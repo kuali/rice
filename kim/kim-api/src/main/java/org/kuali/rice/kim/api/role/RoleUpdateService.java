@@ -15,18 +15,16 @@
  */
 package org.kuali.rice.kim.api.role;
 
-import java.sql.Date;
+import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.core.util.jaxb.SqlDateAdapter;
+import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.core.util.jaxb.AttributeSetAdapter;
-import org.kuali.rice.core.util.jaxb.SqlDateAdapter;
-import org.kuali.rice.kim.api.role.RoleMember;
-import org.kuali.rice.kim.util.KIMWebServiceConstants;
+import java.sql.Date;
+import java.util.Map;
 
 /**
  * This service provides operations for creating and updating roles. 
@@ -45,7 +43,7 @@ public interface RoleUpdateService {
     void assignPrincipalToRole(@WebParam(name="principalId") String principalId, 
     		@WebParam(name="namespaceCode") String namespaceCode, 
     		@WebParam(name="roleName") String roleName, 
-    		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualifications) throws UnsupportedOperationException;
+    		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifications) throws UnsupportedOperationException;
     
 	/**
 	 * Assigns the group with the given id to the role with the specified
@@ -54,7 +52,7 @@ public interface RoleUpdateService {
     void assignGroupToRole(@WebParam(name="groupId") String groupId, 
     		@WebParam(name="namespaceCode") String namespaceCode, 
     		@WebParam(name="roleName") String roleName, 
-    		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualifications) throws UnsupportedOperationException;
+    		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifications) throws UnsupportedOperationException;
 
 	/**
 	 * Assigns the role with the given id to the role with the specified
@@ -63,7 +61,7 @@ public interface RoleUpdateService {
     void assignRoleToRole(@WebParam(name="roleId") String roleId, 
     		@WebParam(name="namespaceCode") String namespaceCode, 
     		@WebParam(name="roleName") String roleName, 
-    		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualifications) throws UnsupportedOperationException;
+    		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifications) throws UnsupportedOperationException;
 
 	/**
 	 * Assigns the role with the given id to the role with the specified
@@ -73,7 +71,7 @@ public interface RoleUpdateService {
     		@WebParam(name="memberId") String memberId,
     		@WebParam(name="memberTypeCode") String memberTypeCode, 
     		@WebParam(name="roleId") String roleId, 
-    		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualifications, 
+    		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifications,
     		@XmlJavaTypeAdapter(value = SqlDateAdapter.class) @WebParam(name="activeFromDate") Date activeFromDate, 
     		@XmlJavaTypeAdapter(value = SqlDateAdapter.class) @WebParam(name="activeToDate") Date activeToDate) throws UnsupportedOperationException;
 
@@ -104,7 +102,7 @@ public interface RoleUpdateService {
     		@WebParam(name="memberTypeCode") String memberTypeCode, 
     		@WebParam(name="delegationTypeCode") String delegationTypeCode, 
     		@WebParam(name="roleId") String roleId, 
-    		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualifications, 
+    		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifications,
     		@XmlJavaTypeAdapter(value = SqlDateAdapter.class) @WebParam(name="activeFromDate") Date activeFromDate, 
     		@XmlJavaTypeAdapter(value = SqlDateAdapter.class) @WebParam(name="activeToDate") Date activeToDate) throws UnsupportedOperationException;
 
@@ -115,7 +113,7 @@ public interface RoleUpdateService {
     void removePrincipalFromRole(@WebParam(name="principalId") String principalId, 
     		@WebParam(name="namespaceCode") String namespaceCode, 
     		@WebParam(name="roleName") String roleName, 
-    		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualifications) throws UnsupportedOperationException;
+    		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifications) throws UnsupportedOperationException;
     
     /**
      * Remove the group with the given id and qualifications from the role
@@ -124,7 +122,7 @@ public interface RoleUpdateService {
     void removeGroupFromRole(@WebParam(name="groupId") String groupId, 
     		@WebParam(name="namespaceCode") String namespaceCode, 
     		@WebParam(name="roleName") String roleName, 
-    		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualifications) throws UnsupportedOperationException;
+    		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifications) throws UnsupportedOperationException;
 
     /**
      * Remove the group with the given id and qualifications from the role
@@ -133,7 +131,7 @@ public interface RoleUpdateService {
     void removeRoleFromRole(@WebParam(name="roleId") String roleId, 
     		@WebParam(name="namespaceCode") String namespaceCode, 
     		@WebParam(name="roleName") String roleName, 
-    		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualifications) throws UnsupportedOperationException;
+    		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifications) throws UnsupportedOperationException;
 
     /**
      * Creates or updates role with given attributes

@@ -17,7 +17,6 @@ package org.kuali.rice.kim.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
@@ -29,8 +28,10 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 
 import javax.jws.WebService;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -43,11 +44,11 @@ public class PermissionUpdateServiceImpl extends PermissionServiceBase implement
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kim.service.PermissionUpdateService#savePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, boolean, org.kuali.rice.core.util.AttributeSet)
+	 * @see org.kuali.rice.kim.service.PermissionUpdateService#savePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, boolean, org.kuali.rice.core.util.Map<String, String>)
 	 */
 	public void savePermission(String permissionId, String permissionTemplateId,
 			String namespaceCode, String name, String description, boolean active,
-			AttributeSet permissionDetails) {
+			Map<String, String> permissionDetails) {
     	// look for an existing permission of the given type
     	try {
 	    	KimPermissionImpl perm = getBusinessObjectService().findBySinglePrimaryKey(KimPermissionImpl.class, permissionId);
@@ -61,7 +62,7 @@ public class PermissionUpdateServiceImpl extends PermissionServiceBase implement
 	    	perm.setName(name);
 	    	perm.setDescription(description);
 	    	perm.setActive(active);
-	    	AttributeSet attributesToAdd = new AttributeSet( permissionDetails );
+	    	Map<String, String> attributesToAdd = new HashMap<String, String>( permissionDetails );
 	    	List<PermissionAttributeDataImpl> details = perm.getDetailObjects();
 	    	Iterator<PermissionAttributeDataImpl> detailIter = details.iterator();
 	    	while ( detailIter.hasNext() ) {

@@ -15,17 +15,10 @@
  */
 package org.kuali.rice.kew.doctype.service.impl;
 
-import java.lang.reflect.Field;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.document.Document;
@@ -44,6 +37,14 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.krad.UserSession;
+
+import java.lang.reflect.Field;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 
 public class DocumentSecurityServiceImpl implements DocumentSecurityService {
@@ -88,7 +89,7 @@ public boolean routeLogAuthorized(UserSession userSession, DocumentRouteHeaderVa
 	  if (session.getUserSession() == null) {
 		  return false;
 	  }
-	  return KimApiServiceLocator.getPermissionService().isAuthorized(session.getUserSession().getPrincipalId(), KEWConstants.KEW_NAMESPACE,	KEWConstants.PermissionNames.UNRESTRICTED_DOCUMENT_SEARCH, new AttributeSet(), new AttributeSet());
+	  return KimApiServiceLocator.getPermissionService().isAuthorized(session.getUserSession().getPrincipalId(), KEWConstants.KEW_NAMESPACE,	KEWConstants.PermissionNames.UNRESTRICTED_DOCUMENT_SEARCH, new HashMap<String, String>(), new HashMap<String, String>());
   }
 
   protected boolean checkStandardAuthorization(DocumentTypeSecurity security, UserSession userSession, String docTypeName, String documentId, String initiatorPrincipalId, SecuritySession session) {
@@ -216,8 +217,8 @@ protected DocumentTypeSecurity getDocumentTypeSecurity(UserSession userSession, 
 	}
 
 	protected boolean isAuthenticatedByPermission(String documentId, String permissionNamespaceCode,
-			String permissionName, AttributeSet permissionDetails,
-			AttributeSet qualification, SecuritySession session)  {
+			String permissionName, Map<String, String> permissionDetails,
+			Map<String, String> qualification, SecuritySession session)  {
 		
 		Document document;
 		try {

@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kim.impl.jaxb;
 
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.jaxb.NameAndNamespacePair;
 import org.kuali.rice.core.util.jaxb.NameAndNamespacePairValidatingAdapter;
 import org.kuali.rice.core.util.jaxb.StringTrimmingAdapter;
@@ -30,6 +29,8 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class represents a &lt;permission&gt; XML element.
@@ -64,7 +65,7 @@ public class PermissionXmlDTO implements Serializable {
     
     @XmlElement(name="permissionDetails")
     @XmlJavaTypeAdapter(PermissionDetailListAdapter.class)
-    private AttributeSet permissionDetails;
+    private Map<String, String> permissionDetails;
     
     public PermissionXmlDTO() {
         this.active = Boolean.TRUE;
@@ -76,7 +77,7 @@ public class PermissionXmlDTO implements Serializable {
         this.permissionDescription = permission.getDescription();
         this.active = Boolean.valueOf(permission.isActive());
         this.permissionDetails = (permission.getAttributes() != null) ?
-                new AttributeSet(permission.getAttributes()) : new AttributeSet();
+                new HashMap<String, String>(permission.getAttributes()) : new HashMap<String, String>();
     }
     
     /**
@@ -152,14 +153,14 @@ public class PermissionXmlDTO implements Serializable {
     /**
      * @return the permissionDetails
      */
-    public AttributeSet getPermissionDetails() {
+    public Map<String, String> getPermissionDetails() {
         return this.permissionDetails;
     }
 
     /**
      * @param permissionDetails the permissionDetails to set
      */
-    public void setPermissionDetails(AttributeSet permissionDetails) {
+    public void setPermissionDetails(Map<String, String> permissionDetails) {
         this.permissionDetails = permissionDetails;
     }
 

@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.krms.api.repository
+package org.kuali.rice.krms.api.repository;
+
 
 import javax.xml.bind.JAXBContext
 import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
 import junit.framework.Assert
 import org.junit.Test
-import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute;
-import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
-import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinitionContract;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute
+import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition
+import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinitionContract
 
 /**
  * Exercises the immutable Country class, including XML (un)marshalling

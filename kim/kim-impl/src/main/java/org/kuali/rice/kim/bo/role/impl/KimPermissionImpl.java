@@ -19,7 +19,6 @@ import org.apache.log4j.Logger;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -44,6 +43,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -164,12 +164,12 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 		this.templateId = templateId;
 	}
 
-	protected transient AttributeSet detailsAsAttributeSet = null;
+	protected transient Map<String, String> detailsAsMap = null;
 
 	public Map<String, String> getDetails() {
-		if ( detailsAsAttributeSet == null ) {
+		if ( detailsAsMap == null ) {
 			KimType kimType = getTypeInfoService().getKimType( getTemplate().getKimTypeId() );
-			AttributeSet m = new AttributeSet();
+			Map<String, String> m = new HashMap<String, String>();
 			for ( PermissionAttributeDataImpl data : getDetailObjects() ) {
 				KimTypeAttribute attribute = null;
 				if ( kimType != null ) {
@@ -184,9 +184,9 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 					m.put( data.getKimAttribute().getAttributeName(), data.getAttributeValue() );
 				}
 			}
-			detailsAsAttributeSet = m;
+			detailsAsMap = m;
 		}
-		return detailsAsAttributeSet;
+		return detailsAsMap;
 	}
 	
 	public boolean hasDetails() {

@@ -15,11 +15,12 @@
  */
 package org.kuali.rice.kew.role;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.engine.RouteContext;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A test implementatino of a QualifierResolver which returns qualifications for chart
@@ -30,15 +31,15 @@ import org.kuali.rice.kew.engine.RouteContext;
  */
 public class TestQualifierResolver implements QualifierResolver {
 	
-	public List<AttributeSet> resolve(RouteContext context) {
-		List<AttributeSet> resolved = new ArrayList<AttributeSet>();
+	public List<Map<String, String>> resolve(RouteContext context) {
+		List<Map<String, String>> resolved = new ArrayList<Map<String, String>>();
 		
-		AttributeSet qualifications = new AttributeSet();
+		Map<String, String> qualifications = new HashMap<String, String>();
 		qualifications.put("chart", "BL");
 		qualifications.put("org", "BUS");
 		resolved.add(qualifications);
 		
-		qualifications = new AttributeSet();
+		qualifications = new HashMap<String, String>();
 		qualifications.put("chart", "IN");
 		qualifications.put("org", "MED");
 		resolved.add(qualifications);

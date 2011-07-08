@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.kew.role;
 
-import java.util.List;
-
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.engine.RouteContext;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * A QualifierResolver is responsible for resolving qualifiers that might be used
@@ -30,6 +30,6 @@ import org.kuali.rice.kew.engine.RouteContext;
  */
 public interface QualifierResolver {
 
-	public List<AttributeSet> resolve(RouteContext context);
+	public List<Map<String, String>> resolve(RouteContext context);
 	
 }

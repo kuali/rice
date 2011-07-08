@@ -16,17 +16,17 @@
  */
 package org.kuali.rice.kew.actionrequest.service;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.engine.ActivationContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Service to handle the building, sorting, saving, activating and deactivating of action request graphs.  These lists are
@@ -180,5 +180,5 @@ public interface ActionRequestService {
      */
     public boolean doesPrincipalHaveRequest(String principalId, String documentId);
 
-    public AttributeSet getActionsRequested(DocumentRouteHeaderValue routeHeader, String principalId, boolean completeAndApproveTheSame);
+    public Map<String, String> getActionsRequested(DocumentRouteHeaderValue routeHeader, String principalId, boolean completeAndApproveTheSame);
 }

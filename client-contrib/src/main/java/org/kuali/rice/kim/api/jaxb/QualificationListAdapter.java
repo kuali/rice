@@ -15,40 +15,41 @@
  */
 package org.kuali.rice.kim.api.jaxb;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.jaxb.StringMapEntry;
+
 import javax.xml.bind.UnmarshalException;
 import javax.xml.bind.annotation.adapters.NormalizedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.core.util.jaxb.StringMapEntry;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * An XML adapter that converts between QualificationList objects and AttributeSet objects.
+ * An XML adapter that converts between QualificationList objects and Map<String, String> objects.
  * Unmarshalled keys and values will automatically be trimmed if non-null.
  * 
  * <p>This adapter will throw an exception during unmarshalling if blank or duplicate keys are encountered.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class QualificationListAdapter extends XmlAdapter<QualificationList,AttributeSet> {
+public class QualificationListAdapter extends XmlAdapter<QualificationList,Map<String, String>> {
 
     /**
      * @see javax.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.Object)
      */
     @Override
-    public AttributeSet unmarshal(QualificationList v) throws Exception {
+    public Map<String, String> unmarshal(QualificationList v) throws Exception {
         if (v != null) {
             NormalizedStringAdapter normalizedStringAdapter = new NormalizedStringAdapter();
-            AttributeSet attributeSet = new AttributeSet();
+            Map<String, String> map = new HashMap<String, String>();
             for (StringMapEntry stringMapEntry : v.getQualifications()) {
                 String tempKey = normalizedStringAdapter.unmarshal(stringMapEntry.getKey());
                 if (StringUtils.isBlank(tempKey)) {
                     throw new UnmarshalException("Cannot create a qualification entry with a blank key");
-                } else if (attributeSet.containsKey(tempKey)) {
+                } else if (map.containsKey(tempKey)) {
                     throw new UnmarshalException("Cannot create more than one qualification entry with a key of \"" + tempKey + "\"");
                 }
-                attributeSet.put(tempKey, normalizedStringAdapter.unmarshal(stringMapEntry.getValue()));
+                map.put(tempKey, normalizedStringAdapter.unmarshal(stringMapEntry.getValue()));
             }
         }
         return null;
@@ -58,7 +59,7 @@ public class QualificationListAdapter extends XmlAdapter<QualificationList,Attri
      * @see javax.xml.bind.annotation.adapters.XmlAdapter#marshal(java.lang.Object)
      */
     @Override
-    public QualificationList marshal(AttributeSet v) throws Exception {
+    public QualificationList marshal(Map<String, String> v) throws Exception {
         return (v != null) ? new QualificationList(v) : null;
     }
 

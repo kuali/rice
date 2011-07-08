@@ -15,14 +15,13 @@
  */
 package org.kuali.rice.kew.rule;
 
+import groovy.lang.Binding;
+import groovy.lang.GroovyShell;
 import org.apache.bsf.BSFEngine;
 import org.apache.bsf.BSFException;
 import org.apache.bsf.BSFManager;
 import org.codehaus.groovy.bsf.GroovyEngine;
 import org.junit.Test;
-
-import groovy.lang.Binding;
-import groovy.lang.GroovyShell;
 
 
 /**

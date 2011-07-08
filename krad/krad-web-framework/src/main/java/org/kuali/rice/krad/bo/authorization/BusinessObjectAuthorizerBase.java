@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.bo.authorization;
 
-import org.kuali.rice.core.util.AttributeSet;
+
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.PersonService;
@@ -98,7 +98,7 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 				.isPermissionDefinedForTemplateName(
 						namespaceCode,
 						permissionTemplateName,
-						new AttributeSet(
+						new HashMap<String, String>(
 								getPermissionDetailValues(businessObject)));
 	}
 
@@ -107,13 +107,13 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 		return getPermissionService()
 				.isPermissionDefinedForTemplateName(namespaceCode,
 						permissionTemplateName,
-						new AttributeSet(permissionDetails));
+						new HashMap<String, String>(permissionDetails));
 	}
 
 	protected final boolean permissionExistsByTemplate(
 			BusinessObject businessObject, String namespaceCode,
 			String permissionTemplateName, Map<String, String> permissionDetails) {
-		AttributeSet combinedPermissionDetails = new AttributeSet(
+		Map<String, String> combinedPermissionDetails = new HashMap<String, String>(
 				getPermissionDetailValues(businessObject));
 		combinedPermissionDetails.putAll(permissionDetails);
 		return getPermissionService()
@@ -125,8 +125,8 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 			String namespaceCode, String permissionName, String principalId) {
 		return getPermissionService().isAuthorized(principalId,
 				namespaceCode, permissionName,
-				new AttributeSet(getPermissionDetailValues(businessObject)),
-				new AttributeSet(getRoleQualification(businessObject, principalId)));
+				new HashMap<String, String>(getPermissionDetailValues(businessObject)),
+				new HashMap<String, String>(getRoleQualification(businessObject, principalId)));
 	}
 
 	public final boolean isAuthorizedByTemplate(BusinessObject dataObject,
@@ -134,30 +134,30 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 			String principalId) {
 		return getPermissionService().isAuthorizedByTemplateName(
 				principalId, namespaceCode, permissionTemplateName,
-				new AttributeSet(getPermissionDetailValues(dataObject)),
-				new AttributeSet(getRoleQualification(dataObject, principalId)));
+				new HashMap<String, String>(getPermissionDetailValues(dataObject)),
+				new HashMap<String, String>(getRoleQualification(dataObject, principalId)));
 	}
 
 	public final boolean isAuthorized(BusinessObject businessObject,
 			String namespaceCode, String permissionName, String principalId,
 			Map<String, String> collectionOrFieldLevelPermissionDetails,
 			Map<String, String> collectionOrFieldLevelRoleQualification) {
-		AttributeSet roleQualifiers = null;
-		AttributeSet permissionDetails = null;
+		Map<String, String> roleQualifiers = null;
+		Map<String, String> permissionDetails = null;
 		if (collectionOrFieldLevelRoleQualification != null) {
-			roleQualifiers = new AttributeSet(
+			roleQualifiers = new HashMap<String, String>(
 					getRoleQualification(businessObject, principalId));
 			roleQualifiers.putAll(collectionOrFieldLevelRoleQualification);
 		} else {
-			roleQualifiers = new AttributeSet(
+			roleQualifiers = new HashMap<String, String>(
 					getRoleQualification(businessObject, principalId));
 		}
 		if (collectionOrFieldLevelPermissionDetails != null) {
-			permissionDetails = new AttributeSet(
+			permissionDetails = new HashMap<String, String>(
 					getPermissionDetailValues(businessObject));
 			permissionDetails.putAll(collectionOrFieldLevelPermissionDetails);
 		} else {
-			permissionDetails = new AttributeSet(
+			permissionDetails = new HashMap<String, String>(
 					getPermissionDetailValues(businessObject));
 		}
 		
@@ -171,9 +171,9 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 			String principalId,
 			Map<String, String> collectionOrFieldLevelPermissionDetails,
 			Map<String, String> collectionOrFieldLevelRoleQualification) {
-		AttributeSet roleQualifiers = new AttributeSet(
+		Map<String, String> roleQualifiers = new HashMap<String, String>(
 				getRoleQualification(dataObject, principalId));
-		AttributeSet permissionDetails = new AttributeSet(
+		Map<String, String> permissionDetails = new HashMap<String, String>(
 				getPermissionDetailValues(dataObject));
 		if (collectionOrFieldLevelRoleQualification != null) {
 			roleQualifiers.putAll(collectionOrFieldLevelRoleQualification);
@@ -217,7 +217,7 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 	 */
 	public Map<String, String> getCollectionItemPermissionDetails(
 			BusinessObject collectionItemBusinessObject) {
-		return new AttributeSet();
+		return new HashMap<String, String>();
 	}
 
 	/**
@@ -225,7 +225,7 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 	 */
 	public Map<String, String> getCollectionItemRoleQualifications(
 			BusinessObject collectionItemBusinessObject) {
-		return new AttributeSet();
+		return new HashMap<String, String>();
 	}
 
 	/**

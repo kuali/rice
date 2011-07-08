@@ -17,7 +17,6 @@ package org.kuali.rice.kim.bo.ui;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.role.Role;
@@ -38,7 +37,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -237,8 +238,8 @@ public class KimDocumentRoleMember  extends KimDocumentBoActivatableToFromEditab
 		return getMemberTypeCode()!=null && getMemberTypeCode().equals(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE);
 	}
 
-	public AttributeSet getQualifierAsAttributeSet() {
-		AttributeSet m = new AttributeSet();
+	public Map<String, String> getQualifierAsMap() {
+		Map<String, String> m = new HashMap<String, String>();
 		for ( KimDocumentRoleQualifier data : getQualifiers() ) {
 			if (data.getKimAttribute() == null){
 				data.refreshReferenceObject("kimAttribute");

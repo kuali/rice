@@ -16,30 +16,11 @@
 
 package org.kuali.rice.kew.service.impl;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.jws.WebService;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -98,6 +79,22 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 
+import javax.jws.WebService;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 @SuppressWarnings({"unchecked"})
 @WebService(endpointInterface = KEWWebServiceConstants.WorkflowUtility.INTERFACE_CLASS,
         serviceName = KEWWebServiceConstants.WorkflowUtility.WEB_SERVICE_NAME,
@@ -107,7 +104,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 
     private static final Logger LOG = Logger.getLogger(WorkflowUtilityWebServiceImpl.class);
 
-    public AttributeSet getActionsRequested(String principalId, String documentId) {
+    public Map<String, String> getActionsRequested(String principalId, String documentId) {
         if (documentId == null) {
             LOG.error("null documentId passed in.  Throwing RuntimeExcpetion");
             throw new RuntimeException("Null documentId passed in.");
@@ -925,11 +922,12 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         if ( (ruleReportCriteria.getActionRequestCodes() != null) && (ruleReportCriteria.getActionRequestCodes().length != 0) ) {
             actionRequestCodes = Arrays.asList(ruleReportCriteria.getActionRequestCodes());
         }
-        Collection rulesFound = KEWServiceLocator.getRuleService().searchByTemplate(ruleReportCriteria.getDocumentTypeName(),ruleReportCriteria.getRuleTemplateName(),
+        Collection rulesFound = KEWServiceLocator.getRuleService().searchByTemplate(
+                ruleReportCriteria.getDocumentTypeName(), ruleReportCriteria.getRuleTemplateName(),
                 ruleReportCriteria.getRuleDescription(), ruleReportCriteria.getResponsibleGroupId(),
-                ruleReportCriteria.getResponsiblePrincipalId(),
-                ruleReportCriteria.isConsiderWorkgroupMembership(),ruleReportCriteria.isIncludeDelegations(),
-                ruleReportCriteria.isActiveIndicator(),extensionValues,actionRequestCodes);
+                ruleReportCriteria.getResponsiblePrincipalId(), ruleReportCriteria.isConsiderWorkgroupMembership(),
+                ruleReportCriteria.isIncludeDelegations(), ruleReportCriteria.isActiveIndicator(), extensionValues,
+                actionRequestCodes);
         RuleDTO[] returnableRules = new RuleDTO[rulesFound.size()];
         int i = 0;
         for (Iterator iter = rulesFound.iterator(); iter.hasNext();) {

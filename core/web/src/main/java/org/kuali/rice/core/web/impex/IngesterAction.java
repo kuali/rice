@@ -28,7 +28,6 @@ import org.kuali.rice.core.api.impex.xml.FileXmlDocCollection;
 import org.kuali.rice.core.api.impex.xml.XmlDoc;
 import org.kuali.rice.core.api.impex.xml.XmlDocCollection;
 import org.kuali.rice.core.api.impex.xml.ZipXmlDocCollection;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.web.struts.action.KualiAction;
@@ -44,8 +43,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 /**
  * Struts action that accepts uploaded files and feeds them to the XmlIngesterService
@@ -208,8 +208,8 @@ public class IngesterAction extends KualiAction {
 	protected void checkAuthorization( ActionForm form, String methodToCall) throws AuthorizationException
     {
     	String principalId = GlobalVariables.getUserSession().getPrincipalId();
-    	AttributeSet roleQualifier = new AttributeSet();
-    	AttributeSet permissionDetails = KRADUtils.getNamespaceAndActionClass(this.getClass());
+    	Map<String, String> roleQualifier = new HashMap<String, String>();
+    	Map<String, String> permissionDetails = KRADUtils.getNamespaceAndActionClass(this.getClass());
 
         if (!KimApiServiceLocator.getPermissionService().isAuthorizedByTemplateName(principalId, KRADConstants.KRAD_NAMESPACE,
         		KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, roleQualifier))

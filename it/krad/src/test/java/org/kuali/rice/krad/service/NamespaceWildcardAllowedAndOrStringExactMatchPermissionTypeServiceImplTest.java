@@ -43,7 +43,7 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
             new NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl();
         
         permissionService.setExactMatchStringAttributeName("actionClass");
-        permissionService.setNamespaceRequiredOnStoredAttributeSet(false);
+        permissionService.setNamespaceRequiredOnStoredMap(false);
         permissionService.setCheckRequiredAttributes(true);
     }
 

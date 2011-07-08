@@ -18,7 +18,6 @@ package org.kuali.rice.core.web.parameter;
 import org.kuali.rice.core.api.component.Component;
 import org.kuali.rice.core.impl.component.ComponentBo;
 import org.kuali.rice.core.impl.parameter.ParameterBo;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -64,7 +63,7 @@ public class ParameterRule extends MaintenanceDocumentRuleBase {
 		 boolean allowsEdit = false;
 	        ParameterBo parm = newBO;
 	        
-	        AttributeSet permissionDetails = new AttributeSet();
+	        Map<String, String> permissionDetails = new HashMap<String, String>();
 	        permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, parm.getNamespaceCode());
 	        permissionDetails.put(KimConstants.AttributeConstants.COMPONENT_NAME, parm.getComponentCode());
 	        permissionDetails.put(KimConstants.AttributeConstants.PARAMETER_NAME, parm.getName());

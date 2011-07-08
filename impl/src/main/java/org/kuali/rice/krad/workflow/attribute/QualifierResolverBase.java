@@ -15,10 +15,7 @@
  */
 package org.kuali.rice.krad.workflow.attribute;
 
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.role.QualifierResolver;
@@ -26,6 +23,9 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.DocumentService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -82,26 +82,26 @@ public abstract class QualifierResolverBase implements QualifierResolver {
 	}
 	
     /**
-     * Add common qualifiers to every AttributeSet in the given List of AttributeSet
-     * @param qualifiers a List of AttributeSets to add common qualifiers to
+     * Add common qualifiers to every Map<String, String> in the given List of Map<String, String>
+     * @param qualifiers a List of Map<String, String>s to add common qualifiers to
      * @param document the document currently being routed
      * @param documentEntry the data dictionary entry of the type of document currently being routed
      * @param routeLevel the document's current route level
      */
-    protected void decorateWithCommonQualifiers(List<AttributeSet> qualifiers, RouteContext context, String customDocTypeName) {
-        for (AttributeSet qualifier : qualifiers) {
-            addCommonQualifiersToAttributeSet(qualifier, context, customDocTypeName);
+    protected void decorateWithCommonQualifiers(List<Map<String, String>> qualifiers, RouteContext context, String customDocTypeName) {
+        for (Map<String, String> qualifier : qualifiers) {
+            addCommonQualifiersToMap(qualifier, context, customDocTypeName);
         }
     }
     
     /**
-     * Adds common qualifiers to a given AttributeSet
-     * @param qualifier an AttributeSet to add common qualifiers to
+     * Adds common qualifiers to a given Map<String, String>
+     * @param qualifier an Map<String, String> to add common qualifiers to
      * @param document the document currently being routed
      * @param documentEntry the data dictionary entry of the type of document currently being routed
      * @param routeLevel the document's current route level
      */
-    protected void addCommonQualifiersToAttributeSet(AttributeSet qualifier, RouteContext context, String customDocTypeName) {    	
+    protected void addCommonQualifiersToMap(Map<String, String> qualifier, RouteContext context, String customDocTypeName) {
         qualifier.put(KIM_ATTRIBUTE_DOCUMENT_NUMBER, context.getDocument().getDocumentId() );
         if ( !qualifier.containsKey(KIM_ATTRIBUTE_DOCUMENT_TYPE_NAME) ) {
 	        if ( StringUtils.isBlank(customDocTypeName)) {

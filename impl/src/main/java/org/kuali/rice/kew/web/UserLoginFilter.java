@@ -22,7 +22,6 @@ import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.IdentityService;
@@ -47,6 +46,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.namespace.QName;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.UUID;
 
 
@@ -133,7 +133,7 @@ public class UserLoginFilter implements Filter {
 				KimConstants.KIM_TYPE_DEFAULT_NAMESPACE, 
 				KimConstants.PermissionNames.LOG_IN, 
 				null, 
-				new AttributeSet("principalId", principalId));
+				Collections.singletonMap("principalId", principalId));
 	}
 	
 	

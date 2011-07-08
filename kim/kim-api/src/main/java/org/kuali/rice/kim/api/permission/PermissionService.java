@@ -119,7 +119,7 @@ public interface PermissionService {
     /**
      * Checks whether the given qualified permission is granted to the principal given
      * the passed roleQualification.  If no roleQualification is passed (null or empty)
-     * then this method behaves the same as {@link #hasPermission(String, String, String, AttributeSet)}.
+     * then this method behaves the same as {@link #hasPermission(String, String, String, Map<String, String>)}.
      * 
      * Each role assigned to the principal is checked for qualifications.  If a qualifier 
      * exists on the principal's membership in that role, that is checked first through
@@ -163,7 +163,7 @@ public interface PermissionService {
     /**
      * Checks whether the given qualified permission is granted to the principal given
      * the passed roleQualification.  If no roleQualification is passed (null or empty)
-     * then this method behaves the same as {@link #hasPermission(String, String, String, AttributeSet)}.
+     * then this method behaves the same as {@link #hasPermission(String, String, String, Map<String, String>)}.
      * 
      * Each role assigned to the principal is checked for qualifications.  If a qualifier 
      * exists on the principal's membership in that role, that is checked first through

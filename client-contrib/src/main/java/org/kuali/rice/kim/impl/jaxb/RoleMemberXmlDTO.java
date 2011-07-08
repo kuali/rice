@@ -16,7 +16,6 @@
 package org.kuali.rice.kim.impl.jaxb;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.jaxb.NameAndNamespacePair;
 import org.kuali.rice.core.util.jaxb.NameAndNamespacePairValidatingAdapter;
 import org.kuali.rice.core.util.jaxb.StringToDateTimeAdapter;
@@ -37,6 +36,8 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.NormalizedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Base class representing an unmarshalled &lt;roleMember&gt; element.
@@ -83,7 +84,7 @@ public abstract class RoleMemberXmlDTO implements Serializable {
     
     @XmlElement(name="qualifications")
     @XmlJavaTypeAdapter(QualificationListAdapter.class)
-    private AttributeSet qualifications;
+    private Map<String, String> qualifications;
     
     @XmlTransient
     private String memberTypeCode;
@@ -108,7 +109,7 @@ public abstract class RoleMemberXmlDTO implements Serializable {
         this.memberTypeCode = roleMember.getMemberTypeCode();
         this.activeFromDate = roleMember.getActiveFromDate();
         this.activeToDate = roleMember.getActiveToDate();
-        this.qualifications = (roleMember.getQualifier() != null) ? new AttributeSet(roleMember.getQualifier()) : new AttributeSet();
+        this.qualifications = (roleMember.getQualifier() != null) ? new HashMap<String, String>(roleMember.getQualifier()) : new HashMap<String, String>();
         
         if (KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)) {
             if (populateMemberId) {
@@ -258,14 +259,14 @@ public abstract class RoleMemberXmlDTO implements Serializable {
     /**
      * @return the qualifications
      */
-    public AttributeSet getQualifications() {
+    public Map<String, String> getQualifications() {
         return this.qualifications;
     }
 
     /**
      * @param qualifications the qualifications to set
      */
-    public void setQualifications(AttributeSet qualifications) {
+    public void setQualifications(Map<String, String> qualifications) {
         this.qualifications = qualifications;
     }
 

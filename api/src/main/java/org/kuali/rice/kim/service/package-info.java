@@ -15,8 +15,10 @@
  */
 
 @javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters({
-	@javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter(value=org.kuali.rice.core.util.jaxb.AttributeSetAdapter.class,type=org.kuali.rice.core.util.AttributeSet.class),
+	@javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter(value=org.kuali.rice.core.util.jaxb.MapStringStringAdapter.class,type=Map.class),
 	@javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter(value=org.kuali.rice.core.util.jaxb.SqlDateAdapter.class,type=java.sql.Date.class),
 	@javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter(value=org.kuali.rice.core.util.jaxb.SqlTimestampAdapter.class,type=java.sql.Timestamp.class)
 })
 package org.kuali.rice.kim.service;
+
+import java.util.Map;

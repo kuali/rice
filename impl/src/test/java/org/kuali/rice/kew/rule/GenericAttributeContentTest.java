@@ -17,14 +17,14 @@
 
 package org.kuali.rice.kew.rule;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+import org.kuali.rice.kew.routeheader.DocumentContent;
+import org.kuali.rice.kew.routeheader.StandardDocumentContent;
 
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
-import org.kuali.rice.kew.routeheader.DocumentContent;
-import org.kuali.rice.kew.routeheader.StandardDocumentContent;
+import static org.junit.Assert.assertEquals;
 
 public class GenericAttributeContentTest {
     private static final String ATTRIB1_CONTENT = "    <boringAttribute>" +

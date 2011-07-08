@@ -1034,18 +1034,18 @@
   <bean id="namespaceOrComponentPermissionTypeService"
         class="org.kuali.rice.krad.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
     <property name="exactMatchStringAttributeName" value="componentName"/>
-    <property name="namespaceRequiredOnStoredAttributeSet" value="false"/>
+    <property name="namespaceRequiredOnStoredMap" value="false"/>
   </bean>
 
   <bean id="parameterPermissionTypeService" class="org.kuali.rice.krad.service.impl.ParameterPermissionTypeServiceImpl">
     <property name="exactMatchStringAttributeName" value="componentName"/>
-    <property name="namespaceRequiredOnStoredAttributeSet" value="false"/>
+    <property name="namespaceRequiredOnStoredMap" value="false"/>
   </bean>
 
   <bean id="batchFeedOrJobPermissionTypeService"
         class="org.kuali.rice.krad.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
     <property name="exactMatchStringAttributeName" value="beanName"/>
-    <property name="namespaceRequiredOnStoredAttributeSet" value="false"/>
+    <property name="namespaceRequiredOnStoredMap" value="false"/>
   </bean>
 
   <bean id="buttonPermissionTypeService" class="org.kuali.rice.krad.service.impl.ButtonPermissionTypeServiceImpl"/>
@@ -1056,7 +1056,7 @@
   <bean id="namespaceOrActionPermissionTypeService"
         class="org.kuali.rice.krad.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
     <property name="exactMatchStringAttributeName" value="actionClass"/>
-    <property name="namespaceRequiredOnStoredAttributeSet" value="false"/>
+    <property name="namespaceRequiredOnStoredMap" value="false"/>
   </bean>
 
   <bean id="documentTypeAndEditModePermissionTypeService"

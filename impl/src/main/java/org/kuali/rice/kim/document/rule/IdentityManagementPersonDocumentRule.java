@@ -722,7 +722,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	    List<String> roleIds = new ArrayList<String>();
 	    roleIds.add(role.getRoleId());
 	    for(KimDocumentRoleMember member: role.getRolePrncpls()){
-	    	oldMemberQualifiers = member.getQualifierAsAttributeSet();
+	    	oldMemberQualifiers = member.getQualifierAsMap();
 	    	errorsAttributesAgainstExisting = kimTypeService.validateAttributesAgainstExisting(
 	    			role.getKimRoleType().getId(), newMemberQualifiers, oldMemberQualifiers);
 	    	validationErrors.putAll(
@@ -761,7 +761,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 		boolean valid;
 		int memberCounter = 0;
 		Map<String, String> errorsTemp;
-		Map<String, String> attributeSetToValidate;
+		Map<String, String> mapToValidate;
         KimTypeService kimTypeService;
         GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
         RoleMemberBo roleMember;
@@ -774,8 +774,8 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 			roleIds = new ArrayList<String>();
 			roleIds.add(delegationMember.getRoleBo().getId());
 			errorPath = "delegationMembers["+memberCounter+"]";
-			attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(delegationMember.getQualifiers());
-			errorsTemp = kimTypeService.validateAttributes(kimType.getId(), attributeSetToValidate);
+			mapToValidate = attributeValidationHelper.convertQualifiersToMap(delegationMember.getQualifiers());
+			errorsTemp = kimTypeService.validateAttributes(kimType.getId(), mapToValidate);
 			validationErrors.putAll(
 					attributeValidationHelper.convertErrors(errorPath,
                             attributeValidationHelper.convertQualifiersToAttrIdxMap(delegationMember.getQualifiers()),
@@ -787,7 +787,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 				GlobalVariables.getMessageMap().putError("document."+errorPath, RiceKeyConstants.ERROR_DELEGATE_ROLE_MEMBER_ASSOCIATION, new String[]{});
 			} else{
 				errorsTemp = kimTypeService.validateUnmodifiableAttributes(
-								kimType.getId(), roleMember.getQualifier(), attributeSetToValidate);
+								kimType.getId(), roleMember.getQualifier(), mapToValidate);
 				validationErrors.putAll(
 						attributeValidationHelper.convertErrors(errorPath, attributeValidationHelper
                                 .convertQualifiersToAttrIdxMap(delegationMember.getQualifiers()), errorsTemp));

@@ -15,16 +15,16 @@
  */
 package org.kuali.rice.kns.web.struts.form;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-
 import org.apache.commons.beanutils.BeanComparator;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.util.TableRenderUtil;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
 
 /**
  * This class holds the metadata necessary to render a table when displaytag is not being used.
@@ -59,7 +59,7 @@ public class KualiTableRenderFormMetadata {
     private int columnToSortIndex;
 
     /**
-     * If it is not feasible to use an index for lookup, as with mapped properties in an AttributeSet, it may be necessary to store a string value
+     * If it is not feasible to use an index for lookup, as with mapped properties in an Map<String, String>, it may be necessary to store a string value
      */
     private String columnToSortName;
 
@@ -371,7 +371,7 @@ public class KualiTableRenderFormMetadata {
     	if (PropertyUtils.isReadable(firstItem, columnToSortOn))
     		comparator = new BeanComparator(columnToSortOn, subComparator);
     	else
-    		comparator = new BeanComparator(new StringBuilder().append("qualifierAsAttributeSet(").append(columnToSortOn).append(")").toString(), subComparator);
+    		comparator = new BeanComparator(new StringBuilder().append("qualifierAsMap<String, String>(").append(columnToSortOn).append(")").toString(), subComparator);
 
 
         // If the user has decided to resort by the same column that the list is currently sorted by, then assume that s/he wants to reverse the order of the sort

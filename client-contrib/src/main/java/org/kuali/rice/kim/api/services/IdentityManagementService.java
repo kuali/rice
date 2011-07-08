@@ -16,7 +16,6 @@
 package org.kuali.rice.kim.api.services;
 
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
@@ -180,22 +179,22 @@ public interface IdentityManagementService {
              String principalId,
              String namespaceCode,
              String permissionName,
-              AttributeSet permissionDetails
+              Map<String, String> permissionDetails
     );
 
     boolean isAuthorized(
              String principalId,
              String namespaceCode,
              String permissionName,
-              AttributeSet permissionDetails,
-              AttributeSet qualification
+              Map<String, String> permissionDetails,
+              Map<String, String> qualification
     );
 
     boolean hasPermissionByTemplateName(
              String principalId,
              String namespaceCode,
              String permissionTemplateName,
-              AttributeSet permissionDetails
+              Map<String, String> permissionDetails
     );
 
     boolean isAuthorizedByTemplateName(
@@ -213,23 +212,23 @@ public interface IdentityManagementService {
              String principalId,
              String namespaceCode,
              String permissionName,
-              AttributeSet permissionDetails,
-              AttributeSet qualification
+              Map<String, String> permissionDetails,
+              Map<String, String> qualification
     );
 
     List<Permission> getAuthorizedPermissionsByTemplateName(
              String principalId,
              String namespaceCode,
              String permissionTemplateName,
-              AttributeSet permissionDetails,
-              AttributeSet qualification
+              Map<String, String> permissionDetails,
+              Map<String, String> qualification
     );
 
     List<PermissionAssigneeInfo> getPermissionAssignees(
              String namespaceCode,
              String permissionName,
-              AttributeSet permissionDetails,
-              AttributeSet qualification
+              Map<String, String> permissionDetails,
+              Map<String, String> qualification
     );
 
     List<PermissionAssigneeInfo> getPermissionAssigneesForTemplateName(
@@ -264,8 +263,8 @@ public interface IdentityManagementService {
              String principalId,
              String namespaceCode,
              String responsibilityName,
-              AttributeSet qualification,
-              AttributeSet responsibilityDetails
+              Map<String, String> qualification,
+              Map<String, String> responsibilityDetails
     );
 
     /**
@@ -275,22 +274,22 @@ public interface IdentityManagementService {
              String principalId,
              String namespaceCode,
              String responsibilityTemplateName,
-              AttributeSet qualification,
-              AttributeSet responsibilityDetails
+              Map<String, String> qualification,
+              Map<String, String> responsibilityDetails
     );
 
     List<ResponsibilityAction> getResponsibilityActions(
              String namespaceCode,
              String responsibilityName,
-              AttributeSet qualification,
-              AttributeSet responsibilityDetails
+              Map<String, String> qualification,
+              Map<String, String> responsibilityDetails
     );
 
     List<ResponsibilityAction> getResponsibilityActionsByTemplateName(
              String namespaceCode,
              String responsibilityTemplateName,
-              AttributeSet qualification,
-              AttributeSet responsibilityDetails
+              Map<String, String> qualification,
+              Map<String, String> responsibilityDetails
     );
 
     /**
@@ -299,7 +298,7 @@ public interface IdentityManagementService {
     boolean isPermissionDefinedForTemplateName(
              String namespaceCode,
              String permissionTemplateName,
-              AttributeSet permissionDetails
+              Map<String, String> permissionDetails
     );
 
 

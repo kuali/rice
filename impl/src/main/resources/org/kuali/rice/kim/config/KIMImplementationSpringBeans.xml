@@ -219,22 +219,22 @@
 
   <bean id="permissionPermissionTypeService" class="org.kuali.rice.krad.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
     	<property name="exactMatchStringAttributeName" value="permissionName" />
-    	<property name="namespaceRequiredOnStoredAttributeSet" value="true" />
+    	<property name="namespaceRequiredOnStoredMap" value="true" />
     </bean>
 
   <bean id="responsibilityPermissionTypeService" class="org.kuali.rice.krad.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
     	<property name="exactMatchStringAttributeName" value="responsibilityName" />
-    	<property name="namespaceRequiredOnStoredAttributeSet" value="true" />
+    	<property name="namespaceRequiredOnStoredMap" value="true" />
     </bean>
 
   <bean id="rolePermissionTypeService" class="org.kuali.rice.krad.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
     	<property name="exactMatchStringAttributeName" value="roleName" />
-    	<property name="namespaceRequiredOnStoredAttributeSet" value="true" />
+    	<property name="namespaceRequiredOnStoredMap" value="true" />
     </bean>
 
   <bean id="groupPermissionTypeService" class="org.kuali.rice.krad.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
     	<property name="exactMatchStringAttributeName" value="groupName" />
-    	<property name="namespaceRequiredOnStoredAttributeSet" value="true" />
+    	<property name="namespaceRequiredOnStoredMap" value="true" />
     </bean>
 
   <!-- for person Doc UI  -->

@@ -16,17 +16,7 @@
  */
 package org.kuali.rice.kew.service;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.List;
-
-import javax.jws.WebParam;
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.core.util.jaxb.AttributeSetAdapter;
+import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.core.util.jaxb.SqlTimestampAdapter;
 import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
@@ -45,6 +35,15 @@ import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWWebServiceConstants;
+
+import javax.jws.WebParam;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A remotable service which provides an API for performing various queries and
@@ -284,8 +283,8 @@ public interface WorkflowUtility {
 			@WebParam(name = "documentId") String documentId)
 			throws WorkflowException;
 
-	@XmlJavaTypeAdapter(value = AttributeSetAdapter.class)
-	public AttributeSet getActionsRequested(
+	@XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+	public Map<String, String> getActionsRequested(
 			@WebParam(name = "principalId") String principalId,
 			@WebParam(name = "documentId") String documentId);
 

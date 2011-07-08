@@ -16,7 +16,6 @@
 package org.kuali.rice.kim.impl.jaxb;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.jaxb.NameAndNamespacePair;
 import org.kuali.rice.kim.api.group.GroupContract;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
@@ -29,6 +28,7 @@ import org.kuali.rice.kim.util.KimConstants.KimUIConstants;
 
 import javax.xml.bind.UnmarshalException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -104,7 +104,7 @@ public final class RoleXmlUtil {
         
         // Define defaults as needed.
         if (newRoleMember.getQualifications() == null) {
-            newRoleMember.setQualifications(new AttributeSet());
+            newRoleMember.setQualifications(new HashMap<String, String>());
         }
         
         // Save the role member.
@@ -164,13 +164,13 @@ public final class RoleXmlUtil {
                     String memberTypeCode = roleMember.getMemberTypeCode();
                     if (KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)) {
                         roleUpdateService.removePrincipalFromRole(roleMember.getMemberId(), role.getNamespaceCode(), role.getName(),
-                                (roleMember.getQualifier() != null) ? new AttributeSet(roleMember.getQualifier()) : new AttributeSet());
+                                (roleMember.getQualifier() != null) ? new HashMap<String, String>(roleMember.getQualifier()) : new HashMap<String, String>());
                     } else if (KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)) {
                         roleUpdateService.removeGroupFromRole(roleMember.getMemberId(), role.getNamespaceCode(), role.getName(),
-                                (roleMember.getQualifier() != null) ? new AttributeSet(roleMember.getQualifier()) : new AttributeSet());
+                                (roleMember.getQualifier() != null) ? new HashMap<String, String>(roleMember.getQualifier()) : new HashMap<String, String>());
                     } else if (KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)) {
                         roleUpdateService.removeRoleFromRole(roleMember.getMemberId(), role.getNamespaceCode(), role.getName(),
-                                (roleMember.getQualifier() != null) ? new AttributeSet(roleMember.getQualifier()) : new AttributeSet());
+                                (roleMember.getQualifier() != null) ? new HashMap<String, String>(roleMember.getQualifier()) : new HashMap<String, String>());
                     }
                 }
             }

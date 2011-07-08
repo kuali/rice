@@ -15,23 +15,24 @@
  */
 package org.kuali.rice.kew.role;
 
-import java.util.Collections;
-import java.util.List;
-
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.engine.RouteContext;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Implementation of the Null Object Pattern for QualiferResolvers.  Returns an List with a single empty
- * AttributeSet when asked to resolve. 
+ * Map<String, String> when asked to resolve.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class NullQualifierResolver implements QualifierResolver {
 
-	public List<AttributeSet> resolve(RouteContext context) {
-		return Collections.singletonList(new AttributeSet());
+	public List<Map<String, String>> resolve(RouteContext context) {
+		return Collections.<Map<String, String>>singletonList(new HashMap<String, String>());
 	}
 
 }

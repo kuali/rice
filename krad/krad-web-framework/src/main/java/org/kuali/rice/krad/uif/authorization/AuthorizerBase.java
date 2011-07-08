@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.uif.authorization;
 
-import org.kuali.rice.core.util.AttributeSet;
+
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.PermissionService;
@@ -117,18 +117,18 @@ public class AuthorizerBase implements Authorizer {
     protected final boolean permissionExistsByTemplate(Object dataObject, String namespaceCode,
             String permissionTemplateName) {
         return getPermissionService().isPermissionDefinedForTemplateName(namespaceCode, permissionTemplateName,
-                new AttributeSet(getPermissionDetailValues(dataObject)));
+                new HashMap<String, String>(getPermissionDetailValues(dataObject)));
     }
 
     protected final boolean permissionExistsByTemplate(String namespaceCode, String permissionTemplateName,
             Map<String, String> permissionDetails) {
         return getPermissionService().isPermissionDefinedForTemplateName(namespaceCode, permissionTemplateName,
-                new AttributeSet(permissionDetails));
+                new HashMap<String, String>(permissionDetails));
     }
 
     protected final boolean permissionExistsByTemplate(Object dataObject, String namespaceCode,
             String permissionTemplateName, Map<String, String> permissionDetails) {
-        AttributeSet combinedPermissionDetails = new AttributeSet(getPermissionDetailValues(dataObject));
+        Map<String, String> combinedPermissionDetails = new HashMap<String, String>(getPermissionDetailValues(dataObject));
         combinedPermissionDetails.putAll(permissionDetails);
 
         return getPermissionService().isPermissionDefinedForTemplateName(namespaceCode, permissionTemplateName,
@@ -137,35 +137,35 @@ public class AuthorizerBase implements Authorizer {
 
     public final boolean isAuthorized(Object dataObject, String namespaceCode, String permissionName, String principalId) {
         return getPermissionService().isAuthorized(principalId, namespaceCode, permissionName,
-                new AttributeSet(getPermissionDetailValues(dataObject)),
-                new AttributeSet(getRoleQualification(dataObject, principalId)));
+                new HashMap<String, String>(getPermissionDetailValues(dataObject)),
+                new HashMap<String, String>(getRoleQualification(dataObject, principalId)));
     }
 
     public final boolean isAuthorizedByTemplate(Object dataObject, String namespaceCode, String permissionTemplateName,
             String principalId) {
         return getPermissionService().isAuthorizedByTemplateName(principalId, namespaceCode,
-                permissionTemplateName, new AttributeSet(getPermissionDetailValues(dataObject)),
-                new AttributeSet((getRoleQualification(dataObject, principalId))));
+                permissionTemplateName, new HashMap<String, String>(getPermissionDetailValues(dataObject)),
+                new HashMap<String, String>((getRoleQualification(dataObject, principalId))));
     }
 
     public final boolean isAuthorized(Object dataObject, String namespaceCode, String permissionName,
             String principalId, Map<String, String> collectionOrFieldLevelPermissionDetails,
             Map<String, String> collectionOrFieldLevelRoleQualification) {
-        AttributeSet roleQualifiers;
-        AttributeSet permissionDetails;
+        Map<String, String> roleQualifiers;
+        Map<String, String> permissionDetails;
         if (collectionOrFieldLevelRoleQualification != null) {
-            roleQualifiers = new AttributeSet(getRoleQualification(dataObject, principalId));
+            roleQualifiers = new HashMap<String, String>(getRoleQualification(dataObject, principalId));
             roleQualifiers.putAll(collectionOrFieldLevelRoleQualification);
         }
         else {
-            roleQualifiers = new AttributeSet(getRoleQualification(dataObject, principalId));
+            roleQualifiers = new HashMap<String, String>(getRoleQualification(dataObject, principalId));
         }
         if (collectionOrFieldLevelPermissionDetails != null) {
-            permissionDetails = new AttributeSet(getPermissionDetailValues(dataObject));
+            permissionDetails = new HashMap<String, String>(getPermissionDetailValues(dataObject));
             permissionDetails.putAll(collectionOrFieldLevelPermissionDetails);
         }
         else {
-            permissionDetails = new AttributeSet(getPermissionDetailValues(dataObject));
+            permissionDetails = new HashMap<String, String>(getPermissionDetailValues(dataObject));
         }
 
         return getPermissionService().isAuthorized(principalId, namespaceCode, permissionName,
@@ -175,8 +175,8 @@ public class AuthorizerBase implements Authorizer {
     public final boolean isAuthorizedByTemplate(Object dataObject, String namespaceCode, String permissionTemplateName,
             String principalId, Map<String, String> collectionOrFieldLevelPermissionDetails,
             Map<String, String> collectionOrFieldLevelRoleQualification) {
-        AttributeSet roleQualifiers = new AttributeSet(getRoleQualification(dataObject, principalId));
-        AttributeSet permissionDetails = new AttributeSet(getPermissionDetailValues(dataObject));
+        Map<String, String> roleQualifiers = new HashMap<String, String>(getRoleQualification(dataObject, principalId));
+        Map<String, String> permissionDetails = new HashMap<String, String>(getPermissionDetailValues(dataObject));
 
         if (collectionOrFieldLevelRoleQualification != null) {
             roleQualifiers.putAll(collectionOrFieldLevelRoleQualification);

@@ -16,15 +16,6 @@
  */
 package org.kuali.rice.kew.support.xstream;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.io.ByteArrayInputStream;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
@@ -32,6 +23,14 @@ import org.kuali.rice.kew.xml.xstream.XStreamSafeEvaluator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import java.io.ByteArrayInputStream;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 
 public class XStreamSafeEvaluatorTest {

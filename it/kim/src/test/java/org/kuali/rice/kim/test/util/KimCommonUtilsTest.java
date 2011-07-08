@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.kim.test.util;
 
-
 import org.junit.Test;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Unit Tests for KimCommonUtils.java
@@ -41,7 +41,7 @@ public class KimCommonUtilsTest extends KIMTestCase {
 
         GroupInfo groupInfo = identityManagementService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "GroupNine");
 
-        AttributeSet infoAttributes = groupInfo.getAttributes();
+        Map<String, String> infoAttributes = groupInfo.getAttributes();
         assertTrue(infoAttributes != null);
         assertTrue(infoAttributes.size() > 0);
         assertTrue(infoAttributes.containsKey("documentTypeName"));
@@ -84,12 +84,12 @@ public class KimCommonUtilsTest extends KIMTestCase {
     	IdentityManagementService identityManagementService = KimApiServiceLocator.getIdentityManagementService();
 
 		Group groupInfo = identityManagementService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "GroupNine");
-		AttributeSet testAttributeSet = groupInfo.getAttributes();
-        testAttributeSet.put("someDummyKey", "someDummyValue");
-        groupInfo.setAttributes(testAttributeSet);
+		Map<String, String> testMap<String, String> = groupInfo.getAttributes();
+        testMap<String, String>.put("someDummyKey", "someDummyValue");
+        groupInfo.setAttributes(testMap<String, String>);
     	try {
             List<GroupAttributeDataImpl> attributeDataList = KimCommonUtilsInternal.copyInfoAttributesToGroupAttributes(groupInfo.getAttributes(), groupInfo.getGroupId(), groupInfo.getKimTypeId());
-    		fail("Ingested a group with an unknown attributeSet");
+    		fail("Ingested a group with an unknown Map<String, String>");
     	}
     	catch (IllegalArgumentException expectedException) {
     		assertTrue(expectedException.getMessage().contains("not found"));

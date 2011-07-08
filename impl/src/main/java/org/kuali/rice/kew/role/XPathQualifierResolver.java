@@ -17,7 +17,6 @@ package org.kuali.rice.kew.role;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.xml.XmlJotter;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.rule.XmlConfiguredAttribute;
@@ -105,7 +104,7 @@ import java.util.Map;
  * </resolverConfig>
  * </pre>
  * 
- * <p>In this example, the following XML would return a List containing an AttributeSet
+ * <p>In this example, the following XML would return a List containing an Map<String, String>
  * for each account number when resolved.
  * 
  * <p><pre>
@@ -127,33 +126,33 @@ public class XPathQualifierResolver implements QualifierResolver, XmlConfiguredA
 
 	private RuleAttribute ruleAttribute;
 	
-	public List<AttributeSet> resolve(RouteContext context) {
+	public List<Map<String, String>> resolve(RouteContext context) {
 			ResolverConfig config = parseResolverConfig();
 			Document xmlContent = context.getDocumentContent().getDocument();
 			XPath xPath = XPathHelper.newXPath();
-			boolean isCompoundAttributeSet = config.getExpressionMap().size() > 1;
+			boolean isCompoundMap = config.getExpressionMap().size() > 1;
 			try {
-				List<AttributeSet> attributeSets = new ArrayList<AttributeSet>();
+				List<Map<String, String>> maps = new ArrayList<Map<String, String>>();
 				NodeList baseElements = (NodeList)xPath.evaluate(config.getBaseXPathExpression(), xmlContent, XPathConstants.NODESET);
 				if (LOG.isDebugEnabled()) {
-					LOG.debug("Found " + baseElements.getLength() + " baseElements to parse for AttributeSets using document XML:" + XmlJotter.jotDocument(xmlContent));
+					LOG.debug("Found " + baseElements.getLength() + " baseElements to parse for Map<String, String>s using document XML:" + XmlJotter.jotDocument(xmlContent));
 				}
 				for (int index = 0; index < baseElements.getLength(); index++) {
 					Node baseNode = baseElements.item(index);
-					if (isCompoundAttributeSet) {
-						handleCompoundAttributeSet(baseNode, attributeSets, config, xPath);
+					if (isCompoundMap) {
+						handleCompoundMap(baseNode, maps, config, xPath);
 					} else {
-						handleSimpleAttributeSet(baseNode, attributeSets, config, xPath);
+						handleSimpleMap(baseNode, maps, config, xPath);
 					}
 				}
-				return attributeSets;
+				return maps;
 			} catch (XPathExpressionException e) {
 				throw new RiceRuntimeException("Encountered an issue executing XPath.", e);
 			}
 	}
 	
-	protected void handleCompoundAttributeSet(Node baseNode, List<AttributeSet> attributeSets, ResolverConfig config, XPath xPath) throws XPathExpressionException {
-		AttributeSet attributeSet = new AttributeSet();
+	protected void handleCompoundMap(Node baseNode, List<Map<String, String>> maps, ResolverConfig config, XPath xPath) throws XPathExpressionException {
+		Map<String, String> map = new HashMap<String, String>();
 		for (String attributeName : config.getExpressionMap().keySet()) {
 			String xPathExpression = config.getExpressionMap().get(attributeName);
 			NodeList attributes = (NodeList)xPath.evaluate(xPathExpression, baseNode, XPathConstants.NODESET);
@@ -162,27 +161,27 @@ public class XPathQualifierResolver implements QualifierResolver, XmlConfiguredA
 			} else if (attributes.getLength() != 0) {
 				String attributeValue = ((Element)attributes.item(0)).getTextContent();
 				if (LOG.isDebugEnabled()) {
-					LOG.debug("Adding values to compound AttributeSet: " + attributeName + "::" + attributeValue);
+					LOG.debug("Adding values to compound Map<String, String>: " + attributeName + "::" + attributeValue);
 				}
-				attributeSet.put(attributeName, attributeValue);
+				map.put(attributeName, attributeValue);
 			}
 		}
-		attributeSets.add(attributeSet);
+		maps.add(map);
 	}
 	
-	protected void handleSimpleAttributeSet(Node baseNode, List<AttributeSet> attributeSets, ResolverConfig config, XPath xPath) throws XPathExpressionException {
+	protected void handleSimpleMap(Node baseNode, List<Map<String, String>> maps, ResolverConfig config, XPath xPath) throws XPathExpressionException {
 		String attributeName = config.getExpressionMap().keySet().iterator().next();
 		String xPathExpression = config.getExpressionMap().get(attributeName);
 		NodeList attributes = (NodeList)xPath.evaluate(xPathExpression, baseNode, XPathConstants.NODESET);
 		for (int index = 0; index < attributes.getLength(); index++) {
 			Element attributeElement = (Element)attributes.item(index);
-			AttributeSet attributeSet = new AttributeSet();
+			Map<String, String> map = new HashMap<String, String>();
 			String attributeValue = attributeElement.getTextContent();
 			if (LOG.isDebugEnabled()) {
-				LOG.debug("Adding values to simple AttributeSet: " + attributeName + "::" + attributeValue);
+				LOG.debug("Adding values to simple Map<String, String>: " + attributeName + "::" + attributeValue);
 			}
-			attributeSet.put(attributeName, attributeValue);
-			attributeSets.add(attributeSet);
+			map.put(attributeName, attributeValue);
+			maps.add(map);
 		}
 	}
 

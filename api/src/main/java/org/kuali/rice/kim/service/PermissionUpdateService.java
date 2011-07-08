@@ -15,15 +15,14 @@
  */
 package org.kuali.rice.kim.service;
 
+import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.kim.util.KIMWebServiceConstants;
+
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.core.util.jaxb.AttributeSetAdapter;
-import org.kuali.rice.kim.util.KIMWebServiceConstants;
-
+import java.util.Map;
 
 /**
  * This service provides operations for creating and updating permissions. 
@@ -40,7 +39,7 @@ public interface PermissionUpdateService {
 			 @WebParam(name="name") String name,
 			 @WebParam(name="description") String description,
 			 @WebParam(name="active") boolean active,
-			 @WebParam(name="permissionDetails") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet permissionDetails );
+			 @WebParam(name="permissionDetails") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> permissionDetails );
 
     /**
      * Returns id available for a new permission

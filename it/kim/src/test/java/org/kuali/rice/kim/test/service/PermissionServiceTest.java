@@ -15,22 +15,18 @@
  */
 package org.kuali.rice.kim.test.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
 import org.junit.Test;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.impl.common.template.TemplateBo;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.test.KIMTestCase;
+
+import java.util.HashMap;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Test the PermissionService
@@ -50,28 +46,28 @@ public class PermissionServiceTest extends KIMTestCase {
 
 	@Test
 	public void testHasPermission() {
-		assertTrue(getPermissionService().hasPermission("entity123pId", "KR-NS", "perm1", new AttributeSet()));
-		assertTrue(getPermissionService().hasPermission("entity123pId", "KR-NS", "perm2", new AttributeSet()));
-		assertFalse(getPermissionService().hasPermission("entity124pId", "KR-NS", "perm2", new AttributeSet()));
+		assertTrue(getPermissionService().hasPermission("entity123pId", "KR-NS", "perm1", new HashMap<String, String>()));
+		assertTrue(getPermissionService().hasPermission("entity123pId", "KR-NS", "perm2", new HashMap<String, String>()));
+		assertFalse(getPermissionService().hasPermission("entity124pId", "KR-NS", "perm2", new HashMap<String, String>()));
 	}
 	
 	@Test
 	public void testIsAuthorized() {
-		assertTrue(getPermissionService().isAuthorized("entity123pId", "KR-NS", "perm1", new AttributeSet(), new AttributeSet()));
-		assertTrue(getPermissionService().isAuthorized("entity123pId", "KR-NS", "perm2", new AttributeSet(), new AttributeSet()));
-		assertFalse(getPermissionService().isAuthorized("entity124pId", "KR-NS", "perm2", new AttributeSet(), new AttributeSet()));
+		assertTrue(getPermissionService().isAuthorized("entity123pId", "KR-NS", "perm1", new HashMap<String, String>(), new HashMap<String, String>()));
+		assertTrue(getPermissionService().isAuthorized("entity123pId", "KR-NS", "perm2", new HashMap<String, String>(), new HashMap<String, String>()));
+		assertFalse(getPermissionService().isAuthorized("entity124pId", "KR-NS", "perm2", new HashMap<String, String>(), new HashMap<String, String>()));
 	}
 	
 	@Test
 	public void testHasPermissionByTemplateName() {
-		assertTrue(getPermissionService().hasPermissionByTemplateName("entity123pId", "KUALI", "Default", new AttributeSet()));
+		assertTrue(getPermissionService().hasPermissionByTemplateName("entity123pId", "KUALI", "Default", new HashMap<String, String>()));
 		// TODO - getting a SOAPFaultException on this call; fix and un-comment
-		// assertFalse(getPermissionService().hasPermissionByTemplateName("entity124pId", "KUALI", "Default", new AttributeSet()));
+		// assertFalse(getPermissionService().hasPermissionByTemplateName("entity124pId", "KUALI", "Default", new Map<String, String>()));
 	}
 	
 	@Test
 	public void testIsAuthorizedByTemplateName() {
-		// assertTrue(getPermissionService().isAuthorizedByTemplateName(principalId, namespaceCode, permissionTemplateName, permissionDetails, qualification)("entity123pId", "KR-NS", "1", new AttributeSet()));
+		// assertTrue(getPermissionService().isAuthorizedByTemplateName(principalId, namespaceCode, permissionTemplateName, permissionDetails, qualification)("entity123pId", "KR-NS", "1", new Map<String, String>()));
 	}
 	
 	@Test

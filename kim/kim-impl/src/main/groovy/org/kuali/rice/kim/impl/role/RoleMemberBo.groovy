@@ -28,7 +28,6 @@ import javax.persistence.Table
 import javax.persistence.Transient
 import org.hibernate.annotations.GenericGenerator
 import org.hibernate.annotations.Parameter
-import org.kuali.rice.core.util.AttributeSet
 import org.kuali.rice.kim.api.role.Role
 import org.kuali.rice.kim.api.role.RoleMember
 import org.kuali.rice.kim.api.role.RoleMemberContract
@@ -87,7 +86,7 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
         if (qualifier == null) {
             Role role = getRoleService().getRole(roleId);
             KimType kimType = getTypeInfoService().getKimType(role.getKimTypeId());
-            AttributeSet m = new AttributeSet();
+            Map<String, String> m = new HashMap<String, String>();
             for (RoleMemberAttributeDataBo data: getAttributes()) {
                 KimTypeAttribute attribute = null;
                 if (kimType != null) {
@@ -99,7 +98,7 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
                     m.put(data.getKimAttribute().getAttributeName(), data.getAttributeValue());
                 }
             }
-            qualifier = Attributes.fromMap(m);
+            qualifier = m;
         }
         return qualifier;
     }

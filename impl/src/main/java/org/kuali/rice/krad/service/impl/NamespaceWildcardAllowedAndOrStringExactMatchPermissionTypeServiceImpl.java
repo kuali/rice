@@ -37,7 +37,7 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
 	protected static final String NAMESPACE_CODE = KimConstants.UniqueKeyConstants.NAMESPACE_CODE;
 	
 	protected String exactMatchStringAttributeName;
-	protected boolean namespaceRequiredOnStoredAttributeSet;
+	protected boolean namespaceRequiredOnStoredMap;
 
 	@Override
 	protected List<Permission> performPermissionMatches(Map<String, String> requestedDetails, List<Permission> permissionsList) {
@@ -57,7 +57,7 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
 	    // otherwise, use those with a blank additional property value
 	    if ( !matchingPermissions.isEmpty() ) {
             List<Permission> matchingWithNamespace = super.performPermissionMatches(requestedDetails, matchingPermissions);
-	        if ( !namespaceRequiredOnStoredAttributeSet ) {
+	        if ( !namespaceRequiredOnStoredMap ) {
 	            // if the namespace is not required and the namespace match would have excluded
 	            // the results, return the original set of matches
 	            if ( matchingWithNamespace.isEmpty() ) {
@@ -67,7 +67,7 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
             return matchingWithNamespace;
 	    } else if ( !matchingBlankPermissions.isEmpty() ) {
             List<Permission> matchingWithNamespace = super.performPermissionMatches(requestedDetails, matchingBlankPermissions);
-            if ( !namespaceRequiredOnStoredAttributeSet ) {
+            if ( !namespaceRequiredOnStoredMap ) {
                 // if the namespace is not required and the namespace match would have excluded
                 // the results, return the original set of matches
                 if ( matchingWithNamespace.isEmpty() ) {
@@ -85,9 +85,9 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
 		requiredAttributes.add(exactMatchStringAttributeName);
 	}
 
-	public void setNamespaceRequiredOnStoredAttributeSet(
-			boolean namespaceRequiredOnStoredAttributeSet) {
-		this.namespaceRequiredOnStoredAttributeSet = namespaceRequiredOnStoredAttributeSet;
+	public void setNamespaceRequiredOnStoredMap(
+			boolean namespaceRequiredOnStoredMap) {
+		this.namespaceRequiredOnStoredMap = namespaceRequiredOnStoredMap;
 	}
 
 	/**

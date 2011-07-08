@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.authorization;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -25,6 +24,7 @@ import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,7 +64,7 @@ public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServ
 	}
 	
 	protected List<PermissionAssigneeInfo> getPermissionAssignees(Map<String, String> qualification) {
-		return getPermissionService().getPermissionAssigneesForTemplateName(permissionTemplateNamespace, permissionTemplateName, new AttributeSet(qualification),  new AttributeSet(qualification));
+		return getPermissionService().getPermissionAssigneesForTemplateName(permissionTemplateNamespace, permissionTemplateName, new HashMap<String, String>(qualification),  new HashMap<String, String>(qualification));
 	}
 
     @Override
@@ -86,7 +86,7 @@ public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServ
     public boolean hasApplicationRole(
             String principalId, List<String> groupIds, String namespaceCode, String roleName, Map<String, String> qualification){
         // FIXME: dangerous - data changes could cause an infinite loop - should add thread-local to trap state and abort
-        return getPermissionService().isAuthorizedByTemplateName(principalId, permissionTemplateNamespace, permissionTemplateName, new AttributeSet(qualification), new AttributeSet(qualification));
+        return getPermissionService().isAuthorizedByTemplateName(principalId, permissionTemplateNamespace, permissionTemplateName, new HashMap<String, String>(qualification), new HashMap<String, String>(qualification));
     }
 
     /**

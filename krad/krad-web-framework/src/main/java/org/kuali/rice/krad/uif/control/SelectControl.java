@@ -25,8 +25,8 @@ public class SelectControl extends MultiValueControlBase {
 	private static final long serialVersionUID = 6443247954759096815L;
 	
 	private int size;
-	private boolean multiple
-;
+	private boolean multiple;
+
 	public SelectControl() {
 		size = 1;
 		multiple = false;

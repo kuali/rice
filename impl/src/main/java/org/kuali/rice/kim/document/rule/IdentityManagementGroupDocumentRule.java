@@ -131,11 +131,11 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
 		Map<String, String> validationErrors = new HashMap<String, String>();
 
 		Map<String, String> errorsTemp;
-		Map<String, String> attributeSetToValidate;
+		Map<String, String> mapToValidate;
         KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(kimType);
         GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
-		attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(groupQualifiers);
-		errorsTemp = kimTypeService.validateAttributes(kimType.getId(), attributeSetToValidate);
+		mapToValidate = attributeValidationHelper.convertQualifiersToMap(groupQualifiers);
+		errorsTemp = kimTypeService.validateAttributes(kimType.getId(), mapToValidate);
 		validationErrors.putAll( attributeValidationHelper.convertErrors("",
                 attributeValidationHelper.convertQualifiersToAttrIdxMap(groupQualifiers), errorsTemp));
 		GlobalVariables.getMessageMap().addToErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);

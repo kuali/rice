@@ -18,7 +18,6 @@ package org.kuali.rice.kns.service.impl;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.PermissionService;
@@ -212,13 +211,13 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 					.getAttributeDefinition(attributeName);
 			if (attributeDefinition.getAttributeSecurity() != null) {
 				if (attributeDefinition.getAttributeSecurity().isHide()) {
-					AttributeSet collectionItemPermissionDetails = new AttributeSet();
-					AttributeSet collectionItemRoleQualifications = null;
+					Map<String, String> collectionItemPermissionDetails = new HashMap<String, String>();
+					Map<String, String> collectionItemRoleQualifications = null;
 					if (ObjectUtils.isNotNull(collectionItemBusinessObject)) {
 						collectionItemPermissionDetails.putAll(getFieldPermissionDetails(collectionItemBusinessObject, attributeName));
 						collectionItemPermissionDetails.putAll(businessObjectAuthorizer.
 								getCollectionItemPermissionDetails(collectionItemBusinessObject));
-						collectionItemRoleQualifications = new AttributeSet(businessObjectAuthorizer.
+						collectionItemRoleQualifications = new HashMap<String, String>(businessObjectAuthorizer.
 								getCollectionItemRoleQualifications(collectionItemBusinessObject));
 					}
 					else {
@@ -261,13 +260,13 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 			AttributeDefinition attributeDefinition = dataObjectEntry
 					.getAttributeDefinition(attributeName);
 			if (attributeDefinition.getAttributeSecurity() != null) {
-				AttributeSet collectionItemPermissionDetails = new AttributeSet();
-				AttributeSet collectionItemRoleQualifications = null;
+				Map<String, String> collectionItemPermissionDetails = new HashMap<String, String>();
+				Map<String, String> collectionItemRoleQualifications = null;
 				if (ObjectUtils.isNotNull(collectionItemBusinessObject)) {
 					collectionItemPermissionDetails.putAll(getFieldPermissionDetails(collectionItemBusinessObject, attributeName));
 					collectionItemPermissionDetails.putAll(businessObjectAuthorizer.
 							getCollectionItemPermissionDetails(collectionItemBusinessObject));
-					collectionItemRoleQualifications = new AttributeSet(businessObjectAuthorizer.
+					collectionItemRoleQualifications = new HashMap<String, String>(businessObjectAuthorizer.
 							getCollectionItemRoleQualifications(collectionItemBusinessObject));
 				}
 				else {
@@ -314,13 +313,13 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 			// TODO what is the equivalent of control.isButton in KRAD
 			if (attributeDefinition.getControl() != null &&
 			        attributeDefinition.getControl().isButton()) {
-				AttributeSet collectionItemPermissionDetails = new AttributeSet();
-				AttributeSet collectionItemRoleQualifications = null;
+				Map<String, String> collectionItemPermissionDetails = new HashMap<String, String>();
+				Map<String, String> collectionItemRoleQualifications = null;
 				if (ObjectUtils.isNotNull(collectionItemBusinessObject)) {
 					collectionItemPermissionDetails.putAll(getButtonFieldPermissionDetails(collectionItemBusinessObject, attributeName));
 					collectionItemPermissionDetails.putAll(businessObjectAuthorizer.
 							getCollectionItemPermissionDetails(collectionItemBusinessObject));
-					collectionItemRoleQualifications = new AttributeSet(businessObjectAuthorizer.
+					collectionItemRoleQualifications = new HashMap<String, String>(businessObjectAuthorizer.
 							getCollectionItemRoleQualifications(collectionItemBusinessObject));
 				}
 				else {
@@ -541,7 +540,7 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 					user.getPrincipalId(),
 					KRADConstants.KRAD_NAMESPACE,
 					KimConstants.PermissionTemplateNames.FULL_UNMASK_FIELD,
-					new AttributeSet(getFieldPermissionDetails(dataObjectClass, fieldName)),
+					new HashMap<String, String>(getFieldPermissionDetails(dataObjectClass, fieldName)),
 					null);
 		}
 		return result; // should be safe to return Boolean here since the only circumstances that
@@ -562,7 +561,7 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 					user.getPrincipalId(),
 					KRADConstants.KRAD_NAMESPACE,
 					KimConstants.PermissionTemplateNames.PARTIAL_UNMASK_FIELD,
-					new AttributeSet(getFieldPermissionDetails(dataObjectClass,fieldName)),
+					new HashMap<String, String>(getFieldPermissionDetails(dataObjectClass,fieldName)),
 					null);
 		} else { // if a document was passed, evaluate the permission in the context of a document
 			return getDocumentHelperService().getDocumentAuthorizer( document )
@@ -619,7 +618,7 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 	
 	protected Map<String, String> getButtonFieldPermissionDetails(
 			Object businessObject, String attributeName) {
-		Map<String, String> permissionDetails = new AttributeSet();
+		Map<String, String> permissionDetails = new HashMap<String, String>();
 		if (attributeName.contains(".")) {
 			permissionDetails.put(KimConstants.AttributeConstants.BUTTON_NAME, attributeName);
 		} else {

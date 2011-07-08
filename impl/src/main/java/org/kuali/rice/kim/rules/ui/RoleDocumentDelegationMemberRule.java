@@ -56,14 +56,14 @@ public class RoleDocumentDelegationMemberRule extends DocumentRuleBase implement
             GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Role Member"});
             return false;
         }
-		List<Map<String, String>> attributeSetListToValidate = new ArrayList<Map<String, String>>();
-		Map<String, String> attributeSetToValidate;
+		List<Map<String, String>> mapListToValidate = new ArrayList<Map<String, String>>();
+		Map<String, String> mapToValidate;
 		Map<String, String> validationErrors = new HashMap<String, String>();
         KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(document.getKimType());
 
 		for(RoleDocumentDelegationMember roleMember: document.getDelegationMembers()) {
-			attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(roleMember.getQualifiers());
-			attributeSetListToValidate.add(attributeSetToValidate);
+			mapToValidate = attributeValidationHelper.convertQualifiersToMap(roleMember.getQualifiers());
+			mapListToValidate.add(mapToValidate);
     	}
 		boolean attributesUnique;
 

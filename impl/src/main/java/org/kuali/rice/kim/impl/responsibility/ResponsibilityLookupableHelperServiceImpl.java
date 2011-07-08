@@ -19,7 +19,6 @@ import com.google.common.collect.MapMaker;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.role.RoleBo;
@@ -189,7 +188,7 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 	}
 
 	private void populateAssignedToRoles(UberResponsibilityBo responsibility){
-		AttributeSet criteria = new AttributeSet();
+		Map<String, String> criteria = new HashMap<String, String>();
 		if ( responsibility.getAssignedToRoles().isEmpty() ) {
 			for(RoleResponsibilityBo roleResponsibility: responsibility.getRoleResponsibilities()){
 				criteria.put(KimConstants.PrimaryKeyConstants.ID, roleResponsibility.getRoleId());
@@ -209,7 +208,7 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 	
 	private List<UberResponsibilityBo> getResponsibilitiesWithResponsibilitySearchCriteria(Map<String, String> responsibilitySearchCriteria, boolean unbounded){
 		String detailCriteriaStr = responsibilitySearchCriteria.remove( DETAIL_CRITERIA );
-		AttributeSet detailCriteria = parseDetailCriteria(detailCriteriaStr);
+		Map<String, String> detailCriteria = parseDetailCriteria(detailCriteriaStr);
 		List<UberResponsibilityBo> cachedResult = respResultCache.get(responsibilitySearchCriteria);
 		List<UberResponsibilityBo> responsibilities = null;
 		if ( cachedResult == null ) {
@@ -227,7 +226,7 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 				filteredResponsibilities.add(responsibility);
 				populateAssignedToRoles(responsibility);
 			} else {
-				if ( isMapSubset( new AttributeSet(responsibility.getAttributes()), detailCriteria ) ) {
+				if ( isMapSubset( new HashMap<String, String>(responsibility.getAttributes()), detailCriteria ) ) {
 					filteredResponsibilities.add(responsibility);
 					populateAssignedToRoles(responsibility);
 				}

@@ -17,14 +17,15 @@ package org.kuali.rice.kim.test.service;
 
 import com.google.common.collect.Maps;
 import org.junit.Test;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.test.KIMTestCase;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -49,7 +50,7 @@ public class RoleServiceTest extends KIMTestCase {
 		roleIds.add("r1");
 		assertTrue( "p1 has direct role r1", getRoleService().principalHasRole("p1", roleIds, null ));	
 		//assertFalse( "p4 has no direct/higher level role r1", getRoleService().principalHasRole("p4", roleIds, null ));	
-		AttributeSet qualification = new AttributeSet();
+		Map<String, String> qualification = new HashMap<String, String>();
 		qualification.put("Attribute 2", "CHEM");
 		assertTrue( "p1 has direct role r1 with rp2 attr data", getRoleService().principalHasRole("p1", roleIds,
                 qualification));

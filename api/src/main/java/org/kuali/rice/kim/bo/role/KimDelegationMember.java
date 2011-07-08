@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.bo.role;
 
-import org.kuali.rice.core.util.AttributeSet;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -30,6 +30,6 @@ public interface KimDelegationMember {
 	String getMemberId();
 	String getMemberTypeCode();
 	String getRoleMemberId();
-	AttributeSet getQualifier();
+	Map<String, String> getQualifier();
 	
 }

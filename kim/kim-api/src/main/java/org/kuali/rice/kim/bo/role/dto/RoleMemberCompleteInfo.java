@@ -15,12 +15,13 @@
  */
 package org.kuali.rice.kim.bo.role.dto;
 
+import org.kuali.rice.krad.dto.InactiveableInfo;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
-import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.krad.dto.InactiveableInfo;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -34,7 +35,7 @@ public class RoleMemberCompleteInfo extends InactiveableInfo implements Serializ
 
 	protected String roleMemberId;
 	protected String roleId;
-	protected AttributeSet qualifier;
+	protected Map<String, String> qualifier;
 	protected List<RoleResponsibilityActionInfo> roleRspActions;
 	protected String memberName;
 	protected String memberNamespaceCode;
@@ -46,7 +47,7 @@ public class RoleMemberCompleteInfo extends InactiveableInfo implements Serializ
 	}
 	
 	public RoleMemberCompleteInfo(String roleId, String roleMemberId, String memberId, 
-			String memberTypeCode, Date activeFromDate, Date activeToDate, AttributeSet qualifier) {
+			String memberTypeCode, Date activeFromDate, Date activeToDate, Map<String, String> qualifier) {
 		super();
 		this.roleId = roleId;
 		if ( memberId == null ) {
@@ -95,14 +96,14 @@ public class RoleMemberCompleteInfo extends InactiveableInfo implements Serializ
 	/**
 	 * @return the qualifier
 	 */
-	public AttributeSet getQualifier() {
+	public Map<String, String> getQualifier() {
 		return this.qualifier;
 	}
 
 	/**
 	 * @param qualifier the qualifier to set
 	 */
-	public void setQualifier(AttributeSet qualifier) {
+	public void setQualifier(Map<String, String> qualifier) {
 		this.qualifier = qualifier;
 	}
 

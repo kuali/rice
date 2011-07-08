@@ -15,13 +15,8 @@
  */
 package org.kuali.rice.krad.uif.authorization;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.doctype.Process;
@@ -34,6 +29,10 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -135,7 +134,7 @@ public class DocumentAuthorizerBase extends AuthorizerBase {
 
     public final boolean canInitiate(String documentTypeName, Person user) {
 		String nameSpaceCode = KRADConstants.KUALI_RICE_SYSTEM_NAMESPACE;
-		AttributeSet permissionDetails = new AttributeSet();
+		Map<String, String> permissionDetails = new HashMap<String, String>();
 		permissionDetails.put(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME,
 				documentTypeName);
 		return getPermissionService().isAuthorizedByTemplateName(

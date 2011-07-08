@@ -21,7 +21,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.actions.DispatchAction;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.exception.AuthorizationException;
@@ -113,8 +112,8 @@ public abstract class KSBAction extends DispatchAction {
 	protected void checkAuthorization( ActionForm form, String methodToCall) throws AuthorizationException 
     {
     	String principalId = GlobalVariables.getUserSession().getPrincipalId();
-    	AttributeSet roleQualifier = new AttributeSet(getRoleQualification(form, methodToCall));
-    	AttributeSet permissionDetails = KRADUtils.getNamespaceAndActionClass(this.getClass());
+    	Map<String, String> roleQualifier = new HashMap<String, String>(getRoleQualification(form, methodToCall));
+    	Map<String, String> permissionDetails = KRADUtils.getNamespaceAndActionClass(this.getClass());
     	
         if (!KimApiServiceLocator.getPermissionService().isAuthorizedByTemplateName(principalId, KRADConstants.KRAD_NAMESPACE,
         		KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, roleQualifier ))

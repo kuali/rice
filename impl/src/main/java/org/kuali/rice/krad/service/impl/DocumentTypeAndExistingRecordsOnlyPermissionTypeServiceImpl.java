@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -25,14 +24,14 @@ import java.util.Map;
 
 public class DocumentTypeAndExistingRecordsOnlyPermissionTypeServiceImpl extends
 		KimPermissionTypeServiceBase {
-	protected boolean performMatch(AttributeSet inputAttributeSet,
-			Map<String, String> storedAttributeSet) {
+	protected boolean performMatch(Map<String, String> inputMap,
+			Map<String, String> storedMap) {
 		// this type doesn't work without attributes passed in 
-		if ( inputAttributeSet == null || storedAttributeSet == null ) {
+		if ( inputMap == null || storedMap == null ) {
 			return false;
 		}
-		String requestedDocumentType = inputAttributeSet.get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME);
-		String permissionDocumentType = storedAttributeSet.get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME);
+		String requestedDocumentType = inputMap.get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME);
+		String permissionDocumentType = storedMap.get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME);
 		if ( requestedDocumentType == null || permissionDocumentType == null ) {
 			return false; // again, don't match if missing document types
 		}
@@ -41,12 +40,11 @@ public class DocumentTypeAndExistingRecordsOnlyPermissionTypeServiceImpl extends
 			return false;
 		}
 		// check the existing attributes only flag
-		if ( !Boolean.parseBoolean(storedAttributeSet.get(KimConstants.AttributeConstants.EXISTING_RECORDS_ONLY)) ) {
+		if ( !Boolean.parseBoolean(storedMap.get(KimConstants.AttributeConstants.EXISTING_RECORDS_ONLY)) ) {
 			// if not set, then any document action allowed
 			return true;
 		}
 		// otherwise, only edit actions are allowed (no New/Copy)
-		return StringUtils.equals(inputAttributeSet
-				.get(KRADConstants.MAINTENANCE_ACTN), KRADConstants.MAINTENANCE_EDIT_ACTION);
+		return StringUtils.equals(inputMap.get(KRADConstants.MAINTENANCE_ACTN), KRADConstants.MAINTENANCE_EDIT_ACTION);
 	}
 }

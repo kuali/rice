@@ -16,12 +16,8 @@
  */
 package org.kuali.rice.kew.service;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.apache.commons.lang.ObjectUtils;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
@@ -38,6 +34,10 @@ import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Convenience class for client applications to query workflow.  This class is one of two
@@ -66,7 +66,7 @@ public class WorkflowInfo implements java.io.Serializable {
 
     }
     
-    public AttributeSet getActionsRequested(String principalId, String documentId) throws WorkflowException {
+    public Map<String, String> getActionsRequested(String principalId, String documentId) throws WorkflowException {
     	return getWorkflowUtility().getActionsRequested(principalId, documentId);
     }
 

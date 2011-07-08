@@ -17,7 +17,6 @@ package org.kuali.rice.kim.service.impl;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
 import org.kuali.rice.kim.api.role.Role;
@@ -32,6 +31,7 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 import java.sql.Date;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -155,7 +155,7 @@ public class RoleManagementServiceImpl implements RoleManagementService {
 
     @Override
     public void assignGroupToRole(String groupId, String namespaceCode, String roleName,
-                                  AttributeSet qualifications) {
+                                  Map<String, String> qualifications) {
         getRoleUpdateService().assignGroupToRole(groupId, namespaceCode, roleName, qualifications);
         Role role = getRoleByName(namespaceCode, roleName);
         removeCacheEntries(role.getId(), null);
@@ -163,7 +163,7 @@ public class RoleManagementServiceImpl implements RoleManagementService {
 
     @Override
     public void assignPrincipalToRole(String principalId, String namespaceCode, String roleName,
-                                      AttributeSet qualifications) {
+                                      Map<String, String> qualifications) {
         Role role = getRoleByName(namespaceCode, roleName);
         getRoleUpdateService().assignPrincipalToRole(principalId, namespaceCode, roleName, qualifications);
         removeCacheEntries(role.getId(), principalId);
@@ -171,7 +171,7 @@ public class RoleManagementServiceImpl implements RoleManagementService {
 
     @Override
     public void removeGroupFromRole(String groupId, String namespaceCode, String roleName,
-                                    AttributeSet qualifications) {
+                                    Map<String, String> qualifications) {
         getRoleUpdateService().removeGroupFromRole(groupId, namespaceCode, roleName, qualifications);
         Role role = getRoleByName(namespaceCode, roleName);
         removeCacheEntries(role.getId(), null);
@@ -179,7 +179,7 @@ public class RoleManagementServiceImpl implements RoleManagementService {
 
     @Override
     public void removePrincipalFromRole(String principalId, String namespaceCode, String roleName,
-                                        AttributeSet qualifications) {
+                                        Map<String, String> qualifications) {
         Role role = getRoleByName(namespaceCode, roleName);
         getRoleUpdateService().removePrincipalFromRole(principalId, namespaceCode, roleName, qualifications);
         removeCacheEntries(role.getId(), principalId);
@@ -209,7 +209,7 @@ public class RoleManagementServiceImpl implements RoleManagementService {
         sb.append('\n');
         sb.append("     Details :\n");
         if (roleQualifiers != null) {
-            sb.append(new AttributeSet(roleQualifiers).formattedDump(15));
+            sb.append(new HashMap<String, String>(roleQualifiers));
         } else {
             sb.append("               [null]\n");
         }
@@ -254,7 +254,7 @@ public class RoleManagementServiceImpl implements RoleManagementService {
 
     @Override
     public void assignRoleToRole(String roleId, String namespaceCode, String roleName,
-                                 AttributeSet qualifications) {
+                                 Map<String, String> qualifications) {
         getRoleUpdateService().assignRoleToRole(
                 roleId, namespaceCode, roleName, qualifications);
         Role role = getRoleByName(namespaceCode, roleName);
@@ -263,7 +263,7 @@ public class RoleManagementServiceImpl implements RoleManagementService {
 
     @Override
     public void saveDelegationMemberForRole(String delegationMemberId, String roleMemberId, String memberId, String memberTypeCode,
-                                            String delegationTypeCode, String roleId, AttributeSet qualifications,
+                                            String delegationTypeCode, String roleId, Map<String, String> qualifications,
                                             Date activeFromDate, Date activeToDate) throws UnsupportedOperationException {
         getRoleUpdateService().saveDelegationMemberForRole(delegationMemberId, roleMemberId, memberId, memberTypeCode, delegationTypeCode, roleId, qualifications, activeFromDate, activeToDate);
         Role role = getRole(roleId);
@@ -272,7 +272,7 @@ public class RoleManagementServiceImpl implements RoleManagementService {
 
     @Override
     public RoleMember saveRoleMemberForRole(String roleMemberId, String memberId, String memberTypeCode,
-                                            String roleId, AttributeSet qualifications, Date activeFromDate, Date activeToDate) throws UnsupportedOperationException {
+                                            String roleId, Map<String, String> qualifications, Date activeFromDate, Date activeToDate) throws UnsupportedOperationException {
         Role role = getRole(roleId);
         RoleMember roleMember = getRoleUpdateService().saveRoleMemberForRole(roleMemberId, memberId, memberTypeCode, roleId, qualifications, activeFromDate, activeToDate);
         removeCacheEntries(role.getId(), memberId);
@@ -281,7 +281,7 @@ public class RoleManagementServiceImpl implements RoleManagementService {
 
     @Override
     public void removeRoleFromRole(String roleId, String namespaceCode, String roleName,
-                                   AttributeSet qualifications) {
+                                   Map<String, String> qualifications) {
         getRoleUpdateService().removeRoleFromRole(roleId, namespaceCode, roleName, qualifications);
         Role role = getRoleByName(namespaceCode, roleName);
         removeCacheEntries(role.getId(), null);

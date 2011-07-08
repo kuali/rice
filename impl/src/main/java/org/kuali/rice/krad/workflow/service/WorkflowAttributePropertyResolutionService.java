@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.krad.workflow.service;
 
-import java.util.List;
-
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.RoutingTypeDefinition;
 import org.kuali.rice.krad.datadictionary.WorkflowAttributes;
 import org.kuali.rice.krad.document.Document;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * A service which will resolve workflow attributes into the proper data for routing qualifier resolution 
@@ -30,12 +30,12 @@ import org.kuali.rice.krad.document.Document;
 public interface WorkflowAttributePropertyResolutionService {
 
     /** 
-     * Generates a List of AttributeSet data from the data on the document for the given WorkflowAttributeDefinitions
+     * Generates a List of Map<String, String> data from the data on the document for the given WorkflowAttributeDefinitions
      * @param document the document to gather data from
      * @param workflowAttributes the workflow attributes which have the routing type qualifiers to resolve
-     * @return a List of populated AttributeSet data
+     * @return a List of populated Map<String, String> data
      */
-    public abstract List<AttributeSet> resolveRoutingTypeQualifiers(Document document, RoutingTypeDefinition routingTypeDefinition);
+    public abstract List<Map<String, String>> resolveRoutingTypeQualifiers(Document document, RoutingTypeDefinition routingTypeDefinition);
     
     /**
      * Given a document, returns the searchable attribute values to index for it

@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.document.authorization;
 
-import org.kuali.rice.core.util.AttributeSet;
+
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.document.MaintenanceDocument;
@@ -37,7 +37,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 	transient protected static DocumentDictionaryService documentDictionaryService;
 
 	public final boolean canCreate(Class boClass, Person user) {
-		AttributeSet permissionDetails = new AttributeSet();
+		Map<String, String> permissionDetails = new HashMap<String, String>();
 		permissionDetails.put(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME,
 				getDocumentDictionaryService().getMaintenanceDocumentTypeName(
 						boClass));
@@ -51,7 +51,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 								user.getPrincipalId(),
 								KRADConstants.KRAD_NAMESPACE,
 								KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS,
-								permissionDetails, new AttributeSet());
+								permissionDetails, new HashMap<String, String>());
 	}
 
 	public final boolean canMaintain(Object dataObject, Person user) {

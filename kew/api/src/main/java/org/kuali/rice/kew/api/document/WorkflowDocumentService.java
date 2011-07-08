@@ -15,13 +15,12 @@
  */
 package org.kuali.rice.kew.api.document;
 
-import java.util.List;
-
-import javax.jws.WebParam;
-
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionTaken;
+
+import javax.jws.WebParam;
+import java.util.List;
 
 /**
  * TODO ... annotate for JAX-WS! 
@@ -130,8 +129,8 @@ public interface WorkflowDocumentService {
 //			@WebParam(name = "documentId") String documentId)
 //			throws WorkflowException;
 //
-//	@XmlJavaTypeAdapter(value = AttributeSetAdapter.class)
-//	public AttributeSet getActionsRequested(
+//	@XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+//	public Map<String, String> getActionsRequested(
 //			@WebParam(name = "principalId") String principalId,
 //			@WebParam(name = "documentId") String documentId);
 //

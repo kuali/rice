@@ -36,7 +36,7 @@ public class ReviewResponsibilityTypeServiceImpl extends DocumentTypeResponsibil
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.service.impl.DocumentTypeResponsibilityTypeServiceImpl#performResponsibilityMatches(org.kuali.rice.core.util.AttributeSet, java.util.List)
+	 * @see org.kuali.rice.kew.service.impl.DocumentTypeResponsibilityTypeServiceImpl#performResponsibilityMatches(org.kuali.rice.core.util.Map<String, String>, java.util.List)
 	 */
 	@Override
 	protected List<Responsibility> performResponsibilityMatches(

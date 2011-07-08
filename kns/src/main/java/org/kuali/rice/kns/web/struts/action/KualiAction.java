@@ -24,7 +24,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DispatchAction;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -880,8 +879,8 @@ public abstract class KualiAction extends DispatchAction {
     protected void checkAuthorization( ActionForm form, String methodToCall) throws AuthorizationException 
     {
     	String principalId = GlobalVariables.getUserSession().getPrincipalId();
-    	AttributeSet roleQualifier = new AttributeSet(getRoleQualification(form, methodToCall));
-    	AttributeSet permissionDetails = KRADUtils.getNamespaceAndActionClass(this.getClass());
+    	Map<String, String> roleQualifier = new HashMap<String, String>(getRoleQualification(form, methodToCall));
+    	Map<String, String> permissionDetails = KRADUtils.getNamespaceAndActionClass(this.getClass());
     	
         if (!KimApiServiceLocator.getPermissionService().isAuthorizedByTemplateName(principalId, KRADConstants.KRAD_NAMESPACE,
         		KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, roleQualifier ))

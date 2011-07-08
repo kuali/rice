@@ -20,7 +20,6 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
@@ -40,7 +39,9 @@ import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The RoleRouteModule is responsible for interfacing with the KIM
@@ -70,15 +71,15 @@ public class RoleRouteModule implements RouteModule {
 		ActionRequestFactory arFactory = new ActionRequestFactory(context.getDocument(), context.getNodeInstance());
 
 		QualifierResolver qualifierResolver = loadQualifierResolver(context);
-		List<AttributeSet> qualifiers = qualifierResolver.resolve(context);
+		List<Map<String, String>> qualifiers = qualifierResolver.resolve(context);
 		String responsibilityTemplateName = loadResponsibilityTemplateName(context);
 		String namespaceCode = loadNamespace(context);
-		AttributeSet responsibilityDetails = loadResponsibilityDetails(context);
+		Map<String, String> responsibilityDetails = loadResponsibilityDetails(context);
 		if (LOG.isDebugEnabled()) {
 			logQualifierCheck(namespaceCode, responsibilityTemplateName, responsibilityDetails, qualifiers);
 		}
 		if ( qualifiers != null ) {
-			for (AttributeSet qualifier : qualifiers) {
+			for (Map<String, String> qualifier : qualifiers) {
 				if ( qualifier.containsKey( KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER ) ) {
 					responsibilityDetails.put(KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER, qualifier.get(KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER));
 				} else {
@@ -113,20 +114,20 @@ public class RoleRouteModule implements RouteModule {
 		return actionRequests;
 	}
 	
-    protected void logQualifierCheck(String namespaceCode, String responsibilityName, AttributeSet responsibilityDetails, List<AttributeSet> qualifiers ) {
+    protected void logQualifierCheck(String namespaceCode, String responsibilityName, Map<String, String> responsibilityDetails, List<Map<String, String>> qualifiers ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(  '\n' );
 		sb.append( "Get Resp Actions: " ).append( namespaceCode ).append( "/" ).append( responsibilityName ).append( '\n' );
 		sb.append( "             Details:\n" );
 		if ( responsibilityDetails != null ) {
-			sb.append( responsibilityDetails.formattedDump( 25 ) );
+			sb.append( responsibilityDetails );
 		} else {
 			sb.append( "                         [null]\n" );
 		}
 		sb.append( "             Qualifiers:\n" );
-		for (AttributeSet qualification : qualifiers) {
+		for (Map<String, String> qualification : qualifiers) {
 			if ( qualification != null ) {
-				sb.append( qualification.formattedDump( 25 ) );
+				sb.append( qualification );
 			} else {
 				sb.append( "                         [null]\n" );
 			}
@@ -185,10 +186,10 @@ public class RoleRouteModule implements RouteModule {
 		return resolver;
 	}
 	
-	protected AttributeSet loadResponsibilityDetails(RouteContext context) {
+	protected Map<String, String> loadResponsibilityDetails(RouteContext context) {
 		String documentTypeName = context.getDocument().getDocumentType().getName();
 		String nodeName = context.getNodeInstance().getName();
-		AttributeSet responsibilityDetails = new AttributeSet();
+		Map<String, String> responsibilityDetails = new HashMap<String, String>();
 		responsibilityDetails.put(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL, documentTypeName);
 		responsibilityDetails.put(KEWConstants.ROUTE_NODE_NAME_DETAIL, nodeName);
 		return responsibilityDetails;

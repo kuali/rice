@@ -21,7 +21,6 @@ import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.framework.parameter.ParameterConstants;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.core.web.format.BooleanFormatter;
 import org.kuali.rice.krad.UserSession;
@@ -160,25 +159,25 @@ public final class KRADUtils {
         return moduleService.getModuleConfiguration().getNamespaceCode();
     }
 
-    public static AttributeSet getNamespaceAndComponentSimpleName(Class<? extends Object> clazz) {
-        AttributeSet attributeSet = new AttributeSet();
-        attributeSet.put(KRADConstants.NAMESPACE_CODE, getNamespaceCode(clazz));
-        attributeSet.put(KRADConstants.COMPONENT_NAME, getComponentSimpleName(clazz));
-        return attributeSet;
+    public static Map<String, String> getNamespaceAndComponentSimpleName(Class<? extends Object> clazz) {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(KRADConstants.NAMESPACE_CODE, getNamespaceCode(clazz));
+        map.put(KRADConstants.COMPONENT_NAME, getComponentSimpleName(clazz));
+        return map;
     }
 
-    public static AttributeSet getNamespaceAndComponentFullName(Class<? extends Object> clazz) {
-        AttributeSet attributeSet = new AttributeSet();
-        attributeSet.put(KRADConstants.NAMESPACE_CODE, getNamespaceCode(clazz));
-        attributeSet.put(KRADConstants.COMPONENT_NAME, getComponentFullName(clazz));
-        return attributeSet;
+    public static Map<String, String> getNamespaceAndComponentFullName(Class<? extends Object> clazz) {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(KRADConstants.NAMESPACE_CODE, getNamespaceCode(clazz));
+        map.put(KRADConstants.COMPONENT_NAME, getComponentFullName(clazz));
+        return map;
     }
 
-    public static AttributeSet getNamespaceAndActionClass(Class<? extends Object> clazz) {
-        AttributeSet attributeSet = new AttributeSet();
-        attributeSet.put(KRADConstants.NAMESPACE_CODE, getNamespaceCode(clazz));
-        attributeSet.put(KRADConstants.ACTION_CLASS, clazz.getName());
-        return attributeSet;
+    public static Map<String, String> getNamespaceAndActionClass(Class<? extends Object> clazz) {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(KRADConstants.NAMESPACE_CODE, getNamespaceCode(clazz));
+        map.put(KRADConstants.ACTION_CLASS, clazz.getName());
+        return map;
     }
 
     private static String getComponentSimpleName(Class<? extends Object> clazz) {

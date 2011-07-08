@@ -19,7 +19,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupQueryResults;
 import org.kuali.rice.kim.api.identity.entity.Entity;
@@ -208,7 +207,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KimLookupabl
 
     
     /** Checks whether the 2nd map is a subset of the first. */
-	protected boolean isMapSubset( AttributeSet mainMap, AttributeSet subsetMap ) {
+	protected boolean isMapSubset( Map<String, String> mainMap, Map<String, String> subsetMap ) {
 		for ( Map.Entry<String, String> keyValue : subsetMap.entrySet() ) {
 			if ( !mainMap.containsKey(keyValue.getKey()) 
 					|| !StringUtils.equals( mainMap.get(keyValue.getKey()), keyValue.getValue() ) ) {
@@ -225,15 +224,15 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KimLookupabl
 	}
 
 	/** Converts a special criteria string that is in the form key=value,key2=value2 into a map */
-	protected AttributeSet parseDetailCriteria( String detailCritiera ) {
+	protected Map<String, String> parseDetailCriteria( String detailCritiera ) {
 	    if ( StringUtils.isBlank(detailCritiera) ) {
-	        return new AttributeSet(0);
+	        return new HashMap<String, String>(0);
 	    }
 		String[] keyValuePairs = StringUtils.split(detailCritiera, ',');
 		if ( keyValuePairs == null || keyValuePairs.length == 0 ) {
-		    return new AttributeSet(0);
+		    return new HashMap<String, String>(0);
 		}
-		AttributeSet parsedDetails = new AttributeSet( keyValuePairs.length );
+		Map<String, String> parsedDetails = new HashMap<String, String>( keyValuePairs.length );
 		for ( String keyValueStr : keyValuePairs ) {
 			String[] keyValue = StringUtils.split(keyValueStr, '=');
 			if ( keyValue.length >= 2 ) {

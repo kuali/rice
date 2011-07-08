@@ -18,7 +18,6 @@ package org.kuali.rice.kew.xml;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.xml.XmlException;
 import org.kuali.rice.core.util.xml.XmlHelper;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -60,7 +59,7 @@ public class GroupXmlParser {
     private HashMap<String, List<String>> memberGroupIds = new HashMap<String, List<String>>();
     private HashMap<String, List<String>> memberGroupNames = new HashMap<String, List<String>>();
     private HashMap<String, List<String>> memberPrincipalIds = new HashMap<String, List<String>>();
-    private AttributeSet groupAttributes = new AttributeSet();
+    private Map<String, String> groupAttributes = new HashMap<String, String>();
 
     public List<Group> parseGroups(InputStream input) throws IOException, XmlException {
         try {

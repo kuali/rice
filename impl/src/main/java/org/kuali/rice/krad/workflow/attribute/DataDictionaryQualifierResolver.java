@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.krad.workflow.attribute;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.datadictionary.RoutingTypeDefinition;
@@ -27,6 +22,11 @@ import org.kuali.rice.krad.datadictionary.WorkflowAttributes;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * QualifierResolver which uses Data Dictionary defined workflow attributes to gather a collection
@@ -75,7 +75,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
  * 
  * At the PaymentMethod node of the document, the DisbursementVoucherDocument-RoutingType-PaymentMethod RoutingTypeDefinition will be
  * consulted; it will pull values from the document (in this case, document.disbVchrPaymentMethodCode) and populate those
- * into the role qualifier AttributeSet, with the key being the qualificationAttributeName and the value being the value of the property
+ * into the role qualifier Map<String, String>, with the key being the qualificationAttributeName and the value being the value of the property
  * listed in the documentValuePathGroups in the document.
  */
 public class DataDictionaryQualifierResolver extends QualifierResolverBase {
@@ -84,21 +84,21 @@ public class DataDictionaryQualifierResolver extends QualifierResolverBase {
 
     /**
      * Given the RouteContext, determines the document type of the document being routed and the current
-     * route nodes; generates a List of qualifier AttributeSets based on the the contents of the document. 
+     * route nodes; generates a List of qualifier Map<String, String>s based on the the contents of the document.
      * @see org.kuali.rice.kew.role.QualifierResolver#resolve(org.kuali.rice.kew.engine.RouteContext)
      */
-    public List<AttributeSet> resolve(RouteContext context) {
+    public List<Map<String, String>> resolve(RouteContext context) {
         final String routeLevel = context.getNodeInstance().getName();
         final DocumentEntry documentEntry = getDocumentEntry(context);
         final RoutingTypeDefinition routingTypeDefinition = getWorkflowAttributeDefintion(documentEntry, routeLevel);
         final Document document = getDocument(context);
-        List<AttributeSet> qualifiers = null;
+        List<Map<String, String>> qualifiers = null;
         
         if (document != null && routingTypeDefinition != null) {
             qualifiers = KRADServiceLocatorInternal.getWorkflowAttributePropertyResolutionService().resolveRoutingTypeQualifiers(document, routingTypeDefinition);
         } else {
-            qualifiers = new ArrayList<AttributeSet>();
-            AttributeSet basicQualifier = new AttributeSet();
+            qualifiers = new ArrayList<Map<String, String>>();
+            Map<String, String> basicQualifier = new HashMap<String, String>();
             qualifiers.add(basicQualifier);
         }
         decorateWithCommonQualifiers(qualifiers, document, documentEntry, routeLevel);
@@ -132,26 +132,26 @@ public class DataDictionaryQualifierResolver extends QualifierResolverBase {
     }
     
     /**
-     * Add common qualifiers to every AttributeSet in the given List of AttributeSet
-     * @param qualifiers a List of AttributeSets to add common qualifiers to
+     * Add common qualifiers to every Map<String, String> in the given List of Map<String, String>
+     * @param qualifiers a List of Map<String, String>s to add common qualifiers to
      * @param document the document currently being routed
      * @param documentEntry the data dictionary entry of the type of document currently being routed
      * @param routeLevel the document's current route level
      */
-    protected void decorateWithCommonQualifiers(List<AttributeSet> qualifiers, Document document, DocumentEntry documentEntry, String routeLevel) {
-        for (AttributeSet qualifier : qualifiers) {
-            addCommonQualifiersToAttributeSet(qualifier, document, documentEntry, routeLevel);
+    protected void decorateWithCommonQualifiers(List<Map<String, String>> qualifiers, Document document, DocumentEntry documentEntry, String routeLevel) {
+        for (Map<String, String> qualifier : qualifiers) {
+            addCommonQualifiersToMap(qualifier, document, documentEntry, routeLevel);
         }
     }
     
     /**
-     * Adds common qualifiers to a given AttributeSet
-     * @param qualifier an AttributeSet to add common qualifiers to
+     * Adds common qualifiers to a given Map<String, String>
+     * @param qualifier an Map<String, String> to add common qualifiers to
      * @param document the document currently being routed
      * @param documentEntry the data dictionary entry of the type of document currently being routed
      * @param routeLevel the document's current route level
      */
-    protected void addCommonQualifiersToAttributeSet(AttributeSet qualifier, Document document, DocumentEntry documentEntry, String routeLevel) {
+    protected void addCommonQualifiersToMap(Map<String, String> qualifier, Document document, DocumentEntry documentEntry, String routeLevel) {
         if ( document != null ) {
             qualifier.put(KIM_ATTRIBUTE_DOCUMENT_NUMBER, document.getDocumentNumber());
         }

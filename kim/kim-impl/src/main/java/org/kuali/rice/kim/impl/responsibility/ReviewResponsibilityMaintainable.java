@@ -71,7 +71,7 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
         populateReviewTemplateInfo();
 
         ReviewResponsibilityBo resp = (ReviewResponsibilityBo)getBusinessObject();
-        // build the AttributeSet with the details
+        // build the Map<String, String> with the details
         Map<String, String> details = new HashMap<String, String>();
         details.put( KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME, resp.getDocumentTypeName() );
         details.put( KimConstants.AttributeConstants.ROUTE_NODE_NAME, resp.getRouteNodeName() );

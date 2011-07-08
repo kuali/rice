@@ -22,7 +22,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.engine.node.RouteNode;
@@ -376,8 +375,8 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 			this.overridden = overridden;
 		}
 
-		public AttributeSet getDetails() {
-			return new AttributeSet(this.resp.getAttributes());
+		public Map<String, String> getDetails() {
+			return new HashMap<String, String>(this.resp.getAttributes());
 		}
 
 		public String getName() {

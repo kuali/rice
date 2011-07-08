@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.uif.authorization;
 
-import org.kuali.rice.core.util.AttributeSet;
+
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.document.MaintenanceDocument;
@@ -34,7 +34,7 @@ import java.util.Set;
 public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase {
 
 	public final boolean canCreate(Class<?> boClass, Person user) {
-		AttributeSet permissionDetails = new AttributeSet();
+		Map<String, String> permissionDetails = new HashMap<String, String>();
         permissionDetails.put(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME,
                 KRADServiceLocatorWeb.getDocumentDictionaryService().getMaintenanceDocumentTypeName(boClass));
 		permissionDetails.put(KRADConstants.MAINTENANCE_ACTN,
@@ -47,7 +47,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase {
 								user.getPrincipalId(),
 								KRADConstants.KRAD_NAMESPACE,
 								KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS,
-								permissionDetails, new AttributeSet());
+								permissionDetails, new HashMap<String, String>());
 	}
 
     public final boolean canMaintain(Object dataObject, Person user) {

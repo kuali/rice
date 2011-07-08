@@ -15,18 +15,16 @@
  */
 package org.kuali.rice.kim.api.jaxb;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import org.kuali.rice.core.util.jaxb.StringMapEntry;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-
-import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.core.util.jaxb.StringMapEntry;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * An XML element that can have zero or more StringMapEntry elements. This is similar
@@ -47,9 +45,9 @@ public class PermissionDetailList implements Serializable {
         this.permissionDetails = new ArrayList<StringMapEntry>();
     }
     
-    public PermissionDetailList(AttributeSet attributeSet) {
+    public PermissionDetailList(Map<String, String> map) {
         this();
-        for (Map.Entry<String,String> tempEntry : attributeSet.entrySet()) {
+        for (Map.Entry<String,String> tempEntry : map.entrySet()) {
             permissionDetails.add(new StringMapEntry(tempEntry));
         }
     }

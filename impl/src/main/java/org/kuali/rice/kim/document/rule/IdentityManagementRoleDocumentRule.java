@@ -16,7 +16,6 @@
 package org.kuali.rice.kim.document.rule;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
@@ -296,12 +295,12 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     }
 
     protected boolean validateRoleQualifier(List<KimDocumentRoleMember> roleMembers, KimType kimType){
-		AttributeSet validationErrors = new AttributeSet();
+		Map<String, String> validationErrors = new HashMap<String, String>();
 
 		int memberCounter = 0;
 		int roleMemberCount = 0;
 		Map<String, String> errorsTemp;
-		Map<String, String> attributeSetToValidate;
+		Map<String, String> mapToValidate;
         KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(kimType);
         GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
         final AttributeDefinitionMap attributeDefinitions = kimTypeService.getAttributeDefinitions(kimType.getId());
@@ -309,9 +308,9 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 
 		for(KimDocumentRoleMember roleMember: roleMembers) {
 			errorsTemp = Collections.emptyMap();
-			attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(roleMember.getQualifiers());
+			mapToValidate = attributeValidationHelper.convertQualifiersToMap(roleMember.getQualifiers());
 			if(!roleMember.isRole()){
-				errorsTemp = kimTypeService.validateAttributes(kimType.getId(), attributeSetToValidate);
+				errorsTemp = kimTypeService.validateAttributes(kimType.getId(), mapToValidate);
 				validationErrors.putAll( 
 						attributeValidationHelper.convertErrorsForMappedFields(
                                 "document.members[" + memberCounter + "]", errorsTemp));
@@ -365,10 +364,10 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
      *
      * @param membershipToCheck the membership to check
      * @param membershipToCheckIndex the index of the person's membership in the role (for error reporting purposes)
-     * @param validationErrors AttributeSet of errors to report
+     * @param validationErrors Map<String, String> of errors to report
      * @return true if all unique values are indeed unique, false otherwise
      */
-    protected boolean validateUniquePersonRoleQualifiersUniqueForRoleMembership(KimDocumentRoleMember membershipToCheck, int membershipToCheckIndex, List<KimDocumentRoleMember> memberships, Set<String> uniqueQualifierIds, AttributeSet validationErrors) {
+    protected boolean validateUniquePersonRoleQualifiersUniqueForRoleMembership(KimDocumentRoleMember membershipToCheck, int membershipToCheckIndex, List<KimDocumentRoleMember> memberships, Set<String> uniqueQualifierIds, Map<String, String> validationErrors) {
     	boolean foundError = false;
     	int count = 0;
 
@@ -443,11 +442,11 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 
     protected boolean validateDelegationMemberRoleQualifier(List<KimDocumentRoleMember> roleMembers,
     		List<RoleDocumentDelegationMember> delegationMembers, KimType kimType){
-		AttributeSet validationErrors = new AttributeSet();
+		Map<String, String> validationErrors = new HashMap<String, String>();
 		boolean valid;
 		int memberCounter = 0;
 		Map<String, String> errorsTemp;
-		Map<String, String> attributeSetToValidate;
+		Map<String, String> mapToValidate;
         KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(kimType);
         GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
         KimDocumentRoleMember roleMember;
@@ -457,9 +456,9 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 
 		for(RoleDocumentDelegationMember delegationMember: delegationMembers) {
 			errorPath = "delegationMembers["+memberCounter+"]";
-			attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(delegationMember.getQualifiers());
+			mapToValidate = attributeValidationHelper.convertQualifiersToMap(delegationMember.getQualifiers());
 			if(!delegationMember.isRole()){
-				errorsTemp = kimTypeService.validateAttributes(kimType.getId(), attributeSetToValidate);
+				errorsTemp = kimTypeService.validateAttributes(kimType.getId(), mapToValidate);
 				validationErrors.putAll(
 						attributeValidationHelper.convertErrorsForMappedFields(errorPath, errorsTemp));
 			}
@@ -471,7 +470,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 				errorsTemp = kimTypeService.validateUnmodifiableAttributes(
 								kimType.getId(),
 								attributeValidationHelper.convertQualifiersToMap(roleMember.getQualifiers()),
-								attributeSetToValidate);
+								mapToValidate);
 				validationErrors.putAll(
 						attributeValidationHelper.convertErrorsForMappedFields(errorPath, errorsTemp) );
 			}
@@ -522,10 +521,10 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
      *
      * @param delegationMembershipToCheck the membership to check
      * @param membershipToCheckIndex the index of the person's membership in the role (for error reporting purposes)
-     * @param validationErrors AttributeSet of errors to report
+     * @param validationErrors Map<String, String> of errors to report
      * @return true if all unique values are indeed unique, false otherwise
      */
-    protected boolean validateUniquePersonRoleQualifiersUniqueForRoleDelegation(RoleDocumentDelegationMember delegationMembershipToCheck, int membershipToCheckIndex, List<RoleDocumentDelegationMember> delegationMemberships, Set<String> uniqueQualifierIds, AttributeSet validationErrors) {
+    protected boolean validateUniquePersonRoleQualifiersUniqueForRoleDelegation(RoleDocumentDelegationMember delegationMembershipToCheck, int membershipToCheckIndex, List<RoleDocumentDelegationMember> delegationMemberships, Set<String> uniqueQualifierIds, Map<String, String> validationErrors) {
     	boolean foundError = false;
     	int count = 0;
 

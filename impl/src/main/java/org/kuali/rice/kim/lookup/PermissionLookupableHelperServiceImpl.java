@@ -19,7 +19,6 @@ import com.google.common.collect.MapMaker;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.impl.GenericPermission;
@@ -206,10 +205,10 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 	
 
 	private void populateAssignedToRoles(PermissionBo permission){
-		AttributeSet criteria;
+		Map<String, String> criteria;
 		for(RolePermissionBo rolePermission: permission.getRolePermissions()){
 			if ( rolePermission.isActive() ) {
-				criteria = new AttributeSet();
+				criteria = new HashMap<String, String>();
 				criteria.put("id", rolePermission.getRoleId());
 	//			permission.getAssignedToRoles().add((RoleBo)getBusinessObjectService().findByPrimaryKey(RoleBo.class, criteria));
                 RoleBo roleBo = getBusinessObjectService().findByPrimaryKey(RoleBo.class, criteria);
@@ -228,7 +227,7 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 	private List<PermissionBo> getPermissionsWithPermissionSearchCriteria(
 			Map<String, String> permissionSearchCriteria, boolean unbounded){
 		String detailCriteriaStr = permissionSearchCriteria.remove( DETAIL_CRITERIA );
-		AttributeSet detailCriteria = parseDetailCriteria(detailCriteriaStr);
+		Map<String, String> detailCriteria = parseDetailCriteria(detailCriteriaStr);
 
 		List<PermissionBo> cachedResult = permResultCache.get(permissionSearchCriteria);
 		List<PermissionBo> permissions;
@@ -247,7 +246,7 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 				filteredPermissions.add(perm);
 				populateAssignedToRoles(perm);
 			} else {
-				if ( isMapSubset( new AttributeSet(perm.getDetails()), detailCriteria ) ) {
+				if ( isMapSubset( new HashMap<String, String>(perm.getDetails()), detailCriteria ) ) {
 					filteredPermissions.add(perm);
 					populateAssignedToRoles(perm);
 				}

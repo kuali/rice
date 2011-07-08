@@ -22,7 +22,6 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -76,7 +75,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         return getActionRequestDAO().getActionRequestByActionRequestId(actionRequestId);
     }
 
-    public AttributeSet getActionsRequested(DocumentRouteHeaderValue routeHeader, String principalId, boolean completeAndApproveTheSame) {
+    public Map<String, String> getActionsRequested(DocumentRouteHeaderValue routeHeader, String principalId, boolean completeAndApproveTheSame) {
     	return getActionsRequested(principalId, routeHeader.getActionRequests(), completeAndApproveTheSame);
     }
     
@@ -87,8 +86,8 @@ public class ActionRequestServiceImpl implements ActionRequestService {
      * @param completeAndApproveTheSame
      * @return
      */
-    protected AttributeSet getActionsRequested(String principalId, List<ActionRequestValue> actionRequests, boolean completeAndApproveTheSame) {
-    	AttributeSet actionsRequested = new AttributeSet();
+    protected Map<String, String> getActionsRequested(String principalId, List<ActionRequestValue> actionRequests, boolean completeAndApproveTheSame) {
+    	Map<String, String> actionsRequested = new HashMap<String, String>();
         actionsRequested.put(KEWConstants.ACTION_REQUEST_FYI_REQ, "false");
         actionsRequested.put(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
         actionsRequested.put(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "false");

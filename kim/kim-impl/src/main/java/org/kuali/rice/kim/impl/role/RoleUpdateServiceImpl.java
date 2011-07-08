@@ -3,8 +3,7 @@ package org.kuali.rice.kim.impl.role;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.AttributeSet;
-import org.kuali.rice.core.util.jaxb.AttributeSetAdapter;
+import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.core.util.jaxb.SqlDateAdapter;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMember;
@@ -29,7 +28,7 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
     private static final Logger LOG = Logger.getLogger(RoleUpdateServiceImpl.class);
 
     @Override
-    public void assignPrincipalToRole(@WebParam(name = "principalId") String principalId, @WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualifier") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualifier) throws UnsupportedOperationException {
+    public void assignPrincipalToRole(@WebParam(name = "principalId") String principalId, @WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualifier") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifier) throws UnsupportedOperationException {
         // look up the role
         RoleBo role = getRoleBoByName(namespaceCode, roleName);
         role.refreshReferenceObject("members");
@@ -50,7 +49,7 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
         newRoleMember.setMemberId(principalId);
         newRoleMember.setMemberTypeCode(Role.PRINCIPAL_MEMBER_TYPE);
 
-        // build role member attribute objects from the given AttributeSet
+        // build role member attribute objects from the given Map<String, String>
         addMemberAttributeData(newRoleMember, qualifier, role.getKimTypeId());
 
         // add row to member table
@@ -60,7 +59,7 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
     }
 
     @Override
-    public void assignGroupToRole(@WebParam(name = "groupId") String groupId, @WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualifier") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualifier) throws UnsupportedOperationException {
+    public void assignGroupToRole(@WebParam(name = "groupId") String groupId, @WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualifier") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifier) throws UnsupportedOperationException {
         // look up the role
         RoleBo role = getRoleBoByName(namespaceCode, roleName);
         // check that identical member does not already exist
@@ -79,7 +78,7 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
         newRoleMember.setMemberId(groupId);
         newRoleMember.setMemberTypeCode(Role.GROUP_MEMBER_TYPE);
 
-        // build role member attribute objects from the given AttributeSet
+        // build role member attribute objects from the given Map<String, String>
         addMemberAttributeData(newRoleMember, qualifier, role.getKimTypeId());
 
         // When members are added to roles, clients must be notified.
@@ -88,7 +87,7 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
     }
 
     @Override
-    public void assignRoleToRole(@WebParam(name = "roleId") String roleId, @WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualifier") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualifier) throws UnsupportedOperationException {
+    public void assignRoleToRole(@WebParam(name = "roleId") String roleId, @WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualifier") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifier) throws UnsupportedOperationException {
         // look up the roleBo
         RoleBo roleBo = getRoleBoByName(namespaceCode, roleName);
         // check that identical member does not already exist
@@ -110,7 +109,7 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
         newRoleMember.setRoleId(roleBo.getId());
         newRoleMember.setMemberId(roleId);
         newRoleMember.setMemberTypeCode(Role.ROLE_MEMBER_TYPE);
-        // build roleBo member attribute objects from the given AttributeSet
+        // build roleBo member attribute objects from the given Map<String, String>
         addMemberAttributeData(newRoleMember, qualifier, roleBo.getKimTypeId());
 
         // When members are added to roles, clients must be notified.
@@ -119,7 +118,7 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
     }
 
     @Override
-    public RoleMember saveRoleMemberForRole(@WebParam(name = "roleMemberId") String roleMemberId, @WebParam(name = "memberId") String memberId, @WebParam(name = "memberTypeCode") String memberTypeCode, @WebParam(name = "roleId") String roleId, @WebParam(name = "qualifications") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualifications, @XmlJavaTypeAdapter(value = SqlDateAdapter.class) @WebParam(name = "activeFromDate") Date activeFromDate, @XmlJavaTypeAdapter(value = SqlDateAdapter.class) @WebParam(name = "activeToDate") Date activeToDate) throws UnsupportedOperationException {
+    public RoleMember saveRoleMemberForRole(@WebParam(name = "roleMemberId") String roleMemberId, @WebParam(name = "memberId") String memberId, @WebParam(name = "memberTypeCode") String memberTypeCode, @WebParam(name = "roleId") String roleId, @WebParam(name = "qualifications") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifications, @XmlJavaTypeAdapter(value = SqlDateAdapter.class) @WebParam(name = "activeFromDate") Date activeFromDate, @XmlJavaTypeAdapter(value = SqlDateAdapter.class) @WebParam(name = "activeToDate") Date activeToDate) throws UnsupportedOperationException {
         if(StringUtils.isEmpty(roleMemberId) && StringUtils.isEmpty(memberId) && StringUtils.isEmpty(roleId)){
     		throw new IllegalArgumentException("Either Role member ID or a combination of member ID and roleBo ID must be passed in.");
     	}
@@ -156,7 +155,7 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
 		if (activeToDate != null) {
 			newRoleMember.setActiveToDate(new java.sql.Timestamp(activeToDate.getTime()));
 		}
-    	// build roleBo member attribute objects from the given AttributeSet
+    	// build roleBo member attribute objects from the given Map<String, String>
     	addMemberAttributeData( newRoleMember, qualifications, roleBo.getKimTypeId() );
 
     	// When members are added to roles, clients must be notified.
@@ -208,7 +207,7 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
     }
 
     @Override
-    public void saveDelegationMemberForRole(@WebParam(name = "assignedToId") String delegationMemberId, @WebParam(name = "roleMemberId") String roleMemberId, @WebParam(name = "memberId") String memberId, @WebParam(name = "memberTypeCode") String memberTypeCode, @WebParam(name = "delegationTypeCode") String delegationTypeCode, @WebParam(name = "roleId") String roleId, @WebParam(name = "qualifications") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualifications, @XmlJavaTypeAdapter(value = SqlDateAdapter.class) @WebParam(name = "activeFromDate") Date activeFromDate, @XmlJavaTypeAdapter(value = SqlDateAdapter.class) @WebParam(name = "activeToDate") Date activeToDate) throws UnsupportedOperationException {
+    public void saveDelegationMemberForRole(@WebParam(name = "assignedToId") String delegationMemberId, @WebParam(name = "roleMemberId") String roleMemberId, @WebParam(name = "memberId") String memberId, @WebParam(name = "memberTypeCode") String memberTypeCode, @WebParam(name = "delegationTypeCode") String delegationTypeCode, @WebParam(name = "roleId") String roleId, @WebParam(name = "qualifications") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifications, @XmlJavaTypeAdapter(value = SqlDateAdapter.class) @WebParam(name = "activeFromDate") Date activeFromDate, @XmlJavaTypeAdapter(value = SqlDateAdapter.class) @WebParam(name = "activeToDate") Date activeToDate) throws UnsupportedOperationException {
         if(StringUtils.isEmpty(delegationMemberId) && StringUtils.isEmpty(memberId) && StringUtils.isEmpty(roleId)){
     		throw new IllegalArgumentException("Either Delegation member ID or a combination of member ID and role ID must be passed in.");
     	}
@@ -244,7 +243,7 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
 			newDelegationMember.setActiveToDate(new java.sql.Timestamp(activeToDate.getTime()));
 		}
 
-    	// build role member attribute objects from the given AttributeSet
+    	// build role member attribute objects from the given Map<String, String>
     	addDelegationMemberAttributeData( newDelegationMember, qualifications, role.getKimTypeId() );
 
     	List<DelegateMemberBo> delegationMembers = new ArrayList<DelegateMemberBo>();
@@ -259,7 +258,7 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
     }
 
     @Override
-    public void removePrincipalFromRole(@WebParam(name = "principalId") String principalId, @WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualifier") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualifier) throws UnsupportedOperationException {
+    public void removePrincipalFromRole(@WebParam(name = "principalId") String principalId, @WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualifier") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifier) throws UnsupportedOperationException {
         // look up the role
     	RoleBo role = getRoleBoByName(namespaceCode, roleName);
     	// pull all the principal members
@@ -276,7 +275,7 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
     }
 
     @Override
-    public void removeGroupFromRole(@WebParam(name = "groupId") String groupId, @WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualifier") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualifier) throws UnsupportedOperationException {
+    public void removeGroupFromRole(@WebParam(name = "groupId") String groupId, @WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualifier") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifier) throws UnsupportedOperationException {
         // look up the roleBo
     	RoleBo roleBo = getRoleBoByName(namespaceCode, roleName);
     	// pull all the group roleBo members
@@ -292,7 +291,7 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
     }
 
     @Override
-    public void removeRoleFromRole(@WebParam(name = "roleId") String roleId, @WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualifier") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualifier) throws UnsupportedOperationException {
+    public void removeRoleFromRole(@WebParam(name = "roleId") String roleId, @WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualifier") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifier) throws UnsupportedOperationException {
         // look up the role
     	RoleBo role = getRoleBoByName(namespaceCode, roleName);
     	// pull all the group role members
@@ -357,7 +356,7 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
         getIdentityManagementNotificationService().roleUpdated();
     }
 
-    protected void addMemberAttributeData(RoleMemberBo roleMember, AttributeSet qualifier, String kimTypeId) {
+    protected void addMemberAttributeData(RoleMemberBo roleMember, Map<String, String> qualifier, String kimTypeId) {
         List<RoleMemberAttributeDataBo> attributes = new ArrayList<RoleMemberAttributeDataBo>();
         for (String attributeName : qualifier.keySet()) {
             RoleMemberAttributeDataBo roleMemberAttrBo = new RoleMemberAttributeDataBo();
@@ -386,7 +385,7 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
         roleMember.setAttributes(attributes);
     }
 
-    protected void addDelegationMemberAttributeData( DelegateMemberBo delegationMember, AttributeSet qualifier, String kimTypeId ) {
+    protected void addDelegationMemberAttributeData( DelegateMemberBo delegationMember, Map<String, String> qualifier, String kimTypeId ) {
 		List<DelegateMemberAttributeDataBo> attributes = new ArrayList<DelegateMemberAttributeDataBo>();
 		for ( String attributeName : qualifier.keySet() ) {
 			DelegateMemberAttributeDataBo delegateMemberAttrBo = new DelegateMemberAttributeDataBo();

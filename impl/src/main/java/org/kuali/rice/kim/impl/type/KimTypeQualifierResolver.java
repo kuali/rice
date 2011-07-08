@@ -17,7 +17,6 @@ package org.kuali.rice.kim.impl.type;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
@@ -67,10 +66,10 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
 	 * 
 	 * @see org.kuali.rice.kew.role.QualifierResolver#resolve(org.kuali.rice.kew.engine.RouteContext)
 	 */
-	public List<AttributeSet> resolve(RouteContext context) {
+	public List<Map<String, String>> resolve(RouteContext context) {
         String routeLevel = context.getNodeInstance().getName();
         Document document = getDocument(context);
-        List<AttributeSet> qualifiers = new ArrayList<AttributeSet>();
+        List<Map<String, String>> qualifiers = new ArrayList<Map<String, String>>();
         String customDocTypeName = null;
         
         if ( document instanceof IdentityManagementGroupDocument ) {
@@ -82,7 +81,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
         }
     	// add standard components
         decorateWithCommonQualifiers(qualifiers, context, customDocTypeName);
-    	// return the resulting list of AttributeSets
+    	// return the resulting list of Map<String, String>s
 		return qualifiers;
 	}
 
@@ -100,17 +99,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
     	return typeService;
 	}
 
-    @Deprecated
-	protected void putMatchingAttributesIntoQualifier( AttributeSet qualifier, AttributeSet itemAttributes, List<String> routingAttributes ) {
-		if ( routingAttributes != null && !routingAttributes.isEmpty() ) {
-        	// pull the qualifiers off the document object (group or role member)
-    		for ( String attribName : routingAttributes ) {
-    			qualifier.put( attribName, itemAttributes.get(attribName));
-    		}
-		}
-	}
-
-    protected void putMatchingAttributesIntoQualifier( AttributeSet qualifier, Map<String, String> itemAttributes, List<String> routingAttributes ) {
+    protected void putMatchingAttributesIntoQualifier( Map<String, String> qualifier, Map<String, String> itemAttributes, List<String> routingAttributes ) {
 		if ( routingAttributes != null && !routingAttributes.isEmpty() ) {
         	// pull the qualifiers off the document object (group or role member)
     		for ( String attribName : routingAttributes ) {
@@ -119,7 +108,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
 		}
 	}
 	
-	protected String handleGroupDocument( List<AttributeSet> qualifiers, IdentityManagementGroupDocument groupDoc, String routeLevel ) {
+	protected String handleGroupDocument( List<Map<String, String>> qualifiers, IdentityManagementGroupDocument groupDoc, String routeLevel ) {
     	// get the appropriate type service for the group being edited
     	String typeId = groupDoc.getGroupTypeId();
     	qualifiers.add( getGroupQualifier(groupDoc.getGroupId(), typeId, groupDoc.getQualifiersAsAttributes(), routeLevel) );
@@ -127,7 +116,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
         return null;
 	}
 
-	protected String handleRoleDocument( List<AttributeSet> qualifiers, IdentityManagementRoleDocument roleDoc, String routeLevel ) {
+	protected String handleRoleDocument( List<Map<String, String>> qualifiers, IdentityManagementRoleDocument roleDoc, String routeLevel ) {
         String customDocTypeName = null;
 
 //        LOG.warn( "Role member data routing not implemented for the Role document yet!" );
@@ -147,13 +136,13 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
     					if ( !rm.isActive() ) { // don't need to check the role member information 
     											// - only active members are returned
     						// inactivated member, add a qualifier
-    						qualifiers.add( getRoleQualifier(rm.getRoleId(), typeId, typeService, rm.getQualifierAsAttributeSet(), routeLevel) );
+    						qualifiers.add( getRoleQualifier(rm.getRoleId(), typeId, typeService, rm.getQualifierAsMap(), routeLevel) );
     					}
     					break;
     				}
     			}
     			if ( !foundMember ) {
-    				qualifiers.add( getRoleQualifier(rm.getRoleId(), typeId, typeService, rm.getQualifierAsAttributeSet(), routeLevel) );
+    				qualifiers.add( getRoleQualifier(rm.getRoleId(), typeId, typeService, rm.getQualifierAsMap(), routeLevel) );
     			}
     		}
     		
@@ -162,7 +151,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
     	return customDocTypeName;
 	}
 	
-	protected String handlePersonDocument( List<AttributeSet> qualifiers, IdentityManagementPersonDocument personDoc, String routeLevel ) {
+	protected String handlePersonDocument( List<Map<String, String>> qualifiers, IdentityManagementPersonDocument personDoc, String routeLevel ) {
     	// check the route level - see if we are doing groups or roles at the moment
         String principalId = personDoc.getPrincipalId();
         if ( GROUP_ROUTE_LEVEL.equals(routeLevel) ) {
@@ -201,13 +190,13 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
         					if ( !rm.isActive() ) { // don't need to check the role member information 
 								// - only active members are returned
         						// inactivated member, add a qualifier
-								qualifiers.add( getRoleQualifier(rm.getRoleId(), pdr.getKimRoleType().getId(), typeService, rm.getQualifierAsAttributeSet(), routeLevel) );
+								qualifiers.add( getRoleQualifier(rm.getRoleId(), pdr.getKimRoleType().getId(), typeService, rm.getQualifierAsMap(), routeLevel) );
 							}
 							break;
             			}
             		}
         			if ( !foundMember ) {
-        				qualifiers.add( getRoleQualifier(rm.getRoleId(), pdr.getKimRoleType().getId(), typeService, rm.getQualifierAsAttributeSet(), routeLevel) );
+        				qualifiers.add( getRoleQualifier(rm.getRoleId(), pdr.getKimRoleType().getId(), typeService, rm.getQualifierAsMap(), routeLevel) );
         			}
         		}
         	}
@@ -220,8 +209,8 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
     	return null;
 	}
 
-    protected AttributeSet getGroupQualifier( String groupId, String kimTypeId, Map<String, String> groupAttributes, String routeLevel ) {
-		AttributeSet qualifier = new AttributeSet();        			
+    protected Map<String, String> getGroupQualifier( String groupId, String kimTypeId, Map<String, String> groupAttributes, String routeLevel ) {
+		Map<String, String> qualifier = new HashMap<String, String>();
 		// pull the group to get its attributes for adding to the qualifier 
         qualifier.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, kimTypeId);
         qualifier.put(KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER, kimTypeId);
@@ -238,8 +227,8 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
     	return qualifier;
     }
     
-    protected AttributeSet getRoleQualifier( String roleId, String kimTypeId, KimTypeService typeService, AttributeSet roleAttributes, String routeLevel ) {
-		AttributeSet qualifier = new AttributeSet();        			
+    protected Map<String, String> getRoleQualifier( String roleId, String kimTypeId, KimTypeService typeService, Map<String, String> roleAttributes, String routeLevel ) {
+		Map<String, String> qualifier = new HashMap<String, String>();
 		// pull the group to get its attributes for adding to the qualifier 
         qualifier.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, kimTypeId);
         qualifier.put(KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER, kimTypeId);

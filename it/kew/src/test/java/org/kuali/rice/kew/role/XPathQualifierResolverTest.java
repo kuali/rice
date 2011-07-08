@@ -15,18 +15,18 @@
  */
 package org.kuali.rice.kew.role;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
-import java.util.List;
-
 import org.junit.Test;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.test.BaseRiceTestCase;
+
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * Tests the XPathQualifierResolver.
@@ -106,7 +106,7 @@ public class XPathQualifierResolverTest extends BaseRiceTestCase {
  		"</xmlData>";
 	
 	@Test
-	public void testResolve_simpleAttributeSet() throws Exception {
+	public void testResolve_simpleMap() throws Exception {
 		XPathQualifierResolver resolver = new XPathQualifierResolver();
 		
 		RuleAttribute ruleAttribute = new RuleAttribute();
@@ -117,12 +117,12 @@ public class XPathQualifierResolverTest extends BaseRiceTestCase {
 		DocumentContent docContent = new StandardDocumentContent(SIMPLE_DOC_XML_1);
 		context.setDocumentContent(docContent);
 		
-		List<AttributeSet> attributeSets = resolver.resolve(context);
-		verifyAccountAttributeSets(attributeSets);
+		List<Map<String, String>> maps = resolver.resolve(context);
+		verifyAccountmaps(maps);
 	}
 	
 	@Test
-	public void testResolve_simpleAttributeSet_noBaseXPath() throws Exception {
+	public void testResolve_simpleMap_noBaseXPath() throws Exception {
 		XPathQualifierResolver resolver = new XPathQualifierResolver();
 		
 		RuleAttribute ruleAttribute = new RuleAttribute();
@@ -133,31 +133,31 @@ public class XPathQualifierResolverTest extends BaseRiceTestCase {
 		DocumentContent docContent = new StandardDocumentContent(SIMPLE_DOC_XML_1);
 		context.setDocumentContent(docContent);
 		
-		List<AttributeSet> attributeSets = resolver.resolve(context);
-		verifyAccountAttributeSets(attributeSets);
+		List<Map<String, String>> maps = resolver.resolve(context);
+		verifyAccountmaps(maps);
 		
 	}
 	
-	private void verifyAccountAttributeSets(List<AttributeSet> attributeSets) {
-		assertEquals("Incorrect number of attribute sets.", 4, attributeSets.size());
+	private void verifyAccountmaps(List<Map<String, String>> maps) {
+		assertEquals("Incorrect number of attribute sets.", 4, maps.size());
 		
 		String acctNumKey = "accountNumber";
-		AttributeSet attributeSet1 = attributeSets.get(0);
-		assertEquals(1, attributeSet1.size());
-		assertEquals("12345", attributeSet1.get(acctNumKey));
-		AttributeSet attributeSet2 = attributeSets.get(1);
-		assertEquals(1, attributeSet2.size());
-		assertEquals("54321", attributeSet2.get(acctNumKey));
-		AttributeSet attributeSet3 = attributeSets.get(2);
-		assertEquals(1, attributeSet3.size());
-		assertEquals("102030", attributeSet3.get(acctNumKey));
-		AttributeSet attributeSet4 = attributeSets.get(3);
-		assertEquals(1, attributeSet4.size());
-		assertEquals("302010", attributeSet4.get(acctNumKey));
+		Map<String, String> map1 = maps.get(0);
+		assertEquals(1, map1.size());
+		assertEquals("12345", map1.get(acctNumKey));
+		Map<String, String> map2 = maps.get(1);
+		assertEquals(1, map2.size());
+		assertEquals("54321", map2.get(acctNumKey));
+		Map<String, String> map3 = maps.get(2);
+		assertEquals(1, map3.size());
+		assertEquals("102030", map3.get(acctNumKey));
+		Map<String, String> map4 = maps.get(3);
+		assertEquals(1, map4.size());
+		assertEquals("302010", map4.get(acctNumKey));
 	}
 	
 	@Test
-	public void testResolve_compoundAttributeSet() throws Exception {
+	public void testResolve_compoundMap1() throws Exception {
 		XPathQualifierResolver resolver = new XPathQualifierResolver();
 		
 		RuleAttribute ruleAttribute = new RuleAttribute();
@@ -168,25 +168,25 @@ public class XPathQualifierResolverTest extends BaseRiceTestCase {
 		DocumentContent docContent = new StandardDocumentContent(COMPOUND_DOC_XML_1);
 		context.setDocumentContent(docContent);
 		
-		List<AttributeSet> attributeSets = resolver.resolve(context);
-		assertEquals("Incorrect number of attribute sets", 2, attributeSets.size());
+		List<Map<String, String>> maps = resolver.resolve(context);
+		assertEquals("Incorrect number of attribute sets", 2, maps.size());
 		
 		String chartKey = "chart";
 		String orgKey = "org";
 		
-		AttributeSet attributeSet1 = attributeSets.get(0);
-		assertEquals(2, attributeSet1.size());
-		assertEquals("BL", attributeSet1.get(chartKey));
-		assertEquals("BUS", attributeSet1.get(orgKey));
+		Map<String, String> map1 = maps.get(0);
+		assertEquals(2, map1.size());
+		assertEquals("BL", map1.get(chartKey));
+		assertEquals("BUS", map1.get(orgKey));
 		
-		AttributeSet attributeSet2 = attributeSets.get(1);
-		assertEquals(2, attributeSet2.size());
-		assertEquals("IN", attributeSet2.get(chartKey));
-		assertEquals("MED", attributeSet2.get(orgKey));
+		Map<String, String> map2 = maps.get(1);
+		assertEquals(2, map2.size());
+		assertEquals("IN", map2.get(chartKey));
+		assertEquals("MED", map2.get(orgKey));
 	}
 	
 	@Test
-	public void testResolve_compoundAttributeSet_badXml() throws Exception {
+	public void testResolve_compoundMap() throws Exception {
 		XPathQualifierResolver resolver = new XPathQualifierResolver();
 		
 		RuleAttribute ruleAttribute = new RuleAttribute();
@@ -212,14 +212,14 @@ public class XPathQualifierResolverTest extends BaseRiceTestCase {
 		docContent = new StandardDocumentContent(COMPOUND_DOC_XML_3);
 		context.setDocumentContent(docContent);
 		
-		List<AttributeSet> attributeSets = resolver.resolve(context);
-		assertEquals(1, attributeSets.size());
-		assertEquals("BL", attributeSets.get(0).get("chart"));
-		assertEquals("BUS", attributeSets.get(0).get("org"));
+		List<Map<String, String>> maps = resolver.resolve(context);
+		assertEquals(1, maps.size());
+		assertEquals("BL", maps.get(0).get("chart"));
+		assertEquals("BUS", maps.get(0).get("org"));
 	}
 	
 	@Test
-	public void testResolve_compoundAttributeSet_noBaseXPath() throws Exception {
+	public void testResolve_compoundMap_noBaseXPath() throws Exception {
 		XPathQualifierResolver resolver = new XPathQualifierResolver();
 		
 		RuleAttribute ruleAttribute = new RuleAttribute();
@@ -245,10 +245,10 @@ public class XPathQualifierResolverTest extends BaseRiceTestCase {
 		docContent = new StandardDocumentContent(COMPOUND_DOC_XML_3);
 		context.setDocumentContent(docContent);
 		
-		List<AttributeSet> attributeSets = resolver.resolve(context);
-		assertEquals(1, attributeSets.size());
-		assertEquals("BL", attributeSets.get(0).get("chart"));
-		assertEquals("BUS", attributeSets.get(0).get("org"));
+		List<Map<String, String>> maps = resolver.resolve(context);
+		assertEquals(1, maps.size());
+		assertEquals("BL", maps.get(0).get("chart"));
+		assertEquals("BUS", maps.get(0).get("org"));
 		
 	}
 	

@@ -23,7 +23,6 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.parameter.Parameter;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.api.group.GroupService;
@@ -824,7 +823,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 						KimConstants.NAMESPACE_CODE,
 						KimConstants.PermissionNames.MODIFY_ENTITY,
 						null,
-						new AttributeSet(KimConstants.AttributeConstants.PRINCIPAL_ID, currentUserPrincipalId));
+						Collections.singletonMap(KimConstants.AttributeConstants.PRINCIPAL_ID, currentUserPrincipalId));
 	}
 
 	public boolean canOverrideEntityPrivacyPreferences( String currentUserPrincipalId, String toModifyPrincipalId ){
@@ -835,7 +834,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 						KimConstants.NAMESPACE_CODE,
 						KimConstants.PermissionNames.OVERRIDE_ENTITY_PRIVACY_PREFERENCES,
 						null,
-						new AttributeSet(KimConstants.AttributeConstants.PRINCIPAL_ID, currentUserPrincipalId) );
+						Collections.singletonMap(KimConstants.AttributeConstants.PRINCIPAL_ID, currentUserPrincipalId) );
 	}
 
 	protected boolean canAssignToRole(IdentityManagementRoleDocument document, String initiatorPrincipalId){
@@ -2223,7 +2222,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
                             (origRoleMemberImpl.getMemberTypeCode()!=null && StringUtils.equals(origRoleMemberImpl.getMemberTypeCode(), newRoleMember.getMemberTypeCode())) &&
                             !origRoleMemberImpl.isActive(new Timestamp(System.currentTimeMillis())) &&
                             !kimTypeService.validateUniqueAttributes(identityManagementRoleDocument.getKimType().getId(),
-                                    documentRoleMember.getQualifierAsAttributeSet(), origRoleMemberImpl.getQualifier())) {
+                                    documentRoleMember.getQualifierAsMap(), origRoleMemberImpl.getQualifier())) {
 
                             //TODO: verify if you want to add  && newRoleMember.isActive() condition to if...
 

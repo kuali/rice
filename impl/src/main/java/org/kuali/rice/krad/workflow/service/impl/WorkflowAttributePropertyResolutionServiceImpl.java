@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.workflow.service.impl;
 
-import org.kuali.rice.core.util.AttributeSet;
+
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeFloatValue;
@@ -44,8 +44,10 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
@@ -60,8 +62,8 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
      * Using the proper RoutingTypeDefinition for the current routing node of the document, aardvarks out the proper routing type qualifiers
      *
      */
-    public List<AttributeSet> resolveRoutingTypeQualifiers(Document document, RoutingTypeDefinition routingTypeDefinition) {
-        List<AttributeSet> qualifiers = new ArrayList<AttributeSet>();
+    public List<Map<String, String>> resolveRoutingTypeQualifiers(Document document, RoutingTypeDefinition routingTypeDefinition) {
+        List<Map<String, String>> qualifiers = new ArrayList<Map<String, String>>();
         
         if (routingTypeDefinition != null) {
             document.populateDocumentForRouting();
@@ -78,11 +80,11 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
      * Resolves all of the values in the given DocumentValuePathGroup from the given BusinessObject
      * @param businessObject the business object which is the source of values
      * @param group the DocumentValuePathGroup which tells us which values we want
-     * @return a List of AttributeSets
+     * @return a List of Map<String, String>s
      */
-    protected List<AttributeSet> resolveDocumentValuePath(BusinessObject businessObject, DocumentValuePathGroup group, RoutingAttributeTracker routingAttributeTracker) {
-        List<AttributeSet> qualifiers;
-        AttributeSet qualifier = new AttributeSet();
+    protected List<Map<String, String>> resolveDocumentValuePath(BusinessObject businessObject, DocumentValuePathGroup group, RoutingAttributeTracker routingAttributeTracker) {
+        List<Map<String, String>> qualifiers;
+        Map<String, String> qualifier = new HashMap<String, String>();
         if (group.getDocumentValues() == null && group.getDocumentCollectionPath() == null) {
             throw new IllegalStateException("A document value path group must have the documentValues property set, the documentCollectionPath property set, or both.");
         }
@@ -92,11 +94,11 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
         if (group.getDocumentCollectionPath() != null) {
             qualifiers = resolveDocumentCollectionPath(businessObject, group.getDocumentCollectionPath(), routingAttributeTracker);
             qualifiers = cleanCollectionQualifiers(qualifiers);
-            for (AttributeSet collectionElementQualifier : qualifiers) {
+            for (Map<String, String> collectionElementQualifier : qualifiers) {
                 copyQualifications(qualifier, collectionElementQualifier);
             }
         } else {
-            qualifiers = new ArrayList<AttributeSet>();
+            qualifiers = new ArrayList<Map<String, String>>();
             qualifiers.add(qualifier);
         }
         return qualifiers;
@@ -106,10 +108,10 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
      * Resolves document values from a collection path on a given business object
      * @param businessObject the business object which has a collection, each element of which is a source of values
      * @param collectionPath the information about what values to pull from each element of the collection
-     * @return a List of AttributeSets
+     * @return a List of Map<String, String>s
      */
-    protected List<AttributeSet> resolveDocumentCollectionPath(BusinessObject businessObject, DocumentCollectionPath collectionPath, RoutingAttributeTracker routingAttributeTracker) {
-        List<AttributeSet> qualifiers = new ArrayList<AttributeSet>();
+    protected List<Map<String, String>> resolveDocumentCollectionPath(BusinessObject businessObject, DocumentCollectionPath collectionPath, RoutingAttributeTracker routingAttributeTracker) {
+        List<Map<String, String>> qualifiers = new ArrayList<Map<String, String>>();
         final Collection collectionByPath = getCollectionByPath(businessObject, collectionPath.getCollectionPath());
         if (!ObjectUtils.isNull(collectionByPath)) {
             if (collectionPath.getNestedCollection() != null) {
@@ -117,9 +119,9 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
                 for (Object collectionElement : collectionByPath) {
                     // for each element, we need to get the child qualifiers
                     if (collectionElement instanceof BusinessObject) {
-                        List<AttributeSet> childQualifiers = resolveDocumentCollectionPath((BusinessObject)collectionElement, collectionPath.getNestedCollection(), routingAttributeTracker);
-                        for (AttributeSet childQualifier : childQualifiers) {
-                            AttributeSet qualifier = new AttributeSet();
+                        List<Map<String, String>> childQualifiers = resolveDocumentCollectionPath((BusinessObject)collectionElement, collectionPath.getNestedCollection(), routingAttributeTracker);
+                        for (Map<String, String> childQualifier : childQualifiers) {
+                            Map<String, String> qualifier = new HashMap<String, String>();
                             routingAttributeTracker.checkPoint();
                             // now we need to get the values for the current element of the collection
                             addPathValuesToQualifier(collectionElement, collectionPath.getDocumentValues(), routingAttributeTracker, qualifier);
@@ -133,7 +135,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
             } else {
                 // go through each element in the collection
                 for (Object collectionElement : collectionByPath) {
-                    AttributeSet qualifier = new AttributeSet();
+                    Map<String, String> qualifier = new HashMap<String, String>();
                     routingAttributeTracker.checkPoint();
                     addPathValuesToQualifier(collectionElement, collectionPath.getDocumentValues(), routingAttributeTracker, qualifier);
                     qualifiers.add(qualifier);
@@ -155,13 +157,13 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
     }
     
     /**
-     * Aardvarks values out of a business object and puts them into an AttributeSet, based on a List of paths
+     * Aardvarks values out of a business object and puts them into an Map<String, String>, based on a List of paths
      * @param businessObject the business object to get values from
      * @param paths the paths of values to get from the qualifier
      * @param routingAttributes the RoutingAttribute associated with this qualifier's document value
      * @param qualifier the qualifier to put values into
      */
-    protected void addPathValuesToQualifier(Object businessObject, List<String> paths, RoutingAttributeTracker routingAttributes, AttributeSet qualifier) {
+    protected void addPathValuesToQualifier(Object businessObject, List<String> paths, RoutingAttributeTracker routingAttributes, Map<String, String> qualifier) {
         if (ObjectUtils.isNotNull(paths)) {
             for (String path : paths) {
                 // get the values for the paths of each element of the collection
@@ -179,7 +181,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
      * @param source the source of values
      * @param target the place to write all the values to
      */
-    protected void copyQualifications(AttributeSet source, AttributeSet target) {
+    protected void copyQualifications(Map<String, String> source, Map<String, String> target) {
         for (String key : source.keySet()) {
             target.put(key, source.get(key));
         }
@@ -238,13 +240,13 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
     }
     
     /**
-     * Removes empty AttributeSets from the given List of qualifiers
-     * @param qualifiers a List of AttributeSets holding qualifiers for responsibilities
+     * Removes empty Map<String, String>s from the given List of qualifiers
+     * @param qualifiers a List of Map<String, String>s holding qualifiers for responsibilities
      * @return a cleaned up list of qualifiers
      */
-    protected List<AttributeSet> cleanCollectionQualifiers(List<AttributeSet> qualifiers) {
-       List<AttributeSet> cleanedQualifiers = new ArrayList<AttributeSet>();
-       for (AttributeSet qualifier : qualifiers) {
+    protected List<Map<String, String>> cleanCollectionQualifiers(List<Map<String, String>> qualifiers) {
+       List<Map<String, String>> cleanedQualifiers = new ArrayList<Map<String, String>>();
+       for (Map<String, String> qualifier : qualifiers) {
            if (qualifier.size() > 0) {
                cleanedQualifiers.add(qualifier);
            }

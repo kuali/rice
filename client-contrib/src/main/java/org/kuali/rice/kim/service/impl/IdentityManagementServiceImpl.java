@@ -18,7 +18,6 @@ package org.kuali.rice.kim.service.impl;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.group.GroupUpdateService;
@@ -40,6 +39,7 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.service.PermissionService;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -76,7 +76,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 
     // AUTHORIZATION SERVICE
     @Override
-    public boolean hasPermission(String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails) {
+    public boolean hasPermission(String principalId, String namespaceCode, String permissionName, Map<String, String> permissionDetails) {
     	if ( LOG.isDebugEnabled() ) {
     		logHasPermissionCheck("Permission", principalId, namespaceCode, permissionName, permissionDetails);
     	}
@@ -88,7 +88,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
     }
 
     @Override
-    public boolean isAuthorized(String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
+    public boolean isAuthorized(String principalId, String namespaceCode, String permissionName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
     	if ( qualification == null || qualification.isEmpty() ) {
     		return hasPermission( principalId, namespaceCode, permissionName, permissionDetails );
     	}
@@ -103,7 +103,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
     }
 
     @Override
-    public boolean hasPermissionByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails) {
+    public boolean hasPermissionByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails) {
     	if ( LOG.isDebugEnabled() ) {
     		logHasPermissionCheck("Perm Templ", principalId, namespaceCode, permissionTemplateName, permissionDetails);
     	}
@@ -119,12 +119,12 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
     @Override
     public boolean isAuthorizedByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
     	if ( qualification == null || qualification.isEmpty() ) {
-    		return hasPermissionByTemplateName( principalId, namespaceCode, permissionTemplateName, new AttributeSet(permissionDetails) );
+    		return hasPermissionByTemplateName( principalId, namespaceCode, permissionTemplateName, new HashMap<String, String>(permissionDetails) );
     	}
     	if ( LOG.isDebugEnabled() ) {
-    		logAuthorizationCheck("Perm Templ", principalId, namespaceCode, permissionTemplateName, new AttributeSet(permissionDetails), new AttributeSet(qualification));
+    		logAuthorizationCheck("Perm Templ", principalId, namespaceCode, permissionTemplateName, new HashMap<String, String>(permissionDetails), new HashMap<String, String>(qualification));
     	}
-    	boolean isAuthorized = getPermissionService().isAuthorizedByTemplateName( principalId, namespaceCode, permissionTemplateName, new AttributeSet(permissionDetails), new AttributeSet(qualification) );
+    	boolean isAuthorized = getPermissionService().isAuthorizedByTemplateName( principalId, namespaceCode, permissionTemplateName, new HashMap<String, String>(permissionDetails), new HashMap<String, String>(qualification) );
    		if ( LOG.isDebugEnabled() ) {
    			LOG.debug( "Result: " + isAuthorized );
    		}
@@ -133,24 +133,24 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 
     @Override
     public List<Permission> getAuthorizedPermissions(String principalId,
-                                                     String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification) {
+                                                     String namespaceCode, String permissionName, Map<String, String> permissionDetails, Map<String, String> qualification) {
     	return getPermissionService().getAuthorizedPermissions(principalId, namespaceCode, permissionName, permissionDetails, qualification);
     }
 
     @Override
     public List<Permission> getAuthorizedPermissionsByTemplateName(String principalId,
-                                                                   String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails, AttributeSet qualification) {
+                                                                   String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails, Map<String, String> qualification) {
     	return getPermissionService().getAuthorizedPermissionsByTemplateName(principalId, namespaceCode, permissionTemplateName, permissionDetails, qualification);
     }
 
     @Override
-    public boolean isPermissionDefinedForTemplateName(String namespaceCode, String permissionTemplateName, AttributeSet permissionDetails) {
+    public boolean isPermissionDefinedForTemplateName(String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails) {
         return getPermissionService().isPermissionDefinedForTemplateName(namespaceCode, permissionTemplateName, permissionDetails);
     }
 
     @Override
 	public List<PermissionAssigneeInfo> getPermissionAssignees(String namespaceCode,
-			String permissionName, AttributeSet permissionDetails, AttributeSet qualification) {
+			String permissionName, Map<String, String> permissionDetails, Map<String, String> qualification) {
 		return this.permissionService.getPermissionAssignees(namespaceCode, permissionName,
                 permissionDetails, qualification);
 	}
@@ -160,7 +160,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 			String permissionTemplateName, Map<String, String> permissionDetails,
 			Map<String, String> qualification) {
 		return this.permissionService.getPermissionAssigneesForTemplateName( namespaceCode,
-				permissionTemplateName, new AttributeSet(permissionDetails), new AttributeSet(qualification) );
+				permissionTemplateName, new HashMap<String, String>(permissionDetails), new HashMap<String, String>(qualification) );
 	}
 
     // GROUP SERVICE
@@ -377,8 +377,8 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 
     @Override
 	public boolean hasResponsibility(String principalId, String namespaceCode,
-			String responsibilityName, AttributeSet qualification,
-			AttributeSet responsibilityDetails) {
+			String responsibilityName, Map<String, String> qualification,
+			Map<String, String> responsibilityDetails) {
 		return getResponsibilityService().hasResponsibility( principalId, namespaceCode, responsibilityName,
                 qualification, responsibilityDetails );
 	}
@@ -390,7 +390,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 
     @Override
 	public List<ResponsibilityAction> getResponsibilityActions( String namespaceCode, String responsibilityName,
-    		AttributeSet qualification, AttributeSet responsibilityDetails) {
+    		Map<String, String> qualification, Map<String, String> responsibilityDetails) {
 		return getResponsibilityService().getResponsibilityActions( namespaceCode, responsibilityName, qualification,
                 responsibilityDetails );
 	}
@@ -398,7 +398,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
     @Override
 	public List<ResponsibilityAction> getResponsibilityActionsByTemplateName(
 			String namespaceCode, String responsibilityTemplateName,
-			AttributeSet qualification, AttributeSet responsibilityDetails) {
+			Map<String, String> qualification, Map<String, String> responsibilityDetails) {
 		return getResponsibilityService().getResponsibilityActionsByTemplateName(namespaceCode, responsibilityTemplateName,
                 qualification, responsibilityDetails);
 	}
@@ -406,12 +406,12 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
     @Override
 	public boolean hasResponsibilityByTemplateName(String principalId,
 			String namespaceCode, String responsibilityTemplateName,
-			AttributeSet qualification, AttributeSet responsibilityDetails) {
+			Map<String, String> qualification, Map<String, String> responsibilityDetails) {
 		return getResponsibilityService().hasResponsibilityByTemplateName(principalId, namespaceCode, responsibilityTemplateName,
                 qualification, responsibilityDetails);
 	}
 
-    protected void logAuthorizationCheck(String checkType, String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification ) {
+    protected void logAuthorizationCheck(String checkType, String principalId, String namespaceCode, String permissionName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(  '\n' );
 		sb.append( "Is AuthZ for " ).append( checkType ).append( ": " ).append( namespaceCode ).append( "/" ).append( permissionName ).append( '\n' );
@@ -425,13 +425,13 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 		sb.append( '\n' );
 		sb.append( "             Details:\n" );
 		if ( permissionDetails != null ) {
-			sb.append( permissionDetails.formattedDump( 25 ) );
+			sb.append( permissionDetails);
 		} else {
 			sb.append( "                         [null]\n" );
 		}
 		sb.append( "             Qualifiers:\n" );
 		if ( qualification != null && !qualification.isEmpty() ) {
-			sb.append( qualification.formattedDump( 25 ) );
+			sb.append( qualification);
 		} else {
 			sb.append( "                         [null]\n" );
 		}
@@ -442,7 +442,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 		}
     }
 
-    protected void logHasPermissionCheck(String checkType, String principalId, String namespaceCode, String permissionName, AttributeSet permissionDetails ) {
+    protected void logHasPermissionCheck(String checkType, String principalId, String namespaceCode, String permissionName, Map<String, String> permissionDetails ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(  '\n' );
 		sb.append( "Has Perm for " ).append( checkType ).append( ": " ).append( namespaceCode ).append( "/" ).append( permissionName ).append( '\n' );
@@ -456,7 +456,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 		sb.append(  '\n' );
 		sb.append( "             Details:\n" );
 		if ( permissionDetails != null ) {
-			sb.append( permissionDetails.formattedDump( 25 ) );
+			sb.append( permissionDetails);
 		} else {
 			sb.append( "                         [null]\n" );
 		}

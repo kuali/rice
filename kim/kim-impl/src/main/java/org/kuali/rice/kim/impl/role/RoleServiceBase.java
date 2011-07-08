@@ -2,7 +2,6 @@ package org.kuali.rice.kim.impl.role;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.group.Group;
@@ -154,10 +153,10 @@ public class RoleServiceBase {
      * Converts the Qualifier Name/Value Role qualification set into Qualifier AttributeID/Value set
      *
      * @param qualification The original role qualification attribute set
-     * @return Converted attributeSet containing ID/value pairs
+     * @return Converted Map<String, String> containing ID/value pairs
      */
     private Map<String, String> convertQualifierKeys(Map<String, String> qualification) {
-        AttributeSet convertedQualification = new AttributeSet();
+        Map<String, String> convertedQualification = new HashMap<String, String>();
         if (qualification != null && CollectionUtils.isNotEmpty(qualification.keySet())) {
             for (String attributeName : qualification.keySet()) {
                 if (StringUtils.isNotEmpty(getKimAttributeId(attributeName))) {
@@ -1157,7 +1156,7 @@ public class RoleServiceBase {
         return primaryDelegate;
     }
 
-    protected RoleMemberBo matchingMemberRecord(List<RoleMemberBo> roleMembers, String memberId, String memberTypeCode, AttributeSet qualifier) {
+    protected RoleMemberBo matchingMemberRecord(List<RoleMemberBo> roleMembers, String memberId, String memberTypeCode, Map<String, String> qualifier) {
         for (RoleMemberBo rm : roleMembers) {
             if (doesMemberMatch(rm, memberId, memberTypeCode, qualifier)) {
                 return rm;
@@ -1193,7 +1192,7 @@ public class RoleServiceBase {
         if (cachedResult != null) {
             return cachedResult;
         }
-        AttributeSet criteria = new AttributeSet();
+        Map<String, String> criteria = new HashMap<String, String>();
         criteria.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode);
         criteria.put(KimConstants.UniqueKeyConstants.NAME, roleName);
         criteria.put(KRADPropertyConstants.ACTIVE, "Y");
@@ -1203,7 +1202,7 @@ public class RoleServiceBase {
         return result;
     }
 
-    protected boolean doAnyMemberRecordsMatch(List<RoleMemberBo> roleMembers, String memberId, String memberTypeCode, AttributeSet qualifier) {
+    protected boolean doAnyMemberRecordsMatch(List<RoleMemberBo> roleMembers, String memberId, String memberTypeCode, Map<String, String> qualifier) {
         for (RoleMemberBo rm : roleMembers) {
             if (doesMemberMatch(rm, memberId, memberTypeCode, qualifier)) {
                 return true;
@@ -1212,7 +1211,7 @@ public class RoleServiceBase {
         return false;
     }
 
-    protected boolean doesMemberMatch(RoleMemberBo roleMember, String memberId, String memberTypeCode, AttributeSet qualifier) {
+    protected boolean doesMemberMatch(RoleMemberBo roleMember, String memberId, String memberTypeCode, Map<String, String> qualifier) {
         if (roleMember.getMemberId().equals(memberId) && roleMember.getMemberTypeCode().equals(memberTypeCode)) {
             // member ID/type match
             Map<String, String> roleQualifier = roleMember.getQualifier();

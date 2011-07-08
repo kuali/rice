@@ -17,7 +17,6 @@ package org.kuali.rice.kim.util;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.services.IdentityService;
@@ -28,6 +27,7 @@ import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -92,7 +92,7 @@ public final class KimCommonUtilsInternal {
 				KimConstants.NAMESPACE_CODE,
 				KimConstants.PermissionNames.OVERRIDE_ENTITY_PRIVACY_PREFERENCES,
 				null,
-				new AttributeSet(KimConstants.AttributeConstants.PRINCIPAL_ID, principalId) );
+				Collections.singletonMap(KimConstants.AttributeConstants.PRINCIPAL_ID, principalId) );
 	}
 
 	public static boolean isSuppressName(String entityId) {

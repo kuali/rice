@@ -19,7 +19,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kim.api.common.assignee.Assignee;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
 import org.kuali.rice.kim.api.common.template.Template;
@@ -144,14 +143,14 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     }
     
     /**
-     * @see org.kuali.rice.kim.service.PermissionService#hasPermission(java.lang.String, String, java.lang.String, AttributeSet)
+     * @see org.kuali.rice.kim.service.PermissionService#hasPermission(java.lang.String, String, java.lang.String, Map<String, String>)
      */
     public boolean hasPermission(String principalId, String namespaceCode, String permissionName, Map<String, String> permissionDetails) {
     	return isAuthorized( principalId, namespaceCode, permissionName, permissionDetails, null );
     }
 
     /**
-     * @see org.kuali.rice.kim.service.PermissionService#isAuthorized( java.lang.String, String, java.lang.String, AttributeSet, AttributeSet)
+     * @see org.kuali.rice.kim.service.PermissionService#isAuthorized( java.lang.String, String, java.lang.String, Map<String, String>, Map<String, String>)
      */
     public boolean isAuthorized(String principalId, String namespaceCode, String permissionName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
     	List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName, permissionDetails );
@@ -159,21 +158,21 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     		return false;
     	}
 
-		//return roleService.principalHasRole( principalId, roleIds, new AttributeSet(qualification.toMap()));
+		//return roleService.principalHasRole( principalId, roleIds, new Map<String, String>(qualification.toMap()));
 
 		return roleService.principalHasRole( principalId, roleIds, qualification);
 
     }
 
     /**
-     * @see org.kuali.rice.kim.service.PermissionService#hasPermission(String, String, String, AttributeSet)
+     * @see org.kuali.rice.kim.service.PermissionService#hasPermission(String, String, String, Map<String, String>)
      */
     public boolean hasPermissionByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails) {
     	return isAuthorizedByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails, null );
     }
 
     /**
-     * @see org.kuali.rice.kim.service.PermissionService#isAuthorized( java.lang.String, String, java.lang.String, AttributeSet, AttributeSet)
+     * @see org.kuali.rice.kim.service.PermissionService#isAuthorized( java.lang.String, String, java.lang.String, Map<String, String>, Map<String, String>)
      */
     public boolean isAuthorizedByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
     	List<String> roleIds = getRoleIdsForPermissionTemplate( namespaceCode, permissionTemplateName, permissionDetails );
@@ -184,7 +183,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     }
 
     /**
-     * @see org.kuali.rice.kim.service.PermissionService#getAuthorizedPermissions(String, String, String, AttributeSet, AttributeSet)
+     * @see org.kuali.rice.kim.service.PermissionService#getAuthorizedPermissions(String, String, String, Map<String, String>, Map<String, String>)
      */
     public List<Permission> getAuthorizedPermissions( String principalId, String namespaceCode, String permissionName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
     	// get all the permission objects whose name match that requested
@@ -195,7 +194,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     }
 
     /**
-     * @see org.kuali.rice.kim.service.PermissionService#getAuthorizedPermissionsByTemplateName(String, String, String, AttributeSet, AttributeSet)
+     * @see org.kuali.rice.kim.service.PermissionService#getAuthorizedPermissionsByTemplateName(String, String, String, Map<String, String>, Map<String, String>)
      */
     public List<Permission> getAuthorizedPermissionsByTemplateName( String principalId, String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
     	// get all the permission objects whose name match that requested
@@ -279,7 +278,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     }
 
     /**
-     * @see org.kuali.rice.kim.service.PermissionService#getPermissionAssignees(String, String, AttributeSet, AttributeSet)
+     * @see org.kuali.rice.kim.service.PermissionService#getPermissionAssignees(String, String, Map<String, String>, Map<String, String>)
      */
     public List<Assignee> getPermissionAssignees( String namespaceCode, String permissionName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
     	List<Assignee> results = new ArrayList<Assignee>();

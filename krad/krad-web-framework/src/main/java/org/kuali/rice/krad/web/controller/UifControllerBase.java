@@ -12,7 +12,6 @@ package org.kuali.rice.krad.web.controller;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.web.format.BooleanFormatter;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -150,8 +149,8 @@ public abstract class UifControllerBase {
      */
     public void checkAuthorization(UifFormBase form, String methodToCall) throws AuthorizationException {
         String principalId = GlobalVariables.getUserSession().getPrincipalId();
-        AttributeSet roleQualifier = new AttributeSet(getRoleQualification(form, methodToCall));
-        AttributeSet permissionDetails = KRADUtils.getNamespaceAndActionClass(this.getClass());
+        Map<String, String> roleQualifier = new HashMap<String, String>(getRoleQualification(form, methodToCall));
+        Map<String, String> permissionDetails = KRADUtils.getNamespaceAndActionClass(this.getClass());
 
         if (!KimApiServiceLocator.getPermissionService()
                 .isAuthorizedByTemplateName(principalId, KRADConstants.KRAD_NAMESPACE,

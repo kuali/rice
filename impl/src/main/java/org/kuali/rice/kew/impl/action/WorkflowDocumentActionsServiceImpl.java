@@ -1,17 +1,9 @@
 package org.kuali.rice.kew.impl.action;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.ActionType;
@@ -44,6 +36,13 @@ import org.kuali.rice.kew.rule.WorkflowAttributeXmlValidator;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.identity.principal.Principal;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Reference implementation of the {@link WorkflowDocumentActionsService} api.
@@ -309,7 +308,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     }
 
     protected RequestedActions determineRequestedActionsInternal(DocumentRouteHeaderValue documentBo, String principalId) {
-        AttributeSet actionsRequested = KEWServiceLocator.getActionRequestService().getActionsRequested(documentBo,
+        Map<String, String> actionsRequested = KEWServiceLocator.getActionRequestService().getActionsRequested(documentBo,
                 principalId, true);
         boolean completeRequested = false;
         boolean approveRequested = false;

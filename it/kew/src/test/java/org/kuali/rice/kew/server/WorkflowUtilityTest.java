@@ -19,7 +19,6 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.core.api.parameter.Parameter;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -64,6 +63,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -144,7 +144,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
     }
 
     protected void assertActionsRequested(String principalName, String documentId) throws Exception {
-    	AttributeSet attrSet = getWorkflowUtility().getActionsRequested(getPrincipalIdForName(principalName), documentId);
+    	Map<String, String> attrSet = getWorkflowUtility().getActionsRequested(getPrincipalIdForName(principalName), documentId);
     	assertNotNull("Actions requested should be populated", attrSet);
     	assertFalse("Actions requested should be populated with at least one entry", attrSet.isEmpty());
     	assertEquals("Wrong number of actions requested", 4, attrSet.size());

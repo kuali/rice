@@ -21,7 +21,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.core.util.AttributeSet;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -32,7 +31,8 @@ import org.kuali.rice.krad.util.KRADConstants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A Struts Action which permits a user to execute a backdoor login to masquerade
@@ -127,10 +127,10 @@ public class BackdoorAction extends KualiAction {
     private void setFormGroupPermission(BackdoorForm backdoorForm, HttpServletRequest request) {
     	// based on whether or not they have permission to use the fictional "AdministrationAction", kind of a hack for now since I don't have time to
     	// split this single action up and I can't pass the methodToCall to the permission check
-    	AttributeSet permissionDetails = new AttributeSet();
+    	Map<String, String> permissionDetails = new HashMap<String, String>();
     	permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, KEWConstants.KEW_NAMESPACE);
     	permissionDetails.put(KimConstants.AttributeConstants.ACTION_CLASS, "org.kuali.rice.kew.web.backdoor.AdministrationAction");
-    	boolean isAdmin = KimApiServiceLocator.getPermissionService().isAuthorizedByTemplateName(getUserSession(request).getPrincipalId(), KRADConstants.KRAD_NAMESPACE,	KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, new AttributeSet());
+    	boolean isAdmin = KimApiServiceLocator.getPermissionService().isAuthorizedByTemplateName(getUserSession(request).getPrincipalId(), KRADConstants.KRAD_NAMESPACE,	KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, new HashMap<String, String>());
         backdoorForm.setIsAdmin(isAdmin);
     }
 

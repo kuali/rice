@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.kew.doctype;
 
-import org.kuali.rice.core.util.AttributeSet;
-
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in. 
@@ -28,8 +28,8 @@ public class SecurityPermissionInfo {
 
 	private String permissionName;
 	private String permissionNamespaceCode;
-	private AttributeSet permissionDetails = new AttributeSet();
-	private AttributeSet qualifications = new AttributeSet();
+	private Map<String, String> permissionDetails = new HashMap<String, String>();
+	private Map<String, String> qualifications = new HashMap<String, String>();
 	
 	
 	/**
@@ -59,25 +59,25 @@ public class SecurityPermissionInfo {
 	/**
 	 * @return the permissionDetails
 	 */
-	public AttributeSet getPermissionDetails() {
+	public Map<String, String> getPermissionDetails() {
 		return this.permissionDetails;
 	}
 	/**
 	 * @param permissionDetails the permissionDetails to set
 	 */
-	public void setPermissionDetails(AttributeSet permissionDetails) {
+	public void setPermissionDetails(Map<String, String> permissionDetails) {
 		this.permissionDetails = permissionDetails;
 	}
 	/**
 	 * @return the qualifications
 	 */
-	public AttributeSet getQualifications() {
+	public Map<String, String> getQualifications() {
 		return this.qualifications;
 	}
 	/**
 	 * @param qualifications the qualifications to set
 	 */
-	public void setQualifications(AttributeSet qualifications) {
+	public void setQualifications(Map<String, String> qualifications) {
 		this.qualifications = qualifications;
 	}
 	

@@ -46,7 +46,7 @@ public class RoutingReportForm extends KualiForm {
 
 	private static final long serialVersionUID = 509542372934250061L;
 
-    private Long ruleTemplateId;
+    private String ruleTemplateId;
     private String lookupableImplServiceName;
     private String documentType;
     private String reportType;
@@ -149,11 +149,11 @@ public class RoutingReportForm extends KualiForm {
         return mins;
     }
 
-    public Long getRuleTemplateId() {
+    public String getRuleTemplateId() {
         return ruleTemplateId;
     }
 
-    public void setRuleTemplateId(Long ruleTemplateId) {
+    public void setRuleTemplateId(String ruleTemplateId) {
         this.ruleTemplateId = ruleTemplateId;
     }
 

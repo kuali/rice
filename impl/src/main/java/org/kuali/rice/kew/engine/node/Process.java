@@ -59,7 +59,7 @@ public class Process implements Serializable, ProcessContract {
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="DOC_TYP_PROC_ID")
-	private Long processId;
+	private String processId;
 	@Column(name="NM")
 	private String name;
 	@ManyToOne(fetch=FetchType.EAGER)
@@ -74,10 +74,10 @@ public class Process implements Serializable, ProcessContract {
 	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
 	
-	public Long getProcessId() {
+	public String getProcessId() {
 		return processId;
 	}
-	public void setProcessId(Long processId) {
+	public void setProcessId(String processId) {
 		this.processId = processId;
 	}
 	public DocumentType getDocumentType() {

@@ -239,7 +239,8 @@ public class NoteAction extends KewKualiAction {
                 	canEditNote = customNoteAttribute.isAuthorizedToEditNote(singleNote);
                 }
                 singleNote.setAuthorizedToEdit(new Boolean(canEditNote));
-                if (noteForm.getNoteIdNumber() != null && (noteForm.getNoteIdNumber().intValue() == singleNote.getNoteId().intValue())) {
+                // KULRICE-5201 - added StringUtils.equals to check equally since this is no longer a numeric (int) comparison
+                if (StringUtils.equals(noteForm.getNoteIdNumber(), singleNote.getNoteId())) {
                     singleNote.setEditingNote(Boolean.TRUE);
                 }
             }
@@ -290,16 +291,16 @@ public class NoteAction extends KewKualiAction {
         return dateFormat.format(currentDate);
     }
 
-    private List sortNotes(List allNotes, String sortOrder) {
+    private List<Note> sortNotes(List<Note> allNotes, String sortOrder) {
         final int returnCode = KEWConstants.Sorting.SORT_SEQUENCE_DSC.equalsIgnoreCase(sortOrder) ? -1 : 1;
 
         try {
           Collections.sort(allNotes,
-          new Comparator() {
+          new Comparator<Note>() {
             @Override
-			public int compare(Object o1, Object o2) {
-  			Timestamp date1 = ((Note) o1).getNoteCreateDate();
-  			Timestamp date2 = ((Note) o2).getNoteCreateDate();
+			public int compare(Note o1, Note o2) {
+  			Timestamp date1 = o1.getNoteCreateDate();
+  			Timestamp date2 = o2.getNoteCreateDate();
 
                 if (date1.before(date2)) {
                   return returnCode * -1;

@@ -169,7 +169,7 @@ public final class WebRuleUtils {
 		RuleTemplate ruleTemplate = null;
 		if (!ArrayUtils.isEmpty(ruleTemplateIds)) {
 			String ruleTemplateId = ruleTemplateIds[0];
-			ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(new Long(ruleTemplateId));
+			ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(ruleTemplateId);
 			if (ruleTemplate == null) {
 				throw new RiceRuntimeException("Failed to load rule template with id '" + ruleTemplateId + "'");
 			}
@@ -205,7 +205,7 @@ public final class WebRuleUtils {
 			throw new RiceRuntimeException("Delegation rule document must be initiated with a valid responsibility ID to delegate from.");
 		}
 		if (!ArrayUtils.isEmpty(responsibilityIds)) {
-			Long responsibilityId = new Long(responsibilityIds[0]);
+			String responsibilityId = responsibilityIds[0];
 			RuleResponsibility ruleResponsibility = KEWServiceLocator.getRuleService().findRuleResponsibility(responsibilityId);
 			if (ruleResponsibility == null) {
 				throw new RiceRuntimeException("Failed to locate a rule responsibility for responsibility ID " + responsibilityId);
@@ -476,7 +476,7 @@ public final class WebRuleUtils {
 
 			for (Iterator iterator2 = ruleTemplate.getActiveRuleTemplateAttributes().iterator(); iterator2.hasNext();) {
 				RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iterator2.next();
-				if (ruleTemplateAttribute.getRuleTemplateAttributeId().longValue() == ruleExtension.getRuleTemplateAttributeId().longValue()) {
+				if (StringUtils.equals(ruleTemplateAttribute.getRuleTemplateAttributeId(), ruleExtension.getRuleTemplateAttributeId())) {
 					ruleExtension.setRuleTemplateAttribute(ruleTemplateAttribute);
 					break;
 				}
@@ -576,7 +576,7 @@ public final class WebRuleUtils {
 	
 	public static void translateRuleExtensionsForLoad(RuleBaseValues rule) {
 		for (RuleExtension ruleExtension : rule.getRuleExtensions()) {
-			Long ruleTemplateAttributeId = ruleExtension.getRuleTemplateAttributeId();
+			String ruleTemplateAttributeId = ruleExtension.getRuleTemplateAttributeId();
 			for (RuleExtensionValue ruleExtensionValue : ruleExtension.getExtensionValues()) {
 				String fieldMapKey = ruleTemplateAttributeId + ID_SEPARATOR + ruleExtensionValue.getKey();
 				rule.getFieldValues().put(fieldMapKey, ruleExtensionValue.getValue());

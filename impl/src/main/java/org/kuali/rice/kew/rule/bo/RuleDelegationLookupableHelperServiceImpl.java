@@ -200,15 +200,16 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
         String docTypeSearchName = null;
         String workflowId = null;
         String workgroupId = null;
-        Long ruleTemplateId = null;
+        String ruleTemplateId = null;
         Boolean isActive = null;
-        Long ruleId = null;
+        String ruleId = null;
 
         if (ruleIdParam != null && !"".equals(ruleIdParam.trim())) {
             try {
-                ruleId = new Long(ruleIdParam.trim());
+                ruleId = ruleIdParam.trim();
             } catch (NumberFormatException e) {
-                ruleId = new Long(-1);
+                // TODO: KULRICE-5201 - verify that this is a reasonable initialization given that ruleId is no longer a Long
+            	ruleId = "-1";
             }
         }
 
@@ -247,11 +248,11 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
         if (ruleTemplateNameParam != null && !ruleTemplateNameParam.trim().equals("") || ruleTemplateIdParam != null && !"".equals(ruleTemplateIdParam) && !"null".equals(ruleTemplateIdParam)) {
             RuleTemplate ruleTemplate = null;
             if (ruleTemplateIdParam != null && !"".equals(ruleTemplateIdParam)) {
-                ruleTemplateId = new Long(ruleTemplateIdParam);
+                ruleTemplateId = ruleTemplateIdParam;
                 ruleTemplate = getRuleTemplateService().findByRuleTemplateId(ruleTemplateId);
             } else {
                 ruleTemplate = getRuleTemplateService().findByRuleTemplateName(ruleTemplateNameParam.trim());
-                ruleTemplateId = new Long(ruleTemplate.getRuleTemplateId().longValue());
+                ruleTemplateId = ruleTemplate.getRuleTemplateId();
             }
 
             if(ruleTemplate == null){
@@ -338,8 +339,8 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
                 for (Object element : myColumns.getColumns()) {
                     KeyValue pair = (KeyValue) element;
                     final KeyValue newPair;
-                    if (record.getRuleExtensionValue(new Long(pair.getKey()), pair.getKey().toString()) != null) {
-                    	newPair = new ConcreteKeyValue(pair.getKey(), record.getRuleExtensionValue(new Long(pair.getValue()), pair.getKey().toString()).getValue());
+                    if (record.getRuleExtensionValue(pair.getKey(), pair.getKey().toString()) != null) {
+                    	newPair = new ConcreteKeyValue(pair.getKey(), record.getRuleExtensionValue(pair.getValue(), pair.getKey().toString()).getValue());
                     } else {
                     	newPair = new ConcreteKeyValue(pair.getKey(), KEWConstants.HTML_NON_BREAKING_SPACE);
                     }

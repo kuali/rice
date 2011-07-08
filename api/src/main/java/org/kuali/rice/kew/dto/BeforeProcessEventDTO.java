@@ -25,17 +25,17 @@ public class BeforeProcessEventDTO extends DocumentEventDTO {
 
 	private static final long serialVersionUID = 1462372563938714818L;
 	
-	private Long nodeInstanceId;
+	private String nodeInstanceId;
 
     public BeforeProcessEventDTO() {
         super(BEFORE_PROCESS);
     }
 
-    public Long getNodeInstanceId() {
+    public String getNodeInstanceId() {
         return this.nodeInstanceId;
     }
 
-    public void setNodeInstanceId(Long nodeInstanceId) {
+    public void setNodeInstanceId(String nodeInstanceId) {
         this.nodeInstanceId = nodeInstanceId;
     }
     

@@ -50,7 +50,7 @@ public class DocumentLink implements Serializable, DocumentLinkContract {
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="DOC_LNK_ID")
-	private Long docLinkId;
+	private String docLinkId;
     @Column(name="ORGN_DOC_ID")
 	private String orgnDocId;
     @Column(name="DEST_DOC_ID")
@@ -59,14 +59,14 @@ public class DocumentLink implements Serializable, DocumentLinkContract {
 	/**
 	 * @return the docLinkId
 	 */
-	public Long getDocLinkId() {
+	public String getDocLinkId() {
 		return this.docLinkId;
 	}
 
 	/**
 	 * @param docLinkId the docLinkId to set
 	 */
-	public void setDocLinkId(Long docLinkId) {
+	public void setDocLinkId(String docLinkId) {
 		this.docLinkId = docLinkId;
 	}
 
@@ -136,7 +136,7 @@ public class DocumentLink implements Serializable, DocumentLinkContract {
 		}
 		DocumentLink documentLinkBo = new DocumentLink();
 		if (documentLink.getId() != null) {
-			documentLinkBo.setDocLinkId(Long.valueOf(documentLink.getId()));
+			documentLinkBo.setDocLinkId(documentLink.getId());
 		}
 		documentLinkBo.setOrgnDocId(documentLink.getOriginatingDocumentId());
 		documentLinkBo.setDestDocId(documentLink.getDestinationDocumentId());

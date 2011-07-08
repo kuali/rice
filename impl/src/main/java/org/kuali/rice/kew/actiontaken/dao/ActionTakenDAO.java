@@ -29,13 +29,13 @@ import java.util.List;
  */
 public interface ActionTakenDAO {
 
-    public ActionTakenValue load(Long id);
+    public ActionTakenValue load(String id);
 
     public void saveActionTaken(ActionTakenValue actionTaken);
 
     public void deleteActionTaken(ActionTakenValue actionTaken);
 
-    public ActionTakenValue findByActionTakenId(Long actionTakenId);
+    public ActionTakenValue findByActionTakenId(String actionTakenId);
 
     public Collection<ActionTakenValue> findByDocumentId(String documentId);
 

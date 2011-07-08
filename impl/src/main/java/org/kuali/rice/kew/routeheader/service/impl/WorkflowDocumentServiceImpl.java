@@ -358,7 +358,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		return finish(routeHeader);
 	}
 
-	public DocumentRouteHeaderValue superUserActionRequestApproveAction(String principalId, DocumentRouteHeaderValue routeHeader, Long actionRequestId, String annotation, boolean runPostProcessor)
+	public DocumentRouteHeaderValue superUserActionRequestApproveAction(String principalId, DocumentRouteHeaderValue routeHeader, String actionRequestId, String annotation, boolean runPostProcessor)
 			throws InvalidActionTakenException {
 		init(routeHeader);
 		Principal principal = loadPrincipal(principalId);
@@ -375,7 +375,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      * the document load inside the current running transaction.  Otherwise we get an optimistic lock exception
      * when attempting to save the branch after the transition to the 'A' status.
      */
-    public DocumentRouteHeaderValue superUserActionRequestApproveAction(String principalId, String documentId, Long actionRequestId, String annotation, boolean runPostProcessor)
+    public DocumentRouteHeaderValue superUserActionRequestApproveAction(String principalId, String documentId, String actionRequestId, String annotation, boolean runPostProcessor)
         throws InvalidActionTakenException {
         return superUserActionRequestApproveAction(principalId, KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId), actionRequestId, annotation, runPostProcessor);
     }
@@ -446,10 +446,9 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		return finish(routeHeader);
 	}
 
-	public void takeMassActions(String principalId, List actionInvocations) {
+	public void takeMassActions(String principalId, List<ActionInvocation> actionInvocations) {
 		Principal principal = loadPrincipal(principalId);
-		for (Iterator iterator = actionInvocations.iterator(); iterator.hasNext();) {
-			ActionInvocation invocation = (ActionInvocation) iterator.next();
+		for (ActionInvocation invocation : actionInvocations) {
 			ActionItem actionItem = KEWServiceLocator.getActionListService().findByActionItemId(invocation.getActionItemId());
 			if (actionItem == null) {
 				LOG.warn("Could not locate action item for the given action item id [" + invocation.getActionItemId() + "], not taking mass action on it.");

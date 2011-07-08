@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.kuali.rice.kew.actions.ActionTakenEvent;
+import org.kuali.rice.kew.actions.asyncservices.ActionInvocation;
 import org.kuali.rice.kew.api.action.AdHocRevoke;
 import org.kuali.rice.kew.api.action.MovePoint;
 import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
@@ -55,8 +56,8 @@ public interface WorkflowDocumentService {
     public void deleteDocument(String principalId, DocumentRouteHeaderValue routeHeader) throws WorkflowException;
     public void logDocumentAction(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException;
 
-    public DocumentRouteHeaderValue superUserActionRequestApproveAction(String principalId, DocumentRouteHeaderValue routeHeader, Long actionRequestId, String annotation, boolean runPostProcessor) throws InvalidActionTakenException;
-    public DocumentRouteHeaderValue superUserActionRequestApproveAction(String principalId, String documentId, Long actionRequestId, String annotation, boolean runPostProcessor) throws InvalidActionTakenException;
+    public DocumentRouteHeaderValue superUserActionRequestApproveAction(String principalId, DocumentRouteHeaderValue routeHeader, String actionRequestId, String annotation, boolean runPostProcessor) throws InvalidActionTakenException;
+    public DocumentRouteHeaderValue superUserActionRequestApproveAction(String principalId, String documentId, String actionRequestId, String annotation, boolean runPostProcessor) throws InvalidActionTakenException;
     public DocumentRouteHeaderValue superUserApprove(String principalId, DocumentRouteHeaderValue routeHeader, String annotation, boolean runPostProcessor) throws InvalidActionTakenException;
     public DocumentRouteHeaderValue superUserCancelAction(String principalId, DocumentRouteHeaderValue routeHeader, String annotation, boolean runPostProcessor) throws InvalidActionTakenException;
     public DocumentRouteHeaderValue superUserDisapproveAction(String principalId, DocumentRouteHeaderValue routeHeader, String annotation, boolean runPostProcessor) throws InvalidActionTakenException;
@@ -108,7 +109,7 @@ public interface WorkflowDocumentService {
      *
      * @since 2.2
      */
-    public void takeMassActions(String principalId, List actionInvocations);
+    public void takeMassActions(String principalId, List<ActionInvocation> actionInvocations);
 
     /**
      * @since 2.2

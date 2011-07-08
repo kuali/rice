@@ -173,7 +173,7 @@ public class NoteConfigComponent implements EDLModelComponent {
                 }
                 singleNote.setAuthorizedToEdit(Boolean.valueOf(canEditNote));
                 if (form.getNoteIdNumber() != null
-                        && (form.getNoteIdNumber().intValue() == singleNote.getNoteId().intValue())) {
+                        && (StringUtils.equals(form.getNoteIdNumber(), singleNote.getNoteId()))) {
                     singleNote.setEditingNote(Boolean.TRUE);
                 }
             }
@@ -632,7 +632,7 @@ public class NoteConfigComponent implements EDLModelComponent {
     private static class NoteForm {
         private String showEdit;
         private Boolean showAdd;
-        private Long noteIdNumber;
+        private String noteIdNumber;
         private Integer numberOfNotes = new Integer(0);
         private String sortOrder = "DESCENDING";
         private Boolean sortNotes;
@@ -655,7 +655,7 @@ public class NoteConfigComponent implements EDLModelComponent {
                 showAdd = Boolean.valueOf(requestParser.getParameterValue("showAdd"));
             }
             if (!org.apache.commons.lang.StringUtils.isEmpty(requestParser.getParameterValue("noteIdNumber"))) {
-                noteIdNumber = Long.valueOf(requestParser.getParameterValue("noteIdNumber"));
+                noteIdNumber = requestParser.getParameterValue("noteIdNumber");
             }
             methodToCall = requestParser.getParameterValue("methodToCall");
             sortOrder = "DESCENDING";
@@ -723,11 +723,11 @@ public class NoteConfigComponent implements EDLModelComponent {
             this.note = note;
         }
 
-        public Long getNoteIdNumber() {
+        public String getNoteIdNumber() {
             return noteIdNumber;
         }
 
-        public void setNoteIdNumber(Long noteIdNumber) {
+        public void setNoteIdNumber(String noteIdNumber) {
             this.noteIdNumber = noteIdNumber;
         }
 

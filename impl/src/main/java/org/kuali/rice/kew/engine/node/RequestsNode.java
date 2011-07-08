@@ -243,7 +243,7 @@ public class RequestsNode extends RequestActivationNode {
 	 * instance passed in.
 	 */
 	protected Object getKey(RouteNodeInstance nodeInstance) {
-		Long id = nodeInstance.getRouteNodeInstanceId();
+		String id = nodeInstance.getRouteNodeInstanceId();
 		return (id != null ? (Object)id : (Object)nodeInstance);
 	}
 

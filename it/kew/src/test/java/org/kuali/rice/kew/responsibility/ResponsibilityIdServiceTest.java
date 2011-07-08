@@ -33,9 +33,9 @@ public class ResponsibilityIdServiceTest extends KEWTestCase {
     @Test
     public void testResponsibilityIdService() {
         ResponsibilityIdService idService = (ResponsibilityIdService)KEWServiceLocator.getService("enResponsibilityIdService");
-        final Long firstId = idService.getNewResponsibilityId();
+        final String firstId = idService.getNewResponsibilityId();
         assertNotNull("Did not get a responsibility id", firstId);
-        final Long secondId = idService.getNewResponsibilityId();
+        final String secondId = idService.getNewResponsibilityId();
         assertNotNull("Did not get a second responsibility id", secondId);
         assertTrue("Both responsibilityIds are equal", firstId.compareTo(secondId) != 0);
     }

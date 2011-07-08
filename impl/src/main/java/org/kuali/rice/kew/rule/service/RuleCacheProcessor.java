@@ -23,6 +23,6 @@ package org.kuali.rice.kew.rule.service;
  */
 public interface RuleCacheProcessor {
 	
-	public void clearRuleFromCache(Long ruleId);
+	public void clearRuleFromCache(String ruleId);
 
 }

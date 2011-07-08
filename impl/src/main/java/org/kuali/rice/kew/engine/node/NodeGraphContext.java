@@ -29,8 +29,8 @@ public class NodeGraphContext {
 	private RouteNodeInstance previousNodeInstance;
     private RouteNodeInstance currentNodeInstance;
     private RouteNodeInstance resultNodeInstance;
-    private Map visited = new HashMap();
-    private Map splitState = new HashMap();
+    private Map<String, RouteNodeInstance> visited = new HashMap<String, RouteNodeInstance>();
+    private Map<String, Integer> splitState = new HashMap<String, Integer>();
     
     public RouteNodeInstance getCurrentNodeInstance() {
         return currentNodeInstance;
@@ -50,16 +50,16 @@ public class NodeGraphContext {
     public void setResultNodeInstance(RouteNodeInstance resultNodeInstance) {
         this.resultNodeInstance = resultNodeInstance;
     }
-    public Map getSplitState() {
+    public Map<String, Integer> getSplitState() {
         return splitState;
     }
-    public void setSplitState(Map splitState) {
+    public void setSplitState(Map<String, Integer> splitState) {
         this.splitState = splitState;
     }
-    public Map getVisited() {
+    public Map<String, RouteNodeInstance> getVisited() {
         return visited;
     }
-    public void setVisited(Map visited) {
+    public void setVisited(Map<String, RouteNodeInstance> visited) {
         this.visited = visited;
     }
 

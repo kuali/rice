@@ -57,7 +57,7 @@ public class AttachmentServlet extends HttpServlet {
 			
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Long attachmentId = new Long(request.getParameter(ATTACHMENT_ID_KEY));
+		String attachmentId = request.getParameter(ATTACHMENT_ID_KEY);
 		if (attachmentId == null) {
 			throw new ServletException("No 'attachmentId' was specified.");
 		}

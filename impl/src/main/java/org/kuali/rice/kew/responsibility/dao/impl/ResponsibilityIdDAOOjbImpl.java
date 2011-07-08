@@ -19,7 +19,6 @@ package org.kuali.rice.kew.responsibility.dao.impl;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.responsibility.dao.ResponsibilityIdDAO;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
@@ -27,10 +26,10 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 public class ResponsibilityIdDAOOjbImpl extends PersistenceBrokerDaoSupport implements ResponsibilityIdDAO {
 
-	public Long getNewResponsibilityId() {
-        return (Long)this.getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
+	public String getNewResponsibilityId() {
+        return (String)this.getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
             public Object doInPersistenceBroker(PersistenceBroker broker) {
-            	return getPlatform().getNextValSQL("KREW_RSP_S", broker);
+            	return String.valueOf(getPlatform().getNextValSQL("KREW_RSP_S", broker));
             }
         });
     }

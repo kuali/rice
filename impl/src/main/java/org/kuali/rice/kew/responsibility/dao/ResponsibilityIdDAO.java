@@ -25,6 +25,6 @@ package org.kuali.rice.kew.responsibility.dao;
  */
 public interface ResponsibilityIdDAO {
 
-	public Long getNewResponsibilityId();
+	public String getNewResponsibilityId();
 	
 }

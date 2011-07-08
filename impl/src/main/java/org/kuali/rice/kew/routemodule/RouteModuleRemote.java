@@ -45,6 +45,6 @@ public interface RouteModuleRemote {
    * @param rId ResponsibiliyId that we need resolved.
    * @return The ResponsibleParty containing a key to a user or workgroup.
    */
-  public ResponsiblePartyDTO resolveResponsibilityId(Long responsibilityId) throws RemoteException;
+  public ResponsiblePartyDTO resolveResponsibilityId(String responsibilityId) throws RemoteException;
 
 }

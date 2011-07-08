@@ -283,7 +283,7 @@ public class ActionItemServiceTest extends KEWTestCase {
         // now ewestfal should have only one action item in both his action items and his action list
         actionItems = KEWServiceLocator.getActionListService().findByWorkflowUserDocumentId(ewestfalPrincipalId, document.getDocumentId());
         assertEquals("Ewestfal should have one action item.", 1, actionItems.size());
-        Long actionItemId = ((ActionItem)actionItems.iterator().next()).getActionItemId();
+        String actionItemId = ((ActionItem)actionItems.iterator().next()).getActionItemId();
         actionItems = KEWServiceLocator.getActionListService().getActionList(ewestfalPrincipalId, null);
         assertEquals("Ewestfal should have one action item in his action list.", 1, actionItems.size());
         assertEquals("The two action items should be the same.", actionItemId, ((ActionItem)actionItems.iterator().next()).getActionItemId());

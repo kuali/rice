@@ -63,10 +63,10 @@ public interface WorkflowUtility {
 			throws WorkflowException;
 
 	public RouteNodeInstanceDTO getNodeInstance(
-			@WebParam(name = "nodeInstanceId") Long nodeInstanceId)
+			@WebParam(name = "nodeInstanceId") String nodeInstanceId)
 			throws WorkflowException;
 
-	public Long getNewResponsibilityId() throws WorkflowException;
+	public String getNewResponsibilityId() throws WorkflowException;
 
 	public Integer getUserActionItemCount(
 			@WebParam(name = "principalId") String principalId)

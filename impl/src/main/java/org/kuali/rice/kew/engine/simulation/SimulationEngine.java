@@ -95,7 +95,7 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
     }
 
     @Override
-    public void process(String documentId, Long nodeInstanceId) throws InvalidActionTakenException, DocumentSimulatedRouteException {
+    public void process(String documentId, String nodeInstanceId) throws InvalidActionTakenException, DocumentSimulatedRouteException {
     	RouteContext context = RouteContext.createNewRouteContext();
     	try {
     		ActivationContext activationContext = new ActivationContext(ActivationContext.CONTEXT_IS_SIMULATION);
@@ -205,12 +205,12 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
         boolean isInPath = false;
         for (Iterator<RouteNode> iterator = nodeInstance.getRouteNode().getNextNodes().iterator(); iterator.hasNext();) {
             RouteNode nextNode = (RouteNode) iterator.next();
-            isInPath = isInPath || isNodeNameInPath(nodeName, nextNode, new HashSet<Long>());
+            isInPath = isInPath || isNodeNameInPath(nodeName, nextNode, new HashSet<String>());
         }
         return isInPath;
     }
 
-    private boolean isNodeNameInPath(String nodeName, RouteNode node, Set<Long> inspected) {
+    private boolean isNodeNameInPath(String nodeName, RouteNode node, Set<String> inspected) {
         boolean isInPath = !inspected.contains(node.getRouteNodeId()) && node.getRouteNodeName().equals(nodeName);
         inspected.add(node.getRouteNodeId());
         if (helper.isSubProcessNode(node)) {

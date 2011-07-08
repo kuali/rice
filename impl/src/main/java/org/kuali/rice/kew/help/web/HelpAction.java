@@ -83,7 +83,7 @@ public class HelpAction extends KewKualiAction {
             GlobalVariables.getMessageMap().putError(HELP_ID_KEY, ID_INVALID);
         } else {
             if (helpForm.getHelpId() != null) {
-                helpEntry.setHelpId(new Long(helpForm.getHelpId()));
+                helpEntry.setHelpId(helpForm.getHelpId());
             }
         }
 
@@ -111,14 +111,14 @@ public class HelpAction extends KewKualiAction {
 
     public ActionForward report(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         HelpForm helpForm = (HelpForm) form;
-        helpForm.setHelpEntry(getHelpService().findById(new Long(request.getParameter("helpId"))));
+        helpForm.setHelpEntry(getHelpService().findById(request.getParameter("helpId")));
         return mapping.findForward("report");
     }
 
     public ActionForward showEdit(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         HelpForm helpForm = (HelpForm) form;
         if(helpForm.getHelpEntry().getHelpId() == null){
-            Long helpId = new Long(request.getParameter("helpId"));
+            String helpId = request.getParameter("helpId");
             helpForm.setHelpEntry(getHelpService().findById(helpId));
         }
         return mapping.findForward("basic");
@@ -127,7 +127,7 @@ public class HelpAction extends KewKualiAction {
     public ActionForward showDelete(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception{
     	HelpForm helpForm=(HelpForm)form;
     	if(helpForm.getHelpEntry().getHelpId()==null){
-    		Long helpId=new Long(request.getParameter("helpId"));
+    		String helpId=request.getParameter("helpId");
     		helpForm.setHelpEntry(getHelpService().findById(helpId));
     	}
         // TOOD hook up KIM permissions to this

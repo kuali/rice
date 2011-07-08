@@ -86,7 +86,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 	    return this.runPostProcessorLogic;
 	}
 
-	public void process(String documentId, Long nodeInstanceId) throws Exception {
+	public void process(String documentId, String nodeInstanceId) throws Exception {
 		if (documentId == null) {
 			throw new IllegalArgumentException("Cannot process a null document id.");
 		}
@@ -121,7 +121,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 				LOG.debug("Document not routable so returning with doing no action");
 				return;
 			}
-			List nodeInstancesToProcess = new LinkedList();
+			List<RouteNodeInstance> nodeInstancesToProcess = new LinkedList<RouteNodeInstance>();
 			if (nodeInstanceId == null) {
 				// pulls the node instances from the passed in document
 				nodeInstancesToProcess.addAll(RouteNodeUtils.getActiveNodeInstances(document));
@@ -597,7 +597,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
      * TODO get the routeContext in this method - it should be a better object
      * than the nodeInstance
      */
-	private DocumentRouteHeaderValue notifyPostProcessorBeforeProcess(DocumentRouteHeaderValue document, Long nodeInstanceId) {
+	private DocumentRouteHeaderValue notifyPostProcessorBeforeProcess(DocumentRouteHeaderValue document, String nodeInstanceId) {
 	    return notifyPostProcessorBeforeProcess(document, nodeInstanceId, new BeforeProcessEvent(document.getDocumentId(),document.getAppDocId(),nodeInstanceId));
 	}
 
@@ -605,7 +605,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
      * TODO get the routeContext in this method - it should be a better object
      * than the nodeInstance
      */
-    private DocumentRouteHeaderValue notifyPostProcessorBeforeProcess(DocumentRouteHeaderValue document, Long nodeInstanceId, BeforeProcessEvent event) {
+    private DocumentRouteHeaderValue notifyPostProcessorBeforeProcess(DocumentRouteHeaderValue document, String nodeInstanceId, BeforeProcessEvent event) {
         ProcessDocReport report = null;
         try {
             PostProcessor postProcessor = null;
@@ -656,7 +656,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
      * TODO get the routeContext in this method - it should be a better object
      * than the nodeInstance
      */
-    private DocumentRouteHeaderValue notifyPostProcessorAfterProcess(DocumentRouteHeaderValue document, Long nodeInstanceId, boolean successfullyProcessed) {
+    private DocumentRouteHeaderValue notifyPostProcessorAfterProcess(DocumentRouteHeaderValue document, String nodeInstanceId, boolean successfullyProcessed) {
     	if (document == null) {
     		// this could happen if we failed to acquire the lock on the document
     		return null;
@@ -668,7 +668,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
      * TODO get the routeContext in this method - it should be a better object
      * than the nodeInstance
      */
-    private DocumentRouteHeaderValue notifyPostProcessorAfterProcess(DocumentRouteHeaderValue document, Long nodeInstanceId, AfterProcessEvent event) {
+    private DocumentRouteHeaderValue notifyPostProcessorAfterProcess(DocumentRouteHeaderValue document, String nodeInstanceId, AfterProcessEvent event) {
         ProcessDocReport report = null;
         try {
             PostProcessor postProcessor = null;

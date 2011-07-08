@@ -203,10 +203,10 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         String docTypeSearchName = null;
         String workflowId = null;
         String workgroupId = null;
-        Long ruleTemplateId = null;
+        String ruleTemplateId = null;
         Boolean isDelegateRule = null;
         Boolean isActive = null;
-        Long ruleId = null;
+        String ruleId = null;
       
         
         //for KULRICE-3678
@@ -221,9 +221,10 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         
         if (ruleIdParam != null && !"".equals(ruleIdParam.trim())) {
             try {
-                ruleId = new Long(ruleIdParam.trim());
+                ruleId = ruleIdParam.trim();
             } catch (NumberFormatException e) {
-                ruleId = new Long(-1);
+                // FIXME: KULRICE-5201 / KULRICE-5329 : Need to check to see if this makes sense now that ruleId is not a Long anymore
+            	ruleId = "-1";
             }
         }
 
@@ -269,11 +270,11 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         if (ruleTemplateNameParam != null && !ruleTemplateNameParam.trim().equals("") || ruleTemplateIdParam != null && !"".equals(ruleTemplateIdParam) && !"null".equals(ruleTemplateIdParam)) {
             RuleTemplate ruleTemplate = null;
             if (ruleTemplateIdParam != null && !"".equals(ruleTemplateIdParam)) {
-                ruleTemplateId = new Long(ruleTemplateIdParam);
+                ruleTemplateId = ruleTemplateIdParam;
                 ruleTemplate = getRuleTemplateService().findByRuleTemplateId(ruleTemplateId);
             } else {
                 ruleTemplate = getRuleTemplateService().findByRuleTemplateName(ruleTemplateNameParam.trim());
-                ruleTemplateId = new Long(ruleTemplate.getRuleTemplateId().longValue());
+                ruleTemplateId = ruleTemplate.getRuleTemplateId();
             }
 
             attributes = new HashMap();
@@ -289,7 +290,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
                 }
                 attribute.setRequired(false);
                 List<Row> searchRows = null;
-				long curExtId = 0;//debugging for EN-1682
+                String curExtId = "0";//debugging for EN-1682
                 if (attribute instanceof OddSearchAttribute) {
                     for (WorkflowServiceErrorImpl wsei : (List<WorkflowServiceErrorImpl>)((OddSearchAttribute)attribute).validateSearchData(fieldValues)) {
                         GlobalVariables.getMessageMap().putError(wsei.getMessage(), RiceKeyConstants.ERROR_CUSTOM, wsei.getArg1());
@@ -375,8 +376,8 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
                 MyColumns myNewColumns = new MyColumns();
                 for (KeyValue pair : myColumns.getColumns()) {
                     final KeyValue newPair;
-                    if (record.getRuleExtensionValue(new Long(pair.getValue()), pair.getKey().toString()) != null) {
-                    	newPair = new ConcreteKeyValue(pair.getKey(), record.getRuleExtensionValue(new Long(pair.getValue()), pair.getKey().toString()).getValue());
+                    if (record.getRuleExtensionValue(pair.getValue(), pair.getKey().toString()) != null) {
+                    	newPair = new ConcreteKeyValue(pair.getKey(), record.getRuleExtensionValue(pair.getValue(), pair.getKey().toString()).getValue());
                     } else {
                     	newPair = new ConcreteKeyValue(pair.getKey(), "");
                     }

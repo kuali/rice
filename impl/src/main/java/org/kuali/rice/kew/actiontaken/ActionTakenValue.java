@@ -75,7 +75,7 @@ public class ActionTakenValue implements Serializable {
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="ACTN_TKN_ID")
-    private Long actionTakenId;
+    private String actionTakenId;
     @Column(name="DOC_HDR_ID")//,insertable=false, updatable=false)
 	private String documentId;
     @Column(name="ACTN_CD")
@@ -210,11 +210,11 @@ public class ActionTakenValue implements Serializable {
     }
 
 
-    public Long getActionTakenId() {
+    public String getActionTakenId() {
         return actionTakenId;
     }
 
-    public void setActionTakenId(Long actionTakenId) {
+    public void setActionTakenId(String actionTakenId) {
         this.actionTakenId = actionTakenId;
     }
 

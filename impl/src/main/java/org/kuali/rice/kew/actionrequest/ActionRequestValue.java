@@ -113,7 +113,7 @@ public class ActionRequestValue implements Serializable {
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="ACTN_RQST_ID")
-	private Long actionRequestId;
+	private String actionRequestId;
     @Column(name="ACTN_RQST_CD")
 	private String actionRequested;
     @Column(name="DOC_HDR_ID")
@@ -121,7 +121,7 @@ public class ActionRequestValue implements Serializable {
     @Column(name="STAT_CD")
 	private String status;
     @Column(name="RSP_ID")
-	private Long responsibilityId;
+	private String responsibilityId;
     @Column(name="GRP_ID")
 	private String groupId;
     @Column(name="RECIP_TYP_CD")
@@ -131,7 +131,7 @@ public class ActionRequestValue implements Serializable {
     @Column(name="RTE_LVL_NBR")
 	private Integer routeLevel;
     @Column(name="ACTN_TKN_ID", insertable=false, updatable=false)
-	private Long actionTakenId;
+	private String actionTakenId;
     @Column(name="DOC_VER_NBR")
     private Integer docVersion = 1;
 	@Column(name="CRTE_DT")
@@ -147,7 +147,7 @@ public class ActionRequestValue implements Serializable {
     @Column(name="FRC_ACTN")
 	private Boolean forceAction;
     @Column(name="PARNT_ID", insertable=false, updatable=false)
-	private Long parentActionRequestId;
+	private String parentActionRequestId;
     @Column(name="QUAL_ROLE_NM")
 	private String qualifiedRoleName;
     @Column(name="ROLE_NM")
@@ -157,7 +157,7 @@ public class ActionRequestValue implements Serializable {
     @Transient
     private String displayStatus;
     @Column(name="RULE_ID")
-	private Long ruleBaseValuesId;
+	private String ruleBaseValuesId;
 
     @Column(name="DLGN_TYP")
     private String delegationType;
@@ -318,7 +318,7 @@ public class ActionRequestValue implements Serializable {
     /**
      * @return Returns the actionRequestId.
      */
-    public Long getActionRequestId() {
+    public String getActionRequestId() {
         return actionRequestId;
     }
 
@@ -326,14 +326,14 @@ public class ActionRequestValue implements Serializable {
      * @param actionRequestId
      *            The actionRequestId to set.
      */
-    public void setActionRequestId(Long actionRequestId) {
+    public void setActionRequestId(String actionRequestId) {
         this.actionRequestId = actionRequestId;
     }
 
     /**
      * @return Returns the actionTakenId.
      */
-    public Long getActionTakenId() {
+    public String getActionTakenId() {
         return actionTakenId;
     }
 
@@ -341,7 +341,7 @@ public class ActionRequestValue implements Serializable {
      * @param actionTakenId
      *            The actionTakenId to set.
      */
-    public void setActionTakenId(Long actionTakenId) {
+    public void setActionTakenId(String actionTakenId) {
         this.actionTakenId = actionTakenId;
     }
 
@@ -476,7 +476,7 @@ public class ActionRequestValue implements Serializable {
     /**
      * @return Returns the responsibilityId.
      */
-    public Long getResponsibilityId() {
+    public String getResponsibilityId() {
         return responsibilityId;
     }
 
@@ -484,7 +484,7 @@ public class ActionRequestValue implements Serializable {
      * @param responsibilityId
      *            The responsibilityId to set.
      */
-    public void setResponsibilityId(Long responsibilityId) {
+    public void setResponsibilityId(String responsibilityId) {
         this.responsibilityId = responsibilityId;
     }
 
@@ -702,11 +702,11 @@ public class ActionRequestValue implements Serializable {
         this.currentIndicator = currentIndicator;
     }
 
-    public Long getParentActionRequestId() {
+    public String getParentActionRequestId() {
         return parentActionRequestId;
     }
 
-    public void setParentActionRequestId(Long parentActionRequestId) {
+    public void setParentActionRequestId(String parentActionRequestId) {
         this.parentActionRequestId = parentActionRequestId;
     }
 
@@ -773,7 +773,7 @@ public class ActionRequestValue implements Serializable {
     public boolean hasChild(ActionRequestValue actionRequest) {
         if (actionRequest == null)
             return false;
-        Long actionRequestId = actionRequest.getActionRequestId();
+        String actionRequestId = actionRequest.getActionRequestId();
         for (Iterator<ActionRequestValue> iter = getChildrenRequests().iterator(); iter.hasNext();) {
             ActionRequestValue childRequest = iter.next();
             if (childRequest.equals(actionRequest) || (actionRequestId != null && actionRequestId.equals(childRequest.getActionRequestId()))) {
@@ -833,11 +833,11 @@ public class ActionRequestValue implements Serializable {
         }
         return null;
     }
-    public Long getRuleBaseValuesId() {
+    public String getRuleBaseValuesId() {
         return ruleBaseValuesId;
     }
 
-    public void setRuleBaseValuesId(Long ruleBaseValuesId) {
+    public void setRuleBaseValuesId(String ruleBaseValuesId) {
         this.ruleBaseValuesId = ruleBaseValuesId;
     }
     
@@ -895,7 +895,10 @@ public class ActionRequestValue implements Serializable {
     }
 
     public boolean isRouteModuleRequest() {
-    	return getResponsibilityId() > 0;
+    	// FIXME: KULRICE-5201 switched rsp_id to a varchar, so the comparison below is no longer valid
+//    	return getResponsibilityId() > 0;
+    	// TODO: KULRICE-5329 Verify that this code below makes sense 
+    	return getResponsibilityId() != null && !KEWConstants.SPECIAL_RESPONSIBILITY_ID_SET.contains(getResponsibilityId());
     }
 
     public String toString() {
@@ -1076,13 +1079,13 @@ public class ActionRequestValue implements Serializable {
 
         actionRequestBo.setActionRequested(actionRequest.getActionRequested().getCode());
         if (!StringUtils.isBlank(actionRequest.getId())) {
-            actionRequestBo.setActionRequestId(Long.valueOf(actionRequest.getId()));
+            actionRequestBo.setActionRequestId(actionRequest.getId());
         }
         
         if (actionRequest.getActionTaken() != null) {
             // actionRequestBo.setActionTaken(ActionTakenValue.from(actionRequest.getActionTaken()));
             if (!StringUtils.isBlank(actionRequest.getActionTaken().getId())) {
-                actionRequestBo.setActionTakenId(Long.valueOf(actionRequest.getActionTaken().getId()));
+                actionRequestBo.setActionTakenId(actionRequest.getActionTaken().getId());
             }
         }
         actionRequestBo.setAnnotation(actionRequest.getAnnotation());
@@ -1102,7 +1105,7 @@ public class ActionRequestValue implements Serializable {
         actionRequestBo.setRecipientTypeCd(actionRequest.getRecipientType().getCode());
         actionRequestBo.setResponsibilityDesc(actionRequest.getResponsibilityDescription());
         if (!StringUtils.isBlank(actionRequest.getResponsibilityId())) {
-            actionRequestBo.setResponsibilityId(Long.valueOf(actionRequest.getResponsibilityId()));
+            actionRequestBo.setResponsibilityId(actionRequest.getResponsibilityId());
         }
         actionRequestBo.setRoleName(actionRequest.getRoleName());
         String documentId = actionRequest.getDocumentId();
@@ -1116,7 +1119,7 @@ public class ActionRequestValue implements Serializable {
         actionRequestBo.setGroupId(actionRequest.getGroupId());
         
         if (routeNodeInstanceLoader != null && !StringUtils.isBlank(actionRequest.getRouteNodeInstanceId())) {
-            actionRequestBo.setNodeInstance(routeNodeInstanceLoader.load(Long.valueOf(actionRequest.getRouteNodeInstanceId())));
+            actionRequestBo.setNodeInstance(routeNodeInstanceLoader.load(actionRequest.getRouteNodeInstanceId()));
         }
     }
     

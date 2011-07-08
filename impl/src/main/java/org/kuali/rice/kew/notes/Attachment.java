@@ -58,9 +58,9 @@ public class Attachment {
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="ATTACHMENT_ID")
-	private Long attachmentId;
+	private String attachmentId;
 	@Transient
-	private Long noteId;
+	private String noteId;
 	@Column(name="FILE_NM")
 	private String fileName;
 	@Column(name="FILE_LOC")
@@ -76,10 +76,10 @@ public class Attachment {
 	@JoinColumn(name="NTE_ID")
 	private Note note;
 	
-	public Long getAttachmentId() {
+	public String getAttachmentId() {
 		return attachmentId;
 	}
-	public void setAttachmentId(Long attachmentId) {
+	public void setAttachmentId(String attachmentId) {
 		this.attachmentId = attachmentId;
 	}
 	public String getFileLoc() {
@@ -106,14 +106,14 @@ public class Attachment {
 	public void setMimeType(String mimeType) {
 		this.mimeType = mimeType;
 	}
-	public Long getNoteId() {
+	public String getNoteId() {
 		//noteId field not mapped in JPA 
 		if (noteId == null && note != null){
 			return note.getNoteId();
 		}
 		return noteId;
 	}
-	public void setNoteId(Long noteId) {
+	public void setNoteId(String noteId) {
 		this.noteId = noteId;
 	}
 	public Note getNote() {

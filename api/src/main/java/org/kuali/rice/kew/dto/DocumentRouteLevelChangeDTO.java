@@ -29,8 +29,8 @@ public class DocumentRouteLevelChangeDTO extends DocumentEventDTO {
     private Integer newRouteLevel;
     private String oldNodeName;
     private String newNodeName;
-    private Long oldNodeInstanceId;
-    private Long newNodeInstanceId;
+    private String oldNodeInstanceId;
+    private String newNodeInstanceId;
 
     public DocumentRouteLevelChangeDTO() {
         super(ROUTE_LEVEL_CHANGE);
@@ -52,11 +52,11 @@ public class DocumentRouteLevelChangeDTO extends DocumentEventDTO {
         this.oldRouteLevel = oldRouteLevel;
     }
 
-    public Long getNewNodeInstanceId() {
+    public String getNewNodeInstanceId() {
         return newNodeInstanceId;
     }
 
-    public void setNewNodeInstanceId(Long newNodeInstanceId) {
+    public void setNewNodeInstanceId(String newNodeInstanceId) {
         this.newNodeInstanceId = newNodeInstanceId;
     }
 
@@ -68,11 +68,11 @@ public class DocumentRouteLevelChangeDTO extends DocumentEventDTO {
         this.newNodeName = newNodeName;
     }
 
-    public Long getOldNodeInstanceId() {
+    public String getOldNodeInstanceId() {
         return oldNodeInstanceId;
     }
 
-    public void setOldNodeInstanceId(Long oldNodeInstanceId) {
+    public void setOldNodeInstanceId(String oldNodeInstanceId) {
         this.oldNodeInstanceId = oldNodeInstanceId;
     }
 

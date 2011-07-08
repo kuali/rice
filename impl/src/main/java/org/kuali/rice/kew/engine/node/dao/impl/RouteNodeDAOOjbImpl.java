@@ -64,13 +64,13 @@ public class RouteNodeDAOOjbImpl extends PersistenceBrokerDaoSupport implements 
 	getPersistenceBrokerTemplate().store(branch);
     }
 
-    public RouteNode findRouteNodeById(Long nodeId) {
+    public RouteNode findRouteNodeById(String nodeId) {
 	Criteria criteria = new Criteria();
 	criteria.addEqualTo(ROUTE_NODE_ID, nodeId);
 	return (RouteNode) getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(RouteNode.class, criteria));
     }
 
-    public RouteNodeInstance findRouteNodeInstanceById(Long nodeInstanceId) {
+    public RouteNodeInstance findRouteNodeInstanceById(String nodeInstanceId) {
 	Criteria criteria = new Criteria();
 	criteria.addEqualTo(ROUTE_NODE_INSTANCE_ID, nodeInstanceId);
 	return (RouteNodeInstance) getPersistenceBrokerTemplate().getObjectByQuery(

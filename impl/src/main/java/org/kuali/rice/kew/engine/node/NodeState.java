@@ -55,11 +55,11 @@ public class NodeState extends State {
         this.nodeInstance = nodeInstance;
     }
 
-    public Long getNodeStateId() {
+    public String getNodeStateId() {
         return getStateId();
     }
 
-    public void setNodeStateId(Long nodeStateId) {
+    public void setNodeStateId(String nodeStateId) {
         setStateId(nodeStateId);
     }
 

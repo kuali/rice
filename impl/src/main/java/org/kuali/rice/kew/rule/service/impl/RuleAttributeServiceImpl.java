@@ -51,19 +51,19 @@ public class RuleAttributeServiceImpl implements RuleAttributeService {
         getRuleAttributeDAO().save(ruleAttribute);
     }
 
-    public void delete(Long ruleAttributeId) {
+    public void delete(String ruleAttributeId) {
         getRuleAttributeDAO().delete(ruleAttributeId);
     }
 
-    public List findByRuleAttribute(RuleAttribute ruleAttribute) {
+    public List<RuleAttribute> findByRuleAttribute(RuleAttribute ruleAttribute) {
         return getRuleAttributeDAO().findByRuleAttribute(ruleAttribute);
     }
 
-    public RuleAttribute findByRuleAttributeId(Long ruleAttributeId) {
+    public RuleAttribute findByRuleAttributeId(String ruleAttributeId) {
         return getRuleAttributeDAO().findByRuleAttributeId(ruleAttributeId);
     }
 
-    public List findAll() {
+    public List<RuleAttribute> findAll() {
         return getRuleAttributeDAO().getAllRuleAttributes();
     }
 

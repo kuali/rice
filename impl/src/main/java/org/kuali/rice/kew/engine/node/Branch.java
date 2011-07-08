@@ -60,7 +60,7 @@ public class Branch implements Serializable {
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="RTE_BRCH_ID")
-	private Long branchId;
+	private String branchId;
 	@ManyToOne(fetch=FetchType.EAGER,cascade=CascadeType.PERSIST)
 	@JoinColumn(name="PARNT_ID")
 	private Branch parentBranch;
@@ -110,10 +110,10 @@ public class Branch implements Serializable {
 	public void setInitialNode(RouteNodeInstance activeNode) {
 		this.initialNode = activeNode;
 	}
-	public Long getBranchId() {
+	public String getBranchId() {
 		return branchId;
 	}
-	public void setBranchId(Long branchId) {
+	public void setBranchId(String branchId) {
 		this.branchId = branchId;
 	}
 	public RouteNodeInstance getJoinNode() {

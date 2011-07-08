@@ -28,7 +28,7 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 public class NoteDAOOjbImpl extends PersistenceBrokerDaoSupport implements NoteDAO {
 
-    public Note getNoteByNoteId(Long noteId) {
+    public Note getNoteByNoteId(String noteId) {
         Criteria crit = new Criteria();
         crit.addEqualTo("noteId", noteId);
         return (Note) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(Note.class, crit));          
@@ -59,7 +59,7 @@ public class NoteDAOOjbImpl extends PersistenceBrokerDaoSupport implements NoteD
     }
 
 	
-    public Attachment findAttachment(Long attachmentId) {
+    public Attachment findAttachment(String attachmentId) {
     	Criteria crit = new Criteria();
     	crit.addEqualTo("attachmentId", attachmentId);
     	return (Attachment)this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(Attachment.class, crit));

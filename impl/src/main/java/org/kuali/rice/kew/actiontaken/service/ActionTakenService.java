@@ -31,9 +31,9 @@ import java.util.List;
  */
 public interface ActionTakenService {
 
-    public ActionTakenValue load(Long id);
+    public ActionTakenValue load(String id);
 
-    public ActionTakenValue findByActionTakenId(Long actionTakenId);
+    public ActionTakenValue findByActionTakenId(String actionTakenId);
 
     public Collection getActionsTaken(String documentId);
 

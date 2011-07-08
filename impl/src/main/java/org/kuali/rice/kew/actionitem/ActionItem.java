@@ -78,7 +78,7 @@ public class ActionItem implements RowStyleable, Serializable {
 			@Parameter(name="value_column",value="id")
 	})
     @Column(name="ACTN_ITM_ID")
-	private Long actionItemId;
+	private String actionItemId;
     @Column(name="PRNCPL_ID")
 	private String principalId;
 	@Column(name="ASND_DT")
@@ -86,7 +86,7 @@ public class ActionItem implements RowStyleable, Serializable {
     @Column(name="RQST_CD")
 	private String actionRequestCd;
     @Column(name="ACTN_RQST_ID", nullable=false)
-	private Long actionRequestId;
+	private String actionRequestId;
     @Column(name="DOC_HDR_ID")//, insertable=false, updatable=false)
 	private String documentId;
     @Column(name="GRP_ID")
@@ -103,7 +103,7 @@ public class ActionItem implements RowStyleable, Serializable {
     @Column(name="DOC_TYP_NM")
 	private String docName;
     @Column(name="RSP_ID")
-    private Long responsibilityId = new Long(1);
+    private String responsibilityId = "1";
     @Column(name="ROLE_NM")
 	private String roleName;
     @Column(name="DLGN_PRNCPL_ID")
@@ -138,7 +138,7 @@ public class ActionItem implements RowStyleable, Serializable {
         OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
     }
     
-    public Long getActionItemId() {
+    public String getActionItemId() {
         return actionItemId;
     }
     
@@ -154,7 +154,7 @@ public class ActionItem implements RowStyleable, Serializable {
         return actionRequestCd;
     }
     
-    public Long getActionRequestId() {
+    public String getActionRequestId() {
         return actionRequestId;
     }
     
@@ -186,7 +186,7 @@ public class ActionItem implements RowStyleable, Serializable {
         return docName;
     }
 
-    public Long getResponsibilityId() {
+    public String getResponsibilityId() {
         return responsibilityId;
     }
 
@@ -294,7 +294,7 @@ public class ActionItem implements RowStyleable, Serializable {
         this.rowStyleClass = rowStyleClass;
     }
     
-    public void setResponsibilityId(Long responsibilityId) {
+    public void setResponsibilityId(String responsibilityId) {
         this.responsibilityId = responsibilityId;
     }
     
@@ -322,11 +322,11 @@ public class ActionItem implements RowStyleable, Serializable {
         this.documentId = documentId;
     }
 
-    public void setActionItemId(Long actionItemId) {
+    public void setActionItemId(String actionItemId) {
         this.actionItemId = actionItemId;
     }
 
-    public void setActionRequestId(Long actionRequestId) {
+    public void setActionRequestId(String actionRequestId) {
         this.actionRequestId = actionRequestId;
     }
 

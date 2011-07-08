@@ -65,7 +65,7 @@ public class RuleAttribute extends PersistableBusinessObjectBase  {
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="RULE_ATTR_ID")
-	private Long ruleAttributeId;
+	private String ruleAttributeId;
     @Column(name="NM")
 	private String name;
     @Column(name="LBL")
@@ -131,10 +131,10 @@ public class RuleAttribute extends PersistableBusinessObjectBase  {
     public void setName(String name) {
         this.name = name;
     }
-    public Long getRuleAttributeId() {
+    public String getRuleAttributeId() {
         return ruleAttributeId;
     }
-    public void setRuleAttributeId(Long ruleAttributeId) {
+    public void setRuleAttributeId(String ruleAttributeId) {
         this.ruleAttributeId = ruleAttributeId;
     }
     public String getType() {

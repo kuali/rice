@@ -25,18 +25,18 @@ public class AfterProcessEventDTO extends DocumentEventDTO {
 
 	private static final long serialVersionUID = 1462372563938714818L;
 	
-	private Long nodeInstanceId;
+	private String nodeInstanceId;
 	private boolean successfullyProcessed;
 
     public AfterProcessEventDTO() {
         super(AFTER_PROCESS);
     }
 
-    public Long getNodeInstanceId() {
+    public String getNodeInstanceId() {
         return this.nodeInstanceId;
     }
 
-    public void setNodeInstanceId(Long nodeInstanceId) {
+    public void setNodeInstanceId(String nodeInstanceId) {
         this.nodeInstanceId = nodeInstanceId;
     }
 

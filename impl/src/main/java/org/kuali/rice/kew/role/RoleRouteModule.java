@@ -239,9 +239,9 @@ public class RoleRouteModule implements RouteModule {
 	/**
 	 * Return null so that the responsibility ID will remain the same.
 	 *
-	 * @see org.kuali.rice.kew.routemodule.RouteModule#resolveResponsibilityId(java.lang.Long)
+	 * @see org.kuali.rice.kew.routemodule.RouteModule#resolveResponsibilityId(String)
 	 */
-	public ResponsibleParty resolveResponsibilityId(Long responsibilityId)
+	public ResponsibleParty resolveResponsibilityId(String responsibilityId)
 			throws WorkflowException {
 		return null;
 	}

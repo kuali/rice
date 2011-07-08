@@ -22,7 +22,7 @@ import org.kuali.rice.kew.rule.RuleResponsibility;
 
 public interface RuleResponsibilityDAO {
 
-  public void delete(Long ruleResponsibilityId);
-  public RuleResponsibility findByRuleResponsibilityId(Long ruleResponsibilityId);
+  public void delete(String ruleResponsibilityId);
+  public RuleResponsibility findByRuleResponsibilityId(String ruleResponsibilityId);
   
 }

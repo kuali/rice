@@ -58,9 +58,9 @@ public class DocumentTypeAttribute implements Comparable, Serializable {
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="DOC_TYP_ATTRIB_ID")
-	private Long documentTypeAttributeId; 
+	private String documentTypeAttributeId; 
     @Column(name="RULE_ATTR_ID",insertable=false, updatable=false)
-	private Long ruleAttributeId;
+	private String ruleAttributeId;
     @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RULE_ATTR_ID")
 	private RuleAttribute ruleAttribute;
@@ -82,14 +82,14 @@ public class DocumentTypeAttribute implements Comparable, Serializable {
 	/**
 	 * @param documentTypeAttributeId The documentTypeAttributeId to set.
 	 */
-	public void setDocumentTypeAttributeId(Long documentTypeAttributeId) {
+	public void setDocumentTypeAttributeId(String documentTypeAttributeId) {
 		this.documentTypeAttributeId = documentTypeAttributeId;
 	}
 
 	/**
 	 * @return Returns the documentTypeAttributeId.
 	 */
-	public Long getDocumentTypeAttributeId() {
+	public String getDocumentTypeAttributeId() {
 		return documentTypeAttributeId;
 	}
 
@@ -110,7 +110,7 @@ public class DocumentTypeAttribute implements Comparable, Serializable {
 	/**
 	 * @param ruleAttributeId The ruleAttributeId to set.
 	 */
-	public void setRuleAttributeId(Long ruleAttributeId) {
+	public void setRuleAttributeId(String ruleAttributeId) {
 		this.ruleAttributeId = ruleAttributeId;
         if (ruleAttributeId == null) {
         	ruleAttribute = null;
@@ -122,7 +122,7 @@ public class DocumentTypeAttribute implements Comparable, Serializable {
 	/**
 	 * @return Returns the ruleAttributeId.
 	 */
-	public Long getRuleAttributeId() {
+	public String getRuleAttributeId() {
 		return ruleAttributeId;
 	}
 

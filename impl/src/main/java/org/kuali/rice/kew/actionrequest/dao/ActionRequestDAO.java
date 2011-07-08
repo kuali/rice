@@ -29,41 +29,41 @@ import java.util.List;
  */
 public interface ActionRequestDAO {
 
-    public ActionRequestValue getActionRequestByActionRequestId(Long actionRequestId);
+    public ActionRequestValue getActionRequestByActionRequestId(String actionRequestId);
 
     public void saveActionRequest(ActionRequestValue actionRequest);
 
-    public List findPendingRootRequestsByDocIdAtRouteLevel(String documentId, Integer routeLevel);
+    public List<ActionRequestValue> findPendingRootRequestsByDocIdAtRouteLevel(String documentId, Integer routeLevel);
 
-    public List findPendingByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel);
+    public List<ActionRequestValue> findPendingByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel);
 
-    public List findPendingRootRequestsByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel);
+    public List<ActionRequestValue> findPendingRootRequestsByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel);
 
-    public void delete(Long actionRequestId);
+    public void delete(String actionRequestId);
 
-     public List findPendingByActionRequestedAndDocId(String actionRequestedCd, String documentId);
+     public List<ActionRequestValue> findPendingByActionRequestedAndDocId(String actionRequestedCd, String documentId);
 
-    public List findAllPendingByDocId(String documentId);
+    public List<ActionRequestValue> findAllPendingByDocId(String documentId);
 
-    public List findAllByDocId(String documentId);
+    public List<ActionRequestValue> findAllByDocId(String documentId);
 
-    public List findAllRootByDocId(String documentId);
+    public List<ActionRequestValue> findAllRootByDocId(String documentId);
 
     public List<ActionRequestValue> findByStatusAndDocId(String statusCd, String documentId);
 
-    public List findByDocumentIdIgnoreCurrentInd(String documentId);
+    public List<ActionRequestValue> findByDocumentIdIgnoreCurrentInd(String documentId);
 
-    public List findActivatedByGroup(String groupId);
+    public List<ActionRequestValue> findActivatedByGroup(String groupId);
 
-    public List findPendingByResponsibilityIds(Collection responsibilityIds);
+    public List<ActionRequestValue> findPendingByResponsibilityIds(Collection responsibilityIds);
 
     public  void deleteByDocumentId(String documentId);
 
-    public List findPendingRootRequestsByDocumentType(String documentTypeId);
+    public List<ActionRequestValue> findPendingRootRequestsByDocumentType(String documentTypeId);
 
-    public List findPendingRootRequestsByDocIdAtRouteNode(String documentId, Long nodeInstanceId);
+    public List<ActionRequestValue> findPendingRootRequestsByDocIdAtRouteNode(String documentId, String nodeInstanceId);
 
-    public List findRootRequestsByDocIdAtRouteNode(String documentId, Long nodeInstanceId);
+    public List<ActionRequestValue> findRootRequestsByDocIdAtRouteNode(String documentId, String nodeInstanceId);
 
     //public List findFutureAdHocRequestsByDocIdAtRouteNode(String documentId, String nodeName);
 

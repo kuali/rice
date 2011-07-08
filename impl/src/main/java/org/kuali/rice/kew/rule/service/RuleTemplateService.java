@@ -37,15 +37,15 @@ public interface RuleTemplateService extends XmlLoader, XmlExporter {
     public void save(RuleTemplate ruleTemplate);
     public void save(RuleTemplateAttribute ruleTemplateAttribute);
     public void saveRuleDefaults(RuleDelegation ruleDelegation, RuleBaseValues ruleBaseValues);
-    public RuleTemplate findByRuleTemplateId(Long ruleTemplateId);
-    public List findAll();
+    public RuleTemplate findByRuleTemplateId(String ruleTemplateId);
+    public List<RuleTemplate> findAll();
     public List findByRuleTemplate(RuleTemplate ruleTemplate);
-    public void delete(Long ruleTemplateId);
+    public void delete(String ruleTemplateId);
     
-    public void deleteRuleTemplateOption(Long ruleTemplateOptionId);
+    public void deleteRuleTemplateOption(String ruleTemplateOptionId);
 //    public void deleteRuleTemplateAttribute(Long ruleTemplateAttributeId, List ruleTemplateAttributes);
-    public RuleTemplateAttribute findByRuleTemplateAttributeId(Long ruleTemplateAttributeId);
+    public RuleTemplateAttribute findByRuleTemplateAttributeId(String ruleTemplateAttributeId);
     public RuleTemplate findByRuleTemplateName(String ruleTemplateName);
-    public Long getNextRuleTemplateId();
+    public String getNextRuleTemplateId();
     
 }

@@ -46,7 +46,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
 	@PersistenceContext(unitName="kew-unit")
 	private EntityManager entityManager;
 
-    public ActionItem findByActionItemId(Long actionItemId) {
+    public ActionItem findByActionItemId(String actionItemId) {
     	return entityManager.find(ActionItem.class, actionItemId);
     }
 
@@ -138,7 +138,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
         return removeOutBoxItems(results);
     }
 
-    public Collection<ActionItem> findByActionRequestId(Long actionRequestId) {
+    public Collection<ActionItem> findByActionRequestId(String actionRequestId) {
         Criteria crit = new Criteria(ActionItem.class.getName());
         crit.eq("actionRequestId", actionRequestId);
         List<ActionItem> results = new QueryByCriteria(entityManager, crit).toQuery().getResultList();

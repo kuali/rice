@@ -41,7 +41,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 
 	public void persistAttachedFileAndSetAttachmentBusinessObjectValue(Attachment attachment) throws Exception {
 		createStorageDirIfNecessary();
-		Long uniqueId = KEWServiceLocator.getResponsibilityIdService().getNewResponsibilityId();
+		String uniqueId = KEWServiceLocator.getResponsibilityIdService().getNewResponsibilityId();
 		String internalFileIndicator = attachment.getFileName().replace('.', '_');
 		String fileName = ATTACHMENT_PREPEND + attachment.getNote().getDocumentId() + "_" + internalFileIndicator + "_" + uniqueId;
 		File file = File.createTempFile(fileName, null, new File(attachmentDir));

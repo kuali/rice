@@ -37,7 +37,7 @@ public class AppSpecificRouteRecipient implements Serializable {
     protected String actionRequested;
     protected String id;  //can be networkId or groupId (although, currently, it's being treated as principal name or group name)
     protected String namespaceCode; // Can be a group namespace code or a person name
-    protected Long actionRequestId; // The action request ID of the AdHoc route action that was sent for this app specific recipient, if any.
+    protected String actionRequestId; // The action request ID of the AdHoc route action that was sent for this app specific recipient, if any.
 
     public String getActionRequested() {
         return actionRequested;
@@ -65,11 +65,11 @@ public class AppSpecificRouteRecipient implements Serializable {
     	this.namespaceCode = namespaceCode;
     }
 
-    public Long getActionRequestId() {
+    public String getActionRequestId() {
     	return actionRequestId;
     }
     
-    public void setActionRequestId(Long actionRequestId) {
+    public void setActionRequestId(String actionRequestId) {
     	this.actionRequestId = actionRequestId;
     }
     

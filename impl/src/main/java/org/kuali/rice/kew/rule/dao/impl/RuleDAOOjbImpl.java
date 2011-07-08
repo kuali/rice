@@ -65,7 +65,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		this.getPersistenceBrokerTemplate().store(ruleBaseValues);
 	}
 
-	public List fetchAllCurrentRulesForTemplateDocCombination(Long ruleTemplateId, List documentTypes) {
+	public List<RuleBaseValues> fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateId, List documentTypes) {
 		Criteria crit = new Criteria();
 		crit.addIn("docTypeName", documentTypes);
 		crit.addEqualTo("ruleTemplateId", ruleTemplateId);
@@ -78,7 +78,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleBaseValues.class, crit));
 	}
 
-	public List fetchAllCurrentRulesForTemplateDocCombination(Long ruleTemplateId, List documentTypes, Timestamp effectiveDate) {
+	public List<RuleBaseValues> fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateId, List documentTypes, Timestamp effectiveDate) {
 		Criteria crit = new Criteria();
 		crit.addIn("docTypeName", documentTypes);
 		crit.addEqualTo("ruleTemplateId", ruleTemplateId);
@@ -119,7 +119,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		return crit;
 	}
 
-	public List fetchAllRules(boolean currentRules) {
+	public List<RuleBaseValues> fetchAllRules(boolean currentRules) {
 		Criteria crit = new Criteria();
 		crit.addEqualTo("currentInd", new Boolean(currentRules));
 		crit.addEqualTo("templateRuleInd", Boolean.FALSE);
@@ -131,11 +131,11 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(query);
 	}
 
-	public void delete(Long ruleBaseValuesId) {
+	public void delete(String ruleBaseValuesId) {
 		this.getPersistenceBrokerTemplate().delete(findRuleBaseValuesById(ruleBaseValuesId));
 	}
 
-	public List findByDocumentId(String documentId) {
+	public List<RuleBaseValues> findByDocumentId(String documentId) {
 		Criteria crit = new Criteria();
 		crit.addEqualTo("documentId", documentId);
 		return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleBaseValues.class, crit));
@@ -148,14 +148,14 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
         return (RuleBaseValues) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(RuleBaseValues.class, crit));
     }
 
-	public RuleBaseValues findRuleBaseValuesById(Long ruleBaseValuesId) {
+	public RuleBaseValues findRuleBaseValuesById(String ruleBaseValuesId) {
 		Criteria crit = new Criteria();
 		crit.addEqualTo("ruleBaseValuesId", ruleBaseValuesId);
 		// crit.addEqualTo("currentInd", new Boolean(true));
 		return (RuleBaseValues) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(RuleBaseValues.class, crit));
 	}
 
-	public List findRuleBaseValuesByResponsibilityReviewer(String reviewerName, String type) {
+	public List<RuleBaseValues> findRuleBaseValuesByResponsibilityReviewer(String reviewerName, String type) {
 		Criteria crit = new Criteria();
 		crit.addEqualTo("ruleResponsibilityName", reviewerName);
 		crit.addEqualTo("ruleResponsibilityType", type);
@@ -173,7 +173,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		return rules;
 	}
 
-	public List findRuleBaseValuesByResponsibilityReviewerTemplateDoc(String ruleTemplateName, String documentType, String reviewerName, String type) {
+	public List<RuleBaseValues> findRuleBaseValuesByResponsibilityReviewerTemplateDoc(String ruleTemplateName, String documentType, String reviewerName, String type) {
 	    Criteria crit = new Criteria();
 		crit.addEqualTo("ruleResponsibilityName", reviewerName);
 		crit.addEqualTo("ruleResponsibilityType", type);
@@ -204,7 +204,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ruleBaseValues));
 	}
 
-	public RuleResponsibility findRuleResponsibility(Long responsibilityId) {
+	public RuleResponsibility findRuleResponsibility(String responsibilityId) {
 				
 		ReportQueryByCriteria subQuery;
 		Criteria subCrit = new Criteria();
@@ -230,7 +230,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		return null;
 	}
 
-	public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, String workgroupId, String principalId, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
+	public List<RuleBaseValues> search(String docTypeName, String ruleId, String ruleTemplateId, String ruleDescription, String workgroupId, String principalId, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
         Criteria crit = getSearchCriteria(docTypeName, ruleTemplateId, ruleDescription, delegateRule, activeInd, extensionValues);
         if (ruleId != null) {
             crit.addEqualTo("ruleBaseValuesId", ruleId);
@@ -269,7 +269,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleBaseValues.class, crit, true));
 	}
 
-    public List search(String docTypeName, Long ruleTemplateId, String ruleDescription, Collection<String> workgroupIds, String workflowId, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection actionRequestCodes) {
+    public List<RuleBaseValues> search(String docTypeName, String ruleTemplateId, String ruleDescription, Collection<String> workgroupIds, String workflowId, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection actionRequestCodes) {
     	List results = null;
         Criteria crit = getSearchCriteria(docTypeName, ruleTemplateId, ruleDescription, delegateRule, activeInd, extensionValues);
         ReportQueryByCriteria query = getResponsibilitySubQuery(workgroupIds, workflowId, actionRequestCodes, (workflowId != null), ((workgroupIds != null) && !workgroupIds.isEmpty()));
@@ -339,7 +339,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
         return query;
     }
 
-    private Criteria getSearchCriteria(String docTypeName, Long ruleTemplateId, String ruleDescription, Boolean delegateRule, Boolean activeInd, Map extensionValues) {
+    private Criteria getSearchCriteria(String docTypeName, String ruleTemplateId, String ruleDescription, Boolean delegateRule, Boolean activeInd, Map extensionValues) {
         Criteria crit = new Criteria();
         crit.addEqualTo("currentInd", Boolean.TRUE);
         crit.addEqualTo("templateRuleInd", Boolean.FALSE);
@@ -425,13 +425,13 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		return query;
 	}
 
-	public List findByPreviousVersionId(Long previousVersionId) {
+	public List<RuleBaseValues> findByPreviousVersionId(String previousVersionId) {
 		Criteria crit = new Criteria();
 		crit.addEqualTo("previousVersionId", previousVersionId);
 		return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleBaseValues.class, crit));
 	}
 
-	public RuleBaseValues findDefaultRuleByRuleTemplateId(Long ruleTemplateId) {
+	public RuleBaseValues findDefaultRuleByRuleTemplateId(String ruleTemplateId) {
 		Criteria crit = new Criteria();
 		crit.addEqualTo("ruleTemplateId", ruleTemplateId);
 		crit.addEqualTo("templateRuleInd", Boolean.TRUE);
@@ -450,7 +450,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		// getPersistenceBroker().retrieveAllReferences(rule);
 	}
 
-	public RuleBaseValues getParentRule(Long ruleBaseValuesId) {
+	public RuleBaseValues getParentRule(String ruleBaseValuesId) {
 		Criteria criteria = new Criteria();
 		criteria.addEqualTo("currentInd", Boolean.TRUE);
 		criteria.addEqualTo("responsibilities.delegationRules.delegateRuleId", ruleBaseValuesId);
@@ -473,11 +473,11 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 				ResultSet rs = null;
 				try {
 					ps = pb.serviceConnectionManager().getConnection().prepareStatement(OLD_DELEGATIONS_SQL);
-					ps.setLong(1, oldRule.getRuleBaseValuesId().longValue());
-					ps.setLong(2, newRule.getRuleBaseValuesId().longValue());
+					ps.setString(1, oldRule.getRuleBaseValuesId());
+					ps.setString(2, newRule.getRuleBaseValuesId());
 					rs = ps.executeQuery();
 					while (rs.next()) {
-						oldDelegations.add(findRuleBaseValuesById(new Long(rs.getLong(1))));
+						oldDelegations.add(findRuleBaseValuesById(rs.getString(1)));
 					}
 				} catch (Exception e) {
 					throw new WorkflowRuntimeException("error saving deactivation date", e);
@@ -502,7 +502,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		});
 	}
 	
-	public Long findResponsibilityIdForRule(String ruleName, String ruleResponsibilityName, String ruleResponsibilityType) {
+	public String findResponsibilityIdForRule(String ruleName, String ruleResponsibilityName, String ruleResponsibilityType) {
 		Criteria crit = new Criteria();
 		crit.addEqualTo("ruleResponsibilityName", ruleResponsibilityName);
 		crit.addEqualTo("ruleResponsibilityType", ruleResponsibilityType);

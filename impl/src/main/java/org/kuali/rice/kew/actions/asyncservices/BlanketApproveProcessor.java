@@ -38,11 +38,11 @@ public class BlanketApproveProcessor implements BlanketApproveProcessorService {
 	
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BlanketApproveProcessor.class);
 	
-	public void doBlanketApproveWork(String documentId, String principalId, Long actionTakenId, Set<String> nodeNames) {
+	public void doBlanketApproveWork(String documentId, String principalId, String actionTakenId, Set<String> nodeNames) {
 		doBlanketApproveWork(documentId, principalId, actionTakenId, nodeNames, false);
 	}
 
-	public void doBlanketApproveWork(String documentId, String principalId, Long actionTakenId, Set<String> nodeNames, boolean shouldSearchIndex) {
+	public void doBlanketApproveWork(String documentId, String principalId, String actionTakenId, Set<String> nodeNames, boolean shouldSearchIndex) {
 		KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
 		DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 		ActionTakenValue actionTaken = KEWServiceLocator.getActionTakenService().findByActionTakenId(actionTakenId);

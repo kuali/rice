@@ -28,13 +28,13 @@ public class StateDTO extends AbstractKeyValue {
     
 	private static final long serialVersionUID = 4787443469039295347L;
 	
-	private Long stateId;
+	private String stateId;
 
-    public Long getStateId() {
+    public String getStateId() {
 		return this.stateId;
 	}
 
-    public void setStateId(Long stateId) {
+    public void setStateId(String stateId) {
 		this.stateId = stateId;
 	}
     

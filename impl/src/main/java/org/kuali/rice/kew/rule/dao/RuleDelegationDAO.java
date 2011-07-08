@@ -25,13 +25,13 @@ import org.kuali.rice.kew.rule.RuleDelegation;
 
 public interface RuleDelegationDAO {
 
-    public List findByDelegateRuleId(Long ruleId);
+    public List<RuleDelegation> findByDelegateRuleId(String ruleId);
     public void save(RuleDelegation ruleDelegation);
-    public List findAllCurrentRuleDelegations();
-    public void delete(Long ruleDelegationId);
-    public RuleDelegation findByRuleDelegationId(Long ruleDelegationId);
-    public List<RuleDelegation> findByResponsibilityIdWithCurrentRule(Long responsibiliytId);
-    public List<RuleDelegation> search(String parentRuleBaseVaueId, String parentResponsibilityId, String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, String workgroupId, String workflowId, String delegationType, Boolean activeInd, Map extensionValues, String workflowIdDirective);
-    public List<RuleDelegation> search(String parentRuleBaseVaueId, String parentResponsibilityId, String docTypeName, Long ruleTemplateId, String ruleDescription, Collection<String> workgroupIds, String workflowId, String delegationType, Boolean activeInd, Map extensionValues, Collection actionRequestCodes);
+    public List<RuleDelegation> findAllCurrentRuleDelegations();
+    public void delete(String ruleDelegationId);
+    public RuleDelegation findByRuleDelegationId(String ruleDelegationId);
+    public List<RuleDelegation> findByResponsibilityIdWithCurrentRule(String responsibiliytId);
+    public List<RuleDelegation> search(String parentRuleBaseVaueId, String parentResponsibilityId, String docTypeName, String ruleId, String ruleTemplateId, String ruleDescription, String workgroupId, String workflowId, String delegationType, Boolean activeInd, Map extensionValues, String workflowIdDirective);
+    public List<RuleDelegation> search(String parentRuleBaseVaueId, String parentResponsibilityId, String docTypeName, String ruleTemplateId, String ruleDescription, Collection<String> workgroupIds, String workflowId, String delegationType, Boolean activeInd, Map extensionValues, Collection actionRequestCodes);
 
 }

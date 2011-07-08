@@ -45,6 +45,6 @@ public interface RouteModule {
      * @param rId ResponsibiliyId that we need resolved.
      * @return The ResponsibleParty containing a key to a user or workgroup.
      */
-    public ResponsibleParty resolveResponsibilityId(Long responsibilityId) throws WorkflowException;
+    public ResponsibleParty resolveResponsibilityId(String responsibilityId) throws WorkflowException;
 
 }

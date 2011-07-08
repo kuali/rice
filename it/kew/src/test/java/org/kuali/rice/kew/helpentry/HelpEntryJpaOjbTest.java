@@ -80,9 +80,9 @@ public class HelpEntryJpaOjbTest extends KEWTestCase {
  	private String ksArray[] = {KEY_PATTERN1, KEY_PATTERN2, KEY_PATTERN3, KEY_PATTERN4, KEY_PATTERN5, KEY_PATTERN6, KEY_PATTERN7};
  	private String tsArray[] = {TEXT_PATTERN1, TEXT_PATTERN2, TEXT_PATTERN3, TEXT_PATTERN4, TEXT_PATTERN5, TEXT_PATTERN6, TEXT_PATTERN7};
  	private String csArray[] = {COMBO_PATTERN1, COMBO_PATTERN2, COMBO_PATTERN3};
-	private Long idForJpa;
-	private Long idForOjb;
-	private static Long NON_EXISTENT_ID = 999999999l;
+	private String idForJpa;
+	private String idForOjb;
+	private static String NON_EXISTENT_ID = "999999999";
 
 	private HelpDAO jpaDao;
 	private HelpDAO ojbDao;

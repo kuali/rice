@@ -78,7 +78,7 @@ public class SearchableAttributeLongValue implements SearchableAttributeValue, S
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="DOC_HDR_EXT_LONG_ID")
-	private Long searchableAttributeValueId;
+	private String searchableAttributeValueId;
     @Column(name="KEY_CD")
 	private String searchableAttributeKey;
     @Column(name="VAL")
@@ -274,11 +274,11 @@ public class SearchableAttributeLongValue implements SearchableAttributeValue, S
         this.searchableAttributeValue = searchableAttributeValue;
     }
 
-    public Long getSearchableAttributeValueId() {
+    public String getSearchableAttributeValueId() {
         return searchableAttributeValueId;
     }
 
-    public void setSearchableAttributeValueId(Long searchableAttributeValueId) {
+    public void setSearchableAttributeValueId(String searchableAttributeValueId) {
         this.searchableAttributeValueId = searchableAttributeValueId;
     }
 

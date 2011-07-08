@@ -57,15 +57,15 @@ public class RuleAttributeDAOJpaImpl implements RuleAttributeDAO {
         }
     }
 
-    public void delete(Long ruleAttributeId) {
+    public void delete(String ruleAttributeId) {
         entityManager.remove(findByRuleAttributeId(ruleAttributeId));
     }
 
-    public RuleAttribute findByRuleAttributeId(Long ruleAttributeId) {
+    public RuleAttribute findByRuleAttributeId(String ruleAttributeId) {
         return (RuleAttribute) entityManager.createNamedQuery("RuleAttribute.FindById").setParameter("ruleAttributeId", ruleAttributeId).getSingleResult();
     }
 
-    public List findByRuleAttribute(RuleAttribute ruleAttribute) {
+    public List<RuleAttribute> findByRuleAttribute(RuleAttribute ruleAttribute) {
         Criteria crit = new Criteria("RuleAttribute", "ra");
 
         if (ruleAttribute.getName() != null) {
@@ -82,7 +82,7 @@ public class RuleAttributeDAOJpaImpl implements RuleAttributeDAO {
 
     }
 
-    public List getAllRuleAttributes() {
+    public List<RuleAttribute> getAllRuleAttributes() {
         return  entityManager.createNamedQuery("RuleAttribute.GetAllRuleAttributes").getResultList();
     }
 

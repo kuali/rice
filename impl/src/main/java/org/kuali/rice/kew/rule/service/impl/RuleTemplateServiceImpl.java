@@ -79,7 +79,7 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
 //        getRuleTemplateAttributeDAO().delete(ruleTemplateAttributeId);
 //    }
 
-    public void deleteRuleTemplateOption(Long ruleTemplateOptionId) {
+    public void deleteRuleTemplateOption(String ruleTemplateOptionId) {
         getRuleTemplateOptionDAO().delete(ruleTemplateOptionId);
     }
 
@@ -92,11 +92,11 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
      *
      * @see org.kuali.rice.kew.rule.RuleTemplateAttributeService#findByRuleTemplateAttributeId(java.lang.Long)
      */
-    public RuleTemplateAttribute findByRuleTemplateAttributeId(Long ruleTemplateAttributeId) {
+    public RuleTemplateAttribute findByRuleTemplateAttributeId(String ruleTemplateAttributeId) {
         return getRuleTemplateAttributeDAO().findByRuleTemplateAttributeId(ruleTemplateAttributeId);
     }
 
-    public List findAll() {
+    public List<RuleTemplate> findAll() {
         return ruleTemplateDAO.findAll();
     }
 
@@ -209,12 +209,12 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
         }
     }
 
-    public RuleTemplate findByRuleTemplateId(Long ruleTemplateId) {
+    public RuleTemplate findByRuleTemplateId(String ruleTemplateId) {
         LOG.debug("findByRuleTemplateId RuleTemplateServiceImpl");
         return getRuleTemplateDAO().findByRuleTemplateId(ruleTemplateId);
     }
 
-    public void delete(Long ruleTemplateId) {
+    public void delete(String ruleTemplateId) {
         LOG.debug("delete RuleTemplateServiceImpl");
         getRuleTemplateDAO().delete(ruleTemplateId);
         LOG.debug("end delete RuleTemplateServiceImpl");
@@ -296,7 +296,7 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
 		return true;
 	}
 
-    public Long getNextRuleTemplateId() {
+    public String getNextRuleTemplateId() {
         return getRuleTemplateDAO().getNextRuleTemplateId();
     }
 

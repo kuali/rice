@@ -48,7 +48,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 	private static final Logger LOG = Logger.getLogger(ActionItemDAOOjbImpl.class);
 
 	
-    public ActionItem findByActionItemId(Long actionItemId) {
+    public ActionItem findByActionItemId(String actionItemId) {
         Criteria crit = new Criteria();
         crit.addEqualTo("actionItemId", actionItemId);
         return (ActionItem) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(ActionItem.class, crit));
@@ -90,7 +90,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         return this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionItem.class, crit));
     }
 
-    public Collection<ActionItem> findByActionRequestId(Long actionRequestId) {
+    public Collection<ActionItem> findByActionRequestId(String actionRequestId) {
         Criteria crit = new Criteria();
         crit.addEqualTo("actionRequestId", actionRequestId);
         return this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionItem.class, crit));

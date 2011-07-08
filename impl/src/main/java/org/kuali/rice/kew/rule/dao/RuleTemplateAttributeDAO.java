@@ -21,7 +21,8 @@ import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 
 public interface RuleTemplateAttributeDAO {
 
-//  public void delete(Long ruleTemplateAttributeId);
-  public RuleTemplateAttribute findByRuleTemplateAttributeId(Long ruleTemplateAttributeId);
-  public void save(RuleTemplateAttribute ruleTemplateAttribute);
+	//  public void delete(Long ruleTemplateAttributeId);
+	public RuleTemplateAttribute findByRuleTemplateAttributeId(String ruleTemplateAttributeId);
+	public void save(RuleTemplateAttribute ruleTemplateAttribute);
+	
 }

@@ -189,7 +189,7 @@ public class DTOConverterTest extends KEWTestCase {
         String workflowId = KimApiServiceLocator.getGroupService().getDirectMemberPrincipalIds(testWorkgroup.getId()).get(0);
         assertNotNull("User from workgroup should not be null", workflowId);
         String actionRequestCd = KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ;
-        Long actionRequestId = Long.valueOf(4);
+        String actionRequestId = "4";
         String docName = "dummy";
         String roleName = "fakeRole";
         String documentId = "23";
@@ -197,7 +197,7 @@ public class DTOConverterTest extends KEWTestCase {
         String docHandlerUrl = "http://this.is.not.us";
         String docTypeLabel = "Label Me";
         String docTitle = "Title me";
-        Long responsibilityId = Long.valueOf(35);
+        String responsibilityId = "35";
         String delegationType = DelegationType.PRIMARY.getCode();
 
         // create fake action item

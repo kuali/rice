@@ -64,7 +64,7 @@ public class RuleDelegationServiceImpl implements RuleDelegationService {
 	
     private RuleDelegationDAO dao;
 
-    public List findByDelegateRuleId(Long ruleId) {
+    public List<RuleDelegation> findByDelegateRuleId(String ruleId) {
         if (ruleId == null) return Collections.EMPTY_LIST;
         return dao.findByDelegateRuleId(ruleId);
     }
@@ -76,29 +76,29 @@ public class RuleDelegationServiceImpl implements RuleDelegationService {
     public void setRuleDelegationDAO(RuleDelegationDAO dao) {
         this.dao = dao;
     }
-    public List findAllCurrentRuleDelegations(){
+    public List<RuleDelegation> findAllCurrentRuleDelegations(){
         return dao.findAllCurrentRuleDelegations();
     }
-    public void delete(Long ruleDelegationId){
+    public void delete(String ruleDelegationId){
         dao.delete(ruleDelegationId);
     }
 
-    public RuleDelegation findByRuleDelegationId(Long ruleDelegationId){
+    public RuleDelegation findByRuleDelegationId(String ruleDelegationId){
         return dao.findByRuleDelegationId(ruleDelegationId);
     }
 
-    public List<RuleDelegation> findByResponsibilityId(Long responsibilityId) {
+    public List<RuleDelegation> findByResponsibilityId(String responsibilityId) {
     	//return dao.findByResponsibilityIdWithCurrentRule(responsibilityId);
     	return findByResponsibilityId(responsibilityId, false);
     }
 
-    public List<RuleDelegation> search(String parentRuleBaseVaueId, String parentResponsibilityId,  String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, String groupId, String principalId,
+    public List<RuleDelegation> search(String parentRuleBaseVaueId, String parentResponsibilityId,  String docTypeName, String ruleId, String ruleTemplateId, String ruleDescription, String groupId, String principalId,
             String delegationType, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
         return dao.search(parentRuleBaseVaueId, parentResponsibilityId, docTypeName, ruleId, ruleTemplateId, ruleDescription, groupId, principalId, delegationType,
                 activeInd, extensionValues, workflowIdDirective);
     }
 
-    public List<RuleDelegation> search(String parentRuleBaseVaueId, String parentResponsibilityId,  String docTypeName, String ruleTemplateName, String ruleDescription, String groupId, String principalId,
+    public List<RuleDelegation> searchByTemplate(String parentRuleBaseVaueId, String parentResponsibilityId,  String docTypeName, String ruleTemplateName, String ruleDescription, String groupId, String principalId,
             Boolean workgroupMember, String delegationType, Boolean activeInd, Map extensionValues, Collection<String> actionRequestCodes) {
 
         if ( (StringUtils.isEmpty(docTypeName)) &&
@@ -113,7 +113,7 @@ public class RuleDelegationServiceImpl implements RuleDelegationService {
         }
 
         RuleTemplate ruleTemplate = getRuleTemplateService().findByRuleTemplateName(ruleTemplateName);
-        Long ruleTemplateId = null;
+        String ruleTemplateId = null;
         if (ruleTemplate != null) {
             ruleTemplateId = ruleTemplate.getRuleTemplateId();
         }
@@ -176,7 +176,7 @@ public class RuleDelegationServiceImpl implements RuleDelegationService {
     
 
     
-    public List findByResponsibilityId(Long responsibilityId, boolean ignoreCache) {
+    public List findByResponsibilityId(String responsibilityId, boolean ignoreCache) {
     	if ( responsibilityId != null ) {
     		PerformanceLogger performanceLogger = new PerformanceLogger();
     		Boolean cachingRules = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_DLGN_CACHE_IND);
@@ -201,7 +201,7 @@ public class RuleDelegationServiceImpl implements RuleDelegationService {
     	}
     }
     
-    protected void putListInCache(Long responsibilityId, List<RuleDelegation> rules) {
+    protected void putListInCache(String responsibilityId, List<RuleDelegation> rules) {
     	String responsibilityIdStr = responsibilityId.toString();
         LOG.info("Caching " + rules.size() + " rules for responsibilityId=" + responsibilityIdStr );
 
@@ -209,7 +209,7 @@ public class RuleDelegationServiceImpl implements RuleDelegationService {
 
     }
     
-    protected List<RuleDelegation> getListFromCache(Long responsibilityId) {
+    protected List<RuleDelegation> getListFromCache(String responsibilityId) {
     	String responsibilityIdStr = responsibilityId.toString();
         LOG.debug("Retrieving List of Delegation Rules from cache for responsibilityId = " + responsibilityIdStr );
         return (List) KsbApiServiceLocator.getCacheAdministrator().getFromCache(getRuleDlgnCacheKey(responsibilityIdStr));

@@ -33,7 +33,7 @@ public class NoteDAOJpaImpl implements NoteDAO {
 	@PersistenceContext(unitName="kew-unit")
 	EntityManager entityManager;
 	
-    public Note getNoteByNoteId(Long noteId) {
+    public Note getNoteByNoteId(String noteId) {
     	Query query = entityManager.createNamedQuery("KewNote.FindNoteByNoteId");
     	query.setParameter("noteId", noteId);
         return (Note) query.getSingleResult();          
@@ -65,7 +65,7 @@ public class NoteDAOJpaImpl implements NoteDAO {
     }
 
 	
-    public Attachment findAttachment(Long attachmentId) {
+    public Attachment findAttachment(String attachmentId) {
     	Query query = entityManager.createNamedQuery("Attachment.FindAttachmentById");
     	query.setParameter("attachmentId", attachmentId);
     	return (Attachment)query.getSingleResult();

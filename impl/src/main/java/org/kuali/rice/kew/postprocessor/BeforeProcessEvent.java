@@ -24,16 +24,16 @@ public class BeforeProcessEvent implements IDocumentEvent {
 
 	private static final long serialVersionUID = 2945081851810845704L;
 	private String documentId;
-	private Long nodeInstanceId;
+	private String nodeInstanceId;
 	private String appDocId;
 
-	public BeforeProcessEvent(String documentId, String appDocId, Long nodeInstanceId) {
+	public BeforeProcessEvent(String documentId, String appDocId, String nodeInstanceId) {
 		this.documentId = documentId;
 		this.appDocId = appDocId;
 		this.nodeInstanceId = nodeInstanceId;
 	}
 	
-	public Long getNodeInstanceId() {
+	public String getNodeInstanceId() {
 	    return nodeInstanceId;
 	}
 

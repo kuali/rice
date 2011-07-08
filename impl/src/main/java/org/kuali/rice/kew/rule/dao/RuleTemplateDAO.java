@@ -24,11 +24,11 @@ import org.kuali.rice.kew.rule.bo.RuleTemplate;
 public interface RuleTemplateDAO {
 
     public void save(RuleTemplate ruleTemplate);
-    public List findByRuleTemplate(RuleTemplate ruleTemplate);
-    public List findAll();
-    public RuleTemplate findByRuleTemplateId(Long ruleTemplateId);
-    public void delete(Long ruleTemplateId);
+    public List<RuleTemplate> findByRuleTemplate(RuleTemplate ruleTemplate);
+    public List<RuleTemplate> findAll();
+    public RuleTemplate findByRuleTemplateId(String ruleTemplateId);
+    public void delete(String ruleTemplateId);
     public RuleTemplate findByRuleTemplateName(String ruleTemplateName);
-    public Long getNextRuleTemplateId();
+    public String getNextRuleTemplateId();
     
 }

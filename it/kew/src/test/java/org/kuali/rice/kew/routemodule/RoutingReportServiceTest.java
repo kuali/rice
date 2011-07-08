@@ -59,7 +59,7 @@ public class RoutingReportServiceTest extends KEWTestCase {
         Collection activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getDocumentId());
         List requests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByDocumentId(document.getDocumentId());
         assertEquals("Should be one active node.", 1, activeNodeInstances.size());
-        Long activeNodeId = ((RouteNodeInstance)activeNodeInstances.iterator().next()).getRouteNodeInstanceId();
+        String activeNodeId = ((RouteNodeInstance)activeNodeInstances.iterator().next()).getRouteNodeInstanceId();
         assertEquals("Should be 2 pending requests.", 2, requests.size());
         
         // now, lets "get our report on", the WorkflowInfo.routingReport method will call the service's report method.

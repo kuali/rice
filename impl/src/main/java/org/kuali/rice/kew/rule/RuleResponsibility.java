@@ -63,9 +63,9 @@ public class RuleResponsibility extends PersistableBusinessObjectBase {
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="RULE_RSP_ID")
-	private Long ruleResponsibilityKey;
+	private String ruleResponsibilityKey;
     @Column(name="RSP_ID")
-	private Long responsibilityId;
+	private String responsibilityId;
     @Column(name="RULE_ID", insertable=false, updatable=false)
     private Long ruleBaseValuesId;
     @Column(name="ACTN_RQST_CD")
@@ -163,11 +163,11 @@ public class RuleResponsibility extends PersistableBusinessObjectBase {
         this.actionRequestedCd = actionRequestedCd;
     }
 
-    public Long getRuleResponsibilityKey() {
+    public String getRuleResponsibilityKey() {
         return ruleResponsibilityKey;
     }
 
-    public void setRuleResponsibilityKey(Long ruleResponsibilityId) {
+    public void setRuleResponsibilityKey(String ruleResponsibilityId) {
         this.ruleResponsibilityKey = ruleResponsibilityId;
     }
     public Integer getPriority() {
@@ -237,10 +237,10 @@ public class RuleResponsibility extends PersistableBusinessObjectBase {
         this.ruleResponsibilityType = ruleResponsibilityType;
     }
 
-    public Long getResponsibilityId() {
+    public String getResponsibilityId() {
         return responsibilityId;
     }
-    public void setResponsibilityId(Long responsibilityId) {
+    public void setResponsibilityId(String responsibilityId) {
         this.responsibilityId = responsibilityId;
     }
     

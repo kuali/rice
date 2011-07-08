@@ -29,10 +29,10 @@ import java.io.Serializable;
 public class ActionInvocation implements Serializable {
 
 	private static final long serialVersionUID = -3828610998370758705L;
-	private final Long actionItemId;
+	private final String actionItemId;
 	private final String actionCode;
 	
-	public ActionInvocation(Long actionItemId, String actionCode) {
+	public ActionInvocation(String actionItemId, String actionCode) {
 		if (actionItemId == null) {
 			throw new IllegalArgumentException("Action Item Id cannot be null.");
 		}
@@ -47,7 +47,7 @@ public class ActionInvocation implements Serializable {
 		return actionCode;
 	}
 	
-	public Long getActionItemId() {
+	public String getActionItemId() {
 		return actionItemId;
 	}
 		

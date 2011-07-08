@@ -44,7 +44,7 @@ public abstract class State extends PersistableBusinessObjectBase implements Key
 			@Parameter(name="sequence_name",value="KREW_RTE_NODE_S"),
 			@Parameter(name="value_column",value="id")
 	})
-	protected Long stateId;
+	protected String stateId;
 	private String key;
     private String value;
 
@@ -60,11 +60,11 @@ public abstract class State extends PersistableBusinessObjectBase implements Key
         OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
     }
 
-    public Long getStateId() {
+    public String getStateId() {
         return stateId;
     }
 
-    public void setStateId(Long stateId) {
+    public void setStateId(String stateId) {
         this.stateId = stateId;
     }
     

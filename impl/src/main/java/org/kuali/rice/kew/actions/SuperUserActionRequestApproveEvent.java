@@ -55,14 +55,14 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
     private static final String UNDEFINED_ACTION_TAKEN_CODE = null;
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SuperUserActionRequestApproveEvent.class);
-    private Long actionRequestId;
+    private String actionRequestId;
 
     public SuperUserActionRequestApproveEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
         super(UNDEFINED_ACTION_TAKEN_CODE, routeHeader, principal);
         this.superUserAction = KEWConstants.SUPER_USER_ACTION_REQUEST_APPROVE;
     }
 
-    public SuperUserActionRequestApproveEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, Long actionRequestId, String annotation, boolean runPostProcessor) {
+    public SuperUserActionRequestApproveEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String actionRequestId, String annotation, boolean runPostProcessor) {
         super(UNDEFINED_ACTION_TAKEN_CODE, routeHeader, principal, annotation, runPostProcessor);
         this.superUserAction = KEWConstants.SUPER_USER_ACTION_REQUEST_APPROVE;
         this.actionRequestId = actionRequestId;

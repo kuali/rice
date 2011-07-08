@@ -233,8 +233,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
             	RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
             	// mark the node instance as having been revoked
             	KEWServiceLocator.getRouteNodeService().revokeNodeInstance(getRouteHeader(), nodeInstance);
-                Long nodeInstanceId = nodeInstance.getRouteNodeInstanceId();
-                List nodeRequests = getActionRequestService().findRootRequestsByDocIdAtRouteNode(getRouteHeader().getDocumentId(), nodeInstanceId);
+                List nodeRequests = getActionRequestService().findRootRequestsByDocIdAtRouteNode(getRouteHeader().getDocumentId(), nodeInstance.getRouteNodeInstanceId());
                 for (Iterator requestIt = nodeRequests.iterator(); requestIt.hasNext();) {
                     ActionRequestValue request = (ActionRequestValue) requestIt.next();
                     if (request.isDone()) {

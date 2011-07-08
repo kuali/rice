@@ -57,7 +57,7 @@ public class RouteNodeConfigParam extends PersistableBusinessObjectBase implemen
 			@Parameter(name="value_column",value="id")
 	})
     //@SequenceGenerator(name="KREW_RTE_NODE_CFG_PARM_SEQ_GEN", sequenceName="KREW_RTE_NODE_CFG_PARM_S")	
-	private Long id;
+	private String id;
 	private String key;
     private String value;
     /**
@@ -80,15 +80,12 @@ public class RouteNodeConfigParam extends PersistableBusinessObjectBase implemen
      */
     @Override
     public String getId() {
-        if (this.id == null) {
-            return null;
-        }
-        return this.id.toString();
+		return this.id;
     }
     /**
      * @param id the id to set
      */
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
     /**

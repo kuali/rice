@@ -28,23 +28,23 @@ import org.kuali.rice.kew.rule.RuleResponsibility;
 public interface RuleDAO {
 
     public void save(RuleBaseValues ruleBaseValues);
-    public void delete(Long ruleBaseValuesId);
+    public void delete(String ruleBaseValuesId);
     public RuleBaseValues findRuleBaseValuesByName(String name);
-    public RuleBaseValues findRuleBaseValuesById(Long ruleBaseValuesId);
-    public RuleResponsibility findRuleResponsibility(Long responsibilityId);
-    public List fetchAllRules(boolean currentRules);
-    public List fetchAllCurrentRulesForTemplateDocCombination(Long ruleTemplateId, List documentTypes);
-    public List fetchAllCurrentRulesForTemplateDocCombination(Long ruleTemplateId, List documentTypes, Timestamp effectiveDate);
-    public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, String workgroupId, String workflowId, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective);
-    public List search(String docTypeName, Long ruleTemplateId, String ruleDescription, Collection<String> workgroupIds, String workflowId, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection actionRequestCodes);
-    public List findByDocumentId(String documentId);
-    public List findRuleBaseValuesByResponsibilityReviewer(String reviewerName, String type);
-    public List findRuleBaseValuesByResponsibilityReviewerTemplateDoc(String ruleTemplateName, String documentType, String reviewerName, String type);
-    public List findByPreviousVersionId(Long previousVersionId);
+    public RuleBaseValues findRuleBaseValuesById(String ruleBaseValuesId);
+    public RuleResponsibility findRuleResponsibility(String responsibilityId);
+    public List<RuleBaseValues> fetchAllRules(boolean currentRules);
+    public List<RuleBaseValues> fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateId, List documentTypes);
+    public List<RuleBaseValues> fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateId, List documentTypes, Timestamp effectiveDate);
+    public List<RuleBaseValues> search(String docTypeName, String ruleId, String ruleTemplateId, String ruleDescription, String workgroupId, String workflowId, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective);
+    public List<RuleBaseValues> search(String docTypeName, String ruleTemplateId, String ruleDescription, Collection<String> workgroupIds, String workflowId, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection actionRequestCodes);
+    public List<RuleBaseValues> findByDocumentId(String documentId);
+    public List<RuleBaseValues> findRuleBaseValuesByResponsibilityReviewer(String reviewerName, String type);
+    public List<RuleBaseValues> findRuleBaseValuesByResponsibilityReviewerTemplateDoc(String ruleTemplateName, String documentType, String reviewerName, String type);
+    public List<RuleBaseValues> findByPreviousVersionId(String previousVersionId);
     public void clearCache();
     public void retrieveAllReferences(RuleBaseValues rule);
-    public RuleBaseValues findDefaultRuleByRuleTemplateId(Long ruleTemplateId);
-    public RuleBaseValues getParentRule(Long ruleBaseValuesId);
+    public RuleBaseValues findDefaultRuleByRuleTemplateId(String ruleTemplateId);
+    public RuleBaseValues getParentRule(String ruleBaseValuesId);
     public List findOldDelegations(RuleBaseValues oldRule, RuleBaseValues newRule);
-    public Long findResponsibilityIdForRule(String ruleName, String ruleResponsibilityName, String ruleResponsibilityType);
+    public String findResponsibilityIdForRule(String ruleName, String ruleResponsibilityName, String ruleResponsibilityType);
 }

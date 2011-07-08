@@ -47,22 +47,22 @@ public class MockRuleServiceImpl implements RuleService {
     Map responsibilitiesByReviewer = new HashMap();
     Map rulesByDocumentId = new HashMap();
 
-    public RuleBaseValues getParentRule(Long ruleBaseValuesId) {
+    public RuleBaseValues getParentRule(String ruleBaseValuesId) {
         return null;
     }
     public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType, boolean ignoreCache) {
         return null;
     }
-    public String isLockedForRouting(Long currentRuleBaseValuesId) {
+    public String isLockedForRouting(String currentRuleBaseValuesId) {
         return null;
     }
     public String routeRuleWithDelegate(String documentId, RuleBaseValues parentRule, RuleBaseValues delegateRule, PrincipalContract principal, String annotation, boolean blanketApprove) throws Exception {
         return null;
     }
-    public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, String workgroupId, String principalId, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
+    public List<RuleBaseValues> search(String docTypeName, String ruleId, String ruleTemplateId, String ruleDescription, String workgroupId, String principalId, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
         return null;
     }
-    public List search(String docTypeName, String ruleTemplateName, String ruleDescription, String groupId, String principalId, Boolean workgroupMember, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection<String> actionRequestCodes) {
+    public List<RuleBaseValues> searchByTemplate(String docTypeName, String ruleTemplateName, String ruleDescription, String groupId, String principalId, Boolean workgroupMember, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection<String> actionRequestCodes) {
         return null;
     }
     public void notifyCacheOfRuleChange(RuleBaseValues rule, DocumentType documentType) {
@@ -108,7 +108,7 @@ public class MockRuleServiceImpl implements RuleService {
         }
     }
 
-    public void delete(Long ruleBaseValuesId) {
+    public void delete(String ruleBaseValuesId) {
         throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
     }
 
@@ -116,7 +116,7 @@ public class MockRuleServiceImpl implements RuleService {
         return null;
     }
 
-    public RuleBaseValues findRuleBaseValuesById(Long ruleBaseValuesId) {
+    public RuleBaseValues findRuleBaseValuesById(String ruleBaseValuesId) {
         return (RuleBaseValues) rules.get(ruleBaseValuesId);
     }
 
@@ -124,15 +124,15 @@ public class MockRuleServiceImpl implements RuleService {
         throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
     }
 
-    public RuleResponsibility findRuleResponsibility(Long responsibilityId) {
+    public RuleResponsibility findRuleResponsibility(String responsibilityId) {
         return (RuleResponsibility) responsibilitiesById.get(responsibilityId);
     }
 
-    public void deleteRuleResponsibilityById(Long ruleResponsibilityId) {
+    public void deleteRuleResponsibilityById(String ruleResponsibilityId) {
         throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
     }
 
-    public RuleResponsibility findByRuleResponsibilityId(Long ruleResponsibilityId) {
+    public RuleResponsibility findByRuleResponsibilityId(String ruleResponsibilityId) {
         return (RuleResponsibility) responsibilitiesByKey.get(ruleResponsibilityId);
     }
 
@@ -148,7 +148,7 @@ public class MockRuleServiceImpl implements RuleService {
         return ruleBaseValues;
     }
 
-    public List findByDocumentId(String documentId) {
+    public List<RuleBaseValues> findByDocumentId(String documentId) {
         return (List) rulesByDocumentId.get(documentId);
     }
 
@@ -190,7 +190,7 @@ public class MockRuleServiceImpl implements RuleService {
     public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType, Timestamp effectiveDate) {
         return null;
     }
-	public RuleBaseValues findDefaultRuleByRuleTemplateId(Long ruleTemplateId) {
+	public RuleBaseValues findDefaultRuleByRuleTemplateId(String ruleTemplateId) {
 		return null;
 	}
 
@@ -222,10 +222,10 @@ public class MockRuleServiceImpl implements RuleService {
 	public List findRuleBaseValuesByResponsibilityReviewerTemplateDoc(String ruleTemplateName, String documentType, String reviewerName, String type) {
 	    throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
 	}
-	public Long getDuplicateRuleId(RuleBaseValues rule) {
+	public String getDuplicateRuleId(RuleBaseValues rule) {
 		throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
 	}
-	public Long findResponsibilityIdForRule(String ruleName,
+	public String findResponsibilityIdForRule(String ruleName,
 			String ruleResponsibilityName, String ruleResponsibilityType) {
 		throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
 	}

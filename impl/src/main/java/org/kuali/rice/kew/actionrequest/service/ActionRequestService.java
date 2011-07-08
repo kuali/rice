@@ -57,7 +57,7 @@ public interface ActionRequestService {
 
     public List findAllValidRequests(String principalId, Collection actionRequests, String requestCode);
 
-    public List findPendingByDoc(String documentId);
+    public List<ActionRequestValue> findPendingByDoc(String documentId);
 
     public void saveActionRequest(ActionRequestValue actionRequest);
 
@@ -77,23 +77,23 @@ public interface ActionRequestService {
 
     public List activateRequestNoNotification(ActionRequestValue actionRequest, ActivationContext activationContext);
 
-    public ActionRequestValue findByActionRequestId(Long actionRequestId);
+    public ActionRequestValue findByActionRequestId(String actionRequestId);
 
-    public List findPendingRootRequestsByDocId(String documentId);
+    public List<ActionRequestValue> findPendingRootRequestsByDocId(String documentId);
 
-    public List findPendingRootRequestsByDocIdAtRouteLevel(String documentId, Integer routeLevel);
+    public List<ActionRequestValue> findPendingRootRequestsByDocIdAtRouteLevel(String documentId, Integer routeLevel);
 
-    public List findPendingByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel);
+    public List<ActionRequestValue> findPendingByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel);
 
-    public List findPendingRootRequestsByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel);
+    public List<ActionRequestValue> findPendingRootRequestsByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel);
 
-    public List findPendingRootRequestsByDocumentType(String documentTypeId);
+    public List<ActionRequestValue> findPendingRootRequestsByDocumentType(String documentTypeId);
 
     public List<ActionRequestValue> findAllActionRequestsByDocumentId(String documentId);
     
     public List<ActionRequestValue> findAllRootActionRequestsByDocumentId(String documentId);
 
-    public List findPendingByActionRequestedAndDocId(String actionRequestedCdCd, String documentId);
+    public List<ActionRequestValue> findPendingByActionRequestedAndDocId(String actionRequestedCdCd, String documentId);
 
     /**
      *
@@ -109,11 +109,11 @@ public interface ActionRequestService {
 
     public void alterActionRequested(List actionRequests, String actionRequestCd);
 
-    public List findByDocumentIdIgnoreCurrentInd(String documentId);
+    public List<ActionRequestValue> findByDocumentIdIgnoreCurrentInd(String documentId);
 
     public List findActivatedByGroup(String groupId);
 
-    public void updateActionRequestsForResponsibilityChange(Set<Long> responsibilityIds);
+    public void updateActionRequestsForResponsibilityChange(Set<String> responsibilityIds);
 
     public ActionRequestValue getRoot(ActionRequestValue actionRequest);
 
@@ -121,7 +121,7 @@ public interface ActionRequestService {
 
     public boolean isDuplicateRequest(ActionRequestValue actionRequest);
 
-    public List findPendingByDocRequestCdRouteLevel(String documentId, String requestCode, Integer routeLevel);
+    public List<ActionRequestValue> findPendingByDocRequestCdRouteLevel(String documentId, String requestCode, Integer routeLevel);
 
     public List findPendingByDocRequestCdNodeName(String documentId, String requestCode, String nodeName);
     
@@ -157,13 +157,13 @@ public interface ActionRequestService {
 
     public void deleteByDocumentId(String documentId);
 
-    public void deleteByActionRequestId(Long actionRequestId);
+    public void deleteByActionRequestId(String actionRequestId);
 
     public void validateActionRequest(ActionRequestValue actionRequest);
 
-    public List<ActionRequestValue> findPendingRootRequestsByDocIdAtRouteNode(String documentId, Long nodeInstanceId);
+    public List<ActionRequestValue> findPendingRootRequestsByDocIdAtRouteNode(String documentId, String nodeInstanceId);
 
-    public List findRootRequestsByDocIdAtRouteNode(String documentId, Long nodeInstanceId);
+    public List<ActionRequestValue> findRootRequestsByDocIdAtRouteNode(String documentId, String nodeInstanceId);
 
     public List getDelegateRequests(ActionRequestValue actionRequest);
 

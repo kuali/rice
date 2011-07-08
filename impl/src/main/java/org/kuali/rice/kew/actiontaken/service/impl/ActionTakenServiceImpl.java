@@ -46,11 +46,11 @@ public class ActionTakenServiceImpl implements ActionTakenService {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionTakenServiceImpl.class);
     private ActionTakenDAO actionTakenDAO;
 
-    public ActionTakenValue load(Long id) {
+    public ActionTakenValue load(String id) {
         return getActionTakenDAO().load(id);
     }
 
-    public ActionTakenValue findByActionTakenId(Long actionTakenId) {
+    public ActionTakenValue findByActionTakenId(String actionTakenId) {
         return getActionTakenDAO().findByActionTakenId(actionTakenId);
     }
 

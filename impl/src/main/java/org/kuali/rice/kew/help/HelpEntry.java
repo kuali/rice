@@ -49,7 +49,7 @@ public class HelpEntry {
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="HLP_ID")
-	private Long helpId;
+	private String helpId;
 	@Column(name="NM")
 	private String helpName;
 	@Column(name="HLP_TXT")
@@ -60,10 +60,10 @@ public class HelpEntry {
 	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
 	
-    public Long getHelpId() {
+    public String getHelpId() {
         return helpId;
     }
-    public void setHelpId(Long helpId) {
+    public void setHelpId(String helpId) {
         this.helpId = helpId;
     }
     public String getHelpName() {

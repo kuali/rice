@@ -66,7 +66,7 @@ public interface ActionListService {
 
     public void validateActionItem(ActionItem actionItem);
 
-    public ActionItem findByActionItemId(Long actionItemId);
+    public ActionItem findByActionItemId(String actionItemId);
 
     /**
      * Retrieves the number of Action List items in the given user's primary Action List (does not include secondary delegations)
@@ -75,7 +75,7 @@ public interface ActionListService {
 
     public void saveRefreshUserOption(String principalId);
 
-    public Collection<ActionItem> findByActionRequestId(Long actionRequestId);
+    public Collection<ActionItem> findByActionRequestId(String actionRequestId);
     
     /**
      *

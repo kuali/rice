@@ -18,7 +18,9 @@ package org.kuali.rice.kew.impl.document;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.jws.WebParam;
 
@@ -192,27 +194,38 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		//going conservative for now.  if the doc isn't enroute or exception nothing will be returned.
 		if (document.isEnroute() || document.isInException()) {
 
-			List<org.kuali.rice.kew.engine.node.RouteNodeInstance> activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document);
-			long largetActivatedNodeId = 0;
-			for (org.kuali.rice.kew.engine.node.RouteNodeInstance routeNodeInstance : activeNodeInstances) {
-				if (routeNodeInstance.getRouteNode().getRouteNodeId().longValue() > largetActivatedNodeId) {
-					largetActivatedNodeId = routeNodeInstance.getRouteNode().getRouteNodeId().longValue();
-				}
-			}
-
-			List<org.kuali.rice.kew.engine.node.RouteNodeInstance> routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodeInstances(document, false);
-			List<String> nodeNames = new ArrayList<String>();
-
-			for (org.kuali.rice.kew.engine.node.RouteNodeInstance routeNode : routeNodes) {
-				if (routeNode.isComplete() && !nodeNames.contains(routeNode.getName())) {
-					//if the prototype of the nodeInstance we're analyzing is less than the largest id of all our active prototypes
-					//then add it to the list.  This is an attempt to account for return to previous hitting a single node multiple times
-					if (routeNode.getRouteNode().getRouteNodeId().longValue() < largetActivatedNodeId) {
-						nodeNames.add(routeNode.getName());
+			// TODO: KULRICE-5329 verify that the rewrite of the numeric logic below is reasonable -- I'm guessing it's not -- this one's a fairly radical change since I had to throw
+			// away the whole premise of using the longValue of the id as a strategy, so I think I'm massively oversimplifying the original goal of the logic
+			List<org.kuali.rice.kew.engine.node.RouteNodeInstance> routeNodeInstances = KEWServiceLocator.getRouteNodeService().getFlattenedNodeInstances(document, false);
+			Set<String> routeNodeNames = new LinkedHashSet<String>();
+			if (routeNodeInstances != null) {
+				for (org.kuali.rice.kew.engine.node.RouteNodeInstance routeNodeInstance : routeNodeInstances) {
+					if (routeNodeInstance.isComplete()) {
+						routeNodeNames.add(routeNodeInstance.getName());
 					}
 				}
 			}
-			return Collections.unmodifiableList(nodeNames);
+//			List<org.kuali.rice.kew.engine.node.RouteNodeInstance> activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document);
+//			long largetActivatedNodeId = 0;
+//			for (org.kuali.rice.kew.engine.node.RouteNodeInstance routeNodeInstance : activeNodeInstances) {
+//				if (routeNodeInstance.getRouteNode().getRouteNodeId().longValue() > largetActivatedNodeId) {
+//					largetActivatedNodeId = routeNodeInstance.getRouteNode().getRouteNodeId().longValue();
+//				}
+//			}
+//
+//			List<org.kuali.rice.kew.engine.node.RouteNodeInstance> routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodeInstances(document, false);
+//			List<String> nodeNames = new ArrayList<String>();
+//
+//			for (org.kuali.rice.kew.engine.node.RouteNodeInstance routeNode : routeNodes) {
+//				if (routeNode.isComplete() && !nodeNames.contains(routeNode.getName())) {
+//					//if the prototype of the nodeInstance we're analyzing is less than the largest id of all our active prototypes
+//					//then add it to the list.  This is an attempt to account for return to previous hitting a single node multiple times
+//					if (routeNode.getRouteNode().getRouteNodeId().longValue() < largetActivatedNodeId) {
+//						nodeNames.add(routeNode.getName());
+//					}
+//				}
+//			}
+			return Collections.unmodifiableList(new ArrayList<String>(routeNodeNames));
 		} else {
 			return Collections.emptyList();
 		}

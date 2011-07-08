@@ -37,8 +37,8 @@ public class DocumentRouteLevelChange implements IDocumentEvent {
   private Integer newRouteLevel;
   private String oldNodeName;
   private String newNodeName;
-  private Long oldNodeInstanceId;
-  private Long newNodeInstanceId;
+  private String oldNodeInstanceId;
+  private String newNodeInstanceId;
   
   //  this constructor is for backwards compatibility
   public DocumentRouteLevelChange(String documentId, String appDocId, Integer oldRouteLevel, Integer newRouteLevel) {
@@ -46,7 +46,7 @@ public class DocumentRouteLevelChange implements IDocumentEvent {
   }
   
   public DocumentRouteLevelChange(String documentId, String appDocId, Integer oldRouteLevel,
-    Integer newRouteLevel, String oldNodeName, String newNodeName, Long oldNodeInstanceId, Long newNodeInstanceId) {
+    Integer newRouteLevel, String oldNodeName, String newNodeName, String oldNodeInstanceId, String newNodeInstanceId) {
     this.documentId = documentId;
     this.oldRouteLevel = oldRouteLevel;
     this.newRouteLevel = newRouteLevel;
@@ -73,7 +73,7 @@ public class DocumentRouteLevelChange implements IDocumentEvent {
     return newRouteLevel;
   }
 
-  public Long getNewNodeInstanceId() {
+  public String getNewNodeInstanceId() {
 	return newNodeInstanceId;
   }
 
@@ -81,7 +81,7 @@ public class DocumentRouteLevelChange implements IDocumentEvent {
 	return newNodeName;
   }
 
-  public Long getOldNodeInstanceId() {
+  public String getOldNodeInstanceId() {
 	return oldNodeInstanceId;
   }
 

@@ -34,7 +34,7 @@ public interface HelpService extends XmlLoader, XmlExporter {
     public void save(HelpEntry helpEntry);    
     public void saveXmlEntry(HelpEntry helpEntry);
     public void delete(HelpEntry helpEntry);
-    public HelpEntry findById(Long helpId);
+    public HelpEntry findById(String helpId);
     public List search(HelpEntry helpEntry);
     public HelpEntry findByKey(String helpKey);
 }

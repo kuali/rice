@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
 import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.framework.persistence.jta.TransactionalNoValidationExceptionRollback;
@@ -86,7 +87,7 @@ public class HelpServiceImpl implements HelpService {
             helpEntry.setHelpKey(helpEntry.getHelpKey().trim());
             HelpEntry entry1=findByKey(helpEntry.getHelpKey());
             if(helpEntry.getHelpId() == null && entry1 != null){
-            	Long id=entry1.getHelpId();
+            	String id=entry1.getHelpId();
             	//LOG.debug("id of this help entry is: "+id.toString());
             	helpEntry.setHelpId(id);
                 helpEntry.setLockVerNbr(entry1.getLockVerNbr());
@@ -143,12 +144,12 @@ public class HelpServiceImpl implements HelpService {
         this.helpDAO = helpDAO;
     }
 
-    public HelpEntry findById(Long helpId){
+    public HelpEntry findById(String helpId){
         return getHelpDAO().findById(helpId);
     }
 
     public List search(HelpEntry helpEntry){
-        if(helpEntry.getHelpId() != null && helpEntry.getHelpId().longValue() == 0){
+        if(helpEntry.getHelpId() != null && StringUtils.equals(helpEntry.getHelpId(), "0")){
             GlobalVariables.getMessageMap().putError(HELP_ID_KEY, ID_INVALID);
         }
         if (GlobalVariables.getMessageMap().hasErrors()) {

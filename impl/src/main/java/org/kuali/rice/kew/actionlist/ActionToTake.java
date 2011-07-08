@@ -23,14 +23,14 @@ package org.kuali.rice.kew.actionlist;
  */
 public class ActionToTake {
 
-	private Long actionItemId;
+	private String actionItemId;
     private String actionTakenCd;
     
-    public Long getActionItemId() {
+    public String getActionItemId() {
 		return actionItemId;
 	}
 
-	public void setActionItemId(Long actionItemId) {
+	public void setActionItemId(String actionItemId) {
 		this.actionItemId = actionItemId;
 	}
 

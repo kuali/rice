@@ -29,7 +29,7 @@ public class RuleTemplateOptionDAOOjbImpl extends PersistenceBrokerDaoSupport im
    * (non-Javadoc)
    * @see org.kuali.rice.kew.rule.dao.RuleTemplateOptionDAO#delete(java.lang.Long)
    */
-  public void delete(Long ruleTemplateOptionId) {
+  public void delete(String ruleTemplateOptionId) {
 	  this.getPersistenceBrokerTemplate().delete(findByRuleTemplateOptionId(ruleTemplateOptionId));
   }
 
@@ -37,7 +37,7 @@ public class RuleTemplateOptionDAOOjbImpl extends PersistenceBrokerDaoSupport im
    * (non-Javadoc)
    * @see org.kuali.rice.kew.rule.dao.RuleTemplateOptionDAO#findByRuleTemplateOptionId(java.lang.Long)
    */
-  public RuleTemplateOption findByRuleTemplateOptionId(Long ruleTemplateOptionId) {
+  public RuleTemplateOption findByRuleTemplateOptionId(String ruleTemplateOptionId) {
   	RuleTemplateOption ruleTemplateOption = new RuleTemplateOption();
     ruleTemplateOption.setRuleTemplateOptionId(ruleTemplateOptionId);
     return (RuleTemplateOption) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(ruleTemplateOption));

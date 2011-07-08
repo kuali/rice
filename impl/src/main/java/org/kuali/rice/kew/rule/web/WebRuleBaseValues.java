@@ -16,13 +16,34 @@
  */
 package org.kuali.rice.kew.rule.web;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
-import org.kuali.rice.kew.rule.*;
+import org.kuali.rice.kew.rule.KeyValueId;
+import org.kuali.rice.kew.rule.RoleAttribute;
+import org.kuali.rice.kew.rule.RuleBaseValues;
+import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleExtension;
+import org.kuali.rice.kew.rule.RuleExtensionValue;
+import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
@@ -34,11 +55,6 @@ import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
-
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 
 /**
@@ -590,7 +606,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
 
 			for (Object element2 : ruleTemplate.getActiveRuleTemplateAttributes()) {
 				RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) element2;
-				if (ruleTemplateAttribute.getRuleTemplateAttributeId().longValue() == ruleExtension.getRuleTemplateAttributeId().longValue()) {
+				if (StringUtils.equals(ruleTemplateAttribute.getRuleTemplateAttributeId(), ruleExtension.getRuleTemplateAttributeId())) {
 					ruleExtension.setRuleTemplateAttribute(ruleTemplateAttribute);
 					break;
 				}
@@ -654,7 +670,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
 		return null;
 	}
 
-	public Long getParentRuleId() {
+	public String getParentRuleId() {
 		if (getDelegateRule().booleanValue()) {
 			List ruleDelegations = getRuleDelegationService().findByDelegateRuleId(getRuleBaseValuesId());
 			RuleDelegation currentRuleDelegation = (RuleDelegation) ruleDelegations.get(0);

@@ -673,9 +673,8 @@ public class ActionListAction extends KualiAction {
         return start(mapping, cleanForm, request, response);
     }
 
-    protected ActionItem getActionItemFromActionList(List actionList, Long actionItemId) {
-    	for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {
-			ActionItem actionItem = (ActionItem) iterator.next();
+    protected ActionItem getActionItemFromActionList(List<ActionItem> actionList, String actionItemId) {
+    	for (ActionItem actionItem : actionList) {
 			if (actionItem.getActionItemId().equals(actionItemId)) {
 				return actionItem;
 			}

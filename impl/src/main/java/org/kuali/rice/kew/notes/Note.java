@@ -74,7 +74,7 @@ public class Note implements Serializable, NoteContract {
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="DOC_NTE_ID")
-	private Long noteId;
+	private String noteId;
     @Column(name="DOC_HDR_ID")
 	private String documentId;
     @Column(name="AUTH_PRNCPL_ID")
@@ -130,11 +130,11 @@ public class Note implements Serializable, NoteContract {
         this.noteCreateDate = noteCreateDate;
     }
 
-    public Long getNoteId() {
+    public String getNoteId() {
         return noteId;
     }
  
-    public void setNoteId(Long noteId) {
+    public void setNoteId(String noteId) {
         this.noteId = noteId;
     }
  
@@ -291,7 +291,7 @@ public class Note implements Serializable, NoteContract {
 		}
 		Note noteBo = new Note();
 		if (note.getId() != null) {
-			noteBo.setNoteId(Long.valueOf(note.getId()));
+			noteBo.setNoteId(note.getId());
 		}
 		noteBo.setDocumentId(note.getDocumentId());
 		noteBo.setNoteAuthorWorkflowId(note.getAuthorPrincipalId());

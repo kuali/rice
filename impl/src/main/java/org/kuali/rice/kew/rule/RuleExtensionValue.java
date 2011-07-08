@@ -49,9 +49,9 @@ public class RuleExtensionValue implements Serializable {
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="RULE_EXT_VAL_ID")
-	private Long ruleExtensionValueId;
+	private String ruleExtensionValueId;
     @Column(name="RULE_EXT_ID", insertable=false, updatable=false)
-	private Long ruleExtensionId;
+	private String ruleExtensionId;
     @Column(name="VAL")
 	private String value;
     @Column(name="KEY_CD")
@@ -95,16 +95,16 @@ public class RuleExtensionValue implements Serializable {
     public void setKey(String key) {
         this.key = key;
     }
-    public Long getRuleExtensionId() {
+    public String getRuleExtensionId() {
         return ruleExtensionId;
     }
-    public void setRuleExtensionId(Long ruleExtensionId) {
+    public void setRuleExtensionId(String ruleExtensionId) {
         this.ruleExtensionId = ruleExtensionId;
     }
-    public Long getRuleExtensionValueId() {
+    public String getRuleExtensionValueId() {
         return ruleExtensionValueId;
     }
-    public void setRuleExtensionValueId(Long ruleExtensionValueId) {
+    public void setRuleExtensionValueId(String ruleExtensionValueId) {
         this.ruleExtensionValueId = ruleExtensionValueId;
     }
     public String getValue() {

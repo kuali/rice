@@ -79,7 +79,7 @@ public class RouteNodeInstance implements Serializable {
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="RTE_NODE_INSTN_ID")
-	private Long routeNodeInstanceId;
+	private String routeNodeInstanceId;
     @Column(name="DOC_HDR_ID")
 	private String documentId;
     @ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE})
@@ -141,10 +141,10 @@ public class RouteNodeInstance implements Serializable {
     public void setRouteNode(RouteNode node) {
         this.routeNode = node;
     }
-    public Long getRouteNodeInstanceId() {
+    public String getRouteNodeInstanceId() {
         return routeNodeInstanceId;
     }
-    public void setRouteNodeInstanceId(Long routeNodeInstanceId) {
+    public void setRouteNodeInstanceId(String routeNodeInstanceId) {
         this.routeNodeInstanceId = routeNodeInstanceId;
     }
     public String getDocumentId() {

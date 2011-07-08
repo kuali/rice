@@ -58,13 +58,13 @@ public class RuleExtension implements Serializable {
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="RULE_EXT_ID")
-	private Long ruleExtensionId;
+	private String ruleExtensionId;
 
 	@Column(name="RULE_TMPL_ATTR_ID", insertable=false, updatable=false)
-	private Long ruleTemplateAttributeId;
+	private String ruleTemplateAttributeId;
 
 	@Column(name="RULE_ID", insertable=false, updatable=false)
-	private Long ruleBaseValuesId;
+	private String ruleBaseValuesId;
 
 	@Version
 	@Column(name="VER_NBR")
@@ -130,27 +130,27 @@ public class RuleExtension implements Serializable {
 		this.lockVerNbr = lockVerNbr;
 	}
 
-	public Long getRuleBaseValuesId() {
+	public String getRuleBaseValuesId() {
 		return ruleBaseValuesId;
 	}
 
-	public void setRuleBaseValuesId(Long ruleBaseValuesId) {
+	public void setRuleBaseValuesId(String ruleBaseValuesId) {
 		this.ruleBaseValuesId = ruleBaseValuesId;
 	}
 
-	public Long getRuleExtensionId() {
+	public String getRuleExtensionId() {
 		return ruleExtensionId;
 	}
 
-	public void setRuleExtensionId(Long ruleExtensionId) {
+	public void setRuleExtensionId(String ruleExtensionId) {
 		this.ruleExtensionId = ruleExtensionId;
 	}
 
-	public Long getRuleTemplateAttributeId() {
+	public String getRuleTemplateAttributeId() {
 		return ruleTemplateAttributeId;
 	}
 
-	public void setRuleTemplateAttributeId(Long ruleTemplateAttributeId) {
+	public void setRuleTemplateAttributeId(String ruleTemplateAttributeId) {
 		this.ruleTemplateAttributeId = ruleTemplateAttributeId;
 	}
 

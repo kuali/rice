@@ -221,7 +221,7 @@ public class RouteLogAction extends KewKualiAction {
         	(WorkflowUtility) GlobalResourceLoader.getService(new QName(applicationId, "WorkflowUtilityService"));
 
         // gather the IDs for action requests that predate the simulation
-		Set<Long> preexistingActionRequestIds = getActionRequestIds(document);
+		Set<String> preexistingActionRequestIds = getActionRequestIds(document);
         
 		// run the simulation via WorkflowUtility
         DocumentDetailDTO documentDetail = workflowUtility.routingReport(reportCriteria);
@@ -257,8 +257,8 @@ public class RouteLogAction extends KewKualiAction {
 	 * this DocumentRouteHeaderValue. 
 	 */
 	@SuppressWarnings("unchecked")
-	private Set<Long> getActionRequestIds(DocumentRouteHeaderValue document) {
-		Set<Long> actionRequestIds = new HashSet<Long>();
+	private Set<String> getActionRequestIds(DocumentRouteHeaderValue document) {
+		Set<String> actionRequestIds = new HashSet<String>();
 
 		List<ActionRequestValue> actionRequests = 
 			KEWServiceLocator.getActionRequestService().findAllActionRequestsByDocumentId(document.getDocumentId());
@@ -282,7 +282,7 @@ public class RouteLogAction extends KewKualiAction {
 	 * @return the ActionRequestValueS that have been created
 	 */
 	private List<ActionRequestValue> reconstituteActionRequestValues(DocumentDetailDTO documentDetail,
-			Set<Long> preexistingActionRequestIds) {
+			Set<String> preexistingActionRequestIds) {
 
         RouteNodeInstanceFabricator routeNodeInstanceFabricator = 
     		new RouteNodeInstanceFabricator(KEWServiceLocator.getRouteNodeService());
@@ -325,10 +325,10 @@ public class RouteLogAction extends KewKualiAction {
      */
     private static class RouteNodeInstanceFabricator implements RouteNodeInstanceLoader {
 
-    	private Map<Long,Branch> branches = new HashMap<Long, Branch>();;
-    	private Map<Long,RouteNodeInstance> routeNodeInstances = new HashMap<Long, RouteNodeInstance>();
-    	private Map<Long,RouteNode> routeNodes = new HashMap<Long, RouteNode>();
-    	private Map<Long,NodeState> nodeStates = new HashMap<Long, NodeState>();
+    	private Map<String,Branch> branches = new HashMap<String, Branch>();
+    	private Map<String,RouteNodeInstance> routeNodeInstances = new HashMap<String, RouteNodeInstance>();
+    	private Map<String,RouteNode> routeNodes = new HashMap<String, RouteNode>();
+    	private Map<String,NodeState> nodeStates = new HashMap<String, NodeState>();
 
     	private RouteNodeService routeNodeService;
     	
@@ -427,10 +427,10 @@ public class RouteLogAction extends KewKualiAction {
 		 * This method returns a dummy RouteNodeInstance for the given ID, or null if it hasn't
 		 * imported from a RouteNodeInstanceDTO with that ID
 		 * 
-		 * @see org.kuali.rice.kew.dto.DTOConverter.RouteNodeInstanceLoader#load(java.lang.Long)
+		 * @see org.kuali.rice.kew.dto.DTOConverter.RouteNodeInstanceLoader#load(String)
 		 */
 		@Override
-		public RouteNodeInstance load(Long routeNodeInstanceID) {
+		public RouteNodeInstance load(String routeNodeInstanceID) {
 			return routeNodeInstances.get(routeNodeInstanceID);
 		}
 
@@ -441,7 +441,7 @@ public class RouteLogAction extends KewKualiAction {
     	 * @param branchId
     	 * @return
     	 */
-    	private Branch getBranch(Long branchId) {
+    	private Branch getBranch(String branchId) {
     		Branch result = null;
 
     		if (branchId != null) {
@@ -463,7 +463,7 @@ public class RouteLogAction extends KewKualiAction {
     	 * @param routeNodeId
     	 * @return
     	 */
-    	private RouteNode getRouteNode(Long routeNodeId) {
+    	private RouteNode getRouteNode(String routeNodeId) {
     		RouteNode result = null;
 
     		if (routeNodeId != null) {
@@ -485,7 +485,7 @@ public class RouteLogAction extends KewKualiAction {
     	 * @param routeNodeInstanceId
     	 * @return
     	 */
-    	public RouteNodeInstance getRouteNodeInstance(Long routeNodeInstanceId) {
+    	public RouteNodeInstance getRouteNodeInstance(String routeNodeInstanceId) {
     		RouteNodeInstance result = null;
 
     		if (routeNodeInstanceId != null) {
@@ -507,7 +507,7 @@ public class RouteLogAction extends KewKualiAction {
     	 * @param nodeStateId
     	 * @return
     	 */
-    	private NodeState getNodeState(Long nodeStateId) {
+    	private NodeState getNodeState(String nodeStateId) {
     		NodeState result = null;
 
     		if (nodeStateId != null) {

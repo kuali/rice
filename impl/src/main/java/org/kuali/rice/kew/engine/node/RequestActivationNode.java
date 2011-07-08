@@ -166,7 +166,7 @@ public class RequestActivationNode extends RequestActivationNodeBase {
         if (!context.isSimulation()) {
             KEWServiceLocator.getActionRequestService().saveActionRequest(actionRequest);
         } else {
-            actionRequest.setActionRequestId(new Long(generatedRequestPriority++));
+            actionRequest.setActionRequestId(String.valueOf(generatedRequestPriority++));
             context.getEngineState().getGeneratedRequests().add(actionRequest);    
         }
         

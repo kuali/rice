@@ -44,7 +44,7 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
  */
 public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport implements ActionRequestDAO {
 
-    public ActionRequestValue getActionRequestByActionRequestId(Long actionRequestId) {
+    public ActionRequestValue getActionRequestByActionRequestId(String actionRequestId) {
         Criteria crit = new Criteria();
         crit.addEqualTo("actionRequestId", actionRequestId);
         return (ActionRequestValue) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
@@ -60,7 +60,7 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
         this.getPersistenceBrokerTemplate().store(actionRequest);
     }
 
-    public List findPendingByResponsibilityIds(Collection responsibilityIds) {
+    public List<ActionRequestValue> findPendingByResponsibilityIds(Collection responsibilityIds) {
         if (responsibilityIds == null || responsibilityIds.size() == 0) return Collections.emptyList();
         Criteria crit = new Criteria();
         Criteria statusCriteria = new Criteria();
@@ -74,16 +74,16 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
         statusCriteria.addOrCriteria(initializedCriteria);
         crit.addAndCriteria(statusCriteria);
         crit.addIn("responsibilityId", responsibilityIds);
-        return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
+        return new ArrayList<ActionRequestValue>(this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit)));
     }
 
-    public List findPendingByActionRequestedAndDocId(String actionRequestedCd, String documentId) {
+    public List<ActionRequestValue> findPendingByActionRequestedAndDocId(String actionRequestedCd, String documentId) {
         Criteria crit = new Criteria();
         crit.addEqualTo("actionRequested", actionRequestedCd);
         crit.addEqualTo("documentId", documentId);
         crit.addEqualTo("currentIndicator", Boolean.TRUE);
         crit.addAndCriteria(getPendingCriteria());
-        return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
+        return new ArrayList<ActionRequestValue>(this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit)));
     }
 
     @SuppressWarnings("unchecked")
@@ -123,42 +123,42 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
         }
     }
 
-    public List findPendingRootRequestsByDocIdAtRouteLevel(String documentId, Integer routeLevel) {
+    public List<ActionRequestValue> findPendingRootRequestsByDocIdAtRouteLevel(String documentId, Integer routeLevel) {
         Criteria crit = new Criteria();
         crit.addEqualTo("routeLevel", routeLevel);
         crit.addNotEqualTo("status", ActionRequestStatus.DONE.getCode());
         crit.addEqualTo("documentId", documentId);
         crit.addEqualTo("currentIndicator", Boolean.TRUE);
         crit.addIsNull("parentActionRequest");
-        return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
+        return new ArrayList<ActionRequestValue>(this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit)));
     }
 
-    public List findPendingByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel) {
+    public List<ActionRequestValue> findPendingByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel) {
         Criteria crit = new Criteria();
         crit.addLessOrEqualThan("routeLevel", routeLevel);
         crit.addNotEqualTo("status", ActionRequestStatus.DONE.getCode());
         crit.addEqualTo("documentId", documentId);
         crit.addEqualTo("currentIndicator", true);
-        return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
+        return new ArrayList<ActionRequestValue>(this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit)));
     }
 
-    public List findPendingRootRequestsByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel) {
+    public List<ActionRequestValue> findPendingRootRequestsByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel) {
         Criteria crit = new Criteria();
         crit.addLessOrEqualThan("routeLevel", routeLevel);
         crit.addNotEqualTo("status", ActionRequestStatus.DONE.getCode());
         crit.addEqualTo("documentId", documentId);
         crit.addEqualTo("currentIndicator", true);
         crit.addIsNull("parentActionRequest");
-        return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
+        return new ArrayList<ActionRequestValue>(this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit)));
     }
 
-    public void delete(Long actionRequestId) {
+    public void delete(String actionRequestId) {
     	Criteria crit = new Criteria();
     	crit.addEqualTo("actionRequestId", actionRequestId);
     	this.getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
     }
 
-    public List findAllPendingByDocId(String documentId) {
+    public List<ActionRequestValue> findAllPendingByDocId(String documentId) {
         Criteria initializedStatCriteria = new Criteria();
         initializedStatCriteria.addEqualTo("status", ActionRequestStatus.INITIALIZED.getCode());
 
@@ -174,28 +174,28 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
         crit.addEqualTo("currentIndicator", true);
         crit.addAndCriteria(statusCriteria);
 
-        return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
+        return new ArrayList<ActionRequestValue>(this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit)));
     }
 
-    public List findAllByDocId(String documentId) {
+    public List<ActionRequestValue> findAllByDocId(String documentId) {
         Criteria crit = new Criteria();
         crit.addEqualTo("documentId", documentId);
         crit.addEqualTo("currentIndicator", true);
-        return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
+        return new ArrayList<ActionRequestValue>(this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit)));
     }
 
-    public List findAllRootByDocId(String documentId) {
+    public List<ActionRequestValue> findAllRootByDocId(String documentId) {
         Criteria crit = new Criteria();
         crit.addEqualTo("documentId", documentId);
         crit.addEqualTo("currentIndicator", true);
         crit.addIsNull("parentActionRequest");
-        return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
+        return new ArrayList<ActionRequestValue>(this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit)));
     }
 
-    public List findByDocumentIdIgnoreCurrentInd(String documentId) {
+    public List<ActionRequestValue> findByDocumentIdIgnoreCurrentInd(String documentId) {
         Criteria crit = new Criteria();
         crit.addEqualTo("documentId", documentId);
-        return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
+        return new ArrayList<ActionRequestValue>(this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit)));
     }
 
     
@@ -216,7 +216,7 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
         this.getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
     }
 
-    public List findPendingRootRequestsByDocumentType(String documentTypeId) {
+    public List<ActionRequestValue> findPendingRootRequestsByDocumentType(String documentTypeId) {
     	Criteria routeHeaderCrit = new Criteria();
     	routeHeaderCrit.addEqualTo("documentTypeId", documentTypeId);
     	Criteria crit = new Criteria();
@@ -224,26 +224,26 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
         crit.addAndCriteria(getPendingCriteria());
         crit.addEqualTo("currentIndicator", Boolean.TRUE);
         crit.addIsNull("parentActionRequest");
-        return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
+        return new ArrayList<ActionRequestValue>(this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit)));
     }
 
-    public List findPendingRootRequestsByDocIdAtRouteNode(String documentId, Long nodeInstanceId) {
+    public List<ActionRequestValue> findPendingRootRequestsByDocIdAtRouteNode(String documentId, String nodeInstanceId) {
     	Criteria crit = new Criteria();
         crit.addEqualTo("documentId", documentId);
         crit.addAndCriteria(getPendingCriteria());
         crit.addEqualTo("currentIndicator", Boolean.TRUE);
         crit.addIsNull("parentActionRequest");
         crit.addEqualTo("nodeInstance.routeNodeInstanceId", nodeInstanceId);
-        return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
+        return new ArrayList<ActionRequestValue>(this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit)));
     }
 
-    public List findRootRequestsByDocIdAtRouteNode(String documentId, Long nodeInstanceId) {
+    public List<ActionRequestValue> findRootRequestsByDocIdAtRouteNode(String documentId, String nodeInstanceId) {
         Criteria crit = new Criteria();
         crit.addEqualTo("documentId", documentId);
         crit.addEqualTo("currentIndicator", Boolean.TRUE);
         crit.addIsNull("parentActionRequest");
         crit.addEqualTo("nodeInstance.routeNodeInstanceId", nodeInstanceId);
-        return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
+        return new ArrayList<ActionRequestValue>(this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit)));
     }
 
     public boolean doesDocumentHaveUserRequest(String principalId, String documentId) {
@@ -278,7 +278,7 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
 	/**
 	 * @see org.kuali.rice.kew.actionrequest.dao.ActionRequestDAO#findActivatedByGroup(String)
 	 */
-	public List findActivatedByGroup(String groupId) {
+	public List<ActionRequestValue> findActivatedByGroup(String groupId) {
         Criteria statusCriteria = new Criteria();
         statusCriteria.addEqualTo("status", ActionRequestStatus.ACTIVATED.getCode());
         Criteria crit = new Criteria();
@@ -286,6 +286,6 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
         crit.addEqualTo("currentIndicator", true);
         crit.addAndCriteria(statusCriteria);
 
-        return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
+        return new ArrayList<ActionRequestValue>(this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit)));
 	}
 }

@@ -27,16 +27,16 @@ public class ActionItemDTO implements Serializable {
 
     private static final long serialVersionUID = -4545795435037464863L;
 
-    private Long actionItemId;
+    private String actionItemId;
     private Timestamp dateAssigned;
     private String actionRequestCd;
-    private Long actionRequestId;
+    private String actionRequestId;
     private String documentId;
     private String docTitle;
     private String docLabel;
     private String docHandlerURL;
     private String docName;
-    private Long responsibilityId;
+    private String responsibilityId;
     private String roleName;
     private String dateAssignedString;
     private String actionToTake;
@@ -63,10 +63,10 @@ public class ActionItemDTO implements Serializable {
      */
     private String delegatorPrincipalId;
 
-    public Long getActionItemId() {
+    public String getActionItemId() {
         return this.actionItemId;
     }
-    public void setActionItemId(Long actionItemId) {
+    public void setActionItemId(String actionItemId) {
         this.actionItemId = actionItemId;
     }
     public Timestamp getDateAssigned() {
@@ -81,10 +81,10 @@ public class ActionItemDTO implements Serializable {
     public void setActionRequestCd(String actionRequestCd) {
         this.actionRequestCd = actionRequestCd;
     }
-    public Long getActionRequestId() {
+    public String getActionRequestId() {
         return this.actionRequestId;
     }
-    public void setActionRequestId(Long actionRequestId) {
+    public void setActionRequestId(String actionRequestId) {
         this.actionRequestId = actionRequestId;
     }
     public String getDocumentId() {
@@ -117,10 +117,10 @@ public class ActionItemDTO implements Serializable {
     public void setDocName(String docName) {
         this.docName = docName;
     }
-    public Long getResponsibilityId() {
+    public String getResponsibilityId() {
         return this.responsibilityId;
     }
-    public void setResponsibilityId(Long responsibilityId) {
+    public void setResponsibilityId(String responsibilityId) {
         this.responsibilityId = responsibilityId;
     }
     public String getRoleName() {

@@ -33,7 +33,7 @@ package org.kuali.rice.kew.rule.bo;
  import java.util.ArrayList;
  import java.util.Collections;
  import java.util.Iterator;
- import java.util.List;
+import java.util.List;
 
 
 /**
@@ -70,14 +70,14 @@ public class RuleTemplate  extends PersistableBusinessObjectBase {
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="RULE_TMPL_ID")
-	private Long ruleTemplateId;
+	private String ruleTemplateId;
     @Column(name="NM")
 	private String name;
     @Column(name="RULE_TMPL_DESC")
 	private String description;
 
     @Column(name="DLGN_RULE_TMPL_ID", insertable=false, updatable=false)
-	private Long delegationTemplateId;
+	private String delegationTemplateId;
     @OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="DLGN_RULE_TMPL_ID")
 	private RuleTemplate delegationTemplate;
@@ -239,19 +239,19 @@ public class RuleTemplate  extends PersistableBusinessObjectBase {
         this.name = name;
     }
 
-    public Long getRuleTemplateId() {
+    public String getRuleTemplateId() {
         return ruleTemplateId;
     }
 
-    public void setRuleTemplateId(Long ruleTemplateId) {
+    public void setRuleTemplateId(String ruleTemplateId) {
         this.ruleTemplateId = ruleTemplateId;
     }
 
-    public Long getDelegationTemplateId() {
+    public String getDelegationTemplateId() {
         return delegationTemplateId;
     }
 
-    public void setDelegationTemplateId(Long delegationTemplateId) {
+    public void setDelegationTemplateId(String delegationTemplateId) {
         this.delegationTemplateId = delegationTemplateId;
     }
 

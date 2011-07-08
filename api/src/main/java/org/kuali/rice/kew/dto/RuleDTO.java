@@ -23,7 +23,7 @@ public class RuleDTO implements java.io.Serializable {
     
     private static final long serialVersionUID = -6559003022586974704L;
 
-    private Long ruleTemplateId;
+    private String ruleTemplateId;
     private Boolean activeInd;
     private String description;
     private String docTypeName;
@@ -117,11 +117,11 @@ public class RuleDTO implements java.io.Serializable {
         setRuleResponsibilities(newRuleResponsibilities);
     }
     
-    public Long getRuleTemplateId() {
+    public String getRuleTemplateId() {
         return ruleTemplateId;
     }
 
-    public void setRuleTemplateId(Long ruleTemplateId) {
+    public void setRuleTemplateId(String ruleTemplateId) {
         this.ruleTemplateId = ruleTemplateId;
     }
 

@@ -29,19 +29,19 @@ public class DocumentLinkDTO implements Serializable {
 
 	private static final long serialVersionUID = 4454393424187842416L;
 
-	private Long docLinkId;
+	private String docLinkId;
 	private String orgnDocId;
 	private String destDocId;
 	/**
 	 * @return the linbkId
 	 */
-	public Long getLinbkId() {
+	public String getLinbkId() {
 		return this.docLinkId;
 	}
 	/**
 	 * @param linbkId the linbkId to set
 	 */
-	public void setLinbkId(Long linkId) {
+	public void setLinbkId(String linkId) {
 		this.docLinkId = linkId;
 	}
 	/**

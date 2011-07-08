@@ -27,7 +27,7 @@ import java.util.Calendar;
  */
 public class ActionTakenDTO implements Serializable {
     static final long serialVersionUID = -8818100923517546091L;
-    private Long actionTakenId;
+    private String actionTakenId;
     private String documentId;
     private Integer docVersion;
     private String principalId;
@@ -57,7 +57,7 @@ public class ActionTakenDTO implements Serializable {
         return actionTaken;
     }
 
-    public Long getActionTakenId() {
+    public String getActionTakenId() {
         return actionTakenId;
     }
 
@@ -85,7 +85,7 @@ public class ActionTakenDTO implements Serializable {
         this.annotation = annotation;
     }
 
-    public void setActionTakenId(Long actionTakenId) {
+    public void setActionTakenId(String actionTakenId) {
         this.actionTakenId = actionTakenId;
     }
 

@@ -38,7 +38,7 @@ public class MockRouteModule implements RouteModule {
         return null;
     }
 
-    public ResponsibleParty resolveResponsibilityId(Long rId) throws ResourceUnavailableException, WorkflowException {
+    public ResponsibleParty resolveResponsibilityId(String rId) throws ResourceUnavailableException, WorkflowException {
         return null;
     }
 

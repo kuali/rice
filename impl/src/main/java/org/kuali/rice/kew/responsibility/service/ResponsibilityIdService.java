@@ -23,6 +23,6 @@ package org.kuali.rice.kew.responsibility.service;
  */
 public interface ResponsibilityIdService {
 
-	public Long getNewResponsibilityId(); 
+	public String getNewResponsibilityId(); 
 	
 }

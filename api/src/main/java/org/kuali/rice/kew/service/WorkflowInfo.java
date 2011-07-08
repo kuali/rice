@@ -98,7 +98,7 @@ public class WorkflowInfo implements java.io.Serializable {
      * @throws WorkflowException if an error occurs obtaining a new responsibility id
      * @see WorkflowUtility#getNewResponsibilityId()
      */
-    public Long getNewResponsibilityId() throws WorkflowException {
+    public String getNewResponsibilityId() throws WorkflowException {
     	return getWorkflowUtility().getNewResponsibilityId();
     }
 
@@ -243,9 +243,9 @@ public class WorkflowInfo implements java.io.Serializable {
      * @param nodeInstanceId the id of the node instance to return
      * @return a node instance of the specified note instance id
      * @throws WorkflowException if an error occurs obtaining the node instance
-     * @see WorkflowUtility#getNodeInstance(Long)
+     * @see WorkflowUtility#getNodeInstance(String)
      */
-    public RouteNodeInstanceDTO getNodeInstance(Long nodeInstanceId) throws WorkflowException {
+    public RouteNodeInstanceDTO getNodeInstance(String nodeInstanceId) throws WorkflowException {
     	return getWorkflowUtility().getNodeInstance(nodeInstanceId);
     }
 

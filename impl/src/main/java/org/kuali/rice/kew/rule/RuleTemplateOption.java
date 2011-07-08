@@ -48,9 +48,9 @@ public class RuleTemplateOption implements Serializable {
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="RULE_TMPL_OPTN_ID")
-	private Long ruleTemplateOptionId;
+	private String ruleTemplateOptionId;
     @Column(name="RULE_TMPL_ID", insertable=false, updatable=false)
-	private Long ruleTemplateId;
+	private String ruleTemplateId;
     @Column(name="KEY_CD")
 	private String key;
     @Column(name="VAL")
@@ -99,19 +99,19 @@ public class RuleTemplateOption implements Serializable {
         this.ruleTemplate = ruleTemplate;
     }
 
-    public Long getRuleTemplateId() {
+    public String getRuleTemplateId() {
         return ruleTemplateId;
     }
 
-    public void setRuleTemplateId(Long ruleTemplateId) {
+    public void setRuleTemplateId(String ruleTemplateId) {
         this.ruleTemplateId = ruleTemplateId;
     }
 
-    public Long getRuleTemplateOptionId() {
+    public String getRuleTemplateOptionId() {
         return ruleTemplateOptionId;
     }
 
-    public void setRuleTemplateOptionId(Long ruleTemplateOptionId) {
+    public void setRuleTemplateOptionId(String ruleTemplateOptionId) {
         this.ruleTemplateOptionId = ruleTemplateOptionId;
     }
 

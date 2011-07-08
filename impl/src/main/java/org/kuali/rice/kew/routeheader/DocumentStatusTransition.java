@@ -41,7 +41,7 @@ public class DocumentStatusTransition extends PersistableBusinessObjectBase {
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="APP_DOC_STAT_TRAN_ID")
-	private Long statusTransitionId;
+	private String statusTransitionId;
 	
 	@Column(name="DOC_HDR_ID")
 	private String documentId;
@@ -65,11 +65,11 @@ public class DocumentStatusTransition extends PersistableBusinessObjectBase {
     	this.statusTransitionDate = new Timestamp(System.currentTimeMillis());
     }
 
-	public Long getStatusTransitionId() {
+	public String getStatusTransitionId() {
 		return this.statusTransitionId;
 	}
 
-	public void setStatusTransitionId(Long statusTransitionId) {
+	public void setStatusTransitionId(String statusTransitionId) {
 		this.statusTransitionId = statusTransitionId;
 	}
 

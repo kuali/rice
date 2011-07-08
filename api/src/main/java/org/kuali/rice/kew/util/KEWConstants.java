@@ -18,9 +18,11 @@ package org.kuali.rice.kew.util;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -746,10 +748,19 @@ public final class KEWConstants {
     public static final String XML_FILE_PARSE_ERROR = "general.error.parsexml";
 
 
-    public static final Long MACHINE_GENERATED_RESPONSIBILITY_ID = new Long(0);
-    public static final Long ADHOC_REQUEST_RESPONSIBILITY_ID = new Long(-1);
-    public static final Long EXCEPTION_REQUEST_RESPONSIBILITY_ID = new Long(-2);
-    public static final Long SAVED_REQUEST_RESPONSIBILITY_ID = new Long(-3);
+    public static final String MACHINE_GENERATED_RESPONSIBILITY_ID = "0";
+    public static final String ADHOC_REQUEST_RESPONSIBILITY_ID = "-1";
+    public static final String EXCEPTION_REQUEST_RESPONSIBILITY_ID = "-2";
+    public static final String SAVED_REQUEST_RESPONSIBILITY_ID = "-3";
+    
+    public static final Set<String> SPECIAL_RESPONSIBILITY_ID_SET;
+    static {
+    	SPECIAL_RESPONSIBILITY_ID_SET = new HashSet<String>();
+    	SPECIAL_RESPONSIBILITY_ID_SET.add(MACHINE_GENERATED_RESPONSIBILITY_ID);
+    	SPECIAL_RESPONSIBILITY_ID_SET.add(ADHOC_REQUEST_RESPONSIBILITY_ID);
+    	SPECIAL_RESPONSIBILITY_ID_SET.add(EXCEPTION_REQUEST_RESPONSIBILITY_ID);
+    	SPECIAL_RESPONSIBILITY_ID_SET.add(SAVED_REQUEST_RESPONSIBILITY_ID);
+    }
 
     public static final int DEFAULT_WEB_SERVICE_RETRY = 1;
 
@@ -968,6 +979,10 @@ public final class KEWConstants {
         private SearchableAttributeConstants() {}
 
 
+    }
+    
+    public static final class WorkflowProcessDirectives {
+    	public static final String RUN_POST_PROCESSOR_LOGIC = "directive.run.post.processor.logic";
     }
 	
 	private KEWConstants() {

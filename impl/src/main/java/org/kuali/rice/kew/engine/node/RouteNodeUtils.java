@@ -77,7 +77,7 @@ public final class RouteNodeUtils {
 	
 	public static List<RouteNodeInstance> getFlattenedNodeInstances(DocumentRouteHeaderValue document, boolean includeProcesses) {
         List<RouteNodeInstance> nodeInstances = new ArrayList<RouteNodeInstance>();
-        Set<Long> visitedNodeInstanceIds = new HashSet<Long>();
+        Set<String> visitedNodeInstanceIds = new HashSet<String>();
         for (RouteNodeInstance initialNodeInstance : document.getInitialRouteNodeInstances())
         {
             flattenNodeInstanceGraph(nodeInstances, visitedNodeInstanceIds, initialNodeInstance, includeProcesses);
@@ -85,7 +85,7 @@ public final class RouteNodeUtils {
         return nodeInstances;
     }
     
-    private static void flattenNodeInstanceGraph(List<RouteNodeInstance> nodeInstances, Set<Long> visitedNodeInstanceIds, RouteNodeInstance nodeInstance, boolean includeProcesses) {
+    private static void flattenNodeInstanceGraph(List<RouteNodeInstance> nodeInstances, Set<String> visitedNodeInstanceIds, RouteNodeInstance nodeInstance, boolean includeProcesses) {
         if (visitedNodeInstanceIds.contains(nodeInstance.getRouteNodeInstanceId())) {
             return;
         }
@@ -176,7 +176,7 @@ public final class RouteNodeUtils {
         return activeNodeInstances;
     }
     
-    public static RouteNodeInstance findRouteNodeInstanceById(Long nodeInstanceId, DocumentRouteHeaderValue document) {
+    public static RouteNodeInstance findRouteNodeInstanceById(String nodeInstanceId, DocumentRouteHeaderValue document) {
     	List<RouteNodeInstance> flattenedNodeInstances = getFlattenedNodeInstances(document, true);
     	RouteNodeInstance niRet = null;
         for (RouteNodeInstance nodeInstance : flattenedNodeInstances)

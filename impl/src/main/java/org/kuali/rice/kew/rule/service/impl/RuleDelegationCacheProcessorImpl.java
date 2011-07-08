@@ -23,7 +23,7 @@ public class RuleDelegationCacheProcessorImpl implements RuleDelegationCacheProc
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RuleDelegationCacheProcessorImpl.class);
 	
-	public void clearRuleDelegationFromCache(Long responsibilityId) {
+	public void clearRuleDelegationFromCache(String responsibilityId) {
 		PerformanceLogger logger = new PerformanceLogger();
 		if (responsibilityId != null) {
 			flushListFromCache(responsibilityId);
@@ -31,14 +31,14 @@ public class RuleDelegationCacheProcessorImpl implements RuleDelegationCacheProc
 		logger.log("Time to notify cache of rule delegation change for responsibility id=" + responsibilityId);
 	}
 	
-	protected void flushListFromCache(Long responsibilityId) {
-    	String responsibilityIdStr = responsibilityId.toString();
-        LOG.info("Flushing delegation rules from Cache for responsibilityId='" + responsibilityIdStr );
-        KsbApiServiceLocator.getCacheAdministrator().flushEntry(getRuleDlgnCacheKey(responsibilityIdStr));
+	protected void flushListFromCache(String responsibilityId) {
+		if (LOG.isInfoEnabled())
+			LOG.info("Flushing delegation rules from Cache for responsibilityId='" + responsibilityId );
+        KsbApiServiceLocator.getCacheAdministrator().flushEntry(getRuleDlgnCacheKey(responsibilityId));
     }
 	
-	protected String getRuleDlgnCacheKey(String responsibilityIdStr) {
-        return "RuleDlgnCache:" + responsibilityIdStr;
+	protected String getRuleDlgnCacheKey(String responsibilityId) {
+        return "RuleDlgnCache:" + responsibilityId;
     }
 	
 }

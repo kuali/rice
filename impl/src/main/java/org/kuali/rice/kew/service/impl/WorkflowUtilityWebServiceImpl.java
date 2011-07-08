@@ -26,6 +26,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -152,7 +154,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return documentDetailVO;
     }
 
-    public RouteNodeInstanceDTO getNodeInstance(Long nodeInstanceId) throws WorkflowException {
+    public RouteNodeInstanceDTO getNodeInstance(String nodeInstanceId) throws WorkflowException {
         if (nodeInstanceId == null) {
             LOG.error("null nodeInstanceId passed in.");
             throw new RuntimeException("null nodeInstanceId passed in");
@@ -164,9 +166,9 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return DTOConverter.convertRouteNodeInstance(nodeInstance);
     }
 
-    public Long getNewResponsibilityId() {
+    public String getNewResponsibilityId() {
     	LOG.debug("Getting new responsibility id.");
-        Long rid = KEWServiceLocator.getResponsibilityIdService().getNewResponsibilityId();
+        String rid = KEWServiceLocator.getResponsibilityIdService().getNewResponsibilityId();
         if ( LOG.isDebugEnabled() ) {
         	LOG.debug("returning responsibility Id " + rid);
         }
@@ -179,11 +181,11 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 
 	public ActionItemDTO[] getActionItemsForPrincipal(String principalId) throws WorkflowException {
         //added by Derek
-        Collection actionItems = KEWServiceLocator.getActionListService().getActionList(principalId, null);
+        Collection<ActionItem> actionItems = KEWServiceLocator.getActionListService().getActionList(principalId, null);
         ActionItemDTO[] actionItemVOs = new ActionItemDTO[actionItems.size()];
         int i = 0;
-        for (Iterator iterator = actionItems.iterator(); iterator.hasNext(); i++) {
-            ActionItem actionItem = (ActionItem) iterator.next();
+        for (Iterator<ActionItem> iterator = actionItems.iterator(); iterator.hasNext(); i++) {
+            ActionItem actionItem = iterator.next();
             actionItemVOs[i] = DTOConverter.convertActionItem(actionItem);
         }
         return actionItemVOs;
@@ -862,29 +864,41 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 		//going conservative for now.  if the doc isn't enroute or exception nothing will be returned.
 		if (document.isEnroute() || document.isInException()) {
 
-			List activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document);
-			long largetActivatedNodeId = 0;
-			for (Iterator iter = activeNodeInstances.iterator(); iter.hasNext();) {
-				RouteNodeInstance routeNodeInstance = (RouteNodeInstance) iter.next();
-				if (routeNodeInstance.getRouteNode().getRouteNodeId().longValue() > largetActivatedNodeId) {
-					largetActivatedNodeId = routeNodeInstance.getRouteNode().getRouteNodeId().longValue();
-				}
-			}
-
-			List routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodeInstances(document, false);
-			List nodeNames = new ArrayList();
-
-			for (Iterator iter = routeNodes.iterator(); iter.hasNext();) {
-				RouteNodeInstance routeNode = (RouteNodeInstance) iter.next();
-				if (routeNode.isComplete() && !nodeNames.contains(routeNode.getName())) {
-					//if the prototype of the nodeInstance we're analyzing is less than the largest id of all our active prototypes
-					//then add it to the list.  This is an attempt to account for return to previous hitting a single node multiple times
-					if (routeNode.getRouteNode().getRouteNodeId().longValue() < largetActivatedNodeId) {
-						nodeNames.add(routeNode.getName());
+			// TODO: KULRICE-5329 verify that the rewrite of the numeric logic below is reasonable -- I'm guessing it's not -- this one's a fairly radical change since I had to throw
+			// away the whole premise of using the longValue of the id as a strategy, so I think I'm massively oversimplifying the original goal of the logic
+			List<RouteNodeInstance> routeNodeInstances = KEWServiceLocator.getRouteNodeService().getFlattenedNodeInstances(document, false);
+			Set<String> routeNodeNames = new LinkedHashSet<String>();
+			if (routeNodeInstances != null) {
+				for (RouteNodeInstance routeNodeInstance : routeNodeInstances) {
+					if (routeNodeInstance.isComplete()) {
+						routeNodeNames.add(routeNodeInstance.getName());
 					}
 				}
 			}
-			return (String[]) nodeNames.toArray(new String[nodeNames.size()]);
+			return routeNodeNames.toArray(new String[routeNodeNames.size()]);
+			
+//			List<RouteNodeInstance> activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document);
+//			long largetActivatedNodeId = 0;
+//			for (Iterator iter = activeNodeInstances.iterator(); iter.hasNext();) {
+//				RouteNodeInstance routeNodeInstance = (RouteNodeInstance) iter.next();
+//				if (routeNodeInstance.getRouteNode().getRouteNodeId().longValue() > largetActivatedNodeId) {
+//					largetActivatedNodeId = routeNodeInstance.getRouteNode().getRouteNodeId().longValue();
+//				}
+//			}
+//
+//			List<RouteNodeInstance> routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodeInstances(document, false);
+//			List<String> nodeNames = new ArrayList<String>();
+//
+//			for (RouteNodeInstance routeNode : routeNodes) {
+//				if (routeNode.isComplete() && !nodeNames.contains(routeNode.getName())) {
+//					//if the prototype of the nodeInstance we're analyzing is less than the largest id of all our active prototypes
+//					//then add it to the list.  This is an attempt to account for return to previous hitting a single node multiple times
+//					if (routeNode.getRouteNode().getRouteNodeId().longValue() < largetActivatedNodeId) {
+//						nodeNames.add(routeNode.getName());
+//					}
+//				}
+//			}
+//			return (String[]) nodeNames.toArray(new String[nodeNames.size()]);
 		} else {
 			return new String[0];
 		}
@@ -911,7 +925,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         if ( (ruleReportCriteria.getActionRequestCodes() != null) && (ruleReportCriteria.getActionRequestCodes().length != 0) ) {
             actionRequestCodes = Arrays.asList(ruleReportCriteria.getActionRequestCodes());
         }
-        Collection rulesFound = KEWServiceLocator.getRuleService().search(ruleReportCriteria.getDocumentTypeName(),ruleReportCriteria.getRuleTemplateName(),
+        Collection rulesFound = KEWServiceLocator.getRuleService().searchByTemplate(ruleReportCriteria.getDocumentTypeName(),ruleReportCriteria.getRuleTemplateName(),
                 ruleReportCriteria.getRuleDescription(), ruleReportCriteria.getResponsibleGroupId(),
                 ruleReportCriteria.getResponsiblePrincipalId(),
                 ruleReportCriteria.isConsiderWorkgroupMembership(),ruleReportCriteria.isIncludeDelegations(),

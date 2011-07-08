@@ -27,16 +27,16 @@ public class DocumentStatusTransitionDTO implements Serializable{
 		
 	private static final long serialVersionUID = -5694589806200056472L;
 	
-	private Long statusTransitionId;
+	private String statusTransitionId;
 	private String documentId;
 	private String oldAppDocStatus;
 	private String newAppDocStatus;
 	private java.sql.Timestamp statusTransitionDate;
 	
-	public Long getStatusTransitionId() {
+	public String getStatusTransitionId() {
 		return this.statusTransitionId;
 	}
-	public void setStatusTransitionId(Long statusTransitionId) {
+	public void setStatusTransitionId(String statusTransitionId) {
 		this.statusTransitionId = statusTransitionId;
 	}
 	public String getDocumentId() {

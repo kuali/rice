@@ -35,14 +35,14 @@ public class NoteForm extends KualiForm {
     private String showEdit;
     private Boolean showAdd;
     private String docId;
-    private Long noteIdNumber;
+    private String noteIdNumber;
     private Integer numberOfNotes;
     private String sortOrder = "DESCENDING";
     private Boolean sortNotes;
     private String currentUserName;
     private String currentDate;
     private Boolean authorizedToAdd;
-    private List noteList;
+    private List<Note> noteList;
     private String addText;
     private Long idInEdit;
     private Boolean showAttachments;
@@ -111,11 +111,11 @@ public class NoteForm extends KualiForm {
         this.showAdd = showAdd;
     }
 
-    public Long getNoteIdNumber() {
+    public String getNoteIdNumber() {
         return noteIdNumber;
     }
 
-    public void setNoteIdNumber(Long noteIdNumber) {
+    public void setNoteIdNumber(String noteIdNumber) {
         this.noteIdNumber = noteIdNumber;
     }
 
@@ -159,11 +159,11 @@ public class NoteForm extends KualiForm {
         this.authorizedToAdd = authorizedToAdd;
     }
 
-    public List getNoteList() {
+    public List<Note> getNoteList() {
         return noteList;
     }
 
-    public void setNoteList(List noteList) {
+    public void setNoteList(List<Note> noteList) {
         this.noteList = noteList;
     }
 

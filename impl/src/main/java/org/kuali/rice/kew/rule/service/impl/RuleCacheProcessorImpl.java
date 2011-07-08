@@ -30,7 +30,7 @@ import org.kuali.rice.kew.util.PerformanceLogger;
  */
 public class RuleCacheProcessorImpl implements RuleCacheProcessor {
 	
-	public void clearRuleFromCache(Long ruleId) {
+	public void clearRuleFromCache(String ruleId) {
         PerformanceLogger logger = new PerformanceLogger();
 		RuleBaseValues rule = KEWServiceLocator.getRuleService().findRuleBaseValuesById(ruleId);
 		if (rule != null) {

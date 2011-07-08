@@ -38,7 +38,7 @@ public class RuleTemplateDAOJpaImpl implements RuleTemplateDAO {
 	@PersistenceContext(unitName="kew-unit")
 	private EntityManager entityManager;
 	
-    public List findAll() {
+    public List<RuleTemplate> findAll() {
         return entityManager.createNamedQuery("findAllOrderedByName").getResultList();
     }
 
@@ -59,7 +59,7 @@ public class RuleTemplateDAOJpaImpl implements RuleTemplateDAO {
         return (RuleTemplate) ruleTemplates.get(0);
     }
 
-    public List findByRuleTemplate(RuleTemplate ruleTemplate) {
+    public List<RuleTemplate> findByRuleTemplate(RuleTemplate ruleTemplate) {
         Criteria crit = new Criteria(RuleTemplate.class.getName());
         if (ruleTemplate.getName() != null) {
           crit.rawJpql("UPPER(RULE_TMPL_NM) like '"+ ruleTemplate.getName().toUpperCase() +"'");
@@ -70,11 +70,11 @@ public class RuleTemplateDAOJpaImpl implements RuleTemplateDAO {
         return new QueryByCriteria(entityManager, crit).toQuery().getResultList();
     }
 
-    public void delete(Long ruleTemplateId) {
+    public void delete(String ruleTemplateId) {
     	entityManager.remove(findByRuleTemplateId(ruleTemplateId));
     }
 
-    public RuleTemplate findByRuleTemplateId(Long ruleTemplateId) {
+    public RuleTemplate findByRuleTemplateId(String ruleTemplateId) {
         return entityManager.find(RuleTemplate.class, ruleTemplateId);
      }
 
@@ -86,8 +86,8 @@ public class RuleTemplateDAOJpaImpl implements RuleTemplateDAO {
     	}
     }
 
-    public Long getNextRuleTemplateId() {
-       return getPlatform().getNextValSQL("KREW_RTE_TMPL_S", entityManager);
+    public String getNextRuleTemplateId() {
+       return String.valueOf(getPlatform().getNextValSQL("KREW_RTE_TMPL_S", entityManager));
     }
 
     protected DatabasePlatform getPlatform() {

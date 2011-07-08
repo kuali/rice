@@ -123,7 +123,7 @@ public class DocumentOperationAction extends KewKualiAction {
 				docForm.setDocumentId(docForm.getDocumentId().trim());
 				String initials="";
 				for(Iterator lInitials=routeHeader.getInitialRouteNodeInstances().iterator();lInitials.hasNext();){
-					Long initial=((RouteNodeInstance)lInitials.next()).getRouteNodeInstanceId();
+					String initial=((RouteNodeInstance)lInitials.next()).getRouteNodeInstanceId();
 					LOG.debug(initial);
 					initials=initials+initial+", ";
 				}
@@ -198,17 +198,17 @@ public class DocumentOperationAction extends KewKualiAction {
 		}
 		if (KEWConstants.UPDATE.equals(routeHeaderOp)) {
 			setRouteHeaderTimestamps(docForm);
-			DocumentRouteHeaderValue dHeader=docForm.getRouteHeader();
+			DocumentRouteHeaderValue dHeader = docForm.getRouteHeader();
 			String initials=docForm.getInitialNodeInstances();
-			List lInitials=new ArrayList();
+			List<RouteNodeInstance> lInitials = new ArrayList<RouteNodeInstance>();
 			if (StringUtils.isNotEmpty(initials)){ 
-    			StringTokenizer tokenInitials=new StringTokenizer(initials,",");
-    			while (tokenInitials.hasMoreTokens()) {
-    		         Long instanceId=Long.valueOf(tokenInitials.nextToken().trim());
-    		         LOG.debug(instanceId);
-    		         RouteNodeInstance instance=getRouteNodeService().findRouteNodeInstanceById(instanceId);
-    		         lInitials.add(instance);
-    		    }
+				StringTokenizer tokenInitials=new StringTokenizer(initials,",");
+				while (tokenInitials.hasMoreTokens()) {
+					String instanceId = tokenInitials.nextToken().trim();
+					LOG.debug(instanceId);
+					RouteNodeInstance instance = getRouteNodeService().findRouteNodeInstanceById(instanceId);
+					lInitials.add(instance);
+				}
 			}
 			dHeader.setInitialRouteNodeInstances(lInitials);
 			getRouteHeaderService().validateRouteHeader(docForm.getRouteHeader());
@@ -626,10 +626,10 @@ public class DocumentOperationAction extends KewKualiAction {
 //					actionRequest.setRouteMethodName(null);
 					String id = request.getParameter("ruleTemplate.ruleTemplateId");
 					if (id != null && !"".equals(id.trim())) {
-						RuleTemplate ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(new Long(id));
-						if (ruleTemplate != null) {
+						RuleTemplate ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(id);
+//						if (ruleTemplate != null) {
 //							actionRequest.setRouteMethodName(ruleTemplate.getName());
-						}
+//						}
 					}
 				}
 				if ("workflowId".equals(lookupField)) {
@@ -771,7 +771,7 @@ public class DocumentOperationAction extends KewKualiAction {
 				}
 			}
 			BlanketApproveProcessorService blanketApprove = MessageServiceNames.getBlanketApproveProcessorService(docForm.getRouteHeader());
-			blanketApprove.doBlanketApproveWork(docForm.getRouteHeader().getDocumentId(), principalId, new Long(docForm.getBlanketApproveActionTakenId()), nodeNames, true);
+			blanketApprove.doBlanketApproveWork(docForm.getRouteHeader().getDocumentId(), principalId, docForm.getBlanketApproveActionTakenId(), nodeNames, true);
 			ActionMessages messages = new ActionMessages();
 			messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.message", "Blanket Approve Processor was successfully scheduled"));
 			saveMessages(request, messages);
@@ -792,7 +792,7 @@ public class DocumentOperationAction extends KewKualiAction {
 					nodeNames.add(nodeName.trim());
 				}
 			}
-			ActionTakenValue actionTaken = KEWServiceLocator.getActionTakenService().findByActionTakenId(new Long(docForm.getBlanketApproveActionTakenId()));
+			ActionTakenValue actionTaken = KEWServiceLocator.getActionTakenService().findByActionTakenId(docForm.getBlanketApproveActionTakenId());
 			MoveDocumentService moveService = MessageServiceNames.getMoveDocumentProcessorService(docForm.getRouteHeader());
 			moveService.moveDocument(principalId, docForm.getRouteHeader(), actionTaken, nodeNames);
 			ActionMessages messages = new ActionMessages();
@@ -808,7 +808,7 @@ public class DocumentOperationAction extends KewKualiAction {
 		try {
 			DocumentOperationForm docForm = (DocumentOperationForm) form;
 			String principalId = KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(docForm.getActionInvocationUser());
-			ActionInvocation invocation = new ActionInvocation(new Long(docForm.getActionInvocationActionItemId()), docForm.getActionInvocationActionCode());
+			ActionInvocation invocation = new ActionInvocation(docForm.getActionInvocationActionItemId(), docForm.getActionInvocationActionCode());
 			ActionInvocationService actionInvocationService = MessageServiceNames.getActionInvocationProcessorService(docForm.getRouteHeader());
 			actionInvocationService.invokeAction(principalId, docForm.getRouteHeader().getDocumentId(), invocation);
 			ActionMessages messages = new ActionMessages();

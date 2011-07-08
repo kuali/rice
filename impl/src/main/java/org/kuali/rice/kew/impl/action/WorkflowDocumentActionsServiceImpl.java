@@ -696,7 +696,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
                     public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo,
                             String principalId, String annotation) throws WorkflowException {
                         return KEWServiceLocator.getWorkflowDocumentService().superUserActionRequestApproveAction(
-                                principalId, documentBo, Long.valueOf(actionRequestId), annotation,
+                                principalId, documentBo, actionRequestId, annotation,
                                 executePostProcessor);
                     }
 

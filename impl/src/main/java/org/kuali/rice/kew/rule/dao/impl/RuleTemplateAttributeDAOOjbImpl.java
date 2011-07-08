@@ -37,7 +37,7 @@ public class RuleTemplateAttributeDAOOjbImpl extends PersistenceBrokerDaoSupport
    * (non-Javadoc)
    * @see org.kuali.rice.kew.rule.dao.RuleTemplateAttributeDAO#findByRuleTemplateAttributeId(java.lang.Long)
    */
-  public RuleTemplateAttribute findByRuleTemplateAttributeId(Long ruleTemplateAttributeId) {
+  public RuleTemplateAttribute findByRuleTemplateAttributeId(String ruleTemplateAttributeId) {
     RuleTemplateAttribute ruleTemplateAttribute = new RuleTemplateAttribute();
     ruleTemplateAttribute.setRuleTemplateAttributeId(ruleTemplateAttributeId);
     ruleTemplateAttribute.setRequired(null);

@@ -59,7 +59,7 @@ public class TestRouteModule implements RouteModule {
             TestRecipient recipient = responsibility.getRecipient();
             Recipient realRecipient = getRealRecipient(recipient);
             ActionRequestFactory arFactory = new ActionRequestFactory(routeHeader);
-            Long responsibilityId = KEWServiceLocator.getResponsibilityIdService().getNewResponsibilityId();
+            String responsibilityId = KEWServiceLocator.getResponsibilityIdService().getNewResponsibilityId();
             ActionRequestValue request = arFactory.addRootActionRequest(responsibility.getActionRequested(), new Integer(responsibility.getPriority()), realRecipient, "", responsibilityId, Boolean.FALSE, null, null);
             responsibilityMap.put(request.getResponsibilityId(), recipient);
             for (Iterator delIt = responsibility.getDelegations().iterator(); delIt.hasNext();) {
@@ -87,7 +87,7 @@ public class TestRouteModule implements RouteModule {
         return realRecipient;
     }
 
-    public ResponsibleParty resolveResponsibilityId(Long responsibilityId) throws ResourceUnavailableException, WorkflowException {
+    public ResponsibleParty resolveResponsibilityId(String responsibilityId) throws ResourceUnavailableException, WorkflowException {
         TestRecipient recipient = (TestRecipient)responsibilityMap.get(responsibilityId);
         if (recipient == null) {
             return null;

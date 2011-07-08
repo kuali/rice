@@ -20,7 +20,7 @@ public class RuleResponsibilityDTO implements java.io.Serializable {
 
     private static final long serialVersionUID = -5253556415865901457L;
 
-    private Long responsibilityId;
+    private String responsibilityId;
     private String actionRequestedCd;
     private Integer priority;
     private String approvePolicy;
@@ -82,11 +82,11 @@ public class RuleResponsibilityDTO implements java.io.Serializable {
         this.priority = priority;
     }
 
-    public Long getResponsibilityId() {
+    public String getResponsibilityId() {
         return responsibilityId;
     }
 
-    public void setResponsibilityId(Long responsibilityId) {
+    public void setResponsibilityId(String responsibilityId) {
         this.responsibilityId = responsibilityId;
     }
 

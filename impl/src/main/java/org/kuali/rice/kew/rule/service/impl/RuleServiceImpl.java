@@ -106,7 +106,7 @@ public class RuleServiceImpl implements RuleService {
         return ruleDAO.findRuleBaseValuesByName(name);
     }
 
-    public RuleBaseValues findDefaultRuleByRuleTemplateId(Long ruleTemplateId){
+    public RuleBaseValues findDefaultRuleByRuleTemplateId(String ruleTemplateId){
         return this.ruleDAO.findDefaultRuleByRuleTemplateId(ruleTemplateId);
     }
     public void setRuleResponsibilityDAO(RuleResponsibilityDAO ruleResponsibilityDAO) {
@@ -152,7 +152,7 @@ public class RuleServiceImpl implements RuleService {
         makeCurrent(findByDocumentId(documentId));
     }
 
-    public void makeCurrent(List rules) {
+    public void makeCurrent(List<RuleBaseValues> rules) {
         PerformanceLogger performanceLogger = new PerformanceLogger();
 
         boolean isGenerateRuleArs = true;
@@ -160,14 +160,12 @@ public class RuleServiceImpl implements RuleService {
         if (!StringUtils.isBlank(generateRuleArs)) {
             isGenerateRuleArs = KEWConstants.YES_RULE_CHANGE_AR_GENERATION_VALUE.equalsIgnoreCase(generateRuleArs);
         }
-        Set responsibilityIds = new HashSet();
-        HashMap rulesToSave = new HashMap();
+        Set<String> responsibilityIds = new HashSet<String>();
+        Map<String, RuleBaseValues> rulesToSave = new HashMap<String, RuleBaseValues>();
 
         Collections.sort(rules, new RuleDelegationSorter());
         boolean delegateFirst = false;
-        for (Iterator iter = rules.iterator(); iter.hasNext();) {
-            RuleBaseValues rule = (RuleBaseValues) iter.next();
-
+        for (RuleBaseValues rule : rules) {
             performanceLogger.log("Preparing rule: " + rule.getDescription());
 
             rule.setCurrentInd(Boolean.TRUE);
@@ -226,7 +224,7 @@ public class RuleServiceImpl implements RuleService {
                 }
             }
         }
-        Map<String, Long> notifyMap = new HashMap<String, Long>();
+        Map<String, String> notifyMap = new HashMap<String, String>();
         for (Iterator iterator = rulesToSave.values().iterator(); iterator.hasNext();) {
             RuleBaseValues rule = (RuleBaseValues) iterator.next();
             getRuleDAO().save(rule);
@@ -234,8 +232,8 @@ public class RuleServiceImpl implements RuleService {
             installNotification(rule, notifyMap);
         }
         LOG.info("Notifying rule cache of "+notifyMap.size()+" cache changes.");
-        for (Object element : notifyMap.values()) {
-            queueRuleCache((Long)element);
+        for (String element : notifyMap.values()) {
+            queueRuleCache(element);
         }
 
         getActionRequestService().updateActionRequestsForResponsibilityChange(responsibilityIds);
@@ -260,8 +258,8 @@ public class RuleServiceImpl implements RuleService {
         if (!StringUtils.isBlank(generateRuleArs)) {
             isGenerateRuleArs = KEWConstants.YES_RULE_CHANGE_AR_GENERATION_VALUE.equalsIgnoreCase(generateRuleArs);
         }
-        Set<Long> responsibilityIds = new HashSet<Long>();
-        Map<Long, RuleBaseValues> rulesToSave = new HashMap<Long, RuleBaseValues>();
+        Set<String> responsibilityIds = new HashSet<String>();
+        Map<String, RuleBaseValues> rulesToSave = new HashMap<String, RuleBaseValues>();
 
         Collections.sort(rules, new RuleDelegationSorter());
         for (Iterator iter = rules.iterator(); iter.hasNext();) {
@@ -305,15 +303,16 @@ public class RuleServiceImpl implements RuleService {
                 }
             }
         }
-        Map<String, Long> notifyMap = new HashMap<String, Long>();
+        Map<String, String> notifyMap = new HashMap<String, String>();
         for (RuleBaseValues rule : rulesToSave.values()) {
             getRuleDAO().save(rule);
             performanceLogger.log("Saved rule: " + rule.getRuleBaseValuesId());
             installNotification(rule, notifyMap);
         }
-        LOG.info("Notifying rule cache of "+notifyMap.size()+" cache changes.");
-        for (Object element : notifyMap.values()) {
-            queueRuleCache((Long)element);
+        if (LOG.isInfoEnabled())
+        	LOG.info("Notifying rule cache of "+notifyMap.size()+" cache changes.");
+        for (String element : notifyMap.values()) {
+            queueRuleCache(element);
         }
         if (isGenerateRuleArs) {
             getActionRequestService().updateActionRequestsForResponsibilityChange(responsibilityIds);
@@ -345,12 +344,12 @@ public class RuleServiceImpl implements RuleService {
         		isGenerateRuleArs = KEWConstants.YES_RULE_CHANGE_AR_GENERATION_VALUE.equalsIgnoreCase(generateRuleArs);
         	}
         }
-        Set<Long> responsibilityIds = new HashSet<Long>();
+        Set<String> responsibilityIds = new HashSet<String>();
 
 
         performanceLogger.log("Preparing rule: " + rule.getDescription());
 
-        Map<Long, RuleBaseValues> rulesToSave = new HashMap<Long, RuleBaseValues>();
+        Map<String, RuleBaseValues> rulesToSave = new HashMap<String, RuleBaseValues>();
         generateRuleNameIfNeeded(rule);
         assignResponsibilityIds(rule);
         rule.setCurrentInd(Boolean.TRUE);
@@ -377,7 +376,7 @@ public class RuleServiceImpl implements RuleService {
 
         boolean isRuleDelegation = ruleDelegation != null;
         
-        Map<String, Long> notifyMap = new HashMap<String, Long>(); 
+        Map<String, String> notifyMap = new HashMap<String, String>(); 
         
         for (RuleBaseValues ruleToSave : rulesToSave.values()) {        	
         	getRuleDAO().save(ruleToSave);
@@ -393,11 +392,11 @@ public class RuleServiceImpl implements RuleService {
         	installDelegationNotification(ruleDelegation.getResponsibilityId(), notifyMap);
         }
         LOG.info("Notifying rule cache of "+notifyMap.size()+" cache changes.");
-        for (Iterator iterator = notifyMap.values().iterator(); iterator.hasNext();) {
+        for (String value : notifyMap.values()) {
             if (isRuleDelegation) {
-                queueDelegationRuleCache((Long)iterator.next());
+                queueDelegationRuleCache(value);
             } else {
-                queueRuleCache((Long)iterator.next());
+                queueRuleCache(value);
             } 
         }
         
@@ -410,7 +409,7 @@ public class RuleServiceImpl implements RuleService {
     }
 
 
-    private void queueRuleCache(Long ruleId){
+    private void queueRuleCache(String ruleId){
 //      PersistedMessageBO ruleCache = new PersistedMessageBO();
 //      ruleCache.setQueuePriority(KEWConstants.ROUTE_QUEUE_RULE_CACHE_PRIORITY);
 //      ruleCache.setQueueDate(new Timestamp(new Date().getTime()));
@@ -433,7 +432,7 @@ public class RuleServiceImpl implements RuleService {
     /**
      * Ensure that we don't have any notification duplication.
      */
-    private void installNotification(RuleBaseValues rule, Map<String, Long> notifyMap) {
+    private void installNotification(RuleBaseValues rule, Map<String, String> notifyMap) {
     	// don't notify the cache if it's a "template" rule!
     	if (!rule.getTemplateRuleInd()) {
     		String key = getRuleCacheKey(rule.getRuleTemplateName(), rule.getDocTypeName());
@@ -443,12 +442,12 @@ public class RuleServiceImpl implements RuleService {
     	}
     }
 
-    private void queueDelegationRuleCache(Long responsibilityId) {
+    private void queueDelegationRuleCache(String responsibilityId) {
         RuleDelegationCacheProcessor ruleDelegationCacheProcessor = (RuleDelegationCacheProcessor) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("RuleDelegationCacheProcessorService"), null, null, null, null);
         ruleDelegationCacheProcessor.clearRuleDelegationFromCache(responsibilityId);    	
     }
     
-    private void installDelegationNotification(Long responsibilityId, Map<String, Long> notifyMap) {
+    private void installDelegationNotification(String responsibilityId, Map<String, String> notifyMap) {
     	// don't notify the cache if it's a "template" rule!
     	String key = getRuleDlgnCacheKey(responsibilityId);
     	if (!notifyMap.containsKey(key)) {
@@ -456,11 +455,11 @@ public class RuleServiceImpl implements RuleService {
     	}
     }
 
-	protected String getRuleDlgnCacheKey(Long responsibilityId) {
+	protected String getRuleDlgnCacheKey(String responsibilityId) {
 		return "RuleDlgnCache:" + responsibilityId;
 	}
 	
-    public RuleBaseValues getParentRule(Long ruleBaseValuesId) {
+    public RuleBaseValues getParentRule(String ruleBaseValuesId) {
         return getRuleDAO().getParentRule(ruleBaseValuesId);
     }
 
@@ -622,8 +621,8 @@ public class RuleServiceImpl implements RuleService {
      * Returns the responsibility IDs that were modified between the 2 given versions of the rule.  Any added
      * or removed responsibilities are also included in the returned Set.
      */
-    private Set<Long> getModifiedResponsibilityIds(RuleBaseValues oldRule, RuleBaseValues newRule) {
-        Map<Long, RuleResponsibility> modifiedResponsibilityMap = new HashMap<Long, RuleResponsibility>();
+    private Set<String> getModifiedResponsibilityIds(RuleBaseValues oldRule, RuleBaseValues newRule) {
+        Map<String, RuleResponsibility> modifiedResponsibilityMap = new HashMap<String, RuleResponsibility>();
         for (Object element : oldRule.getResponsibilities()) {
             RuleResponsibility responsibility = (RuleResponsibility) element;
             modifiedResponsibilityMap.put(responsibility.getResponsibilityId(), responsibility);
@@ -906,17 +905,17 @@ public class RuleServiceImpl implements RuleService {
         }
     }
 
-    public List findByDocumentId(String documentId) {
+    public List<RuleBaseValues> findByDocumentId(String documentId) {
         return getRuleDAO().findByDocumentId(documentId);
     }
 
-    public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, String groupId, String principalId,
+    public List<RuleBaseValues> search(String docTypeName, String ruleId, String ruleTemplateId, String ruleDescription, String groupId, String principalId,
             Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
         return getRuleDAO().search(docTypeName, ruleId, ruleTemplateId, ruleDescription, groupId, principalId, delegateRule,
                 activeInd, extensionValues, workflowIdDirective);
     }
 
-    public List search(String docTypeName, String ruleTemplateName, String ruleDescription, String groupId, String principalId,
+    public List<RuleBaseValues> searchByTemplate(String docTypeName, String ruleTemplateName, String ruleDescription, String groupId, String principalId,
             Boolean workgroupMember, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection<String> actionRequestCodes) {
 
         if ( (StringUtils.isEmpty(docTypeName)) &&
@@ -931,7 +930,7 @@ public class RuleServiceImpl implements RuleService {
         }
 
         RuleTemplate ruleTemplate = getRuleTemplateService().findByRuleTemplateName(ruleTemplateName);
-        Long ruleTemplateId = null;
+        String ruleTemplateId = null;
         if (ruleTemplate != null) {
             ruleTemplateId = ruleTemplate.getRuleTemplateId();
         }
@@ -963,15 +962,15 @@ public class RuleServiceImpl implements RuleService {
                 delegateRule,activeInd, extensionValues, actionRequestCodes);
     }
 
-    public void delete(Long ruleBaseValuesId) {
+    public void delete(String ruleBaseValuesId) {
         getRuleDAO().delete(ruleBaseValuesId);
     }
 
-    public RuleBaseValues findRuleBaseValuesById(Long ruleBaseValuesId) {
+    public RuleBaseValues findRuleBaseValuesById(String ruleBaseValuesId) {
         return getRuleDAO().findRuleBaseValuesById(ruleBaseValuesId);
     }
 
-    public RuleResponsibility findRuleResponsibility(Long responsibilityId) {
+    public RuleResponsibility findRuleResponsibility(String responsibilityId) {
         return getRuleDAO().findRuleResponsibility(responsibilityId);
     }
 
@@ -989,7 +988,7 @@ public class RuleServiceImpl implements RuleService {
             if (ruleTemplate == null) {
                 return Collections.EMPTY_LIST;
             }
-            Long ruleTemplateId = ruleTemplate.getRuleTemplateId();
+            String ruleTemplateId = ruleTemplate.getRuleTemplateId();
             //RuleListCache translatedRules = new RuleListCache();
             //translatedRules.setId(getRuleCacheKey(ruleTemplateName, documentType));
             rules = getRuleDAO().fetchAllCurrentRulesForTemplateDocCombination(ruleTemplateId, getDocGroupAndTypeList(documentType));
@@ -999,7 +998,7 @@ public class RuleServiceImpl implements RuleService {
             performanceLogger.log("Time to fetchRules by template " + ruleTemplateName + " cache refreshed.");
             return rules;
         } else {
-            Long ruleTemplateId = getRuleTemplateService().findByRuleTemplateName(ruleTemplateName).getRuleTemplateId();
+        	String ruleTemplateId = getRuleTemplateService().findByRuleTemplateName(ruleTemplateName).getRuleTemplateId();
             performanceLogger.log("Time to fetchRules by template " + ruleTemplateName + " not caching.");
             return getRuleDAO().fetchAllCurrentRulesForTemplateDocCombination(ruleTemplateId, getDocGroupAndTypeList(documentType));
         }
@@ -1010,7 +1009,7 @@ public class RuleServiceImpl implements RuleService {
     }
 
     public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType, Timestamp effectiveDate){
-        Long ruleTemplateId = getRuleTemplateService().findByRuleTemplateName(ruleTemplateName).getRuleTemplateId();
+        String ruleTemplateId = getRuleTemplateService().findByRuleTemplateName(ruleTemplateName).getRuleTemplateId();
         PerformanceLogger performanceLogger = new PerformanceLogger();
         performanceLogger.log("Time to fetchRules by template " + ruleTemplateName + " not caching.");
         return getRuleDAO().fetchAllCurrentRulesForTemplateDocCombination(ruleTemplateId, getDocGroupAndTypeList(documentType), effectiveDate);
@@ -1053,7 +1052,7 @@ public class RuleServiceImpl implements RuleService {
      *
      * In the case of a new delegate rule or a delegate rule edit, this method will take the id of it's parent.
      */
-    public String isLockedForRouting(Long currentRuleBaseValuesId) {
+    public String isLockedForRouting(String currentRuleBaseValuesId) {
         // checks for any other versions of the given rule, essentially, if this is a rule edit we want to see how many other
         // pending edits are out there
         List pendingRules = ruleDAO.findByPreviousVersionId(currentRuleBaseValuesId);
@@ -1170,11 +1169,11 @@ public class RuleServiceImpl implements RuleService {
         return ruleDAO;
     }
 
-    public void deleteRuleResponsibilityById(Long ruleResponsibilityId) {
+    public void deleteRuleResponsibilityById(String ruleResponsibilityId) {
         getRuleResponsibilityDAO().delete(ruleResponsibilityId);
     }
 
-    public RuleResponsibility findByRuleResponsibilityId(Long ruleResponsibilityId) {
+    public RuleResponsibility findByRuleResponsibilityId(String ruleResponsibilityId) {
         return getRuleResponsibilityDAO().findByRuleResponsibilityId(ruleResponsibilityId);
     }
 
@@ -1252,9 +1251,9 @@ public class RuleServiceImpl implements RuleService {
 		return true;
 	}
 
-    protected List<RuleBaseValues> loadRules(List<Long> ruleIds) {
+    protected List<RuleBaseValues> loadRules(List<String> ruleIds) {
         List<RuleBaseValues> rules = new ArrayList<RuleBaseValues>();
-        for (Long ruleId : ruleIds) {
+        for (String ruleId : ruleIds) {
             RuleBaseValues rule = KEWServiceLocator.getRuleService().findRuleBaseValuesById(ruleId);
             rules.add(rule);
         }
@@ -1417,7 +1416,7 @@ public class RuleServiceImpl implements RuleService {
         }
     }
 
-    public Long getDuplicateRuleId(RuleBaseValues rule) {
+    public String getDuplicateRuleId(RuleBaseValues rule) {
 
     	// TODO: this method is extremely slow, if we could implement a more optimized query here, that would help tremendously
 
@@ -1492,7 +1491,7 @@ public class RuleServiceImpl implements RuleService {
     	return savedRuleDelegations;
     }
 
-    public Long findResponsibilityIdForRule(String ruleName, String ruleResponsibilityName, String ruleResponsibilityType) {
+    public String findResponsibilityIdForRule(String ruleName, String ruleResponsibilityName, String ruleResponsibilityType) {
     	return getRuleDAO().findResponsibilityIdForRule(ruleName, ruleResponsibilityName, ruleResponsibilityType);
     }
 

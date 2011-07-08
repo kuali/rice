@@ -49,7 +49,7 @@ public class KualiWorkflowInfoImpl implements KualiWorkflowInfo {
         return workflowInfo;
     }
 
-    public Long getNewResponsibilityId() throws WorkflowException {
+    public String getNewResponsibilityId() throws WorkflowException {
     	return getWorkflowUtility().getNewResponsibilityId();
     }
 

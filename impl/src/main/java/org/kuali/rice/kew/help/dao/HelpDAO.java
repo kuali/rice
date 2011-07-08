@@ -24,7 +24,7 @@ import org.kuali.rice.kew.help.HelpEntry;
 public interface HelpDAO {
     public void save(HelpEntry helpEntry);
     public void deleteEntry(HelpEntry helpEntry);
-    public HelpEntry findById(Long helpId);
+    public HelpEntry findById(String helpId);
     public List search(HelpEntry helpEntry);
     public HelpEntry findByKey(String helpKey);
     

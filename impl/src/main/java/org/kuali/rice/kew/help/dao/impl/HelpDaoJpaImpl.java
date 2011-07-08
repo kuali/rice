@@ -21,6 +21,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.kew.help.HelpEntry;
@@ -45,14 +46,14 @@ public class HelpDaoJpaImpl implements HelpDAO {
         entityManager.remove(reattatched);
     }
     
-    public HelpEntry findById(Long helpId) {
+    public HelpEntry findById(String helpId) {
    		return (HelpEntry) entityManager.createNamedQuery("HelpEntry.FindById").setParameter("helpId", helpId).getSingleResult();
     }
     
     public List search(HelpEntry helpEntry) {
         Criteria crit = new Criteria("HelpEntry", "he");
        
-        if (helpEntry.getHelpId() != null && helpEntry.getHelpId().longValue() != 0) {
+        if (helpEntry.getHelpId() != null && !StringUtils.equals(helpEntry.getHelpId(),"0")) {
             crit.eq("helpId", helpEntry.getHelpId());
         }
 

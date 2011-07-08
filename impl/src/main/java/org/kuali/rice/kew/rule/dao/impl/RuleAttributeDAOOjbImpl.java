@@ -33,17 +33,17 @@ public class RuleAttributeDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
 		this.getPersistenceBrokerTemplate().store(ruleAttribute);
 	}
 
-	public void delete(Long ruleAttributeId) {
+	public void delete(String ruleAttributeId) {
 		this.getPersistenceBrokerTemplate().delete(findByRuleAttributeId(ruleAttributeId));
 	}
 
-	public RuleAttribute findByRuleAttributeId(Long ruleAttributeId) {
+	public RuleAttribute findByRuleAttributeId(String ruleAttributeId) {
 		RuleAttribute ruleAttribute = new RuleAttribute();
 		ruleAttribute.setRuleAttributeId(ruleAttributeId);
 		return (RuleAttribute) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(ruleAttribute));
 	}
 
-	public List findByRuleAttribute(RuleAttribute ruleAttribute) {
+	public List<RuleAttribute> findByRuleAttribute(RuleAttribute ruleAttribute) {
 		Criteria crit = new Criteria();
 		if (ruleAttribute.getName() != null) {
 			crit.addSql("UPPER(RULE_ATTRIB_NM) like '" + ruleAttribute.getName().toUpperCase() + "'");
@@ -54,12 +54,12 @@ public class RuleAttributeDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
 		if (ruleAttribute.getType() != null) {
 			crit.addSql("UPPER(RULE_ATTRIB_TYP) like '" + ruleAttribute.getType().toUpperCase() + "'");
 		}
-		return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleAttribute.class, crit));
+		return (List<RuleAttribute>) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleAttribute.class, crit));
 
 	}
 
-	public List getAllRuleAttributes() {
-		return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleAttribute.class));
+	public List<RuleAttribute> getAllRuleAttributes() {
+		return (List<RuleAttribute>) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleAttribute.class));
 	}
 
 	public RuleAttribute findByName(String name) {

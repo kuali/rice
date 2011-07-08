@@ -123,7 +123,7 @@ public class ActionListServiceImpl implements ActionListService {
         return getActionItemDAO().findByDocumentId(documentId);
     }
 
-    public Collection<ActionItem> findByActionRequestId(Long actionRequestId) {
+    public Collection<ActionItem> findByActionRequestId(String actionRequestId) {
         return getActionItemDAO().findByActionRequestId(actionRequestId);
     }
 
@@ -281,7 +281,7 @@ public class ActionListServiceImpl implements ActionListService {
         }
     }
 
-    public ActionItem findByActionItemId(Long actionItemId) {
+    public ActionItem findByActionItemId(String actionItemId) {
         return getActionItemDAO().findByActionItemId(actionItemId);
     }
 

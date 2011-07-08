@@ -39,10 +39,10 @@ public class ResponsibilityChangeProcessor implements KSBXMLService {
 		ParameterTranslator translator = new ParameterTranslator(message);
 		String[] parameters = translator.getParameters();
 
-		Set<Long> respIds = new HashSet<Long>();
+		Set<String> respIds = new HashSet<String>();
 
 		for(String parameter: parameters){
-			respIds.add(new Long(parameter));
+			respIds.add(parameter);
 		}
 
 		KEWServiceLocator.getActionRequestService().updateActionRequestsForResponsibilityChange(respIds);

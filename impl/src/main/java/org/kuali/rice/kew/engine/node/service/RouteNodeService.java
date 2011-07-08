@@ -37,8 +37,8 @@ public interface RouteNodeService {
     public void save(RouteNodeInstance nodeInstance);
     public void save(NodeState nodeState);
     public void save(Branch branch);
-    public RouteNode findRouteNodeById(Long nodeId);
-    public RouteNodeInstance findRouteNodeInstanceById(Long nodeInstanceId);
+    public RouteNode findRouteNodeById(String nodeId);
+    public RouteNodeInstance findRouteNodeInstanceById(String nodeInstanceId);
     
     /**
      * 
@@ -49,7 +49,7 @@ public interface RouteNodeService {
      * @param document
      * @return
      */
-    public RouteNodeInstance findRouteNodeInstanceById(Long nodeInstanceId, DocumentRouteHeaderValue document);
+    public RouteNodeInstance findRouteNodeInstanceById(String nodeInstanceId, DocumentRouteHeaderValue document);
 
     /**
      * Retrieves the initial node instances of the given document.  The initial node instances are 
@@ -83,7 +83,7 @@ public interface RouteNodeService {
      * The algorithm for locating the current nodes is as follows: If the document has
      * active node instances, return those, otherwise return it's terminal node instances.
      */
-    public List getCurrentNodeInstances(String documentId);
+    public List<RouteNodeInstance> getCurrentNodeInstances(String documentId);
 
     public NodeState findNodeState(Long nodeInstanceId, String key);
     public RouteNode findRouteNodeByName(String documentTypeId, String name);

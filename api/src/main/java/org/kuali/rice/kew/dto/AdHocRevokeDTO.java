@@ -37,26 +37,27 @@ public class AdHocRevokeDTO implements java.io.Serializable {
 
 	private static final long serialVersionUID = 7650456194747488114L;
 
-	private Long actionRequestId;
+	private String actionRequestId;
 	private String nodeName;
 	private String principalId;
 	private String groupId;
 	
 	public AdHocRevokeDTO() {}
 	
-	public AdHocRevokeDTO(Long actionRequestId) {
-		this.actionRequestId = actionRequestId;
-	}
+	// TODO: KULRICE-5329 - verify that this is in fact no longer used anyway  
+//	public AdHocRevokeDTO(Long actionRequestId) {
+//		this.actionRequestId = actionRequestId;
+//	}
 		
 	public AdHocRevokeDTO(String nodeName) {
 		this.nodeName = nodeName;
 	}
 
-	public Long getActionRequestId() {
+	public String getActionRequestId() {
 		return actionRequestId;
 	}
 
-	public void setActionRequestId(Long actionRequestId) {
+	public void setActionRequestId(String actionRequestId) {
 		this.actionRequestId = actionRequestId;
 	}
 

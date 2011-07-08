@@ -31,8 +31,8 @@ public interface RouteNodeDAO {
     public void save(RouteNodeInstance nodeInstance);
     public void save(NodeState nodeState);
     public void save(Branch branch);
-    public RouteNode findRouteNodeById(Long nodeId);
-    public RouteNodeInstance findRouteNodeInstanceById(Long nodeInstanceId);
+    public RouteNode findRouteNodeById(String nodeId);
+    public RouteNodeInstance findRouteNodeInstanceById(String nodeInstanceId);
     public List<RouteNodeInstance> getActiveNodeInstances(String documentId);
     public List<RouteNodeInstance> getTerminalNodeInstances(String documentId);
     public List getInitialNodeInstances(String documentId);

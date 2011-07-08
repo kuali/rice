@@ -84,7 +84,7 @@ public class RouteModuleRemoteAdapter implements RouteModule {
         }
     }
 
-    public ResponsibleParty resolveResponsibilityId(Long responsibilityId) throws WorkflowException {
+    public ResponsibleParty resolveResponsibilityId(String responsibilityId) throws WorkflowException {
         try {
             return DTOConverter.convertResponsiblePartyVO(routeModule.resolveResponsibilityId(responsibilityId));
         } catch (RemoteException e) {

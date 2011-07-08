@@ -33,11 +33,11 @@ public class NoteServiceImpl implements NoteService {
 
 	private AttachmentService attachmentService;
 
-	public Note getNoteByNoteId(Long noteId) {
+	public Note getNoteByNoteId(String noteId) {
 		return getNoteDAO().getNoteByNoteId(noteId);
 	}
 
-	public List getNotesByDocumentId(String documentId) {
+	public List<Note> getNotesByDocumentId(String documentId) {
 		return getNoteDAO().getNotesByDocumentId(documentId);
 	}
 
@@ -95,7 +95,7 @@ public class NoteServiceImpl implements NoteService {
 
 	}
 
-	public Attachment findAttachment(Long attachmentId) {
+	public Attachment findAttachment(String attachmentId) {
 		return noteDAO.findAttachment(attachmentId);
 	}
 

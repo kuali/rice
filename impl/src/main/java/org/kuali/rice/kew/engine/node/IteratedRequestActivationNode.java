@@ -265,7 +265,7 @@ public class IteratedRequestActivationNode implements SimpleNode {
         if (!context.isSimulation()) {
             KEWServiceLocator.getActionRequestService().saveActionRequest(actionRequest);
         } else {
-            actionRequest.setActionRequestId(new Long(generatedRequestPriority++));
+            actionRequest.setActionRequestId(String.valueOf(generatedRequestPriority++));
             context.getEngineState().getGeneratedRequests().add(actionRequest);    
         }
         

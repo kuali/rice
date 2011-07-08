@@ -28,7 +28,7 @@ public class NoteDTO implements Serializable{
 	
 	static final long serialVersionUID = 3278600875270364172L;	
 	
-	private Long noteId;
+	private String noteId;
     private String documentId;
     private String noteAuthorWorkflowId;
     private Calendar noteCreateDate;
@@ -53,10 +53,10 @@ public class NoteDTO implements Serializable{
 	public void setNoteCreateDate(Calendar noteCreateDate) {
 		this.noteCreateDate = noteCreateDate;
 	}
-	public Long getNoteId() {
+	public String getNoteId() {
 		return noteId;
 	}
-	public void setNoteId(Long noteId) {
+	public void setNoteId(String noteId) {
 		this.noteId = noteId;
 	}
 	public String getNoteText() {

@@ -28,6 +28,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.WorkflowInfo;
@@ -49,7 +50,7 @@ public class SuperUserForm extends KewRoutingKualiForm {
     private String destNodeName;
     private String returnDestNodeName;
     private String action;
-    private List actionRequests = new ArrayList();
+    private List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
     private String actionTakenActionRequestId;
     private String actionTakenNetworkId;
     private String actionTakenWorkGroupId;
@@ -125,11 +126,11 @@ public class SuperUserForm extends KewRoutingKualiForm {
         this.action = action;
     }
 
-    public List getActionRequests() {
+    public List<ActionRequestValue> getActionRequests() {
         return actionRequests;
     }
 
-    public void setActionRequests(List actionRequests) {
+    public void setActionRequests(List<ActionRequestValue> actionRequests) {
         this.actionRequests = actionRequests;
     }
 

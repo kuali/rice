@@ -16,14 +16,15 @@
  */
 package org.kuali.rice.kew.rule.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
-import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.dao.RuleTemplateDAO;
@@ -34,7 +35,7 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 public class RuleTemplateDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleTemplateDAO {
 
 
-    public List findAll() {
+    public List<RuleTemplate> findAll() {
         QueryByCriteria query = new QueryByCriteria(RuleTemplate.class);
         query.addOrderByAscending("name");
         return (List)this.getPersistenceBrokerTemplate().getCollectionByQuery(query);
@@ -53,7 +54,7 @@ public class RuleTemplateDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
         return null;
     }
 
-    public List findByRuleTemplate(RuleTemplate ruleTemplate) {
+    public List<RuleTemplate> findByRuleTemplate(RuleTemplate ruleTemplate) {
         Criteria crit = new Criteria();
         if (ruleTemplate.getName() != null) {
           crit.addSql("UPPER(RULE_TMPL_NM) like '"+ ruleTemplate.getName().toUpperCase() +"'");
@@ -61,14 +62,14 @@ public class RuleTemplateDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
         if (ruleTemplate.getDescription() != null) {
           crit.addSql("UPPER(RULE_TMPL_DESC) like '"+ ruleTemplate.getDescription().toUpperCase()+"'");
         }
-        return (List)this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleTemplate.class, crit));
+        return new ArrayList<RuleTemplate>(this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleTemplate.class, crit)));
     }
 
-    public void delete(Long ruleTemplateId) {
+    public void delete(String ruleTemplateId) {
     	this.getPersistenceBrokerTemplate().delete(findByRuleTemplateId(ruleTemplateId));
     }
 
-    public RuleTemplate findByRuleTemplateId(Long ruleTemplateId) {
+    public RuleTemplate findByRuleTemplateId(String ruleTemplateId) {
         Criteria crit = new Criteria();
         crit.addEqualTo("ruleTemplateId", ruleTemplateId);
         return (RuleTemplate) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(RuleTemplate.class, crit));
@@ -78,10 +79,10 @@ public class RuleTemplateDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
     	this.getPersistenceBrokerTemplate().store(ruleTemplate);
     }
 
-    public Long getNextRuleTemplateId() {
-        return (Long)this.getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
+    public String getNextRuleTemplateId() {
+        return (String)this.getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
             public Object doInPersistenceBroker(PersistenceBroker broker) {
-            	  return getPlatform().getNextValSQL("KREW_RTE_TMPL_S", broker);
+            	  return String.valueOf(getPlatform().getNextValSQL("KREW_RTE_TMPL_S", broker));
             }
         });
     }

@@ -72,7 +72,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 
     private ActionRequestDAO actionRequestDAO;
 
-    public ActionRequestValue findByActionRequestId(Long actionRequestId) {
+    public ActionRequestValue findByActionRequestId(String actionRequestId) {
         return getActionRequestDAO().getActionRequestByActionRequestId(actionRequestId);
     }
 
@@ -303,7 +303,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 
     private void processResponsibilityId(ActionRequestValue actionRequest) {
     	if (actionRequest.getResolveResponsibility()) {
-	        Long responsibilityId = actionRequest.getResponsibilityId();
+	        String responsibilityId = actionRequest.getResponsibilityId();
 	        try {
 	            RouteModule routeModule = KEWServiceLocator.getRouteModuleService().findRouteModule(actionRequest);
 	            if (responsibilityId != null && actionRequest.isRouteModuleRequest()) {
@@ -474,25 +474,25 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     }
 
     public List<ActionRequestValue> getRootRequests(Collection<ActionRequestValue> actionRequests) {
-            Set<ActionRequestValue> unsavedRequests = new HashSet<ActionRequestValue>();
-            Map<Long, ActionRequestValue> requestMap = new HashMap<Long, ActionRequestValue>();
-        for (ActionRequestValue actionRequest1 : actionRequests)
-        {
-            ActionRequestValue actionRequest = (ActionRequestValue) actionRequest1;
-            ActionRequestValue rootRequest = getRoot(actionRequest);
-            if (rootRequest.getActionRequestId() != null)
-            {
-                requestMap.put(rootRequest.getActionRequestId(), rootRequest);
-            } else
-            {
-                unsavedRequests.add(rootRequest);
-            }
-        }
-            List<ActionRequestValue> requests = new ArrayList<ActionRequestValue>();
-            requests.addAll(requestMap.values());
-            requests.addAll(unsavedRequests);
-            return requests;
-        }
+    	Set<ActionRequestValue> unsavedRequests = new HashSet<ActionRequestValue>();
+    	Map<String, ActionRequestValue> requestMap = new HashMap<String, ActionRequestValue>();
+    	for (ActionRequestValue actionRequest1 : actionRequests)
+    	{
+    		ActionRequestValue actionRequest = (ActionRequestValue) actionRequest1;
+    		ActionRequestValue rootRequest = getRoot(actionRequest);
+    		if (rootRequest.getActionRequestId() != null)
+    		{
+    			requestMap.put(rootRequest.getActionRequestId(), rootRequest);
+    		} else
+    		{
+    			unsavedRequests.add(rootRequest);
+    		}
+    	}
+    	List<ActionRequestValue> requests = new ArrayList<ActionRequestValue>();
+    	requests.addAll(requestMap.values());
+    	requests.addAll(unsavedRequests);
+    	return requests;
+    }
 
     public ActionRequestValue getRoot(ActionRequestValue actionRequest) {
         if (actionRequest == null) {
@@ -558,7 +558,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 		return filteredActionRequests;
 	}
 
-    public void updateActionRequestsForResponsibilityChange(Set<Long> responsibilityIds) {
+    public void updateActionRequestsForResponsibilityChange(Set<String> responsibilityIds) {
     	PerformanceLogger performanceLogger = null;
     	if ( LOG.isInfoEnabled() ) {
     		performanceLogger = new PerformanceLogger();
@@ -640,19 +640,19 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     }
 
 
-    public List findByDocumentIdIgnoreCurrentInd(String documentId) {
+    public List<ActionRequestValue> findByDocumentIdIgnoreCurrentInd(String documentId) {
         return getActionRequestDAO().findByDocumentIdIgnoreCurrentInd(documentId);
     }
 
-    public List findAllActionRequestsByDocumentId(String documentId) {
+    public List<ActionRequestValue> findAllActionRequestsByDocumentId(String documentId) {
         return getActionRequestDAO().findAllByDocId(documentId);
     }
 
-    public List findAllRootActionRequestsByDocumentId(String documentId) {
+    public List<ActionRequestValue> findAllRootActionRequestsByDocumentId(String documentId) {
         return getActionRequestDAO().findAllRootByDocId(documentId);
     }
 
-    public List findPendingByActionRequestedAndDocId(String actionRequestedCd, String documentId) {
+    public List<ActionRequestValue> findPendingByActionRequestedAndDocId(String actionRequestedCd, String documentId) {
         return getActionRequestDAO().findPendingByActionRequestedAndDocId(actionRequestedCd, documentId);
     }
 
@@ -673,31 +673,31 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     	return principalIds;
     }
 
-    public List findPendingByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel) {
+    public List<ActionRequestValue> findPendingByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel) {
         return getActionRequestDAO().findPendingByDocIdAtOrBelowRouteLevel(documentId, routeLevel);
     }
 
-    public List findPendingRootRequestsByDocId(String documentId) {
+    public List<ActionRequestValue> findPendingRootRequestsByDocId(String documentId) {
         return getRootRequests(findPendingByDoc(documentId));
     }
 
-    public List findPendingRootRequestsByDocIdAtRouteNode(String documentId, Long nodeInstanceId) {
+    public List<ActionRequestValue> findPendingRootRequestsByDocIdAtRouteNode(String documentId, String nodeInstanceId) {
         return getActionRequestDAO().findPendingRootRequestsByDocIdAtRouteNode(documentId, nodeInstanceId);
     }
 
-    public List findRootRequestsByDocIdAtRouteNode(String documentId, Long nodeInstanceId) {
+    public List<ActionRequestValue> findRootRequestsByDocIdAtRouteNode(String documentId, String nodeInstanceId) {
         return getActionRequestDAO().findRootRequestsByDocIdAtRouteNode(documentId, nodeInstanceId);
     }
 
-    public List findPendingRootRequestsByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel) {
+    public List<ActionRequestValue> findPendingRootRequestsByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel) {
         return getActionRequestDAO().findPendingRootRequestsByDocIdAtOrBelowRouteLevel(documentId, routeLevel);
     }
 
-    public List findPendingRootRequestsByDocIdAtRouteLevel(String documentId, Integer routeLevel) {
+    public List<ActionRequestValue> findPendingRootRequestsByDocIdAtRouteLevel(String documentId, Integer routeLevel) {
         return getActionRequestDAO().findPendingRootRequestsByDocIdAtRouteLevel(documentId, routeLevel);
     }
 
-    public List findPendingRootRequestsByDocumentType(String documentTypeId) {
+    public List<ActionRequestValue> findPendingRootRequestsByDocumentType(String documentTypeId) {
         return getActionRequestDAO().findPendingRootRequestsByDocumentType(documentTypeId);
     }
 
@@ -710,11 +710,11 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         getActionRequestDAO().saveActionRequest(actionRequest);
     }
 
-    public List findPendingByDoc(String documentId) {
+    public List<ActionRequestValue> findPendingByDoc(String documentId) {
         return getActionRequestDAO().findAllPendingByDocId(documentId);
     }
 
-    public List findPendingByDocRequestCdRouteLevel(String documentId, String requestCode, Integer routeLevel) {
+    public List<ActionRequestValue> findPendingByDocRequestCdRouteLevel(String documentId, String requestCode, Integer routeLevel) {
         List<ActionRequestValue> requests = new ArrayList<ActionRequestValue>();
         for (Object object : getActionRequestDAO().findAllPendingByDocId(documentId))
         {
@@ -848,7 +848,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         actionRequestDAO.deleteByDocumentId(documentId);
     }
 
-    public void deleteByActionRequestId(Long actionRequestId) {
+    public void deleteByActionRequestId(String actionRequestId) {
         actionRequestDAO.delete(actionRequestId);
     }
 

@@ -67,9 +67,9 @@ public interface SearchableAttributeValue {
 
     public void setSearchableAttributeKey(String searchableAttributeKey);
 
-    public Long getSearchableAttributeValueId();
+    public String getSearchableAttributeValueId();
 
-    public void setSearchableAttributeValueId(Long searchableAttributeValueId);
+    public void setSearchableAttributeValueId(String searchableAttributeValueId);
 
     public Object getSearchableAttributeValue();
 }

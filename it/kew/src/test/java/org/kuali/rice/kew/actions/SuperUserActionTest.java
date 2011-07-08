@@ -207,7 +207,7 @@ public class SuperUserActionTest extends KEWTestCase {
 
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), generateDummyEnrouteDocument("ewestfal").getDocumentId());
         try {
-            Long actionRequestId = null;
+        	String actionRequestId = null;
             // get actionRequestId to use... there should only be one active action request
             ActionRequestDTO[] actionRequests = new WorkflowInfo().getActionRequests(document.getDocumentId());
             for (int i = 0; i < actionRequests.length; i++) {

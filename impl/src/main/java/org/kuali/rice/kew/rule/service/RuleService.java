@@ -52,27 +52,27 @@ public interface RuleService extends XmlLoader, XmlExporter {
     //public void save(RuleBaseValues ruleBaseValues) throws Exception;
     public void save2(RuleBaseValues ruleBaseValues) throws Exception;
     public void validate2(RuleBaseValues ruleBaseValues, RuleDelegation ruleDelegation, List errors) throws Exception;
-    public void delete(Long ruleBaseValuesId);
-    public RuleBaseValues findRuleBaseValuesById(Long ruleBaseValuesId);
-    public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, String groupId, String principalId, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective);
-    public List search(String docTypeName, String ruleTemplateName, String ruleDescription, String groupId, String principalId, Boolean workgroupMember, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection<String> actionRequestCodes);
-    public RuleResponsibility findRuleResponsibility(Long responsibilityId);
-    public void deleteRuleResponsibilityById(Long ruleResponsibilityId);
-    public RuleResponsibility findByRuleResponsibilityId(Long ruleResponsibilityId);
+    public void delete(String ruleBaseValuesId);
+    public RuleBaseValues findRuleBaseValuesById(String ruleBaseValuesId);
+    public List<RuleBaseValues> search(String docTypeName, String ruleId, String ruleTemplateId, String ruleDescription, String groupId, String principalId, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective);
+    public List<RuleBaseValues> searchByTemplate(String docTypeName, String ruleTemplateName, String ruleDescription, String groupId, String principalId, Boolean workgroupMember, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection<String> actionRequestCodes);
+    public RuleResponsibility findRuleResponsibility(String responsibilityId);
+    public void deleteRuleResponsibilityById(String ruleResponsibilityId);
+    public RuleResponsibility findByRuleResponsibilityId(String ruleResponsibilityId);
     public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType);
     public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType, boolean ignoreCache);
     public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType, Timestamp effectiveDate);
-    public List findByDocumentId(String documentId);
+    public List<RuleBaseValues> findByDocumentId(String documentId);
     public void makeCurrent(String documentId);
     public void makeCurrent(RuleBaseValues rule, boolean isRetroactiveUpdatePermitted);
     public void makeCurrent(RuleDelegation ruleDelegation, boolean isRetroactiveUpdatePermitted);
     public List findRuleBaseValuesByResponsibilityReviewer(String reviewerName, String type);
     public List findRuleBaseValuesByResponsibilityReviewerTemplateDoc(String ruleTemplateName, String documentType, String reviewerName, String type);
-    public String isLockedForRouting(Long currentRuleBaseValuesId);
+    public String isLockedForRouting(String currentRuleBaseValuesId);
     public List fetchAllRules(boolean currentRules);
-    public RuleBaseValues findDefaultRuleByRuleTemplateId(Long ruleTemplateId);
+    public RuleBaseValues findDefaultRuleByRuleTemplateId(String ruleTemplateId);
     public void notifyCacheOfRuleChange(RuleBaseValues rule, DocumentType documentType);
-    public RuleBaseValues getParentRule(Long ruleBaseValuesId);
+    public RuleBaseValues getParentRule(String ruleBaseValuesId);
 
 
     /**
@@ -97,7 +97,7 @@ public interface RuleService extends XmlLoader, XmlExporter {
      * 
      * @return the id of the duplicate rule if one exists, null otherwise
      */
-    public Long getDuplicateRuleId(RuleBaseValues rule);
+    public String getDuplicateRuleId(RuleBaseValues rule);
         
     public RuleBaseValues saveRule(RuleBaseValues rule, boolean isRetroactiveUpdatePermitted);
     
@@ -107,5 +107,5 @@ public interface RuleService extends XmlLoader, XmlExporter {
     
     public List<RuleDelegation> saveRuleDelegations(List<RuleDelegation> ruleDelegationsToSave, boolean isRetroactiveUpdatePermitted);
     
-    public Long findResponsibilityIdForRule(String ruleName, String ruleResponsibilityName, String ruleResponsibilityType);
+    public String findResponsibilityIdForRule(String ruleName, String ruleResponsibilityName, String ruleResponsibilityType);
 }

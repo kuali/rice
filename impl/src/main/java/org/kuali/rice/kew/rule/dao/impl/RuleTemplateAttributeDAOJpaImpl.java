@@ -29,7 +29,7 @@ public class RuleTemplateAttributeDAOJpaImpl implements RuleTemplateAttributeDAO
 	private EntityManager entityManager;
 
 	public RuleTemplateAttribute findByRuleTemplateAttributeId(
-			Long ruleTemplateAttributeId) {
+			String ruleTemplateAttributeId) {
 		return entityManager.find(RuleTemplateAttribute.class,
 				ruleTemplateAttributeId);
 	}

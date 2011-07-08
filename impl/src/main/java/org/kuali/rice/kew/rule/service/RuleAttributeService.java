@@ -33,10 +33,10 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 public interface RuleAttributeService extends XmlLoader, XmlExporter {
 
     public void save(RuleAttribute ruleAttribute);
-    public void delete(Long ruleAttributeId);
-    public List findByRuleAttribute(RuleAttribute ruleAttribute);
-    public RuleAttribute findByRuleAttributeId(Long ruleAttributeId);
-    public List findAll();
+    public void delete(String ruleAttributeId);
+    public List<RuleAttribute> findByRuleAttribute(RuleAttribute ruleAttribute);
+    public RuleAttribute findByRuleAttributeId(String ruleAttributeId);
+    public List<RuleAttribute> findAll();
     public RuleAttribute findByName(String name);
     public RuleAttribute findByClassName(String className);
     

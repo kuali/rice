@@ -145,11 +145,11 @@ public class AddRuleDelegationTest extends KEWTestCase {
 		 *  now let's try editing our first delegate rule
 		 */
 
-		Long newRuleDelegationId = newRuleDelegation.getRuleDelegationId();
+		String newRuleDelegationId = newRuleDelegation.getRuleDelegationId();
 		// change the delegation type to secondary
 		newRuleDelegation.setDelegationType(DelegationType.SECONDARY.getCode());
 		saveNewVersion(newRuleDelegation);
-		Long newRuleDelegationId2 = newRuleDelegation.getRuleDelegationId();
+		String newRuleDelegationId2 = newRuleDelegation.getRuleDelegationId();
 
 		// let's check the original and verify that its been re-versioned
 		newRuleDelegation = KEWServiceLocator.getRuleDelegationService().findByRuleDelegationId(newRuleDelegationId);

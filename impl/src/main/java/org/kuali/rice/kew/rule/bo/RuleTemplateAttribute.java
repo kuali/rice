@@ -61,11 +61,11 @@ public class RuleTemplateAttribute extends PersistableBusinessObjectBase impleme
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="RULE_TMPL_ATTR_ID")
-	private Long ruleTemplateAttributeId;
+	private String ruleTemplateAttributeId;
     @Column(name="RULE_TMPL_ID", insertable=false, updatable=false)
-	private Long ruleTemplateId;
+	private String ruleTemplateId;
     @Column(name="RULE_ATTR_ID", insertable=false, updatable=false)
-	private Long ruleAttributeId;
+	private String ruleAttributeId;
     @Column(name="REQ_IND")
 	private Boolean required;
     @Column(name="ACTV_IND")
@@ -234,27 +234,27 @@ public class RuleTemplateAttribute extends PersistableBusinessObjectBase impleme
     	this.active = active;
     }
 
-    public Long getRuleAttributeId() {
-	return ruleAttributeId;
+    public String getRuleAttributeId() {
+    	return ruleAttributeId;
     }
 
-    public void setRuleAttributeId(Long ruleAttributeId) {
-	this.ruleAttributeId = ruleAttributeId;
+    public void setRuleAttributeId(String ruleAttributeId) {
+    	this.ruleAttributeId = ruleAttributeId;
     }
 
-    public Long getRuleTemplateAttributeId() {
-	return ruleTemplateAttributeId;
+    public String getRuleTemplateAttributeId() {
+    	return ruleTemplateAttributeId;
     }
 
-    public void setRuleTemplateAttributeId(Long ruleTemplateAttributeId) {
-	this.ruleTemplateAttributeId = ruleTemplateAttributeId;
+    public void setRuleTemplateAttributeId(String ruleTemplateAttributeId) {
+    	this.ruleTemplateAttributeId = ruleTemplateAttributeId;
     }
 
-    public Long getRuleTemplateId() {
-	return ruleTemplateId;
+    public String getRuleTemplateId() {
+    	return ruleTemplateId;
     }
 
-    public void setRuleTemplateId(Long ruleTemplateId) {
-	this.ruleTemplateId = ruleTemplateId;
+    public void setRuleTemplateId(String ruleTemplateId) {
+    	this.ruleTemplateId = ruleTemplateId;
     }
 }

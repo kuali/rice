@@ -37,7 +37,7 @@ public class ActionTakenDAOOjbImpl extends PersistenceBrokerDaoSupport implement
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionTakenDAOOjbImpl.class);
 
-    public ActionTakenValue load(Long id) {
+    public ActionTakenValue load(String id) {
         LOG.debug("Loading Action Taken for the given id " + id);
         Criteria crit = new Criteria();
         crit.addEqualTo("actionTakenId", id);
@@ -49,7 +49,7 @@ public class ActionTakenDAOOjbImpl extends PersistenceBrokerDaoSupport implement
         this.getPersistenceBrokerTemplate().delete(actionTaken);
     }
 
-    public ActionTakenValue findByActionTakenId(Long actionTakenId) {
+    public ActionTakenValue findByActionTakenId(String actionTakenId) {
         LOG.debug("finding Action Taken by actionTakenId " + actionTakenId);
         Criteria crit = new Criteria();
         crit.addEqualTo("actionTakenId", actionTakenId);

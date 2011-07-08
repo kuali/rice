@@ -33,7 +33,7 @@ public class RuleTemplateOptionDAOJpaImpl implements RuleTemplateOptionDAO {
    * (non-Javadoc)
    * @see org.kuali.rice.kew.rule.dao.RuleTemplateOptionDAO#delete(java.lang.Long)
    */
-  public void delete(Long ruleTemplateOptionId) {
+  public void delete(String ruleTemplateOptionId) {
 	  entityManager.remove(findByRuleTemplateOptionId(ruleTemplateOptionId));
   }
 
@@ -41,7 +41,7 @@ public class RuleTemplateOptionDAOJpaImpl implements RuleTemplateOptionDAO {
    * (non-Javadoc)
    * @see org.kuali.rice.kew.rule.dao.RuleTemplateOptionDAO#findByRuleTemplateOptionId(java.lang.Long)
    */
-  public RuleTemplateOption findByRuleTemplateOptionId(Long ruleTemplateOptionId) {
+  public RuleTemplateOption findByRuleTemplateOptionId(String ruleTemplateOptionId) {
 	  return entityManager.find(RuleTemplateOption.class, ruleTemplateOptionId);
   }
   

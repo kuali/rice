@@ -61,7 +61,7 @@ public class ActionInvocationProcessorTest extends KEWTestCase {
 		assertNotNull(request);
 
 		String user1PrincipalId = getPrincipalIdForName("user1");
-        Long actionItemID = Long.parseLong(request.getDocumentId().trim());
+		String actionItemID = request.getDocumentId().trim();
 
 		new ActionInvocationProcessor().invokeAction(user1PrincipalId, request.getDocumentId(), new ActionInvocation(actionItemID, request.getActionRequested()));
 		//do it again and make sure we don't have a blow up

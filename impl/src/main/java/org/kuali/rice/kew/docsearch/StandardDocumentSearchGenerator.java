@@ -1627,8 +1627,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     		
         	String searchCriteriaRouteNodeName = "";
         	try {
-        		long docRouteLevelLong = Long.parseLong(docRouteLevel);
-        		RouteNode searchCriteriaRouteNode = KEWServiceLocator.getRouteNodeService().findRouteNodeById(docRouteLevelLong);
+        		RouteNode searchCriteriaRouteNode = KEWServiceLocator.getRouteNodeService().findRouteNodeById(docRouteLevel);
         		
         		if (searchCriteriaRouteNode != null) {
         			searchCriteriaRouteNodeName = searchCriteriaRouteNode.getRouteNodeName();

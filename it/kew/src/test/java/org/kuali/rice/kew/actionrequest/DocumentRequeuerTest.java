@@ -54,11 +54,11 @@ public class DocumentRequeuerTest extends KEWTestCase {
        List<ActionRequest> requests = document.getRootActionRequests();
        assertEquals("Should be 2 requests.", 2, requests.size());
        // save off request ids
+
        Set<String> requestIds = new HashSet<String>();
-        for (ActionRequest request : requests)
-        {
-            requestIds.add(request.getId());
-        }
+       for (ActionRequest request : requests) {
+    	   requestIds.add(request.getId());
+       }
 
        DocumentRouteHeaderValue documentH = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId());
        DocumentRequeuerService documentRequeuer = MessageServiceNames.getDocumentRequeuerService(documentH.getDocumentType().getApplicationId(), documentH.getDocumentId(), 0);

@@ -57,7 +57,7 @@ public class NoteServiceImpl implements NoteService {
 		if (StringUtils.isBlank(noteId)) {
 			throw new RiceIllegalArgumentException("noteId was null or blank");
 		}
-		org.kuali.rice.kew.notes.Note noteBo = getNoteDao().getNoteByNoteId(Long.valueOf(noteId));
+		org.kuali.rice.kew.notes.Note noteBo = getNoteDao().getNoteByNoteId(noteId);
 		return org.kuali.rice.kew.notes.Note.to(noteBo);
 	}
 
@@ -108,7 +108,7 @@ public class NoteServiceImpl implements NoteService {
 		if (StringUtils.isBlank(noteId)) {
 			throw new RiceIllegalArgumentException("noteId was null or blank");
 		}
-		org.kuali.rice.kew.notes.Note noteBo = getNoteDao().getNoteByNoteId(Long.valueOf(noteId));
+		org.kuali.rice.kew.notes.Note noteBo = getNoteDao().getNoteByNoteId(noteId);
 		if (noteBo == null) {
 			throw new RiceIllegalArgumentException("A note does not exist for the given note id: " + noteId);
 		}

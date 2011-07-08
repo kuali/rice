@@ -297,7 +297,7 @@ public class AdHocRouteTest extends KEWTestCase {
     	docId = doc.getDocumentId();
     	doc.route("");
     	// find all current request and get a list of ids for elimination purposes later
-    	List<Long> oldRequestIds = new ArrayList<Long>();
+    	List<String> oldRequestIds = new ArrayList<String>();
         for (Iterator iterator = KEWServiceLocator.getActionRequestService().findAllActionRequestsByDocumentId(doc.getDocumentId()).iterator(); iterator.hasNext();) {
             oldRequestIds.add(((ActionRequestValue) iterator.next()).getActionRequestId());
         }

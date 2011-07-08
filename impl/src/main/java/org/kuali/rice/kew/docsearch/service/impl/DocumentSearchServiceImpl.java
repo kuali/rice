@@ -466,7 +466,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		savedSearchString.append(criteria.getApprover() == null || "".equals(criteria.getApprover()) ? "" : ",,approver=" + criteria.getApprover());
 
         if (! org.apache.commons.lang.StringUtils.isEmpty(criteria.getDocRouteNodeId()) && !criteria.getDocRouteNodeId().equals("-1")) {
-            RouteNode routeNode = KEWServiceLocator.getRouteNodeService().findRouteNodeById(new Long(criteria.getDocRouteNodeId()));
+            RouteNode routeNode = KEWServiceLocator.getRouteNodeService().findRouteNodeById(criteria.getDocRouteNodeId());
             // this block will result in NPE if routeNode is not found; is the intent to preserve the requested criteria? if so, then the following line fixes it
             //savedSearchString.append(",,docRouteNodeId=" + (routeNode != null ? routeNode.getRouteNodeId() : criteria.getDocRouteNodeId()));
             savedSearchString.append(",,docRouteNodeId=");

@@ -19,6 +19,7 @@ package org.kuali.rice.kew.dto;
 import java.io.Serializable;
 import java.util.Calendar;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
 import org.kuali.rice.kew.api.action.RecipientType;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -37,17 +38,17 @@ public class ActionRequestDTO implements Serializable {
     private final static String COMPLETE_REQ = "C";
 
     static final long serialVersionUID = 1074824814950100121L;
-    private Long actionRequestId;
+    private String actionRequestId;
     private String actionRequested;
     private String status;
     private Boolean currentIndicator = Boolean.TRUE;
     private Calendar dateCreated;
-    private Long responsibilityId;
+    private String responsibilityId;
     private String documentId;
     private String routeMethodName;
     private Integer priority;
     private String annotation;
-    private Long actionTakenId;
+    private String actionTakenId;
     private String groupId;    
     private String recipientTypeCd;
     private String approvePolicy;
@@ -58,13 +59,13 @@ public class ActionRequestDTO implements Serializable {
     private Boolean forceAction;
     private String principalId;
     private String delegationType;
-    private Long parentActionRequestId;
+    private String parentActionRequestId;
     private String qualifiedRoleName;
     private String qualifiedRoleNameLabel;
     private ActionRequestDTO[] childrenRequests;
     private ActionTakenDTO actionTaken;
     private String nodeName;
-    private Long nodeInstanceId;
+    private String nodeInstanceId;
     private String requestLabel;
 
     public ActionRequestDTO() {}
@@ -81,11 +82,11 @@ public class ActionRequestDTO implements Serializable {
         return actionRequested;
     }
 
-    public Long getActionRequestId() {
+    public String getActionRequestId() {
         return actionRequestId;
     }
 
-    public Long getActionTakenId() {
+    public String getActionTakenId() {
         return actionTakenId;
     }
 
@@ -109,7 +110,7 @@ public class ActionRequestDTO implements Serializable {
         return responsibilityDesc;
     }
 
-    public Long getResponsibilityId() {
+    public String getResponsibilityId() {
         return responsibilityId;
     }
 
@@ -145,7 +146,7 @@ public class ActionRequestDTO implements Serializable {
         this.documentId = documentId;
     }
 
-    public void setResponsibilityId(Long responsibilityId) {
+    public void setResponsibilityId(String responsibilityId) {
         this.responsibilityId = responsibilityId;
     }
 
@@ -169,11 +170,11 @@ public class ActionRequestDTO implements Serializable {
         this.annotation = annotation;
     }
 
-    public void setActionTakenId(Long actionTakenId) {
+    public void setActionTakenId(String actionTakenId) {
         this.actionTakenId = actionTakenId;
     }
 
-    public void setActionRequestId(Long actionRequestId) {
+    public void setActionRequestId(String actionRequestId) {
         this.actionRequestId = actionRequestId;
     }
 
@@ -280,10 +281,10 @@ public class ActionRequestDTO implements Serializable {
         this.delegationType = delegationType;
     }
 
-    public Long getParentActionRequestId() {
+    public String getParentActionRequestId() {
         return parentActionRequestId;
     }
-    public void setParentActionRequestId(Long parentActionRequestId) {
+    public void setParentActionRequestId(String parentActionRequestId) {
         this.parentActionRequestId = parentActionRequestId;
     }
 
@@ -333,11 +334,11 @@ public class ActionRequestDTO implements Serializable {
         this.nodeName = nodeName;
     }
 
-    public Long getNodeInstanceId() {
+    public String getNodeInstanceId() {
         return nodeInstanceId;
     }
 
-    public void setNodeInstanceId(Long nodeInstanceId) {
+    public void setNodeInstanceId(String nodeInstanceId) {
         this.nodeInstanceId = nodeInstanceId;
     }
     
@@ -362,7 +363,9 @@ public class ActionRequestDTO implements Serializable {
     }
 
     public boolean isRouteModuleRequest() {
-    	return getResponsibilityId().longValue() > 0;
+    	// FIXME: KULRICE-5329 : this is probably not the best way to replace the logic below (commented out)
+    	return !StringUtils.equals(getResponsibilityId(), "0") && !getResponsibilityId().startsWith("-");
+//    	return getResponsibilityId().longValue() > 0;
     }
 
 	public String getRequestLabel() {

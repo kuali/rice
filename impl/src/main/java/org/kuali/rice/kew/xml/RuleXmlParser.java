@@ -171,7 +171,7 @@ public class RuleXmlParser {
     	if (parentResponsibilityElement == null) {
     		throw new XmlException("parent responsibility was not defined");
     	}
-    	Long parentResponsibilityId = parseParentResponsibilityId(parentResponsibilityElement);
+    	String parentResponsibilityId = parseParentResponsibilityId(parentResponsibilityElement);
     	String delegationType = element.getChildText(DELEGATION_TYPE, element.getNamespace());
         if (delegationType == null || !(delegationType.equals(DelegationType.PRIMARY.getCode()) || delegationType.equals(DelegationType.SECONDARY.getCode()))) {
             throw new XmlException("Invalid delegation type specified for delegate rule '" + delegationType + "'");
@@ -188,10 +188,10 @@ public class RuleXmlParser {
     	return ruleDelegation;
     }
     
-    private Long parseParentResponsibilityId(Element element) throws XmlException {
+    private String parseParentResponsibilityId(Element element) throws XmlException {
     	String responsibilityId = element.getChildText(RESPONSIBILITY_ID, element.getNamespace());
     	if (!StringUtils.isBlank(responsibilityId)) {
-    		return Long.valueOf(responsibilityId);
+    		return responsibilityId;
     	}
     	String parentRuleName = element.getChildText(PARENT_RULE_NAME, element.getNamespace());
     	if (StringUtils.isBlank(parentRuleName)) {
@@ -205,7 +205,7 @@ public class RuleXmlParser {
     	if (ruleResponsibilityNameAndType == null) {
     		throw new XmlException("Could not locate a valid responsibility declaration for the parent responsibility.");
     	}
-    	Long parentResponsibilityId = KEWServiceLocator.getRuleService().findResponsibilityIdForRule(parentRuleName, 
+    	String parentResponsibilityId = KEWServiceLocator.getRuleService().findResponsibilityIdForRule(parentRuleName, 
     			ruleResponsibilityNameAndType.getRuleResponsibilityName(),
     			ruleResponsibilityNameAndType.getRuleResponsibilityType());
     	if (parentResponsibilityId == null) {
@@ -325,7 +325,7 @@ public class RuleXmlParser {
      * @throws XmlException if this incoming rule duplicates an existing rule
      */
     private void checkRuleForDuplicate(RuleBaseValues rule) throws XmlException {
-        Long ruleId = KEWServiceLocator.getRuleService().getDuplicateRuleId(rule);
+    	String ruleId = KEWServiceLocator.getRuleService().getDuplicateRuleId(rule);
         if (ruleId != null) {
         	throw new XmlException("Rule '" + rule.getDescription() + "' on doc '" + rule.getDocTypeName() + "' is a duplicate of rule with rule Id " + ruleId);
         }

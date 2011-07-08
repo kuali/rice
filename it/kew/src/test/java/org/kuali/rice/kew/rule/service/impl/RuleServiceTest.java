@@ -381,7 +381,7 @@ public class RuleServiceTest extends KEWTestCase {
     @Test
     public void testRetrievalOfRulesWithoutResponsibilities() throws Exception {
     	loadXmlFile("org/kuali/rice/kew/rule/RulesWithoutResponsibilities.xml");
-    	final Long NULL_ID = null;
+    	final String NULL_ID = null;
     	final String[] expectedRuleNames = {"NoResponsibilitiesRule1", "NoResponsibilitiesRule2", "NoResponsibilitiesRule3"};
     	final String[] expectedRuleDocTypes = {"RiceDocument.RuleDocument", "RiceDocument.child1", "RiceDocument.child1child"};
     	final String[] expectedRuleDescriptions = {"A rule with no responsibilities", "Another rule without responsibilities", "A third rule lacking responsibilities"};

@@ -79,7 +79,7 @@ public class SearchableAttributeFloatValue implements SearchableAttributeValue, 
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="DOC_HDR_EXT_FLT_ID")
-	private Long searchableAttributeValueId;
+	private String searchableAttributeValueId;
     @Column(name="KEY_CD")
 	private String searchableAttributeKey;
     @Column(name="VAL")
@@ -291,11 +291,11 @@ public class SearchableAttributeFloatValue implements SearchableAttributeValue, 
         }
     }
 
-    public Long getSearchableAttributeValueId() {
+    public String getSearchableAttributeValueId() {
         return searchableAttributeValueId;
     }
 
-    public void setSearchableAttributeValueId(Long searchableAttributeValueId) {
+    public void setSearchableAttributeValueId(String searchableAttributeValueId) {
         this.searchableAttributeValueId = searchableAttributeValueId;
     }
 

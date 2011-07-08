@@ -67,7 +67,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		}
 	}
 
-	public List fetchAllCurrentRulesForTemplateDocCombination(Long ruleTemplateId, List documentTypes) {
+	public List<RuleBaseValues> fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateId, List documentTypes) {
 		Criteria crit = new Criteria(RuleBaseValues.class.getName());
 		crit.in("docTypeName", documentTypes);
 		crit.eq("ruleTemplateId", ruleTemplateId);
@@ -80,7 +80,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
 	}
 
-	public List fetchAllCurrentRulesForTemplateDocCombination(Long ruleTemplateId, List documentTypes, Timestamp effectiveDate) {
+	public List<RuleBaseValues> fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateId, List documentTypes, Timestamp effectiveDate) {
 		Criteria crit = new Criteria(RuleBaseValues.class.getName());
 		crit.in("docTypeName", documentTypes);
 		crit.eq("ruleTemplateId", ruleTemplateId);
@@ -121,7 +121,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		return crit;
 	}
 
-	public List fetchAllRules(boolean currentRules) {
+	public List<RuleBaseValues> fetchAllRules(boolean currentRules) {
 		Criteria crit = new Criteria(RuleBaseValues.class.getName());
 		crit.eq("currentInd", new Boolean(currentRules));
 		crit.eq("templateRuleInd", Boolean.FALSE);
@@ -132,11 +132,11 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		return (List) query.toQuery().getResultList();
 	}
 
-	public void delete(Long ruleBaseValuesId) {
+	public void delete(String ruleBaseValuesId) {
 		entityManager.remove(entityManager.find(RuleBaseValues.class, ruleBaseValuesId));
 	}
 
-	public List findByDocumentId(String documentId) {
+	public List<RuleBaseValues> findByDocumentId(String documentId) {
 		Criteria crit = new Criteria(RuleBaseValues.class.getName());
 		crit.eq("documentId", documentId);
 		return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
@@ -152,7 +152,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
        	return (RuleBaseValues) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
     }
 
-	public RuleBaseValues findRuleBaseValuesById(Long ruleBaseValuesId) {
+	public RuleBaseValues findRuleBaseValuesById(String ruleBaseValuesId) {
 		if (ruleBaseValuesId == null) {
 			return null;
 		}
@@ -161,7 +161,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		return (RuleBaseValues) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
 	}
 
-	public List findRuleBaseValuesByResponsibilityReviewer(String reviewerName, String type) {
+	public List<RuleBaseValues> findRuleBaseValuesByResponsibilityReviewer(String reviewerName, String type) {
 		Criteria crit = new Criteria(RuleResponsibility.class.getName());
 		crit.eq("ruleResponsibilityName", reviewerName);
 		crit.eq("ruleResponsibilityType", type);
@@ -179,7 +179,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		return rules;
 	}
 
-	public List findRuleBaseValuesByResponsibilityReviewerTemplateDoc(String ruleTemplateName, String documentType, String reviewerName, String type) {
+	public List<RuleBaseValues> findRuleBaseValuesByResponsibilityReviewerTemplateDoc(String ruleTemplateName, String documentType, String reviewerName, String type) {
 	    Criteria crit = new Criteria(RuleResponsibility.class.getName());
 		crit.eq("ruleResponsibilityName", reviewerName);
 		crit.eq("ruleResponsibilityType", type);
@@ -211,7 +211,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 //		return (List) new QueryByObject(entityManager,ruleBaseValues).toQuery().getResultList();
 //	}
 
-	public RuleResponsibility findRuleResponsibility(Long responsibilityId) {
+	public RuleResponsibility findRuleResponsibility(String responsibilityId) {
 		Criteria crit = new Criteria(RuleResponsibility.class.getName());
 		crit.eq("responsibilityId", responsibilityId);
 		Collection responsibilities = new QueryByCriteria(entityManager, crit).toQuery().getResultList();
@@ -224,7 +224,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		return null;
 	}
 
-	public List search(String docTypeName, Long ruleId, Long ruleTemplateId, String ruleDescription, String groupId, String principalId, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
+	public List<RuleBaseValues> search(String docTypeName, String ruleId, String ruleTemplateId, String ruleDescription, String groupId, String principalId, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
         Criteria crit = getSearchCriteria(docTypeName, ruleTemplateId, ruleDescription, delegateRule, activeInd, extensionValues);
         if (ruleId != null) {
             crit.eq("ruleBaseValuesId", ruleId);
@@ -265,7 +265,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
 	}
 
-    public List search(String docTypeName, Long ruleTemplateId, String ruleDescription, Collection<String> workgroupIds, String workflowId, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection actionRequestCodes) {
+    public List<RuleBaseValues> search(String docTypeName, String ruleTemplateId, String ruleDescription, Collection<String> workgroupIds, String workflowId, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection actionRequestCodes) {
         Criteria crit = getSearchCriteria(docTypeName, ruleTemplateId, ruleDescription, delegateRule, activeInd, extensionValues);
         addResponsibilityCriteria(crit, workgroupIds, workflowId, actionRequestCodes, (workflowId != null), ((workgroupIds != null) && !workgroupIds.isEmpty()));
         //if (responsibilityCrit != null) {
@@ -338,7 +338,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
         //return responsibilityCrit;
     }
 
-    private Criteria getSearchCriteria(String docTypeName, Long ruleTemplateId, String ruleDescription, Boolean delegateRule, Boolean activeInd, Map extensionValues) {
+    private Criteria getSearchCriteria(String docTypeName, String ruleTemplateId, String ruleDescription, Boolean delegateRule, Boolean activeInd, Map extensionValues) {
         Criteria crit = new Criteria(RuleBaseValues.class.getName());
         crit.eq("currentInd", Boolean.TRUE);
         crit.eq("templateRuleInd", Boolean.FALSE);
@@ -427,13 +427,13 @@ public class RuleDAOJpaImpl implements RuleDAO {
 //		return responsibilityCrit;
 //	}
 
-	public List findByPreviousVersionId(Long previousVersionId) {
+	public List<RuleBaseValues> findByPreviousVersionId(String previousVersionId) {
 		Criteria crit = new Criteria(RuleBaseValues.class.getName());
 		crit.eq("previousVersionId", previousVersionId);
 		return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
 	}
 
-	public RuleBaseValues findDefaultRuleByRuleTemplateId(Long ruleTemplateId) {
+	public RuleBaseValues findDefaultRuleByRuleTemplateId(String ruleTemplateId) {
 		Criteria crit = new Criteria(RuleBaseValues.class.getName());
 		crit.eq("ruleTemplateId", ruleTemplateId);
 		crit.eq("templateRuleInd", Boolean.TRUE);
@@ -452,7 +452,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		// getPersistenceBroker().retrieveAllReferences(rule);
 	}
 
-	public RuleBaseValues getParentRule(Long ruleBaseValuesId) {
+	public RuleBaseValues getParentRule(String ruleBaseValuesId) {
 		Criteria criteria = new Criteria(RuleBaseValues.class.getName());
 		criteria.eq("currentInd", Boolean.TRUE);
 		criteria.eq("responsibilities.delegationRules.delegateRuleId", ruleBaseValuesId);
@@ -470,17 +470,18 @@ public class RuleDAOJpaImpl implements RuleDAO {
 	public List findOldDelegations(final RuleBaseValues oldRule, final RuleBaseValues newRule) {
 
 		Query q = entityManager.createNativeQuery(OLD_DELEGATIONS_SQL);
-		q.setParameter(1, oldRule.getRuleBaseValuesId().longValue());
-		q.setParameter(2, newRule.getRuleBaseValuesId().longValue());
+		q.setParameter(1, oldRule.getRuleBaseValuesId());
+		q.setParameter(2, newRule.getRuleBaseValuesId());
 		List oldDelegations = new ArrayList();
 		for(Object l:q.getResultList()){
-			oldDelegations.add(findRuleBaseValuesById((Long)l));
+			// FIXME: KULRICE-5201 - This used to be a cast by new Long(l) -- assuming that the Object here in result list is actually a string or is castable to string by .toString()
+			oldDelegations.add(findRuleBaseValuesById(String.valueOf(l)));
 		}
 		return oldDelegations;
 
 	}
 	
-	public Long findResponsibilityIdForRule(String ruleName, String ruleResponsibilityName, String ruleResponsibilityType) {
+	public String findResponsibilityIdForRule(String ruleName, String ruleResponsibilityName, String ruleResponsibilityType) {
 		Criteria crit = new Criteria(RuleResponsibility.class.getName());
 		crit.eq("ruleResponsibilityName", ruleResponsibilityName);
 		crit.eq("ruleResponsibilityType", ruleResponsibilityType);

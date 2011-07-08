@@ -27,11 +27,11 @@ public class RouteNodeInstanceDTO implements Serializable {
 
     private static final long serialVersionUID = -5456548621231617447L;
     
-    private Long routeNodeInstanceId;
+    private String routeNodeInstanceId;
     private String documentId;
-    private Long branchId;
-    private Long routeNodeId;
-    private Long processId;
+    private String branchId;
+    private String routeNodeId;
+    private String processId;
     private String name;
     private boolean active;
     private boolean complete;
@@ -45,10 +45,10 @@ public class RouteNodeInstanceDTO implements Serializable {
     public void setActive(boolean active) {
         this.active = active;
     }
-    public Long getBranchId() {
+    public String getBranchId() {
         return branchId;
     }
-    public void setBranchId(Long branchId) {
+    public void setBranchId(String branchId) {
         this.branchId = branchId;
     }
     public boolean isComplete() {
@@ -69,10 +69,10 @@ public class RouteNodeInstanceDTO implements Serializable {
     public void setInitial(boolean initial) {
         this.initial = initial;
     }
-    public Long getProcessId() {
+    public String getProcessId() {
         return processId;
     }
-    public void setProcessId(Long processId) {
+    public void setProcessId(String processId) {
         this.processId = processId;
     }
     public String getName() {
@@ -81,16 +81,16 @@ public class RouteNodeInstanceDTO implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-    public Long getRouteNodeId() {
+    public String getRouteNodeId() {
         return routeNodeId;
     }
-    public void setRouteNodeId(Long routeNodeId) {
+    public void setRouteNodeId(String routeNodeId) {
         this.routeNodeId = routeNodeId;
     }
-    public Long getRouteNodeInstanceId() {
+    public String getRouteNodeInstanceId() {
         return routeNodeInstanceId;
     }
-    public void setRouteNodeInstanceId(Long routeNodeInstanceId) {
+    public void setRouteNodeInstanceId(String routeNodeInstanceId) {
         this.routeNodeInstanceId = routeNodeInstanceId;
     }
     public StateDTO[] getState() {

@@ -333,7 +333,7 @@ public class RuleTemplateXmlParser {
                 ruleDelegationDefaults = new RuleDelegation();
                 ruleDelegationDefaults.setDelegationRuleBaseValues(ruleDefaults);
                 ruleDelegationDefaults.setDelegationType(delegationType);
-                ruleDelegationDefaults.setResponsibilityId(new Long(-1));
+                ruleDelegationDefaults.setResponsibilityId(KEWConstants.ADHOC_REQUEST_RESPONSIBILITY_ID);
             }
 
             // explicitly save the new rule delegation defaults and default rule
@@ -394,7 +394,7 @@ public class RuleTemplateXmlParser {
                 for (RuleTemplate rt: parsedRuleTemplates) {
                     if (delegateTemplateName.equalsIgnoreCase(rt.getName())) {
                         // set the expected next rule template id on the target delegateTemplate
-                        Long ruleTemplateId = KEWServiceLocator.getRuleTemplateService().getNextRuleTemplateId();
+                    	String ruleTemplateId = KEWServiceLocator.getRuleTemplateService().getNextRuleTemplateId();
                         rt.setRuleTemplateId(ruleTemplateId);
                         delegateTemplate = rt;
                         break;

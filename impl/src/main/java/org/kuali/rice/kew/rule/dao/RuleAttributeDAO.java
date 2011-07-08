@@ -23,11 +23,11 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 
 public interface RuleAttributeDAO {
 
-    public List findByRuleAttribute(RuleAttribute ruleAttribute);
+    public List<RuleAttribute> findByRuleAttribute(RuleAttribute ruleAttribute);
     public void save(RuleAttribute ruleAttribute);
-    public void delete(Long ruleAttributeId);
-    public RuleAttribute findByRuleAttributeId(Long ruleAttributeId);
-    public List getAllRuleAttributes();
+    public void delete(String ruleAttributeId);
+    public RuleAttribute findByRuleAttributeId(String ruleAttributeId);
+    public List<RuleAttribute> getAllRuleAttributes();
     public RuleAttribute findByName(String name);
     public RuleAttribute findByClassName(String classname);
 }

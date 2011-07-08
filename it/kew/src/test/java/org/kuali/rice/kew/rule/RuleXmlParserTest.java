@@ -187,8 +187,8 @@ public class RuleXmlParserTest extends KEWTestCase {
         RuleService ruleService = KEWServiceLocator.getRuleService();
         // let's grab the responsibility id from the original named rule
         RuleBaseValues rule = ruleService.getRuleByName("ANamedRule");
-        Long responsibilityId = rule.getResponsibilities().get(0).getResponsibilityId();
-        Long ruleId = rule.getRuleBaseValuesId();
+        String responsibilityId = rule.getResponsibilities().get(0).getResponsibilityId();
+        String ruleId = rule.getRuleBaseValuesId();
         Integer versionNumber = rule.getVersionNbr();
         
         loadXmlFile("UpdatedNamedRule.xml");

@@ -48,7 +48,7 @@ public class EmailMessageTestCaseCustomEmailAttribute implements CustomEmailAttr
 
     public void setActionRequestVO(ActionRequestDTO actionRequestVO) {
         this.actionRequestVO = actionRequestVO;
-        this.actionRequestVO.setActionRequestId(new Long(-1));
+        this.actionRequestVO.setActionRequestId("-1");
     }
 
     public void setRouteHeaderVO(RouteHeaderDTO routeHeaderVO) {

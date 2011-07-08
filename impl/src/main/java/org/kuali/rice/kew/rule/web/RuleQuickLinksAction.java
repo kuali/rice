@@ -117,7 +117,7 @@ public class RuleQuickLinksAction extends KewKualiAction {
     public ActionForward addDelegationRule(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	ActionForward result = null;
     	
-        Long ruleTemplateId = new Long(request.getParameter("delegationRuleBaseValues.ruleTemplate.ruleTemplateId"));
+    	String ruleTemplateId = request.getParameter("delegationRuleBaseValues.ruleTemplate.ruleTemplateId");
         String docTypeName = request.getParameter("delegationRuleBaseValues.documentType.name");
         List rules = getRuleService().search(docTypeName, null, ruleTemplateId, "", null, null, Boolean.FALSE, Boolean.TRUE, new HashMap(), null);
         
@@ -301,7 +301,7 @@ public class RuleQuickLinksAction extends KewKualiAction {
 		public String getRouteMethodName() {
 			return this.baseNode.getRouteMethodName();
 		}
-		public Long getRouteNodeId() {
+		public String getRouteNodeId() {
 			return this.baseNode.getRouteNodeId();
 		}
 		public String getRouteNodeName() {

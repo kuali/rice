@@ -294,7 +294,7 @@ public class RoutingReportAction extends KewKualiAction {
 			actionRequest.setNodeInstance(routeNode);
 			actionRequest.setRouteLevel(new Integer(0));
 			magicCounter++;
-			actionRequest.setActionRequestId(new Long(magicCounter));
+			actionRequest.setActionRequestId(String.valueOf(magicCounter));
 		}
 		return magicCounter;
 	}

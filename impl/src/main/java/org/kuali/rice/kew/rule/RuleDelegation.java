@@ -55,11 +55,11 @@ public class RuleDelegation extends PersistableBusinessObjectBase {
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="DLGN_RULE_ID")
-	private Long ruleDelegationId;
+	private String ruleDelegationId;
     @Column(name="RSP_ID")
-	private Long responsibilityId;
+	private String responsibilityId;
     @Column(name="DLGN_RULE_BASE_VAL_ID", insertable=false, updatable=false)
-	private Long delegateRuleId;
+	private String delegateRuleId;
     @Column(name="DLGN_TYP")
     private String delegationType = DelegationType.PRIMARY.getCode();
 
@@ -76,7 +76,7 @@ public class RuleDelegation extends PersistableBusinessObjectBase {
     public Object copy(boolean preserveKeys) {
         RuleDelegation clone = new RuleDelegation();
         if (ruleDelegationId != null && preserveKeys) {
-            clone.setRuleDelegationId(new Long(ruleDelegationId.longValue()));
+            clone.setRuleDelegationId(ruleDelegationId);
         }
         clone.setDelegationRuleBaseValues(delegationRuleBaseValues);
         clone.setDelegateRuleId(delegationRuleBaseValues.getRuleBaseValuesId());
@@ -86,10 +86,10 @@ public class RuleDelegation extends PersistableBusinessObjectBase {
         return clone;
     }
 
-    public Long getDelegateRuleId() {
+    public String getDelegateRuleId() {
         return delegateRuleId;
     }
-    public void setDelegateRuleId(Long delegateRuleId) {
+    public void setDelegateRuleId(String delegateRuleId) {
         this.delegateRuleId = delegateRuleId;
     }
     public RuleBaseValues getDelegationRuleBaseValues() {
@@ -104,10 +104,10 @@ public class RuleDelegation extends PersistableBusinessObjectBase {
     public void setDelegationType(String delegationType) {
         this.delegationType = delegationType;
     }
-    public Long getRuleDelegationId() {
+    public String getRuleDelegationId() {
         return ruleDelegationId;
     }
-    public void setRuleDelegationId(Long ruleDelegationId) {
+    public void setRuleDelegationId(String ruleDelegationId) {
         this.ruleDelegationId = ruleDelegationId;
     }
 
@@ -126,10 +126,10 @@ public class RuleDelegation extends PersistableBusinessObjectBase {
         return this.getDelegationRuleBaseValues().getDocumentType();
     }
 
-    public Long getResponsibilityId() {
+    public String getResponsibilityId() {
         return responsibilityId;
     }
-    public void setResponsibilityId(Long ruleResponsibilityId) {
+    public void setResponsibilityId(String ruleResponsibilityId) {
         this.responsibilityId = ruleResponsibilityId;
     }
 

@@ -438,7 +438,7 @@ public class ActionListTest extends KEWTestCase {
     private ActionItem generateActionItem(DocumentRouteHeaderValue routeHeader, String actionRequested, String authenticationId, String groupId) {
         ActionItem actionItem = new ActionItem();
         actionItem.setActionRequestCd(actionRequested);
-        actionItem.setActionRequestId((long) 1);
+        actionItem.setActionRequestId("1");
         actionItem.setPrincipalId(getPrincipalIdForName(authenticationId));
         actionItem.setDocumentId(routeHeader.getDocumentId());
         actionItem.setDateAssigned(new Timestamp(new Date().getTime()));

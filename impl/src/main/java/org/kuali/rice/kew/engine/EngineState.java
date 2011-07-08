@@ -69,9 +69,9 @@ public class EngineState implements Serializable {
      * assigned to our data beans, this method will be used to get a new simulation id which is guaranteed to be a negative number
      * which will be unique for at least the lifetime of the simulation.
      */
-    public Long getNextSimulationId() {
+    public String getNextSimulationId() {
         synchronized (EngineState.class) {
-            return new Long(currentSimulationId--);
+            return String.valueOf(currentSimulationId--);
         }
     }
     

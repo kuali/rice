@@ -143,7 +143,7 @@ public class HierarchyRoutingNode implements DynamicNode {
         
         RouteNodeInstance processInstance = context.getNodeInstance().getProcess();
         RouteNodeInstance curStopNode = context.getNodeInstance();
-        Map<Long, RouteNodeInstance> stopRequestNodeMap = new HashMap<Long, RouteNodeInstance>();
+        Map<String, RouteNodeInstance> stopRequestNodeMap = new HashMap<String, RouteNodeInstance>();
         findStopRequestNodes(provider, context, stopRequestNodeMap);//SpringServiceLocator.getRouteNodeService().findProcessNodeInstances(processInstance);
         
         Stop stop = provider.getStop(curStopNode);
@@ -197,7 +197,7 @@ public class HierarchyRoutingNode implements DynamicNode {
         return result;
     }
     
-    private void findStopRequestNodes(HierarchyProvider provider, RouteContext context, Map<Long, RouteNodeInstance> stopRequestNodes) {
+    private void findStopRequestNodes(HierarchyProvider provider, RouteContext context, Map<String, RouteNodeInstance> stopRequestNodes) {
         List<RouteNodeInstance> nodeInstances = KEWServiceLocator.getRouteNodeService().getFlattenedNodeInstances(context.getDocument(), true);
         for (RouteNodeInstance nodeInstance: nodeInstances) {
             if (provider.hasStop(nodeInstance)) {

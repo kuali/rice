@@ -50,18 +50,18 @@ public class BranchPrototype implements Serializable {
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="RTE_BRCH_PROTO_ID")
-	private Long branchId;
+	private String branchId;
 	@Column(name="BRCH_NM")
 	private String name;
 	@Version
 	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
 	
-	public Long getBranchId() {
+	public String getBranchId() {
 		return branchId;
 	}
 	
-	public void setBranchId(Long branchId) {
+	public void setBranchId(String branchId) {
 		this.branchId = branchId;
 	}
 	

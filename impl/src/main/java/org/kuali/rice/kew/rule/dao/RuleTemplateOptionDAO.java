@@ -21,7 +21,8 @@ import org.kuali.rice.kew.rule.RuleTemplateOption;
 
 public interface RuleTemplateOptionDAO {
 
-  public void delete(Long ruleTemplateOptionId);
-  public RuleTemplateOption findByRuleTemplateOptionId(Long ruleTemplateOptionId);
-  public void save(RuleTemplateOption ruleTemplateOption);
+	public void delete(String ruleTemplateOptionId);
+	public RuleTemplateOption findByRuleTemplateOptionId(String ruleTemplateOptionId);
+	public void save(RuleTemplateOption ruleTemplateOption);
+
 }

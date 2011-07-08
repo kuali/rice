@@ -787,7 +787,7 @@ public class DTOConverter {
      * Interface for a simple service providing RouteNodeInstanceS based on their IDs 
      */
     public static interface RouteNodeInstanceLoader {
-    	RouteNodeInstance load(Long routeNodeInstanceID);
+    	RouteNodeInstance load(String routeNodeInstanceID);
     }
     
     /**
@@ -1071,7 +1071,7 @@ public class DTOConverter {
         }
         org.kuali.rice.kew.api.document.Document document = DocumentRouteHeaderValue.to(routeHeader);
         DocumentDetail.Builder detail = DocumentDetail.Builder.create(document);
-        Map<Long, RouteNodeInstance> nodeInstances = new HashMap<Long, RouteNodeInstance>();
+        Map<String, RouteNodeInstance> nodeInstances = new HashMap<String, RouteNodeInstance>();
         List<ActionRequest> actionRequestVOs = new ArrayList<ActionRequest>();
         List<ActionRequestValue> rootActionRequests = KEWServiceLocator.getActionRequestService().getRootRequests(routeHeader.getActionRequests());
         for (Iterator<ActionRequestValue> iterator = rootActionRequests.iterator(); iterator.hasNext();) {

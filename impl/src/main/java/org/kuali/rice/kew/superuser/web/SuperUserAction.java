@@ -17,7 +17,10 @@
 package org.kuali.rice.kew.superuser.web;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -226,8 +229,8 @@ public class SuperUserAction extends KewKualiAction {
         initForm(request, form);
 
         // If the action request was also an app specific request, remove it from the app specific route recipient list.
-        int removalIndex = findAppSpecificRecipientIndex(superUserForm,
-                Long.parseLong(superUserForm.getActionTakenActionRequestId()));
+        int removalIndex = findAppSpecificRecipientIndex(superUserForm, superUserForm.getActionTakenActionRequestId());
+
         if (removalIndex >= 0) {
             superUserForm.getAppSpecificRouteList().remove(removalIndex);
         }
@@ -245,16 +248,16 @@ public class SuperUserAction extends KewKualiAction {
      * @return The index of the app specific route recipient that was handled by the given action
      *         request, or -1 if no such recipient was found.
      */
-    private int findAppSpecificRecipientIndex(SuperUserForm superUserForm, long actionRequestId) {
-        int tempIndex = 0;
-        for (Iterator<?> appRouteIter = superUserForm.getAppSpecificRouteList().iterator(); appRouteIter.hasNext();) {
-            Long tempActnReqId = ((AppSpecificRouteRecipient) appRouteIter.next()).getActionRequestId();
-            if (tempActnReqId != null && tempActnReqId.longValue() == actionRequestId) {
-                return tempIndex;
-            }
-            tempIndex++;
-        }
-        return -1;
+    private int findAppSpecificRecipientIndex(SuperUserForm superUserForm, String actionRequestId) {
+    	int tempIndex = 0;
+    	for (Iterator<?> appRouteIter = superUserForm.getAppSpecificRouteList().iterator(); appRouteIter.hasNext();) {
+    		String tempActnReqId = ((AppSpecificRouteRecipient) appRouteIter.next()).getActionRequestId();
+    		if (StringUtils.equals(tempActnReqId, actionRequestId)) {
+    			return tempIndex;
+    		}
+    		tempIndex++;
+    	}
+    	return -1;
     }
 
     public ActionForward initForm(HttpServletRequest request, ActionForm form) throws Exception {
@@ -382,17 +385,52 @@ public class SuperUserAction extends KewKualiAction {
      *         exist in the list.
      */
     private ActionRequestValue getLatestActionRequest(SuperUserForm superUserForm) {
-        ActionRequestValue latestActnReq = null;
-        long latestId = -1;
-        // Search the list for the action request with the highest action request value.
-        for (Iterator<?> actnReqIter = superUserForm.getActionRequests().iterator(); actnReqIter.hasNext();) {
-            ActionRequestValue tmpActnReq = (ActionRequestValue) actnReqIter.next();
-            if (tmpActnReq.getActionRequestId().longValue() > latestId) {
-                latestActnReq = tmpActnReq;
-                latestId = tmpActnReq.getActionRequestId().longValue();
-            }
-        }
-        return latestActnReq;
+    	ActionRequestValue latestActnReq = null;
+//    	long latestId = -1;
+    	
+    	// FIXME: KULRICE-5201 required the following refactor since action request ids are no longer numeric (and in any case the assumption that
+    	// they are strictly ordinal by time of creation may be false)
+    	List<ActionRequestValue> actionRequests = superUserForm.getActionRequests();
+    	
+    	if (actionRequests != null && actionRequests.size() > 0) {
+	    	Collections.sort(actionRequests, new Comparator<ActionRequestValue>() {
+	
+				@Override
+				// Should should by date in descending order
+				public int compare(ActionRequestValue o1, ActionRequestValue o2) {
+					if (o1 == null && o2 == null)
+						return 0;
+					if (o1 == null)
+						return -1;
+					if (o2 == null)
+						return 1;
+					
+					if (o1.getCreateDate() == null && o2.getCreateDate() == null)
+						return 0;
+					if (o1.getCreateDate() == null)
+						return -1;
+					if (o2.getCreateDate() == null)
+						return 1;
+	
+					return o2.getCreateDate().compareTo(o1.getCreateDate());
+				}
+	    	
+	    	});
+
+	    	// If the list above is sorted in descending order then the first item should be the most recent
+	    	latestActnReq = actionRequests.get(0);
+    	}
+    	
+    	// TODO: As part of KULRICE-5329 this change above needs to be verified and compared with code below
+//    	// Search the list for the action request with the highest action request value.
+//    	for (Iterator<?> actnReqIter = superUserForm.getActionRequests().iterator(); actnReqIter.hasNext();) {
+//    		ActionRequestValue tmpActnReq = (ActionRequestValue) actnReqIter.next();
+//    		if (tmpActnReq.getActionRequestId().longValue() > latestId) {
+//    			latestActnReq = tmpActnReq;
+//    			latestId = tmpActnReq.getActionRequestId().longValue();
+//    		}
+//    	}
+    	return latestActnReq;
     }
 
     /**

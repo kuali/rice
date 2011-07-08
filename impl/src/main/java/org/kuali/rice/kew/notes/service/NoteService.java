@@ -32,12 +32,12 @@ import org.kuali.rice.kew.notes.Note;
  */
 public interface NoteService {
 
-    public Note getNoteByNoteId(Long noteId);
-    public List getNotesByDocumentId(String documentId);
+    public Note getNoteByNoteId(String noteId);
+    public List<Note> getNotesByDocumentId(String documentId);
     public void saveNote(Note note);
     public void deleteNote(Note note);
     public void deleteAttachment(Attachment attachment);
     public File findAttachmentFile(Attachment attachment);
-    public Attachment findAttachment(Long attachmentId);
+    public Attachment findAttachment(String attachmentId);
     
 }

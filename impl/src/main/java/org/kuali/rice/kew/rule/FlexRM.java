@@ -222,7 +222,7 @@ public class FlexRM {
 		return actionRequests;
 	}
 
-	public ResponsibleParty resolveResponsibilityId(Long responsibilityId) {
+	public ResponsibleParty resolveResponsibilityId(String responsibilityId) {
 		if (responsibilityId == null) {
 			throw new IllegalArgumentException("A null responsibilityId was passed to resolve responsibility!");
 		}

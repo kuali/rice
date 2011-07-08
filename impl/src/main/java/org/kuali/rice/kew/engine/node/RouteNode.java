@@ -85,7 +85,7 @@ public class RouteNode implements Serializable, RouteNodeContract {
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="RTE_NODE_ID")
-	private Long routeNodeId;
+	private String routeNodeId;
     @Column(name="DOC_TYP_ID",insertable=false, updatable=false)
 	private String documentTypeId;
     @Column(name="NM")
@@ -252,11 +252,11 @@ public class RouteNode implements Serializable, RouteNodeContract {
         this.documentTypeId = documentTypeId;
     }
 
-    public Long getRouteNodeId() {
+    public String getRouteNodeId() {
         return routeNodeId;
     }
 
-    public void setRouteNodeId(Long routeNodeId) {
+    public void setRouteNodeId(String routeNodeId) {
         this.routeNodeId = routeNodeId;
     }
 

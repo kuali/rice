@@ -21,7 +21,6 @@ import javax.persistence.PersistenceContext;
 
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.responsibility.dao.ResponsibilityIdDAO;
 
@@ -30,8 +29,8 @@ public class ResponsibilityIdDAOJpaImpl implements ResponsibilityIdDAO {
     private EntityManager entityManager;
 
 
-	public Long getNewResponsibilityId() {
-	    return getPlatform().getNextValSQL("KREW_RSP_S", entityManager);
+	public String getNewResponsibilityId() {
+	    return String.valueOf(getPlatform().getNextValSQL("KREW_RSP_S", entityManager));
     }
 
 	protected DatabasePlatform getPlatform() {

@@ -62,16 +62,16 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="RULE_ID")
-    private Long ruleBaseValuesId;
+    private String ruleBaseValuesId;
     /**
      * Unique Rule name
      */
     @Column(name="NM")
 	private String name;
     @Column(name="RULE_TMPL_ID", insertable=false, updatable=false)
-	private Long ruleTemplateId;
+	private String ruleTemplateId;
     @Column(name="PREV_RULE_VER_NBR")
-	private Long previousVersionId;
+	private String previousVersionId;
     @Column(name="ACTV_IND")
 	private Boolean activeInd;
     @Column(name="RULE_BASE_VAL_DESC")
@@ -242,7 +242,7 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
         return null;
     }
 
-    public RuleExtensionValue getRuleExtensionValue(Long ruleTemplateAttributeId, String key) {
+    public RuleExtensionValue getRuleExtensionValue(String ruleTemplateAttributeId, String key) {
         for (Iterator iter = getRuleExtensions().iterator(); iter.hasNext();) {
             RuleExtension ruleExtension = (RuleExtension) iter.next();
             if (ruleExtension.getRuleTemplateAttributeId().equals(ruleTemplateAttributeId)) {
@@ -257,11 +257,11 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
         return null;
     }
 
-    public Long getPreviousVersionId() {
+    public String getPreviousVersionId() {
         return previousVersionId;
     }
 
-    public void setPreviousVersionId(Long previousVersion) {
+    public void setPreviousVersionId(String previousVersion) {
         this.previousVersionId = previousVersion;
     }
 
@@ -302,11 +302,11 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
         this.ruleTemplate = ruleTemplate;
     }
 
-    public Long getRuleTemplateId() {
+    public String getRuleTemplateId() {
         return ruleTemplateId;
     }
 
-    public void setRuleTemplateId(Long ruleTemplateId) {
+    public void setRuleTemplateId(String ruleTemplateId) {
         this.ruleTemplateId = ruleTemplateId;
     }
 
@@ -392,11 +392,11 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
         this.description = description;
     }
 
-    public Long getRuleBaseValuesId() {
+    public String getRuleBaseValuesId() {
         return ruleBaseValuesId;
     }
 
-    public void setRuleBaseValuesId(Long ruleBaseValuesId) {
+    public void setRuleBaseValuesId(String ruleBaseValuesId) {
         this.ruleBaseValuesId = ruleBaseValuesId;
     }
 

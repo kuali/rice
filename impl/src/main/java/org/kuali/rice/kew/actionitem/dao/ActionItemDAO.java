@@ -30,7 +30,7 @@ import org.kuali.rice.kew.actionrequest.Recipient;
  */
 public interface ActionItemDAO {
 
-	public ActionItem findByActionItemId(Long actionItemId);
+	public ActionItem findByActionItemId(String actionItemId);
 
 	public void deleteActionItem(ActionItem actionItem);
 
@@ -45,7 +45,7 @@ public interface ActionItemDAO {
 
 	public Collection<ActionItem> findByDocumentId(String documentId);
 
-	public Collection<ActionItem> findByActionRequestId(Long actionRequestId);
+	public Collection<ActionItem> findByActionRequestId(String actionRequestId);
 
 	public Collection<ActionItem> findByWorkflowUserDocumentId(
 			String workflowUserId, String documentId);

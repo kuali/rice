@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.rule.web;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleResponsibility;
@@ -39,8 +40,8 @@ public class DelegateRuleForm extends KualiForm {
 
 	private static final long serialVersionUID = 5412969516727713859L;
 
-	private Long parentRuleId;
-	private Long parentResponsibilityId;
+	private String parentRuleId;
+	private String parentResponsibilityId;
 
 	private RuleBaseValues parentRule;
 	private RuleResponsibility parentResponsibility;
@@ -49,19 +50,19 @@ public class DelegateRuleForm extends KualiForm {
 	private List<String> responsibilityTypes = new ArrayList<String>();
 	private List<String> actionRequestCodes = new ArrayList<String>();
 	
-	public Long getParentRuleId() {
+	public String getParentRuleId() {
 		return this.parentRuleId;
 	}
 
-	public void setParentRuleId(Long parentRuleId) {
+	public void setParentRuleId(String parentRuleId) {
 		this.parentRuleId = parentRuleId;
 	}
 
-	public Long getParentResponsibilityId() {
+	public String getParentResponsibilityId() {
 		return this.parentResponsibilityId;
 	}
 
-	public void setParentResponsibilityId(Long parentResponsibilityId) {
+	public void setParentResponsibilityId(String parentResponsibilityId) {
 		this.parentResponsibilityId = parentResponsibilityId;
 	}
 
@@ -73,7 +74,7 @@ public class DelegateRuleForm extends KualiForm {
 	    if (this.parentRule != null 
 	            && parentRule != null
 	            && this.parentResponsibility != null) {
-	        if (this.parentRule.getRuleBaseValuesId().longValue() != parentRule.getRuleBaseValuesId().longValue()) {
+	    	if (!StringUtils.equals(this.parentRule.getRuleBaseValuesId(), parentRule.getRuleBaseValuesId())) {
 	            this.parentResponsibility = null;
 	            this.parentResponsibilityId = null;
 	        }

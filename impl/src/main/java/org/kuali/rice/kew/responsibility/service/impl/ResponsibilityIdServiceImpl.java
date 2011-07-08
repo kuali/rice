@@ -30,7 +30,7 @@ public class ResponsibilityIdServiceImpl implements ResponsibilityIdService {
 
 	private ResponsibilityIdDAO responsibilityIdDAO;
 	
-	public Long getNewResponsibilityId() {
+	public String getNewResponsibilityId() {
 		return getResponsibilityIdDAO().getNewResponsibilityId();
 	}
 

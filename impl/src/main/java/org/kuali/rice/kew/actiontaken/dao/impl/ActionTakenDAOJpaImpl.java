@@ -43,7 +43,7 @@ public class ActionTakenDAOJpaImpl implements ActionTakenDAO {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionTakenDAOJpaImpl.class);
 
-    public ActionTakenValue load(Long id) {
+    public ActionTakenValue load(String id) {
         LOG.debug("Loading Action Taken for the given id " + id);
         return entityManager.find(ActionTakenValue.class, id);
     }
@@ -53,7 +53,7 @@ public class ActionTakenDAOJpaImpl implements ActionTakenDAO {
         entityManager.remove(entityManager.find(ActionTakenValue.class, actionTaken.getActionTakenId()));
     }
 
-    public ActionTakenValue findByActionTakenId(Long actionTakenId) {
+    public ActionTakenValue findByActionTakenId(String actionTakenId) {
         LOG.debug("finding Action Taken by actionTakenId " + actionTakenId);
         Criteria crit = new Criteria(ActionTakenValue.class.getName());
         crit.eq("actionTakenId", actionTakenId);

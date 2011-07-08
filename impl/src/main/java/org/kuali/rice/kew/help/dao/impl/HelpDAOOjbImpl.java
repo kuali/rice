@@ -18,6 +18,7 @@ package org.kuali.rice.kew.help.dao.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.kuali.rice.kew.help.HelpEntry;
@@ -36,7 +37,7 @@ public class HelpDAOOjbImpl extends PersistenceBrokerDaoSupport implements HelpD
     	this.getPersistenceBrokerTemplate().delete(helpEntry);
     }
     
-    public HelpEntry findById(Long helpId){
+    public HelpEntry findById(String helpId){
         Criteria crit = new Criteria();
         crit.addEqualTo("helpId", helpId);
 		return (HelpEntry) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(HelpEntry.class, crit)); 
@@ -45,7 +46,7 @@ public class HelpDAOOjbImpl extends PersistenceBrokerDaoSupport implements HelpD
     public List search(HelpEntry helpEntry){
         Criteria crit = new Criteria();
 
-        if (helpEntry.getHelpId() != null && helpEntry.getHelpId().longValue() != 0) {
+        if (helpEntry.getHelpId() != null && !StringUtils.equals(helpEntry.getHelpId(), "0")) {
             crit.addEqualTo("helpId", helpEntry.getHelpId());
         }
 

@@ -34,7 +34,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
  */
 public interface KualiWorkflowInfo {
 
-    public abstract Long getNewResponsibilityId() throws WorkflowException;
+    public abstract String getNewResponsibilityId() throws WorkflowException;
 
     public abstract ActionRequestDTO[] getActionRequests(String documentId) throws WorkflowException;
 

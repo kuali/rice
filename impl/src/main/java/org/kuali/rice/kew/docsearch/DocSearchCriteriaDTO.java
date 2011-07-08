@@ -465,7 +465,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
             abbreviatedString.append("Approver=").append(approver).append("; ");
         }
         if (docRouteNodeId != null && !"".equals(docRouteNodeId.trim())) {
-            RouteNode routeNode = KEWServiceLocator.getRouteNodeService().findRouteNodeById(new Long(docRouteNodeId));
+            RouteNode routeNode = KEWServiceLocator.getRouteNodeService().findRouteNodeById(docRouteNodeId);
             abbreviatedString.append("Document Route Node=").append(routeNode.getRouteNodeName()).append("; ");
         }
         if (docRouteStatus != null && !"".equals(docRouteStatus.trim())) {

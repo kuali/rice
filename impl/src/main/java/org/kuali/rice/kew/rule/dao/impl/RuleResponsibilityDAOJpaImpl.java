@@ -32,7 +32,7 @@ public class RuleResponsibilityDAOJpaImpl implements RuleResponsibilityDAO {
      * 
      * @see org.kuali.rice.kew.rule.dao.RuleTemplateAttributeDAO#delete(java.lang.Long)
      */
-    public void delete(Long ruleResponsibilityId) {
+    public void delete(String ruleResponsibilityId) {
     	entityManager.remove(findByRuleResponsibilityId(ruleResponsibilityId));
     }
 
@@ -41,7 +41,7 @@ public class RuleResponsibilityDAOJpaImpl implements RuleResponsibilityDAO {
      * 
      * @see org.kuali.rice.kew.rule.dao.RuleTemplateAttributeDAO#findByRuleTemplateAttributeId(java.lang.Long)
      */
-    public RuleResponsibility findByRuleResponsibilityId(Long ruleResponsibilityId) {
+    public RuleResponsibility findByRuleResponsibilityId(String ruleResponsibilityId) {
         return entityManager.find(RuleResponsibility.class, ruleResponsibilityId);
     }
 

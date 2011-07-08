@@ -56,11 +56,11 @@ public class BranchState extends State {
         this.branch = branch;
     }
 
-    public Long getBranchStateId() {
+    public String getBranchStateId() {
         return getStateId();
     }
 
-    public void setBranchStateId(Long branchStateId) {
+    public void setBranchStateId(String branchStateId) {
         setStateId(branchStateId);
     }
 

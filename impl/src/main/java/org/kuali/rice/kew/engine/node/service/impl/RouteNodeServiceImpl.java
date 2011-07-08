@@ -58,19 +58,19 @@ public class RouteNodeServiceImpl implements RouteNodeService {
         routeNodeDAO.save(branch);
     }
 
-    public RouteNode findRouteNodeById(Long nodeId) {
+    public RouteNode findRouteNodeById(String nodeId) {
     	return routeNodeDAO.findRouteNodeById(nodeId);
     }
     
-    public RouteNodeInstance findRouteNodeInstanceById(Long nodeInstanceId) {
+    public RouteNodeInstance findRouteNodeInstanceById(String nodeInstanceId) {
     	return routeNodeDAO.findRouteNodeInstanceById(nodeInstanceId);
     }
 
-    public RouteNodeInstance findRouteNodeInstanceById(Long nodeInstanceId, DocumentRouteHeaderValue document) {
+    public RouteNodeInstance findRouteNodeInstanceById(String nodeInstanceId, DocumentRouteHeaderValue document) {
     	return RouteNodeUtils.findRouteNodeInstanceById(nodeInstanceId, document);
     }
     
-    public List getCurrentNodeInstances(String documentId) {
+    public List<RouteNodeInstance> getCurrentNodeInstances(String documentId) {
         List<RouteNodeInstance> currentNodeInstances = getActiveNodeInstances(documentId);
         if (currentNodeInstances.isEmpty()) {
             currentNodeInstances = getTerminalNodeInstances(documentId);
@@ -119,12 +119,12 @@ public class RouteNodeServiceImpl implements RouteNodeService {
         List<RouteNode> nodesInPath = new ArrayList<RouteNode>();
         for (Iterator<RouteNode> iterator = nodeInstance.getRouteNode().getNextNodes().iterator(); iterator.hasNext();) {
             RouteNode nextNode = iterator.next();
-            nodesInPath.addAll(findNextRouteNodesInPath(nodeName, nextNode, new HashSet<Long>()));
+            nodesInPath.addAll(findNextRouteNodesInPath(nodeName, nextNode, new HashSet<String>()));
         }
         return nodesInPath;
     }
     
-    private List<RouteNode> findNextRouteNodesInPath(String nodeName, RouteNode node, Set<Long> inspected) {
+    private List<RouteNode> findNextRouteNodesInPath(String nodeName, RouteNode node, Set<String> inspected) {
         List<RouteNode> nextNodesInPath = new ArrayList<RouteNode>();
         if (inspected.contains(node.getRouteNodeId())) {
             return nextNodesInPath;
@@ -251,7 +251,7 @@ public class RouteNodeServiceImpl implements RouteNodeService {
     
     public List<RouteNodeInstance> getFlattenedNodeInstances(DocumentRouteHeaderValue document, boolean includeProcesses) {
         List<RouteNodeInstance> nodeInstances = new ArrayList<RouteNodeInstance>();
-        Set<Long> visitedNodeInstanceIds = new HashSet<Long>();
+        Set<String> visitedNodeInstanceIds = new HashSet<String>();
         for (Iterator<RouteNodeInstance> iterator = document.getInitialRouteNodeInstances().iterator(); iterator.hasNext();) {
             RouteNodeInstance initialNodeInstance = iterator.next();
             flattenNodeInstanceGraph(nodeInstances, visitedNodeInstanceIds, initialNodeInstance, includeProcesses);    
@@ -259,7 +259,7 @@ public class RouteNodeServiceImpl implements RouteNodeService {
         return nodeInstances;
     }
     
-	private void flattenNodeInstanceGraph(List<RouteNodeInstance> nodeInstances, Set<Long> visitedNodeInstanceIds, RouteNodeInstance nodeInstance, boolean includeProcesses) {
+	private void flattenNodeInstanceGraph(List<RouteNodeInstance> nodeInstances, Set<String> visitedNodeInstanceIds, RouteNodeInstance nodeInstance, boolean includeProcesses) {
 
 		if (nodeInstance != null) {
 			if (visitedNodeInstanceIds.contains(nodeInstance.getRouteNodeInstanceId())) {
@@ -346,12 +346,12 @@ public class RouteNodeServiceImpl implements RouteNodeService {
         return foundNodes;
     }
     
-        private List determineExactPath(NodeGraphContext context, int searchDirection, Collection startingNodeInstances) {
-    	List exactPath = new ArrayList();
+    private List determineExactPath(NodeGraphContext context, int searchDirection, Collection<RouteNodeInstance> startingNodeInstances) {
+    	List<RouteNodeInstance> exactPath = new ArrayList<RouteNodeInstance>();
     	if (context.getResultNodeInstance() == null) {
     		exactPath.addAll(context.getVisited().values());
     	} else {
-    		determineExactPath(exactPath, new HashMap<Long, RouteNodeInstance>(), startingNodeInstances, context.getResultNodeInstance());
+    		determineExactPath(exactPath, new HashMap<String, RouteNodeInstance>(), startingNodeInstances, context.getResultNodeInstance());
     	}
     	if (NodeGraphSearchCriteria.SEARCH_DIRECTION_FORWARD == searchDirection) {
     		Collections.sort(exactPath, NODE_INSTANCE_BACKWARD_SORT);
@@ -361,7 +361,7 @@ public class RouteNodeServiceImpl implements RouteNodeService {
     	return exactPath;
     }
     
-    private void determineExactPath(List exactPath, Map<Long, RouteNodeInstance> visited, Collection startingNodeInstances, RouteNodeInstance nodeInstance) {
+    private void determineExactPath(List<RouteNodeInstance> exactPath, Map<String, RouteNodeInstance> visited, Collection<RouteNodeInstance> startingNodeInstances, RouteNodeInstance nodeInstance) {
     	if (nodeInstance == null) {
     		return;
     	}
@@ -370,8 +370,7 @@ public class RouteNodeServiceImpl implements RouteNodeService {
     	}
     	visited.put(nodeInstance.getRouteNodeInstanceId(), nodeInstance);
     	exactPath.add(nodeInstance);
-    	for (Iterator iterator = startingNodeInstances.iterator(); iterator.hasNext(); ) {
-			RouteNodeInstance startingNode = (RouteNodeInstance) iterator.next();
+    	for (RouteNodeInstance startingNode : startingNodeInstances) {
 			if (startingNode.getRouteNodeInstanceId().equals(nodeInstance.getRouteNodeInstanceId())) {
 				return;
 			}
@@ -470,8 +469,7 @@ public class RouteNodeServiceImpl implements RouteNodeService {
     	}
     	String[] revokedNodes = state.getValue().split(",");
     	for (int index = 0; index < revokedNodes.length; index++) {
-			String revokedNodeInstanceIdValue = revokedNodes[index];
-			Long revokedNodeInstanceId = Long.valueOf(revokedNodeInstanceIdValue);
+			String revokedNodeInstanceId = revokedNodes[index];
 			RouteNodeInstance revokedNodeInstance = findRouteNodeInstanceById(revokedNodeInstanceId);
 			if (revokedNodeInstance == null) {
 				LOG.warn("Could not locate revoked RouteNodeInstance with the given id: " + revokedNodeInstanceId);

@@ -60,7 +60,7 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
     /**
      * Orchestrates the document through the blanket approval process. The termination of the process is keyed off of the Set of node names. If there are no node names, then the document will be blanket approved past the terminal node(s) in the document.
      */
-    public void process(String documentId, Long nodeInstanceId) throws Exception {
+    public void process(String documentId, String nodeInstanceId) throws Exception {
         if (documentId == null) {
             throw new IllegalArgumentException("Cannot process a null document id.");
         }
@@ -196,13 +196,13 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
             String nodeName = (String) nodeName1;
             for (RouteNode nextNode : nodeInstance.getRouteNode().getNextNodes())
             {
-                isInPath = isInPath || isNodeNameInPath(nodeName, nextNode, new HashSet<Long>());
+                isInPath = isInPath || isNodeNameInPath(nodeName, nextNode, new HashSet<String>());
             }
         }
         return isInPath;
     }
 
-    private boolean isNodeNameInPath(String nodeName, RouteNode node, Set<Long> inspected) throws Exception {
+    private boolean isNodeNameInPath(String nodeName, RouteNode node, Set<String> inspected) throws Exception {
         boolean isInPath = !inspected.contains(node.getRouteNodeId()) && node.getRouteNodeName().equals(nodeName);
         inspected.add(node.getRouteNodeId());
         if (helper.isSubProcessNode(node)) {

@@ -43,7 +43,7 @@ import java.util.Set;
 
 public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleDelegationDAO {
 
-    public List findByDelegateRuleId(Long ruleId) {
+    public List<RuleDelegation> findByDelegateRuleId(String ruleId) {
         Criteria crit = new Criteria();
         crit.addEqualTo("delegateRuleId", ruleId);
         return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleDelegation.class, crit));
@@ -52,23 +52,23 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
     public void save(RuleDelegation ruleDelegation) {
     	this.getPersistenceBrokerTemplate().store(ruleDelegation);
     }
-    public List findAllCurrentRuleDelegations(){
+    public List<RuleDelegation> findAllCurrentRuleDelegations(){
         Criteria crit = new Criteria();
         crit.addEqualTo("delegationRuleBaseValues.currentInd", true);
         return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleDelegation.class, crit));
     }
 
-    public RuleDelegation findByRuleDelegationId(Long ruleDelegationId){
+    public RuleDelegation findByRuleDelegationId(String ruleDelegationId){
         Criteria crit = new Criteria();
         crit.addEqualTo("ruleDelegationId", ruleDelegationId);
         return (RuleDelegation) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(RuleDelegation.class, crit));
 
     }
-    public void delete(Long ruleDelegationId){
+    public void delete(String ruleDelegationId){
     	this.getPersistenceBrokerTemplate().delete(findByRuleDelegationId(ruleDelegationId));
     }
 
-    public List<RuleDelegation> findByResponsibilityIdWithCurrentRule(Long responsibilityId) {
+    public List<RuleDelegation> findByResponsibilityIdWithCurrentRule(String responsibilityId) {
     	Criteria crit = new Criteria();
     	crit.addEqualTo("responsibilityId", responsibilityId);
     	crit.addEqualTo("delegationRuleBaseValues.currentInd", true);
@@ -81,8 +81,8 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
      *
      * @see org.kuali.rice.kew.rule.dao.RuleDelegationDAO#search(java.lang.String, java.lang.Long, java.lang.Long, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean, java.util.Map, java.lang.String)
      */
-    public List<RuleDelegation> search(String parentRuleBaseVaueId, String parentResponsibilityId, String docTypeName, Long ruleId,
-            Long ruleTemplateId, String ruleDescription, String workgroupId,
+    public List<RuleDelegation> search(String parentRuleBaseVaueId, String parentResponsibilityId, String docTypeName, String ruleId,
+            String ruleTemplateId, String ruleDescription, String workgroupId,
             String principalId, String delegationType, Boolean activeInd,
             Map extensionValues, String workflowIdDirective) {
         Criteria crit = new Criteria(); //getSearchCriteria(docTypeName, ruleTemplateId, ruleDescription, delegationType, activeInd, extensionValues);
@@ -112,7 +112,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
      *
      * @see org.kuali.rice.kew.rule.dao.RuleDelegationDAO#search(java.lang.String, java.lang.Long, java.lang.String, java.util.Collection, java.lang.String, java.lang.String, java.lang.Boolean, java.util.Map, java.util.Collection)
      */
-    public List<RuleDelegation> search(String parentRuleBaseVaueId, String parentResponsibilityId, String docTypeName, Long ruleTemplateId,
+    public List<RuleDelegation> search(String parentRuleBaseVaueId, String parentResponsibilityId, String docTypeName, String ruleTemplateId,
             String ruleDescription, Collection<String> workgroupIds,
             String workflowId, String delegationType, Boolean activeInd,
             Map extensionValues, Collection actionRequestCodes) {
@@ -158,10 +158,10 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
         return query;
     }
 
-    private ReportQueryByCriteria getRuleBaseValuesSubQuery(String docTypeName, Long ruleTemplateId,
+    private ReportQueryByCriteria getRuleBaseValuesSubQuery(String docTypeName, String ruleTemplateId,
             String ruleDescription, Collection<String> workgroupIds,
             String workflowId, Boolean activeInd,
-            Map extensionValues, Collection actionRequestCodes) {
+            Map<String, String> extensionValues, Collection actionRequestCodes) {
         Criteria crit = getSearchCriteria(docTypeName, ruleTemplateId, ruleDescription, activeInd, extensionValues);
         crit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupIds, workflowId, actionRequestCodes, (workflowId != null), ((workgroupIds != null) && !workgroupIds.isEmpty())));
         crit.addEqualTo("delegateRule", 1);
@@ -170,10 +170,10 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
         return query;
     }
 
-    private ReportQueryByCriteria getRuleBaseValuesSubQuery(String docTypeName, Long ruleId,
-            Long ruleTemplateId, String ruleDescription, String workgroupId,
+    private ReportQueryByCriteria getRuleBaseValuesSubQuery(String docTypeName, String ruleId,
+            String ruleTemplateId, String ruleDescription, String workgroupId,
             String principalId, Boolean activeInd,
-            Map extensionValues, String workflowIdDirective) {
+            Map<String, String> extensionValues, String workflowIdDirective) {
         Criteria crit = getSearchCriteria(docTypeName, ruleTemplateId, ruleDescription, activeInd, extensionValues);
         if (ruleId != null) {
             crit.addEqualTo("ruleBaseValuesId", ruleId);
@@ -229,7 +229,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
         return getResponsibilitySubQuery(workgroupIdStrings,workflowId,new ArrayList<String>(), searchUser, searchUserInWorkgroups);
     }
 
-    private ReportQueryByCriteria getResponsibilitySubQuery(Collection<String> workgroupIds, String workflowId, Collection actionRequestCodes, Boolean searchUser, Boolean searchUserInWorkgroups) {
+    private ReportQueryByCriteria getResponsibilitySubQuery(Collection<String> workgroupIds, String workflowId, Collection<String> actionRequestCodes, Boolean searchUser, Boolean searchUserInWorkgroups) {
         Criteria responsibilityCrit = new Criteria();
         if ( (actionRequestCodes != null) && (!actionRequestCodes.isEmpty()) ) {
             responsibilityCrit.addIn("actionRequestedCd", actionRequestCodes);
@@ -275,7 +275,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
     }
 
 
-    private Criteria getSearchCriteria(String docTypeName, Long ruleTemplateId, String ruleDescription, Boolean activeInd, Map extensionValues) {
+    private Criteria getSearchCriteria(String docTypeName, String ruleTemplateId, String ruleDescription, Boolean activeInd, Map<String, String> extensionValues) {
         Criteria crit = new Criteria();
         crit.addEqualTo("currentInd", Boolean.TRUE);
         crit.addEqualTo("templateRuleInd", Boolean.FALSE);
@@ -292,9 +292,8 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
             crit.addEqualTo("ruleTemplateId", ruleTemplateId);
         }
         if (extensionValues != null && !extensionValues.isEmpty()) {
-            for (Iterator iter2 = extensionValues.entrySet().iterator(); iter2.hasNext();) {
-                Map.Entry entry = (Map.Entry) iter2.next();
-                if (!org.apache.commons.lang.StringUtils.isEmpty((String) entry.getValue())) {
+            for (Map.Entry<String,String> entry : extensionValues.entrySet()) {
+                if (!org.apache.commons.lang.StringUtils.isEmpty(entry.getValue())) {
                     // Criteria extensionCrit = new Criteria();
                     // extensionCrit.addEqualTo("extensionValues.key",
                     // entry.getKey());

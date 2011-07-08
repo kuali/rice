@@ -34,6 +34,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_DOC_NTE_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_DOC_NTE_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_ATT_T
 -----------------------------------------------------------------------------
@@ -66,6 +67,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_ATT_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_ATT_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_ACTN_ITM_T
 -----------------------------------------------------------------------------
@@ -139,6 +141,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_ACTN_ITM_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_ACTN_ITM_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_ACTN_TKN_T
 -----------------------------------------------------------------------------
@@ -207,6 +210,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_ACTN_TKN_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_ACTN_TKN_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_ACTN_RQST_T
 -----------------------------------------------------------------------------
@@ -316,6 +320,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_ACTN_RQST_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_ACTN_RQST_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_RULE_TMPL_T
 -----------------------------------------------------------------------------
@@ -355,6 +360,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_RULE_TMPL_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_RULE_TMPL_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_RULE_TMPL_ATTR_T
 -----------------------------------------------------------------------------
@@ -407,6 +413,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_RULE_TMPL_ATTR_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_RULE_TMPL_ATTR_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_RULE_T
 -----------------------------------------------------------------------------
@@ -463,6 +470,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_RULE_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_RULE_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_DLGN_RSP_T
 -----------------------------------------------------------------------------
@@ -500,6 +508,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_DLGN_RSP_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_DLGN_RSP_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_RULE_RSP_T
 -----------------------------------------------------------------------------
@@ -545,6 +554,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_RULE_RSP_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_RULE_RSP_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_RULE_EXT_T
 -----------------------------------------------------------------------------
@@ -581,6 +591,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_RULE_EXT_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_RULE_EXT_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_RTE_NODE_T
 -----------------------------------------------------------------------------
@@ -646,6 +657,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_RTE_NODE_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_RTE_NODE_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_RTE_NODE_INSTN_T
 -----------------------------------------------------------------------------
@@ -708,6 +720,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_RTE_NODE_INSTN_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_RTE_NODE_INSTN_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_RTE_NODE_INSTN_LNK_T
 -----------------------------------------------------------------------------
@@ -747,6 +760,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_RTE_NODE_INSTN_LNK_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_RTE_NODE_INSTN_LNK_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_RTE_BRCH_T
 -----------------------------------------------------------------------------
@@ -812,6 +826,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_RTE_BRCH_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_RTE_BRCH_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_RTE_BRCH_ST_T
 -----------------------------------------------------------------------------
@@ -861,6 +876,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_RTE_BRCH_ST_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_RTE_BRCH_ST_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_RTE_NODE_INSTN_ST_T
 -----------------------------------------------------------------------------
@@ -910,6 +926,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_RTE_NODE_INSTN_ST_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_RTE_NODE_INSTN_ST_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_DOC_TYP_ATTR_T
 -----------------------------------------------------------------------------
@@ -947,6 +964,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_DOC_TYP_ATTR_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_DOC_TYP_ATTR_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_RULE_ATTR_T
 -----------------------------------------------------------------------------
@@ -986,6 +1004,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_RULE_ATTR_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_RULE_ATTR_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_RULE_TMPL_OPTN_T
 -----------------------------------------------------------------------------
@@ -1017,6 +1036,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_RULE_TMPL_OPTN_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_RULE_TMPL_OPTN_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_OUT_BOX_ITM_T
 -----------------------------------------------------------------------------
@@ -1085,6 +1105,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_OUT_BOX_ITM_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_OUT_BOX_ITM_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_RTE_NODE_CFG_PARM_T
 -----------------------------------------------------------------------------
@@ -1121,6 +1142,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_RTE_NODE_CFG_PARM_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_RTE_NODE_CFG_PARM_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_DOC_TYP_PROC_T
 -----------------------------------------------------------------------------
@@ -1172,6 +1194,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_DOC_TYP_PROC_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_DOC_TYP_PROC_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_DOC_LNK_T
 -----------------------------------------------------------------------------
@@ -1207,6 +1230,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_DOC_LNK_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_DOC_LNK_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_RTE_BRCH_PROTO_T
 -----------------------------------------------------------------------------
@@ -1242,6 +1266,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_RTE_BRCH_PROTO_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_RTE_BRCH_PROTO_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_HLP_T
 -----------------------------------------------------------------------------
@@ -1279,6 +1304,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_HLP_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_HLP_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_RULE_EXT_VAL_T
 -----------------------------------------------------------------------------
@@ -1322,6 +1348,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_RULE_EXT_VAL_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_RULE_EXT_VAL_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_RULE_EXPR_T
 -----------------------------------------------------------------------------
@@ -1356,6 +1383,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_RULE_EXPR_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_RULE_EXPR_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_APP_DOC_STAT_TRAN_T
 -----------------------------------------------------------------------------
@@ -1410,6 +1438,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_APP_DOC_STAT_TRAN_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_APP_DOC_STAT_TRAN_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_DOC_HDR_EXT_DT_T
 -----------------------------------------------------------------------------
@@ -1458,6 +1487,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_DOC_HDR_EXT_DT_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_DOC_HDR_EXT_DT_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_DOC_HDR_EXT_LONG_T
 -----------------------------------------------------------------------------
@@ -1506,6 +1536,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_DOC_HDR_EXT_LONG_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_DOC_HDR_EXT_LONG_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_DOC_HDR_EXT_FLT_T
 -----------------------------------------------------------------------------
@@ -1554,6 +1585,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_DOC_HDR_EXT_FLT_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_DOC_HDR_EXT_FLT_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
+/
 -----------------------------------------------------------------------------
 -- KREW_DOC_HDR_EXT_T
 -----------------------------------------------------------------------------
@@ -1602,7 +1634,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'TEMP_KREW_DOC_HDR_EXT_T';
 	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE TEMP_KREW_DOC_HDR_EXT_T CASCADE CONSTRAINTS PURGE'; END IF;
 END;
-
+/
 
 -----------------------------------------------------------------------------
 -- FOREIGN KEY CONSTRAINTS IMPACTED BY CHANGES

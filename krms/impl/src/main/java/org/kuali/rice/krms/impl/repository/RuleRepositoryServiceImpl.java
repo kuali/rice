@@ -6,9 +6,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.CriteriaLookupService;
+import org.kuali.rice.core.api.criteria.GenericQueryResults;
+import org.kuali.rice.core.api.criteria.Predicate;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krms.api.repository.RuleRepositoryService;
@@ -18,12 +21,16 @@ import org.kuali.rice.krms.api.repository.agenda.AgendaTreeSubAgendaEntry;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.api.repository.context.ContextSelectionCriteria;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
+import org.kuali.rice.krms.impl.util.KRMSPropertyConstants;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
 /**
  *
  */
 public class RuleRepositoryServiceImpl implements RuleRepositoryService {
     protected BusinessObjectService businessObjectService;
+    private CriteriaLookupService criteriaLookupService;
 	
 	/**
 	 * This overridden method ...
@@ -39,21 +46,10 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
     	if (StringUtils.isBlank(contextSelectionCriteria.getNamespaceCode())){
     		throw new IllegalArgumentException("selection criteria namespace code is null or blank");
     	}
-    	Map<String, String> attributesById = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService()
-    		.convertAttributeKeys(contextSelectionCriteria.getContextQualifiers(),
-    							  contextSelectionCriteria.getNamespaceCode());
-    	Map<String, String> contextQualifiers = new HashMap<String,String>();
-    	
-    	// TODO: use new criteria API so we can match multiple qualifiers at once.
-    	
-    	contextQualifiers.put("namespace", contextSelectionCriteria.getNamespaceCode());
-    	contextQualifiers.put("name", contextSelectionCriteria.getName());
-    	for(Entry<String,String> attributeEntry : attributesById.entrySet()) {
-			contextQualifiers.put("attributeBos.attributeDefinitionId", attributeEntry.getKey());
-			contextQualifiers.put("attributeBos.value", attributeEntry.getValue());
-		}    	
-    	
-    	List<ContextBo> resultBos = (List<ContextBo>) getBusinessObjectService().findMatching(ContextBo.class, contextQualifiers);
+    	QueryByCriteria queryCriteria = buildQuery(contextSelectionCriteria);
+        GenericQueryResults<ContextBo> results = criteriaLookupService.lookup(ContextBo.class, queryCriteria);
+
+    	List<ContextBo> resultBos = results.getResults();
 
     	//assuming 1 ?
     	ContextDefinition result = null;
@@ -170,6 +166,42 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
 		}
 		return builder;
 	}
+	
+	/**
+	 * 
+	 * This method converts a {@link ContextSelectionCriteria} object into a
+	 * {@link QueryByCriteria} object with the proper predicates for AttributeBo properties.
+	 * 
+	 * @param selectionCriteria
+	 * @return 
+	 */
+	private QueryByCriteria buildQuery( ContextSelectionCriteria selectionCriteria ){
+		Predicate p;
+		QueryByCriteria.Builder qBuilder = QueryByCriteria.Builder.create();
+    	List<Predicate> pList = new ArrayList<Predicate>();
+    	if (selectionCriteria.getNamespaceCode() != null){
+    		p = equal(KRMSPropertyConstants.Context.NAMESPACE, selectionCriteria.getNamespaceCode());
+    		pList.add(p);
+    	}
+    	if (selectionCriteria.getName() != null){
+    		p = equal(KRMSPropertyConstants.Context.NAME, selectionCriteria.getName());
+    		pList.add(p);
+    	}
+    	if (selectionCriteria.getContextQualifiers() != null){
+    		for (Map.Entry<String, String> entry : selectionCriteria.getContextQualifiers().entrySet()){
+    			p = and(equal(KRMSPropertyConstants.Context.ATTRIBUTE_BOS
+    					+ "." + KRMSPropertyConstants.BaseAttribute.ATTRIBUTE_DEFINITION
+    					+ "." + KRMSPropertyConstants.KrmsAttributeDefinition.NAME, entry.getKey()),
+    				equal(KRMSPropertyConstants.Context.ATTRIBUTE_BOS
+    					+ "." + KRMSPropertyConstants.BaseAttribute.VALUE, entry.getValue()));
+    			pList.add(p);
+    		}
+    	}
+     	Predicate[] preds = new Predicate[pList.size()];
+     	pList.toArray(preds);
+    	qBuilder.setPredicates(and(preds)); 
+		return qBuilder.build();
+	}
 
 	/**
      * Sets the businessObjectService property.
@@ -186,4 +218,14 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
 		}
 		return businessObjectService;
 	}
+    
+    /**
+     * Sets the criteriaLookupService attribute value.
+     *
+     * @param criteriaLookupService The criteriaLookupService to set.
+     */
+    public void setCriteriaLookupService(final CriteriaLookupService criteriaLookupService) {
+        this.criteriaLookupService = criteriaLookupService;
+    }
+    
 }

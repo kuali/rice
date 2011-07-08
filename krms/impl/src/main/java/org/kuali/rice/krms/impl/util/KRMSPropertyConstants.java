@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krms.impl.util;
 
+import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo;
+
 /**
  * This class contains constants associated with the KRMS Repository 
  * 
@@ -34,10 +36,24 @@ public final class KRMSPropertyConstants {
 	
 	public static final class Context {
 		public static final String CONTEXT_ID ="contextId";
+		public static final String NAME = "name";
+		public static final String NAMESPACE = "namespace";
+		public static final String ATTRIBUTE_BOS = "attributeBos";
 	}
 
 	public static final class Rule {
 		public static final String RULE_ID ="ruleId";
+	}
+
+	public static final class KrmsAttributeDefinition {
+		public static final String NAME = "name";
+		public static final String NAMESPACE = "namespace";		
+	}
+
+	public static final class BaseAttribute {
+		public static final String ATTRIBUTE_DEFINITION_ID = "attributeDefinitionId";
+		public static final String VALUE = "value";
+		public static final String ATTRIBUTE_DEFINITION = "attributeDefinition";
 	}
 
 }

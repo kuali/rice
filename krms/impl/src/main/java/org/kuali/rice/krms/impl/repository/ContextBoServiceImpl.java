@@ -91,7 +91,7 @@ public final class ContextBoServiceImpl implements ContextBoService {
 		businessObjectService.deleteMatching(ContextAttributeBo.class, fields);
         
 		// update the rule and create new attributes
-        businessObjectService.save(ContextBo.from(toUpdate));
+        businessObjectService.save(boToUpdate);
 	}
 
 	/**

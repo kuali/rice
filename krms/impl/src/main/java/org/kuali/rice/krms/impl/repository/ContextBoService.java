@@ -16,8 +16,6 @@
 package org.kuali.rice.krms.impl.repository;
 
 
-import org.kuali.rice.krms.api.repository.action.ActionDefinition;
-import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 
 /**
@@ -72,7 +70,7 @@ public interface ContextBoService {
      * is null or blank.
      */
 	public ContextDefinition getContextByNameAndNamespace( String name, String namespace );
-	
+
 	/**
 	* Converts a mutable bo to it's immutable counterpart
 	* @param bo the mutable business object

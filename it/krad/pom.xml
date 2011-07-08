@@ -58,6 +58,23 @@
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.kuali.rice</groupId>
+      <version>${project.version}</version>
+      <artifactId>rice-krad-web-framework</artifactId>
+      <scope>test</scope>
+      <type>test-jar</type>
+    </dependency>
+
+    <dependency>
+      <groupId>org.kuali.rice</groupId>
+      <version>${project.version}</version>
+      <artifactId>rice-krad-app-framework</artifactId>
+      <scope>test</scope>
+      <type>test-jar</type>
+    </dependency>
+
     <!-- HACK!! this dependency should not be here -->
     <dependency>
       <groupId>${project.groupId}</groupId>

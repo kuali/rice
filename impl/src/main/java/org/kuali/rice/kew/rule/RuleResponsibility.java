@@ -67,7 +67,7 @@ public class RuleResponsibility extends PersistableBusinessObjectBase {
     @Column(name="RSP_ID")
 	private String responsibilityId;
     @Column(name="RULE_ID", insertable=false, updatable=false)
-    private Long ruleBaseValuesId;
+    private String ruleBaseValuesId;
     @Column(name="ACTN_RQST_CD")
 	private String actionRequestedCd;
     @Column(name="NM")
@@ -139,11 +139,11 @@ public class RuleResponsibility extends PersistableBusinessObjectBase {
     	return (ruleResponsibilityName != null && !ruleResponsibilityName.trim().equals("") && ruleResponsibilityType != null && ruleResponsibilityType.equals(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID));
     }
 
-    public Long getRuleBaseValuesId() {
+    public String getRuleBaseValuesId() {
         return ruleBaseValuesId;
     }
 
-    public void setRuleBaseValuesId(Long ruleBaseValuesId) {
+    public void setRuleBaseValuesId(String ruleBaseValuesId) {
         this.ruleBaseValuesId = ruleBaseValuesId;
     }
 

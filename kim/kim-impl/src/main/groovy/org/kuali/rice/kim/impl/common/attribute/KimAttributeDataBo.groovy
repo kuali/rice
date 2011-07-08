@@ -76,7 +76,7 @@ abstract class KimAttributeDataBo extends PersistableBusinessObjectBase implemen
            //purposely not using Collections.emptyList() b/c we do not want to return an unmodifiable list.
            return new ArrayList<T>();
        }
-       return attributes.toMap().entrySet().collect {
+       return attributes.entrySet().collect {
             KimTypeAttribute attr = KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId).getAttributeDefinitionByName(it.getKey());
             if (attr != null && StringUtils.isNotBlank(it.getValue())) {
                 T newDetail = type.newInstance();

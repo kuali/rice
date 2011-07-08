@@ -66,6 +66,8 @@ import java.util.Date;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+
+//FIXME: cannot move to unit test dir b/c DateTimeService needs to be mocked.
 public class DataTypeConstraintProcessorTest {
 
 	private DataTypeConstraintProcessor processor;

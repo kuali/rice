@@ -19,14 +19,14 @@ package org.kuali.rice.kim.api.common.attribute;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
-import org.kuali.rice.core.api.mo.common.active.Inactivatable;
+import org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable;
 
 /**
  * This is the contract for a KimAttribute.  A KimAttribute
  * associates categorizes an attribute and describes how to
  * find the attribute for the purpose of the kns.
  */
-public interface KimAttributeContract extends Versioned, GloballyUnique, Identifiable, Inactivatable {
+public interface KimAttributeContract extends Versioned, GloballyUnique, Identifiable, ImmutableInactivatable {
 
     /**
      * A fully-qualified class name which contains the {@link #getAttributeName()}.    This cannot be null or a blank string.

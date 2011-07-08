@@ -18,9 +18,9 @@ package org.kuali.rice.kim.api.common.template;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
-import org.kuali.rice.core.api.mo.common.active.Inactivatable;
+import org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable;
 
-public interface TemplateContract extends Versioned, GloballyUnique, Inactivatable, Identifiable {
+public interface TemplateContract extends Versioned, GloballyUnique, ImmutableInactivatable, Identifiable {
     /**
      * The namespace code that this KIM Permission Template belongs too.
      *

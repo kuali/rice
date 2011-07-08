@@ -15,11 +15,11 @@
 
 package org.kuali.rice.kim.api.common.delegate;
 
-import org.kuali.rice.core.api.mo.common.active.Inactivatable;
+import org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable;
 
 import java.util.List;
 
-public interface DelegateTypeContract extends Inactivatable {
+public interface DelegateTypeContract extends ImmutableInactivatable {
 
     String getRoleId();
 

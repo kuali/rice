@@ -19,11 +19,11 @@ package org.kuali.rice.kim.api.group;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
-import org.kuali.rice.core.api.mo.common.active.Inactivatable;
+import org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable;
 
 import java.util.Map;
 
-public interface GroupContract extends Versioned, GloballyUnique, Inactivatable, Identifiable {
+public interface GroupContract extends Versioned, GloballyUnique, ImmutableInactivatable, Identifiable {
 
     /**
      * This is the namespace code for the Group.

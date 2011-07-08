@@ -18,7 +18,6 @@ package org.kuali.rice.kim.api.identity.external;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
-import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
 /**
  * an external identifier for a KIM identity

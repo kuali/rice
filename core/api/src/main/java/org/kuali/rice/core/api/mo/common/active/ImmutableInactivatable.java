@@ -22,7 +22,7 @@ package org.kuali.rice.core.api.mo.common.active;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface Inactivatable {
+public interface ImmutableInactivatable {
 
     /**
      * The active indicator for an object.

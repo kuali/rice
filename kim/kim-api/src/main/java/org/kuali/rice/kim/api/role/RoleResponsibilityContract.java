@@ -15,7 +15,7 @@
 package org.kuali.rice.kim.api.role;
 
 import org.kuali.rice.core.api.mo.common.Versioned;
-import org.kuali.rice.core.api.mo.common.active.Inactivatable;
+import org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable;
 
 /**
  * An lightweight association of a Responsibility and a Role represented by references to the identifiers of a
@@ -23,7 +23,7 @@ import org.kuali.rice.core.api.mo.common.active.Inactivatable;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface RoleResponsibilityContract extends Versioned, Inactivatable {
+public interface RoleResponsibilityContract extends Versioned, ImmutableInactivatable {
 
     /**
      * Provides the String identifier for a given RoleResponsibility

@@ -18,12 +18,12 @@ package org.kuali.rice.shareddata.api.state;
 
 import org.kuali.rice.core.api.mo.common.Coded;
 import org.kuali.rice.core.api.mo.common.Versioned;
-import org.kuali.rice.core.api.mo.common.active.Inactivatable;
+import org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable;
 
 /**
  * This is the contract for a State.
  */
-public interface StateContract extends Versioned, Inactivatable, Coded {
+public interface StateContract extends Versioned, ImmutableInactivatable, Coded {
 
     /**
      * This the postal name for the State.  This cannot be null or a blank string.

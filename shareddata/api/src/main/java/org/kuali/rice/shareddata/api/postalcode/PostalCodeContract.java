@@ -18,7 +18,7 @@ package org.kuali.rice.shareddata.api.postalcode;
 
 import org.kuali.rice.core.api.mo.common.Coded;
 import org.kuali.rice.core.api.mo.common.Versioned;
-import org.kuali.rice.core.api.mo.common.active.Inactivatable;
+import org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable;
 
 /**
  * This is the contract for a Postal Code.  A postal code is assigned to different geographic regions
@@ -26,7 +26,7 @@ import org.kuali.rice.core.api.mo.common.active.Inactivatable;
  *
  * Examples of postal codes are Zip Codes in the United States and FSALDU in Canada.
  */
-public interface PostalCodeContract extends Versioned, Inactivatable, Coded {
+public interface PostalCodeContract extends Versioned, ImmutableInactivatable, Coded {
 
     /**
      * This the postal country code for the PostalCode.  This cannot be null or a blank string.

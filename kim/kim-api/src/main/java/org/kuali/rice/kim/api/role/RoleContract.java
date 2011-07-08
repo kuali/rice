@@ -17,12 +17,12 @@ package org.kuali.rice.kim.api.role;
 
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
-import org.kuali.rice.core.api.mo.common.active.Inactivatable;
+import org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable;
 
 /**
  * Contract for a Role. Role is a basic abstraction over a role assignable to a principal within KIM.
  */
-public interface RoleContract extends Versioned, Identifiable, Inactivatable {
+public interface RoleContract extends Versioned, Identifiable, ImmutableInactivatable {
 
     /**
      * A namespace for this role.  A namespace for a role identifies the system/module to which this role applies.

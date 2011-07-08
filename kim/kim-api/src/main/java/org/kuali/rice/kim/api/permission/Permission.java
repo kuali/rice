@@ -171,7 +171,7 @@ public final class Permission implements PermissionContract, ModelObjectComplete
 	}
 
 	/**
-	 * @see org.kuali.rice.core.api.mo.common.active.Inactivatable#isActive()
+	 * @see org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable#isActive()
 	 */
 	@Override
 	public boolean isActive() {

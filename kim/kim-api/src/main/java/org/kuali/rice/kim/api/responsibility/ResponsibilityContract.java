@@ -19,7 +19,7 @@ package org.kuali.rice.kim.api.responsibility;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
-import org.kuali.rice.core.api.mo.common.active.Inactivatable;
+import org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable;
 import org.kuali.rice.kim.api.common.template.TemplateContract;
 
 import java.util.Map;
@@ -31,7 +31,7 @@ import java.util.Map;
  * never against roles or groups.
  *  
  */
-public interface ResponsibilityContract extends Versioned, GloballyUnique, Inactivatable, Identifiable{;
+public interface ResponsibilityContract extends Versioned, GloballyUnique, ImmutableInactivatable, Identifiable{;
     
     /**
      * The namespace code that this Responsibility belongs too.

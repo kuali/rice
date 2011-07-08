@@ -109,6 +109,7 @@
 		<property name="transactionManager" ref="transactionManager"/>
 		<property name="dataSource" ref="rice.ksb.messageDataSource"/>
 		<property name="nonTransactionalDataSource" ref="rice.ksb.messageNonTransactionalDataSource"/>
+        <property name="startupDelay" value="10" />
 	</bean>
 
   	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator" lazy-init="true">

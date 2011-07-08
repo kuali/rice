@@ -82,6 +82,32 @@
 			</bean>
 		</property>
 	</bean>
+	
+	<bean id="rice.kew.documentTypeService.exporter" parent="kewEmbeddedServiceExporter">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
+		<property name="serviceDefinition">
+			<bean parent="kewJaxWsSoapService">
+				<property name="service">
+					<ref bean="rice.kew.documentTypeService" />
+				</property>
+				<property name="localServiceName" value="documentTypeServiceSoap" />
+				<property name="busSecurity" value="${rice.kew.documentTypeServiceSoap.secure}" />
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="rice.kew.noteService.exporter" parent="kewEmbeddedServiceExporter">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
+		<property name="serviceDefinition">
+			<bean parent="kewJaxWsSoapService">
+				<property name="service">
+					<ref bean="rice.kew.noteService" />
+				</property>
+				<property name="localServiceName" value="noteServiceSoap" />
+				<property name="busSecurity" value="${rice.kew.noteServiceSoap.secure}" />
+			</bean>
+		</property>
+	</bean>
 
 	<bean parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />

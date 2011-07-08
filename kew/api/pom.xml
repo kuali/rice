@@ -39,6 +39,31 @@
 							<goal>java2ws</goal>
 						</goals>
 					</execution>
+					<execution>
+						<id>documentTypeService-wsdl</id>
+						<phase>${rice.java2ws.phase}</phase>
+						<configuration>
+							<className>org.kuali.rice.kew.api.doctype.DocumentTypeService</className>
+							<outputFile>${project.build.directory}/generated-sources/wsdl/DocumentTypeService.wsdl</outputFile>
+							<serviceName>DocumentTypeService</serviceName>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>noteService-wsdl</id>
+						<phase>${rice.java2ws.phase}</phase>
+						<configuration>
+							<className>org.kuali.rice.kew.api.note.NoteService</className>
+							<outputFile>${project.build.directory}/generated-sources/wsdl/NoteService.wsdl</outputFile>
+							<serviceName>NoteService</serviceName>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+					
 				</executions>
 			</plugin>
 		</plugins>

@@ -17,18 +17,45 @@ package org.kuali.rice.kew.api.note;
 
 import java.util.List;
 
-import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.kew.api.KewApiConstants;
+
+@WebService(name = "noteServiceSoap", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface NoteService {
 
-	List<Note> getNotes(String documentId) throws RiceIllegalArgumentException;
-	
-	Note getNote(String noteId) throws RiceIllegalArgumentException;
-	
-	Note createNote(Note note) throws RiceIllegalArgumentException;
-	
-	Note updateNote(Note note) throws RiceIllegalArgumentException;
-	
-	Note deleteNote(String noteId) throws RiceIllegalArgumentException;
-	
+    @WebMethod(operationName = "getNotes")
+    @WebResult(name = "notes")
+    @XmlElementWrapper(name = "notes", required = true)
+    @XmlElement(name = "note", required = false)
+    List<Note> getNotes(@WebParam(name = "documentId") String documentId) throws RiceIllegalArgumentException;
+
+    @WebMethod(operationName = "getNote")
+    @WebResult(name = "note")
+    @XmlElement(name = "note", required = false)
+    Note getNote(@WebParam(name = "noteId") String noteId) throws RiceIllegalArgumentException;
+
+    @WebMethod(operationName = "createNote")
+    @WebResult(name = "note")
+    @XmlElement(name = "note", required = true)
+    Note createNote(@WebParam(name = "note") Note note) throws RiceIllegalArgumentException;
+
+    @WebMethod(operationName = "update")
+    @WebResult(name = "note")
+    @XmlElement(name = "note", required = true)
+    Note updateNote(@WebParam(name = "note") Note note) throws RiceIllegalArgumentException;
+
+    @WebMethod(operationName = "deleteNote")
+    @WebResult(name = "note")
+    @XmlElement(name = "note", required = true)
+    Note deleteNote(@WebParam(name = "noteId") String noteId) throws RiceIllegalArgumentException;
+
 }

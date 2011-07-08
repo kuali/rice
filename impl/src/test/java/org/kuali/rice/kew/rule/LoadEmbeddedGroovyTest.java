@@ -17,6 +17,7 @@ package org.kuali.rice.kew.rule;
 
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
+import org.junit.Assert;
 import org.junit.Test;
 
 import javax.script.ScriptEngine;
@@ -34,8 +35,8 @@ public class LoadEmbeddedGroovyTest {
         GroovyShell shell = new GroovyShell(binding);
 
         Object value = shell.evaluate("println 'Hello World!'; x = 123; return foo * 10");
-        assert value.equals(new Integer(20));
-        assert binding.getVariable("x").equals(new Integer(123));
+        Assert.assertTrue(value.equals(new Integer(20)));
+        Assert.assertTrue(binding.getVariable("x").equals(new Integer(123)));
     }
 
     @Test public void testJSR223Groovy() throws Exception {

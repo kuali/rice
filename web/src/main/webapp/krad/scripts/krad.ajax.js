@@ -203,6 +203,28 @@ function toggleInactiveRecordDisplay(collectionGroupId, showInactive) {
 			elementToBlock);
 }
 
+function performCollectionAction(collectionGroupId){
+	if(collectionGroupId){
+		var elementToBlock = jq("#" + collectionGroupId + "_div");
+	    var updateCollectionCallback = function(htmlContent){
+	    	var component = jq("#" + collectionGroupId + "_div", htmlContent);
+
+			elementToBlock.unblock({onUnblock: function(){
+					//replace component
+					if(jq("#" + collectionGroupId + "_div").length){
+						jq("#" + collectionGroupId + "_div").replaceWith(component);
+					}
+					runHiddenScripts(collectionGroupId + "_div");
+				}
+			});
+	    };
+	    
+	    var methodToCall = jq("input[name='methodToCall']").val();
+		ajaxSubmitForm(methodToCall, updateCollectionCallback, {reqComponentId: collectionGroupId}, 
+				elementToBlock);
+	}
+}
+
 
 
 //called when a line is added to a collection
@@ -224,23 +246,7 @@ function addLineToCollection(collectionGroupId, collectionBaseId){
 		jq.watermark.showAll();
 
 		if(valid){
-			var elementToBlock = jq("#" + collectionGroupId + "_div");
-		    var updateCollectionCallback = function(htmlContent){
-		    	var component = jq("#" + collectionGroupId + "_div", htmlContent);
-
-				elementToBlock.unblock({onUnblock: function(){
-						//replace component
-						if(jq("#" + collectionGroupId + "_div").length){
-							jq("#" + collectionGroupId + "_div").replaceWith(component);
-						}
-						runHiddenScripts(collectionGroupId + "_div");
-					}
-				});
-		    };
-		    
-		    var methodToCall = jq("input[name='methodToCall']").val();
-			ajaxSubmitForm(methodToCall, updateCollectionCallback, {reqComponentId: collectionGroupId}, 
-					elementToBlock);
+			performCollectionAction(collectionGroupId);
 		}
 		else{
 			jq("#formComplete").html("");

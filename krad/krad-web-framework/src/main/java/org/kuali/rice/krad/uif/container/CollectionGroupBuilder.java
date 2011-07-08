@@ -341,6 +341,7 @@ public class CollectionGroupBuilder implements Serializable {
 					.getBindingPath());
 			actionField.addActionParameter(UifParameters.SELECTED_LINE_INDEX, Integer.toString(lineIndex));
 			actionField.setJumpToIdAfterSubmit(collectionGroup.getId() + "_div");
+			actionField.setClientSideJs("performCollectionAction('"+collectionGroup.getId()+"');");
 		}
 
 		ComponentUtils.updateContextsForLine(lineActions, collectionLine, lineIndex);
@@ -369,7 +370,7 @@ public class CollectionGroupBuilder implements Serializable {
 			actionField.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH, collectionGroup.getBindingInfo()
 					.getBindingPath());
 			//actionField.addActionParameter(UifParameters.COLLECTION_ID, collectionGroup.getId());
-			actionField.setJumpToIdAfterSubmit(collectionGroup.getId());
+			actionField.setJumpToIdAfterSubmit(collectionGroup.getId() + "_div");
 			actionField.addActionParameter(UifParameters.ACTION_TYPE, UifParameters.ADD_LINE);
 			actionField.setClientSideJs("addLineToCollection('"+collectionGroup.getId()+"', '"+ collectionGroup.getBaseId() +"');");
 		}

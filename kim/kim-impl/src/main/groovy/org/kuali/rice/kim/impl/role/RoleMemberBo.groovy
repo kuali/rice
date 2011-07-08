@@ -31,11 +31,9 @@ import org.hibernate.annotations.Parameter
 import org.kuali.rice.kim.api.role.Role
 import org.kuali.rice.kim.api.role.RoleMember
 import org.kuali.rice.kim.api.role.RoleMemberContract
-import org.kuali.rice.kim.api.role.RoleService
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
-import org.kuali.rice.kim.api.type.KimType
-import org.kuali.rice.kim.api.type.KimTypeAttribute
 import org.kuali.rice.kim.api.type.KimTypeInfoService
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo
 import org.kuali.rice.kim.impl.membership.AbstractMemberBo
 import org.springframework.util.AutoPopulatingList
 
@@ -62,27 +60,31 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
 
     @OneToMany(targetEntity = RoleMemberAttributeDataBo.class, cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
     @JoinColumn(name = "ROLE_MBR_ID", insertable = false, updatable = false)
-    List<RoleMemberAttributeDataBo> attributes; // = new AutoPopulatingList(RoleMemberAttributeDataBo.class);
+    List<RoleMemberAttributeDataBo> attributeDetails; // = new AutoPopulatingList(RoleMemberAttributeDataBo.class);
 
     @Transient
     List<RoleResponsibilityActionBo> roleRspActions;
 
     @Transient
-    transient Map<String,String> qualifier = null;
+    Map<String,String> attributes
 
 
-    List<RoleMemberAttributeDataBo> getAttributes() {
-        if (this.attributes == null) {
+    List<RoleMemberAttributeDataBo> getAttributeDetails() {
+        if (this.attributeDetails == null) {
             return new AutoPopulatingList(RoleMemberAttributeDataBo.class);
         }
-        return this.attributes;
+        return this.attributeDetails;
     }
 
-    void setAttributes(List<RoleMemberAttributeDataBo> attributes) {
-        this.attributes = attributes;
+    void setAttributeDetails(List<RoleMemberAttributeDataBo> attributeDetails) {
+        this.attributeDetails = attributeDetails;
     }
 
-    Map<String,String> getQualifier() {
+    Map<String,String> getAttributes() {
+        return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes
+    }
+
+    /*Map<String,String> getAttributes() {
         if (qualifier == null) {
             Role role = getRoleService().getRole(roleId);
             KimType kimType = getTypeInfoService().getKimType(role.getKimTypeId());
@@ -101,27 +103,7 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
             qualifier = m;
         }
         return qualifier;
-    }
-
-    private transient static KimTypeInfoService kimTypeInfoService;
-    private transient static RoleService roleService;
-
-    protected static KimTypeInfoService getTypeInfoService() {
-        if (kimTypeInfoService == null) {
-            kimTypeInfoService = KimApiServiceLocator.getKimTypeInfoService();
-        }
-        return kimTypeInfoService;
-    }
-
-    protected static RoleService getRoleService() {
-        if (roleService == null) {
-            roleService = KimApiServiceLocator.getRoleService();
-        }
-        return roleService;
-    }
-
-
-
+    }*/
     public static RoleMember to(RoleMemberBo bo) {
         if (bo == null) {return null;}
         return RoleMember.Builder.create(bo).build();
@@ -133,7 +115,6 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
         return new RoleMemberBo(
                 roleMemberId: immutable.roleMemberId,
                 roleId: immutable.roleId,
-                qualifier: immutable.qualifier,
                 roleRspActions: immutable.roleRspActions.collect { RoleResponsibilityActionBo.from(it) },
                 memberId: immutable.memberId,
                 memberTypeCode: immutable.memberTypeCode,

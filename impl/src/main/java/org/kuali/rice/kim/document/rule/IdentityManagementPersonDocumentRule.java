@@ -787,7 +787,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 				GlobalVariables.getMessageMap().putError("document."+errorPath, RiceKeyConstants.ERROR_DELEGATE_ROLE_MEMBER_ASSOCIATION, new String[]{});
 			} else{
 				errorsTemp = kimTypeService.validateUnmodifiableAttributes(
-								kimType.getId(), roleMember.getQualifier(), mapToValidate);
+								kimType.getId(), roleMember.getAttributes(), mapToValidate);
 				validationErrors.putAll(
 						attributeValidationHelper.convertErrors(errorPath, attributeValidationHelper
                                 .convertQualifiersToAttrIdxMap(delegationMember.getQualifiers()), errorsTemp));

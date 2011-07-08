@@ -46,7 +46,7 @@ import java.util.Map;
 @XmlType(name = RoleMember.Constants.TYPE_NAME, propOrder = {
         RoleMember.Elements.ROLE_MEMBER_ID,
         RoleMember.Elements.ROLE_ID,
-        RoleMember.Elements.QUALIFIER,
+        RoleMember.Elements.ATTRIBUTES,
         RoleMember.Elements.ROLE_RESPONSIBILITY_ACTIONS,
         RoleMember.Elements.MEMBER_ID,
         RoleMember.Elements.MEMBER_TYPE_CODE,
@@ -64,9 +64,9 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
     @XmlElement(name = Elements.ROLE_ID)
     private final String roleId;
 
-    @XmlElement(name = Elements.QUALIFIER)
+    @XmlElement(name = Elements.ATTRIBUTES, required = false)
     @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    private final Map<String, String> qualifier;
+    private final Map<String, String> attributes;
 
     @XmlElement(name = Elements.ROLE_RESPONSIBILITY_ACTIONS)
     private final List<RoleResponsibilityAction> roleResponsibilityActions;
@@ -96,7 +96,7 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
     private RoleMember() {
         roleMemberId = null;
         roleId = null;
-        qualifier = null;
+        attributes = null;
         roleResponsibilityActions = null;
         memberId = null;
         memberTypeCode = null;
@@ -107,7 +107,7 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
     private RoleMember(Builder b) {
         roleMemberId = b.getRoleMemberId();
         roleId = b.getRoleId();
-        qualifier = b.getQualifier();
+        attributes = b.getAttributes();
 
         List<RoleResponsibilityAction> roleResponsibilityActions = new ArrayList<RoleResponsibilityAction>();
         if (!CollectionUtils.isEmpty(b.getRoleRspActions())) {
@@ -142,10 +142,10 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
     }
 
     /**
-     * @return the qualifier
+     * @return the attributes
      */
-    public Map<String, String> getQualifier() {
-        return this.qualifier;
+    public Map<String, String> getAttributes() {
+        return this.attributes;
     }
 
     /**
@@ -188,7 +188,7 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
 
         private String roleMemberId;
         private String roleId;
-        private Map<String, String> qualifier;
+        private Map<String, String> attributes;
         private List<RoleResponsibilityAction.Builder> roleRspActions;
         private String memberId;
         private String memberTypeCode;
@@ -196,7 +196,7 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
         private Timestamp activeToDate;
 
         public static Builder create(String roleId, String roleMemberId, String memberId,
-                                     String memberTypeCode, Timestamp activeFromDate, Timestamp activeToDate, Map<String, String> qualifier) {
+                                     String memberTypeCode, Timestamp activeFromDate, Timestamp activeToDate, Map<String, String> attributes) {
             Builder b = new Builder();
             b.setRoleId(roleId);
             b.setRoleMemberId(roleMemberId);
@@ -204,7 +204,7 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
             b.setMemberTypeCode(memberTypeCode);
             b.setActiveFromDate(activeFromDate);
             b.setActiveToDate(activeToDate);
-            b.setQualifier(qualifier);
+            b.setAttributes(attributes);
             return b;
         }
 
@@ -212,7 +212,7 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
             Builder b = new Builder();
             b.setRoleMemberId(contract.getRoleMemberId());
             b.setRoleId(contract.getRoleId());
-            b.setQualifier(contract.getQualifier());
+            b.setAttributes(contract.getAttributes());
 
             List<RoleResponsibilityAction.Builder> rraBuilders = new ArrayList<RoleResponsibilityAction.Builder>();
             if (!CollectionUtils.isEmpty(contract.getRoleRspActions())) {
@@ -249,12 +249,12 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
             this.roleId = roleId;
         }
 
-        public Map<String, String> getQualifier() {
-            return qualifier;
+        public Map<String, String> getAttributes() {
+            return attributes;
         }
 
-        public void setQualifier(Map<String, String> qualifier) {
-            this.qualifier = qualifier;
+        public void setAttributes(Map<String, String> attributes) {
+            this.attributes = attributes;
         }
 
         public List<RoleResponsibilityAction.Builder> getRoleRspActions() {
@@ -331,7 +331,7 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
     static class Elements {
         final static String ROLE_MEMBER_ID = "roleMemberId";
         final static String ROLE_ID = "roleId";
-        final static String QUALIFIER = "qualifier";
+        final static String ATTRIBUTES = "attributes";
         final static String ROLE_RESPONSIBILITY_ACTIONS = "roleResponsibilityActions";
         final static String MEMBER_ID = "memberId";
         final static String MEMBER_TYPE_CODE = "memberTypeCode";

@@ -29,7 +29,7 @@ public interface RoleMemberContract extends InactivatableFromTo {
 
     String getRoleId();
 
-    Map<String, String> getQualifier();
+    Map<String, String> getAttributes();
 
     List<? extends RoleResponsibilityActionContract> getRoleRspActions();
 }

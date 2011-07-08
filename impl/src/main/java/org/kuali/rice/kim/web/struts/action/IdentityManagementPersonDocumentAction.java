@@ -482,7 +482,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 	        AttributeDefinition attrDefinition;
 	        RoleMemberBo roleMember = KIMServiceLocatorInternal.getUiDocumentService().getRoleMember(newDelegationMember.getRoleMemberId());
 	        Map<String, String>
-                    roleMemberAttributes = (new AttributeValidationHelper()).convertAttributesToMap(roleMember.getAttributes());
+                    roleMemberAttributes = (new AttributeValidationHelper()).convertAttributesToMap(roleMember.getAttributeDetails());
 	        for (String key: attrHelper.getDefinitions().keySet()) {
 	        	RoleDocumentDelegationMemberQualifier qualifier = new RoleDocumentDelegationMemberQualifier();
 	        	attrDefinition = attrHelper.getDefinitions().get(key);

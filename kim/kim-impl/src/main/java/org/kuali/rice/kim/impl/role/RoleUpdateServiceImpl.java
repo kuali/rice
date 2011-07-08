@@ -160,7 +160,7 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
 
     	// When members are added to roles, clients must be notified.
     	getResponsibilityInternalService().saveRoleMember(newRoleMember);
-    	deleteNullMemberAttributeData(newRoleMember.getAttributes());
+    	deleteNullMemberAttributeData(newRoleMember.getAttributeDetails());
     	getIdentityManagementNotificationService().roleUpdated();
 
     	return findRoleMember(newRoleMember.getRoleMemberId());
@@ -382,7 +382,7 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
             }
             attributes.add(roleMemberAttrBo);
         }
-        roleMember.setAttributes(attributes);
+        roleMember.setAttributeDetails(attributes);
     }
 
     protected void addDelegationMemberAttributeData( DelegateMemberBo delegationMember, Map<String, String> qualifier, String kimTypeId ) {

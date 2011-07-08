@@ -730,7 +730,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
                     roleMember.getRoleMemberId(),
                     roleMember.getMemberId(),
                     roleMember.getMemberTypeCode(),
-                    roleMember.getQualifier())
+                    roleMember.getAttributes())
                     .build();
             roleMemberships.add(roleMembership);
         }

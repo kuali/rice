@@ -721,7 +721,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	        		docRolePrncpl.setRoleId(rolePrincipal.getRoleId());
 	        		docRolePrncpl.setActiveFromDate(rolePrincipal.getActiveFromDate());
 	        		docRolePrncpl.setActiveToDate(rolePrincipal.getActiveToDate());
-	         		docRolePrncpl.setQualifiers(populateDocRoleQualifier(namespaceCode, rolePrincipal.getAttributes(), definitions));
+	         		docRolePrncpl.setQualifiers(populateDocRoleQualifier(namespaceCode, rolePrincipal.getAttributeDetails(), definitions));
 	         		docRolePrncpl.setEdit(true);
 	        		docRoleMembers.add(docRolePrncpl);
 	    		 }
@@ -1354,7 +1354,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 							if(ObjectUtils.isNotNull(origRoleMembers)){
 								for (RoleMemberBo origMember : origRoleMembers) {
 									if (origMember.getRoleMemberId()!=null && StringUtils.equals(origMember.getRoleMemberId(), roleMember.getRoleMemberId())) {
-										origAttributes = origMember.getAttributes();
+										origAttributes = origMember.getAttributeDetails();
 										roleMemberImpl.setVersionNumber(origMember.getVersionNumber());
 									}
 								}
@@ -1385,7 +1385,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 									//}
 								}
 							}
-							roleMemberImpl.setAttributes(attributes);
+							roleMemberImpl.setAttributeDetails(attributes);
 							roleMembers.add(roleMemberImpl);
 						}
 					}
@@ -1439,14 +1439,14 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		if(ObjectUtils.isNotNull(rolePrncpls)){
 			for (RoleMemberBo roleMbr : rolePrncpls) {
 				List <RoleMemberAttributeDataBo>  roleMemberAttrs = new ArrayList<RoleMemberAttributeDataBo>();
-				if (CollectionUtils.isNotEmpty(roleMbr.getAttributes())) {
-					for (RoleMemberAttributeDataBo attr : roleMbr.getAttributes()) {
+				if (CollectionUtils.isNotEmpty(roleMbr.getAttributeDetails())) {
+					for (RoleMemberAttributeDataBo attr : roleMbr.getAttributeDetails()) {
 						if (StringUtils.isBlank(attr.getAttributeValue())) {
 							roleMemberAttrs.add(attr);
 						}
 					}
 					if (!roleMemberAttrs.isEmpty()) {
-						roleMbr.getAttributes().removeAll(roleMemberAttrs);
+						roleMbr.getAttributeDetails().removeAll(roleMemberAttrs);
 						blankRoleMemberAttrs.addAll(roleMemberAttrs);
 					}
 
@@ -1641,7 +1641,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					pndMember.setMemberName(getMemberName(member.getMemberTypeCode(), member.getMemberId()));
 					pndMember.setMemberFullName(getMemberFullName(member.getMemberTypeCode(), member.getMemberId()));
 					pndMember.setMemberTypeCode(member.getMemberTypeCode());
-					pndMember.setQualifiers(loadRoleMemberQualifiers(identityManagementRoleDocument, member.getAttributes()));
+					pndMember.setQualifiers(loadRoleMemberQualifiers(identityManagementRoleDocument, member.getAttributeDetails()));
 					pndMember.setEdit(true);
 					pndMembers.add(pndMember);
 				}
@@ -2222,7 +2222,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
                             (origRoleMemberImpl.getMemberTypeCode()!=null && StringUtils.equals(origRoleMemberImpl.getMemberTypeCode(), newRoleMember.getMemberTypeCode())) &&
                             !origRoleMemberImpl.isActive(new Timestamp(System.currentTimeMillis())) &&
                             !kimTypeService.validateUniqueAttributes(identityManagementRoleDocument.getKimType().getId(),
-                                    documentRoleMember.getQualifierAsMap(), origRoleMemberImpl.getQualifier())) {
+                                    documentRoleMember.getQualifierAsMap(), origRoleMemberImpl.getAttributes())) {
 
                             //TODO: verify if you want to add  && newRoleMember.isActive() condition to if...
 
@@ -2237,8 +2237,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
                     }
                 }
                 origAttributes = (origRoleMemberImplTemp==null || origRoleMemberImplTemp.getAttributes()==null)?
-                                    new ArrayList<RoleMemberAttributeDataBo>():origRoleMemberImplTemp.getAttributes();
-                newRoleMember.setAttributes(getRoleMemberAttributeData(documentRoleMember.getQualifiers(), origAttributes, activatingInactive, newRoleMemberIdAssigned));
+                                    new ArrayList<RoleMemberAttributeDataBo>():origRoleMemberImplTemp.getAttributeDetails();
+                newRoleMember.setAttributeDetails(getRoleMemberAttributeData(documentRoleMember.getQualifiers(), origAttributes, activatingInactive, newRoleMemberIdAssigned));
                 newRoleMember.setRoleRspActions(getRoleMemberResponsibilityActions(documentRoleMember, origRoleMemberImplTemp, activatingInactive, newRoleMemberIdAssigned));
                 roleMembers.add(newRoleMember);
                 activatingInactive = false;
@@ -2806,7 +2806,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				KimCommonUtilsInternal.copyProperties(matchingRoleMember, roleMemberBo);
 				matchingRoleMember.setMemberName(getMemberName(roleMemberBo.getMemberTypeCode(), roleMemberObject));
 				matchingRoleMember.setMemberNamespaceCode(getMemberNamespaceCode(roleMemberBo.getMemberTypeCode(), roleMemberObject));
-				matchingRoleMember.setQualifiers(getQualifiers(roleMemberBo.getAttributes()));
+				matchingRoleMember.setQualifiers(getQualifiers(roleMemberBo.getAttributeDetails()));
 				matchingRoleMembers.add(matchingRoleMember);
 			}
 		}

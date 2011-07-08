@@ -136,11 +136,11 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                             roleMemberBo.getRoleMemberId(),
                             roleMemberBo.getMemberId(),
                             roleMemberBo.getMemberTypeCode(),
-                            roleMemberBo.getQualifier()).build();
+                            roleMemberBo.getAttributes()).build();
 
                     las.add(mi);
                 } else {
-                    results.add(roleMemberBo.getQualifier());
+                    results.add(roleMemberBo.getAttributes());
                 }
             }
         }
@@ -205,11 +205,11 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                             roleMemberBo.getRoleMemberId(),
                             roleMemberBo.getMemberId(),
                             roleMemberBo.getMemberTypeCode(),
-                            roleMemberBo.getQualifier()).build();
+                            roleMemberBo.getAttributes()).build();
 
                     las.add(mi);
                 } else {
-                    results.add(roleMemberBo.getQualifier());
+                    results.add(roleMemberBo.getAttributes());
                 }
             } else if (roleMemberBo.getMemberTypeCode().equals(Role.ROLE_MEMBER_TYPE)) {
                 // find out if the user has the role
@@ -233,7 +233,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                 // if the user has the given role, add the qualifier the *nested role* has with the
                 // originally queries role
                 if (principalHasRole(principalId, nestedRoleId, nestedQualification, false)) {
-                    results.add(roleMemberBo.getQualifier());
+                    results.add(roleMemberBo.getAttributes());
                 }
             }
         }
@@ -345,7 +345,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                     roleMemberBo.getRoleMemberId(),
                     roleMemberBo.getMemberId(),
                     roleMemberBo.getMemberTypeCode(),
-                    roleMemberBo.getQualifier()).build();
+                    roleMemberBo.getAttributes()).build();
             roleMemberships.add(roleMembeship);
         }
         return roleMemberships;
@@ -611,7 +611,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                     roleMemberBo.getRoleMemberId(),
                     roleMemberBo.getMemberId(),
                     roleMemberBo.getMemberTypeCode(),
-                    roleMemberBo.getQualifier()).build();
+                    roleMemberBo.getAttributes()).build();
 
             // if the qualification check does not need to be made, just add the result
             if ((qualification == null || qualification.isEmpty()) || getRoleTypeService(roleMemberBo.getRoleId()) == null) {
@@ -793,7 +793,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                 //it is possible that the the roleTypeService is coming from a remote application
                 // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
                 try {
-                    if (roleTypeService.doesRoleQualifierMatchQualification(qualification, roleMemberBo.getQualifier())) {
+                    if (roleTypeService.doesRoleQualifierMatchQualification(qualification, roleMemberBo.getAttributes())) {
                         RoleBo memberRole = getRoleBo(roleMemberBo.getMemberId());
                         Map<String, String> nestedRoleQualification = roleTypeService.convertQualificationForMemberRoles(
                                 roles.get(roleMemberBo.getRoleId()).getNamespaceCode(),
@@ -957,7 +957,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                         if (!rm.isActive(new Timestamp(new Date().getTime()))) {
                             continue;
                         }
-                        Map<String, String> roleQualifier = rm.getQualifier();
+                        Map<String, String> roleQualifier = rm.getAttributes();
                         //it is possible that the the roleTypeService is coming from a remote application
                         // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
                         try {
@@ -992,7 +992,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                     roleMemberBo.getRoleMemberId(),
                     roleMemberBo.getMemberId(),
                     roleMemberBo.getMemberTypeCode(),
-                    roleMemberBo.getQualifier()).build();
+                    roleMemberBo.getAttributes()).build();
 
             // if the role type service is null, assume that all qualifiers match
             if (getRoleTypeService(roleMemberBo.getRoleId()) == null) {

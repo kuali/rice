@@ -30,7 +30,7 @@ class RoleMemberTest {
 
     static final String ROLE_MEMBER_ID = "1";
     static final String ROLE_ID = "23";
-    static final Map<String, String> QUALIFIER = [:]
+    static final Map<String, String> ATTRIBUTES = [:]
     static final List<RoleResponsibilityAction.Builder> ROLE_RESPONSIBILITY_ACTIONS = [create_rra_builder()];
     static final String MEMBER_NAME = "Spock";
     static final String MEMBER_NAMESPACE_CODE = "KUALI";
@@ -61,7 +61,7 @@ class RoleMemberTest {
        <roleMember xmlns="http://rice.kuali.org/kim/v2_0">
          <roleMemberId>${ROLE_MEMBER_ID}</roleMemberId>
          <roleId>${ROLE_ID}</roleId>
-         <qualifier/>
+         <attributes/>
          <roleResponsibilityActions>
             <id>${RoleResponsibilityActionTest.ID}</id>
             <roleResponsibilityId>${RoleResponsibilityActionTest.ROLE_RESPONSIBILITY_ID}</roleResponsibilityId>
@@ -99,7 +99,7 @@ class RoleMemberTest {
         RoleMember roleMember = (RoleMember) unmarshaller.unmarshal(new StringReader(XML))
         Assert.assertEquals(ROLE_MEMBER_ID, roleMember.roleMemberId)
         Assert.assertEquals(ROLE_ID, roleMember.roleId)
-        Assert.assertEquals(QUALIFIER, roleMember.qualifier)
+        Assert.assertEquals(ATTRIBUTES, roleMember.attributes)
         Assert.assertEquals(roleResponsibilityActions, roleMember.roleRspActions)
         Assert.assertEquals(MEMBER_ID, roleMember.memberId)
         Assert.assertEquals(MEMBER_TYPE_CODE, roleMember.memberTypeCode)
@@ -112,7 +112,7 @@ class RoleMemberTest {
         Marshaller marshaller = jc.createMarshaller()
         StringWriter sw = new StringWriter()
 
-        RoleMember roleMember = RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, ACTIVE_FROM, ACTIVE_TO, QUALIFIER).build()
+        RoleMember roleMember = RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES).build()
 
         marshaller.marshal(roleMember, sw)
         String xml = sw.toString()
@@ -125,19 +125,19 @@ class RoleMemberTest {
 
     @Test
     void test_Builder_create() {
-        RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, ACTIVE_FROM, ACTIVE_TO, QUALIFIER).build()
+        RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES).build()
     }
 
     @Test
     void test_Builder_createWithContract() {
-        RoleMemberContract rmc = RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, ACTIVE_FROM, ACTIVE_TO, QUALIFIER).build()
+        RoleMemberContract rmc = RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES).build()
         RoleMember rm = RoleMember.Builder.create(rmc).build();
         Assert.assertEquals(rm, rmc);
     }
 
     @Test
     void test_Builder_memberIdNull() {
-        RoleMember.Builder b = RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, ACTIVE_FROM, ACTIVE_TO, QUALIFIER)
+        RoleMember.Builder b = RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES)
         shouldFail(IllegalArgumentException) {
             b.memberId = null
         }
@@ -145,7 +145,7 @@ class RoleMemberTest {
 
     @Test
     void test_Builder_memberIdBlank() {
-        RoleMember.Builder b = RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, ACTIVE_FROM, ACTIVE_TO, QUALIFIER)
+        RoleMember.Builder b = RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES)
         shouldFail(IllegalArgumentException) {
             b.memberId = ""
         }
@@ -153,7 +153,7 @@ class RoleMemberTest {
 
     @Test
     void test_Builder_memberTypeCodeNull() {
-        RoleMember.Builder b = RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, ACTIVE_FROM, ACTIVE_TO, QUALIFIER)
+        RoleMember.Builder b = RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES)
         shouldFail(IllegalArgumentException) {
             b.memberTypeCode = null
         }
@@ -161,7 +161,7 @@ class RoleMemberTest {
 
     @Test
     void test_Builder_memberTypeCodeBlank() {
-        RoleMember.Builder b = RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, ACTIVE_FROM, ACTIVE_TO, QUALIFIER)
+        RoleMember.Builder b = RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES)
         shouldFail(IllegalArgumentException) {
             b.memberTypeCode = ""
         }
@@ -173,7 +173,7 @@ class RoleMemberTest {
         Timestamp betweenTimeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(betweenDate).toTimestamp()
 
         RoleMember roleMember =
-            RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, ACTIVE_FROM, ACTIVE_TO, QUALIFIER).build()
+            RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES).build()
 
         Assert.assertTrue(roleMember.isActive(betweenTimeStamp))
     }
@@ -184,7 +184,7 @@ class RoleMemberTest {
         Timestamp betweenTimeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(betweenDate).toTimestamp()
 
         RoleMember roleMember =
-            RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, ACTIVE_FROM, ACTIVE_TO, QUALIFIER).build()
+            RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES).build()
 
         Assert.assertFalse(roleMember.isActive(betweenTimeStamp))
     }
@@ -195,7 +195,7 @@ class RoleMemberTest {
         Timestamp betweenTimeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(betweenDate).toTimestamp()
 
         RoleMember roleMember =
-            RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, ACTIVE_FROM, ACTIVE_TO, QUALIFIER).build()
+            RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES).build()
 
         Assert.assertFalse(roleMember.isActive(betweenTimeStamp))
     }

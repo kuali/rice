@@ -109,7 +109,7 @@ public abstract class RoleMemberXmlDTO implements Serializable {
         this.memberTypeCode = roleMember.getMemberTypeCode();
         this.activeFromDate = roleMember.getActiveFromDate();
         this.activeToDate = roleMember.getActiveToDate();
-        this.qualifications = (roleMember.getQualifier() != null) ? new HashMap<String, String>(roleMember.getQualifier()) : new HashMap<String, String>();
+        this.qualifications = (roleMember.getAttributes() != null) ? roleMember.getAttributes() : new HashMap<String, String>();
         
         if (KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)) {
             if (populateMemberId) {

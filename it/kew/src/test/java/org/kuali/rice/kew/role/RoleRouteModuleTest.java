@@ -244,17 +244,17 @@ public class RoleRouteModuleTest extends KEWTestCase {
         List<RoleMemberAttributeDataBo> user1Attributes = new ArrayList<RoleMemberAttributeDataBo>();
         user1Attributes.add(chartDataIN);
         user1Attributes.add(orgDataMED);
-        user1RolePrincipal.setAttributes(user1Attributes);
+        user1RolePrincipal.setAttributeDetails(user1Attributes);
 
         List<RoleMemberAttributeDataBo> user2Attributes = new ArrayList<RoleMemberAttributeDataBo>();
         user2Attributes.add(chartDataBL2);
         user2Attributes.add(orgDataBUS2);
-        user2RolePrincipal.setAttributes(user2Attributes);
+        user2RolePrincipal.setAttributeDetails(user2Attributes);
 
         List<RoleMemberAttributeDataBo> adminAttributes = new ArrayList<RoleMemberAttributeDataBo>();
         adminAttributes.add(chartDataBL);
         adminAttributes.add(orgDataBUS);
-        adminRolePrincipal.setAttributes(adminAttributes);
+        adminRolePrincipal.setAttributeDetails(adminAttributes);
 
 
         /**

@@ -164,13 +164,13 @@ public final class RoleXmlUtil {
                     String memberTypeCode = roleMember.getMemberTypeCode();
                     if (KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)) {
                         roleUpdateService.removePrincipalFromRole(roleMember.getMemberId(), role.getNamespaceCode(), role.getName(),
-                                (roleMember.getQualifier() != null) ? new HashMap<String, String>(roleMember.getQualifier()) : new HashMap<String, String>());
+                                (roleMember.getAttributes() != null) ? roleMember.getAttributes() : new HashMap<String, String>());
                     } else if (KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)) {
                         roleUpdateService.removeGroupFromRole(roleMember.getMemberId(), role.getNamespaceCode(), role.getName(),
-                                (roleMember.getQualifier() != null) ? new HashMap<String, String>(roleMember.getQualifier()) : new HashMap<String, String>());
+                                (roleMember.getAttributes() != null) ? roleMember.getAttributes() :new HashMap<String, String>());
                     } else if (KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)) {
                         roleUpdateService.removeRoleFromRole(roleMember.getMemberId(), role.getNamespaceCode(), role.getName(),
-                                (roleMember.getQualifier() != null) ? new HashMap<String, String>(roleMember.getQualifier()) : new HashMap<String, String>());
+                                (roleMember.getAttributes() != null) ? roleMember.getAttributes() : new HashMap<String, String>());
                     }
                 }
             }

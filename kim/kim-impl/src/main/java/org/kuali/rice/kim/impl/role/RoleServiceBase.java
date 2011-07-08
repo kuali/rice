@@ -486,7 +486,8 @@ public class RoleServiceBase {
 
             // Retrieve any uncached results from the database and then cache them.
             if (!uncachedLists.isEmpty()) {
-                Map<String, DelegateBo> uncachedResults = roleDao.getDelegationImplMapFromRoleIds(uncachedLists.keySet());
+                Map<String, DelegateBo> uncachedResults = roleDao.getDelegationImplMapFromRoleIds(
+                        uncachedLists.keySet());
 
                 for (Map.Entry<String, DelegateBo> uncachedResult : uncachedResults.entrySet()) {
                     finalResults.put(uncachedResult.getKey(), uncachedResult.getValue());
@@ -860,8 +861,8 @@ public class RoleServiceBase {
         if (delegateMember != null) {
             getCacheAdministrator().putInCache(getDelegationMemberCacheKey(delegateMember.getDelegationMemberId()),
                     delegateMember, DELEGATION_MEMBER_IMPL_CACHE_GROUP);
-            getCacheAdministrator().putInCache(getDelegationMemberByDelegationAndIdCacheKey(delegateMember.getDelegationId(),
-                    delegateMember.getDelegationMemberId()), delegateMember, DELEGATION_MEMBER_IMPL_CACHE_GROUP);
+            getCacheAdministrator().putInCache(getDelegationMemberByDelegationAndIdCacheKey(
+                    delegateMember.getDelegationId(), delegateMember.getDelegationMemberId()), delegateMember, DELEGATION_MEMBER_IMPL_CACHE_GROUP);
         }
     }
 
@@ -878,7 +879,8 @@ public class RoleServiceBase {
     }
 
     protected DelegateMemberBo getDelegationMemberByDelegationAndIdFromCache(String delegationId, String delegationMemberId) {
-        return (DelegateMemberBo) getCacheAdministrator().getFromCache(getDelegationMemberByDelegationAndIdCacheKey(delegationId, delegationMemberId));
+        return (DelegateMemberBo) getCacheAdministrator().getFromCache(getDelegationMemberByDelegationAndIdCacheKey(
+                delegationId, delegationMemberId));
     }
 
     protected List<DelegateMemberBo> getDelegationMemberListByMemberAndDelegationIdFromCache(String memberId, String delegationId) {
@@ -1214,7 +1216,7 @@ public class RoleServiceBase {
     protected boolean doesMemberMatch(RoleMemberBo roleMember, String memberId, String memberTypeCode, Map<String, String> qualifier) {
         if (roleMember.getMemberId().equals(memberId) && roleMember.getMemberTypeCode().equals(memberTypeCode)) {
             // member ID/type match
-            Map<String, String> roleQualifier = roleMember.getQualifier();
+            Map<String, String> roleQualifier = roleMember.getAttributes();
             if ((qualifier == null || qualifier.isEmpty())
                     && (roleQualifier == null || roleQualifier.isEmpty())) {
                 return true; // blank qualifier match

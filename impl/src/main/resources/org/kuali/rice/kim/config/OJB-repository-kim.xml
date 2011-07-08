@@ -525,7 +525,7 @@
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
     <field-descriptor name="activeFromDate" column="ACTV_FRM_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="activeToDate" column="ACTV_TO_DT" jdbc-type="TIMESTAMP" />
-    <collection-descriptor name="attributes" element-class-ref="org.kuali.rice.kim.impl.role.RoleMemberAttributeDataBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
+    <collection-descriptor name="attributeDetails" element-class-ref="org.kuali.rice.kim.impl.role.RoleMemberAttributeDataBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="assignedToId" target-field-ref="roleMemberId"/>
     </collection-descriptor>
   </class-descriptor>

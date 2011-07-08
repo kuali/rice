@@ -170,14 +170,14 @@ public class CollectionGroupBuilder implements Serializable {
                     + Integer.toString(lineIndex));
         }
         
-		if(currentLine == null && !lineFields.isEmpty()){
+		if(lineIndex == -1 && !lineFields.isEmpty()){
     		for(Field f: lineFields){
-    		    f.addStyleClass(collectionGroup.getId() + "-addField");
     		    if(f instanceof AttributeField){
     		        //sets up - skipping these fields in add area during standard form validation calls
     		        //custom addLineToCollection js call will validate these fields manually on an add
     		    	Control control = ((AttributeField) f).getControl();
     		    	if (control != null) {
+    		    	    control.addStyleClass(collectionGroup.getBaseId() + "-addField");
     		    		control.addStyleClass("ignoreValid");
     		    	}
     		    }
@@ -188,25 +188,6 @@ public class CollectionGroupBuilder implements Serializable {
     		    }
     		}
 		}
-		
-/*		if(currentLine == null && !lineFields.isEmpty()){
-    		for(Field f: lineFields){
-    		    f.addStyleClass(collectionGroup.getId() + "-addField");
-    		    if(f instanceof AttributeField){
-    		        //sets up - skipping these fields in add area during standard form validation calls
-    		        //custom addLineToCollection js call will validate these fields manually on an add
-    		    	Control control = ((AttributeField) f).getControl();
-    		    	if (control != null) {
-    		    		control.addStyleClass("ignoreValid");
-    		    	}
-    		    }
-    		}
-    		for(ActionField action: actions){
-    		    if(action.getActionParameter(UifParameters.ACTION_TYPE).equals(UifParameters.ADD_LINE)){
-    		        action.setFocusOnAfterSubmit(lineFields.get(0).getId());
-    		    }
-    		}
-		}*/
 		
 		ComponentUtils.updateContextsForLine(lineFields, currentLine, lineIndex);
 
@@ -390,7 +371,7 @@ public class CollectionGroupBuilder implements Serializable {
 			//actionField.addActionParameter(UifParameters.COLLECTION_ID, collectionGroup.getId());
 			actionField.setJumpToIdAfterSubmit(collectionGroup.getId());
 			actionField.addActionParameter(UifParameters.ACTION_TYPE, UifParameters.ADD_LINE);
-			actionField.setClientSideJs("addLineToCollection('"+ collectionGroup.getId() +"');");
+			actionField.setClientSideJs("addLineToCollection('"+collectionGroup.getId()+"', '"+ collectionGroup.getBaseId() +"');");
 		}
 
 		// get add line for context

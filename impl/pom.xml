@@ -456,11 +456,6 @@
     </dependency>
 
     <dependency>
-      <groupId>bsf</groupId>
-      <artifactId>bsf</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>xerces</groupId>
       <artifactId>xercesImpl</artifactId>
     </dependency>

@@ -65,9 +65,6 @@
     <aopalliance.version>1.0</aopalliance.version>
     <asm.version>3.3.1</asm.version>
     <bcprov.version>1.46</bcprov.version>
-
-    <!-- the 3.x codebase is completely different - switching will require rewriting much code -->
-    <bsf.version>2.4.0</bsf.version>
     <cas-client-core.version>3.2.0</cas-client-core.version>
     <cglib.version>2.2.2</cglib.version>
     <commons-beanutils.version>1.8.3-kuali</commons-beanutils.version>
@@ -855,19 +852,6 @@
         <groupId>asm</groupId>
         <artifactId>asm</artifactId>
         <version>${asm.version}</version>
-      </dependency>
-
-      <dependency>
-        <!-- groupid was changed to org.apache.bsf in later versions -->
-        <groupId>bsf</groupId>
-        <artifactId>bsf</artifactId>
-        <version>${bsf.version}</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>commons-logging</artifactId>
-            <groupId>commons-logging</groupId>
-          </exclusion>
-        </exclusions>
       </dependency>
 
       <dependency>

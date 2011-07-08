@@ -15,15 +15,14 @@
  */
 package org.kuali.rice.kew.rule;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.bsf.BSFException;
-import org.apache.bsf.BSFManager;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowException;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An extension of BSFRuleExpression that makes it easier to accumulate a list of responsibilities
@@ -35,13 +34,13 @@ public class AccumulatingBSFRuleExpression extends BSFRuleExpression {
     private static final Logger LOG = Logger.getLogger(AccumulatingBSFRuleExpression.class);
 
     @Override
-    protected void declareBeans(BSFManager manager, Rule rule, RouteContext context) throws BSFException {
+    protected void declareBeans(ScriptEngine engine, Rule rule, RouteContext context) throws ScriptException {
         // define the standard beans
-        super.declareBeans(manager, rule, context);
+        super.declareBeans(engine, rule, context);
         // define our special rule helper class
         RuleHelper rh = new RuleHelper(rule, context);
-        manager.declareBean("metarule", rh, RuleHelper.class); // backwards compatibility with existing KRAMetaRuleExpression usage
-        manager.declareBean("rulehelper", rh, RuleHelper.class);
+        engine.put("metarule", rh); // backwards compatibility with existing KRAMetaRuleExpression usage
+        engine.put("rulehelper", rh);
     }
 
     /**

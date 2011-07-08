@@ -17,12 +17,10 @@ package org.kuali.rice.kew.rule;
 
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
-import org.apache.bsf.BSFEngine;
-import org.apache.bsf.BSFException;
-import org.apache.bsf.BSFManager;
-import org.codehaus.groovy.bsf.GroovyEngine;
 import org.junit.Test;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 
 /**
  * Tests that Groovy can be loaded via Bean Scripting Framework
@@ -40,27 +38,15 @@ public class LoadEmbeddedGroovyTest {
         assert binding.getVariable("x").equals(new Integer(123));
     }
 
-    @Test public void testBSFGroovy() throws BSFException {
-        BSFManager.registerScriptingEngine(
-                "groovy", 
-                "org.codehaus.groovy.bsf.GroovyEngine", 
-                new String[] { "groovy", "gy" }
-        );
-        GroovyEngine ge = new GroovyEngine();
-        BSFManager manager = new BSFManager();
-        BSFEngine engine = manager.loadScriptingEngine("groovy");
-        manager.eval("groovy", "LoadEmbeddedGroovyTest", 0, 0, "println 'hello embedded groovy world'");
+    @Test public void testJSR223Groovy() throws Exception {
+        ScriptEngineManager factory = new ScriptEngineManager();
+        ScriptEngine engine = factory.getEngineByName("groovy");
+        engine.eval("println 'hello embedded groovy world'");
     }
-    
-    @Test public void testBSFGroovy2() throws BSFException {
-        BSFManager.registerScriptingEngine(
-                "groovy", 
-                "org.codehaus.groovy.bsf.GroovyEngine", 
-                new String[] { "groovy", "gy" }
-        );
-        GroovyEngine ge = new GroovyEngine();
-        BSFManager manager = new BSFManager();
-        BSFEngine engine = manager.loadScriptingEngine("groovy");
-        manager.eval("groovy", "LoadEmbeddedGroovyTest", 0, 0, "var = 0\r\ndef foo() {\r\n var++\r\n }\r\n foo()");
+
+    @Test public void testJSR223Groovy2() throws Exception {
+        ScriptEngineManager factory = new ScriptEngineManager();
+        ScriptEngine engine = factory.getEngineByName("groovy");
+        engine.eval("var = 0\r\ndef foo() {\r\n var++\r\n }\r\n foo()");
     }
 }

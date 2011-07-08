@@ -15,13 +15,14 @@
  */
 package org.kuali.rice.kew.rule;
 
-import org.apache.bsf.BSFException;
-import org.apache.bsf.BSFManager;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
 /**
  * A rule expression implementation that uses Bean Scripting Framework.
@@ -30,25 +31,20 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+//TODO: this should really be renamed since it is no longer using apache BSF
 public class BSFRuleExpression implements RuleExpression {
-    static {
-        BSFManager.registerScriptingEngine(
-                "groovy", 
-                "org.codehaus.groovy.bsf.GroovyEngine", 
-                new String[] { "groovy", "gy" }
-        );
-    }
     public RuleExpressionResult evaluate(Rule rule, RouteContext context) throws WorkflowException {
         RuleBaseValues ruleDefinition = rule.getDefinition();
         String type = ruleDefinition.getRuleExpressionDef().getType();
         String lang = parseLang(type, "groovy");
         String expression = ruleDefinition.getRuleExpressionDef().getExpression();
         RuleExpressionResult result;
-        BSFManager manager = new BSFManager();
+        ScriptEngineManager factory = new ScriptEngineManager();
+        ScriptEngine engine = factory.getEngineByName(lang);
         try {
-            declareBeans(manager, rule, context);
-            result = (RuleExpressionResult) manager.eval(lang, null, 0, 0, expression);
-        } catch (BSFException e) {
+            declareBeans(engine, rule, context);
+            result = (RuleExpressionResult) engine.eval(expression);
+        } catch (ScriptException e) {
             throw new WorkflowException("Error evaluating " + type + " expression: '" + expression + "'", e);
         }
         if (result == null) {
@@ -80,10 +76,10 @@ public class BSFRuleExpression implements RuleExpression {
      * @param rule the current Rule object
      * @param context the current RouteContext
      */
-    protected void declareBeans(BSFManager manager, Rule rule, RouteContext context) throws BSFException {
-        manager.declareBean("rule", rule, Rule.class);
-        manager.declareBean("routeContext", context, RouteContext.class);
-        manager.declareBean("workflow", new WorkflowRuleAPI(context), WorkflowRuleAPI.class);
+    protected void declareBeans(ScriptEngine engine, Rule rule, RouteContext context) throws ScriptException {
+        engine.put("rule", rule);
+        engine.put("routeContext", context);
+        engine.put("workflow", new WorkflowRuleAPI(context));
     }
 
     /**

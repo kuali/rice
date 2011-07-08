@@ -15,8 +15,9 @@
  */
 package org.kuali.rice.krad.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.Assert;
+import org.junit.Test;
+import org.kuali.rice.krad.util.BeanPropertyComparator.BeanComparisonException;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -26,14 +27,10 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Test;
-import org.kuali.rice.krad.util.BeanPropertyComparator.BeanComparisonException;
-import org.kuali.test.KRADTestCase;
-
 /**
  * This class tests the BeanPropertyComparator methods.
  */
-public class BeanPropertyComparatorTest extends KRADTestCase {
+public class BeanPropertyComparatorTest {
 
     @Test public void testConstructor_nullList() {
         boolean failedAsExpected = false;
@@ -45,7 +42,7 @@ public class BeanPropertyComparatorTest extends KRADTestCase {
             failedAsExpected = true;
         }
 
-        assertTrue(failedAsExpected);
+        Assert.assertTrue(failedAsExpected);
     }
 
     @Test public void testConstructor_emptyList() {
@@ -56,7 +53,7 @@ public class BeanPropertyComparatorTest extends KRADTestCase {
         catch (IllegalArgumentException e) {
             failedAsExpected = true;
         }
-        assertTrue(failedAsExpected);
+        Assert.assertTrue(failedAsExpected);
     }
 
     @Test public void testCompare_unknownPropertyNames() {
@@ -76,7 +73,7 @@ public class BeanPropertyComparatorTest extends KRADTestCase {
                 failedAsExpected = true;
             }
         }
-        assertTrue(failedAsExpected);
+        Assert.assertTrue(failedAsExpected);
     }
 
     @Test public void testCompare_propertyTypeMismatch() {
@@ -94,7 +91,7 @@ public class BeanPropertyComparatorTest extends KRADTestCase {
         catch (ClassCastException e) {
             failedAsExpected = true;
         }
-        assertTrue(failedAsExpected);
+        Assert.assertTrue(failedAsExpected);
     }
 
     @Test public void testCompare_privateProperty() {
@@ -114,7 +111,7 @@ public class BeanPropertyComparatorTest extends KRADTestCase {
                 failedAsExpected = true;
             }
         }
-        assertTrue(failedAsExpected);
+        Assert.assertTrue(failedAsExpected);
     }
 
 
@@ -126,13 +123,13 @@ public class BeanPropertyComparatorTest extends KRADTestCase {
         B greater = new B("Two", new Integer(0), Boolean.valueOf(false));
 
         int lessThan = bpc.compare(lesser, greater);
-        assertTrue(lessThan < 0);
+        Assert.assertTrue(lessThan < 0);
 
         int greaterThan = bpc.compare(greater, lesser);
-        assertTrue(greaterThan > 0);
+        Assert.assertTrue(greaterThan > 0);
 
         int equal = bpc.compare(greater, greater);
-        assertTrue(equal == 0);
+        Assert.assertTrue(equal == 0);
     }
 
     @Test public void testCompare_oneProperty_integer() {
@@ -143,13 +140,13 @@ public class BeanPropertyComparatorTest extends KRADTestCase {
         B greater = new B("One", new Integer(1), Boolean.valueOf(false));
 
         int lessThan = bpc.compare(lesser, greater);
-        assertTrue(lessThan < 0);
+        Assert.assertTrue(lessThan < 0);
 
         int greaterThan = bpc.compare(greater, lesser);
-        assertTrue(greaterThan > 0);
+        Assert.assertTrue(greaterThan > 0);
 
         int equal = bpc.compare(greater, greater);
-        assertTrue(equal == 0);
+        Assert.assertTrue(equal == 0);
     }
 
     @Test public void testCompare_oneProperty_boolean() {
@@ -160,13 +157,13 @@ public class BeanPropertyComparatorTest extends KRADTestCase {
         B greater = new B("One", new Integer(0), Boolean.valueOf(true));
 
         int lessThan = bpc.compare(lesser, greater);
-        assertTrue(lessThan < 0);
+        Assert.assertTrue(lessThan < 0);
 
         int greaterThan = bpc.compare(greater, lesser);
-        assertTrue(greaterThan > 0);
+        Assert.assertTrue(greaterThan > 0);
 
         int equal = bpc.compare(greater, greater);
-        assertTrue(equal == 0);
+        Assert.assertTrue(equal == 0);
     }
 
     @Test public void testCompare_oneLevel() {
@@ -177,13 +174,13 @@ public class BeanPropertyComparatorTest extends KRADTestCase {
         B greater = new B("Two", new Integer(0), Boolean.valueOf(false));
 
         int lessThan = bpcSIB.compare(lesser, greater);
-        assertTrue(lessThan < 0);
+        Assert.assertTrue(lessThan < 0);
 
         int greaterThan = bpcSIB.compare(greater, lesser);
-        assertTrue(greaterThan > 0);
+        Assert.assertTrue(greaterThan > 0);
 
         int equal = bpcSIB.compare(greater, greater);
-        assertTrue(equal == 0);
+        Assert.assertTrue(equal == 0);
     }
 
     @Test public void testCompare_twoLevels() {
@@ -194,13 +191,13 @@ public class BeanPropertyComparatorTest extends KRADTestCase {
         B greater = new B("Same", new Integer(1), Boolean.valueOf(false));
 
         int lessThan = bpc.compare(lesser, greater);
-        assertTrue(lessThan < 0);
+        Assert.assertTrue(lessThan < 0);
 
         int greaterThan = bpc.compare(greater, lesser);
-        assertTrue(greaterThan > 0);
+        Assert.assertTrue(greaterThan > 0);
 
         int equal = bpc.compare(greater, greater);
-        assertTrue(equal == 0);
+        Assert.assertTrue(equal == 0);
     }
 
     @Test public void testCompare_threeLevels() {
@@ -211,13 +208,13 @@ public class BeanPropertyComparatorTest extends KRADTestCase {
         B greater = new B("Same", new Integer(1), Boolean.valueOf(true));
 
         int lessThan = bpc.compare(lesser, greater);
-        assertTrue(lessThan < 0);
+        Assert.assertTrue(lessThan < 0);
 
         int greaterThan = bpc.compare(greater, lesser);
-        assertTrue(greaterThan > 0);
+        Assert.assertTrue(greaterThan > 0);
 
         int equal = bpc.compare(greater, greater);
-        assertTrue(equal == 0);
+        Assert.assertTrue(equal == 0);
     }
 
     @Test public void testCompare_differentCases() {
@@ -230,10 +227,10 @@ public class BeanPropertyComparatorTest extends KRADTestCase {
         B greater = new B("something", new Integer(1), Boolean.valueOf(false));
 
         int equal = insensitive.compare(greater, lesser);
-        assertTrue(equal == 0);
+        Assert.assertTrue(equal == 0);
 
         int inequal = sensitive.compare(greater, lesser);
-        assertTrue(inequal != 0);
+        Assert.assertTrue(inequal != 0);
     }
     
     @Test public void testCompare_differentDates() throws ParseException {
@@ -247,16 +244,16 @@ public class BeanPropertyComparatorTest extends KRADTestCase {
     	D greater = new D(dateFormat.parse("01/02/1990"));
     	
     	int result = comparator.compare(greater, lesser);
-    	assertEquals(1, result);
+    	Assert.assertEquals(1, result);
     	
     	result = comparator.compare(lesser, greater);
-    	assertEquals(-1, result);
+    	Assert.assertEquals(-1, result);
     	
     	result = comparator.compare(lesser, lesser);
-    	assertEquals(0, result);
+    	Assert.assertEquals(0, result);
     	
     	result = comparator.compare(greater, greater);
-    	assertEquals(0, result);
+    	Assert.assertEquals(0, result);
     }
     
     @Test public void testCompare_firstNullDates() throws ParseException {
@@ -270,16 +267,16 @@ public class BeanPropertyComparatorTest extends KRADTestCase {
     	D greater = new D(dateFormat.parse("01/02/1990"));
     	
     	int result = comparator.compare(greater, lesser);
-    	assertEquals(1, result);
+    	Assert.assertEquals(1, result);
     	
     	result = comparator.compare(lesser, greater);
-    	assertEquals(-1, result);
+    	Assert.assertEquals(-1, result);
     	
     	result = comparator.compare(lesser, lesser);
-    	assertEquals(0, result);
+    	Assert.assertEquals(0, result);
     	
     	result = comparator.compare(greater, greater);
-    	assertEquals(0, result);
+    	Assert.assertEquals(0, result);
     }
     
     @Test public void testCompare_secondNullDates() throws ParseException {
@@ -293,16 +290,16 @@ public class BeanPropertyComparatorTest extends KRADTestCase {
     	D greater = new D(null);
     	
     	int result = comparator.compare(greater, lesser);
-    	assertEquals(-1, result);
+    	Assert.assertEquals(-1, result);
     	
     	result = comparator.compare(lesser, greater);
-    	assertEquals(1, result);
+    	Assert.assertEquals(1, result);
     	
     	result = comparator.compare(lesser, lesser);
-    	assertEquals(0, result);
+    	Assert.assertEquals(0, result);
     	
     	result = comparator.compare(greater, greater);
-    	assertEquals(0, result);
+    	Assert.assertEquals(0, result);
     }
 
     public static class A {

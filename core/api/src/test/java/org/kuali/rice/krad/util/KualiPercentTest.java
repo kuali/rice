@@ -19,7 +19,6 @@ import org.junit.Test;
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.core.util.type.KualiPercent;
 import org.kuali.rice.core.web.format.Formatter;
-import org.kuali.rice.test.BaseRiceTestCase;
 
 import java.math.BigDecimal;
 
@@ -28,7 +27,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * This class tests the KualiDecimal methods.
  */
-public class KualiPercentTest extends BaseRiceTestCase {
+public class KualiPercentTest {
     private static final int OPERAND_VALUE = 25;
 
     @Test public void testToKualiDecimal() throws Exception {

@@ -18,14 +18,13 @@ package org.kuali.rice.krad.util.properties;
 
 import org.junit.Test;
 import org.kuali.rice.krad.exception.PropertiesException;
-import org.kuali.test.KRADTestCase;
 
 import static org.junit.Assert.assertTrue;
 
 /**
  * This class tests the FilePropertySource methods.
  */
-public class FilePropertySourceTest extends KRADTestCase {
+public class FilePropertySourceTest {
 
     @Test public void testLoadProperties_defaultFileName() {
         FilePropertySource fps = new FilePropertySource();

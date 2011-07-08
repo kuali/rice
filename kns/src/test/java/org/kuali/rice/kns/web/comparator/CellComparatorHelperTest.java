@@ -13,16 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.web.comparator;
+package org.kuali.rice.kns.web.comparator;
 
 import org.displaytag.model.Cell;
 import org.junit.Test;
-import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
-import org.kuali.test.KRADTestCase;
 
 import static org.junit.Assert.assertEquals;
 
-public class CellComparatorHelperTest extends KRADTestCase {
+public class CellComparatorHelperTest {
 
     @Test public void testExtractFromHref() {
 

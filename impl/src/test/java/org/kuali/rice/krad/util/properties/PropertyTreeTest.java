@@ -16,19 +16,23 @@
 
 package org.kuali.rice.krad.util.properties;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.kuali.test.KRADTestCase;
 import org.springframework.beans.BeanUtils;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
 /**
  * This class tests the PropertyTreeTest methods.
  */
-public class PropertyTreeTest extends KRADTestCase {
+public class PropertyTreeTest {
     private static final String KNOWN_SIMPLE_KEY = "simple";
     private static final String KNOWN_SIMPLE_VALUE = "simple value";
     private static final String KNOWN_COMPLEX_KEY = "known.complex.key";
@@ -37,9 +41,8 @@ public class PropertyTreeTest extends KRADTestCase {
 
     PropertyTree tree;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
         tree = new PropertyTree();
     }
 

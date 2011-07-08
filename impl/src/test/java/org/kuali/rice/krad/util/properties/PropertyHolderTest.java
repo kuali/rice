@@ -18,7 +18,6 @@ package org.kuali.rice.krad.util.properties;
 import org.junit.Test;
 import org.kuali.rice.krad.exception.DuplicateKeyException;
 import org.kuali.rice.krad.exception.PropertiesException;
-import org.kuali.test.KRADTestCase;
 
 import java.util.Iterator;
 
@@ -27,7 +26,7 @@ import static org.junit.Assert.*;
 /**
  * This class tests the PropertyHolder methods.
  */
-public class PropertyHolderTest extends KRADTestCase {
+public class PropertyHolderTest  {
     private static final String KNOWN_KEY1 = "key1";
     private static final String KNOWN_VALUE1 = "value1";
 

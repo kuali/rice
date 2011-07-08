@@ -15,27 +15,25 @@
  */
 package org.kuali.rice.krad.util;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiIntegerPercentageFieldConversion;
-import org.kuali.test.KRADTestCase;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * This class tests the OjbKualiIntegerPercentageFieldConversionTest methods.
  */
-public class OjbKualiIntegerPercentageFieldConversionTest extends KRADTestCase {
+public class OjbKualiIntegerPercentageFieldConversionTest {
     @Test public void testJavaToSql_checkNull() {
         OjbKualiIntegerPercentageFieldConversion converter = new OjbKualiIntegerPercentageFieldConversion();
 
         Object object = converter.javaToSql(null);
-        assertEquals("when null is passed converter shouldn't explode", object, null);
+        Assert.assertEquals("when null is passed converter shouldn't explode", object, null);
     }
 
     @Test public void testSqlToJava_checkNull() {
         OjbKualiIntegerPercentageFieldConversion converter = new OjbKualiIntegerPercentageFieldConversion();
 
         Object object = converter.sqlToJava(null);
-        assertEquals("when null is passed converter shouldn't explode", object, null);
+        Assert.assertEquals("when null is passed converter shouldn't explode", object, null);
     }
 }

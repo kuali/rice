@@ -17,7 +17,6 @@ package org.kuali.rice.krad.util;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
-import org.kuali.test.KRADTestCase;
 
 import java.util.Properties;
 
@@ -26,7 +25,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * This class tests the UrlFactory methods.
  */
-public class UrlFactoryTest extends KRADTestCase {
+public class UrlFactoryTest {
 
     /**
      * Test that what is returned from url factory matches the url we expect.

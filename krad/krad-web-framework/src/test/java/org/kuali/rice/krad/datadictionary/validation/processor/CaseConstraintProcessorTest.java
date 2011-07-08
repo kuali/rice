@@ -15,16 +15,16 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.processor;
 
-import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
-import org.kuali.rice.krad.datadictionary.validation.ErrorLevel;
 import org.kuali.rice.krad.datadictionary.validation.Address;
+import org.kuali.rice.krad.datadictionary.validation.ErrorLevel;
 import org.kuali.rice.krad.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteConstraint;
 import org.kuali.rice.krad.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.krad.datadictionary.validation.result.ProcessorResult;
+
+import java.util.List;
 
 
 

@@ -58,12 +58,10 @@
     <dependency>
       <groupId>org.apache.struts</groupId>
       <artifactId>struts-el</artifactId>
-      <version>${struts.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.struts</groupId>
       <artifactId>struts-taglib</artifactId>
-      <version>${struts.version}</version>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -82,7 +80,10 @@
     <dependency>
       <groupId>org.directwebremoting</groupId>
       <artifactId>dwr</artifactId>
-      <version>${dwr.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
     </dependency>
   </dependencies>
 </project>

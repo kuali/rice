@@ -15,11 +15,10 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.processor;
 
-
 import org.junit.Assert;
 import org.junit.Test;
-import org.kuali.rice.krad.datadictionary.validation.ErrorLevel;
 import org.kuali.rice.krad.datadictionary.validation.Address;
+import org.kuali.rice.krad.datadictionary.validation.ErrorLevel;
 import org.kuali.rice.krad.datadictionary.validation.result.ConstraintValidationResult;
 
 /**

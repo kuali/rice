@@ -18,7 +18,6 @@ package org.kuali.rice.krad.datadictionary.validation;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -237,7 +236,7 @@ public class ValidationUtils {
     }
     
     public static boolean isNullOrEmpty(Object value) {
-    	return ObjectUtils.isNull(value) || (value instanceof String && StringUtils.isBlank(((String) value).trim()));
+    	return value == null || (value instanceof String && StringUtils.isBlank(((String) value).trim()));
     }
     
 	

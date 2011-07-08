@@ -465,7 +465,8 @@
   <!--<param name="weeklyEmail.cronExpression">0 0 2 ? * 2</param>-->
   <param name="weeklyEmail.active">true</param>
 
-  <param name="secure.workflowdocument.javaservice.endpoint">true</param>
+  <param name="rice.kew.workflowDocumentActionsServiceSoap.secure">true</param>
+
   <param name="secure.workflowutility.javaservice.endpoint">true</param>
   <param name="secure.workflowutility.soapservice.endpoint">true</param>
   <param name="secure.identity.javaservice.endpoint">true</param>
@@ -513,7 +514,6 @@
       enImmediateEmailReminderService,
       enActionListEmailService,
       enWorkflowUtilityService,
-      enWorkflowDocumentActionsService,
       enUserOptionsService,
       enDocumentSecurityService,
       enEmailContentService,

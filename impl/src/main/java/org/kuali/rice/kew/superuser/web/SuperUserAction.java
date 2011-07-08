@@ -16,25 +16,34 @@
  */
 package org.kuali.rice.kew.superuser.web;
 
+import java.util.Collection;
+import java.util.Iterator;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.namespace.QName;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.AdHocRevoke;
+import org.kuali.rice.kew.api.action.DocumentActionParameters;
+import org.kuali.rice.kew.api.action.ReturnPoint;
+import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.AppSpecificRouteRecipient;
@@ -46,12 +55,7 @@ import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.namespace.QName;
-import java.util.Collection;
-import java.util.Iterator;
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 
 /**
  * A Struts Action which provides super user functionality.
@@ -96,11 +100,12 @@ public class SuperUserAction extends KewKualiAction {
         LOG.info("entering routeLevelApprove()...");
         SuperUserForm superUserForm = (SuperUserForm) form;
         String documentId = superUserForm.getRouteHeader().getDocumentId();
-        WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
-        documentActions
-                .superUserNodeApproveAction(getUserSession(request).getPrincipalId(), documentId,
-                        superUserForm.getDestNodeName(), superUserForm.getAnnotation(),
-                        superUserForm.isRunPostProcessorLogic());
+        WorkflowDocumentActionsService documentActions = getWorkflowDocumentActionsService(documentId);
+        DocumentActionParameters parameters = DocumentActionParameters.create(documentId, getUserSession(request)
+                .getPrincipalId(), superUserForm.getAnnotation());
+
+        documentActions.superUserNodeApprove(parameters, superUserForm.isRunPostProcessorLogic(),
+                superUserForm.getDestNodeName());
         saveDocumentMessage("general.routing.superuser.routeLevelApproved", request, superUserForm.getDocumentId(),
                 null);
         LOG.info("exiting routeLevelApprove()...");
@@ -114,10 +119,10 @@ public class SuperUserAction extends KewKualiAction {
         LOG.info("entering approve() ...");
         SuperUserForm superUserForm = (SuperUserForm) form;
         String documentId = superUserForm.getRouteHeader().getDocumentId();
-        WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
-        documentActions.superUserApprove(getUserSession(request).getPrincipalId(),
-                DTOConverter.convertRouteHeader(superUserForm.getRouteHeader(), null), superUserForm.getAnnotation(),
-                superUserForm.isRunPostProcessorLogic());
+        WorkflowDocumentActionsService documentActions = getWorkflowDocumentActionsService(documentId);
+        DocumentActionParameters parameters = DocumentActionParameters.create(documentId, getUserSession(request)
+                .getPrincipalId(), superUserForm.getAnnotation());
+        documentActions.superUserBlanketApprove(parameters, superUserForm.isRunPostProcessorLogic());
         saveDocumentMessage("general.routing.superuser.approved", request, superUserForm.getDocumentId(), null);
         LOG.info("exiting approve() ...");
         superUserForm.getActionRequests().clear();
@@ -130,10 +135,10 @@ public class SuperUserAction extends KewKualiAction {
         LOG.info("entering disapprove() ...");
         SuperUserForm superUserForm = (SuperUserForm) form;
         String documentId = superUserForm.getRouteHeader().getDocumentId();
-        WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
-        documentActions.superUserDisapprove(getUserSession(request).getPrincipalId(),
-                DTOConverter.convertRouteHeader(superUserForm.getRouteHeader(), null), superUserForm.getAnnotation(),
-                superUserForm.isRunPostProcessorLogic());
+        WorkflowDocumentActionsService documentActions = getWorkflowDocumentActionsService(documentId);
+        DocumentActionParameters parameters = DocumentActionParameters.create(documentId, getUserSession(request)
+                .getPrincipalId(), superUserForm.getAnnotation());
+        documentActions.superUserDisapprove(parameters, superUserForm.isRunPostProcessorLogic());
         saveDocumentMessage("general.routing.superuser.disapproved", request, superUserForm.getDocumentId(), null);
         LOG.info("exiting disapprove() ...");
         superUserForm.getActionRequests().clear();
@@ -146,10 +151,10 @@ public class SuperUserAction extends KewKualiAction {
         LOG.info("entering cancel() ...");
         SuperUserForm superUserForm = (SuperUserForm) form;
         String documentId = superUserForm.getRouteHeader().getDocumentId();
-        WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
-        documentActions.superUserCancel(getUserSession(request).getPrincipalId(),
-                DTOConverter.convertRouteHeader(superUserForm.getRouteHeader(), null), superUserForm.getAnnotation(),
-                superUserForm.isRunPostProcessorLogic());
+        WorkflowDocumentActionsService documentActions = getWorkflowDocumentActionsService(documentId);
+        DocumentActionParameters parameters = DocumentActionParameters.create(documentId, getUserSession(request)
+                .getPrincipalId(), superUserForm.getAnnotation());
+        documentActions.superUserCancel(parameters, superUserForm.isRunPostProcessorLogic());
         saveDocumentMessage("general.routing.superuser.canceled", request, superUserForm.getDocumentId(), null);
         LOG.info("exiting cancel() ...");
         superUserForm.getActionRequests().clear();
@@ -162,10 +167,11 @@ public class SuperUserAction extends KewKualiAction {
         LOG.info("entering returnToPreviousNode() ...");
         SuperUserForm superUserForm = (SuperUserForm) form;
         String documentId = superUserForm.getRouteHeader().getDocumentId();
-        WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
-        documentActions.superUserReturnToPreviousNode(getUserSession(request).getPrincipalId(), documentId,
-                superUserForm.getReturnDestNodeName(), superUserForm.getAnnotation(),
-                superUserForm.isRunPostProcessorLogic());
+        WorkflowDocumentActionsService documentActions = getWorkflowDocumentActionsService(documentId);
+        DocumentActionParameters parameters = DocumentActionParameters.create(documentId, getUserSession(request)
+                .getPrincipalId(), superUserForm.getAnnotation());
+        documentActions.superUserReturnToPreviousNode(parameters, superUserForm.isRunPostProcessorLogic(),
+                ReturnPoint.create(superUserForm.getReturnDestNodeName()));
         saveDocumentMessage("general.routing.returnedToPreviousNode", request, "document", superUserForm
                 .getReturnDestNodeName().toString());
         LOG.info("exiting returnToPreviousRouteLevel() ...");
@@ -194,10 +200,11 @@ public class SuperUserAction extends KewKualiAction {
         boolean runPostProcessorLogic = ArrayUtils.contains(superUserForm.getActionRequestRunPostProcessorCheck(),
                 superUserForm.getActionTakenActionRequestId());
         String documentId = superUserForm.getRouteHeader().getDocumentId();
-        WorkflowDocumentActions documentActions = getWorkflowDocumentActions(documentId);
-        documentActions.superUserActionRequestApproveAction(getUserSession(request).getPrincipalId(), documentId,
-                new Long(superUserForm.getActionTakenActionRequestId()), superUserForm.getAnnotation(),
-                runPostProcessorLogic);
+        WorkflowDocumentActionsService documentActions = getWorkflowDocumentActionsService(documentId);
+        DocumentActionParameters parameters = DocumentActionParameters.create(documentId, getUserSession(request)
+                .getPrincipalId(), superUserForm.getAnnotation());
+        documentActions.superUserTakeRequestedAction(parameters, runPostProcessorLogic,
+                superUserForm.getActionTakenActionRequestId());
         String messageString;
         String actionReqest = StringUtils.substringBetween(methodToCallAttr,
                 KRADConstants.METHOD_TO_CALL_PARM6_LEFT_DEL, KRADConstants.METHOD_TO_CALL_PARM6_RIGHT_DEL);
@@ -429,13 +436,15 @@ public class SuperUserAction extends KewKualiAction {
         return start(mapping, form, request, response);
     }
 
-    private WorkflowDocumentActions getWorkflowDocumentActions(String documentId) {
+    private WorkflowDocumentActionsService getWorkflowDocumentActionsService(String documentId) {
         DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByDocumentId(documentId);
         String applicationId = documentType.getApplicationId();
-        WorkflowDocumentActions service = (WorkflowDocumentActions) GlobalResourceLoader.getService(new QName(
-                applicationId, "WorkflowDocumentActionsService"));
+        QName serviceName = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0,
+                KewApiConstants.ServiceNames.WORKFLOW_DOCUMENT_ACTIONS_SERVICE_SOAP);
+        WorkflowDocumentActionsService service = (WorkflowDocumentActionsService) KsbApiServiceLocator.getServiceBus()
+                .getService(serviceName, applicationId);
         if (service == null) {
-            service = KEWServiceLocator.getWorkflowDocumentActionsService();
+            service = KewApiServiceLocator.getWorkflowDocumentActionsService();
         }
         return service;
     }

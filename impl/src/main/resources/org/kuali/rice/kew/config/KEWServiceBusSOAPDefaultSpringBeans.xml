@@ -46,12 +46,10 @@
 
 	<bean id="kewJaxWsSoapService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition"
 		abstract="true">
-		<property name="serviceNameSpaceURI" value="http://rice.kuali.org/wsdl/kew" />
+		<property name="serviceNameSpaceURI" value="#{ T(org.kuali.rice.kew.api.KewApiConstants$Namespaces).KEW_NAMESPACE_2_0 }" />
 		<property name="jaxWsService" value="true" />
 		<property name="priority" value="3" />
 		<property name="retryAttempts" value="0" />
-		<property name="busSecurity"
-			value="${secure.workflowdocument.javaservice.endpoint}" />
 		<property name="serviceVersion" value="${rice.version}" />
 	</bean>
 
@@ -61,8 +59,6 @@
 		<property name="jaxWsService" value="false" />
 		<property name="priority" value="3" />
 		<property name="retryAttempts" value="0" />
-		<property name="busSecurity"
-			value="${secure.workflowdocument.javaservice.endpoint}" />
 		<property name="serviceVersion" value="${rice.version}" />
 	</bean>
 	
@@ -71,46 +67,18 @@
 		<property name="jaxWsService" value="false" />
 		<property name="priority" value="3" />
 		<property name="retryAttempts" value="0" />
-		<property name="busSecurity"
-			value="${secure.workflowdocument.javaservice.endpoint}" />
 		<property name="serviceVersion" value="${rice.version}" />
 	</bean>
 
-	<bean parent="kewEmbeddedServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus" />
-		<property name="serviceDefinition">
-			<bean parent="kewServiceNamespaceSoapService">
-				<property name="service">
-					<ref bean="enWorkflowDocumentActionsService" />
-				</property>
-				<property name="localServiceName" value="WorkflowDocumentActionsService" />
-			</bean>
-		</property>
-	</bean>
-
-	<bean parent="kewLocalServiceExporter">
+	<bean id="rice.kew.workflowDocumentActionService.exporter" parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
 			<bean parent="kewJaxWsSoapService">
 				<property name="service">
-					<ref bean="enWorkflowDocumentActionsService" />
+					<ref bean="rice.kew.workflowDocumentActionsService" />
 				</property>
-				<property name="localServiceName" value="WorkflowDocumentActionsServiceSOAP" />
-				<property name="busSecurity"
-					value="${secure.workflowdocument.javaservice.endpoint}" />
-			</bean>
-		</property>
-		<property name="exportIf" value="WorkflowDocumentActionsServiceSOAP.expose" />
-	</bean>
-
-	<bean parent="kewLocalServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus" />
-		<property name="serviceDefinition">
-			<bean parent="kewServiceNamespaceSoapService">
-				<property name="service">
-					<ref bean="enWorkflowDocumentActionsService" />
-				</property>
-				<property name="localServiceName" value="enWorkflowDocumentActionsService" />
+				<property name="localServiceName" value="workflowDocumentActionsServiceSoap" />
+				<property name="busSecurity" value="${rice.kew.workflowDocumentActionsServiceSoap.secure}" />
 			</bean>
 		</property>
 	</bean>

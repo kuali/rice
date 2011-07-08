@@ -246,13 +246,6 @@ public final class KEWServiceLocator {
 		return (WorkflowUtility) GlobalResourceLoader.getResourceLoader().getService(new QName(KEWConstants.WORKFLOW_UTILITY_SERVICE));
 	}
 
-	public static WorkflowDocumentActions getWorkflowDocumentActionsService() {
-		if ( LOG.isDebugEnabled() ) {
-			LOG.debug("Fetching service " + KEWConstants.WORKFLOW_DOCUMENT_ACTIONS_SERVICE);
-		}
-		return (WorkflowDocumentActions) GlobalResourceLoader.getResourceLoader().getService(new QName(KEWConstants.WORKFLOW_DOCUMENT_ACTIONS_SERVICE));
-	}
-
 	public static DocumentTypeService getDocumentTypeService() {
 		return (DocumentTypeService) getBean(DOCUMENT_TYPE_SERVICE);
 	}

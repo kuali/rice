@@ -22,17 +22,17 @@ import java.util.Set;
 import org.kuali.rice.kew.actions.ActionTakenEvent;
 import org.kuali.rice.kew.api.action.AdHocRevoke;
 import org.kuali.rice.kew.api.action.MovePoint;
+import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.service.WorkflowDocumentActions;
 
 
 /**
  * Service for initiating actions against documents.  Uses from the service endpoint
  * for the client API.
  *
- * @see WorkflowDocumentActions
+ * @see WorkflowDocumentActionsService
  * @see ActionTakenEvent
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)

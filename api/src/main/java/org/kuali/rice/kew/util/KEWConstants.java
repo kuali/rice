@@ -827,8 +827,6 @@ public final class KEWConstants {
 
 	public static final String WORKFLOW_UTILITY_SERVICE = "enWorkflowUtilityService";
 
-	public static final String WORKFLOW_DOCUMENT_ACTIONS_SERVICE = "enWorkflowDocumentActionsService";
-
 	public static final String SIMPLE_DATE_FORMAT_FOR_DATE = RiceConstants.SIMPLE_DATE_FORMAT_FOR_DATE;
     public static final String SIMPLE_DATE_FORMAT_FOR_TIME = RiceConstants.SIMPLE_DATE_FORMAT_FOR_TIME;
     public static final String DEFAULT_DATE_FORMAT_PATTERN = RiceConstants.DEFAULT_DATE_FORMAT_PATTERN;

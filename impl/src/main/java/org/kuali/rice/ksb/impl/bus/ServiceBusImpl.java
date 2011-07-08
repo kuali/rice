@@ -230,25 +230,44 @@ public class ServiceBusImpl extends BaseLifecycle implements ServiceBus, Initial
 
 	@Override
 	public Endpoint getEndpoint(QName serviceName) {
-		if (serviceName == null) {
-			throw new IllegalArgumentException("serviceName cannot be null");
-		}
-		Endpoint availableEndpoint = null;
-		synchronized (serviceLock) {
-			// look at local services first
-			availableEndpoint = getLocalEndpoint(serviceName);
-			if (availableEndpoint == null) {
-				 // TODO - would be better to return an Endpoint that contained an internal proxy to all the services so fail-over would be easier to implement!
-				Set<RemoteService> remoteServices = clientRegistryCache.get(serviceName);
-				if (remoteServices != null && !remoteServices.isEmpty()) {
-					// TODO - this should also probably check the current status of the service?
-					RemoteService[] remoteServiceArray = remoteServices.toArray(new RemoteService[0]);
-					RemoteService availableRemoteService = remoteServiceArray[this.randomNumber.nextInt(remoteServiceArray.length)];
-					availableEndpoint = availableRemoteService.getEndpoint();
-				}
-			}
-		}
-		return availableEndpoint;
+		return getEndpoint(serviceName, null);
+	}
+	
+	@Override
+    public Endpoint getEndpoint(QName serviceName, String applicationId) {
+        if (serviceName == null) {
+            throw new IllegalArgumentException("serviceName cannot be null");
+        }
+        Endpoint availableEndpoint = null;
+        synchronized (serviceLock) {
+            // look at local services first
+            availableEndpoint = getLocalEndpoint(serviceName);
+            if (availableEndpoint == null || (!StringUtils.isBlank(applicationId) && !availableEndpoint.getServiceConfiguration().getApplicationId().equals(applicationId))) {
+                 // TODO - would be better to return an Endpoint that contained an internal proxy to all the services so fail-over would be easier to implement!
+                Set<RemoteService> remoteServices = clientRegistryCache.get(serviceName);
+                remoteServices = filterByApplicationId(applicationId, remoteServices);
+                if (remoteServices != null && !remoteServices.isEmpty()) {
+                    // TODO - this should also probably check the current status of the service?
+                    RemoteService[] remoteServiceArray = remoteServices.toArray(new RemoteService[0]);
+                    RemoteService availableRemoteService = remoteServiceArray[this.randomNumber.nextInt(remoteServiceArray.length)];
+                    availableEndpoint = availableRemoteService.getEndpoint();
+                }
+            }
+        }
+        return availableEndpoint;
+    }
+	
+	protected Set<RemoteService> filterByApplicationId(String applicationId, Set<RemoteService> remoteServices) {
+	    if (StringUtils.isBlank(applicationId) || remoteServices == null || remoteServices.isEmpty()) {
+	        return remoteServices;
+	    }
+	    Set<RemoteService> filtered = new HashSet<RemoteService>();
+	    for (RemoteService remoteService : remoteServices) {
+	        if (remoteService.getServiceInfo().getApplicationId().equals(applicationId)) {
+	            filtered.add(remoteService);
+	        }
+	    }
+	    return filtered;
 	}
 	
 	@Override
@@ -271,10 +290,14 @@ public class ServiceBusImpl extends BaseLifecycle implements ServiceBus, Initial
 		return null;
 	}
 
+	@Override
+    public Object getService(QName serviceName) {
+        return getService(serviceName, null);
+    }
 	
 	@Override
-	public Object getService(QName serviceName) {
-		Endpoint availableEndpoint = getEndpoint(serviceName);
+	public Object getService(QName serviceName, String applicationId) {
+		Endpoint availableEndpoint = getEndpoint(serviceName, applicationId);
 		if (availableEndpoint == null) {
 			return null;
 		}

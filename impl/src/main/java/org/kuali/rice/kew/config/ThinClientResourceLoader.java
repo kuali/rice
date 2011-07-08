@@ -42,11 +42,9 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.framework.resourceloader.BaseResourceLoader;
-import org.kuali.rice.kew.service.WorkflowDocumentActions;
-import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.api.group.GroupService;
+import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.ksb.messaging.HttpClientHelper;
 import org.kuali.rice.ksb.messaging.KSBHttpInvokerRequestExecutor;
@@ -120,13 +118,14 @@ public class ThinClientResourceLoader extends BaseResourceLoader {
 	    	    return cachedService;
 	    	}
 		if (serviceName.equals(KEWConstants.WORKFLOW_UTILITY_SERVICE)) {
-			WorkflowUtility utility = getWorkflowUtility();
-			services.put(serviceName, utility);
-			return utility;
-		} else if (serviceName.equals(KEWConstants.WORKFLOW_DOCUMENT_ACTIONS_SERVICE)) {
-			WorkflowDocumentActions documentActions = getWorkflowDocument();
-			services.put(serviceName, documentActions);
-			return documentActions;
+		    throw new UnsupportedOperationException("Reimplement me! - see KULRICE-5061");
+//			WorkflowUtility utility = getWorkflowUtility();
+//			services.put(serviceName, utility);
+//			return utility;
+//		} else if (serviceName.equals(KEWConstants.WORKFLOW_DOCUMENT_ACTIONS_SERVICE)) {
+//			WorkflowDocumentActions documentActions = getWorkflowDocument();
+//			services.put(serviceName, documentActions);
+//			return documentActions;
 		} else if (serviceName.equals(KimApiServiceLocator.KIM_IDENTITY_SERVICE)) {
 			IdentityService identityService = getIdentityService();
 			services.put(serviceName, identityService);
@@ -139,13 +138,13 @@ public class ThinClientResourceLoader extends BaseResourceLoader {
 	    return null;
 	}
 
-	public WorkflowUtility getWorkflowUtility() {
-	    return (WorkflowUtility)getServiceProxy(WorkflowUtility.class, UTILITY_ENDPOINT, SECURE_UTILITY_ENDPOINT);
-	}
-
-	public WorkflowDocumentActions getWorkflowDocument() {
-	    return (WorkflowDocumentActions)getServiceProxy(WorkflowDocumentActions.class, DOCUMENT_ENDPOINT, SECURE_DOCUMENT_ENDPOINT);
-	}
+//	public WorkflowUtility getWorkflowUtility() {
+//	    return (WorkflowUtility)getServiceProxy(WorkflowUtility.class, UTILITY_ENDPOINT, SECURE_UTILITY_ENDPOINT);
+//	}
+//
+//	public WorkflowDocumentActions getWorkflowDocument() {
+//	    return (WorkflowDocumentActions)getServiceProxy(WorkflowDocumentActions.class, DOCUMENT_ENDPOINT, SECURE_DOCUMENT_ENDPOINT);
+//	}
 	
 	public IdentityService getIdentityService() {
 	    return (IdentityService)getServiceProxy(IdentityService.class, IDENTITY_ENDPOINT, SECURE_IDENTITY_ENDPOINT);

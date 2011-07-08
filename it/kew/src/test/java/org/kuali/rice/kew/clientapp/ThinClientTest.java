@@ -16,30 +16,19 @@
 
 package org.kuali.rice.kew.clientapp;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.util.List;
 
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.junit.Ignore;
-import org.junit.Test;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 import org.kuali.rice.core.impl.config.property.JAXBConfigImpl;
 import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
-import org.kuali.rice.kew.config.ThinClientResourceLoader;
-import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.identity.principal.Principal;
 
 /**
  * 
@@ -114,30 +103,31 @@ public class ThinClientTest extends KEWTestCase {
 		super.tearDown();
 	}
 
-	@Test
-	public void testThinClientServices() throws Exception {
-		//verify the ThinClientResourceLoader is in the GRL.
-		ResourceLoader rl = GlobalResourceLoader.getResourceLoader();
-		List<ResourceLoader> resourceLoaders = rl.getResourceLoaders();
-		ResourceLoader tempThinRL = rl.getResourceLoaders().get(0);
-		assertTrue("First resource loader should be thin", tempThinRL instanceof ThinClientResourceLoader);
-		ThinClientResourceLoader thinRL = (ThinClientResourceLoader)tempThinRL;
-
-		// test KIM identity service
-		Principal principal = thinRL.getIdentityService().getPrincipalByPrincipalName(KIM_PRINCIPAL_NAME);
-		assertTrue(principal.getPrincipalName().equals(KIM_PRINCIPAL_NAME));
-
-		// test KIM group service
-		List<Group> groups = thinRL.getGroupService().getGroupsForPrincipal(principal.getPrincipalId());
-		assertNotNull(groups);
-		assertTrue(groups.size() > 0);
-
-		// test Workflow
-		RouteHeaderDTO routeHeader = new RouteHeaderDTO();
-		routeHeader.setDocTypeName("RiceDocument");
-		routeHeader = thinRL.getWorkflowDocument().createDocument(principal.getPrincipalId(), routeHeader);
-		assertTrue(principal.getPrincipalId().equals(routeHeader.getInitiatorPrincipalId()));
-	}
+	// commented out pending addressing KULRICE-5061
+//	@Test
+//	public void testThinClientServices() throws Exception {
+//		//verify the ThinClientResourceLoader is in the GRL.
+//		ResourceLoader rl = GlobalResourceLoader.getResourceLoader();
+//		List<ResourceLoader> resourceLoaders = rl.getResourceLoaders();
+//		ResourceLoader tempThinRL = rl.getResourceLoaders().get(0);
+//		assertTrue("First resource loader should be thin", tempThinRL instanceof ThinClientResourceLoader);
+//		ThinClientResourceLoader thinRL = (ThinClientResourceLoader)tempThinRL;
+//
+//		// test KIM identity service
+//		Principal principal = thinRL.getIdentityService().getPrincipalByPrincipalName(KIM_PRINCIPAL_NAME);
+//		assertTrue(principal.getPrincipalName().equals(KIM_PRINCIPAL_NAME));
+//
+//		// test KIM group service
+//		List<Group> groups = thinRL.getGroupService().getGroupsForPrincipal(principal.getPrincipalId());
+//		assertNotNull(groups);
+//		assertTrue(groups.size() > 0);
+//
+//		// test Workflow
+//		RouteHeaderDTO routeHeader = new RouteHeaderDTO();
+//		routeHeader.setDocTypeName("RiceDocument");
+//		routeHeader = thinRL.getWorkflowDocument().createDocument(principal.getPrincipalId(), routeHeader);
+//		assertTrue(principal.getPrincipalId().equals(routeHeader.getInitiatorPrincipalId()));
+//	}
 
 	/**
 	 * a privileged action to create a new classloader with our thread's classloader as its parent 

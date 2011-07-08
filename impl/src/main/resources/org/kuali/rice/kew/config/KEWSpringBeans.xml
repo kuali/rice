@@ -431,31 +431,6 @@
 		</property>
 	</bean>
 
-  <bean id="matchAllTxCheckedExceptionInterceptor" class="org.kuali.rice.core.framework.persistence.jta.KualiTransactionInterceptor">
-    <property name="transactionManager">
-      <ref bean="transactionManager" />
-    </property>
-    <property name="transactionAttributeSource">
-      <ref bean="matchAllWithPropReqCheckedException" />
-    </property>
-  </bean>
-
-
-  <bean id="checkedExceptionAutoProxyCreator" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
-    <property name="interceptorNames">
-      <list>
-        <idref local="matchAllTxCheckedExceptionInterceptor" />
-      </list>
-    </property>
-    <property name="beanNames">
-      <list>
-        <idref local="enWorkflowDocumentActionsService" />
-      </list>
-    </property>
-  </bean>
-
-  <bean id="enWorkflowDocumentActionsService" class="org.kuali.rice.kew.service.impl.WorkflowDocumentActionsWebServiceImpl"  lazy-init="true"/>
-
   <bean id="xmlIngesterService"
 		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="xmlIngesterService" />

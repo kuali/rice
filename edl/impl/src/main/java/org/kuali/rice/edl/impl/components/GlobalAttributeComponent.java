@@ -92,7 +92,7 @@ public class GlobalAttributeComponent extends SimpleWorkflowEDLConfigComponent i
 				boolean curAttrValid = true;
 				if (edlContext.getUserAction().isValidatableAction()) {
 				    List<WorkflowAttributeValidationError> errors = document.validateAttributeDefinition(attributeDefBuilder.build());
-					if (errors.isEmpty()) {
+					if (!errors.isEmpty()) {
 						edlContext.setInError(true);
 						curAttrValid = false;
 					}

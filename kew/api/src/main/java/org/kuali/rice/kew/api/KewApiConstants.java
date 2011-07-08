@@ -58,6 +58,10 @@ public final class KewApiConstants {
         public static final String KEW_NAMESPACE_2_0 = KEW_NAMESPACE_PREFIX + "/" + Versions.VERSION_2_0;
 
     }
+    
+    public static final class ServiceNames {
+        public static final String WORKFLOW_DOCUMENT_ACTIONS_SERVICE_SOAP = "workflowDocumentActionsServiceSoap";
+    }
 
     private KewApiConstants() {
         throw new UnsupportedOperationException("Should never be called.");

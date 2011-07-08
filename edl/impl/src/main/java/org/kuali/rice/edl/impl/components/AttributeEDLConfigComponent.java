@@ -70,7 +70,7 @@ public class AttributeEDLConfigComponent extends SimpleWorkflowEDLConfigComponen
             // validate if they are taking an action on the document (i.e. it's annotatable)
             if (edlContext.getUserAction().isValidatableAction()) {
                 List<WorkflowAttributeValidationError> errors = document.validateAttributeDefinition(attributeDef);
-                if (errors.isEmpty()) {
+                if (!errors.isEmpty()) {
                     getEdlContext().setInError(true);
                 }
                 for (WorkflowAttributeValidationError error : errors) {

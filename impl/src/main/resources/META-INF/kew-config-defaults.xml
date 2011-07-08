@@ -64,7 +64,6 @@
       enImmediateEmailReminderService,
       enActionListEmailService,
       enWorkflowUtilityService,
-      enWorkflowDocumentActionsService,
       enUserOptionsService,
       enDocumentSecurityService,
       enEmailContentService,

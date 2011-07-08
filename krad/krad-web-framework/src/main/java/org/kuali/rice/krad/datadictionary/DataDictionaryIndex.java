@@ -140,7 +140,7 @@ public class DataDictionaryIndex implements Runnable {
                         .append(" / existing=")
                         .append(((DocumentEntry)documentEntries.get(entry.getDocumentClass().getName())).getDocumentTypeName()).toString());
             }
-            if ((entriesByJstlKey.get(entry.getJstlKey()) != null) && !((DocumentEntry)documentEntries.get(entry.getJstlKey())).getDocumentTypeName().equals(entry.getDocumentTypeName())) {
+            if ((documentEntries.get(entry.getJstlKey()) != null) && !((DocumentEntry)documentEntries.get(entry.getJstlKey())).getDocumentTypeName().equals(entry.getDocumentTypeName())) {
                 throw new DataDictionaryException(new StringBuffer("Two document types may not share the same jstl key: this=").append(entry.getDocumentTypeName()).append(" / existing=").append(((DocumentEntry)documentEntries.get(entry.getJstlKey())).getDocumentTypeName()).toString());
             }
 

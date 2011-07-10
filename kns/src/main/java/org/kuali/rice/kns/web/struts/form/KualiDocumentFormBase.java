@@ -849,13 +849,22 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 		String docTypeName = getDocTypeName();
 		if (StringUtils.isNotBlank(docTypeName)) {
 			DataDictionary dataDictionary = KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary();
-            DocumentDictionaryService documentDictionaryService = KRADServiceLocatorWeb.getDocumentDictionaryService();
-			Class<? extends DerivedValuesSetter> derivedValuesSetterClass = ((MaintenanceDocumentEntry) documentDictionaryService.getMaintenanceDocumentEntry(docTypeName)).getDerivedValuesSetterClass();
+
+            Class<? extends DerivedValuesSetter> derivedValuesSetterClass = null;
+            org.kuali.rice.krad.datadictionary.DocumentEntry documentEntry = dataDictionary.getDocumentEntry(docTypeName);
+            if (documentEntry instanceof MaintenanceDocumentEntry) {
+               derivedValuesSetterClass = ((MaintenanceDocumentEntry) documentEntry).getDerivedValuesSetterClass();
+            }
+            if (documentEntry instanceof DocumentEntry) {
+               derivedValuesSetterClass = ((DocumentEntry) documentEntry).getDerivedValuesSetterClass();
+            }
+
 			if (derivedValuesSetterClass != null) {
 				DerivedValuesSetter derivedValuesSetter = null;
 				try {
 					derivedValuesSetter = derivedValuesSetterClass.newInstance();
 				}
+
 				catch (Exception e) {
 					LOG.error("Unable to instantiate class " + derivedValuesSetterClass.getName(), e);
 					throw new RuntimeException("Unable to instantiate class " + derivedValuesSetterClass.getName(), e);

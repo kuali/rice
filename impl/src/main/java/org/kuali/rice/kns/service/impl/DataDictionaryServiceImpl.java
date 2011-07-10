@@ -19,6 +19,7 @@ import org.kuali.rice.kns.datadictionary.exporter.DataDictionaryMap;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
+import org.kuali.rice.krad.datadictionary.DataDictionary;
 
 import java.util.Map;
 
@@ -29,6 +30,14 @@ public class DataDictionaryServiceImpl extends org.kuali.rice.krad.service.impl.
 
     private DataDictionaryMap dataDictionaryMap = new DataDictionaryMap(this);
 
+    public DataDictionaryServiceImpl() {
+        super();
+    }
+    
+    public DataDictionaryServiceImpl(DataDictionary dataDictionary) {
+        super(dataDictionary);
+    }
+    
     /**
      * @see org.kuali.rice.krad.service.DataDictionaryService#getPromptBeforeValidationClass(java.lang.String)
      */

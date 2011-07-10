@@ -19,6 +19,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.util.RiceKeyConstants;
@@ -41,12 +42,15 @@ import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.control.HiddenControl;
 import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.field.GeneratedField;
+import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.field.LookupCriteriaAttributeField;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
+import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.util.BeanPropertyComparator;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.krad.web.controller.MaintenanceDocumentController;
@@ -80,6 +84,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     private Map<String, String> fieldConversions;
     private List<String> readOnlyFieldsList;
 
+    private transient ConfigurationService configurationService;
     private transient DataObjectAuthorizationService dataObjectAuthorizationService;
     private transient DataObjectMetaDataService dataObjectMetaDataService;
     private transient DocumentDictionaryService documentDictionaryService;
@@ -150,16 +155,6 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             if (isResultReturnable(object)) {
                 form.setAtLeastOneRowReturnable(true);
             }
-
-//            BusinessObjectRestrictions dataObjectRestrictions =
-//                    getBusinessObjectAuthorizationService().getLookupResultRestrictions(object, user);
-//            String actionUrls = getActionUrls(object, pkNames, dataObjectRestrictions);
-//            if (StringUtils.isNotBlank(HtmlUtils.htmlUnescape(actionUrls).replace('\u00A0', '\u0020'))) {
-//                setAtLeastOneRowHasActions(true);
-//            }
-//            if (isAtLeastOneRowReturnable() && isAtLeastOneRowHasActions()) {
-//                break;
-//            }
         }
 
         return displayList;
@@ -536,46 +531,248 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.service.LookupViewHelperService#getCreateNewUrl(org.kuali.rice.krad.uif.field.GeneratedField)
+     * @see org.kuali.rice.krad.lookup.Lookupable#getReturnUrlForResults
      */
-    public String getCreateNewUrl(GeneratedField generatedField) {
-        String url = "";
+    public void getReturnUrlForResults(LinkField returnLinkField, Object model) {
+        LookupForm lookupForm = (LookupForm) model;
+        LookupView lookupView = (LookupView) returnLinkField.getContext().get(UifConstants.ContextVariableNames.VIEW);
 
-        if (allowsMaintenanceNewOrCopyAction()) {
-            Properties props = new Properties();
-            // TODO delyea - DOCUMENT THE FOLLOWING CHANGES (next 5 lines)
-            // props.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.MAINTENANCE_NEW_METHOD_TO_CALL);
-            // props.put(KRADConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, getDataObjectClass().getName());
-            props.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, MaintenanceDocumentController.METHOD_TO_CALL_NEW);
-            props.put(UifParameters.DATA_OBJECT_CLASS_NAME, getDataObjectClass().getName());
-            props.put(UifParameters.VIEW_TYPE_NAME, UifConstants.ViewType.MAINTENANCE);
+        Object dataObject = returnLinkField.getContext().get(UifConstants.ContextVariableNames.LINE);
 
-            // TODO delyea - DOCUMENT THE FOLLOWING CHANGES (next 2 lines)
-            // url = UrlFactory.parameterizeUrl(KRADConstants.MAINTENANCE_ACTION, props);
-            url = UrlFactory.parameterizeUrl(MaintenanceDocumentController.REQUEST_MAPPING_MAINTENANCE, props);
-            url = "<a id=\"" + generatedField.getId() + "\" href=\"" + url +
-                    "\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
+        // return a non-breaking space if the object is null or if the row is not returnable
+        if ((dataObject == null) || (!isResultReturnable(dataObject))) {
+            returnLinkField.setRender(false);
+            return;
         }
 
-        return url;
+        // build return link href
+        String href = getReturnUrl(lookupView, lookupForm, dataObject);
+        if (StringUtils.isBlank(href)) {
+            returnLinkField.setRender(false);
+            return;
+        }
+        // TODO: need to handle returning anchor
+        returnLinkField.setHrefText(href);
+
+        // build return link label and title
+        String linkLabel =
+                getConfigurationService().getPropertyString(KRADConstants.Lookup.TITLE_RETURN_URL_PREPENDTEXT_PROPERTY);
+        returnLinkField.setLinkLabel(linkLabel);
+
+        List<String> returnKeys = getReturnKeys(lookupView, lookupForm, dataObject);
+        Map<String, String> returnKeyValues = KRADUtils.getPropertyKeyValuesFromDataObject(returnKeys, dataObject);
+
+        String title = LookupInquiryUtils.getLinkTitleText(linkLabel, getDataObjectClass(), returnKeyValues);
+        returnLinkField.setTitle(title);
     }
 
     /**
-     * Determines if underlying lookup bo has associated maintenance document that allows new or copy maintenance
+     * Builds the URL for returning the given data object result row
+     *
+     * <p>
+     * Note return URL will only be built if a return location is specified on the <code>LookupForm</code>
+     * </p>
+     *
+     * @param lookupView - lookup view instance containing lookup configuration
+     * @param lookupForm - lookup form instance containing the data
+     * @param dataObject - data object instance for the current line and for which the return URL is being built
+     * @return String return URL or blank if URL cannot be built
+     */
+    protected String getReturnUrl(LookupView lookupView, LookupForm lookupForm, Object dataObject) {
+        Properties props = getReturnUrlParameters(lookupView, lookupForm, dataObject);
+
+        String href = "";
+        if (StringUtils.isNotBlank(lookupForm.getReturnLocation())) {
+            href = UrlFactory.parameterizeUrl(lookupForm.getReturnLocation(), props);
+        }
+
+        return href;
+    }
+
+    /**
+     * Builds up a <code>Properties</code> object that will be used to provide the request parameters for the
+     * return URL link
+     *
+     * @param lookupView - lookup view instance containing lookup configuration
+     * @param lookupForm - lookup form instance containing the data
+     * @param dataObject - data object instance for the current line and for which the return URL is being built
+     * @return Properties instance containing request parameters for return URL
+     */
+    protected Properties getReturnUrlParameters(LookupView lookupView, LookupForm lookupForm, Object dataObject) {
+        Properties props = new Properties();
+        props.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.RETURN_METHOD_TO_CALL);
+
+        if (StringUtils.isNotBlank(lookupForm.getReturnFormKey())) {
+            props.put(UifParameters.FORM_KEY, lookupForm.getReturnFormKey());
+        }
+
+        props.put(KRADConstants.REFRESH_CALLER, lookupView.getId());
+
+        if (StringUtils.isNotBlank(lookupForm.getDocNum())) {
+            props.put(UifParameters.DOC_NUM, lookupForm.getDocNum());
+        }
+
+        if (StringUtils.isNotBlank(lookupForm.getReferencesToRefresh())) {
+            props.put(KRADConstants.REFERENCES_TO_REFRESH, lookupForm.getReferencesToRefresh());
+        }
+
+        List<String> returnKeys = getReturnKeys(lookupView, lookupForm, dataObject);
+        Map<String, String> returnKeyValues = KRADUtils.getPropertyKeyValuesFromDataObject(returnKeys, dataObject);
+
+        for (String returnKey : returnKeyValues.keySet()) {
+            String returnValue = returnKeyValues.get(returnKey);
+            if (lookupForm.getFieldConversions().containsKey(returnKey)) {
+                returnKey = lookupForm.getFieldConversions().get(returnKey);
+            }
+
+            props.put(returnKey, returnValue);
+        }
+
+        return props;
+    }
+
+    /**
+     * Returns the configured return key property names or if not configured defaults to the primary keys
+     * for the data object class
+     *
+     * @return List<String> property names which should be passed back on the return URL
+     */
+    protected List<String> getReturnKeys(LookupView lookupView, LookupForm lookupForm, Object dataObject) {
+        List<String> returnKeys;
+        if (lookupForm.getFieldConversions() != null && !lookupForm.getFieldConversions().isEmpty()) {
+            returnKeys = new ArrayList<String>(lookupForm.getFieldConversions().keySet());
+        } else {
+            returnKeys = getDataObjectMetaDataService().listPrimaryKeyFieldNames(getDataObjectClass());
+        }
+
+        return returnKeys;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.lookup.Lookupable#getMaintenanceActionLink
+     */
+    public void getMaintenanceActionLink(LinkField actionLinkField, Object model, String maintenanceMethodToCall) {
+        LookupForm lookupForm = (LookupForm) model;
+        LookupView lookupView = (LookupView) actionLinkField.getContext().get(UifConstants.ContextVariableNames.VIEW);
+        Object dataObject = actionLinkField.getContext().get(UifConstants.ContextVariableNames.LINE);
+
+        List<String> pkNames = getDataObjectMetaDataService().listPrimaryKeyFieldNames(getDataObjectClass());
+
+        // build maintenance link href
+        String href = getActionUrlHref(lookupForm, dataObject, maintenanceMethodToCall, pkNames);
+        if (StringUtils.isBlank(href)) {
+            actionLinkField.setRender(false);
+            return;
+        }
+        // TODO: need to handle returning anchor
+        actionLinkField.setHrefText(href);
+
+        // build action title
+        String prependTitleText = actionLinkField.getLinkLabel() + " " +
+                getDataDictionaryService().getDataDictionary().getDataObjectEntry(getDataObjectClass().getName())
+                        .getObjectLabel() + " " +
+                getConfigurationService().getPropertyString(KRADConstants.Lookup.TITLE_ACTION_URL_PREPENDTEXT_PROPERTY);
+
+        Map<String, String> primaryKeyValues = KRADUtils.getPropertyKeyValuesFromDataObject(pkNames, dataObject);
+        String title = LookupInquiryUtils.getLinkTitleText(prependTitleText, getDataObjectClass(), primaryKeyValues);
+        actionLinkField.setTitle(title);
+
+        lookupForm.setAtLeastOneRowHasActions(true);
+    }
+
+    /**
+     * Generates a URL to perform a maintenance action on the given result data object
+     *
+     * <p>
+     * Will build a URL containing keys of the data object to invoke the given maintenance action method
+     * within the maintenance controller
+     * </p>
+     *
+     * @param dataObject - data object instance for the line to build the maintenance action link for
+     * @param methodToCall - method name on the maintenance controller that should be invoked
+     * @param pkNames - list of primary key field names for the data object whose key/value pairs will be added to
+     * the maintenance link
+     * @return String URL link for the maintenance action
+     */
+    protected String getActionUrlHref(LookupForm lookupForm, Object dataObject, String methodToCall,
+            List<String> pkNames) {
+        Properties props = new Properties();
+        props.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, methodToCall);
+
+        Map<String, String> primaryKeyValues = KRADUtils.getPropertyKeyValuesFromDataObject(pkNames, dataObject);
+        for (String primaryKey : primaryKeyValues.keySet()) {
+            String primaryKeyValue = primaryKeyValues.get(primaryKey);
+
+            props.put(primaryKey, primaryKeyValue);
+        }
+
+        if (StringUtils.isNotBlank(lookupForm.getReturnLocation())) {
+            props.put(KRADConstants.RETURN_LOCATION_PARAMETER, lookupForm.getReturnLocation());
+        }
+
+        props.put(UifParameters.DATA_OBJECT_CLASS_NAME, dataObject.getClass().getName());
+        props.put(UifParameters.VIEW_TYPE_NAME, UifConstants.ViewType.MAINTENANCE);
+
+        return UrlFactory.parameterizeUrl(KRADConstants.Maintenance.REQUEST_MAPPING_MAINTENANCE, props);
+    }
+
+    /**
+     * Determines if given data object has associated maintenance document that allows new or copy
+     * maintenance
      * actions
      *
-     * @return true if object has maintenance doc that allows new or copy actions
+     * @return boolean true if the maintenance new or copy action is allowed for the data object instance, false
+     *         otherwise
      */
-    protected boolean allowsMaintenanceNewOrCopyAction() {
+    public boolean allowsMaintenanceNewOrCopyAction() {
         boolean allowsNewOrCopy = false;
 
         String maintDocTypeName = getMaintenanceDocumentTypeName();
-
         if (StringUtils.isNotBlank(maintDocTypeName)) {
             allowsNewOrCopy = getDataObjectAuthorizationService()
                     .canCreate(getDataObjectClass(), GlobalVariables.getUserSession().getPerson(), maintDocTypeName);
         }
+
         return allowsNewOrCopy;
+    }
+
+    /**
+     * Determines if given data object has associated maintenance document that allows edit maintenance
+     * actions
+     *
+     * @return boolean true if the maintenance edit action is allowed for the data object instance, false otherwise
+     */
+    public boolean allowsMaintenanceEditAction(Object dataObject) {
+        boolean allowsEdit = false;
+
+        String maintDocTypeName = getMaintenanceDocumentTypeName();
+        if (StringUtils.isNotBlank(maintDocTypeName)) {
+            allowsEdit = getDataObjectAuthorizationService()
+                    .canMaintain(dataObject, GlobalVariables.getUserSession().getPerson(), maintDocTypeName);
+        }
+
+        return allowsEdit;
+    }
+
+    /**
+     * Determines if given data object has associated maintenance document that allows delete maintenance
+     * actions.
+     *
+     * @return boolean true if the maintenance delete action is allowed for the data object instance, false otherwise
+     */
+    public boolean allowsMaintenanceDeleteAction(Object dataObject) {
+        boolean allowsMaintain = false;
+        boolean allowsDelete = false;
+
+        String maintDocTypeName = getMaintenanceDocumentTypeName();
+        if (StringUtils.isNotBlank(maintDocTypeName)) {
+            allowsMaintain = getDataObjectAuthorizationService()
+                    .canMaintain(dataObject, GlobalVariables.getUserSession().getPerson(), maintDocTypeName);
+        }
+
+        allowsDelete = getDocumentDictionaryService().getAllowsRecordDeletion(getDataObjectClass());
+
+        return allowsDelete && allowsMaintain;
     }
 
     /**
@@ -589,14 +786,6 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
         return maintDocTypeName;
     }
-
-    public String getReturnUrlForResults(GeneratedField generatedField) {
-        return "";
-    }
-
-    public String getActionUrlsFromField(GeneratedField generatedField) {
-		return "";
-	}
 
     /**
      * Determines whether a given data object that's returned as one of the lookup's results is considered returnable,
@@ -679,6 +868,17 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         return fieldConversions;
     }
 
+    protected ConfigurationService getConfigurationService() {
+        if (configurationService == null) {
+            this.configurationService = KRADServiceLocator.getKualiConfigurationService();
+        }
+        return configurationService;
+    }
+
+    public void setConfigurationService(ConfigurationService configurationService) {
+        this.configurationService = configurationService;
+    }
+
     protected DataObjectAuthorizationService getDataObjectAuthorizationService() {
         if (dataObjectAuthorizationService == null) {
             this.dataObjectAuthorizationService = KRADServiceLocatorWeb.getDataObjectAuthorizationService();
@@ -733,5 +933,4 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     public void setEncryptionService(EncryptionService encryptionService) {
         this.encryptionService = encryptionService;
     }
-
 }

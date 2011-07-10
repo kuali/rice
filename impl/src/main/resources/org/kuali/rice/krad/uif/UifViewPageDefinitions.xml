@@ -101,45 +101,58 @@
 		<property name="footer">
 			<bean parent="Footer" />
 		</property>
-
-		<!-- BELOW WILL BE COPIED OUT TO COMMON BEAN DEFINITIONS -->
-
 		<property name="criteriaGroup">
-			<bean parent="GroupGridLayout">
-				<property name="renderHeader" value="false" />
-				<property name="title" value="Lookup Criteria" />
-				<property name="fieldBindingObjectPath" value="criteriaFields" />
-				<property name="layoutManager.numberOfColumns" value="2" />
-				<property name="accordion.render" value="false" />
-				<property name="footer">
-					<bean parent="FooterLookup" />
-				</property>
-			</bean>
+           <bean parent="LookupCriteriaGroup" />
+		</property>
+		<property name="resultsGroup">
+			<bean parent="LookupResultsGroup" />
 		</property>
 		<property name="resultsActionsField">
-			<bean parent="GeneratedField">
+			<bean parent="FieldGroup">
 				<property name="label" value="Actions" />
-				<property name="renderingMethodToCall" value="getActionUrlsFromField" />
+                <property name="group">
+                   <bean parent="LinkGroup"/>
+                </property>
+                <property name="items">
+                  <list>
+                    <bean parent="LinkField" p:order="10">
+                      <property name="linkLabel" value="edit" />
+				      <property name="finalizeMethodToCall" value="getMaintenanceActionLink" />
+                      <property name="finalizeMethodAdditionalArguments">
+                        <list>
+                          <value>maintenanceEdit</value>
+                        </list>
+                      </property>
+                      <property name="conditionalRender" value="#ViewHelper.allowsMaintenanceEditAction(#line)"/>
+			        </bean>
+                    <bean parent="LinkField" p:order="20">
+                      <property name="linkLabel" value="copy" />
+				      <property name="finalizeMethodToCall" value="getMaintenanceActionLink" />
+                      <property name="finalizeMethodAdditionalArguments">
+                        <list>
+                          <value>maintenanceCopy</value>
+                        </list>
+                      </property>
+                      <property name="conditionalRender" value="#ViewHelper.allowsMaintenanceNewOrCopyAction()"/>
+			        </bean>
+                    <bean parent="LinkField" p:order="30">
+                      <property name="linkLabel" value="delete" />
+				      <property name="finalizeMethodToCall" value="getMaintenanceActionLink" />
+                      <property name="finalizeMethodAdditionalArguments">
+                        <list>
+                          <value>maintenanceDelete</value>
+                        </list>
+                      </property>
+                      <property name="conditionalRender" value="#ViewHelper.allowsMaintenanceDeleteAction(#line)"/>
+			        </bean>
+                  </list>
+                </property>
 			</bean>
 		</property>
 		<property name="resultsReturnField">
-			<bean parent="GeneratedField">
+			<bean parent="LinkField">
 				<property name="label" value="Return Value" />
-				<property name="renderingMethodToCall" value="getReturnUrlForResults" />
-			</bean>
-		</property>
-		<property name="resultsGroup">
-			<bean parent="CollectionGroupTableLayout"
-				p:layoutManager.suppressLineWrapping="true">
-				<property name="showInactive" value="true" />
-				<property name="propertyName" value="searchResults" />
-				<property name="layoutManager.renderSequenceField" value="false" />
-				<property name="renderAddLine" value="false" />
-				<property name="conditionalReadOnly" value="true" />
-				<property name="accordion.render" value="false" />
-				<property name="header.group">
-         			<bean parent="GroupBodyOnly"/>
-     		 	</property>
+				<property name="finalizeMethodToCall" value="getReturnUrlForResults" />
 			</bean>
 		</property>
 	</bean>

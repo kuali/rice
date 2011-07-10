@@ -55,6 +55,7 @@ public class TabGroup extends Group{
 	/**
 	 * Gets the widget which contains any configuration for the tab widget component used to render
 	 * this TabGroup
+     *
 	 * @return the tabsWidget
 	 */
 	public Tabs getTabsWidget() {

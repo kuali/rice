@@ -91,10 +91,11 @@ public abstract class ComponentBase implements Component {
     private List<String> styleClasses;
 
     private int order;
-    
+
     private boolean skipInTabOrder;
 
     private String finalizeMethodToCall;
+    private List<Object> finalizeMethodAdditionalArguments;
     private MethodInvokerConfig finalizeMethodInvoker;
     private boolean selfRendered;
     private String renderOutput;
@@ -138,6 +139,7 @@ public abstract class ComponentBase implements Component {
         progressiveRenderViaAJAX = false;
         progressiveRenderAndRefresh = false;
 
+        finalizeMethodAdditionalArguments = new ArrayList<Object>();
         styleClasses = new ArrayList<String>();
         componentModifiers = new ArrayList<ComponentModifier>();
         componentOptions = new HashMap<String, String>();
@@ -151,7 +153,7 @@ public abstract class ComponentBase implements Component {
      * conditionalRefresh variables are processed if set.
      * <ul>
      * </ul>
-     * 
+     *
      * @see org.kuali.rice.krad.uif.core.ComponentBase#performInitialization(org.kuali.rice.krad.uif.container.View)
      */
     public void performInitialization(View view) {
@@ -164,14 +166,14 @@ public abstract class ComponentBase implements Component {
                 conditionalRender = progressiveRender;
             }
             progressiveDisclosureControlNames = new ArrayList<String>();
-            progressiveDisclosureConditionJs = ComponentUtils.parseExpression(progressiveRender,
-                    progressiveDisclosureControlNames);
+            progressiveDisclosureConditionJs =
+                    ComponentUtils.parseExpression(progressiveRender, progressiveDisclosureControlNames);
         }
 
         if (StringUtils.isNotEmpty(conditionalRefresh)) {
             conditionalRefreshControlNames = new ArrayList<String>();
-            conditionalRefreshConditionJs = ComponentUtils.parseExpression(conditionalRefresh,
-                    conditionalRefreshControlNames);
+            conditionalRefreshConditionJs =
+                    ComponentUtils.parseExpression(conditionalRefresh, conditionalRefreshControlNames);
         }
 
         if (StringUtils.isNotEmpty(refreshWhenChanged)) {
@@ -188,7 +190,7 @@ public abstract class ComponentBase implements Component {
      * <ul>
      * <li></li>
      * </ul>
-     * 
+     *
      * @see org.kuali.rice.krad.uif.core.Component#performApplyModel(org.kuali.rice.krad.uif.container.View,
      *      java.lang.Object)
      */
@@ -205,7 +207,7 @@ public abstract class ComponentBase implements Component {
      * </li>
      * <li>Set the skipInTabOrder flag for nested components</li>
      * </ul>
-     * 
+     *
      * @see org.kuali.rice.krad.uif.core.Component#performFinalize(org.kuali.rice.krad.uif.container.View,
      *      java.lang.Object, org.kuali.rice.krad.uif.core.Component)
      */
@@ -237,13 +239,15 @@ public abstract class ComponentBase implements Component {
         }
         // replace the #line? collections place holder with the correct binding
         // path
-        CollectionGroup collectionGroup = (CollectionGroup)(this.getContext().get(UifConstants.ContextVariableNames.COLLECTION_GROUP));
+        CollectionGroup collectionGroup =
+                (CollectionGroup) (this.getContext().get(UifConstants.ContextVariableNames.COLLECTION_GROUP));
         String linePath = "";
-        if(collectionGroup != null){
+        if (collectionGroup != null) {
             linePath = ComponentUtils.getLinePathValue(this);
             //ProgressiveRender conditions
             if (StringUtils.isNotEmpty(progressiveRender) && StringUtils.isNotEmpty(linePath)) {
-                progressiveDisclosureConditionJs = ComponentUtils.replaceLineAttr(progressiveDisclosureConditionJs, linePath);
+                progressiveDisclosureConditionJs =
+                        ComponentUtils.replaceLineAttr(progressiveDisclosureConditionJs, linePath);
                 ListIterator<String> listIterator = progressiveDisclosureControlNames.listIterator();
                 while (listIterator.hasNext()) {
                     String name = listIterator.next();
@@ -251,7 +255,7 @@ public abstract class ComponentBase implements Component {
                     listIterator.set(name);
                 }
             }
-            
+
             //Refresh conditions
             if (StringUtils.isNotEmpty(conditionalRefresh) && StringUtils.isNotEmpty(linePath)) {
                 conditionalRefreshConditionJs = ComponentUtils.replaceLineAttr(conditionalRefreshConditionJs, linePath);
@@ -262,8 +266,8 @@ public abstract class ComponentBase implements Component {
                     listIterator.set(name);
                 }
             }
-            
-            if(StringUtils.isNotEmpty(refreshWhenChanged)){
+
+            if (StringUtils.isNotEmpty(refreshWhenChanged)) {
                 ListIterator<String> listIterator = refreshWhenChangedControlNames.listIterator();
                 while (listIterator.hasNext()) {
                     String name = listIterator.next();
@@ -272,9 +276,6 @@ public abstract class ComponentBase implements Component {
                 }
             }
         }
-
-        
-        
     }
 
     /**
@@ -291,7 +292,7 @@ public abstract class ComponentBase implements Component {
      * Set of property names for the component base for which on the property
      * value reference should be copied. Subclasses can override this but should
      * include a call to super
-     * 
+     *
      * @see org.kuali.rice.krad.uif.core.Component#getPropertiesForReferenceCopy()
      */
     public Set<String> getPropertiesForReferenceCopy() {
@@ -404,7 +405,7 @@ public abstract class ComponentBase implements Component {
     /**
      * Expression language string for conditionally setting the required
      * property
-     * 
+     *
      * @return String el that should evaluate to boolean
      */
     public String getConditionalRequired() {
@@ -413,7 +414,7 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Setter for the conditional required string
-     * 
+     *
      * @param conditionalRequired
      */
     public void setConditionalRequired(String conditionalRequired) {
@@ -468,7 +469,7 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Expression language string for conditionally setting the colSpan property
-     * 
+     *
      * @return String el that should evaluate to int
      */
     public String getConditionalColSpan() {
@@ -477,7 +478,7 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Setter for the conditional colSpan string
-     * 
+     *
      * @param conditionalColSpan
      */
     public void setConditionalColSpan(String conditionalColSpan) {
@@ -500,7 +501,7 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Expression language string for conditionally setting the rowSpan property
-     * 
+     *
      * @return String el that should evaluate to int
      */
     public String getConditionalRowSpan() {
@@ -509,7 +510,7 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Setter for the conditional rowSpan string
-     * 
+     *
      * @param conditionalRowSpan
      */
     public void setConditionalRowSpan(String conditionalRowSpan) {
@@ -524,7 +525,7 @@ public abstract class ComponentBase implements Component {
      * should be aligned horizontally within the container. During the finalize
      * phase the CSS text-align style will be created for the align setting.
      * </p>
-     * 
+     *
      * @return String horizontal align
      * @see org.kuali.rice.krad.uif.CssConstants.TextAligns
      */
@@ -534,7 +535,7 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Sets the components horizontal alignment
-     * 
+     *
      * @param align
      */
     public void setAlign(String align) {
@@ -550,7 +551,7 @@ public abstract class ComponentBase implements Component {
      * phase the CSS vertical-align style will be created for the valign
      * setting.
      * </p>
-     * 
+     *
      * @return String vertical align
      * @see org.kuali.rice.krad.uif.CssConstants.VerticalAligns
      */
@@ -560,7 +561,7 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Setter for the component's vertical align
-     * 
+     *
      * @param valign
      */
     public void setValign(String valign) {
@@ -579,7 +580,7 @@ public abstract class ComponentBase implements Component {
      * <p>
      * e.g. '30%', '55px'
      * </p>
-     * 
+     *
      * @return String width string
      */
     public String getWidth() {
@@ -588,7 +589,7 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Setter for the components width
-     * 
+     *
      * @param width
      */
     public void setWidth(String width) {
@@ -626,7 +627,7 @@ public abstract class ComponentBase implements Component {
     /**
      * Builds the HTML class attribute string by combining the styleClasses list
      * with a space delimiter
-     * 
+     *
      * @return String class attribute string
      */
     public String getStyleClassesAsString() {
@@ -665,11 +666,27 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Setter for the finalize method
-     * 
+     *
      * @param finalizeMethodToCall
      */
     public void setFinalizeMethodToCall(String finalizeMethodToCall) {
         this.finalizeMethodToCall = finalizeMethodToCall;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.core.Component#getFinalizeMethodAdditionalArguments()
+     */
+    public List<Object> getFinalizeMethodAdditionalArguments() {
+        return finalizeMethodAdditionalArguments;
+    }
+
+    /**
+     * Setter for the finalize additional arguments list
+     *
+     * @param finalizeMethodAdditionalArguments
+     */
+    public void setFinalizeMethodAdditionalArguments(List<Object> finalizeMethodAdditionalArguments) {
+        this.finalizeMethodAdditionalArguments = finalizeMethodAdditionalArguments;
     }
 
     /**
@@ -681,7 +698,7 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Setter for the method invoker instance
-     * 
+     *
      * @param renderingMethodInvoker
      */
     public void setFinalizeMethodInvoker(MethodInvokerConfig finalizeMethodInvoker) {
@@ -787,7 +804,7 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Setter for the component's order
-     * 
+     *
      * @param order
      */
     public void setOrder(int order) {
@@ -810,7 +827,7 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Setter for the components onLoad script
-     * 
+     *
      * @param onLoadScript
      */
     public void setOnLoadScript(String onLoadScript) {
@@ -833,7 +850,7 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Setter for the components onDocumentReady script
-     * 
+     *
      * @param onDocumentReadyScript
      */
     public void setOnDocumentReadyScript(String onDocumentReadyScript) {
@@ -856,7 +873,7 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Setter for the components onUnload script
-     * 
+     *
      * @param onUnloadScript
      */
     public void setOnUnloadScript(String onUnloadScript) {
@@ -879,7 +896,7 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Setter for the components onClose script
-     * 
+     *
      * @param onCloseScript
      */
     public void setOnCloseScript(String onCloseScript) {
@@ -902,7 +919,7 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Setter for the components onBlur script
-     * 
+     *
      * @param onBlurScript
      */
     public void setOnBlurScript(String onBlurScript) {
@@ -925,7 +942,7 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Setter for the components onChange script
-     * 
+     *
      * @param onChangeScript
      */
     public void setOnChangeScript(String onChangeScript) {
@@ -948,7 +965,7 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Setter for the components onClick script
-     * 
+     *
      * @param onClickScript
      */
     public void setOnClickScript(String onClickScript) {
@@ -971,7 +988,7 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Setter for the components onDblClick script
-     * 
+     *
      * @param onDblClickScript
      */
     public void setOnDblClickScript(String onDblClickScript) {
@@ -994,7 +1011,7 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Setter for the components onFocus script
-     * 
+     *
      * @param onFocusScript
      */
     public void setOnFocusScript(String onFocusScript) {
@@ -1017,7 +1034,7 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Setter for the components onSubmit script
-     * 
+     *
      * @param onSubmitScript
      */
     public void setOnSubmitScript(String onSubmitScript) {
@@ -1040,7 +1057,7 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Setter for the components onKeyPress script
-     * 
+     *
      * @param onKeyPressScript
      */
     public void setOnKeyPressScript(String onKeyPressScript) {
@@ -1063,7 +1080,7 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Setter for the components onKeyUp script
-     * 
+     *
      * @param onKeyUpScript
      */
     public void setOnKeyUpScript(String onKeyUpScript) {
@@ -1086,7 +1103,7 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Setter for the components onKeyDown script
-     * 
+     *
      * @param onKeyDownScript
      */
     public void setOnKeyDownScript(String onKeyDownScript) {
@@ -1109,7 +1126,7 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Setter for the components onMouseOver script
-     * 
+     *
      * @param onMouseOverScript
      */
     public void setOnMouseOverScript(String onMouseOverScript) {
@@ -1132,7 +1149,7 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Setter for the components onMouseOut script
-     * 
+     *
      * @param onMouseOutScript
      */
     public void setOnMouseOutScript(String onMouseOutScript) {
@@ -1155,7 +1172,7 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Setter for the components onMouseUp script
-     * 
+     *
      * @param onMouseUpScript
      */
     public void setOnMouseUpScript(String onMouseUpScript) {
@@ -1178,7 +1195,7 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Setter for the components onMouseDown script
-     * 
+     *
      * @param onMouseDownScript
      */
     public void setOnMouseDownScript(String onMouseDownScript) {
@@ -1201,7 +1218,7 @@ public abstract class ComponentBase implements Component {
 
     /**
      * Setter for the components onMouseMove script
-     * 
+     *
      * @param onMouseMoveScript
      */
     public void setOnMouseMoveScript(String onMouseMoveScript) {
@@ -1229,7 +1246,7 @@ public abstract class ComponentBase implements Component {
      * Builds a string from the underlying <code>Map</code> of component options
      * that will export that options as a JavaScript Map for use in js and
      * jQuery plugins
-     * 
+     *
      * @return String of widget options formatted as JS Map
      */
     public String getComponentOptionsJSString() {
@@ -1251,9 +1268,8 @@ public abstract class ComponentBase implements Component {
             sb.append(":");
 
             boolean isNumber = false;
-            if (StringUtils.isNotBlank(optionValue)
-                    && (StringUtils.isNumeric(optionValue.trim().substring(0, 1)) || optionValue.trim().substring(0, 1)
-                            .equals("-"))) {
+            if (StringUtils.isNotBlank(optionValue) && (StringUtils.isNumeric(optionValue.trim().substring(0, 1)) ||
+                    optionValue.trim().substring(0, 1).equals("-"))) {
                 try {
                     Double.parseDouble(optionValue.trim());
                     isNumber = true;
@@ -1308,7 +1324,7 @@ public abstract class ComponentBase implements Component {
      * progressiveRender's condition anded with its own condition). <b>If a
      * component should be refreshed every time it is shown, use the
      * progressiveRenderAndRefresh option with this property instead.</b>
-     * 
+     *
      * @return the progressiveRender
      */
     public String getProgressiveRender() {
@@ -1316,8 +1332,7 @@ public abstract class ComponentBase implements Component {
     }
 
     /**
-     * @param progressiveRender
-     *            the progressiveRender to set
+     * @param progressiveRender the progressiveRender to set
      */
     public void setProgressiveRender(String progressiveRender) {
         this.progressiveRender = progressiveRender;
@@ -1337,7 +1352,7 @@ public abstract class ComponentBase implements Component {
      * progressiveRender's condition anded with its own condition). <b>If a
      * component should be refreshed every time it is shown, use the
      * progressiveRenderAndRefresh option with this property instead.</b>
-     * 
+     *
      * @return the conditionalRefresh
      */
     public String getConditionalRefresh() {
@@ -1345,8 +1360,7 @@ public abstract class ComponentBase implements Component {
     }
 
     /**
-     * @param conditionalRefresh
-     *            the conditionalRefresh to set
+     * @param conditionalRefresh the conditionalRefresh to set
      */
     public void setConditionalRefresh(String conditionalRefresh) {
         this.conditionalRefresh = conditionalRefresh;
@@ -1355,7 +1369,7 @@ public abstract class ComponentBase implements Component {
     /**
      * Control names used to control progressive disclosure, set internally
      * cannot be set.
-     * 
+     *
      * @return the progressiveDisclosureControlNames
      */
     public List<String> getProgressiveDisclosureControlNames() {
@@ -1365,7 +1379,7 @@ public abstract class ComponentBase implements Component {
     /**
      * The condition to show this component progressively converted to a js
      * expression, set internally cannot be set.
-     * 
+     *
      * @return the progressiveDisclosureConditionJs
      */
     public String getProgressiveDisclosureConditionJs() {
@@ -1375,7 +1389,7 @@ public abstract class ComponentBase implements Component {
     /**
      * The condition to refresh this component converted to a js expression, set
      * internally cannot be set.
-     * 
+     *
      * @return the conditionalRefreshConditionJs
      */
     public String getConditionalRefreshConditionJs() {
@@ -1385,7 +1399,7 @@ public abstract class ComponentBase implements Component {
     /**
      * Control names used to control conditional refresh, set internally cannot
      * be set.
-     * 
+     *
      * @return the conditionalRefreshControlNames
      */
     public List<String> getConditionalRefreshControlNames() {
@@ -1399,7 +1413,7 @@ public abstract class ComponentBase implements Component {
      * its progressive condition result changes. <b>By default, this is false,
      * so components with progressive render capabilities will always be already
      * within the client html and toggled to be hidden or visible.</b>
-     * 
+     *
      * @return the progressiveRenderViaAJAX
      */
     public boolean isProgressiveRenderViaAJAX() {
@@ -1407,8 +1421,7 @@ public abstract class ComponentBase implements Component {
     }
 
     /**
-     * @param progressiveRenderViaAJAX
-     *            the progressiveRenderViaAJAX to set
+     * @param progressiveRenderViaAJAX the progressiveRenderViaAJAX to set
      */
     public void setProgressiveRenderViaAJAX(boolean progressiveRenderViaAJAX) {
         this.progressiveRenderViaAJAX = progressiveRenderViaAJAX;
@@ -1421,7 +1434,7 @@ public abstract class ComponentBase implements Component {
      * case with the progressiveRenderViaAJAX option). <b>By default, this is
      * false, so components with progressive render capabilities will always be
      * already within the client html and toggled to be hidden or visible.</b>
-     * 
+     *
      * @return the progressiveRenderAndRefresh
      */
     public boolean isProgressiveRenderAndRefresh() {
@@ -1429,8 +1442,7 @@ public abstract class ComponentBase implements Component {
     }
 
     /**
-     * @param progressiveRenderAndRefresh
-     *            the progressiveRenderAndRefresh to set
+     * @param progressiveRenderAndRefresh the progressiveRenderAndRefresh to set
      */
     public void setProgressiveRenderAndRefresh(boolean progressiveRenderAndRefresh) {
         this.progressiveRenderAndRefresh = progressiveRenderAndRefresh;
@@ -1443,7 +1455,7 @@ public abstract class ComponentBase implements Component {
      * refreshed when any of them change. <Br>DO NOT use with progressiveRender
      * unless it is know that progressiveRender condition will always be
      * satisfied before one of these fields can be changed.
-     * 
+     *
      * @return the refreshWhenChanged
      */
     public String getRefreshWhenChanged() {
@@ -1451,8 +1463,7 @@ public abstract class ComponentBase implements Component {
     }
 
     /**
-     * @param refreshWhenChanged
-     *            the refreshWhenChanged to set
+     * @param refreshWhenChanged the refreshWhenChanged to set
      */
     public void setRefreshWhenChanged(String refreshWhenChanged) {
         this.refreshWhenChanged = refreshWhenChanged;
@@ -1461,6 +1472,7 @@ public abstract class ComponentBase implements Component {
     /**
      * Control names which will refresh this component when they are changed, added
      * internally
+     *
      * @return the refreshWhenChangedControlNames
      */
     public List<String> getRefreshWhenChangedControlNames() {
@@ -1482,8 +1494,7 @@ public abstract class ComponentBase implements Component {
     }
 
     /**
-     * @param setter
-     *            for the skipInTabOrder flag
+     * @param setter for the skipInTabOrder flag
      */
     public void setSkipInTabOrder(boolean skipInTabOrder) {
         this.skipInTabOrder = skipInTabOrder;
@@ -1492,7 +1503,7 @@ public abstract class ComponentBase implements Component {
     /**
      * Flag indicating that this component and its nested components must be
      * skipped when keyboard tabbing.
-     * 
+     *
      * @return the skipInTabOrder flag
      */
     public boolean isSkipInTabOrder() {
@@ -1503,6 +1514,7 @@ public abstract class ComponentBase implements Component {
      * The original generated id.  During the component lifecycle the id may get manipulated
      * and changed based on the type of component it is.  This id represents the original id
      * assigned before any additional suffixes were appended.
+     *
      * @return the baseId
      */
     public String getBaseId() {
@@ -1515,6 +1527,4 @@ public abstract class ComponentBase implements Component {
     public void setBaseId(String baseId) {
         this.baseId = baseId;
     }
-    
-    
 }

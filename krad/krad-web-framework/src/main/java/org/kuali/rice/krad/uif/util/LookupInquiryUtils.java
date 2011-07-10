@@ -206,7 +206,7 @@ public class LookupInquiryUtils {
 	 *            - map of key value pairs to add to the title text
 	 * @return String title text
 	 */
-	public static String getTitleText(String prependText, Class<?> element, Map<String, String> keyValueMap) {
+	public static String getLinkTitleText(String prependText, Class<?> element, Map<String, String> keyValueMap) {
 		StringBuffer titleText = new StringBuffer(prependText);
 		for (String key : keyValueMap.keySet()) {
 			String fieldVal = keyValueMap.get(key).toString();

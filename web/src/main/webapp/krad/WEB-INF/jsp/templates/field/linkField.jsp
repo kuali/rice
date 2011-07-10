@@ -32,4 +32,5 @@
 	<c:set var="tabindex" value="tabindex=-1" />
 </c:if>
 
-<a id="${field.id}" href="${field.hrefText}" target="${field.target}"${style} ${styleClass}  ${tabindex} >${field.linkLabel}</a>
+<a id="${field.id}" href="${field.hrefText}" target="${field.target}" title="${field.title}"
+   ${style} ${styleClass}  ${tabindex} >${field.linkLabel}</a>

@@ -18,11 +18,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class is used to define global constants.
+ * Defines Global Constants for the KRAD Module
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class KRADConstants {
 
-//    public static final String AD_HOC_ROUTE_ERRORS = null;
+    private KRADConstants() {
+		throw new UnsupportedOperationException("do not call");
+	}
 
     // special user used in the post-processor
     public static final String SYSTEM_USER = "kr";
@@ -261,14 +265,12 @@ public final class KRADConstants {
     public static final String HIDE_LOOKUP_RETURN_LINK = "hideReturnLink";
     public static final String SUPPRESS_ACTIONS = "suppressActions";
     public static final String REFERENCES_TO_REFRESH = "referencesToRefresh";
-//    public static final String INITIAL_KUALI_DOCUMENT_STATUS_CD = "?";
 
     public static final String INQUIRABLE_ATTRIBUTE_NAME = "kualiInquirable";
     public static final String INQUIRY_ACTION = "inquiry.do";
     public static final String PORTAL_ACTION = "portal.do";
     public static final String DIRECT_INQUIRY_ACTION = "directInquiry.do";
     public static final String CONTINUE_WITH_INQUIRY_METHOD_TO_CALL = "continueWithInquiry";
-//    public static final String INQUIRY_IMPL_ATTRIBUTE_NAME = "inquirableImplServiceName";
     public static final String INQUIRY_PK_VALUE_PASSED_FROM_PREVIOUS_REQUEST_PREFIX = "previousPkValue_";
     public static final String INACTIVE_RECORD_DISPLAY_PARAM_PREFIX = "inactiveRecordDisplay_";
     
@@ -511,16 +513,6 @@ public final class KRADConstants {
     	}
     }
 
-    public static final class Maintenance {
-        public static final String AFTER_CLASS_DELIM = "!!";
-        public static final String AFTER_FIELDNAME_DELIM = "^^";
-        public static final String AFTER_VALUE_DELIM = "::";
-        
-    	private Maintenance() {
-    		throw new UnsupportedOperationException("do not call");
-    	}
-    }
-
     public static final int DEFAULT_NUM_OF_COLUMNS = 1;
 
     public static final class TableRenderConstants {
@@ -568,14 +560,28 @@ public final class KRADConstants {
   	public static final String SENSITIVE_DATA_QUESTION_SESSION_TICKET = "SENSITIVE_DATA_QUESTION_SESSION_TICKET";
   	public static final String EDITABLE_PROPERTIES_HISTORY_HOLDER_ATTR_NAME = "EditablePropertiesHistoryHolder";
 
-  	
+    // TODO: new krad constants, previous needs to be cleaned up
+
     public static final String DATA_TYPE_STRING = "string";
     public static final String DATA_TYPE_DATE = "datetime";
     public static final String DATA_TYPE_LONG = "long";
     public static final String DATA_TYPE_FLOAT = "float";
     public static final String DATA_TYPE_BOOLEAN = "boolean";
-  	
-	private KRADConstants() {
-		throw new UnsupportedOperationException("do not call");
-	}
+
+    public static final class Maintenance {
+        public static final String REQUEST_MAPPING_MAINTENANCE = "maintenance";
+        public static final String METHOD_TO_CALL_NEW = "start";
+        public static final String METHOD_TO_CALL_NEW_WITH_EXISTING = "maintenanceNewWithExisting";
+        public static final String METHOD_TO_CALL_EDIT = "maintenanceEdit";
+        public static final String METHOD_TO_CALL_COPY = "maintenanceCopy";
+        public static final String METHOD_TO_CALL_DELETE = "maintenanceDelete";
+        public static final String LOCK_AFTER_CLASS_DELIM = "!!";
+        public static final String LOCK_AFTER_FIELDNAME_DELIM = "^^";
+        public static final String LOCK_AFTER_VALUE_DELIM = "::";
+    }
+
+    public static class Lookup {
+        public static final String TITLE_RETURN_URL_PREPENDTEXT_PROPERTY = "title.return.url.value.prependtext";
+        public static final String TITLE_ACTION_URL_PREPENDTEXT_PROPERTY = "title.action.url.value.prependtext";
+    }
 }

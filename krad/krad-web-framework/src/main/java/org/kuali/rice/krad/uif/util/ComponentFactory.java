@@ -21,6 +21,7 @@ import org.kuali.rice.krad.uif.core.Component;
 import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.GroupField;
+import org.kuali.rice.krad.uif.field.LabelField;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
@@ -38,6 +39,7 @@ public class ComponentFactory {
 
     private static final Map<String, Component> componentDefinitions = new HashMap<String, Component>();
 
+    protected static final String LABEL_FIELD = "LabelField";
     protected static final String MESSAGE_FIELD = "MessageField";
     protected static final String TEXT_CONTROL = "TextControl";
     protected static final String RADIO_GROUP_CONTROL = "RadioGroupControl";
@@ -68,6 +70,10 @@ public class ComponentFactory {
         }
 
         return null;
+    }
+
+    public static LabelField getLabelField() {
+        return (LabelField) getNewComponentInstance(LABEL_FIELD);
     }
 
     public static MessageField getMessageField() {

@@ -28,6 +28,7 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.service.ModuleService;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -390,6 +391,48 @@ public final class KRADUtils {
         }
 
         return parameterValues;
+    }
+
+    /**
+     * Builds a Map containing a key/value pair for each property given in the property names list, general
+     * security is checked to determine if the value needs to be encrypted along with applying formatting to
+     * the value
+     *
+     * @param propertyNames - list of property names to get key/value pairs for
+     * @param dataObject - object instance containing the properties for which the values will be pulled
+     * @return Map<String, String> containing entry for each property name with the property name as the map key
+     *         and the property value as the value
+     */
+    public static Map<String, String> getPropertyKeyValuesFromDataObject(List<String> propertyNames,
+            Object dataObject) {
+        Map<String, String> propertyKeyValues = new HashMap<String, String>();
+
+        if (dataObject == null) {
+            return propertyKeyValues;
+        }
+
+        // iterate through properties and add a map entry for each
+        for (String propertyName : propertyNames) {
+            Object propertyValue = ObjectPropertyUtils.getPropertyValue(dataObject, propertyName);
+            if (propertyValue == null) {
+                propertyValue = StringUtils.EMPTY;
+            }
+
+            if (KRADServiceLocatorWeb.getDataObjectAuthorizationService()
+                    .attributeValueNeedsToBeEncryptedOnFormsAndLinks(dataObject.getClass(), propertyName)) {
+                try {
+                    propertyValue = CoreApiServiceLocator.getEncryptionService().encrypt(propertyValue) +
+                            EncryptionService.ENCRYPTION_POST_PREFIX;
+                } catch (GeneralSecurityException e) {
+                    throw new RuntimeException("Exception while trying to encrypt value for key/value map.", e);
+                }
+            }
+
+            // TODO: need to apply formatting to return value once util class is ready
+            propertyKeyValues.put(propertyName, propertyValue.toString());
+        }
+
+        return propertyKeyValues;
     }
 
     public static boolean containsSensitiveDataPatternMatch(String fieldValue) {

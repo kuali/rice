@@ -21,7 +21,7 @@ public class ExpressionFunctions {
     public static boolean isAssignableFrom(Class<?> assignableClass, Class<?> objectClass) {
         return assignableClass.isAssignableFrom(objectClass);
     }
-    
+
     /**
      * Checks whether the given value is null or blank string
      *
@@ -30,5 +30,19 @@ public class ExpressionFunctions {
      */
     public static boolean empty(Object value) {
         return (value == null) || (StringUtils.isBlank(value.toString()));
+    }
+
+    /**
+     * Returns the name for the given class
+     *
+     * @param clazz - class object to return name for
+     * @return String class name or empty string if class is null
+     */
+    public static String getName(Class<?> clazz) {
+        if (clazz == null) {
+            return "";
+        } else {
+            return clazz.getName();
+        }
     }
 }

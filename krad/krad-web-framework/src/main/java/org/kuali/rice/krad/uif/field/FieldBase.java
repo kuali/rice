@@ -20,6 +20,7 @@ import org.kuali.rice.krad.uif.UifConstants.Position;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.core.Component;
 import org.kuali.rice.krad.uif.core.ComponentBase;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
 
 import java.util.List;
 
@@ -143,6 +144,10 @@ public class FieldBase extends ComponentBase implements Field {
 	 * @see org.kuali.rice.krad.uif.field.Field#setLabel(java.lang.String)
 	 */
 	public void setLabel(String label) {
+        if (StringUtils.isNotBlank(label) && labelField == null) {
+            labelField = ComponentFactory.getLabelField();
+        }
+
 		if (labelField != null) {
 			labelField.setLabelText(label);
 		}

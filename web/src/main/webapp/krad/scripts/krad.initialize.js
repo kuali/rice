@@ -191,6 +191,7 @@ jq(document).ready(function() {
 	// buttons
 	jq("input:submit").button();
 	jq("input:button").button();
+    jq("a.button").button();
 
     // common ajax setup
 	jq.ajaxSetup({

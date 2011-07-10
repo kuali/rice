@@ -366,6 +366,7 @@ public abstract class UifControllerBase {
             for (Entry<String, String> lookupParameter : lookupParameterFields.entrySet()) {
                 String lookupParameterValue = LookupInquiryUtils.retrieveLookupParameterValue(form, request,
                         lookupObjectClass, lookupParameter.getValue(), lookupParameter.getKey());
+
                 if (StringUtils.isNotBlank(lookupParameterValue)) {
                     lookupParameters.put(UifPropertyPaths.CRITERIA_FIELDS + "['" + lookupParameter.getValue() + "']",
                             lookupParameterValue);

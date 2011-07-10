@@ -21,12 +21,25 @@ import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.core.Component;
 import org.kuali.rice.krad.uif.core.RequestParameter;
 import org.kuali.rice.krad.uif.field.Field;
+import org.kuali.rice.krad.web.form.LookupForm;
 
 import java.util.Arrays;
 import java.util.List;
 
 /**
- * TODO delyea: Fill in javadocs here
+ * View type for Maintenance documents
+ *
+ * <p>
+ * Supports doing a search against a data object class or performing a more advanced query. The view
+ * type is primarily made up of two groups, the search (or criteria) group and the results group. Many
+ * options are supported on the view to enable/disable certain features, like what actions are available
+ * on the search results.
+ * </p>
+ *
+ * <p>
+ * Works in conjunction with <code>LookupableImpl</code> which customizes the view and carries out the
+ * business functionality
+ * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -37,12 +50,14 @@ public class LookupView extends FormView {
 
     private Group criteriaGroup;
     private CollectionGroup resultsGroup;
+
     private Field resultsActionsField;
     private Field resultsReturnField;
 
     private List<Component> criteriaFields;
     private List<Component> resultFields;
     private List<String> defaultSortAttributeNames;
+
     protected boolean sortAscending = true;
 
     @RequestParameter
@@ -55,8 +70,6 @@ public class LookupView extends FormView {
     private boolean multipleValues = false;
     private boolean lookupCriteriaEnabled = true;
     private boolean supplementalActionsEnabled = false;
-    private boolean ddExtraButton = false;
-    private boolean headerBarEnabled = true;
     private boolean disableSearchButtons = false;
 
     private Integer resultSetLimit = null;
@@ -110,14 +123,20 @@ public class LookupView extends FormView {
      */
     @Override
     public void performApplyModel(View view, Object model, Component parent) {
-	    if (isRenderActionsFields()) {
-	        ((List<Field>)getResultsGroup().getItems()).add(0, getResultsActionsField());
-	    }
-	    if (isRenderReturnFields()) {
-	        ((List<Field>)getResultsGroup().getItems()).add(0, getResultsReturnField());
-	    }
-	    applyConditionalLogicForFieldDisplay();
-	    super.performApplyModel(view, model, parent);
+        LookupForm lookupForm = (LookupForm) model;
+
+
+        // TODO: need to check lookupForm.isAtLeastOneRowHasActions() somewhere
+        if (!isSuppressActions() && isShowMaintenanceLinks()) {
+            ((List<Field>) getResultsGroup().getItems()).add(0, getResultsActionsField());
+        }
+
+        if (StringUtils.isNotBlank(lookupForm.getReturnFormKey()) &&
+                StringUtils.isNotBlank(lookupForm.getReturnLocation()) && !isHideReturnLinks()) {
+            ((List<Field>) getResultsGroup().getItems()).add(0, getResultsReturnField());
+        }
+
+        super.performApplyModel(view, model, parent);
     }
 
     public void applyConditionalLogicForFieldDisplay() {
@@ -145,68 +164,6 @@ public class LookupView extends FormView {
 //				}
 //	        }
 //		}
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.container.View#performFinalize(org.kuali.rice.krad.uif.container.View,
-     *      java.lang.Object)
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
-//	    if (isRenderActionsFields()) {
-//	        ((List<Field>)getResultsGroup().getItems()).add(0, getResultsActionsField());
-//	    }
-//	    if (isRenderReturnFields()) {
-//	        ((List<Field>)getResultsGroup().getItems()).add(0, getResultsReturnField());
-//	    }
-    }
-
-    public boolean isRenderActionsFields() {
-        /* if -
-           *   KualiForm.actionUrlsExist = true
-           *   KualiForm.suppressActions != true
-           *   !KualiForm.multipleValues
-           *   KualiForm.showMaintenanceLinks = true
-           *
-           *  if -
-           *   row.actionsUrls != ''
-           */
-
-        return true;
-//        LookupViewHelperService lookupHelperService = (LookupViewHelperService) getViewHelperService();
-//        return ((lookupHelperService.isAtLeastOneRowHasActions()) && (!isSuppressActions()) &&
-//                (isShowMaintenanceLinks()));
-    }
-
-    public boolean isRenderReturnFields() {
-        /* if -
-           *   KualiForm.formKey != ''
-           *   KualiForm.hideReturnLink = false
-           *   !KualiForm.multipleValues
-           *   KualiForm.backLocation is not empty
-           *
-           *  if -
-           *   row.rowReturnable
-           */
-
-        return true;
-
-        /* if -
-           *   KualiForm.formKey != ''   ----   @see LookupViewHelperService#getDocFormKey()
-           *   KualiForm.hideReturnLink = false   ----
-           *   !KualiForm.multipleValues   ----
-           *   KualiForm.backLocation is not empty   ----
-           *
-           *  if -
-           *   row.rowReturnable   ----   @see LookupViewHelperService#getActionUrlsFromField
-           */
-
-
-//        LookupViewHelperService lookupHelperService = (LookupViewHelperService) getViewHelperService();
-//        return ((StringUtils.isNotBlank(lookupHelperService.getReturnFormKey())) &&
-//                (StringUtils.isNotBlank(lookupHelperService.getReturnLocation())) && (!isHideReturnLinks()));
     }
 
     /**

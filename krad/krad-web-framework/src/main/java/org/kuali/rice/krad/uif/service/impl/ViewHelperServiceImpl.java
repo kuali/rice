@@ -49,6 +49,7 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.util.MethodInvoker;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -470,6 +471,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
         Map<String, Object> context = new HashMap<String, Object>();
 
         context.put(UifConstants.ContextVariableNames.VIEW, view);
+        context.put(UifConstants.ContextVariableNames.VIEW_HELPER, this);
 
         Properties properties = KRADServiceLocator.getKualiConfigurationService().getAllProperties();
         context.put(UifConstants.ContextVariableNames.CONFIG_PROPERTIES, properties);
@@ -630,7 +632,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
         }
         
         // invoke configured method finalizers
-        invokeMethodFinalizer(view, component);
+        invokeMethodFinalizer(view, component, model);
         
         // invoke component to update its state
         component.performFinalize(view, model, parent);
@@ -656,8 +658,11 @@ public class ViewHelperServiceImpl implements ViewHelperService {
      *            - view instance that contains the component
      * @param component
      *            - component to run finalize method for
+     * @param model
+     *            - top level object containing the data
+     *
      */
-    protected void invokeMethodFinalizer(View view, Component component) {
+    protected void invokeMethodFinalizer(View view, Component component, Object model) {
         String finalizeMethodToCall = component.getFinalizeMethodToCall();
         MethodInvoker finalizeMethodInvoker = component.getFinalizeMethodInvoker();
 
@@ -680,9 +685,21 @@ public class ViewHelperServiceImpl implements ViewHelperService {
             finalizeMethodInvoker.setTargetObject(view.getViewHelperService());
         }
 
-        // add the component instance as an argument
-        Object[] arguments = new Object[1];
+        // setup arguments for method
+        List<Object> additionalArguments = component.getFinalizeMethodAdditionalArguments();
+        if (additionalArguments == null) {
+            additionalArguments = new ArrayList<Object>();
+        }
+
+        Object[] arguments = new Object[2 + additionalArguments.size()];
         arguments[0] = component;
+        arguments[1] = model;
+
+        int argumentIndex = 1;
+        for (Object argument : additionalArguments) {
+            argumentIndex++;
+            arguments[argumentIndex] = argument;
+        }
         finalizeMethodInvoker.setArguments(arguments);
 
         // invoke method and get render output

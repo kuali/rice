@@ -201,7 +201,7 @@ public class Inquiry extends WidgetBase {
 
         // set inquiry title
         String linkTitle = createTitleText(inquiryObjectClass);
-        linkTitle = LookupInquiryUtils.getTitleText(linkTitle, inquiryObjectClass, getInquiryParameters());
+        linkTitle = LookupInquiryUtils.getLinkTitleText(linkTitle, inquiryObjectClass, getInquiryParameters());
         getInquiryLinkField().setTitle(linkTitle);
 
         setRender(true);

@@ -70,10 +70,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="LookupCriteriaAttributeField" abstract="true" parent="LookupCriteriaAttributeField-parentBean"/>
   <bean id="LookupCriteriaAttributeField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.LookupCriteriaAttributeField" parent="AttributeField">
-<!--
-      <property name="summaryMessageField.render" value="false"/>
-      <property name="constraintMessageField.render" value="false"/>
--->
       <property name="bindingInfo.bindToMap" value="true"/>
       <property name="alternateDisplayPropertyBindingInfo.bindToForm" value="true"/>
       <property name="additionalDisplayPropertyBindingInfo.bindToForm" value="true"/>
@@ -331,9 +327,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="DirectInquiryImageField" parent="ImageField" p:source="/kr-dev/krad/images/book_open.png"
         p:altText="Direct Inquiry" p:title="Direct Inquiry"/>                                                                                     
         
-  <bean id="ActionLinkField_CreateNew" parent="GeneratedField" p:label="Create New" p:renderingMethodToCall="getCreateNewUrl" 
-        p:styleClasses="action"
-        p:conditionalRender="!#view.suppressActions and #view.showMaintenanceLinks" />
+  <bean id="ActionLinkField_CreateNew" parent="LinkField"
+        p:styleClasses="action" p:linkLabel="Create New"
+        p:hrefText="maintenance?methodToCall=start&amp;dataObjectClassName=@{#getName(#view.dataObjectClassName)}&amp;viewTypeName=MAINTENANCE"
+        p:conditionalRender="!#view.suppressActions and #view.showMaintenanceLinks and #ViewHelper.allowsMaintenanceNewOrCopyAction()" />
 
   <bean id="ActionField_ShowInactive" parent="ActionField_SmallSecondary" p:methodToCall="toggleInactiveRecordDisplay"
         p:actionLabel="show inactive" p:clientSideJs="toggleInactiveRecordDisplay('{@#component.context['collectionGroup'].id}', true);"/>

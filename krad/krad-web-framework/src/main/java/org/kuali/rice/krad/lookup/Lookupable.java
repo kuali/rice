@@ -18,6 +18,7 @@ package org.kuali.rice.krad.lookup;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.container.LookupView;
 import org.kuali.rice.krad.uif.container.View;
+import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.web.form.LookupForm;
 
@@ -101,4 +102,33 @@ public interface Lookupable extends ViewHelperService, java.io.Serializable {
      * @param readOnlyFieldsList - list of read only fields
      */
     public void setReadOnlyFieldsList(List<String> readOnlyFieldsList);
+
+    /**
+     * Invoked to build the return URL for a result row
+     *
+     * <p>
+     * Based on the line contained in the field context, the URL for returning the role is constructed and
+     * set as the href for the link field. If a return link cannot be constructed the field should be set
+     * to not render
+     * </p>
+     *
+     * @param returnLinkField - link field that will be used to render the return URL
+     * @param model - lookup form containing the data
+     */
+    public void getReturnUrlForResults(LinkField returnLinkField, Object model);
+
+    /**
+     * Invoked to build a maintenance URL for a result row
+     *
+     * <p>
+     * Based on the line contained in the field context and the given maintenance method that should be called a
+     * URL is constructed and set as the href on the link field. If a maintenance link cannot be constructed the
+     * field should be set to not render
+     * </p>
+     *
+     * @param actionLinkField - link field that will be used to return the maintenance URL
+     * @param model - lookup form containing the data
+     * @param maintenanceMethodToCall - name of the method that should be invoked in the maintenance controller
+     */
+    public void getMaintenanceActionLink(LinkField actionLinkField, Object model, String maintenanceMethodToCall);
 }

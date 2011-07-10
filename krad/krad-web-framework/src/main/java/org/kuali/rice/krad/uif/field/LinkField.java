@@ -33,7 +33,7 @@ public class LinkField extends FieldBase {
 	private LightBox lightBox;
 
 	public LinkField() {
-
+      super();
 	}
 
 	/**

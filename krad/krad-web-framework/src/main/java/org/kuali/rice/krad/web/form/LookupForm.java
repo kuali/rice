@@ -26,6 +26,7 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -39,16 +40,14 @@ import java.util.Map;
 public class LookupForm extends UifFormBase {
     private static final long serialVersionUID = -7323484966538685327L;
 
-    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(InquiryForm.class);
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupForm.class);
 
     private String dataObjectClassName;
     private String docNum;
-    private Map<String, String> criteriaFields;
-    private Map<String, String> criteriaFieldsForLookup;
-    private String conversionFields;
-    private Map<String, String> fieldConversions;
+    private String referencesToRefresh;
 
-    private String readOnlyFields;
+    private Map<String, String> criteriaFields;
+    private Map<String, String> fieldConversions;
     private List<String> readOnlyFieldsList;
 
     private boolean atLeastOneRowReturnable;
@@ -58,14 +57,19 @@ public class LookupForm extends UifFormBase {
 
     public LookupForm() {
         super();
+
         setViewTypeName(ViewType.LOOKUP);
         atLeastOneRowReturnable = false;
         atLeastOneRowHasActions = false;
+
+        criteriaFields = new HashMap<String, String>();
+        fieldConversions = new HashMap<String, String>();
+        readOnlyFieldsList = new ArrayList<String>();
     }
 
     /**
      * Picks out business object name from the request to get retrieve a
-     * lookupable and set properties.
+     * lookupable and set properties
      */
     @Override
     public void postBind(HttpServletRequest request) {
@@ -78,6 +82,10 @@ public class LookupForm extends UifFormBase {
                 throw new RuntimeException("Lookupable not found for view id " + getView().getId());
             }
 
+            // init lookupable with data object class
+            Class<?> dataObjectClass = Class.forName(getDataObjectClassName());
+            lookupable.setDataObjectClass(dataObjectClass);
+
             // if showMaintenanceLinks is not already true, only show maintenance links
             // if the lookup was called from the home application view
             if (!((LookupView) getView()).isShowMaintenanceLinks()) {
@@ -88,40 +96,39 @@ public class LookupForm extends UifFormBase {
                 }
             }
 
+            // populate lookup read only fields list
             if (request.getParameter(KRADConstants.LOOKUP_READ_ONLY_FIELDS) != null) {
-                setReadOnlyFields(request.getParameter(KRADConstants.LOOKUP_READ_ONLY_FIELDS));
-                setReadOnlyFieldsList(KRADUtils.convertStringParameterToList(getReadOnlyFields()));
+                String readOnlyFields = request.getParameter(KRADConstants.LOOKUP_READ_ONLY_FIELDS);
+                setReadOnlyFieldsList(KRADUtils.convertStringParameterToList(readOnlyFields));
                 lookupable.setReadOnlyFieldsList(getReadOnlyFieldsList());
             }
 
-            // init lookupable with data object class
-            Class<?> boClass = Class.forName(getDataObjectClassName());
-            lookupable.setDataObjectClass(boClass);
+            // populate field conversions list
+            if (request.getParameter(KRADConstants.CONVERSION_FIELDS_PARAMETER) != null) {
+                String conversionFields = request.getParameter(KRADConstants.CONVERSION_FIELDS_PARAMETER);
+                setFieldConversions(KRADUtils.convertStringParameterToMap(conversionFields));
+                lookupable.setFieldConversions(getFieldConversions());
+            }
 
+            // perform upper casing of lookup parameters
             Map<String, String> fieldValues = new HashMap<String, String>();
             Map<String, String> formFields = getCriteriaFields();
 
             if (formFields != null) {
                 for (Map.Entry<String, String> entry : formFields.entrySet()) {
                     // check here to see if this field is a criteria element on the form
-                    fieldValues
-                            .put(entry.getKey(), LookupUtils.forceUppercase(boClass, entry.getKey(), entry.getValue()));
+                    fieldValues.put(entry.getKey(),
+                            LookupUtils.forceUppercase(dataObjectClass, entry.getKey(), entry.getValue()));
                 }
             }
 
-           // fieldValues.put(UifParameters.RETURN_FORM_KEY, getReturnFormKey());
-           // fieldValues.put(UifParameters.RETURN_LOCATION, getReturnLocation());
+            // fieldValues.put(UifParameters.RETURN_FORM_KEY, getReturnFormKey());
+            // fieldValues.put(UifParameters.RETURN_LOCATION, getReturnLocation());
             if (StringUtils.isNotBlank(getDocNum())) {
                 fieldValues.put(KRADConstants.DOC_NUM, getDocNum());
             }
 
             this.setCriteriaFields(fieldValues);
-
-            setFieldConversions(KRADUtils.convertStringParameterToMap(getConversionFields()));
-            lookupable.setFieldConversions(getFieldConversions());
-            //lookupable.setDocNum(getDocNum());
-
-            setCriteriaFieldsForLookup(fieldValues);
         } catch (ClassNotFoundException e) {
             LOG.error("Object class " + getDataObjectClassName() + " not found");
             throw new RuntimeException("Object class " + getDataObjectClassName() + " not found", e);
@@ -171,28 +178,20 @@ public class LookupForm extends UifFormBase {
         this.docNum = docNum;
     }
 
+    public String getReferencesToRefresh() {
+        return referencesToRefresh;
+    }
+
+    public void setReferencesToRefresh(String referencesToRefresh) {
+        this.referencesToRefresh = referencesToRefresh;
+    }
+
     public Map<String, String> getCriteriaFields() {
         return this.criteriaFields;
     }
 
     public void setCriteriaFields(Map<String, String> criteriaFields) {
         this.criteriaFields = criteriaFields;
-    }
-
-    public Map<String, String> getCriteriaFieldsForLookup() {
-        return this.criteriaFieldsForLookup;
-    }
-
-    public void setCriteriaFieldsForLookup(Map<String, String> criteriaFieldsForLookup) {
-        this.criteriaFieldsForLookup = criteriaFieldsForLookup;
-    }
-
-    public String getConversionFields() {
-        return this.conversionFields;
-    }
-
-    public void setConversionFields(String conversionFields) {
-        this.conversionFields = conversionFields;
     }
 
     public Map<String, String> getFieldConversions() {
@@ -209,14 +208,6 @@ public class LookupForm extends UifFormBase {
 
     public void setSearchResults(Collection<?> searchResults) {
         this.searchResults = searchResults;
-    }
-
-    public String getReadOnlyFields() {
-        return this.readOnlyFields;
-    }
-
-    public void setReadOnlyFields(String readOnlyFields) {
-        this.readOnlyFields = readOnlyFields;
     }
 
     public List<String> getReadOnlyFieldsList() {

@@ -276,7 +276,6 @@ public class AttributeField extends FieldBase implements DataBinding {
      * @param model - model instance
      */
     private void setAlternateAndAdditionalDisplayValue(View view, Object model){
-
     	boolean isSecure = false;
     	boolean additionalValueSet = false;
     	boolean alternateValueSet = false;

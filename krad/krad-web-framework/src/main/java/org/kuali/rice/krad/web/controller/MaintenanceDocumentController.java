@@ -52,13 +52,6 @@ import javax.servlet.http.HttpServletResponse;
 public class MaintenanceDocumentController extends DocumentControllerBase {
     protected static final Logger LOG = Logger.getLogger(MaintenanceDocumentController.class);
 
-    public static final String REQUEST_MAPPING_MAINTENANCE = "maintenance";
-    public static final String METHOD_TO_CALL_NEW = "start";
-    public static final String METHOD_TO_CALL_NEW_WITH_EXISTING = "maintenanceNewWithExisting";
-    public static final String METHOD_TO_CALL_EDIT = "maintenanceEdit";
-    public static final String METHOD_TO_CALL_COPY = "maintenanceCopy";
-    public static final String METHOD_TO_CALL_DELETE = "maintenanceDelete";
-
     @Override
     public MaintenanceForm createInitialForm(HttpServletRequest request) {
         return new MaintenanceForm();
@@ -121,7 +114,7 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
      * Default method for controller that setups a new
      * <code>MaintenanceView</code> with the default new action
      */
-    @RequestMapping(params = "methodToCall=" + METHOD_TO_CALL_NEW)
+    @RequestMapping(params = "methodToCall=" + KRADConstants.Maintenance.METHOD_TO_CALL_NEW)
     @Override
     public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
@@ -136,7 +129,7 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
      * Setups a new <code>MaintenanceView</code> with the edit maintenance
      * action
      */
-    @RequestMapping(params = "methodToCall=" + METHOD_TO_CALL_EDIT)
+    @RequestMapping(params = "methodToCall=" + KRADConstants.Maintenance.METHOD_TO_CALL_EDIT)
     public ModelAndView maintenanceEdit(@ModelAttribute("KualiForm") MaintenanceForm form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -149,7 +142,7 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
      * Setups a new <code>MaintenanceView</code> with the copy maintenance
      * action
      */
-    @RequestMapping(params = "methodToCall=" + METHOD_TO_CALL_COPY)
+    @RequestMapping(params = "methodToCall=" + KRADConstants.Maintenance.METHOD_TO_CALL_COPY)
     public ModelAndView maintenanceCopy(@ModelAttribute("KualiForm") MaintenanceForm form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -162,7 +155,7 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
      * Setups a new <code>MaintenanceView</code> with the new with existing
      * maintenance action
      */
-    @RequestMapping(params = "methodToCall=" + METHOD_TO_CALL_NEW_WITH_EXISTING)
+    @RequestMapping(params = "methodToCall=" + KRADConstants.Maintenance.METHOD_TO_CALL_NEW_WITH_EXISTING)
     public ModelAndView maintenanceNewWithExisting(@ModelAttribute("KualiForm") MaintenanceForm form,
             BindingResult result, HttpServletRequest request, HttpServletResponse response) throws Exception {
 

@@ -147,7 +147,7 @@ public class LookupController extends UifControllerBase {
         supressActionsIfNeeded(lookupForm);
 
         Lookupable lookupable = (Lookupable) lookupForm.getLookupable();
-        lookupForm.setCriteriaFields(lookupable.performClear(lookupForm, lookupForm.getCriteriaFieldsForLookup()));
+        lookupForm.setCriteriaFields(lookupable.performClear(lookupForm, lookupForm.getCriteriaFields()));
 
         return getUIFModelAndView(lookupForm);
     }
@@ -169,10 +169,10 @@ public class LookupController extends UifControllerBase {
         }
 
         // validate search parameters
-        lookupable.validateSearchParameters(lookupForm, lookupForm.getCriteriaFieldsForLookup());
+        lookupable.validateSearchParameters(lookupForm, lookupForm.getCriteriaFields());
 
         Collection<?> displayList =
-                lookupable.performSearch(lookupForm, lookupForm.getCriteriaFieldsForLookup(), true);
+                lookupable.performSearch(lookupForm, lookupForm.getCriteriaFields(), true);
 
         if (displayList instanceof CollectionIncomplete<?>) {
             request.setAttribute("reqSearchResultsActualSize",

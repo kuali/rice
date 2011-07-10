@@ -143,6 +143,20 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <bean parent="TreeWidget"/>
       </property>
   </bean>
+
+  <bean id="LinkGroup" abstract="true" parent="LinkGroup-parentBean"/>
+  <bean id="LinkGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.LinkGroup" parent="GroupBodyOnly">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/group/linkGroup.jsp"/>
+      <property name="linkSeparator" value="&amp;nbsp;&amp;nbsp;"/>
+      <property name="emptyLinkGroupString" value="&amp;nbsp;"/>
+  </bean>
+
+  <bean id="ChildLinkGroup" abstract="true" parent="ChildLinkGroup-parentBean"/>
+  <bean id="ChildLinkGroup-parentBean" abstract="true" parent="LinkGroup">
+      <property name="linkSeparator" value="&amp;nbsp;|&amp;nbsp;"/>
+      <property name="groupBeginDelimiter" value="&amp;nbsp;["/>
+      <property name="groupEndDelimiter" value="]"/>
+  </bean>
   
   <bean id="GroupSection" abstract="true" parent="GroupSection-parentBean"/>
   <bean id="GroupSection-parentBean" abstract="true" parent="Group">
@@ -220,44 +234,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     <property name="accordion.collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_collapse.png"/>
     <property name="accordion.expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_expand.png"/>
   </bean>   
-  
-  <bean id="MaintenanceGroupSectionGridLayout" abstract="true" parent="MaintenanceGroupSectionGridLayout-parentBean"/>
-  <bean id="MaintenanceGroupSectionGridLayout-parentBean" parent="GroupSectionGridLayout">  
-    <property name="layoutManager.conditionalNumberOfColumns" value="maintenanceAction eq 'Edit' ? 4 : 2"/>
-    <property name="componentModifiers">
-       <list merge="true">
-         <bean parent="MaintenanceCompareModifier" p:runPhase="APPLY_MODEL" p:runCondition="maintenanceAction eq 'Edit'"/>
-       </list>
-    </property>
-  </bean>
-  
-  <bean id="MaintenanceGroupSection" abstract="true" parent="MaintenanceGroupSection-parentBean"/>
-  <bean id="MaintenanceGroupSection-parentBean" parent="GroupSection" />
-  
-  <bean id="MaintenanceCollectionGroupSection" abstract="true" parent="MaintenanceCollectionGroupSection-parentBean"/>
-  <bean id="MaintenanceCollectionGroupSection-parentBean" parent="CollectionGroupSection">  
-    <property name="layoutManager.lineGroupPrototype">   
-       <bean parent="StackedGroupPrototype">          
-         <property name="layoutManager.conditionalNumberOfColumns" value="maintenanceAction eq 'Edit' ? 4 : 2"/>
-         <property name="componentModifiers">
-            <list merge="true">
-              <bean parent="MaintenanceCompareModifier" p:runPhase="APPLY_MODEL" p:runCondition="maintenanceAction eq 'Edit'"/>
-            </list>
-        </property>
-      </bean>
-    </property>
-    <property name="activeCollectionFilter">
-      <bean class="org.kuali.rice.krad.uif.core.MaintenanceActiveCollectionFilter"
-            p:oldBindingObjectPath="document.oldMaintainableObject.dataObject" />
-    </property>
-  </bean>
 
-  <bean id="MaintenanceSubCollectionGroup" abstract="true" parent="MaintenanceSubCollectionGroup-parentBean"/>
-  <bean id="MaintenanceSubCollectionGroup-parentBean" parent="MaintenanceCollectionGroupSection">
-     <property name="header.render" value="false"/>
-     <property name="accordion.render" value="false"/>
-  </bean>
-  
   <!-- Common Groups -->
   
   <bean id="Group_LookupHeader" parent="GroupBodyOnly">
@@ -480,6 +457,66 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
            </bean>
          </list>
       </property>
-  </bean>    
-  
-</beans>  
+  </bean>
+
+  <bean id="MaintenanceGroupSectionGridLayout" abstract="true" parent="MaintenanceGroupSectionGridLayout-parentBean"/>
+  <bean id="MaintenanceGroupSectionGridLayout-parentBean" parent="GroupSectionGridLayout">
+    <property name="layoutManager.conditionalNumberOfColumns" value="maintenanceAction eq 'Edit' ? 4 : 2"/>
+    <property name="componentModifiers">
+       <list merge="true">
+         <bean parent="MaintenanceCompareModifier" p:runPhase="APPLY_MODEL" p:runCondition="maintenanceAction eq 'Edit'"/>
+       </list>
+    </property>
+  </bean>
+
+  <bean id="MaintenanceGroupSection" abstract="true" parent="MaintenanceGroupSection-parentBean"/>
+  <bean id="MaintenanceGroupSection-parentBean" parent="GroupSection" />
+
+  <bean id="MaintenanceCollectionGroupSection" abstract="true" parent="MaintenanceCollectionGroupSection-parentBean"/>
+  <bean id="MaintenanceCollectionGroupSection-parentBean" parent="CollectionGroupSection">
+    <property name="layoutManager.lineGroupPrototype">
+       <bean parent="StackedGroupPrototype">
+         <property name="layoutManager.conditionalNumberOfColumns" value="maintenanceAction eq 'Edit' ? 4 : 2"/>
+         <property name="componentModifiers">
+            <list merge="true">
+              <bean parent="MaintenanceCompareModifier" p:runPhase="APPLY_MODEL" p:runCondition="maintenanceAction eq 'Edit'"/>
+            </list>
+        </property>
+      </bean>
+    </property>
+    <property name="activeCollectionFilter">
+      <bean class="org.kuali.rice.krad.uif.core.MaintenanceActiveCollectionFilter"
+            p:oldBindingObjectPath="document.oldMaintainableObject.dataObject" />
+    </property>
+  </bean>
+
+  <bean id="MaintenanceSubCollectionGroup" abstract="true" parent="MaintenanceSubCollectionGroup-parentBean"/>
+  <bean id="MaintenanceSubCollectionGroup-parentBean" parent="MaintenanceCollectionGroupSection">
+     <property name="header.render" value="false"/>
+     <property name="accordion.render" value="false"/>
+  </bean>
+
+  <bean id="LookupCriteriaGroup" parent="GroupGridLayout">
+    <property name="renderHeader" value="false"/>
+    <property name="title" value="Lookup Criteria"/>
+    <property name="fieldBindingObjectPath" value="criteriaFields"/>
+    <property name="layoutManager.numberOfColumns" value="2"/>
+    <property name="accordion.render" value="false"/>
+    <property name="footer">
+      <bean parent="FooterLookup"/>
+    </property>
+  </bean>
+
+  <bean id="LookupResultsGroup" parent="CollectionGroupTableLayout" p:layoutManager.suppressLineWrapping="true">
+    <property name="showInactive" value="true"/>
+    <property name="propertyName" value="searchResults"/>
+    <property name="layoutManager.renderSequenceField" value="false"/>
+    <property name="renderAddLine" value="false"/>
+    <property name="conditionalReadOnly" value="true"/>
+    <property name="accordion.render" value="false"/>
+    <property name="header.group">
+      <bean parent="GroupBodyOnly"/>
+    </property>
+  </bean>
+
+</beans>

@@ -564,6 +564,17 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
         String title = LookupInquiryUtils.getLinkTitleText(linkLabel, getDataObjectClass(), returnKeyValues);
         returnLinkField.setTitle(title);
+        
+        // Add the return target if it is set
+        String returnTarget = lookupView.getReturnTarget();
+        if (returnTarget != null) {
+            returnLinkField.setTarget(returnTarget);
+            
+            // Close the light box if return target is not _self or _parent
+            if (!returnTarget.equals("_self") && !returnTarget.equals("_parent")) {
+                returnLinkField.setOnClickScript("parent.$.fancybox.close();");
+            }
+        }
     }
 
     /**
@@ -676,7 +687,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         Map<String, String> primaryKeyValues = KRADUtils.getPropertyKeyValuesFromDataObject(pkNames, dataObject);
         String title = LookupInquiryUtils.getLinkTitleText(prependTitleText, getDataObjectClass(), primaryKeyValues);
         actionLinkField.setTitle(title);
-
+        // TODO : do not hardcode the _self string
+        actionLinkField.setTarget("_self");
         lookupForm.setAtLeastOneRowHasActions(true);
     }
 

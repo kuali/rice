@@ -37,7 +37,10 @@
     </property>
   </bean>
   
-  <util:list id="buttonClasses"><value>ui-button ui-widget</value></util:list>
+  <util:list id="buttonClasses">
+    <value>ui-button</value>
+    <value>ui-widget</value>
+  </util:list>
 
   <!-- hack to merge a list with one of those util:lists -->
   <bean id="krms-css" class="org.apache.commons.collections.ListUtils" factory-method="union">
@@ -56,97 +59,107 @@
     <property name="title" value="Business Rules"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.ui.AgendaEditor"/>
     <property name="items">
-      <list merge="false"> <!-- this gets rid of header, notes, route log -->
-        <bean parent="GroupSection" p:accordion.render="false">
-          <property name="items">
-            <list>
-              <bean parent="FieldGroup" p:label="Field Group 4">
-                <!-- p:width="40%" p:labelField.width="10%" -->
-                <property name="group.layoutManager.orientation" value="HORIZONTAL"/>
-                <property name="items">
-                  <list>
-                    <bean parent="AttributeField" p:propertyName="context.name" p:labelPlacement="LEFT">
-                      <!--  property name="required" value="true" / -->
-                      <property name="control">
-                        <bean parent="TextControl" p:size="30" p:watermarkText="name"/>
-                      </property>
-                      <property name="fieldLookup.dataObjectClassName"
-                                value="org.kuali.rice.krms.impl.repository.ContextBo"/>
-                      <property name="fieldLookup.fieldConversions">
-                      <!-- Spring shortcuts for maps and lists:
-                        [12:20:06 PDT] Jerry Neal: prop="one,two,three'
-                        [12:20:18 PDT] Jerry Neal: map="key:value,key:value"
-                       -->
-                        <map>
-                          <entry key="name" value="document.newMaintainableObject.bo.context.name"/>
-                          <entry key="namespace" value="document.newMaintainableObject.bo.context.namespace"/>
-                          <entry key="id" value="document.newMaintainableObject.bo.context.id"/>
-                        </map>
-                      </property>
-                      <property name="label" value="Name"/>
-                      <property name="fieldSuggest.render" value="true" />
-                      <property name="fieldSuggest.sourcePropertyName" value="name" />
-                      <property name="fieldSuggest.suggestQuery.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ContextBo" />
-                    </bean>
-                    <bean parent="AttributeField" p:propertyName="context.namespace"
-                          p:label="Namespace" p:labelPlacement="LEFT">
-                      <property name="control">
-                        <bean parent="TextControl" p:size="30" p:watermarkText="namespace"/>
-                      </property>
-                    </bean>
-                    <bean parent="AttributeField" p:propertyName="context.id"
-                            p:showLabel="false" p:label="id" p:maxLength="40">
-                      <property name="control">
-                        <bean parent="HiddenControl"/>
-                      </property>
-                    </bean>
-                  </list>
-                </property>
-              </bean>
-            </list>
-
-          </property>
-          <property name="title" value="Context"/>
-        </bean>
-
-        <bean parent="GroupSection">
-          <property name="title" value="Agenda Editor"/>
-          <property name="items">
-            <list>
-              <bean parent="GroupGridBodyOnly" p:layoutManager.numberOfColumns="4">
-                <property name="items">
-                  <list >
-                    <ref bean="agendaName"/>
-                    <ref bean="agendaActive"/>
-                  </list>
-                </property>
-              </bean>
-              
-              <bean parent="GroupBodyOnly" p:style="border: 1px solid #999999; padding: 5px; margin: 5px; background: white; ">
-                <property name="items">
-                  <list>
-                    <bean parent="GroupGridBodyOnly" p:style="margin-bottom: 5pt;">
-                      <property name="items">
-                        <list>
-                          <ref bean="treeControls"/>
-                        </list>
-                      </property>
-                    </bean>
-                    <ref bean="treeExpandCollapse" />
-                    <ref bean="tree" />
-                  </list>
-                </property>
-              </bean>
-
-
-            </list>
-          </property>
-        </bean>
-        
+      <list> 
+        <ref bean="contextSection" />
+        <ref bean="agendaSection" />
       </list>
     </property>
   </bean>
-  
+
+  <bean id="contextSection" parent="GroupSection" p:accordion.render="false">
+    <property name="items">
+      <list>
+        <bean parent="FieldGroup" p:label="Field Group 4">
+          <!-- p:width="40%" p:labelField.width="10%" -->
+          <property name="group.layoutManager.orientation"
+            value="HORIZONTAL" />
+          <property name="items">
+            <list>
+              <bean parent="AttributeField" p:propertyName="context.name"
+                p:labelPlacement="LEFT">
+                <!-- property name="required" value="true" / -->
+                <property name="control">
+                  <bean parent="TextControl" p:size="30"
+                    p:watermarkText="name" />
+                </property>
+                <property name="fieldLookup.dataObjectClassName"
+                  value="org.kuali.rice.krms.impl.repository.ContextBo" />
+                <property name="fieldLookup.fieldConversions">
+                  <!-- Spring shortcuts for maps and lists: [12:20:06 PDT] 
+                    Jerry Neal: prop="one,two,three" [12:20:18 PDT] Jerry Neal: map="key:value,key:value" -->
+                  <map>
+                    <entry key="name"
+                      value="document.newMaintainableObject.dataObject.context.name" />
+                    <entry key="namespace"
+                      value="document.newMaintainableObject.dataObject.context.namespace" />
+                    <entry key="id"
+                      value="document.newMaintainableObject.dataObject.context.id" />
+                  </map>
+                </property>
+                <property name="label" value="Name" />
+                <property name="fieldSuggest.render" value="true" />
+                <property name="fieldSuggest.sourcePropertyName"
+                  value="name" />
+                <property
+                  name="fieldSuggest.suggestQuery.dataObjectClassName"
+                  value="org.kuali.rice.krms.impl.repository.ContextBo" />
+              </bean>
+              <bean parent="AttributeField" p:propertyName="context.namespace"
+                p:label="Namespace" p:labelPlacement="LEFT">
+                <property name="control">
+                  <bean parent="TextControl" p:size="30"
+                    p:watermarkText="namespace" />
+                </property>
+              </bean>
+              <bean parent="AttributeField" p:propertyName="context.id"
+                p:showLabel="false" p:label="id" p:maxLength="40">
+                <property name="control">
+                  <bean parent="HiddenControl" />
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+
+    </property>
+    <property name="title" value="Context" />
+  </bean>
+
+  <bean id="agendaSection" parent="GroupSection">
+    <property name="title" value="Agenda Editor" />
+    <property name="items">
+      <list>
+        <bean parent="GroupGridBodyOnly" p:layoutManager.numberOfColumns="4">
+          <property name="items">
+            <list>
+              <ref bean="agendaName" />
+              <ref bean="agendaActive" />
+            </list>
+          </property>
+        </bean>
+
+        <bean parent="GroupBodyOnly" p:style="border: 1px solid #999999; padding: 5px; margin: 5px; background: white; " >
+          <property name="items">
+            <list>
+              <bean parent="GroupGridBodyOnly" p:style="margin-bottom: 5pt;">
+                <property name="items">
+                  <list>
+                    <ref bean="treeControls" />
+                  </list>
+                </property>
+              </bean>
+              <ref bean="treeExpandCollapse" />
+              <ref bean="tree" />
+            </list>
+          </property>
+        </bean>
+
+
+      </list>
+    </property>
+  </bean>
+
   <bean id="treeExpandCollapse" parent="FieldGroup" p:label="Field Group 4" 
     p:conditionalRender="document.newMaintainableObject.dataObject.agenda != null and document.newMaintainableObject.dataObject.agenda.name != null and !document.newMaintainableObject.dataObject.agenda.name.isEmpty()"
     p:style="font-size: smaller;">
@@ -168,8 +181,11 @@
   <bean id="treeControls" parent="FieldGroup" p:showLabel="false" p:group.layoutManager.orientation="HORIZONTAL">
     <property name="items">
       <list>
-        <bean parent="ActionField" p:methodToCall="add" p:actionLabel="add rule" p:styleClasses-ref="buttonClasses"/>
-        <!-- bean parent="AttributeField_Form" p:propertyName="maintenanceAction" p:label="" 
+        <bean parent="ActionField" p:methodToCall="add" p:actionLabel="add rule"  p:clientSideJs="alert('Not Yet Implemented');" 
+          p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt;"/>
+        
+        <!-- 
+        <bean parent="AttributeField_Form" p:propertyName="maintenanceAction" p:label="" 
            p:defaultValue="below" p:style="float:none; margin-right: 15px;">
           <property name="control">
             <bean parent="SelectControl">
@@ -183,10 +199,22 @@
                 </property>
             </bean>
           </property>
-        </bean -->
-        <bean parent="ActionField" p:methodToCall="moveUp" p:actionLabel="Move Up" p:styleClasses-ref="buttonClasses"/>
-        <bean parent="ActionField" p:methodToCall="moveDown" p:actionLabel="Move Down" p:styleClasses-ref="buttonClasses" 
-          p:style="margin-right: 15pt;"/>
+        </bean>
+         -->
+         
+        <bean parent="MessageField" p:messageText="Move: [" p:style="display: inline;"/>
+        <bean parent="ActionField" p:methodToCall="moveLeft"
+          p:actionLabel="&lt; Left" p:styleClasses-ref="buttonClasses" />
+        <bean parent="ActionField" p:methodToCall="moveUp" p:actionLabel="Up ^"
+          p:styleClasses-ref="buttonClasses" />
+        <bean parent="ActionField" p:methodToCall="moveDown"
+          p:actionLabel="v Down" p:styleClasses-ref="buttonClasses" />
+        <bean parent="ActionField" p:methodToCall="moveRight"
+          p:actionLabel="Right &gt;" p:styleClasses-ref="buttonClasses" />
+        <bean parent="MessageField" p:messageText="]" p:style="display: inline;"/>
+        
+        <bean parent="ActionField" p:methodToCall="cut" p:actionLabel="Cut" p:clientSideJs="alert('Not Yet Implemented');" p:styleClasses-ref="buttonClasses" p:style="margin-left: 15pt;"/>
+        <bean parent="ActionField" p:methodToCall="paste" p:actionLabel="Paste" p:clientSideJs="alert('Not Yet Implemented');" p:styleClasses-ref="buttonClasses"/>
         <bean parent="ActionField" p:methodToCall="delete" p:actionLabel="Delete" p:styleClasses-ref="buttonClasses" 
           p:style="margin-right: 15pt;"/>
         <bean parent="ActionField" p:methodToCall="refresh" p:actionLabel="refresh" p:styleClasses-ref="buttonClasses"/>
@@ -208,15 +236,14 @@
                     value="org.kuali.rice.krms.impl.repository.AgendaBo"/>
           <property name="fieldLookup.lookupParameters">
             <map>
-              <!-- TODO: this is not correct / working.  Need to add a hidden id field on the context -->
-              <entry key="document.newMaintainableObject.bo.context.id" value="contextId"/>
+              <entry key="document.newMaintainableObject.dataObject.context.id" value="contextId"/>
             </map>
           </property>
           <property name="fieldLookup.fieldConversions">
             <map>
               <entry key="name" value="document.newMaintainableObject.dataObject.agenda.name"/>
               <entry key="id" value="document.newMaintainableObject.dataObject.agenda.id"/>
-              <entry key="active" value="document.newMaintainableObject.dataObject.agenda.active"/>
+              <!-- entry key="active" value="document.newMaintainableObject.dataObject.agenda.active"/ -->
             </map>
           </property>
           <property name="fieldSuggest.render" value="true" />
@@ -229,7 +256,7 @@
           </property>
         </bean>
         <bean parent="ActionField" p:methodToCall="saveAgenda"
-              p:actionLabel="save" p:styleClasses-ref="buttonClasses"/>
+              p:actionLabel="save" p:clientSideJs="alert('Not Yet Implemented');" p:styleClasses-ref="buttonClasses"/>
         <bean parent="AttributeField" p:propertyName="agenda.id"
                             p:showLabel="false" p:label="id" p:maxLength="40">
           <property name="control">

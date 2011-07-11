@@ -182,13 +182,13 @@
         <reference-descriptor name="rule" class-ref="org.kuali.rice.krms.impl.repository.RuleBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
             <foreignkey field-ref="ruleId" target-field-ref="id" />
         </reference-descriptor>
-        <reference-descriptor name="whenTrue" class-ref="org.kuali.rice.krms.impl.repository.AgendaItemBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
+        <reference-descriptor name="whenTrue" class-ref="org.kuali.rice.krms.impl.repository.AgendaItemBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
             <foreignkey field-ref="whenTrueId" target-field-ref="id" />
         </reference-descriptor>
-        <reference-descriptor name="whenFalse" class-ref="org.kuali.rice.krms.impl.repository.AgendaItemBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
+        <reference-descriptor name="whenFalse" class-ref="org.kuali.rice.krms.impl.repository.AgendaItemBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
             <foreignkey field-ref="whenFalseId" target-field-ref="id" />
         </reference-descriptor>
-        <reference-descriptor name="always" class-ref="org.kuali.rice.krms.impl.repository.AgendaItemBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
+        <reference-descriptor name="always" class-ref="org.kuali.rice.krms.impl.repository.AgendaItemBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
             <foreignkey field-ref="alwaysId" target-field-ref="id" />
         </reference-descriptor>
     </class-descriptor>

@@ -36,6 +36,11 @@
         	  var agendaItemId = jq(this.parentNode).find('input').attr('value');
         	  var selectedItemTracker = jq('input[name="agenda_item_selected"]');
         	  selectedItemTracker.val(agendaItemId);
+        	  // make li show containment of children
+        	  jq('li').each( function() {
+        		  jq(this).removeClass('ruleBlockSelected');
+        	  });
+        	  jq(this.parentNode).addClass('ruleBlockSelected');
           });
     	  // logic nodes should clear the selected item
           jq('a.logicNode').click( function() {
@@ -43,6 +48,7 @@
               selectedItemTracker.val('');
           });
       });
+
 </script> 
 <!-- keep track of the agenda item that is selected: -->
 <input type="hidden" name="agenda_item_selected" value=""/>

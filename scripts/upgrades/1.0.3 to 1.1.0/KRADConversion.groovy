@@ -36,8 +36,12 @@ Map<String, String> dDPropertyMapping = ["businessObjectClass":"objectClass", "B
 "AlphaValidationPattern":"AlphaPatternConstraint", "AlphaNumericValidationPattern":"AlphaNumericPatternConstraint",
 "CharsetValidationPattern":"CharsetPatternConstraint", "NumericValidationPattern":"NumericPatternConstraint", 
 "RegexValidationPattern":"RegexPatternConstraint", "FixedPointValidationPattern":"FixedPointValidationPattern",
-"FloatingPointValidationPattern":"FloatingPointPatternConstraint"]
-List<String> removePropertyList = ["inquiryDefinition","lookupDefinition"]
+"FloatingPointValidationPattern":"FloatingPointPatternConstraint","ZipcodeValidationPattern":"ZipcodePatternConstraint",
+"YearValidationPattern":"YearPatternConstraint","TimestampValidationPattern":"TimestampPatternConstraint",
+"PhoneNumberValidationPattern":"PhoneUSPatternConstraint","MonthValidationPattern":"MonthPatternConstraint",
+"JavaClassValidationPattern":"JavaClassPatternConstraint","EmailAddressValidationPattern":"EmailPatternConstraint",
+"DateValidationPattern":"DatePatternConstraint"]
+List<String> removePropertyList = ["inquiryDefinition","lookupDefinition","relationships"]
 
 def beanSchema = 'http://www.springframework.org/schema/p'
 def oldSchema = 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'

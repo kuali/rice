@@ -19,8 +19,6 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.impl.GenericPermission;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
-//import org.kuali.rice.kim.bo.impl.PermissionImpl;
-//import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;

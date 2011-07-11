@@ -29,12 +29,18 @@ import javax.persistence.Transient
 import org.hibernate.annotations.Fetch
 import org.hibernate.annotations.FetchMode
 import org.hibernate.annotations.Type
+import org.kuali.rice.kim.api.services.KimApiServiceLocator
+import org.kuali.rice.kim.api.type.KimType
+import org.kuali.rice.kim.api.type.KimTypeAttribute
+import org.kuali.rice.kim.api.type.KimTypeInfoService
 import org.kuali.rice.kim.api.permission.Permission
 import org.kuali.rice.kim.api.permission.PermissionContract
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo
 import org.kuali.rice.kim.impl.role.RolePermissionBo
 import org.kuali.rice.kim.util.KimConstants
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krad.service.DataDictionaryService;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb
 
 @Entity
 @Table(name = "KRIM_PERM_T")
@@ -86,19 +92,6 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
         return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes
     }
 
-    public String getDetailObjectsValues() {
-        StringBuffer detailObjectsToDisplay = new StringBuffer();
-        Iterator<PermissionAttributeBo> permIter = attributeDetails.iterator();
-        while (permIter.hasNext()) {
-            PermissionAttributeBo permissionAttributeData = permIter.next();
-            detailObjectsToDisplay.append(permissionAttributeData.getAttributeValue());
-            if (permIter.hasNext()) {
-                detailObjectsToDisplay.append(KimConstants.KimUIConstants.COMMA_SEPARATOR);
-            }
-        }
-        return detailObjectsToDisplay.toString();
-    }
-
     /**
      * Converts a mutable bo to its immutable counterpart
      * @param bo the mutable business object
@@ -139,5 +132,46 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
 
     PermissionTemplateBo getTemplate() {
         return template;
+    }
+    
+    public String getDetailObjectsValues() {
+        StringBuffer detailObjectsToDisplay = new StringBuffer();
+        Iterator<PermissionAttributeBo> permIter = attributeDetails.iterator();
+        while (permIter.hasNext()) {
+            PermissionAttributeBo permissionAttributeData = permIter.next();
+            detailObjectsToDisplay.append(permissionAttributeData.getAttributeValue());
+            if (permIter.hasNext()) {
+                detailObjectsToDisplay.append(KimConstants.KimUIConstants.COMMA_SEPARATOR);
+            }
+        }
+        return detailObjectsToDisplay.toString();
+    }
+
+    String getDetailObjectsToDisplay() {
+        final KimType kimType = getTypeInfoService().getKimType( getTemplate().getKimTypeId() );
+
+        return attributeDetails.collect {
+            getKimAttributeLabelFromDD(kimType.getAttributeDefinitionById(it.kimAttributeId)) + ":" + it.attributeValue
+        }.join(",")
+    }
+    
+    private String getKimAttributeLabelFromDD( KimTypeAttribute attribute ){
+        return getDataDictionaryService().getAttributeLabel(attribute.getKimAttribute().getComponentName(), attribute.getKimAttribute().getAttributeName() );
+    }
+
+    private DataDictionaryService dataDictionaryService;
+    private DataDictionaryService getDataDictionaryService() {
+        if(dataDictionaryService == null){
+            dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
+        }
+        return dataDictionaryService;
+    }
+    
+    private KimTypeInfoService kimTypeInfoService;
+    private KimTypeInfoService getTypeInfoService() {
+        if(kimTypeInfoService == null){
+            kimTypeInfoService = KimApiServiceLocator.getKimTypeInfoService();
+        }
+        return kimTypeInfoService;
     }
 }

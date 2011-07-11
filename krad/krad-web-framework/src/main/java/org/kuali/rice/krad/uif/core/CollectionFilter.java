@@ -4,6 +4,7 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.View;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Provides filtering on collection data within a <code>CollectionGroup</code>
@@ -14,12 +15,13 @@ public interface CollectionFilter extends Serializable {
 
     /**
      * Invoked to filter the collection data before the collection group is
-     * built. Note the collection should be retrieved from the model and updated
-     * back to the model
+     * built. Note the collection should be retrieved from the model and the valid
+     * row indexes must be returned in the return list
      *
      * @param view - view instance for the collection group
      * @param model - object containing the view data and from which the collection should be pulled/updated
      * @param collectionGroup - collection group instance containing configuration for the collection
+     * @return the list that contains valid row indexes
      */
-    public void filter(View view, Object model, CollectionGroup collectionGroup);
+    public List<Integer> filter(View view, Object model, CollectionGroup collectionGroup);
 }

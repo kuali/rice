@@ -76,6 +76,7 @@ public class UifConstants {
         public static final String REFRESH = "refresh";
         public static final String CANCEL = "cancel";
         public static final String UPDATE_COMP = "updateComponent";
+        public static final String TOGGLE_INACTIVE = "toggleInactiveRecordDisplay";
     }
 
     public static class LayoutComponentOptions {

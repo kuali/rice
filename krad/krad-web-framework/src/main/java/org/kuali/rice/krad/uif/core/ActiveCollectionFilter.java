@@ -19,30 +19,31 @@ public class ActiveCollectionFilter implements CollectionFilter {
 
     /**
      * Iterates through the collection and if the collection line type implements <code>Inactivatable</code>,
-     * inactive lines are removed from the underlying collection in the model
+     * active indexes are added to the show indexes list
      *
      * @see CollectionFilter#filter(org.kuali.rice.krad.uif.container.View, Object, org.kuali.rice.krad.uif.container.CollectionGroup)
      */
     @Override
-    public void filter(View view, Object model, CollectionGroup collectionGroup) {
+    public List<Integer> filter(View view, Object model, CollectionGroup collectionGroup) {
         // get the collection for this group from the model
         List<Object> modelCollection =
                 ObjectPropertyUtils.getPropertyValue(model, collectionGroup.getBindingInfo().getBindingPath());
 
-        // iterate through and filter out inactive records
-        List<Object> activeRecords = new ArrayList<Object>();
+        // iterate through and add only active indexes
+        List<Integer> showIndexes = new ArrayList<Integer>();
         if (modelCollection != null) {
+            int lineIndex = 0;
             for (Object line : modelCollection) {
                 if (line instanceof ImmutableInactivatable) {
                     boolean active = ((ImmutableInactivatable) line).isActive();
                     if (active) {
-                        activeRecords.add(line);
+                        showIndexes.add(lineIndex);
                     }
                 }
+                lineIndex++;
             }
         }
 
-        // update collection in model
-        ObjectPropertyUtils.setPropertyValue(model, collectionGroup.getBindingInfo().getBindingPath(), activeRecords);
+        return showIndexes;
     }
 }

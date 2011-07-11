@@ -274,8 +274,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     #collectionGroup.collectionObjectClass)">
     <property name="items">
       <list>
-        <bean parent="ActionField_ShowInactive" p:conditionalRender="!#collectionGroup.showInactive"/>
-        <bean parent="ActionField_HideInactive" p:conditionalRender="#collectionGroup.showInactive"/>
+        <bean parent="ActionField_ShowInactive" p:conditionalRender="!#collectionGroup.showInactive and #collectionGroup.showHideInactiveButton"/>
+        <bean parent="ActionField_HideInactive" p:conditionalRender="#collectionGroup.showInactive and #collectionGroup.showHideInactiveButton"/>
       </list>
     </property>
   </bean>

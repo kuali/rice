@@ -10,6 +10,9 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -24,9 +27,6 @@ import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.LabelField;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Group that holds a collection of objects and configuration for presenting the
@@ -66,6 +66,7 @@ public class CollectionGroup extends Group implements DataBinding {
     private boolean renderLineActions;
     private List<ActionField> actionFields;
 
+    private boolean showHideInactiveButton;
     private boolean showInactive;
     private CollectionFilter activeCollectionFilter;
 
@@ -184,8 +185,6 @@ public class CollectionGroup extends Group implements DataBinding {
 
         pushCollectionGroupToReference();
 
-        performCollectionFiltering(view, model);
-
         getCollectionGroupBuilder().build(view, model, this);
         
         pushCollectionGroupToReference();
@@ -220,9 +219,11 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @param model - object containing the views data, from which the collection will be pulled
      */
-    protected void performCollectionFiltering(View view, Object model) {
+    protected List<Integer> performCollectionFiltering(View view, Object model) {
         if (ImmutableInactivatable.class.isAssignableFrom(this.collectionObjectClass) && !showInactive) {
-            this.activeCollectionFilter.filter(view, model, this);
+            return this.activeCollectionFilter.filter(view, model, this);
+        }else{
+            return null;
         }
     }
 
@@ -611,6 +612,20 @@ public class CollectionGroup extends Group implements DataBinding {
     @Override
     public List<? extends Field> getItems() {
         return (List<? extends Field>) super.getItems();
+    }
+
+    /**
+     * @param showHideInactiveButton the showHideInactiveButton to set
+     */
+    public void setShowHideInactiveButton(boolean showHideInactiveButton) {
+        this.showHideInactiveButton = showHideInactiveButton;
+    }
+
+    /**
+     * @return the showHideInactiveButton
+     */
+    public boolean isShowHideInactiveButton() {
+        return showHideInactiveButton;
     }
 
 }

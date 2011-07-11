@@ -3,11 +3,8 @@ package org.kuali.rice.krad.uif.core;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
-import org.kuali.rice.krad.uif.container.MaintenanceView;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
-import org.kuali.rice.krad.util.KRADConstants;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +21,7 @@ public class MaintenanceActiveCollectionFilter implements CollectionFilter {
 
     /**
      * Iterates through the collection and if the collection line type implements <code>Inactivatable</code>
-     * and removes inactive lines that are ok to not show
+     * active indexes are added to the show indexes list
      *
      * <p>
      * In the case of a new line being added, the user is not allowed to hide the record (even if it is inactive).
@@ -35,45 +32,42 @@ public class MaintenanceActiveCollectionFilter implements CollectionFilter {
      * @see org.kuali.rice.krad.uif.core.CollectionFilter#filter(org.kuali.rice.krad.uif.container.View, Object, org.kuali.rice.krad.uif.container.CollectionGroup)
      */
     @Override
-    public void filter(View view, Object model, CollectionGroup collectionGroup) {
-        MaintenanceView maintenanceView = (MaintenanceView) view;
-        boolean isMaintenanceEdit = KRADConstants.MAINTENANCE_EDIT_ACTION.equals(maintenanceView.getMaintenanceAction());
+    public List<Integer> filter(View view, Object model, CollectionGroup collectionGroup) {
 
         // get the collection for this group from the model
         List<Object> newCollection =
                 ObjectPropertyUtils.getPropertyValue(model, collectionGroup.getBindingInfo().getBindingPath());
 
-        // if edit action, get collection from old data object
+        // Get collection from old data object
         List<Object> oldCollection = null;
-        if (isMaintenanceEdit) {
-            String oldCollectionBindingPath = StringUtils.replaceOnce(collectionGroup.getBindingInfo().getBindingPath(),
+        String oldCollectionBindingPath = null;
+        oldCollectionBindingPath = StringUtils.replaceOnce(collectionGroup.getBindingInfo().getBindingPath(),
                     collectionGroup.getBindingInfo().getBindingObjectPath(), oldBindingObjectPath);
-            oldCollection = ObjectPropertyUtils.getPropertyValue(model, oldCollectionBindingPath);
-        }
+        oldCollection = ObjectPropertyUtils.getPropertyValue(model, oldCollectionBindingPath);
 
-        // iterate through and filter out inactive records
-        List<Object> showRecords = new ArrayList<Object>();
+        // iterate through and add only active indexes
+        List<Integer> showIndexes = new ArrayList<Integer>();
         for (int i = 0; i < newCollection.size(); i++) {
             Object line = newCollection.get(i);
             if (line instanceof ImmutableInactivatable) {
                 boolean active = ((ImmutableInactivatable) line).isActive();
-
-                if (active) {
-                    showRecords.add(line);
-                } else if (isMaintenanceEdit && (oldCollection != null) && (oldCollection.size() > i)) {
+                if ((oldCollection != null) && (oldCollection.size() > i)) {
                     // if active status has changed, show record
                     ImmutableInactivatable oldLine = (ImmutableInactivatable) oldCollection.get(i);
                     if (oldLine.isActive()) {
-                        showRecords.add(line);
+                        showIndexes.add(i);
                     }
                 } else {
                     // TODO: if newly added line, show record
+                    // If only new and no old add the newline
+                    if (active) {
+                        showIndexes.add(i);
+                    }
                 }
             }
         }
 
-        // update collection in model
-        ObjectPropertyUtils.setPropertyValue(model, collectionGroup.getBindingInfo().getBindingPath(), showRecords);
+        return showIndexes;
     }
 
     /**

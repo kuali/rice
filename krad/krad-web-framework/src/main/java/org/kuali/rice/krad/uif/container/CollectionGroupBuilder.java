@@ -71,32 +71,39 @@ public class CollectionGroupBuilder implements Serializable {
 	 * @param collectionGroup
 	 *            - CollectionGroup component for the collection
 	 */
-	public void build(View view, Object model, CollectionGroup collectionGroup) {
-		// create add line
-		if (collectionGroup.isRenderAddLine() && !collectionGroup.isReadOnly()) {
-			buildAddLine(view, model, collectionGroup);
-		}
+    public void build(View view, Object model, CollectionGroup collectionGroup) {
+        // create add line
+        if (collectionGroup.isRenderAddLine() && !collectionGroup.isReadOnly()) {
+            buildAddLine(view, model, collectionGroup);
+        }
 
-		// get the collection for this group from the model
-		List<Object> modelCollection = ObjectPropertyUtils.getPropertyValue(model, ((DataBinding) collectionGroup)
-				.getBindingInfo().getBindingPath());
+        // get the collection for this group from the model
+        List<Object> modelCollection = ObjectPropertyUtils.getPropertyValue(model, ((DataBinding) collectionGroup)
+                .getBindingInfo().getBindingPath());
 
-		// for each collection row build the line fields
-		if (modelCollection != null) {
-			for (int index = 0; index < modelCollection.size(); index++) {
-				String bindingPathPrefix = collectionGroup.getBindingInfo().getBindingName() + "[" + index + "]";
-				if (StringUtils.isNotBlank(collectionGroup.getBindingInfo().getBindByNamePrefix())) {
-					bindingPathPrefix = collectionGroup.getBindingInfo().getBindByNamePrefix() + "."
-							+ bindingPathPrefix;
-				}
+        // filter inactive model
+        List<Integer> showIndexes = collectionGroup.performCollectionFiltering(view, model);
+        
+        // for each collection row build the line fields
+        if (modelCollection != null) {
+            for (int index = 0; index < modelCollection.size(); index++) {
+                
+                // Display only records that passed filtering
+                if (showIndexes == null || showIndexes.contains(index)) {
+                    String bindingPathPrefix = collectionGroup.getBindingInfo().getBindingName() + "[" + index + "]";
+                    if (StringUtils.isNotBlank(collectionGroup.getBindingInfo().getBindByNamePrefix())) {
+                        bindingPathPrefix = collectionGroup.getBindingInfo().getBindByNamePrefix() + "."
+                                + bindingPathPrefix;
+                    }
 
-				Object currentLine = modelCollection.get(index);
+                    Object currentLine = modelCollection.get(index);
 
-				List<ActionField> actions = getLineActions(view, model, collectionGroup, currentLine, index);
-				buildLine(view, model, collectionGroup, bindingPathPrefix, actions, false, currentLine, index);
-			}
-		}
-	}
+                    List<ActionField> actions = getLineActions(view, model, collectionGroup, currentLine, index);
+                    buildLine(view, model, collectionGroup, bindingPathPrefix, actions, false, currentLine, index);
+                }
+            }
+        }
+    }
 
 	/**
 	 * Builds the fields for holding the collection add line and if necessary

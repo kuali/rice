@@ -333,8 +333,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         p:conditionalRender="!#view.suppressActions and #view.showMaintenanceLinks and #ViewHelper.allowsMaintenanceNewOrCopyAction()" />
 
   <bean id="ActionField_ShowInactive" parent="ActionField_SmallSecondary" p:methodToCall="toggleInactiveRecordDisplay"
-        p:actionLabel="show inactive" p:clientSideJs="toggleInactiveRecordDisplay('{@#component.context['collectionGroup'].id}', true);"/>
+        p:actionLabel="show inactive" p:clientSideJs="toggleInactiveRecordDisplay('@{#component.context['collectionGroup'].id}', true);"/>
 
   <bean id="ActionField_HideInactive" parent="ActionField_SmallSecondary" p:methodToCall="toggleInactiveRecordDisplay"
-        p:actionLabel="hide inactive" p:clientSideJs="toggleInactiveRecordDisplay('{@#component.context['collectionGroup'].id}', false);"/>
+        p:actionLabel="hide inactive" p:clientSideJs="toggleInactiveRecordDisplay('@{#component.context['collectionGroup'].id}', false);"/>
 </beans>

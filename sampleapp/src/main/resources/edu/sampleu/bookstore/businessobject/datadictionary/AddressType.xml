@@ -25,8 +25,8 @@
     <property name="label" value="Address Type"/>
     <property name="shortLabel" value="Type"/>
     <property name="maxLength" value="40"/>
-    <property name="validationPattern">
-      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="false"/>
+    <property name="validCharactersConstraint">
+      <bean parent="AnyCharacterPatternConstraint" p:allowWhitespace="false"/>
     </property>
     <property name="required" value="true"/>
     <property name="controlField">
@@ -42,8 +42,8 @@
     <property name="label" value="Address Description"/>
     <property name="shortLabel" value="Description"/>
     <property name="maxLength" value="100"/>
-    <property name="validationPattern">
-      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
+    <property name="validCharactersConstraint">
+      <bean parent="AnyCharacterPatternConstraint" p:allowWhitespace="true"/>
     </property>
     <property name="required" value="true"/>
     <property name="controlField">
@@ -58,8 +58,8 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="active"/>
     <property name="maxLength" value="1"/>
-    <property name="validationPattern">
-      <bean parent="AnyCharacterValidationPattern"/>
+    <property name="validCharactersConstraint">
+      <bean parent="AnyCharacterPatternConstraint"/>
     </property>
     <property name="controlField">
       <bean parent="CheckboxControl"/>

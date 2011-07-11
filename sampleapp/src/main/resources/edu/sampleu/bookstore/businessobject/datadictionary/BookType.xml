@@ -34,8 +34,8 @@
     <property name="controlField">
       <bean parent="TextControl" p:size="40"/>
     </property>
-    <property name="validationPattern">
-      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="false"/>
+    <property name="validCharactersConstraint">
+      <bean parent="AnyCharacterPatternConstraint" p:allowWhitespace="false"/>
     </property>
     <property name="required" value="true"/>
     <property name="summary" value="Code identifying the book type."/>
@@ -48,8 +48,8 @@
     <property name="label" value="Book Type Name"/>
     <property name="shortLabel" value="Name"/>
     <property name="maxLength" value="100"/>
-    <property name="validationPattern">
-      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
+    <property name="validCharactersConstraint">
+      <bean parent="AnyCharacterPatternConstraint" p:allowWhitespace="true"/>
     </property>
     <property name="controlField">
       <bean parent="TextControl" p:size="100"/>
@@ -65,8 +65,8 @@
     <property name="label" value="Book Type Description"/>
     <property name="shortLabel" value="Description"/>
     <property name="maxLength" value="500"/>
-    <property name="validationPattern">
-      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
+    <property name="validCharactersConstraint">
+      <bean parent="AnyCharacterPatternConstraint" p:allowWhitespace="true"/>
     </property>
     <property name="controlField">
       <bean parent="TextControl" p:size="100"/>
@@ -81,8 +81,8 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="active"/>
     <property name="maxLength" value="1"/>
-    <property name="validationPattern">
-      <bean parent="AnyCharacterValidationPattern"/>
+    <property name="validCharactersConstraint">
+      <bean parent="AnyCharacterPatternConstraint"/>
     </property>
     <property name="controlField">
       <bean parent="CheckboxControl"/>

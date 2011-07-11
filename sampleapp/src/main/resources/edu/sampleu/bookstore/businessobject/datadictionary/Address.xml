@@ -18,18 +18,6 @@
         
       </list>
     </property>
-<!--     <property name="relationships"> -->
-<!--       <list> -->
-<!--         <bean parent="RelationshipDefinition"> -->
-<!--           <property name="objectAttributeName" value="addressType"/> -->
-<!--           <property name="primitiveAttributes"> -->
-<!--             <list> -->
-<!--               <bean parent="PrimitiveAttributeDefinition" p:sourceName="type" p:targetName="type"/> -->
-<!--             </list> -->
-<!--           </property> -->
-<!--         </bean> -->
-<!--       </list> -->
-<!--     </property> -->
     <property name="titleAttribute" value="addressId"/>
     <property name="primaryKeys">
       <list>
@@ -43,8 +31,8 @@
   <bean id="Address-id-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Id"/>
     <property name="maxLength" value="19"/>
-    <property name="validationPattern">
-      <bean parent="NumericValidationPattern"/>
+    <property name="validCharactersConstraint">
+      <bean parent="NumericPatternConstraint"/>
     </property>
     <property name="controlField">
        <bean parent="HiddenControl"/>
@@ -76,8 +64,8 @@
   <bean id="Address-street1-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Street 1"/>
     <property name="maxLength" value="19"/>
-    <property name="validationPattern">
-      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
+    <property name="validCharactersConstraint">
+      <bean parent="AnyCharacterPatternConstraint" p:allowWhitespace="true"/>
     </property>
     <property name="name" value="street1"/>
     <property name="label" value="Street 1"/>
@@ -89,8 +77,8 @@
   <bean id="Address-street2-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Street 2"/>
     <property name="maxLength" value="19"/>
-    <property name="validationPattern">
-      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
+    <property name="validCharactersConstraint">
+      <bean parent="AnyCharacterPatternConstraint" p:allowWhitespace="true"/>
     </property>
     <property name="name" value="street2"/>
     <property name="label" value="Street 2"/>
@@ -102,8 +90,8 @@
   <bean id="Address-city-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="City"/>
     <property name="maxLength" value="100"/>
-    <property name="validationPattern">
-      <bean parent="AnyCharacterValidationPattern"/>
+    <property name="validCharactersConstraint">
+      <bean parent="AnyCharacterPatternConstraint"/>
     </property>
     <property name="name" value="city"/>
     <property name="label" value="City"/>
@@ -115,8 +103,8 @@
   <bean id="Address-province-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Province"/>
     <property name="maxLength" value="32"/>
-    <property name="validationPattern">
-      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
+    <property name="validCharactersConstraint">
+      <bean parent="AnyCharacterPatternConstraint" p:allowWhitespace="true"/>
     </property>
     <property name="name" value="province"/>
     <property name="label" value="Province"/>
@@ -128,8 +116,8 @@
   <bean id="Address-country-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Country"/>
     <property name="maxLength" value="25"/>
-    <property name="validationPattern">
-      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
+    <property name="validCharactersConstraint">
+      <bean parent="AnyCharacterPatternConstraint" p:allowWhitespace="true"/>
     </property>
     <property name="name" value="country"/>
     <property name="label" value="Country"/>
@@ -143,8 +131,8 @@
 <!--     <property name="label" value="Address Type"/> -->
 <!--     <property name="shortLabel" value="Type"/> -->
 <!--     <property name="maxLength" value="40"/> -->
-<!--     <property name="validationPattern"> -->
-<!--       <bean parent="AnyCharacterValidationPattern"/> -->
+<!--     <property name="validCharactersConstraint"> -->
+<!--       <bean parent="AnyCharacterPatternConstraint"/> -->
 <!--     </property>      -->
 <!--     <property name="controlField"> -->
 <!--       <bean parent="TextControl" p:size="30"/> -->
@@ -156,8 +144,8 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="active"/>
     <property name="maxLength" value="1"/>
-    <property name="validationPattern">
-      <bean parent="AnyCharacterValidationPattern"/>
+    <property name="validCharactersConstraint">
+      <bean parent="AnyCharacterPatternConstraint"/>
     </property>
     <property name="controlField">
       <bean parent="CheckboxControl"/>

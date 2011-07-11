@@ -36,8 +36,8 @@
   <bean id="BookOrder-bookId-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Book Id"/>
     <property name="maxLength" value="19"/>
-    <property name="validationPattern">
-      <bean parent="NumericValidationPattern"/>
+    <property name="validCharactersConstraint">
+      <bean parent="NumericPatternConstraint"/>
     </property>
 <!--     <property name="control">-->
 <!--      <bean parent="SelectControlDefinition" p:dataObjectClass="edu.sampleu.bookstore.bo.Book" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="false" p:includeBlankRow="true" p:keyAttribute="id" p:labelAttribute="title"/>-->
@@ -58,8 +58,8 @@
   <bean id="BookOrder-quantity-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Qty"/>
     <property name="maxLength" value="19"/>
-    <property name="validationPattern">
-      <bean parent="NumericValidationPattern"/>
+    <property name="validCharactersConstraint">
+      <bean parent="NumericPatternConstraint"/>
     </property>
      <property name="controlField">
       <bean parent="TextControl" p:size="30"/>
@@ -75,8 +75,8 @@
     <property name="shortLabel" value="Unit Price"/>
     <property name="maxLength" value="10"/>
     <property name="required" value="false"/>
-    <property name="validationPattern">
-      <bean parent="FloatingPointValidationPattern" p:allowNegative="false"/>
+    <property name="validCharactersConstraint">
+      <bean parent="FloatingPointPatternConstraint" p:allowNegative="false"/>
     </property>
     <property name="control">
       <bean parent="CurrencyControlDefinition" p:formattedMaxLength="26" p:size="10"/>
@@ -95,8 +95,8 @@
     <property name="shortLabel" value="Discount"/>
     <property name="maxLength" value="10"/>
     <property name="required" value="false"/>
-    <property name="validationPattern">
-      <bean parent="FloatingPointValidationPattern" p:allowNegative="false"/>
+    <property name="validCharactersConstraint">
+      <bean parent="FloatingPointPatternConstraint" p:allowNegative="false"/>
     </property>
      <property name="controlField">
       <bean parent="TextControl"  p:size="10"/>
@@ -112,8 +112,8 @@
     <property name="shortLabel" value="Total Price"/>
     <property name="maxLength" value="10"/>
     <property name="required" value="false"/>
-    <property name="validationPattern">
-      <bean  parent="FloatingPointValidationPattern" p:allowNegative="false"/>
+    <property name="validCharactersConstraint">
+      <bean  parent="FloatingPointPatternConstraint" p:allowNegative="false"/>
     </property>
      <property name="control">
       <bean parent="CurrencyControlDefinition" p:formattedMaxLength="26" p:size="10"/>

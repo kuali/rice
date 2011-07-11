@@ -20,8 +20,8 @@
     <property name="controlField">
       <bean parent="TextControl" p:size="15"/>
     </property>
-    <property name="validationPattern">
-      <bean parent="AlphaNumericValidationPattern" />
+    <property name="validCharactersConstraint">
+      <bean parent="AlphaNumericPatternConstraint" />
     </property>
   </bean>
   <bean id="Account-authorId" parent="Author-Id">
@@ -36,8 +36,8 @@
     <property name="controlField">
       <bean parent="TextControl" p:size="50"/>
     </property>
-    <property name="validationPattern">
-      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
+    <property name="validCharactersConstraint">
+      <bean parent="AnyCharacterPatternConstraint" p:allowWhitespace="true"/>
     </property>
   </bean>
 </beans>

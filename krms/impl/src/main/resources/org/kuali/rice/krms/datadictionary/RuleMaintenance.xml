@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:p="http://www.springframework.org/schema/p"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-    
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:p="http://www.springframework.org/schema/p"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                      http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
   <bean id="RuleMaintenanceDocument" parent="MaintenanceDocumentEntry">
     <property name="businessObjectClass" value="org.kuali.rice.krms.impl.repository.RuleBo"/>
     <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl" />
@@ -16,120 +16,180 @@
       </list>
     </property>
   </bean>
-   
-  <bean id="RuleBo-MaintenanceView" parent="MaintenanceView">
-    <property name="title" value="Rule Maintenance"/>
-    <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.RuleBo"/>
-    <property name="items">
-      <list merge="true">
-		  <bean parent="GroupSection">
-			<property name="title" value="Rule Information" />
-			<property name="items">
-			  <list>
-<!--          <bean parent="MaintenanceGroupSectionGridLayout">
- -->
-			    <bean parent="GroupGridBodyOnly">
-            <property name="title" value="Rule Information"/>
-            <property name="items">
-              <list>
-               <bean parent="AttributeField" p:propertyName="id"/>
-               <bean parent="AttributeField" p:propertyName="name"/>
-               <bean parent="AttributeField" p:propertyName="namespace"/>
-               <bean parent="AttributeField" p:propertyName="description"/>
-               <bean parent="AttributeField" p:propertyName="typeId"/>
-               <bean parent="AttributeField" p:propertyName="propId"/>
-              </list>
-            </property>
-         </bean>
-        <bean parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="4">
-           <property name="title" value="Rule Attributes"/>  
-           <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.RuleAttributeBo"/>
-           <property  name="propertyName" value="attributeBos"/>
-		   <property name="layoutManager.renderSequenceField" value="false" />
-           <property name="items">
-               <list>
-                 <bean parent="AttributeField" p:propertyName="id"/>
-                 <bean parent="AttributeField" p:propertyName="attributeDefinitionId"/>
-                 <bean parent="AttributeField" p:propertyName="attributeDefinition.name"/>
-                 <bean parent="AttributeField" p:propertyName="value"/>
-                </list>
-              </property>
-           </bean>  
-           </list>
-           </property>
-           </bean>
-         
-   		  <bean parent="GroupSection">
-			<property name="title" value="Proposition" />
-			<property name="items">
-			  <list>
-		  		<bean parent="GroupGridBodyOnly">
-				  <property name="layoutManager.numberOfColumns" value="2" />
-	              <property name="items">
-              <list>
-               <bean parent="AttributeField" p:propertyName="proposition.id"/>
-               <bean parent="AttributeField" p:propertyName="proposition.description"/>
-               <bean parent="AttributeField" p:propertyName="proposition.propositionTypeCode"/>
-              </list>
-            </property>
-         </bean>
-			    <bean parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="3">
-				  <property name="title" value="Proposition Parameters" />
-				  <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.PropositionParameterBo" />
-				  <property name="propertyName" value="proposition.parameters" />
-				  <property name="layoutManager.renderSequenceField" value="false" />
-				  <property name="items">
-				    <list>
-					  <bean parent="AttributeField" p:propertyName="sequenceNumber" />
-					  <bean parent="AttributeField" p:propertyName="value" />
-					  <bean parent="AttributeField" p:propertyName="parameterType" />
-				    </list>
-				   </property>
-			    </bean>
-              </list>
-			</property>
-		  </bean>
-			    <bean parent="CollectionGroupSectionTableLayout" p:layoutManager.numberOfColumns="4">
-				  <property name="title" value="Rule Actions" />
-				  <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.ActionBo" />
-				  <property name="propertyName" value="actions" />
-				  <property name="layoutManager.renderSequenceField" value="false" />
-				  <property name="items">
-				    <list>
-					  <bean parent="AttributeField" p:propertyName="id" />
-					  <bean parent="AttributeField" p:propertyName="name" />
-					  <bean parent="AttributeField" p:propertyName="description" />
-					  <bean parent="AttributeField" p:propertyName="typeId" />
-				    </list>
-				   </property>
-			    </bean>
-          
-<!--          <bean parent="MaintenanceCollectionGroupSection">
- -->
- <!-- 
 
-         <bean parent="MaintenanceGroupSectionGridLayout">
-           <property name="title" value="Proposition Information"/>  
-             <property name="items">
-               <list>
-                 <bean parent="AttributeField" p:propertyName="proposition.id"/>
-                 <bean parent="AttributeField" p:propertyName="proposition.description"/>
-                 <bean parent="AttributeField" p:propertyName="proposition.ruleId"/>
-                 <bean parent="AttributeField" p:propertyName="proposition.typeId"/>
-                 <bean parent="AttributeField" p:propertyName="proposition.propositionTypeCode"/>
-                </list>
-              </property>   
-              <property name="layoutManager.summaryTitle" value="Proposition"/> 
-              <property name="layoutManager.summaryFields">
-                <list>
-                  <value>id</value>
-                </list>
-              </property>
-           </bean>  
---> 
-                  
-       </list>
-     </property>
-  </bean>      
-    
+  <bean id="RuleBo-MaintenanceView" parent="MaintenanceView">
+    <property name="title" value="Rule Editor" />
+    <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.RuleBo" />
+    <property name="items">
+      <list merge="false">
+        <ref bean="ruleEditorBody" />
+      </list>
+    </property>
+  </bean>
+
+  <bean id="ruleEditorBody" parent="ruleEditorBody-parent">
+    <property name="componentModifiers">
+      <list>
+      </list>
+    </property>
+    <property name="layoutManager">
+      <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL" />
+    </property>
+  </bean>
+
+  <bean id="ruleEditorBody-parent" parent="GroupGridLayout">
+    <property name="title" value="Rule Editor" />
+    <property name="layoutManager">
+      <bean parent="GridLayoutManager" p:numberOfColumns="3" />
+    </property>
+    <property name="items">
+      <list>
+        <ref bean="loadRuleGroup" />
+        <ref bean="ruleInfoSection" />
+        <ref bean="propositionSection" />
+      </list>
+    </property>
+  </bean>
+
+  <bean id="loadRuleGroup" parent="loadRuleGroup-parent" />
+  <bean id="loadRuleGroup-parent" parent="GroupSection">
+    <property name="title" value="Source" />
+    <property name="renderHeader" value="true" />
+    <property name="accordion.render" value="false" />
+    <property name="layoutManager">
+      <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL"
+        p:styleClasses="datatable display" />
+    </property>
+    <property name="items">
+      <list>
+        <bean parent="AttributeField" p:propertyName="name">
+          <property name="label" value="Load Existing Rule" />
+        </bean>
+        <bean parent="LabelField" p:labelText=" or "
+          p:requiredMessageField="" p:renderColon="false" />
+        <bean parent="ActionField" p:actionLabel="Create New Rule"
+          p:methodToCall="foo" p:styleClasses="fg-button  button-secondary1" />
+      </list>
+    </property>
+  </bean>
+
+  <bean id="ruleInfoSection" parent="ruleInfoSection-parent">
+    <!-- <property name="componentModifiers"> <list> </list> </property> 
+      <property name="layoutManager"> <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL"/> 
+      </property> -->
+  </bean>
+
+  <bean id="ruleInfoSection-parent" parent="GroupSectionGridLayout">
+    <property name="title" value="Rule Information" />
+    <property name="renderHeader" value="true" />
+    <property name="accordion.render" value="false" />
+    <property name="layoutManager">
+      <bean parent="GridLayoutManager" p:numberOfColumns="6" />
+    </property>
+    <property name="items">
+      <list>
+        <bean parent="AttributeField" p:propertyName="name" />
+        <bean parent="AttributeField" p:propertyName="namespace" />
+        <bean parent="AttributeField" p:propertyName="typeId" />
+        <bean parent="AttributeField" p:propertyName="description"
+          p:labelField.colSpan="1" p:colSpan="5" />
+      </list>
+    </property>
+  </bean>
+
+  <bean name="propositionSection" parent="propositionSection-parent" />
+  <bean name="propositionSection-parent" parent="GroupSection">
+    <property name="title" value="Proposition" />
+    <property name="accordion.render" value="false" />
+    <property name="items">
+      <list>
+        <bean parent="GroupGridLayout">
+          <property name="accordion.render" value="false" />
+          <property name="layoutManager.numberOfColumns" value="8" />
+          <property name="items">
+            <list>
+              <bean parent="AttributeField" p:propertyName="proposition.description"
+                p:colSpan="6" />
+              <bean parent="ActionField" p:actionLabel="Save"
+                p:methodToCall="foo" p:styleClasses="fg-button  button-secondary1" />
+            </list>
+          </property>
+        </bean>
+        <bean parent="CollectionGroupTableLayout"
+          p:layoutManager.numberOfColumns="3">
+          <property name="title" value="campusCode = &quot;BL&quot;" />
+          <property name="collectionObjectClass"
+            value="org.kuali.rice.krms.impl.repository.PropositionParameterBo" />
+          <property name="propertyName" value="proposition.parameters" />
+          <property name="layoutManager.renderSequenceField"
+            value="false" />
+          <property name="accordion.defaultOpen" value="false" />
+          <property name="items">
+            <list>
+              <bean parent="AttributeField" p:propertyName="sequenceNumber" />
+              <bean parent="AttributeField" p:propertyName="value" />
+              <bean parent="AttributeField" p:propertyName="parameterType" />
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <!--  This section below are pieces that are works in progress and not yet attached to the main body -->
+  
+  <bean name="ruleAttributeSection" parent="CollectionGroupTableLayout"
+    p:layoutManager.numberOfColumns="2">
+    <property name="title" value="Rule Attributes" />
+    <property name="collectionObjectClass"
+      value="org.kuali.rice.krms.impl.repository.RuleAttributeBo" />
+    <property name="propertyName" value="attributeBos" />
+    <property name="layoutManager.renderSequenceField" value="false" />
+    <property name="layoutManager.useShortLabels" value="true" />
+    <property name="layoutManager.repeatHeader" value="false" />
+    <property name="layoutManager.tableTools.disableTableSort"
+      value="true" />
+    <property name="renderAddLine" value="false" />
+    <property name="renderLineActions" value="false" />
+    <property name="accordion.render" value="false" />
+    <property name="header.render" value="false" />
+    <property name="items">
+      <list>
+        <bean parent="AttributeField" p:propertyName="attributeDefinition.name" />
+        <bean parent="AttributeField" p:propertyName="value" />
+      </list>
+    </property>
+  </bean>
+
+  <bean parent="CollectionGroupTableLayout"
+    p:layoutManager.numberOfColumns="4">
+    <property name="title" value="Rule Attributes" />
+    <property name="collectionObjectClass"
+      value="org.kuali.rice.krms.impl.repository.RuleAttributeBo" />
+    <property name="propertyName" value="attributeBos" />
+    <property name="layoutManager.renderSequenceField" value="false" />
+    <property name="items">
+      <list>
+        <bean parent="AttributeField" p:propertyName="id" />
+        <bean parent="AttributeField" p:propertyName="attributeDefinitionId" />
+        <bean parent="AttributeField" p:propertyName="attributeDefinition.name" />
+        <bean parent="AttributeField" p:propertyName="value" />
+      </list>
+    </property>
+  </bean>
+
+  <bean name="ruleActionsSection" parent="CollectionGroupSectionTableLayout"
+    p:layoutManager.numberOfColumns="4">
+    <property name="title" value="Rule Actions" />
+    <property name="collectionObjectClass"
+      value="org.kuali.rice.krms.impl.repository.ActionBo" />
+    <property name="propertyName" value="actions" />
+    <property name="layoutManager.renderSequenceField" value="false" />
+    <property name="items">
+      <list>
+        <bean parent="AttributeField" p:propertyName="name" />
+      </list>
+    </property>
+  </bean>
+
 </beans>

@@ -45,7 +45,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Rule Id"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="TextControl" p:size="20"/>
     </property>
     <property name="name" value="id"/>
     <property name="label" value="Rule Id"/>
@@ -56,10 +56,10 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Name"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="100"/>
+      <bean parent="TextControl" p:size="40" p:maxLength="100"/>
     </property>
     <property name="name" value="name"/>
-    <property name="label" value="Rule Name"/>
+    <property name="label" value="Name"/>
   </bean>  
   
   <bean id="RuleBo-namespace" parent="RuleBo-namespace-parentBean"/>
@@ -67,10 +67,10 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Namespace"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="TextControl" p:size="20" p:maxLength="40"/>
     </property>
     <property name="name" value="namespace"/>
-    <property name="label" value="Rule Namespace"/>
+    <property name="label" value="Namespace"/>
   </bean>  
   
   <bean id="RuleBo-typeId" parent="RuleBo-typeId-parentBean"/>
@@ -78,10 +78,10 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Type Id"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="TextControl" p:size="10"/>
     </property>
     <property name="name" value="typeId"/>
-    <property name="label" value="Rule Type Id"/>
+    <property name="label" value="Type Id"/>
   </bean>
     
   <bean id="RuleBo-description" parent="RuleBo-description-parentBean"/>
@@ -89,10 +89,10 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Description"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="TextAreaControl" p:rows="4" p:cols="60" />
     </property>
     <property name="name" value="description"/>
-    <property name="label" value="Rule Description"/>
+    <property name="label" value="Description"/>
   </bean>
     
   <bean id="RuleBo-propId" parent="RuleBo-propId-parentBean"/>

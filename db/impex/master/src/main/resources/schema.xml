@@ -346,11 +346,11 @@
         </index>
     </table>
     <table name="KREW_ACTN_ITM_T">
-        <column name="ACTN_ITM_ID" primaryKey="true" size="14" type="DECIMAL"/>
+        <column name="ACTN_ITM_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="PRNCPL_ID" required="true" size="40" type="VARCHAR"/>
         <column name="ASND_DT" required="true" type="DATE"/>
         <column name="RQST_CD" required="true" size="1" type="CHAR"/>
-        <column name="ACTN_RQST_ID" required="true" size="14" type="DECIMAL"/>
+        <column name="ACTN_RQST_ID" required="true" size="40" type="VARCHAR"/>
         <column name="DOC_HDR_ID" required="true" size="40" type="VARCHAR"/>
         <column name="ROLE_NM" size="2000" type="VARCHAR"/>
         <column name="DLGN_PRNCPL_ID" size="40" type="VARCHAR"/>
@@ -358,7 +358,7 @@
         <column name="DOC_TYP_LBL" required="true" size="128" type="VARCHAR"/>
         <column name="DOC_HDLR_URL" required="true" size="255" type="VARCHAR"/>
         <column name="DOC_TYP_NM" required="true" size="64" type="VARCHAR"/>
-        <column name="RSP_ID" required="true" size="14" type="DECIMAL"/>
+        <column name="RSP_ID" required="true" size="40" type="VARCHAR"/>
         <column name="DLGN_TYP" size="1" type="VARCHAR"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
         <column name="DTYPE" size="50" type="VARCHAR"/>
@@ -381,13 +381,13 @@
         </index>
     </table>
     <table name="KREW_ACTN_RQST_T">
-        <column name="ACTN_RQST_ID" primaryKey="true" size="14" type="DECIMAL"/>
-        <column name="PARNT_ID" size="14" type="DECIMAL"/>
+        <column name="ACTN_RQST_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="PARNT_ID" size="40" type="VARCHAR"/>
         <column name="ACTN_RQST_CD" required="true" size="1" type="CHAR"/>
         <column name="DOC_HDR_ID" required="true" size="40" type="VARCHAR"/>
-        <column name="RULE_ID" size="19" type="DECIMAL"/>
+        <column name="RULE_ID" size="40" type="VARCHAR"/>
         <column name="STAT_CD" required="true" size="1" type="CHAR"/>
-        <column name="RSP_ID" required="true" size="14" type="DECIMAL"/>
+        <column name="RSP_ID" required="true" size="40" type="VARCHAR"/>
         <column name="PRNCPL_ID" size="40" type="VARCHAR"/>
         <column name="ROLE_NM" size="2000" type="VARCHAR"/>
         <column name="QUAL_ROLE_NM" size="2000" type="VARCHAR"/>
@@ -396,8 +396,8 @@
         <column name="PRIO_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="RTE_TYP_NM" size="255" type="VARCHAR"/>
         <column name="RTE_LVL_NBR" required="true" size="8" type="DECIMAL"/>
-        <column name="RTE_NODE_INSTN_ID" size="19" type="DECIMAL"/>
-        <column name="ACTN_TKN_ID" size="14" type="DECIMAL"/>
+        <column name="RTE_NODE_INSTN_ID" size="40" type="VARCHAR"/>
+        <column name="ACTN_TKN_ID" size="40" type="VARCHAR"/>
         <column name="DOC_VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="CRTE_DT" required="true" type="DATE"/>
         <column name="RSP_DESC_TXT" size="200" type="VARCHAR"/>
@@ -437,7 +437,7 @@
         </index>
     </table>
     <table name="KREW_ACTN_TKN_T">
-        <column name="ACTN_TKN_ID" primaryKey="true" size="14" type="DECIMAL"/>
+        <column name="ACTN_TKN_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="DOC_HDR_ID" required="true" size="40" type="VARCHAR"/>
         <column name="PRNCPL_ID" required="true" size="40" type="VARCHAR"/>
         <column name="DLGTR_PRNCPL_ID" size="40" type="VARCHAR"/>
@@ -468,7 +468,7 @@
         </index>
     </table>
     <table name="KREW_APP_DOC_STAT_TRAN_T">
-        <column name="APP_DOC_STAT_TRAN_ID" primaryKey="true" size="19" type="DECIMAL"/>
+        <column name="APP_DOC_STAT_TRAN_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="DOC_HDR_ID" size="40" type="VARCHAR"/>
         <column name="APP_DOC_STAT_FROM" size="64" type="VARCHAR"/>
         <column name="APP_DOC_STAT_TO" size="64" type="VARCHAR"/>
@@ -492,17 +492,20 @@
         </index>
     </table>
     <table name="KREW_ATT_T">
-        <column name="ATTACHMENT_ID" primaryKey="true" size="19" type="DECIMAL"/>
-        <column name="NTE_ID" required="true" size="19" type="DECIMAL"/>
+        <column name="ATTACHMENT_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="NTE_ID" size="40" type="VARCHAR"/>
         <column name="FILE_NM" required="true" size="255" type="VARCHAR"/>
         <column name="FILE_LOC" required="true" size="255" type="VARCHAR"/>
         <column name="MIME_TYP" required="true" size="255" type="VARCHAR"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
+        <index name="KREW_ATT_TI1">
+            <index-column name="NTE_ID"/>
+        </index>
     </table>
     <table name="KREW_DLGN_RSP_T">
-        <column name="DLGN_RULE_ID" primaryKey="true" size="19" type="DECIMAL"/>
-        <column name="RSP_ID" required="true" size="19" type="DECIMAL"/>
-        <column name="DLGN_RULE_BASE_VAL_ID" required="true" size="19" type="DECIMAL"/>
+        <column name="DLGN_RULE_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="RSP_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="DLGN_RULE_BASE_VAL_ID" required="true" size="40" type="VARCHAR"/>
         <column name="DLGN_TYP" required="true" size="20" type="VARCHAR"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
@@ -515,7 +518,7 @@
         <column name="DOC_CNTNT_TXT" type="CLOB"/>
     </table>
     <table name="KREW_DOC_HDR_EXT_DT_T">
-        <column name="DOC_HDR_EXT_DT_ID" primaryKey="true" size="19" type="DECIMAL"/>
+        <column name="DOC_HDR_EXT_DT_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="DOC_HDR_ID" required="true" size="40" type="VARCHAR"/>
         <column name="KEY_CD" required="true" size="256" type="VARCHAR"/>
         <column name="VAL" type="DATE"/>
@@ -531,7 +534,7 @@
         </index>
     </table>
     <table name="KREW_DOC_HDR_EXT_FLT_T">
-        <column name="DOC_HDR_EXT_FLT_ID" primaryKey="true" size="19" type="DECIMAL"/>
+        <column name="DOC_HDR_EXT_FLT_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="DOC_HDR_ID" required="true" size="40" type="VARCHAR"/>
         <column name="KEY_CD" required="true" size="256" type="VARCHAR"/>
         <column name="VAL" scale="15" size="30" type="DECIMAL"/>
@@ -547,7 +550,7 @@
         </index>
     </table>
     <table name="KREW_DOC_HDR_EXT_LONG_T">
-        <column name="DOC_HDR_EXT_LONG_ID" primaryKey="true" size="19" type="DECIMAL"/>
+        <column name="DOC_HDR_EXT_LONG_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="DOC_HDR_ID" required="true" size="40" type="VARCHAR"/>
         <column name="KEY_CD" required="true" size="256" type="VARCHAR"/>
         <column name="VAL" size="22" type="DECIMAL"/>
@@ -563,7 +566,7 @@
         </index>
     </table>
     <table name="KREW_DOC_HDR_EXT_T">
-        <column name="DOC_HDR_EXT_ID" primaryKey="true" size="19" type="DECIMAL"/>
+        <column name="DOC_HDR_EXT_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="DOC_HDR_ID" required="true" size="40" type="VARCHAR"/>
         <column name="KEY_CD" required="true" size="256" type="VARCHAR"/>
         <column name="VAL" size="2000" type="VARCHAR"/>
@@ -637,7 +640,7 @@
         </index>
     </table>
     <table name="KREW_DOC_LNK_T">
-        <column name="DOC_LNK_ID" primaryKey="true" size="19" type="DECIMAL"/>
+        <column name="DOC_LNK_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="ORGN_DOC_ID" required="true" size="40" type="VARCHAR"/>
         <column name="DEST_DOC_ID" required="true" size="40" type="VARCHAR"/>
         <index name="KREW_DOC_LNK_TI1">
@@ -645,7 +648,7 @@
         </index>
     </table>
     <table name="KREW_DOC_NTE_T">
-        <column name="DOC_NTE_ID" primaryKey="true" size="19" type="DECIMAL"/>
+        <column name="DOC_NTE_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="DOC_HDR_ID" required="true" size="40" type="VARCHAR"/>
         <column name="AUTH_PRNCPL_ID" required="true" size="40" type="VARCHAR"/>
         <column name="CRT_DT" required="true" type="DATE"/>
@@ -668,9 +671,9 @@
         </index>
     </table>
     <table name="KREW_DOC_TYP_ATTR_T">
-        <column name="DOC_TYP_ATTRIB_ID" primaryKey="true" size="19" type="DECIMAL"/>
+        <column name="DOC_TYP_ATTRIB_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="DOC_TYP_ID" required="true" size="40" type="VARCHAR"/>
-        <column name="RULE_ATTR_ID" required="true" size="19" type="DECIMAL"/>
+        <column name="RULE_ATTR_ID" required="true" size="40" type="VARCHAR"/>
         <column default="0" name="ORD_INDX" size="4" type="DECIMAL"/>
         <index name="KREW_DOC_TYP_ATTR_TI1">
             <index-column name="DOC_TYP_ID"/>
@@ -689,7 +692,7 @@
         </unique>
     </table>
     <table name="KREW_DOC_TYP_PROC_T">
-        <column name="DOC_TYP_PROC_ID" primaryKey="true" size="19" type="DECIMAL"/>
+        <column name="DOC_TYP_PROC_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="DOC_TYP_ID" required="true" size="40" type="VARCHAR"/>
         <column name="INIT_RTE_NODE_ID" size="22" type="DECIMAL"/>
         <column name="NM" required="true" size="255" type="VARCHAR"/>
@@ -806,7 +809,7 @@
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
     </table>
     <table name="KREW_HLP_T">
-        <column name="HLP_ID" primaryKey="true" size="19" type="DECIMAL"/>
+        <column name="HLP_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="NM" required="true" size="500" type="VARCHAR"/>
         <column name="KEY_CD" required="true" size="500" type="VARCHAR"/>
         <column name="HLP_TXT" required="true" size="4000" type="VARCHAR"/>
@@ -826,11 +829,11 @@
         </index>
     </table>
     <table name="KREW_OUT_BOX_ITM_T">
-        <column name="ACTN_ITM_ID" primaryKey="true" size="14" type="DECIMAL"/>
+        <column name="ACTN_ITM_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="PRNCPL_ID" required="true" size="40" type="VARCHAR"/>
         <column name="ASND_DT" required="true" type="DATE"/>
         <column name="RQST_CD" required="true" size="1" type="CHAR"/>
-        <column name="ACTN_RQST_ID" required="true" size="14" type="DECIMAL"/>
+        <column name="ACTN_RQST_ID" required="true" size="40" type="VARCHAR"/>
         <column name="DOC_HDR_ID" required="true" size="40" type="VARCHAR"/>
         <column name="ROLE_NM" size="2000" type="VARCHAR"/>
         <column name="DLGN_PRNCPL_ID" size="40" type="VARCHAR"/>
@@ -838,7 +841,7 @@
         <column name="DOC_TYP_LBL" required="true" size="128" type="VARCHAR"/>
         <column name="DOC_HDLR_URL" required="true" size="255" type="VARCHAR"/>
         <column name="DOC_TYP_NM" required="true" size="64" type="VARCHAR"/>
-        <column name="RSP_ID" required="true" size="14" type="DECIMAL"/>
+        <column name="RSP_ID" required="true" size="40" type="VARCHAR"/>
         <column name="DLGN_TYP" size="1" type="VARCHAR"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
         <column name="GRP_ID" size="40" type="VARCHAR"/>
@@ -890,7 +893,7 @@
         <column name="RULE_ID" primaryKey="true" size="19" type="DECIMAL"/>
     </table>
     <table name="KREW_RTE_BRCH_PROTO_T">
-        <column name="RTE_BRCH_PROTO_ID" primaryKey="true" size="19" type="DECIMAL"/>
+        <column name="RTE_BRCH_PROTO_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="BRCH_NM" required="true" size="255" type="VARCHAR"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
         <index name="KREW_RTE_BRCH_PROTO_TI1">
@@ -898,8 +901,8 @@
         </index>
     </table>
     <table name="KREW_RTE_BRCH_ST_T">
-        <column name="RTE_BRCH_ST_ID" primaryKey="true" size="19" type="DECIMAL"/>
-        <column name="RTE_BRCH_ID" required="true" size="19" type="DECIMAL"/>
+        <column name="RTE_BRCH_ST_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="RTE_BRCH_ID" required="true" size="40" type="VARCHAR"/>
         <column name="KEY_CD" required="true" size="255" type="VARCHAR"/>
         <column name="VAL" size="2000" type="VARCHAR"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
@@ -916,12 +919,12 @@
         </index>
     </table>
     <table name="KREW_RTE_BRCH_T">
-        <column name="RTE_BRCH_ID" primaryKey="true" size="19" type="DECIMAL"/>
+        <column name="RTE_BRCH_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="NM" required="true" size="255" type="VARCHAR"/>
-        <column name="PARNT_ID" size="19" type="DECIMAL"/>
-        <column name="INIT_RTE_NODE_INSTN_ID" size="19" type="DECIMAL"/>
-        <column name="SPLT_RTE_NODE_INSTN_ID" size="19" type="DECIMAL"/>
-        <column name="JOIN_RTE_NODE_INSTN_ID" size="19" type="DECIMAL"/>
+        <column name="PARNT_ID" size="40" type="VARCHAR"/>
+        <column name="INIT_RTE_NODE_INSTN_ID" size="40" type="VARCHAR"/>
+        <column name="SPLT_RTE_NODE_INSTN_ID" size="40" type="VARCHAR"/>
+        <column name="JOIN_RTE_NODE_INSTN_ID" size="40" type="VARCHAR"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
         <index name="KREW_RTE_BRCH_TI1">
             <index-column name="NM"/>
@@ -940,18 +943,21 @@
         </index>
     </table>
     <table name="KREW_RTE_NODE_CFG_PARM_T">
-        <column name="RTE_NODE_CFG_PARM_ID" primaryKey="true" size="19" type="DECIMAL"/>
-        <column name="RTE_NODE_ID" required="true" size="19" type="DECIMAL"/>
+        <column name="RTE_NODE_CFG_PARM_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="RTE_NODE_ID" required="true" size="40" type="VARCHAR"/>
         <column name="KEY_CD" required="true" size="255" type="VARCHAR"/>
         <column name="VAL" size="4000" type="VARCHAR"/>
+        <foreign-key foreignTable="KREW_RTE_NODE_T" name="EN_RTE_NODE_CFG_PARM_TR1">
+            <reference foreign="RTE_NODE_ID" local="RTE_NODE_ID"/>
+        </foreign-key>
         <index name="KREW_RTE_NODE_CFG_PARM_TI1">
             <index-column name="RTE_NODE_ID"/>
         </index>
     </table>
     <table name="KREW_RTE_NODE_INSTN_LNK_T">
         <column name="FROM_RTE_NODE_INSTN_ID" primaryKey="true"
-            size="19" type="DECIMAL"/>
-        <column name="TO_RTE_NODE_INSTN_ID" primaryKey="true" size="19" type="DECIMAL"/>
+            size="40" type="VARCHAR"/>
+        <column name="TO_RTE_NODE_INSTN_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <index name="KREW_RTE_NODE_INSTN_LNK_TI1">
             <index-column name="FROM_RTE_NODE_INSTN_ID"/>
         </index>
@@ -960,8 +966,8 @@
         </index>
     </table>
     <table name="KREW_RTE_NODE_INSTN_ST_T">
-        <column name="RTE_NODE_INSTN_ST_ID" primaryKey="true" size="19" type="DECIMAL"/>
-        <column name="RTE_NODE_INSTN_ID" required="true" size="19" type="DECIMAL"/>
+        <column name="RTE_NODE_INSTN_ST_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="RTE_NODE_INSTN_ID" required="true" size="40" type="VARCHAR"/>
         <column name="KEY_CD" required="true" size="255" type="VARCHAR"/>
         <column name="VAL" size="2000" type="VARCHAR"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
@@ -978,11 +984,11 @@
         </index>
     </table>
     <table name="KREW_RTE_NODE_INSTN_T">
-        <column name="RTE_NODE_INSTN_ID" primaryKey="true" size="19" type="DECIMAL"/>
+        <column name="RTE_NODE_INSTN_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="DOC_HDR_ID" required="true" size="40" type="VARCHAR"/>
-        <column name="RTE_NODE_ID" required="true" size="19" type="DECIMAL"/>
-        <column name="BRCH_ID" size="19" type="DECIMAL"/>
-        <column name="PROC_RTE_NODE_INSTN_ID" size="19" type="DECIMAL"/>
+        <column name="RTE_NODE_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="BRCH_ID" size="40" type="VARCHAR"/>
+        <column name="PROC_RTE_NODE_INSTN_ID" size="40" type="VARCHAR"/>
         <column default="0" name="ACTV_IND" required="true" size="1" type="DECIMAL"/>
         <column default="0" name="CMPLT_IND" required="true" size="1" type="DECIMAL"/>
         <column default="0" name="INIT_IND" required="true" size="1" type="DECIMAL"/>
@@ -1003,8 +1009,8 @@
         </index>
     </table>
     <table name="KREW_RTE_NODE_LNK_T">
-        <column name="FROM_RTE_NODE_ID" primaryKey="true" size="19" type="DECIMAL"/>
-        <column name="TO_RTE_NODE_ID" primaryKey="true" size="19" type="DECIMAL"/>
+        <column name="FROM_RTE_NODE_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="TO_RTE_NODE_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <index name="KREW_RTE_NODE_LNK_TI1">
             <index-column name="FROM_RTE_NODE_ID"/>
         </index>
@@ -1013,8 +1019,8 @@
         </index>
     </table>
     <table name="KREW_RTE_NODE_T">
-        <column name="RTE_NODE_ID" primaryKey="true" size="19" type="DECIMAL"/>
-        <column name="DOC_TYP_ID" size="40" type="VARCHAR"/>
+        <column name="RTE_NODE_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="DOC_TYP_ID" size="19" type="DECIMAL"/>
         <column name="NM" required="true" size="255" type="VARCHAR"/>
         <column name="TYP" required="true" size="255" type="VARCHAR"/>
         <column name="RTE_MTHD_NM" size="255" type="VARCHAR"/>
@@ -1022,7 +1028,7 @@
         <column name="FNL_APRVR_IND" size="1" type="DECIMAL"/>
         <column name="MNDTRY_RTE_IND" size="1" type="DECIMAL"/>
         <column name="ACTVN_TYP" size="250" type="VARCHAR"/>
-        <column name="BRCH_PROTO_ID" size="19" type="DECIMAL"/>
+        <column name="BRCH_PROTO_ID" size="40" type="VARCHAR"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
         <column name="CONTENT_FRAGMENT" size="4000" type="VARCHAR"/>
         <column name="GRP_ID" size="40" type="VARCHAR"/>
@@ -1043,7 +1049,7 @@
         </index>
     </table>
     <table name="KREW_RULE_ATTR_T">
-        <column name="RULE_ATTR_ID" primaryKey="true" size="19" type="DECIMAL"/>
+        <column name="RULE_ATTR_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="NM" required="true" size="255" type="VARCHAR"/>
         <column name="LBL" required="true" size="2000" type="VARCHAR"/>
         <column name="RULE_ATTR_TYP_CD" required="true" size="2000" type="VARCHAR"/>
@@ -1058,7 +1064,7 @@
         </unique>
     </table>
     <table name="KREW_RULE_EXPR_T">
-        <column name="RULE_EXPR_ID" primaryKey="true" size="19" type="DECIMAL"/>
+        <column name="RULE_EXPR_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="TYP" required="true" size="256" type="VARCHAR"/>
         <column name="RULE_EXPR" size="4000" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
@@ -1068,17 +1074,17 @@
         </unique>
     </table>
     <table name="KREW_RULE_EXT_T">
-        <column name="RULE_EXT_ID" primaryKey="true" size="19" type="DECIMAL"/>
-        <column name="RULE_TMPL_ATTR_ID" required="true" size="19" type="DECIMAL"/>
-        <column name="RULE_ID" required="true" size="19" type="DECIMAL"/>
+        <column name="RULE_EXT_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="RULE_TMPL_ATTR_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="RULE_ID" required="true" size="40" type="VARCHAR"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
         <index name="KREW_RULE_EXT_T1">
             <index-column name="RULE_ID"/>
         </index>
     </table>
     <table name="KREW_RULE_EXT_VAL_T">
-        <column name="RULE_EXT_VAL_ID" primaryKey="true" size="19" type="DECIMAL"/>
-        <column name="RULE_EXT_ID" required="true" size="19" type="DECIMAL"/>
+        <column name="RULE_EXT_VAL_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="RULE_EXT_ID" required="true" size="40" type="VARCHAR"/>
         <column name="VAL" required="true" size="2000" type="VARCHAR"/>
         <column name="KEY_CD" required="true" size="2000" type="VARCHAR"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
@@ -1091,9 +1097,9 @@
         </index>
     </table>
     <table name="KREW_RULE_RSP_T">
-        <column name="RULE_RSP_ID" primaryKey="true" size="19" type="DECIMAL"/>
-        <column name="RSP_ID" required="true" size="19" type="DECIMAL"/>
-        <column name="RULE_ID" required="true" size="19" type="DECIMAL"/>
+        <column name="RULE_RSP_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="RSP_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="RULE_ID" required="true" size="40" type="VARCHAR"/>
         <column name="PRIO" size="5" type="DECIMAL"/>
         <column name="ACTN_RQST_CD" size="2000" type="VARCHAR"/>
         <column name="NM" size="200" type="VARCHAR"/>
@@ -1109,10 +1115,10 @@
         </index>
     </table>
     <table name="KREW_RULE_T">
-        <column name="RULE_ID" primaryKey="true" size="19" type="DECIMAL"/>
+        <column name="RULE_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="NM" size="256" type="VARCHAR"/>
-        <column name="RULE_TMPL_ID" size="19" type="DECIMAL"/>
-        <column name="RULE_EXPR_ID" size="19" type="DECIMAL"/>
+        <column name="RULE_TMPL_ID" size="40" type="VARCHAR"/>
+        <column name="RULE_EXPR_ID" size="40" type="VARCHAR"/>
         <column name="ACTV_IND" required="true" size="1" type="DECIMAL"/>
         <column name="RULE_BASE_VAL_DESC" size="2000" type="VARCHAR"/>
         <column name="FRC_ACTN" required="true" size="1" type="DECIMAL"/>
@@ -1125,7 +1131,7 @@
         <column default="0" name="CUR_IND" size="1" type="DECIMAL"/>
         <column default="0" name="RULE_VER_NBR" size="8" type="DECIMAL"/>
         <column name="DLGN_IND" size="1" type="DECIMAL"/>
-        <column name="PREV_RULE_VER_NBR" size="19" type="DECIMAL"/>
+        <column name="PREV_RULE_VER_NBR" size="40" type="VARCHAR"/>
         <column name="ACTVN_DT" type="DATE"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
@@ -1137,9 +1143,9 @@
         </unique>
     </table>
     <table name="KREW_RULE_TMPL_ATTR_T">
-        <column name="RULE_TMPL_ATTR_ID" primaryKey="true" size="19" type="DECIMAL"/>
-        <column name="RULE_TMPL_ID" required="true" size="19" type="DECIMAL"/>
-        <column name="RULE_ATTR_ID" required="true" size="19" type="DECIMAL"/>
+        <column name="RULE_TMPL_ATTR_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="RULE_TMPL_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="RULE_ATTR_ID" required="true" size="40" type="VARCHAR"/>
         <column name="REQ_IND" required="true" size="1" type="DECIMAL"/>
         <column name="ACTV_IND" required="true" size="1" type="DECIMAL"/>
         <column name="DSPL_ORD" required="true" size="5" type="DECIMAL"/>
@@ -1157,17 +1163,17 @@
         </index>
     </table>
     <table name="KREW_RULE_TMPL_OPTN_T">
-        <column name="RULE_TMPL_OPTN_ID" primaryKey="true" size="19" type="DECIMAL"/>
-        <column name="RULE_TMPL_ID" size="19" type="DECIMAL"/>
+        <column name="RULE_TMPL_OPTN_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="RULE_TMPL_ID" size="40" type="VARCHAR"/>
         <column name="KEY_CD" size="250" type="VARCHAR"/>
         <column name="VAL" size="2000" type="VARCHAR"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
     </table>
     <table name="KREW_RULE_TMPL_T">
-        <column name="RULE_TMPL_ID" primaryKey="true" size="19" type="DECIMAL"/>
+        <column name="RULE_TMPL_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="NM" required="true" size="250" type="VARCHAR"/>
         <column name="RULE_TMPL_DESC" size="2000" type="VARCHAR"/>
-        <column name="DLGN_RULE_TMPL_ID" size="19" type="DECIMAL"/>
+        <column name="DLGN_RULE_TMPL_ID" size="40" type="VARCHAR"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <unique name="KREW_RULE_TMPL_TC0">
@@ -2753,11 +2759,11 @@
     <table name="KRMS_CTGRY_T">
         <column name="CTGRY_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="NM" required="true" size="255" type="VARCHAR"/>
-        <column name="NMSP_CD" required="true" size="40" type="VARCHAR"/>
+        <column name="NMSPC_CD" required="true" size="40" type="VARCHAR"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
         <unique name="KRMS_CTGRY_TC0">
             <unique-column name="NM"/>
-            <unique-column name="NMSP_CD"/>
+            <unique-column name="NMSPC_CD"/>
         </unique>
     </table>
     <table name="KRMS_FUNC_CTGRY_T">

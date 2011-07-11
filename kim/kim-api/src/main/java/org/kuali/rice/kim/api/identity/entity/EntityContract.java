@@ -18,7 +18,7 @@ package org.kuali.rice.kim.api.identity.entity;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
-import org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationContract;
 import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenshipContract;
 import org.kuali.rice.kim.api.identity.employment.EntityEmploymentContract;
@@ -41,7 +41,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface EntityContract extends Versioned, GloballyUnique, ImmutableInactivatable, Identifiable {
+public interface EntityContract extends Versioned, GloballyUnique, Inactivatable, Identifiable {
 
 	/**
 	 * Gets this {@link EntityContract}'s identity types

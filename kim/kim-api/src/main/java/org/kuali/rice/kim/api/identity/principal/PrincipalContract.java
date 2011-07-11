@@ -3,9 +3,9 @@ package org.kuali.rice.kim.api.identity.principal;
 
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Versioned;
-import org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
-public interface PrincipalContract extends ImmutableInactivatable, Versioned, GloballyUnique {
+public interface PrincipalContract extends Inactivatable, Versioned, GloballyUnique {
    /**
      * Gets this {@link PrincipalContract}'s id.
      * @return the id for this {@link PrincipalContract}, or null if none has been assigned.

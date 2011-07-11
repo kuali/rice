@@ -170,7 +170,7 @@ public final class Responsibility implements ResponsibilityContract, ModelObject
 	}
 
 	/**
-	 * @see org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable#isActive()
+	 * @see org.kuali.rice.core.api.mo.common.active.Inactivatable#isActive()
 	 */
 	@Override
 	public boolean isActive() {

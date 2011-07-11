@@ -19,14 +19,14 @@ package org.kuali.rice.kim.api.type;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
-import org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.kim.api.common.attribute.KimAttributeContract;
 
 /**
  * This is the contract for a KimTypeAttribute.  A KimTypeAttribute
  * associates a kim type with a kim attribute.
  */
-public interface KimTypeAttributeContract extends Versioned, GloballyUnique, Identifiable, ImmutableInactivatable {
+public interface KimTypeAttributeContract extends Versioned, GloballyUnique, Identifiable, Inactivatable {
 
     /**
      * The alpha and/or numeric code used to choose an order for displaying KimTypeAttributes.  This can be null or blank.

@@ -2,11 +2,11 @@ package org.kuali.rice.krms.api.repository.type;
 
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
-import org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
 import java.util.List;
 
-public interface KrmsTypeDefinitionContract extends Identifiable, ImmutableInactivatable, Versioned {
+public interface KrmsTypeDefinitionContract extends Identifiable, Inactivatable, Versioned {
 
 	/**
 	 * This is the name for the KRMSType 

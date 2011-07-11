@@ -1,6 +1,6 @@
 package org.kuali.rice.krad.uif.core;
 
-import org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -34,8 +34,8 @@ public class ActiveCollectionFilter implements CollectionFilter {
         if (modelCollection != null) {
             int lineIndex = 0;
             for (Object line : modelCollection) {
-                if (line instanceof ImmutableInactivatable) {
-                    boolean active = ((ImmutableInactivatable) line).isActive();
+                if (line instanceof Inactivatable) {
+                    boolean active = ((Inactivatable) line).isActive();
                     if (active) {
                         showIndexes.add(lineIndex);
                     }

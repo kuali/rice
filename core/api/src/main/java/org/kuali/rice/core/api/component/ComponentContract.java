@@ -19,13 +19,13 @@ package org.kuali.rice.core.api.component;
 import org.kuali.rice.core.api.mo.common.Coded;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Versioned;
-import org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
 /**
  * This is the contract for a Component.  This represents functional/logical piece
  * within a rice application or rice ecosystem.
  */
-public interface ComponentContract extends Versioned, GloballyUnique, ImmutableInactivatable, Coded {
+public interface ComponentContract extends Versioned, GloballyUnique, Inactivatable, Coded {
 
     /**
      * This is the name value for the component.  It cannot be null or a blank string.

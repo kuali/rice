@@ -1,11 +1,11 @@
 package org.kuali.rice.krms.impl.repository
 
-import org.kuali.rice.krad.bo.Inactivatable
+import org.kuali.rice.krad.bo.MutableInactivatable
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.krms.api.repository.function.FunctionDefinition
 import org.kuali.rice.krms.api.repository.function.FunctionDefinitionContract
 
-public class FunctionBo extends PersistableBusinessObjectBase implements Inactivatable, FunctionDefinitionContract {
+public class FunctionBo extends PersistableBusinessObjectBase implements MutableInactivatable, FunctionDefinitionContract {
 
 	def String id
 	def String namespace

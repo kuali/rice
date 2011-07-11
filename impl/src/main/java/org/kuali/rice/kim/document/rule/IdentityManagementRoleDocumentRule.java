@@ -20,6 +20,7 @@ import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
+import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -40,6 +41,7 @@ import org.kuali.rice.kim.impl.responsibility.AddResponsibilityRule;
 import org.kuali.rice.kim.impl.responsibility.KimDocumentResponsibilityRule;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
+import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.impl.role.RoleServiceBase;
 import org.kuali.rice.kim.impl.type.KimTypeLookupableHelperServiceImpl;
 import org.kuali.rice.kim.rule.event.ui.AddDelegationEvent;
@@ -166,13 +168,10 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 
     @SuppressWarnings("unchecked")
 	protected boolean validDuplicateRoleName(IdentityManagementRoleDocument roleDoc){
-    	Map<String, String> criteria = new HashMap<String, String>();
-    	criteria.put("roleName", roleDoc.getRoleName());
-    	criteria.put("namespaceCode", roleDoc.getRoleNamespace());
-    	List<RoleEbo> roleEboList = (List<RoleEbo>) getBusinessObjectService().findMatching(RoleEbo.class, criteria);
+        Role role = KimApiServiceLocator.getRoleService().getRoleByName(roleDoc.getRoleNamespace(), roleDoc.getRoleName());
     	boolean rulePassed = true;
-    	if(roleEboList!=null && roleEboList.size()>0){
-    		if(roleEboList.size()==1 && roleEboList.get(0).getId().equals(roleDoc.getRoleId())) {
+    	if(role!=null){
+    		if(role.getId().equals(roleDoc.getRoleId())) {
                 rulePassed = true;
             }
     		else{

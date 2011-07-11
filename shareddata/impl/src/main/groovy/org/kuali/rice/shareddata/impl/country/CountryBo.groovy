@@ -26,14 +26,14 @@ import javax.persistence.Id
 import javax.persistence.Table
 import org.hibernate.annotations.Type
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject
-import org.kuali.rice.krad.bo.Inactivatable
+import org.kuali.rice.krad.bo.MutableInactivatable
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.shareddata.api.country.Country
 import org.kuali.rice.shareddata.api.country.CountryContract
 
 @Entity
 @Table(name="KRLC_CNTRY_T")
-class CountryBo extends PersistableBusinessObjectBase implements Inactivatable, CountryContract, ExternalizableBusinessObject {
+class CountryBo extends PersistableBusinessObjectBase implements MutableInactivatable, CountryContract, ExternalizableBusinessObject {
 
   @Id
   @Column(name = "POSTAL_CNTRY_CD")

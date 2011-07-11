@@ -30,7 +30,7 @@ import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.PropertyRenderingConfigElement;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kns.web.ui.Section;
-import org.kuali.rice.krad.bo.Inactivatable;
+import org.kuali.rice.krad.bo.MutableInactivatable;
 import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.CurrencyControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.KualiUserControlDefinition;
@@ -53,7 +53,6 @@ import org.kuali.rice.krad.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.krad.keyvalues.IndicatorValuesFinder;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.service.BusinessObjectDictionaryService;
 import org.kuali.rice.krad.service.DataDictionaryService;
@@ -1274,7 +1273,7 @@ public final class FieldUtils {
             }
 
             // if the attrib name is "active", and BO is Inactivatable, then set the default value to Y
-            if (attributeName.equals(KRADPropertyConstants.ACTIVE) && Inactivatable.class.isAssignableFrom(businessObjectClass)) {
+            if (attributeName.equals(KRADPropertyConstants.ACTIVE) && MutableInactivatable.class.isAssignableFrom(businessObjectClass)) {
             	field.setPropertyValue(KRADConstants.YES_INDICATOR_VALUE);
             	field.setDefaultValue(KRADConstants.YES_INDICATOR_VALUE);
             }

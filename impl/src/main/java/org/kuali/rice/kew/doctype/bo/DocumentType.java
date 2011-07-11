@@ -60,7 +60,7 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.bo.Inactivatable;
+import org.kuali.rice.krad.bo.MutableInactivatable;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.util.ObjectUtils;
 
@@ -104,7 +104,7 @@ import java.util.Set;
                 "WHERE drhv.initiatorWorkflowId = :initiatorWorkflowId AND drhv.documentTypeId = dt.documentTypeId AND dt.active = 1 AND dt.currentInd = 1 " +
                 "ORDER BY UPPER(dt.label)")
 })
-public class DocumentType extends PersistableBusinessObjectBase implements Inactivatable, DocumentTypeEBO, DocumentTypeContract {
+public class DocumentType extends PersistableBusinessObjectBase implements MutableInactivatable, DocumentTypeEBO, DocumentTypeContract {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentType.class);
 
     private static final long serialVersionUID = 1312830153583125069L;
@@ -1595,7 +1595,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     }
 
     /**
-     * @see org.kuali.rice.krad.bo.Inactivatable#isActive()
+     * @see org.kuali.rice.krad.bo.MutableInactivatable#isActive()
      */
     public boolean isActive() {
         boolean bRet = false;
@@ -1608,7 +1608,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     }
 
     /**
-     * @see org.kuali.rice.krad.bo.Inactivatable#setActive(boolean)
+     * @see org.kuali.rice.krad.bo.MutableInactivatable#setActive(boolean)
      */
     public void setActive(boolean active) {
         this.active = Boolean.valueOf(active);

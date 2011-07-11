@@ -145,7 +145,7 @@
             <bean class="org.kuali.rice.kew.responsibility.ResponsibilityChangeProcessor" />
           </property>
           <property name="localServiceName" value="ResponsibilityChangeService" />
-          <property name="serviceNameSpaceURI" value="" />
+          <property name="serviceNameSpaceURI" value="KEW" />
           <property name="priority" value="10" />
           <property name="retryAttempts" value="1" />
           <property name="messageExceptionHandler" value="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler" />

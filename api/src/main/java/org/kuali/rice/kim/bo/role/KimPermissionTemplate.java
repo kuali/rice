@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.bo.role;
 
-import org.kuali.rice.krad.bo.Inactivatable;
+import org.kuali.rice.krad.bo.MutableInactivatable;
 
 
 /**
@@ -26,7 +26,7 @@ import org.kuali.rice.krad.bo.Inactivatable;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface KimPermissionTemplate extends Inactivatable {
+public interface KimPermissionTemplate extends MutableInactivatable {
 
 	String getPermissionTemplateId();
 	

@@ -2021,10 +2021,12 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		} else {
 			roleBo.setActive(identityManagementRoleDocument.isActive());
 			roleBo.setVersionNumber(origRole.getVersionNumber());
-			origRolePermissions = new ArrayList<RolePermissionBo>(getBusinessObjectService().findMatching(RolePermissionBo.class, criteria));
-			origRoleResponsibilities = (List<RoleResponsibilityBo>)getBusinessObjectService().findMatching(RoleResponsibilityBo.class, criteria);
-			origRoleMembers = (List<RoleMemberBo>)getBusinessObjectService().findMatching(RoleMemberBo.class, criteria);
-			origRoleDelegations = (List<DelegateBo>)getBusinessObjectService().findMatching(DelegateBo.class, criteria);
+            Map<String, String> altCriteria = new HashMap<String, String>();
+            criteria.put(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID, roleId);
+			origRolePermissions = new ArrayList<RolePermissionBo>(getBusinessObjectService().findMatching(RolePermissionBo.class, altCriteria));
+            origRoleResponsibilities = (List<RoleResponsibilityBo>)getBusinessObjectService().findMatching(RoleResponsibilityBo.class, altCriteria);
+			origRoleMembers = (List<RoleMemberBo>)getBusinessObjectService().findMatching(RoleMemberBo.class, altCriteria);
+			origRoleDelegations = (List<DelegateBo>)getBusinessObjectService().findMatching(DelegateBo.class, altCriteria);
 		}
 
 		if( getKimTypeInfoService().getKimType(identityManagementRoleDocument.getRoleTypeId()) == null ) {

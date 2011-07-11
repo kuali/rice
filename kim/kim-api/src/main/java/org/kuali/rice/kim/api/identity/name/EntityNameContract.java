@@ -4,10 +4,10 @@ import org.kuali.rice.core.api.mo.common.Defaultable;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
-import org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.kim.api.identity.TypeContract;
 
-public interface EntityNameContract extends Versioned, GloballyUnique, Defaultable, ImmutableInactivatable, Identifiable {
+public interface EntityNameContract extends Versioned, GloballyUnique, Defaultable, Inactivatable, Identifiable {
     /**
      * Gets this {@link Entity}'s id.
      * @return the id for this {@link EntityNameContract}, or null if none has been assigned.

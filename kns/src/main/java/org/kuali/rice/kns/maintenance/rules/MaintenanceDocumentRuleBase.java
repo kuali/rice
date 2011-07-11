@@ -32,7 +32,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.GlobalBusinessObject;
-import org.kuali.rice.krad.bo.Inactivatable;
+import org.kuali.rice.krad.bo.MutableInactivatable;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.krad.document.Document;
@@ -243,9 +243,9 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         if (maintenanceDocument.isEdit()) {
             Class boClass = maintenanceDocument.getNewMaintainableObject().getDataObjectClass();
             // we can only be inactivating a business object if we're editing it
-            if (boClass != null && Inactivatable.class.isAssignableFrom(boClass)) {
-                Inactivatable oldInactivateableBO = (Inactivatable) oldBo;
-                Inactivatable newInactivateableBO = (Inactivatable) newBo;
+            if (boClass != null && MutableInactivatable.class.isAssignableFrom(boClass)) {
+                MutableInactivatable oldInactivateableBO = (MutableInactivatable) oldBo;
+                MutableInactivatable newInactivateableBO = (MutableInactivatable) newBo;
 
                 return oldInactivateableBO.isActive() && !newInactivateableBO.isActive();
             }

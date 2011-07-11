@@ -2,9 +2,9 @@ package org.kuali.rice.krms.api.repository.type;
 
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
-import org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
-public interface KrmsAttributeDefinitionContract extends Identifiable, ImmutableInactivatable, Versioned {
+public interface KrmsAttributeDefinitionContract extends Identifiable, Inactivatable, Versioned {
 
 	/**
 	 * This is the name for the KrmsAttributeDefinition

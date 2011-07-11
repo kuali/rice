@@ -2,7 +2,7 @@ package org.kuali.rice.kim.api.identity;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.core.api.mo.common.Defaultable;
-import org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
 import java.util.Collection;
 
@@ -12,7 +12,7 @@ public class EntityUtils {
         throw new UnsupportedOperationException("do not call.");
     }
 
-    public static <T extends Defaultable & ImmutableInactivatable> T getDefaultItem( Collection<T> collection ) {
+    public static <T extends Defaultable & Inactivatable> T getDefaultItem( Collection<T> collection ) {
 		// find the default entry
         if (CollectionUtils.isEmpty(collection)) {
             return null;

@@ -24,13 +24,13 @@ import javax.persistence.JoinColumn
 import javax.persistence.OneToOne
 import javax.persistence.Table
 import org.hibernate.annotations.Type
-import org.kuali.rice.krad.bo.Inactivatable
+import org.kuali.rice.krad.bo.MutableInactivatable
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.shareddata.api.campus.CampusContract
 
 @Entity
 @Table(name="KRLC_CMP_T")
-public class CampusBo extends PersistableBusinessObjectBase implements Inactivatable, CampusContract {
+public class CampusBo extends PersistableBusinessObjectBase implements MutableInactivatable, CampusContract {
 	private static final long serialVersionUID = 787567094298971223L;
 	@Id
 	@Column(name="CAMPUS_CD")

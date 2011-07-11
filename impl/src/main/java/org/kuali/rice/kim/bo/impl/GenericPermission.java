@@ -133,14 +133,14 @@ public class GenericPermission extends PersistableBusinessObjectBase {
 	}
 	
 	/**
-	 * @see org.kuali.rice.krad.bo.Inactivatable#isActive()
+	 * @see org.kuali.rice.krad.bo.MutableInactivatable#isActive()
 	 */
 	public boolean isActive() {
 		return active;
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.bo.Inactivatable#setActive(boolean)
+	 * @see org.kuali.rice.krad.bo.MutableInactivatable#setActive(boolean)
 	 */
 	public void setActive(boolean active) {
 		this.active = active;

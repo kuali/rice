@@ -19,10 +19,10 @@ package org.kuali.rice.core.framework.component
 import org.kuali.rice.core.api.component.Component
 import org.kuali.rice.core.api.component.ComponentContract
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject
-import org.kuali.rice.krad.bo.Inactivatable
+import org.kuali.rice.krad.bo.MutableInactivatable
 
 //@ToString
-class ComponentEbo implements ComponentContract, Inactivatable, ExternalizableBusinessObject {
+class ComponentEbo implements ComponentContract, MutableInactivatable, ExternalizableBusinessObject {
 
     private static final long serialVersionUID = 1L;
 

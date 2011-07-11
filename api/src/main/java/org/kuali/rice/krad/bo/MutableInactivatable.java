@@ -15,15 +15,13 @@
  */
 package org.kuali.rice.krad.bo;
 
-import org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable;
-
 /**
  * This interface is used to tag business objects as inactivateable, so that the framework will automatically handle special
  * processing related to active indicator, e.g. default active indicator to active on new or copy, have a show/hide inactive and
  * hide inactive by default for collections in maintenance documents, display active indicator in the search criteria and result set
  * for lookups and default the search criteria field to active
  */
-public interface Inactivatable extends ImmutableInactivatable {
+public interface MutableInactivatable extends org.kuali.rice.core.api.mo.common.active.Inactivatable {
 
     /**
      * Sets the record to active or inactive.

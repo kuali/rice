@@ -1,11 +1,11 @@
 package org.kuali.rice.krms.impl.repository
 
-import org.kuali.rice.krad.bo.Inactivatable
+import org.kuali.rice.krad.bo.MutableInactivatable
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinitionContract
 
-public class KrmsAttributeDefinitionBo extends PersistableBusinessObjectBase implements KrmsAttributeDefinitionContract, Inactivatable{
+public class KrmsAttributeDefinitionBo extends PersistableBusinessObjectBase implements KrmsAttributeDefinitionContract, MutableInactivatable{
 
 	def String id
 	def String name

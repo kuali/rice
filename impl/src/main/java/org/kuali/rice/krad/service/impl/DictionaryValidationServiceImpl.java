@@ -32,7 +32,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.Inactivatable;
+import org.kuali.rice.krad.bo.MutableInactivatable;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.CollectionDefinition;
@@ -475,7 +475,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         if (referenceBo == null) {
             return false;
         }
-        if (!(referenceBo instanceof Inactivatable) || ((Inactivatable) referenceBo).isActive()) {
+        if (!(referenceBo instanceof MutableInactivatable) || ((MutableInactivatable) referenceBo).isActive()) {
             return true;
         }
 
@@ -622,7 +622,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             if (exists) {
 
                 // do the active test, if appropriate
-                if (!(bo instanceof Inactivatable) || ((Inactivatable) bo).isActive()) {
+                if (!(bo instanceof MutableInactivatable) || ((MutableInactivatable) bo).isActive()) {
                     active = validateReferenceIsActive(bo, referenceName);
                     if (!active) {
                         GlobalVariables.getMessageMap()

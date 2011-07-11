@@ -18,13 +18,13 @@ package org.kuali.rice.kim.api.role;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
-import org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
 /**
  * This is the contract for a KimPermission.  
  *  
  */
-public interface RolePermissionContract extends Versioned, GloballyUnique, Identifiable, ImmutableInactivatable {
+public interface RolePermissionContract extends Versioned, GloballyUnique, Identifiable, Inactivatable {
     
     /**
      * The Role ID referenced by the Role Permission.

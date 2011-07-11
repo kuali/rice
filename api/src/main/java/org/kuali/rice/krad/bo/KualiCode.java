@@ -20,7 +20,7 @@ import org.kuali.rice.core.api.mo.common.Coded;
 /**
  * Represents a simple code-description business object
  */
-public interface KualiCode extends Inactivatable, Coded {
+public interface KualiCode extends MutableInactivatable, Coded {
 
 	/**
 	 * @param code - Setter for the Code.

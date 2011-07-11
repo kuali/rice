@@ -29,13 +29,13 @@ import org.hibernate.annotations.Type
 import org.kuali.rice.core.api.component.Component
 import org.kuali.rice.core.api.component.ComponentContract
 import org.kuali.rice.core.impl.namespace.NamespaceBo
-import org.kuali.rice.krad.bo.Inactivatable
+import org.kuali.rice.krad.bo.MutableInactivatable
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 @IdClass(ComponentId.class)
 @Entity
 @Table(name="KRCR_PARM_DTL_TYP_T")
-public class ComponentBo extends PersistableBusinessObjectBase implements ComponentContract, Inactivatable {
+public class ComponentBo extends PersistableBusinessObjectBase implements ComponentContract, MutableInactivatable {
 
     private static final long serialVersionUID = 1L;
 

@@ -1,7 +1,7 @@
 package org.kuali.rice.krad.uif.core;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -49,11 +49,11 @@ public class MaintenanceActiveCollectionFilter implements CollectionFilter {
         List<Integer> showIndexes = new ArrayList<Integer>();
         for (int i = 0; i < newCollection.size(); i++) {
             Object line = newCollection.get(i);
-            if (line instanceof ImmutableInactivatable) {
-                boolean active = ((ImmutableInactivatable) line).isActive();
+            if (line instanceof Inactivatable) {
+                boolean active = ((Inactivatable) line).isActive();
                 if ((oldCollection != null) && (oldCollection.size() > i)) {
                     // if active status has changed, show record
-                    ImmutableInactivatable oldLine = (ImmutableInactivatable) oldCollection.get(i);
+                    Inactivatable oldLine = (Inactivatable) oldCollection.get(i);
                     if (oldLine.isActive()) {
                         showIndexes.add(i);
                     }

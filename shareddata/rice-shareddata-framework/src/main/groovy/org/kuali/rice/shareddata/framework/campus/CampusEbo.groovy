@@ -19,11 +19,11 @@
 package org.kuali.rice.shareddata.framework.campus
 
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject
-import org.kuali.rice.krad.bo.Inactivatable
+import org.kuali.rice.krad.bo.MutableInactivatable
 import org.kuali.rice.shareddata.api.campus.CampusContract
 
 //@ToString
-public class CampusEbo implements Inactivatable, CampusContract, ExternalizableBusinessObject {
+public class CampusEbo implements MutableInactivatable, CampusContract, ExternalizableBusinessObject {
 	private static final long serialVersionUID = 787567094298971223L;
 
 	def String code;

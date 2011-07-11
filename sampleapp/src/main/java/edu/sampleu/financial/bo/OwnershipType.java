@@ -16,7 +16,7 @@
 
 package edu.sampleu.financial.bo;
 
-import org.kuali.rice.krad.bo.Inactivatable;
+import org.kuali.rice.krad.bo.MutableInactivatable;
 import org.kuali.rice.krad.document.DocumentBase;
 
 /**
@@ -25,7 +25,7 @@ import org.kuali.rice.krad.document.DocumentBase;
  *
  * @see org.kuali.kfs.vnd.businessobject.OwnershipCategory
  */
-public class OwnershipType extends DocumentBase implements Inactivatable {
+public class OwnershipType extends DocumentBase implements MutableInactivatable {
 
     protected String vendorOwnershipCode;
     protected String vendorOwnershipDescription;

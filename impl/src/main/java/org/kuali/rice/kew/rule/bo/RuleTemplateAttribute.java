@@ -27,7 +27,7 @@ import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.rule.service.RuleAttributeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.krad.bo.Inactivatable;
+import org.kuali.rice.krad.bo.MutableInactivatable;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.Column;
@@ -51,7 +51,7 @@ import java.util.List;
 @Entity
 @Table(name="KREW_RULE_TMPL_ATTR_T")
 //@Sequence(name="KREW_RTE_TMPL_S", property="ruleTemplateAttributeId")
-public class RuleTemplateAttribute extends PersistableBusinessObjectBase implements Comparable<RuleTemplateAttribute>, Inactivatable {
+public class RuleTemplateAttribute extends PersistableBusinessObjectBase implements Comparable<RuleTemplateAttribute>, MutableInactivatable {
 
     private static final long serialVersionUID = -3580049225424553828L;
     @Id

@@ -25,7 +25,7 @@ import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.Table
 import org.hibernate.annotations.Type
-import org.kuali.rice.krad.bo.Inactivatable
+import org.kuali.rice.krad.bo.MutableInactivatable
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.shareddata.api.state.State
 import org.kuali.rice.shareddata.api.state.StateContract
@@ -34,7 +34,7 @@ import org.kuali.rice.shareddata.impl.country.CountryBo
 @IdClass(StateId.class)
 @Entity
 @Table(name = "KRLC_ST_T")
-class StateBo extends PersistableBusinessObjectBase implements StateContract, Inactivatable {
+class StateBo extends PersistableBusinessObjectBase implements StateContract, MutableInactivatable {
 
     @Id
     @Column(name = "POSTAL_STATE_CD")

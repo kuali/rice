@@ -26,7 +26,7 @@ import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.bo.GlobalBusinessObject;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.krad.bo.Inactivatable;
+import org.kuali.rice.krad.bo.MutableInactivatable;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.krad.document.Document;
@@ -205,9 +205,9 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         if (maintenanceDocument.isEdit()) {
             Class dataObjectClass = maintenanceDocument.getNewMaintainableObject().getDataObjectClass();
             // we can only be inactivating a business object if we're editing it
-            if (dataObjectClass != null && Inactivatable.class.isAssignableFrom(dataObjectClass)) {
-                Inactivatable oldInactivateableBO = (Inactivatable) oldDataObject;
-                Inactivatable newInactivateableBO = (Inactivatable) newDataObject;
+            if (dataObjectClass != null && MutableInactivatable.class.isAssignableFrom(dataObjectClass)) {
+                MutableInactivatable oldInactivateableBO = (MutableInactivatable) oldDataObject;
+                MutableInactivatable newInactivateableBO = (MutableInactivatable) newDataObject;
 
                 return oldInactivateableBO.isActive() && !newInactivateableBO.isActive();
             }

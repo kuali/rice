@@ -19,10 +19,10 @@ package org.kuali.rice.shareddata.api.campus;
 import org.kuali.rice.core.api.mo.common.Coded;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Versioned;
-import org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
 
-public interface CampusContract extends Versioned, GloballyUnique, ImmutableInactivatable, Coded {
+public interface CampusContract extends Versioned, GloballyUnique, Inactivatable, Coded {
 
 	/**
 	 * This is the name for the Campus. 

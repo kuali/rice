@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.bo.role;
 
-import org.kuali.rice.krad.bo.Inactivatable;
+import org.kuali.rice.krad.bo.MutableInactivatable;
 
 import java.util.Map;
 
@@ -28,7 +28,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface KimPermission extends Inactivatable {
+public interface KimPermission extends MutableInactivatable {
 
 	String getPermissionId();
 	

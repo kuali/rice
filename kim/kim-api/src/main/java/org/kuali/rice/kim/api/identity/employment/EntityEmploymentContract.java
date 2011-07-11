@@ -18,7 +18,7 @@ package org.kuali.rice.kim.api.identity.employment;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
-import org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kim.api.identity.TypeContract;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationContract;
@@ -28,7 +28,7 @@ import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationContract;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface EntityEmploymentContract extends Versioned, GloballyUnique, ImmutableInactivatable, Identifiable {
+public interface EntityEmploymentContract extends Versioned, GloballyUnique, Inactivatable, Identifiable {
 
 
     /**

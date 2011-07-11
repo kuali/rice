@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.bo.role;
 
-import org.kuali.rice.krad.bo.Inactivatable;
+import org.kuali.rice.krad.bo.MutableInactivatable;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface KimDelegation extends Inactivatable {
+public interface KimDelegation extends MutableInactivatable {
 
 	String getDelegationId();
 	String getRoleId();

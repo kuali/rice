@@ -25,17 +25,18 @@ import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.Table
 import org.hibernate.annotations.Type
-import org.kuali.rice.krad.bo.Inactivatable
+
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.shareddata.api.county.County
 import org.kuali.rice.shareddata.api.county.CountyContract
 import org.kuali.rice.shareddata.impl.country.CountryBo
 import org.kuali.rice.shareddata.impl.state.StateBo
+import org.kuali.rice.krad.bo.MutableInactivatable
 
 @IdClass(CountyId.class)
 @Entity
 @Table(name = "KRLC_CNTY_T")
-class CountyBo extends PersistableBusinessObjectBase implements CountyContract, Inactivatable {
+class CountyBo extends PersistableBusinessObjectBase implements CountyContract, MutableInactivatable {
 
     @Id
     @Column(name = "COUNTY_CD")

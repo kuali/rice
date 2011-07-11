@@ -85,10 +85,6 @@ import java.util.Map;
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface IdentityService {
 
-    //TODO: refine contract, add javadoc, add annotations
-    //TODO:
-
-
     /**
      * This method finds EntityDefault data based on a query criteria.  The criteria cannot be null.
      *
@@ -98,7 +94,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "findEntityDefaults")
     @WebResult(name = "results")
-	EntityDefaultQueryResults findEntityDefaults(@WebParam(name = "query") QueryByCriteria queryByCriteria);
+	EntityDefaultQueryResults findEntityDefaults(@WebParam(name = "query") QueryByCriteria query);
 
     /**
      * This method finds Entities based on a query criteria.  The criteria cannot be null.
@@ -109,7 +105,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "findEntities")
     @WebResult(name = "results")
-	EntityQueryResults findEntities(@WebParam(name = "query") QueryByCriteria queryByCriteria);
+	EntityQueryResults findEntities(@WebParam(name = "query") QueryByCriteria query);
 
 	
     /**

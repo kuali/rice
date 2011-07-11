@@ -1,10 +1,10 @@
 package org.kuali.rice.krms.api.repository.type;
 
 import org.kuali.rice.core.api.mo.common.Identifiable;
-import org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
 
-public interface KrmsTypeAttributeContract extends Identifiable, ImmutableInactivatable {
+public interface KrmsTypeAttributeContract extends Identifiable, Inactivatable {
 
 	/**
 	 * This is the KrmsType to which the attribute applies 

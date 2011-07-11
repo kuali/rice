@@ -54,7 +54,7 @@ public interface DocumentTypeEBO extends ExternalizableBusinessObject{
 	 * In order to make this object Inactivateable. Not sure if I
 	 * should remove the getActive method.
 	 *
-	 * @see org.kuali.rice.krad.bo.Inactivatable#isActive()
+	 * @see org.kuali.rice.krad.bo.MutableInactivatable#isActive()
 	 */
 	public boolean isActive();
 

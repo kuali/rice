@@ -18,6 +18,7 @@ package org.kuali.rice.kim.impl.responsibility;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.responsibility.ResponsibilityChangeProcessor;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.role.RoleResponsibility;
@@ -87,7 +88,7 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
 	public void updateActionRequestsForResponsibilityChange(Set<String> responsibilityIds) {
 
 		KSBXMLService responsibilityChangeProcessor = (KSBXMLService) KsbApiServiceLocator.getMessageHelper()
-        .getServiceAsynchronously(new QName(MessageServiceNames.RESPONSIBILITY_CHANGE_SERVICE));
+        .getServiceAsynchronously(new QName(KEWConstants.KEW_MODULE_NAMESPACE, MessageServiceNames.RESPONSIBILITY_CHANGE_SERVICE));
         try {
         	responsibilityChangeProcessor.invoke(ResponsibilityChangeProcessor.getResponsibilityChangeContents(responsibilityIds));
 

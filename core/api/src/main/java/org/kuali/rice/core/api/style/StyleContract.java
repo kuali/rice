@@ -17,7 +17,7 @@ package org.kuali.rice.core.api.style;
 
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Versioned;
-import org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
 /**
  * This is the contract for a Style.  A style represents a stylesheet that is used for transforming data from
@@ -26,7 +26,7 @@ import org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface StyleContract extends Versioned, GloballyUnique, ImmutableInactivatable {
+public interface StyleContract extends Versioned, GloballyUnique, Inactivatable {
 
 	/**
 	 * Returns the identifier of this style.  Should only return null if this

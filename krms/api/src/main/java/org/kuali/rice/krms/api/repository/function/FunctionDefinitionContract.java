@@ -17,7 +17,7 @@ package org.kuali.rice.krms.api.repository.function;
 
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
-import org.kuali.rice.core.api.mo.common.active.ImmutableInactivatable;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.krms.api.repository.category.CategoryDefinitionContract;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 
@@ -37,7 +37,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface FunctionDefinitionContract extends Versioned, Identifiable, ImmutableInactivatable {
+public interface FunctionDefinitionContract extends Versioned, Identifiable, Inactivatable {
 
 	/**
 	 * Returns the namespace code of this function definition.  All functions

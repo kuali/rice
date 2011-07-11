@@ -424,7 +424,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
     protected void processAfterAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
         super.processAfterAddLine(view, collectionGroup, model, addLine);
 
-        if (KRADConstants.MAINTENANCE_EDIT_ACTION.equals(maintenanceAction)) {
+        if (model instanceof MaintenanceForm && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceForm)model).getMaintenanceAction())) {
             MaintenanceForm maintenanceForm = (MaintenanceForm) model;
             MaintenanceDocument document = maintenanceForm.getDocument();
 
@@ -440,6 +440,36 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
             }
         }
     }
+    
+    /**
+     * In the case of edit maintenance deleted the item on the old side
+     *
+     *
+     * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#processAfterDeleteLine(org.kuali.rice.krad.uif.container.View,
+     *      org.kuali.rice.krad.uif.container.CollectionGroup, java.lang.Object,
+     *      java.lang.Object)
+     */
+    @Override
+    protected void processAfterDeleteLine(View view, CollectionGroup collectionGroup, Object model, int lineIndex) {
+        super.processAfterDeleteLine(view, collectionGroup, model, lineIndex);
+
+        if (model instanceof MaintenanceForm && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceForm)model).getMaintenanceAction())) {
+            MaintenanceForm maintenanceForm = (MaintenanceForm) model;
+            MaintenanceDocument document = maintenanceForm.getDocument();
+
+            // get the old object's collection
+            Collection<Object> oldCollection = ObjectPropertyUtils
+                    .getPropertyValue(document.getOldMaintainableObject().getDataObject(),
+                            collectionGroup.getPropertyName());
+            try {
+                
+                // Remove the object at lineIndex from the collection
+                oldCollection.remove(oldCollection.toArray()[lineIndex]);
+            } catch (Exception e) {
+                throw new RuntimeException("Unable to delete line instance for old maintenance object", e);
+            }
+        }
+    }    
 
     /**
      * Retrieves the document number configured on this maintainable

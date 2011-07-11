@@ -816,6 +816,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
             boolean isValid = performDeleteLineValidation(view, collectionGroup, deleteLine);
             if (isValid) {
                 ((List<Object>) collection).remove(lineIndex);
+                processAfterDeleteLine(view, collectionGroup, model, lineIndex);
             }
         } else {
             logAndThrowRuntime("Only List collection implementations are supported for the delete by index method");
@@ -1024,6 +1025,25 @@ public class ViewHelperServiceImpl implements ViewHelperService {
     protected void processAfterAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
 
     }
+    
+    /**
+     * Hook for service overrides to process the collection line after it
+     * has been deleted
+     * 
+     * @param view
+     *            - view instance that is being presented (the action was taken
+     *            on)
+     * @param collectionGroup
+     *            - collection group component for the collection the line that
+     *            was added
+     * @param model
+     *            - object instance that contain's the views data
+     * @param addLine
+     *            - the new line that was added
+     */
+    protected void processAfterDeleteLine(View view, CollectionGroup collectionGroup, Object model, int lineIndex) {        
+        
+    }    
 
     protected void logAndThrowRuntime(String message) {
         LOG.error(message);

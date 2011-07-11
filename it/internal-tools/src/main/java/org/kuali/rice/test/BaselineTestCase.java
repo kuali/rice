@@ -16,7 +16,6 @@
 package org.kuali.rice.test;
 
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
-import org.kuali.rice.core.api.lifecycle.Lifecycle;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;

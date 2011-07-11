@@ -18,8 +18,9 @@ package org.kuali.rice.kim.document;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.impl.GenericPermission;
-import org.kuali.rice.kim.bo.impl.PermissionImpl;
-import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
+import org.kuali.rice.kim.impl.permission.PermissionBo;
+//import org.kuali.rice.kim.bo.impl.PermissionImpl;
+//import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
@@ -94,12 +95,12 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 			if ( businessObject == null ) {
 				throw new RuntimeException( "Configuration ERROR: GenericPermissionMaintainable.prepareBusinessObject passed a null object." );
 			}
-			if ( businessObject instanceof PermissionImpl ) {
-				KimPermissionImpl perm = getBusinessObjectService().findBySinglePrimaryKey(KimPermissionImpl.class, ((PermissionImpl)businessObject).getPermissionId() );
+			if ( businessObject instanceof PermissionBo ) {
+				PermissionBo perm = getBusinessObjectService().findBySinglePrimaryKey(PermissionBo.class, ((PermissionBo)businessObject).getId() );
 				businessObject = new GenericPermission( perm );
 			} else if ( businessObject instanceof GenericPermission ) {
 				// lookup the KimResponsibilityImpl and convert to a ReviewResponsibility
-				KimPermissionImpl perm = getBusinessObjectService().findBySinglePrimaryKey(KimPermissionImpl.class, ((GenericPermission)businessObject).getPermissionId() );		
+				PermissionBo perm = getBusinessObjectService().findBySinglePrimaryKey(PermissionBo.class, ((GenericPermission)businessObject).getPermissionId() );		
 				((GenericPermission)businessObject).loadFromKimPermission(perm);
 			} else {
 				throw new RuntimeException( "Configuration ERROR: GenericPermissionMaintainable passed an unsupported object type: " + businessObject.getClass() );

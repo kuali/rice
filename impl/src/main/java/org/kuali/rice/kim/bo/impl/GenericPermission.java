@@ -17,7 +17,7 @@ package org.kuali.rice.kim.bo.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Type;
-import org.kuali.rice.kim.bo.role.KimPermission;
+import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.Column;
@@ -67,11 +67,11 @@ public class GenericPermission extends PersistableBusinessObjectBase {
 	public GenericPermission() {
 	}
 	
-	public GenericPermission( KimPermission perm ) {
+	public GenericPermission( PermissionBo perm ) {
 		loadFromKimPermission( perm );
 	}
-	public void loadFromKimPermission( KimPermission perm ) {
-		setPermissionId( perm.getPermissionId() );
+	public void loadFromKimPermission( PermissionBo perm ) {
+		setPermissionId( perm.getId() );
 		setNamespaceCode( perm.getNamespaceCode() );
 		setName( perm.getName() );
 		setTemplateId( perm.getTemplateId() );

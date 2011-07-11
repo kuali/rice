@@ -225,7 +225,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         if (isDocumentInactivatingBusinessObject(maintenanceDocument)) {
             Class dataObjectClass = maintenanceDocument.getNewMaintainableObject().getDataObjectClass();
             Set<InactivationBlockingMetadata> inactivationBlockingMetadatas =
-                    ddService.getAllInactivationBlockingDefinitions(dataObjectClass);
+                    getDataDictionaryService().getAllInactivationBlockingDefinitions(dataObjectClass);
 
             if (inactivationBlockingMetadatas != null) {
                 for (InactivationBlockingMetadata inactivationBlockingMetadata : inactivationBlockingMetadatas) {
@@ -284,7 +284,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      */
     protected void putInactivationBlockingErrorOnPage(MaintenanceDocument document,
             InactivationBlockingMetadata inactivationBlockingMetadata) {
-        if (!persistenceStructureService.hasPrimaryKeyFieldValues(newDataObject)) {
+        if (!getPersistenceStructureService().hasPrimaryKeyFieldValues(newDataObject)) {
             throw new RuntimeException("Maintenance document did not have all primary key values filled in.");
         }
         Properties parameters = new Properties();
@@ -490,7 +490,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      * @param errorConstant - Error Constant that can be mapped to a resource for the actual text message.
      */
     protected void putFieldErrorWithShortLabel(String propertyName, String errorConstant) {
-        String shortLabel = ddService.getAttributeShortLabel(dataObjectClass, propertyName);
+        String shortLabel = getDataDictionaryService().getAttributeShortLabel(dataObjectClass, propertyName);
         putFieldError(propertyName, errorConstant, shortLabel);
     }
 
@@ -646,7 +646,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
         GlobalVariables.getMessageMap().addToErrorPath("dataObject");
 
-        dictionaryValidationService.validate(newDataObject);
+        getDictionaryValidationService().validate(newDataObject);
 
         GlobalVariables.getMessageMap().removeFromErrorPath("dataObject");
 
@@ -718,7 +718,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
                 // DB call that may not be necessary, and we want to minimize these.
 
                 // attempt to do a lookup, see if this object already exists by these Primary Keys
-                PersistableBusinessObject testBo = boService
+                PersistableBusinessObject testBo = getBoService()
                         .findByPrimaryKey(dataObjectClass.asSubclass(PersistableBusinessObject.class), newPkFields);
 
                 // if the retrieve was successful, then this object already exists, and we need
@@ -753,7 +753,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
             // TODO should this be getting labels from the view dictionary
             // use the DataDictionary service to translate field name into human-readable label
-            String humanReadableFieldName = ddService.getAttributeLabel(dataObjectClass, pkFieldName);
+            String humanReadableFieldName = getDataDictionaryService().getAttributeLabel(dataObjectClass, pkFieldName);
 
             // append the next field
             pkFieldNames.append(delim + humanReadableFieldName);
@@ -1158,7 +1158,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
                     String fieldName = (String) iter.next();
 
                     // get the human-readable name
-                    String fieldNameReadable = ddService.getAttributeLabel(newDataObject.getClass(), fieldName);
+                    String fieldNameReadable = getDataDictionaryService().getAttributeLabel(newDataObject.getClass(), fieldName);
 
                     // add a field error
                     putFieldError(fieldName, RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_PARTIALLY_FILLED_OUT_REF_FKEYS,
@@ -1189,7 +1189,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
             // get the human-readable name
             // add the new one, with the appropriate delimiter
-            sb.append(delim + ddService.getAttributeLabel(newDataObject.getClass(), fieldName));
+            sb.append(delim + getDataDictionaryService().getAttributeLabel(newDataObject.getClass(), fieldName));
 
             // after the first item, start using a delimiter
             if (firstPass) {
@@ -1210,8 +1210,8 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      * @return A human-readable label, pulled from the DataDictionary.
      */
     protected String getFieldLabel(String fieldName) {
-        return ddService.getAttributeLabel(newDataObject.getClass(), fieldName) + "(" +
-                ddService.getAttributeShortLabel(newDataObject.getClass(), fieldName) + ")";
+        return getDataDictionaryService().getAttributeLabel(newDataObject.getClass(), fieldName) + "(" +
+                getDataDictionaryService().getAttributeShortLabel(newDataObject.getClass(), fieldName) + ")";
     }
 
     /**
@@ -1224,8 +1224,8 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      * @return A human-readable label, pulled from the DataDictionary.
      */
     protected String getFieldLabel(Class dataObjectClass, String fieldName) {
-        return ddService.getAttributeLabel(dataObjectClass, fieldName) + "(" +
-                ddService.getAttributeShortLabel(dataObjectClass, fieldName) + ")";
+        return getDataDictionaryService().getAttributeLabel(dataObjectClass, fieldName) + "(" +
+                getDataDictionaryService().getAttributeShortLabel(dataObjectClass, fieldName) + ")";
     }
 
     /**

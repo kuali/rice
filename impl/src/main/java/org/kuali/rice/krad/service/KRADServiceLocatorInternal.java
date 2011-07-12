@@ -12,17 +12,13 @@
  */
 package org.kuali.rice.krad.service;
 
-
-import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import org.kuali.rice.core.api.namespace.NamespaceService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.krad.dao.BusinessObjectDao;
 import org.kuali.rice.krad.dao.DocumentDao;
-import org.kuali.rice.krad.lookup.Lookupable;
 import org.kuali.rice.krad.util.OjbCollectionHelper;
-import org.kuali.rice.krad.util.cache.MethodCacheInterceptor;
 import org.kuali.rice.krad.workflow.service.WorkflowAttributePropertyResolutionService;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -42,12 +38,6 @@ public class KRADServiceLocatorInternal {
 	return (MailService) getService(MAIL_SERVICE);
     }
 
-    public static final String METHOD_CACHE_INTERCEPTOR = "methodCacheInterceptor";
-
-    public static MethodCacheInterceptor getMethodCacheInterceptor() {
-	return (MethodCacheInterceptor) getService(METHOD_CACHE_INTERCEPTOR);
-    }
-
     public static final String POST_PROCESSOR_SERVICE = "postProcessorService";
 
     public static PostProcessorService getPostProcessorService() {
@@ -64,12 +54,6 @@ public class KRADServiceLocatorInternal {
 
     public static OjbCollectionHelper getOjbCollectionHelper() {
 	return (OjbCollectionHelper) getService(OJB_COLLECTION_HELPER);
-    }
-
-    public static final String PERSISTENCE_CACHE_ADMINISTRATOR = "persistenceCacheAdministrator";
-
-    public static final GeneralCacheAdministrator getPersistenceCacheAdministrator() {
-	return (GeneralCacheAdministrator) getService(PERSISTENCE_CACHE_ADMINISTRATOR);
     }
 
     public static final String TRANSACTION_MANAGER = "transactionManager";

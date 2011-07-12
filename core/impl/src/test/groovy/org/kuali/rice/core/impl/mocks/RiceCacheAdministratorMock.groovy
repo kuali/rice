@@ -50,12 +50,6 @@ class RiceCacheAdministratorMock implements RiceCacheAdministrator {
 	public synchronized Object getFromCache(String key, int refreshPeriod) {
 		return cache.get(key);
 	}
-	
-	//The following method does not factor in the refreshPeriod or the cronExpression
-	@Override
-	public synchronized Object getFromCache(String key, int refreshPeriod, String cronExpression) {
-		return cache.get(key);
-	}
 
 	@Override
 	public synchronized void putInCache(String key, Object content, String[] groups) {

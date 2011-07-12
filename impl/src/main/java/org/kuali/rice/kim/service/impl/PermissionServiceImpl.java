@@ -440,46 +440,28 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	if ( StringUtils.isBlank( permissionId ) ) {
     		return null;
     	}
-    	String cacheKey = getPermissionImplByIdCacheKey(permissionId);
-    	List<PermissionBo> permissions = (List<PermissionBo>)getCacheAdministrator().getFromCache(cacheKey, getRefreshPeriodInSeconds());
-    	if ( permissions == null ) {
-	    	HashMap<String,Object> pk = new HashMap<String,Object>( 1 );
-	    	pk.put( KimConstants.PrimaryKeyConstants.ID, permissionId );
-	    	permissions = Collections.singletonList(getBusinessObjectService().findByPrimaryKey( PermissionBo.class, pk ) );
-	    	getCacheAdministrator().putInCache(cacheKey, permissions, PERMISSION_IMPL_CACHE_GROUP);
-    	}
-    	return permissions.get( 0 );
+    	PermissionBo permissions  = getBusinessObjectService().findByPrimaryKey( PermissionBo.class, Collections.singletonMap(KimConstants.PrimaryKeyConstants.ID, permissionId) );
+
+    	return permissions;
     }
     
     @SuppressWarnings("unchecked")
 	protected List<PermissionBo> getPermissionImplsByTemplateName( String namespaceCode, String permissionTemplateName ) {
-    	String cacheKey = getPermissionImplByTemplateNameCacheKey(namespaceCode, permissionTemplateName);
-    	List<PermissionBo> permissions = (List<PermissionBo>)getCacheAdministrator().getFromCache(cacheKey, getRefreshPeriodInSeconds());
-    	if ( permissions == null ) {
-	    	HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
-	    	pk.put( "template.namespaceCode", namespaceCode );
-	    	pk.put( "template.name", permissionTemplateName );
-			pk.put( KRADPropertyConstants.ACTIVE, "Y" );
-	    	permissions = new ArrayList<PermissionBo>(getBusinessObjectService().findMatching( PermissionBo.class, pk ));
-	    	getCacheAdministrator().putInCache(cacheKey, permissions, PERMISSION_IMPL_CACHE_GROUP);
-    	}
-    	return permissions;
+        HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
+        pk.put( "template.namespaceCode", namespaceCode );
+        pk.put( "template.name", permissionTemplateName );
+        pk.put( KRADPropertyConstants.ACTIVE, "Y" );
+        return new ArrayList<PermissionBo>(getBusinessObjectService().findMatching( PermissionBo.class, pk ));
     }
 
     @SuppressWarnings("unchecked")
 	protected PermissionBo getPermissionImplsByName( String namespaceCode, String permissionName ) {
-    	String cacheKey = getPermissionImplByNameCacheKey(namespaceCode, permissionName);
-    	PermissionBo permissions = (PermissionBo)getCacheAdministrator().getFromCache(cacheKey, getRefreshPeriodInSeconds());
-    	if ( permissions == null ) {
-	    	HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
-	    	pk.put( KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode );
-	    	pk.put( KimConstants.UniqueKeyConstants.PERMISSION_NAME, permissionName );
-			pk.put( KRADPropertyConstants.ACTIVE, "Y" );
-            Collection<PermissionBo> c = getBusinessObjectService().findMatching( PermissionBo.class, pk );
-	    	permissions = c != null && c.iterator().hasNext() ? c.iterator().next() : null;
-	    	getCacheAdministrator().putInCache(cacheKey, permissions, PERMISSION_IMPL_CACHE_GROUP);
-    	}
-    	return permissions;
+        HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
+        pk.put( KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode );
+        pk.put( KimConstants.UniqueKeyConstants.PERMISSION_NAME, permissionName );
+        pk.put( KRADPropertyConstants.ACTIVE, "Y" );
+        Collection<PermissionBo> c = getBusinessObjectService().findMatching( PermissionBo.class, pk );
+        return c != null && c.iterator().hasNext() ? c.iterator().next() : null;
     }
 
     
@@ -641,17 +623,11 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 	
     @SuppressWarnings("unchecked")
     protected PermissionBo getPermissionImplsByNameIncludingInactive(String namespaceCode, String permissionName) {
-        String cacheKey = getPermissionImplByNameCacheKey(namespaceCode, permissionName + "inactive");
-        PermissionBo permissions = (PermissionBo) getCacheAdministrator().getFromCache(cacheKey, getRefreshPeriodInSeconds());
-        if (permissions == null) {
-            HashMap<String, Object> pk = new HashMap<String, Object>(2);
-            pk.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode);
-            pk.put(KimConstants.UniqueKeyConstants.PERMISSION_NAME, permissionName);
-            Collection<PermissionBo> c = getBusinessObjectService().findMatching( PermissionBo.class, pk );
-	    	permissions = c != null && c.iterator().hasNext() ? c.iterator().next() : null;
-            getCacheAdministrator().putInCache(cacheKey, permissions, PERMISSION_IMPL_CACHE_GROUP);
-        }
-        return permissions;
+        HashMap<String, Object> pk = new HashMap<String, Object>(2);
+        pk.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode);
+        pk.put(KimConstants.UniqueKeyConstants.PERMISSION_NAME, permissionName);
+        Collection<PermissionBo> c = getBusinessObjectService().findMatching( PermissionBo.class, pk );
+        return c != null && c.iterator().hasNext() ? c.iterator().next() : null;
     }
     
     public int getRefreshPeriodInSeconds() {

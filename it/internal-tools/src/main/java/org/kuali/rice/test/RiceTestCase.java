@@ -26,8 +26,6 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.impl.config.property.JAXBConfigImpl;
-import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
-import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
 import org.kuali.rice.test.data.PerSuiteUnitTestData;
 import org.kuali.rice.test.lifecycles.PerSuiteDataLoaderLifecycle;
@@ -161,7 +159,7 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
         if (System.getProperty("basedir") == null) {
         	final String userDir = System.getProperty("user.dir");
         	
-            System.setProperty("basedir", userDir + ((userDir.endsWith(File.separator + "test" + File.separator + moduleBaseDir)) ? "" : File.separator + "test" + File.separator + moduleBaseDir));
+            System.setProperty("basedir", userDir + ((userDir.endsWith(File.separator + "it" + File.separator + moduleBaseDir)) ? "" : File.separator + "it" + File.separator + moduleBaseDir));
         }
     }
 

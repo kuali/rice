@@ -29,8 +29,6 @@ public interface RiceCacheAdministrator extends Lifecycle {
 	
 	public Object getFromCache(String key, int refreshPeriod);
 	
-	public Object getFromCache(String key, int refreshPeriod,  String cronExpression);
-
 	public void putInCache(String key, Object content, String[] groups);
 
 	public void putInCache(String key, Object content, String group);

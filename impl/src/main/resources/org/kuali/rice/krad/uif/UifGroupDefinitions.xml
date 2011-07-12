@@ -270,7 +270,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>
 
   <bean id="Group_ShowHideInactive" parent="GroupBodyOnly"
-        p:conditionalRender="#isAssignableFrom(T(org.kuali.rice.krad.bo.Inactivatable),
+        p:conditionalRender="#isAssignableFrom(T(org.kuali.rice.core.api.mo.common.active.Inactivatable),
     #collectionGroup.collectionObjectClass)">
     <property name="items">
       <list>

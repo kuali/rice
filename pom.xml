@@ -16,7 +16,8 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.kuali</groupId>
@@ -54,7 +55,9 @@
     <maven.failsafe.useSystemClassLoader>true</maven.failsafe.useSystemClassLoader>
     <maven.failsafe.skip>true</maven.failsafe.skip>
     <maven.failsafe.includes>**/*Test.java</maven.failsafe.includes>
-
+    <maven.failsafe.execution.phase>integration-test</maven.failsafe.execution.phase>
+    <gmaven.generate.stubs.phase>generate-sources</gmaven.generate.stubs.phase>
+    
     <!-- must provide an explicit pattern - surefire default does not work
 			b/c of non-unit test classes that are included in default expression -->
     <maven.surefire.includes>**/*Test.java</maven.surefire.includes>
@@ -442,6 +445,7 @@
           <executions>
             <execution>
               <id>gmaven-generate-stubs</id>
+              <phase>${gmaven.generate.stubs.phase}</phase>
               <goals>
                 <goal>generateStubs</goal>
                 <goal>compile</goal>
@@ -491,7 +495,7 @@
             <webAppConfig>
               <contextPath>${web.launch.context.path}</contextPath>
             </webAppConfig>
-			<systemProperties>
+            <systemProperties>
               <systemProperty>
                 <name>web.bootstrap.spring.file</name>
                 <value>${bootstrap.spring.file}</value>
@@ -520,7 +524,7 @@
           <version>1.1</version>
           <configuration>
             <path>${web.launch.context.path}</path>
-			<systemProperties>
+            <systemProperties>
               <web.bootstrap.spring.file>${bootstrap.spring.file}</web.bootstrap.spring.file>
             </systemProperties>
           </configuration>
@@ -594,6 +598,7 @@
           <executions>
             <execution>
               <id>integration-test</id>
+              <phase>${maven.failsafe.execution.phase}</phase>
               <goals>
                 <goal>integration-test</goal>
               </goals>
@@ -1618,26 +1623,26 @@
         <artifactId>spring-webmvc</artifactId>
         <version>${spring.version}</version>
       </dependency>
-      
+
       <dependency>
         <groupId>org.springframework.security</groupId>
         <artifactId>spring-security-core</artifactId>
         <version>${spring.version}</version>
       </dependency>
-      
+
       <dependency>
         <groupId>org.springframework.security</groupId>
         <artifactId>spring-security-cas-client</artifactId>
         <version>${spring.version}</version>
         <exclusions>
-        	<exclusion>
-        		<groupId>commons-logging</groupId>
-            	<artifactId>commons-logging</artifactId>
-        	</exclusion>
-        	<exclusion>
-        		<groupId>org.jasig.cas</groupId>
-        		<artifactId>cas-client-core</artifactId>        	
-        	</exclusion>
+          <exclusion>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.jasig.cas</groupId>
+            <artifactId>cas-client-core</artifactId>
+          </exclusion>
         </exclusions>
       </dependency>
 
@@ -1736,7 +1741,7 @@
         <version>${xmlunit.version}</version>
         <scope>test</scope>
       </dependency>
-      
+
     </dependencies>
   </dependencyManagement>
 

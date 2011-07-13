@@ -29,7 +29,7 @@ import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentBo;
 import org.kuali.rice.kim.impl.identity.entity.EntityBo;
 import org.kuali.rice.kim.impl.identity.name.EntityNameBo;
 import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
-import org.kuali.rice.kim.impl.identity.type.EntityTypeDataBo;
+import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.xml.sax.SAXException;
@@ -130,7 +130,7 @@ public class UserXmlParser {
 		}
 		entity.setEmploymentInformation(emplInfos);
 		
-		EntityTypeDataBo entityType = new EntityTypeDataBo();
+		EntityTypeContactInfoBo entityType = new EntityTypeContactInfoBo();
 		//identity.getEntityTypes().add(entityType);
 		entityType.setEntityTypeCode(entityTypeCode);
 		entityType.setEntityId(entity.getId());
@@ -155,9 +155,9 @@ public class UserXmlParser {
 			entityType.setEmailAddresses(emailAddresses);
 			//email = (KimEntityEmailImpl)KRADServiceLocatorInternal.getBusinessObjectService().save(email);
 		}
-		List<EntityTypeDataBo> entityTypes = new ArrayList<EntityTypeDataBo>(1);
+		List<EntityTypeContactInfoBo> entityTypes = new ArrayList<EntityTypeContactInfoBo>(1);
 		entityTypes.add(entityType);
-		entity.setEntityTypes(entityTypes);
+		entity.setEntityTypeContactInfos(entityTypes);
 		
 		if (!StringUtils.isBlank(firstName) || !StringUtils.isBlank(lastName)) {
 			Long entityNameId = sas.getNextAvailableSequenceNumber(

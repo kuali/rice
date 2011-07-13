@@ -23,11 +23,10 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.entity.Entity;
 import org.kuali.rice.kim.api.identity.entity.EntityDefaultQueryResults;
-import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.IdentityService;
-import org.kuali.rice.kim.api.identity.type.EntityTypeDataDefault;
+import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoDefault;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
@@ -168,7 +167,7 @@ public class IdentityServiceTest extends KIMTestCase {
 		
 		EntityDefault entity = identityService.getEntityDefault(principal.getEntityId());
 		assertNotNull( "Entity Must not be null", entity );
-		EntityTypeDataDefault eet = entity.getEntityType( "PERSON" );
+		EntityTypeContactInfoDefault eet = entity.getEntityType( "PERSON" );
 		assertNotNull( "PERSON EntityTypeData must not be null", eet );
 		assertNotNull( "EntityEntityType's default email address must not be null", eet.getDefaultEmailAddress() );
 		assertEquals( "p1@kuali.org", eet.getDefaultEmailAddress().getEmailAddressUnmasked() );
@@ -179,7 +178,7 @@ public class IdentityServiceTest extends KIMTestCase {
 		Map<String,String> criteria = new HashMap<String,String>(1);
 		criteria.put(KIMPropertyConstants.Person.PRINCIPAL_ID, principalId);
 		Map<String, String> entityCriteria = personServiceImpl.convertPersonPropertiesToEntityProperties(criteria);
-        entityCriteria.put("entityTypes.entityTypeCode", "PERSON");
+        entityCriteria.put("entityTypeContactInfos.entityTypeCode", "PERSON");
         QueryByCriteria.Builder query = QueryByCriteria.Builder.create();
         List<Predicate> predicates = new ArrayList<Predicate>();
         for (String key : entityCriteria.keySet()) {

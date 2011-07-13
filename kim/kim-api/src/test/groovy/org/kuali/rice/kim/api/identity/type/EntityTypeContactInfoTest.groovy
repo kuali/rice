@@ -12,7 +12,7 @@ import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract
 import org.kuali.rice.kim.api.identity.phone.EntityPhone
 import org.kuali.rice.kim.api.identity.email.EntityEmailContract
 
-class EntityTypeDataTest {
+class EntityTypeContactInfoTest {
 
 
 	private static final String ENTITY_TYPE_CODE = "PERSON";
@@ -77,7 +77,7 @@ class EntityTypeDataTest {
     private static final String ACTIVE = "true";
 
     private static final String XML = """
-    <entityTypeData xmlns="http://rice.kuali.org/kim/v2_0">
+    <entityTypeContactInfo xmlns="http://rice.kuali.org/kim/v2_0">
         <entityId>${ENTITY_ID}</entityId>
         <entityTypeCode>${ENTITY_TYPE_CODE}</entityTypeCode>
         <entityType>
@@ -251,141 +251,141 @@ class EntityTypeDataTest {
         <versionNumber>${VERSION_NUMBER}</versionNumber>
         <objectId>${OBJECT_ID}</objectId>
         <active>${ACTIVE}</active>
-    </entityTypeData>
+    </entityTypeContactInfo>
     """
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_entityId_whitespace() {
-        EntityTypeData.Builder builder = EntityTypeData.Builder.create("", "PERSON");
+        EntityTypeContactInfo.Builder builder = EntityTypeContactInfo.Builder.create("", "PERSON");
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_entityId_null() {
-        EntityTypeData.Builder builder = EntityTypeData.Builder.create(null, "PERSON");
+        EntityTypeContactInfo.Builder builder = EntityTypeContactInfo.Builder.create(null, "PERSON");
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_entityTypeCode_whitespace() {
-        EntityTypeData.Builder builder = EntityTypeData.Builder.create("9012923", "");
+        EntityTypeContactInfo.Builder builder = EntityTypeContactInfo.Builder.create("9012923", "");
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_entityTypeCode_null() {
-        EntityTypeData.Builder builder = EntityTypeData.Builder.create("9012923", null);
+        EntityTypeContactInfo.Builder builder = EntityTypeContactInfo.Builder.create("9012923", null);
     }
 
     @Test
     void test_copy() {
-        def o1 = EntityTypeData.Builder.create("1010101", "SYSTEM").build();
-        def o2 = EntityTypeData.Builder.create(o1).build();
+        def o1 = EntityTypeContactInfo.Builder.create("1010101", "SYSTEM").build();
+        def o2 = EntityTypeContactInfo.Builder.create(o1).build();
 
         Assert.assertEquals(o1, o2);
     }
 
     @Test
     void happy_path() {
-        EntityTypeData.Builder.create("1010101", "PERSON");
+        EntityTypeContactInfo.Builder.create("1010101", "PERSON");
     }
 
     @Test
 	public void test_Xml_Marshal_Unmarshal() {
-		JAXBAssert.assertEqualXmlMarshalUnmarshal(this.create(), XML, EntityTypeData.class)
+		JAXBAssert.assertEqualXmlMarshalUnmarshal(this.create(), XML, EntityTypeContactInfo.class)
 	}
 
     public static create() {
 
         EntityAddress addr = EntityAddress.Builder.create(new EntityAddressContract() {
-                    def String id = EntityTypeDataTest.ADDR_ID
-                    def String entityTypeCode = EntityTypeDataTest.ENTITY_TYPE_CODE
-                    def String entityId = EntityTypeDataTest.ENTITY_ID
+                    def String id = EntityTypeContactInfoTest.ADDR_ID
+                    def String entityTypeCode = EntityTypeContactInfoTest.ENTITY_TYPE_CODE
+                    def String entityId = EntityTypeContactInfoTest.ENTITY_ID
                     def Type getAddressType() { Type.Builder.create(new TypeContract() {
-                        def String code = EntityTypeDataTest.TYPE_CODE
-                        def String name = EntityTypeDataTest.TYPE_NAME
-                        def boolean active = EntityTypeDataTest.TYPE_ACTIVE.toBoolean()
-                        def String sortCode = EntityTypeDataTest.TYPE_SORT_CODE
-                        def Long versionNumber = EntityTypeDataTest.ADDR_TYPE_VERSION_NUMBER
-                        def String objectId = EntityTypeDataTest.ADDR_TYPE_OBJECT_ID
+                        def String code = EntityTypeContactInfoTest.TYPE_CODE
+                        def String name = EntityTypeContactInfoTest.TYPE_NAME
+                        def boolean active = EntityTypeContactInfoTest.TYPE_ACTIVE.toBoolean()
+                        def String sortCode = EntityTypeContactInfoTest.TYPE_SORT_CODE
+                        def Long versionNumber = EntityTypeContactInfoTest.ADDR_TYPE_VERSION_NUMBER
+                        def String objectId = EntityTypeContactInfoTest.ADDR_TYPE_OBJECT_ID
                     }).build()
                     }
-                    def String line1 = EntityTypeDataTest.ADDR_LINE1
-                    def String line2 = EntityTypeDataTest.ADDR_LINE2
-                    def String line3 = EntityTypeDataTest.ADDR_LINE3
-                    def String cityName = EntityTypeDataTest.ADDR_CITY_NAME
-                    def String stateCode = EntityTypeDataTest.ADDR_STATE_CODE
-                    def String postalCode = EntityTypeDataTest.ADDR_POSTAL_CODE
-                    def String countryCode = EntityTypeDataTest.ADDR_COUNTRY_CODE
-                    def String line1Unmasked = EntityTypeDataTest.ADDR_LINE1
-                    def String line2Unmasked = EntityTypeDataTest.ADDR_LINE2
-                    def String line3Unmasked = EntityTypeDataTest.ADDR_LINE3
-                    def String cityNameUnmasked = EntityTypeDataTest.ADDR_CITY_NAME
-                    def String stateCodeUnmasked = EntityTypeDataTest.ADDR_STATE_CODE
-                    def String postalCodeUnmasked = EntityTypeDataTest.ADDR_POSTAL_CODE
-                    def String countryCodeUnmasked = EntityTypeDataTest.ADDR_COUNTRY_CODE
-                    def boolean suppressAddress = EntityTypeDataTest.ADDR_SUPPRESS.toBoolean()
-                    def boolean defaultValue = EntityTypeDataTest.ADDR_DEFAULT.toBoolean()
-                    def boolean active = EntityTypeDataTest.ADDR_ACTIVE.toBoolean()
-                    def Long versionNumber = EntityTypeDataTest.ADDR_VERSION_NUMBER;
-                    def String objectId = EntityTypeDataTest.ADDR_OBJECT_ID
+                    def String line1 = EntityTypeContactInfoTest.ADDR_LINE1
+                    def String line2 = EntityTypeContactInfoTest.ADDR_LINE2
+                    def String line3 = EntityTypeContactInfoTest.ADDR_LINE3
+                    def String cityName = EntityTypeContactInfoTest.ADDR_CITY_NAME
+                    def String stateCode = EntityTypeContactInfoTest.ADDR_STATE_CODE
+                    def String postalCode = EntityTypeContactInfoTest.ADDR_POSTAL_CODE
+                    def String countryCode = EntityTypeContactInfoTest.ADDR_COUNTRY_CODE
+                    def String line1Unmasked = EntityTypeContactInfoTest.ADDR_LINE1
+                    def String line2Unmasked = EntityTypeContactInfoTest.ADDR_LINE2
+                    def String line3Unmasked = EntityTypeContactInfoTest.ADDR_LINE3
+                    def String cityNameUnmasked = EntityTypeContactInfoTest.ADDR_CITY_NAME
+                    def String stateCodeUnmasked = EntityTypeContactInfoTest.ADDR_STATE_CODE
+                    def String postalCodeUnmasked = EntityTypeContactInfoTest.ADDR_POSTAL_CODE
+                    def String countryCodeUnmasked = EntityTypeContactInfoTest.ADDR_COUNTRY_CODE
+                    def boolean suppressAddress = EntityTypeContactInfoTest.ADDR_SUPPRESS.toBoolean()
+                    def boolean defaultValue = EntityTypeContactInfoTest.ADDR_DEFAULT.toBoolean()
+                    def boolean active = EntityTypeContactInfoTest.ADDR_ACTIVE.toBoolean()
+                    def Long versionNumber = EntityTypeContactInfoTest.ADDR_VERSION_NUMBER;
+                    def String objectId = EntityTypeContactInfoTest.ADDR_OBJECT_ID
                 }).build()
 
         EntityEmail email = EntityEmail.Builder.create(new EntityEmailContract() {
-                    def String id = EntityTypeDataTest.EMAIL_ID
-                    def String entityTypeCode = EntityTypeDataTest.ENTITY_TYPE_CODE
-                    def String entityId = EntityTypeDataTest.ENTITY_ID
+                    def String id = EntityTypeContactInfoTest.EMAIL_ID
+                    def String entityTypeCode = EntityTypeContactInfoTest.ENTITY_TYPE_CODE
+                    def String entityId = EntityTypeContactInfoTest.ENTITY_ID
                     def Type getEmailType() { Type.Builder.create(new TypeContract() {
-                        def String code = EntityTypeDataTest.TYPE_CODE
-                        def String name = EntityTypeDataTest.TYPE_NAME
-                        def boolean active = EntityTypeDataTest.TYPE_ACTIVE.toBoolean()
-                        def String sortCode = EntityTypeDataTest.TYPE_SORT_CODE
-                        def Long versionNumber = EntityTypeDataTest.EMAIL_TYPE_VERSION_NUMBER
-                        def String objectId = EntityTypeDataTest.EMAIL_TYPE_OBJECT_ID
+                        def String code = EntityTypeContactInfoTest.TYPE_CODE
+                        def String name = EntityTypeContactInfoTest.TYPE_NAME
+                        def boolean active = EntityTypeContactInfoTest.TYPE_ACTIVE.toBoolean()
+                        def String sortCode = EntityTypeContactInfoTest.TYPE_SORT_CODE
+                        def Long versionNumber = EntityTypeContactInfoTest.EMAIL_TYPE_VERSION_NUMBER
+                        def String objectId = EntityTypeContactInfoTest.EMAIL_TYPE_OBJECT_ID
                     }).build()}
-                    def String emailAddress = EntityTypeDataTest.EMAIL_ADDRESS
-                    def String emailAddressUnmasked = EntityTypeDataTest.EMAIL_ADDRESS
-                    def boolean suppressEmail = EntityTypeDataTest.EMAIL_SUPPRESS.toBoolean()
-                    def boolean defaultValue = EntityTypeDataTest.EMAIL_DEFAULT.toBoolean()
-                    def boolean active = EntityTypeDataTest.EMAIL_ACTIVE.toBoolean()
-                    def Long versionNumber = EntityTypeDataTest.EMAIL_VERSION_NUMBER;
-                    def String objectId = EntityTypeDataTest.EMAIL_OBJECT_ID
+                    def String emailAddress = EntityTypeContactInfoTest.EMAIL_ADDRESS
+                    def String emailAddressUnmasked = EntityTypeContactInfoTest.EMAIL_ADDRESS
+                    def boolean suppressEmail = EntityTypeContactInfoTest.EMAIL_SUPPRESS.toBoolean()
+                    def boolean defaultValue = EntityTypeContactInfoTest.EMAIL_DEFAULT.toBoolean()
+                    def boolean active = EntityTypeContactInfoTest.EMAIL_ACTIVE.toBoolean()
+                    def Long versionNumber = EntityTypeContactInfoTest.EMAIL_VERSION_NUMBER;
+                    def String objectId = EntityTypeContactInfoTest.EMAIL_OBJECT_ID
                 }).build()
 
         EntityPhone phone = EntityPhone.Builder.create(new EntityPhoneContract() {
-                    def String id = EntityTypeDataTest.PHONE_ID
-                    def String entityTypeCode = EntityTypeDataTest.ENTITY_TYPE_CODE
-                    def String entityId = EntityTypeDataTest.ENTITY_ID
+                    def String id = EntityTypeContactInfoTest.PHONE_ID
+                    def String entityTypeCode = EntityTypeContactInfoTest.ENTITY_TYPE_CODE
+                    def String entityId = EntityTypeContactInfoTest.ENTITY_ID
                     def Type getPhoneType() { Type.Builder.create(new TypeContract() {
-                        def String code = EntityTypeDataTest.TYPE_CODE
-                        def String name = EntityTypeDataTest.TYPE_NAME
-                        def boolean active = EntityTypeDataTest.TYPE_ACTIVE.toBoolean()
-                        def String sortCode = EntityTypeDataTest.TYPE_SORT_CODE
-                        def Long versionNumber = EntityTypeDataTest.PHONE_TYPE_VERSION_NUMBER
-                        def String objectId = EntityTypeDataTest.PHONE_TYPE_OBJECT_ID
+                        def String code = EntityTypeContactInfoTest.TYPE_CODE
+                        def String name = EntityTypeContactInfoTest.TYPE_NAME
+                        def boolean active = EntityTypeContactInfoTest.TYPE_ACTIVE.toBoolean()
+                        def String sortCode = EntityTypeContactInfoTest.TYPE_SORT_CODE
+                        def Long versionNumber = EntityTypeContactInfoTest.PHONE_TYPE_VERSION_NUMBER
+                        def String objectId = EntityTypeContactInfoTest.PHONE_TYPE_OBJECT_ID
                     }).build()}
-                    def String countryCode = EntityTypeDataTest.PHONE_COUNTRY_CODE
-                    def String phoneNumber = EntityTypeDataTest.PHONE_NUMBER
-                    def String extensionNumber = EntityTypeDataTest.PHONE_EXTENSION_NUMBER
-                    def String countryCodeUnmasked = EntityTypeDataTest.PHONE_COUNTRY_CODE
-                    def String phoneNumberUnmasked = EntityTypeDataTest.PHONE_NUMBER
-                    def String extensionNumberUnmasked = EntityTypeDataTest.PHONE_EXTENSION_NUMBER
-                    def String formattedPhoneNumber = EntityTypeDataTest.PHONE_NUMBER + " x" + EntityTypeDataTest.PHONE_EXTENSION_NUMBER
-                    def String formattedPhoneNumberUnmasked = EntityTypeDataTest.PHONE_NUMBER + " x" + EntityTypeDataTest.PHONE_EXTENSION_NUMBER
-                    def boolean suppressPhone = EntityTypeDataTest.PHONE_SUPPRESS.toBoolean()
-                    def boolean defaultValue = EntityTypeDataTest.PHONE_DEFAULT.toBoolean()
-                    def boolean active = EntityTypeDataTest.PHONE_ACTIVE.toBoolean()
-                    def Long versionNumber = EntityTypeDataTest.PHONE_VERSION_NUMBER;
-                    def String objectId = EntityTypeDataTest.PHONE_OBJECT_ID
+                    def String countryCode = EntityTypeContactInfoTest.PHONE_COUNTRY_CODE
+                    def String phoneNumber = EntityTypeContactInfoTest.PHONE_NUMBER
+                    def String extensionNumber = EntityTypeContactInfoTest.PHONE_EXTENSION_NUMBER
+                    def String countryCodeUnmasked = EntityTypeContactInfoTest.PHONE_COUNTRY_CODE
+                    def String phoneNumberUnmasked = EntityTypeContactInfoTest.PHONE_NUMBER
+                    def String extensionNumberUnmasked = EntityTypeContactInfoTest.PHONE_EXTENSION_NUMBER
+                    def String formattedPhoneNumber = EntityTypeContactInfoTest.PHONE_NUMBER + " x" + EntityTypeContactInfoTest.PHONE_EXTENSION_NUMBER
+                    def String formattedPhoneNumberUnmasked = EntityTypeContactInfoTest.PHONE_NUMBER + " x" + EntityTypeContactInfoTest.PHONE_EXTENSION_NUMBER
+                    def boolean suppressPhone = EntityTypeContactInfoTest.PHONE_SUPPRESS.toBoolean()
+                    def boolean defaultValue = EntityTypeContactInfoTest.PHONE_DEFAULT.toBoolean()
+                    def boolean active = EntityTypeContactInfoTest.PHONE_ACTIVE.toBoolean()
+                    def Long versionNumber = EntityTypeContactInfoTest.PHONE_VERSION_NUMBER;
+                    def String objectId = EntityTypeContactInfoTest.PHONE_OBJECT_ID
                 }).build()
 
-		return EntityTypeData.Builder.create(new EntityTypeDataContract() {
-            def String entityTypeCode = EntityTypeDataTest.ENTITY_TYPE_CODE
-            def String entityId = EntityTypeDataTest.ENTITY_ID
+		return EntityTypeContactInfo.Builder.create(new EntityTypeContactInfoContract() {
+            def String entityTypeCode = EntityTypeContactInfoTest.ENTITY_TYPE_CODE
+            def String entityId = EntityTypeContactInfoTest.ENTITY_ID
 			def Type getEntityType() { Type.Builder.create(new TypeContract() {
-				def String code = EntityTypeDataTest.ENTITY_TYPE_CODE
-				def String name = EntityTypeDataTest.ENTITY_TYPE_NAME
-				def boolean active = EntityTypeDataTest.TYPE_ACTIVE
-                def String sortCode = EntityTypeDataTest.TYPE_SORT_CODE
-                def Long versionNumber = EntityTypeDataTest.TYPE_VERSION_NUMBER
-				def String objectId = EntityTypeDataTest.TYPE_OBJECT_ID
+				def String code = EntityTypeContactInfoTest.ENTITY_TYPE_CODE
+				def String name = EntityTypeContactInfoTest.ENTITY_TYPE_NAME
+				def boolean active = EntityTypeContactInfoTest.TYPE_ACTIVE
+                def String sortCode = EntityTypeContactInfoTest.TYPE_SORT_CODE
+                def Long versionNumber = EntityTypeContactInfoTest.TYPE_VERSION_NUMBER
+				def String objectId = EntityTypeContactInfoTest.TYPE_OBJECT_ID
 			}).build()}
             def List<EntityAddress> getAddresses()  {[
                 addr
@@ -399,9 +399,9 @@ class EntityTypeDataTest {
             def EntityAddress getDefaultAddress() { addr }
             def EntityEmail getDefaultEmailAddress() { email }
             def EntityPhone getDefaultPhoneNumber() { phone }
-            def boolean active = EntityTypeDataTest.ACTIVE.toBoolean()
-            def Long versionNumber = EntityTypeDataTest.VERSION_NUMBER;
-            def String objectId = EntityTypeDataTest.OBJECT_ID
+            def boolean active = EntityTypeContactInfoTest.ACTIVE.toBoolean()
+            def Long versionNumber = EntityTypeContactInfoTest.VERSION_NUMBER;
+            def String objectId = EntityTypeContactInfoTest.OBJECT_ID
         }).build()
 
 	}

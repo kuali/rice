@@ -44,7 +44,7 @@ import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.identity.residency.EntityResidency;
-import org.kuali.rice.kim.api.identity.type.EntityTypeData;
+import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
 import org.kuali.rice.kim.api.identity.visa.EntityVisa;
 import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.impl.identity.EntityTypeBo;
@@ -71,7 +71,7 @@ import org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo;
 import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
 import org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo;
 import org.kuali.rice.kim.impl.identity.residency.EntityResidencyBo;
-import org.kuali.rice.kim.impl.identity.type.EntityTypeDataBo;
+import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo;
 import org.kuali.rice.kim.impl.identity.visa.EntityVisaBo;
 import org.kuali.rice.kim.service.IdentityUpdateService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
@@ -245,7 +245,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
     }
 
     @Override
-    public EntityTypeData addEntityTypeDataToEntity(EntityTypeData entityTypeData) {
+    public EntityTypeContactInfo addEntityTypeContactInfoToEntity(EntityTypeContactInfo entityTypeData) {
         if (entityTypeData == null) {
             throw new RiceIllegalArgumentException("entityTypeData is null");
         }
@@ -258,44 +258,44 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
                 throw new RiceIllegalStateException("the entityTypeData to create already exists: " + entityTypeData);
             }
         }
-        EntityTypeDataBo bo = EntityTypeDataBo.from(entityTypeData);
-        return EntityTypeDataBo.to(businessObjectService.save(bo));
+        EntityTypeContactInfoBo bo = EntityTypeContactInfoBo.from(entityTypeData);
+        return EntityTypeContactInfoBo.to(businessObjectService.save(bo));
     }
 
-    private EntityTypeDataBo getEntityTypeDataBo(String entityId, String entityTypeCode) {
+    private EntityTypeContactInfoBo getEntityTypeDataBo(String entityId, String entityTypeCode) {
         Map<String,Object> criteria = new HashMap<String,Object>(3);
          criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, entityId);
          criteria.put(KIMPropertyConstants.Entity.ENTITY_TYPE_CODE, entityTypeCode);
          criteria.put(KIMPropertyConstants.Entity.ACTIVE, true);
-         return businessObjectService.findByPrimaryKey(EntityTypeDataBo.class, criteria);
+         return businessObjectService.findByPrimaryKey(EntityTypeContactInfoBo.class, criteria);
     }
 
     @Override
-    public EntityTypeData updateEntityTypeData(EntityTypeData entityTypeData) {
-        if (entityTypeData == null) {
+    public EntityTypeContactInfo updateEntityTypeContactInfo(EntityTypeContactInfo entityTypeContactInfo) {
+        if (entityTypeContactInfo == null) {
             throw new RiceIllegalArgumentException("entityTypeData is null");
         }
 
-        if (StringUtils.isBlank(entityTypeData.getEntityId()) || StringUtils.isEmpty(entityTypeData.getEntityId())
-                || StringUtils.isBlank(entityTypeData.getEntityTypeCode()) || StringUtils.isEmpty(entityTypeData.getEntityTypeCode())) {
+        if (StringUtils.isBlank(entityTypeContactInfo.getEntityId()) || StringUtils.isEmpty(entityTypeContactInfo.getEntityId())
+                || StringUtils.isBlank(entityTypeContactInfo.getEntityTypeCode()) || StringUtils.isEmpty(entityTypeContactInfo.getEntityTypeCode())) {
             throw new RiceIllegalStateException("EntityTypeData's entityId and entityTypeCode must be populated before update");
         }  else {
-            if (getEntityTypeDataBo(entityTypeData.getEntityId(), entityTypeData.getEntityTypeCode()) == null) {
-                throw new RiceIllegalStateException("the entityTypeData to update does not exist: " + entityTypeData);
+            if (getEntityTypeDataBo(entityTypeContactInfo.getEntityId(), entityTypeContactInfo.getEntityTypeCode()) == null) {
+                throw new RiceIllegalStateException("the entityTypeData to update does not exist: " + entityTypeContactInfo);
             }
         }
-        EntityTypeDataBo bo = EntityTypeDataBo.from(entityTypeData);
-        return EntityTypeDataBo.to(businessObjectService.save(bo));
+        EntityTypeContactInfoBo bo = EntityTypeContactInfoBo.from(entityTypeContactInfo);
+        return EntityTypeContactInfoBo.to(businessObjectService.save(bo));
     }
 
     @Override
-    public EntityTypeData inactivateEntityTypeData(String entityId, String entityTypeCode) {
-        EntityTypeDataBo bo = getEntityTypeDataBo(entityId, entityTypeCode);
+    public EntityTypeContactInfo inactivateEntityTypeContactInfo(String entityId, String entityTypeCode) {
+        EntityTypeContactInfoBo bo = getEntityTypeDataBo(entityId, entityTypeCode);
         if (bo == null) {
             throw new RiceIllegalStateException("EntityTypeData with entityId: " + entityId + " entityTypeCode: " + entityTypeCode + " does not exist");
         }
         bo.setActive(false);
-        return EntityTypeDataBo.to(businessObjectService.save(bo));
+        return EntityTypeContactInfoBo.to(businessObjectService.save(bo));
     }
 
     private EntityAddressBo getEntityAddressBo(String entityId, String entityTypeCode, String addressTypeCode) {
@@ -712,7 +712,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
              * sort of OJB caching and not filling in the type values.  We need to figure out why this is happening and fix it.
              * Yes, this is a hack :P
              */
-            for (EntityTypeDataBo type : entityImpl.getEntityTypes()) {
+            for (EntityTypeContactInfoBo type : entityImpl.getEntityTypeContactInfos()) {
                 type.refresh();
                 for (EntityAddressBo addressBo : type.getAddresses()) {
                     addressBo.refreshReferenceObject("addressType");

@@ -27,7 +27,7 @@ import org.kuali.rice.kim.api.identity.entity.Entity;
 import org.kuali.rice.kim.api.identity.name.EntityNameContract;
 import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
-import org.kuali.rice.kim.api.identity.type.EntityTypeData;
+import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.Person;
@@ -91,7 +91,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
         criteria.put("entityTypeCode", "PERSON");
 
 		Entity entity = KimApiServiceLocator.getIdentityService().getEntity(personDoc.getEntityId());
-        EntityTypeData entityType = entity.getEntityTypes().get(0);
+        EntityTypeContactInfo entityType = entity.getEntityTypeContactInfos().get(0);
         personDoc.getExternalIdentifiers();
 		assertAddressTrue((PersonDocumentAddress)personDoc.getAddrs().get(0), entityType.getAddresses().get(0));
 		assertPhoneTrue((PersonDocumentPhone)personDoc.getPhones().get(0), entityType.getPhoneNumbers().get(0));
@@ -107,7 +107,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		uiDocumentService.saveEntityPerson(personDoc);
 		Entity entity2 = ((IdentityServiceImpl) KIMServiceLocatorInternal.getService("kimIdentityDelegateService")).getEntity(
                 personDoc.getEntityId());
-        EntityTypeData entityType2 = entity2.getEntityTypes().get(0);
+        EntityTypeContactInfo entityType2 = entity2.getEntityTypeContactInfos().get(0);
         personDoc.getExternalIdentifiers();
         assertAddressTrue((PersonDocumentAddress)personDoc.getAddrs().get(0), entityType2.getAddresses().get(0));
         assertPhoneTrue((PersonDocumentPhone)personDoc.getPhones().get(0), entityType2.getPhoneNumbers().get(0));
@@ -137,7 +137,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		assertNotNull(entity);
 		IdentityManagementPersonDocument personDoc = new IdentityManagementPersonDocument();
 		uiDocumentService.loadEntityToPersonDoc(personDoc, "entity123pId");
-        EntityTypeData entityType = entity.getEntityTypes().get(0);
+        EntityTypeContactInfo entityType = entity.getEntityTypeContactInfos().get(0);
         personDoc.getExternalIdentifiers();
 		assertAddressTrue((PersonDocumentAddress)personDoc.getAddrs().get(0), entityType.getAddresses().get(0));
 		assertPhoneTrue((PersonDocumentPhone)personDoc.getPhones().get(0), entityType.getPhoneNumbers().get(0));

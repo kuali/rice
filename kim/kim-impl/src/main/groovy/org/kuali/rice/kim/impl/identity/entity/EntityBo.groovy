@@ -25,7 +25,7 @@ import org.kuali.rice.kim.api.identity.name.EntityNameContract
 import org.kuali.rice.kim.api.identity.personal.EntityEthnicity
 import org.kuali.rice.kim.api.identity.principal.Principal
 import org.kuali.rice.kim.api.identity.residency.EntityResidency
-import org.kuali.rice.kim.api.identity.type.EntityTypeData
+import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo
 import org.kuali.rice.kim.api.identity.visa.EntityVisa
 import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo
 import org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipBo
@@ -37,7 +37,7 @@ import org.kuali.rice.kim.impl.identity.personal.EntityEthnicityBo
 import org.kuali.rice.kim.impl.identity.principal.PrincipalBo
 import org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo
 import org.kuali.rice.kim.impl.identity.residency.EntityResidencyBo
-import org.kuali.rice.kim.impl.identity.type.EntityTypeDataBo
+import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo
 import org.kuali.rice.kim.impl.identity.visa.EntityVisaBo
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
@@ -76,7 +76,7 @@ class EntityBo extends PersistableBusinessObjectBase implements EntityContract {
 	@OneToMany(fetch = FetchType.EAGER, cascade = [ CascadeType.ALL ])
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-	List<EntityTypeDataBo> entityTypes  = new ArrayList<EntityTypeDataBo>()
+	List<EntityTypeContactInfoBo> entityTypeContactInfos  = new ArrayList<EntityTypeContactInfoBo>()
 	
 	@OneToOne(targetEntity=EntityPrivacyPreferencesBo.class, fetch = FetchType.EAGER, cascade = [CascadeType.MERGE, CascadeType.REFRESH])
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
@@ -172,10 +172,10 @@ class EntityBo extends PersistableBusinessObjectBase implements EntityContract {
             }
         }
 
-        bo.entityTypes = new ArrayList<EntityTypeDataBo>()
-        if (CollectionUtils.isNotEmpty(immutable.entityTypes)) {
-            for (EntityTypeData entityType : immutable.entityTypes) {
-                bo.entityTypes.add(EntityTypeDataBo.from(entityType))
+        bo.entityTypeContactInfos = new ArrayList<EntityTypeContactInfoBo>()
+        if (CollectionUtils.isNotEmpty(immutable.entityTypeContactInfos)) {
+            for (EntityTypeContactInfo entityType : immutable.entityTypeContactInfos) {
+                bo.entityTypeContactInfos.add(EntityTypeContactInfoBo.from(entityType))
             }
         }
 
@@ -222,11 +222,11 @@ class EntityBo extends PersistableBusinessObjectBase implements EntityContract {
       }
 
 
-    EntityTypeDataBo getEntityType(String entityTypeCode) {
-        if (CollectionUtils.isEmpty(this.entityTypes)) {
+    EntityTypeContactInfoBo getEntityTypeContactInfoByTypeCode(String entityTypeCode) {
+        if (CollectionUtils.isEmpty(this.entityTypeContactInfos)) {
             return null
         }
-        for (EntityTypeDataBo entType : this.entityTypes) {
+        for (EntityTypeContactInfoBo entType : this.entityTypeContactInfos) {
             if (entType.getEntityTypeCode().equals(entityTypeCode)) {
                 return entType
             }

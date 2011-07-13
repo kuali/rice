@@ -11,7 +11,7 @@ import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract;
 
 import java.util.List;
 
-public interface EntityTypeDataContract extends Versioned, GloballyUnique, Inactivatable {
+public interface EntityTypeContactInfoContract extends Versioned, GloballyUnique, Inactivatable {
     /**
      * Gets the id of the parent identity object.
      * @return the identity id for this {@link EntityAddressContract}
@@ -25,28 +25,28 @@ public interface EntityTypeDataContract extends Versioned, GloballyUnique, Inact
     String getEntityTypeCode();
 
     /**
-     * Gets this identity Type of the {@link EntityTypeDataContract}'s object.
-     * @return the identity type for this {@link EntityTypeDataContract}
+     * Gets this identity Type of the {@link EntityTypeContactInfoContract}'s object.
+     * @return the identity type for this {@link EntityTypeContactInfoContract}
      */
 	TypeContract getEntityType();
 
 	/**
-     * Gets this {@link EntityTypeDataContract}'s List of {@link org.kuali.rice.kim.api.identity.address.EntityAddress}S.
-     * @return the List of {@link org.kuali.rice.kim.api.identity.address.EntityAddressContract}S for this {@link EntityTypeDataContract}.
+     * Gets this {@link EntityTypeContactInfoContract}'s List of {@link org.kuali.rice.kim.api.identity.address.EntityAddress}S.
+     * @return the List of {@link org.kuali.rice.kim.api.identity.address.EntityAddressContract}S for this {@link EntityTypeContactInfoContract}.
      * The returned List will never be null, an empty List will be assigned and returned if needed. 
      */
 	List<? extends EntityAddressContract> getAddresses();
 
 	/**
-     * Gets this {@link EntityTypeDataContract}'s List of {@link org.kuali.rice.kim.api.identity.email.EntityEmailContract}S.
-     * @return the List of {@link org.kuali.rice.kim.api.identity.email.EntityEmailContract}S for this {@link EntityTypeDataContract}.
+     * Gets this {@link EntityTypeContactInfoContract}'s List of {@link org.kuali.rice.kim.api.identity.email.EntityEmailContract}S.
+     * @return the List of {@link org.kuali.rice.kim.api.identity.email.EntityEmailContract}S for this {@link EntityTypeContactInfoContract}.
      * The returned List will never be null, an empty List will be assigned and returned if needed. 
      */
 	List<? extends EntityEmailContract> getEmailAddresses();
 	
 	/**
-     * Gets this {@link EntityTypeDataContract}'s List of {@link org.kuali.rice.kim.api.identity.phone.EntityPhone}S.
-     * @return the List of {@link org.kuali.rice.kim.api.identity.phone.EntityPhoneContract}S for this {@link EntityTypeDataContract}.
+     * Gets this {@link EntityTypeContactInfoContract}'s List of {@link org.kuali.rice.kim.api.identity.phone.EntityPhone}S.
+     * @return the List of {@link org.kuali.rice.kim.api.identity.phone.EntityPhoneContract}S for this {@link EntityTypeContactInfoContract}.
      * The returned List will never be null, an empty List will be assigned and returned if needed. 
      */
 	List<? extends EntityPhoneContract> getPhoneNumbers();

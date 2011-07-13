@@ -31,25 +31,25 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@XmlRootElement(name = EntityTypeData.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = EntityTypeContactInfo.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = EntityTypeData.Constants.TYPE_NAME, propOrder = {
-    EntityTypeData.Elements.ENTITY_ID,
-    EntityTypeData.Elements.ENTITY_TYPE_CODE,
-    EntityTypeData.Elements.ENTITY_TYPE,
-    EntityTypeData.Elements.ADDRESSES,
-    EntityTypeData.Elements.EMAIL_ADDRESSES,
-    EntityTypeData.Elements.PHONE_NUMBERS,
-    EntityTypeData.Elements.DEFAULT_ADDRESS,
-    EntityTypeData.Elements.DEFAULT_EMAIL_ADDRESS,
-    EntityTypeData.Elements.DEFAULT_PHONE_NUMBER,
+@XmlType(name = EntityTypeContactInfo.Constants.TYPE_NAME, propOrder = {
+    EntityTypeContactInfo.Elements.ENTITY_ID,
+    EntityTypeContactInfo.Elements.ENTITY_TYPE_CODE,
+    EntityTypeContactInfo.Elements.ENTITY_TYPE,
+    EntityTypeContactInfo.Elements.ADDRESSES,
+    EntityTypeContactInfo.Elements.EMAIL_ADDRESSES,
+    EntityTypeContactInfo.Elements.PHONE_NUMBERS,
+    EntityTypeContactInfo.Elements.DEFAULT_ADDRESS,
+    EntityTypeContactInfo.Elements.DEFAULT_EMAIL_ADDRESS,
+    EntityTypeContactInfo.Elements.DEFAULT_PHONE_NUMBER,
     CoreConstants.CommonElements.VERSION_NUMBER,
     CoreConstants.CommonElements.OBJECT_ID,
-    EntityTypeData.Elements.ACTIVE,
+    EntityTypeContactInfo.Elements.ACTIVE,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class EntityTypeData
-    implements ModelObjectComplete, EntityTypeDataContract
+public final class EntityTypeContactInfo
+    implements ModelObjectComplete, EntityTypeContactInfoContract
 {
 
     @XmlElement(name = Elements.ENTITY_ID, required = true)
@@ -86,7 +86,7 @@ public final class EntityTypeData
     /**
      * Private constructor used only by JAXB.
      */
-    private EntityTypeData() {
+    private EntityTypeContactInfo() {
         this.entityId = null;
         this.entityTypeCode = null;
         this.entityType = null;
@@ -101,7 +101,7 @@ public final class EntityTypeData
         this.active = false;
     }
 
-    private EntityTypeData(Builder builder) {
+    private EntityTypeContactInfo(Builder builder) {
         this.entityId = builder.getEntityId();
         this.entityTypeCode = builder.getEntityTypeCode();
         this.entityType = (builder.getEntityType() != null) ? builder.getEntityType().build() : null;
@@ -209,11 +209,11 @@ public final class EntityTypeData
 
 
     /**
-     * A builder which can be used to construct {@link EntityTypeData} instances.  Enforces the constraints of the {@link EntityTypeDataContract}.
+     * A builder which can be used to construct {@link EntityTypeContactInfo} instances.  Enforces the constraints of the {@link EntityTypeContactInfoContract}.
      *
      */
     public final static class Builder
-        implements Serializable, ModelBuilder, EntityTypeDataContract
+        implements Serializable, ModelBuilder, EntityTypeContactInfoContract
     {
         private String entityId;
         private String entityTypeCode;
@@ -235,7 +235,7 @@ public final class EntityTypeData
             return new Builder(entityId, entityTypeCode);
         }
 
-        public static Builder create(EntityTypeDataContract contract) {
+        public static Builder create(EntityTypeContactInfoContract contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
             }
@@ -267,8 +267,8 @@ public final class EntityTypeData
             return builder;
         }
 
-        public EntityTypeData build() {
-            return new EntityTypeData(this);
+        public EntityTypeContactInfo build() {
+            return new EntityTypeContactInfo(this);
         }
 
         @Override
@@ -381,8 +381,8 @@ public final class EntityTypeData
      */
     static class Constants {
 
-        final static String ROOT_ELEMENT_NAME = "entityTypeData";
-        final static String TYPE_NAME = "EntityTypeDataType";
+        final static String ROOT_ELEMENT_NAME = "entityTypeContactInfo";
+        final static String TYPE_NAME = "EntityTypeContactInfoType";
         final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] {CoreConstants.CommonElements.FUTURE_ELEMENTS };
 
     }

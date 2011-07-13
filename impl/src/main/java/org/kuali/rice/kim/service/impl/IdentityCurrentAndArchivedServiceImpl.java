@@ -37,7 +37,7 @@ import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.identity.residency.EntityResidency;
-import org.kuali.rice.kim.api.identity.type.EntityTypeData;
+import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
 import org.kuali.rice.kim.api.identity.visa.EntityVisa;
 import org.kuali.rice.kim.api.services.IdentityArchiveService;
 import org.kuali.rice.kim.api.services.IdentityService;
@@ -404,18 +404,18 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
     }
 
     @Override
-    public EntityTypeData addEntityTypeDataToEntity(EntityTypeData entityTypeData) {
-        return getInnerIdentityService().addEntityTypeDataToEntity(entityTypeData);
+    public EntityTypeContactInfo addEntityTypeContactInfoToEntity(EntityTypeContactInfo entityTypeContactInfo) {
+        return getInnerIdentityService().addEntityTypeContactInfoToEntity(entityTypeContactInfo);
     }
 
     @Override
-    public EntityTypeData updateEntityTypeData(EntityTypeData entityTypeData) {
-        return getInnerIdentityService().updateEntityTypeData(entityTypeData);
+    public EntityTypeContactInfo updateEntityTypeContactInfo(EntityTypeContactInfo entityTypeContactInfo) {
+        return getInnerIdentityService().updateEntityTypeContactInfo(entityTypeContactInfo);
     }
 
     @Override
-    public EntityTypeData inactivateEntityTypeData(String entityId, String entityTypeCode) {
-        return getInnerIdentityService().inactivateEntityTypeData(entityId, entityTypeCode);
+    public EntityTypeContactInfo inactivateEntityTypeContactInfo(String entityId, String entityTypeCode) {
+        return getInnerIdentityService().inactivateEntityTypeContactInfo(entityId, entityTypeCode);
     }
 
     @Override

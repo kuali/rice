@@ -26,8 +26,8 @@ import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.identity.residency.EntityResidency;
 import org.kuali.rice.kim.api.identity.residency.EntityResidencyContract;
-import org.kuali.rice.kim.api.identity.type.EntityTypeData;
-import org.kuali.rice.kim.api.identity.type.EntityTypeDataContract;
+import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
+import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoContract;
 import org.kuali.rice.kim.api.identity.visa.EntityVisa;
 import org.kuali.rice.kim.api.identity.visa.EntityVisaContract;
 import org.w3c.dom.Element;
@@ -49,7 +49,7 @@ import java.util.List;
 @XmlType(name = Entity.Constants.TYPE_NAME, propOrder = {
     Entity.Elements.ID,
     Entity.Elements.PRINCIPALS,
-    Entity.Elements.ENTITY_TYPES,
+    Entity.Elements.ENTITY_TYPE_CONTACT_INFOS,
     Entity.Elements.EXTERNAL_IDENTIFIERS,
     Entity.Elements.AFFILIATIONS,
     Entity.Elements.NAMES,
@@ -76,9 +76,9 @@ public final class Entity
     @XmlElementWrapper(name = Elements.PRINCIPALS, required = false)
     @XmlElement(name = Elements.PRINCIPAL, required = false)
     private final List<Principal> principals;
-    @XmlElementWrapper(name = Elements.ENTITY_TYPES, required = false)
-    @XmlElement(name = Elements.ENTITY_TYPE, required = false)
-    private final List<EntityTypeData> entityTypes;
+    @XmlElementWrapper(name = Elements.ENTITY_TYPE_CONTACT_INFOS, required = false)
+    @XmlElement(name = Elements.ENTITY_TYPE_CONTACT_INFO, required = false)
+    private final List<EntityTypeContactInfo> entityTypeContactInfos;
     @XmlElementWrapper(name = Elements.EXTERNAL_IDENTIFIERS, required = false)
     @XmlElement(name = Elements.EXTERNAL_IDENTIFIER, required = false)
     private final List<EntityExternalIdentifier> externalIdentifiers;
@@ -130,7 +130,7 @@ public final class Entity
      */
     private Entity() {
         this.principals = null;
-        this.entityTypes = null;
+        this.entityTypeContactInfos = null;
         this.externalIdentifiers = null;
         this.affiliations = null;
         this.names = null;
@@ -157,10 +157,10 @@ public final class Entity
                 this.principals.add(principal.build());
             }
         }
-        this.entityTypes = new ArrayList<EntityTypeData>();
-        if (CollectionUtils.isNotEmpty(builder.getEntityTypes())) {
-            for (EntityTypeData.Builder entityTypeData : builder.getEntityTypes()) {
-                this.entityTypes.add(entityTypeData.build());
+        this.entityTypeContactInfos = new ArrayList<EntityTypeContactInfo>();
+        if (CollectionUtils.isNotEmpty(builder.getEntityTypeContactInfos())) {
+            for (EntityTypeContactInfo.Builder entityTypeData : builder.getEntityTypeContactInfos()) {
+                this.entityTypeContactInfos.add(entityTypeData.build());
             }
         }
         this.externalIdentifiers = new ArrayList<EntityExternalIdentifier>();
@@ -228,8 +228,8 @@ public final class Entity
     }
 
     @Override
-    public List<EntityTypeData> getEntityTypes() {
-        return this.entityTypes;
+    public List<EntityTypeContactInfo> getEntityTypeContactInfos() {
+        return this.entityTypeContactInfos;
     }
 
     @Override
@@ -330,11 +330,11 @@ public final class Entity
         return this.id;
     }
 
-    public EntityTypeData getEntityType(String entityTypeCode) {
-        if (entityTypes == null) {
+    public EntityTypeContactInfo getEntityTypeContactInfoByTypeCode(String entityTypeCode) {
+        if (entityTypeContactInfos == null) {
             return null;
         }
-        for (EntityTypeData entType : entityTypes) {
+        for (EntityTypeContactInfo entType : entityTypeContactInfos) {
             if (entType.getEntityTypeCode().equals(entityTypeCode)) {
                 return entType;
             }
@@ -367,7 +367,7 @@ public final class Entity
     {
 
         private List<Principal.Builder> principals;
-        private List<EntityTypeData.Builder> entityTypes;
+        private List<EntityTypeContactInfo.Builder> entityTypeContactInfos;
         private List<EntityExternalIdentifier.Builder> externalIdentifiers;
         private List<EntityAffiliation.Builder> affiliations;
         private List<EntityName.Builder> names;
@@ -401,10 +401,10 @@ public final class Entity
                 }
                 builder.setPrincipals(tempPrincipals);
             }
-            if (contract.getEntityTypes() != null) {
-                List<EntityTypeData.Builder> tempTypeData = new ArrayList<EntityTypeData.Builder>();
-                for (EntityTypeDataContract typeData : contract.getEntityTypes()) {
-                    tempTypeData.add(EntityTypeData.Builder.create(typeData));
+            if (contract.getEntityTypeContactInfos() != null) {
+                List<EntityTypeContactInfo.Builder> tempTypeData = new ArrayList<EntityTypeContactInfo.Builder>();
+                for (EntityTypeContactInfoContract typeData : contract.getEntityTypeContactInfos()) {
+                    tempTypeData.add(EntityTypeContactInfo.Builder.create(typeData));
                 }
                 builder.setEntityTypes(tempTypeData);
             }
@@ -483,8 +483,8 @@ public final class Entity
         }
 
         @Override
-        public List<EntityTypeData.Builder> getEntityTypes() {
-            return this.entityTypes;
+        public List<EntityTypeContactInfo.Builder> getEntityTypeContactInfos() {
+            return this.entityTypeContactInfos;
         }
 
         @Override
@@ -523,11 +523,11 @@ public final class Entity
         }
 
         @Override
-        public EntityTypeData.Builder getEntityType(String entityTypeCode) {
-            if (CollectionUtils.isEmpty(this.entityTypes)) {
+        public EntityTypeContactInfo.Builder getEntityTypeContactInfoByTypeCode(String entityTypeCode) {
+            if (CollectionUtils.isEmpty(this.entityTypeContactInfos)) {
                 return null;
             }
-            for (EntityTypeData.Builder builder : this.entityTypes) {
+            for (EntityTypeContactInfo.Builder builder : this.entityTypeContactInfos) {
                 if (builder.getEntityTypeCode().equals(entityTypeCode) && builder.isActive()) {
                     return builder;
                 }
@@ -629,8 +629,8 @@ public final class Entity
             this.principals = principals;
         }
 
-        public void setEntityTypes(List<EntityTypeData.Builder> entityTypes) {
-            this.entityTypes = entityTypes;
+        public void setEntityTypes(List<EntityTypeContactInfo.Builder> entityTypeContactInfos) {
+            this.entityTypeContactInfos = entityTypeContactInfos;
         }
 
         public void setExternalIdentifiers(List<EntityExternalIdentifier.Builder> externalIdentifiers) {
@@ -716,8 +716,8 @@ public final class Entity
 
         final static String PRINCIPALS = "principals";
         final static String PRINCIPAL = "principal";
-        final static String ENTITY_TYPES = "entityTypes";
-        final static String ENTITY_TYPE = "entityType";
+        final static String ENTITY_TYPE_CONTACT_INFOS = "entityTypeContactInfos";
+        final static String ENTITY_TYPE_CONTACT_INFO = "entityTypeContactInfo";
         final static String EXTERNAL_IDENTIFIERS = "externalIdentifiers";
         final static String EXTERNAL_IDENTIFIER = "externalIdentifier";
         final static String AFFILIATIONS = "affiliations";

@@ -3,29 +3,20 @@ package org.kuali.rice.kim.api.identity.entity
 import org.junit.Test
 import org.junit.Assert
 import org.kuali.rice.kim.api.test.JAXBAssert
-import org.kuali.rice.kim.api.identity.address.EntityAddress
-import org.kuali.rice.kim.api.identity.address.EntityAddressContract
-import org.kuali.rice.kim.api.identity.Type
-import org.kuali.rice.kim.api.identity.TypeContract
-import org.kuali.rice.kim.api.identity.email.EntityEmail
-import org.kuali.rice.kim.api.identity.email.EntityEmailContract
-import org.kuali.rice.kim.api.identity.phone.EntityPhone
-import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract
+
 import org.kuali.rice.kim.api.identity.principal.Principal
-import org.kuali.rice.kim.api.identity.principal.PrincipalContract
+
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifier
-import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType
-import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierTypeContract
+
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierContract
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationContract
-import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationTypeContract
-import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType
+
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierTest
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationTest
 import org.kuali.rice.kim.api.identity.principal.PrincipalTest
-import org.kuali.rice.kim.api.identity.type.EntityTypeData
-import org.kuali.rice.kim.api.identity.type.EntityTypeDataTest
+
+import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoTest
 import org.kuali.rice.kim.api.identity.name.EntityName
 import org.kuali.rice.kim.api.identity.name.EntityNameTest
 import org.kuali.rice.kim.api.identity.employment.EntityEmploymentTest
@@ -44,23 +35,16 @@ import org.kuali.rice.kim.api.identity.visa.EntityVisa
 import org.kuali.rice.kim.api.identity.visa.EntityVisaTest
 import javax.xml.bind.JAXBContext
 import javax.xml.bind.Marshaller
-import org.kuali.rice.kim.api.identity.type.EntityTypeDataContract
+
 import org.kuali.rice.kim.api.identity.name.EntityNameContract
 import org.kuali.rice.kim.api.identity.employment.EntityEmploymentContract
-import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferencesContract
-import org.kuali.rice.kim.api.identity.personal.EntityBioDemographicsContract
-import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenshipContract
-import org.kuali.rice.kim.api.identity.personal.EntityEthnicityContract
-import org.kuali.rice.kim.api.identity.residency.EntityResidencyContract
-import org.kuali.rice.kim.api.identity.visa.EntityVisaContract
-import java.text.SimpleDateFormat
-
+import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo
 
 class EntityTest {
 
     private static final String ENTITY_ID = "190192";
     private static final Principal PRINCIPAL = PrincipalTest.create()
-    private static final EntityTypeData ENTITY_TYPE = EntityTypeDataTest.create()
+    private static final EntityTypeContactInfo ENTITY_TYPE = EntityTypeContactInfoTest.create()
     private static final EntityExternalIdentifier EXTERNAL_ID = EntityExternalIdentifierTest.create()
     private static final EntityAffiliation AFFILIATION = EntityAffiliationTest.create()
     private static final EntityName NAME = EntityNameTest.create()
@@ -90,8 +74,8 @@ class EntityTest {
                         <objectId>${PRINCIPAL.objectId}</objectId>
                     </principal>
                 </principals>
-                <entityTypes>
-                    <entityType>
+                <entityTypeContactInfos>
+                    <entityTypeContactInfo>
                         <entityId>${ENTITY_TYPE.entityId}</entityId>
                         <entityTypeCode>${ENTITY_TYPE.entityTypeCode}</entityTypeCode>
                         <entityType>
@@ -267,29 +251,182 @@ class EntityTest {
                         <versionNumber>${ENTITY_TYPE.versionNumber}</versionNumber>
                         <objectId>${ENTITY_TYPE.objectId}</objectId>
                         <active>${ENTITY_TYPE.active}</active>
-                    </entityType>
-                </entityTypes>
-            <externalIdentifiers>
-                <externalIdentifier>
-                    <id>${EXTERNAL_ID.id}</id>
-                    <entityId>${EXTERNAL_ID.entityId}</entityId>
-                    <externalIdentifierTypeCode>${EXTERNAL_ID.externalIdentifierTypeCode}</externalIdentifierTypeCode>
-                    <externalIdentifierType>
-                        <code>${EXTERNAL_ID.externalIdentifierType.code}</code>
-                        <name>${EXTERNAL_ID.externalIdentifierType.name}</name>
-                        <sortCode>${EXTERNAL_ID.externalIdentifierType.sortCode}</sortCode>
-                        <active>${EXTERNAL_ID.externalIdentifierType.active}</active>
-                        <encryptionRequired>${EXTERNAL_ID.externalIdentifierType.encryptionRequired}</encryptionRequired>
-                        <versionNumber>${EXTERNAL_ID.externalIdentifierType.versionNumber}</versionNumber>
-                        <objectId>${EXTERNAL_ID.externalIdentifierType.objectId}</objectId>
-                    </externalIdentifierType>
-                    <externalId>${EXTERNAL_ID.externalId}</externalId>
-                    <versionNumber>${EXTERNAL_ID.versionNumber}</versionNumber>
-                    <objectId>${EXTERNAL_ID.objectId}</objectId>
-                </externalIdentifier>
-            </externalIdentifiers>
-            <affiliations>
-                <affiliation>
+                    </entityTypeContactInfo>
+                </entityTypeContactInfos>
+                <externalIdentifiers>
+                    <externalIdentifier>
+                        <id>${EXTERNAL_ID.id}</id>
+                        <entityId>${EXTERNAL_ID.entityId}</entityId>
+                        <externalIdentifierTypeCode>${EXTERNAL_ID.externalIdentifierTypeCode}</externalIdentifierTypeCode>
+                        <externalIdentifierType>
+                            <code>${EXTERNAL_ID.externalIdentifierType.code}</code>
+                            <name>${EXTERNAL_ID.externalIdentifierType.name}</name>
+                            <sortCode>${EXTERNAL_ID.externalIdentifierType.sortCode}</sortCode>
+                            <active>${EXTERNAL_ID.externalIdentifierType.active}</active>
+                            <encryptionRequired>${EXTERNAL_ID.externalIdentifierType.encryptionRequired}</encryptionRequired>
+                            <versionNumber>${EXTERNAL_ID.externalIdentifierType.versionNumber}</versionNumber>
+                            <objectId>${EXTERNAL_ID.externalIdentifierType.objectId}</objectId>
+                        </externalIdentifierType>
+                        <externalId>${EXTERNAL_ID.externalId}</externalId>
+                        <versionNumber>${EXTERNAL_ID.versionNumber}</versionNumber>
+                        <objectId>${EXTERNAL_ID.objectId}</objectId>
+                    </externalIdentifier>
+                </externalIdentifiers>
+                <affiliations>
+                    <affiliation>
+                        <id>${AFFILIATION.id}</id>
+                        <entityId>${AFFILIATION.entityId}</entityId>
+                        <affiliationType>
+                            <code>${AFFILIATION.affiliationType.code}</code>
+                            <name>${AFFILIATION.affiliationType.name}</name>
+                            <sortCode>${AFFILIATION.affiliationType.sortCode}</sortCode>
+                            <active>${AFFILIATION.affiliationType.active}</active>
+                            <employmentAffiliationType>${AFFILIATION.affiliationType.employmentAffiliationType}</employmentAffiliationType>
+                            <versionNumber>${AFFILIATION.affiliationType.versionNumber}</versionNumber>
+                            <objectId>${AFFILIATION.affiliationType.objectId}</objectId>
+                        </affiliationType>
+                        <campusCode>${AFFILIATION.campusCode}</campusCode>
+                        <defaultValue>${AFFILIATION.defaultValue}</defaultValue>
+                        <active>${AFFILIATION.active}</active>
+                        <versionNumber>${AFFILIATION.versionNumber}</versionNumber>
+                        <objectId>${AFFILIATION.objectId}</objectId>
+                    </affiliation>
+                </affiliations>
+                <names>
+                    <name>
+                        <id>${NAME.id}</id>
+                        <entityId>${NAME.entityId}</entityId>
+                        <nameType>
+                            <code>${NAME.nameType.code}</code>
+                            <name>${NAME.nameType.name}</name>
+                            <sortCode>${NAME.nameType.sortCode}</sortCode>
+                            <active>${NAME.nameType.active}</active>
+                            <versionNumber>${NAME.nameType.versionNumber}</versionNumber>
+                            <objectId>${NAME.nameType.objectId}</objectId>
+                        </nameType>
+                        <title>${NAME.title}</title>
+                        <firstName>${NAME.firstName}</firstName>
+                        <middleName>${NAME.middleName}</middleName>
+                        <lastName>${NAME.lastName}</lastName>
+                        <suffix>${NAME.suffix}</suffix>
+                        <formattedName>${NAME.formattedName}</formattedName>
+                        <titleUnmasked>${NAME.titleUnmasked}</titleUnmasked>
+                        <firstNameUnmasked>${NAME.firstNameUnmasked}</firstNameUnmasked>
+                        <middleNameUnmasked>${NAME.middleNameUnmasked}</middleNameUnmasked>
+                        <lastNameUnmasked>${NAME.lastNameUnmasked}</lastNameUnmasked>
+                        <suffixUnmasked>${NAME.suffixUnmasked}</suffixUnmasked>
+                        <formattedNameUnmasked>${NAME.formattedNameUnmasked}</formattedNameUnmasked>
+                        <suppressName>${NAME.suppressName}</suppressName>
+                        <defaultValue>${NAME.defaultValue}</defaultValue>
+                        <active>${NAME.active}</active>
+                        <versionNumber>${NAME.versionNumber}</versionNumber>
+                        <objectId>${NAME.objectId}</objectId>
+                    </name>
+                </names>
+                <employmentInformation>
+                    <employment>
+                        <id>${EMPLOYMENT.id}</id>
+                        <entityId>${EMPLOYMENT.entityId}</entityId>
+                        <employeeId>${EMPLOYMENT.employeeId}</employeeId>
+                        <employmentRecordId>${EMPLOYMENT.employmentRecordId}</employmentRecordId>
+                        <entityAffiliation>
+                            <id>${EMPLOYMENT.entityAffiliation.id}</id>
+                            <entityId>${EMPLOYMENT.entityAffiliation.entityId}</entityId>
+                            <affiliationType>
+                                <code>${EMPLOYMENT.entityAffiliation.affiliationType.code}</code>
+                                <name>${EMPLOYMENT.entityAffiliation.affiliationType.name}</name>
+                                <sortCode>${EMPLOYMENT.entityAffiliation.affiliationType.sortCode}</sortCode>
+                                <active>${EMPLOYMENT.entityAffiliation.affiliationType.active}</active>
+                                <employmentAffiliationType>${EMPLOYMENT.entityAffiliation.affiliationType.employmentAffiliationType}</employmentAffiliationType>
+                                <versionNumber>${EMPLOYMENT.entityAffiliation.affiliationType.versionNumber}</versionNumber>
+                                <objectId>${EMPLOYMENT.entityAffiliation.affiliationType.objectId}</objectId>
+                            </affiliationType>
+                            <campusCode>${EMPLOYMENT.entityAffiliation.campusCode}</campusCode>
+                            <defaultValue>${EMPLOYMENT.entityAffiliation.defaultValue}</defaultValue>
+                            <active>${EMPLOYMENT.entityAffiliation.active}</active>
+                            <versionNumber>${EMPLOYMENT.entityAffiliation.versionNumber}</versionNumber>
+                            <objectId>${EMPLOYMENT.entityAffiliation.objectId}</objectId>
+                        </entityAffiliation>
+                        <employeeStatus>
+                            <code>${EMPLOYMENT.employeeStatus.code}</code>
+                            <name>${EMPLOYMENT.employeeStatus.name}</name>
+                            <sortCode>${EMPLOYMENT.employeeStatus.sortCode}</sortCode>
+                            <active>${EMPLOYMENT.employeeStatus.active}</active>
+                            <versionNumber>${EMPLOYMENT.employeeStatus.versionNumber}</versionNumber>
+                            <objectId>${EMPLOYMENT.employeeStatus.objectId}</objectId>
+                        </employeeStatus>
+                        <employeeType>
+                            <code>${EMPLOYMENT.employeeType.code}</code>
+                            <name>${EMPLOYMENT.employeeType.name}</name>
+                            <sortCode>${EMPLOYMENT.employeeType.sortCode}</sortCode>
+                            <active>${EMPLOYMENT.employeeType.active}</active>
+                            <versionNumber>${EMPLOYMENT.employeeType.versionNumber}</versionNumber>
+                            <objectId>${EMPLOYMENT.employeeType.objectId}</objectId>
+                        </employeeType>
+                        <primaryDepartmentCode>${EMPLOYMENT.primaryDepartmentCode}</primaryDepartmentCode>
+                        <baseSalaryAmount>${EMPLOYMENT.baseSalaryAmount}</baseSalaryAmount>
+                        <primary>${EMPLOYMENT.primary}</primary>
+                        <versionNumber>${EMPLOYMENT.versionNumber}</versionNumber>
+                        <objectId>${EMPLOYMENT.objectId}</objectId>
+                        <active>${EMPLOYMENT.active}</active>
+                    </employment>
+                </employmentInformation>
+                <privacyPreferences>
+                    <entityId>${PRIVACY.entityId}</entityId>
+                    <suppressName>${PRIVACY.suppressName}</suppressName>
+                    <suppressAddress>${PRIVACY.suppressAddress}</suppressAddress>
+                    <suppressEmail>${PRIVACY.suppressEmail}</suppressEmail>
+                    <suppressPhone>${PRIVACY.suppressPhone}</suppressPhone>
+                    <suppressPersonal>${PRIVACY.suppressPersonal}</suppressPersonal>
+                    <versionNumber>${PRIVACY.versionNumber}</versionNumber>
+                    <objectId>${PRIVACY.objectId}</objectId>
+                </privacyPreferences>
+                <bioDemographics>
+                    <entityId>${BIO.entityId}</entityId>
+                    <deceasedDate>${BIO.deceasedDate}</deceasedDate>
+                    <birthDate>${BIO.birthDate}</birthDate>
+                    <genderCode>${BIO.genderCode}</genderCode>
+                    <maritalStatusCode>${BIO.maritalStatusCode}</maritalStatusCode>
+                    <primaryLanguageCode>${BIO.primaryLanguageCode}</primaryLanguageCode>
+                    <secondaryLanguageCode>${BIO.secondaryLanguageCode}</secondaryLanguageCode>
+                    <countryOfBirthCode>${BIO.countryOfBirthCode}</countryOfBirthCode>
+                    <birthStateCode>${BIO.birthStateCode}</birthStateCode>
+                    <cityOfBirth>${BIO.cityOfBirth}</cityOfBirth>
+                    <geographicOrigin>${BIO.geographicOrigin}</geographicOrigin>
+                    <birthDateUnmasked>${BIO.birthDateUnmasked}</birthDateUnmasked>
+                    <genderCodeUnmasked>${BIO.genderCodeUnmasked}</genderCodeUnmasked>
+                    <maritalStatusCodeUnmasked>${BIO.maritalStatusCodeUnmasked}</maritalStatusCodeUnmasked>
+                    <primaryLanguageCodeUnmasked>${BIO.primaryLanguageCodeUnmasked}</primaryLanguageCodeUnmasked>
+                    <secondaryLanguageCodeUnmasked>${BIO.secondaryLanguageCodeUnmasked}</secondaryLanguageCodeUnmasked>
+                    <countryOfBirthCodeUnmasked>${BIO.countryOfBirthCodeUnmasked}</countryOfBirthCodeUnmasked>
+                    <birthStateCodeUnmasked>${BIO.birthStateCodeUnmasked}</birthStateCodeUnmasked>
+                    <cityOfBirthUnmasked>${BIO.cityOfBirthUnmasked}</cityOfBirthUnmasked>
+                    <geographicOriginUnmasked>${BIO.geographicOriginUnmasked}</geographicOriginUnmasked>
+                    <suppressPersonal>${BIO.suppressPersonal}</suppressPersonal>
+                    <versionNumber>${BIO.versionNumber}</versionNumber>
+                    <objectId>${BIO.objectId}</objectId>
+                </bioDemographics>
+                <citizenships>
+                    <citizenship>
+                        <id>${CITIZENSHIP.id}</id>
+                        <entityId>${CITIZENSHIP.entityId}</entityId>
+                        <status>
+                            <code>${CITIZENSHIP.status.code}</code>
+                            <name>${CITIZENSHIP.status.name}</name>
+                            <sortCode>${CITIZENSHIP.status.sortCode}</sortCode>
+                            <active>${CITIZENSHIP.status.active}</active>
+                            <versionNumber>${CITIZENSHIP.status.versionNumber}</versionNumber>
+                            <objectId>${CITIZENSHIP.status.objectId}</objectId>
+                        </status>
+                        <countryCode>${CITIZENSHIP.countryCode}</countryCode>
+                        <startDate>${CITIZENSHIP.startDate.toString()}</startDate>
+                        <endDate>${CITIZENSHIP.endDate.toString()}</endDate>
+                        <versionNumber>${CITIZENSHIP.versionNumber}</versionNumber>
+                        <objectId>${CITIZENSHIP.objectId}</objectId>
+                        <active>${CITIZENSHIP.active}</active>
+                    </citizenship>
+                </citizenships>
+                <defaultAffiliation>
                     <id>${AFFILIATION.id}</id>
                     <entityId>${AFFILIATION.entityId}</entityId>
                     <affiliationType>
@@ -306,10 +443,8 @@ class EntityTest {
                     <active>${AFFILIATION.active}</active>
                     <versionNumber>${AFFILIATION.versionNumber}</versionNumber>
                     <objectId>${AFFILIATION.objectId}</objectId>
-                </affiliation>
-            </affiliations>
-            <names>
-                <name>
+                </defaultAffiliation>
+                <defaultName>
                     <id>${NAME.id}</id>
                     <entityId>${NAME.entityId}</entityId>
                     <nameType>
@@ -337,196 +472,45 @@ class EntityTest {
                     <active>${NAME.active}</active>
                     <versionNumber>${NAME.versionNumber}</versionNumber>
                     <objectId>${NAME.objectId}</objectId>
-                </name>
-            </names>
-            <employmentInformation>
-                <employment>
-                    <id>${EMPLOYMENT.id}</id>
-                    <entityId>${EMPLOYMENT.entityId}</entityId>
-                    <employeeId>${EMPLOYMENT.employeeId}</employeeId>
-                    <employmentRecordId>${EMPLOYMENT.employmentRecordId}</employmentRecordId>
-                    <entityAffiliation>
-                        <id>${EMPLOYMENT.entityAffiliation.id}</id>
-                        <entityId>${EMPLOYMENT.entityAffiliation.entityId}</entityId>
-                        <affiliationType>
-                            <code>${EMPLOYMENT.entityAffiliation.affiliationType.code}</code>
-                            <name>${EMPLOYMENT.entityAffiliation.affiliationType.name}</name>
-                            <sortCode>${EMPLOYMENT.entityAffiliation.affiliationType.sortCode}</sortCode>
-                            <active>${EMPLOYMENT.entityAffiliation.affiliationType.active}</active>
-                            <employmentAffiliationType>${EMPLOYMENT.entityAffiliation.affiliationType.employmentAffiliationType}</employmentAffiliationType>
-                            <versionNumber>${EMPLOYMENT.entityAffiliation.affiliationType.versionNumber}</versionNumber>
-                            <objectId>${EMPLOYMENT.entityAffiliation.affiliationType.objectId}</objectId>
-                        </affiliationType>
-                        <campusCode>${EMPLOYMENT.entityAffiliation.campusCode}</campusCode>
-                        <defaultValue>${EMPLOYMENT.entityAffiliation.defaultValue}</defaultValue>
-                        <active>${EMPLOYMENT.entityAffiliation.active}</active>
-                        <versionNumber>${EMPLOYMENT.entityAffiliation.versionNumber}</versionNumber>
-                        <objectId>${EMPLOYMENT.entityAffiliation.objectId}</objectId>
-                    </entityAffiliation>
-                    <employeeStatus>
-                        <code>${EMPLOYMENT.employeeStatus.code}</code>
-                        <name>${EMPLOYMENT.employeeStatus.name}</name>
-                        <sortCode>${EMPLOYMENT.employeeStatus.sortCode}</sortCode>
-                        <active>${EMPLOYMENT.employeeStatus.active}</active>
-                        <versionNumber>${EMPLOYMENT.employeeStatus.versionNumber}</versionNumber>
-                        <objectId>${EMPLOYMENT.employeeStatus.objectId}</objectId>
-                    </employeeStatus>
-                    <employeeType>
-                        <code>${EMPLOYMENT.employeeType.code}</code>
-                        <name>${EMPLOYMENT.employeeType.name}</name>
-                        <sortCode>${EMPLOYMENT.employeeType.sortCode}</sortCode>
-                        <active>${EMPLOYMENT.employeeType.active}</active>
-                        <versionNumber>${EMPLOYMENT.employeeType.versionNumber}</versionNumber>
-                        <objectId>${EMPLOYMENT.employeeType.objectId}</objectId>
-                    </employeeType>
-                    <primaryDepartmentCode>${EMPLOYMENT.primaryDepartmentCode}</primaryDepartmentCode>
-                    <baseSalaryAmount>${EMPLOYMENT.baseSalaryAmount}</baseSalaryAmount>
-                    <primary>${EMPLOYMENT.primary}</primary>
-                    <versionNumber>${EMPLOYMENT.versionNumber}</versionNumber>
-                    <objectId>${EMPLOYMENT.objectId}</objectId>
-                    <active>${EMPLOYMENT.active}</active>
-                </employment>
-            </employmentInformation>
-            <privacyPreferences>
-                <entityId>${PRIVACY.entityId}</entityId>
-                <suppressName>${PRIVACY.suppressName}</suppressName>
-                <suppressAddress>${PRIVACY.suppressAddress}</suppressAddress>
-                <suppressEmail>${PRIVACY.suppressEmail}</suppressEmail>
-                <suppressPhone>${PRIVACY.suppressPhone}</suppressPhone>
-                <suppressPersonal>${PRIVACY.suppressPersonal}</suppressPersonal>
-                <versionNumber>${PRIVACY.versionNumber}</versionNumber>
-                <objectId>${PRIVACY.objectId}</objectId>
-            </privacyPreferences>
-            <bioDemographics>
-                <entityId>${BIO.entityId}</entityId>
-                <deceasedDate>${BIO.deceasedDate}</deceasedDate>
-                <birthDate>${BIO.birthDate}</birthDate>
-                <genderCode>${BIO.genderCode}</genderCode>
-                <maritalStatusCode>${BIO.maritalStatusCode}</maritalStatusCode>
-                <primaryLanguageCode>${BIO.primaryLanguageCode}</primaryLanguageCode>
-                <secondaryLanguageCode>${BIO.secondaryLanguageCode}</secondaryLanguageCode>
-                <countryOfBirthCode>${BIO.countryOfBirthCode}</countryOfBirthCode>
-                <birthStateCode>${BIO.birthStateCode}</birthStateCode>
-                <cityOfBirth>${BIO.cityOfBirth}</cityOfBirth>
-                <geographicOrigin>${BIO.geographicOrigin}</geographicOrigin>
-                <birthDateUnmasked>${BIO.birthDateUnmasked}</birthDateUnmasked>
-                <genderCodeUnmasked>${BIO.genderCodeUnmasked}</genderCodeUnmasked>
-                <maritalStatusCodeUnmasked>${BIO.maritalStatusCodeUnmasked}</maritalStatusCodeUnmasked>
-                <primaryLanguageCodeUnmasked>${BIO.primaryLanguageCodeUnmasked}</primaryLanguageCodeUnmasked>
-                <secondaryLanguageCodeUnmasked>${BIO.secondaryLanguageCodeUnmasked}</secondaryLanguageCodeUnmasked>
-                <countryOfBirthCodeUnmasked>${BIO.countryOfBirthCodeUnmasked}</countryOfBirthCodeUnmasked>
-                <birthStateCodeUnmasked>${BIO.birthStateCodeUnmasked}</birthStateCodeUnmasked>
-                <cityOfBirthUnmasked>${BIO.cityOfBirthUnmasked}</cityOfBirthUnmasked>
-                <geographicOriginUnmasked>${BIO.geographicOriginUnmasked}</geographicOriginUnmasked>
-                <suppressPersonal>${BIO.suppressPersonal}</suppressPersonal>
-                <versionNumber>${BIO.versionNumber}</versionNumber>
-                <objectId>${BIO.objectId}</objectId>
-            </bioDemographics>
-            <citizenships>
-                <citizenship>
-                    <id>${CITIZENSHIP.id}</id>
-                    <entityId>${CITIZENSHIP.entityId}</entityId>
-                    <status>
-                        <code>${CITIZENSHIP.status.code}</code>
-                        <name>${CITIZENSHIP.status.name}</name>
-                        <sortCode>${CITIZENSHIP.status.sortCode}</sortCode>
-                        <active>${CITIZENSHIP.status.active}</active>
-                        <versionNumber>${CITIZENSHIP.status.versionNumber}</versionNumber>
-                        <objectId>${CITIZENSHIP.status.objectId}</objectId>
-                    </status>
-                    <countryCode>${CITIZENSHIP.countryCode}</countryCode>
-                    <startDate>${CITIZENSHIP.startDate.toString()}</startDate>
-                    <endDate>${CITIZENSHIP.endDate.toString()}</endDate>
-                    <versionNumber>${CITIZENSHIP.versionNumber}</versionNumber>
-                    <objectId>${CITIZENSHIP.objectId}</objectId>
-                    <active>${CITIZENSHIP.active}</active>
-                </citizenship>
-            </citizenships>
-            <defaultAffiliation>
-                <id>${AFFILIATION.id}</id>
-                <entityId>${AFFILIATION.entityId}</entityId>
-                <affiliationType>
-                    <code>${AFFILIATION.affiliationType.code}</code>
-                    <name>${AFFILIATION.affiliationType.name}</name>
-                    <sortCode>${AFFILIATION.affiliationType.sortCode}</sortCode>
-                    <active>${AFFILIATION.affiliationType.active}</active>
-                    <employmentAffiliationType>${AFFILIATION.affiliationType.employmentAffiliationType}</employmentAffiliationType>
-                    <versionNumber>${AFFILIATION.affiliationType.versionNumber}</versionNumber>
-                    <objectId>${AFFILIATION.affiliationType.objectId}</objectId>
-                </affiliationType>
-                <campusCode>${AFFILIATION.campusCode}</campusCode>
-                <defaultValue>${AFFILIATION.defaultValue}</defaultValue>
-                <active>${AFFILIATION.active}</active>
-                <versionNumber>${AFFILIATION.versionNumber}</versionNumber>
-                <objectId>${AFFILIATION.objectId}</objectId>
-            </defaultAffiliation>
-            <defaultName>
-                <id>${NAME.id}</id>
-                <entityId>${NAME.entityId}</entityId>
-                <nameType>
-                    <code>${NAME.nameType.code}</code>
-                    <name>${NAME.nameType.name}</name>
-                    <sortCode>${NAME.nameType.sortCode}</sortCode>
-                    <active>${NAME.nameType.active}</active>
-                    <versionNumber>${NAME.nameType.versionNumber}</versionNumber>
-                    <objectId>${NAME.nameType.objectId}</objectId>
-                </nameType>
-                <title>${NAME.title}</title>
-                <firstName>${NAME.firstName}</firstName>
-                <middleName>${NAME.middleName}</middleName>
-                <lastName>${NAME.lastName}</lastName>
-                <suffix>${NAME.suffix}</suffix>
-                <formattedName>${NAME.formattedName}</formattedName>
-                <titleUnmasked>${NAME.titleUnmasked}</titleUnmasked>
-                <firstNameUnmasked>${NAME.firstNameUnmasked}</firstNameUnmasked>
-                <middleNameUnmasked>${NAME.middleNameUnmasked}</middleNameUnmasked>
-                <lastNameUnmasked>${NAME.lastNameUnmasked}</lastNameUnmasked>
-                <suffixUnmasked>${NAME.suffixUnmasked}</suffixUnmasked>
-                <formattedNameUnmasked>${NAME.formattedNameUnmasked}</formattedNameUnmasked>
-                <suppressName>${NAME.suppressName}</suppressName>
-                <defaultValue>${NAME.defaultValue}</defaultValue>
-                <active>${NAME.active}</active>
-                <versionNumber>${NAME.versionNumber}</versionNumber>
-                <objectId>${NAME.objectId}</objectId>
-            </defaultName>
-            <ethnicities>
-                <ethnicity>
-                    <id>${ETHNICITY.id}</id>
-                    <entityId>${ETHNICITY.entityId}</entityId>
-                    <ethnicityCode>${ETHNICITY.ethnicityCode}</ethnicityCode>
-                    <ethnicityCodeUnmasked>${ETHNICITY.ethnicityCodeUnmasked}</ethnicityCodeUnmasked>
-                    <subEthnicityCode>${ETHNICITY.subEthnicityCode}</subEthnicityCode>
-                    <subEthnicityCodeUnmasked>${ETHNICITY.subEthnicityCodeUnmasked}</subEthnicityCodeUnmasked>
-                    <suppressPersonal>${ETHNICITY.suppressPersonal}</suppressPersonal>
-                    <versionNumber>${ETHNICITY.versionNumber}</versionNumber>
-                    <objectId>${ETHNICITY.objectId}</objectId>
-                </ethnicity>
-            </ethnicities>
-            <residencies>
-                <residency>
-                    <id>${RESIDENCY.id}</id>
-                    <entityId>${RESIDENCY.entityId}</entityId>
-                    <determinationMethod>${RESIDENCY.determinationMethod}</determinationMethod>
-                    <inState>${RESIDENCY.inState}</inState>
-                    <versionNumber>${RESIDENCY.versionNumber}</versionNumber>
-                    <objectId>${RESIDENCY.objectId}</objectId>
-                </residency>
-            </residencies>
-            <visas>
-                <visa>
-                    <id>${VISA.id}</id>
-                    <entityId>${VISA.entityId}</entityId>
-                    <visaTypeKey>${VISA.visaTypeKey}</visaTypeKey>
-                    <visaEntry>${VISA.visaEntry}</visaEntry>
-                    <visaId>${VISA.visaId}</visaId>
-                    <versionNumber>${VISA.versionNumber}</versionNumber>
-                    <objectId>${VISA.objectId}</objectId>
-                </visa>
-            </visas>
-            <versionNumber>${VERSION_NUMBER}</versionNumber>
-            <objectId>${OBJECT_ID}</objectId>
-            <active>${ACTIVE}</active>
-        </entity>
+                </defaultName>
+                <ethnicities>
+                    <ethnicity>
+                        <id>${ETHNICITY.id}</id>
+                        <entityId>${ETHNICITY.entityId}</entityId>
+                        <ethnicityCode>${ETHNICITY.ethnicityCode}</ethnicityCode>
+                        <ethnicityCodeUnmasked>${ETHNICITY.ethnicityCodeUnmasked}</ethnicityCodeUnmasked>
+                        <subEthnicityCode>${ETHNICITY.subEthnicityCode}</subEthnicityCode>
+                        <subEthnicityCodeUnmasked>${ETHNICITY.subEthnicityCodeUnmasked}</subEthnicityCodeUnmasked>
+                        <suppressPersonal>${ETHNICITY.suppressPersonal}</suppressPersonal>
+                        <versionNumber>${ETHNICITY.versionNumber}</versionNumber>
+                        <objectId>${ETHNICITY.objectId}</objectId>
+                    </ethnicity>
+                </ethnicities>
+                <residencies>
+                    <residency>
+                        <id>${RESIDENCY.id}</id>
+                        <entityId>${RESIDENCY.entityId}</entityId>
+                        <determinationMethod>${RESIDENCY.determinationMethod}</determinationMethod>
+                        <inState>${RESIDENCY.inState}</inState>
+                        <versionNumber>${RESIDENCY.versionNumber}</versionNumber>
+                        <objectId>${RESIDENCY.objectId}</objectId>
+                    </residency>
+                </residencies>
+                <visas>
+                    <visa>
+                        <id>${VISA.id}</id>
+                        <entityId>${VISA.entityId}</entityId>
+                        <visaTypeKey>${VISA.visaTypeKey}</visaTypeKey>
+                        <visaEntry>${VISA.visaEntry}</visaEntry>
+                        <visaId>${VISA.visaId}</visaId>
+                        <versionNumber>${VISA.versionNumber}</versionNumber>
+                        <objectId>${VISA.objectId}</objectId>
+                    </visa>
+                </visas>
+                <versionNumber>${VERSION_NUMBER}</versionNumber>
+                <objectId>${OBJECT_ID}</objectId>
+                <active>${ACTIVE}</active>
+            </entity>
         """
 
 
@@ -570,7 +554,7 @@ class EntityTest {
     private create() {
         List<Principal> testPrincipals = Collections.singletonList(EntityTest.PRINCIPAL)
 
-        List<EntityTypeData> testEntityTypes = Collections.singletonList(EntityTest.ENTITY_TYPE)
+        List<EntityTypeContactInfo> testEntityTypes = Collections.singletonList(EntityTest.ENTITY_TYPE)
 
         List<EntityExternalIdentifier> testExternalIdentifiers = Collections.singletonList(EntityTest.EXTERNAL_ID)
 
@@ -595,7 +579,7 @@ class EntityTest {
 
             def String id = EntityTest.ENTITY_ID
             def List<Principal> getPrincipals() {return testPrincipals }
-            def List<EntityTypeData> getEntityTypes() { return testEntityTypes }
+            def List<EntityTypeContactInfo> getEntityTypeContactInfos() { return testEntityTypes }
             def List<EntityExternalIdentifier> getExternalIdentifiers() {return testExternalIdentifiers }
             def List<EntityAffiliation> getAffiliations() { return testAffiliations }
             def List<EntityName> getNames() { return testNames }
@@ -603,8 +587,8 @@ class EntityTest {
             def EntityPrivacyPreferences getPrivacyPreferences() { return testPrivacyPreferences }
             def EntityBioDemographics getBioDemographics() { return testBioDemographics }
             def List<EntityCitizenship> getCitizenships() { return testCitizenships }
-            def EntityTypeData getEntityType(String entityTypeCode) {
-                return this.getEntityType(entityTypeCode)
+            def EntityTypeContactInfo getEntityTypeContactInfoByTypeCode(String entityTypeCode) {
+                return this.getEntityTypeContactInfoByTypeCode(entityTypeCode)
             }
             def EntityEmploymentContract getPrimaryEmployment() {
                 return EntityTest.EMPLOYMENT

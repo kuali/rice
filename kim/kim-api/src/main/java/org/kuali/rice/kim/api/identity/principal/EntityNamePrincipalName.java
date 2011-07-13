@@ -6,16 +6,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
-import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
-import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationContract;
-import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
-import org.kuali.rice.kim.api.identity.entity.EntityContract;
-import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifier;
-import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierContract;
 import org.kuali.rice.kim.api.identity.name.EntityName;
-import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
-import org.kuali.rice.kim.api.identity.type.EntityTypeDataContract;
-import org.kuali.rice.kim.api.identity.type.EntityTypeDataDefault;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -25,9 +16,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @XmlRootElement(name = EntityNamePrincipalName.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)

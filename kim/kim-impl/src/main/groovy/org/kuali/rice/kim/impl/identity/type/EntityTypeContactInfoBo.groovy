@@ -15,21 +15,21 @@ import org.apache.commons.collections.CollectionUtils
 import org.hibernate.annotations.Type
 import org.kuali.rice.kim.api.identity.EntityUtils
 import org.kuali.rice.kim.api.identity.address.EntityAddress
-import org.kuali.rice.kim.api.identity.email.EntityEmail
+
 import org.kuali.rice.kim.api.identity.phone.EntityPhone
-import org.kuali.rice.kim.api.identity.type.EntityTypeData
-import org.kuali.rice.kim.api.identity.type.EntityTypeDataContract
+import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo
+import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoContract
 import org.kuali.rice.kim.impl.identity.EntityTypeBo
 import org.kuali.rice.kim.impl.identity.address.EntityAddressBo
 import org.kuali.rice.kim.impl.identity.email.EntityEmailBo
 import org.kuali.rice.kim.impl.identity.phone.EntityPhoneBo
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
-import org.kuali.rice.kim.api.identity.type.EntityTypeDataDefault
+import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoDefault
 
 @Entity
-@IdClass(EntityTypeDataId.class)
+@IdClass(EntityTypeContactInfoId.class)
 @Table(name = "KRIM_ENTITY_ENT_TYP_T")
-public class EntityTypeDataBo extends PersistableBusinessObjectBase implements EntityTypeDataContract {
+public class EntityTypeContactInfoBo extends PersistableBusinessObjectBase implements EntityTypeContactInfoContract {
 
     private static final long serialVersionUID = 1L;
 
@@ -45,7 +45,7 @@ public class EntityTypeDataBo extends PersistableBusinessObjectBase implements E
     @JoinColumn(name = "ENT_TYP_CD", insertable = false, updatable = false)
     EntityTypeBo entityType;
 
-    @OneToMany(targetEntity = EntityTypeDataBo.class, fetch = FetchType.EAGER, cascade = [ CascadeType.ALL ])
+    @OneToMany(targetEntity = EntityTypeContactInfoBo.class, fetch = FetchType.EAGER, cascade = [ CascadeType.ALL ])
     @JoinColumns([
         @JoinColumn(name="ENTITY_ID", insertable = false, updatable = false),
         @JoinColumn(name="ENT_TYP_CD", insertable = false, updatable = false)
@@ -75,16 +75,16 @@ public class EntityTypeDataBo extends PersistableBusinessObjectBase implements E
        * @param bo
        * @return an immutable EntityTypeData
        */
-      static EntityTypeData to(EntityTypeDataBo bo) {
+      static EntityTypeContactInfo to(EntityTypeContactInfoBo bo) {
         if (bo == null) { return null }
-        return EntityTypeData.Builder.create(bo).build()
+        return EntityTypeContactInfo.Builder.create(bo).build()
       }
 
-      static EntityTypeDataDefault toDefault(EntityTypeDataBo bo) {
+      static EntityTypeContactInfoDefault toDefault(EntityTypeContactInfoBo bo) {
           if (bo == null) { return null }
-          return new EntityTypeDataDefault(bo.getEntityTypeCode(),
+          return new EntityTypeContactInfoDefault(bo.getEntityTypeCode(),
                                         EntityAddressBo.to(bo.getDefaultAddress()),
-                                        EntityTypeDataBo.to(bo.getDefaultEmailAddress()),
+                                        EntityTypeContactInfoBo.to(bo.getDefaultEmailAddress()),
                                         EntityPhoneBo.to(bo.getDefaultPhoneNumber()))
       }
 
@@ -93,10 +93,10 @@ public class EntityTypeDataBo extends PersistableBusinessObjectBase implements E
        * @param an immutable EntityTypeData
        * @return a EntityTypeDataBo
        */
-      static EntityTypeDataBo from(EntityTypeData immutable) {
+      static EntityTypeContactInfoBo from(EntityTypeContactInfo immutable) {
         if (immutable == null) {return null}
 
-        EntityTypeDataBo bo = new EntityTypeDataBo()
+        EntityTypeContactInfoBo bo = new EntityTypeContactInfoBo()
         bo.active = immutable.active
 
         bo.entityId = immutable.entityId
@@ -113,10 +113,10 @@ public class EntityTypeDataBo extends PersistableBusinessObjectBase implements E
                 bo.phoneNumbers.add(EntityPhoneBo.from(phone))
             }
         }
-        bo.emailAddresses = new ArrayList<EntityTypeDataBo>()
+        bo.emailAddresses = new ArrayList<EntityTypeContactInfoBo>()
         if (CollectionUtils.isNotEmpty(immutable.emailAddresses)) {
-            for (EntityTypeData email : immutable.emailAddresses) {
-                bo.emailAddresses.add(EntityTypeDataBo.from(email))
+            for (EntityTypeContactInfo email : immutable.emailAddresses) {
+                bo.emailAddresses.add(EntityTypeContactInfoBo.from(email))
             }
         }
         bo.versionNumber = immutable.versionNumber

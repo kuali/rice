@@ -21,7 +21,7 @@ import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifier;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.api.identity.type.EntityTypeDataDefault;
+import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoDefault;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.Column;
@@ -93,8 +93,8 @@ public class KimEntityDefaultInfoCacheImpl extends PersistableBusinessObjectBase
 				principalId = entity.getPrincipals().get(0).getPrincipalId();
 				principalName = entity.getPrincipals().get(0).getPrincipalName();
 			}
-			if ( entity.getEntityTypes() != null && !entity.getEntityTypes().isEmpty() ) {
-				entityTypeCode = entity.getEntityTypes().get(0).getEntityTypeCode();
+			if ( entity.getEntityTypeContactInfos() != null && !entity.getEntityTypeContactInfos().isEmpty() ) {
+				entityTypeCode = entity.getEntityTypeContactInfos().get(0).getEntityTypeCode();
 			}
 			if ( entity.getName() != null ) {
 				firstName = entity.getName().getFirstNameUnmasked();
@@ -135,9 +135,9 @@ public class KimEntityDefaultInfoCacheImpl extends PersistableBusinessObjectBase
 		info.setName(nameInfo);
 
 		// identity type information
-		EntityTypeDataDefault.Builder entityTypeInfo = EntityTypeDataDefault.Builder.create();
+		EntityTypeContactInfoDefault.Builder entityTypeInfo = EntityTypeContactInfoDefault.Builder.create();
         entityTypeInfo.setEntityTypeCode(this.getEntityTypeCode());
-		info.setEntityTypes(Collections.singletonList(entityTypeInfo));
+		info.setEntityTypeContactInfos(Collections.singletonList(entityTypeInfo));
 
 		// affiliations
 		EntityAffiliation.Builder aff = EntityAffiliation.Builder.create();

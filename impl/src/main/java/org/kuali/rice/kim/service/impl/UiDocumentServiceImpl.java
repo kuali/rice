@@ -38,7 +38,7 @@ import org.kuali.rice.kim.api.identity.phone.EntityPhone;
 import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
-import org.kuali.rice.kim.api.identity.type.EntityTypeData;
+import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMember;
@@ -89,7 +89,7 @@ import org.kuali.rice.kim.impl.identity.name.EntityNameBo;
 import org.kuali.rice.kim.impl.identity.phone.EntityPhoneBo;
 import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
 import org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo;
-import org.kuali.rice.kim.impl.identity.type.EntityTypeDataBo;
+import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
 import org.kuali.rice.kim.impl.role.RoleBo;
@@ -186,14 +186,14 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			setupAffiliation(identityManagementPersonDocument, kimEntity, origEntity.getAffiliations(), origEntity.getEmploymentInformation());
 			setupName(identityManagementPersonDocument, kimEntity, origEntity.getNames());
 		// entitytype
-			List<EntityTypeDataBo> entityTypes = new ArrayList<EntityTypeDataBo>();
-			EntityTypeDataBo entityType = new EntityTypeDataBo();
+			List<EntityTypeContactInfoBo> entityTypes = new ArrayList<EntityTypeContactInfoBo>();
+			EntityTypeContactInfoBo entityType = new EntityTypeContactInfoBo();
 			entityType.setEntityId(identityManagementPersonDocument.getEntityId());
 			entityType.setEntityTypeCode(KimConstants.EntityTypes.PERSON);
 			entityType.setActive(true);
 			entityTypes.add(entityType);
-			EntityTypeDataBo origEntityType = new EntityTypeDataBo();
-			for (EntityTypeDataBo type : origEntity.getEntityTypes()) {
+			EntityTypeContactInfoBo origEntityType = new EntityTypeContactInfoBo();
+			for (EntityTypeContactInfoBo type : origEntity.getEntityTypeContactInfos()) {
 				// should check identity.entitytypeid, but it's not persist in persondoc yet
 				if (type.getEntityTypeCode()!=null && StringUtils.equals(type.getEntityTypeCode(), entityType.getEntityTypeCode())) {
 					origEntityType = type;
@@ -204,7 +204,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			setupPhone(identityManagementPersonDocument, entityType, origEntityType.getPhoneNumbers());
 			setupEmail(identityManagementPersonDocument, entityType, origEntityType.getEmailAddresses());
 			setupAddress(identityManagementPersonDocument, entityType, origEntityType.getAddresses());
-            kimEntity.setEntityTypes(entityTypes);
+            kimEntity.setEntityTypeContactInfos(entityTypes);
 		} else{
 			if(ObjectUtils.isNotNull(origEntity.getExternalIdentifiers())) {
                 kimEntity.setExternalIdentifiers(origEntity.getExternalIdentifiers());
@@ -218,8 +218,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			if(ObjectUtils.isNotNull(origEntity.getNames())) {
                 kimEntity.setNames(origEntity.getNames());
             }
-			if(ObjectUtils.isNotNull(origEntity.getEntityTypes())) {
-                kimEntity.setEntityTypes(origEntity.getEntityTypes());
+			if(ObjectUtils.isNotNull(origEntity.getEntityTypeContactInfos())) {
+                kimEntity.setEntityTypeContactInfos(origEntity.getEntityTypeContactInfos());
             }
 		}
 		if(creatingNew || canOverrideEntityPrivacyPreferences(getInitiatorPrincipalId(identityManagementPersonDocument), identityManagementPersonDocument.getPrincipalId())) {
@@ -351,10 +351,10 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		//identityManagementPersonDocument.setActive(kimEntity.isActive());
 		identityManagementPersonDocument.setAffiliations(loadAffiliations(kimEntity.getAffiliations(),kimEntity.getEmploymentInformation()));
 		identityManagementPersonDocument.setNames(loadNames( identityManagementPersonDocument, principalId, kimEntity.getNames(), identityManagementPersonDocument.getPrivacy().isSuppressName() ));
-		EntityTypeData entityType = null;
-		for (EntityTypeData type : kimEntity.getEntityTypes()) {
+		EntityTypeContactInfo entityType = null;
+		for (EntityTypeContactInfo type : kimEntity.getEntityTypeContactInfos()) {
 			if (KimConstants.EntityTypes.PERSON.equals(type.getEntityTypeCode())) {
-				entityType = EntityTypeData.Builder.create(type).build();
+				entityType = EntityTypeContactInfo.Builder.create(type).build();
 			}
 		}
 
@@ -662,8 +662,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	private EntityBo getEntityBo(String entityId) {
 		EntityBo entityImpl = getBusinessObjectService().findBySinglePrimaryKey(EntityBo.class, entityId);
         //TODO - remove this hack... This is here because currently jpa only seems to be going 2 levels deep on the eager fetching.
-		if(entityImpl!=null  && entityImpl.getEntityTypes() != null) {
-        	for (EntityTypeDataBo et : entityImpl.getEntityTypes()) {
+		if(entityImpl!=null  && entityImpl.getEntityTypeContactInfos() != null) {
+        	for (EntityTypeContactInfoBo et : entityImpl.getEntityTypeContactInfos()) {
         		et.refresh();
         	}
         }
@@ -1094,7 +1094,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     			&& StringUtils.equals( origEmpInfo.getEntityId(),entityEmpInfo.getEntityId());
     }
 
-    protected void setupPhone(IdentityManagementPersonDocument identityManagementPersonDocument, EntityTypeDataBo entityType, List<EntityPhoneBo> origPhones) {
+    protected void setupPhone(IdentityManagementPersonDocument identityManagementPersonDocument, EntityTypeContactInfoBo entityType, List<EntityPhoneBo> origPhones) {
     	if ( !identityManagementPersonDocument.getPrivacy().isSuppressPhone() || canOverrideEntityPrivacyPreferences(getInitiatorPrincipalId(identityManagementPersonDocument), identityManagementPersonDocument.getPrincipalId()) ) {
 			List<EntityPhoneBo> entityPhones = new ArrayList<EntityPhoneBo>();
 			if(CollectionUtils.isNotEmpty(identityManagementPersonDocument.getPhones())){
@@ -1155,7 +1155,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
     protected void setupEmail(
 			IdentityManagementPersonDocument identityManagementPersonDocument,
-			EntityTypeDataBo entityType, List<EntityEmailBo> origEmails) {
+			EntityTypeContactInfoBo entityType, List<EntityEmailBo> origEmails) {
     	if ( !identityManagementPersonDocument.getPrivacy().isSuppressEmail() || canOverrideEntityPrivacyPreferences(getInitiatorPrincipalId(identityManagementPersonDocument), identityManagementPersonDocument.getPrincipalId()) ) {
 			List<EntityEmailBo> entityEmails = new ArrayList<EntityEmailBo>();
 			if(CollectionUtils.isNotEmpty(identityManagementPersonDocument.getEmails())){
@@ -1210,7 +1210,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
     protected void setupAddress(
 			IdentityManagementPersonDocument identityManagementPersonDocument,
-			EntityTypeDataBo entityType, List<EntityAddressBo> origAddresses) {
+			EntityTypeContactInfoBo entityType, List<EntityAddressBo> origAddresses) {
     	if ( !identityManagementPersonDocument.getPrivacy().isSuppressAddress() || canOverrideEntityPrivacyPreferences(getInitiatorPrincipalId(identityManagementPersonDocument), identityManagementPersonDocument.getPrincipalId()) ) {
 			List<EntityAddressBo> entityAddresses = new ArrayList<EntityAddressBo>();
 			if(CollectionUtils.isNotEmpty(identityManagementPersonDocument.getAddrs())){

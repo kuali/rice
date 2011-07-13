@@ -1,7 +1,6 @@
 package org.kuali.rice.kim.api.identity.entity;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -18,8 +17,8 @@ import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
-import org.kuali.rice.kim.api.identity.type.EntityTypeDataContract;
-import org.kuali.rice.kim.api.identity.type.EntityTypeDataDefault;
+import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoContract;
+import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoDefault;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -41,7 +40,7 @@ import java.util.List;
     EntityDefault.Elements.ENTITY_ID,
     EntityDefault.Elements.NAME,
     EntityDefault.Elements.PRINCIPALS,
-    EntityDefault.Elements.ENTITY_TYPES,
+    EntityDefault.Elements.ENTITY_TYPE_CONTACT_INFOS,
     EntityDefault.Elements.AFFILIATIONS,
     EntityDefault.Elements.DEFAULT_AFFILIATION,
     EntityDefault.Elements.EMPLOYMENT,
@@ -58,9 +57,9 @@ public class EntityDefault implements ModelObjectComplete {
     @XmlElementWrapper(name = Elements.PRINCIPALS, required = false)
     @XmlElement(name = Elements.PRINCIPAL, required = false)
     private final List<Principal> principals;
-    @XmlElementWrapper(name = Elements.ENTITY_TYPES, required = false)
-    @XmlElement(name = Elements.ENTITY_TYPE, required = false)
-    private final List<EntityTypeDataDefault> entityTypes;
+    @XmlElementWrapper(name = Elements.ENTITY_TYPE_CONTACT_INFOS, required = false)
+    @XmlElement(name = Elements.ENTITY_TYPE_CONTACT_INFO, required = false)
+    private final List<EntityTypeContactInfoDefault> entityTypeContactInfos;
     @XmlElementWrapper(name = Elements.AFFILIATIONS, required = false)
     @XmlElement(name = Elements.AFFILIATION, required = false)
     private final List<EntityAffiliation> affiliations;
@@ -85,7 +84,7 @@ public class EntityDefault implements ModelObjectComplete {
         principals = null;
         affiliations = null;
         defaultAffiliation = null;
-        entityTypes = null;
+        entityTypeContactInfos = null;
         employment = null;
         externalIdentifiers = null;
         privacyPreferences = null;
@@ -93,13 +92,13 @@ public class EntityDefault implements ModelObjectComplete {
     }
 
     public EntityDefault(String entityId, EntityName name, List<Principal> principals,
-            List<EntityTypeDataDefault> entityTypes, List<EntityAffiliation> affiliations,
+            List<EntityTypeContactInfoDefault> entityTypes, List<EntityAffiliation> affiliations,
             EntityAffiliation defaultAffiliation, EntityEmployment employment,
             List<EntityExternalIdentifier> externalIdentifiers, EntityPrivacyPreferences privacyPreferences, boolean active) {
         this.entityId = entityId;
         this.name = name;
         this.principals = principals;
-        this.entityTypes = entityTypes;
+        this.entityTypeContactInfos = entityTypes;
         this.affiliations = affiliations;
         this.defaultAffiliation = defaultAffiliation;
         this.employment = employment;
@@ -117,10 +116,10 @@ public class EntityDefault implements ModelObjectComplete {
                 this.principals.add(principal.build());
             }
         }
-        this.entityTypes = new ArrayList<EntityTypeDataDefault>();
-        if (CollectionUtils.isNotEmpty(builder.getEntityTypes())) {
-            for (EntityTypeDataDefault.Builder entityType : builder.getEntityTypes()) {
-                this.entityTypes.add(entityType.build());
+        this.entityTypeContactInfos = new ArrayList<EntityTypeContactInfoDefault>();
+        if (CollectionUtils.isNotEmpty(builder.getEntityTypeContactInfos())) {
+            for (EntityTypeContactInfoDefault.Builder entityType : builder.getEntityTypeContactInfos()) {
+                this.entityTypeContactInfos.add(entityType.build());
             }
         }
         this.affiliations = new ArrayList<EntityAffiliation>();
@@ -173,8 +172,8 @@ public class EntityDefault implements ModelObjectComplete {
         return Collections.unmodifiableList(principals);
     }
 
-    public List<EntityTypeDataDefault> getEntityTypes() {
-        return Collections.unmodifiableList(entityTypes);
+    public List<EntityTypeContactInfoDefault> getEntityTypeContactInfos() {
+        return Collections.unmodifiableList(entityTypeContactInfos);
     }
 
     public List<EntityAffiliation> getAffiliations() {
@@ -203,14 +202,14 @@ public class EntityDefault implements ModelObjectComplete {
 
     /**
      * Gets this {@link EntityDefault}'s {@link KimEntityEntityTypeDefaultInfo} for the given type code.
-     * @return the {@link EntityTypeDataDefault} for the given type code for this {@link KimEntityDefaultInfo},
+     * @return the {@link org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoDefault} for the given type code for this {@link KimEntityDefaultInfo},
      * or null if none has been assigned.
      */
-    public EntityTypeDataDefault getEntityType(String entityTypeCode) {
-        if (entityTypes == null) {
+    public EntityTypeContactInfoDefault getEntityType(String entityTypeCode) {
+        if (entityTypeContactInfos == null) {
             return null;
         }
-        for (EntityTypeDataDefault entType : entityTypes) {
+        for (EntityTypeContactInfoDefault entType : entityTypeContactInfos) {
             if (entType.getEntityTypeCode().equals(entityTypeCode)) {
                 return entType;
             }
@@ -229,7 +228,7 @@ public class EntityDefault implements ModelObjectComplete {
         private String entityId;
         private EntityName.Builder name;
         private List<Principal.Builder> principals;
-        private List<EntityTypeDataDefault.Builder> entityTypes;
+        private List<EntityTypeContactInfoDefault.Builder> entityTypeContactInfos;
         private List<EntityAffiliation.Builder> affiliations;
         private EntityAffiliation.Builder defaultAffiliation;
         private EntityEmployment.Builder employment;
@@ -266,11 +265,11 @@ public class EntityDefault implements ModelObjectComplete {
                     EntityPrivacyPreferences.Builder.create(contract.getId()) : EntityPrivacyPreferences.Builder.create(contract.getPrivacyPreferences()));
 
             builder.setName(contract.getDefaultName() == null ? null : EntityName.Builder.create(contract.getDefaultName()));
-            List<EntityTypeDataDefault.Builder> typeBuilders = new ArrayList<EntityTypeDataDefault.Builder>();
-            for ( EntityTypeDataContract etContract : contract.getEntityTypes() ) {
-                typeBuilders.add(EntityTypeDataDefault.Builder.create(etContract));
+            List<EntityTypeContactInfoDefault.Builder> typeBuilders = new ArrayList<EntityTypeContactInfoDefault.Builder>();
+            for ( EntityTypeContactInfoContract etContract : contract.getEntityTypeContactInfos() ) {
+                typeBuilders.add(EntityTypeContactInfoDefault.Builder.create(etContract));
             }
-            builder.setEntityTypes(typeBuilders);
+            builder.setEntityTypeContactInfos(typeBuilders);
           
             List<EntityAffiliation.Builder> affiliationBuilders = new ArrayList<EntityAffiliation.Builder>( );
             for ( EntityAffiliationContract aff : contract.getAffiliations() ) {
@@ -319,12 +318,12 @@ public class EntityDefault implements ModelObjectComplete {
             this.principals = principals;
         }
 
-        public List<EntityTypeDataDefault.Builder> getEntityTypes() {
-            return entityTypes;
+        public List<EntityTypeContactInfoDefault.Builder> getEntityTypeContactInfos() {
+            return entityTypeContactInfos;
         }
 
-        public void setEntityTypes(List<EntityTypeDataDefault.Builder> entityTypes) {
-            this.entityTypes = entityTypes;
+        public void setEntityTypeContactInfos(List<EntityTypeContactInfoDefault.Builder> entityTypeContactInfos) {
+            this.entityTypeContactInfos = entityTypeContactInfos;
         }
 
         public List<EntityAffiliation.Builder> getAffiliations() {
@@ -397,8 +396,8 @@ public class EntityDefault implements ModelObjectComplete {
         final static String NAME = "name";
         final static String PRINCIPALS = "principals";
         final static String PRINCIPAL = "principal";
-        final static String ENTITY_TYPES = "entityTypes";
-        final static String ENTITY_TYPE = "entityType";
+        final static String ENTITY_TYPE_CONTACT_INFOS = "entityTypeContactInfos";
+        final static String ENTITY_TYPE_CONTACT_INFO = "entityTypeContactInfo";
         final static String AFFILIATIONS = "affiliations";
         final static String AFFILIATION = "affiliation";
         final static String DEFAULT_AFFILIATION = "defaultAffiliation";

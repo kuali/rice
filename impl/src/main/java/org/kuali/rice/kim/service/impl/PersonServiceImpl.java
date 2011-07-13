@@ -26,7 +26,7 @@ import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.entity.EntityDefaultQueryResults;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType;
 import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.api.identity.type.EntityTypeDataDefault;
+import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoDefault;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -69,10 +69,10 @@ public class PersonServiceImpl implements PersonService, InitializingBean {
 	private static Logger LOG = Logger.getLogger( PersonServiceImpl.class );
 	protected static final String ENTITY_EXT_ID_PROPERTY_PREFIX = "externalIdentifiers.";
 	protected static final String ENTITY_AFFILIATION_PROPERTY_PREFIX = "affiliations.";
-	protected static final String ENTITY_TYPE_PROPERTY_PREFIX = "entityTypes.";
-	protected static final String ENTITY_EMAIL_PROPERTY_PREFIX = "entityTypes.emailAddresses.";
-	protected static final String ENTITY_PHONE_PROPERTY_PREFIX = "entityTypes.phoneNumbers.";
-	protected static final String ENTITY_ADDRESS_PROPERTY_PREFIX = "entityTypes.addresses.";
+	protected static final String ENTITY_TYPE_PROPERTY_PREFIX = "entityTypeContactInfos.";
+	protected static final String ENTITY_EMAIL_PROPERTY_PREFIX = "entityTypeContactInfos.emailAddresses.";
+	protected static final String ENTITY_PHONE_PROPERTY_PREFIX = "entityTypeContactInfos.phoneNumbers.";
+	protected static final String ENTITY_ADDRESS_PROPERTY_PREFIX = "entityTypeContactInfos.addresses.";
 	protected static final String ENTITY_NAME_PROPERTY_PREFIX = "names.";
 	protected static final String PRINCIPAL_PROPERTY_PREFIX = "principals.";
 	protected static final String ENTITY_EMPLOYEE_ID_PROPERTY_PREFIX = "employmentInformation.";
@@ -112,15 +112,15 @@ public class PersonServiceImpl implements PersonService, InitializingBean {
 		criteriaConversion.put( KIMPropertyConstants.Person.FIRST_NAME, "names.firstName" );
 		criteriaConversion.put( KIMPropertyConstants.Person.LAST_NAME, "names.lastName" );
 		criteriaConversion.put( KIMPropertyConstants.Person.MIDDLE_NAME, "names.middleName" );
-		criteriaConversion.put( KIMPropertyConstants.Person.EMAIL_ADDRESS, "entityTypes.emailAddresses.emailAddress" );
-		criteriaConversion.put( KIMPropertyConstants.Person.PHONE_NUMBER, "entityTypes.phoneNumbers.phoneNumber" );
-		criteriaConversion.put( KIMPropertyConstants.Person.ADDRESS_LINE_1, "entityTypes.addresses.line1" );
-		criteriaConversion.put( KIMPropertyConstants.Person.ADDRESS_LINE_2, "entityTypes.addresses.line2" );
-		criteriaConversion.put( KIMPropertyConstants.Person.ADDRESS_LINE_3, "entityTypes.addresses.line3" );
-		criteriaConversion.put( KIMPropertyConstants.Person.CITY_NAME, "entityTypes.addresses.cityName" );
-		criteriaConversion.put( KIMPropertyConstants.Person.STATE_CODE, "entityTypes.addresses.stateCode" );
-		criteriaConversion.put( KIMPropertyConstants.Person.POSTAL_CODE, "entityTypes.addresses.postalCode" );
-		criteriaConversion.put( KIMPropertyConstants.Person.COUNTRY_CODE, "entityTypes.addresses.countryCode" );
+		criteriaConversion.put( KIMPropertyConstants.Person.EMAIL_ADDRESS, "entityTypeContactInfos.emailAddresses.emailAddress" );
+		criteriaConversion.put( KIMPropertyConstants.Person.PHONE_NUMBER, "entityTypeContactInfos.phoneNumbers.phoneNumber" );
+		criteriaConversion.put( KIMPropertyConstants.Person.ADDRESS_LINE_1, "entityTypeContactInfos.addresses.line1" );
+		criteriaConversion.put( KIMPropertyConstants.Person.ADDRESS_LINE_2, "entityTypeContactInfos.addresses.line2" );
+		criteriaConversion.put( KIMPropertyConstants.Person.ADDRESS_LINE_3, "entityTypeContactInfos.addresses.line3" );
+		criteriaConversion.put( KIMPropertyConstants.Person.CITY_NAME, "entityTypeContactInfos.addresses.cityName" );
+		criteriaConversion.put( KIMPropertyConstants.Person.STATE_CODE, "entityTypeContactInfos.addresses.stateCode" );
+		criteriaConversion.put( KIMPropertyConstants.Person.POSTAL_CODE, "entityTypeContactInfos.addresses.postalCode" );
+		criteriaConversion.put( KIMPropertyConstants.Person.COUNTRY_CODE, "entityTypeContactInfos.addresses.countryCode" );
 		criteriaConversion.put( KIMPropertyConstants.Person.CAMPUS_CODE, "affiliations.campusCode" );
 		criteriaConversion.put( KIMPropertyConstants.Person.AFFILIATION_TYPE_CODE, "affiliations.affiliationTypeCode" );
 		criteriaConversion.put( KIMPropertyConstants.Person.EXTERNAL_IDENTIFIER_TYPE_CODE, "externalIdentifiers.externalIdentifierTypeCode" );
@@ -175,7 +175,7 @@ public class PersonServiceImpl implements PersonService, InitializingBean {
 		try {
 			// get the EntityEntityType for the EntityType corresponding to a Person
 			for ( String entityTypeCode : personEntityTypeCodes ) {
-				EntityTypeDataDefault entType = entity.getEntityType( entityTypeCode );
+				EntityTypeContactInfoDefault entType = entity.getEntityType( entityTypeCode );
 				// if no "person" identity type present for the given principal, skip to the next type in the list
 				if ( entType == null ) {
 					continue;
@@ -415,7 +415,7 @@ public class PersonServiceImpl implements PersonService, InitializingBean {
 		HashMap<String,String> newCriteria = new HashMap<String,String>();
 		newCriteria.putAll( baseLookupCriteria );
 
-		newCriteria.put( "entityTypes.entityTypeCode", personEntityTypeLookupCriteria );
+		newCriteria.put( "entityTypeContactInfos.entityTypeCode", personEntityTypeLookupCriteria );
 
         if ( criteria != null ) {
 			for ( String key : criteria.keySet() ) {

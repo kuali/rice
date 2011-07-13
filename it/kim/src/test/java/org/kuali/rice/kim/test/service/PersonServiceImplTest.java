@@ -146,8 +146,8 @@ public class PersonServiceImplTest extends KIMTestCase {
 		Map<String,String> entityCriteria = personService.convertPersonPropertiesToEntityProperties( criteria );
 		assertEquals( "number of criteria is not correct", 6, entityCriteria.size() );
 		assertNotNull( "criteria must filter for active entities", entityCriteria.get( "active" ) );
-		assertNotNull( "criteria must filter for active entity types", entityCriteria.get( "entityTypes.active" ) );
-		assertNotNull( "criteria must filter on entity type code", entityCriteria.get( "entityTypes.entityTypeCode" ) );
+		assertNotNull( "criteria must filter for active entity types", entityCriteria.get( "entityTypeContactInfos.active" ) );
+		assertNotNull( "criteria must filter on entity type code", entityCriteria.get( "entityTypeContactInfos.entityTypeCode" ) );
 		assertNotNull( "criteria must filter for first name", entityCriteria.get( "names.firstName" ) );
 		assertNotNull( "criteria must filter for active names", entityCriteria.get( "names.active" ) );
 		assertNotNull( "criteria must filter for the default name", entityCriteria.get( "names.defaultValue" ) );

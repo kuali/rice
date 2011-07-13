@@ -39,7 +39,7 @@ import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.identity.residency.EntityResidency;
-import org.kuali.rice.kim.api.identity.type.EntityTypeData;
+import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
 import org.kuali.rice.kim.api.identity.visa.EntityVisa;
 import org.kuali.rice.kim.api.jaxb.StringToKimEntityNameInfoMapAdapter;
 import org.kuali.rice.kim.api.jaxb.StringToKimEntityNamePrincipalInfoMapAdapter;
@@ -353,47 +353,49 @@ public interface IdentityService {
 
 
     /**
-     * This will create a {@link org.kuali.rice.kim.api.identity.type.EntityTypeData} exactly like the entityTypeData passed in.
+     * This will create a {@link org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo} exactly like the entityTypeContactInfo passed in.
      *
-     * The EntityTypeData object passed in must be populated with an entityId and a entityTypeCode
+     * The EntityTypeContactInfo object passed in must be populated with an entityId and a entityTypeCode
      *
-     * @param entityTypeData the EntityTypeData to create
-     * @return the newly created EntityTypeData object.
-     * @throws IllegalArgumentException if the entityTypeData is null
-     * @throws IllegalStateException if the entityTypeData already exists in the system or the EntityTypeData object is not populated with entityId and entityTypeCode
+     * @param entityTypeContactInfo the EntityTypeContactInfo to create
+     * @return the newly created EntityTypeContactInfo object.
+     * @throws IllegalArgumentException if the entityTypeContactInfo is null
+     * @throws IllegalStateException if the entityTypeContactInfo already exists in the system or the EntityTypeContactInfo object is not populated with entityId and entityTypeCode
      */
-    @WebMethod(operationName="addEntityTypeDataToEntity")
-    @WebResult(name = "entityTypeData")
-    EntityTypeData addEntityTypeDataToEntity(@WebParam(name = "entityTypeData") EntityTypeData entityTypeData)
+    @WebMethod(operationName="addEntityTypeContactInfoToEntity")
+    @WebResult(name = "entityTypeContactInfo")
+    EntityTypeContactInfo addEntityTypeContactInfoToEntity(
+            @WebParam(name = "entityTypeContactInfo") EntityTypeContactInfo entityTypeContactInfo)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
-     * This will update a {@link org.kuali.rice.kim.api.identity.type.EntityTypeData} exactly like the entityTypeData passed in.
+     * This will update a {@link org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo} exactly like the entityTypeContactInfo passed in.
      *
      *
-     * @param entityTypeData the EntityTypeData to update
-     * @return the updated EntityTypeData object.
-     * @throws IllegalArgumentException if the entityTypeData is null
-     * @throws IllegalStateException if the entityTypeData does not exist in the system.
+     * @param entityTypeContactInfo the EntityTypeContactInfo to update
+     * @return the updated EntityTypeContactInfo object.
+     * @throws IllegalArgumentException if the entityTypeContactInfo is null
+     * @throws IllegalStateException if the entityTypeContactInfo does not exist in the system.
      */
-    @WebMethod(operationName="updateEntityTypeData")
-    @WebResult(name = "entityTypeData")
-    EntityTypeData updateEntityTypeData(@WebParam(name = "entityTypeData") EntityTypeData entityTypeData)
+    @WebMethod(operationName="updateEntityTypeContactInfo")
+    @WebResult(name = "entityTypeContactInfo")
+    EntityTypeContactInfo updateEntityTypeContactInfo(@WebParam(name = "entityTypeContactInfo") EntityTypeContactInfo entityTypeContactInfo)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
-     * This will inactivate a {@link org.kuali.rice.kim.api.identity.type.EntityTypeData} with the passed in parameters.
+     * This will inactivate a {@link org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo} with the passed in parameters.
      *
      *
-     * @param entityId the entityId of the EntityTypeData to inactivate
-     * @param entityTypeCode the entityTypeCode of the EntityTypeData to inactivate
-     * @return the inactivated EntityTypeData object.
-     * @throws IllegalArgumentException if the entityTypeData is null
-     * @throws IllegalStateException if the entityTypeData does not exist in the system.
+     * @param entityId the entityId of the EntityTypeContactInfo to inactivate
+     * @param entityTypeCode the entityTypeCode of the EntityTypeContactInfo to inactivate
+     * @return the inactivated EntityTypeContactInfo object.
+     * @throws IllegalArgumentException if the entityId or entityTypeCode passed in is null
+     * @throws IllegalStateException if the EntityTypeContactInfo does not exist in the system.
      */
-    @WebMethod(operationName="inactivateEntityTypeData")
-    @WebResult(name = "entityTypeData")
-    EntityTypeData inactivateEntityTypeData(@WebParam(name = "entityId") String entityId, @WebParam(name = "entityTypeCode") String entityTypeCode)
+    @WebMethod(operationName="inactivateEntityTypeContactInfo")
+    @WebResult(name = "entityTypeContactInfo")
+    EntityTypeContactInfo inactivateEntityTypeContactInfo(@WebParam(name = "entityId") String entityId,
+            @WebParam(name = "entityTypeCode") String entityTypeCode)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**

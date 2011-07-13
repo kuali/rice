@@ -29,7 +29,7 @@ import org.kuali.rice.kim.api.identity.personal.EntityEthnicityContract;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferencesContract;
 import org.kuali.rice.kim.api.identity.residency.EntityResidencyContract;
-import org.kuali.rice.kim.api.identity.type.EntityTypeDataContract;
+import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoContract;
 import org.kuali.rice.kim.api.identity.visa.EntityVisaContract;
 
 import java.util.List;
@@ -45,10 +45,10 @@ public interface EntityContract extends Versioned, GloballyUnique, Inactivatable
 
 	/**
 	 * Gets this {@link EntityContract}'s identity types
-	 * @return the List of {@link EntityTypeDataContract}S for this {@link EntityContract}.
+	 * @return the List of {@link org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoContract}S for this {@link EntityContract}.
 	 * The returned List will never be null, an empty List will be assigned and returned if needed. 
 	 */
-	List<? extends EntityTypeDataContract> getEntityTypes();
+	List<? extends EntityTypeContactInfoContract> getEntityTypeContactInfos();
 	
     /**
      * Gets this {@link EntityContract}'s principals
@@ -114,7 +114,7 @@ public interface EntityContract extends Versioned, GloballyUnique, Inactivatable
 	 * @return the EntityEntityType object corresponding to the given code or null if this
 	 * identity does not have data for that type.
 	 */
-	EntityTypeDataContract getEntityType( String entityTypeCode );
+	EntityTypeContactInfoContract getEntityTypeContactInfoByTypeCode(String entityTypeCode);
 	
 	/**
 	 * Gets this {@link EntityContract}'s employment information

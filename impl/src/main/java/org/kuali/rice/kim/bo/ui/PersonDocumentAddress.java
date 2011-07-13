@@ -212,15 +212,12 @@ public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimDefaultableEntityTypeData#getEntityTypeCode()
+	 * @see org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo#getEntityTypeCode()
 	 */
 	public String getEntityTypeCode() {
 		return entityTypeCode;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimDefaultableEntityTypeData#setEntityTypeCode(java.lang.String)
-	 */
 	public void setEntityTypeCode(String entityTypeCode) {
 		this.entityTypeCode = entityTypeCode;
 	}

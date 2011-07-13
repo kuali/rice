@@ -7,15 +7,8 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.kim.api.identity.address.EntityAddress;
-import org.kuali.rice.kim.api.identity.address.EntityAddressContract;
-import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.email.EntityEmail;
-import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifier;
-import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.phone.EntityPhone;
-import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract;
-import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -26,18 +19,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
 
-@XmlRootElement(name = EntityTypeDataDefault.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = EntityTypeContactInfoDefault.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = EntityTypeDataDefault.Constants.TYPE_NAME, propOrder = {
-    EntityTypeDataDefault.Elements.ENTITY_TYPE_CODE,
-    EntityTypeDataDefault.Elements.DEFAULT_ADDRESS,
-    EntityTypeDataDefault.Elements.DEFAULT_EMAIL_ADDRESS,
-    EntityTypeDataDefault.Elements.DEFAULT_PHONE_NUMBER,
+@XmlType(name = EntityTypeContactInfoDefault.Constants.TYPE_NAME, propOrder = {
+    EntityTypeContactInfoDefault.Elements.ENTITY_TYPE_CODE,
+    EntityTypeContactInfoDefault.Elements.DEFAULT_ADDRESS,
+    EntityTypeContactInfoDefault.Elements.DEFAULT_EMAIL_ADDRESS,
+    EntityTypeContactInfoDefault.Elements.DEFAULT_PHONE_NUMBER,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class EntityTypeDataDefault implements ModelObjectComplete
+public final class EntityTypeContactInfoDefault implements ModelObjectComplete
 {
     @XmlElement(name = Elements.ENTITY_TYPE_CODE, required = true)
     private final String entityTypeCode;
@@ -54,7 +46,7 @@ public final class EntityTypeDataDefault implements ModelObjectComplete
     /**
      * Private constructor used only by JAXB.
      */
-    private EntityTypeDataDefault() {
+    private EntityTypeContactInfoDefault() {
         this.entityTypeCode = null;
         this.defaultAddress = null;
         this.defaultEmailAddress = null;
@@ -62,14 +54,15 @@ public final class EntityTypeDataDefault implements ModelObjectComplete
 
     }
 
-    public EntityTypeDataDefault(String entityTypeCode, EntityAddress defaultAddress, EntityEmail defaultEmailAddress, EntityPhone defaultPhoneNumber) {
+    public EntityTypeContactInfoDefault(String entityTypeCode, EntityAddress defaultAddress,
+            EntityEmail defaultEmailAddress, EntityPhone defaultPhoneNumber) {
         this.entityTypeCode = entityTypeCode;
         this.defaultAddress = defaultAddress;
         this.defaultEmailAddress = defaultEmailAddress;
         this.defaultPhoneNumber = defaultPhoneNumber;
     }
 
-    public EntityTypeDataDefault(Builder builder) {
+    public EntityTypeContactInfoDefault(Builder builder) {
         this.entityTypeCode = builder.getEntityTypeCode();
         this.defaultAddress = builder.getDefaultAddress() == null ? null : builder.getDefaultAddress().build();
         this.defaultEmailAddress = builder.getDefaultEmailAddress() == null ? null : builder.getDefaultEmailAddress().build();
@@ -121,7 +114,7 @@ public final class EntityTypeDataDefault implements ModelObjectComplete
             return new Builder();
         }
 
-        public static Builder create(EntityTypeDataDefault immutable) {
+        public static Builder create(EntityTypeContactInfoDefault immutable) {
             if (immutable == null) {
                 throw new IllegalArgumentException("EntityTypeDataDefault is null");
             }
@@ -139,7 +132,7 @@ public final class EntityTypeDataDefault implements ModelObjectComplete
             return builder;
         }
 
-        public static Builder create(EntityTypeDataContract contract) {
+        public static Builder create(EntityTypeContactInfoContract contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }
@@ -157,8 +150,8 @@ public final class EntityTypeDataDefault implements ModelObjectComplete
             return builder;
         }
 
-        public EntityTypeDataDefault build() {
-            return new EntityTypeDataDefault(this);
+        public EntityTypeContactInfoDefault build() {
+            return new EntityTypeContactInfoDefault(this);
         }
 
         public String getEntityTypeCode() {

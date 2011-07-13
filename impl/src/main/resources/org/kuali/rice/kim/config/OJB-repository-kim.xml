@@ -200,7 +200,7 @@
     <collection-descriptor name="names" element-class-ref="org.kuali.rice.kim.impl.identity.name.EntityNameBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="entityId" target-field-ref="id" />
     </collection-descriptor>
-    <collection-descriptor name="entityTypes" element-class-ref="org.kuali.rice.kim.impl.identity.type.EntityTypeDataBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
+    <collection-descriptor name="entityTypeContactInfos" element-class-ref="org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="entityId" target-field-ref="id" />
     </collection-descriptor>
     <collection-descriptor name="principals" element-class-ref="org.kuali.rice.kim.impl.identity.principal.PrincipalBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
@@ -372,7 +372,7 @@
   <!-- Entity Type Tables -->
   <!-- ******************************************************************* -->
 
-  <class-descriptor class="org.kuali.rice.kim.impl.identity.type.EntityTypeDataBo" table="KRIM_ENTITY_ENT_TYP_T">
+  <class-descriptor class="org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo" table="KRIM_ENTITY_ENT_TYP_T">
     <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="entityTypeCode" column="ENT_TYP_CD" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />

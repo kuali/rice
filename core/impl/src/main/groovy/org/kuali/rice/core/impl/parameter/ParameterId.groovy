@@ -27,7 +27,7 @@ public class ParameterId implements Serializable {
     
 	@Column(name="NMSPC_CD")
     def final String namespaceCode
-    @Column(name="PARM_DTL_TYP_CD")
+    @Column(name="CMPNT_CD")
     def final String componentCode
     @Column(name="PARM_NM")
     def final String name

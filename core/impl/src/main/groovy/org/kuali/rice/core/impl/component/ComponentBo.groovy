@@ -34,7 +34,7 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 @IdClass(ComponentId.class)
 @Entity
-@Table(name="KRCR_PARM_DTL_TYP_T")
+@Table(name="KRCR_CMPNT_T")
 public class ComponentBo extends PersistableBusinessObjectBase implements ComponentContract, MutableInactivatable {
 
     private static final long serialVersionUID = 1L;
@@ -44,7 +44,7 @@ public class ComponentBo extends PersistableBusinessObjectBase implements Compon
 	def String namespaceCode;
 
 	@Id
-	@Column(name="PARM_DTL_TYP_CD")
+	@Column(name="CMPNT_CD")
 	def String code;
 
 	@Column(name="NM")

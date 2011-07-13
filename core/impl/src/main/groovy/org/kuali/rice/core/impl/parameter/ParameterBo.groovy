@@ -43,7 +43,7 @@ public class ParameterBo extends PersistableBusinessObjectBase implements Parame
     def String namespaceCode
 
     @Id
-    @Column(name = "PARM_DTL_TYP_CD")
+    @Column(name = "CMPNT_CD")
     def String componentCode
 
     @Id
@@ -54,7 +54,7 @@ public class ParameterBo extends PersistableBusinessObjectBase implements Parame
     @Column(name = "APPL_ID")
     def String applicationId
 
-    @Column(name = "TXT")
+    @Column(name = "VAL")
     def String value
 
     @Column(name = "PARM_DESC_TXT", length = 2048)
@@ -63,7 +63,7 @@ public class ParameterBo extends PersistableBusinessObjectBase implements Parame
     @Column(name = "PARM_TYP_CD")
     def String parameterTypeCode
 
-    @Column(name = "CONS_CD")
+    @Column(name = "EVAL_OPRTR_CD")
     def String evaluationOperatorCode
 
     @ManyToOne(fetch = FetchType.LAZY)

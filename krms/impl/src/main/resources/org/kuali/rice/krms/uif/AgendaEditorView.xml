@@ -254,6 +254,7 @@
           <property name="fieldSuggest.render" value="true" />
           <property name="fieldSuggest.sourcePropertyName" value="name" />
           <property name="fieldSuggest.suggestQuery.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.AgendaBo" />
+          <property name="fieldSuggest.suggestQuery.queryFieldMapping" value="namespace:context.namespace" />
           <property name="fieldSuggest.suggestQuery.additionalCriteria">
             <map>
               <entry key="active" value="true" />

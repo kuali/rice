@@ -7,17 +7,359 @@
 	on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either 
 	express or implied. See the License for the specific language governing permissions 
 	and limitations under the License. -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <name>Rice Impex</name>
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.kuali.rice</groupId>
     <artifactId>rice-db</artifactId>
-    <version>2.0.0-m6-SNAPSHOT</version>
+    <version>2.0.0-m7-SNAPSHOT</version>
   </parent>
   <artifactId>rice-impex</artifactId>
   <packaging>pom</packaging>
   <modules>
     <module>master</module>
   </modules>
+  <properties>
+    <impex.sql.plugin.escapeProcessing>false</impex.sql.plugin.escapeProcessing>
+    <impex.sql.plugin.orderFile>ascending</impex.sql.plugin.orderFile>
+    <impex.sql.plugin.keepFormat>true</impex.sql.plugin.keepFormat>
+    <impex.sql.plugin.printResultSet>false</impex.sql.plugin.printResultSet>
+    <impex.sql.plugin.delimiter.type>row</impex.sql.plugin.delimiter.type>
+    <impex.sql.plugin.force.execution>false</impex.sql.plugin.force.execution>
+    <impex.sql.plugin.skip>false</impex.sql.plugin.skip>
+    <impex.ant.compatibility.mode>false</impex.ant.compatibility.mode>
+    <impex.include.version.in.comment>false</impex.include.version.in.comment>
+
+    <impex.generate.phase>generate-resources</impex.generate.phase>
+    <impex.generate.sql.phase>${impex.generate.phase}</impex.generate.sql.phase>
+    <impex.generate.sql.oracle.phase>${impex.generate.sql.phase}</impex.generate.sql.oracle.phase>
+    <impex.generate.sql.mysql.phase>${impex.generate.sql.phase}</impex.generate.sql.mysql.phase>
+    <impex.generate.morph.phase>${impex.generate.phase}</impex.generate.morph.phase>
+    <impex.generate.dtd.phase>${impex.generate.phase}</impex.generate.dtd.phase>
+    <!-- This is the format dates will be exported/imported as -->
+    <impex.date.format>yyyyMMddHHmmss</impex.date.format>
+
+    <!-- Oracle specific properties -->
+    <impex.masterdb.url>???</impex.masterdb.url>
+    <impex.masterdb.schema>RICEMASTER</impex.masterdb.schema>
+    <impex.masterdb.username>RICEMASTER</impex.masterdb.username>
+    <impex.masterdb.password>RICEMASTER</impex.masterdb.password>
+    <impex.oracle.driver>oracle.jdbc.driver.OracleDriver</impex.oracle.driver>
+    <impex.oracle.default.url>jdbc:oracle:thin:@localhost:1521:XE</impex.oracle.default.url>
+    <impex.oracle.delimiter>/</impex.oracle.delimiter>
+    <impex.oracle.defaultTablespace>users</impex.oracle.defaultTablespace>
+    <impex.oracle.temporaryTablespace>temp</impex.oracle.temporaryTablespace>
+    <impex.oracle.quota>UNLIMITED</impex.oracle.quota>
+    <impex.oracle.error.sqlcode.userDoesNotExist>-01918</impex.oracle.error.sqlcode.userDoesNotExist>
+    <impex.oracle.error.sqlcode.userAlreadyExists>-01920</impex.oracle.error.sqlcode.userAlreadyExists>
+    <impex.oracle.dba.username>SYS AS SYSDBA</impex.oracle.dba.username>
+    <impex.oracle.dba.password>change_on_install</impex.oracle.dba.password>
+
+    <!-- Simple select query for validating connection properties -->
+    <impex.oracle.sql.validate>
+      SELECT SYSDATE FROM DUAL
+    </impex.oracle.sql.validate>
+
+    <!-- Drop the user, ignoring the Oracle error code for "user does not exist" -->
+    <impex.oracle.sql.drop>
+      BEGIN
+      EXECUTE IMMEDIATE 'DROP USER ${impex.username} CASCADE';
+      EXCEPTION WHEN OTHERS THEN
+      IF
+      SQLCODE != ${impex.oracle.error.sqlcode.userDoesNotExist} THEN
+      RAISE;
+      END IF;
+      END;
+      /
+    </impex.oracle.sql.drop>
+
+    <!-- Create an Oracle user with some sensible defaults -->
+    <impex.oracle.sql.create>
+      CREATE USER ${impex.username}
+      IDENTIFIED BY ${impex.password}
+      DEFAULT TABLESPACE
+      ${impex.oracle.defaultTablespace}
+      TEMPORARY TABLESPACE ${impex.oracle.temporaryTablespace}
+      QUOTA
+      ${impex.oracle.quota} ON ${impex.oracle.defaultTablespace}
+      /
+    </impex.oracle.sql.create>
+
+    <!-- Grant permissions needed for KS -->
+    <impex.oracle.sql.grants>
+      GRANT CREATE PROCEDURE
+      , CREATE SEQUENCE
+      , CREATE SESSION
+      , CREATE SYNONYM
+      , CREATE TABLE
+      ,
+      CREATE TRIGGER
+      , CREATE TYPE
+      , CREATE VIEW
+      TO ${impex.username}
+      /
+    </impex.oracle.sql.grants>
+    <!-- This is executed just before generating XML from the master db -->
+    <impex.oracle.sql.pre.export>
+    </impex.oracle.sql.pre.export>
+    <!-- This is executed after materializing the master db from database control files -->
+    <impex.oracle.sql.post.materialization>
+      purge recyclebin
+      /
+    </impex.oracle.sql.post.materialization>
+
+  </properties>
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.kuali.maven.plugins</groupId>
+          <artifactId>sql-maven-plugin</artifactId>
+          <version>1.6</version>
+          <configuration>
+            <username>${impex.username}</username>
+            <password>${impex.password}</password>
+            <url>${impex.url}</url>
+            <driver>${impex.driver}</driver>
+            <delimiter>${impex.delimiter}</delimiter>
+            <delimiterType>${impex.sql.plugin.delimiter.type}</delimiterType>
+            <forceMojoExecution>${impex.sql.plugin.force.execution}</forceMojoExecution>
+            <skip>${impex.sql.plugin.skip}</skip>
+            <keepFormat>${impex.sql.plugin.keepFormat}</keepFormat>
+            <printResultSet>${impex.sql.plugin.printResultSet}</printResultSet>
+            <outputFile>${impex.sql.plugin.outputFile}</outputFile>
+            <orderFile>${impex.sql.plugin.orderFile}</orderFile>
+            <escapeProcessing>${impex.sql.plugin.escapeProcessing}</escapeProcessing>
+          </configuration>
+          <executions>
+            <execution>
+              <id>validate-dba-config</id>
+              <phase>none</phase>
+              <goals>
+                <goal>execute</goal>
+              </goals>
+              <configuration>
+                <username>${impex.dba.username}</username>
+                <password>${impex.dba.password}</password>
+                <sqlCommand>${impex.sql.validate}</sqlCommand>
+              </configuration>
+            </execution>
+            <execution>
+              <id>validate-db-config</id>
+              <phase>none</phase>
+              <goals>
+                <goal>execute</goal>
+              </goals>
+              <configuration>
+                <username>${impex.username}</username>
+                <password>${impex.password}</password>
+                <sqlCommand>${impex.sql.validate}</sqlCommand>
+              </configuration>
+            </execution>
+            <execution>
+              <id>drop-db</id>
+              <phase>none</phase>
+              <goals>
+                <goal>execute</goal>
+              </goals>
+              <configuration>
+                <username>${impex.dba.username}</username>
+                <password>${impex.dba.password}</password>
+                <sqlCommand>${impex.sql.drop}</sqlCommand>
+              </configuration>
+            </execution>
+            <execution>
+              <id>init-db</id>
+              <phase>none</phase>
+              <goals>
+                <goal>execute</goal>
+              </goals>
+              <configuration>
+                <username>${impex.dba.username}</username>
+                <password>${impex.dba.password}</password>
+                <sqlCommand>${impex.sql.initialize}</sqlCommand>
+              </configuration>
+            </execution>
+            <execution>
+              <id>execute-pre-export-sql</id>
+              <phase>none</phase>
+              <goals>
+                <goal>execute</goal>
+              </goals>
+              <configuration>
+                <forceMojoExecution>true</forceMojoExecution>
+                <sqlCommand>${impex.sql.pre.export}</sqlCommand>
+              </configuration>
+            </execution>
+          </executions>
+          <dependencies>
+            <dependency>
+              <groupId>mysql</groupId>
+              <artifactId>mysql-connector-java</artifactId>
+              <version>${mysql.connector.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>com.oracle</groupId>
+              <artifactId>ojdbc14</artifactId>
+              <version>${oracle.ojdbc.version}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+        <plugin>
+          <groupId>org.kuali.maven.impex</groupId>
+          <artifactId>maven-impex-plugin</artifactId>
+          <version>1.0.17</version>
+          <dependencies>
+            <dependency>
+              <groupId>mysql</groupId>
+              <artifactId>mysql-connector-java</artifactId>
+              <version>${mysql.connector.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>com.oracle</groupId>
+              <artifactId>ojdbc14</artifactId>
+              <version>${oracle.ojdbc.version}</version>
+            </dependency>
+          </dependencies>
+          <configuration>
+            <username>${impex.username}</username>
+            <password>${impex.password}</password>
+            <url>${impex.url}</url>
+            <driver>${impex.driver}</driver>
+            <dataXMLDir>${project.build.directory}/generated-impex/xml</dataXMLDir>
+            <schemaDir>${project.build.directory}/generated-impex</schemaDir>
+            <schemaXMLFile>${project.build.directory}/generated-impex/${project.artifactId}.xml</schemaXMLFile>
+            <dateFormat>${impex.date.format}</dateFormat>
+            <includeVersionInComment>${impex.include.version.in.comment}</includeVersionInComment>
+            <antCompatibilityMode>${impex.ant.compatibility.mode}</antCompatibilityMode>
+          </configuration>
+          <executions>
+            <execution>
+              <id>morph-xml</id>
+              <phase>${impex.generate.morph.phase}</phase>
+              <goals>
+                <goal>morphschema</goal>
+                <goal>morphdata</goal>
+              </goals>
+              <configuration>
+                <oldSchemaXMLFile>${project.basedir}/src/main/resources/schema.xml</oldSchemaXMLFile>
+                <oldDataXMLDir>${project.basedir}/src/main/resources</oldDataXMLDir>
+              </configuration>
+            </execution>
+            <execution>
+              <id>generate-data-dtd</id>
+              <phase>${impex.generate.dtd.phase}</phase>
+              <goals>
+                <goal>datadtd</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>generate-oracle-sql</id>
+              <phase>${impex.generate.sql.oracle.phase}</phase>
+              <goals>
+                <goal>schemasql</goal>
+                <goal>datasql</goal>
+              </goals>
+              <configuration>
+                <targetDatabase>oracle</targetDatabase>
+              </configuration>
+            </execution>
+            <execution>
+              <id>generate-mysql-sql</id>
+              <phase>${impex.generate.sql.mysql.phase}</phase>
+              <goals>
+                <goal>schemasql</goal>
+                <goal>datasql</goal>
+              </goals>
+              <configuration>
+                <targetDatabase>mysql</targetDatabase>
+              </configuration>
+            </execution>
+            <execution>
+              <id>import-data</id>
+              <phase>none</phase>
+              <goals>
+                <goal>import</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+  <profiles>
+    <profile>
+      <!--
+        This profile sets properties for Oracle specific SQL that handles dropping and creating
+        Oracle schemas as well as granting permissions
+      -->
+      <id>oracle</id>
+      <properties>
+        <impex.delimiter>${impex.oracle.delimiter}</impex.delimiter>
+        <impex.url>${impex.oracle.default.url}</impex.url>
+        <impex.driver>${impex.oracle.driver}</impex.driver>
+        <impex.dba.username>${impex.oracle.dba.username}</impex.dba.username>
+        <impex.dba.password>${impex.oracle.dba.password}</impex.dba.password>
+        <impex.sql.validate>${impex.oracle.sql.validate}</impex.sql.validate>
+        <impex.sql.drop>${impex.oracle.sql.drop}</impex.sql.drop>
+        <impex.sql.pre.export>${impex.oracle.sql.pre.export}</impex.sql.pre.export>
+        <impex.sql.initialize>
+          ${impex.oracle.sql.create}
+          ${impex.oracle.sql.grants}
+        </impex.sql.initialize>
+        <impex.generate.sql.mysql.phase>none</impex.generate.sql.mysql.phase>
+      </properties>
+    </profile>
+    <profile>
+      <!--
+        This profile connects the dropping/creating/loading of a database to appropriate
+        phases of the Maven build lifecycle. The "clean" phase drops the db, the "initialize" phase creates the
+        db and grants permissions, and the "install" phase loads data into the db
+      -->
+      <id>db</id>
+      <build>
+        <resources>
+          <resource>
+            <directory>${project.build.directory}/generated-impex</directory>
+          </resource>
+        </resources>
+        <plugins>
+          <plugin>
+            <groupId>org.kuali.maven.impex</groupId>
+            <artifactId>maven-impex-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>import-data</id>
+                <phase>install</phase>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.kuali.maven.plugins</groupId>
+            <artifactId>sql-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>drop-db</id>
+                <phase>clean</phase>
+              </execution>
+              <execution>
+                <id>validate-dba-config</id>
+                <phase>validate</phase>
+              </execution>
+              <execution>
+                <id>init-db</id>
+                <phase>initialize</phase>
+              </execution>
+              <execution>
+                <id>validate-db-config</id>
+                <phase>verify</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

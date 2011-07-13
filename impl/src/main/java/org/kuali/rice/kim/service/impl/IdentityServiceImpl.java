@@ -22,6 +22,7 @@ import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
+import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.address.EntityAddress;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
@@ -46,7 +47,6 @@ import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.identity.residency.EntityResidency;
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
 import org.kuali.rice.kim.api.identity.visa.EntityVisa;
-import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.impl.identity.EntityTypeBo;
 import org.kuali.rice.kim.impl.identity.address.EntityAddressBo;
 import org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo;
@@ -96,14 +96,13 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-@WebService(endpointInterface = KIMWebServiceConstants.IdentityService.INTERFACE_CLASS, serviceName = KIMWebServiceConstants.IdentityService.WEB_SERVICE_NAME, portName = KIMWebServiceConstants.IdentityService.WEB_SERVICE_PORT, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
 public class IdentityServiceImpl implements IdentityService, IdentityUpdateService {
 
     private CriteriaLookupService criteriaLookupService;
 	private BusinessObjectService businessObjectService;
 
 	/**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getEntityInfo(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityInfo(java.lang.String)
 	 */
 	public Entity getEntity(String entityId) {
 		EntityBo entity = getEntityBo( entityId );
@@ -114,7 +113,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getEntityByPrincipalId(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityByPrincipalId(java.lang.String)
 	 */
 	public Entity getEntityByPrincipalId(String principalId) {
 		EntityBo entity = getEntityBoByPrincipalId(principalId);
@@ -125,7 +124,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getEntityByPrincipalName(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityByPrincipalName(java.lang.String)
 	 */
 	public Entity getEntityByPrincipalName(String principalName) {
 		EntityBo entity = getEntityBoByPrincipalName(principalName);
@@ -136,7 +135,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getEntityDefault(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityDefault(java.lang.String)
 	 */
 	public EntityDefault getEntityDefault(String entityId) {
 		EntityBo entity = getEntityBo( entityId );
@@ -147,7 +146,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getEntityDefaultByPrincipalId(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityDefaultByPrincipalId(java.lang.String)
 	 */
 	public EntityDefault getEntityDefaultByPrincipalId(String principalId) {
 		EntityBo entity = getEntityBoByPrincipalId(principalId);
@@ -158,7 +157,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getEntityDefaultByPrincipalName(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityDefaultByPrincipalName(java.lang.String)
 	 */
 	public EntityDefault getEntityDefaultByPrincipalName(String principalName) {
 		EntityBo entity = getEntityBoByPrincipalName(principalName);
@@ -169,7 +168,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getPrincipalByPrincipalNameAndPassword(java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getPrincipalByPrincipalNameAndPassword(java.lang.String, java.lang.String)
 	 */
 	@SuppressWarnings("unchecked")
 	public Principal getPrincipalByPrincipalNameAndPassword(String principalName, String password) {
@@ -605,7 +604,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
     }
 
     /**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#findEntities(org.kuali.rice.core.api.criteria.QueryByCriteria)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#findEntities(org.kuali.rice.core.api.criteria.QueryByCriteria)
 	 */
 	@SuppressWarnings("unchecked")
 	public EntityQueryResults findEntities(QueryByCriteria queryByCriteria) {
@@ -628,7 +627,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
         return builder.build();
 	}
 	/**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#findEntityDefault(Map, boolean)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#findEntityDefault(Map, boolean)
 	 */
 	@SuppressWarnings("unchecked")
 	public EntityDefaultQueryResults findEntityDefaults(QueryByCriteria queryByCriteria) {
@@ -652,7 +651,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	}
 
     /**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#findEntity(Map, boolean)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#findEntity(Map, boolean)
 	 */
 	@SuppressWarnings("unchecked")
 	public EntityNameQueryResults findNames(QueryByCriteria queryByCriteria) {
@@ -676,7 +675,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getEntityPrivacyPreferences(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityPrivacyPreferences(java.lang.String)
 	 */
 	public EntityPrivacyPreferences getEntityPrivacyPreferences(String entityId) {
         if (StringUtils.isEmpty(entityId)) {
@@ -688,7 +687,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	}
 
     /**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getPrincipal(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getPrincipal(java.lang.String)
 	 */
 	public Principal getPrincipal(String principalId) {
 		PrincipalBo principal = getPrincipalBo(principalId);
@@ -732,7 +731,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#lookupEntitys(java.util.Map)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#lookupEntitys(java.util.Map)
 	 */
 	@SuppressWarnings("unchecked")
 	protected List<EntityBo> lookupEntitys(Map<String, String> searchCriteria) {
@@ -740,7 +739,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#lookupEntityIds(java.util.Map)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#lookupEntityIds(java.util.Map)
 	 */
 	public List<String> lookupEntityIds(Map<String,String> searchCriteria) {
 		List<EntityBo> entities = lookupEntitys( searchCriteria );
@@ -752,7 +751,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getPrincipalByPrincipalName(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getPrincipalByPrincipalName(java.lang.String)
 	 */
 	@SuppressWarnings("unchecked")
 	public Principal getPrincipalByPrincipalName(String principalName) {
@@ -769,7 +768,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
     }
 
 	/**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getEntityByPrincipalName(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityByPrincipalName(java.lang.String)
 	 */
 	protected EntityBo getEntityBoByPrincipalName(String principalName) {
 		if ( StringUtils.isBlank( principalName ) ) {
@@ -779,7 +778,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getEntityByPrincipalId(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityByPrincipalId(java.lang.String)
 	 */
 	protected EntityBo getEntityBoByPrincipalId(String principalId) {
 		if ( StringUtils.isBlank( principalId ) ) {
@@ -789,7 +788,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getEntityIdByPrincipalId(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityIdByPrincipalId(java.lang.String)
 	 */
 	public String getEntityIdByPrincipalId(String principalId) {
 		if ( StringUtils.isBlank( principalId ) ) {
@@ -800,7 +799,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
     }
 
 	/**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getEntityIdByPrincipalName(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityIdByPrincipalName(java.lang.String)
 	 */
 	public String getEntityIdByPrincipalName(String principalName) {
 		if ( StringUtils.isBlank( principalName ) ) {
@@ -811,7 +810,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
     }
 	
 	/**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getPrincipalIdByPrincipalName(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getPrincipalIdByPrincipalName(java.lang.String)
 	 */
 	public String getPrincipalIdByPrincipalName(String principalName) {
 		if ( StringUtils.isBlank( principalName ) ) {
@@ -822,7 +821,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getDefaultNamesForEntityIds(java.util.List)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getDefaultNamesForEntityIds(java.util.List)
 	 */
 	public Map<String, EntityNamePrincipalName> getDefaultNamesForEntityIds(List<String> entityIds) {
 		Map<String, EntityNamePrincipalName> result = new HashMap<String, EntityNamePrincipalName>(entityIds.size());
@@ -852,7 +851,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 
 
     /**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getDefaultNamesForPrincipalIds(java.util.List)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getDefaultNamesForPrincipalIds(java.util.List)
 	 */
 	public Map<String, EntityNamePrincipalName> getDefaultNamesForPrincipalIds(List<String> principalIds) {
 		Map<String, EntityNamePrincipalName> result = new HashMap<String, EntityNamePrincipalName>();
@@ -1408,7 +1407,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
     }
 
     /**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getEntityPrivacyPreferences(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityPrivacyPreferences(java.lang.String)
 	 */
 	private EntityBioDemographicsBo getEntityBioDemographicsBo(String entityId) {
         if (StringUtils.isEmpty(entityId)) {

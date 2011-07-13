@@ -17,6 +17,7 @@
 package org.kuali.rice.kim.api;
 
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.CoreConstants.Versions;
 
 public final class KimConstants {
     public static final class Namespaces {
@@ -25,7 +26,7 @@ public final class KimConstants {
     	/**
     	 * Namespace for the core module which is compatible with Kuali Rice 2.0.x.
     	 */
-    	public static final String KIM_NAMESPACE_2_0 = KIM_NAMESPACE_PREFIX + "/" + CoreConstants.Versions.VERSION_2_0;
+    	public static final String KIM_NAMESPACE_2_0 = KIM_NAMESPACE_PREFIX + "/" + Versions.VERSION_2_0;
 
         private Namespaces() {
 		    throw new UnsupportedOperationException("do not call");

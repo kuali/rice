@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.api.services;
+package org.kuali.rice.kim.api.identity;
 
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 

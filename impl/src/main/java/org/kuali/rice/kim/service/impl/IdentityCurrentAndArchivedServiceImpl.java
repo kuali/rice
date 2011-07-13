@@ -16,6 +16,8 @@
 package org.kuali.rice.kim.service.impl;
 
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.kim.api.identity.IdentityArchiveService;
+import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.address.EntityAddress;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
@@ -39,8 +41,6 @@ import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.identity.residency.EntityResidency;
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
 import org.kuali.rice.kim.api.identity.visa.EntityVisa;
-import org.kuali.rice.kim.api.services.IdentityArchiveService;
-import org.kuali.rice.kim.api.services.IdentityService;
 import org.kuali.rice.kim.service.IdentityUpdateService;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
@@ -74,28 +74,28 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getAddressType(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getAddressType(java.lang.String)
 	 */
 	public Type getAddressType(String code) {
 		return getInnerIdentityService().getAddressType(code);
 	}
 
     /**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getAffiliationType(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getAffiliationType(java.lang.String)
 	 */
 	public EntityAffiliationType getAffiliationType(String code) {
 		return getInnerIdentityService().getAffiliationType(code);
 	}
 
     /**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getCitizenshipStatus(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getCitizenshipStatus(java.lang.String)
 	 */
 	public Type getCitizenshipStatus(String code) {
 		return Type.Builder.create(getInnerIdentityService().getCitizenshipStatus(code)).build();
 	}
 
     /**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getDefaultNamesForEntityIds(java.util.List)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getDefaultNamesForEntityIds(java.util.List)
 	 */
 	public Map<String, EntityNamePrincipalName> getDefaultNamesForEntityIds(
 			List<String> entityIds) {
@@ -143,7 +143,7 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
     }
 
     /**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getDefaultNamesForPrincipalIds(java.util.List)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getDefaultNamesForPrincipalIds(java.util.List)
 	 */
 	public Map<String, EntityNamePrincipalName> getDefaultNamesForPrincipalIds(
 			List<String> principalIds) {
@@ -151,14 +151,14 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getEmailType(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEmailType(java.lang.String)
 	 */
 	public Type getEmailType(String code) {
 		return getInnerIdentityService().getEmailType(code);
 	}
 
     /**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getEmploymentStatus(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEmploymentStatus(java.lang.String)
 	 */
 	public Type getEmploymentStatus(String code) {
 		return getInnerIdentityService().getEmploymentStatus(code);
@@ -166,7 +166,7 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 
 
     /**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getEmploymentType(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEmploymentType(java.lang.String)
 	 */
 	public Type getEmploymentType(String code) {
 		return getInnerIdentityService().getEmploymentType(code);
@@ -177,7 +177,7 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 	 * This method first tries the inner IdentityService impl, and resorts to
 	 * the IdentityArchiveService if need be.
 	 * 
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getEntityDefault(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityDefault(java.lang.String)
 	 */
 	public EntityDefault getEntityDefault(String entityId) {
 		EntityDefault entity = getInnerIdentityService().getEntityDefault(entityId);
@@ -193,7 +193,7 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 	 * This method first tries the inner IdentityService impl, and resorts to
 	 * the IdentityArchiveService if need be.
 	 * 
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getEntityDefaultByPrincipalId(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityDefaultByPrincipalId(java.lang.String)
 	 */
 	public EntityDefault getEntityDefaultByPrincipalId(String principalId) {
 		EntityDefault entity = getInnerIdentityService().getEntityDefaultByPrincipalId(principalId);
@@ -209,7 +209,7 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 	 * This method first tries the inner IdentityService impl, and resorts to
 	 * the IdentityArchiveService if need be.
 	 * 
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getEntityDefaultByPrincipalName(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityDefaultByPrincipalName(java.lang.String)
 	 */
 	public EntityDefault getEntityDefaultByPrincipalName(String principalName) {
 		EntityDefault entity = getInnerIdentityService().getEntityDefaultByPrincipalName(principalName);
@@ -232,21 +232,21 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
     }
 
     /**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getEntity(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntity(java.lang.String)
 	 */
 	public Entity getEntity(String entityId) {
 		return getInnerIdentityService().getEntity(entityId);
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getEntityByPrincipalId(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityByPrincipalId(java.lang.String)
 	 */
 	public Entity getEntityByPrincipalId(String principalId) {
 		return getInnerIdentityService().getEntityByPrincipalId(principalId);
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getEntityByPrincipalName(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityByPrincipalName(java.lang.String)
 	 */
 	public Entity getEntityByPrincipalName(String principalName) {
 		return getInnerIdentityService().getEntityByPrincipalName(principalName);
@@ -269,14 +269,14 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
     }
 
     /**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getNameType(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getNameType(java.lang.String)
 	 */
 	public Type getNameType(String code) {
 		return getInnerIdentityService().getNameType(code);
 	}
 
     /**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getEntityPrivacyPreferences(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityPrivacyPreferences(java.lang.String)
 	 */
 	public EntityPrivacyPreferences getEntityPrivacyPreferences(
 			String entityId) {
@@ -339,14 +339,14 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
     }
 
     /**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getEntityType(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityType(java.lang.String)
 	 */
 	public Type getEntityType(String code) {
 		return getInnerIdentityService().getEntityType(code);
 	}
 
     /**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getExternalIdentifierType(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getExternalIdentifierType(java.lang.String)
 	 */
 	public EntityExternalIdentifierType getExternalIdentifierType(String code) {
 		return getInnerIdentityService().getExternalIdentifierType(code);
@@ -354,28 +354,28 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 
 
 	/**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getPhoneType(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getPhoneType(java.lang.String)
 	 */
 	public Type getPhoneType(String code) {
 		return getInnerIdentityService().getPhoneType(code);
 	}
 
     /**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getPrincipal(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getPrincipal(java.lang.String)
 	 */
 	public Principal getPrincipal(String principalId) {
 		return getInnerIdentityService().getPrincipal(principalId);
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getPrincipalByPrincipalName(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getPrincipalByPrincipalName(java.lang.String)
 	 */
 	public Principal getPrincipalByPrincipalName(String principalName) {
 		return getInnerIdentityService().getPrincipalByPrincipalName(principalName);
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.services.IdentityService#getPrincipalByPrincipalNameAndPassword(java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getPrincipalByPrincipalNameAndPassword(java.lang.String, java.lang.String)
 	 */
 	public Principal getPrincipalByPrincipalNameAndPassword(
 			String principalName, String password) {

@@ -31,7 +31,7 @@
 						<phase>${rice.java2ws.phase}</phase>
 						<configuration>
 							<className>org.kuali.rice.kew.api.action.WorkflowDocumentActionsService</className>
-							<outputFile>${project.build.directory}/generated-sources/wsdl/WorkflowDocumentActionsService.wsdl</outputFile>
+							<outputFile>${project.build.outputDirectory}/wsdl/WorkflowDocumentActionsService.wsdl</outputFile>
 							<serviceName>WorkflowDocumentActionsService</serviceName>
 						</configuration>
 						<goals>
@@ -43,7 +43,7 @@
 						<phase>${rice.java2ws.phase}</phase>
 						<configuration>
 							<className>org.kuali.rice.kew.api.doctype.DocumentTypeService</className>
-							<outputFile>${project.build.directory}/generated-sources/wsdl/DocumentTypeService.wsdl</outputFile>
+							<outputFile>${project.build.outputDirectory}/wsdl/DocumentTypeService.wsdl</outputFile>
 							<serviceName>DocumentTypeService</serviceName>
 						</configuration>
 						<goals>
@@ -55,7 +55,7 @@
 						<phase>${rice.java2ws.phase}</phase>
 						<configuration>
 							<className>org.kuali.rice.kew.api.note.NoteService</className>
-							<outputFile>${project.build.directory}/generated-sources/wsdl/NoteService.wsdl</outputFile>
+							<outputFile>${project.build.outputDirectory}/wsdl/NoteService.wsdl</outputFile>
 							<serviceName>NoteService</serviceName>
 						</configuration>
 						<goals>

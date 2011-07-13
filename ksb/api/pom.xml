@@ -35,7 +35,7 @@
 						<phase>${rice.java2ws.phase}</phase>
 						<configuration>
 							<className>org.kuali.rice.ksb.api.registry.ServiceRegistry</className>
-							<outputFile>${project.build.directory}/generated-sources/wsdl/ServiceRegistry.wsdl</outputFile>
+							<outputFile>${project.build.outputDirectory}/wsdl/ServiceRegistry.wsdl</outputFile>
 							<serviceName>ServiceRegistry</serviceName>
 						</configuration>
 						<goals>

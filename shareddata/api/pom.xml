@@ -38,7 +38,7 @@
 						<phase>${rice.java2ws.phase}</phase>
                         <configuration>
                             <className>org.kuali.rice.shareddata.api.country.CountryService</className>
-                            <outputFile>${project.build.directory}/generated-sources/wsdl/CountryService.wsdl</outputFile>
+                            <outputFile>${project.build.outputDirectory}/wsdl/CountryService.wsdl</outputFile>
                             <serviceName>CountryService</serviceName>
                         </configuration>
                         <goals>
@@ -50,7 +50,7 @@
 						<phase>${rice.java2ws.phase}</phase>
                         <configuration>
                             <className>org.kuali.rice.shareddata.api.campus.CampusService</className>
-                            <outputFile>${project.build.directory}/generated-sources/wsdl/CampusService.wsdl</outputFile>
+                            <outputFile>${project.build.outputDirectory}/wsdl/CampusService.wsdl</outputFile>
                             <serviceName>CampusService</serviceName>
                         </configuration>
                         <goals>
@@ -62,7 +62,7 @@
 						<phase>${rice.java2ws.phase}</phase>
                         <configuration>
                             <className>org.kuali.rice.shareddata.api.county.CountyService</className>
-                            <outputFile>${project.build.directory}/generated-sources/wsdl/CountyService.wsdl</outputFile>
+                            <outputFile>${project.build.outputDirectory}/wsdl/CountyService.wsdl</outputFile>
                             <serviceName>CountyService</serviceName>
                         </configuration>
                         <goals>
@@ -74,7 +74,7 @@
 						<phase>${rice.java2ws.phase}</phase>
                         <configuration>
                             <className>org.kuali.rice.shareddata.api.postalcode.PostalCodeService</className>
-                            <outputFile>${project.build.directory}/generated-sources/wsdl/PostalCodeService.wsdl</outputFile>
+                            <outputFile>${project.build.outputDirectory}/wsdl/PostalCodeService.wsdl</outputFile>
                             <serviceName>PostalCodeService</serviceName>
                         </configuration>
                         <goals>
@@ -86,7 +86,7 @@
 						<phase>${rice.java2ws.phase}</phase>
                         <configuration>
                             <className>org.kuali.rice.shareddata.api.state.StateService</className>
-                            <outputFile>${project.build.directory}/generated-sources/wsdl/StateService.wsdl</outputFile>
+                            <outputFile>${project.build.outputDirectory}/wsdl/StateService.wsdl</outputFile>
                             <serviceName>StateService</serviceName>
                         </configuration>
                         <goals>

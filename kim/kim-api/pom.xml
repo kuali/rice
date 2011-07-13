@@ -43,7 +43,7 @@
                         <phase>${rice.java2ws.phase}</phase>
                         <configuration>
                             <className>org.kuali.rice.kim.api.group.GroupService</className>
-                            <outputFile>${project.build.directory}/generated-sources/wsdl/GroupService.wsdl</outputFile>
+                            <outputFile>${project.build.outputDirectory}/wsdl/GroupService.wsdl</outputFile>
                             <serviceName>GroupService</serviceName>
                         </configuration>
                         <goals>
@@ -56,7 +56,7 @@
                         <phase>${rice.java2ws.phase}</phase>
                         <configuration>
                             <className>org.kuali.rice.kim.api.group.GroupUpdateService</className>
-                            <outputFile>${project.build.directory}/generated-sources/wsdl/GroupUpdateService.wsdl
+                            <outputFile>${project.build.outputDirectory}/wsdl/GroupUpdateService.wsdl
                             </outputFile>
                             <serviceName>GroupUpdateService</serviceName>
                         </configuration>
@@ -70,7 +70,7 @@
                         <phase>${rice.java2ws.phase}</phase>
                         <configuration>
                             <className>org.kuali.rice.kim.api.permission.PermissionService</className>
-                            <outputFile>${project.build.directory}/generated-sources/wsdl/PermissionService.wsdl
+                            <outputFile>${project.build.outputDirectory}/wsdl/PermissionService.wsdl
                             </outputFile>
                             <serviceName>PermissionService</serviceName>
                         </configuration>
@@ -84,7 +84,7 @@
                         <phase>${rice.java2ws.phase}</phase>
                         <configuration>
                             <className>org.kuali.rice.kim.api.role.RoleService</className>
-                            <outputFile>${project.build.directory}/generated-sources/wsdl/RoleService.wsdl
+                            <outputFile>${project.build.outputDirectory}/wsdl/RoleService.wsdl
                             </outputFile>
                             <serviceName>RoleService</serviceName>
                         </configuration>
@@ -98,7 +98,7 @@
                         <phase>${rice.java2ws.phase}</phase>
                         <configuration>
                             <className>org.kuali.rice.kim.api.role.RoleUpdateService</className>
-                            <outputFile>${project.build.directory}/generated-sources/wsdl/RoleUpdateService.wsdl
+                            <outputFile>${project.build.outputDirectory}/wsdl/RoleUpdateService.wsdl
                             </outputFile>
                             <serviceName>RoleUpdateService</serviceName>
                         </configuration>
@@ -112,7 +112,7 @@
                         <phase>${rice.java2ws.phase}</phase>
                         <configuration>
                             <className>org.kuali.rice.kim.api.type.KimTypeInfoService</className>
-                            <outputFile>${project.build.directory}/generated-sources/wsdl/KimTypeInfoService.wsdl
+                            <outputFile>${project.build.outputDirectory}/wsdl/KimTypeInfoService.wsdl
                             </outputFile>
                             <serviceName>KimTypeInfoService</serviceName>
                         </configuration>

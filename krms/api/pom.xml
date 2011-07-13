@@ -36,7 +36,7 @@
             <phase>${rice.java2ws.phase}</phase>
             <configuration>
               <className>org.kuali.rice.krms.api.repository.RuleRepositoryService</className>
-              <outputFile>${project.build.directory}/generated-sources/wsdl/RuleRepositoryService.wsdl</outputFile>
+              <outputFile>${project.build.outputDirectory}/wsdl/RuleRepositoryService.wsdl</outputFile>
               <serviceName>RuleRepositoryService</serviceName>
             </configuration>
             <goals>
@@ -48,7 +48,7 @@
             <phase>${rice.java2ws.phase}</phase>
             <configuration>
               <className>org.kuali.rice.krms.api.repository.function.FunctionRepositoryService</className>
-              <outputFile>${project.build.directory}/generated-sources/wsdl/FunctionRepositoryService.wsdl</outputFile>
+              <outputFile>${project.build.outputDirectory}/wsdl/FunctionRepositoryService.wsdl</outputFile>
               <serviceName>FunctionRepositoryService</serviceName>
             </configuration>
             <goals>

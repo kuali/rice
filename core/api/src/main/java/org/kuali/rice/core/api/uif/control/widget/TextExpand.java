@@ -8,6 +8,31 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = TextExpand.Constants.TYPE_NAME)
 public class TextExpand extends AbstractWidget {
 
+    private TextExpand() {
+        super();
+    }
+
+    private TextExpand(Builder b) {
+        super();
+    }
+
+    public static final class Builder extends AbstractWidget.Builder {
+
+        private Builder() {
+            super();
+        }
+
+        public static Builder create() {
+            return new Builder();
+        }
+
+        @Override
+        public TextExpand build() {
+            return new TextExpand(this);
+        }
+    }
+
+
     /**
      * Defines some internal constants used on this class.
      */

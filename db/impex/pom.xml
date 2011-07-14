@@ -94,8 +94,7 @@
       , CREATE SESSION
       , CREATE SYNONYM
       , CREATE TABLE
-      ,
-      CREATE TRIGGER
+      , CREATE TRIGGER
       , CREATE TYPE
       , CREATE VIEW
       TO ${impex.username}
@@ -135,7 +134,7 @@
           </configuration>
           <executions>
             <execution>
-              <id>validate-dba-config</id>
+              <id>validate-dba</id>
               <phase>none</phase>
               <goals>
                 <goal>execute</goal>
@@ -147,7 +146,7 @@
               </configuration>
             </execution>
             <execution>
-              <id>validate-db-config</id>
+              <id>validate</id>
               <phase>none</phase>
               <goals>
                 <goal>execute</goal>
@@ -159,7 +158,7 @@
               </configuration>
             </execution>
             <execution>
-              <id>drop-db</id>
+              <id>clean</id>
               <phase>none</phase>
               <goals>
                 <goal>execute</goal>
@@ -171,7 +170,7 @@
               </configuration>
             </execution>
             <execution>
-              <id>init-db</id>
+              <id>initialize</id>
               <phase>none</phase>
               <goals>
                 <goal>execute</goal>
@@ -183,7 +182,7 @@
               </configuration>
             </execution>
             <execution>
-              <id>execute-pre-export-sql</id>
+              <id>pre-export</id>
               <phase>none</phase>
               <goals>
                 <goal>execute</goal>
@@ -237,7 +236,7 @@
           </configuration>
           <executions>
             <execution>
-              <id>morph-xml</id>
+              <id>morph</id>
               <phase>${impex.generate.morph.phase}</phase>
               <goals>
                 <goal>morphschema</goal>
@@ -249,14 +248,14 @@
               </configuration>
             </execution>
             <execution>
-              <id>generate-data-dtd</id>
+              <id>datadtd</id>
               <phase>${impex.generate.dtd.phase}</phase>
               <goals>
                 <goal>datadtd</goal>
               </goals>
             </execution>
             <execution>
-              <id>generate-oracle-sql</id>
+              <id>oracle</id>
               <phase>${impex.generate.sql.oracle.phase}</phase>
               <goals>
                 <goal>schemasql</goal>
@@ -267,7 +266,7 @@
               </configuration>
             </execution>
             <execution>
-              <id>generate-mysql-sql</id>
+              <id>mysql</id>
               <phase>${impex.generate.sql.mysql.phase}</phase>
               <goals>
                 <goal>schemasql</goal>
@@ -278,7 +277,7 @@
               </configuration>
             </execution>
             <execution>
-              <id>import-data</id>
+              <id>install</id>
               <phase>none</phase>
               <goals>
                 <goal>import</goal>
@@ -331,7 +330,7 @@
             <artifactId>maven-impex-plugin</artifactId>
             <executions>
               <execution>
-                <id>import-data</id>
+                <id>install</id>
                 <phase>install</phase>
               </execution>
             </executions>
@@ -341,19 +340,19 @@
             <artifactId>sql-maven-plugin</artifactId>
             <executions>
               <execution>
-                <id>drop-db</id>
+                <id>clean</id>
                 <phase>clean</phase>
               </execution>
               <execution>
-                <id>validate-dba-config</id>
+                <id>validate-dba</id>
                 <phase>validate</phase>
               </execution>
               <execution>
-                <id>init-db</id>
+                <id>initialize</id>
                 <phase>initialize</phase>
               </execution>
               <execution>
-                <id>validate-db-config</id>
+                <id>validate</id>
                 <phase>verify</phase>
               </execution>
             </executions>

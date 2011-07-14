@@ -8,25 +8,37 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = Select.Constants.TYPE_NAME)
 public class Select extends AbstractControl implements SelectContract {
-    private final Integer size;
 
     @XmlElement(name = Elements.SIZE, required = false)
+    private final Integer size;
+
+    @XmlElement(name = Elements.DEFAULT_VALUE, required = false)
+    private final String defaultValue;
+
     @Override
     public Integer getSize() {
         return size;
     }
 
+    @Override
+    public String getDefaultValue() {
+        return defaultValue;
+    }
+
     private Select() {
         size = null;
+        defaultValue = null;
     }
 
     private Select(Builder b) {
         super(b);
         size = b.size;
+        defaultValue = b.defaultValue;
     }
 
     public static final class Builder extends AbstractControl.Builder implements SelectContract {
         private Integer size;
+        private String defaultValue;
 
         private Builder(String name) {
             super(name);
@@ -42,6 +54,7 @@ public class Select extends AbstractControl implements SelectContract {
             partialCreate(contract, b);
 
             b.setSize(contract.getSize());
+            b.setDefaultValue(contract.getDefaultValue());
             return b;
         }
 
@@ -59,6 +72,15 @@ public class Select extends AbstractControl implements SelectContract {
         }
 
         @Override
+        public String getDefaultValue() {
+            return defaultValue;
+        }
+
+        public void setDefaultValue(String defaultValue) {
+            this.defaultValue = defaultValue;
+        }
+
+        @Override
         public Select build() {
             return new Select(this);
         }
@@ -73,5 +95,6 @@ public class Select extends AbstractControl implements SelectContract {
 
     static final class Elements {
         static final String SIZE = "size";
+        static final String DEFAULT_VALUE = "defaultValue";
     }
 }

@@ -87,7 +87,7 @@
       /
     </impex.oracle.sql.create>
 
-    <!-- Grant permissions needed for KS -->
+    <!-- Grant permissions needed for Rice -->
     <impex.oracle.sql.grants>
       GRANT CREATE PROCEDURE
       , CREATE SEQUENCE

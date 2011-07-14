@@ -179,7 +179,7 @@ public class ActionField extends FieldBase {
             if (StringUtils.isNotBlank(clientSideJs)) {
                 postScript = clientSideJs;
             } else {
-                postScript = "jq('#kualiForm').submit();";
+                postScript = "writeHiddenToForm('renderFullView' , 'true'); jq('#kualiForm').submit();";
             }
 
             if (includeDirtyCheckScript) {

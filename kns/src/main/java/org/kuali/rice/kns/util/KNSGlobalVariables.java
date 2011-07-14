@@ -25,7 +25,11 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Deprecated
-public class KNSGlobalVariables extends GlobalVariables {
+public final class KNSGlobalVariables {
+
+    private KNSGlobalVariables() {
+        throw new UnsupportedOperationException("do not call");
+    }
 
     private static ThreadLocal<KualiForm> kualiForms = new ThreadLocal<KualiForm>();
 

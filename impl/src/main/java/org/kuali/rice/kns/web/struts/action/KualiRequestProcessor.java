@@ -139,7 +139,7 @@ public class KualiRequestProcessor extends RequestProcessor {
         if (session == null) {
         	throw new IllegalStateException("the user session has not been established");
         }
-    	KNSGlobalVariables.setUserSession(session);
+    	GlobalVariables.setUserSession(session);
     	KNSGlobalVariables.clear();
 		return true;
 	}

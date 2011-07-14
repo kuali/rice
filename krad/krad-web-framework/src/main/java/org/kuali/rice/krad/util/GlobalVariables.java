@@ -25,7 +25,11 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class GlobalVariables {
+public final class GlobalVariables {
+
+    private GlobalVariables() {
+        throw new UnsupportedOperationException("do not call");
+    }
 
     private static ThreadLocal<UserSession> userSessions = new ThreadLocal<UserSession>();
     private static ThreadLocal<String> hideSessionFromTestsMessage = new ThreadLocal<String>();

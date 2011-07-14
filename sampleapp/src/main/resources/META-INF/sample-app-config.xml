@@ -14,13 +14,14 @@
   ~ limitations under the License.
   -->
 <config>
-	<param name="module.name">sample-app</param>
-	<param name="application.id">TRAVEL</param>
-	
-	<param name="filter.login.class">org.kuali.rice.kew.web.DummyLoginFilter</param>
-	<param name="filtermapping.login.1">/*</param>
-	
-	<param name="config.location">classpath:META-INF/common-config-defaults.xml</param>
-	<param name="config.location">classpath:META-INF/common-config-locations.xml</param>
-	<param name="config.location">${alt.config.location}</param>
+  <param name="module.name">sample-app</param>
+  <param name="application.id">TRAVEL</param>
+
+  <param name="filter.login.class">org.kuali.rice.kew.web.DummyLoginFilter</param>
+  <param name="filtermapping.login.1">/*</param>
+
+  <param name="config.location">classpath:META-INF/common-config-defaults.xml</param>
+  <param name="config.location">classpath:META-INF/common-config-locations.xml</param>
+  <param name="config.location">${alt.config.location}</param>
+  <param name="version">${project.name} :: ${project.version} :: ${env.BUILD_NUMBER} :: ${kuali.build.timestamp}</param>
 </config>

@@ -462,7 +462,6 @@ public final class KRADConstants {
     public static final String CSV_FORMAT = "csv";
 
     public static final String XML_MIME_TYPE = "application/xml";
-    public static final String AUDIT_ERRORS = "AuditErrors";
 
     // Header Tab navigation constant values
     public static final String NAVIGATE_TO = "navigateTo.";

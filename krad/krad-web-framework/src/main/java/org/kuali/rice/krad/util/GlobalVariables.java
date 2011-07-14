@@ -36,13 +36,6 @@ public class GlobalVariables {
 			return new MessageMap();
 		}
 	};
-
-    private static ThreadLocal<HashMap<String, AuditCluster>> auditErrorMaps = new ThreadLocal<HashMap<String, AuditCluster>>() {
-    	@Override
-    	protected HashMap<String, AuditCluster> initialValue() {
-    		return new HashMap<String, AuditCluster>();
-    	}
-    };
     
     private static ThreadLocal<Map<String,Object>> requestCaches = new ThreadLocal<Map<String,Object>>() {
     	@Override
@@ -105,22 +98,6 @@ public class GlobalVariables {
     	messageMaps.set(messageMap);
     }
 
-    /**
-     * @return ArrayList containing audit error messages.
-     */
-    public static Map<String, AuditCluster> getAuditErrorMap() {
-        return auditErrorMaps.get();
-    }
-
-    /**
-     * Sets a new (clean) AuditErrorList
-     *
-     * @param errorMap
-     */
-    public static void setAuditErrorMap(HashMap<String, AuditCluster> errorMap) {
-        auditErrorMaps.set(errorMap);
-    }
-
     public static Object getRequestCache( String cacheName ) {
     	return requestCaches.get().get(cacheName);
     }
@@ -134,7 +111,6 @@ public class GlobalVariables {
      */
     public static void clear() {
         messageMaps.set(new MessageMap());
-        auditErrorMaps.set(new HashMap<String, AuditCluster>());
         requestCaches.set(new HashMap<String,Object>() );
     }
 }

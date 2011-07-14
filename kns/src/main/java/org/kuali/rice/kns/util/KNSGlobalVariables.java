@@ -16,11 +16,10 @@
 package org.kuali.rice.kns.util;
 
 import org.kuali.rice.kns.web.struts.form.KualiForm;
-import org.kuali.rice.krad.util.AuditCluster;
 import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.util.MessageMap;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -37,9 +36,17 @@ public class KNSGlobalVariables extends GlobalVariables {
         }
     };
 
+    private static ThreadLocal<HashMap<String, AuditCluster>> auditErrorMaps = new ThreadLocal<HashMap<String, AuditCluster>>() {
+    	@Override
+    	protected HashMap<String, AuditCluster> initialValue() {
+    		return new HashMap<String, AuditCluster>();
+    	}
+    };
+
     /**
      * @return ArrayList containing messages.
      */
+    @Deprecated
     public static MessageList getMessageList() {
         return messageLists.get();
     }
@@ -49,6 +56,7 @@ public class KNSGlobalVariables extends GlobalVariables {
      *
      * @param messageList
      */
+    @Deprecated
     public static void setMessageList(MessageList messageList) {
         messageLists.set(messageList);
     }
@@ -62,6 +70,24 @@ public class KNSGlobalVariables extends GlobalVariables {
     }
 
     /**
+     * @return ArrayList containing audit error messages.
+     */
+    @Deprecated
+    public static Map<String, AuditCluster> getAuditErrorMap() {
+        return auditErrorMaps.get();
+    }
+
+    /**
+     * Sets a new (clean) AuditErrorList
+     *
+     * @param errorMap
+     */
+    @Deprecated
+    public static void setAuditErrorMap(HashMap<String, AuditCluster> errorMap) {
+        auditErrorMaps.set(errorMap);
+    }
+
+    /**
      * sets the kualiForm object into the global variable for this thread
      *
      * @param kualiForm
@@ -71,9 +97,11 @@ public class KNSGlobalVariables extends GlobalVariables {
         kualiForms.set(kualiForm);
     }
 
+    @Deprecated
     public static void clear() {
         GlobalVariables.clear();
         messageLists.set(new MessageList());
+        auditErrorMaps.set(new HashMap<String, AuditCluster>());
         kualiForms.set(null);
     }
 }

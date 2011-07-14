@@ -30,24 +30,25 @@ import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kns.exception.FileUploadLimitExceededException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.SessionDocumentService;
 import org.kuali.rice.kns.util.ErrorContainer;
 import org.kuali.rice.kns.util.InfoContainer;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSGlobalVariables;
 import org.kuali.rice.kns.util.WarningContainer;
 import org.kuali.rice.kns.util.WebUtils;
-import org.kuali.rice.krad.UserSession;
-import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.exception.ValidationException;
-import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
-import org.kuali.rice.kns.service.SessionDocumentService;
-import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.KRADUtils;
-import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.kns.web.EditablePropertiesHistoryHolder;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.pojo.PojoForm;
+import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.exception.ValidationException;
+import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.KRADUtils;
+import org.kuali.rice.krad.util.MessageMap;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -673,8 +674,8 @@ public class KualiRequestProcessor extends RequestProcessor {
 	 * attribute.
 	 */
 	private void saveAuditErrors(HttpServletRequest request) {
-		if (!GlobalVariables.getAuditErrorMap().isEmpty()) {
-			request.setAttribute(KRADConstants.AUDIT_ERRORS, GlobalVariables.getAuditErrorMap());
+		if (!KNSGlobalVariables.getAuditErrorMap().isEmpty()) {
+			request.setAttribute(KNSConstants.AUDIT_ERRORS, KNSGlobalVariables.getAuditErrorMap());
 		}
 	}
 

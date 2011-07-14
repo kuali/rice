@@ -23,5 +23,5 @@
   <param name="config.location">classpath:META-INF/common-config-defaults.xml</param>
   <param name="config.location">classpath:META-INF/common-config-locations.xml</param>
   <param name="config.location">${alt.config.location}</param>
-  <param name="version">${project.name} :: ${project.version} :: ${env.BUILD_NUMBER} :: ${kuali.build.timestamp}</param>
+  <param name="version">${project.name} :: ${project.version} :: #${env.BUILD_NUMBER} :: ${kuali.build.timestamp}</param>
 </config>

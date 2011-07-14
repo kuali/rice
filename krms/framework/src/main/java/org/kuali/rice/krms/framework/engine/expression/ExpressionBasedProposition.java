@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.framework.engine.Proposition;
+import org.kuali.rice.krms.framework.engine.PropositionResult;
 
 /**
  * TODO... 
@@ -36,8 +37,8 @@ public class ExpressionBasedProposition implements Proposition {
 	}
 	
 	@Override
-	public boolean evaluate(ExecutionEnvironment environment) {
-		return expression.invoke(environment).booleanValue();
+	public PropositionResult evaluate(ExecutionEnvironment environment) {
+		return new PropositionResult(expression.invoke(environment).booleanValue());
 	}
 
 

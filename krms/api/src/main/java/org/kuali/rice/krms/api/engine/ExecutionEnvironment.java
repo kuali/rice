@@ -1,6 +1,7 @@
 package org.kuali.rice.krms.api.engine;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * The ExecutionEnvironment manages contextual information which is made available to
@@ -40,7 +41,9 @@ public interface ExecutionEnvironment {
 	
 	public void addTermResolver(TermResolver<?> termResolver);
 
-	public <T> T resolveTerm(Term term) throws TermResolutionException;
+	public <T> T resolveTerm(Term term, Object caller) throws TermResolutionException;
+	
+	public Set<Term> getTermsForCaller(Object caller);
 	
 	public ExecutionOptions getExecutionOptions();
 	

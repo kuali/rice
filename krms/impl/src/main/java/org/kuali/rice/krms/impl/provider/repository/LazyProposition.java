@@ -22,6 +22,7 @@ import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.framework.engine.Proposition;
+import org.kuali.rice.krms.framework.engine.PropositionResult;
 import org.kuali.rice.krms.framework.type.PropositionTypeService;
 import org.kuali.rice.krms.impl.type.KrmsTypeResolver;
 
@@ -48,7 +49,7 @@ final class LazyProposition implements Proposition {
 	}
 	
 	@Override
-	public boolean evaluate(ExecutionEnvironment environment) {
+	public PropositionResult evaluate(ExecutionEnvironment environment) {
 		return getProposition().evaluate(environment);
 	}
 	
@@ -74,8 +75,8 @@ final class LazyProposition implements Proposition {
 		if (proposition == null) {
 			proposition = new Proposition() {
 				@Override
-				public boolean evaluate(ExecutionEnvironment environment) {
-					return true;
+				public PropositionResult evaluate(ExecutionEnvironment environment) {
+					return new PropositionResult(true);
 				}
 
 			    @Override

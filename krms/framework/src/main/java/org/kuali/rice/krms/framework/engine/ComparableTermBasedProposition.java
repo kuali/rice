@@ -28,17 +28,17 @@ public class ComparableTermBasedProposition<T> implements Proposition {
 	 * @throws TermResolutionException if there is a problem resolving the {@link Term}
 	 */
 	@Override
-	public boolean evaluate(ExecutionEnvironment environment) {
+	public PropositionResult evaluate(ExecutionEnvironment environment) {
 		Comparable<T> termValue;
 
-		termValue = environment.resolveTerm(term);
+		termValue = environment.resolveTerm(term, this);
 
 		boolean result = compare(termValue);
 
 		if (LOG.isEnabled(environment)){
 			LOG.logResult(new BasicResult(ResultEvent.PropositionEvaluated, this, environment, result));
 		}
-		return result;
+		return new PropositionResult(result);
 	}
 
 	/**

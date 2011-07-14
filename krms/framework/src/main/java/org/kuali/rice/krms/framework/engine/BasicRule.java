@@ -28,7 +28,7 @@ public class BasicRule implements Rule {
 	
 	@Override
 	public boolean evaluate(ExecutionEnvironment environment) {
-		boolean result = proposition.evaluate(environment);
+		boolean result = proposition.evaluate(environment).getResult();
 		if (actions != null) {
 			for (Action action : actions) {
 				if (shouldExecuteAction(result)) {

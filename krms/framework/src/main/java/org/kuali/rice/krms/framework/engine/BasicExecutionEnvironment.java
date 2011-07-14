@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.HashSet;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.kuali.rice.krms.api.engine.EngineResults;
@@ -14,6 +16,8 @@ import org.kuali.rice.krms.api.engine.Term;
 import org.kuali.rice.krms.api.engine.TermResolutionEngine;
 import org.kuali.rice.krms.api.engine.TermResolutionException;
 import org.kuali.rice.krms.api.engine.TermResolver;
+import org.kuali.rice.krms.api.engine.ResultEvent;
+
 
 public final class BasicExecutionEnvironment implements ExecutionEnvironment {
 
@@ -22,7 +26,8 @@ public final class BasicExecutionEnvironment implements ExecutionEnvironment {
 	private final ExecutionOptions executionOptions;
 	private final EngineResults engineResults;
 	private final TermResolutionEngine termResolutionEngine;
-	
+	private Map<Object, Set<Term>> termPropositionMap;
+		
 	public BasicExecutionEnvironment(SelectionCriteria selectionCriteria, Map<Term, Object> facts, ExecutionOptions executionOptions, TermResolutionEngine termResolutionEngine) {
 		if (selectionCriteria == null) {
 			throw new IllegalArgumentException("Selection criteria must not be null.");
@@ -33,7 +38,7 @@ public final class BasicExecutionEnvironment implements ExecutionEnvironment {
 		this.selectionCriteria = selectionCriteria;
 		this.executionOptions = new ExecutionOptions(executionOptions);
 		this.engineResults = new EngineResultsImpl();
-		// TODO: inject this (will have to make it non-final)
+				
 		this.termResolutionEngine = new TermResolutionEngineImpl();
 		
 		// Add facts
@@ -61,17 +66,36 @@ public final class BasicExecutionEnvironment implements ExecutionEnvironment {
 	}
 	
 	@Override
-	public <T> T resolveTerm(Term term) throws TermResolutionException {
+	public <T> T resolveTerm(Term term, Object caller) throws TermResolutionException {
 		T value;
 		
 		// This looks funny, but works around a javac bug: http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6302954
 		// Specifically, using <T> below works around it.
 		value = termResolutionEngine.<T>resolveTerm(term);
 		
-		publishFact(term, value);
+		if (caller != null) {
+		    if(termPropositionMap == null) {
+		        termPropositionMap = new HashMap<Object, Set<Term>>();
+		    }
+
+		    // update the Proposition-Term mapping
+		    if(termPropositionMap.containsKey(caller)) {
+		        termPropositionMap.get(caller).add(term);
+		    } else {
+		        termPropositionMap.put(caller, new HashSet<Term>());
+		        termPropositionMap.get(caller).add(term);
+		    }
+		}
+		
+		publishFact(term, value);		
+		
 		return value;
 	}
 
+	public Set<Term> getTermsForCaller(Object caller) {
+		return termPropositionMap.get(caller);
+	}
+	
 	@Override
 	public boolean publishFact(Term factName, Object factValue) {
 		if (facts.containsKey(factName) && ObjectUtils.equals(facts.get(factName), factValue)) {
@@ -91,5 +115,6 @@ public final class BasicExecutionEnvironment implements ExecutionEnvironment {
 	public EngineResults getEngineResults() {
 		return engineResults;
 	}
+	
 
 }

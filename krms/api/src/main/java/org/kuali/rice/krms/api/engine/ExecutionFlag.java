@@ -46,7 +46,14 @@ public enum ExecutionFlag {
 	 * 
 	 * @see SelectionCriteria
 	 */
-	CONTEXT_MUST_EXIST(false);
+	CONTEXT_MUST_EXIST(false),
+	
+	/**
+	 * Instructs the engine to evaluate all propositions.  If this value is
+	 * set to false, the engine may skip (aka short circuit) propositions that 
+	 * do not influence the overall outcome of the proposition tree.  
+	 */
+	EVALUATE_ALL_PROPOSITIONS(false);
 	
 	private final boolean defaultValue;
 	

@@ -2,12 +2,18 @@ package org.kuali.rice.krms.framework.engine;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.kuali.rice.krms.api.engine.EngineResults;
 import org.kuali.rice.krms.api.engine.ResultEvent;
+import org.kuali.rice.krms.api.engine.Term;
+
 
 public class EngineResultsImpl implements EngineResults {
+	
 	private List<ResultEvent> results = new ArrayList<ResultEvent>();
+	private Map<Object, Set<Term>> termPropositionMap;
 	
 	@Override
 	public void addResult(ResultEvent result) {

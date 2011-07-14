@@ -1,8 +1,10 @@
 package org.kuali.rice.krms.framework.engine.result;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.EventObject;
+import java.util.Map;
 
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.engine.ResultEvent;
@@ -12,6 +14,17 @@ public class TimingResult extends EventObject implements ResultEvent {
 	private Date start;
 	private Date end;
 	private ExecutionEnvironment environment;
+	private String description;
+	private Map<String, ?> resultDetails;
+
+	public TimingResult(String description, String type, Object source, ExecutionEnvironment environment, Date start, Date end){
+		super(source);
+		this.type = type;
+		this.environment = environment;
+		this.start = start;
+		this.end = end;
+		this.description = description;
+	}
 	
 	public TimingResult(String type, Object source, ExecutionEnvironment environment, Date start, Date end){
 		super(source);
@@ -54,5 +67,19 @@ public class TimingResult extends EventObject implements ResultEvent {
 	@Override
 	public String getType() {
 		return type;
+	}
+	
+	@Override
+	public Map<String, ?> getResultDetails() {
+	    if (resultDetails == null) {
+	        return Collections.emptyMap();
+	    } else {
+	        return Collections.unmodifiableMap(resultDetails);
+	    }
+	}
+	
+	@Override
+	public String getDescription() {
+		return description;
 	}
 }

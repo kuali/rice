@@ -25,12 +25,12 @@ public class CollectionOfComparablesTermBasedProposition<T> extends ComparableTe
 	 * @throws TermResolutionException if there is a problem resolving a {@link Term}
 	 */
 	@Override
-	public boolean evaluate(ExecutionEnvironment environment) {
+	public PropositionResult evaluate(ExecutionEnvironment environment) {
 		boolean collatedResult = collectionOper.getInitialCollatedResult();
 
 		Collection<? extends Comparable<T>> termValue;
 
-		termValue = environment.resolveTerm(term);
+		termValue = environment.resolveTerm(term, this);
 
 		if (termValue != null) {
 			for (Comparable<T> item : termValue) {
@@ -44,7 +44,7 @@ public class CollectionOfComparablesTermBasedProposition<T> extends ComparableTe
 			LOG.logResult(new BasicResult(ResultEvent.PropositionEvaluated, this, environment, collatedResult));
 		}
 
-		return collatedResult;
+		return new PropositionResult(collatedResult);
 	}
 
 	public String toString() {

@@ -39,7 +39,7 @@ public final class TermExpression implements Expression<Object> {
 	 */
 	@Override
 	public Object invoke(ExecutionEnvironment environment) {
-	    return environment.resolveTerm(term);
+	    return environment.resolveTerm(term, this);
 	}
 
 }

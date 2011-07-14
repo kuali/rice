@@ -19,7 +19,7 @@ public interface Proposition {
      * @param environment the {@link ExecutionEnvironment} that this {@link Proposition} is running in
      * @return the boolean result of evaluation
      */
-	public boolean evaluate(ExecutionEnvironment environment);
+	public PropositionResult evaluate(ExecutionEnvironment environment);
 	
 	/**
 	 * This method returns the {@link List} of child {@link Proposition}s that belong to this object.
@@ -35,5 +35,5 @@ public interface Proposition {
 	 * @return true if this {@link Proposition} can contain child {@link Proposition}s.
 	 */
 	public boolean isCompound();
-	
+		
 }

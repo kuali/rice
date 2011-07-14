@@ -19,17 +19,22 @@ import static org.junit.Assert.*
 
 import java.util.Collections;
 import java.util.List;
+import java.util.HashMap;
 
 import org.junit.Before
 import org.junit.Test
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment
+import org.kuali.rice.krms.api.engine.SelectionCriteria;
+import org.kuali.rice.krms.api.engine.Term;
 import org.kuali.rice.krms.api.repository.LogicalOperator
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinitionContract;
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameterType;
 import org.kuali.rice.krms.api.repository.proposition.PropositionType;
-import org.kuali.rice.krms.framework.engine.Proposition
+import org.kuali.rice.krms.framework.engine.BasicExecutionEnvironment;
+import org.kuali.rice.krms.framework.engine.Proposition;
+import org.kuali.rice.krms.framework.engine.PropositionResult;
 
 import groovy.mock.interceptor.MockFor
 
@@ -55,13 +60,13 @@ class CompoundPropositionTypeServiceTest {
 			String value = subProp.getParameters().get(0).getValue();
 			if (value == "true") {
 				return new Proposition() {
-					public boolean evaluate(ExecutionEnvironment environment) { return true }
+					public PropositionResult evaluate(ExecutionEnvironment environment) { return new PropositionResult(true) }
                     public List<Proposition> getChildren() { return Collections.emptyList() }
                     public boolean isCompound() { return false }
 				}
 			} else if (value== "false") {
 				return new Proposition() {
-                    public boolean evaluate(ExecutionEnvironment environment) { return false }
+                    public PropositionResult evaluate(ExecutionEnvironment environment) { return new PropositionResult(false) }
                     public List<Proposition> getChildren() { return Collections.emptyList() }
                     public boolean isCompound() { return false }
 				}
@@ -143,8 +148,10 @@ class CompoundPropositionTypeServiceTest {
 		demandDefaultTranslator();		
 		PropositionDefinition propositionDefintion = createCompoundPropositionDefinition(LogicalOperator.AND);
 		Proposition proposition = service.loadProposition(propositionDefintion);
-		assert proposition != null;
-		assert !proposition.evaluate(null);
+		assert proposition != null;		
+		BasicExecutionEnvironment environment = new BasicExecutionEnvironment(
+			new SelectionCriteria("name", null), new HashMap<Term, Object>(), null, null);
+		assert !(proposition.evaluate(environment).getResult());
 		verifyMocks();
 	}
 	
@@ -154,7 +161,9 @@ class CompoundPropositionTypeServiceTest {
 		PropositionDefinition propositionDefintion = createCompoundPropositionDefinition(LogicalOperator.OR);
 		Proposition proposition = service.loadProposition(propositionDefintion);
 		assert proposition != null;
-		assert proposition.evaluate(null);
+		BasicExecutionEnvironment environment = new BasicExecutionEnvironment(
+			new SelectionCriteria("name", null), new HashMap<Term, Object>(), null, null);
+		assert (proposition.evaluate(environment).getResult());
 		verifyMocks();
 	}
 

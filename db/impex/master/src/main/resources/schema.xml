@@ -14,21 +14,9 @@
         <column name="ACCT_UPDATE_DT_TM" type="DATE"/>
         <column name="ACCT_AWAKE" size="1" type="VARCHAR"/>
     </table>
-    <table name="KRCR_NMSPC_T">
+    <table name="KRCR_CMPNT_T">
         <column name="NMSPC_CD" primaryKey="true" size="20" type="VARCHAR"/>
-        <column default="SYS_GUID()" name="OBJ_ID" required="true"
-            size="36" type="VARCHAR"/>
-        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column name="NM" size="40" type="VARCHAR"/>
-        <column default="Y" name="ACTV_IND" required="true" size="1" type="CHAR"/>
-        <column name="APPL_ID" size="20" type="VARCHAR"/>
-        <unique name="KRNS_NMSPC_TC0">
-            <unique-column name="OBJ_ID"/>
-        </unique>
-    </table>
-    <table name="KRCR_PARM_DTL_TYP_T">
-        <column name="NMSPC_CD" primaryKey="true" size="20" type="VARCHAR"/>
-        <column name="PARM_DTL_TYP_CD" primaryKey="true" size="100" type="VARCHAR"/>
+        <column name="CMPNT_CD" primaryKey="true" size="100" type="VARCHAR"/>
         <column default="SYS_GUID()" name="OBJ_ID" required="true"
             size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
@@ -41,17 +29,29 @@
             <unique-column name="OBJ_ID"/>
         </unique>
     </table>
+    <table name="KRCR_NMSPC_T">
+        <column name="NMSPC_CD" primaryKey="true" size="20" type="VARCHAR"/>
+        <column default="SYS_GUID()" name="OBJ_ID" required="true"
+            size="36" type="VARCHAR"/>
+        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <column name="NM" size="40" type="VARCHAR"/>
+        <column default="Y" name="ACTV_IND" required="true" size="1" type="CHAR"/>
+        <column name="APPL_ID" size="20" type="VARCHAR"/>
+        <unique name="KRNS_NMSPC_TC0">
+            <unique-column name="OBJ_ID"/>
+        </unique>
+    </table>
     <table name="KRCR_PARM_T">
         <column name="NMSPC_CD" primaryKey="true" size="20" type="VARCHAR"/>
-        <column name="PARM_DTL_TYP_CD" primaryKey="true" size="100" type="VARCHAR"/>
+        <column name="CMPNT_CD" primaryKey="true" size="100" type="VARCHAR"/>
         <column name="PARM_NM" primaryKey="true" size="255" type="VARCHAR"/>
         <column default="SYS_GUID()" name="OBJ_ID" required="true"
             size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="PARM_TYP_CD" required="true" size="5" type="VARCHAR"/>
-        <column name="TXT" size="4000" type="VARCHAR"/>
+        <column name="VAL" size="4000" type="VARCHAR"/>
         <column name="PARM_DESC_TXT" size="4000" type="VARCHAR"/>
-        <column name="CONS_CD" size="1" type="VARCHAR"/>
+        <column name="EVAL_OPRTR_CD" size="1" type="VARCHAR"/>
         <column default="KUALI" name="APPL_ID" primaryKey="true"
             size="20" type="VARCHAR"/>
         <foreign-key foreignTable="KRCR_PARM_TYP_T" name="KRNS_PARM_TR2">
@@ -2434,7 +2434,6 @@
     <table name="KRLC_CMP_TYP_T">
         <column name="CAMPUS_TYP_CD" primaryKey="true" size="1" type="VARCHAR"/>
         <column name="CMP_TYP_NM" size="250" type="VARCHAR"/>
-        <column name="DOBJ_MAINT_CD_ACTV_IND" required="true" size="1" type="VARCHAR"/>
         <column default="SYS_GUID()" name="OBJ_ID" required="true"
             size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>

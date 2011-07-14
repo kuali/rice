@@ -105,6 +105,10 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityInfo(java.lang.String)
 	 */
 	public Entity getEntity(String entityId) {
+        if (StringUtils.isBlank(entityId)) {
+            throw new RiceIllegalArgumentException("entityId is blank");
+        }
+
 		EntityBo entity = getEntityBo( entityId );
 		if ( entity == null ) {
 			return null;

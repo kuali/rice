@@ -1,5 +1,7 @@
 package org.kuali.rice.core.api.uif.control.widget;
 
+import org.apache.commons.lang.StringUtils;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -57,11 +59,12 @@ public class QuickFinder extends AbstractWidget {
     public static final class Builder extends AbstractWidget.Builder {
         private String baseLookupUrl;
         private String dataObjectClass;
-        private Map<String, String> lookupParameters;
-        private Map<String, String> fieldConversions;
+        private Map<String, String> lookupParameters = Collections.emptyMap();
+        private Map<String, String> fieldConversions = Collections.emptyMap();
 
         private Builder(String baseLookupUrl, String dataObjectClass) {
-            super();
+            setBaseLookupUrl(baseLookupUrl);
+            setDataObjectClass(dataObjectClass);
         }
 
         public static Builder create(String baseLookupUrl, String dataObjectClass) {
@@ -73,6 +76,10 @@ public class QuickFinder extends AbstractWidget {
         }
 
         public void setBaseLookupUrl(String baseLookupUrl) {
+            if (StringUtils.isBlank(baseLookupUrl)) {
+                throw new IllegalArgumentException("baseLookupUrl is blank");
+            }
+
             this.baseLookupUrl = baseLookupUrl;
         }
 
@@ -81,6 +88,10 @@ public class QuickFinder extends AbstractWidget {
         }
 
         public void setDataObjectClass(String dataObjectClass) {
+            if (StringUtils.isBlank(baseLookupUrl)) {
+                throw new IllegalArgumentException("dataObjectClass is blank");
+            }
+
             this.dataObjectClass = dataObjectClass;
         }
 
@@ -89,7 +100,9 @@ public class QuickFinder extends AbstractWidget {
         }
 
         public void setLookupParameters(Map<String, String> lookupParameters) {
-            this.lookupParameters = new HashMap<String, String>(lookupParameters);
+            if (lookupParameters != null) {
+                this.lookupParameters = new HashMap<String, String>(lookupParameters);
+            }
         }
 
         public Map<String, String> getFieldConversions() {
@@ -97,7 +110,9 @@ public class QuickFinder extends AbstractWidget {
         }
 
         public void setFieldConversions(Map<String, String> fieldConversions) {
-            this.fieldConversions = new HashMap<String, String>(fieldConversions);
+            if (fieldConversions != null) {
+                this.fieldConversions = new HashMap<String, String>(fieldConversions);
+            }
         }
 
         @Override

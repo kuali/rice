@@ -41,7 +41,6 @@ import org.kuali.rice.krad.uif.container.LookupView;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.control.HiddenControl;
 import org.kuali.rice.krad.uif.field.AttributeField;
-import org.kuali.rice.krad.uif.field.GeneratedField;
 import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.field.LookupCriteriaAttributeField;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
@@ -53,7 +52,6 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.util.UrlFactory;
-import org.kuali.rice.krad.web.controller.MaintenanceDocumentController;
 import org.kuali.rice.krad.web.form.LookupForm;
 
 import java.security.GeneralSecurityException;
@@ -556,7 +554,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
         // build return link label and title
         String linkLabel =
-                getConfigurationService().getPropertyString(KRADConstants.Lookup.TITLE_RETURN_URL_PREPENDTEXT_PROPERTY);
+                getConfigurationService().getPropertyValueAsString(
+                        KRADConstants.Lookup.TITLE_RETURN_URL_PREPENDTEXT_PROPERTY);
         returnLinkField.setLinkLabel(linkLabel);
 
         List<String> returnKeys = getReturnKeys(lookupView, lookupForm, dataObject);
@@ -682,7 +681,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         String prependTitleText = actionLinkField.getLinkLabel() + " " +
                 getDataDictionaryService().getDataDictionary().getDataObjectEntry(getDataObjectClass().getName())
                         .getObjectLabel() + " " +
-                getConfigurationService().getPropertyString(KRADConstants.Lookup.TITLE_ACTION_URL_PREPENDTEXT_PROPERTY);
+                getConfigurationService().getPropertyValueAsString(
+                        KRADConstants.Lookup.TITLE_ACTION_URL_PREPENDTEXT_PROPERTY);
 
         Map<String, String> primaryKeyValues = KRADUtils.getPropertyKeyValuesFromDataObject(pkNames, dataObject);
         String title = LookupInquiryUtils.getLinkTitleText(prependTitleText, getDataObjectClass(), primaryKeyValues);

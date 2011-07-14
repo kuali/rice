@@ -111,7 +111,7 @@ public interface ParameterRepositoryService {
      * @return a string value or null
      * @throws IllegalArgumentException if the key is null
      */
-    @WebMethod(operationName="getParameterValueAsString")
+    @WebMethod(operationName="getPropertyValueAsString")
     @WebResult(name = "value")
     String getParameterValueAsString(@WebParam(name = "key") ParameterKey key);
 
@@ -129,12 +129,24 @@ public interface ParameterRepositoryService {
      *   This method will return null if the parameter does not exist or is not a valid truth value.
      * </p>
      *
-     * valid truth values (case insensitive):
+     * valid true values (case insensitive):
      * <ul>
      *     <li>Y</li>
      *     <li>true</li>
+     *     <li>on</li>
+     *     <li>1</li>
+     *     <li>t</li>
+     *     <li>enabled</li>
+     * </ul>
+     *
+     * valid false values (case insensitive):
+     * <ul>
      *     <li>N</li>
      *     <li>false</li>
+     *     <li>off</li>
+     *     <li>0</li>
+     *     <li>f</li>
+     *     <li>disabled</li>
      * </ul>
      *
      * @param key the key to retrieve the parameter by. cannot be null.

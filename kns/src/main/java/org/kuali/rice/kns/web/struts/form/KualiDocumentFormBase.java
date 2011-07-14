@@ -29,6 +29,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.datadictionary.HeaderNavigation;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.util.WebUtils;
@@ -38,9 +39,7 @@ import org.kuali.rice.krad.bo.AdHocRoutePerson;
 import org.kuali.rice.krad.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
-import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
@@ -241,7 +240,8 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         parameters.put(KRADConstants.PARAMETER_DOC_ID, documentId);
         parameters.put(KRADConstants.PARAMETER_COMMAND, KRADConstants.METHOD_DISPLAY_DOC_SEARCH_VIEW);
         return UrlFactory.parameterizeUrl(
-                KRADServiceLocator.getKualiConfigurationService().getPropertyString(KRADConstants.WORKFLOW_URL_KEY) + "/" + KRADConstants.DOC_HANDLER_ACTION, parameters);
+                KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                        KRADConstants.WORKFLOW_URL_KEY) + "/" + KRADConstants.DOC_HANDLER_ACTION, parameters);
     }
     
     protected String buildHtmlLink(String url, String linkBody) {

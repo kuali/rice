@@ -468,6 +468,9 @@ public final class KRADUtils {
      * @return whether the deploy environment is production
      */
     public static boolean isProductionEnvironment() {
-        return KRADServiceLocator.getKualiConfigurationService().isProductionEnvironment();
+        return KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                KRADConstants.PROD_ENVIRONMENT_CODE_KEY)
+                .equalsIgnoreCase(KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                        KRADConstants.ENVIRONMENT_KEY));
     }
 }

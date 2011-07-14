@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.krad.exception;
 
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.exception.KualiException;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.exception.KualiException;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 
 /**
  * This class contains the exception incident information, exception, form and
@@ -203,7 +203,7 @@ public class ExceptionIncident implements KualiExceptionIncident {
         }
         
         String env= KRADServiceLocator.getKualiConfigurationService().
-                        getPropertyString("environment");
+                getPropertyValueAsString("environment");
         String format="%s:%s:%s";
         String componentName=properties.get(COMPONENT_NAME);
         String subject=String.format(format,

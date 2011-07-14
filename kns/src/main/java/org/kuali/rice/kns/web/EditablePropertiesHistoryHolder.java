@@ -57,7 +57,8 @@ public class EditablePropertiesHistoryHolder implements java.io.Serializable {
 	 */
 	public int getMaxHistoryLength() {
 		if (maxLength == null) {
-			final String historyLengthAsString = getConfigurationService().getPropertyString(EditablePropertiesHistoryHolder.EDITABLE_PROPERTIES_HISTORY_SIZE_PROPERTY_NAME);
+			final String historyLengthAsString = getConfigurationService().getPropertyValueAsString(
+                    EditablePropertiesHistoryHolder.EDITABLE_PROPERTIES_HISTORY_SIZE_PROPERTY_NAME);
 			if (historyLengthAsString == null) {
 				maxLength = new Integer(20);
 			} else {

@@ -18,9 +18,7 @@
 package org.kuali.rice.core.web.format;
 // end Kuali Foundation modification
 
-import java.util.Arrays;
-import java.util.List;
-
+import org.kuali.rice.core.api.truthy.Truth;
 import org.kuali.rice.core.util.RiceKeyConstants;
 
 /**
@@ -36,12 +34,6 @@ public class BooleanFormatter extends Formatter {
 
     // deleted line: static final String CONVERT_MSG = "Unable to create Boolean object from ";
     // end Kuali Foundation modification
-
-	// begin Kuali Foundation modification
-	// "y" and "t" added to TRUE_VALUES, "n" and "f" added to FALSE_VALUES
-    static final List<String> TRUE_VALUES = Arrays.asList(new String[] { "yes", "y", "true", "t", "on", "1", "enabled" });
-    static final List<String> FALSE_VALUES = Arrays.asList(new String[] { "no", "n", "false", "f", "off", "0", "disabled" });
-	// end Kuali Foundation modification
 
 	/* begin Kuali Foundation modification
 	   deleted following method */
@@ -62,15 +54,12 @@ public class BooleanFormatter extends Formatter {
         String stringValue = target.getClass().isArray() ? unwrapString(target) : (String) target;
         stringValue = stringValue.trim().toLowerCase();
 
-        if (TRUE_VALUES.contains(stringValue))
-            return Boolean.TRUE;
-        if (FALSE_VALUES.contains(stringValue))
-            return Boolean.FALSE;
+        Boolean b = Truth.strToBooleanIgnoreCase(stringValue);
+        if (b == null) {
+            throw new FormatException("converting", RiceKeyConstants.ERROR_BOOLEAN, stringValue);
+        }
 
-		// begin Kuali Foundation modification
-		// was: throw new FormatException(CONVERT_MSG + stringValue);
-        throw new FormatException("converting", RiceKeyConstants.ERROR_BOOLEAN, stringValue);
-        // end Kuali Foundation modification
+        return b;
     }
 
     public Object format(Object target) {

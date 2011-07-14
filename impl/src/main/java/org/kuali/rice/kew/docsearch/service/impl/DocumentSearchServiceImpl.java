@@ -257,9 +257,9 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
             if (!checkDateRanges(criteria.getFromDateCreated(), criteria.getToDateCreated())) {
             	String[] messageArgs = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(
             			DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateCreated");
-            	errors.add(new WorkflowServiceErrorImpl(MessageFormat.format(getKualiConfigurationService().getPropertyString(
-            					getDataDictionaryService().getAttributeValidatingErrorMessageKey(DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateCreated") +
-            							".range"), messageArgs[0]), "docsearch.DocumentSearchService.dateCreatedRange"));
+            	errors.add(new WorkflowServiceErrorImpl(MessageFormat.format(getKualiConfigurationService().getPropertyValueAsString(
+                        getDataDictionaryService().getAttributeValidatingErrorMessageKey(DOC_SEARCH_CRITERIA_DTO_CLASS,
+                                "fromDateCreated") + ".range"), messageArgs[0]), "docsearch.DocumentSearchService.dateCreatedRange"));
             }
         }
         compareDatePairs = true;
@@ -285,9 +285,9 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
             if (!checkDateRanges(criteria.getFromDateApproved(), criteria.getToDateApproved())) {
             	String[] messageArgs = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(
             			DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateApproved");
-            	errors.add(new WorkflowServiceErrorImpl(MessageFormat.format(getKualiConfigurationService().getPropertyString(
-            					getDataDictionaryService().getAttributeValidatingErrorMessageKey(DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateApproved") +
-            							".range"), messageArgs[0]), "docsearch.DocumentSearchService.dateApprovedRange"));
+            	errors.add(new WorkflowServiceErrorImpl(MessageFormat.format(getKualiConfigurationService().getPropertyValueAsString(
+                        getDataDictionaryService().getAttributeValidatingErrorMessageKey(DOC_SEARCH_CRITERIA_DTO_CLASS,
+                                "fromDateApproved") + ".range"), messageArgs[0]), "docsearch.DocumentSearchService.dateApprovedRange"));
             }
         }
         compareDatePairs = true;
@@ -313,9 +313,9 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
             if (!checkDateRanges(criteria.getFromDateFinalized(), criteria.getToDateFinalized())) {
             	String[] messageArgs = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(
             			DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateFinalized");
-            	errors.add(new WorkflowServiceErrorImpl(MessageFormat.format(getKualiConfigurationService().getPropertyString(
-            					getDataDictionaryService().getAttributeValidatingErrorMessageKey(DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateFinalized") +
-            							".range"), messageArgs[0]), "docsearch.DocumentSearchService.dateFinalizedRange"));
+            	errors.add(new WorkflowServiceErrorImpl(MessageFormat.format(getKualiConfigurationService().getPropertyValueAsString(
+                        getDataDictionaryService().getAttributeValidatingErrorMessageKey(DOC_SEARCH_CRITERIA_DTO_CLASS,
+                                "fromDateFinalized") + ".range"), messageArgs[0]), "docsearch.DocumentSearchService.dateFinalizedRange"));
             }
         }
         compareDatePairs = true;
@@ -341,9 +341,9 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
             if (!checkDateRanges(criteria.getFromDateLastModified(), criteria.getToDateLastModified())) {
             	String[] messageArgs = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(
             			DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateLastModified");
-            	errors.add(new WorkflowServiceErrorImpl(MessageFormat.format(getKualiConfigurationService().getPropertyString(
-            					getDataDictionaryService().getAttributeValidatingErrorMessageKey(DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateLastModified") +
-            							".range"), messageArgs[0]), "docsearch.DocumentSearchService.dateLastModifiedRange"));
+            	errors.add(new WorkflowServiceErrorImpl(MessageFormat.format(getKualiConfigurationService().getPropertyValueAsString(
+                        getDataDictionaryService().getAttributeValidatingErrorMessageKey(DOC_SEARCH_CRITERIA_DTO_CLASS,
+                                "fromDateLastModified") + ".range"), messageArgs[0]), "docsearch.DocumentSearchService.dateLastModifiedRange"));
             }
         }
         return errors;

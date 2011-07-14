@@ -16,9 +16,6 @@
 
 package org.kuali.rice.kns.web.struts.action;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -47,6 +44,9 @@ import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADConstants;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * This class handles requests for help text.
@@ -393,7 +393,7 @@ public class KualiHelpAction extends KualiAction {
 
         helpForm.setHelpLabel("");
         helpForm.setHelpSummary("");
-        helpForm.setHelpDescription(getConfigurationService().getPropertyString(resourceKey));
+        helpForm.setHelpDescription(getConfigurationService().getPropertyValueAsString(resourceKey));
     }
     
     /**
@@ -452,7 +452,7 @@ public class KualiHelpAction extends KualiAction {
     }
 
     private String getHelpUrl(String parameterNamespace, String parameterDetailTypeCode, String parameterName) {
-        return getConfigurationService().getPropertyString(KRADConstants.EXTERNALIZABLE_HELP_URL_KEY) + getParameterService().getParameterValueAsString(parameterNamespace, parameterDetailTypeCode, parameterName);
+        return getConfigurationService().getPropertyValueAsString(KRADConstants.EXTERNALIZABLE_HELP_URL_KEY) + getParameterService().getParameterValueAsString(parameterNamespace, parameterDetailTypeCode, parameterName);
     }    
     
     /**

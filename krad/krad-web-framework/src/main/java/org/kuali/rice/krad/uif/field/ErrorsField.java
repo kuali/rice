@@ -233,8 +233,7 @@ public class ErrorsField extends FieldBase {
 
 				for (ErrorMessage e : errorList) {
 					tempCount++;
-					String message = configService.getPropertyString(e
-							.getErrorKey());
+					String message = configService.getPropertyValueAsString(e.getErrorKey());
 					if (e.getMessageParameters() != null) {
 						message = message.replace("'", "''");
 						message = MessageFormat.format(message,

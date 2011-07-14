@@ -17,9 +17,9 @@
 package org.kuali.rice.kns.lookup;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.encryption.EncryptionService;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
@@ -31,6 +31,7 @@ import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.document.authorization.FieldRestriction;
+import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -48,7 +49,6 @@ import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeSecurity;
 import org.kuali.rice.krad.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.krad.exception.ValidationException;
-import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.krad.service.BusinessObjectDictionaryService;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataDictionaryService;
@@ -550,7 +550,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         String prependTitleText = displayText + " "
                 + getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(getBusinessObjectClass().getName()).getObjectLabel()
                 + " "
-                + this.getKualiConfigurationService().getPropertyString(TITLE_ACTION_URL_PREPENDTEXT_PROPERTY);
+                + this.getKualiConfigurationService().getPropertyValueAsString(TITLE_ACTION_URL_PREPENDTEXT_PROPERTY);
         return HtmlData.getTitleText(prependTitleText, businessObject, pkNames, businessObjectRestrictions);
     }
 
@@ -751,7 +751,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     final public HtmlData getReturnUrl(BusinessObject businessObject, Map fieldConversions, String lookupImpl, List returnKeys, BusinessObjectRestrictions businessObjectRestrictions) {
         String href = getReturnHref(businessObject, fieldConversions, lookupImpl, returnKeys);
         String returnUrlAnchorLabel =
-                this.getKualiConfigurationService().getPropertyString(TITLE_RETURN_URL_PREPENDTEXT_PROPERTY);
+                this.getKualiConfigurationService().getPropertyValueAsString(TITLE_RETURN_URL_PREPENDTEXT_PROPERTY);
         HtmlData.AnchorHtmlData anchor = new HtmlData.AnchorHtmlData(href, HtmlData.getTitleText(returnUrlAnchorLabel, businessObject, returnKeys, businessObjectRestrictions));
         anchor.setDisplayText(returnUrlAnchorLabel);
         return anchor;
@@ -788,7 +788,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
     protected HtmlData getReturnInputHtmlData(BusinessObject businessObject, Properties parameters, LookupForm lookupForm, List returnKeys, BusinessObjectRestrictions businessObjectRestrictions) {
         String returnUrlAnchorLabel =
-                this.getKualiConfigurationService().getPropertyString(TITLE_RETURN_URL_PREPENDTEXT_PROPERTY);
+                this.getKualiConfigurationService().getPropertyValueAsString(TITLE_RETURN_URL_PREPENDTEXT_PROPERTY);
         String name = KRADConstants.MULTIPLE_VALUE_LOOKUP_SELECTED_OBJ_ID_PARAM_PREFIX + lookupForm.getLookupObjectId();
         HtmlData.InputHtmlData input = new HtmlData.InputHtmlData(name, HtmlData.InputHtmlData.CHECKBOX_INPUT_TYPE);
         input.setTitle(HtmlData.getTitleText(returnUrlAnchorLabel, businessObject, returnKeys, businessObjectRestrictions));
@@ -805,7 +805,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
     protected HtmlData getReturnAnchorHtmlData(BusinessObject businessObject, Properties parameters, LookupForm lookupForm, List returnKeys, BusinessObjectRestrictions businessObjectRestrictions) {
         String returnUrlAnchorLabel =
-                this.getKualiConfigurationService().getPropertyString(TITLE_RETURN_URL_PREPENDTEXT_PROPERTY);
+                this.getKualiConfigurationService().getPropertyValueAsString(TITLE_RETURN_URL_PREPENDTEXT_PROPERTY);
         HtmlData.AnchorHtmlData anchor = new HtmlData.AnchorHtmlData(
                 getReturnHref(parameters, lookupForm, returnKeys),
                 HtmlData.getTitleText(returnUrlAnchorLabel, businessObject, returnKeys, businessObjectRestrictions));

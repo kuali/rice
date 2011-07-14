@@ -93,30 +93,32 @@ public class PreferencesServiceImpl implements PreferencesService {
         
         ConfigurationService kcs = KRADServiceLocator.getKualiConfigurationService();
         
-        String stagingDirectory = kcs.getPropertyString("staging.directory");                                                    
+        String stagingDirectory = kcs.getPropertyValueAsString("staging.directory");
                                                                                                     
-        String defaultColor =  kcs.getPropertyString("userOptions.default.color");                                                                                                  
-        String defaultEmail = kcs.getPropertyString("userOptions.default.email");                                                                                                   
-        String defaultNotifyPrimary = kcs.getPropertyString("userOptions.default.notifyPrimary");                                                                                   
-        String defaultNotifySecondary = kcs.getPropertyString("userOptions.default.notifySecondary");                                                                               
-        String defaultOpenNewWindow = kcs.getPropertyString("userOptions.default.openNewWindow");                                                                                   
-        String defaultActionListSize = kcs.getPropertyString("userOptions.default.actionListSize");                                                                                 
-        String defaultRefreshRate = kcs.getPropertyString("userOptions.default.refreshRate");                                                                                       
-        String defaultShowActionRequired = kcs.getPropertyString("userOptions.default.showActionRequired");                                                                         
-        String defaultShowDateCreated = kcs.getPropertyString("userOptions.default.showDateCreated");                                                                               
-        String defaultShowDocType = kcs.getPropertyString("userOptions.default.showDocumentType");                                                                                  
-        String defaultShowDocStatus = kcs.getPropertyString("userOptions.default.showDocumentStatus");                                                                              
-        String defaultShowInitiator = kcs.getPropertyString("userOptions.default.showInitiator");                                                                                   
-        String defaultShowDelegator = kcs.getPropertyString("userOptions.default.showDelegator");                                                                                   
-        String defaultShowTitle = kcs.getPropertyString("userOptions.default.showTitle");                                                                                           
-        String defaultShowWorkgroupRequest = kcs.getPropertyString("userOptions.default.showWorkgroupRequest");                                                                     
-        String defaultShowLastApprovedDate = kcs.getPropertyString("userOptions.default.showLastApprovedDate");                                                                     
-        String defaultShowClearFYI = kcs.getPropertyString("userOptions.default.showClearFYI");                                                                                     
-        String defaultShowCurrentNode = kcs.getPropertyString("userOptions.default.showCurrentNode");                                                                               
-        String defaultDelegatorFilterOnActionList = kcs.getPropertyString("userOptions.default.delegatorFilterOnActionList");                                                       
-        String defaultPrimaryDelegatorFilterOnActionList = kcs.getPropertyString("userOptions.default.primaryDelegatorFilterOnActionList");                                         
+        String defaultColor =  kcs.getPropertyValueAsString("userOptions.default.color");
+        String defaultEmail = kcs.getPropertyValueAsString("userOptions.default.email");
+        String defaultNotifyPrimary = kcs.getPropertyValueAsString("userOptions.default.notifyPrimary");
+        String defaultNotifySecondary = kcs.getPropertyValueAsString("userOptions.default.notifySecondary");
+        String defaultOpenNewWindow = kcs.getPropertyValueAsString("userOptions.default.openNewWindow");
+        String defaultActionListSize = kcs.getPropertyValueAsString("userOptions.default.actionListSize");
+        String defaultRefreshRate = kcs.getPropertyValueAsString("userOptions.default.refreshRate");
+        String defaultShowActionRequired = kcs.getPropertyValueAsString("userOptions.default.showActionRequired");
+        String defaultShowDateCreated = kcs.getPropertyValueAsString("userOptions.default.showDateCreated");
+        String defaultShowDocType = kcs.getPropertyValueAsString("userOptions.default.showDocumentType");
+        String defaultShowDocStatus = kcs.getPropertyValueAsString("userOptions.default.showDocumentStatus");
+        String defaultShowInitiator = kcs.getPropertyValueAsString("userOptions.default.showInitiator");
+        String defaultShowDelegator = kcs.getPropertyValueAsString("userOptions.default.showDelegator");
+        String defaultShowTitle = kcs.getPropertyValueAsString("userOptions.default.showTitle");
+        String defaultShowWorkgroupRequest = kcs.getPropertyValueAsString("userOptions.default.showWorkgroupRequest");
+        String defaultShowLastApprovedDate = kcs.getPropertyValueAsString("userOptions.default.showLastApprovedDate");
+        String defaultShowClearFYI = kcs.getPropertyValueAsString("userOptions.default.showClearFYI");
+        String defaultShowCurrentNode = kcs.getPropertyValueAsString("userOptions.default.showCurrentNode");
+        String defaultDelegatorFilterOnActionList = kcs.getPropertyValueAsString(
+                "userOptions.default.delegatorFilterOnActionList");
+        String defaultPrimaryDelegatorFilterOnActionList = kcs.getPropertyValueAsString(
+                "userOptions.default.primaryDelegatorFilterOnActionList");
 
-        final String defaultUseOutBox = kcs.getPropertyString(KEWConstants.USER_OPTIONS_DEFAULT_USE_OUTBOX_PARAM);
+        final String defaultUseOutBox = kcs.getPropertyValueAsString(KEWConstants.USER_OPTIONS_DEFAULT_USE_OUTBOX_PARAM);
                                                                                                                                                                                     
         Preferences preferences = new Preferences();                                                                                                                                
         preferences.setColorApproved(getOption(optionMap,APPROVED_DOC_COLOR, defaultColor, principalId, preferences).getOptionVal());                                               

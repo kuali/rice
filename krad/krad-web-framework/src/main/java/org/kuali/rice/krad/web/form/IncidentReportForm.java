@@ -74,7 +74,7 @@ public class IncidentReportForm extends UifFormBase {
      * @return the email subject
      */
     public String createEmailSubject() {
-        String env = KRADServiceLocator.getKualiConfigurationService().getPropertyString("environment");
+        String env = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString("environment");
         String format = "%s:%s:%s";
         String subject = String.format(format, env, (incidentViewId == null) ? "" : incidentViewId,
                 truncateString(exceptionMessage, 180));

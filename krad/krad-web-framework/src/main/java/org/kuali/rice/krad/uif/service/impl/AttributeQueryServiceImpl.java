@@ -160,7 +160,8 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
             // add data not found message
             if (fieldQuery.isRenderNotFoundMessage()) {
                 String messageTemplate =
-                        getConfigurationService().getPropertyString(UifConstants.MessageKeys.QUERY_DATA_NOT_FOUND);
+                        getConfigurationService().getPropertyValueAsString(
+                                UifConstants.MessageKeys.QUERY_DATA_NOT_FOUND);
                 String message = MessageFormat.format(messageTemplate, attributeField.getLabel());
                 fieldQuery.setReturnMessageText(message.toLowerCase());
             }

@@ -109,7 +109,8 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
     protected ActionForward returnToSender(HttpServletRequest request, ActionMapping mapping, KualiDocumentFormBase form) {
         ActionForward dest;
         if (form.isReturnToActionList()) {
-            String workflowBase = getKualiConfigurationService().getPropertyString(KRADConstants.WORKFLOW_URL_KEY);
+            String workflowBase = getKualiConfigurationService().getPropertyValueAsString(
+                    KRADConstants.WORKFLOW_URL_KEY);
             String actionListUrl = workflowBase + "/ActionList.do";
 
             dest = new ActionForward(actionListUrl, true);

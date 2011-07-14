@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.util.properties;
+package org.kuali.rice.krad.service.impl;
 
 import org.junit.Test;
 import org.kuali.rice.krad.exception.DuplicateKeyException;
@@ -37,19 +37,19 @@ public class PropertyHolderTest  {
     private static final String KNOWN_VALUE3 = "";
 
     @Test public void testIsEmpty_emptyHolder() {
-        PropertyHolder propertyHolder = new PropertyHolder();
+        ConfigurationServiceImpl.PropertyHolder propertyHolder = new ConfigurationServiceImpl.PropertyHolder();
 
         assertTrue(propertyHolder.isEmpty());
     }
 
     @Test public void testIsEmpty_notEmptyHolder() {
-        PropertyHolder propertyHolder = buildNonEmpty();
+        ConfigurationServiceImpl.PropertyHolder propertyHolder = buildNonEmpty();
 
         assertTrue(!propertyHolder.isEmpty());
     }
 
     @Test public void testContainsKey_invalidKey() {
-        PropertyHolder propertyHolder = new PropertyHolder();
+        ConfigurationServiceImpl.PropertyHolder propertyHolder = new ConfigurationServiceImpl.PropertyHolder();
 
         boolean failedAsExpected = false;
         try {
@@ -63,7 +63,7 @@ public class PropertyHolderTest  {
     }
 
     @Test public void testContainsKey_emptyHolder() {
-        PropertyHolder propertyHolder = new PropertyHolder();
+        ConfigurationServiceImpl.PropertyHolder propertyHolder = new ConfigurationServiceImpl.PropertyHolder();
 
         assertFalse(propertyHolder.containsKey(KNOWN_KEY1));
         assertFalse(propertyHolder.containsKey(KNOWN_KEY2));
@@ -71,7 +71,7 @@ public class PropertyHolderTest  {
     }
 
     @Test public void testContainsKey_notContains() {
-        PropertyHolder propertyHolder = buildNonEmpty();
+        ConfigurationServiceImpl.PropertyHolder propertyHolder = buildNonEmpty();
 
         assertFalse(propertyHolder.containsKey(KNOWN_KEY1 + "foo"));
         assertFalse(propertyHolder.containsKey(KNOWN_KEY2 + "foo"));
@@ -79,7 +79,7 @@ public class PropertyHolderTest  {
     }
 
     @Test public void testContainsKey_contains() {
-        PropertyHolder propertyHolder = buildNonEmpty();
+        ConfigurationServiceImpl.PropertyHolder propertyHolder = buildNonEmpty();
 
         assertTrue(propertyHolder.containsKey(KNOWN_KEY1));
         assertTrue(propertyHolder.containsKey(KNOWN_KEY2));
@@ -87,7 +87,7 @@ public class PropertyHolderTest  {
     }
 
     @Test public void testGetProperty_invalidKey() {
-        PropertyHolder propertyHolder = new PropertyHolder();
+        ConfigurationServiceImpl.PropertyHolder propertyHolder = new ConfigurationServiceImpl.PropertyHolder();
 
         boolean failedAsExpected = false;
         try {
@@ -101,7 +101,7 @@ public class PropertyHolderTest  {
     }
 
     @Test public void testGetProperty_emptyHolder() {
-        PropertyHolder propertyHolder = new PropertyHolder();
+        ConfigurationServiceImpl.PropertyHolder propertyHolder = new ConfigurationServiceImpl.PropertyHolder();
 
         assertNull(propertyHolder.getProperty(KNOWN_KEY1));
         assertNull(propertyHolder.getProperty(KNOWN_KEY2));
@@ -109,7 +109,7 @@ public class PropertyHolderTest  {
     }
 
     @Test public void testGetProperty_notContains() {
-        PropertyHolder propertyHolder = buildNonEmpty();
+        ConfigurationServiceImpl.PropertyHolder propertyHolder = buildNonEmpty();
 
         assertNull(propertyHolder.getProperty(KNOWN_KEY1 + "foo"));
         assertNull(propertyHolder.getProperty(KNOWN_KEY2 + "foo"));
@@ -117,7 +117,7 @@ public class PropertyHolderTest  {
     }
 
     @Test public void testGetProperty_contains() {
-        PropertyHolder propertyHolder = buildNonEmpty();
+        ConfigurationServiceImpl.PropertyHolder propertyHolder = buildNonEmpty();
 
         String value = propertyHolder.getProperty(KNOWN_KEY1);
         assertEquals(KNOWN_VALUE1, value);
@@ -128,7 +128,7 @@ public class PropertyHolderTest  {
     }
 
     @Test public void testSetProperty_invalidKey() {
-        PropertyHolder propertyHolder = new PropertyHolder();
+        ConfigurationServiceImpl.PropertyHolder propertyHolder = new ConfigurationServiceImpl.PropertyHolder();
 
         boolean failedAsExpected = false;
         try {
@@ -142,7 +142,7 @@ public class PropertyHolderTest  {
     }
 
     @Test public void testSetProperty_invalidValue() {
-        PropertyHolder propertyHolder = new PropertyHolder();
+        ConfigurationServiceImpl.PropertyHolder propertyHolder = new ConfigurationServiceImpl.PropertyHolder();
 
         boolean failedAsExpected = false;
         try {
@@ -156,7 +156,7 @@ public class PropertyHolderTest  {
     }
 
     @Test public void testSetProperty_uniqueKey() {
-        PropertyHolder propertyHolder = new PropertyHolder();
+        ConfigurationServiceImpl.PropertyHolder propertyHolder = new ConfigurationServiceImpl.PropertyHolder();
 
         propertyHolder.setProperty(KNOWN_KEY1, KNOWN_VALUE1);
         assertTrue(propertyHolder.containsKey(KNOWN_KEY1));
@@ -164,7 +164,7 @@ public class PropertyHolderTest  {
     }
 
     @Test public void testSetProperty_duplicateKey() {
-        PropertyHolder propertyHolder = buildNonEmpty();
+        ConfigurationServiceImpl.PropertyHolder propertyHolder = buildNonEmpty();
 
         boolean failedAsExpected = false;
         assertTrue(propertyHolder.containsKey(KNOWN_KEY1));
@@ -179,7 +179,7 @@ public class PropertyHolderTest  {
     }
 
     @Test public void testClearProperty_invalidKey() {
-        PropertyHolder propertyHolder = buildNonEmpty();
+        ConfigurationServiceImpl.PropertyHolder propertyHolder = buildNonEmpty();
 
         boolean failedAsExpected = false;
         try {
@@ -193,7 +193,7 @@ public class PropertyHolderTest  {
     }
 
     @Test public void testClearProperty_unknownKey() {
-        PropertyHolder propertyHolder = buildNonEmpty();
+        ConfigurationServiceImpl.PropertyHolder propertyHolder = buildNonEmpty();
 
         assertTrue(propertyHolder.containsKey(KNOWN_KEY1));
         propertyHolder.clearProperty(KNOWN_KEY1 + "foo");
@@ -201,7 +201,7 @@ public class PropertyHolderTest  {
     }
 
     @Test public void testClearProperty_knownKey() {
-        PropertyHolder propertyHolder = buildNonEmpty();
+        ConfigurationServiceImpl.PropertyHolder propertyHolder = buildNonEmpty();
 
         assertTrue(propertyHolder.containsKey(KNOWN_KEY1));
         assertTrue(propertyHolder.containsKey(KNOWN_KEY2));
@@ -211,7 +211,7 @@ public class PropertyHolderTest  {
     }
 
     @Test public void testClearProperties_empty() {
-        PropertyHolder propertyHolder = new PropertyHolder();
+        ConfigurationServiceImpl.PropertyHolder propertyHolder = new ConfigurationServiceImpl.PropertyHolder();
 
         assertTrue(propertyHolder.isEmpty());
         propertyHolder.clearProperties();
@@ -219,7 +219,7 @@ public class PropertyHolderTest  {
     }
 
     @Test public void testClearProperties_nonEmpty() {
-        PropertyHolder propertyHolder = buildNonEmpty();
+        ConfigurationServiceImpl.PropertyHolder propertyHolder = buildNonEmpty();
 
         assertFalse(propertyHolder.isEmpty());
         propertyHolder.clearProperties();
@@ -227,7 +227,7 @@ public class PropertyHolderTest  {
     }
 
     @Test public void testGetKeys_empty() {
-        PropertyHolder propertyHolder = new PropertyHolder();
+        ConfigurationServiceImpl.PropertyHolder propertyHolder = new ConfigurationServiceImpl.PropertyHolder();
 
         assertTrue(propertyHolder.isEmpty());
         Iterator i = propertyHolder.getKeys();
@@ -235,7 +235,7 @@ public class PropertyHolderTest  {
     }
 
     @Test public void testGetKeys_nonEmpty() {
-        PropertyHolder propertyHolder = buildNonEmpty();
+        ConfigurationServiceImpl.PropertyHolder propertyHolder = buildNonEmpty();
 
         assertFalse(propertyHolder.isEmpty());
         Iterator i = propertyHolder.getKeys();
@@ -248,7 +248,7 @@ public class PropertyHolderTest  {
     }
 
     @Test public void testLoadProperties_nullPropertySource() {
-        PropertyHolder propertyHolder = new PropertyHolder();
+        ConfigurationServiceImpl.PropertyHolder propertyHolder = new ConfigurationServiceImpl.PropertyHolder();
 
         boolean failedAsExpected = false;
         try {
@@ -262,8 +262,8 @@ public class PropertyHolderTest  {
     }
 
     @Test public void testLoadProperties_invalidPropertySource() {
-        PropertyHolder propertyHolder = new PropertyHolder();
-        FilePropertySource fps = new FilePropertySource();
+        ConfigurationServiceImpl.PropertyHolder propertyHolder = new ConfigurationServiceImpl.PropertyHolder();
+        ConfigurationServiceImpl.FilePropertySource fps = new ConfigurationServiceImpl.FilePropertySource();
 
         boolean failedAsExpected = false;
         try {
@@ -277,8 +277,8 @@ public class PropertyHolderTest  {
     }
 
     @Test public void testLoadProperties_unknownPropertySource() {
-        PropertyHolder propertyHolder = new PropertyHolder();
-        FilePropertySource fps = new FilePropertySource();
+        ConfigurationServiceImpl.PropertyHolder propertyHolder = new ConfigurationServiceImpl.PropertyHolder();
+        ConfigurationServiceImpl.FilePropertySource fps = new ConfigurationServiceImpl.FilePropertySource();
         fps.setFileName("foo");
 
         boolean failedAsExpected = false;
@@ -292,8 +292,8 @@ public class PropertyHolderTest  {
         assertTrue(failedAsExpected);
     }
 
-    private final PropertyHolder buildNonEmpty() {
-        PropertyHolder propertyHolder = new PropertyHolder();
+    private final ConfigurationServiceImpl.PropertyHolder buildNonEmpty() {
+        ConfigurationServiceImpl.PropertyHolder propertyHolder = new ConfigurationServiceImpl.PropertyHolder();
         propertyHolder.setProperty(KNOWN_KEY1, KNOWN_VALUE1);
         propertyHolder.setProperty(KNOWN_KEY2, KNOWN_VALUE2);
         propertyHolder.setProperty(KNOWN_KEY3, KNOWN_VALUE3);

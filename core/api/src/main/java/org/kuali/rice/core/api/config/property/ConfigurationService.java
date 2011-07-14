@@ -16,7 +16,7 @@
 
 package org.kuali.rice.core.api.config.property;
 
-import java.util.Properties;
+import java.util.Map;
 
 /**
  * This interface defines methods that a Configuration Service must provide. Provides methods for getting string
@@ -24,34 +24,29 @@ import java.util.Properties;
  */
 public interface ConfigurationService {
     /**
-         * Given a property name (key), returns the value associated with that key, or null if none is available.
-         * 
-         * @param key
-         * @return String associated with the given key
-         * @throws IllegalArgumentException
-         *                 if the key is null
-         */
-    public String getPropertyString(String key);
+     * Given a property name (key), returns the value associated with that key, or null if none is available.
+     *
+     * @param key
+     * @return String associated with the given key
+     * @throws IllegalArgumentException
+     *                 if the key is null
+     */
+    String getPropertyValueAsString(String key);
 
     /**
-         * Given a property name (key), returns the "booleanized" value associated with that key.
-         * 
-         * true, yes, on, or 1 are translated into <b>true</b> - all other values result in <b>false</b>
-         * 
-         * @param key
-         * @return String associated with the given key
-         * @throws IllegalArgumentException
-         *                 if the key is null
-         */
-    public boolean getPropertyAsBoolean(String key);
+     * Given a property name (key), returns the "booleanized" value associated with that key.
+     *
+     * true, yes, on, or 1 are translated into <b>true</b> - all other values result in <b>false</b>
+     *
+     * @param key
+     * @return String associated with the given key
+     * @throws IllegalArgumentException
+     *                 if the key is null
+     */
+    boolean getPropertyValueAsBoolean(String key);
 
     /**
-         * @return Properties instance containing all (key,value) pairs known to the service
-         */
-    public Properties getAllProperties();
-
-    /**
-         * Returns whether this instance is production based on the configuration options.
-         */
-    public boolean isProductionEnvironment();
+     * @return Properties instance containing all (key,value) pairs known to the service
+     */
+    Map<String, String> getAllProperties();
 }

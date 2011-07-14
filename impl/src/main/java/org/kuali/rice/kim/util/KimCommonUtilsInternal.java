@@ -57,7 +57,8 @@ public final class KimCommonUtilsInternal {
 	}
 
 	public static String getKimBasePath(){
-		String kimBaseUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyString(KimConstants.KimUIConstants.KIM_URL_KEY);
+		String kimBaseUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                KimConstants.KimUIConstants.KIM_URL_KEY);
 		if (!kimBaseUrl.endsWith(KimConstants.KimUIConstants.URL_SEPARATOR)) {
 			kimBaseUrl = kimBaseUrl + KimConstants.KimUIConstants.URL_SEPARATOR;
 		}

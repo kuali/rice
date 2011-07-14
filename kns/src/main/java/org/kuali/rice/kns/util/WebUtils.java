@@ -29,6 +29,8 @@ import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.kns.datadictionary.DocumentEntry;
+import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.web.struts.action.KualiMultipartRequestHandler;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
@@ -39,8 +41,6 @@ import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.AttributeSecurity;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntryBase;
-import org.kuali.rice.kns.datadictionary.DocumentEntry;
-import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.krad.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.authorization.DocumentAuthorizer;
@@ -545,7 +545,7 @@ public class WebUtils {
 
     public static boolean isInquiryHiddenField(String className, String fieldName, Object formObject, String propertyName) {
     	boolean isHidden = false;
-    	String hiddenInquiryFields = getKualiConfigurationService().getPropertyString(className+".hidden");
+    	String hiddenInquiryFields = getKualiConfigurationService().getPropertyValueAsString(className + ".hidden");
     	if (StringUtils.isEmpty(hiddenInquiryFields)) {
     		return isHidden;
     	}
@@ -558,7 +558,7 @@ public class WebUtils {
 
     public static boolean isHiddenKimObjectType(String type, String configParameter) {
     	boolean hideType = false;
-    	String hiddenTypes = getKualiConfigurationService().getPropertyString(configParameter);
+    	String hiddenTypes = getKualiConfigurationService().getPropertyValueAsString(configParameter);
     	if (StringUtils.isEmpty(hiddenTypes)) {
     		return hideType;
     	}
@@ -763,8 +763,8 @@ public class WebUtils {
 	 * @return the URL where question button images are located
 	 */
 	public static String getButtonImageUrl(String imageName) {
-		String buttonImageUrl = getKualiConfigurationService().getPropertyString(
-				WebUtils.APPLICATION_IMAGE_URL_PROPERTY_PREFIX + "." + imageName);
+		String buttonImageUrl = getKualiConfigurationService().getPropertyValueAsString(
+                WebUtils.APPLICATION_IMAGE_URL_PROPERTY_PREFIX + "." + imageName);
 		if (StringUtils.isBlank(buttonImageUrl)) {
 			buttonImageUrl = getDefaultButtonImageUrl(imageName);
 		}
@@ -780,7 +780,7 @@ public class WebUtils {
 	 * @return the default button image url
 	 */
 	public static String getDefaultButtonImageUrl(String imageName) {
-		return getKualiConfigurationService().getPropertyString(WebUtils.DEFAULT_IMAGE_URL_PROPERTY_NAME)
+		return getKualiConfigurationService().getPropertyValueAsString(WebUtils.DEFAULT_IMAGE_URL_PROPERTY_NAME)
 				+ "buttonsmall_" + imageName + ".gif";
 	}
 

@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.core.framework.persistence.jpa.criteria;
 
-import org.kuali.rice.core.util.RiceUtilities;
+import org.kuali.rice.core.api.truthy.Truth;
 import org.kuali.rice.core.util.type.TypeUtils;
 
 import javax.persistence.Query;
@@ -1221,7 +1221,7 @@ public class Criteria {
 			if (value != null) {
 				if (value instanceof String) {
 					if (query.getParameter(param.getKey()).getParameterType().equals(java.lang.Boolean.class)) {
-						value = RiceUtilities.getBooleanValueForString((String)value, false);
+						value = Truth.strToBooleanIgnoreCase((String) value, Boolean.FALSE);
 					} else {
 						//value = ((String)value).replaceAll("\\*", "%");
 					}

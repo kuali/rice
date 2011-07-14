@@ -16,22 +16,16 @@
 
 package org.kuali.rice.krad.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.kuali.rice.core.api.component.Component;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.framework.parameter.ParameterConstants.COMPONENT;
+import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.datadictionary.TransactionalDocumentEntry;
 import org.kuali.rice.krad.document.TransactionalDocument;
-import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -39,6 +33,12 @@ import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.service.RiceApplicationConfigurationService;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 //@Transactional
 public class RiceApplicationConfigurationServiceImpl implements RiceApplicationConfigurationService {
@@ -51,7 +51,7 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
     private DataDictionaryService dataDictionaryService;
     
     public String getConfigurationParameter( String parameterName ){
-    	return getKualiConfigurationService().getPropertyString(parameterName);
+    	return getKualiConfigurationService().getPropertyValueAsString(parameterName);
     }
     
     /**
@@ -191,7 +191,8 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
 	}
 	
 	public String getBaseHelpUrl(String businessObjectClassName) {
-		return KRADServiceLocator.getKualiConfigurationService().getPropertyString(KRADConstants.APPLICATION_URL_KEY) + "/kr/help.do";
+		return KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                KRADConstants.APPLICATION_URL_KEY) + "/kr/help.do";
 	}
 
 	/**

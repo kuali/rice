@@ -15,13 +15,6 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import java.lang.reflect.Modifier;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -47,6 +40,13 @@ import org.kuali.rice.krad.util.UrlFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
+
+import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
 
 /**
  * This class implements ModuleService interface.
@@ -200,7 +200,8 @@ public class ModuleServiceBase implements ModuleService {
 	}
 
 	protected String getInquiryUrl(Class inquiryBusinessObjectClass){
-		String riceBaseUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyString(KRADConstants.APPLICATION_URL_KEY);
+		String riceBaseUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                KRADConstants.APPLICATION_URL_KEY);
 		String inquiryUrl = riceBaseUrl;
 		if (!inquiryUrl.endsWith("/")) {
 			inquiryUrl = inquiryUrl + "/";
@@ -216,7 +217,8 @@ public class ModuleServiceBase implements ModuleService {
 	public String getExternalizableBusinessObjectLookupUrl(Class inquiryBusinessObjectClass, Map<String, String> parameters) {
 		Properties urlParameters = new Properties();
 
-		String riceBaseUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyString(KRADConstants.APPLICATION_URL_KEY);
+		String riceBaseUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                KRADConstants.APPLICATION_URL_KEY);
 		String lookupUrl = riceBaseUrl;
 		if (!lookupUrl.endsWith("/")) {
 			lookupUrl = lookupUrl + "/";

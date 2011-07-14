@@ -15,9 +15,7 @@
  */
 package org.kuali.rice.core.web.format;
 
-import java.util.Arrays;
-import java.util.List;
-
+import org.kuali.rice.core.api.truthy.Truth;
 import org.kuali.rice.core.util.RiceKeyConstants;
 
 /**
@@ -26,9 +24,6 @@ import org.kuali.rice.core.util.RiceKeyConstants;
 public class LittleBooleanFormatter extends Formatter {
 
     private static final long serialVersionUID = -1800859871401901842L;
-    
-	static final List<String> TRUE_VALUES = Arrays.asList(new String[] { "yes", "y", "true", "t", "on", "1", "enabled" });
-    static final List<String> FALSE_VALUES = Arrays.asList(new String[] { "no", "n", "false", "f", "off", "0", "disabled" });
 
     protected Object convertToObject(String target) {
         if (Formatter.isEmptyValue(target))
@@ -37,12 +32,11 @@ public class LittleBooleanFormatter extends Formatter {
         String stringValue = target.getClass().isArray() ? unwrapString(target) : (String) target;
         stringValue = stringValue.trim().toLowerCase();
 
-        if (TRUE_VALUES.contains(stringValue))
-            return Boolean.TRUE;
-        if (FALSE_VALUES.contains(stringValue))
-            return Boolean.FALSE;
-
-        throw new FormatException("converting", RiceKeyConstants.ERROR_BOOLEAN, stringValue);
+        Boolean b = Truth.strToBooleanIgnoreCase(stringValue);
+        if (b == null) {
+            throw new FormatException("converting", RiceKeyConstants.ERROR_BOOLEAN, stringValue);
+        }
+        return b;
     }
 
     public Object format(Object target) {

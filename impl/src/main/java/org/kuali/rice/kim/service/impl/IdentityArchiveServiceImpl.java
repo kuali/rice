@@ -84,7 +84,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 		new CallableAdapter(new PreLogCallableWrapper<Boolean>(writer, Level.DEBUG, "rice is shutting down, flushing write queue"));
 	
 	private int getExecutionIntervalSeconds() {
-		final String prop = kualiConfigurationService.getPropertyString(EXEC_INTERVAL_SECS);
+		final String prop = kualiConfigurationService.getPropertyValueAsString(EXEC_INTERVAL_SECS);
 		try {
 			return Integer.valueOf(prop).intValue();
 		} catch (NumberFormatException e) {
@@ -93,7 +93,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 	}
 	
 	private int getMaxWriteQueueSize() {
-		final String prop = kualiConfigurationService.getPropertyString(MAX_WRITE_QUEUE_SIZE);
+		final String prop = kualiConfigurationService.getPropertyValueAsString(MAX_WRITE_QUEUE_SIZE);
 		try {
 			return Integer.valueOf(prop).intValue();
 		} catch (NumberFormatException e) {

@@ -709,7 +709,7 @@ public class DocumentAuthorizerBaseTest extends KRADTestCase {
 //        private MockPerson() {};
 //
 //        public MockPerson(Person user) {
-//            this(user.getPrincipalId(), user.getPrincipalName(), KimApiServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), org.kuali.rice.kim.util.KimConstants.KIM_GROUP_KFS_NAMESPACE_CODE, KRADServiceLocatorInternal.getKualiConfigurationService().getParameterValueAsString(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.CoreApcParms.SUPERVISOR_WORKGROUP)));
+//            this(user.getPrincipalId(), user.getPrincipalName(), KimApiServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), org.kuali.rice.kim.util.KimConstants.KIM_GROUP_KFS_NAMESPACE_CODE, KRADServiceLocatorInternal.getKualiConfigurationService().getPropertyValueAsString(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.CoreApcParms.SUPERVISOR_WORKGROUP)));
 //        }
 //
 //        public MockPerson(String universalId, String userId, boolean supervisor) {

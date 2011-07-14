@@ -227,8 +227,7 @@ public class KualiDocumentActionBase extends KualiAction {
                 }
 
                 String attachmentEnabled =
-                        getKualiConfigurationService().getPropertyString(
-                                KRADConstants.NOTE_ATTACHMENT_ENABLED);
+                        getKualiConfigurationService().getPropertyValueAsString(KRADConstants.NOTE_ATTACHMENT_ENABLED);
                 // Override the document entry
                 if (attachmentEnabled != null) {
                     // This is a hack for KULRICE-1602 since the document entry is modified by a
@@ -646,7 +645,7 @@ public class KualiDocumentActionBase extends KualiAction {
                 // question hasn't been asked, prompt to continue
                 return this.performQuestionWithoutInput(mapping, form, request, response,
                         KRADConstants.DOCUMENT_SENSITIVE_DATA_QUESTION, getKualiConfigurationService()
-                        .getPropertyString(RiceKeyConstants.QUESTION_SENSITIVE_DATA_DOCUMENT),
+                        .getPropertyValueAsString(RiceKeyConstants.QUESTION_SENSITIVE_DATA_DOCUMENT),
                         KRADConstants.CONFIRMATION_QUESTION, caller, context);
             }
 
@@ -725,7 +724,8 @@ public class KualiDocumentActionBase extends KualiAction {
         request.setAttribute("backFormHiddenVariables", backFormParameters);
 
         // setup route report form variables
-        request.setAttribute("workflowRouteReportUrl", getKualiConfigurationService().getPropertyString(KRADConstants.WORKFLOW_URL_KEY) + "/" + KEWConstants.DOCUMENT_ROUTING_REPORT_PAGE);
+        request.setAttribute("workflowRouteReportUrl", getKualiConfigurationService().getPropertyValueAsString(
+                KRADConstants.WORKFLOW_URL_KEY) + "/" + KEWConstants.DOCUMENT_ROUTING_REPORT_PAGE);
         List<KeyValue> generalRouteReportFormParameters = new ArrayList<KeyValue>();
         generalRouteReportFormParameters.add(new ConcreteKeyValue(KEWConstants.INITIATOR_ID_ATTRIBUTE_NAME, document.getDocumentHeader().getWorkflowDocument().getDocument().getInitiatorPrincipalId()));
         generalRouteReportFormParameters.add(new ConcreteKeyValue(KEWConstants.DOCUMENT_TYPE_NAME_ATTRIBUTE_NAME, document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName()));
@@ -885,7 +885,8 @@ public class KualiDocumentActionBase extends KualiAction {
             // ask question if not already asked
             return this.performQuestionWithInput(mapping, form, request, response,
                     KRADConstants.DOCUMENT_DISAPPROVE_QUESTION,
-                    getKualiConfigurationService().getPropertyString(RiceKeyConstants.QUESTION_DISAPPROVE_DOCUMENT),
+                    getKualiConfigurationService().getPropertyValueAsString(
+                            RiceKeyConstants.QUESTION_DISAPPROVE_DOCUMENT),
                     KRADConstants.CONFIRMATION_QUESTION, KRADConstants.MAPPING_DISAPPROVE, "");
         }
         Object buttonClicked = request.getParameter(KRADConstants.QUESTION_CLICKED_BUTTON);
@@ -896,7 +897,7 @@ public class KualiDocumentActionBase extends KualiAction {
         }
 
         // have to check length on value entered
-        String introNoteMessage = getKualiConfigurationService().getPropertyString(
+        String introNoteMessage = getKualiConfigurationService().getPropertyValueAsString(
                 RiceKeyConstants.MESSAGE_DISAPPROVAL_NOTE_TEXT_INTRO)
                 + KRADConstants.BLANK_SPACE;
 
@@ -919,7 +920,7 @@ public class KualiDocumentActionBase extends KualiAction {
                 return this
                         .performQuestionWithInputAgainBecauseOfErrors(mapping, form, request, response,
                                 KRADConstants.DOCUMENT_DISAPPROVE_QUESTION, getKualiConfigurationService()
-                                .getPropertyString(RiceKeyConstants.QUESTION_DISAPPROVE_DOCUMENT),
+                                .getPropertyValueAsString(RiceKeyConstants.QUESTION_DISAPPROVE_DOCUMENT),
                                 KRADConstants.CONFIRMATION_QUESTION, KRADConstants.MAPPING_DISAPPROVE, "", reason,
                                 RiceKeyConstants.ERROR_DOCUMENT_FIELD_CONTAINS_POSSIBLE_SENSITIVE_DATA,
                                 KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME, "reason");
@@ -940,7 +941,8 @@ public class KualiDocumentActionBase extends KualiAction {
             }
             return this.performQuestionWithInputAgainBecauseOfErrors(mapping, form, request, response,
                     KRADConstants.DOCUMENT_DISAPPROVE_QUESTION,
-                    getKualiConfigurationService().getPropertyString(RiceKeyConstants.QUESTION_DISAPPROVE_DOCUMENT),
+                    getKualiConfigurationService().getPropertyValueAsString(
+                            RiceKeyConstants.QUESTION_DISAPPROVE_DOCUMENT),
                     KRADConstants.CONFIRMATION_QUESTION, KRADConstants.MAPPING_DISAPPROVE, "", reason,
                     RiceKeyConstants.ERROR_DOCUMENT_DISAPPROVE_REASON_REQUIRED,
                     KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME, Integer.toString(noteTextMaxLength));
@@ -971,7 +973,8 @@ public class KualiDocumentActionBase extends KualiAction {
         // logic for cancel question
         if (question == null) {
             // ask question if not already asked
-            return this.performQuestionWithoutInput(mapping, form, request, response, KRADConstants.DOCUMENT_CANCEL_QUESTION, getKualiConfigurationService().getPropertyString("document.question.cancel.text"), KRADConstants.CONFIRMATION_QUESTION, KRADConstants.MAPPING_CANCEL, "");
+            return this.performQuestionWithoutInput(mapping, form, request, response, KRADConstants.DOCUMENT_CANCEL_QUESTION, getKualiConfigurationService().getPropertyValueAsString(
+                    "document.question.cancel.text"), KRADConstants.CONFIRMATION_QUESTION, KRADConstants.MAPPING_CANCEL, "");
         } else {
             Object buttonClicked = request.getParameter(KRADConstants.QUESTION_CLICKED_BUTTON);
             if ((KRADConstants.DOCUMENT_CANCEL_QUESTION.equals(question)) && ConfirmationQuestion.NO.equals(buttonClicked)) {
@@ -1012,7 +1015,8 @@ public class KualiDocumentActionBase extends KualiAction {
             // logic for close question
             if (question == null) {
                 // ask question if not already asked
-                return this.performQuestionWithoutInput(mapping, form, request, response, KRADConstants.DOCUMENT_SAVE_BEFORE_CLOSE_QUESTION, getKualiConfigurationService().getPropertyString(RiceKeyConstants.QUESTION_SAVE_BEFORE_CLOSE), KRADConstants.CONFIRMATION_QUESTION, KRADConstants.MAPPING_CLOSE, "");
+                return this.performQuestionWithoutInput(mapping, form, request, response, KRADConstants.DOCUMENT_SAVE_BEFORE_CLOSE_QUESTION, getKualiConfigurationService().getPropertyValueAsString(
+                        RiceKeyConstants.QUESTION_SAVE_BEFORE_CLOSE), KRADConstants.CONFIRMATION_QUESTION, KRADConstants.MAPPING_CLOSE, "");
             } else {
                 Object buttonClicked = request.getParameter(KRADConstants.QUESTION_CLICKED_BUTTON);
                 if ((KRADConstants.DOCUMENT_SAVE_BEFORE_CLOSE_QUESTION.equals(question)) && ConfirmationQuestion.YES.equals(buttonClicked)) {
@@ -1092,7 +1096,8 @@ public class KualiDocumentActionBase extends KualiAction {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
 
 
-        String workflowSuperUserUrl = getKualiConfigurationService().getPropertyString(KRADConstants.WORKFLOW_URL_KEY) + "/SuperUser.do?methodToCall=displaySuperUserDocument&documentId=" + kualiDocumentFormBase.getDocument().getDocumentHeader().getDocumentNumber();
+        String workflowSuperUserUrl = getKualiConfigurationService().getPropertyValueAsString(
+                KRADConstants.WORKFLOW_URL_KEY) + "/SuperUser.do?methodToCall=displaySuperUserDocument&documentId=" + kualiDocumentFormBase.getDocument().getDocumentHeader().getDocumentNumber();
         response.sendRedirect(workflowSuperUserUrl);
 
         return null;
@@ -1666,7 +1671,8 @@ public class KualiDocumentActionBase extends KualiAction {
     protected ActionForward returnToSender(HttpServletRequest request, ActionMapping mapping, KualiDocumentFormBase form) {
         final ActionForward dest;
         if (form.isReturnToActionList()) {
-            String workflowBase = getKualiConfigurationService().getPropertyString(KRADConstants.WORKFLOW_URL_KEY);
+            String workflowBase = getKualiConfigurationService().getPropertyValueAsString(
+                    KRADConstants.WORKFLOW_URL_KEY);
             String actionListUrl = workflowBase + "/ActionList.do";
 
             dest = new ActionForward(actionListUrl, true);

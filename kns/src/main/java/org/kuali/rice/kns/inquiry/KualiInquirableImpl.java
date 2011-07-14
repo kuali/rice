@@ -275,7 +275,7 @@ public class KualiInquirableImpl extends InquirableImpl implements Inquirable {
 				// subclass
 				// to return the configuration service from a Spring service
 				// locator (or set it).
-				hRef.setHref(getKualiConfigurationService().getPropertyString(KRADConstants.WORKFLOW_URL_KEY)
+				hRef.setHref(getKualiConfigurationService().getPropertyValueAsString(KRADConstants.WORKFLOW_URL_KEY)
 						+ KRADConstants.DOCHANDLER_DO_URL + documentNumber + KRADConstants.DOCHANDLER_URL_CHUNK);
 			}
 			return hRef;
@@ -435,7 +435,7 @@ public class KualiInquirableImpl extends InquirableImpl implements Inquirable {
 	protected String createTitleText(Class<?> dataObjectClass) {
 		String titleText = "";
 
-		String titlePrefixProp = getKualiConfigurationService().getPropertyString(INQUIRY_TITLE_PREFIX);
+		String titlePrefixProp = getKualiConfigurationService().getPropertyValueAsString(INQUIRY_TITLE_PREFIX);
 		if (StringUtils.isNotBlank(titlePrefixProp)) {
 			titleText += titlePrefixProp + " ";
 		}
@@ -622,7 +622,8 @@ public class KualiInquirableImpl extends InquirableImpl implements Inquirable {
 	protected AnchorHtmlData getHyperLink(Class inquiryClass, Map<String, String> fieldList, String inquiryUrl,
 			String displayText) {
 		AnchorHtmlData a = new AnchorHtmlData(inquiryUrl, KRADConstants.EMPTY_STRING, displayText);
-		a.setTitle(AnchorHtmlData.getTitleText(getKualiConfigurationService().getPropertyString(INQUIRY_TITLE_PREFIX)
+		a.setTitle(AnchorHtmlData.getTitleText(getKualiConfigurationService().getPropertyValueAsString(
+                INQUIRY_TITLE_PREFIX)
 				+ " "
 				+ getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(inquiryClass.getName())
 						.getObjectLabel() + " ", inquiryClass, fieldList));

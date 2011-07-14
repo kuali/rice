@@ -203,7 +203,8 @@ public class AttachmentServiceImpl implements AttachmentService {
     private String getDocumentFileStorageLocation(String objectId) {
         String location = null;
         if(StringUtils.isEmpty(objectId)) {
-            location = kualiConfigurationService.getPropertyString(KRADConstants.ATTACHMENTS_PENDING_DIRECTORY_KEY);
+            location = kualiConfigurationService.getPropertyValueAsString(
+                    KRADConstants.ATTACHMENTS_PENDING_DIRECTORY_KEY);
         } else {    
         	/* 
         	 * We need to create a hierarchical directory structure to store
@@ -218,7 +219,7 @@ public class AttachmentServiceImpl implements AttachmentService {
             for ( int i = 0; i < count; i++ )
                 prefix.append(File.separator + chars[i]);
             
-            location = kualiConfigurationService.getPropertyString(KRADConstants.ATTACHMENTS_DIRECTORY_KEY) + prefix + File.separator + objectId;
+            location = kualiConfigurationService.getPropertyValueAsString(KRADConstants.ATTACHMENTS_DIRECTORY_KEY) + prefix + File.separator + objectId;
         }
         return  location;
     }

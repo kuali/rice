@@ -15,12 +15,6 @@
  */
 package org.kuali.rice.edl.impl.components;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-
 import org.kuali.rice.edl.impl.EDLContext;
 import org.kuali.rice.edl.impl.EDLModelComponent;
 import org.kuali.rice.edl.impl.RequestParser;
@@ -34,6 +28,11 @@ import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -53,7 +52,7 @@ import org.w3c.dom.NodeList;
 public class GlobalAttributeComponent extends SimpleWorkflowEDLConfigComponent implements EDLModelComponent  {
 
 	public void updateDOM(Document dom, Element configElement, EDLContext edlContext) {
-	    //String action = edlContext.getRequestParser().getParameterValueAsString(WorkflowDocumentActions.USER_ACTION_REQUEST_KEY);
+	    //String action = edlContext.getRequestParser().getPropertyValueAsString(WorkflowDocumentActions.USER_ACTION_REQUEST_KEY);
 	    // we don't want to clear the attribute content if they are just opening up the document to view it!
 	    if (!edlContext.getUserAction().isLoadAction()) {
 		RequestParser requestParser = edlContext.getRequestParser();

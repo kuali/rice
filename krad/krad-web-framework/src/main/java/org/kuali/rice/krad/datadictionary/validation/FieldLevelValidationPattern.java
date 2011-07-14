@@ -37,7 +37,8 @@ abstract public class FieldLevelValidationPattern extends ValidationPattern {
      * @see org.kuali.rice.krad.datadictionary.validation.ValidationPattern#getRegexString()
      */
     protected String getRegexString() {
-        return (String) KRADServiceLocator.getKualiConfigurationService().getPropertyString("validationPatternRegex." + getPatternTypeName());
+        return (String) KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                "validationPatternRegex." + getPatternTypeName());
     }
 
     /**

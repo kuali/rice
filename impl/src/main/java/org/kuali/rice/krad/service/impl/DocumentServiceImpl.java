@@ -16,14 +16,6 @@
 
 package org.kuali.rice.krad.service.impl;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.StopWatch;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -74,6 +66,14 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
 import org.springframework.dao.OptimisticLockingFailureException;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 
@@ -1136,7 +1136,8 @@ public class DocumentServiceImpl implements DocumentService {
         String requestedName = requestedUser.getFirstName() + " " + requestedUser.getLastName();
 
         String notificationText =
-                kualiConfigurationService.getPropertyString(RiceKeyConstants.MESSAGE_NOTE_NOTIFICATION_ANNOTATION);
+                kualiConfigurationService.getPropertyValueAsString(
+                        RiceKeyConstants.MESSAGE_NOTE_NOTIFICATION_ANNOTATION);
         if (StringUtils.isBlank(notificationText)) {
             throw new RuntimeException(
                     "No annotation message found for note notification. Message needs added to application resources with key:" +

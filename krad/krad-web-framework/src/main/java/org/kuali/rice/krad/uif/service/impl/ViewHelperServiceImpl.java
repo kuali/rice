@@ -14,7 +14,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.inquiry.Inquirable;
-import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -45,6 +44,7 @@ import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.util.MethodInvoker;
 
@@ -56,7 +56,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Properties;
 import java.util.Set;
 
 /**
@@ -473,7 +472,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
         context.put(UifConstants.ContextVariableNames.VIEW, view);
         context.put(UifConstants.ContextVariableNames.VIEW_HELPER, this);
 
-        Properties properties = KRADServiceLocator.getKualiConfigurationService().getAllProperties();
+        Map<String, String> properties = KRADServiceLocator.getKualiConfigurationService().getAllProperties();
         context.put(UifConstants.ContextVariableNames.CONFIG_PROPERTIES, properties);
         context.put(UifConstants.ContextVariableNames.CONSTANTS, KRADConstants.class);
 

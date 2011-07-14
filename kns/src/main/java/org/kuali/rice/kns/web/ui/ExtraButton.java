@@ -80,14 +80,12 @@ public class ExtraButton implements Serializable {
 							"${kr.externalizable.images.url}",
 							KRADServiceLocator
 									.getKualiConfigurationService()
-									.getPropertyString(
-											KRADConstants.EXTERNALIZABLE_IMAGES_URL_KEY))
+									.getPropertyValueAsString(KRADConstants.EXTERNALIZABLE_IMAGES_URL_KEY))
 					.replace(
 							"${externalizable.images.url}",
 							KRADServiceLocator
 									.getKualiConfigurationService()
-									.getPropertyString(
-											KRADConstants.APPLICATION_EXTERNALIZABLE_IMAGES_URL_KEY));
+									.getPropertyValueAsString(KRADConstants.APPLICATION_EXTERNALIZABLE_IMAGES_URL_KEY));
 		}
 	}
 

@@ -161,9 +161,10 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
         // TODO: catch exception if service locator call fails
         ConfigurationService kualiConfigurationservice = KRADServiceLocator.getKualiConfigurationService();
         this.menubar = menubar.replace("${kr.externalizable.images.url}",
-                kualiConfigurationservice.getPropertyString(KRADConstants.EXTERNALIZABLE_IMAGES_URL_KEY)).replace("${externalizable.images.url}",
-                kualiConfigurationservice.getPropertyString(KRADConstants.APPLICATION_EXTERNALIZABLE_IMAGES_URL_KEY));
-        this.menubar = this.menubar.replace("${application.url}", kualiConfigurationservice.getPropertyString(
+                kualiConfigurationservice.getPropertyValueAsString(KRADConstants.EXTERNALIZABLE_IMAGES_URL_KEY)).replace("${externalizable.images.url}",
+                kualiConfigurationservice.getPropertyValueAsString(
+                        KRADConstants.APPLICATION_EXTERNALIZABLE_IMAGES_URL_KEY));
+        this.menubar = this.menubar.replace("${application.url}", kualiConfigurationservice.getPropertyValueAsString(
                 KRADConstants.APPLICATION_URL_KEY));
     }
 

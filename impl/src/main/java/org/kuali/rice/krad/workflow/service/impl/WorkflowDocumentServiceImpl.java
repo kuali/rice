@@ -315,7 +315,8 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
                 	String newAnnotation = annotation;
                 	if ( StringUtils.isBlank( annotation ) ) {
                 		try {
-                			String message = KRADServiceLocator.getKualiConfigurationService().getPropertyString(RiceKeyConstants.MESSAGE_ADHOC_ANNOTATION);
+                			String message = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                                    RiceKeyConstants.MESSAGE_ADHOC_ANNOTATION);
                 			newAnnotation = MessageFormat.format(message, GlobalVariables.getUserSession().getPrincipalName() );
                 		} catch ( Exception ex ) {
                 			LOG.warn("Unable to set annotation", ex );

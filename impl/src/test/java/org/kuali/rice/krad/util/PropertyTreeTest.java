@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.krad.util.properties;
+package org.kuali.rice.krad.util;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -39,11 +39,11 @@ public class PropertyTreeTest {
     private static final String KNOWN_COMPLEX_VALUE = "known complex value";
     private static final int MIXED_COUNT = 13;
 
-    PropertyTree tree;
+    JstlPropertyHolder.PropertyTree tree;
 
     @Before
     public void setUp() throws Exception {
-        tree = new PropertyTree();
+        tree = new JstlPropertyHolder.PropertyTree();
     }
 
     // entrySet
@@ -396,7 +396,7 @@ public class PropertyTreeTest {
     @Test public void testGet_chainedGet() throws Exception {
         setManyMixedKeys();
 
-        String value = ((PropertyTree) ((PropertyTree) tree.get("known")).get("complex")).get("key").toString();
+        String value = ((JstlPropertyHolder.PropertyTree) ((JstlPropertyHolder.PropertyTree) tree.get("known")).get("complex")).get("key").toString();
 
         assertNotNull(value);
         assertEquals(KNOWN_COMPLEX_VALUE, value);
@@ -493,14 +493,14 @@ public class PropertyTreeTest {
         Properties p = new Properties();
         p.setProperty(KNOWN_SIMPLE_KEY, KNOWN_SIMPLE_VALUE);
 
-        tree = new PropertyTree(p);
+        tree = new JstlPropertyHolder.PropertyTree(p);
     }
 
     private void setOneComplexKey() {
         Properties p = new Properties();
         p.setProperty(KNOWN_COMPLEX_KEY, KNOWN_COMPLEX_VALUE);
 
-        tree = new PropertyTree(p);
+        tree = new JstlPropertyHolder.PropertyTree(p);
     }
 
     private void setManyMixedKeys() {
@@ -520,6 +520,6 @@ public class PropertyTreeTest {
         p.setProperty("b", "b");
         p.setProperty("d", "d");
 
-        tree = new PropertyTree(p);
+        tree = new JstlPropertyHolder.PropertyTree(p);
     }
 }

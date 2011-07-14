@@ -26,6 +26,7 @@ import org.kuali.rice.core.api.parameter.Parameter;
 import org.kuali.rice.core.api.parameter.ParameterKey;
 import org.kuali.rice.core.api.parameter.ParameterQueryResults;
 import org.kuali.rice.core.api.parameter.ParameterRepositoryService;
+import org.kuali.rice.core.api.truthy.Truth;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -112,19 +113,7 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
     public Boolean getParameterValueAsBoolean(ParameterKey key) {
         final Parameter p =  getParameter(key);
         final String value =  p != null ? p.getValue() : null;
-        if (value == null) {
-            return null;
-        }
-
-        final Boolean bValue;
-        if ("Y".equalsIgnoreCase(value) || "true".equalsIgnoreCase(value)) {
-            bValue = Boolean.TRUE;
-        } else if ("N".equalsIgnoreCase(value) || "false".equalsIgnoreCase(value)) {
-            bValue = Boolean.FALSE;
-        } else {
-            bValue = null;
-        }
-        return bValue;
+        return Truth.strToBooleanIgnoreCase(value);
     }
 
     @Override

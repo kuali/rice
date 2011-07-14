@@ -828,7 +828,8 @@ public abstract class KualiAction extends DispatchAction {
         String fullParameter = (String) request.getAttribute(KRADConstants.METHOD_TO_CALL_ATTRIBUTE);
         String conversionFields = StringUtils.substringBetween(fullParameter, KRADConstants.METHOD_TO_CALL_PARM1_LEFT_DEL, KRADConstants.METHOD_TO_CALL_PARM1_RIGHT_DEL);
 
-        String deploymentBaseUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyString(KRADConstants.WORKFLOW_URL_KEY);
+        String deploymentBaseUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                KRADConstants.WORKFLOW_URL_KEY);
         String workgroupLookupUrl = deploymentBaseUrl + "/Lookup.do?lookupableImplServiceName=WorkGroupLookupableImplService&methodToCall=start&docFormKey=" + GlobalVariables.getUserSession().addObjectWithGeneratedKey(form);
 
         if (conversionFields != null) {
@@ -1130,7 +1131,8 @@ public abstract class KualiAction extends DispatchAction {
 
 	public static String getApplicationBaseUrl() {
 		if ( applicationBaseUrl == null ) {
-			applicationBaseUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyString(KRADConstants.APPLICATION_URL_KEY);
+			applicationBaseUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                    KRADConstants.APPLICATION_URL_KEY);
 		}
 		return applicationBaseUrl;
 	}

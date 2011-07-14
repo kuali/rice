@@ -21,6 +21,90 @@
   </component>
   <component name="FacetAutodetectingManager">
     <autodetection-disabled>
+      <facet-type id="BeanValidation">
+        <modules>
+          <module name="rice-sampleapp">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
+            </directories>
+          </module>
+          <module name="rice-standalone">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
+            </directories>
+          </module>
+        </modules>
+      </facet-type>
+      <facet-type id="Clojure">
+        <modules>
+          <module name="rice-sampleapp">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
+            </directories>
+          </module>
+          <module name="rice-standalone">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
+            </directories>
+          </module>
+        </modules>
+      </facet-type>
+      <facet-type id="ejb">
+        <modules>
+          <module name="rice-sampleapp">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
+            </directories>
+          </module>
+          <module name="rice-standalone">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
+            </directories>
+          </module>
+        </modules>
+      </facet-type>
+      <facet-type id="google-app-engine">
+        <modules>
+          <module name="rice-sampleapp">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
+            </directories>
+          </module>
+          <module name="rice-standalone">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
+            </directories>
+          </module>
+        </modules>
+      </facet-type>
+      <facet-type id="hibernate">
+        <modules>
+          <module name="rice-sampleapp">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
+            </directories>
+          </module>
+          <module name="rice-standalone">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
+            </directories>
+          </module>
+        </modules>
+      </facet-type>
+      <facet-type id="javaeeApplication">
+        <modules>
+          <module name="rice-sampleapp">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
+            </directories>
+          </module>
+          <module name="rice-standalone">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
+            </directories>
+          </module>
+        </modules>
+      </facet-type>
       <facet-type id="jpa">
         <modules>
           <module name="rice-edl-impl">
@@ -42,6 +126,44 @@
             <files>
               <file url="file://$PROJECT_DIR$/../../../it/krad/src/test/resources/META-INF/krad-test-persistence.xml" />
             </files>
+          </module>
+          <module name="rice-sampleapp">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
+            </directories>
+          </module>
+          <module name="rice-standalone">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
+            </directories>
+          </module>
+        </modules>
+      </facet-type>
+      <facet-type id="jsf">
+        <modules>
+          <module name="rice-sampleapp">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
+            </directories>
+          </module>
+          <module name="rice-standalone">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
+            </directories>
+          </module>
+        </modules>
+      </facet-type>
+      <facet-type id="Osmorc">
+        <modules>
+          <module name="rice-sampleapp">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
+            </directories>
+          </module>
+          <module name="rice-standalone">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
+            </directories>
           </module>
         </modules>
       </facet-type>
@@ -320,6 +442,9 @@
             </files>
           </module>
           <module name="rice-sampleapp">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
+            </directories>
             <files>
               <file url="file://$PROJECT_DIR$/../../../sampleapp/src/main/resources/SampleAppModuleBeans.xml" />
               <file url="file://$PROJECT_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/bookstore/businessobject/datadictionary/Account.xml" />
@@ -392,6 +517,9 @@
             </files>
           </module>
           <module name="rice-standalone">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
+            </directories>
             <files>
               <file url="file://$PROJECT_DIR$/../../../standalone/src/main/resources/org/kuali/rice/standalone/config/StandaloneSpringBeans.xml" />
             </files>
@@ -406,9 +534,17 @@
       <facet-type id="struts">
         <modules>
           <module name="rice-sampleapp">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
+            </directories>
             <files>
               <file url="file://$PROJECT_DIR$/../../../sampleapp/src/main/webapp/WEB-INF/struts-config.xml" />
             </files>
+          </module>
+          <module name="rice-standalone">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
+            </directories>
           </module>
           <module name="rice-web">
             <files>
@@ -420,6 +556,20 @@
               <file url="file://$PROJECT_DIR$/../../../web/src/main/webapp/kr/WEB-INF/struts-config.xml" />
               <file url="file://$PROJECT_DIR$/../../../web/src/main/webapp/ksb/WEB-INF/struts-config.xml" />
             </files>
+          </module>
+        </modules>
+      </facet-type>
+      <facet-type id="tapestry">
+        <modules>
+          <module name="rice-sampleapp">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
+            </directories>
+          </module>
+          <module name="rice-standalone">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
+            </directories>
           </module>
         </modules>
       </facet-type>
@@ -439,6 +589,20 @@
           <module name="rice-sampleapp" />
           <module name="rice-standalone" />
           <module name="rice-web" />
+        </modules>
+      </facet-type>
+      <facet-type id="WebBeans">
+        <modules>
+          <module name="rice-sampleapp">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
+            </directories>
+          </module>
+          <module name="rice-standalone">
+            <directories>
+              <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />
+            </directories>
+          </module>
         </modules>
       </facet-type>
     </autodetection-disabled>

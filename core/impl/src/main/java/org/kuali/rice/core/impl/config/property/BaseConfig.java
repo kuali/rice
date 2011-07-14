@@ -16,6 +16,14 @@
 
 package org.kuali.rice.core.impl.config.property;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.config.property.Config;
+import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.truthy.Truth;
+import org.kuali.rice.core.util.RiceUtilities;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -28,13 +36,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.config.property.Config;
-import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.util.RiceUtilities;
 
 /**
  * Abstract base hierarchical config implementation. Loads a hierarchy configs,
@@ -191,7 +192,7 @@ public abstract class BaseConfig implements Config {
     }
     
     public boolean getBooleanProperty(String key, boolean defaultValue) {
-    	return RiceUtilities.getBooleanValueForString(getProperty(key), defaultValue);
+    	return Truth.strToBooleanIgnoreCase(getProperty(key), defaultValue);
     }
 
     public Map<String, Object> getObjects() {

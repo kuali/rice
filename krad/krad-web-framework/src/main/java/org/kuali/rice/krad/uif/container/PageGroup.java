@@ -63,16 +63,18 @@ public class PageGroup extends Group {
             ConfigurationService configService = KRADServiceLocator.getKualiConfigurationService();
             MessageMap messageMap = GlobalVariables.getMessageMap();
             if(messageMap.hasErrors()){
-                String message = configService.getPropertyString("growl.hasErrors");
+                String message = configService.getPropertyValueAsString("growl.hasErrors");
                 if(StringUtils.isNotBlank(message)){
-                    growlScript = growlScript + "showGrowl('" + message + "', '"+ configService.getPropertyString("general.error") +"', 'errorGrowl');";
+                    growlScript = growlScript + "showGrowl('" + message + "', '"+ configService.getPropertyValueAsString(
+                            "general.error") +"', 'errorGrowl');";
                 }
             }
             
             if(messageMap.hasWarnings()){
-                String message = configService.getPropertyString("growl.hasWarnings");
+                String message = configService.getPropertyValueAsString("growl.hasWarnings");
                 if(StringUtils.isNotBlank(message)){
-                    growlScript = growlScript + "showGrowl('" + message + "', '"+ configService.getPropertyString("general.warning") +"', 'warningGrowl');";
+                    growlScript = growlScript + "showGrowl('" + message + "', '"+ configService.getPropertyValueAsString(
+                            "general.warning") +"', 'warningGrowl');";
                 }
             }
             
@@ -85,10 +87,11 @@ public class PageGroup extends Group {
                         if (errorList != null) {
                             for (ErrorMessage e : errorList) {
                                 if(StringUtils.isBlank(message)){
-                                    message = configService.getPropertyString(e.getErrorKey());
+                                    message = configService.getPropertyValueAsString(e.getErrorKey());
                                 }
                                 else{
-                                    message = message + "<br/>" + configService.getPropertyString(e.getErrorKey());
+                                    message = message + "<br/>" + configService.getPropertyValueAsString(
+                                            e.getErrorKey());
                                 }
                                 if (e.getMessageParameters() != null) {
                                     message = message.replace("'", "''");
@@ -101,7 +104,8 @@ public class PageGroup extends Group {
                 }
                 
                 if(StringUtils.isNotBlank(message)){
-                    growlScript = growlScript + "showGrowl('" + message + "', '"+ configService.getPropertyString("general.info") +"', 'infoGrowl');";
+                    growlScript = growlScript + "showGrowl('" + message + "', '"+ configService.getPropertyValueAsString(
+                            "general.info") +"', 'infoGrowl');";
                 }
             }
             

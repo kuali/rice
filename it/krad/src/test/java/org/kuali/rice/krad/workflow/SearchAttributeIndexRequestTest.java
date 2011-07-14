@@ -78,7 +78,8 @@ public class SearchAttributeIndexRequestTest extends KRADTestCase {
 	 */
 	@Test
 	public void regularApproveTest() throws Exception {
-		LOG.warn("message.delivery state: "+ KRADServiceLocator.getKualiConfigurationService().getPropertyString("message.delivery"));
+		LOG.warn("message.delivery state: "+ KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                "message.delivery"));
 		
 		final DocumentService documentService = KRADServiceLocatorWeb.getDocumentService();
 		final String principalName = "quickstart";
@@ -188,7 +189,8 @@ public class SearchAttributeIndexRequestTest extends KRADTestCase {
 	 */
 	@Test
 	public void blanketApproveTest() throws Exception {
-		LOG.warn("message.delivery state: "+ KRADServiceLocator.getKualiConfigurationService().getPropertyString("message.delivery"));
+		LOG.warn("message.delivery state: "+ KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                "message.delivery"));
 		
 		final DocumentService documentService = KRADServiceLocatorWeb.getDocumentService();
 		final String principalName = "admin";

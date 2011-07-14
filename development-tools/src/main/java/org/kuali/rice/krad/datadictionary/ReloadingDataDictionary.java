@@ -15,15 +15,8 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
-import java.io.File;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
 import no.geosoft.cc.io.FileListener;
 import no.geosoft.cc.io.FileMonitor;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -33,6 +26,12 @@ import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
+
+import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -77,13 +76,13 @@ public class ReloadingDataDictionary extends DataDictionary implements FileListe
 		ConfigurationService configurationService = KRADServiceLocator.getKualiConfigurationService();
 
 		// class directory part of the path that should be replaced
-		String classesDir = configurationService.getPropertyString(CLASS_DIR_CONFIG_PARM);
+		String classesDir = configurationService.getPropertyValueAsString(CLASS_DIR_CONFIG_PARM);
 
 		// source directory where dictionary files are found
-		String sourceDir = configurationService.getPropertyString(SOURCE_DIR_CONFIG_PARM);
+		String sourceDir = configurationService.getPropertyValueAsString(SOURCE_DIR_CONFIG_PARM);
 
 		// interval to poll for changes in milliseconds
-		int reloadInterval = Integer.parseInt(configurationService.getPropertyString(INTERVAL_CONFIG_PARM));
+		int reloadInterval = Integer.parseInt(configurationService.getPropertyValueAsString(INTERVAL_CONFIG_PARM));
 
 		FileMonitor dictionaryFileMonitor = new FileMonitor(reloadInterval);
 

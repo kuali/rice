@@ -555,7 +555,8 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
             // logic for delegates question
             if (question == null || !REMOVE_AFFECTED_DELEGATES_QUESTION_ID.equals(question)) {
                 return performQuestionWithoutInput(mapping, form, request, response, REMOVE_AFFECTED_DELEGATES_QUESTION_ID,
-                        getKualiConfigurationService().getPropertyString(RiceKeyConstants.QUESTION_ACTIVE_DELEGATES_FOR_INACTIVE_MEMBERS),
+                        getKualiConfigurationService().getPropertyValueAsString(
+                                RiceKeyConstants.QUESTION_ACTIVE_DELEGATES_FOR_INACTIVE_MEMBERS),
                         KRADConstants.CONFIRMATION_QUESTION, roleDocumentForm.getMethodToCall(), StringUtils.EMPTY);
             }
             Object buttonClicked = request.getParameter(KRADConstants.QUESTION_CLICKED_BUTTON);

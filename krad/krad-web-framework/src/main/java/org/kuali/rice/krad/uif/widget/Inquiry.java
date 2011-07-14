@@ -217,7 +217,7 @@ public class Inquiry extends WidgetBase {
     public String createTitleText(Class<?> dataObjectClass) {
         String titleText = "";
 
-        String titlePrefixProp = KRADServiceLocator.getKualiConfigurationService().getPropertyString(
+        String titlePrefixProp = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
                 INQUIRY_TITLE_PREFIX);
         if (StringUtils.isNotBlank(titlePrefixProp)) {
             titleText += titlePrefixProp + " ";

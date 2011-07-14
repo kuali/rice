@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.krad.util.properties;
+package org.kuali.rice.krad.service.impl;
 
 import org.junit.Test;
 import org.kuali.rice.krad.exception.PropertiesException;
@@ -27,7 +27,7 @@ import static org.junit.Assert.assertTrue;
 public class FilePropertySourceTest {
 
     @Test public void testLoadProperties_defaultFileName() {
-        FilePropertySource fps = new FilePropertySource();
+        ConfigurationServiceImpl.FilePropertySource fps = new ConfigurationServiceImpl.FilePropertySource();
 
         boolean failedAsExpected = false;
         try {
@@ -41,7 +41,7 @@ public class FilePropertySourceTest {
     }
 
     @Test public void testLoadProperties_invalidFileName() {
-        FilePropertySource fps = new FilePropertySource();
+        ConfigurationServiceImpl.FilePropertySource fps = new ConfigurationServiceImpl.FilePropertySource();
         fps.setFileName("      ");
 
         boolean failedAsExpected = false;
@@ -56,7 +56,7 @@ public class FilePropertySourceTest {
     }
 
     @Test public void testLoadProperties_unknownFileName() {
-        FilePropertySource fps = new FilePropertySource();
+        ConfigurationServiceImpl.FilePropertySource fps = new ConfigurationServiceImpl.FilePropertySource();
         fps.setFileName("unknown");
 
         boolean failedAsExpected = false;
@@ -71,7 +71,7 @@ public class FilePropertySourceTest {
     }
 
     @Test public void testLoadProperties_knownFileName_noSuffix() {
-        FilePropertySource fps = new FilePropertySource();
+        ConfigurationServiceImpl.FilePropertySource fps = new ConfigurationServiceImpl.FilePropertySource();
         fps.setFileName("configuration");
 
         boolean failedAsExpected = false;

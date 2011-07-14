@@ -23,15 +23,15 @@ import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.web.comparator.NullValueComparator;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.BusinessObjectRelationship;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
+import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.krad.exception.ClassNotPersistableException;
 import org.kuali.rice.krad.lookup.SelectiveReferenceRefresher;
 import org.kuali.rice.krad.service.BusinessObjectDictionaryService;
@@ -350,7 +350,7 @@ public class LookupUtils {
         ConfigurationService kualiConfigurationService = KRADServiceLocator.getKualiConfigurationService();
     	if ( isMultipleValue ) {
     		if ( BASE_MULTIPLE_VALUE_LOOKUP_ACTION_URL == null ) {
-    			String lookupUrl = kualiConfigurationService.getPropertyString(KRADConstants.APPLICATION_URL_KEY);
+    			String lookupUrl = kualiConfigurationService.getPropertyValueAsString(KRADConstants.APPLICATION_URL_KEY);
     			if (!lookupUrl.endsWith("/")) {
     				lookupUrl = lookupUrl + "/";
     			}
@@ -360,7 +360,7 @@ public class LookupUtils {
     		return BASE_MULTIPLE_VALUE_LOOKUP_ACTION_URL;
     	} else {
     		if ( BASE_LOOKUP_ACTION_URL == null ) {
-    			String lookupUrl = kualiConfigurationService.getPropertyString(KRADConstants.APPLICATION_URL_KEY);
+    			String lookupUrl = kualiConfigurationService.getPropertyValueAsString(KRADConstants.APPLICATION_URL_KEY);
     			if (!lookupUrl.endsWith("/")) {
     				lookupUrl = lookupUrl + "/";
     			}
@@ -375,7 +375,8 @@ public class LookupUtils {
     public static String getBaseInquiryUrl() {
     	if ( BASE_INQUIRY_ACTION_URL == null ) {
 	    	StringBuffer inquiryUrl = new StringBuffer( 
-	    			KRADServiceLocator.getKualiConfigurationService().getPropertyString(KRADConstants.APPLICATION_URL_KEY) );
+	    			KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                            KRADConstants.APPLICATION_URL_KEY) );
 			if (inquiryUrl.charAt(inquiryUrl.length()-1) != '/' ) {
 				inquiryUrl.append( '/' );
 			}

@@ -99,7 +99,8 @@ public class MaintenanceUtils {
         parameters.put(KRADConstants.PARAMETER_DOC_ID, blockingDocId);
         parameters.put(KRADConstants.PARAMETER_COMMAND, KRADConstants.METHOD_DISPLAY_DOC_SEARCH_VIEW);
         String blockingUrl = UrlFactory.parameterizeUrl(
-                KRADServiceLocator.getKualiConfigurationService().getPropertyString(KRADConstants.WORKFLOW_URL_KEY) +
+                KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                        KRADConstants.WORKFLOW_URL_KEY) +
                         "/" + KRADConstants.DOC_HANDLER_ACTION, parameters);
         if (MaintenanceUtils.LOG.isDebugEnabled()) {
             MaintenanceUtils.LOG.debug("blockingUrl = '" + blockingUrl + "'");

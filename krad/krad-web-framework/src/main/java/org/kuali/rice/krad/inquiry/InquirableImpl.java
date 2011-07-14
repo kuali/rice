@@ -261,7 +261,7 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
             String documentNumber = (String) ObjectUtils.getPropertyValue(dataObject, propertyName);
             if (StringUtils.isNotBlank(documentNumber)) {
                 inquiry.getInquiryLinkField().setHrefText(
-                        getConfigurationService().getPropertyString(KRADConstants.WORKFLOW_URL_KEY) +
+                        getConfigurationService().getPropertyValueAsString(KRADConstants.WORKFLOW_URL_KEY) +
                                 KRADConstants.DOCHANDLER_DO_URL + documentNumber + KRADConstants.DOCHANDLER_URL_CHUNK);
                 inquiry.getInquiryLinkField().setLinkLabel(documentNumber);
                 inquiry.setRender(true);

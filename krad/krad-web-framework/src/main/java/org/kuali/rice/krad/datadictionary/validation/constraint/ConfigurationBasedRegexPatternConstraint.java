@@ -28,8 +28,8 @@ public abstract class ConfigurationBasedRegexPatternConstraint extends ValidData
 	 * validationPattern's regex string from the ConfigurationService which should not include the start(^) and end($) symbols
 	 */
     protected String getRegexString() {
-//        return (String) KRADServiceLocator.getKualiConfigurationService().getPropertyString("validationPatternRegex." + getPatternTypeName());
-        return (String) KRADServiceLocator.getKualiConfigurationService().getPropertyString(getPatternTypeKey());
+//        return (String) KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString("validationPatternRegex." + getPatternTypeName());
+        return (String) KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(getPatternTypeKey());
     }
 
 }

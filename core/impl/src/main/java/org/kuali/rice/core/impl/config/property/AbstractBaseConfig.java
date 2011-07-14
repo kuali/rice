@@ -20,7 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.util.RiceUtilities;
+import org.kuali.rice.core.api.truthy.Truth;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -80,7 +80,7 @@ public abstract class AbstractBaseConfig implements org.kuali.rice.core.api.conf
     }
 
     public boolean getBooleanProperty(String key, boolean defaultValue) {
-        return RiceUtilities.getBooleanValueForString(getProperty(key), defaultValue);
+        return Truth.strToBooleanIgnoreCase(getProperty(key), defaultValue);
     }
 
     public String getClientWSDLFullPathAndFileName() {

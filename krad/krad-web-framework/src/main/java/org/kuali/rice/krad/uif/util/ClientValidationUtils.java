@@ -115,7 +115,7 @@ public class ClientValidationUtils {
 				String[] tokens = labelKey.split(LABEL_KEY_SPLIT_PATTERN);
 				int i = 0;
 				for(String s: tokens){
-					String ps = configService.getPropertyString(VALIDATION_MSG_KEY_PREFIX + s);
+					String ps = configService.getPropertyValueAsString(VALIDATION_MSG_KEY_PREFIX + s);
 					i++;
 					if(i != tokens.length){
 						message = message + ps + ", ";
@@ -126,7 +126,7 @@ public class ClientValidationUtils {
 				}
 			}
 			else{
-				message = configService.getPropertyString(VALIDATION_MSG_KEY_PREFIX + labelKey);
+				message = configService.getPropertyValueAsString(VALIDATION_MSG_KEY_PREFIX + labelKey);
 			}
 		}
 		return message;
@@ -143,7 +143,7 @@ public class ClientValidationUtils {
 		String keyValuePairs = "";
 		for(ValidationMessageKeys element : EnumSet.allOf(ValidationMessageKeys.class)){
 			String key = element.toString();
-			String message = configService.getPropertyString(VALIDATION_MSG_KEY_PREFIX + key);
+			String message = configService.getPropertyValueAsString(VALIDATION_MSG_KEY_PREFIX + key);
 			if(StringUtils.isNotEmpty(message)){
 				keyValuePairs = keyValuePairs + "\n" + key + ": '"+ message + "',";
 				
@@ -473,7 +473,7 @@ public class ClientValidationUtils {
 		methodKey++;
 		String message = "";
 		if(StringUtils.isEmpty(constraint.getLabelKey())){
-			message = configService.getPropertyString(VALIDATION_MSG_KEY_PREFIX + "prerequisite");
+			message = configService.getPropertyValueAsString(VALIDATION_MSG_KEY_PREFIX + "prerequisite");
 		}
 		else{
 			message = generateMessageFromLabelKey(constraint.getLabelKey());
@@ -487,7 +487,7 @@ public class ClientValidationUtils {
 				message = MessageFormat.format(message, requiredField.getLabel());
 			}
 			else{
-				message = MessageFormat.format(message, configService.getPropertyString(GENERIC_FIELD_MSG_KEY));
+				message = MessageFormat.format(message, configService.getPropertyValueAsString(GENERIC_FIELD_MSG_KEY));
 			}
 		}
 		
@@ -522,7 +522,7 @@ public class ClientValidationUtils {
 		// field occurs after case
 		String message = "";
 		if(StringUtils.isEmpty(constraint.getLabelKey())){
-			message = configService.getPropertyString(VALIDATION_MSG_KEY_PREFIX + "postrequisite");
+			message = configService.getPropertyValueAsString(VALIDATION_MSG_KEY_PREFIX + "postrequisite");
 		}
 		else{
 			message = generateMessageFromLabelKey(constraint.getLabelKey());
@@ -533,7 +533,7 @@ public class ClientValidationUtils {
 				message = MessageFormat.format(message, field.getLabel());
 			}
 			else{
-				message = MessageFormat.format(message, configService.getPropertyString(GENERIC_FIELD_MSG_KEY));
+				message = MessageFormat.format(message, configService.getPropertyValueAsString(GENERIC_FIELD_MSG_KEY));
 			}
 			
 		}
@@ -652,13 +652,14 @@ public class ClientValidationUtils {
 			message = generateMessageFromLabelKey(constraint.getLabelKey());
 		}
 		else{
-			String and = configService.getPropertyString(AND_MSG_KEY);
-			String or = configService.getPropertyString(OR_MSG_KEY);
-			String all = configService.getPropertyString(ALL_MSG_KEY);
-			String atMost = configService.getPropertyString(ATMOST_MSG_KEY);
-			String genericLabel = configService.getPropertyString(GENERIC_FIELD_MSG_KEY);
-			String mustOccursMsg = configService.getPropertyString(VALIDATION_MSG_KEY_PREFIX + MUSTOCCURS_MSG_KEY);
-			//String postfix = configService.getPropertyString(VALIDATION_MSG_KEY_PREFIX + MUSTOCCURS_POST_MSG_KEY);
+			String and = configService.getPropertyValueAsString(AND_MSG_KEY);
+			String or = configService.getPropertyValueAsString(OR_MSG_KEY);
+			String all = configService.getPropertyValueAsString(ALL_MSG_KEY);
+			String atMost = configService.getPropertyValueAsString(ATMOST_MSG_KEY);
+			String genericLabel = configService.getPropertyValueAsString(GENERIC_FIELD_MSG_KEY);
+			String mustOccursMsg = configService.getPropertyValueAsString(
+                    VALIDATION_MSG_KEY_PREFIX + MUSTOCCURS_MSG_KEY);
+			//String postfix = configService.getPropertyValueAsString(VALIDATION_MSG_KEY_PREFIX + MUSTOCCURS_POST_MSG_KEY);
 			String statement="";
 			for(int i=0; i< mustOccursPathNames.size(); i++){
 				String andedString = "";

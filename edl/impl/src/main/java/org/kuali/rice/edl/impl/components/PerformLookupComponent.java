@@ -31,7 +31,11 @@ import org.w3c.dom.Element;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.StringTokenizer;
 
 public class PerformLookupComponent implements EDLModelComponent {
 
@@ -47,7 +51,8 @@ public class PerformLookupComponent implements EDLModelComponent {
 	
 	protected String constructRedirectUrl(Document dom, Element configElement, EDLContext edlContext) {
 		StringBuilder buf = new StringBuilder(30);
-		buf.append(KRADServiceLocator.getKualiConfigurationService().getPropertyString(KRADConstants.APPLICATION_URL_KEY));
+		buf.append(KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                KRADConstants.APPLICATION_URL_KEY));
 		buf.append("/kr/").append(KRADConstants.LOOKUP_ACTION);
 		
 		Properties parameters = new Properties();
@@ -152,7 +157,8 @@ public class PerformLookupComponent implements EDLModelComponent {
 
 	protected String constructReturnUrl(Document dom, Element configElement, EDLContext edlContext) {
 		StringBuilder baseUrl = new StringBuilder(30);
-		baseUrl.append(KRADServiceLocator.getKualiConfigurationService().getPropertyString(KRADConstants.APPLICATION_URL_KEY));
+		baseUrl.append(KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                KRADConstants.APPLICATION_URL_KEY));
 		baseUrl.append("/kew/EDocLite");
 		
 		Properties parameters = new Properties();

@@ -364,7 +364,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
 				 * this.performQuestionWithoutInput(mapping, form, request,
 				 * response, KRADConstants.DOCUMENT_SENSITIVE_DATA_QUESTION,
 				 * getKualiConfigurationService()
-				 * .getPropertyString(RiceKeyConstants
+				 * .getPropertyValueAsString(RiceKeyConstants
 				 * .QUESTION_SENSITIVE_DATA_DOCUMENT),
 				 * KRADConstants.CONFIRMATION_QUESTION, caller, context);
 				 */

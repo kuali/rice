@@ -659,8 +659,10 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 	}
 
 	private boolean isNonProductionEnvAndUnmaskingTurnedOff(){
-		return !getKualiConfigurationService().isProductionEnvironment() && 
-				!getKualiConfigurationService().getPropertyAsBoolean(KRADConstants.ENABLE_NONPRODUCTION_UNMASKING);
+		return !getKualiConfigurationService().getPropertyValueAsString(KRADConstants.PROD_ENVIRONMENT_CODE_KEY)
+                .equalsIgnoreCase(
+                        getKualiConfigurationService().getPropertyValueAsString(KRADConstants.ENVIRONMENT_KEY)) &&
+				!getKualiConfigurationService().getPropertyValueAsBoolean(KRADConstants.ENABLE_NONPRODUCTION_UNMASKING);
 	}
 
 }

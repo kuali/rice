@@ -167,7 +167,9 @@ public class UserLoginFilter implements Filter {
 		final String backdoor = request.getParameter(KRADConstants.BACKDOOR_PARAMETER);
 		
 		if ( StringUtils.isNotBlank(backdoor) ) {
-			if ( !getKualiConfigurationService().isProductionEnvironment() ) {
+			if ( !getKualiConfigurationService().getPropertyValueAsString(KRADConstants.PROD_ENVIRONMENT_CODE_KEY)
+                .equalsIgnoreCase(
+                        getKualiConfigurationService().getPropertyValueAsString(KRADConstants.ENVIRONMENT_KEY)) ) {
 				if ( getParameterService().getParameterValueAsBoolean(KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KRADConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.SHOW_BACK_DOOR_LOGIN_IND) ) {
 					KRADUtils.getUserSessionFromRequest(request).setBackdoorUser(backdoor);
 				}

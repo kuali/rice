@@ -15,12 +15,6 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.mail.MailMessage;
 import org.kuali.rice.core.mail.Mailer;
@@ -31,6 +25,12 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KualiExceptionIncidentService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This is a basic implementation of the KualiReporterService. Currently, it only has
@@ -145,7 +145,8 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
         // First check if message template already define mailing list
         Set emails=messageTemplate.getToAddresses();
         if (emails == null || emails.isEmpty()) {
-            String mailingList= KRADServiceLocator.getKualiConfigurationService().getPropertyString(REPORT_MAIL_LIST);
+            String mailingList= KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                    REPORT_MAIL_LIST);
             if (mailingList == null || mailingList.trim().length() == 0) {
                 String em=REPORT_MAIL_LIST+" is not set or messageTemplate does not have ToAddresses already set.";
                 LOG.error(em);

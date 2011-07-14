@@ -17,6 +17,9 @@ package org.kuali.rice.krad.uif.authorization;
 
 import java.util.Set;
 
+import org.kuali.rice.krad.bo.Exporter;
+import org.kuali.rice.krad.datadictionary.DataObjectEntry;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.container.InquiryView;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -36,11 +39,32 @@ public class InquiryPresentationControllerBase extends PresentationControllerBas
         
         Set<String> actionFlags = super.getActionFlags(model);
         
-        if (((InquiryView)model.getView()).isCanExport()){
+        if (isExportSupported((InquiryView)model.getView())){
             actionFlags.add(KRADConstants.KUALI_ACTION_CAN_EXPORT);
         }
         
         return actionFlags;
     }
+    
+    /**
+     * Examines the DataObjects's data dictionary entry to determine if it supports XML export or not.
+     *
+     * returns true if it supports export
+     */
 
+    protected boolean isExportSupported(InquiryView view) {
+        DataObjectEntry dataObjectEntry = KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDataObjectEntry(view.getDataObjectClassName().getName());
+        Class<? extends Exporter> exporterClass = dataObjectEntry.getExporterClass();
+        if (exporterClass != null) {
+            try {
+                Exporter exporter = exporterClass.newInstance();
+                if (exporter.getSupportedFormats(dataObjectEntry.getDataObjectClass()).contains(KRADConstants.XML_FORMAT)) {
+                    return true;
+                }
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to locate or create exporter class: " + exporterClass);
+            }
+        }
+        return false;
+    }
 }

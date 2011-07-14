@@ -133,7 +133,7 @@ public interface IdentityService {
      *
      * @param principalId the unique id to retrieve the entity by. cannot be null.
      * @return a {@link org.kuali.rice.kim.api.identity.entity.Entity} or null
-     * @throws IllegalArgumentException if the id is blank
+     * @throws IllegalArgumentException if the principalId is blank
      */
     @WebMethod(operationName = "getEntityByPrincipalId")
     @WebResult(name = "entity")

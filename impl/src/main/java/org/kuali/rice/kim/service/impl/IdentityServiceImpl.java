@@ -120,6 +120,9 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityByPrincipalId(java.lang.String)
 	 */
 	public Entity getEntityByPrincipalId(String principalId) {
+        if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId is blank");
+        }
 		EntityBo entity = getEntityBoByPrincipalId(principalId);
 		if ( entity == null ) {
 			return null;
@@ -131,6 +134,9 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityByPrincipalName(java.lang.String)
 	 */
 	public Entity getEntityByPrincipalName(String principalName) {
+        if (StringUtils.isBlank(principalName)) {
+            throw new RiceIllegalArgumentException("principalName is blank");
+        }
 		EntityBo entity = getEntityBoByPrincipalName(principalName);
 		if ( entity == null ) {
 			return null;
@@ -142,6 +148,9 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityDefault(java.lang.String)
 	 */
 	public EntityDefault getEntityDefault(String entityId) {
+        if (StringUtils.isBlank(entityId)) {
+            throw new RiceIllegalArgumentException("entityId is blank");
+        }
 		EntityBo entity = getEntityBo( entityId );
 		if ( entity == null ) {
 			return null;
@@ -153,6 +162,9 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityDefaultByPrincipalId(java.lang.String)
 	 */
 	public EntityDefault getEntityDefaultByPrincipalId(String principalId) {
+        if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId is blank");
+        }
 		EntityBo entity = getEntityBoByPrincipalId(principalId);
 		if ( entity == null ) {
 			return null;
@@ -164,6 +176,9 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityDefaultByPrincipalName(java.lang.String)
 	 */
 	public EntityDefault getEntityDefaultByPrincipalName(String principalName) {
+        if (StringUtils.isBlank(principalName)) {
+            throw new RiceIllegalArgumentException("principalName is blank");
+        }
 		EntityBo entity = getEntityBoByPrincipalName(principalName);
 		if ( entity == null ) {
 			return null;
@@ -176,16 +191,19 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	 */
 	@SuppressWarnings("unchecked")
 	public Principal getPrincipalByPrincipalNameAndPassword(String principalName, String password) {
-		 Map<String,Object> criteria = new HashMap<String,Object>(3);
-         criteria.put(KIMPropertyConstants.Principal.PRINCIPAL_NAME, principalName);
-         criteria.put(KIMPropertyConstants.Principal.PASSWORD, password);
-         criteria.put(KIMPropertyConstants.Principal.ACTIVE, true);
-         Collection<PrincipalBo> principals = businessObjectService.findMatching(PrincipalBo.class, criteria);
+        if (StringUtils.isBlank(principalName)) {
+            throw new RiceIllegalArgumentException("principalName is blank");
+        }
+		Map<String,Object> criteria = new HashMap<String,Object>(3);
+        criteria.put(KIMPropertyConstants.Principal.PRINCIPAL_NAME, principalName);
+        criteria.put(KIMPropertyConstants.Principal.PASSWORD, password);
+        criteria.put(KIMPropertyConstants.Principal.ACTIVE, true);
+        Collection<PrincipalBo> principals = businessObjectService.findMatching(PrincipalBo.class, criteria);
 
-         if (!principals.isEmpty()) {
-             return PrincipalBo.to(principals.iterator().next());
-         }
-         return null;
+        if (!principals.isEmpty()) {
+            return PrincipalBo.to(principals.iterator().next());
+        }
+        return null;
 	}
 
     @Override

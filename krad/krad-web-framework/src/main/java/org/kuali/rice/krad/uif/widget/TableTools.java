@@ -15,19 +15,28 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.type.KualiDecimal;
+import org.kuali.rice.core.util.type.KualiInteger;
+import org.kuali.rice.core.util.type.KualiPercent;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.View;
+import org.kuali.rice.krad.uif.control.CheckboxControl;
+import org.kuali.rice.krad.uif.control.CheckboxGroupControl;
+import org.kuali.rice.krad.uif.control.RadioGroupControl;
+import org.kuali.rice.krad.uif.control.SelectControl;
+import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.core.Component;
 import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.field.GroupField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
-
-import java.util.Date;
 
 /**
  * Decorates a HTML Table client side with various tools
@@ -125,6 +134,8 @@ public class TableTools extends WidgetBase {
                     tableToolsColumnOptions.append(" null ,");
                 }
 
+                String sortType = null;
+                
                 for (Component component : collectionGroup.getItems()) {
                     /**
                      * For GroupField, get the first field from that group
@@ -132,19 +143,32 @@ public class TableTools extends WidgetBase {
                     if (component instanceof GroupField) {
                         component = ((GroupField) component).getItems().get(0);
                     }
-                    Class dataTypeClass = ObjectPropertyUtils
-                            .getPropertyType(collectionGroup.getCollectionObjectClass(),
-                                    ((AttributeField) component).getPropertyName());
-                    String colOptions = constructTableColumnOptions(true, dataTypeClass);
+                    
+                    if (component instanceof AttributeField){
+                        AttributeField field = (AttributeField)component;
+                        
+                        if (field.getControl() instanceof TextControl){
+                            sortType = UifConstants.TableToolsValues.DOM_TEXT;
+                        }else if (field.getControl() instanceof SelectControl){
+                            sortType = UifConstants.TableToolsValues.DOM_SELECT;
+                        }else if (field.getControl() instanceof CheckboxControl || field.getControl() instanceof CheckboxGroupControl){
+                            sortType = UifConstants.TableToolsValues.DOM_CHECK;
+                        }else if (field.getControl() instanceof RadioGroupControl){
+                            sortType = UifConstants.TableToolsValues.DOM_RADIO;
+                        }
+                        
+                    }
+                    
+                    Class dataTypeClass = ObjectPropertyUtils.getPropertyType(collectionGroup.getCollectionObjectClass(),((AttributeField) component).getPropertyName());
+                    String colOptions = constructTableColumnOptions(true, dataTypeClass,sortType);
                     tableToolsColumnOptions.append(colOptions + " , ");
                 }
-
+                   
                 if (collectionGroup.isRenderLineActions()) {
-                    String colOptions = constructTableColumnOptions(false, null);
+                    String colOptions = constructTableColumnOptions(false, null,null);
                     tableToolsColumnOptions.append(colOptions);
                 } else {
-                    tableToolsColumnOptions =
-                            new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(), ", "));
+                    tableToolsColumnOptions = new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(), ", "));
                 }
 
                 tableToolsColumnOptions.append("]");
@@ -157,24 +181,30 @@ public class TableTools extends WidgetBase {
     /**
      * This method constructs the sort data type for each datatable columns.
      */
-    protected String constructTableColumnOptions(boolean isSortable, Class dataTypeClass) {
+    protected String constructTableColumnOptions(boolean isSortable, Class dataTypeClass, String sortType) {
 
         String colOptions = "null";
 
-        if (!isSortable || dataTypeClass == null) {
+        if (!isSortable || dataTypeClass == null || sortType == null) {
             colOptions = "{ \"" + UifConstants.TableToolsKeys.SORTABLE + "\" : false } ";
         } else {
-            if (ClassUtils.isAssignable(dataTypeClass, String.class)) {
+            if (ClassUtils.isAssignable(dataTypeClass, KualiPercent.class)) {
                 colOptions = "{ \"" + UifConstants.TableToolsKeys.SORT_DATA_TYPE + "\" : \"" +
-                        UifConstants.TableToolsValues.DOM_TEXT + "\" } ";
-            } else if (ClassUtils.isAssignable(dataTypeClass, Date.class)) {
+                             sortType + "\" , \"" + UifConstants.TableToolsKeys.SORT_TYPE + "\" : \"" + UifConstants.TableToolsValues.PERCENT + "\" } ";
+            }else if (ClassUtils.isAssignable(dataTypeClass, KualiInteger.class) || ClassUtils.isAssignable(dataTypeClass, KualiDecimal.class)) {
                 colOptions = "{ \"" + UifConstants.TableToolsKeys.SORT_DATA_TYPE + "\" : \"" +
-                        UifConstants.TableToolsValues.DOM_TEXT + "\" , \"" + UifConstants.TableToolsKeys.SORT_TYPE +
-                        "\" : \"" + UifConstants.TableToolsValues.DATE + "\" } ";
-            } else if (ClassUtils.isAssignable(dataTypeClass, Number.class)) {
+                              sortType + "\" , \"" + UifConstants.TableToolsKeys.SORT_TYPE + "\" : \"" + UifConstants.TableToolsValues.CURRENCY + "\" } ";
+            }else if (ClassUtils.isAssignable(dataTypeClass, Timestamp.class)) {
                 colOptions = "{ \"" + UifConstants.TableToolsKeys.SORT_DATA_TYPE + "\" : \"" +
-                        UifConstants.TableToolsValues.DOM_TEXT + "\" , \"" + UifConstants.TableToolsKeys.SORT_TYPE +
-                        "\" : \"" + UifConstants.TableToolsValues.NUMERIC + "\" } ";
+                             sortType + "\" , \"" + UifConstants.TableToolsKeys.SORT_TYPE + "\" : \"" + "date" + "\" } ";
+            }else if (ClassUtils.isAssignable(dataTypeClass, java.sql.Date.class) || ClassUtils.isAssignable(dataTypeClass, java.util.Date.class)) {
+                colOptions = "{ \"" + UifConstants.TableToolsKeys.SORT_DATA_TYPE + "\" : \"" +
+                             sortType + "\" , \"" + UifConstants.TableToolsKeys.SORT_TYPE + "\" : \"" + UifConstants.TableToolsValues.DATE + "\" } ";
+            }else if (ClassUtils.isAssignable(dataTypeClass, Number.class)) {
+                colOptions = "{ \"" + UifConstants.TableToolsKeys.SORT_DATA_TYPE + "\" : \"" +
+                             sortType + "\" , \"" + UifConstants.TableToolsKeys.SORT_TYPE + "\" : \"" + UifConstants.TableToolsValues.NUMERIC + "\" } ";
+            }else{
+                colOptions = "{ \"" + UifConstants.TableToolsKeys.SORT_DATA_TYPE + "\" : \"" + sortType + "\" } ";
             }
         }
 

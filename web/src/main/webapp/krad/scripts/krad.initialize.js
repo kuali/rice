@@ -128,26 +128,87 @@ jQuery.validator.addMethod("maxLengthConditional", function(value, element, para
 
 // data table initialize default sorting
 jQuery.fn.dataTableExt.oSort['kuali_date-asc']  = function(a,b) {
-	var ukDatea = a.split('/');
-	var ukDateb = b.split('/');
-	var x = (ukDatea[2] + ukDatea[0] + ukDatea[1]) * 1;
-	var y = (ukDateb[2] + ukDateb[0] + ukDateb[1]) * 1;
+	var date1 = a.split('/');
+	var date2 = b.split('/');
+	var x = (date1[2] + date1[0] + date1[1]) * 1;
+	var y = (date2[2] + date2[0] + date2[1]) * 1;
 	return ((x < y) ? -1 : ((x > y) ?  1 : 0));
 };
 
 jQuery.fn.dataTableExt.oSort['kuali_date-desc'] = function(a,b) {
-	var ukDatea = a.split('/');
-	var ukDateb = b.split('/');
-	var x = (ukDatea[2] + ukDatea[0] + ukDatea[1]) * 1;
-	var y = (ukDateb[2] + ukDateb[0] + ukDateb[1]) * 1;
+	var date1 = a.split('/');
+	var date2 = b.split('/');
+	var x = (date1[2] + date1[0] + date1[1]) * 1;
+	var y = (date2[2] + date2[0] + date2[1]) * 1;
 	return ((x < y) ? 1 : ((x > y) ?  -1 : 0));
+};
+
+jQuery.fn.dataTableExt.oSort['kuali_percent-asc'] = function(a,b) {
+	var num1 = a.replace(/[^0-9]/g, '');
+	var num2 = b.replace(/[^0-9]/g, '');
+	num1 = (num1 == "-" || num1 === "" || isNaN(num1)) ? 0 : num1*1;
+	num2 = (num2 == "-" || num2 === "" || isNaN(num2)) ? 0 : num2*1;
+	return num1 - num2;
+};
+
+jQuery.fn.dataTableExt.oSort['kuali_percent-desc'] = function(a,b) {
+	var num1 = a.replace(/[^0-9]/g, '');
+	var num2 = b.replace(/[^0-9]/g, '');
+	num1 = (num1 == "-" || num1 === "" || isNaN(num1)) ? 0 : num1*1;
+	num2 = (num2 == "-" || num2 === "" || isNaN(num2)) ? 0 : num2*1;
+	return num2 - num1;
+};
+
+jQuery.fn.dataTableExt.oSort['kuali_currency-asc'] = function(a,b) {
+	/* Remove any commas (assumes that if present all strings will have a fixed number of d.p) */
+	var x = a == "-" ? 0 : a.replace( /,/g, "" );
+	var y = b == "-" ? 0 : b.replace( /,/g, "" );
+	/* Remove the currency sign */
+	x = x.substring( 1 );
+	y = y.substring( 1 );
+	/* Parse and return */
+	x = parseFloat( x );
+	y = parseFloat( y );
+	
+	x = isNaN(x) ? 0 : x*1;
+	y = isNaN(y) ? 0 : y*1;
+	
+	return x - y;
+};
+
+jQuery.fn.dataTableExt.oSort['kuali_currency-desc'] = function(a,b) {
+	/* Remove any commas (assumes that if present all strings will have a fixed number of d.p) */
+	var x = a == "-" ? 0 : a.replace( /,/g, "" );
+	var y = b == "-" ? 0 : b.replace( /,/g, "" );
+	/* Remove the currency sign */
+	x = x.substring( 1 );
+	y = y.substring( 1 );
+	/* Parse and return */
+	x = parseFloat( x );
+	y = parseFloat( y );
+	
+	x = isNaN(x) ? 0 : x;
+	y = isNaN(y) ? 0 : y;
+	
+	return y - x;
 };
 
 jQuery.fn.dataTableExt.afnSortData['dom-text'] = function  ( oSettings, iColumn )
 {
 	var aData = [];
-	jq( 'td:eq('+iColumn+') input', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
-		aData.push( this.value );
+	jq( 'td:eq('+iColumn+')', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
+		var input = jq(this).find('input:text');
+		if(input.length != 0){
+			aData.push( input.val() );	
+		}else{
+			var input1 = jq(this).find('.field_attribute');
+			if(input1.length != 0){
+				aData.push(jq.trim(input1.text()));
+			}else{
+				aData.push( "");
+			}
+		}
+		
 	} );
 	return aData;
 }
@@ -156,8 +217,19 @@ jQuery.fn.dataTableExt.afnSortData['dom-text'] = function  ( oSettings, iColumn 
 jQuery.fn.dataTableExt.afnSortData['dom-select'] = function  ( oSettings, iColumn )
 {
 	var aData = [];
-	jq( 'td:eq('+iColumn+') select', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
-		aData.push( jq(this).val() );
+	jq( 'td:eq('+iColumn+')', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
+		var selected = jq(this).find('select option:selected:first');
+		if(selected.length != 0){
+			aData.push( selected.text() );	
+		}else{
+			var input1 = jq(this).find('.field_attribute');
+			if(input1.length != 0){
+				aData.push(jq.trim(input1.text()));
+			}else{
+				aData.push( "");
+			}
+		}
+		
 	} );
 	return aData;
 }
@@ -166,10 +238,58 @@ jQuery.fn.dataTableExt.afnSortData['dom-select'] = function  ( oSettings, iColum
 jQuery.fn.dataTableExt.afnSortData['dom-checkbox'] = function  ( oSettings, iColumn )
 {
 	var aData = [];
-	jq( 'td:eq('+iColumn+') input', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
-		aData.push( this.checked==true ? "1" : "0" );
+	jq( 'td:eq('+iColumn+')', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
+		var checkboxes = jq(this).find('input:checkbox');
+		if(checkboxes.length != 0){
+			var str = "";
+			for(i=0; i < checkboxes.length; i++){
+				var check = checkboxes[i]; 
+				if (check.checked == true && check.value.length > 0){
+					str += check.value + " ";
+				}
+			}
+			aData.push( str );
+		}else{
+			var input1 = jq(this).find('.field_attribute');
+			if(input1.length != 0){
+				aData.push(jq.trim(input1.text()));
+			}else{
+				aData.push( "");
+			}
+		}
+		
 	} );
 	return aData;
+	
+}
+
+jQuery.fn.dataTableExt.afnSortData['dom-radio'] = function  ( oSettings, iColumn )
+{
+	var aData = [];
+	jq( 'td:eq('+iColumn+')', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
+		var radioButtons = jq(this).find('input:radio');
+		if(radioButtons.length != 0){
+			var value = "";
+			for(i=0; i < radioButtons.length; i++){
+				var radio = radioButtons[i];
+				if (radio.checked == true){
+					value = radio.value;
+					break;
+				}
+			}
+			aData.push( value );
+		}else{
+			var input1 = jq(this).find('.field_attribute');
+			if(input1.length != 0){
+				aData.push(jq.trim(input1.text()));
+			}else{
+				aData.push( "");
+			}
+		}
+		
+	} );
+	return aData;
+	
 }
 
 // setup window javascript error handler

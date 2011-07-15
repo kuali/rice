@@ -209,6 +209,12 @@
 	</profiles>
 
 	<dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>rice-impex-master</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
 
 		<dependency>
 			<groupId>${project.groupId}</groupId>

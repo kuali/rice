@@ -16,7 +16,8 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.kuali</groupId>
@@ -491,7 +492,7 @@
             <webAppConfig>
               <contextPath>${web.launch.context.path}</contextPath>
             </webAppConfig>
-			<systemProperties>
+            <systemProperties>
               <systemProperty>
                 <name>web.bootstrap.spring.file</name>
                 <value>${bootstrap.spring.file}</value>
@@ -520,7 +521,7 @@
           <version>1.1</version>
           <configuration>
             <path>${web.launch.context.path}</path>
-			<systemProperties>
+            <systemProperties>
               <web.bootstrap.spring.file>${bootstrap.spring.file}</web.bootstrap.spring.file>
             </systemProperties>
           </configuration>
@@ -798,6 +799,7 @@
   </build>
 
   <modules>
+    <module>db</module>
     <module>core</module>
     <module>api</module>
     <module>kim</module>
@@ -1618,26 +1620,26 @@
         <artifactId>spring-webmvc</artifactId>
         <version>${spring.version}</version>
       </dependency>
-      
+
       <dependency>
         <groupId>org.springframework.security</groupId>
         <artifactId>spring-security-core</artifactId>
         <version>${spring.version}</version>
       </dependency>
-      
+
       <dependency>
         <groupId>org.springframework.security</groupId>
         <artifactId>spring-security-cas-client</artifactId>
         <version>${spring.version}</version>
         <exclusions>
-        	<exclusion>
-        		<groupId>commons-logging</groupId>
-            	<artifactId>commons-logging</artifactId>
-        	</exclusion>
-        	<exclusion>
-        		<groupId>org.jasig.cas</groupId>
-        		<artifactId>cas-client-core</artifactId>        	
-        	</exclusion>
+          <exclusion>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.jasig.cas</groupId>
+            <artifactId>cas-client-core</artifactId>
+          </exclusion>
         </exclusions>
       </dependency>
 
@@ -1736,7 +1738,7 @@
         <version>${xmlunit.version}</version>
         <scope>test</scope>
       </dependency>
-      
+
     </dependencies>
   </dependencyManagement>
 

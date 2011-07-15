@@ -22,13 +22,13 @@
     <module>master</module>
   </modules>
   <properties>
-    <impex.sql.plugin.escapeProcessing>false</impex.sql.plugin.escapeProcessing>
-    <impex.sql.plugin.orderFile>ascending</impex.sql.plugin.orderFile>
-    <impex.sql.plugin.keepFormat>true</impex.sql.plugin.keepFormat>
-    <impex.sql.plugin.printResultSet>false</impex.sql.plugin.printResultSet>
-    <impex.sql.plugin.delimiter.type>row</impex.sql.plugin.delimiter.type>
-    <impex.sql.plugin.force.execution>false</impex.sql.plugin.force.execution>
-    <impex.sql.plugin.skip>false</impex.sql.plugin.skip>
+    <sql.plugin.escapeProcessing>false</sql.plugin.escapeProcessing>
+    <sql.plugin.orderFile>ascending</sql.plugin.orderFile>
+    <sql.plugin.keepFormat>true</sql.plugin.keepFormat>
+    <sql.plugin.printResultSet>false</sql.plugin.printResultSet>
+    <sql.plugin.delimiter.type>row</sql.plugin.delimiter.type>
+    <sql.plugin.force.execution>false</sql.plugin.force.execution>
+    <sql.plugin.skip>false</sql.plugin.skip>
     <impex.ant.compatibility.mode>false</impex.ant.compatibility.mode>
     <impex.include.version.in.comment>false</impex.include.version.in.comment>
 
@@ -123,14 +123,14 @@
             <url>${impex.url}</url>
             <driver>${impex.driver}</driver>
             <delimiter>${impex.delimiter}</delimiter>
-            <delimiterType>${impex.sql.plugin.delimiter.type}</delimiterType>
-            <forceMojoExecution>${impex.sql.plugin.force.execution}</forceMojoExecution>
-            <skip>${impex.sql.plugin.skip}</skip>
-            <keepFormat>${impex.sql.plugin.keepFormat}</keepFormat>
-            <printResultSet>${impex.sql.plugin.printResultSet}</printResultSet>
-            <outputFile>${impex.sql.plugin.outputFile}</outputFile>
-            <orderFile>${impex.sql.plugin.orderFile}</orderFile>
-            <escapeProcessing>${impex.sql.plugin.escapeProcessing}</escapeProcessing>
+            <delimiterType>${sql.plugin.delimiter.type}</delimiterType>
+            <forceMojoExecution>${sql.plugin.force.execution}</forceMojoExecution>
+            <skip>${sql.plugin.skip}</skip>
+            <keepFormat>${sql.plugin.keepFormat}</keepFormat>
+            <printResultSet>${sql.plugin.printResultSet}</printResultSet>
+            <outputFile>${sql.plugin.outputFile}</outputFile>
+            <orderFile>${sql.plugin.orderFile}</orderFile>
+            <escapeProcessing>${sql.plugin.escapeProcessing}</escapeProcessing>
           </configuration>
           <executions>
             <execution>

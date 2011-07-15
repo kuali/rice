@@ -319,6 +319,7 @@ public abstract class UifControllerBase {
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         // TODO: this code still needs ported with whatever we are supposed
         // to do on refresh
+        form.setRenderFullView(true);
         return getUIFModelAndView(form);
     }
 

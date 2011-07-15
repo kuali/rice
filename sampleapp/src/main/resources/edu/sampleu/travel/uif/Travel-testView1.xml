@@ -196,7 +196,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
       <property name="propertyName" value="fiscalOfficer.accounts"/>
       <property name="layoutManager.sequencePropertyName" value="number"/>
-      <property name="layoutManager.tableTools.render" value="false"/>
       <property name="items">
         <list>
           <bean parent="AttributeField" p:propertyName="number" p:required="true"/>

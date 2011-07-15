@@ -15,23 +15,21 @@
  */
 package edu.samplu.travel.test;
 
+import com.thoughtworks.selenium.DefaultSelenium;
+import com.thoughtworks.selenium.SeleneseTestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.Assert;
-
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.SeleneseTestCase;
 /**
  * TODO Administrator don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class FiscalOfficerInfoMaintenanceNewTest extends SeleneseTestCase{
+public class FiscalOfficerInfoMaintenanceNewIT extends SeleneseTestCase{
     
     @Before
     public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", "http://localhost:8080/");
+        selenium = new DefaultSelenium("127.0.0.1", 4444, "*googlechrome", "http://127.0.0.1:8080/");
         selenium.start();
     }
     

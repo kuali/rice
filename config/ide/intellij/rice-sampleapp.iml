@@ -28,17 +28,27 @@
     <output url="file://$MODULE_DIR$/../../../sampleapp/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../sampleapp/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../sampleapp">
+      <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/it/groovy" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/it/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/test/groovy" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/annotations" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/cargo" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/downloads" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/failsafe-reports" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/rice-sampleapp-2.0.0-m7-SNAPSHOT" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/selenium" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/surefire" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/surefire-reports" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/test-classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/tomcat6x" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/war" />
     </content>
     <orderEntry type="inheritedJdk" />

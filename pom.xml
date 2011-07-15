@@ -117,6 +117,7 @@
         <quartz.version>2.0.1</quartz.version>
     -->
     <quartz.version>1.8.4</quartz.version>
+    <selenium-java-client-driver.version>1.0.2</selenium-java-client-driver.version>
     <serializer.version>2.7.1</serializer.version>
     <servlet-api.version>2.5</servlet-api.version>
     <slf4j.version>1.6.1</slf4j.version>
@@ -617,12 +618,13 @@
             <reportFormat>plain</reportFormat>
             <argLine>-Dalt.config.location="${build.alt.config.location}" -Xmx1024m -XX:MaxPermSize=512m
               -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled</argLine>
-            <systemPropertyVariables>
-              <jaxws.endpoint.publish.test.address>http://localhost:25555/countryServce/</jaxws.endpoint.publish.test.address>
-            </systemPropertyVariables>
           </configuration>
         </plugin>
-
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+		  <artifactId>selenium-maven-plugin</artifactId>
+	      <version>1.1</version>
+        </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>cobertura-maven-plugin</artifactId>
@@ -1534,6 +1536,13 @@
           </exclusion>
         </exclusions>
       </dependency>
+
+      <dependency>
+		<groupId>org.seleniumhq.selenium.client-drivers</groupId>
+		<artifactId>selenium-java-client-driver</artifactId>
+		<version>${selenium-java-client-driver.version}</version>
+		<scope>test</scope>
+	  </dependency>
 
       <dependency>
         <groupId>org.slf4j</groupId>

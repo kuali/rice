@@ -3,7 +3,6 @@
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/../../../db/clover/master/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../db/clover/master/target/test-classes" />
-    <exclude-output />
     <content url="file://$MODULE_DIR$/../../../db/clover/master">
       <sourceFolder url="file://$MODULE_DIR$/../../../db/clover/master/src/main/resources" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../db/clover/master/target" />

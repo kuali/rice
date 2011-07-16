@@ -204,7 +204,7 @@ public class DictionaryValidationServiceImplTest extends KRADTestCase{
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
 	}
 	
-	@Test
+    @Test
 	public void testValidUSAddress() {
 		DictionaryValidationResult dictionaryValidationResult = service.validate(validUSAddress, "org.kuali.rice.kns.datadictionary.validation.MockAddress", addressEntry, true);
 		
@@ -282,13 +282,18 @@ public class DictionaryValidationServiceImplTest extends KRADTestCase{
 		DataDictionaryService dataDictionaryService = new DataDictionaryServiceImpl(dataDictionary);
 		service.setDataDictionaryService(dataDictionaryService);
 		
+		//Get object entries from dictionary
 		DataObjectEntry addressEntry = dataDictionary.getDataObjectEntry("org.kuali.rice.krad.datadictionary.validation.Address");
+        DataObjectEntry companyEntry = dataDictionary.getDataObjectEntry("org.kuali.rice.krad.datadictionary.validation.Company");
 		
-		DictionaryValidationResult dictionaryValidationResult;		
-
+		//Validate object entries
+		addressEntry.completeValidation();
+		companyEntry.completeValidation();
+		
 		Company acmeCompany = new Company();
-
-		DataObjectEntry companyEntry = dataDictionary.getDataObjectEntry("org.kuali.rice.krad.datadictionary.validation.Company");		
+		
+		//Validate empty Company object
+        DictionaryValidationResult dictionaryValidationResult;		
 		dictionaryValidationResult = service.validate(acmeCompany, "org.kuali.rice.krad.datadictionary.validation.Company",companyEntry, true);
 		
 		//Main address is required this should result in error

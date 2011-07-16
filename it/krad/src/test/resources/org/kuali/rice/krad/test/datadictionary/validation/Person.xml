@@ -20,11 +20,11 @@
  limitations under the License.
 -->
 
-	 <bean id="Employee" parent="Employee-parentBean"/>
-	 <bean id="Employee-parentBean" abstract="true" parent="DataObjectEntry">
-		<property name="dataObjectClass" value="org.kuali.rice.krad.datadictionary.validation.Employee"/>
+	 <bean id="Person" parent="Person-parentBean"/>
+	 <bean id="Person-parentBean" abstract="true" parent="DataObjectEntry">
+		<property name="dataObjectClass" value="org.kuali.rice.krad.datadictionary.validation.Person"/>
 		<property name="titleAttribute" value="id"/>
-		<property name="objectLabel" value="Emplopyee"/>
+		<property name="objectLabel" value="Course"/>
 		<property name="primaryKeys">
 		  <list>
 		    <value>id</value>
@@ -32,17 +32,17 @@
 		</property>
 		<property name="attributes">
 		  <list>
-		    <ref bean="Employee-firstName"/>
-		    <ref bean="Employee-middleName"/>
-		    <ref bean="Employee-lastName"/>
-		    <ref bean="Employee-birthDate"/>
-		    <ref bean="Employee-gender"/>		    		    
+		    <ref bean="Person-firstName"/>
+		    <ref bean="Person-middleName"/>
+		    <ref bean="Person-lastName"/>
+		    <ref bean="Person-birthDate"/>
+		    <ref bean="Person-gender"/>		    		    
 		  </list>
 		</property>		
 	</bean>
   
-	<bean id="Employee-firstName" parent="Employee-firstName-parentBean"/>
-	<bean id="Employee-firstName-parentBean" abstract="true" parent="AttributeDefinition">
+	<bean id="Person-firstName" parent="Person-firstName-parentBean"/>
+	<bean id="Person-firstName-parentBean" abstract="true" parent="AttributeDefinition">
 		<property name="name" value="firstName"/>
 		<property name="shortLabel" value="firstName"/>
 		<property name="summary" value="First Name"/>
@@ -58,8 +58,8 @@
 		</property>	  
 	</bean>
   
-	<bean id="Employee-middleName" parent="Employee-middleName-parentBean"/>
-	<bean id="Employee-middleName-parentBean" abstract="true" parent="AttributeDefinition">
+	<bean id="Person-middleName" parent="Person-middleName-parentBean"/>
+	<bean id="Person-middleName-parentBean" abstract="true" parent="AttributeDefinition">
 		<property name="name" value="middleName"/>
 		<property name="shortLabel" value="middleName"/>
 		<property name="summary" value="Middle Name"/>
@@ -75,8 +75,8 @@
 		</property>	  
 	</bean>
 
-	<bean id="Employee-lastName" parent="Employee-lastName-parentBean"/>
-	<bean id="Employee-lastName-parentBean" abstract="true" parent="AttributeDefinition">
+	<bean id="Person-lastName" parent="Person-lastName-parentBean"/>
+	<bean id="Person-lastName-parentBean" abstract="true" parent="AttributeDefinition">
 		<property name="name" value="lastName"/>
 		<property name="shortLabel" value="lastName"/>
 		<property name="summary" value="lastName"/>
@@ -92,8 +92,8 @@
 		</property>	  
 	</bean>
 
-	<bean id="Employee-gender" parent="Employee-gender-parentBean"/>
-	<bean id="Employee-gender-parentBean" abstract="true" parent="AttributeDefinition">
+	<bean id="Person-gender" parent="Person-gender-parentBean"/>
+	<bean id="Person-gender-parentBean" abstract="true" parent="AttributeDefinition">
 		<property name="name" value="gender"/>
 		<property name="shortLabel" value="gender"/>
 		<property name="summary" value="gender"/>
@@ -110,8 +110,8 @@
 	</bean>
 
 
-	<bean id="Employee-postalCode" parent="Employee-postalCode-parentBean"/>
-	<bean id="Employee-postalCode-parentBean" abstract="true" parent="AttributeDefinition">
+	<bean id="Person-postalCode" parent="Person-postalCode-parentBean"/>
+	<bean id="Person-postalCode-parentBean" abstract="true" parent="AttributeDefinition">
 		<property name="name" value="postalCode"/>
 		<property name="shortLabel" value="postalCode"/>
 		<property name="summary" value="postalCode"/>
@@ -128,8 +128,8 @@
 	</bean>
 
 
-	<bean id="Employee-birthDate" parent="Employee-birthDate-parentBean"/>
-	<bean id="Employee-birthDate-parentBean" abstract="true" parent="AttributeDefinition">
+	<bean id="Person-birthDate" parent="Person-birthDate-parentBean"/>
+	<bean id="Person-birthDate-parentBean" abstract="true" parent="AttributeDefinition">
 		<property name="name" value="birthDate"/>
 		<property name="shortLabel" value="birthDate"/>
 		<property name="summary" value="birthDate"/>

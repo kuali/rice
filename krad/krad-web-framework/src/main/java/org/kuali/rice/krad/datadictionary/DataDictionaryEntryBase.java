@@ -360,7 +360,7 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry, In
     	List<ComplexAttributeDefinition> nestedComplexAttributes = dataDictionaryEntry.getComplexAttributes();
     	if (nestedComplexAttributes != null){
 	    	for (ComplexAttributeDefinition nestedComplexAttribute:nestedComplexAttributes){
-	    		addNestedAttributes(nestedComplexAttribute, attrPath);
+	    		addNestedAttributes(nestedComplexAttribute, attrPath + "." + nestedComplexAttribute.getName());
 	    	}
     	}
     }

@@ -370,7 +370,7 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry, In
     	
     	try {
     		
-			BeanUtils.copyProperties(attrDefToCopy, attrDefToCopy, new String[] { "formatterClass" });
+			BeanUtils.copyProperties(attrDefToCopy, attrDefCopy, new String[] { "formatterClass" });
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

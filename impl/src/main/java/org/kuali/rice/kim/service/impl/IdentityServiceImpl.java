@@ -77,7 +77,9 @@ import org.kuali.rice.kim.service.IdentityUpdateService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.PersistenceService;
 
 import javax.jws.WebService;
 import java.util.ArrayList;
@@ -100,6 +102,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 
     private CriteriaLookupService criteriaLookupService;
 	private BusinessObjectService businessObjectService;
+    private PersistenceService persistenceService;
 
 	/**
 	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityInfo(java.lang.String)
@@ -728,7 +731,8 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	private EntityBo getEntityBo(String entityId) {
 		EntityBo entityImpl = businessObjectService.findByPrimaryKey(EntityBo.class, Collections.singletonMap("id", entityId));
         if(entityImpl!=null) {
-        	entityImpl.refresh();
+            // in order for unit tests to run, we needed a way to mock the persistence service, so the refresh is done within here now rather than on the BO
+            getPersistenceService().retrieveNonKeyFields(entityImpl);
             /*TODO: We need to try and remove this.  Currently, without it, some integration tests fail because of some
              * sort of OJB caching and not filling in the type values.  We need to figure out why this is happening and fix it.
              * Yes, this is a hack :P
@@ -751,7 +755,14 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
         }
         return entityImpl;
 	}
-	
+
+    private PersistenceService getPersistenceService() {
+		if ( persistenceService == null ) {
+			persistenceService = KRADServiceLocator.getPersistenceService();
+		}
+		return persistenceService;
+	}
+
 	/**
 	 * @see org.kuali.rice.kim.api.identity.IdentityService#lookupEntitys(java.util.Map)
 	 */
@@ -904,7 +915,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 		Map<String,String> criteria = new HashMap<String,String>(1);
         criteria.put(key, value);
         Collection<EntityBo> entities = businessObjectService.findMatching(EntityBo.class, criteria);
-        if (entities.size() >= 1) {
+        if (entities != null && entities.size() >= 1) {
         	return entities.iterator().next();
         }
 		return null;
@@ -1476,5 +1487,9 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 
     public void setBusinessObjectService(final BusinessObjectService businessObjectService) {
         this.businessObjectService = businessObjectService;
+    }
+
+    public void setPersistenceService(final PersistenceService persistenceService) {
+        this.persistenceService = persistenceService;
     }
 }

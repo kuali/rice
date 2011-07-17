@@ -16,6 +16,12 @@
  */
 package org.kuali.rice.kew.actions;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
@@ -26,6 +32,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.BlanketApproveEngine;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.OrchestrationConfig;
+import org.kuali.rice.kew.engine.OrchestrationConfig.EngineCapability;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
@@ -35,9 +42,6 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
-
-
-import java.util.*;
 
 
 /**
@@ -198,10 +202,8 @@ public class BlanketApproveAction extends ActionTakenEvent {
             String newStatus = getRouteHeader().getDocRouteStatus();
             notifyStatusChange(newStatus, oldStatus);
         }
-        OrchestrationConfig config = new OrchestrationConfig();
-        config.setDestinationNodeNames(nodeNames);
-        config.setCause(actionTaken);
-        BlanketApproveEngine blanketApproveEngine = KEWServiceLocator.getBlanketApproveEngineFactory().newEngine(config);
+        OrchestrationConfig config = new OrchestrationConfig(EngineCapability.BLANKET_APPROVAL, nodeNames, actionTaken);
+        BlanketApproveEngine blanketApproveEngine = KEWServiceLocator.getWorkflowEngineFactory().newEngine(config);
         blanketApproveEngine.process(getRouteHeader().getDocumentId(), null);
    
         queueDocumentProcessing();

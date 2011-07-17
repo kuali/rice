@@ -24,6 +24,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.BlanketApproveEngine;
 import org.kuali.rice.kew.engine.OrchestrationConfig;
 import org.kuali.rice.kew.engine.RouteContext;
+import org.kuali.rice.kew.engine.OrchestrationConfig.EngineCapability;
 import org.kuali.rice.kew.engine.node.RequestsNode;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -88,14 +89,11 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
 			KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
 		}
 
-		OrchestrationConfig config = new OrchestrationConfig();
-		config.setCause(actionTaken);
-		config.setDestinationNodeNames(new HashSet<String>());
-		config.setSendNotifications(docType.getSuperUserApproveNotificationPolicy().getPolicyValue());
+		OrchestrationConfig config = new OrchestrationConfig(EngineCapability.BLANKET_APPROVAL, new HashSet<String>(), actionTaken, docType.getSuperUserApproveNotificationPolicy().getPolicyValue(), isRunPostProcessorLogic());
 		RequestsNode.setSupressPolicyErrors(RouteContext.getCurrentRouteContext());
 		try {
 			completeAnyOutstandingCompleteApproveRequests(actionTaken, docType.getSuperUserApproveNotificationPolicy().getPolicyValue());
-			BlanketApproveEngine blanketApproveEngine = KEWServiceLocator.getBlanketApproveEngineFactory().newEngine(config, isRunPostProcessorLogic());
+			BlanketApproveEngine blanketApproveEngine = KEWServiceLocator.getWorkflowEngineFactory().newEngine(config);
 			blanketApproveEngine.process(getRouteHeader().getDocumentId(), null);
 		} catch (Exception e) {
 			LOG.error("Failed to orchestrate the document to SuperUserApproved.", e);

@@ -19,6 +19,7 @@ package org.kuali.rice.kew.engine;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.util.KEWConstants;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,41 +31,63 @@ import java.util.Set;
  */
 public class OrchestrationConfig {
 
-    private boolean sendNotifications = true;
-    private String notificationType = KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ;
-    private Set<String> destinationNodeNames = new HashSet<String>();
-    private ActionTakenValue cause;
-    private boolean runPostProcessorLogic = true;
+    public enum EngineCapability { STANDARD, BLANKET_APPROVAL, SIMULATION };
+    
+    private final EngineCapability capability;
+    private final boolean sendNotifications;
+    private final String notificationType = KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ;
+    private final Set<String> destinationNodeNames;
+    private final ActionTakenValue cause;
+    private final boolean runPostProcessorLogic;
+    
+    public OrchestrationConfig(EngineCapability capability) {
+        this(capability, null, null, true, true);
+    }
+    
+    public OrchestrationConfig(EngineCapability capability, boolean isRunPostProcessorLogic) {
+        this(capability, null, null, true, isRunPostProcessorLogic);
+    }
+    
+    public OrchestrationConfig(EngineCapability capability, Set<String> destinationNodeNames, ActionTakenValue cause) {
+        this(capability, destinationNodeNames, cause, true, true);
+    }
+    
+    public OrchestrationConfig(EngineCapability capability, Set<String> destinationNodeNames, ActionTakenValue cause, boolean sendNotifications, boolean doRunPostProcessorLogic) {
+        this.capability = capability;
+        if (destinationNodeNames != null)
+            this.destinationNodeNames = Collections.unmodifiableSet(destinationNodeNames);
+        else 
+            this.destinationNodeNames = Collections.unmodifiableSet(new HashSet<String>());
+        this.cause = cause;
+        this.sendNotifications = sendNotifications;
+        this.runPostProcessorLogic = doRunPostProcessorLogic;
+    }
     
     public Set<? extends String> getDestinationNodeNames() {
         return destinationNodeNames;
     }
-    public void setDestinationNodeNames(Set<String> destinationNodeNames) {
-        this.destinationNodeNames = destinationNodeNames;
-    }
+
     public String getNotificationType() {
         return notificationType;
     }
-    public void setNotificationType(String notificationType) {
-        this.notificationType = notificationType;
-    }
+
     public boolean isSendNotifications() {
         return sendNotifications;
     }
-    public void setSendNotifications(boolean sendNotifications) {
-        this.sendNotifications = sendNotifications;
-    }
+
     public ActionTakenValue getCause() {
         return cause;
     }
-    public void setCause(ActionTakenValue cause) {
-        this.cause = cause;
-    }
+
 	public boolean isRunPostProcessorLogic() {
 		return this.runPostProcessorLogic;
 	}
-	public void setRunPostProcessorLogic(boolean runPostProcessorLogic) {
-		this.runPostProcessorLogic = runPostProcessorLogic;
-	}    
+
+    /**
+     * @return the capability
+     */
+    public EngineCapability getCapability() {
+        return this.capability;
+    }    
     
 }

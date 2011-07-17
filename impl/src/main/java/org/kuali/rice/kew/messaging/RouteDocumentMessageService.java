@@ -19,6 +19,8 @@ package org.kuali.rice.kew.messaging;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
+import org.kuali.rice.kew.engine.OrchestrationConfig;
+import org.kuali.rice.kew.engine.OrchestrationConfig.EngineCapability;
 import org.kuali.rice.kew.engine.WorkflowEngine;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
@@ -36,8 +38,8 @@ public class RouteDocumentMessageService implements KSBXMLService {
 	public void invoke(String xml) {
 		try {
 			RouteMessageXmlElement newElement = RouteMessageXmlElement.construct(xml);
-			WorkflowEngine engine = KEWServiceLocator.getWorkflowEngine();
-			engine.setRunPostProcessorLogic(newElement.runPostProcessor);
+			OrchestrationConfig config = new OrchestrationConfig(EngineCapability.STANDARD, newElement.runPostProcessor);
+			WorkflowEngine engine = KEWServiceLocator.getWorkflowEngineFactory().newEngine(config);
 			engine.process(newElement.documentId, null);
 			if (newElement.shouldSearchAttributeIndex) {
 				SearchableAttributeProcessingService searchableAttService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(KEWServiceLocator.getRouteHeaderService().getRouteHeader(newElement.documentId));

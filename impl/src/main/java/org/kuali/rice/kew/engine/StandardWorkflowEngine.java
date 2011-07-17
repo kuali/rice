@@ -66,24 +66,28 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(StandardWorkflowEngine.class);
 
-	protected RouteHelper helper = new RouteHelper();
-	private boolean runPostProcessorLogic = true;
-    private RouteNodeService routeNodeService;
-    private RouteHeaderService routeHeaderService;
-    private ParameterService parameterService;
+	protected final RouteHelper helper = new RouteHelper();
+	protected final RouteNodeService routeNodeService;
+    protected final RouteHeaderService routeHeaderService;
+    protected final ParameterService parameterService;
+    protected final OrchestrationConfig config;
 
-    public StandardWorkflowEngine() {}
+//    public StandardWorkflowEngine() {}
 
-	public StandardWorkflowEngine(boolean runPostProcessorLogic) {
-	    setRunPostProcessorLogic(runPostProcessorLogic);
+	protected StandardWorkflowEngine(RouteNodeService routeNodeService, RouteHeaderService routeHeaderService, 
+	        ParameterService parameterService, OrchestrationConfig config) {
+	    this.routeNodeService = routeNodeService;
+	    this.routeHeaderService = routeHeaderService;
+	    this.parameterService = parameterService;
+	    this.config = config;
 	}
 
-	public void setRunPostProcessorLogic(boolean runPostProcessorLogic) {
-	    this.runPostProcessorLogic = runPostProcessorLogic;
-	}
+//	public void setRunPostProcessorLogic(boolean runPostProcessorLogic) {
+//	    this.runPostProcessorLogic = runPostProcessorLogic;
+//	}
 
 	public boolean isRunPostProcessorLogic() {
-	    return this.runPostProcessorLogic;
+	    return this.config.isRunPostProcessorLogic();
 	}
 
 	public void process(String documentId, String nodeInstanceId) throws Exception {
@@ -739,15 +743,15 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		return parameterService;
 	}
 
-    public void setRouteNodeService(RouteNodeService routeNodeService) {
-        this.routeNodeService = routeNodeService;
-    }
-
-    public void setRouteHeaderService(RouteHeaderService routeHeaderService) {
-        this.routeHeaderService = routeHeaderService;
-    }
-
-    public void setParameterService(ParameterService parameterService) {
-        this.parameterService = parameterService;
-    }
+//    public void setRouteNodeService(RouteNodeService routeNodeService) {
+//        this.routeNodeService = routeNodeService;
+//    }
+//
+//    public void setRouteHeaderService(RouteHeaderService routeHeaderService) {
+//        this.routeHeaderService = routeHeaderService;
+//    }
+//
+//    public void setParameterService(ParameterService parameterService) {
+//        this.parameterService = parameterService;
+//    }
 }

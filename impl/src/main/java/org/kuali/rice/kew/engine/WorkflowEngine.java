@@ -34,7 +34,6 @@ public interface WorkflowEngine {
      * @throws IllegalDocumentTypeException if the given document could not be initialized successfully
      */
     public void initializeDocument(DocumentRouteHeaderValue document);
+
     
-    public void setRunPostProcessorLogic(boolean runPostProcessorLogic);
-    	
 }

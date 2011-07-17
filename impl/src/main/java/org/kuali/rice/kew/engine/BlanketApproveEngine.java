@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.MDC;
+import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
@@ -34,9 +35,11 @@ import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.engine.node.Process;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 
@@ -50,11 +53,10 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
 	
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BlanketApproveEngine.class);
 
-    private final OrchestrationConfig config;
 
-    BlanketApproveEngine(OrchestrationConfig config) {
-        super(config.isRunPostProcessorLogic());
-        this.config = config;
+    BlanketApproveEngine(RouteNodeService routeNodeService, RouteHeaderService routeHeaderService, 
+            ParameterService parameterService, OrchestrationConfig config) {
+        super(routeNodeService, routeHeaderService, parameterService, config);
     }
 
     /**

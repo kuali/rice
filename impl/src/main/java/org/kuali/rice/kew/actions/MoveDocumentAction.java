@@ -29,6 +29,7 @@ import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.action.MovePoint;
 import org.kuali.rice.kew.engine.BlanketApproveEngine;
 import org.kuali.rice.kew.engine.OrchestrationConfig;
+import org.kuali.rice.kew.engine.OrchestrationConfig.EngineCapability;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
@@ -145,11 +146,8 @@ public class MoveDocumentAction extends ActionTakenEvent {
             String newStatus = getRouteHeader().getDocRouteStatus();
             notifyStatusChange(newStatus, oldStatus);
         }
-        OrchestrationConfig config = new OrchestrationConfig();
-        config.setCause(actionTaken);
-        config.setDestinationNodeNames(nodeNames);
-        config.setSendNotifications(false);
-        BlanketApproveEngine blanketApproveEngine = KEWServiceLocator.getBlanketApproveEngineFactory().newEngine(config);
+        OrchestrationConfig config = new OrchestrationConfig(EngineCapability.BLANKET_APPROVAL, nodeNames, actionTaken, false, false);
+        BlanketApproveEngine blanketApproveEngine = KEWServiceLocator.getWorkflowEngineFactory().newEngine(config);
 		blanketApproveEngine.process(getRouteHeader().getDocumentId(), null);
         
         queueDocumentProcessing();

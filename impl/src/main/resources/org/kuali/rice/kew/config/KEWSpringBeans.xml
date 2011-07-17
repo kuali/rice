@@ -194,7 +194,7 @@
         <property name="parameterService" ref="parameterService" />
     </bean>
     
-    <bean id="blanketApproveEngineFactory" class="org.kuali.rice.kew.engine.BlanketApproveEngineFactoryImpl" lazy-init="true">
+    <bean id="workflowEngineFactory" class="org.kuali.rice.kew.engine.WorkflowEngineFactoryImpl" lazy-init="true">
         <property name="routeHeaderService" ref="enDocumentRouteHeaderService" />
         <property name="routeNodeService" ref="enRouteNodeService" />
         <property name="parameterService" ref="parameterService" />

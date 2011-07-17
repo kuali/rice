@@ -21,6 +21,7 @@ import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.BlanketApproveEngine;
 import org.kuali.rice.kew.engine.OrchestrationConfig;
+import org.kuali.rice.kew.engine.OrchestrationConfig.EngineCapability;
 import org.kuali.rice.kew.exception.*;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -85,12 +86,9 @@ public class SuperUserNodeApproveEvent extends SuperUserActionTakenEvent {
                 KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
             }
 
-            OrchestrationConfig config = new OrchestrationConfig();
-            config.setCause(actionTaken);
-            config.setDestinationNodeNames(Collections.singleton(nodeName));
-            config.setSendNotifications(docType.getSuperUserApproveNotificationPolicy().getPolicyValue());
+            OrchestrationConfig config = new OrchestrationConfig(EngineCapability.BLANKET_APPROVAL, Collections.singleton(nodeName), actionTaken, docType.getSuperUserApproveNotificationPolicy().getPolicyValue(), isRunPostProcessorLogic());
             try {
-            	BlanketApproveEngine blanketApproveEngine = KEWServiceLocator.getBlanketApproveEngineFactory().newEngine(config, isRunPostProcessorLogic());
+            	BlanketApproveEngine blanketApproveEngine = KEWServiceLocator.getWorkflowEngineFactory().newEngine(config);
     			blanketApproveEngine.process(getRouteHeader().getDocumentId(), null);
             } catch (Exception e) {
             	if (e instanceof RuntimeException) {

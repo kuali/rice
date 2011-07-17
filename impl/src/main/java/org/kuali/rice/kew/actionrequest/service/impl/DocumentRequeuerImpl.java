@@ -18,13 +18,14 @@ package org.kuali.rice.kew.actionrequest.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.engine.OrchestrationConfig;
+import org.kuali.rice.kew.engine.OrchestrationConfig.EngineCapability;
 import org.kuali.rice.kew.engine.RouteHelper;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
@@ -84,7 +85,8 @@ public class DocumentRequeuerImpl implements DocumentRequeuerService {
             getActionRequestService().deleteActionRequestGraph(requestToDelete);
         }
         try {
-        	KEWServiceLocator.getWorkflowEngine().process(documentId, null);
+            OrchestrationConfig config = new OrchestrationConfig(EngineCapability.STANDARD);
+        	KEWServiceLocator.getWorkflowEngineFactory().newEngine(config).process(documentId, null);
         } catch (Exception e) {
         	throw new WorkflowRuntimeException(e);
         }

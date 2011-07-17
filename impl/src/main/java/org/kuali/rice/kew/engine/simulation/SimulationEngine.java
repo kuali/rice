@@ -17,6 +17,7 @@
 package org.kuali.rice.kew.engine.simulation;
 
 import org.apache.log4j.MDC;
+import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
@@ -28,6 +29,7 @@ import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.ActivationContext;
 import org.kuali.rice.kew.engine.EngineState;
+import org.kuali.rice.kew.engine.OrchestrationConfig;
 import org.kuali.rice.kew.engine.ProcessContext;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.StandardWorkflowEngine;
@@ -40,10 +42,12 @@ import org.kuali.rice.kew.engine.node.RequestsNode;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.SimpleNode;
+import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.exception.DocumentSimulatedRouteException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
@@ -74,7 +78,12 @@ import java.util.Set;
  */
 public class SimulationEngine extends StandardWorkflowEngine implements SimulationWorkflowEngine {
 
-	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SimulationEngine.class);
+    public SimulationEngine(RouteNodeService routeNodeService, RouteHeaderService routeHeaderService,
+            ParameterService parameterService, OrchestrationConfig config) {
+        super(routeNodeService, routeHeaderService, parameterService, config);
+    }
+
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SimulationEngine.class);
 
 	private SimulationCriteria criteria;
     private SimulationResults results;

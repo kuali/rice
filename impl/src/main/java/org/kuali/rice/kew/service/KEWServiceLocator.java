@@ -16,12 +16,18 @@
 
 package org.kuali.rice.kew.service;
 
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+import javax.transaction.TransactionManager;
+import javax.transaction.UserTransaction;
+import javax.xml.namespace.QName;
+
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.encryption.EncryptionService;
-import org.kuali.rice.core.mail.Mailer;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.mail.Mailer;
 import org.kuali.rice.edl.framework.extract.ExtractService;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
@@ -33,8 +39,7 @@ import org.kuali.rice.kew.doctype.service.DocumentSecurityService;
 import org.kuali.rice.kew.doctype.service.DocumentTypePermissionService;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.documentlink.service.DocumentLinkService;
-import org.kuali.rice.kew.engine.BlanketApproveEngineFactory;
-import org.kuali.rice.kew.engine.WorkflowEngine;
+import org.kuali.rice.kew.engine.WorkflowEngineFactory;
 import org.kuali.rice.kew.engine.node.service.BranchService;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.engine.simulation.SimulationWorkflowEngine;
@@ -60,12 +65,6 @@ import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.springframework.transaction.PlatformTransactionManager;
-
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-import javax.transaction.TransactionManager;
-import javax.transaction.UserTransaction;
-import javax.xml.namespace.QName;
 
 
 /**
@@ -176,11 +175,9 @@ public final class KEWServiceLocator {
 
 	public static final String ROUTE_NODE_SERVICE = "enRouteNodeService";
 
-	public static final String WORKFLOW_ENGINE = "workflowEngine";
-
     public static final String SIMULATION_ENGINE = "simulationEngine";
 	
-	public static final String BLANKET_APPROVE_ENGINE_FACTORY = "blanketApproveEngineFactory";
+	public static final String WORKFLOW_ENGINE_FACTORY = "workflowEngineFactory";
 
 	public static final String ACTION_LIST_EMAIL_SERVICE = "enActionListEmailService";
 
@@ -331,16 +328,12 @@ public final class KEWServiceLocator {
 		return (RouteNodeService) getBean(ROUTE_NODE_SERVICE);
 	}
 
-	public static WorkflowEngine getWorkflowEngine() {
-		return (WorkflowEngine) getBean(WORKFLOW_ENGINE);
-	}
-
     public static SimulationWorkflowEngine getSimulationEngine() {
 		return (SimulationWorkflowEngine) getBean(SIMULATION_ENGINE);
 	}
 
-	public static BlanketApproveEngineFactory getBlanketApproveEngineFactory() {
-		return (BlanketApproveEngineFactory) getBean(BLANKET_APPROVE_ENGINE_FACTORY);
+	public static WorkflowEngineFactory getWorkflowEngineFactory() {
+		return (WorkflowEngineFactory) getBean(WORKFLOW_ENGINE_FACTORY);
 	}
 
 	public static WorkflowDocumentExceptionRoutingService getExceptionRoutingService() {

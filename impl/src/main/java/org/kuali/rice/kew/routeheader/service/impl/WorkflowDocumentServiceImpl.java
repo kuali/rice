@@ -53,7 +53,9 @@ import org.kuali.rice.kew.api.action.MovePoint;
 import org.kuali.rice.kew.api.doctype.IllegalDocumentTypeException;
 import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
 import org.kuali.rice.kew.engine.CompatUtils;
+import org.kuali.rice.kew.engine.OrchestrationConfig;
 import org.kuali.rice.kew.engine.RouteContext;
+import org.kuali.rice.kew.engine.OrchestrationConfig.EngineCapability;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -255,7 +257,8 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		}
 		routeHeader.setStatusModDate(new Timestamp(new Date().getTime()));
 		KEWServiceLocator.getRouteHeaderService().saveRouteHeader(routeHeader);
-		KEWServiceLocator.getWorkflowEngine().initializeDocument(routeHeader);
+		OrchestrationConfig config = new OrchestrationConfig(EngineCapability.STANDARD);
+		KEWServiceLocator.getWorkflowEngineFactory().newEngine(config).initializeDocument(routeHeader);
 		KEWServiceLocator.getRouteHeaderService().saveRouteHeader(routeHeader);
 		return routeHeader;
 	}

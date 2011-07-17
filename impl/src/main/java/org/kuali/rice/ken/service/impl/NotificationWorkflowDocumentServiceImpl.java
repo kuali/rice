@@ -90,7 +90,9 @@ public class NotificationWorkflowDocumentServiceImpl implements NotificationWork
 	// param 5 - this is the "force action" requests - if set to true, this will be delivered to the recipients list regardless of
 	//           whether the recipient has already taken action on this request; in our case, this doesn't really apply at this point in time,
 	//           so we'll set to true just to be safe
-	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(recipientUserId);
+	
+	// recipientUserId will always be a principal ID due to code changes in NotificationMessageDeliveryResolverServiceImpl.buildCompleteRecipientList()
+	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(recipientUserId);
 	document.adHocRouteDocumentToPrincipal(actionRequested, annotation, principal.getPrincipalId(),
 		messageDelivery.getNotification().getProducer().getName(), true);
 

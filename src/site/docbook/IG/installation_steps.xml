@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?> 
-<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+<chapter xml:id="installation_steps" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">    
     <title>Installation Steps</title>
     <para>Kuali Rice has the potential to run on most platforms that support a Java development
         environment (not simply a runtime environment), a servlet container, and an Oracle or MySQL
@@ -73,7 +73,7 @@
                             JDKs other than Sun. So alternative implementations like OpenJDK should
                             be used at your own risk.</para></warning>
                     </listitem>
-                <listitem>Servlet container (Apache Tomcat 5.5+, or Jetty 6.1.1)</listitem>
+                <listitem><para>Servlet container (Apache Tomcat 5.5+, or Jetty 6.1.1)</para></listitem>
                     <listitem>
                         <para>Apache Ant 1.8.1</para>
                     </listitem>
@@ -120,7 +120,7 @@
             <para>Subversion 1.5 or greater if checking out projects from Kuali source
                 control</para>
         </sect2>
-        <sect2 id="sources_for_required_software">
+        <sect2 xml:id="sources_for_required_software">
             <title>Sources for Required Software</title>
             <table frame="none">
                 <title/>
@@ -344,7 +344,7 @@ export JAVA_HOME CATALINA_OPTS ANT_HOME ANT_OPTS MAVEN_OPT GROOVY_HOME          
     </sect1>
     <sect1>
         <title>Install the JDBC Drivers</title>
-        <warning>You must install the JDBC (Java Database Connectivity) driver for MySQL and Oracle to satisfy the requirement for the structure of the Ant target in the build process.</warning>
+        <warning><para>You must install the JDBC (Java Database Connectivity) driver for MySQL and Oracle to satisfy the requirement for the structure of the Ant target in the build process.</para></warning>
         <sect2>
             <title>Rice software database drivers directory defaults</title>
             <para><emphasis role="bold">/java/drivers</emphasis> is a hard coded directory that the
@@ -367,9 +367,8 @@ export JAVA_HOME CATALINA_OPTS ANT_HOME ANT_OPTS MAVEN_OPT GROOVY_HOME          
                 the JDBC driver, copy it to <emphasis role="bold">/java/drivers</emphasis>. </para>
         </sect2>
     </sect1>
-    <sect1 id="set_up_impex_process">
+    <sect1 xml:id="set_up_impex_process">
         <title>Set Up the ImpEx Process to Build the Database</title>
-        <para>
             <sect2>
                 <title>Overview</title>
                 <para>The ImpEx tool is a Kuali-developed application which is based on <link
@@ -377,7 +376,7 @@ export JAVA_HOME CATALINA_OPTS ANT_HOME ANT_OPTS MAVEN_OPT GROOVY_HOME          
                     database structure and data from XML files in a platform independent way and
                     then creates the resulting database in either Oracle or MySQL.</para>
             </sect2>
-        </para>
+        
         <sect2>
             <title>Obtaining the ImpEx Tool</title>
             <para>The ImpEx tool is included in the Rice binary and server distributions. It is
@@ -406,7 +405,7 @@ export JAVA_HOME CATALINA_OPTS ANT_HOME ANT_OPTS MAVEN_OPT GROOVY_HOME          
                             system maintenance)</para>
                     </listitem>
                 </orderedlist></para>
-            <note>Please inform your DBA that the above scripts must be run under the Oracle SYS account.</note>
+            <note><para>Please inform your DBA that the above scripts must be run under the Oracle SYS account.</para></note>
             <para>After your DBA runs the above scripts, you must run two more scripts as the kulusermaint:<orderedlist>
                     <listitem>
                         <para><emphasis role="bold">create_admin_user.sql</emphasis> (Creates the
@@ -708,18 +707,17 @@ tail -n 500 -f catalina.out</programlisting></para>
                             </para>
                             <figure>
                                 <title>Rice Portal Main Menu</title>
-                                <inlinemediaobject>
+                                <mediaobject>
                                     <imageobject>
                                         <imagedata fileref="../images/rice_portal_main_menu.png"/>
                                     </imageobject>
-                                    </inlinemediaobject>
+                                    </mediaobject>
                             </figure>    
                         </listitem>
                     </itemizedlist></para>    
 <!-- End Quick Start Best Practice -->
                 <sect4>
                     <title>Parameters</title>
-                </sect4>
                 <para>The tables below have the basic set of parameters for rice-config.xml that you
                     need to get an instance of Rice running. Please use these tables as a beginning
                     reference to modify your rice-config.xml file. </para>
@@ -750,7 +748,8 @@ tail -n 500 -f catalina.out</programlisting></para>
                             </row>
                             <row>
                                 <entry>app.context.name</entry>
-                                <entry>Context name of the web application<itemizedlist>
+                                <entry><para>Context name of the web application</para>
+                                    <itemizedlist>
                                         <listitem>
                                           <para>Essentially, the name of the WAR file</para>
                                         </listitem>
@@ -991,7 +990,8 @@ tail -n 500 -f catalina.out</programlisting></para>
                             </row>
                         </tbody>
                     </tgroup>
-                </table>    
+                </table>   
+              </sect4>     
             </sect3>
         </sect2>
     </sect1>

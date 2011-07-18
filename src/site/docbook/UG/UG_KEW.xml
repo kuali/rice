@@ -226,11 +226,13 @@
             <para>Your institution may have KEW links inside other applications, such as Kuali
                 Financial Systems (KFS). KFS may display an Action List button at the top left
                 of the KFS page like this:</para>
-            <para><inlinemediaobject>
+            <figure><title>Kuali Portal: Action List Button</title>
+                <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/kfs_kew.png"/>
+                        <imagedata fileref="../images/kfs_kew.png" scale="75"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>Clicking an Action List link or button displays your <emphasis role="bold"
                     >Action List</emphasis> page. This is a sample KEW Action List; your
                 institution’s may look somewhat different:</para>
@@ -427,11 +429,13 @@
                             You can use this menu to agree that you’ve received the document for
                             information purposes: Select FYI, then click the Take Actions button
                             at the bottom of the page. </para>
-                        <para><inlinemediaobject>
+                        <figure><title>Action List</title>
+                            <mediaobject>
                                 <imageobject>
-                                    <imagedata fileref="../images/action_list.png"/>
+                                    <imagedata fileref="../images/action_list.png" scale="85"/>
                                 </imageobject>
-                            </inlinemediaobject></para>
+                            </mediaobject>
+                        </figure>
                     </listitem>
                     <listitem>
                         <para><emphasis role="bold">Log</emphasis>: (also known as the Route
@@ -439,11 +443,13 @@
                             display the Route Log page. This page has details about the routing
                             path and Actions Taken on this document. Learn more about this
                             information in the Route Log Guide. A sample Route Log page:</para>
-                        <para><inlinemediaobject>
+                        <figure><title>Route Log</title>
+                            <mediaobject>
                                 <imageobject>
                                     <imagedata fileref="../images/route_log.png"/>
                                 </imageobject>
-                            </inlinemediaobject></para>
+                            </mediaobject>
+                        </figure>
                     </listitem>
                 </itemizedlist></para>
                 <para>If enabled for a particular document, messages can also be logged through
@@ -475,27 +481,31 @@
                 Action List Preferences page on KEW. To display this page, click the Preferences
                 button at the top of the Action List page or click the User Preferences link in
                 the Workflow pane of the Main Menu tab. Action List page:</para>
-            <para><inlinemediaobject>
+            <figure><title>Action List: Preferences Button</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/action_list_page.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>This displays the Action List Preferences page, where you can make choices
                 about how KEW displays and refreshes (updates) your Action List and about how
                 and when you receive email reminders about your new action requests:</para>
-            <para><inlinemediaobject>
+            <figure><title>Action List Preference Page</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/action_list_preferences.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>The Action List Preferences page has three sections:</para>
             <figure>
-                <title>Action List Preferences page, General section</title>
-                <inlinemediaobject>
+                <title>Action List Preferences: General section</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/action_list_preferences_general.png"/>
                     </imageobject>
-                </inlinemediaobject>
+                </mediaobject>
             </figure>
             <para>
                 <itemizedlist>
@@ -559,14 +569,14 @@
                             on which you are the Secondary Delegate on your Action List page,
                             you can only see them on a Filter Page (see Filter, below).</para>
                         <figure>
-                            <title>Action List Preferences page, Fields Displayed in Action List section</title>
-                            <inlinemediaobject>
+                            <title>Action List Preferences: Fields Displayed section</title>
+                            <mediaobject>
                                 <imageobject>
                                     <imagedata
                                         fileref="../images/fields_displayed_in_action_list.png"
-                                    />
+                                        scale="85"/>
                                 </imageobject>
-                            </inlinemediaobject></figure>
+                            </mediaobject></figure>
                     </listitem>
                     <listitem>
                         <para>You determine which fields are displayed on your Action List page
@@ -575,13 +585,13 @@
                             Action List page. (Click the box to checkmark it and click it again
                             to un-checkmark it, and vice versa.)</para>
                         <figure>
-                            <title>Action List Preferences page, Document Route Status Colors for Actionlist Entries section</title>
-                            <inlinemediaobject>
+                            <title>Action List Preferences: Document Route Status Colors Section</title>
+                            <mediaobject>
                                 <imageobject>
-                                    <imagedata
-                                        fileref="../images/document_route_status_colors.png"/>
+                                    <imagedata fileref="../images/document_route_status_colors.png"
+                                        scale="85"/>
                                 </imageobject>
-                            </inlinemediaobject>
+                            </mediaobject>
                         </figure>
                     </listitem>
                     <listitem>
@@ -604,19 +614,23 @@
                     </listitem>
                 </itemizedlist></para>
             <para>Your Action List Preferences page looks like this: </para>
-            <para><inlinemediaobject>
+            <figure><title>Action List Preferences: Example</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/action_list_preferences2.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>Click the Save button at the bottom of the page to make these changes in your
                 Action List.</para>
             <para>Action Lists your color changes by Status:</para>
-            <para><inlinemediaobject>
+            <figure><title>Action List Preferences: Setup Error Message</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/action_list_error.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>Remember, all of these preferences and settings are on your Action List
                 Preferences page.</para>
             <sect3>
@@ -635,11 +649,13 @@
                     List page:</para>
                 <para>This displays the <emphasis role="bold">Action List Filter</emphasis>
                     page: </para>
-                <para><inlinemediaobject>
+                <figure><title>Action List Filter Page</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/action_list_filter.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
             </sect3>
             <sect3>
                 <title>Keys to using the Action List Filter:</title>
@@ -801,12 +817,15 @@
                                         want to use the first one in the list, KIM Principal
                                         Maintenance Document, click return value in the row for
                                         KIM Principal Maintenance Document. </para>
-                                    <para><inlinemediaobject>
+                                    <figure><title>Document Type Lookup</title>
+                                        <mediaobject>
                                             <imageobject>
-                                              <imagedata
-                                              fileref="../images/document_type_lookup.png"/>
+                                                <imagedata
+                                                  fileref="../images/document_type_lookup.png"
+                                                  scale="85"/>
                                             </imageobject>
-                                        </inlinemediaobject></para>
+                                        </mediaobject>
+                                    </figure>
                                     <note><para>If you do not find the Type that you need, you can
                                         either do another search or click the link for return
                                         with no value to return to the Action List Filter page
@@ -831,11 +850,13 @@
                             of “April” on this calendar, the month displayed would change to
                             March 2009. If you could click the double arrowhead to the right of
                             “April”, the month would change to April 2010.</para>
-                        <para><inlinemediaobject>
+                        <figure><title>Date Widget</title>
+                            <mediaobject>
                                 <imageobject>
-                                    <imagedata fileref="../images/date_created.png"/>
+                                    <imagedata fileref="../images/date_created.png" scale="85"/>
                                 </imageobject>
-                            </inlinemediaobject></para>
+                            </mediaobject>
+                        </figure>
                     </listitem>
                     <listitem>
                         <para><emphasis role="bold">Date Last Assigned</emphasis>: Use this
@@ -851,11 +872,13 @@
                 <title>Clear Filter</title>
                 <para>When you have used a filter on your Action List, you can see a Clear
                     Filter button at the top of your page:</para>
-                <para><inlinemediaobject>
+                <figure><title>Action List: Clear Filter Button</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/action_list_old.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>Click this button to display all of your action requests again. </para>
                 <note><para>If your Action List is not filtered, you cannot see the Clear Filter
                     button.</para></note>
@@ -889,7 +912,7 @@
                 Action Requests:</para>
             <para>
                 <table frame="none">
-                    <title/>
+                    <title>Types of Action Requests</title>
                     <tgroup cols="3">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                         <colspec colname="c2" colnum="2" colwidth="1.79*"/>
@@ -1011,11 +1034,13 @@
                 <para>You can combine a role request with a delegate. In fact, in the previous
                     example, the action request that is sent to Joe as a fiscal officer is really a
                     role request. The action request tree for that scenario is:</para>
-                <para><inlinemediaobject>
+                <figure><title>Delegation Tree Example</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/action_request_tree.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>This tree is three levels deep and shows a role delegating to a user. You can
                     also have a role delegate to another role.</para>
             </sect3>
@@ -1069,11 +1094,13 @@
                     Jane issues an Approve action on her request, Deactivation starts at Jane's
                     request. However, if Joe issues the Approve action, Deactivation starts at the
                     parent. </para>
-                <para><inlinemediaobject>
+                <figure><title>Delegation Tree Example: Deactivation</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/deactivation_flow.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>If there are no roles set to "All Approve" on an action request, one action
                     can Deactivate the entire request tree. This is because KEW works up and down
                     the tree, Deactivating requests as it goes.</para>
@@ -1407,11 +1434,12 @@
             <para>Use the <emphasis role="bold">eDocLite Lookup</emphasis> screen to quickly find
                 basic information about eDocLite documents and as the first step in creating a new
                 eDocLite. </para>
-            <para><inlinemediaobject>
+            <figure><title>Workflow Channel: eDocLite Link</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/edoclite_link.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject></figure>
             <sect3>
                 <title>Finding the eDocLite Lookup Screen</title>
                 <para>You can go to the <emphasis role="bold">eDocLite Lookup</emphasis> by:<orderedlist>
@@ -1427,17 +1455,19 @@
                     </orderedlist></para>
             </sect3>
             <sect3>
-                <title>eDocLite Lookup Options</title>
-                <para><inlinemediaobject>
+                <title>eDocLite Lookup</title>
+                <figure><title>eDocLite Lookup</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/edoclite_lookup.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>On the eDocLite lookup page, users can search for an eDocLite document based
                     on several criteria:</para>
                 <para>
                     <table frame="none">
-                        <title/>
+                        <title>eDocLite Lookup Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                             <colspec colname="c2" colnum="2" colwidth="1.47*"/>
@@ -1479,11 +1509,13 @@
                 </para>
                 <para>You can use the above criteria to limit your search results. A search will
                     produce a list of one or more results that look similar to the following:</para>
-                <para><inlinemediaobject>
+                <figure><title>eDocLite Lookup: Search Results</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/search_results.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>Clicking <emphasis role="bold">Create Document</emphasis> on any line takes
                     you to the eDocLite document screen where new documents can be created. The line
                     item you choose will result in that document being used as a template for the
@@ -1568,11 +1600,13 @@
         </sect2>
         <sect2>
             <title>eDocLite Inquiry</title>
-            <para><inlinemediaobject>
+            <figure><title>eDocLite Inquiry</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/edoclite_inquiry.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>The Inquiry screen displays the same information as is found on a line of the
                 Lookup output, but this screen provides you with the export option. Exporting from
                 the Inquiry screen produces a XML file of the source for the eDocLite
@@ -1597,7 +1631,7 @@
             <sect3>
                 <title>Document Header</title>
                 <para>The Document Header contains the following fields: <table frame="none">
-                        <title/>
+                        <title>Document Header Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                             <colspec colname="c2" colnum="2" colwidth="3.08*"/>
@@ -1636,7 +1670,7 @@
                     complete business function. </para>
                 <para>
                     <table frame="none">
-                        <title/>
+                        <title>Document Body Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                             <colspec colname="c2" colnum="2" colwidth="2.92*"/>
@@ -1667,7 +1701,7 @@
                 </para>
             </sect3>
             <sect3>
-                <title>routing action and annotation, and note area</title>
+                <title>Routing Action and Annotation, and Note area</title>
                 <para>This area is used to add annotation and choose action to be taken on this
                     eDocLite document. Annotation is the comments associated with the routing
                     process. You can add them to different nodes of the routing process and take
@@ -1676,7 +1710,7 @@
                     specific eDocLite form and appear with the form and not in the route log. </para>
                 <para>
                     <table frame="none">
-                        <title/>
+                        <title>Routing Action and Annotation, and Note Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                             <colspec colname="c2" colnum="2" colwidth="2.45*"/>
@@ -1778,17 +1812,21 @@
         <title>Preferences</title>
         <para>Workflow allows for users to individually configure certain aspects of the system. You
             should be able to access the User Preferences from the Main portal page:</para>
-        <para><inlinemediaobject>
+        <figure><title>Workflow Channel: User Preferences Link</title>
+            <mediaobject>
                 <imageobject>
                     <imagedata fileref="../images/select_user_preferences.png"/>
                 </imageobject>
-            </inlinemediaobject></para>
+            </mediaobject>
+        </figure>
         <para>After clicking the link you should be taken to Workflow Preferences screen:</para>
-        <para><inlinemediaobject>
+        <figure><title>Workflow Preferences</title>
+            <mediaobject>
                 <imageobject>
                     <imagedata fileref="../images/workflow_preferences.png"/>
                 </imageobject>
-            </inlinemediaobject></para>
+            </mediaobject>
+        </figure>
         <para>There are three configuration sections on this screen:</para>
         <sect2>
             <title>General Preferences</title>
@@ -1797,7 +1835,7 @@
                 how to override the default values.</para></note>
             <para>
                 <table frame="none">
-                    <title/>
+                    <title>User Preferences Attributes</title>
                     <tgroup cols="3">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                         <colspec colname="c2" colnum="2" colwidth="1.14*"/>
@@ -1839,8 +1877,8 @@
                             <row>
                                 <entry>Delegator Filter</entry>
                                 <entry>Secondary Delegators on Action List Page</entry>
-                                <entry>Determines what is displayed on the action list page.
-                                    Options: <itemizedlist>
+                                <entry><para>Determines what is displayed on the action list page.  Options:</para>
+                                    <itemizedlist>
                                         <listitem>
                                             <para>Secondary Delegators on Action List Page</para>
                                         </listitem>
@@ -1852,8 +1890,7 @@
                             <row>
                                 <entry>Primary Delegate Filter</entry>
                                 <entry>Primary Delegators on Action List Page</entry>
-                                <entry>Determines what is displayed on the action list page.
-                                    Options: <itemizedlist>
+                                <entry><para>Determines what is displayed on the action list page. Options:</para> <itemizedlist>
                                         <listitem>
                                             <para>Primary Delegators on Action List Page</para>
                                         </listitem>
@@ -1873,7 +1910,7 @@
                 page.</para>
             <para>
                 <table frame="none">
-                    <title/>
+                    <title>User Preferences: Fields Displayed Attributes</title>
                     <tgroup cols="2">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                         <colspec colname="c2" colnum="2" colwidth="1.0*"/>
@@ -1956,24 +1993,29 @@
                 through the <emphasis role="bold">Delegate Rule Lookup</emphasis>. This Lookup also
                 lets you create new Delegation Rules using the <emphasis role="bold">create
                     new</emphasis> function and edit existing Delegation Rules.</para>
-            <para><inlinemediaobject>
+            <figure><title>Workflow Channel: Routing Rules Delegation Link</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/routing_rules_delegation.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>To access the <emphasis role="bold">Delegate Rule Lookup</emphasis> screen, click
                     <emphasis role="bold">Routing Rules Delegation</emphasis> on the Rice Main
                 Menu.</para>
-            <para><inlinemediaobject>
+            <figure><title>Delegation Lookup</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/delegate_rule_lookup.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>Use the <emphasis role="bold">Delegate Rule Lookup</emphasis> screen to find
                 information about a Delegation Rule. You can also create a new Rule by clicking the
                 create new button in the upper right corner of the screen. The create new function
                 is described in the Routing Rule Creation section later in this document.</para>
-            <para>When you do a search from the Delegate Rule Lookup screen, you can:<itemizedlist>
+            <para>When you do a search from the Delegate Rule Lookup screen, you can:
+                <itemizedlist>
                     <listitem>
                         <para>View the Delegation Rule information returned by the search </para>
                     </listitem>
@@ -2001,11 +2043,13 @@
                 way to find a particular Rule.</para></note>
             <para>After you click the search button, Delegate Rule Lookup displays a list of Rules
                 that looks similar to this:</para>
-            <para><inlinemediaobject>
+            <figure><title>Delegation Lookup: Results Example</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/rules_list.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>Click <emphasis role="bold">edit</emphasis> on any row to go to the <emphasis
                     role="bold">Routing Rule Delegation</emphasis> document for that Rule. You can
                 use this document to do maintenance on that Rule. This is discussed later in this
@@ -2033,11 +2077,13 @@
         </sect2>
         <sect2>
             <title>Delegation Rule Inquiry</title>
-            <para><inlinemediaobject>
+            <figure><title>Delegation Inquiry</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/delegation_rule_inquiry.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>This screen provides specific information on how a <emphasis role="bold"
                     >Rule</emphasis> works. From this screen, you can either click the <emphasis
                     role="bold">close</emphasis> button to return to the previous screen or you can
@@ -2047,11 +2093,13 @@
         </sect2>
         <sect2>
             <title>Delegate Routing Rule Creation</title>
-            <para><inlinemediaobject>
+            <figure><title>Delegation Rule: Create New Screen</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/delegate_routing_rule_creation.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>To create a new Delegate Routing Rule, start by selecting a Parent Rule to
                 associate with your new Delegate Rule:<orderedlist>
                     <listitem>
@@ -2067,12 +2115,15 @@
                         <para>When you have found the appropriate Parent Rule, click its return
                             value link to return to the Delegate Routing Rule Creation screen with
                             this Parent Rule.</para>
-                        <para><inlinemediaobject>
+                        <figure><title>Delegate Routing Rule: Create New, Parent Selection</title>
+                            <mediaobject>
                                 <imageobject>
                                     <imagedata
-                                        fileref="../images/delegate_routing_rule_creation2.png"/>
+                                        fileref="../images/delegate_routing_rule_creation2.png"
+                                        scale="85"/>
                                 </imageobject>
-                            </inlinemediaobject></para>
+                            </mediaobject>
+                        </figure>
                     </listitem>
                     <listitem>
                         <para>Information from the Parent Rule you selected is now in the <emphasis
@@ -2101,11 +2152,13 @@
             <para>You can use the <emphasis role="bold">Routing Rule Delegation</emphasis> document
                 screen for both editing existing Delegation Rules and for adding new Delegation
                 Rules to Rice. </para>
-            <para><inlinemediaobject>
+            <figure><title>Routing Rule Delegation: Overview</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/routing_rule_delegation.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <note><para>When Rice first displays the <emphasis role="bold">Routing Rule
                     Delegation</emphasis> screen, all of the tabs except the Notes and Attachments,
                 Ad Hoc Recipients, and Route Log tabs, are expanded. They are all collapsed in the
@@ -2151,22 +2204,26 @@
                 <para>The Delegation Details screen is displayed differently, depending on whether
                     you are creating a new Rule or editing/copying a Rule. The version you see when
                     creating a new Rule looks similar to this:</para>
-                <para><inlinemediaobject>
+                <figure><title>Routing Rule Deleation: Details Section</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/delegation_details.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>The information displayed is a copy of the information for the Parent Rule.
                     Descriptions of these fields are below. Change this information as needed, then
                     click the <emphasis role="bold">submit</emphasis> button to create this new
                     Rule.</para>
                 <para>The version you see when editing or copying a Rule looks similar to
                     this:</para>
-                <para><inlinemediaobject>
+                <figure><title>Routing Rules Delegation: Edit/Copy View</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/copying_rules.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>When you first see this version, the information in both columns is the same.
                     You can modify the information in the fields in the right column, but not the
                     left column. After changing the information appropriately in the right column,
@@ -2174,7 +2231,7 @@
                 <para>The fields are the same in both versions of the screen:</para>
                 <para>
                     <table frame="none">
-                        <title/>
+                        <title>Routing Rules Delegation Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
@@ -2204,7 +2261,8 @@
                                 </row>
                                 <row>
                                     <entry>Action Request</entry>
-                                    <entry>The type of Action this Reviewer can take. This may be:<itemizedlist>
+                                    <entry><para>The type of Action this Reviewer can take. This may be:</para>
+                                        <itemizedlist>
                                             <listitem>
                                                 <para>Acknowledge</para>
                                             </listitem>
@@ -2229,20 +2287,24 @@
                 <para>The Delegate Rule tab is displayed differently, depending on whether you are
                     creating a new Rule or editing/copying a Rule. The version you see when creating
                     a new Rule looks similar to this:</para>
-                <para><inlinemediaobject>
+                <figure><title>Routing Rules Delegation: Delegate Rule Tab</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/delegate_rule.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>Enter the appropriate information for your new Delegate Rule in these fields.
                     There are descriptions of each of these fields below.</para>
                 <para>The version you see when editing or copying a Rule looks similar to
                     this:</para>
-                <para><inlinemediaobject>
+                <figure><title>Routing Rule Delegation: Delegate Rule Tab, Edit/Copy View</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/delegate_rule_copy.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>When you first see this version, the information in both columns is the same.
                     You can modify the information in the fields in the right column, but not the
                     left column. After changing the information in the right column
@@ -2250,7 +2312,7 @@
                 <para>The fields are the same in both versions of the screen:</para>
                 <para>
                     <table frame="none">
-                        <title/>
+                        <title>Routing Rule Delegation: Delegate Rule Tab Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
@@ -2276,7 +2338,8 @@
                                 </row>
                                 <row>
                                     <entry>Delegation Type</entry>
-                                    <entry>Required. Options for Delegation Type are:<itemizedlist>
+                                    <entry><para>Required. Options for Delegation Type are:</para>
+                                        <itemizedlist>
                                             <listitem>
                                                 <para><emphasis role="bold">Primary</emphasis>: This
                                                   means that the delegator turns over full authority
@@ -2306,10 +2369,8 @@
                                 </row>
                                 <row>
                                     <entry>Name</entry>
-                                    <entry>The unique Name of the routing delegate Rule you are
-                                        creating or editing 
-                                        <note><para>You are not required to enter a Name, but if you don’t, Rice assigns a unique Name to the
-                                                Rule.</para></note>
+                                    <entry><para>he unique Name of the routing delegate Rule you are creating or editing.</para> 
+                                        <para><emphasis role="bold">Note: </emphasis>You are not required to enter a Name, but if you don’t, Rice assigns a unique Name to the Rule.</para>
                                     </entry>
                                 </row>
                                 <row>
@@ -2347,21 +2408,25 @@
                     tab lets you add people to the Rule and set the type of Action each person needs
                     to take under this Rule. The version of the Persons screen that you see when
                     creating a new Delegate Rule looks similar to this:</para>
-                <para><inlinemediaobject>
+                <figure><title>Routing Rules Delegation: Persons Tab</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/persons_tab.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>Enter the appropriate information for the Persons section of your new Delegate
                     Rule in these fields. There are descriptions of each of these fields
                     below.</para>
                 <para>The version you see when editing or copying a Rule looks similar to
                     this:</para>
-                <para><inlinemediaobject>
+                <figure><title>Routing Rules Delegation: Persons tab, Copy/Edit View</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/persons_tab_copy.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>Use the top portion of this tab to add a new Person to this Rule and set the
                     Action that Person needs to take and its Priority. Use the lower portion of this
                     tab to change existing values for this Rule. </para>
@@ -2370,7 +2435,7 @@
                     required fields. </para></note>
                 <para>
                     <table frame="none">
-                        <title/>
+                        <title>Routing Rules Delegation: Persons Tab Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
@@ -2388,8 +2453,7 @@
                                 </row>
                                 <row>
                                     <entry>Action Request</entry>
-                                    <entry>Required. The type of Action this person needs to take.
-                                        This Action may be one of these:<itemizedlist>
+                                    <entry><para>Required. The type of Action this person needs to take. This Action may be one of these:</para><itemizedlist>
                                             <listitem>
                                                 <para>Acknowledge</para>
                                             </listitem>
@@ -2419,26 +2483,30 @@
                 <para>The Groups tab differently, depending on whether you are creating a new Rule
                     or editing/copying a Rule. The version you see when creating a new Rule looks
                     similar to this:</para>
-                <para><inlinemediaobject>
+                <figure><title>Routing Rules Delegation: Groups Tab</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/groups_tab.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>Enter the appropriate information for the Groups section of your new Delegate
                     Rule in these fields. These fields are described below.</para>
                 <para>The version you see when editing or copying a Rule looks similar to
                     this:</para>
-                <para><inlinemediaobject>
+                <figure><title>Routing Rules Delegation: Groups Tab, Edit/Copy View</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/groups_tab_copy.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>Use the top portion of this tab to add a new Group. Use the lower portion to
                     change existing information for a Group. </para>
                 <note><para>When you create a new group, you must click the <emphasis role="bold">add</emphasis> button
                         after you enter information in the required fields.</para></note>
                 <para><table frame="none">
-                    <title/>
+                    <title>Routing Rules Deleation: Groups Tab Attributes</title>
                     <tgroup cols="2">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                         <colspec colname="c2" colnum="2" colwidth="1.0*"/>
@@ -2462,8 +2530,7 @@
                                 </row>
                             <row>
                                 <entry>Action Request</entry>
-                                <entry>Required. The type of Action this Group is expected to take.
-                                        The Action may be one of these:<itemizedlist>
+                                <entry><para>Required. The type of Action this Group is expected to take.  The Action may be one of these:</para><itemizedlist>
                                             <listitem>
                                                 <para>Acknowledge</para>
                                             </listitem>
@@ -2494,11 +2561,13 @@
                 through the <emphasis role="bold">Rule Lookup</emphasis> feature. This feature also
                 provides an entry point to creating a new Rule through the <emphasis role="bold"
                     >create new</emphasis> function.</para>
-            <para><inlinemediaobject>
+            <figure><title>Workflow Channel: Routing Rules Link</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/routing_rules_link.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>To access the <emphasis role="bold">Rule Lookup</emphasis> screen click on
                     <emphasis role="bold">Routing Rules</emphasis> on the Rice <emphasis role="bold"
                     >Main Menu</emphasis>.</para>
@@ -2506,11 +2575,13 @@
                 copy information about routing rules defined in Rice. It is also the starting point
                 for creating a new rule using the <emphasis role="bold">Routing Rule Creation
                 </emphasis>screen.</para>
-            <para><inlinemediaobject>
+            <figure><title>Routing Rules Lookup</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/rule_lookup.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>Click on the <emphasis role="bold">create new</emphasis> button to go to the
                 Routing Rule Creation screen. The process for creating a new Routing Rule is
                 discussed in the <emphasis role="bold">Routing Rule Creation</emphasis> section of
@@ -2528,11 +2599,13 @@
                     will automatically provide a list of rule templates.</para>
             </note>
             <para>Rule Lookups return a list that looks similar to the following:</para>
-            <para><inlinemediaobject>
+            <figure><title>Routing Rules Lookup: Results Example</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/rule_lookup_results.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>Clicking <emphasis role="bold">edit</emphasis> on any line item takes you to the
                     <emphasis role="bold">Rule Maintenance Document Type Document</emphasis> where
                 you can perform maintenance on that rule. This is discussed later in this document
@@ -2554,11 +2627,13 @@
         </sect2>
         <sect2>
             <title>Rule Inquiry</title>
-            <para><inlinemediaobject>
+            <figure><title>Routing Rules Inquiry</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/rule_inquiry.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>This screen provides specific information on how the <emphasis role="bold"
                     >Rule</emphasis> is set up in Rice. The fields on this screen are described in
                 the <emphasis role="bold">Rule Maintenance</emphasis> section of this
@@ -2566,11 +2641,13 @@
         </sect2>
         <sect2>
             <title>Routing Rule Creation</title>
-            <para><inlinemediaobject>
+            <figure><title>Routing Rules Creation</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/routing_rule_creation.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>When creating a new Routing Rule you start by entering the <emphasis role="bold"
                     >Document Type</emphasis> and the <emphasis role="bold">Rule Template</emphasis>
                 you want associated with your new Rule, then click the continue button. This takes
@@ -2579,7 +2656,7 @@
                 follows.</para>
             <para>
                 <table frame="none">
-                    <title/>
+                    <title>Routing Rule Creation Attributes</title>
                     <tgroup cols="2">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                         <colspec colname="c2" colnum="2" colwidth="1.0*"/>
@@ -2618,11 +2695,13 @@
             <para>The routing report is a tool to check workflow routing. You select a rule template
                 and enter any routing data required by the rule template. You can then view the
                 workflow routing that would be assigned to such a document.</para>
-            <para><inlinemediaobject>
+            <figure><title>Workflow Channel: Routing report</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/sample_travel_app.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <sect3>
                 <title>Using the Report</title>
                 <para>In the default implementation of Rice you can find the link to the Routing
@@ -2635,41 +2714,49 @@
                         <emphasis role="bold"
                         >http://my.kuali.host/kuali/kew/RoutingReport.do)</emphasis>. The following
                     page is displayed:</para>
-                <para><inlinemediaobject>
+                <figure><title>Routing Report: Template Selection</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/select_rule_template.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
             </sect3>
             <sect3>
                 <title>Select a Rule Template</title>
                 <para>The first thing to do is select the rule template to use for the test from the
                     drop-down list. When you select a template the page will update to show the
                     routing data that you need to enter to run the test:</para>
-                <para><inlinemediaobject>
+                <figure><title>Routing Report: Template Selection, Detail</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/select_rule_template2.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
             </sect3>
             <sect3>
                 <title>Enter Routing Data</title>
                 <para>The data entry fields for the routing data use the standard controls described
                     in the Standard Buttons on Lookup Screens document. Here is the example with the
                     routing data:</para>
-                <para><inlinemediaobject>
+                <figure><title>Routing Report: Routing Data Entry</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/routing_data_entry.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>The specific information you need to enter is specific to the rule template
                     you selected. Once you have entered the information, click the button to display
                     the report:</para>
-                <para><inlinemediaobject>
+                <figure><title>Routing Report: Route Log View</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/view_route_log_report.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
             </sect3>
             <sect3>
                 <title>Report Contents</title>
@@ -2679,11 +2766,13 @@
                 <para>The lower section of the report (labeled “Pending Action Requests”) contains
                     the routing that the document would be given. Clicking the button on any action
                     displays more detail of the action:</para>
-                <para><inlinemediaobject>
+                <figure><title>Routing Report: Route Log View, Pending Action Requests</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/pending_action_requests.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
             </sect3>
         </sect2>
         <sect2>
@@ -2691,7 +2780,7 @@
             <para>The <emphasis role="bold">Rule Maintenance Document Type Document</emphasis>
                 screen is used for both editing existing Rules and for adding new Rules to Rice. </para>
             <figure>
-                <title>rule_maintenance_document_type_document.png</title>
+                <title>Rule Maintenance Document Type Document</title>
                 <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/rule_maintenance_document_type_document.png"/>
@@ -2741,20 +2830,24 @@
                 <para>The Rule tab is presented differently depending on whether you are creating a
                     new Rule, or editing/copying a Rule. The version you see when creating a new
                     Rule looks similar to this:</para>
-                <para><inlinemediaobject>
+                <figure><title>Rule Maintenance Document Type Document: Rule Tab</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/rule_tab.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>The version you see when editing or copying looks similar to this:</para>
-                <para><inlinemediaobject>
+                <figure><title>Rule Maintenance Document Type Document: Rule Tab, Edit/Copy View</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/rule_tab_copy.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>
                     <table frame="none">
-                        <title/>
+                        <title>Rule Maintenance Document Type Document: Rule Tab Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
@@ -2782,11 +2875,9 @@
                                 </row>
                                 <row>
                                     <entry>Name</entry>
-                                    <entry>
-                                        <para>The unique Name of the routing Name you are creating
+                                    <entry><para>The unique Name of the routing Name you are creating
                                             or editing.</para>
-                                        <note><para>It is not required that you enter a Name, but if you don’t the system will assign a unique
-                                                value.</para></note>
+                                        <para><emphasis role="bold">Note: </emphasis>It is not required that you enter a Name, but if you don’t the system will assign a unique value.</para>
                                     </entry>
                                 </row>
                                 <row>
@@ -2822,20 +2913,25 @@
                 <para>The Persons tab is presented differently depending on whether you are creating
                     a new Rule, or editing/copying a Rule. The version you see when creating a new
                     Rule looks similar to this:</para>
-                <para><inlinemediaobject>
+                <figure><title>Rule Maintenance Document Type Document: Person Tab</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/person_tab.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>The version you see when editing or copying looks similar to this:</para>
-                <para><inlinemediaobject>
+                <figure><title>Rule Maintenance Document Type Document: Person Tab, Edit/Copy View</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/person_tab_copy.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>
                     <table frame="none">
-                        <title/>
+                        <title>Rule Maintenance Document Type Document: Person Tab
+                            Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
@@ -2853,7 +2949,8 @@
                                 </row>
                                 <row>
                                     <entry>Action Request</entry>
-                                    <entry>The type of action this person can take.<itemizedlist>
+                                    <entry><para>The type of action this person can take.</para>
+                                        <itemizedlist>
                                             <listitem>
                                                 <para>Acknowledge</para>
                                             </listitem>
@@ -2884,22 +2981,27 @@
                 <para>The Groups tab is presented differently depending on whether you are creating
                     a new Rule, or editing/copying a Rule. The version you see when creating a new
                     Rule looks similar to this:</para>
-                <para><inlinemediaobject>
+                <figure><title>Rule Maintenance Document Type Document: Groups Tab</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/groups_tab.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>The version you see when editing or copying looks similar to this:</para>
-                <para><inlinemediaobject>
+                <figure><title>Rule Maintenance Document Type Document: Groups Tab, Edit/Copy View</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/groups_tab_copy.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>The top portion of this tab is used to add a new Group while the lower portion
                     is used to change existing values. </para>
                 <para>
                     <table frame="none">
-                        <title/>
+                        <title>Rule Maintenance Document Type Document: Groups Tab
+                            Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
@@ -2923,7 +3025,8 @@
                                 </row>
                                 <row>
                                     <entry>Action Request</entry>
-                                    <entry>The type of action this Group is expected to take.<itemizedlist>
+                                    <entry><para>The type of action this Group is expected to take.</para>
+                                        <itemizedlist>
                                             <listitem>
                                                 <para>Acknowledge</para>
                                             </listitem>
@@ -2954,27 +3057,31 @@
             <para>The <emphasis role="bold">Rules Template Lookup</emphasis> function is available
                 from any screen with the field lookup button next to the Rule Template field. Simply
                 click on the button and you will go a screen that looks like this.</para>
-            <para><inlinemediaobject>
+            <figure><title>Rule Template Lookup</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/rule_template_lookup.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>The <emphasis role="bold">Rule Template Lookup</emphasis> page will automatically
                 provide a complete list of the rule templates. You can reduce the number of items
                 returned by your search by entering values in the fields, or if you are not sure or
                 familiar with the key word(s) for the search criteria, simply click on the search
                 button. </para>
-            <para><inlinemediaobject>
+            <figure><title>Rule Template Lookup: Results Example</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/rule_template_results.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>Clicking on the <emphasis role="bold">Id</emphasis> field will take you to the
                     <emphasis role="bold">Rule Template Inquiry</emphasis> screen for that
                 particular Rule Template.</para>
             <para>
                 <table frame="none">
-                    <title/>
+                    <title>Rule Template Lookup Attributes</title>
                     <tgroup cols="2">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                         <colspec colname="c2" colnum="2" colwidth="1.0*"/>
@@ -3016,18 +3123,15 @@
             <para>The <emphasis role="bold">Rule Template Inquiry</emphasis> screen provides
                 specific information about one particular <emphasis role="bold">Rule
                     Template</emphasis>.</para>
-            <para><inlinemediaobject>
+            <figure><title>Rule Template Inquiry</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/rule_template_inquiry.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>Clicking the export button will export a copy of the complete Rule Template in XML
                 format.</para>
-        </sect2>
-<!-- This was in orginal Word document, but the section was blank         
-        <sect2>
-            <title>Workflow</title>
-        </sect2>
--->        
+        </sect2>        
     </sect1>
 </chapter>

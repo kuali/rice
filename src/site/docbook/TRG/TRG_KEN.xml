@@ -12,21 +12,21 @@
                 in a typical Rice Environment. </para>
             <figure>
                 <title>KEN Message Flow</title>
-                <inlinemediaobject>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/KEN_message_flow.png"/>
                     </imageobject>
-                </inlinemediaobject></figure>
+                </mediaobject></figure>
             <para>From a developer’s perspective the diagram below helps to represent the inner
                 workings of how KEN stores data from the Data Modeling Layer into the Persistence
                 Layer. </para>
             <figure>
                 <title>KEN Message Storage</title>
-                <inlinemediaobject>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/KEN_message_storage.png"/>
                     </imageobject>
-                </inlinemediaobject></figure>
+                </mediaobject></figure>
             <para>The following sections of documentation aim at describing the inner workings of
                 KEN as well as how those pieces interact with Rice, specifically KEW. KEN itself is
                 an interface that sits on top of KEW’s API. This allows for registration and

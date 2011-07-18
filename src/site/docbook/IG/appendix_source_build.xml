@@ -1,16 +1,16 @@
 <?xml version='1.0' encoding='UTF-8'?> 
-<appendix xmlns="http://docbook.org/ns/docbook" version="5.0">
+<appendix xml:id="appendix_source_build" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">    
     <title>Building Rice from Source</title>
     <sect1>
         <title>Installing Java</title>
-        <para><warning>When you install Java on the server to run Kuali Rice ${pom.version}, please make a note of the
+        <warning><para>When you install Java on the server to run Kuali Rice ${pom.version}, please make a note of the
             installation directory. You must have this information to configure the other Rice
-            products.</warning></para>
-        <para><note>Version 1.0.0 of Rice was compiled with Java 5 and maintained source code
+            products.</para></warning>
+        <note><para>Version 1.0.0 of Rice was compiled with Java 5 and maintained source code
             compatibility with Java 5 as well. Starting with the 1.0.1.1 release, Rice is now being
             compiled using Java 6, although the source code still remains compatible with Java 5. It
             is recommended that client applications begin using Java 6 for compiling and running
-            Rice.</note></para>
+            Rice.</para></note>
         <!-- Quick Start Best Practice -->
         <orderedlist>
             <listitem>
@@ -31,16 +31,16 @@
         </orderedlist>
         <para>This puts your Java JDK software in <emphasis role="bold"
                 >/usr/java/jdk1.6.0_16/</emphasis>.</para>
-        <para><note>This directory is used throughout the rest of the Quick Start Recommended Best
-            Practices sections in this Installation Guide as the Java home directory</note></para>
+        <note><para>This directory is used throughout the rest of the Quick Start Recommended Best
+            Practices sections in this Installation Guide as the Java home directory</para></note>
         <!-- End Quick Start Best Practice -->
-        <para><warning>Using a default IBM JDK will result in the failure of Rice to startup do to
+        <warning><para>Using a default IBM JDK will result in the failure of Rice to startup do to
             incompatibilities between cryptography packages. In order to make the IBM JDK work with
-            Rice, the bcprov-*.jar needs to be removed from the classpath.</warning></para>        
+            Rice, the bcprov-*.jar needs to be removed from the classpath.</para></warning>        
     </sect1>
     <sect1>
         <title>Install Software Tools</title>
-        <para><note>This step should not be necessary for binary and server distributions.</note></para>
+        <note><para>This step should not be necessary for binary and server distributions.</para></note>
         <sect2>
             <title>Install Apache Ant and Maven</title>
             <itemizedlist>
@@ -167,7 +167,7 @@ torque.sql.dir=${torque.schema.dir}/sql
         <sect2>
             <title>Oracle Users</title>
             <para>For retrieving the most current Rice database, verify that these parameters are
-                set to: <para>
+                set to: 
                     <programlisting>svnroot=https://test.kuali.org/svn/
 svn.module =rice-cfg-dbs
 svn.base= branches/rice-release-1-0-2-br
@@ -182,7 +182,7 @@ torque.sql.dir=${torque.schema.dir}/sql
 #svn.base.2=trunk
 #torque.schema.dir.2=../../${svn.module.2}
 #torque.sql.dir.2=${torque.schema.dir.2}/sql</programlisting>
-                </para>Verify that the second set of svn parameters (svnroot.2, svn.module.2) are
+                Verify that the second set of svn parameters (svnroot.2, svn.module.2) are
                 commented out or deleted for a Rice only/non-Kuali Financials, Kuali Student or
                 Kuali Coeus installation.</para>
         </sect2>
@@ -292,8 +292,7 @@ maven.home.directory=/usr/local/maven</programlisting></para>
                                     <para>An Apache Ant script called install-oracle-jar installs
                                         this dependency; however, due to licensing restrictions you
                                         must download the driver from the Oracle website. Please
-                                        refer to the <link linkend="sources_for_required_software"
-                                            >Sources for Required Software</link> section to find
+                                        refer to the <link linkend="sources_for_required_software">Sources for Required Software</link> section to find
                                         the download location for this software. </para>
                                     <para>Once you have downloaded the JDBC driver, copy it to the
                                         /java/drivers directory. The Apache Ant script, located in

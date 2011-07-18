@@ -13,11 +13,11 @@
             based on your particular needs.</para>
         <figure>
             <title>KIM Architecture</title>
-            <inlinemediaobject>
+            <mediaobject>
                 <imageobject>
                     <imagedata fileref="../images/KIM_architecture.png"/>
                 </imageobject>
-            </inlinemediaobject></figure>
+            </mediaobject></figure>
         <sect2>
             <title>KIM Features</title>
             <itemizedlist>
@@ -74,11 +74,14 @@
                         permission checks based on hierarchical data.</para>
                 </listitem>
             </itemizedlist>
-            <para>A more detailed picture of the KIM architecture:<inlinemediaobject>
+            <para>A more detailed picture of the KIM architecture:</para>
+            <figure><title>Detailed KIM Achitecture</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/KIM_architecture_detailed.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>    
         </sect2>
     </sect1>
     <sect1>
@@ -119,11 +122,14 @@
                 <sect4>
                     <title>From the Field Search Button </title>
                     <para>If you clicked the field search button on another Kuali page to get to the
-                        Person Lookup screen, your screen looks like this:<inlinemediaobject>
+                    Person Lookup screen, your screen looks like this:</para>
+                    <figure><title>Person Lookup</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/person_lookup.png"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>    
                     <para>To find a Person, enter some information about that person in the
                         appropriate fields and click the <emphasis role="bold">search</emphasis>
                         button at the bottom of the screen.<itemizedlist>
@@ -136,11 +142,15 @@
                             <listitem>
                                 <para>Rice displays a list of Persons who match your search
                                     information. The list is just below the search fields on the
-                                    Person Lookup page:<inlinemediaobject>
+                                    Person Lookup page:</para>
+                                <figure><title>Person Lookup: Results</title>
+                                    <mediaobject>
                                         <imageobject>
-                                            <imagedata fileref="../images/person_results.png"/>
+                                            <imagedata fileref="../images/person_results.png"
+                                                scale="85"/>
                                         </imageobject>
-                                    </inlinemediaobject></para>
+                                    </mediaobject>
+                                </figure>    
                                 <para>Click one of the underlined column titles on the search
                                     results list to sort the list by that column. Click it again to
                                     sort the list in the opposite order.</para>
@@ -151,11 +161,13 @@
                                     in the search results list, click one of the information fields
                                     for that Person. Kuali then displays the <emphasis role="bold"
                                         >Person Document</emphasis> screen for that Person.</para>
-                                <para><inlinemediaobject>
+                                <figure><title>Person Document</title>
+                                    <mediaobject>
                                         <imageobject>
                                             <imagedata fileref="../images/person_document.png"/>
                                         </imageobject>
-                                    </inlinemediaobject></para>
+                                    </mediaobject>
+                                </figure>
                                 <para>The <emphasis role="bold">Return Value</emphasis> column has a
                                         <emphasis role="bold">return value</emphasis> link for each
                                     person. Click this return value link for the Person whose
@@ -173,11 +185,13 @@
                             >Administration</emphasis> tab, you see a <emphasis role="bold">create
                             new</emphasis> button in the upper right corner of your screen, like
                         this:</para>
-                    <para><inlinemediaobject>
+                    <figure><title>Person Lookup: Create New Button</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/person_lookup_create_new.png"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                     <para>You can click this create new button to go to the <emphasis role="bold"
                             >Person Document</emphasis> screen, where you can add a new Person as a
                         Kuali user. For more information on adding a Person, see the <emphasis
@@ -261,11 +275,13 @@
                 <para>The Person Document includes <emphasis role="bold">Document Overview,
                         Overview, Contact, Privacy Preferences, Membership, Ad Hoc
                         Recipients</emphasis>, and <emphasis role="bold">Route Log</emphasis> tabs. </para>
-                <para><inlinemediaobject>
+                <figure><title>Person Document</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/person_document2.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
             </sect3>
             <sect3>
                 <title>Document Overview Tab</title>
@@ -288,19 +304,21 @@
                 <para>The instructions below assume that you are manually entering this information.
                     Many institutions either have this data fed from an existing Person database or
                     simply override this information with existing Person data.</para>
-                <para><inlinemediaobject>
+                <figure><title>Person Document: Overview Section</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/person_overview_tab.png"/>
                         </imageobject>
-                </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <sect4>
                     <title>Overview Section</title>
                     <para>
                         <table frame="none">
-                            <title>Overview Fields</title>
+                            <title>Person Document: Overview Attributes</title>
                             <tgroup cols="2">
                                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                                <colspec colname="c2" colnum="2" colwidth="4.0*"/>
+                                <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                                 <thead>
                                     <row>
                                         <entry>Field Name</entry>
@@ -367,10 +385,10 @@
                         additional fields.</para>
                     <para>
                         <table frame="none">
-                            <title>Affiliation Fields</title>
+                            <title>Person Document: Overview Attributes, Affiliations</title>
                             <tgroup cols="2">
                                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                                <colspec colname="c2" colnum="2" colwidth="4.0*"/>
+                                <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                                 <thead>
                                     <row>
                                         <entry>Field Name</entry>
@@ -380,7 +398,8 @@
                                 <tbody>
                                     <row>
                                         <entry>Affiliation Type</entry>
-                                        <entry>Optional. Select the Type of Affiliation from the list. Options:<itemizedlist>
+                                        <entry><para>Optional. Select the Type of Affiliation from the list. Options:</para>
+                                            <itemizedlist>
                                                 <listitem>
                                                     <para><emphasis role="bold">Affiliate</emphasis>:
                                                       Users in your system who are neither employees nor
@@ -399,8 +418,9 @@
                                                       non-employee identified as a student of your
                                                       institution </para>
                                                 </listitem>
-                                        </itemizedlist>
-                                            Affiliation types of Faculty and Staff require additional information (see below).
+                                            </itemizedlist>
+                                            <para>
+                                          Affiliation types of Faculty and Staff require additional information (see below).</para>
                                         </entry>
                                     </row>
                                     <row>
@@ -425,17 +445,20 @@
                     </para>
                     <para>If you select an Affiliation of Faculty or Staff, KIM displays additional
                         fields to collect employment information: </para>
-                    <para><inlinemediaobject>
+                    <figure><title>Person Document: Overview Tab, Affiliations Section</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/faculty_staff_affiliate_fields.png"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                     <para>
                         <table frame="none">
-                            <title>Faculty/Staff Additional Affiliate Fields</title>
+                            <title>Person Document: Overview Attributes, Affiliations
+                                Continued</title>
                             <tgroup cols="2">
                                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                                <colspec colname="c2" colnum="2" colwidth="3.88*"/>
+                                <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                                 <thead>
                                     <row>
                                         <entry/>
@@ -460,8 +483,8 @@
                                     </row>
                                     <row>
                                         <entry>Employee Status</entry>
-                                        <entry>Required. Select the current status of this Faculty or
-                                            Staff affiliation. Options:<itemizedlist>
+                                        <entry><para>Required. Select the current status of this Faculty or Staff affiliation. Options:</para>
+                                            <itemizedlist>
                                                 <listitem>
                                                     <para>Active </para>
                                                 </listitem>
@@ -487,8 +510,8 @@
                                     </row>
                                     <row>
                                         <entry>Employee Type</entry>
-                                        <entry>Required. Select the type of employment for this
-                                            Affiliation. Options:<itemizedlist>
+                                        <entry><para>Required. Select the type of employment for this Affiliation. Options:</para>
+                                            <itemizedlist>
                                                 <listitem>
                                                     <para> Non-Professional </para>
                                                 </listitem>
@@ -528,24 +551,28 @@
                     record can store multiple contact information records of each type (name,
                     address, phone number, and email address). You must select one value of each
                     type as the default for that Person record.</para>
-                <para><inlinemediaobject>
+                <figure><title>Person Document: Contact Tab</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/person_contact_tab.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <sect4>
                     <title>Names Section</title>
-                    <para><inlinemediaobject>
+                    <figure><title>Person Document: Contact Tab, Names Section</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/person_names_section.png"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                     <para>
                         <table frame="none">
-                            <title>Names Fields</title>
+                            <title>Person Document: Contact Tab, Names Section Attributes</title>
                             <tgroup cols="2">
                                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                                <colspec colname="c2" colnum="2" colwidth="2.33*"/>
+                                <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                                 <thead>
                                     <row>
                                         <entry>Field Name</entry>
@@ -555,8 +582,8 @@
                                 <tbody>
                                     <row>
                                         <entry>Name Type</entry>
-                                        <entry>Optional. Select the type of name to be added in this
-                                            row. Options:<itemizedlist>
+                                        <entry><para>Optional. Select the type of name to be added in this
+                                            row. Options:</para><itemizedlist>
                                                 <listitem>
                                                   <para>Other </para>
                                                 </listitem>
@@ -570,8 +597,9 @@
                                     </row>
                                     <row>
                                         <entry>Title</entry>
-                                        <entry>Optional. Select the appropriate title for the name
-                                            being added in this row. Options:<itemizedlist>
+                                        <entry><para>Optional. Select the appropriate title for the name
+                                        being added in this row. Options:</para>
+                                            <itemizedlist>
                                                 <listitem>
                                                   <para>Ms </para>
                                                 </listitem>
@@ -598,7 +626,8 @@
                                     </row>
                                     <row>
                                         <entry>Suffix</entry>
-                                        <entry>Optional. Select a suffix for this name record. Options:<itemizedlist>
+                                        <entry><para>Optional. Select a suffix for this name record. Options:</para>
+                                            <itemizedlist>
                                                 <listitem>
                                                   <para>Jr </para>
                                                 </listitem>
@@ -638,17 +667,19 @@
                 </sect4>
                 <sect4>
                     <title>Addresses Section</title>
-                    <para><inlinemediaobject>
+                    <figure><title>Person Document: Contact Tab, Addresses Section</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/addresses_section.png"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                     <para>
                         <table frame="none">
-                            <title>Addresses Fields</title>
+                            <title>Person Document:  Contact Tab, Address Section Attributes</title>
                             <tgroup cols="2">
                                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                                <colspec colname="c2" colnum="2" colwidth="2.28*"/>
+                                <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                                 <thead>
                                     <row>
                                         <entry>Field Name</entry>
@@ -658,8 +689,9 @@
                                 <tbody>
                                     <row>
                                         <entry>Address Type</entry>
-                                        <entry>Optional. Select the type of address being added on
-                                            this row. Options:<itemizedlist>
+                                        <entry><para>Optional. Select the type of address being added on
+                                        this row. Options:</para>
+                                            <itemizedlist>
                                                 <listitem>
                                                   <para>Home </para>
                                                 </listitem>
@@ -720,17 +752,19 @@
                 </sect4>
                 <sect4>
                     <title>Phone Numbers Section</title>
-                    <para><inlinemediaobject>
+                    <figure><title>Person Document: Contact Tab, Phone Numbers Section</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/phone_numbers_section.png"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                     <para>
                         <table frame="none">
-                            <title>Phone Number Fields</title>
+                            <title>Person Document: Contact Tab, Phone Numbers Attributes</title>
                             <tgroup cols="2">
                                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                                <colspec colname="c2" colnum="2" colwidth="2.17*"/>
+                                <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                                 <thead>
                                     <row>
                                         <entry>Field Name</entry>
@@ -740,8 +774,8 @@
                                 <tbody>
                                     <row>
                                         <entry>Phone Type</entry>
-                                        <entry>Optional. Select the type of phone number being added
-                                            on this row. Options:<itemizedlist>
+                                        <entry><para>Optional. Select the type of phone number being added on this row. Options:</para>
+                                            <itemizedlist>
                                                 <listitem>
                                                   <para>Home </para>
                                                 </listitem>
@@ -794,17 +828,19 @@
                 </sect4>
                 <sect4>
                     <title>Email Addresses Section</title>
-                    <para><inlinemediaobject>
+                    <figure><title>Person Document: Contact Tab, Email Addresses Section</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/email_addresses_section.png"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                     <para>
                         <table frame="none">
-                            <title>Email Addresses Fields</title>
+                            <title>Person Document: Contact Tab, Email Address Attributes</title>
                             <tgroup cols="2">
                                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                                <colspec colname="c2" colnum="2" colwidth="2.17*"/>
+                                <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                                 <thead>
                                     <row>
                                         <entry>Field Name</entry>
@@ -819,8 +855,8 @@
                                     </row>
                                     <row>
                                         <entry>Type</entry>
-                                        <entry>Optional. Select the type of email address on this
-                                            row. Options:<itemizedlist>
+                                        <entry><para>Optional. Select the type of email address on this row. Options:</para>
+                                            <itemizedlist>
                                                 <listitem>
                                                   <para>Home </para>
                                                 </listitem>
@@ -860,17 +896,19 @@
                 <para>The <emphasis role="bold">Privacy Preferences</emphasis> tab allows you to
                     suppress the display of (hide) fields on the <emphasis role="bold"
                         >Contact</emphasis> Tab. </para>
-                <para><inlinemediaobject>
+                <figure><title>Person Document: Privacy Preferences Tab</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/privacy_preferences_tab.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>
                     <table frame="none">
-                        <title>Privacy Preferences Fields</title>
+                        <title>Person Document: Privacy Preferences Tab Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                            <colspec colname="c2" colnum="2" colwidth="1.94*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                             <thead>
                                 <row>
                                     <entry>Field Name</entry>
@@ -914,11 +952,13 @@
                     person with groups and roles and, by extension, with KIM permissions and
                     responsibilities. Assigning a person to a role is the most direct way to give
                     him or her KIM permissions and responsibilities.</para>
-                <para><inlinemediaobject>
+                <figure><title>Person Document: Memberships Tab</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/membership_tab.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>The Membership tab is divided into two sections, one for managing assignments
                     to <emphasis role="bold">Groups</emphasis> and another for <emphasis role="bold"
                         >Roles</emphasis>.</para>
@@ -926,10 +966,10 @@
                     <title>Groups Section</title>
                     <para>
                         <table frame="none">
-                            <title>Groups Fields</title>
+                            <title>Person Document: Memeberships Tab, Groups Attributes</title>
                             <tgroup cols="2">
                                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                                <colspec colname="c2" colnum="2" colwidth="1.94*"/>
+                                <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                                 <thead>
                                     <row>
                                         <entry>Field Name</entry>
@@ -988,10 +1028,10 @@
                     <title>Roles Section</title>
                     <para>
                         <table frame="none">
-                            <title>Roles Fields</title>
+                            <title>Person Document: Memeberships Tab, Roles Attributes</title>
                             <tgroup cols="2">
                                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                                <colspec colname="c2" colnum="2" colwidth="1.91*"/>
+                                <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                                 <thead>
                                     <row>
                                         <entry>Field Name</entry>
@@ -1074,26 +1114,32 @@
             <para>You get to this screen by clicking the <emphasis role="bold">Group</emphasis>
                 option in the <emphasis role="bold">Identity</emphasis> section of the <emphasis
                     role="bold">Administration</emphasis> screen.</para>
-            <para><inlinemediaobject>
+            <figure><title>Identity Channel: Group Link</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/select_group.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
-            <para><inlinemediaobject>
+                </mediaobject>
+            </figure>
+            <figure><title>Group Lookup</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/group_lookup.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>On the <emphasis role="bold">Group Lookup</emphasis> screen, click the <emphasis
                     role="bold">create new</emphasis> button to go to the <emphasis role="bold"
                     >Group Maintenance</emphasis> screen, where you can create a new Group in Rice. </para>
             <para>Conducting a search from the Group Lookup screen returns a list similar to
                 this:</para>
-            <para><inlinemediaobject>
+            <figure><title>Group Lookup: Results</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/group_lookup_results.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>For information on any of the fields above, please refer to the <emphasis
                     role="bold">Group Maintenance</emphasis> section below.</para>
         </sect2>
@@ -1104,11 +1150,13 @@
             <para>Click a <emphasis role="bold">Group Request</emphasis> value on the <emphasis
                     role="bold">Action List</emphasis> screen to display the <emphasis role="bold"
                     >Group Inquiry</emphasis> page for that Group:</para>
-            <para><inlinemediaobject>
+            <figure><title>Group Inquiry</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/group_inquiry.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <sect3>
                 <title>Overview Tab</title>
                 <para>For information on these fields please refer to the <emphasis role="bold"
@@ -1118,10 +1166,10 @@
                 <title>Assignees Tab</title>
                 <para>
                     <table frame="none">
-                        <title>Assignees Fields</title>
+                        <title>Group Inquiry: Assignees Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                            <colspec colname="c2" colnum="2" colwidth="2.17*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                             <thead>
                                 <row>
                                     <entry>Field</entry>
@@ -1176,11 +1224,12 @@
                         <emphasis role="bold">KIM Type Lookup</emphasis> screen. Before Rice can
                     generate a new Group document, you must search for and select an existing Type
                     for the new Group.</para>
-                <para><inlinemediaobject>
+                <figure><title>KIM Type Lookup</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/Kim_type_lookup.png"/>
                         </imageobject>
-                </inlinemediaobject></para>
+                    </mediaobject></figure>
                 <note>
                     <para><emphasis role="bold">Always use this KIM Type Lookup screen when you create a
                             new Group or Role.</emphasis>
@@ -1192,10 +1241,10 @@
                 </note>
                 <para>
                     <table frame="none">
-                        <title>KIM Type Lookup search fields</title>
+                        <title>KIM Type Lookup Search Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                            <colspec colname="c2" colnum="2" colwidth="2.33*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                             <thead>
                                 <row>
                                     <entry>Field</entry>
@@ -1234,11 +1283,13 @@
                     link for that Type. KIM will copy the Type information to use in creating your
                     new Group.</para>
                 <para>The KIM Type Lookup screen displaying a search result:</para>
-                <para><inlinemediaobject>
+                <figure><title>Kim Type Lookup: Results Set</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/kim_type_lookup_results.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
             </sect3>
             <sect3>
                 <title>Group Maintenance Document: Layout</title>
@@ -1262,27 +1313,30 @@
                 <para>The Overview and Assignees tabs are described below. Information on the others
                     can be found in the Common Features and Functions section of this User
                     Guide.</para>
-                <para><inlinemediaobject>
+                <figure><title>Group Maintenance Document</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/group_maintenance_document.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <sect4>
                     <title>Overview Tab</title>
                     <para>This tab identifies the Group with a unique system-assigned ID number, a
                         namespace, and a name. Each Group also has a Type that specifies any
                         qualifiers that this Group might require. </para>
-                    <para><inlinemediaobject>
+                    <figure><title>Group Maintenance Document: Group Overview</title>
+                        <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/group_overview.png"/>
+                                <imagedata fileref="../images/group_overview.png" scale="85"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject></figure>
                     <para>
                         <table frame="none">
-                            <title>Overview Fields</title>
+                            <title>Group Maintenance Document: Group Overview Attributes</title>
                             <tgroup cols="2">
                                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                                <colspec colname="c2" colnum="2" colwidth="2.92*"/>
+                                <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                                 <thead>
                                     <row>
                                         <entry>Field</entry>
@@ -1298,10 +1352,10 @@
                                     </row>
                                     <row>
                                         <entry>Type Name</entry>
-                                        <entry>Required. The type of attributes that are associated
+                                        <entry><para>Required. The type of attributes that are associated
                                             with this Group. Some Group types, such as the Default
-                                            Type, do not require attributes.
-                                        <note><para>When creating a new Group, you must select the Type before Rice can generate the document.  See the Creating New Groups section of this document</para></note>
+                                            Type, do not require attributes.</para>
+                                        <para><emphasis role="bold">Note: </emphasis>When creating a new Group, you must select the Type before Rice can generate the document.  See the Creating New Groups section of this document</para>
                                         </entry>
                                     </row>
                                     <row>
@@ -1335,17 +1389,19 @@
                         association with a group is past, users should set the “Active To Date”
                         field to the end of the membership; the member will not be an active member
                         of the group after that date.</para>
-                    <para><inlinemediaobject>
+                    <figure><title>Group Maintenance Document: Assignees Tab</title>
+                        <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/assignees_tab.png"/>
+                                <imagedata fileref="../images/assignees_tab.png" scale="85"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                     <para>
                         <table frame="none">
-                            <title>Assignees Fields</title>
+                            <title>Group Maintenance Document: Assignees Tab Attributes</title>
                             <tgroup cols="2">
                                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                                <colspec colname="c2" colnum="2" colwidth="2.85*"/>
+                                <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                                 <thead>
                                     <row>
                                         <entry/>
@@ -1379,13 +1435,13 @@
                                     </row>
                                     <row>
                                         <entry>Active To Date</entry>
-                                        <entry>Optional. To specify a date on which this member is
+                                        <entry><para>Optional. To specify a date on which this member is
                                             no longer to be considered a valid member of this Group,
                                             enter a date in this field. As of this date, the Member
                                             will no longer be considered a member of this
-                                            Group.
-                                            <note><para>You cannot delete or inactivate Group members. To remove a member from a Group, enter an
-                                                  Active To Date.</para></note>
+                                            Group.</para>
+                                            <para><emphasis role="bold">Note: </emphasis>You cannot delete or inactivate Group members. To remove a member from a Group, enter an
+                                                  Active To Date.</para>
                                         </entry>
                                     </row>
                                     <row>
@@ -1415,11 +1471,13 @@
                     role="bold">Role Lookup</emphasis> screen. You can also access the Role Lookup
                 screen by clicking a <emphasis role="bold">Granted to Roles</emphasis> value in any
                 list where it appears.</para>
-            <para><inlinemediaobject>
+            <figure><title>Role Lookup</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/role_lookup.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <sect3>
                 <title>Document Layout</title>
                 <para>This screen may have three or four tabs of information, depending on the Role.
@@ -1428,11 +1486,13 @@
                         >Responsibilities</emphasis>. KIM only displays the fourth tab, <emphasis
                         role="bold">Assignees</emphasis>, when Assignee information is associated
                     with this <emphasis role="bold">Role</emphasis>.</para>
-                <para><inlinemediaobject>
+                <figure><title>Role Maintenance Document</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/role_maintenance_document.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>Information on the fields in all of these tabs can be found in the <emphasis
                         role="bold">Role Maintenance</emphasis> section of this user guide.</para>
             </sect3>
@@ -1461,7 +1521,7 @@
                     </listitem>
                 </orderedlist></para>
             <sect3>
-                <title>Role Maintenance Document: Layout </title>
+                <title>Role Maintenance Document</title>
                 <para>The Role document includes eight tabs:<itemizedlist>
                         <listitem>
                             <para>Document Overview </para>
@@ -1492,27 +1552,31 @@
                     about the Document Overview, Ad Hoc Recipients and Route Log tabs, please see
                     the <emphasis role="bold">Common Features and Functions</emphasis>
                     document.</para>
-                <para><inlinemediaobject>
-                        <imageobject>
-                            <imagedata fileref="../images/role_tabs.png"/>
-                        </imageobject>
-                    </inlinemediaobject></para>
+                <figure><title>Role Maintenance Document: Tabs</title>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/role_tabs.png"/>
+                            </imageobject>
+                        </mediaobject>
+                </figure>
                 <sect4>
                     <title>Overview Tab</title>
                     <para>This tab gives the Role a unique system-assigned ID number, a Namespace,
                         and a Name. Each Role also has a Type that usually matches the kinds of
                         Permissions and Responsibilities associated with it. </para>
-                    <para><inlinemediaobject>
+                    <figure><title>Role Maintenance Document: Overview Tab</title>
+                        <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/role_overview.png"/>
+                                <imagedata fileref="../images/role_overview.png" scale="90"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                     <para>
                         <table frame="none">
-                            <title>Role Overview Fields</title>
+                            <title>Role Maintenance Doucment: Overview Attributes</title>
                             <tgroup cols="2">
                                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                                <colspec colname="c2" colnum="2" colwidth="2.47*"/>
+                                <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                                 <thead>
                                     <row>
                                         <entry>Field</entry>
@@ -1527,11 +1591,11 @@
                                     </row>
                                     <row>
                                         <entry>Type Name</entry>
-                                        <entry>Display-only. The Type Name usually identifies the
+                                        <entry><para>Display-only. The Type Name usually identifies the
                                             general kinds of Permissions and Responsibilities
-                                            associated with this Role.
-                                        <note><para> When creating a new Role, you must select its Type before you can display a new Role
-                                                  document. See Creating New Roles below.</para></note>
+                                            associated with this Role.</para>
+                                        <para><emphasis role="bold">Note: </emphasis> When creating a new Role, you must select its Type before you can display a new Role
+                                                  document. See Creating New Roles below.</para>
                                         </entry>
                                     </row>
                                     <row>
@@ -1562,11 +1626,13 @@
                     <para>You must search for and select an existing Type for KIM to generate a new
                         Role document. When you click the Create New button, KIM displays the
                             <emphasis role="bold">KIM Type Lookup</emphasis> screen:</para>
-                    <para><inlinemediaobject>
+                    <figure><title>KIM Type Lookup</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/Kim_type_lookup.png"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                     <note><para>While you use the KIM Type Lookup screen both for creating new Groups and
                         new Roles, not all KIM Types are valid for both Groups and Roles. When using
                         this Lookup, you may see different results depending on the KIM Types that
@@ -1578,17 +1644,19 @@
                         authorize specific actions in the system with which they are associated. A
                         Role can have any number of Permissions (including no Permissions)
                         associated with it. </para>
-                    <para><inlinemediaobject>
+                    <figure><title>Role Maintenance Document: Permissions Tab</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/role_permissions.png"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                     <para>
                         <table frame="none">
-                            <title>Role Permissions Fields</title>
+                            <title>Role Maintenance Document: Permissions Attributes</title>
                             <tgroup cols="2">
                                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                                <colspec colname="c2" colnum="2" colwidth="2.57*"/>
+                                <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                                 <thead>
                                     <row>
                                         <entry>Field Name</entry>
@@ -1618,17 +1686,20 @@
                     <note><para>You <emphasis role="italic">cannot</emphasis> edit Permissions from the
                             <emphasis role="bold">Role Maintenance Document</emphasis>.</para>
                     </note>
-                    <para><inlinemediaobject>
+                    <figure><title>Role Maintenance Document: Permissions Tab, Add Permissions</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/role_add_permission.png"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                     <para>
                         <table frame="none">
-                            <title>Role Permission Fields</title>
+                            <title>Role Maintenance Document: Permissions Tabb, Add
+                                Attributes</title>
                             <tgroup cols="2">
                                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                                <colspec colname="c2" colnum="2" colwidth="2.4*"/>
+                                <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                                 <thead>
                                     <row>
                                         <entry>Field</entry>
@@ -1666,12 +1737,12 @@
                                     </row>
                                     <row>
                                         <entry>Actions</entry>
-                                        <entry>Click the <emphasis role="bold">Delete</emphasis>
-                                            button to remove this Permission from this Role.
-                                            <warning><para>You may delete a Permission from a Role only if it has not yet been saved. (In other words,
+                                        <entry><para>Click the <emphasis role="bold">Delete</emphasis>
+                                           button to remove this Permission from this Role.</para>
+                                            <para><emphasis role="bold">Warning: </emphasis>You may delete a Permission from a Role only if it has not yet been saved. (In other words,
                                                   you can delete a Permission from a Role only if
                                                   you added it to this Role, but have not yet
-                                                  submitted the document.)</para></warning>
+                                                  submitted the document.)</para>
                                         </entry>
                                     </row>
                                 </tbody>
@@ -1685,17 +1756,19 @@
                         Responsibilities define the workflow actions that will be requested of the
                         Role. A Role can have any number of Responsibilities (including none)
                         associated with it.</para>
-                    <para><inlinemediaobject>
+                    <figure><title>Role Maintenance Document: Responsibilities Tab</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/role_responsibilities.png"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                     <para>
                         <table frame="none">
-                            <title>Role Responsibilities Fields</title>
+                            <title>Role Maintenance Document: Responsibility Attributes</title>
                             <tgroup cols="2">
                                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                                <colspec colname="c2" colnum="2" colwidth="2.33*"/>
+                                <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                                 <thead>
                                     <row>
                                         <entry>Field Name</entry>
@@ -1724,17 +1797,19 @@
                     <note><para>In general, you cannot edit Responsibilities using the Role document, but
                         some Responsibilities have associated attributes that you must define at the
                         Role level.</para></note>
-                    <para><inlinemediaobject>
+                    <figure><title>Role Maintenance Document: Responsibility, Added Responsibility</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/role_responsibility_added.png"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                     <para>
                         <table frame="none">
-                            <title/>
+                            <title>Role Maintenance Document: Responsibility, Add Attributes</title>
                             <tgroup cols="2">
                                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                                <colspec colname="c2" colnum="2" colwidth="3.12*"/>
+                                <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                                 <thead>
                                     <row>
                                         <entry>Field Name</entry>
@@ -1760,10 +1835,11 @@
                                     </row>
                                     <row>
                                         <entry>Responsibility Detail Values</entry>
-                                        <entry>Display-only. This gives you more specific
+                                        <entry><para>Display-only. This gives you more specific
                                             information about the Responsibility. Responsibility
                                             Detail Values are formatted in a standard way with these
-                                            attributes, separated by commas:<itemizedlist>
+                                            attributes, separated by commas:</para>
+                                            <itemizedlist>
                                                 <listitem>
                                                   <para><emphasis role="bold">Route Node</emphasis>:
                                                   The location where this Responsibility is invoked
@@ -1805,12 +1881,11 @@
                                     </row>
                                     <row>
                                         <entry>Actions</entry>
-                                        <entry>Click the Delete button to remove this Responsibility
-                                            from this Role. 
-                                        <warning><para>You can delete a Responsibility only if it has not yet been saved to the database (in other
+                                        <entry><para>Click the Delete button to remove this Responsibility from this Role.</para> 
+                                        <para><emphasis role="bold">Warning: </emphasis>You can delete a Responsibility only if it has not yet been saved to the database (in other
                                                   words, you can only delete it if you have added it
                                                   to this Role but have not yet submitted the
-                                                  document).</para></warning></entry>
+                                                  document).</para></entry>
                                     </row>
                                 </tbody>
                             </tgroup>
@@ -1829,17 +1904,21 @@
                         Responsibility. Entries in these fields cause KIM to generate the same Type
                         of Action Requests for all members of this Role and handle actions by all
                         members of this Role in the same way.</para>
-                    <para><inlinemediaobject>
+                    <figure><title>Role Maintenance Document: Responsibility Tab, Action Section</title>
+                        <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/role_responsibility_action.png"/>
+                                <imagedata fileref="../images/role_responsibility_action.png"
+                                    scale="90"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                     <para>
                         <table frame="none">
-                            <title>Action Detail Fields</title>
+                            <title>Role Maintenance Document: Responsibility Tab, Action Section
+                                Attributes</title>
                             <tgroup cols="2">
                                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                                <colspec colname="c2" colnum="2" colwidth="2.57*"/>
+                                <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                                 <thead>
                                     <row>
                                         <entry>Field Name</entry>
@@ -1909,17 +1988,19 @@
                         document will have their “delete” buttons inactivated. To end that member’s
                         active association with the group, set the “Active To Date” field to the end
                         of the membership.</para>
-                    <para><inlinemediaobject>
+                    <figure><title>Role Maintenance Document: Assignees Tab</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/role_assignees.png"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                     <para>
                         <table frame="none">
-                            <title>Assignees Fields</title>
+                            <title>Role Maintenance Document: Assignees Tab Attributes</title>
                             <tgroup cols="2">
                                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                                <colspec colname="c2" colnum="2" colwidth="2.28*"/>
+                                <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                                 <thead>
                                     <row>
                                         <entry>Field Name</entry>
@@ -1964,13 +2045,13 @@
                                     </row>
                                     <row>
                                         <entry>Active To Dt</entry>
-                                        <entry>Optional. Allows you to deactivate a member’s
+                                        <entry><para>Optional. Allows you to deactivate a member’s
                                             association with a Role on a specific date. Enter the
                                             date the user is no longer a member of this
-                                            Role.
-                                        <note><para>You cannot delete or inactivate Role members. To remove a member from a Role, enter an
+                                            Role.</para>
+                                        <para><emphasis role="bold">Note: </emphasis>You cannot delete or inactivate Role members. To remove a member from a Role, enter an
                                                   <emphasis role="bold">Active To
-                                                  Dt.</emphasis></para></note></entry>
+                                                  Dt.</emphasis></para></entry>
                                     </row>
                                     <row>
                                         <entry>Actions</entry>
@@ -1997,17 +2078,19 @@
                     <para>Just as with Group and Role Associations, delegations added outside of the
                         current maintenance document have inactive “delete” buttons and must have
                         the “Active To Date” field set to end the delegation.</para>
-                    <para><inlinemediaobject>
+                    <figure><title>Role Maintenance Document: Delegations Tab</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/role_delegations.png"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                     <para>
                         <table frame="none">
-                            <title>Delegations Fields</title>
+                            <title>Role Maintenance Document: Delegations Tab Attributes</title>
                             <tgroup cols="2">
                                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                                <colspec colname="c2" colnum="2" colwidth="2.33*"/>
+                                <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                                 <thead>
                                     <row>
                                         <entry>Field Name</entry>
@@ -2059,13 +2142,13 @@
                                     </row>
                                     <row>
                                         <entry>Active To Date</entry>
-                                        <entry>Optional. Allows you to deactivate a Delegate’s
+                                        <entry><para>Optional. Allows you to deactivate a Delegate’s
                                             association with a Role on a specific date. The date you
                                             enter is the date on which this user is no longer a
-                                            Delegate for this Role.
-                                        <note><para>You <emphasis role="italic">cannot</emphasis> delete or deactivate Delegates. To remove a
+                                            Delegate for this Role.</para>
+                                        <para><emphasis role="bold">Note: </emphasis>You <emphasis role="italic">cannot</emphasis> delete or deactivate Delegates. To remove a
                                                   Delegate from a Role, enter an <emphasis
-                                                  role="bold">Active To Date</emphasis>.</para></note>
+                                                  role="bold">Active To Date</emphasis>.</para>
                                         </entry>
                                     </row>
                                     <row>
@@ -2101,19 +2184,21 @@
             <title>KIM Type Lookup</title>
             <para>Use this lookup when you create a new group in KIM to find the KIM Type for the
                 new group. </para>
-            <para><inlinemediaobject>
+            <figure><title>KIM Type Lookup</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/Kim_type_lookup.png"/>
                     </imageobject>
-            </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>You may enter information in one or more of the search fields to find the correct
                 Type for your new group:</para>
             <para>
                 <table frame="none">
-                    <title>KIM Type Lookup Fields</title>
+                    <title>KIM Type Lookup Attributes</title>
                     <tgroup cols="2">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                        <colspec colname="c2" colnum="2" colwidth="2.83*"/>
+                        <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                         <thead>
                             <row>
                                 <entry>Field Name</entry>
@@ -2145,11 +2230,13 @@
                     </tgroup>
                 </table>
             </para>
-            <para><inlinemediaobject>
+            <figure><title>KIM Type Lookup: Results Example</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/kim_type_lookup_results.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>The search results list for this screen has the same fields as the <emphasis
                     role="bold">Lookup</emphasis> screen. To select the Type you want to use for
                 your new group, click the <emphasis role="bold">return value</emphasis> link for it
@@ -2161,16 +2248,18 @@
             <para>To access this screen, from the <emphasis role="bold">Role Lookup</emphasis>
                 screen, click a <emphasis role="bold">Role Type Name</emphasis> in your search
                 results list.</para>
-            <para><inlinemediaobject>
+            <figure><title>KIM Type Inquiry</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/kim_type.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>All fields are defined above in <emphasis role="italic">KIM Type Lookup</emphasis>
                 except these:</para>
             <para>
                 <table frame="none">
-                    <title>KIM Type Inquiry Fields</title>
+                    <title>KIM Type Inquiry Attributes</title>
                     <tgroup cols="2">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                         <colspec colname="c2" colnum="2" colwidth="1.0*"/>
@@ -2205,29 +2294,33 @@
                 for and view existing responsibilities in KIM. You can view summarized information
                 about the responsibility detail values as well as the roles with which the
                 responsibility is currently associated. </para>
-            <para><inlinemediaobject>
+            <figure><title>Identity Channel: Responsibility Link</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/KIM_responsibility.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>To display this screen, from the <emphasis role="bold">Administration</emphasis>
                 menu, click <emphasis role="bold">Responsibility</emphasis> in the Identify section
                 of the menu.</para>
             <note><para>This table is display-only. Technical assistance is required to modify
                     responsibilities.</para></note>
-            <para><inlinemediaobject>
+            <figure><title>Responsibility Lookup</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/responsibility_lookup.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>To find information about a Responsibility, enter information in one or more of
                 the fields on the Lookup page and then click the Search button.</para>
             <para>
                 <table frame="none">
-                    <title>Responsibility Lookup Fields</title>
+                    <title>Responsibility Lookup Attributes</title>
                     <tgroup cols="2">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                        <colspec colname="c2" colnum="2" colwidth="3.26*"/>
+                        <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                         <thead>
                             <row>
                                 <entry>Field Name</entry>
@@ -2302,18 +2395,19 @@
                     </tgroup>
                 </table>
             </para>
-            <para><inlinemediaobject>
+            <figure><title>Responsibility Look: Results</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/responsibility_results.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>
                 <table frame="none">
-                    <title>New fields in the search results list from a Responsibility Lookup
-                        search</title>
+                    <title>Responsibility Lookup: Resutls Attributes</title>
                     <tgroup cols="2">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                        <colspec colname="c2" colnum="2" colwidth="3.0*"/>
+                        <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                         <thead>
                             <row>
                                 <entry>Field Name</entry>
@@ -2323,7 +2417,8 @@
                         <tbody>
                             <row>
                                 <entry>Responsibility Detail Values</entry>
-                                <entry>Display-only. Detailed information that defines:<itemizedlist>
+                                <entry><para>Display-only. Detailed information that defines:</para>
+                                    <itemizedlist>
                                         <listitem>
                                             <para>What document this responsibility generates action
                                                 requests for </para>
@@ -2334,9 +2429,10 @@
                                         <listitem>
                                             <para>How the requests are handled by workflow </para>
                                         </listitem>
-                                    </itemizedlist> Unlike permissions, which sometimes have
+                                    </itemizedlist><para>Unlike permissions, which sometimes have
                                     different detail values, responsibility detail values generally
-                                    contain these elements:<itemizedlist>
+                                    contain these elements:</para> 
+                                    <itemizedlist>
                                         <listitem>
                                             <para><emphasis role="bold">routeNodeName</emphasis>:
                                                 The point in a document’s workflow routing at which
@@ -2394,11 +2490,13 @@
                 the search results list displayed when you do a Responsibility Lookup. The
                 Responsibility Inquiry screen contains the same information displayed in the search
                 results, but in a slightly different format:</para>
-            <para><inlinemediaobject>
+            <figure><title>Responsibility Inquiry</title>
+                <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/responsibility_inquiry.png"/>
+                        <imagedata fileref="../images/responsibility_inquiry.png" scale="90"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>The fields on this screen are documented in the Responsibility Lookup section
                 above.</para>
         </sect2>
@@ -2414,21 +2512,23 @@
             <para>You get to this screen by clicking <emphasis role="bold">Permissions</emphasis> in
                 the <emphasis role="bold">Identity</emphasis> section of the <emphasis role="bold"
                     >Administration</emphasis> menu.</para>
-            <para><inlinemediaobject>
+            <figure><title>Permission Lookup</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/permission_lookup.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>Enter information in one or more fields on the <emphasis role="bold">Permission
                     Lookup</emphasis> screen and then click the <emphasis role="bold"
                     >search</emphasis> button to display permissions that match your
                 information.</para>
             <para>
                 <table frame="none">
-                    <title>Permission Lookup Fields</title>
+                    <title>Permission Lookup Attributes</title>
                     <tgroup cols="2">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                        <colspec colname="c2" colnum="2" colwidth="2.33*"/>
+                        <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                         <thead>
                             <row>
                                 <entry>Field Name</entry>
@@ -2487,14 +2587,15 @@
                             </row>
                             <row>
                                 <entry>Permission Detail Values</entry>
-                                <entry>Optional. Detailed information that, in combination with the
+                                <entry><para>Optional. Detailed information that, in combination with the
                                     permission name, defines the permission’s function For example,
                                     if the permission name is <emphasis role="bold">Initiate
                                         Document</emphasis>, the <emphasis role="bold">Permission
                                         Detail Values</emphasis> field indicates the specific type
                                     of document the initiate permission pertains to. Permission
                                     detail values can include many different types of data. Some
-                                    common permission details: <itemizedlist>
+                                    common permission details:</para> 
+                                    <itemizedlist>
                                         <listitem>
                                             <para><emphasis role="bold">documentTypeName</emphasis>:
                                                 The name of the document Type associated with this
@@ -2523,16 +2624,18 @@
             </para>
             <para>When you click the <emphasis role="bold">search</emphasis> button for a Permission
                 Lookup, KIM displays your search results in a table like this:</para>
-            <para><inlinemediaobject>
+            <figure><title>Permission Lookup: Results Example</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/permission_lookup_results.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>The information in the search results table is display-only and is defined above.
                 New field:</para>
             <para>
                 <table frame="none">
-                    <title/>
+                    <title>Permission Lookup: Results Attributes</title>
                     <tgroup cols="2">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                         <colspec colname="c2" colnum="2" colwidth="1.0*"/>
@@ -2561,11 +2664,13 @@
                 results from a Permission Lookup. The Permission Inquiry screen contains the same
                 information as the Permission Lookup search results, but in a slightly different
                 format:</para>
-            <para><inlinemediaobject>
+            <figure><title>Permission Inquiry</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/permission_inquiry.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>The fields on this screen are documented above in the <emphasis role="bold"
                     >Permission Lookup</emphasis> section.</para>
         </sect2>
@@ -2575,11 +2680,13 @@
                     Namespace</emphasis>. To display it, click a <emphasis role="bold">Template
                     Name</emphasis> on the <emphasis role="bold">Document Configuration</emphasis>
                 screen or the <emphasis role="bold">Permission Inquiry</emphasis> screen.</para>
-            <para><inlinemediaobject>
+            <figure><title>Permission Template Inquiry</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/permission_template_inquiry.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>Information related to the fields on this screen can be found above, in the
                     <emphasis role="bold">Permission Lookup</emphasis> section of this
                 document.</para>
@@ -2593,11 +2700,13 @@
                 <title>Campus Lookup</title>
                 <para>The Campus Lookup screen provides detailed information about the campuses
                     defined in your system.</para>
-                <para><inlinemediaobject>
+                <figure><title>Identity Channel: Campus Link</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/select_campus.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>To get to the Campus Lookup function, click <emphasis role="bold"
                         >Campus</emphasis> on the Rice <emphasis role="bold">Administration
                         Menu</emphasis>.</para>
@@ -2608,11 +2717,13 @@
                     choose to create a new Campus, KIM displays the <emphasis role="bold"
                         >CampusMaintenanceDocument</emphasis>, which is discussed in the <emphasis
                         role="bold">Campus Maintenance</emphasis> section below.</para>
-                <para><inlinemediaobject>
+                <figure><title>Campus Lookup</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/campus_lookup.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>Another way to get to the <emphasis role="bold">Campus Lookup</emphasis>
                     screen is to click the Field Lookup button next to the <emphasis role="bold"
                         >Campus Code</emphasis> field on any screen where it appears. If you do
@@ -2625,11 +2736,13 @@
                 <para>If you did NOT begin your Campus Lookup from the <emphasis role="bold"
                         >Administration</emphasis> menu, your list of search results looks like
                     this:</para>
-                <para><inlinemediaobject>
+                <figure><title>Campus Lookup: Results Example</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/campus_lookup_results.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>If you did begin your search from the <emphasis role="bold"
                         >Administration</emphasis> menu, you see <emphasis role="bold"
                         >edit</emphasis> and <emphasis role="bold">copy</emphasis> as links for each
@@ -2657,11 +2770,13 @@
                 <para>Display this screen by clicking <emphasis role="bold">Campus Code</emphasis>
                     in the search results list after you do a <emphasis role="bold">Campus
                         Lookup</emphasis>:</para>
-                <para><inlinemediaobject>
+                <figure><title>Campus Inquiry</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/campus_inquiry.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>You can find information about the fields on this screen in the <emphasis
                         role="bold">Edit Campus Tab</emphasis> section under <emphasis role="bold"
                         >Campus Maintenance</emphasis>, below.</para>
@@ -2678,11 +2793,13 @@
                             <emphasis role="bold">Campus Lookup</emphasis> screen, then click the
                             <emphasis role="bold">create new</emphasis> button. KIM displays the
                             <emphasis role="bold">CampusMaintenanceDocument</emphasis>. </para>
-                    <para><inlinemediaobject>
+                    <figure><title>Campue Maintenance Document</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/CampusMaintenanceDocument.png"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                     <para>The fields on this document are described in the <emphasis role="bold"
                             >Document Layout</emphasis> section below. Enter information in all
                         required fields and other fields appropriate to this campus, then click the
@@ -2701,12 +2818,16 @@
                                 </para>
                             </listitem>
                             <listitem>
-                                <para>KIM displays the CampusMaintenanceDocument for that campus:
-                                <inlinemediaobject>
-                                    <imageobject>
-                                        <imagedata fileref="../images/CampusMaintenanceDocument2.png"/>
-                                    </imageobject>
-                                </inlinemediaobject></para>
+                                <para>KIM displays the CampusMaintenanceDocument for that campus:</para>
+                                <figure><title>Campus Maintenane Document: Expanded</title>
+                                    <mediaobject>
+                                        <imageobject>
+                                            <imagedata
+                                                fileref="../images/CampusMaintenanceDocument2.png"
+                                                scale="90"/>
+                                        </imageobject>
+                                    </mediaobject>
+                                </figure>
                             </listitem>
                         <listitem><para>Change the information in the fields that you need to edit, then click the save button at the
                                     bottom of the document.</para></listitem>
@@ -2737,11 +2858,13 @@
                 </sect4>
                 <sect4>
                     <title>Edit Campus Tab</title>
-                    <para><inlinemediaobject>
+                    <figure><title>Campus Maintenance Document: Edit Campus Tab</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/edit_campus.png"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                     <para>In edit mode, the <emphasis role="bold">Edit Campus Tab</emphasis>
                         presents a display-only set of fields on the left and editable fields on the
                         right in which you may enter changes. When this tab is displayed in the
@@ -2749,7 +2872,7 @@
                         fields are displayed.</para>
                     <para>
                         <table frame="none">
-                            <title>Edit Campus Fields</title>
+                            <title>Campus Maintenance Document: Edit Campus Attributes</title>
                             <tgroup cols="2">
                                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
@@ -2777,7 +2900,8 @@
                                     </row>
                                     <row>
                                         <entry>Campus Type Code </entry>
-                                        <entry>Required. Indicates the type of campus. Valid values are:<itemizedlist>
+                                        <entry><para>Required. Indicates the type of campus. Valid values are:</para>
+                                            <itemizedlist>
                                                 <listitem>
                                                   <para>B - Both </para>
                                                 </listitem>
@@ -2812,11 +2936,13 @@
                             </para>
                         </listitem>
                     </orderedlist></para>
-                <para><inlinemediaobject>
+                <figure><title>Campus Type Lookup</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/campus_type_lookup.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>There are two ways to search for information using this screen:<itemizedlist>
                         <listitem>
                             <para>Enter information in one or more fields on the <emphasis
@@ -2829,12 +2955,15 @@
                             <para>Leave the fields on the Campus Type Lookup screen blank and click
                                 the Search button. This displays a list of all available campus
                                 types, similar to this: </para>
-                            <para><inlinemediaobject>
+                            <figure><title>Campue Type Lookup: Results Example</title>
+                                <mediaobject>
                                     <imageobject>
                                         <imagedata
-                                            fileref="../images/campus_type_lookup_results.png"/>
+                                            fileref="../images/campus_type_lookup_results.png"
+                                            scale="90"/>
                                     </imageobject>
-                                </inlinemediaobject></para>
+                                </mediaobject>
+                            </figure>
                         </listitem>
                     </itemizedlist></para>
                 <para>You can export the search results list in CSV, spreadsheet, or XML format.
@@ -2866,29 +2995,35 @@
                             </para>
                         </listitem>
                     </orderedlist></para>
-                <para><inlinemediaobject>
+                <figure><title>Campus Type Inquiry</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/campus_type_inquiry.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>Field information on this screen can be found in the <emphasis role="bold"
                         >Edit Campus Tab</emphasis> section above.</para>
             </sect3>
             <sect3>
                 <title>Campus Type Maintenance</title>
-                <para><inlinemediaobject>
+                <figure><title>Identity Channel: Campus Type Link</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/campus_type_maintenance.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>To create or perform maintenance on a Campus Type, click <emphasis role="bold"
                         >Campus Type</emphasis> on the <emphasis role="bold">Administration
                         Menu</emphasis>.</para>
-                <para><inlinemediaobject>
+                <figure><title>Campus Type Lookup</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/campus_type_lookup.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>From the <emphasis role="bold">Campus Type Lookup</emphasis> screen, you may
                     either create a new <emphasis role="bold">Campus Type</emphasis> or search for
                     an existing one. </para>
@@ -2902,11 +3037,13 @@
                         <emphasis role="bold">copy</emphasis> button, KIM displays the <emphasis
                         role="bold">Campus Type Maintenance</emphasis> document. This document lets
                     you add and update Campus Types.</para>
-                <para><inlinemediaobject>
+                <figure><title>Campus Maintenance Document</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/CampusMaintenanceDocument.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <sect4>
                     <title>Document Layout</title>
                     <para>The <emphasis role="bold">CampusTypeMaintenance</emphasis> document
@@ -2914,24 +3051,28 @@
                             Type</emphasis> tab. The standard tabs are documented in the Common
                         Features and Functions section of this User Guide. The Edit Campus Type tab
                         is described below.</para>
-                    <para><inlinemediaobject>
+                    <figure><title>Campus Maintenance Document: Overview Tab</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/campus_maintenance_overview.png"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                 </sect4>
                 <sect4>
                     <title>Edit Campus Type Tab</title>
                     <para>The Edit Campus Type tab displays the fields that are unique to each
                         Campus Type.</para>
-                    <para><inlinemediaobject>
+                    <figure><title>Campus Maintenance Document: Edit Campus Type Tab</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/edit_campus_type.png"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                     <para>
                         <table frame="none">
-                            <title>Campus Type Fields</title>
+                            <title>Campus Maintenance Document: Edit Campus Type Attributes</title>
                             <tgroup cols="2">
                                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
@@ -2944,8 +3085,8 @@
                                 <tbody>
                                     <row>
                                         <entry>Campus Type Code </entry>
-                                        <entry>Required. The code used by Rice to identify this type
-                                            of Campus. Valid values are:<itemizedlist>
+                                        <entry><para>Required. The code used by Rice to identify this type of Campus. Valid values are:</para>
+                                            <itemizedlist>
                                                 <listitem>
                                                   <para>B - Both </para>
                                                 </listitem>
@@ -2987,22 +3128,28 @@
                     clicking <emphasis role="bold">Postal Code</emphasis> in the <emphasis
                         role="bold">Identity</emphasis> section of the <emphasis role="bold"
                         >Administration</emphasis> menu.</para>
-                <para><inlinemediaobject>
+                <figure><title>Identity Channel: Postal Code Link</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/postal_code.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
-                <para><inlinemediaobject>
+                    </mediaobject>
+                </figure>
+                <figure><title>Postal Code Lookup</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/postal_code_lookup.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>A search produces a list similar to the example below.</para>
-                <para><inlinemediaobject>
+                <figure><title>Postal Code Lookup: Results Example</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/postal_code_lookup_results.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <note><para>You may also enter a city and state to search for the associated zip
                     code(s).</para></note>
                 <para>Descriptions of the fields in this list can be found in the Postal Code
@@ -3022,11 +3169,13 @@
             </sect3>
             <sect3>
                 <title>Postal Code Inquiry</title>
-                <para><inlinemediaobject>
+                <figure><title>Postal Code Inquiry</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/postal_code_inquiry.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>Information about these fields can be found in the Postal Code Maintenance
                     section below.</para>
             </sect3>
@@ -3039,11 +3188,13 @@
                     a postal code to edit or click the <emphasis role="bold">create new</emphasis>
                     button, KIM displays the <emphasis role="bold"
                         >PostalCodeMaintenanceDocument</emphasis> screen. </para>
-                <para><inlinemediaobject>
+                <figure><title>Postal Code Manintenance Document</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/PostalCodeMaintenanceDocument.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>To create a new Postal Code, enter information in the required fields in the
                         <emphasis role="bold">Document Overview</emphasis> and <emphasis role="bold"
                         >Edit Postal Codes</emphasis> tabs, then click the <emphasis role="bold"
@@ -3060,21 +3211,25 @@
                     <para>In edit mode, the <emphasis role="bold">Edit Postal Codes</emphasis> tab
                         presents a display-only set of fields on the left and editable fields on the
                         right, in which you may enter changes. The tab looks like this:</para>
-                    <para><inlinemediaobject>
+                    <figure><title>Postal Code Manintenance Document: Edit Postal Codes Tab</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/edit_postal_codes.png"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject></figure>
                     <para>In create mode, the <emphasis role="bold">Edit Postal Codes</emphasis> tab
                         presents only a set of fields in which you may enter information. </para>
-                    <para><inlinemediaobject>
+                    <figure><title>Postal Code Manintenance Document: Create Postal Codes</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/create_postal_code.png"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                     <para>
                         <table frame="none">
-                            <title>Postal Code Fields</title>
+                            <title>Postal Code Maintenance Document: Create Postal Codes
+                                Attributes</title>
                             <tgroup cols="2">
                                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
@@ -3132,25 +3287,31 @@
                     clicking <emphasis role="bold">County</emphasis> in the <emphasis role="bold"
                         >Identity</emphasis> section of the <emphasis role="bold"
                         >Administration</emphasis> Menu.</para>
-                <para><inlinemediaobject>
+                <figure><title>Identity Channel: County Lin</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/county.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
-                <para><inlinemediaobject>
+                    </mediaobject>
+                </figure>
+                <figure><title>County Code Lookup</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/county_code_lookup.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>Click the <emphasis role="bold">create new</emphasis> button to go to the
                         <emphasis role="bold">County Maintenance</emphasis> function, where you can
                     create a new County in Rice. </para>
                 <para>Conducting a search from this screen returns a list similar to this:</para>
-                <para><inlinemediaobject>
+                <figure><title>County Code Lookup: Results Example</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/county_code_lookup_results.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>Clicking the <emphasis role="bold">edit</emphasis> or <emphasis role="bold"
                         >copy</emphasis> link in the Action column allows you to edit the county
                     information you selected or to create a new county in Rice, beginning with a
@@ -3170,11 +3331,13 @@
                 <title>County Inquiry</title>
                 <para>This screen provides a snapshot of the important information about a <emphasis
                         role="bold">County</emphasis>:</para>
-                <para><inlinemediaobject>
+                <figure><title>County Inquiry</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/county_inquiry.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>You can find information about the fields on this screen in the <emphasis
                         role="bold">County Maintenance</emphasis> section below.</para>
             </sect3>
@@ -3186,11 +3349,13 @@
                         Lookup</emphasis> screen. After you select to edit a county or click the
                         <emphasis role="bold">create new</emphasis> button, KIM displays the
                         <emphasis role="bold">CountyMaintenanceDocument</emphasis> screen:</para>
-                <para><inlinemediaobject>
+                <figure><title>County Maintenance Document</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/CountyMaintenanceDocument.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>To create a new County, enter valid information in the required fields in
                         the<emphasis role="bold"> Document Overview</emphasis> and <emphasis
                         role="bold">Edit Counties</emphasis> tabs, then click the <emphasis
@@ -3207,21 +3372,25 @@
                     <para>In edit mode, the <emphasis role="bold">Edit Counties</emphasis> tab
                         presents a display-only set of fields on the left and editable fields on the
                         right, in which you may enter changes. The tab looks like this:</para>
-                    <para><inlinemediaobject>
+                    <figure><title>County Mainteance Document: Edit Counties Tab</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/edit_counties.png"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                     <para>In create mode, the <emphasis role="bold">Edit Counties</emphasis> tab
                         presents only a set of fields in which you may enter information. </para>
-                    <para><inlinemediaobject>
+                    <figure><title>County Maintenance Document: Create County</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/create_county.png"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                     <para>
                         <table frame="none">
-                            <title>County Fields</title>
+                            <title>County Maintenance Document: Create County Attributes</title>
                             <tgroup cols="2">
                                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
@@ -3275,26 +3444,32 @@
                 <para>You can display the <emphasis role="bold">State Code Lookup</emphasis> screen
                     by clicking <emphasis role="bold">State</emphasis> on the Rice <emphasis
                         role="bold">Administration</emphasis> menu.</para>
-                <para><inlinemediaobject>
+                <figure><title>Identity Channel: State Link</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/state.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
-                <para><inlinemediaobject>
+                    </mediaobject>
+                </figure>
+                <figure><title>State Lookup</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/state_code_lookup.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>Enter information in one or more of the fields on the <emphasis role="bold"
                         >State Code Lookup</emphasis> screen and then click the <emphasis
                         role="bold">search</emphasis> button to see a list of States that fit your
                     criteria.</para>
                 <note><para>Leave all of the search fields blank to display a list of all States.</para></note>
-                <para><inlinemediaobject>
+                <figure><title>State Lookup: Results Example</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/state_code_lookup_results.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>Click <emphasis role="bold">edit</emphasis> or <emphasis role="bold"
                         >copy</emphasis> in the <emphasis role="bold">Actions</emphasis> column to
                     go to the <emphasis role="bold">StateMaintenanceDocument</emphasis> screen,
@@ -3313,11 +3488,13 @@
                 <para>The <emphasis role="bold">State Inquiry</emphasis> screen provides a snapshot
                     of the most important information defined in Rice for a <emphasis role="bold"
                         >State</emphasis>.</para>
-                <para><inlinemediaobject>
+                <figure><title>State Inquiry</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/state_inquiry.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
             </sect3>
             <sect3>
                 <title>State Maintenance</title>
@@ -3327,11 +3504,13 @@
                     you click <emphasis role="bold">edit</emphasis> for a State or click the
                         <emphasis role="bold">create new</emphasis> button, KIM displays the
                         <emphasis role="bold">StateMaintenanceDocument</emphasis>.</para>
-                <para><inlinemediaobject>
+                <figure><title>State Maintenance Document</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/StateMaintenanceDocument.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <sect4>
                     <title>Document Layout</title>
                     <para>This screen contains five tabs:<itemizedlist>
@@ -3360,25 +3539,29 @@
                     <para>The Edit States tab can be displayed with two different sets of fields.
                         Which you see depends on whether you are creating a new State or editing an
                         existing State.</para>
-                    <para><inlinemediaobject>
+                    <figure><title>State Maintenance Document: Add State</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/create_state.png"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                     <para>The version of the tab above is displayed when you are creating a new
                         State.</para>
-                    <para><inlinemediaobject>
+                    <figure><title>State Maintenance Document: Edit States Tab</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/edit_states.png"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                     <para>Pictured above in <emphasis role="bold">edit</emphasis> mode, the
                             <emphasis role="bold">Edit States</emphasis> tab presents a display-only
                         set of fields on the left and editable fields on the right, in which you may
                         enter changes. </para>
                     <para>
                         <table frame="none">
-                            <title>States Fields</title>
+                            <title>States Maintenance Document: Edit States Attributes</title>
                             <tgroup cols="2">
                                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>
@@ -3426,18 +3609,22 @@
                 <title>Country Lookup</title>
                 <para>This screen provides information about <emphasis role="bold">Country
                         Codes</emphasis> and is accessed directly off the Administration menu. </para>
-                <para><inlinemediaobject>
+                <figure><title>Country Lookup</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/country_lookup.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>Performing a search on a <emphasis role="bold">Country Code</emphasis>
                     produces results similar to this:</para>
-                <para><inlinemediaobject>
+                <figure><title>Country Lookup: Results Example</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/county_code_lookup_results.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>Selecting <emphasis role="bold">edit</emphasis> or <emphasis role="bold"
                         >copy</emphasis> in the <emphasis role="bold">Actions</emphasis> column
                     takes you to the <emphasis role="bold">Country Maintenance Document</emphasis>
@@ -3457,11 +3644,13 @@
                     about a Country in Rice. You get to this screen by clicking a <emphasis
                         role="bold">Country Code</emphasis> in the list of search results after you
                     do a <emphasis role="bold">Country Lookup</emphasis>. </para>
-                <para><inlinemediaobject>
+                <figure><title>Country Inquiry</title>
+                    <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/country_lookup.png"/>
+                            <imagedata fileref="../images/country_inquiry.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
             </sect3>
             <sect3>
                 <title>Country Maintenance</title>
@@ -3471,29 +3660,32 @@
                     the <emphasis role="bold">Country Lookup</emphasis> screen. After you select a
                     country or click the <emphasis role="bold">create new</emphasis> button, KIM
                     presents the <emphasis role="bold">CountryMaintenanceDocument</emphasis> screen. </para>
-                <para><inlinemediaobject>
+                <figure><title>Country Maintenance Document</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/CountryMaintenanceDocument.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <sect4>
                     <title>Document Layout</title>
-                    <para>All of the tabs in the <emphasis role="bold"
-                            >CountryMaintenanceDocument</emphasis> are standard with the exception
+                    <para>All of the tabs in the <emphasis role="bold">CountryMaintenanceDocument</emphasis> are standard with the exception
                         of the <emphasis role="bold">Edit Country</emphasis> tab. Documentation on
                         standard tabs can be found in the Common Features and Functions section of
                         the User Guide.</para>
                 </sect4>
                 <sect4>
                     <title>Edit Country tab</title>
-                    <para><inlinemediaobject>
+                    <figure><title>Country Maintenance Document: Edit Country Tab</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/edit_country.png"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                     <para>
                         <table frame="none">
-                            <title>Country Fields</title>
+                            <title>Country Maintenance Document: Edit Country Attributes</title>
                             <tgroup cols="2">
                                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                                 <colspec colname="c2" colnum="2" colwidth="1.0*"/>

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?> 
-<chapter xmlns="http://docbook.org/ns/docbook" version="5.0">
+<chapter xml:id="software_architecture" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">
     <title>Software Architecture</title>
     <sect1>
         <title>Kuali Rice Implementations</title>
@@ -59,8 +59,7 @@
     </sect1>
     <sect1>
         <title>Obtaining Distributions and Source Code</title>
-        <para>All three distributions, as well as the source code of the latest production release
-            are available at <link>http://rice.kuali.org/download</link>.</para> 
+        <para>All three distributions, as well as the source code of the latest production release are available at <link xlink:href="http://rice.kuali.org/download">here</link>.</para> 
     </sect1>
 </chapter>
 

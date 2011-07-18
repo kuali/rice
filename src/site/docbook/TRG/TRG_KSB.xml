@@ -20,15 +20,14 @@
                 other calling code using a number of different protocols. Using this paradigm the
                 client developer and the organization can rapidly build and consume services, often
                 a daunting challenge using other buses.</para>
-            <para><figure>
+            <figure>
                 <title>Overview of Supported Service Protocols</title>
-                <inlinemediaobject>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/supported_service_protocols.png"/>
                     </imageobject>
-                </inlinemediaobject>
+                </mediaobject>
                 </figure>
-            </para>
         </sect2>
         <sect2>
             <title>Diagram Notes</title>
@@ -1191,10 +1190,10 @@ String result = echoService.echo(echoValue);</programlisting>
                                 <entry>true</entry>
                                 <entry><para>If <emphasis role="italic">true</emphasis>, the service
                                         will behave like a queue in that there is only one real
-                                        service call when a message is sent. </para>If <emphasis
+                                        service call when a message is sent. </para><para>If <emphasis
                                         role="italic">false</emphasis>, the service will behave like
                                     a topic. All beans bound to the service name will be sent a
-                                    message when a message is sent to the service. <para>Use queues
+                                    message when a message is sent to the service. </para><para>Use queues
                                         for operations you only want to happen once (for example, to
                                         route a document). Use topics for notifications across a
                                         cluster (for example, to invalidate cache
@@ -1414,13 +1413,13 @@ cache.flushEntry(this.key);
 
 //flush group
 cache.flushGroup(this.group);</programlisting>
-        </sect2>
-        <sect2>
+        
+        
             <para>All flushing will be broadcast across the cluster. The cache cluster is a topic
                 base off the messageEntity in the KRice configurer. As machines with a KRice cache
                 configured with the same messageEntity come up, they will automatically join the
                 cluster.</para>
-        </sect2>
+        </sect2>        
         <sect2>
             <title>Configuring the OSCache behind the scenes</title>
             <para>OSCache has many configuration options available as properties. You can use the
@@ -1901,11 +1900,13 @@ String returnParam = remotedOjb.invoke("call1");</programlisting>
                             an initial <emphasis role="italic">RootResourceLoader</emphasis> (which
                             may be provided by the application via the RiceConfigurer), as well as
                             resource loaders supplied by each module:</para>
-                        <para><inlinemediaobject>
+                        <figure><title>Global Resource Loader</title>
+                            <mediaobject>
                                 <imageobject>
                                     <imagedata fileref="../images/global_resource_loader.png"/>
                                 </imageobject>
-                            </inlinemediaobject></para>
+                            </mediaobject>
+                        </figure>
                     </listitem>
                 </itemizedlist></para>
             <para>The <emphasis role="bold">GlobalResourceLoader</emphasis> is the top-level entry
@@ -2048,13 +2049,14 @@ protected WorkflowDocumentService workflowDocumentService;</programlisting>
                         the appropriate location in the WEB-INF/classes directory, which will take
                         precedence over the Rice-provided files in WEB-INF/lib.</para>
                 </warning>
-                <para><inlinemediaobject>
+                <figure><title>Application Resources Properties Tree</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata
-                                fileref="../images/directory_tree_ApplicationResources_properties.png"
-                            />
+                                fileref="../images/directory_tree_ApplicationResources_properties.png"/>
                         </imageobject>
-                </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>The cleanest way to do this is take an unadulterated copy of the respective
                     Rice Spring file, rename it, and then &lt;import> it from your override Spring
                     file. That way one does not have to copy and maintain the entire contents of the

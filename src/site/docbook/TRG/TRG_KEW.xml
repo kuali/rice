@@ -915,11 +915,11 @@ WorkflowDocument document = new WorkflowDocument(principalId, docId);
                     look.</para>
                 <para><figure>
                     <title>Sample KEW embedded deployment</title>
-                    <inlinemediaobject>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/kew_embedded_deployment.png"/>
                         </imageobject>
-                    </inlinemediaobject>
+                    </mediaobject>
                     </figure>
                 </para>
             </sect3>
@@ -1075,15 +1075,14 @@ WorkflowDocument document = new WorkflowDocument(principalId, docId);
             </sect3>
             <sect3>
                 <title>Bundled Deployment Diagram</title>
-                <para><figure>
+                <figure>
                     <title>Bundled deployment diagram</title>
-                    <inlinemediaobject>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/bundled_deployment_diagram.png"/>
                         </imageobject>
-                    </inlinemediaobject>
+                    </mediaobject>
                     </figure>
-                </para>
             </sect3>
         </sect2>
         <sect2>
@@ -1275,15 +1274,14 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 <title>Thin Client Deployment Diagram</title>
                 <para>Here is a diagram showing what a thin client deployment might look
                     like.</para>
-                <para><figure>
+                <figure>
                     <title>Thin client deployment diagram</title>
-                    <inlinemediaobject>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/thin_client_deployment_diagram.png"/>
                         </imageobject>
-                    </inlinemediaobject>
+                    </mediaobject>
                 </figure>
-                </para>
             </sect3>
         </sect2>
         <sect2>
@@ -1293,15 +1291,14 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 with multiple systems communicating with each other.</para>
             <para>The diagram below shows what a typical Enterprise deployment of Kuali Rice might
                 look like.</para>
-            <para><figure>
+            <figure>
                 <title>Typical enterprise deployment of Kuali Rice</title>
-                <inlinemediaobject>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/enterprise_deployment.png"/>
                     </imageobject>
-                </inlinemediaobject>
+                </mediaobject>
             </figure>
-            </para>
         </sect2>
         <sect2>
             <title>KEW Core Parameters</title>
@@ -1506,9 +1503,10 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                             </row>
                             <row>
                                 <entry>Identity.useRemoteServices </entry>
-                                <entry>Configuration parameter that governs whether a number of
+                                <entry><para>Configuration parameter that governs whether a number of
                                     common identity services (user and group service) are exported
-                                    or retrieved via the bus. If this flag is set to true then: <orderedlist>
+                                    or retrieved via the bus. If this flag is set to true then:</para>
+                                    <orderedlist>
                                         <listitem>
                                             <para>user and group service will NOT be published the
                                                 bus, and </para>
@@ -2021,18 +2019,22 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 <title>Uploading an eDocLite form</title>
                 <para>To upload XML, go to <emphasis role="italic">Ingester UI</emphasis> and select
                     the XML file that you want to import:</para>
-                <para><inlinemediaobject>
+                <figure><title>Ingester</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/ingester.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>After upload, notice the red arrow and the statement, <emphasis role="italic"
                         >Ingested xml doc: &lt;name of file></emphasis>:</para>
-                <para><inlinemediaobject>
+                <figure><title>Ingestion Complete</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/ingestion_complete.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
             </sect3>
         </sect2>
         <sect2>
@@ -2047,15 +2049,14 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
             <sect3>
                 <title>Examining the Route Queue</title>
                 <para>The main Route Queue screen:</para>
-                <para><figure>
+                <figure>
                     <title>Route Queue Screen</title>
-                    <inlinemediaobject>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/route_queue_screen.png"/>
                         </imageobject>
-                    </inlinemediaobject>
+                    </mediaobject>
                     </figure>
-                </para>
                 <para>Examining this sample screen, we see there are five entries in the route
                     queue, one on each row. The columns display information about each entry:<itemizedlist>
                         <listitem>
@@ -2165,15 +2166,14 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     set the entry’s status back to <emphasis role="bold">QUEUED</emphasis>. Here's a
                     screen shot of the <emphasis role="bold">Route Queue Entry - Edit</emphasis>
                     screen:</para>
-                <para><figure>
+                <figure>
                     <title>Route Queue Entry Edit Screen</title>
-                    <inlinemediaobject>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/route_queue_entry_edit.png"/>
                         </imageobject>
-                    </inlinemediaobject>
+                    </mediaobject>
                     </figure>
-                </para>
                 <para>Use the Queue Status dropdown list to change the status of the entry. You may
                     also want to set the Retry Count to zero to allow you to diagnose the problem
                     before the document goes into exception routing.</para>
@@ -2724,7 +2724,6 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <para>There are some common attributes in every <emphasis role="bold">Document
                 Type</emphasis>, but each <emphasis role="bold">Document Type</emphasis> can be
             customized to provide different functions.<itemizedlist>
-                <!-- TODO: Link these to appropriate sections -->
                 <listitem>
                     <para>Document Types </para>
                 </listitem>
@@ -2880,14 +2879,16 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                             </row>
                             <row>
                                 <entry>activationType</entry>
-                                <entry>The activation type of the next node that is requested by
-                                    this Document Type. There are two activation types: <itemizedlist>
-                                        <listitem><emphasis role="bold">P</emphasis>: Parallel:
+                                <entry><para>The activation type of the next node that is requested by
+                                this Document Type. There are two activation types:</para>
+                                    <itemizedlist>
+                                        <listitem><para><emphasis role="bold">P</emphasis>: Parallel:
                                             Multiple nodes in the routing process are activated at
-                                            the same time</listitem>
-                                        <listitem><emphasis role="bold">S</emphasis>: Serial or
+                                            the same time</para></listitem>
+                                        <listitem><para><emphasis role="bold">S</emphasis>: Serial or
                                             Sequential: The nodes in the routing process are
-                                            activated one at a time </listitem>
+                                            activated one at a time</para>
+                                        </listitem>
                                     </itemizedlist></entry>
                             </row>
                             <row>
@@ -2917,16 +2918,18 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                             </row>
                             <row>
                                 <entry>simple</entry>
-                                <entry>A new node in the routing path 
-                                    <itemizedlist><listitem><emphasis role="bold">type</emphasis>: The type of the new routing node </listitem>
-                                        <listitem><emphasis role="bold">value</emphasis>: The value
-                                            of the new routing node </listitem>
-                                        <listitem><emphasis role="bold">message</emphasis>: The
-                                            message associated with the new routing node </listitem>
-                                        <listitem><emphasis role="bold">level</emphasis>: The
-                                            routing level of the new routing node </listitem>
-                                        <listitem><emphasis role="bold">log</emphasis>: The log name
-                                            of the new routing node </listitem></itemizedlist>
+                                <entry><para>A new node in the routing path</para> 
+                                    <itemizedlist>
+                                        <listitem><para><emphasis role="bold">type</emphasis>: The type of the new routing node</para></listitem>
+                                        <listitem><para><emphasis role="bold">value</emphasis>: The value
+                                            of the new routing node</para></listitem>
+                                        <listitem><para><emphasis role="bold">message</emphasis>: The
+                                            message associated with the new routing node</para></listitem>
+                                        <listitem><para><emphasis role="bold">level</emphasis>: The
+                                            routing level of the new routing node</para></listitem>
+                                        <listitem><para><emphasis role="bold">log</emphasis>: The log name
+                                        of the new routing node</para></listitem>
+                                    </itemizedlist>
                                 </entry>
                             </row>
                             <row>
@@ -3152,11 +3155,11 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 </para>
                 <para>
                     <figure><title>BlanketApproveSequentialTest Workflow</title>
-                    <inlinemediaobject>
-                        <imageobject>
-                            <imagedata fileref="../images/BlanketApproveSequentialTest.png"/>
-                        </imageobject>
-                    </inlinemediaobject>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/BlanketApproveSequentialTest.png"/>
+                            </imageobject>
+                    </mediaobject>
                     </figure>
                 </para>
                 <para><emphasis role="bold">BlanketApproveParallelTest</emphasis></para>
@@ -3379,12 +3382,12 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 </para>
                 <para>
                     <figure><title>BlanketApproveParallelTest Workflow</title>
-                    <inlinemediaobject>
-                        <imageobject>
-                            <imagedata fileref="../images/BlanketApproveParallelTest.png"/>
-                        </imageobject>
-                    </inlinemediaobject>
-                    </figure>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/BlanketApproveParallelTest.png"/>
+                            </imageobject>
+                        </mediaobject>
+                        </figure>
                 </para>
                 <para><emphasis role="bold">NotificationTest</emphasis></para>
                 <programlisting>&lt;documentType>
@@ -3538,11 +3541,11 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 </para>
                 <para>
                     <figure><title>NotificationTest Workflow</title>
-                    <inlinemediaobject>
-                        <imageobject>
-                            <imagedata fileref="../images/NotificationTest.png"/>
-                        </imageobject>
-                    </inlinemediaobject>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/NotificationTest.png"/>
+                            </imageobject>
+                        </mediaobject>
                     </figure>
                 </para>
                 <para><emphasis role="bold">NotificationTestChild</emphasis></para>
@@ -3769,12 +3772,14 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                         </listitem>
                     </itemizedlist>
                 </para>
-                <para><inlinemediaobject>
+                <figure><title>Blankte Approve Mandatory Test</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata
                                 fileref="../images/BlanketApproveMandatoryNodeTest_workflow.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para><emphasis role="bold">SaveActionEventTest</emphasis></para>
                 <programlisting>&lt;documentType>
     &lt;name>SaveActionEventTest&lt;/name>
@@ -3883,11 +3888,13 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                         </listitem>
                     </itemizedlist>
                 </para>
-                <para><inlinemediaobject>
+                <figure><title>Save Action Event Test</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/SaveActionEventTest_workflow.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para><emphasis role="bold">SaveActionEventTestNonInitiator</emphasis></para>
                 <programlisting>&lt;documentType>
     &lt;name>SaveActionEventTestNonInitiator&lt;/name>
@@ -4011,12 +4018,14 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                         </listitem>
                     </itemizedlist>
                 </para>
-                <para><inlinemediaobject>
+                <figure><title>Save Action Even Test: Non-Initiator</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata
                                 fileref="../images/SaveActionEventTestNonInitiator_workflow.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para><emphasis role="bold">TakeWorkgroupAuthorityDoc</emphasis></para>
                 <programlisting>&lt;documentType>
     &lt;name>TakeWorkgroupAuthorityDoc&lt;/name>
@@ -4121,11 +4130,13 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                             </itemizedlist></para>
                     </listitem>
                 </itemizedlist>
-                <para><inlinemediaobject>
+                <figure><title>Take Workgroup Authority</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/TakeWorkgroupAuthorityDoc_workflow.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para><emphasis role="bold">MoveSequentialTest</emphasis></para>
                 <programlisting>&lt;documentType>
     &lt;name>MoveSequentialTest&lt;/name>
@@ -4268,11 +4279,13 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                             </itemizedlist></para>
                     </listitem>
                 </itemizedlist>
-                <para><inlinemediaobject>
+                <figure><title>Move Sequential Test</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/MoveSequentialTest_workflow.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para><emphasis role="bold">MoveInProcessTest</emphasis></para>
                 <programlisting>&lt;documentType>
     &lt;name>MoveInProcessTest&lt;/name>
@@ -4414,11 +4427,13 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                             </itemizedlist></para>
                     </listitem>
                 </itemizedlist>
-                <para><inlinemediaobject>
+                <figure><title>Move In Process Test</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/MoveInProcessTest_workflow.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para><emphasis role="bold">AdhocRouteTest</emphasis></para>
                 <programlisting>&lt;documentType>
 	&lt;name>AdhocRouteTest&lt;/name>
@@ -4513,11 +4528,13 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                             </itemizedlist></para>
                     </listitem>
                 </itemizedlist>
-                <para><inlinemediaobject>
+                <figure><title>Adhoc Route Test</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/AdhocRouteTest_workflow.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para><emphasis role="bold">PreApprovalTest</emphasis></para>
                 <programlisting>&lt;documentType>
     &lt;name>PreApprovalTest&lt;/name>
@@ -4608,11 +4625,13 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                             </itemizedlist></para>
                     </listitem>
                 </itemizedlist>
-                <para><inlinemediaobject>
+                <figure><title>PreApproval Test</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/PreApprovalTest_workflow.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para><emphasis role="bold">VariablesTest</emphasis></para>
                 <programlisting>&lt;documentType>
     &lt;name>VariablesTest&lt;/name>
@@ -4902,11 +4921,13 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                             </itemizedlist></para>
                     </listitem>
                 </itemizedlist>
-                <para><inlinemediaobject>
+                <figure><title>Variables Test</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/VariablesTest_workflow.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para><emphasis role="bold">SUApproveDocumentNotifications</emphasis></para>
                 <programlisting>&lt;documentType>
     &lt;name>SUApproveDocumentNotifications&lt;/name>
@@ -5130,12 +5151,14 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     configurable by document type and as such allows for inheritance. </para>
                 <para>By default, the ALLOW_SU_POST_PROCESSOR_OVERIDE it's set to true. The checkbox
                     appears on the super user screen as:</para>
-                <para><inlinemediaobject>
+                <figure><title>Super User Action on Requests</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/super_user_action_on_action_requests.png"
                             />
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>In order to turn off the post processor check box, you would add this to the
                 documentType definition: </para>
                 <programlisting>&lt;policies>
@@ -5461,13 +5484,14 @@ document.routeDocument("user inputted annotation");
                     activated one after the other, according to rule order (S = <emphasis
                         role="italic">sequential</emphasis> activation). Activation type is only
                     relevant when multiple rules are generated.</para>
-                <para><figure>
+                <para>
+                    <figure>
                     <title>Activation Type</title>
-                    <inlinemediaobject>
-                        <imageobject>
-                            <imagedata fileref="../images/activation_type.png"/>
-                        </imageobject>
-                    </inlinemediaobject>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/activation_type.png"/>
+                            </imageobject>
+                        </mediaobject>
                     </figure>
                 </para>
                 <para>The <emphasis role="bold">mandatoryRoute</emphasis> key determines if it’s
@@ -6059,11 +6083,11 @@ org.kuali.rice.kns.workflow.attribute.DataDictionaryQualifierResolver
                 </itemizedlist></para>
             <para><figure>
                 <title>EDL Controller Chain</title>
-                <inlinemediaobject>
-                    <imageobject>
-                        <imagedata fileref="../images/edl_controller_chain.png"/>
-                    </imageobject>
-                </inlinemediaobject>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/edl_controller_chain.png"/>
+                        </imageobject>
+                    </mediaobject>
             </figure>
             </para>
         </sect2>
@@ -6768,11 +6792,13 @@ EDL EDoclite Example
             <title>Custom Search Screen</title>
             <para>As an example of customizing a Document Search screen, we’ll use a customized
                     <emphasis role="bold">Delete Course Request</emphasis> screen:</para>
-            <para><inlinemediaobject>
+            <figure><title>Custom Search Screen: Delete Course Example</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/delete_course_request.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <sect3>
                 <title>What are custom document search attributes? </title>
                 <para>Custom document search attributes are associated with a document type. They
@@ -6975,11 +7001,13 @@ EDL EDoclite Example
                     >true</emphasis>. This means that a search icon will be displayed on the
                 Document Search screen. Based on the XML code above, the final Document Search
                 screen looks like this:</para>
-            <para><inlinemediaobject>
+            <figure><title>Custom Document Search: Department Example</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/document_search.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
         </sect2>
         <sect2>
             <title>Define Keyword Search</title>
@@ -7294,11 +7322,13 @@ EDL EDoclite Example
                 type <emphasis role="bold"
                 >DocumentSearchRsultXMLResultProcessorAttribute</emphasis>.</para>
             <para>The <emphasis role="italic">standard</emphasis> Search Result table:</para>
-            <para><inlinemediaobject>
+            <figure><title>Standard Doc Search Results Set</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/standard_search_result_table.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>The Standard Search Result fields: <itemizedlist>
                     <listitem>
                         <para>Document Id </para>
@@ -7368,8 +7398,7 @@ EDL EDoclite Example
                     </itemizedlist></para>
                 <para>The key for the search result customization is focused on the elements and
                     column tag(s) under the &lt;searchResultConfig>.</para>
-                <para>
-                    <para>Attributes that are included in the &lt;searchResultConfig> tag:<itemizedlist>
+                    <para>Attributes that are included in the &lt;searchResultConfig> tag:</para><itemizedlist>
                             <listitem>
                                 <para><emphasis role="bold">overrideSearchableAttributes</emphasis>:
                                     The indicator of whether to display the column <emphasis
@@ -7411,9 +7440,9 @@ EDL EDoclite Example
                                         </listitem>
                                     </itemizedlist></para>
                             </listitem>
-                        </itemizedlist></para>
-                </para>
-                <para>Attributes that can be added in a &lt;column> tag:<itemizedlist>
+                        </itemizedlist>                
+                <para>Attributes that can be added in a &lt;column> tag:</para>
+                <itemizedlist>
                         <listitem>
                             <para><emphasis role="bold">Name</emphasis>: The key for connecting the
                                 value of a particular attribute. For example, <emphasis
@@ -7443,7 +7472,7 @@ EDL EDoclite Example
                                     </listitem>
                                 </itemizedlist></para>
                         </listitem>
-                    </itemizedlist></para>
+                    </itemizedlist>
                 <para>For &lt;column> with sortable = <emphasis role="italic">true</emphasis>, the
                     field title becomes a link and when a user clicks the link, KEW sorts the
                     results by that column.</para>

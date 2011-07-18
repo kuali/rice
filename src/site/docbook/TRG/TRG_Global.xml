@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?> 
-<chapter xml:id="TRG_Global" xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+<chapter xml:id="TRG_Global" xmlns="http://docbook.org/ns/docbook"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
     <title>Global</title>
     <sect1>
         <title>Rice Client Overview</title>
@@ -17,11 +18,12 @@
                 Resource Guide for the module you want to embed.</para>
             <figure>
                 <title>Diagram of a sample embedded implementation</title>
-                <inlinemediaobject>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/sample_embedded_implementation.png"/>
                     </imageobject>
-                </inlinemediaobject></figure>
+                </mediaobject>
+            </figure>
             <sect3>
                 <title>Advantages</title>
                 <itemizedlist>
@@ -67,12 +69,13 @@
                 more details on how the web portion of each module is configured, please read the
                 Configuration Guide for each of the modules.</para>
             <para>
-                <figure><title>Diagram of a sample bundled implementation</title>
-                    <inlinemediaobject>
+                <figure>
+                    <title>Diagram of a sample bundled implementation</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/sample_bundled_implementation.png"/>
                         </imageobject>
-                    </inlinemediaobject>
+                    </mediaobject>
                 </figure>
             </para>
             <sect3>
@@ -119,12 +122,14 @@
                 also be secured to provide access to only those callers with authorized digital
                 signatures.</para>
             <para>
-                <figure><title>Diagram of a sample Thin Java Client implementation</title>
-                    <inlinemediaobject>
+                <figure>
+                    <title>Diagram of a sample Thin Java Client implementation</title>
+                    <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/sample_thin_java_client_implementation.png"/>
+                            <imagedata
+                                fileref="../images/sample_thin_java_client_implementation.png"/>
                         </imageobject>
-                    </inlinemediaobject>
+                    </mediaobject>
                 </figure>
             </para>
             <sect3>
@@ -184,11 +189,11 @@
     <sect1>
         <title>Global Configuration Parameters</title>
         <table frame="none">
-            <title/>
+            <title>Global Configuration Parameters</title>
             <tgroup cols="3">
                 <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                <colspec colname="c2" colnum="2" colwidth="2.66*"/>
-                <colspec colname="c3" colnum="3" colwidth="2.7*"/>
+                <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                <colspec colname="c3" colnum="3" colwidth="1.0*"/>
                 <thead>
                     <row>
                         <entry>Configuration Parameter</entry>
@@ -205,7 +210,10 @@
                     </row>
                     <row>
                         <entry>application.id</entry>
-                        <entry>The unique ID for the application. A value should be chosen which will be unique within the scope of Kuali Rice deployment and integration.  There is no default for this value but it must be defined in order for portions of Kuali Rice to function properly.</entry>
+                        <entry>The unique ID for the application. A value should be chosen which
+                            will be unique within the scope of Kuali Rice deployment and
+                            integration. There is no default for this value but it must be defined
+                            in order for portions of Kuali Rice to function properly.</entry>
                         <entry/>
                     </row>
                     <row>
@@ -382,12 +390,13 @@
                 When the RiceConfigurer is instantiated, it constructs a GlobalResourceLoader which
                 contains an ordered chain of ResourceLoader instances to load services from: </para>
             <para>
-                <figure><title>Resource Loader Stack</title>
-                    <inlinemediaobject>
+                <figure>
+                    <title>Resource Loader Stack</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/resource_loader_stack.png"/>
                         </imageobject>
-                    </inlinemediaobject>
+                    </mediaobject>
                 </figure>
             </para>
             <para>All application code should use the GlobalResourceLoader to obtain service
@@ -423,9 +432,11 @@
                 <para>In addition to programmatically acquiring service references, you can also
                     import Rice services into a Spring context with the help of the
                     ResourceLoaderServiceFactoryBean:</para>
-                <para><programlisting>&lt;!-- import a Rice service from the ResourceLoader stack -->
+                <para>
+                    <programlisting>&lt;!-- import a Rice service from the ResourceLoader stack -->
 &lt;bean id="aRiceService" class="org.kuali.rice.resourceloader.support.ResourceLoaderServiceFactoryBean"/>
-</programlisting></para>
+</programlisting>
+                </para>
                 <para>This class uses the GlobalResourceLoader to locate a service named the same as
                     the ID and produces a bean that proxies that service. The bean can thereafter be
                     wired in Spring like any other bean.</para>
@@ -439,15 +450,19 @@
                     services to auto-wire.</para>
                 <para>Add this bean definition to the top of your Spring configuration file to
                     configure the Spring extension:</para>
-                <para><programlisting>&lt;bean class="org.kuali.rice.core.util.GRLServiceInjectionPostProcessor"/></programlisting></para>
+                <para>
+                    <programlisting>&lt;bean class="org.kuali.rice.core.util.GRLServiceInjectionPostProcessor"/></programlisting>
+                </para>
                 <para>Add the @RiceService annotation to any field or method, following the normal
                     Spring rules for injection annotations. The annotation requires a name property
                     that specifies the name of the service to inject. If the name requires a
                     namespace other than the current context namespace, you must specify the
                     namespace as a prefix (for example, “{KEW}actionListService”).</para>
-                <para><programlisting>@RiceService(name="workflowDocumentService")
+                <para>
+                    <programlisting>@RiceService(name="workflowDocumentService")
 protected WorkflowDocumentService workflowDocumentService;
-</programlisting></para>
+</programlisting>
+                </para>
             </sect3>
             <sect3>
                 <title>Publishing Spring Services to the Global Resource Loader</title>
@@ -455,19 +470,23 @@ protected WorkflowDocumentService workflowDocumentService;
                     Spring context to the Resource Loader stack. Fortunately, there is an easy way
                     to accomplish this using the RiceSpringResourceLoaderConfigurer as shown
                     below:</para>
-                <para><programlisting>&lt;!—- Publish all services from this Spring context to the GRL -->
+                <para>
+                    <programlisting>&lt;!—- Publish all services from this Spring context to the GRL -->
 &lt;bean class="org.kuali.rice.core.resourceloader.RiceSpringResourceLoaderConfigurer"/>
 
 &lt;bean id="myService1" class="my.app.package.MyService1"/>
 
 &lt;bean id="myService2" class="my.app.package.MyService2"/>
-</programlisting></para>
+</programlisting>
+                </para>
                 <para>In the above example, both myService1 and myService2 would be added to a
                     Resource Loader that would be put at the top of the Resource Loader stack. The
                     names of these services would be “myService1” and “myService2” with no
                     namespace. To load these services you would use the following call to the Global
                     Resource Loader:</para>
-                <para><programlisting>MyService1 myService1 = GlobalResourceLoader.getService(“myService1”);</programlisting></para>
+                <para>
+                    <programlisting>MyService1 myService1 = GlobalResourceLoader.getService(“myService1”);</programlisting>
+                </para>
             </sect3>
             <sect3>
                 <title>Customizing and Overriding Rice Services</title>
@@ -495,7 +514,8 @@ protected WorkflowDocumentService workflowDocumentService;
                         ResourceLoader. Your configuration needs to inject this bean as the
                         RootResourceLoader of the RiceConfigurer using the rootResourceLoader
                         property, as shown below:</para>
-                    <para><programlisting>&lt;!-- a Rice bean we want to override in our application -->
+                    <para>
+                        <programlisting>&lt;!-- a Rice bean we want to override in our application -->
 &lt;bean id="overriddenRiceBean" class="my.app.package.MyRiceServiceImpl"/>
 
 
@@ -507,7 +527,8 @@ protected WorkflowDocumentService workflowDocumentService;
     &lt;property name="rootResourceLoader" ref="appResourceLoader"/>
     ...
 &lt;/bean>
-</programlisting></para>
+</programlisting>
+                    </para>
                     <warning>
                         <para><emphasis role="bold">Application Resource Loader and Circular
                                 Dependencies</emphasis></para>
@@ -530,7 +551,8 @@ protected WorkflowDocumentService workflowDocumentService;
                         file) that loads the Rice modules. You can override services from the
                         various modules by injecting a list of additional spring files to load as in
                         the following example:</para>
-                    <para><programlisting>&lt;bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
+                    <para>
+                        <programlisting>&lt;bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
     ...
     &lt;property name="additionalSpringFiles" ref="appResourceLoader">
         &lt;list>
@@ -539,7 +561,8 @@ protected WorkflowDocumentService workflowDocumentService;
     &lt;/property>
     ...
 &lt;/bean>
-</programlisting></para>
+</programlisting>
+                    </para>
                     <para>You will need to ensure that any Spring XML files and necessary classes
                         they reference are in the classpath of your application. If you are
                         overriding things in the Rice standlone application itself, then you would
@@ -559,9 +582,11 @@ protected WorkflowDocumentService workflowDocumentService;
                         case, you can specify additional spring files using a configuration
                         parameter in your Rice configuration XML, as in the following
                         example:</para>
-                    <para><programlisting>&lt;param name=”rice.additionalSpringFiles”
+                    <para>
+                        <programlisting>&lt;param name=”rice.additionalSpringFiles”
 value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
-</programlisting></para>
+</programlisting>
+                    </para>
                 </sect4>
             </sect3>
         </sect2>
@@ -674,7 +699,9 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                                         <emphasis role="bold">C:\Documents and
                                         Settings\user\.m2\settings.xml</emphasis>. Add this line to
                                     the file somewhere inside the &lt;settings> tag: </para>
-                                <para><programlisting>&lt;localRepository>C:\work\m2&lt;/localRepository></programlisting></para>
+                                <para>
+                                    <programlisting>&lt;localRepository>C:\work\m2&lt;/localRepository></programlisting>
+                                </para>
                             </listitem>
                         </orderedlist></para>
                 </listitem>
@@ -682,10 +709,10 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
         </sect2>
         <sect2>
             <title>Import rice into Eclipse as a project (Source distribution only)</title>
-            <para><note>You only need to follow these instructions if you downloaded the source distribution of Rice
-                    as a zip file. If you are a contributing developer who will be committing code
-                    to CVS, please skip this step (Importing rice into Eclipse as a Project) and go
-                    to the next one instead.</note></para>
+            <para><emphasis role="bold">Note: </emphasis>You only need to follow these instructions
+                if you downloaded the source distribution of Rice as a zip file. If you are a
+                contributing developer who will be committing code to CVS, please skip this step
+                (Importing rice into Eclipse as a Project) and go to the next one instead.</para>
             <orderedlist>
                 <listitem>
                     <para>Open Eclipse. </para>
@@ -693,30 +720,37 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                 <listitem>
                     <para>Choose <emphasis role="italic">File --> Import --> Existing Projects into
                             Workspace</emphasis>. </para>
-                    <para>
-                        <inlinemediaobject>
+                    <figure>
+                        <title>Root Directory Selection</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/eclipse_import_existing_projects.png"
                                 />
                             </imageobject>
-                        </inlinemediaobject>
-                    </para>
+                        </mediaobject>
+                    </figure>
                 </listitem>
                 <listitem>
                     <para>Browse for and select <emphasis role="bold">/java/projects/rice</emphasis>
                         (or where ever you unzipped the source distribution to) as the root project
-                        directory and click Finish.<inlinemediaobject>
+                        directory and click Finish.</para>
+                    <figure>
+                        <title>Root Directory Selection Continued</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/eclipse_import_projects_directory.png"
                                 />
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                 </listitem>
             </orderedlist>
         </sect2>
         <sect2>
             <title>Check out the Rice code (Non-source SVN distribution only)</title>
-            <para><note>You do not need to perform the steps in this section if you have downloaded the source distribution of Rice as a zip file.</note></para>
+            <para><emphasis role="bold">Note: </emphasis>You do not need to perform the steps in
+                this section if you have downloaded the source distribution of Rice as a zip
+                file.</para>
             <orderedlist>
                 <listitem>
                     <para>We recommend installing Subclipse as a plugin from your Eclipse instance
@@ -757,14 +791,20 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                         <para>Run this command from the command line (this should all be on one line
                             when you enter it): </para>
                         <para><emphasis role="bold">UNIX</emphasis></para>
-                        <para><programlisting>mvn install:install-file -DgroupId=com.oracle -DartifactId=ojdbc14
+                        <para>
+                            <programlisting>mvn install:install-file -DgroupId=com.oracle -DartifactId=ojdbc14
  -Dversion=10.2.0.3.0 -Dpackaging=jar -Dfile=/java/drivers/ojdbc14.jar
-</programlisting></para>
+</programlisting>
+                        </para>
                         <para><emphasis role="bold">Windows</emphasis></para>
-                        <para><programlisting>mvn install:install-file -DgroupId=com.oracle -DartifactId=ojdbc14
- -Dversion=10.2.0.3.0 -Dpackaging=jar -Dfile=c:/java/drivers/ojdbc14.jar</programlisting></para>
+                        <para>
+                            <programlisting>mvn install:install-file -DgroupId=com.oracle -DartifactId=ojdbc14
+ -Dversion=10.2.0.3.0 -Dpackaging=jar -Dfile=c:/java/drivers/ojdbc14.jar</programlisting>
+                        </para>
                         <para>Or, run the equivalent Ant target: </para>
-                        <para><programlisting>ant install-oracle-jar</programlisting></para>
+                        <para>
+                            <programlisting>ant install-oracle-jar</programlisting>
+                        </para>
                     </listitem>
                 </orderedlist>
             </sect3>
@@ -785,11 +825,14 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                     role="bold">M2_REPO</emphasis> Classpath Variable in your Eclipse: <emphasis
                     role="italic">Java > Build Path > Classpath Variable</emphasis>, under the
                 Preferences menu. </para>
-            <para><inlinemediaobject>
+            <figure>
+                <title>Eclipse Classpath Variables</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/eclipse_classpath_variables.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>The Rice project contains auto-generated build path entries that rely on the
                 presence of this M2_REPO variable to determine the location of dependency
                 libraries.</para>
@@ -801,13 +844,14 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                     <para>If dependency libraries have been added or removed from the Rice project,
                         including the first time you check out Rice, you should run the
                         retrieve-maven-dependencies Ant target to pull down all necessary libraries. </para>
-                    <para><note>For the Maven2 Ant tasks to work, Ant has to know where your Maven2 home is. If you have set
-                            the <emphasis role="bold">M2_HOME</emphasis> variable in your system
-                            environment, it will be recognized automatically. If not, or if for some
-                            reason you want to use a different location (e.g., if you want to have
-                            multiple Maven installations), then you can set the <emphasis
-                                role="bold">maven.home.directory</emphasis> property in <emphasis
-                                role="bold">${user.home}/kuali-build.properties</emphasis>.</note></para>
+                    <para><emphasis>Note: </emphasis>For the Maven2 Ant tasks to work, Ant has to
+                        know where your Maven2 home is. If you have set the <emphasis role="bold"
+                            >M2_HOME</emphasis> variable in your system environment, it will be
+                        recognized automatically. If not, or if for some reason you want to use a
+                        different location (e.g., if you want to have multiple Maven installations),
+                        then you can set the <emphasis role="bold">maven.home.directory</emphasis>
+                        property in <emphasis role="bold"
+                            >${user.home}/kuali-build.properties</emphasis>.</para>
                 </listitem>
                 <listitem>
                     <para>Add the <emphasis role="bold">build.xml</emphasis> file in the root of the
@@ -826,11 +870,14 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                 </listitem>
                 <listitem>
                     <para>Execute a clean build of the project in Eclipse:</para>
-                    <para><inlinemediaobject>
+                    <figure>
+                        <title>Eclipse Clean Build</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/eclipse_clean_build.png"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                 </listitem>
                 <listitem>
                     <para>If your build was previously broken due to the <emphasis role="bold"
@@ -840,13 +887,15 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
             </orderedlist>
         </sect2>
         <sect2>
-            <title linkend="installing_dbms">Install the database</title>
+            <title>Install the database</title>
             <para>To set up the database, please follow the instructions in the Installation Guide
-                under <link>Preparing the Database</link>.</para>
+                under Preparing the Database.</para>
         </sect2>
         <sect2>
             <title>Installing the appropriate configuration files</title>
-            <para><note>Be sure to use an appropriate editor such as vi or Notepad when editing configuration files.  For example, we have found that WordPad can corrupt the configuration file.</note></para>
+            <para><emphasis role="bold">Note: </emphasis>Be sure to use an appropriate editor such
+                as vi or Notepad when editing configuration files. For example, we have found that
+                WordPad can corrupt the configuration file.</para>
             <para>To install the configuration file for the Kuali Rice sample application, you can
                 do an Ant-based setup or a manual setup.</para>
             <sect3>
@@ -869,21 +918,23 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                 <orderedlist>
                     <listitem>
                         <para>Copy the <emphasis role="bold"
-                                >config/templates/sample-app-config.template.xml</emphasis> file
-                            to <emphasis role="bold">&lt;user
+                                >config/templates/sample-app-config.template.xml</emphasis> file to
+                                <emphasis role="bold">&lt;user
                                 home>/kuali/main/dev/sample-app-config.xml</emphasis>.</para>
                         <itemizedlist>
                             <listitem>
-                                <para>For Windows, your user home is: <emphasis role="bold">C:\Documents and
-                                    Settings\&lt;user name></emphasis>
+                                <para>For Windows, your user home is: <emphasis role="bold"
+                                        >C:\Documents and Settings\&lt;user name></emphasis>
                                 </para>
-                            </listitem><listitem>
+                            </listitem>
+                            <listitem>
                                 <para>For Unix/Linux, your user home is: <emphasis role="bold"
-                                    >/home/&lt;user name></emphasis>
+                                        >/home/&lt;user name></emphasis>
                                 </para>
-                            </listitem><listitem>
-                                <para>For Mac OS X, your user home is: <emphasis role="bold">/Users/&lt;user
-                                    name></emphasis>
+                            </listitem>
+                            <listitem>
+                                <para>For Mac OS X, your user home is: <emphasis role="bold"
+                                        >/Users/&lt;user name></emphasis>
                                 </para>
                             </listitem>
                         </itemizedlist>
@@ -893,33 +944,38 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                                 >&lt;user home>/kuali/main/dev/sample-app-config.xml</emphasis><itemizedlist>
                                 <listitem>
                                     <para>Oracle</para>
-                                    <para><programlisting>&lt;param name="datasource.url">jdbc:oracle:thin:@localhost:1521:XE&lt;/param>
+                                    <para>
+                                        <programlisting>&lt;param name="datasource.url">jdbc:oracle:thin:@localhost:1521:XE&lt;/param>
 &lt;param name="datasource.username">oracle.username&lt;/param>
-&lt;param name="datasource.password">oracle.password&lt;/param></programlisting></para>
+&lt;param name="datasource.password">oracle.password&lt;/param></programlisting>
+                                    </para>
                                 </listitem>
                                 <listitem>
                                     <para>MySQL</para>
-                                    <para><programlisting>&lt;param name="datasource.url">jdbc:mysql://localhost:3306/kulrice&lt;/param>
+                                    <para>
+                                        <programlisting>&lt;param name="datasource.url">jdbc:mysql://localhost:3306/kulrice&lt;/param>
 &lt;param name="datasource.username">mysql.username&lt;/param>
-&lt;param name="datasource.password">mysql.password&lt;/param></programlisting></para>
+&lt;param name="datasource.password">mysql.password&lt;/param></programlisting>
+                                    </para>
                                 </listitem>
                             </itemizedlist></para>
                     </listitem>
                 </orderedlist>
-                
             </sect3>
         </sect2>
         <sect2>
             <title>Run the sample web application</title>
             <itemizedlist>
                 <listitem>
-                    <para>Back in Eclipse, locate and run the rice - JettyServer.launch
-                        file:</para>
-                    <para><inlinemediaobject>
+                    <para>Back in Eclipse, locate and run the rice - JettyServer.launch file:</para>
+                    <figure>
+                        <title>Eclipse Jetty Launch</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/eclipse_jetty_launch.png"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                 </listitem>
                 <listitem>
                     <para>Point your browser to the following url: <link
@@ -935,17 +991,23 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                     >pom.xml</emphasis> files, you must run the <emphasis role="bold"
                     >update-eclipse-classpath</emphasis> Ant target to regenerate the top-level
                 Eclipse <emphasis role="bold">.classpath</emphasis> file for the project. </para>
-            <para><inlinemediaobject>
+            <figure>
+                <title>Update Eclipse Classpath</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/update_eclipse_classpath.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>If you change the dependencies and commit the change, when others update their
                 local source copy they must run the corresponding retrieve-maven-dependencies target
                 again.</para>
-            <para><note><para>Refresh your Eclipse project if dependencies (and therefore the 
-                Eclipse.classpath file) have changed.</para>
-            </note></para>
+            <para>
+                <note>
+                    <para>Refresh your Eclipse project if dependencies (and therefore the
+                        Eclipse.classpath file) have changed.</para>
+                </note>
+            </para>
         </sect2>
         <sect2>
             <title>Other Notes</title>
@@ -960,12 +1022,14 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                     All you need to do is create a settings.xml file with this content:</para>
                 <programlisting>&lt;settings/></programlisting>
                 <para>Rebuild, and the warning should no longer appear.</para>
-                <note><para>You do <emphasis role="bold">NOT</emphasis> ever need to run any of the context menu Maven
-                        commands from inside Eclipse. </para>
+                <note>
+                    <para>You do <emphasis role="bold">NOT</emphasis> ever need to run any of the
+                        context menu Maven commands from inside Eclipse. </para>
                     <para>You do <emphasis role="bold">NOT</emphasis> need to run any Maven commands
                         from the command line.</para>
                     <para>The Eclipse Maven2 plugin is a little bit flaky sometimes. You might need
-                        to close Eclipse to flush its memory.</para></note>
+                        to close Eclipse to flush its memory.</para>
+                </note>
             </sect3>
             <sect3>
                 <title>Default workspace JDK not 1.5</title>
@@ -996,9 +1060,11 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                         xlink:href="http://m2eclipse.codehaus.org/update-dev/"
                         >http://m2eclipse.codehaus.org/update-dev/</link> allows you to specify a
                     custom local repository. </para>
-                <note><para>If you make this change, you may have to delete and re-add the Maven Managed Dependencies
-                        library to your project build path if you have an existing, invalid,
-                        Maven-managed dependencies library.</para></note>
+                <note>
+                    <para>If you make this change, you may have to delete and re-add the Maven
+                        Managed Dependencies library to your project build path if you have an
+                        existing, invalid, Maven-managed dependencies library.</para>
+                </note>
             </sect3>
             <sect3>
                 <title>Setting JDK Compliance version</title>
@@ -1036,7 +1102,6 @@ alter system set sessions=150 scope=spfile;
                 <para>Disconnect any other clients and then restart Oracle-XE.</para>
             </sect3>
         </sect2>
-        
     </sect1>
     <sect1>
         <title>Creating Rice Enabled Applications</title>
@@ -1096,14 +1161,14 @@ alter system set sessions=150 scope=spfile;
                             <para><emphasis role="bold">-rdir</emphasis> specifies the directory
                                 containing the Rice project. It must be followed by a space and the
                                 directory. If not specified, the directory /java/projects/rice will
-                                be used.  </para>
+                                be used. </para>
                         </listitem>
                         <listitem>
                             <para><emphasis role="bold">-mdir</emphasis> specifies the home
                                 directory for Maven, which is required to set up the Eclipse
                                 project’s class path information. It must be followed by a space and
                                 the directory. If not specified, the script will attempt to find
-                                Maven using the following sources:  <itemizedlist>
+                                Maven using the following sources: <itemizedlist>
                                     <listitem>
                                         <para>An environment variable named <emphasis role="bold"
                                                 >M2_HOME</emphasis>
@@ -1162,11 +1227,11 @@ alter system set sessions=150 scope=spfile;
         <sect2>
             <title>Reorder Eclipse Classpath</title>
             <para>Once the sample script execution has completed, you will need to import your
-                project into eclipse and reorder the eclipse classpath to account for a change
-                in how the classpath was generated by maven. Navigate to your project properties
-                and select the Order and Export tab from the Java Build Path project property.
-                There will be an entry for JRE System Library at the bottom of the list that
-                should be moved to the very top.</para>
+                project into eclipse and reorder the eclipse classpath to account for a change in
+                how the classpath was generated by maven. Navigate to your project properties and
+                select the Order and Export tab from the Java Build Path project property. There
+                will be an entry for JRE System Library at the bottom of the list that should be
+                moved to the very top.</para>
         </sect2>
         <sect2>
             <title>Rice Configuration System</title>
@@ -1491,12 +1556,4 @@ config.parseConfig();             </programlisting>
             </sect3>
         </sect2>
     </sect1>
-<!-- These sections were blank in the Doc2Help Word docs, but included in case we want to fill them out    
-    <sect1>
-        <title>The Help Framework</title>
-    </sect1>
-    <sect1>
-        <title>Testing</title>
-    </sect1>
--->    
 </chapter>

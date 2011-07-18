@@ -547,7 +547,6 @@ KimRoleInfo info = rmSvc.getRoleByName(namespaceCode, roleName);             </p
                 <para>All custom type services must implement a sub-interface of <emphasis
                         role="bold">org.kuali.rice.kim.service.support.KimTypeService</emphasis>
                     based on the type of custom type being created.</para>
-<!-- Begin Recommended Best Practice -->
                 <para>Your custom type service class should extend the appropriate subclass of
                         <emphasis role="bold"
                         >org.kuali.rice.kim.service.support.impl.KimTypeServiceBase</emphasis> and
@@ -559,8 +558,7 @@ KimRoleInfo info = rmSvc.getRoleByName(namespaceCode, roleName);             </p
 
 
 }
-</programlisting>
-<!-- End Recommended Best Practice -->                
+</programlisting>                
             </sect3>
             <sect3>
                 <title>Method getAttributeDefinitions</title>
@@ -694,7 +692,6 @@ KimRoleInfo info = rmSvc.getRoleByName(namespaceCode, roleName);             </p
                 for more details on the methods described here.</para>
             <sect3>
                 <title>Java Class Information</title>
-                <!-- Begin Recommended Best Practice -->
                 <para>Your custom type service class should extend
                     org.kuali.rice.kim.service.support.impl.KimGroupTypeServiceBase and only
                     override the methods necessary to implement your custom behavior. Use the
@@ -705,7 +702,6 @@ KimRoleInfo info = rmSvc.getRoleByName(namespaceCode, roleName);             </p
     // Do something
 }
 </programlisting>
-                <!-- End Recommended Best Practice -->
             </sect3>
             <sect3>
                 <title>Methods Specific to Group Types</title>
@@ -723,7 +719,6 @@ KimRoleInfo info = rmSvc.getRoleByName(namespaceCode, roleName);             </p
                 methods described here.</para>
             <sect3>
                 <title>Java Class Information</title>
-                <!-- Begin Recommended Best Practice -->
                 <para>Your custom permission type service class should extend <emphasis role="bold"
                         >org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase</emphasis>
                     and only override the methods necessary to implement your custom behavior. Use
@@ -732,7 +727,6 @@ KimRoleInfo info = rmSvc.getRoleByName(namespaceCode, roleName);             </p
  implements KimPermissionTypeService {
     // Do something
 }</programlisting>
-                <!-- End Recommended Best Practice -->
             </sect3>
             <sect3>
                 <title>Methods Specific to Permission Types</title>
@@ -784,7 +778,6 @@ KimRoleInfo info = rmSvc.getRoleByName(namespaceCode, roleName);             </p
                 for more details on the methods described here.</para>
             <sect3>
                 <title>Java Class Information</title>
-                <!-- Begin Recommended Best Practice -->
                 <para>Your custom permission type service class should extend <emphasis role="bold"
                         >org.kuali.rice.kim.service.support.impl.KimResponsibilityTypeServiceBase</emphasis>
                     and only override the methods necessary to implement your custom behavior. Use
@@ -795,7 +788,6 @@ KimRoleInfo info = rmSvc.getRoleByName(namespaceCode, roleName);             </p
     // Do something
 }
 </programlisting>
-                <!-- End Recommended Best Practice -->
             </sect3>
             <sect3>
                 <title>Methods Specific to Responsibility Types</title>
@@ -847,7 +839,6 @@ KimRoleInfo info = rmSvc.getRoleByName(namespaceCode, roleName);             </p
                 details on the methods described here.</para>
             <sect3>
                 <title>Java Class Information</title>
-                <!-- Begin Recommended Best Practice -->
                 <para>Your custom type service class should extend one of the following classes (all
                     in the package <emphasis role="bold"
                         >org.kuali.rice.kim.service.support.impl</emphasis>):<itemizedlist>
@@ -873,7 +864,6 @@ KimRoleInfo info = rmSvc.getRoleByName(namespaceCode, roleName);             </p
 
 
 }</programlisting>
-                <!-- End Recommended Best Practice -->
             </sect3>
             <sect3>
                 <title>Methods Specific to Role Types</title>

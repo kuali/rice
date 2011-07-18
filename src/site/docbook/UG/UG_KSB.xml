@@ -11,11 +11,11 @@
         <para>
             <figure>
                 <title>Kuali Service Bus</title>
-                <inlinemediaobject>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/kuali_service_bus.png"/>
                     </imageobject>
-                </inlinemediaobject>
+                </mediaobject>
             </figure>
         </para>
         <para>You can deploy services to the bus using Spring or programmatically. Services must be
@@ -109,11 +109,11 @@
             <title>Overview of Supported Service Protocols</title>
             <figure>
                 <title>Supported Service Protocols</title>
-                <inlinemediaobject>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/supported_service_protocols.png"/>
                     </imageobject>
-                </inlinemediaobject>
+                </mediaobject>
             </figure>
             <para>This drawing is conceptual and not representative of true deployment architecture.
                 Essentially, the KSB is a registry with service-calling behavior on the client end
@@ -160,11 +160,13 @@
             find it on the Administration menu. </para>
         <para>It has three main sections: Current Node Info, the message filter and fetch section,
             and the Documents currently in route queue section.</para>
-        <para><inlinemediaobject>
+        <figure><title>Message Queue: Documents Currently In Route</title>
+            <mediaobject>
                 <imageobject>
                     <imagedata fileref="../images/message_queue.png"/>
                 </imageobject>
-            </inlinemediaobject></para>
+            </mediaobject>
+        </figure>
         <sect2>
             <title>Current Node Info</title>
             <itemizedlist>
@@ -205,18 +207,20 @@
                 Message Filter section, enter your criteria and click the Filter button:</para>
             <para>
                 <figure>
-                    <title>Message Filter Screen:</title>
-                    <imageobject>
-                        <imagedata fileref="../images/message_filter_screen.png"/>
-                    </imageobject>
+                    <title>Message Filter Screen</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/message_filter_screen.png"/>
+                        </imageobject>
+                    </mediaobject>                        
                 </figure>
             </para>
             <para>
                 <table frame="none">
-                    <title/>
+                    <title>Message Filter Screen: Attributes</title>
                     <tgroup cols="2">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                        <colspec colname="c2" colnum="2" colwidth="2.57*"/>
+                        <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                         <thead>
                             <row>
                                 <entry>Field</entry>
@@ -242,8 +246,8 @@
                             </row>
                             <row>
                                 <entry>Queue Status</entry>
-                                <entry>You can sort documents by the queue status. The queue status
-                                    may be:<itemizedlist>
+                                <entry><para>You can sort documents by the queue status. The queue status may be:</para>
+                                    <itemizedlist>
                                         <listitem>
                                             <para>QUEUED: The message is waiting for a worker thread
                                                 to pick it up </para>
@@ -282,26 +286,31 @@
                 left of the button. </para>
             <para>When you click the Execute Message Fetcher button, a dialog box appears,
                 confirming that you want to execute this command:</para>
-            <para><inlinemediaobject>
+            <figure><title>Execute Message Filter: Confirmation Screen</title>
+                <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/execute_message_fetcher_message.png"/>
+                        <imagedata fileref="../images/execute_message_fetcher_message.png"
+                            scale="75"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>KSB displays the results of a search and/or filter at the bottom of the page in
                 the Documents currently in route queue table.</para>
-            <para><inlinemediaobject>
+            <figure><title>Documents In Route Queue</title>
+                <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/documents_in%20route_queue_table.png"/>
+                        <imagedata fileref="../images/docs_inroute_queue_table.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
         </sect2>
         <sect2>
             <title>Documents Currently in Route Queue</title>
             <table frame="none">
-                <title>Documents currently in route queue table fields</title>
+                <title>Documents Currently in Route Queue: Attributes</title>
                 <tgroup cols="2">
                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                    <colspec colname="c2" colnum="2" colwidth="4.0*"/>
+                    <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                     <thead>
                         <row>
                             <entry>Field</entry>
@@ -328,7 +337,8 @@
                         </row>
                         <row>
                             <entry>Queue Status</entry>
-                            <entry>You can sort documents by the queue status. The queue status may be:<itemizedlist>
+                            <entry><para>You can sort documents by the queue status. The queue status may be:</para>
+                                <itemizedlist>
                                     <listitem>
                                         <para>QUEUED: The message is waiting for a worker thread to
                                             pick it up </para>
@@ -377,7 +387,8 @@
                         </row>
                         <row>
                             <entry>Actions</entry>
-                            <entry>Click a link in this field to:<itemizedlist>
+                            <entry><para>Click a link in this field to:</para>
+                                <itemizedlist>
                                     <listitem>
                                         <para><emphasis role="bold">View</emphasis>: View the detail
                                             message report </para>
@@ -403,7 +414,7 @@
                 Documents currently in route queue table. Additional information on the View screen:<itemizedlist>
                     <listitem>
                         <para><emphasis role="bold">Message</emphasis><table frame="none">
-                                <title/>
+                                <title>Message: Attributes</title>
                                 <tgroup cols="2">
                                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                                     <colspec colname="c2" colnum="2" colwidth="1.0*"/>
@@ -428,10 +439,10 @@
                     </listitem>
                     <listitem>
                         <para><emphasis role="bold">Payload</emphasis><table frame="none">
-                                <title/>
+                                <title>Payload: Attributes</title>
                                 <tgroup cols="2">
                                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                                    <colspec colname="c2" colnum="2" colwidth="1.7*"/>
+                                    <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                                     <thead>
                                         <row>
                                             <entry>Field</entry>
@@ -476,8 +487,8 @@
                                         </row>
                                         <row>
                                             <entry>ServiceInfo.queue</entry>
-                                            <entry>A true and false indicator that activates the
-                                                queue or topic function:<itemizedlist>
+                                            <entry><para>A true and false indicator that activates the queue or topic function:</para>
+                                                <itemizedlist>
                                                   <listitem>
                                                   <para>"True" uses the Queue method, which sends
                                                   the message to one contact at a time</para>
@@ -505,7 +516,8 @@
                                         </row>
                                         <row>
                                             <entry>ServiceInfo.millisToLive</entry>
-                                            <entry>An expiration indicator:<itemizedlist>
+                                            <entry><para>An expiration indicator:</para>
+                                                <itemizedlist>
                                                   <listitem>
                                                   <para>1 means the message never expires</para>
                                                   </listitem>
@@ -542,10 +554,10 @@
                         <para>When you click <emphasis role="bold">Edit</emphasis> in the <emphasis
                                 role="bold">Actions</emphasis> menu, KSB displays the editable
                             fields for that message. Fields on the Edit screen:<table frame="none">
-                                <title/>
+                                <title>Edit Screen: Attributes</title>
                                 <tgroup cols="2">
                                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                                    <colspec colname="c2" colnum="2" colwidth="1.63*"/>
+                                    <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                                     <thead>
                                         <row>
                                             <entry>Field</entry>
@@ -599,10 +611,10 @@
                                 </tgroup>
                             </table></para>
                             <para>Functional links on the Edit page:<table frame="none">
-                                <title/>
+                                <title>Edit Screen: Links</title>
                                 <tgroup cols="2">
                                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                                    <colspec colname="c2" colnum="2" colwidth="1.6*"/>
+                                    <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                                     <thead>
                                         <row>
                                             <entry>Field</entry>
@@ -647,11 +659,13 @@
                         <para><emphasis role="bold">ReQueue</emphasis></para>
                         <para>When you click ReQueue in the Actions menu, KSB displays this pop-up
                             message:</para>
-                        <para><inlinemediaobject>
+                        <figure><title>Requeue Documents: Confirmation Screen</title>
+                            <mediaobject>
                                 <imageobject>
                                     <imagedata fileref="../images/requeue_confirmation.png"/>
                                 </imageobject>
-                            </inlinemediaobject></para>
+                            </mediaobject>
+                        </figure>
                     </listitem>
                 </itemizedlist></para>
         </sect2>
@@ -668,17 +682,19 @@
             Thread Pool and allows you to change four parameters for the Thread Pool. The core pool
             size, the maximum pool size, the RouteQueue.TimeIncrement and the
             RouteQueue.maxRetryAttempts.</para>
-        <para><inlinemediaobject>
+        <figure><title>Thread Pool Administration Page</title>
+            <mediaobject>
                 <imageobject>
                     <imagedata fileref="../images/thread_pool_administration.png"/>
                 </imageobject>
-            </inlinemediaobject></para>
+            </mediaobject>
+        </figure>
         <para>
             <table frame="none">
-                <title/>
+                <title>Thread Pool: Attributes</title>
                 <tgroup cols="2">
                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                    <colspec colname="c2" colnum="2" colwidth="1.78*"/>
+                    <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                     <thead>
                         <row>
                             <entry>Field</entry>
@@ -769,22 +785,26 @@
                 role="bold">Current Node Info</emphasis> table and the beginning of the <emphasis
                 role="bold">Published Services</emphasis> table, as well as the refresh link and
             button:</para>
-        <para><inlinemediaobject>
+        <figure><title>Service Registery</title>
+            <mediaobject>
                 <imageobject>
                     <imagedata fileref="../images/service_registry_top.png"/>
                 </imageobject>
-            </inlinemediaobject></para>
+            </mediaobject>
+        </figure>
         <para>To update the list of published services, use either the <emphasis role="bold">Refresh
                 Page</emphasis> link in the header at the top of the page or the "Refresh Service
             Registry" button.</para>
         <para>This screen print shows the point on a Service Registry page where KSB displays a
             notation that there are no published temporary services and the beginning of the
                 <emphasis role="bold">All Registry Services</emphasis> table:</para>
-        <para><inlinemediaobject>
+        <figure><title>Service Reigstery Results</title>
+            <mediaobject>
                 <imageobject>
                     <imagedata fileref="../images/service_registry_bottom.png"/>
                 </imageobject>
-            </inlinemediaobject></para>
+            </mediaobject>
+        </figure>
     </sect1>
     <sect1>
         <title>Quartz</title>
@@ -796,11 +816,13 @@
             See the Technical Reference Guide for KSB, Configuring Quartz for KSB for more
             information. </para>
         <para>Quartz is also known as the <emphasis role="bold">Exception Routing Queue</emphasis>. </para>
-        <para><inlinemediaobject>
+        <figure><title>Exception Routing Queue</title>
+            <mediaobject>
                 <imageobject>
                     <imagedata fileref="../images/exception_routing_queue.png"/>
                 </imageobject>
-            </inlinemediaobject></para>
+            </mediaobject>
+        </figure>
         <para>When you click the Quartz link on the Kuali Rice Portal Administration page, KSB
             displays the screen shown above. The contents of the table can be sorted in ascending or
             descending order by clicking on a column title. This technique works for all columns
@@ -808,10 +830,10 @@
             scheduled:</para>
         <para>
             <table frame="none">
-                <title/>
+                <title>Exception Routing Queue: Attributes</title>
                 <tgroup cols="2">
                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                    <colspec colname="c2" colnum="2" colwidth="1.86*"/>
+                    <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                     <thead>
                         <row>
                             <entry>Field</entry>
@@ -855,35 +877,41 @@
         <para>For client applications to consume secured services hosted from a standalone Rice
             server, the implementer must generate a keystore in KSB. KSB security relies on the
             creation of a keystore using the JVM keytool.</para>
-        <para><inlinemediaobject>
+        <figure><title>Create Keystore</title>
+            <mediaobject>
                 <imageobject>
                     <imagedata fileref="../images/create_keystore.png"/>
                 </imageobject>
-            </inlinemediaobject></para>
+            </mediaobject>
+        </figure>
         <para>To create a new Client Keystore file, complete all three fields and click the create
             button that is just below the fields:</para>
-        <para><inlinemediaobject>
+        <figure><title>Create Keystore: File Section</title>
+            <mediaobject>
                 <imageobject>
                     <imagedata fileref="../images/create_keystore_file.png"/>
                 </imageobject>
-            </inlinemediaobject></para>
+            </mediaobject>
+        </figure>
         <para>The <emphasis role="bold">Desired Alias</emphasis> (name for the new keystore you are
             creating) must be unique among your keystores. KSB automatically displays a list of
             existing Keystore entries for your reference below the <emphasis role="italic">Create
                 new Client Keystore file</emphasis> table. The data in this list can be sorted in
             ascending or descending order by clicking the column heading for any column except
                 <emphasis role="italic">Actions</emphasis>. </para>
-        <para><inlinemediaobject>
+        <figure><title>Create Keystore: Existing Keystore Section</title>
+            <mediaobject>
                 <imageobject>
                     <imagedata fileref="../images/existing_keystore_entries.png"/>
                 </imageobject>
-            </inlinemediaobject></para>
+            </mediaobject>
+        </figure>
         <para>
             <table frame="none">
-                <title/>
+                <title>Existing Keystore Entries: Attributes</title>
                 <tgroup cols="2">
                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                    <colspec colname="c2" colnum="2" colwidth="1.9*"/>
+                    <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                     <thead>
                         <row>
                             <entry>Field</entry>

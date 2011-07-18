@@ -1,8 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?> 
-<appendix xmlns="http://docbook.org/ns/docbook" version="5.0">
+<appendix xml:id="appendix_load_balanced" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">    
     <title>Setting Up a Load-Balanced Clustered Production Environment</title>
-    <para><note>These details are repeated from the previous section on running a production
-        platform</note></para>
+    <note><para>These details are repeated from the previous section on running a productionplatform</para></note>
     <para>This describes how to set up Rice instances for a load-balanced production environment
         across multiple computers. <orderedlist>
             <listitem>

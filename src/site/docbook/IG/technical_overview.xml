@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?> 
-<chapter xmlns="http://docbook.org/ns/docbook" version="5.0">
+<chapter xml:id="technical_architecture" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">    
     <title>Technical Overview</title>
     <sect1>
         <title>Architectural Diagram</title>
@@ -174,11 +174,11 @@
                         <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/supported_service_protocols.png"/>
-                            </imageobject>
-                            <textobject>This drawing is conceptual and not representative of true
-                                deployment architecture.</textobject>
+                            </imageobject>                            
                         </mediaobject>
                     </figure>
+                    <note><para>This drawing is conceptual and not representative of true
+                        deployment architecture.</para></note>                    
                 </para>
                 <para>Essentially, the KSB is a registry with service-calling behavior on the client
                     end (for Java clients). All policies and behaviors (aysnc vs. sync) are

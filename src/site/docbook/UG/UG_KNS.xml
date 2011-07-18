@@ -25,21 +25,23 @@
         </sect2>
         <sect2>
             <title>KNS Conceptual View</title>
-            <para><inlinemediaobject>
+            <figure><title>KNS: Conceptual View</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/kns_conceptual_view.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject></figure>
             <para>KNS is the core technical module in Rice. It has reusable code components to
                 provide functionality. </para>
         </sect2>
         <sect2>
             <title>KNS Relational View</title>
-            <para><inlinemediaobject>
+            <figure><title>KNS: Relational View</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/kns_relational_view.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject></figure>
             <para>Essentially, KNS is a common set of service methods you can use to take actions on
                 a document. It’s very similar to a business object service, for example, one that
                 persists documents and integrates with a workflow. One of the ways the KNS subsystem
@@ -61,11 +63,12 @@
                 are used for configuring the system during runtime. Parameters control whether
                 certain features are turned on or off. They also establish default values within the
                 Rice system or by a process such as validation.</para>
-            <para><inlinemediaobject>
+            <figure><title>Parameter Lookup Link</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/select_parameter_lookup.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject></figure>
             <para>To access the Parameter Lookup screen:<orderedlist>
                     <listitem>
                         <para>Go to the Rice<emphasis role="bold"> Main Menu</emphasis> screen
@@ -79,11 +82,13 @@
                         </para>
                     </listitem>
                 </orderedlist></para>
-            <para><inlinemediaobject>
+            <figure><title>Parameter Lookup</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/parameter_lookup.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>There are two ways to search for information on specific parameters:<itemizedlist>
                     <listitem>
                         <para>Enter information about the parameter in one or more fields on the
@@ -99,11 +104,13 @@
                             parameters, similar to this: </para>
                     </listitem>
                 </itemizedlist></para>
-            <para><inlinemediaobject>
+            <figure><title>Parameter Lookup: Results Set</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/parameter_lookup_results.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>You can sort the list of parameters in ascending or descending order by one column
                 by clicking the appropriate column heading. If you want to save the list, you can
                 export the entire list in CSV, spreadsheet, or XML format. </para>
@@ -115,11 +122,13 @@
             <para>You arrive at this screen by clicking a<emphasis role="bold"> Parameter
                     Name</emphasis> on the <emphasis role="bold">Parameter Lookup</emphasis>
                 list.</para>
-            <para><inlinemediaobject>
+            <figure><title>Parameter Inquiry</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/parameter_inquiry.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
         </sect2>
         <sect2>
             <title>Parameter Maintenance</title>
@@ -148,11 +157,13 @@
                 <title>Parameter Maintenance Screen</title>
                 <para>KNS Parameters can be created and edited by selecting the Parameter option on
                     the Rice Administration screen.</para>
-                <para><inlinemediaobject>
+                <figure><title>Configureation Channel: Parameter Link</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/select_parameter.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>After selection you will be presented with the <emphasis role="bold">Parameter
                         Maintenance Document </emphasis>screen. The picture below is the complete
                     screen with all tabs hidden. By default the Document Overview and Edit Parameter
@@ -160,11 +171,13 @@
                 <para>The system will automatically assign a new document number every time this
                     screen is accessed. The Initiator, Status and Created information will also
                     automatically be filled in.</para>
-                <para><inlinemediaobject>
+                <figure><title>Parameter Maintenance Document</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/parameter_maintenance_document.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>The Notes and Attachments tab, the Ad Hoc Recipients tab, the Route Log tab,
                     and the buttons at the bottom of this screen perform standard functionality as
                     described in the Common Features and Functionality document found in the Global
@@ -174,7 +187,7 @@
                 <para/>
                 <para>
                     <table frame="none">
-                        <title/>
+                        <title>Parameter Maintenance Document: attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
@@ -213,14 +226,16 @@
             </sect3>
             <sect3>
                 <title>Document Overview Tab</title>
-                <para><inlinemediaobject>
+                <figure><title>Parameter Maintenance Document:Document Overivew Tab</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/parameter_overview.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>
                     <table frame="none">
-                        <title/>
+                        <title>Document Overview Tab: Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
@@ -255,14 +270,16 @@
             </sect3>
             <sect3>
                 <title>Edit Parameter Tab</title>
-                <para><inlinemediaobject>
+                <figure><title>Parameter Maintenace Document: Edit Parameter Tab</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/edit_parameter.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>
                     <table frame="none">
-                        <title/>
+                        <title>Edite Parameter Tab: Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
@@ -336,11 +353,13 @@
                         <para>actual creation date and time </para>
                     </listitem>
                 </itemizedlist></para>
-                <para><inlinemediaobject>
+                <figure><title>Parameter Maintenance Document: Routed Summary</title>
+                    <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/parameter_maintenance_document2.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
             <para>You’ll also notice that the screen has changed and now has different buttons at
                 the bottom. Click the close button to close the current screen and return to your
                 starting point.</para>
@@ -356,30 +375,36 @@
             <para>To get to the <emphasis role="bold">Parameter Component Lookup</emphasis> screen
                 click that option in the <emphasis role="bold">KNS Maintenance Documents</emphasis>
                 section on the <emphasis role="bold">Main Menu</emphasis>.</para>
-            <para><inlinemediaobject>
+            <figure><title>KNS Maintenance Documents: Parameter Componenet Lookup Link</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/select_parameter_component_lookup.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>This leads you to the <emphasis role="bold">Parameter Component Lookup</emphasis>
                 screen.</para>
-            <para><inlinemediaobject>
+            <figure><title>Parameter Component Lookup</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/parameter_component_lookup.png"/>
                     </imageobject>
-            </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>Performing a search from this screen returns a list of one or more Parameter
                 Components which looks similar to the following example.</para>
-            <para><inlinemediaobject>
+            <figure><title>Parameter Component Lookup: Resutls Set</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/parameter_component_lookup_results.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>To limit the number of items returned you simply provide criteria which is then
                 used to limit the search.</para>
             <para>
                 <table frame="none">
-                    <title/>
+                    <title>Parameter Component Lookup: Resultes set Attributes</title>
                     <tgroup cols="2">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                         <colspec colname="c2" colnum="2" colwidth="1.0*"/>
@@ -416,17 +441,19 @@
         </sect2>
         <sect2>
             <title>Parameter Component Inquiry</title>
-            <para><inlinemediaobject>
+            <figure><title>Parameter Componenet Inquiry</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/parameter_component_inquiry.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>You arrive at this screen by clicking on a <emphasis role="bold">Parameter
                     Component</emphasis> on the <emphasis role="bold">Parameter Lookup</emphasis>
                 list.</para>
             <para>
                 <table frame="none">
-                    <title/>
+                    <title>Parameter Componenet Inquiry: Attributes</title>
                     <tgroup cols="2">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                         <colspec colname="c2" colnum="2" colwidth="1.0*"/>
@@ -463,11 +490,13 @@
                     <emphasis role="bold">KNS Maintenance Documents</emphasis> section on the
                     <emphasis role="bold">Main Menu</emphasis>, Rice displays a screen titled
                     <emphasis role="bold">Namespace Lookup</emphasis>, like this:</para>
-            <para><inlinemediaobject>
+            <figure><title>Namespace Lookup</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/namespace_lookup.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>There are two ways to search for information on a specific Namespace:<itemizedlist>
                     <listitem>
                         <para>Enter information about the Namespace you want to find in one or more
@@ -483,11 +512,13 @@
                             Namespaces, similar to this: </para>
                     </listitem>
                 </itemizedlist></para>
-            <para><inlinemediaobject>
+            <figure><title>Namespace Lookup: Results Set</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/namespace_lookup_results.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>You can sort the search results in ascending or descending order by one column by
                 clicking that column’s heading. If you want to save the search results, you can
                 export the entire list in CSV, spreadsheet, or XML format. </para>
@@ -528,11 +559,13 @@
                 </itemizedlist></para>
             <para>The Namespace Inquiry screen and information you see will be similar to
                 this:</para>
-            <para><inlinemediaobject>
+            <figure><title>Namespace Inquiry</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/namespace_inquiry.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
         </sect2>
     </sect1>
     <sect1>
@@ -544,27 +577,33 @@
                 Rice system.</para>
             <para>To get to this screen, click <emphasis role="bold">Parameter Type
                     Lookup</emphasis> on the <emphasis role="bold">Main Menu</emphasis>. </para>
-            <para><inlinemediaobject>
+            <figure><title>KNS Maintenance Documents Channel: Parameter Type Lookup Link</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/select_parameter_type_lookup.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>You can also get to this screen by clicking the field lookup button on any screen
                 where it appears next to the <emphasis role="bold">Parameter Type Code</emphasis>
                 field.</para>
-            <para><inlinemediaobject>
+            <figure><title>Parameter Type Lookup</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/parameter_type_lookup.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>Performing a search from the <emphasis role="bold">Parameter Type
                     Lookup</emphasis> screen displays a table of Parameter Types that looks similar
                 to this:</para>
-            <para><inlinemediaobject>
+            <figure><title>Parameter Type Lookup: Results Set</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/parameter_type_lookup_results.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>The fields on this screen are described in the <emphasis role="bold">Parameter
                     Type Maintenance</emphasis> section of this document.</para>
             <para>You can sort the search results in ascending or descending order by clicking the
@@ -581,11 +620,13 @@
                     Code</emphasis> from the dropdown list. Then, click the inquiry button to
                 display the Parameter Type Inquiry screen with the information for that
                 parameter:</para>
-            <para><inlinemediaobject>
+            <figure><title>Parameter Type Inquiry</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/parameter_type_inquiry.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>The fields on this screen are described in the <emphasis role="bold">Parameter
                     Type Maintenance</emphasis> section of this document.</para>
         </sect2>
@@ -598,18 +639,22 @@
                 by clicking <emphasis role="bold">Parameter Type</emphasis> in the <emphasis
                     role="bold">Configuration</emphasis> section on the Rice <emphasis role="bold"
                     >Administration</emphasis> menu:</para>
-            <para><inlinemediaobject>
+            <figure><title>Configuration Channel: Parameter Type Link</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/select_parameter_type.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>This takes you to the <emphasis role="bold">Parameter Type Maintenance
                     Document</emphasis> screen:</para>
-            <para><inlinemediaobject>
+            <figure><title>Parameter Type Maintenance Document</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/parameter_type_maintenance_document.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <sect3>
                 <title>Document Layout</title>
                 <para>The Parameter Type Maintenance screen has five main tabs:<itemizedlist>
@@ -634,14 +679,16 @@
             </sect3>
             <sect3>
                 <title>Edit Parameter Type tab</title>
-                <para><inlinemediaobject>
+                <figure><title>Parameter Type Maintenance Document: Edit Parameter Tab</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/edit_parameter_type.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>
                 <para>
                     <table frame="none">
-                        <title/>
+                        <title>Edit Parameter Type Tab: Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
@@ -682,14 +729,16 @@
             <para>You get to this screen by clicking the <emphasis role="bold">Pessimistic Lock
                     Lookup</emphasis> option on the <emphasis role="bold">Main
                 Menu</emphasis>.</para>
-            <para><inlinemediaobject>
+            <figure><title>Pessimistic Lock Lookup</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/pessimistic_lock_lookup.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
             <para>
                 <table frame="none">
-                    <title>Pessimistic Lock Lookup Fields</title>
+                    <title>Pessimistic Lock Lookup: Search Attributes</title>
                     <tgroup cols="2">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                         <colspec colname="c2" colnum="2" colwidth="1.0*"/>

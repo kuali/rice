@@ -40,8 +40,7 @@
         <sect2>
             <title>Software License</title>
             <para>Kuali Rice software is licensed under the Educational Community License, Version
-                2.0. You may obtain a copy of the License at
-                    <link>http://www.opensource.org/licenses/ecl2.php</link>. See the License for
+                2.0. You may obtain a copy of the License <link xlink:href = "http://www.opensource.org/licenses/ecl2.php">here</link>. See the License for
                 the specific language governing permissions and limitations.</para>
             <para>If you have any questions about Kuali Intellectual property, please contact the
                 Kuali Foundation at <link xlink:href="mailto:licensing@kuali.org"
@@ -142,12 +141,12 @@
         <title>Common Features and Functions</title>
         <sect2>
             <title>Standard Buttons on Lookup Screens</title>
-            <table frame="none">
-                <title/>
+            <table>
+                <title>Standard Rice Buttons</title>
                 <tgroup cols="3">
                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                    <colspec colname="c2" colnum="2" colwidth="1.39*"/>
-                    <colspec colname="c3" colnum="3" colwidth="3.6*"/>
+                    <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                    <colspec colname="c3" colnum="3" colwidth="1.0*"/>
                     <thead>
                         <row>
                             <entry>Feature</entry>
@@ -157,73 +156,102 @@
                     </thead>
                     <tbody>
                         <row>
-                            <entry>Action List Button </entry>
+                            <entry>
+                                <para>Action List Button</para>
+                            </entry>
                             <entry><inlinemediaobject>
                                     <imageobject>
                                         <imagedata fileref="../images/button_action_list.png"/>
                                     </imageobject>
                                 </inlinemediaobject></entry>
-                            <entry>Displays the Action List screen</entry>
+                            <entry>
+                                <para>Displays the Action List screen</para>
+                            </entry>
                         </row>
                         <row>
-                            <entry>Add Button</entry>
+                            <entry>
+                                <para>Add Button</para>
+                            </entry>
                             <entry><inlinemediaobject>
                                     <imageobject>
                                         <imagedata fileref="../images/button_add.png"/>
                                     </imageobject>
                                 </inlinemediaobject></entry>
-                            <entry>Use to add notes or attachments</entry>
+                            <entry>
+                                <para>Use to add notes or attachments</para>
+                            </entry>
                         </row>
                         <row>
-                            <entry>Calendar Button</entry>
+                            <entry>
+                                <para>Calendar Button</para>
+                            </entry>
                             <entry><inlinemediaobject>
                                     <imageobject>
                                         <imagedata fileref="../images/button_calendar.png"/>
                                     </imageobject>
                                 </inlinemediaobject></entry>
-                            <entry>This button displays a pop-up calendar from which you can select
-                                a specific date. The date you select is then automatically entered
-                                in the field next to the Calendar button.</entry>
+                            <entry>
+                                <para>This button displays a pop-up calendar from which you can
+                                    select a specific date. The date you select is then
+                                    automatically entered in the field next to the Calendar
+                                    button.</para>
+                            </entry>
                         </row>
                         <row>
-                            <entry>Cancel Button</entry>
+                            <entry>
+                                <para>Cancel Button</para>
+                            </entry>
                             <entry><inlinemediaobject>
                                     <imageobject>
                                         <imagedata fileref="../images/button_cancel.png"/>
                                     </imageobject>
                                 </inlinemediaobject></entry>
-                            <entry>Returns you to the main menu screen</entry>
+                            <entry>
+                                <para>Returns you to the main menu screen</para>
+                            </entry>
                         </row>
                         <row>
-                            <entry>Clear Button</entry>
+                            <entry>
+                                <para>Clear Button</para>
+                            </entry>
                             <entry><inlinemediaobject>
                                     <imageobject>
                                         <imagedata fileref="../images/button_clear.png"/>
                                     </imageobject>
                                 </inlinemediaobject></entry>
-                            <entry>Clears the content in all the fields on this screen</entry>
+                            <entry>
+                                <para>Clears the content in all the fields on this screen</para>
+                            </entry>
                         </row>
                         <row>
-                            <entry>Clear Save Searches Button</entry>
+                            <entry>
+                                <para>Clear Save Searches Button</para>
+                            </entry>
                             <entry><inlinemediaobject>
                                     <imageobject>
                                         <imagedata
                                             fileref="../images/button_clear_saved_searches.png"/>
                                     </imageobject>
                                 </inlinemediaobject></entry>
-                            <entry>Clears all saved searches. (If you give a search a name, you can
-                                save it permanently. This button clears all of those saved
-                                searches.)</entry>
+                            <entry>
+                                <para>Clears all saved searches. (If you give a search a name, you
+                                    can save it permanently. This button clears all of those saved
+                                    searches.)</para>
+                            </entry>
                         </row>
                         <row>
-                            <entry>Close Button</entry>
+                            <entry>
+                                <para>Close Button</para>
+                            </entry>
                             <entry><inlinemediaobject>
                                     <imageobject>
                                         <imagedata fileref="../images/button_close.png"/>
                                     </imageobject>
                                 </inlinemediaobject></entry>
-                            <entry>Closes a pop-up screen and returns you to the previous
-                                screen</entry>
+                            <entry>
+                                <para>Closes a pop-up screen and returns you to the previous
+                                    screen</para>
+                            </entry>
                         </row>
                         <row>
                             <entry>Create New Button</entry>
@@ -259,7 +287,8 @@
                             <entry>Doc Search Button</entry>
                             <entry><inlinemediaobject>
                                     <imageobject>
-                                        <imagedata fileref="../images/button_doc_search.png"/>
+                                        <imagedata fileref="../images/button_doc_search.png"
+                                            width="110" scalefit="0"/>
                                     </imageobject>
                                 </inlinemediaobject></entry>
                             <entry>Displays the Document Search screen</entry>
@@ -515,18 +544,18 @@
             <title>Lookup Wildcards</title>
             <para>Rice allows you to use wildcards in the Lookup process. The available wildcards
                 and their functions:<table frame="none">
-                    <title/>
+                    <title>Lookup Wildcards</title>
                     <tgroup cols="5">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                        <colspec colname="c2" colnum="2" colwidth="2.44*"/>
-                        <colspec colname="c3" colnum="3" colwidth="2.42*"/>
-                        <colspec colname="c4" colnum="4" colwidth="1.27*"/>
-                        <colspec colname="newCol5" colnum="5" colwidth="9.52*"/>
+                        <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                        <colspec colname="c3" colnum="3" colwidth="1.0*"/>
+                        <colspec colname="c4" colnum="4" colwidth="1.0*"/>
+                        <colspec colname="newCol5" colnum="5" colwidth="1.0*"/>
                         <thead>
                             <row>
                                 <entry>Operator</entry>
                                 <entry>Name</entry>
-                                <entry>Compatible Data Types</entry>
+                                <entry><para>Compatible Data Types</para></entry>
                                 <entry>Precedence</entry>
                                 <entry>Notes</entry>
                             </row>
@@ -551,29 +580,26 @@
                                 <entry>Not Equal to</entry>
                                 <entry>String</entry>
                                 <entry>1</entry>
-                                <entry>If used repeatedly, e.g. !1031490!1031491, an &amp;&amp; is
-                                    assumed, leading to !1031490&amp;&amp;!1031491</entry>
+                                <entry><para>If used repeatedly, e.g. !1031490!1031491, an &amp;&amp; is assumed, leading to !1031490&amp;&amp;!1031491</para></entry>
                             </row>
                             <row>
                                 <entry>?, *</entry>
                                 <entry>Like</entry>
                                 <entry>String</entry>
                                 <entry>7</entry>
-                                <entry>? will match any one character and * will match any number of
-                                    characters. These will still be used if ! has been used, but not
-                                    if any of the range criteria below have been used.</entry>
+                                <entry><para>? will match any one character and * will match any number of characters. These will still be used if ! has been used, but not if any of the range criteria below have been used.</para></entry>
                             </row>
                             <row>
                                 <entry>></entry>
                                 <entry>Greater Than</entry>
-                                <entry>String, Number, Date</entry>
+                                <entry><para>String, Number, Date</para></entry>
                                 <entry>3</entry>
                                 <entry/>
                             </row>
                             <row>
                                 <entry>&lt;</entry>
                                 <entry>Less Than</entry>
-                                <entry>String, Number, Date</entry>
+                                <entry><para>String, Number, Date</para></entry>
                                 <entry>4</entry>
                                 <entry/>
                             </row>
@@ -606,7 +632,7 @@
                 <title>Account Number (String) Example of Wildcard Use</title>
                 <tgroup cols="2">
                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                    <colspec colname="c2" colnum="2" colwidth="4.49*"/>
+                    <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                     <thead>
                         <row>
                             <entry>Wildcard</entry>
@@ -682,7 +708,7 @@
                 <title>Proposal Number (String) Example of Wildcard Use</title>
                 <tgroup cols="2">
                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                    <colspec colname="c2" colnum="2" colwidth="4.4*"/>
+                    <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                     <thead>
                         <row>
                             <entry>Wildcard</entry>
@@ -707,7 +733,7 @@
                 <title>Create Date (Date) Example of Wildcard Use</title>
                 <tgroup cols="2">
                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                    <colspec colname="c2" colnum="2" colwidth="4.26*"/>
+                    <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                     <thead>
                         <row>
                             <entry>Wildcard</entry>
@@ -748,27 +774,27 @@
                     adds people or groups to the normal routing. </para>
                 <para>The Ad Hoc Recipients tab has two sections: Person Requests and Ad Hoc Group
                     Requests. Use one or both of the sections to route the document to an additional
-                    person, group, or both.
+                    person, group, or both.</para>
                     <figure><title>Ad Hoc Recipients Tab</title>
-                    <inlinemediaobject>
-                        <imageobject>
+                        <mediaobject>
+                            <imageobject>
                             <imagedata fileref="../images/ad_hoc_recipients_tab.png"/>
                         </imageobject>       
-                    </inlinemediaobject>
+                        </mediaobject>
                     </figure>    
-                </para><para>
-                    <figure><title>Person Requests Section of the Ad Hoc Recipients Tab</title>
-                    <inlinemediaobject>
-                        <imageobject>
+                
+                    <figure><title>Ad Hoc Recipients Tab: Person Requests</title>
+                        <mediaobject>
+                            <imageobject>
                             <imagedata fileref="../images/person_requests_section.png"/>
                         </imageobject>
-                    </inlinemediaobject>
+                        </mediaobject>
                     </figure>
                     <table frame="none">
-                        <title/>
+                        <title>Ad Hoc Recipients: Person Requests attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                            <colspec colname="c2" colnum="2" colwidth="5.9*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                             <thead>
                                 <row>
                                     <entry>Field</entry>
@@ -791,20 +817,20 @@
                             </tbody>
                         </tgroup>
                     </table>
-                </para>
-                <para>When you click the Add button, Rice adds this person to the routing path for
-                    this document.
-                    <figure><title>Ad Hoc Group Requests Section of the Ad Hoc Recipients Tab</title>
-                    <inlinemediaobject>
-                        <imageobject>
-                            <imagedata fileref="../images/ad_hoc_group_requests_section.png"/>
+                
+                <para>When you click the Add button, Rice adds this person to the routing path for this document.</para>
+                    <figure><title>Ad Hoc Recipients Tab: Group Requests Section</title>
+                        <mediaobject>
+                            <imageobject>
+                            <imagedata fileref="../images/ad_hoc_group_requests_section.png"
+                                scale="85"/>
                         </imageobject>
-                    </inlinemediaobject>
+                        </mediaobject>
                     </figure>
-                </para>
+                
                 <para>Follow the same guidelines as the Person Requests Section of the Ad Hoc
                     Recipients Tab, using a group instead of a person.<table frame="none">
-                        <title/>
+                        <title>Ad Hoc Recipients: Group Requests attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                             <colspec colname="c2" colnum="2" colwidth="1.0*"/>
@@ -827,15 +853,19 @@
             <sect3>
                 <title>Document Overview Tab</title>
                 <para>The Document Overview tab contains the short description for a document and
-                    two other optional fields. This tab is used for many documents.<inlinemediaobject>
-                        <imageobject>
-                            <imagedata fileref="../images/document_overview_tab.png"/>
-                        </imageobject>
-                    </inlinemediaobject><table frame="none">
-                        <title/>
+                    two other optional fields. This tab is used for many documents.</para>
+                    <figure><title>Document Overview Tab</title>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/document_overview_tab.png"/>
+                            </imageobject>
+                        </mediaobject>
+                    </figure>
+                    <table frame="none">
+                        <title>Document Overview Tab: Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                            <colspec colname="c2" colnum="2" colwidth="7.2*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                             <thead>
                                 <row>
                                     <entry>Field</entry>
@@ -865,22 +895,26 @@
                                 </row>
                             </tbody>
                         </tgroup>
-                    </table></para>
+                    </table>
             </sect3>
             <sect3>
                 <title>Note and Attachments Tab</title>
                 <para>The Notes and Attachments tab has fields for user notes, attachments, and
                     system-generated remarks about the document. The number of notes and/or
                     attachments for the current document is displayed on the tab, in parentheses
-                    next to the tab title.<inlinemediaobject>
-                        <imageobject>
-                            <imagedata fileref="../images/notes_attachments_tab.png"/>
-                        </imageobject>
-                    </inlinemediaobject><table frame="none">
-                        <title/>
+                    next to the tab title.</para>
+                    <figure><title>Notes and Attachments Tab</title>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/notes_attachments_tab.png"/>
+                            </imageobject>
+                        </mediaobject>
+                    </figure>    
+                        <table frame="none">
+                        <title>Notes and Attachments Tab: Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                            <colspec colname="c2" colnum="2" colwidth="6.18*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                             <thead>
                                 <row>
                                     <entry>Field</entry>
@@ -918,28 +952,31 @@
                                 </row>
                             </tbody>
                         </tgroup>
-                    </table></para>
+                    </table>
             </sect3>
             <sect3>
                 <title>Route Log Tab</title>
-                <para>The Route Log tab displays details of the workflow status.<inlinemediaobject>
+                <para>The Route Log tab displays details of the workflow status.</para>
+                <figure><title>Route Log Tab</title>
+                    <mediaobject>
                         <imageobject>
                             <imagedata fileref="../images/route_log_tab.png"/>
                         </imageobject>
-                    </inlinemediaobject></para>
-                <para>
-                    <figure><title>ID Section of the Route Log Tab</title>
-                    <inlinemediaobject>
-                        <imageobject>
+                    </mediaobject>
+                </figure>   
+                
+                    <figure><title>Route Log Tab: ID Section</title>
+                        <mediaobject>
+                            <imageobject>
                             <imagedata fileref="../images/id_section_route_log_tab.png"/>
                         </imageobject>
-                    </inlinemediaobject>
+                        </mediaobject>
                     </figure>
                     <table frame="none">
-                        <title/>
+                        <title>Route Log Tab: ID Section Attributes</title>
                         <tgroup cols="2">
                             <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                            <colspec colname="c2" colnum="2" colwidth="7.27*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                             <thead>
                                 <row>
                                     <entry>Field</entry>
@@ -994,17 +1031,16 @@
                             </tbody>
                         </tgroup>
                     </table>
-                </para>
-                <para>
-                    <figure><title>Future Action Requests Section of the Route Log Tab</title>
-                        <inlinemediaobject>
+                
+                    <figure><title>Route Log Tab: Future Action Requests Section</title>
+                            <mediaobject>
                                 <imageobject>
-                                    <imagedata
-                                        fileref="../images/future_action_requests_section.png"/>
-                                </imageobject>
-                            </inlinemediaobject>                       
+                            <imagedata fileref="../images/future_action_requests_section.png"
+                                scale="85"/>
+                        </imageobject>
+                            </mediaobject>                       
                     </figure>
-                </para>
+                
                 <para>Once a document is Saved or ENROUTE, this section shows the action requests
                     that Workflow will generate in the future, based on the information currently on
                     the document.</para>
@@ -1030,12 +1066,15 @@
                                 >https://test.kuali.org/jira/secure/IssueNavigator.jspa?mode=show&amp;requestId=11791</link>.</para>
                     </listitem>
                     <listitem>
-                        <para>Find the Text Search section in the left column of the Issue Navigator
-                            page, below the section for Components and Versions. <inlinemediaobject>
+                        <para>Find the Text Search section at the top of the of the Issue Navigator
+                            page.</para>
+                         <figure><title>Jira Serach: Query options</title>   
+                            <mediaobject>
                                 <imageobject>
                                     <imagedata fileref="../images/Jira_search.png"/>
                                 </imageobject>
-                            </inlinemediaobject></para>
+                            </mediaobject>
+                         </figure>   
                     </listitem>
                     <listitem>
                         <para>In the Query field of the Text Search section, enter some text that
@@ -1103,11 +1142,13 @@
                         <para>Click the Next>> button. </para>
                     </listitem>
                 </orderedlist></para>
-                <para><inlinemediaobject>
-                    <imageobject>
+                <figure><title>Create New Jira: Initial Screen</title>
+                    <mediaobject>
+                        <imageobject>
                         <imagedata fileref="../images/Jira_create_issue.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                    </mediaobject>
+                </figure>    
         </sect2>
         <sect2>
             <title>Step 3: Fill Out Required Fields</title>
@@ -1175,11 +1216,13 @@
             <para>This screen print is from the Bug Fix screen. The screens for Improvement and for
                 New Feature are slightly different. The fields in which you need to enter
                 information are highlighted in this screen print.</para>
-            <para><inlinemediaobject>
+            <figure><title>Creat New Jira: Detail Section</title>
+                <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/Jira_bug_fix.png"/>
+                        <imagedata fileref="../images/Jira_bug_fix.png" scale="65"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+            </figure>
         </sect2>
         <sect2>
             <title>Step 4: Save the Jira issue</title>

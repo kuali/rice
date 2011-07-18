@@ -82,32 +82,26 @@
                     <emphasis role="bold">Yes</emphasis> using the Channel Subscriptions form. On
                 the Main Menu, click the <emphasis role="bold">Channel Subscriptions</emphasis> link
                 in the <emphasis role="bold">Notification</emphasis> box:</para>
-            <para><inlinemediaobject>
+            <figure><title>Notification Channel: Channel Subscriptions</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/channel_subscriptions.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject></figure>
             <para>This displays the list of channels that allow the user to manage their
                 subscriptions:</para>
-            <para><inlinemediaobject>
+            <figure><title>Chanel Subscriptions: Manage</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/channel_subscriptions2.png"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject></figure>
             <para>Click the <emphasis role="bold">Subscribe</emphasis> button for a channel to
                 subscribe to a channel for which you are not already subscribed. Click the <emphasis
                     role="bold">Unsubscribe</emphasis> button to cancel your subscription to the
                 channel.</para>
         </sect2>
-    </sect1>
-<!-- Word Doc had 'Topic Coming Soon' for these two sections     
-    <sect1>
-        <title>Content and Content Types</title>
-    </sect1>
-    <sect1>
-        <title>Delivery</title>
-    </sect1>
--->    
+    </sect1>    
     <sect1>
         <title>Notification Priority</title>
         <para>The priority of a notification indicates its importance. It has no effect on how KEN
@@ -145,7 +139,7 @@
                 </listitem>
             </itemizedlist></para>
         <para>By default, three priorities are defined in KEN:<table frame="none">
-                <title/>
+                <title>Notification: Priority Attributes</title>
                 <tgroup cols="4">
                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                     <colspec colname="c2" colnum="2" colwidth="1.0*"/>
@@ -187,10 +181,5 @@
             <para>There is no user interface page to manage priorities, so changes to the list of
                 priorities must be made by a programmer using SQL. See the KEN section of the
                 Technical Reference Guide for further information on this topic.</para>
-    </sect1>
-<!-- Word Doc had 'Topic Coming Soon' for these two sections    
-    <sect1>
-        <title>Senders and Recipients</title>
-    </sect1>
--->    
+    </sect1>    
 </chapter>

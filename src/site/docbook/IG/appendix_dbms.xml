@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<appendix id="installing_dbms" xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+<appendix xml:id="installing_dbms" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">    
     <title>Installing the Database Management Systems</title>
     <para>Kuali Rice was developed using two relational database management systems:<itemizedlist>
             <listitem>
@@ -14,7 +14,6 @@
         <para>Install the MySQL database management system.</para>
         <sect2>
             <title>Steps to Install the Standalone Rice Platform</title>
-            <!-- Quick Start Best Practice -->
             <para>If you are installing MySQL after the initial operating system installation, use
                 the RHEL update manager or yum on CentOS and install these packages:<itemizedlist>
                     <listitem>
@@ -216,9 +215,7 @@ OK</programlisting>
             <para>To start mysqld at boot time you have to copy <emphasis role="bold"
                     >support-files/mysql.server</emphasis> to the right place for your
                 system.</para>
-            <para>
-                <warning>Remember to set a password for the MySQL root User!</warning>
-            </para>
+                <warning><para>Remember to set a password for the MySQL root User!</para></warning>
             <para>To do so, start the server and then issue the following commands:</para>
             <para>
                 <programlisting>/usr/bin/mysqladmin -u root password 'new-password'
@@ -439,11 +436,11 @@ innodb_locks_unsafe_for_binlog=1</programlisting>
                     uses with the Oracle XE admin webapp:
                     <figure>
                         <title>Oracle XE admin webapp</title>
-                        <inlinemediaobject>    
-                            <imageobject>
-                                <imagedata fileref="../images/oracle_xe_admin_webapp.png"/>
-                            </imageobject>
-                        </inlinemediaobject>
+                            <mediaobject>    
+                                <imageobject>
+                                    <imagedata fileref="../images/oracle_xe_admin_webapp.png"/>
+                                </imageobject>
+                            </mediaobject>
                     </figure>
                 </para>
                 <para>If you prefer, you can use the Oracle SQL tool described here to change the

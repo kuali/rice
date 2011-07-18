@@ -27,6 +27,7 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants.KimUIConstants;
 
 import javax.xml.bind.UnmarshalException;
+import java.sql.Date;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -111,8 +112,8 @@ public final class RoleXmlUtil {
         RoleMemberContract newMember = KimApiServiceLocator.getRoleUpdateService().saveRoleMemberForRole(
                 null, newRoleMember.getMemberId(), newRoleMember.getMemberTypeCode(),
                         newRoleMember.getRoleId(), newRoleMember.getQualifications(),
-                                (newRoleMember.getActiveFromDate() != null) ? new java.sql.Date(newRoleMember.getActiveFromDate().getTime()) : null,
-                                (newRoleMember.getActiveToDate() != null) ? new java.sql.Date(newRoleMember.getActiveToDate().getTime()) : null);
+                                (newRoleMember.getActiveFromDate() != null) ? new Date(newRoleMember.getActiveFromDate().getMillis()) : null,
+                                (newRoleMember.getActiveToDate() != null) ? new Date(newRoleMember.getActiveToDate().getMillis()) : null);
         
         return newMember.getRoleMemberId();
     }

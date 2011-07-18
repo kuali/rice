@@ -89,14 +89,14 @@
 
   <bean id="dataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.XAPoolDataSource">
     <property name="transactionManager"><ref local="jtaTransactionManager"/></property>
-    <property name="driverClassName"><value>${datasource.driver.name}</value></property>
-    <property name="url"><value>${datasource.url}</value></property>
-    <property name="maxSize"><value>${datasource.pool.maxSize}</value></property>
-    <property name="minSize"><value>${datasource.pool.minSize}</value></property>
-    <property name="maxWait"><value>${datasource.pool.maxWait}</value></property>
-    <property name="validationQuery"><value>${datasource.pool.validationQuery}</value></property>
-    <property name="username"><value>${datasource.username}</value></property>
-    <property name="password"><value>${datasource.password}</value></property>
+    <property name="driverClassName" value="${datasource.driver.name}"/>
+    <property name="url" value="${datasource.url}"/>
+    <property name="maxSize" value="${datasource.pool.maxSize}" />
+    <property name="minSize" value="${datasource.pool.minSize}"/>
+    <property name="maxWait" value="${datasource.pool.maxWait}"/>
+    <property name="validationQuery" value="${datasource.pool.validationQuery}"/>
+    <property name="username" value="${datasource.username}" />
+    <property name="password" value="${datasource.password}" />
   </bean>
   
   <bean id="nonTransactionalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">

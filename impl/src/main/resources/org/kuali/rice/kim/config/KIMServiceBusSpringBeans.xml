@@ -169,26 +169,6 @@
   </bean>
 
   <bean parent="kimLocalServiceExporter">
-	<property name="serviceBus" ref="rice.ksb.serviceBus"/>
-    <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="kimGroupUpdateService"
-        p:localServiceName="kimGroupUpdateService" />
-    </property>
-  </bean>
-
-  <bean parent="kimLocalServiceExporter">
-  	<property name="serviceBus" ref="rice.ksb.serviceBus"/>
-    <property name="serviceDefinition">
-      <bean parent="kimJaxWsSoapService"
-        p:service-ref="kimGroupUpdateService"
-        p:localServiceName="kimGroupUpdateServiceSOAP"
-        p:serviceInterface="org.kuali.rice.kim.api.group.GroupUpdateService" />
-    </property>
-    <property name="exportIf" value="kimGroupUpdateServiceSOAP.expose"/>
-  </bean>
-
-  <bean parent="kimLocalServiceExporter">
   <property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimService"

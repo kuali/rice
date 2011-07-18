@@ -21,7 +21,6 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.impl.group.GroupMemberBo;
 import org.kuali.rice.kim.impl.group.GroupServiceImpl;
-import org.kuali.rice.kim.service.impl.GroupUpdateServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
@@ -39,7 +38,7 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 /**
- * Unit test for {@link GroupUpdateServiceImpl}
+ * Unit test for {@link groupServiceImpl}
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -47,13 +46,11 @@ import static org.junit.Assert.*;
 public class GroupUpdateServiceImplTest extends KIMTestCase {
 
 	private GroupServiceImpl groupService;
-	private GroupUpdateServiceImpl groupUpdateService;
 	private BusinessObjectService businessObjectService;
 
 	public void setUp() throws Exception {
 		super.setUp();
 		groupService = (GroupServiceImpl)GlobalResourceLoader.getService(new QName("KIM", "kimGroupService"));
-		groupUpdateService = (GroupUpdateServiceImpl) GlobalResourceLoader.getService(new QName("KIM", "kimGroupUpdateService"));
 		businessObjectService = KRADServiceLocator.getBusinessObjectService();
 	}
 
@@ -75,7 +72,7 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
 
 		assertTrue( "g1 must contain group g2", preGroupIds.contains( "g2" ) );
 
-		groupUpdateService.removeGroupFromGroup("g2", "g1");
+		groupService.removeGroupFromGroup("g2", "g1");
 
 		List<String> postGroupIds = groupService.getDirectMemberGroupIds("g1");
 
@@ -105,7 +102,7 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
 		List<String> preDirectPrincipalMemberIds = groupService.getDirectMemberPrincipalIds("g2");
 		assertTrue( "p1 must be direct member of g2", preDirectPrincipalMemberIds.contains("p1") );
 
-		groupUpdateService.removePrincipalFromGroup("p1", "g2");
+		groupService.removePrincipalFromGroup("p1", "g2");
 
 		List<String> postDirectPrincipalMemberIds = groupService.getDirectMemberPrincipalIds("g2");
 		assertFalse( "p1 must no longer be a direct member of g2", postDirectPrincipalMemberIds.contains("p1") );
@@ -134,12 +131,12 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
 	public void testRemoveGroupMembers() {
 		List<String> before = groupService.getMemberPrincipalIds("g1");
 
-		groupUpdateService.addPrincipalToGroup("p1", "g1");
+		groupService.addPrincipalToGroup("p1", "g1");
 
 		assertTrue( "p1 must be direct member of g1", groupService.isDirectMemberOfGroup("p1", "g1") );
 		assertTrue( "g2 must be direct member of g1", groupService.isGroupMemberOfGroup("g2", "g1") );
 
-		groupUpdateService.removeAllMembers("g1");
+		groupService.removeAllMembers("g1");
 
 		List<GroupMember> memberInfos = groupService.getMembersOfGroup("g1");
 		assertTrue("should be no active members", CollectionUtils.isEmpty(memberInfos));
@@ -167,7 +164,7 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
 		assertFalse("g2 should be inactive", g2.isActive(new Timestamp(System.currentTimeMillis())));
 	}
 
-	/* Stubs to test other GroupUpdateService methods: */
+	/* Stubs to test other groupService methods: */
 	@Test
 	public void testUpdateGroup() {
 
@@ -176,7 +173,7 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
 		builder.setDescription("This is a new description.  It is useful.");
 
 
-		groupUpdateService.updateGroup(group.getId(), builder.build());
+		groupService.updateGroup(group.getId(), builder.build());
 
 		Group result = groupService.getGroupByName("KUALI", "gA");
 
@@ -195,10 +192,10 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
         assertFalse(groupService.isGroupMemberOfGroup("g1", group.getId()));
 
         //add g1 to gA
-        groupUpdateService.addGroupToGroup("g1", group.getId());
+        groupService.addGroupToGroup("g1", group.getId());
 
         //make sure g1 is now a member of gA
-        groupUpdateService.isGroupMemberOfGroup("g1", group.getId());
+        groupService.isGroupMemberOfGroup("g1", group.getId());
 
     }
 
@@ -210,10 +207,10 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
         assertFalse(groupService.isMemberOfGroup("p1", group.getId()));
 
         //add g1 to gA
-        groupUpdateService.addPrincipalToGroup("p1", group.getId());
+        groupService.addPrincipalToGroup("p1", group.getId());
 
         //make sure g1 is now a member of gA
-        groupUpdateService.isMemberOfGroup("p1", group.getId());
+        groupService.isMemberOfGroup("p1", group.getId());
     }
 
 
@@ -239,6 +236,6 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
         Group.Builder groupInfo = Group.Builder.create("KUALI", "gA", "1");
 		groupInfo.setActive(true);
 
-		return groupUpdateService.createGroup(groupInfo.build());
+		return groupService.createGroup(groupInfo.build());
     }
 }

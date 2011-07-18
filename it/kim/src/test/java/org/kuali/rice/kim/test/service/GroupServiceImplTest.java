@@ -21,7 +21,6 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.impl.group.GroupServiceImpl;
-import org.kuali.rice.kim.service.impl.GroupUpdateServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 
 import javax.xml.namespace.QName;
@@ -42,12 +41,10 @@ import static org.junit.Assert.assertTrue;
 public class GroupServiceImplTest extends KIMTestCase {
 
 	private GroupServiceImpl groupService;
-	private GroupUpdateServiceImpl groupUpdateService;
 
 	public void setUp() throws Exception {
 		super.setUp();
 		groupService = (GroupServiceImpl)GlobalResourceLoader.getService(new QName("KIM", "kimGroupService"));
-		groupUpdateService = (GroupUpdateServiceImpl) GlobalResourceLoader.getService(new QName("KIM", "kimGroupUpdateService"));
 	}
 
 	@Test
@@ -91,7 +88,7 @@ public class GroupServiceImplTest extends KIMTestCase {
 		Group g4Info = groupService.getGroup("g4");
         Group.Builder builder = Group.Builder.create(g4Info);
         builder.setActive(true);
-		groupUpdateService.updateGroup("g4", builder.build());
+		groupService.updateGroup("g4", builder.build());
 
 		assertTrue( "p4 should be reported as a member of g2 (now that g4 is active)", groupService.isMemberOfGroup("p4", "g2") );
 		

@@ -16,26 +16,27 @@
 
 package org.kuali.rice.kim.api.group
 
-import java.sql.Timestamp
-import java.text.SimpleDateFormat
 import javax.xml.bind.JAXBContext
 import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
+import org.joda.time.DateTime
 import org.junit.Assert
 import org.junit.Test
+import org.joda.time.format.DateTimeFormatter
+import org.joda.time.format.DateTimeFormat
 
 class GroupMemberTest {
-
+    static final DateTimeFormatter FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
     private static final String ID = "1"
     private static final String GROUP_ID = "50"
     private static final String MEMBER_ID = "1"
     private static final String TYPE_CD = "P"
     private static final Long VER_NBR = new Long(1)
     private static final String OBJ_ID = UUID.randomUUID()
-    private static final String ACTIVE_FROM_STRING = "2011-01-01 12:00:00.0"
-    private static final Timestamp ACTIVE_FROM = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(ACTIVE_FROM_STRING).toTimestamp()
-    private static final String ACTIVE_TO_STRING = "2012-01-01 12:00:00.0"
-    private static final Timestamp ACTIVE_TO = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(ACTIVE_TO_STRING).toTimestamp()
+    private static final String ACTIVE_FROM_STRING = "2011-01-01 12:00:00"
+    private static final DateTime ACTIVE_FROM = new DateTime(FORMATTER.parseDateTime(ACTIVE_FROM_STRING))
+    private static final String ACTIVE_TO_STRING = "2012-01-01 12:00:00"
+    private static final DateTime ACTIVE_TO = new DateTime(FORMATTER.parseDateTime(ACTIVE_FROM_STRING))
 
         private static final String XML = """
     <groupMember xmlns="http://rice.kuali.org/kim/v2_0">
@@ -43,8 +44,8 @@ class GroupMemberTest {
         <groupId>${GROUP_ID}</groupId>
         <memberId>${MEMBER_ID}</memberId>
         <typeCode>${TYPE_CD}</typeCode>
-        <activeFromDate>${ACTIVE_FROM.getTime()}</activeFromDate>
-        <activeToDate>${ACTIVE_TO.getTime()}</activeToDate>
+        <activeFromDate>${ACTIVE_FROM}</activeFromDate>
+        <activeToDate>${ACTIVE_TO}</activeToDate>
         <versionNumber>${VER_NBR}</versionNumber>
         <objectId>${OBJ_ID}</objectId>
     </groupMember>
@@ -72,12 +73,12 @@ class GroupMemberTest {
             String getGroupId() {GroupMemberTest.GROUP_ID}
             String getMemberId() {GroupMemberTest.MEMBER_ID}
             String getTypeCode() {GroupMemberTest.TYPE_CD}
-            Timestamp getActiveFromDate() {GroupMemberTest.ACTIVE_FROM}
-            Timestamp getActiveToDate() {GroupMemberTest.ACTIVE_TO}
+            DateTime getActiveFromDate() {GroupMemberTest.ACTIVE_FROM}
+            DateTime getActiveToDate() {GroupMemberTest.ACTIVE_TO}
             Long getVersionNumber() { GroupMemberTest.VER_NBR }
             String getObjectId() { GroupMemberTest.OBJ_ID }
             boolean isActive() { this.isActive() }
-            boolean isActive(Timestamp t) { this.isActive(t) }
+            boolean isActive(DateTime t) { this.isActive(t) }
 		}).build()
 
         return groupMember

@@ -182,7 +182,7 @@
             <element id="module-output" name="rice-edl-framework" />
           </element>
           <element id="library" level="project" name="Maven: opensymphony:oscache:2.4.1" />
-          <element id="library" level="project" name="Maven: org.jasig.cas.client:cas-client-core:3.2.0" />
+          <element id="library" level="project" name="Maven: org.jasig.cas.client:cas-client-core:3.2.1" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:3.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.aspectj:aspectjrt:1.6.8" />
           <element id="library" level="project" name="Maven: org.aspectj:aspectjweaver:1.6.8" />

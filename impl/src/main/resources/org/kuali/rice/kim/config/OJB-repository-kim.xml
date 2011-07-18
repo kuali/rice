@@ -479,8 +479,8 @@
     <field-descriptor name="typeCode" column="MBR_TYP_CD" jdbc-type="CHAR" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
-    <field-descriptor name="activeFromDate" column="ACTV_FRM_DT" jdbc-type="TIMESTAMP" />
-    <field-descriptor name="activeToDate" column="ACTV_TO_DT" jdbc-type="TIMESTAMP" />
+    <field-descriptor name="activeFromDateValue" column="ACTV_FRM_DT" jdbc-type="TIMESTAMP" />
+    <field-descriptor name="activeToDateValue" column="ACTV_TO_DT" jdbc-type="TIMESTAMP" />
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.impl.group.GroupAttributeBo" table="KRIM_GRP_ATTR_DATA_T">
@@ -523,8 +523,8 @@
     <field-descriptor name="memberTypeCode" column="MBR_TYP_CD" jdbc-type="CHAR" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
-    <field-descriptor name="activeFromDate" column="ACTV_FRM_DT" jdbc-type="TIMESTAMP" />
-    <field-descriptor name="activeToDate" column="ACTV_TO_DT" jdbc-type="TIMESTAMP" />
+    <field-descriptor name="activeFromDateValue" column="ACTV_FRM_DT" jdbc-type="TIMESTAMP" />
+    <field-descriptor name="activeToDateValue" column="ACTV_TO_DT" jdbc-type="TIMESTAMP" />
     <collection-descriptor name="attributeDetails" element-class-ref="org.kuali.rice.kim.impl.role.RoleMemberAttributeDataBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="assignedToId" target-field-ref="roleMemberId"/>
     </collection-descriptor>
@@ -568,8 +568,8 @@
     <field-descriptor name="typeCode" column="MBR_TYP_CD" jdbc-type="CHAR" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
-    <field-descriptor name="activeFromDate" column="ACTV_FRM_DT" jdbc-type="TIMESTAMP" />
-    <field-descriptor name="activeToDate" column="ACTV_TO_DT" jdbc-type="TIMESTAMP" />
+    <field-descriptor name="activeFromDateValue" column="ACTV_FRM_DT" jdbc-type="TIMESTAMP" />
+    <field-descriptor name="activeToDateValue" column="ACTV_TO_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="roleMemberId" column="ROLE_MBR_ID" jdbc-type="VARCHAR" />
     <collection-descriptor name="attributes" element-class-ref="org.kuali.rice.kim.impl.common.delegate.DelegateMemberAttributeDataBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="assignedToId" target-field-ref="delegationMemberId"/>

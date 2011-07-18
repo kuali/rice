@@ -21,8 +21,8 @@ import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.api.identity.IdentityArchiveService;
-import org.kuali.rice.kim.api.group.GroupUpdateService;
 import org.kuali.rice.kim.api.role.RoleUpdateService;
+import org.kuali.rice.kim.impl.group.GroupInternalService;
 import org.kuali.rice.kim.util.KimConstants;
 
 import javax.xml.namespace.QName;
@@ -41,7 +41,6 @@ public final class KIMServiceLocatorInternal {
 
     public static final String KIM_IDENTITY_UPDATE_SERVICE = "kimIdentityUpdateService";
 	public static final String KIM_IDENTITY_ARCHIVE_SERVICE = "kimIdentityArchiveService";
-	public static final String KIM_GROUP_UPDATE_SERVICE = "kimGroupUpdateService";
     public static final String KIM_ROLE_UPDATE_SERVICE = "kimRoleUpdateService";
 	public static final String KIM_PERMISSION_UPDATE_SERVICE = "kimPermissionUpdateService";
 	public static final String KIM_AUTHENTICATION_SERVICE = "kimAuthenticationService";
@@ -67,12 +66,6 @@ public final class KIMServiceLocatorInternal {
 
     public static IdentityArchiveService getIdentityArchiveService() {
     	return (IdentityArchiveService)getService(KIM_IDENTITY_ARCHIVE_SERVICE);
-    }
-
-    
-
-    public static GroupUpdateService getGroupUpdateService() {
-    	return (GroupUpdateService)getService(KIM_GROUP_UPDATE_SERVICE);
     }
 
     public static RoleUpdateService getRoleUpdateService() {

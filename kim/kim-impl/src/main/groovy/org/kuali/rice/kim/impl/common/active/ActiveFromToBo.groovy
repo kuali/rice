@@ -20,15 +20,28 @@ import java.sql.Timestamp
 import javax.persistence.Column
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
+import org.joda.time.DateTime
 
 public abstract class ActiveFromToBo extends PersistableBusinessObjectBase {
     @Column(name = "ACTV_FRM_DT")
-	Timestamp activeFromDate
+	Timestamp activeFromDateValue
 
 	@Column(name = "ACTV_TO_DT")
-	Timestamp activeToDate
+	Timestamp activeToDateValue
 
     boolean isActive(Timestamp activeAsOfDate) {
-        return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, activeAsOfDate)
+        return InactivatableFromToUtils.isActive(getActiveFromDate(), getActiveToDate(), new DateTime(activeAsOfDate))
+    }
+
+    boolean isActive(DateTime activeAsOfDate) {
+        return InactivatableFromToUtils.isActive(getActiveFromDate(), getActiveToDate(), activeAsOfDate)
+    }
+
+    DateTime getActiveFromDate() {
+        return this.activeFromDateValue == null ? null : new DateTime(this.activeFromDateValue)
+    }
+
+    DateTime getActiveToDate() {
+        return this.activeToDateValue == null ? null : new DateTime(this.activeToDateValue)
     }
 }

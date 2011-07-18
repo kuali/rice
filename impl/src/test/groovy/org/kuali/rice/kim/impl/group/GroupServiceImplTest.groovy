@@ -69,21 +69,21 @@ class GroupServiceImplTest {
 
         //Doing setup in a static context since bring up and down a server is an expensive operation
         GroupMemberBo member1 = new GroupMemberBo(id: "1", memberId: "234", groupId: "1",
-                typeCode: "P", activeFromDate: new Timestamp(new Long(1262402288000)),
-                activeToDate: new Timestamp(new Long(4102543088000)))
+                typeCode: "P", activeFromDateValue: new Timestamp(new Long(1262402288000)),
+                activeToDateValue: new Timestamp(new Long(4102543088000)))
         GroupMemberBo member2 = new GroupMemberBo(id: "2", memberId: "240", groupId: "1",
-                typeCode: "P", activeFromDate: new Timestamp(new Long(1262402288000)),
-                activeToDate: new Timestamp(new Long(4102543088000)))
+                typeCode: "P", activeFromDateValue: new Timestamp(new Long(1262402288000)),
+                activeToDateValue: new Timestamp(new Long(4102543088000)))
         GroupMemberBo member3 = new GroupMemberBo(id: "3", memberId: "114", groupId: "1",
-                typeCode: "G", activeFromDate: new Timestamp(new Long(1262402288000)),
-                activeToDate: new Timestamp(new Long(4102543088000)))
+                typeCode: "G", activeFromDateValue: new Timestamp(new Long(1262402288000)),
+                activeToDateValue: new Timestamp(new Long(4102543088000)))
 
         GroupMemberBo member4 = new GroupMemberBo(id: "4", memberId: "250", groupId: "2",
-                typeCode: "P", activeFromDate: new Timestamp(new Long(1262402288000)),
-                activeToDate: new Timestamp(new Long(4102543088000)))
+                typeCode: "P", activeFromDateValue: new Timestamp(new Long(1262402288000)),
+                activeToDateValue: new Timestamp(new Long(4102543088000)))
         GroupMemberBo member5 = new GroupMemberBo(id: "5", memberId: "114", groupId: "2",
-                typeCode: "G", activeFromDate: new Timestamp(new Long(1262402288000)),
-                activeToDate: new Timestamp(new Long(4102543088000)))
+                typeCode: "G", activeFromDateValue: new Timestamp(new Long(1262402288000)),
+                activeToDateValue: new Timestamp(new Long(4102543088000)))
 
         for (bo in [member1, member2, member3 ]) {
             group1Members.add(bo)
@@ -568,5 +568,27 @@ class GroupServiceImplTest {
             Assert.assertTrue(gm.getId() + "should be in List", expected.contains(gm) )
         }
         businessObjectServiceMockFor.verify(bos)
+    }
+
+    @Test
+    void test_createGroupNullGroup(){
+        injectBusinessObjectServiceIntoGroupService()
+
+        shouldFail(IllegalArgumentException.class) {
+            groupService.createGroup(null)
+        }
+        businessObjectServiceMockFor.verify(bos)
+
+    }
+
+    @Test
+    void test_updateGroupNullGroup(){
+        injectBusinessObjectServiceIntoGroupService()
+
+        shouldFail(IllegalArgumentException.class) {
+            groupService.updateGroup(null, null)
+        }
+        businessObjectServiceMockFor.verify(bos)
+
     }
 }

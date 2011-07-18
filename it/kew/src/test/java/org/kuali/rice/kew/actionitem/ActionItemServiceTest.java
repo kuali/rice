@@ -81,14 +81,14 @@ public class ActionItemServiceTest extends KEWTestCase {
         Collection<GroupMember> members = groupService.getMembersOfGroup(oldWorkgroup.getId());
         for (GroupMember recipient : members) {
         		if (recipient.getMemberId().equals(rkirkend.getPrincipalId()) || recipient.getMemberId().equals(shenl.getPrincipalId())) {
-        			KimApiServiceLocator.getGroupUpdateService().removePrincipalFromGroup(recipient.getMemberId(), oldWorkgroup.getId());
+        			KimApiServiceLocator.getGroupService().removePrincipalFromGroup(recipient.getMemberId(), oldWorkgroup.getId());
         		}
 
         }
 
         //add user1 and user2
-        KimApiServiceLocator.getGroupUpdateService().addPrincipalToGroup(user1.getPrincipalId(), oldWorkgroup.getId());
-        KimApiServiceLocator.getGroupUpdateService().addPrincipalToGroup(user2.getPrincipalId(), oldWorkgroup.getId());
+        KimApiServiceLocator.getGroupService().addPrincipalToGroup(user1.getPrincipalId(), oldWorkgroup.getId());
+        KimApiServiceLocator.getGroupService().addPrincipalToGroup(user2.getPrincipalId(), oldWorkgroup.getId());
 
 
         // verify that the new workgroup is sane...
@@ -158,12 +158,12 @@ public class ActionItemServiceTest extends KEWTestCase {
 
         assertEquals("User should have 1 action item", 1, KEWServiceLocator.getActionListService().findByPrincipalId(ewestfal.getPrincipalId()).size());
         assertEquals("Workgroup should have 6 members.", 6, KimApiServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getId()).size());
-        KimApiServiceLocator.getGroupUpdateService().removePrincipalFromGroup(ewestfal.getPrincipalId(), workgroup1.getId());
+        KimApiServiceLocator.getGroupService().removePrincipalFromGroup(ewestfal.getPrincipalId(), workgroup1.getId());
 
         assertEquals("Workgroup should have 5 members.", 5, KimApiServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getId()).size());
         assertEquals("User should have 0 action item", 0, KEWServiceLocator.getActionListService().findByPrincipalId(ewestfal.getPrincipalId()).size());
 
-         KimApiServiceLocator.getGroupUpdateService().addPrincipalToGroup(ewestfal.getPrincipalId(), workgroup1.getId());
+         KimApiServiceLocator.getGroupService().addPrincipalToGroup(ewestfal.getPrincipalId(), workgroup1.getId());
          assertEquals("Workgroup should have 6 members.", 6, KimApiServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getId()).size());
          assertEquals("User should have 1 action item", 1, KEWServiceLocator.getActionListService().findByPrincipalId(ewestfal.getPrincipalId()).size());
 
@@ -171,7 +171,7 @@ public class ActionItemServiceTest extends KEWTestCase {
          // test the save group
          Group workgroup1Impl = this.getGroup(workgroup1.getId());
          Principal dewey = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName("dewey");
-         KimApiServiceLocator.getGroupUpdateService().addPrincipalToGroup(dewey.getPrincipalId(), workgroup1Impl.getId());
+         KimApiServiceLocator.getGroupService().addPrincipalToGroup(dewey.getPrincipalId(), workgroup1Impl.getId());
          //GroupMember groupMember = GroupMember.Builder.create(workgroup1Impl.getId(), dewey.getPrincipalId(), KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE).build();
          //GroupBo workgroup1Bo = GroupBo.from(workgroup1Impl);
          //workgroup1Bo.getMembersOfGroup().add(GroupMemberBo.from(groupMember));
@@ -197,12 +197,12 @@ public class ActionItemServiceTest extends KEWTestCase {
 
          //get the subgroup so we can remove the member.
          Group workgroupSub = KimApiServiceLocator.getGroupService().getGroupByName("KR-WKFLW", "AIWG-Nested2");
-         KimApiServiceLocator.getGroupUpdateService().removePrincipalFromGroup(user1.getPrincipalId(), workgroupSub.getId());
+         KimApiServiceLocator.getGroupService().removePrincipalFromGroup(user1.getPrincipalId(), workgroupSub.getId());
 
          assertEquals("Workgroup should have 5 members.", 5, KimApiServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getId()).size());
          assertEquals("User should have 0 action item", 0, KEWServiceLocator.getActionListService().findByPrincipalId(user1.getPrincipalId()).size());
 
-          KimApiServiceLocator.getGroupUpdateService().addPrincipalToGroup(user1.getPrincipalId(), workgroupSub.getId());
+          KimApiServiceLocator.getGroupService().addPrincipalToGroup(user1.getPrincipalId(), workgroupSub.getId());
           assertEquals("Workgroup should have 6 members.", 6, KimApiServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getId()).size());
           assertEquals("User should have 1 action item", 1, KEWServiceLocator.getActionListService().findByPrincipalId(user1.getPrincipalId()).size());
 

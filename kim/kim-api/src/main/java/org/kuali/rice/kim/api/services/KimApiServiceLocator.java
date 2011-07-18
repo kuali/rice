@@ -2,7 +2,6 @@ package org.kuali.rice.kim.api.services;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kim.api.group.GroupUpdateService;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.role.RoleService;
@@ -24,7 +23,6 @@ public class KimApiServiceLocator {
     public static final String KIM_PERSON_SERVICE = "personService";
 
     public static final String KIM_IDENTITY_UPDATE_SERVICE = "kimIdentityUpdateService";
-	public static final String KIM_GROUP_UPDATE_SERVICE = "kimGroupUpdateService";
     public static final String KIM_ROLE_UPDATE_SERVICE = "kimRoleUpdateService";
 	public static final String KIM_PERMISSION_UPDATE_SERVICE = "kimPermissionUpdateService";
     public static final String KIM_TYPE_INFO_SERVICE = "kimTypeInfoService";
@@ -64,10 +62,6 @@ public class KimApiServiceLocator {
     
     public static IdentityUpdateService getIdentityUpdateService() {
     	return getService(KIM_IDENTITY_UPDATE_SERVICE);
-    }
-
-    public static GroupUpdateService getGroupUpdateService() {
-    	return getService(KIM_GROUP_UPDATE_SERVICE);
     }
 
     public static RoleUpdateService getRoleUpdateService() {

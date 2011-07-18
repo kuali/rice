@@ -150,10 +150,10 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
     	newRoleMember.setMemberId( memberId );
     	newRoleMember.setMemberTypeCode( memberTypeCode );
 		if (activeFromDate != null) {
-			newRoleMember.setActiveFromDate(new java.sql.Timestamp(activeFromDate.getTime()));
+			newRoleMember.setActiveFromDateValue(new java.sql.Timestamp(activeFromDate.getTime()));
 		}
 		if (activeToDate != null) {
-			newRoleMember.setActiveToDate(new java.sql.Timestamp(activeToDate.getTime()));
+			newRoleMember.setActiveToDateValue(new java.sql.Timestamp(activeToDate.getTime()));
 		}
     	// build roleBo member attribute objects from the given Map<String, String>
     	addMemberAttributeData( newRoleMember, qualifications, roleBo.getKimTypeId() );
@@ -237,10 +237,10 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
     	newDelegationMember.setRoleMemberId(roleMemberId);
     	newDelegationMember.setTypeCode(memberTypeCode);
 		if (activeFromDate != null) {
-			newDelegationMember.setActiveFromDate(new java.sql.Timestamp(activeFromDate.getTime()));
+			newDelegationMember.setActiveFromDateValue(new java.sql.Timestamp(activeFromDate.getTime()));
 		}
 		if (activeToDate != null) {
-			newDelegationMember.setActiveToDate(new java.sql.Timestamp(activeToDate.getTime()));
+			newDelegationMember.setActiveToDateValue(new java.sql.Timestamp(activeToDate.getTime()));
 		}
 
     	// build role member attribute objects from the given Map<String, String>

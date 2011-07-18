@@ -729,14 +729,14 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	}
 
 	private EntityBo getEntityBo(String entityId) {
-		EntityBo entityImpl = businessObjectService.findByPrimaryKey(EntityBo.class, Collections.singletonMap("id", entityId));
-        if(entityImpl!=null) {
+		return businessObjectService.findByPrimaryKey(EntityBo.class, Collections.singletonMap("id", entityId));
+        /*if(entityImpl!=null) {
             // in order for unit tests to run, we needed a way to mock the persistence service, so the refresh is done within here now rather than on the BO
             getPersistenceService().retrieveNonKeyFields(entityImpl);
-            /*TODO: We need to try and remove this.  Currently, without it, some integration tests fail because of some
+            *//*TODO: We need to try and remove this.  Currently, without it, some integration tests fail because of some
              * sort of OJB caching and not filling in the type values.  We need to figure out why this is happening and fix it.
              * Yes, this is a hack :P
-             */
+             *//*
             for (EntityTypeContactInfoBo type : entityImpl.getEntityTypeContactInfos()) {
                 type.refresh();
                 for (EntityAddressBo addressBo : type.getAddresses()) {
@@ -753,7 +753,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
                 name.refreshReferenceObject("nameType");
             }
         }
-        return entityImpl;
+        return entityImpl;*/
 	}
 
     private PersistenceService getPersistenceService() {

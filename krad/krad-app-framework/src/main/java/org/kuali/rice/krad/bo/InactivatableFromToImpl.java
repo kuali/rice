@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.bo;
 
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
 
 import javax.persistence.Column;
@@ -44,7 +45,7 @@ public abstract class InactivatableFromToImpl extends PersistableBusinessObjectB
 	 * the from and to dates. Null dates are considered to indicate an open range.
 	 */
 	public boolean isActive() {
-        return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, activeAsOfDate);
+        return InactivatableFromToUtils.isActive(new DateTime(activeFromDate), new DateTime(activeToDate), new DateTime(activeAsOfDate));
 	}
 	
 	public void setActive(boolean active) {

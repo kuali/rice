@@ -20,11 +20,12 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
-import org.kuali.rice.core.api.util.jaxb.SqlTimestampAdapter;
+import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -66,12 +67,12 @@ public class GroupMember implements GroupMemberContract, ModelObjectComplete  {
     private final String typeCode;
 
     @XmlElement(name = CoreConstants.CommonElements.ACTIVE_FROM_DATE, required = false)
-    @XmlJavaTypeAdapter(SqlTimestampAdapter.class)
-    private final Timestamp activeFromDate;
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
+    private final DateTime activeFromDate;
 
     @XmlElement(name = CoreConstants.CommonElements.ACTIVE_TO_DATE, required = false)
-    @XmlJavaTypeAdapter(SqlTimestampAdapter.class)
-	private final Timestamp activeToDate;
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
+	private final DateTime activeToDate;
 
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
@@ -111,8 +112,8 @@ public class GroupMember implements GroupMemberContract, ModelObjectComplete  {
         private String groupId;
         private String memberId;
         private String typeCode;
-        private Timestamp activeFromDate;
-        private Timestamp activeToDate;
+        private DateTime activeFromDate;
+        private DateTime activeToDate;
         private Long versionNumber;
         private String objectId;
 
@@ -194,20 +195,20 @@ public class GroupMember implements GroupMemberContract, ModelObjectComplete  {
         }
 
         @Override
-        public Timestamp getActiveFromDate() {
+        public DateTime getActiveFromDate() {
             return activeFromDate;
         }
 
-        public void setActiveFromDate(final Timestamp activeFromDate) {
+        public void setActiveFromDate(final DateTime activeFromDate) {
             this.activeFromDate = activeFromDate;
         }
 
         @Override
-        public Timestamp getActiveToDate() {
+        public DateTime getActiveToDate() {
             return activeToDate;
         }
 
-        public void setActiveToDate(final Timestamp activeToDate) {
+        public void setActiveToDate(final DateTime activeToDate) {
             this.activeToDate = activeToDate;
         }
 
@@ -230,7 +231,7 @@ public class GroupMember implements GroupMemberContract, ModelObjectComplete  {
         }
 
         @Override
-        public boolean isActive(Timestamp activeAsOf) {
+        public boolean isActive(DateTime activeAsOf) {
             return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, activeAsOf);
         }
 
@@ -256,11 +257,11 @@ public class GroupMember implements GroupMemberContract, ModelObjectComplete  {
         return typeCode;
     }
 
-    public Timestamp getActiveFromDate() {
+    public DateTime getActiveFromDate() {
         return activeFromDate;
     }
 
-    public Timestamp getActiveToDate() {
+    public DateTime getActiveToDate() {
         return activeToDate;
     }
 
@@ -273,7 +274,7 @@ public class GroupMember implements GroupMemberContract, ModelObjectComplete  {
     }
 
     @Override
-    public boolean isActive(Timestamp activeAsOf) {
+    public boolean isActive(DateTime activeAsOf) {
         return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, activeAsOf);
     }
 

@@ -52,20 +52,6 @@
                     </execution>
 
                     <execution>
-                        <id>groupUpdateService-wsdl</id>
-                        <phase>${rice.java2ws.phase}</phase>
-                        <configuration>
-                            <className>org.kuali.rice.kim.api.group.GroupUpdateService</className>
-                            <outputFile>${project.build.outputDirectory}/wsdl/GroupUpdateService.wsdl
-                            </outputFile>
-                            <serviceName>GroupUpdateService</serviceName>
-                        </configuration>
-                        <goals>
-                            <goal>java2ws</goal>
-                        </goals>
-                    </execution>
-
-                    <execution>
                         <id>permissionService-wsdl</id>
                         <phase>${rice.java2ws.phase}</phase>
                         <configuration>
@@ -115,6 +101,19 @@
                             <outputFile>${project.build.outputDirectory}/wsdl/KimTypeInfoService.wsdl
                             </outputFile>
                             <serviceName>KimTypeInfoService</serviceName>
+                        </configuration>
+                        <goals>
+                            <goal>java2ws</goal>
+                        </goals>
+                    </execution>
+
+                    <execution>
+                        <id>identityService-wsdl</id>
+                        <phase>${rice.java2ws.phase}</phase>
+                        <configuration>
+                            <className>org.kuali.rice.kim.api.identity.IdentityService</className>
+                            <outputFile>${project.build.outputDirectory}/wsdl/IdentityService.wsdl</outputFile>
+                            <serviceName>IdentityService</serviceName>
                         </configuration>
                         <goals>
                             <goal>java2ws</goal>

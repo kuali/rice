@@ -24,6 +24,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../it/krad/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/krad/src/test/resources/META-INF" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/krad/target/generated-sources/test-annotations" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../it/krad/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/krad/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/krad/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/krad/target/test-classes" />
@@ -164,7 +165,7 @@
     <orderEntry type="module" module-name="rice-ksb-framework" scope="TEST" />
     <orderEntry type="module" module-name="rice-edl-framework" />
     <orderEntry type="library" scope="TEST" name="Maven: opensymphony:oscache:2.4.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.jasig.cas.client:cas-client-core:3.2.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.jasig.cas.client:cas-client-core:3.2.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-core:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.aspectj:aspectjrt:1.6.8" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.aspectj:aspectjweaver:1.6.8" level="project" />

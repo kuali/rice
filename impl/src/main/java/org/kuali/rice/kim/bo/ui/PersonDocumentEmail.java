@@ -53,7 +53,7 @@ public class PersonDocumentEmail extends PersonDocumentBoDefaultBase{
 
 	@ManyToOne(targetEntity=EntityEmailTypeBo.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "EMAIL_TYP_CD", insertable = false, updatable = false)
-	protected TypeContract emailType;
+	protected EntityEmailTypeBo emailType;
 	
 	public PersonDocumentEmail() {
 		this.active = true;
@@ -112,11 +112,11 @@ public class PersonDocumentEmail extends PersonDocumentBoDefaultBase{
 		this.entityEmailId = entityEmailId;
 	}
 
-	public TypeContract getEmailType() {
+	public EntityEmailTypeBo getEmailType() {
 		return this.emailType;
 	}
 
-	public void setEmailType(TypeContract emailType) {
+	public void setEmailType(EntityEmailTypeBo emailType) {
 		this.emailType = emailType;
 	}
 

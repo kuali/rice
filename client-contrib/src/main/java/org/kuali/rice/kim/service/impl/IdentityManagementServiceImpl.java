@@ -20,7 +20,6 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
-import org.kuali.rice.kim.api.group.GroupUpdateService;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
@@ -50,7 +49,6 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 	private ResponsibilityService responsibilityService;
 	private IdentityService identityService;
 	private GroupService groupService;
-	private GroupUpdateService groupUpdateService;
 
     @Override
 	public void flushAllCaches() {
@@ -230,37 +228,37 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 
     @Override
     public boolean addGroupToGroup(String childId, String parentId) {
-        return getGroupUpdateService().addGroupToGroup(childId, parentId);
+        return getGroupService().addGroupToGroup(childId, parentId);
     }
 
     @Override
     public boolean addPrincipalToGroup(String principalId, String groupId) {
-        return getGroupUpdateService().addPrincipalToGroup(principalId, groupId);
+        return getGroupService().addPrincipalToGroup(principalId, groupId);
     }
 
     @Override
     public boolean removeGroupFromGroup(String childId, String parentId) {
-        return getGroupUpdateService().removeGroupFromGroup(childId, parentId);
+        return getGroupService().removeGroupFromGroup(childId, parentId);
     }
 
     @Override
     public boolean removePrincipalFromGroup(String principalId, String groupId) {
-        return getGroupUpdateService().removePrincipalFromGroup(principalId, groupId);
+        return getGroupService().removePrincipalFromGroup(principalId, groupId);
     }
 
     @Override
 	public Group createGroup(Group group) {
-		return getGroupUpdateService().createGroup(group);
+		return getGroupService().createGroup(group);
 	}
 
     @Override
 	public void removeAllMembers(String groupId) {
-		getGroupUpdateService().removeAllMembers(groupId);
+		getGroupService().removeAllMembers(groupId);
 	}
 
     @Override
 	public Group updateGroup(String groupId, Group group) {
-		return getGroupUpdateService().updateGroup(groupId, group);
+		return getGroupService().updateGroup(groupId, group);
 	}
 
 
@@ -495,19 +493,5 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 			responsibilityService = KimApiServiceLocator.getResponsibilityService();
 		}
 		return responsibilityService;
-	}
-
-	public GroupUpdateService getGroupUpdateService() {
-		try {
-			if ( groupUpdateService == null ) {
-				groupUpdateService = KimApiServiceLocator.getGroupUpdateService();
-				if ( groupUpdateService == null ) {
-					throw new UnsupportedOperationException( "null returned for GroupUpdateService, unable to update group data");
-				}
-			}
-		} catch ( Exception ex ) {
-			throw new UnsupportedOperationException( "unable to obtain a GroupUpdateService, unable to update group data", ex);
-		}
-		return groupUpdateService;
 	}
 }

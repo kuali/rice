@@ -16,6 +16,8 @@
 
 package org.kuali.rice.core.api.mo.common.active;
 
+import org.joda.time.DateTime;
+
 import java.sql.Timestamp;
 
 /**
@@ -32,14 +34,14 @@ public interface InactivatableFromTo {
 	 *
 	 * @return Timestamp of active from date
 	 */
-	Timestamp getActiveFromDate();
+	DateTime getActiveFromDate();
 
 	/**
 	 * Gets the date for which the record become inactive. Can be null.
 	 *
 	 * @return Timestamp of active to date
 	 */
-	Timestamp getActiveToDate();
+	DateTime getActiveToDate();
 
     /**
      * Returns if the record is active for a given Time.
@@ -47,5 +49,5 @@ public interface InactivatableFromTo {
      *
      * @return true if active false if not
      */
-    boolean isActive(Timestamp activeAsOfDate);
+    boolean isActive(DateTime activeAsOfDate);
 }

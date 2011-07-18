@@ -36,6 +36,7 @@ import org.kuali.rice.kim.api.type.KimTypeInfoService
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo
 import org.kuali.rice.kim.impl.membership.AbstractMemberBo
 import org.springframework.util.AutoPopulatingList
+import java.sql.Timestamp
 
 @Entity
 @Table(name = "KRIM_ROLE_MBR_T")
@@ -118,8 +119,8 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
                 roleRspActions: immutable.roleRspActions.collect { RoleResponsibilityActionBo.from(it) },
                 memberId: immutable.memberId,
                 memberTypeCode: immutable.memberTypeCode,
-                activeFromDate: immutable.activeFromDate,
-                activeToDate: immutable.activeToDate,
+                activeFromDateValue: immutable.activeFromDate == null ? null : new Timestamp(immutable.activeFromDate.getMillis()),
+                activeToDateValue: immutable.activeToDate == null ? null : new Timestamp(immutable.activeToDate.getMillis()),
         )
     }
 }

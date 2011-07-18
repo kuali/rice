@@ -24,7 +24,6 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
-import org.kuali.rice.kim.api.group.GroupUpdateService;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -93,7 +92,6 @@ public class GroupXmlParser {
         }
         for (Group group : groups) {
             GroupService groupService = KimApiServiceLocator.getGroupService();
-            GroupUpdateService groupUpdateService = KimApiServiceLocator.getGroupUpdateService();
             // check if group already exists
             Group foundGroup = groupService.getGroupByName(group.getNamespaceCode(), group.getName());
 
@@ -102,7 +100,7 @@ public class GroupXmlParser {
                 	LOG.info("Group named '" + group.getName() + "' not found, creating new group named '" + group.getName() + "'");
                 }
                 try {
-                    Group newGroup =  groupUpdateService.createGroup(group);
+                    Group newGroup =  groupService.createGroup(group);
 
                     String key = newGroup.getNamespaceCode().trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + newGroup.getName().trim();
                     addGroupMembers(newGroup, key);
@@ -121,10 +119,10 @@ public class GroupXmlParser {
 
                     //builder.setVersionNumber(foundGroup.getVersionNumber());
                     group = builder.build();
-                    groupUpdateService.updateGroup(foundGroup.getId(), group);
+                    groupService.updateGroup(foundGroup.getId(), group);
 
                     //delete existing group members and replace with new
-                    groupUpdateService.removeAllMembers(foundGroup.getId());
+                    groupService.removeAllMembers(foundGroup.getId());
 
                     String key = group.getNamespaceCode().trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + group.getName().trim();
                     addGroupMembers(group, key);
@@ -296,21 +294,13 @@ public class GroupXmlParser {
     }
 
     private void addGroupMembers(Group groupInfo, String key) throws XmlException {
-        GroupUpdateService groupUpdateService = KimApiServiceLocator.getGroupUpdateService();
         GroupService groupService = KimApiServiceLocator.getGroupService();
         List<String> groupIds = memberGroupIds.get(key);
         if (groupIds != null) {
             for (String groupId : groupIds) {
                 Group group = groupService.getGroup(groupId);
                 if (group != null) {
-                    groupUpdateService.addGroupToGroup(group.getId(), groupInfo.getId());
-                    //TODO HACK!!!!!!! Use IDMService.addPrincipalToGroup
-                    /*GroupMemberBo groupMember = new GroupMemberBo();
-                    groupMember.setGroupId(groupInfo.getId());
-                    groupMember.setTypeCode( KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE );
-                    groupMember.setMemberId(group.getId());*/
-
-                    /*groupMember = (GroupMemberBo)KRADServiceLocator.getBusinessObjectService().save(groupMember);*/
+                    groupService.addGroupToGroup(group.getId(), groupInfo.getId());
                 } else {
                     throw new XmlException("Group Id "+groupId+" cannot be found.");
                 }
@@ -321,7 +311,7 @@ public class GroupXmlParser {
             for (String groupName : groupNames) {
                 Group group = groupService.getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
                 if (group != null) {
-                	groupUpdateService.addGroupToGroup(group.getId(), groupInfo.getId());
+                	groupService.addGroupToGroup(group.getId(), groupInfo.getId());
                 } else {
                     throw new XmlException("Group "+groupName+" cannot be found.");
                 }
@@ -330,7 +320,7 @@ public class GroupXmlParser {
         List<String> principalIds = memberPrincipalIds.get(key);
         if (principalIds != null) {
             for (String principalId : principalIds) {
-            	groupUpdateService.addPrincipalToGroup(principalId, groupInfo.getId());
+            	groupService.addPrincipalToGroup(principalId, groupInfo.getId());
             }
         }
 

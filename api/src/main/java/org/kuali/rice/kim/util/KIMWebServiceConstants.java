@@ -58,16 +58,6 @@ public class KIMWebServiceConstants {
 		}
 	}
 
-	public static final class GroupUpdateService {
-		public static final String WEB_SERVICE_NAME = "kimGroupUpdateServiceSOAP";
-		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.api.group.GroupUpdateService";
-		public static final String WEB_SERVICE_PORT = "GroupUpdateServicePort";
-		
-		private GroupUpdateService() {
-			throw new UnsupportedOperationException("do not call");
-		}
-	}
-
 	public static final class IdentityService {
 		public static final String WEB_SERVICE_NAME = "kimIdentityServiceSOAP";
 		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.api.identity.IdentityService";

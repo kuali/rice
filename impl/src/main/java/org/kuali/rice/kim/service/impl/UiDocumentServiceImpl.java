@@ -19,6 +19,7 @@ package org.kuali.rice.kim.service.impl;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.parameter.Parameter;
 import org.kuali.rice.core.framework.parameter.ParameterService;
@@ -81,12 +82,19 @@ import org.kuali.rice.kim.impl.group.GroupAttributeBo;
 import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.impl.group.GroupMemberBo;
 import org.kuali.rice.kim.impl.identity.address.EntityAddressBo;
+import org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo;
 import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo;
+import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo;
 import org.kuali.rice.kim.impl.identity.email.EntityEmailBo;
+import org.kuali.rice.kim.impl.identity.email.EntityEmailTypeBo;
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentBo;
+import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo;
+import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo;
 import org.kuali.rice.kim.impl.identity.entity.EntityBo;
 import org.kuali.rice.kim.impl.identity.name.EntityNameBo;
+import org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo;
 import org.kuali.rice.kim.impl.identity.phone.EntityPhoneBo;
+import org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo;
 import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
 import org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo;
 import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo;
@@ -444,8 +452,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		if(ObjectUtils.isNotNull(members)){
 			for(DelegateMemberBo member: members){
 				pndMember = new RoleDocumentDelegationMember();
-				pndMember.setActiveFromDate(member.getActiveFromDate());
-				pndMember.setActiveToDate(member.getActiveToDate());
+				pndMember.setActiveFromDate(member.getActiveFromDateValue());
+				pndMember.setActiveToDate(member.getActiveToDateValue());
 				pndMember.setActive(member.isActive(new Timestamp(System.currentTimeMillis())));
 				pndMember.setRoleBo(roleImpl);
 				if(pndMember.isActive()){
@@ -527,7 +535,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
                             groupMemberships = getGroupService().getMembers(groupIds);
                             if(ObjectUtils.isNotNull(groupMemberships)){
                                 for (GroupMember groupMember: groupMemberships) {
-                                    if (groupMember.isActive(new Timestamp(System.currentTimeMillis())) && StringUtils.equals(groupMember.getMemberId(), identityManagementPersonDocument.getPrincipalId()) &&
+                                    if (groupMember.isActive(new DateTime(System.currentTimeMillis())) && StringUtils.equals(groupMember.getMemberId(), identityManagementPersonDocument.getPrincipalId()) &&
                                         StringUtils.equals(groupMember.getTypeCode(), KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
                                         // create one PersonDocumentGroup per GroupMembershipInfo **
                                         PersonDocumentGroup docGroup = new PersonDocumentGroup();
@@ -537,10 +545,10 @@ public class UiDocumentServiceImpl implements UiDocumentService {
                                         docGroup.setPrincipalId(memberId);
                                         docGroup.setGroupMemberId(groupMember.getId());
                                         if (groupMember.getActiveFromDate() != null) {
-                                        	docGroup.setActiveFromDate(new Timestamp(groupMember.getActiveFromDate().getTime()));
+                                        	docGroup.setActiveFromDate(groupMember.getActiveFromDate() == null ? null : new Timestamp(groupMember.getActiveFromDate().getMillis()));
                                         }
                                         if (groupMember.getActiveToDate() != null) {
-                                        	docGroup.setActiveToDate(new Timestamp(groupMember.getActiveToDate().getTime()));
+                                        	docGroup.setActiveToDate(groupMember.getActiveToDate() == null ? null : new Timestamp(groupMember.getActiveToDate().getMillis()));
                                         }
                                         docGroup.setEdit(true);
                                         docGroups.add(docGroup);
@@ -719,8 +727,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	        		docRolePrncpl.setRoleMemberId(rolePrincipal.getRoleMemberId());
 	        		docRolePrncpl.setActive(rolePrincipal.isActive(new Timestamp(System.currentTimeMillis())));
 	        		docRolePrncpl.setRoleId(rolePrincipal.getRoleId());
-	        		docRolePrncpl.setActiveFromDate(rolePrincipal.getActiveFromDate());
-	        		docRolePrncpl.setActiveToDate(rolePrincipal.getActiveToDate());
+	        		docRolePrncpl.setActiveFromDate(rolePrincipal.getActiveFromDateValue());
+	        		docRolePrncpl.setActiveToDate(rolePrincipal.getActiveToDateValue());
 	         		docRolePrncpl.setQualifiers(populateDocRoleQualifier(namespaceCode, rolePrincipal.getAttributeDetails(), definitions));
 	         		docRolePrncpl.setEdit(true);
 	        		docRoleMembers.add(docRolePrncpl);
@@ -958,6 +966,14 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				for (PersonDocumentName name : identityManagementPersonDocument.getNames()) {
 				    EntityNameBo entityName = new EntityNameBo();
 					entityName.setNameTypeCode(name.getNameTypeCode());
+                    if (name.getEntityNameType() != null) {
+                        entityName.setNameType(name.getEntityNameType());
+                    } else {
+                        if (StringUtils.isNotEmpty(name.getNameTypeCode())) {
+                            entityName.setNameType(
+                                    EntityNameTypeBo.from(getIdentityService().getNameType(name.getNameTypeCode())));
+                        }
+                    }
 					entityName.setFirstName(name.getFirstName());
 					entityName.setLastName(name.getLastName());
 					entityName.setMiddleName(name.getMiddleName());
@@ -990,6 +1006,14 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			for (PersonDocumentAffiliation affiliation : identityManagementPersonDocument.getAffiliations()) {
 				EntityAffiliationBo entityAffiliation = new EntityAffiliationBo();
 				entityAffiliation.setAffiliationTypeCode(affiliation.getAffiliationTypeCode());
+                if (affiliation.getAffiliationType() != null) {
+                        entityAffiliation.setAffiliationType(affiliation.getAffiliationType());
+                } else {
+                    if (StringUtils.isNotEmpty(affiliation.getAffiliationTypeCode())) {
+                        entityAffiliation.setAffiliationType(EntityAffiliationTypeBo.from(getIdentityService().getAffiliationType(
+                                affiliation.getAffiliationTypeCode())));
+                    }
+                }
 				entityAffiliation.setCampusCode(affiliation.getCampusCode());
 				entityAffiliation.setActive(affiliation.isActive());
 				entityAffiliation.setDefaultValue(affiliation.isDflt());
@@ -1017,7 +1041,23 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 						entityEmpInfo.setBaseSalaryAmount(empInfo.getBaseSalaryAmount());
 						entityEmpInfo.setPrimaryDepartmentCode(empInfo.getPrimaryDepartmentCode());
 						entityEmpInfo.setEmployeeStatusCode(empInfo.getEmploymentStatusCode());
+                        if (empInfo.getEmploymentStatus() != null) {
+                            entityEmpInfo.setEmployeeStatus(empInfo.getEmploymentStatus());
+                        } else {
+                            if (StringUtils.isNotEmpty(empInfo.getEmploymentStatusCode())) {
+                                entityEmpInfo.setEmployeeStatus(EntityEmploymentStatusBo
+                                        .from(getIdentityService().getEmploymentStatus(empInfo.getEmploymentStatusCode())));
+                            }
+                        }
 						entityEmpInfo.setEmployeeTypeCode(empInfo.getEmploymentTypeCode());
+                        if (empInfo.getEmploymentType() != null) {
+                            entityEmpInfo.setEmployeeType(empInfo.getEmploymentType());
+                        } else {
+                            if (StringUtils.isNotEmpty(empInfo.getEmploymentTypeCode())) {
+                                entityEmpInfo.setEmployeeType(EntityEmploymentTypeBo
+                                        .from(getIdentityService().getEmploymentType(empInfo.getEmploymentTypeCode())));
+                            }
+                        }
 						entityEmpInfo.setActive(empInfo.isActive());
 						entityEmpInfo.setPrimary(empInfo.isPrimary());
 						entityEmpInfo.setEntityId(identityManagementPersonDocument.getEntityId());
@@ -1101,6 +1141,14 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				for (PersonDocumentPhone phone : identityManagementPersonDocument.getPhones()) {
 					EntityPhoneBo entityPhone = new EntityPhoneBo();
 					entityPhone.setPhoneTypeCode(phone.getPhoneTypeCode());
+                    if (phone.getPhoneType() != null) {
+                        entityPhone.setPhoneType(phone.getPhoneType());
+                    } else {
+                        if (StringUtils.isNotEmpty(phone.getPhoneTypeCode())) {
+                            entityPhone.setPhoneType(EntityPhoneTypeBo
+                                    .from(getIdentityService().getAddressType(phone.getPhoneTypeCode())));
+                        }
+                    }
 					entityPhone.setEntityId(identityManagementPersonDocument.getEntityId());
 					entityPhone.setId(phone.getEntityPhoneId());
 					entityPhone.setEntityTypeCode(entityType.getEntityTypeCode());
@@ -1163,6 +1211,14 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					EntityEmailBo entityEmail = new EntityEmailBo();
 					entityEmail.setEntityId(identityManagementPersonDocument.getEntityId());
 					entityEmail.setEntityTypeCode(entityType.getEntityTypeCode());
+                    if (email.getEmailType() != null) {
+                        entityEmail.setEmailType(email.getEmailType());
+                    } else {
+                        if (StringUtils.isNotEmpty(email.getEmailTypeCode())) {
+                            entityEmail.setEmailType(
+                                    EntityEmailTypeBo.from(getIdentityService().getEmailType(email.getEmailTypeCode())));
+                        }
+                    }
 					entityEmail.setEmailTypeCode(email.getEmailTypeCode());
 					entityEmail.setEmailAddress(email.getEmailAddress());
 					entityEmail.setActive(email.isActive());
@@ -1219,6 +1275,14 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					entityAddress.setEntityId(identityManagementPersonDocument.getEntityId());
 					entityAddress.setEntityTypeCode(entityType.getEntityTypeCode());
 					entityAddress.setAddressTypeCode(address.getAddressTypeCode());
+                    if (address.getAddressType() != null) {
+                        entityAddress.setAddressType(address.getAddressType());
+                    } else {
+                        if (StringUtils.isNotEmpty(address.getAddressTypeCode())) {
+                            entityAddress.setAddressType(EntityAddressTypeBo.from(
+                                    getIdentityService().getAddressType(address.getAddressTypeCode())));
+                        }
+                    }
 					entityAddress.setLine1(address.getLine1());
 					entityAddress.setLine2(address.getLine2());
 					entityAddress.setLine3(address.getLine3());
@@ -1280,10 +1344,10 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			for (PersonDocumentGroup group : identityManagementPersonDocument.getGroups()) {
 				GroupMember.Builder groupPrincipalImpl = GroupMember.Builder.create(group.getGroupId(), identityManagementPersonDocument.getPrincipalId(), KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
 				if (group.getActiveFromDate() != null) {
-					groupPrincipalImpl.setActiveFromDate(new java.sql.Timestamp(group.getActiveFromDate().getTime()));
+					groupPrincipalImpl.setActiveFromDate(new DateTime(group.getActiveFromDate().getTime()));
 				}
 				if (group.getActiveToDate() != null) {
-					groupPrincipalImpl.setActiveToDate(new java.sql.Timestamp(group.getActiveToDate().getTime()));
+					groupPrincipalImpl.setActiveToDate(new DateTime(group.getActiveToDate().getTime()));
 				}
 				groupPrincipalImpl.setId(group.getGroupMemberId());
 
@@ -1295,7 +1359,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				Collection<GroupMember> currGroupMembers = getGroupService().getMembers(Collections.singletonList(group.getGroupId()));
 				if(ObjectUtils.isNotNull(currGroupMembers)){
 					for (GroupMember origGroupMember: currGroupMembers) {
-                        if (origGroupMember.isActive(new Timestamp(System.currentTimeMillis()))
+                        if (origGroupMember.isActive(new DateTime(System.currentTimeMillis()))
                             && origGroupMember.getTypeCode().equals(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
                             if(origGroupMember.getId()!=null && StringUtils.equals(origGroupMember.getId(), group.getGroupMemberId())){
                                 groupPrincipalImpl.setObjectId(origGroupMember.getObjectId());
@@ -1345,10 +1409,12 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 							roleMemberImpl.setMemberTypeCode(Role.PRINCIPAL_MEMBER_TYPE);
 							roleMemberImpl.setRoleMemberId(roleMember.getRoleMemberId());
 							if (roleMember.getActiveFromDate() != null) {
-								roleMemberImpl.setActiveFromDate(new java.sql.Timestamp(roleMember.getActiveFromDate().getTime()));
+								roleMemberImpl.setActiveFromDateValue(
+                                        new java.sql.Timestamp(roleMember.getActiveFromDate().getTime()));
 							}
 							if (roleMember.getActiveToDate() != null) {
-								roleMemberImpl.setActiveToDate(new java.sql.Timestamp(roleMember.getActiveToDate().getTime()));
+								roleMemberImpl.setActiveToDateValue(
+                                        new java.sql.Timestamp(roleMember.getActiveToDate().getTime()));
 							}
 							List<RoleMemberAttributeDataBo> origAttributes = new ArrayList<RoleMemberAttributeDataBo>();
 							if(ObjectUtils.isNotNull(origRoleMembers)){
@@ -1630,8 +1696,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		if(ObjectUtils.isNotNull(members)){
 			for(RoleMemberBo member: members){
 				pndMember = new KimDocumentRoleMember();
-				pndMember.setActiveFromDate(member.getActiveFromDate());
-				pndMember.setActiveToDate(member.getActiveToDate());
+				pndMember.setActiveFromDate(member.getActiveFromDateValue());
+				pndMember.setActiveToDate(member.getActiveToDateValue());
 				pndMember.setActive(member.isActive(new Timestamp(System.currentTimeMillis())));
 				if(pndMember.isActive()){
 					pndMember.setRoleMemberId(member.getRoleMemberId());
@@ -1928,8 +1994,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		if(ObjectUtils.isNotNull(members)){
 			for(DelegateMemberBo member: members){
 				pndMember = new RoleDocumentDelegationMember();
-				pndMember.setActiveFromDate(member.getActiveFromDate());
-				pndMember.setActiveToDate(member.getActiveToDate());
+				pndMember.setActiveFromDate(member.getActiveFromDateValue());
+				pndMember.setActiveToDate(member.getActiveToDateValue());
 				pndMember.setActive(member.isActive(new Timestamp(System.currentTimeMillis())));
 				if(pndMember.isActive()){
 					KimCommonUtilsInternal.copyProperties(pndMember, member);
@@ -2240,6 +2306,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
                 }
                 origAttributes = (origRoleMemberImplTemp==null || origRoleMemberImplTemp.getAttributes()==null)?
                                     new ArrayList<RoleMemberAttributeDataBo>():origRoleMemberImplTemp.getAttributeDetails();
+                newRoleMember.setActiveFromDateValue(documentRoleMember.getActiveFromDate());
+                newRoleMember.setActiveToDateValue(documentRoleMember.getActiveToDate());
                 newRoleMember.setAttributeDetails(getRoleMemberAttributeData(documentRoleMember.getQualifiers(), origAttributes, activatingInactive, newRoleMemberIdAssigned));
                 newRoleMember.setRoleRspActions(getRoleMemberResponsibilityActions(documentRoleMember, origRoleMemberImplTemp, activatingInactive, newRoleMemberIdAssigned));
                 roleMembers.add(newRoleMember);
@@ -2418,7 +2486,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				origMembers = (origDelegationImplTemp == null || origDelegationImplTemp.getMembers()==null)?
 									new ArrayList<DelegateMemberBo>():origDelegationImplTemp.getMembers();
 				newKimDelegation.setMembers(getDelegationMembers(roleDocumentDelegation.getMembers(), origMembers, activatingInactive, newDelegationIdAssigned));
-				kimDelegations.add(newKimDelegation);
+                kimDelegations.add(newKimDelegation);
 				activatingInactive = false;
 			}
 		}
@@ -2454,7 +2522,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				origAttributes = (origDelegationMemberImplTemp==null || origDelegationMemberImplTemp.getAttributes()==null)?
 						new ArrayList<DelegateMemberAttributeDataBo>():origDelegationMemberImplTemp.getAttributes();
 				newDelegationMemberImpl.setAttributes(getDelegationMemberAttributeData(delegationMember.getQualifiers(), origAttributes, activatingInactive, delegationMemberId));
-				delegationsMembersList.add(newDelegationMemberImpl);
+				newDelegationMemberImpl.setActiveFromDateValue(delegationMember.getActiveFromDate());
+                newDelegationMemberImpl.setActiveToDateValue(delegationMember.getActiveToDate());
+                delegationsMembersList.add(newDelegationMemberImpl);
 			}
 		}
 		return delegationsMembersList;
@@ -2538,8 +2608,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		if(ObjectUtils.isNotNull(members)){
 			for(GroupMember member: members){
 				pndMember = new GroupDocumentMember();
-				pndMember.setActiveFromDate(member.getActiveFromDate());
-				pndMember.setActiveToDate(member.getActiveToDate());
+
+				pndMember.setActiveFromDate(member.getActiveFromDate() == null ? null : new Timestamp(member.getActiveFromDate().getMillis()));
+				pndMember.setActiveToDate(member.getActiveToDate() == null ? null : new Timestamp(member.getActiveToDate().getMillis()));
 				//pndMember.setActive(member.isActive());
 				if(pndMember.isActive()){
 					pndMember.setGroupMemberId(member.getMemberId());
@@ -2665,8 +2736,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
                 //copy properties manually for now until new BO created for DocumentGroupMember
 
 				newGroupMember.setGroupId(identityManagementGroupDocument.getGroupId());
-                newGroupMember.setActiveFromDate(documentGroupMember.getActiveFromDate());
-                newGroupMember.setActiveToDate(documentGroupMember.getActiveToDate());
+                newGroupMember.setActiveFromDateValue(documentGroupMember.getActiveFromDate());
+                newGroupMember.setActiveToDateValue(documentGroupMember.getActiveToDate());
                 newGroupMember.setMemberId(documentGroupMember.getMemberId());
                 newGroupMember.setTypeCode(documentGroupMember.getMemberTypeCode());
 				if(ObjectUtils.isNotNull(origGroupMembers)){

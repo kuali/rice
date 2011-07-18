@@ -12,6 +12,7 @@ import org.kuali.rice.kim.api.common.delegate.DelegateMember
 import org.kuali.rice.kim.api.common.delegate.DelegateMemberContract
 import org.kuali.rice.kim.impl.membership.AbstractMemberBo
 import org.springframework.util.AutoPopulatingList
+import java.sql.Timestamp
 
 @Entity
 @Table(name = "KRIM_DLGN_MBR_T")
@@ -48,25 +49,21 @@ public class DelegateMemberBo extends AbstractMemberBo implements DelegateMember
 
 
     public static DelegateMember to(DelegateMemberBo bo) {
-        DelegateMember.Builder builder = DelegateMember.Builder.create()
-        builder.delegationMemberId = bo.delegationMemberId
-        builder.activeFromDate = bo.activeFromDate
-        builder.activeToDate = bo.activeToDate
-        builder.delegationId = bo.delegationId
-        builder.memberId = bo.memberId
-        builder.roleMemberId = bo.roleMemberId
-        builder.typeCode = bo.typeCode
+        if (bo == null) {return null;}
+        return DelegateMember.Builder.create(bo).build();
     }
 
-    public static DelegateMemberBo from(Delegate immutable) {
+    public static DelegateMemberBo from(DelegateMember immutable) {
+        if (immutable == null) { return null; }
+
         return new DelegateMemberBo(
                 delegationMemberId: immutable.delegationMemberId,
-                activeFromDate: immutable.activeFromDate,
-                activeToDate: immutable.activeToDate,
+                activeFromDateValue: immutable.activeFromDate == null ? null : new Timestamp(immutable.activeFromDate.getMillis()),
+                activeToDateValue: immutable.activeToDate == null ? null : new Timestamp(immutable.activeToDate.getMillis()),
                 delegationId: immutable.delegationId,
                 memberId: immutable.memberId,
                 roleMemberId: immutable.roleMemberId,
-                typeCode: immutable.memberTypeCode,
+                typeCode: immutable.typeCode,
         )
     }
 }

@@ -24,10 +24,15 @@ import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
 import org.junit.Assert
 import org.junit.Test
+import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
+import org.joda.time.format.DateTimeFormatter
+import org.kuali.rice.kim.api.test.JAXBAssert
 
 class RoleMemberTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
 
+    static final DateTimeFormatter FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
     static final String ROLE_MEMBER_ID = "1";
     static final String ROLE_ID = "23";
     static final Map<String, String> ATTRIBUTES = [:]
@@ -37,10 +42,10 @@ class RoleMemberTest {
     static final String MEMBER_ID = "42";
     static final String MEMBER_TYPE_CODE = "G";
 
-    static final String ACTIVE_FROM_STRING = "2011-01-01 12:00:00.0"
-    static final Timestamp ACTIVE_FROM = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(ACTIVE_FROM_STRING).toTimestamp()
-    static final String ACTIVE_TO_STRING = "2012-01-01 12:00:00.0"
-    static final Timestamp ACTIVE_TO = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(ACTIVE_TO_STRING).toTimestamp()
+    static final String ACTIVE_FROM_STRING = "2011-01-01 12:00:00"
+    static final DateTime ACTIVE_FROM = new DateTime(FORMATTER.parseDateTime(ACTIVE_FROM_STRING))
+    static final String ACTIVE_TO_STRING = "2012-01-01 12:00:00"
+    static final DateTime ACTIVE_TO = new DateTime(FORMATTER.parseDateTime(ACTIVE_TO_STRING))
     static final boolean ACTIVE = true;
 
     private static create_rra_builder() {
@@ -81,8 +86,8 @@ class RoleMemberTest {
          </roleResponsibilityActions>
          <memberId>${MEMBER_ID}</memberId>
          <memberTypeCode>${MEMBER_TYPE_CODE}</memberTypeCode>
-         <activeFromDate>${ACTIVE_FROM.time}</activeFromDate>
-         <activeToDate>${ACTIVE_TO.time}</activeToDate>
+         <activeFromDate>${ACTIVE_FROM}</activeFromDate>
+         <activeToDate>${ACTIVE_TO}</activeToDate>
          <active>${ACTIVE}</active>
        </roleMember>
     """
@@ -93,10 +98,11 @@ class RoleMemberTest {
         for (RoleResponsibilityAction.Builder rraBuilder: ROLE_RESPONSIBILITY_ACTIONS) {
             roleResponsibilityActions.add(rraBuilder.build());
         }
-
+        System.out.println(XML);
         JAXBContext jc = JAXBContext.newInstance(RoleMember.class)
         Unmarshaller unmarshaller = jc.createUnmarshaller();
         RoleMember roleMember = (RoleMember) unmarshaller.unmarshal(new StringReader(XML))
+        System.out.println(roleMember)
         Assert.assertEquals(ROLE_MEMBER_ID, roleMember.roleMemberId)
         Assert.assertEquals(ROLE_ID, roleMember.roleId)
         Assert.assertEquals(ATTRIBUTES, roleMember.attributes)
@@ -106,6 +112,7 @@ class RoleMemberTest {
         Assert.assertEquals(ACTIVE_FROM, roleMember.activeFromDate)
         Assert.assertEquals(ACTIVE_TO, roleMember.activeToDate)
     }
+
 
     void testXmlMarshalingAndUnMarshalling() {
         JAXBContext jc = JAXBContext.newInstance(RoleMember.class)
@@ -169,34 +176,34 @@ class RoleMemberTest {
 
     @Test
     void test_isActiveTimestamp_Between() {
-        String betweenDate = "2011-06-01 12:00:00.0"
-        Timestamp betweenTimeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(betweenDate).toTimestamp()
+        String betweenDate = "2011-06-01 12:00:00"
+        DateTime betweenDateTime = FORMATTER.parseDateTime(betweenDate)
 
         RoleMember roleMember =
             RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES).build()
 
-        Assert.assertTrue(roleMember.isActive(betweenTimeStamp))
+        Assert.assertTrue(roleMember.isActive(betweenDateTime))
     }
 
     @Test
     void test_isActiveTimestamp_Before() {
-        String betweenDate = "2010-06-01 12:00:00.0"
-        Timestamp betweenTimeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(betweenDate).toTimestamp()
+        String betweenDate = "2010-06-01 12:00:00"
+        DateTime betweenDateTime = FORMATTER.parseDateTime(betweenDate)
 
         RoleMember roleMember =
             RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES).build()
 
-        Assert.assertFalse(roleMember.isActive(betweenTimeStamp))
+        Assert.assertFalse(roleMember.isActive(betweenDateTime))
     }
 
     @Test
     void test_isActiveTimestamp_After() {
-        String betweenDate = "2013-06-01 12:00:00.0"
-        Timestamp betweenTimeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(betweenDate).toTimestamp()
+        String betweenDate = "2013-06-01 12:00:00"
+        DateTime betweenDateTime = FORMATTER.parseDateTime(betweenDate)
 
         RoleMember roleMember =
             RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES).build()
 
-        Assert.assertFalse(roleMember.isActive(betweenTimeStamp))
+        Assert.assertFalse(roleMember.isActive(betweenDateTime))
     }
 }

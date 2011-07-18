@@ -67,7 +67,7 @@ public class PersonDocumentPhone extends PersonDocumentBoDefaultBase {
 	
 	@ManyToOne(targetEntity=EntityPhoneTypeBo.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "PHONE_TYP_CD", insertable = false, updatable = false)
-	protected TypeContract phoneType;
+	protected EntityPhoneTypeBo phoneType;
 
 	// Waiting until we pull in from KFS
 	// protected Country country;
@@ -152,11 +152,11 @@ public class PersonDocumentPhone extends PersonDocumentBoDefaultBase {
 		this.entityTypeCode = entityTypeCode;
 	}
 
-	public TypeContract getPhoneType() {
+	public EntityPhoneTypeBo getPhoneType() {
 		return this.phoneType;
 	}
 
-	public void setPhoneType(TypeContract phoneType) {
+	public void setPhoneType(EntityPhoneTypeBo phoneType) {
 		this.phoneType = phoneType;
 	}
 

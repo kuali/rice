@@ -27,6 +27,8 @@ import org.hibernate.annotations.Parameter
 import org.kuali.rice.kim.api.group.GroupMember
 import org.kuali.rice.kim.api.group.GroupMemberContract
 import org.kuali.rice.kim.impl.membership.AbstractMemberBo
+import java.sql.Timestamp
+import org.joda.time.DateTime
 
 @Entity
 @Table(name="KRIM_GRP_MBR_T")
@@ -73,28 +75,12 @@ public class GroupMemberBo extends AbstractMemberBo implements GroupMemberContra
         bo.groupId = im.groupId
         bo.memberId = im.memberId
         bo.typeCode = im.typeCode
-        bo.activeFromDate = im.activeFromDate
-        bo.activeToDate = im.activeToDate
+        bo.activeFromDateValue = im.activeFromDate == null ? null : new Timestamp(im.activeFromDate.getMillis());
+        bo.activeToDateValue = im.activeToDate == null ? null : new Timestamp(im.activeToDate.getMillis());
         bo.versionNumber = im.versionNumber
 		bo.objectId = im.objectId;
 
         return bo
     }
-
-   /* @Override
-    boolean isActive(){
-        boolean tempIsActive = super.isActive()
-        if (tempIsActive) {
-            //check to see if underlying member is active
-            if (typeCode.equals(KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE)) {
-                return KimApiServiceLocator.getIdentityManagementService().getGroup(memberId).isActive()
-            } else if (typeCode.equals(KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
-                return KimApiServiceLocator.getIdentityManagementService().getPrincipal(memberId).isActive()
-            } else {
-                return tempIsActive
-            }
-
-        }
-    }*/
 
 }

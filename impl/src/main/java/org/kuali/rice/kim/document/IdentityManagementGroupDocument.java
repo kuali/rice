@@ -128,7 +128,10 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	 * @return the kimType
 	 */
 	public KimType getKimType() {
-		return KimApiServiceLocator.getKimTypeInfoService().getKimType(getGroupTypeId());
+        if (getGroupTypeId() != null) {
+		    return KimApiServiceLocator.getKimTypeInfoService().getKimType(getGroupTypeId());
+        }
+        return null;
 	}
 	
 	public GroupDocumentMember getBlankMember() {

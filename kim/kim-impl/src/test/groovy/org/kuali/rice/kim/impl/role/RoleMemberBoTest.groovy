@@ -6,13 +6,16 @@ import org.junit.Assert
 import org.junit.Ignore
 import org.junit.Test
 import org.kuali.rice.kim.api.role.RoleMember
+import org.joda.time.format.DateTimeFormatter
+import org.joda.time.format.DateTimeFormat
+import org.joda.time.DateTime
 
 class RoleMemberBoTest {
-
-    static final String ACTIVE_FROM_STRING = "2011-01-01 12:00:00.0"
-    static final String ACTIVE_TO_STRING = "2012-01-01 12:00:00.0"
-    static final Timestamp ACTIVE_FROM = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(ACTIVE_FROM_STRING).toTimestamp()
-    static final Timestamp ACTIVE_TO = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(ACTIVE_TO_STRING).toTimestamp()
+    static final DateTimeFormatter FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+    static final String ACTIVE_FROM_STRING = "2011-01-01 12:00:00"
+    static final String ACTIVE_TO_STRING = "2012-01-01 12:00:00"
+    static final DateTime ACTIVE_FROM = FORMATTER.parseDateTime(ACTIVE_FROM_STRING)
+    static final DateTime ACTIVE_TO = FORMATTER.parseDateTime(ACTIVE_TO_STRING)
 
     @Test
     @Ignore("RoleMemberBo.getAttributes(), called by RoleMemberBo.to(), requires the GRL to use both RoleService and TypeInfoService - not setup for unit tests")

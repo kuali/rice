@@ -16,9 +16,10 @@
 package org.kuali.rice.kim.impl.jaxb;
 
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
+import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
 import org.kuali.rice.core.util.jaxb.NameAndNamespacePair;
 import org.kuali.rice.core.util.jaxb.NameAndNamespacePairValidatingAdapter;
-import org.kuali.rice.core.util.jaxb.StringToDateTimeAdapter;
 import org.kuali.rice.kim.api.group.GroupContract;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.jaxb.QualificationListAdapter;
@@ -75,12 +76,12 @@ public abstract class RoleMemberXmlDTO implements Serializable {
     private NameAndNamespacePair roleNameAsMember;
     
     @XmlElement(name="activeFromDate")
-    @XmlJavaTypeAdapter(StringToDateTimeAdapter.class)
-    private java.util.Date activeFromDate;
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
+    private DateTime activeFromDate;
     
     @XmlElement(name="activeToDate")
-    @XmlJavaTypeAdapter(StringToDateTimeAdapter.class)
-    private java.util.Date activeToDate;
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
+    private DateTime activeToDate;
     
     @XmlElement(name="qualifications")
     @XmlJavaTypeAdapter(QualificationListAdapter.class)
@@ -231,28 +232,28 @@ public abstract class RoleMemberXmlDTO implements Serializable {
     /**
      * @return the activeFromDate
      */
-    public java.util.Date getActiveFromDate() {
+    public DateTime getActiveFromDate() {
         return this.activeFromDate;
     }
 
     /**
      * @param activeFromDate the activeFromDate to set
      */
-    public void setActiveFromDate(java.util.Date activeFromDate) {
+    public void setActiveFromDate(DateTime activeFromDate) {
         this.activeFromDate = activeFromDate;
     }
 
     /**
      * @return the activeToDate
      */
-    public java.util.Date getActiveToDate() {
+    public DateTime getActiveToDate() {
         return this.activeToDate;
     }
 
     /**
      * @param activeToDate the activeToDate to set
      */
-    public void setActiveToDate(java.util.Date activeToDate) {
+    public void setActiveToDate(DateTime activeToDate) {
         this.activeToDate = activeToDate;
     }
 

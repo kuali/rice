@@ -3,6 +3,7 @@ package org.kuali.rice.kim.impl.role;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
@@ -509,7 +510,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         List<RoleMemberBo> roleMembers = getStoredRolePrincipalsForPrincipalIdAndRoleIds(null, principalId, null);
         Set<String> roleIds = new HashSet<String>(roleMembers.size());
         for (RoleMemberBo roleMemberBo : roleMembers) {
-            roleMemberBo.setActiveToDate(yesterday);
+            roleMemberBo.setActiveToDateValue(yesterday);
             roleIds.add(roleMemberBo.getRoleId()); // add to the set of IDs
         }
         getBusinessObjectService().save(roleMembers);
@@ -531,7 +532,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     protected void inactivateGroupRoleMemberships(List<String> groupIds, Timestamp yesterday) {
         List<RoleMemberBo> roleMemberBosOfGroupType = getStoredRoleGroupsForGroupIdsAndRoleIds(null, groupIds, null);
         for (RoleMemberBo roleMemberbo : roleMemberBosOfGroupType) {
-            roleMemberbo.setActiveToDate(yesterday);
+            roleMemberbo.setActiveToDateValue(yesterday);
         }
         getBusinessObjectService().save(roleMemberBosOfGroupType);
         getIdentityManagementNotificationService().roleUpdated();
@@ -542,7 +543,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         List<GroupMemberBo> groupMemberBoList = new ArrayList<GroupMemberBo>(groupMembers.size());
         for (GroupMember gm : groupMembers) {
             GroupMember.Builder builder = GroupMember.Builder.create(gm);
-            builder.setActiveToDate(yesterday);
+            builder.setActiveToDate(new DateTime(yesterday.getTime()));
             groupMemberBoList.add(GroupMemberBo.from(builder.build()));
         }
         getBusinessObjectService().save(groupMemberBoList);
@@ -553,7 +554,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         List<GroupMemberBo> groupMemberBoList = new ArrayList<GroupMemberBo>(groupMembers.size());
         for (GroupMember groupMember : groupMembers) {
             GroupMember.Builder builder = GroupMember.Builder.create(groupMember);
-            builder.setActiveToDate(yesterday);
+            builder.setActiveToDate(new DateTime(yesterday.getTime()));
             groupMemberBoList.add(GroupMemberBo.from(builder.build()));
         }
         getBusinessObjectService().save(groupMemberBoList);
@@ -562,7 +563,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     protected void inactivatePrincipalDelegations(String principalId, Timestamp yesterday) {
         List<DelegateMemberBo> delegationMembers = getStoredDelegationPrincipalsForPrincipalIdAndDelegationIds(null, principalId);
         for (DelegateMemberBo delegateMemberBo : delegationMembers) {
-            delegateMemberBo.setActiveToDate(yesterday);
+            delegateMemberBo.setActiveToDateValue(yesterday);
         }
         getBusinessObjectService().save(delegationMembers);
         getIdentityManagementNotificationService().delegationUpdated();
@@ -1198,7 +1199,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     private void inactivateRoleMemberships(List<String> roleIds, Timestamp yesterday) {
         List<RoleMemberBo> roleMemberBoList = getStoredRoleMembersForRoleIds(roleIds, null, null);
         for (RoleMemberBo roleMemberBo : roleMemberBoList) {
-            roleMemberBo.setActiveToDate(yesterday);
+            roleMemberBo.setActiveToDateValue(yesterday);
         }
         getBusinessObjectService().save(roleMemberBoList);
         getIdentityManagementNotificationService().roleUpdated();
@@ -1209,7 +1210,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         for (DelegateBo delegation : delegations) {
             delegation.setActive(false);
             for (DelegateMemberBo delegationMember : delegation.getMembers()) {
-                delegationMember.setActiveToDate(yesterday);
+                delegationMember.setActiveToDateValue(yesterday);
             }
         }
         getBusinessObjectService().save(delegations);
@@ -1219,7 +1220,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     private void inactivateMembershipsForRoleAsMember(List<String> roleIds, Timestamp yesterday) {
         List<RoleMemberBo> roleMemberBoList = getStoredRoleMembershipsForRoleIdsAsMembers(roleIds, null);
         for (RoleMemberBo roleMemberBo : roleMemberBoList) {
-            roleMemberBo.setActiveToDate(yesterday);
+            roleMemberBo.setActiveToDateValue(yesterday);
         }
         getBusinessObjectService().save(roleMemberBoList);
         getIdentityManagementNotificationService().roleUpdated();

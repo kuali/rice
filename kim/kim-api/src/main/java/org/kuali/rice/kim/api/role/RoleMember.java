@@ -20,12 +20,13 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
+import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
-import org.kuali.rice.core.api.util.jaxb.SqlTimestampAdapter;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -35,7 +36,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -77,13 +77,13 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
     @XmlElement(name = Elements.MEMBER_TYPE_CODE)
     private final String memberTypeCode;
 
-    @XmlJavaTypeAdapter(SqlTimestampAdapter.class)
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
     @XmlElement(name = CoreConstants.CommonElements.ACTIVE_FROM_DATE)
-    private final Timestamp activeFromDate;
+    private final DateTime activeFromDate;
 
-    @XmlJavaTypeAdapter(SqlTimestampAdapter.class)
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
     @XmlElement(name = CoreConstants.CommonElements.ACTIVE_TO_DATE)
-    private final Timestamp activeToDate;
+    private final DateTime activeToDate;
 
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -155,16 +155,16 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
         return this.roleResponsibilityActions;
     }
 
-    public Timestamp getActiveFromDate() {
+    public DateTime getActiveFromDate() {
         return activeFromDate;
     }
 
-    public Timestamp getActiveToDate() {
+    public DateTime getActiveToDate() {
         return activeToDate;
     }
 
     @Override
-    public boolean isActive(Timestamp activeAsOfDate) {
+    public boolean isActive(DateTime activeAsOfDate) {
         return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, activeAsOfDate);
     }
 
@@ -192,11 +192,11 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
         private List<RoleResponsibilityAction.Builder> roleRspActions;
         private String memberId;
         private String memberTypeCode;
-        private Timestamp activeFromDate;
-        private Timestamp activeToDate;
+        private DateTime activeFromDate;
+        private DateTime activeToDate;
 
         public static Builder create(String roleId, String roleMemberId, String memberId,
-                                     String memberTypeCode, Timestamp activeFromDate, Timestamp activeToDate, Map<String, String> attributes) {
+                                     String memberTypeCode, DateTime activeFromDate, DateTime activeToDate, Map<String, String> attributes) {
             Builder b = new Builder();
             b.setRoleId(roleId);
             b.setRoleMemberId(roleMemberId);
@@ -287,24 +287,24 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
             this.memberTypeCode = memberTypeCode;
         }
 
-        public Timestamp getActiveFromDate() {
+        public DateTime getActiveFromDate() {
             return activeFromDate;
         }
 
-        public void setActiveFromDate(Timestamp activeFromDate) {
+        public void setActiveFromDate(DateTime activeFromDate) {
             this.activeFromDate = activeFromDate;
         }
 
-        public Timestamp getActiveToDate() {
+        public DateTime getActiveToDate() {
             return activeToDate;
         }
 
-        public void setActiveToDate(Timestamp activeToDate) {
+        public void setActiveToDate(DateTime activeToDate) {
             this.activeToDate = activeToDate;
         }
 
         @Override
-        public boolean isActive(Timestamp activeAsOfDate) {
+        public boolean isActive(DateTime activeAsOfDate) {
             return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, activeAsOfDate);
         }
 

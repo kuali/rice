@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.service;
+package org.kuali.rice.kim.impl.group;
 
 import org.kuali.rice.kim.impl.group.GroupBo;
 

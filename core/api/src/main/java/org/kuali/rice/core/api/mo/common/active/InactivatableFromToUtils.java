@@ -16,7 +16,7 @@
 
 package org.kuali.rice.core.api.mo.common.active;
 
-import java.sql.Timestamp;
+import org.joda.time.DateTime;
 
 public final class InactivatableFromToUtils {
 
@@ -24,17 +24,17 @@ public final class InactivatableFromToUtils {
         throw new UnsupportedOperationException("do not call");
     }
 
-    public static boolean isActive(Timestamp activeFromDate, Timestamp activeToDate, Timestamp activeAsOfDate) {
+    public static boolean isActive(DateTime activeFromDate, DateTime activeToDate, DateTime activeAsOfDate) {
         long asOfDate = System.currentTimeMillis();
         if (activeAsOfDate != null) {
-            asOfDate = activeAsOfDate.getTime();
+            asOfDate = activeAsOfDate.getMillis();
         }
 
         return computeActive(activeFromDate, activeToDate, asOfDate);
     }
 
-    private static boolean computeActive(Timestamp activeFromDate, Timestamp activeToDate, long asOfDate) {
-        return (activeFromDate == null || asOfDate >= activeFromDate.getTime()) &&
-                (activeToDate == null || asOfDate < activeToDate.getTime());
+    private static boolean computeActive(DateTime activeFromDate, DateTime activeToDate, long asOfDate) {
+        return (activeFromDate == null || asOfDate >= activeFromDate.getMillis()) &&
+                (activeToDate == null || asOfDate < activeToDate.getMillis());
     }
 }

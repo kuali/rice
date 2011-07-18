@@ -156,9 +156,6 @@
   <bean id="kimGroupService" class="org.kuali.rice.kim.impl.group.GroupServiceImpl"
           p:businessObjectService-ref="businessObjectService"
           p:criteriaLookupService-ref="criteriaLookupService" />
-  <bean id="kimGroupUpdateService" class="org.kuali.rice.kim.service.impl.GroupUpdateServiceImpl"
-            p:businessObjectService-ref="businessObjectService"
-            p:criteriaLookupService-ref="criteriaLookupService" />
 
   <!--
         Permission Service
@@ -195,7 +192,7 @@
 
   <bean id="activePrincipalRoleTypeService" class="org.kuali.rice.kim.service.support.impl.PrincipalDerivedRoleTypeServiceImpl" />
 
-  <bean id="groupInternalService" class="org.kuali.rice.kim.service.impl.GroupInternalServiceImpl" />
+  <bean id="groupInternalService" class="org.kuali.rice.kim.impl.group.GroupInternalServiceImpl" />
   <bean id="responsibilityInternalService" class="org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalServiceImpl" />
 
   <bean id="documentInitiatorRoleTypeService" class="org.kuali.rice.krad.authorization.PermissionDerivedRoleTypeServiceImpl">

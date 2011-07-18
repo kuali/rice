@@ -6,6 +6,7 @@ import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.PredicateFactory;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
@@ -99,7 +100,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
                 if (principalId != null) {
                     if (StringUtils.equals(groupMembershipInfo.getTypeCode(), Role.PRINCIPAL_MEMBER_TYPE)
                             && StringUtils.equals(principalId, groupMembershipInfo.getMemberId())
-                            && groupMembershipInfo.isActive(new Timestamp(System.currentTimeMillis()))) {
+                            && groupMembershipInfo.isActive(new DateTime())) {
                         groupPrincipals.add(groupMembershipInfo);
                     }
                 } else {
@@ -122,7 +123,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
                 if (!CollectionUtils.isEmpty(groupMemberships)) {
                     for (GroupMember groupMembershipInfo : groupMemberships) {
                         if (StringUtils.equals(groupMembershipInfo.getTypeCode(), Role.GROUP_MEMBER_TYPE)
-                                && groupMembershipInfo.isActive(new Timestamp(System.currentTimeMillis()))) {
+                                && groupMembershipInfo.isActive(new DateTime())) {
                             groupMembers.add(groupMembershipInfo);
                         }
                     }

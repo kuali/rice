@@ -35,6 +35,7 @@ import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo
 import org.kuali.rice.kim.impl.type.KimTypeBo
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
+import org.joda.time.DateTime
 
 @Entity
 @Table(name="KRIM_GRP_T")
@@ -73,7 +74,7 @@ public class GroupBo extends PersistableBusinessObjectBase implements GroupContr
     private List<Person> memberPersons
 
     @Transient
-    private List<GroupBo> memberGroups
+    private List<Group> memberGroups
 
     @Transient
     Map<String,String> attributes
@@ -135,7 +136,7 @@ public class GroupBo extends PersistableBusinessObjectBase implements GroupContr
         memberGroups = new ArrayList<Group>()
         if (getMembers() != null) {
             for ( GroupMemberBo groupMember : getMembers() ) {
-                if (groupMember.isActive()) {
+                if (groupMember.isActive(new DateTime())) {
                     if ( groupMember.getTypeCode().equals ( KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE )) {
                         Person tempPerson =  KimApiServiceLocator.getPersonService().getPerson(groupMember.getMemberId())
                         if (tempPerson != null && tempPerson.isActive()) {
@@ -163,7 +164,7 @@ public class GroupBo extends PersistableBusinessObjectBase implements GroupContr
         List<String> principalIds = new ArrayList<String>()
         if (getMembers() != null) {
             for ( GroupMemberBo groupMember : getMembers() ) {
-                if (groupMember.isActive()) {
+                if (groupMember.isActive(new DateTime())) {
                     if ( groupMember.getTypeCode().equals ( KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE )) {
                         principalIds.add(groupMember.getMemberId());
                     }
@@ -177,7 +178,7 @@ public class GroupBo extends PersistableBusinessObjectBase implements GroupContr
         List<String> principalIds = new ArrayList<String>()
         if (getMembers() != null) {
             for ( GroupMemberBo groupMember : getMembers() ) {
-                if (groupMember.isActive()) {
+                if (groupMember.isActive(new DateTime())) {
                     if ( groupMember.getTypeCode().equals ( KimGroupMemberTypes.GROUP_MEMBER_TYPE )) {
                         principalIds.add(groupMember.getMemberId());
                     }

@@ -40,6 +40,11 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentPhone;
 import org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
+import org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo;
+import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo;
+import org.kuali.rice.kim.impl.identity.email.EntityEmailTypeBo;
+import org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo;
+import org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo;
 import org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo;
 import org.kuali.rice.kim.impl.type.KimTypeAttributeBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
@@ -235,6 +240,8 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 			PersonDocumentName docName = new PersonDocumentName();
 			docName.setEntityNameId("nameId123");
 			docName.setNameTypeCode("PRFR");
+            docName.setEntityNameType(
+                    EntityNameTypeBo.from(KimApiServiceLocator.getIdentityService().getNameType("PRFR")));
 			docName.setFirstName("John");
 			docName.setLastName("Doe");
 			docName.setMiddleName("M");
@@ -250,6 +257,8 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		List<PersonDocumentAffiliation> docAffiliations = new ArrayList<PersonDocumentAffiliation>();
 			PersonDocumentAffiliation docAffiliation = new PersonDocumentAffiliation();
 			docAffiliation.setAffiliationTypeCode("FCLTY");
+            docAffiliation.setAffiliationType(
+                    EntityAffiliationTypeBo.from(KimApiServiceLocator.getIdentityService().getAffiliationType("FCLTY")));
 			docAffiliation.setEntityAffiliationId("aflID123");
 			docAffiliation.setCampusCode("BL");
 			docAffiliation.setActive(true);
@@ -288,6 +297,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		List<PersonDocumentPhone> docPhones = new ArrayList<PersonDocumentPhone>();
 			PersonDocumentPhone docPhone = new PersonDocumentPhone();
 			docPhone.setPhoneTypeCode("HM");
+            docPhone.setPhoneType(EntityPhoneTypeBo.from(KimApiServiceLocator.getIdentityService().getPhoneType("HM")));
 			docPhone.setEntityPhoneId("phoneId123");
 			docPhone.setEntityTypeCode("PERSON");
 			docPhone.setPhoneNumber("123-45'6789");
@@ -306,6 +316,8 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 			docEmail.setEntityEmailId("emailId123");
 			docEmail.setEntityTypeCode("PERSON");
 			docEmail.setEmailTypeCode("HM");
+            docEmail.setEmailType(
+                    EntityEmailTypeBo.from(KimApiServiceLocator.getIdentityService().getEmailType("HM")));
 			docEmail.setEmailAddress("test@abc.com");
 			docEmail.setActive(true);
 			docEmail.setDflt(true);
@@ -319,6 +331,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 			docAddress.setEntityTypeCode("PERSON");
 			docAddress.setEntityAddressId("addrId123");
 			docAddress.setAddressTypeCode("HM");
+            docAddress.setAddressType(EntityAddressTypeBo.from(KimApiServiceLocator.getIdentityService().getAddressType("HM")));
 			docAddress.setLine1("PO box 123");
 			docAddress.setStateCode("IN");
 			docAddress.setPostalCode("46123");

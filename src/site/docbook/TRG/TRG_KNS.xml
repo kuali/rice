@@ -1479,11 +1479,13 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                         for each of these columns indicated. The label for the total row will
                         display in the first lookup column. By default this label is set to 'TOTALS'
                         and can be changed in KR-ApplicationResources.properties.</para>
-                    <para><inlinemediaobject>
+                    <figure><title>Totals</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/totals.png"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                        </mediaobject>
+                    </figure>
                     <para>The total line will not be displayed for the column if the column values
                         are masked.</para>
                     <para>One limitation of the totaling functionality is it will not work with a
@@ -1576,10 +1578,10 @@ public void setActiveAsOfDate(Date activeAsOfDate);
     ...
 &lt;/beans></programlisting>
             </sect3>
-<!-- TO DO             
-            <sect3>
-                <title>Business Object Data Dictionary Inquiry Definition</title>
-            </sect3>
+<!-- TO DO     
+   <sect3>
+        <title>Business Object Data Dictionary Inquiry Definition</title>
+   </sect3>
 -->
             <sect3>
                 <title>Merging Custom Attributes into Inquiry Definitions</title>
@@ -1654,7 +1656,7 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                             action. </para>
                     </listitem>
                 </orderedlist></para>
-            <sect3>
+            <sect3><title>Comparison of Maintenance and Transactional Documents</title>
                 <para>
                     <table frame="none">
                         <title>Comparison of Maintenance and Transactional Documents</title>
@@ -3246,20 +3248,18 @@ Example:
                                 unmasked by the current end user.</entry>
                         </row>
                         <row>
-                            <entry>canPartiallyUnmaskField</entry>
+                            <entry>canPartiallyUnmaskField
                             <emphasis role="bold">
-                                <entry>${kfunc:canPartiallyUnmaskField (businessObjectClassName,
-                                    fieldName, kualiForm)}</entry>
-                            </emphasis>
+                                ${kfunc:canPartiallyUnmaskField (businessObjectClassName,
+                                fieldName, kualiForm)}</emphasis></entry>
                             <entry>Checks KIM permissions to determine if the field can be partially
                                 unmasked by the current end user.</entry>
                         </row>
                         <row>
-                            <entry>getFullyMaskedValue</entry>
+                            <entry>getFullyMaskedValue
                             <emphasis role="bold">
-                                <entry>${kfunc:getFullyMaskedValue (className, fieldName, kualiForm,
-                                    propertyName)}</entry>
-                            </emphasis>
+                                ${kfunc:getFullyMaskedValue (className, fieldName, kualiForm,
+                                propertyName)}</emphasis></entry>
                             <entry>Uses the AttributeSecurity declaration to determine the fully
                                 masked value.</entry>
                         </row>
@@ -3374,7 +3374,7 @@ Example:
                 override <emphasis role="bold">getDocumentActions</emphasis> from scratch.</para>
             <para>
                 <table frame="none">
-                    <title/>
+                    <title>Document Presentation Controller Methods</title>
                     <tgroup cols="3">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                         <colspec colname="c2" colnum="2" colwidth="1.0*"/>
@@ -3514,7 +3514,7 @@ Example:
                 document presentation controller input. These are:</para>
             <para>
                 <table frame="none">
-                    <title/>
+                    <title>Document Authorizer Methods</title>
                     <tgroup cols="3">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                         <colspec colname="c2" colnum="2" colwidth="1.0*"/>

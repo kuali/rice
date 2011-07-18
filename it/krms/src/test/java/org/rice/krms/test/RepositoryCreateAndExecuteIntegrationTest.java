@@ -1,15 +1,15 @@
 package org.rice.krms.test;
 
-import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.kew.util.PerformanceLogger;
@@ -261,7 +261,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
         contextQualifiers.put("name", "Context1");
         contextQualifiers.put("Context1Qualifier", "BLAH");
         Map<String,String> agendaQualifiers = new HashMap<String,String>();
-        Date now = new Date();
+        DateTime now = new DateTime();
 
         SelectionCriteria sc1 = SelectionCriteria.createCriteria("Tsunami", now, contextQualifiers, agendaQualifiers);
 
@@ -368,7 +368,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
         contextQualifiers.put("name", "Context1");
         contextQualifiers.put("Context1Qualifier", "BLAH");
         Map<String,String> agendaQualifiers = new HashMap<String,String>();
-        Date now = new Date();
+        DateTime now = new DateTime();
 
 	    SelectionCriteria sc2 = SelectionCriteria.createCriteria("Earthquake", now, contextQualifiers, agendaQualifiers);
 

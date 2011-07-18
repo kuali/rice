@@ -6,7 +6,7 @@ import java.util.Collections;
 
 public enum Truth {
     TRUE("true", "yes", "Y", "on", "1", "t", "enabled"),
-    FALSE("false", "yes", "N", "off", "0", "f", "disabled");
+    FALSE("false", "no", "N", "off", "0", "f", "disabled");
 
     private final Collection<String> truthStrings;
 

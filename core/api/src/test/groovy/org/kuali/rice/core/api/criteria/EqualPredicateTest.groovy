@@ -16,10 +16,12 @@
 package org.kuali.rice.core.api.criteria;
 
 
-import org.junit.Test
-import org.kuali.rice.core.test.JAXBAssert
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.fail
+
+import org.joda.time.DateTime
+import org.junit.Test
+import org.kuali.rice.core.test.JAXBAssert
 
 /**
  * A test for the {@link EqualPredicate} class.
@@ -58,7 +60,7 @@ public class EqualPredicateTest {
 		assertEquals(BigInteger.ZERO, equalExpression.getValue().getValue());
 		
 		// Test that it can take a CriteriaDateTimeValue
-		Calendar dateTime = Calendar.getInstance();
+		DateTime dateTime = new DateTime();
 		equalExpression = new EqualPredicate("property.path", new CriteriaDateTimeValue(dateTime));
 		assertEquals("property.path", equalExpression.getPropertyPath());
 		assertEquals(dateTime, equalExpression.getValue().getValue());

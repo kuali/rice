@@ -15,10 +15,6 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import org.apache.commons.lang.StringUtils;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
@@ -32,6 +28,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
+
+import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 
 /**
  * A class which includes various utilities and constants for use within the criteria API.
@@ -146,6 +148,8 @@ final class CriteriaSupportUtils {
 			throw new IllegalArgumentException("Given criteria value cannot be null.");
 		} else if (object instanceof CharSequence) {
 			return new CriteriaStringValue((CharSequence)object);
+		} else if (object instanceof DateTime) {
+            return new CriteriaDateTimeValue((DateTime)object);
 		} else if (object instanceof Calendar) {
 			return new CriteriaDateTimeValue((Calendar)object);
 		} else if (object instanceof Date) {

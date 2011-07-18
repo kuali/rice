@@ -75,6 +75,7 @@ public class TypeUtils {
         temp.add(java.util.Date.class);
         temp.add(java.sql.Date.class);
         temp.add(java.sql.Timestamp.class);
+        // TODO add joda-time DateTime class to this?
         TEMPORAL_CLASSES = Collections.unmodifiableCollection(temp);
     }
 

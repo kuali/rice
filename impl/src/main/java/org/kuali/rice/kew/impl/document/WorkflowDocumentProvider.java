@@ -22,6 +22,8 @@ import org.kuali.rice.kew.api.document.DocumentUpdate;
 /**
  * TODO 
  * 
+ * ...implementations must be thread-safe...
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */

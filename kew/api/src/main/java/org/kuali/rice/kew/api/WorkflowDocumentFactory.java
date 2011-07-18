@@ -37,7 +37,22 @@ import org.kuali.rice.kew.api.document.DocumentUpdate;
 public final class WorkflowDocumentFactory {
 
 	private static final String CREATE_METHOD_NAME = "createDocument";
-	private static final String LOAD_METHOD_NAME = "loadDocument"; 
+	private static final String LOAD_METHOD_NAME = "loadDocument";
+	
+	/**
+	 * A lazy initialization holder class for the Provider.  Allows for
+	 * thread-safe initialization of shared resource.
+	 */
+	private static final class ProviderHolder {
+	    static final Object provider;
+	    static final Method createMethod;
+	    static final Method loadMethod;
+	    static {
+	        provider = loadProvider();
+	        createMethod = locateCreateMethod(provider);
+	        loadMethod = locateLoadMethod(provider);
+	    }
+	}
 	
     /**
      * TODO 
@@ -97,20 +112,11 @@ public final class WorkflowDocumentFactory {
 		if (StringUtils.isBlank(documentTypeName)) {
 			throw new IllegalArgumentException("documentTypeName was null or blank");
 		}
-		Object provider = loadProvider();
-		Method createMethod = null;
-		try {
-			createMethod = provider.getClass().getMethod(CREATE_METHOD_NAME, String.class, String.class, DocumentUpdate.class, DocumentContentUpdate.class);
-		} catch (NoSuchMethodException e) {
-			throw new ConfigurationException("Failed to locate valid createDocument method signature on provider class: " + provider.getClass().getName(), e);
-		} catch (SecurityException e) {
-			throw new ConfigurationException("Encountered security issue when attempting to access createDocument method on provider class: " + provider.getClass().getName(), e);
-		}
 		
 		Object workflowDocument = null;
 		
 		try {
-			workflowDocument = createMethod.invoke(provider, principalId, documentTypeName, documentUpdate, documentContentUpdate);
+			workflowDocument = ProviderHolder.createMethod.invoke(ProviderHolder.provider, principalId, documentTypeName, documentUpdate, documentContentUpdate);
 		} catch (IllegalAccessException e) {
 			throw new ConfigurationException("Failed to invoke " + CREATE_METHOD_NAME, e);
 		} catch (InvocationTargetException e) {
@@ -133,21 +139,11 @@ public final class WorkflowDocumentFactory {
 		if (StringUtils.isBlank(documentId)) {
 			throw new IllegalArgumentException("documentId was null or blank");
 		}
-		
-		Object provider = loadProvider();
-		Method loadMethod = null;
-		try {
-			loadMethod = provider.getClass().getMethod(LOAD_METHOD_NAME, String.class, String.class);
-		} catch (NoSuchMethodException e) {
-			throw new ConfigurationException("Failed to locate valid createDocument method signature on provider class: " + provider.getClass().getName(), e);
-		} catch (SecurityException e) {
-			throw new ConfigurationException("Encountered security issue when attempting to access createDocument method on provider class: " + provider.getClass().getName(), e);
-		}
-		
+				
 		Object workflowDocument = null;
 		
 		try {
-			workflowDocument = loadMethod.invoke(provider, principalId, documentId);
+			workflowDocument = ProviderHolder.loadMethod.invoke(ProviderHolder.provider, principalId, documentId);
 		} catch (IllegalAccessException e) {
 			throw new ConfigurationException("Failed to invoke " + LOAD_METHOD_NAME, e);
 		} catch (InvocationTargetException e) {
@@ -194,4 +190,25 @@ public final class WorkflowDocumentFactory {
 			throw new ConfigurationException("Failed to instantiate provider class: " + providerClass.getName(), e);
 		}
 	}
+	
+	private static Method locateCreateMethod(Object provider) {
+        try {
+            return provider.getClass().getMethod(CREATE_METHOD_NAME, String.class, String.class, DocumentUpdate.class, DocumentContentUpdate.class);
+        } catch (NoSuchMethodException e) {
+            throw new ConfigurationException("Failed to locate valid createDocument method signature on provider class: " + provider.getClass().getName(), e);
+        } catch (SecurityException e) {
+            throw new ConfigurationException("Encountered security issue when attempting to access createDocument method on provider class: " + provider.getClass().getName(), e);
+        }
+	}
+	
+	private static Method locateLoadMethod(Object provider) {
+        try {
+            return provider.getClass().getMethod(LOAD_METHOD_NAME, String.class, String.class);
+        } catch (NoSuchMethodException e) {
+            throw new ConfigurationException("Failed to locate valid createDocument method signature on provider class: " + provider.getClass().getName(), e);
+        } catch (SecurityException e) {
+            throw new ConfigurationException("Encountered security issue when attempting to access createDocument method on provider class: " + provider.getClass().getName(), e);
+        }
+	}
+
 }

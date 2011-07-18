@@ -19,7 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.docsearch.DocSearchDTO;

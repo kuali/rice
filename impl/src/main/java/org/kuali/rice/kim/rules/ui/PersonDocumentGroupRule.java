@@ -15,11 +15,8 @@
  */
 package org.kuali.rice.kim.rules.ui;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
@@ -27,6 +24,9 @@ import org.kuali.rice.kim.rule.ui.AddGroupRule;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.rules.DocumentRuleBase;
 import org.kuali.rice.krad.util.GlobalVariables;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 

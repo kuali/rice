@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.krad.test.document;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import org.kuali.rice.core.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.test.document.bo.AccountType;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class AccountTypeKeyValues extends KeyValuesBase {
 	

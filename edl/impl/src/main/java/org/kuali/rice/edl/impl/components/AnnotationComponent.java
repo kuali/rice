@@ -17,11 +17,9 @@
 
 package org.kuali.rice.edl.impl.components;
 
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.xml.XmlJotter;
+import org.kuali.rice.core.api.util.xml.XmlJotter;
 import org.kuali.rice.edl.impl.EDLContext;
 import org.kuali.rice.edl.impl.EDLModelComponent;
 import org.kuali.rice.edl.impl.EDLXmlUtils;
@@ -32,6 +30,8 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import java.util.List;
 
 /**
  * EDL pipeline component that exposes annotations from the previous array of taken actions in the

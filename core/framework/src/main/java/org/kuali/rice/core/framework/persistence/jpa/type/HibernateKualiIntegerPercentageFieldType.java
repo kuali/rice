@@ -15,17 +15,17 @@
  */
 package org.kuali.rice.core.framework.persistence.jpa.type;
 
+import org.hibernate.HibernateException;
+import org.hibernate.type.StandardBasicTypes;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiInteger;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-
-import org.hibernate.HibernateException;
-import org.hibernate.type.StandardBasicTypes;
-import org.kuali.rice.core.util.type.KualiDecimal;
-import org.kuali.rice.core.util.type.KualiInteger;
 
 /**
  * Kuali integer percentage type converteger

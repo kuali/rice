@@ -16,14 +16,6 @@
 
 package org.kuali.rice.ksb.messaging.servlet;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.namespace.QName;
-
 import org.apache.cxf.Bus;
 import org.apache.cxf.interceptor.Interceptor;
 import org.apache.cxf.message.Message;
@@ -32,7 +24,7 @@ import org.apache.cxf.transport.servlet.ServletTransportFactory;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.bus.Endpoint;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
@@ -50,6 +42,13 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter;
 import org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.namespace.QName;
+import java.io.IOException;
+import java.util.List;
 
 
 /**

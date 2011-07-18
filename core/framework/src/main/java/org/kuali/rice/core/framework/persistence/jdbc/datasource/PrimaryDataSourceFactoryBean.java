@@ -21,7 +21,7 @@ import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
-import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.core.api.util.RiceConstants;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.jndi.JndiTemplate;
 

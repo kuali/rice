@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.kew.lookup.valuefinder;
 
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.krad.keyvalues.KeyValuesBase;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 
 /**
  * This is a description of what this class does - chris don't forget to fill this in.

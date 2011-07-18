@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.core.web.format;
 
-import org.kuali.rice.core.api.truthy.Truth;
-import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.Truth;
 
 /**
  * This class is a formatter for little-b boolean classes, that cannot accept a null.

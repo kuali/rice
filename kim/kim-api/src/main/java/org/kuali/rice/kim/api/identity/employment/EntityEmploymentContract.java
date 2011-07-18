@@ -19,7 +19,7 @@ import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
-import org.kuali.rice.core.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.kim.api.identity.TypeContract;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationContract;
 

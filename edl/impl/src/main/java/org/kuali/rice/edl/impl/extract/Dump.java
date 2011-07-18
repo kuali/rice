@@ -16,13 +16,14 @@
 
 package org.kuali.rice.edl.impl.extract;
 
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.edl.framework.extract.DumpDTO;
+import org.kuali.rice.edl.framework.extract.FieldDTO;
+import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -32,15 +33,13 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.edl.framework.extract.DumpDTO;
-import org.kuali.rice.edl.framework.extract.FieldDTO;
-import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.krad.service.KRADServiceLocator;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  *

@@ -20,7 +20,7 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
-import org.kuali.rice.core.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo;
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo;
 

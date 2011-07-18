@@ -1,16 +1,14 @@
 package edu.sampleu.bookstore.rule;
 
-import java.util.List;
-
-import org.kuali.rice.core.util.RiceKeyConstants;
+import edu.sampleu.bookstore.bo.Address;
+import edu.sampleu.bookstore.bo.Author;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.krad.document.MaintenanceDocument;
 import org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 
-
-import edu.sampleu.bookstore.bo.Author;
-import edu.sampleu.bookstore.bo.Address;
+import java.util.List;
 
 /*
  * Business Rule for Author Document that follows prior to submit action.

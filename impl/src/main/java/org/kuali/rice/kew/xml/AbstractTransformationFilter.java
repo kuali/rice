@@ -15,15 +15,15 @@
  */
 package org.kuali.rice.kew.xml;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringEscapeUtils;
-import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.XMLFilterImpl;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This abstract class handles the xml stack of elements and makes

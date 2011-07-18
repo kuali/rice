@@ -18,7 +18,7 @@ package org.kuali.rice.krad.workflow.service.impl;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.StopWatch;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;

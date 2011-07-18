@@ -17,8 +17,8 @@
 package org.kuali.rice.core.impl.config.property;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.xml.XmlException;
-import org.kuali.rice.core.util.xml.XmlJotter;
+import org.kuali.rice.core.api.util.xml.XmlException;
+import org.kuali.rice.core.api.util.xml.XmlJotter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

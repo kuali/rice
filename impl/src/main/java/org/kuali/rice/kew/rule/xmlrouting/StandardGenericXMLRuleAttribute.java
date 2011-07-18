@@ -17,9 +17,9 @@
 package org.kuali.rice.kew.rule.xmlrouting;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.xml.XmlJotter;
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.core.api.util.xml.XmlJotter;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.attribute.XMLAttributeUtils;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
@@ -43,7 +43,11 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.BufferedReader;
 import java.io.StringReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 

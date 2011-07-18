@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.core.framework.persistence.ojb.conversion;
 
-import java.math.BigDecimal;
-
 import org.apache.ojb.broker.accesslayer.conversions.FieldConversion;
-import org.kuali.rice.core.util.type.KualiDecimal;
-import org.kuali.rice.core.util.type.KualiInteger;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiInteger;
+
+import java.math.BigDecimal;
 
 
 public class OjbKualiIntegerPercentageFieldConversion extends OjbDecimalPercentageFieldConversion {

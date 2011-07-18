@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.routeheader;
 
-import java.io.Serializable;
+import org.kuali.rice.core.api.util.xml.XmlJotter;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -26,8 +26,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-
-import org.kuali.rice.core.util.xml.XmlJotter;
+import java.io.Serializable;
 
 @Entity
 @Table(name="KREW_DOC_HDR_CNTNT_T")

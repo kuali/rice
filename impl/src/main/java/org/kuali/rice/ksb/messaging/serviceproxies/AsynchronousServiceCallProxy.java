@@ -15,24 +15,24 @@
  */
 package org.kuali.rice.ksb.messaging.serviceproxies;
 
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.reflect.BaseInvocationHandler;
+import org.kuali.rice.core.api.util.reflect.TargetedInvocationHandler;
+import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
+import org.kuali.rice.ksb.api.bus.Endpoint;
+import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
+import org.kuali.rice.ksb.api.messaging.AsynchronousCall;
+import org.kuali.rice.ksb.api.messaging.AsynchronousCallback;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
+import org.kuali.rice.ksb.util.KSBConstants;
+
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.List;
-
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
-import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.core.util.reflect.BaseInvocationHandler;
-import org.kuali.rice.core.util.reflect.TargetedInvocationHandler;
-import org.kuali.rice.ksb.api.bus.Endpoint;
-import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
-import org.kuali.rice.ksb.api.messaging.AsynchronousCallback;
-import org.kuali.rice.ksb.api.messaging.AsynchronousCall;
-import org.kuali.rice.ksb.messaging.PersistedMessageBO;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
-import org.kuali.rice.ksb.util.KSBConstants;
 
 
 /**

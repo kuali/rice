@@ -15,21 +15,20 @@
  */
 package org.kuali.rice.kew.rule.bo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.util.KNSGlobalVariables;
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
-import org.kuali.rice.krad.util.GlobalVariables;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A values finder for generating a list of Role names that can be selected for a given RuleTemplate.

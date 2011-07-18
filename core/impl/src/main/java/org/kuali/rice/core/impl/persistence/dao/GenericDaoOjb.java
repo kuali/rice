@@ -23,10 +23,10 @@ import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
+import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.persistence.dao.GenericDao;
 import org.kuali.rice.core.framework.persistence.ojb.SuffixableQueryByCriteria;
-import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.springframework.dao.DataAccessException;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 

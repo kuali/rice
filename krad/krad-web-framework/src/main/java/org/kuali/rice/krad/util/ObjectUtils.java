@@ -23,7 +23,7 @@ import org.apache.ojb.broker.core.proxy.ProxyHelper;
 import org.hibernate.collection.PersistentBag;
 import org.hibernate.proxy.HibernateProxy;
 import org.kuali.rice.core.api.search.SearchOperator;
-import org.kuali.rice.core.util.cache.CopiedObject;
+import org.kuali.rice.core.api.util.cache.CopiedObject;
 import org.kuali.rice.core.web.format.CollectionFormatter;
 import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.core.web.format.Formatter;

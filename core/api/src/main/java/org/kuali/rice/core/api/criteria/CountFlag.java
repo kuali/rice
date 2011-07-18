@@ -1,6 +1,6 @@
 package org.kuali.rice.core.api.criteria;
 
-import org.kuali.rice.core.util.jaxb.EnumStringAdapter;
+import org.kuali.rice.core.api.util.jaxb.EnumStringAdapter;
 
 /**
  * Defines possible directives for how a query is requested to produce count values in it's results.

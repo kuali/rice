@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krms.impl.ui;
 
-import org.kuali.rice.core.util.Node;
+import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.krms.impl.repository.AgendaItemBo;
 
 /**

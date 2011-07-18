@@ -16,13 +16,13 @@
  */
 package org.kuali.rice.kew.responsibility.dao.impl;
 
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
+import org.kuali.rice.kew.responsibility.dao.ResponsibilityIdDAO;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
-import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kew.responsibility.dao.ResponsibilityIdDAO;
 
 public class ResponsibilityIdDAOJpaImpl implements ResponsibilityIdDAO {
     @PersistenceContext(unitName = "kew-unit")

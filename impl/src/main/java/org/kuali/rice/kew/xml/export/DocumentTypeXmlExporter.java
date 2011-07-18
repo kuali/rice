@@ -16,68 +16,16 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.ACTIVATION_TYPE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.ACTIVE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.ATTRIBUTE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.ATTRIBUTES;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.BLANKET_APPROVE_GROUP_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.BLANKET_APPROVE_POLICY;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.BRANCH;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.DEFAULT_EXCEPTION_GROUP_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.DESCRIPTION;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.DOCUMENT_TYPE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.DOCUMENT_TYPES;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.DOCUMENT_TYPE_NAMESPACE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.DOCUMENT_TYPE_SCHEMA_LOCATION;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.DOC_HANDLER;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.DOC_SEARCH_HELP_URL;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.EXCEPTION_GROUP_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.FINAL_APPROVAL;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.HELP_DEFINITION_URL;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.INITIAL_NODE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.LABEL;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.MANDATORY_ROUTE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.NAMESPACE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.NEXT_NODE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.NOTIFICATION_FROM_ADDRESS;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.PARENT;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.POLICIES;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.POLICY;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.POST_PROCESSOR_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.PROCESS_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.REPORTING_GROUP_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.ROUTE_MODULE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.ROUTE_NODES;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.ROUTE_PATH;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.ROUTE_PATHS;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.ROUTING_VERSION;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_TEMPLATE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_LOCATION_ATTR;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_NAMESPACE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.APPLICATION_ID;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.SUPER_USER_GROUP_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.TYPE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.VALUE;
-
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.kuali.rice.core.api.impex.ExportDataSet;
+import org.kuali.rice.core.api.util.xml.XmlException;
+import org.kuali.rice.core.api.util.xml.XmlHelper;
+import org.kuali.rice.core.api.util.xml.XmlRenderer;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
-import org.kuali.rice.core.util.xml.XmlException;
-import org.kuali.rice.core.util.xml.XmlHelper;
-import org.kuali.rice.core.util.xml.XmlRenderer;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
@@ -91,6 +39,16 @@ import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.Group;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.*;
 
 /**
  * Exports {@link DocumentType}s to XML.

@@ -18,9 +18,9 @@ package org.kuali.rice.krad.rules;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.framework.parameter.ParameterConstants;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;

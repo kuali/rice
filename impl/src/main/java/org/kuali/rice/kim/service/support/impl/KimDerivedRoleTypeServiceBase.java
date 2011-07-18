@@ -30,9 +30,6 @@ import java.util.Map;
  */
 public class KimDerivedRoleTypeServiceBase extends KimRoleTypeServiceBase {
 
-	/**
-	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#getRoleMembersFromApplicationRole(java.lang.String, java.lang.String, org.kuali.rice.core.util.Map<String, String>)
-	 */
 	@Override
 	public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Map<String, String> qualification) {
         return new ArrayList<RoleMembership>();

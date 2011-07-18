@@ -17,7 +17,7 @@ package org.kuali.rice.krad.document;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.core.proxy.ProxyHelper;
-import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kim.bo.Person;
@@ -64,7 +64,6 @@ import javax.persistence.Transient;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;

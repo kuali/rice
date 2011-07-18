@@ -168,7 +168,7 @@
 			   	
 			   	    if(collection != null && collection.size() > 0) {
 			   		  for(Object obj : collection) {
-				   	    org.kuali.rice.core.util.KeyValue pair = (org.kuali.rice.core.util.KeyValue) obj;
+				   	    org.kuali.rice.core.api.util.KeyValue pair = (org.kuali.rice.core.api.util.KeyValue) obj;
 				   	    for (Object val : propertyValue) {
 					   	  if(pair.getKey() != null && pair.getKey().equals(val)) {
 					   	    if (!selectedOptionDescription.trim().equals("")) {

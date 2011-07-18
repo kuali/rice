@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.ken.service;
 
-import org.kuali.rice.core.util.xml.XmlException;
+import org.kuali.rice.core.api.util.xml.XmlException;
 import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.bo.NotificationResponse;
 

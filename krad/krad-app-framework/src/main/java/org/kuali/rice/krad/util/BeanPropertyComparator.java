@@ -18,7 +18,7 @@ package org.kuali.rice.krad.util;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.comparators.ComparableComparator;
 import org.kuali.rice.core.api.exception.KualiException;
-import org.kuali.rice.core.util.type.TypeUtils;
+import org.kuali.rice.core.api.util.type.TypeUtils;
 
 import java.beans.PropertyDescriptor;
 import java.io.Serializable;

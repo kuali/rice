@@ -15,16 +15,16 @@
  */
 package org.kuali.rice.core.framework.persistence.jpa.type;
 
+import org.hibernate.HibernateException;
+import org.hibernate.type.StandardBasicTypes;
+import org.hibernate.usertype.UserType;
+import org.kuali.rice.core.api.util.type.KualiPercent;
+
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-
-import org.hibernate.HibernateException;
-import org.hibernate.type.StandardBasicTypes;
-import org.hibernate.usertype.UserType;
-import org.kuali.rice.core.util.type.KualiPercent;
 
 /**
  * Creates a KualiPercent object from the data field. Field is stored as a percentage

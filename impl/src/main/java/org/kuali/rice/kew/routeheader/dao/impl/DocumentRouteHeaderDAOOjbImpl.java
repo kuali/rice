@@ -16,16 +16,6 @@
  */
 package org.kuali.rice.kew.routeheader.dao.impl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.ojb.broker.OptimisticLockException;
@@ -36,8 +26,8 @@ import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
-import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
@@ -52,6 +42,16 @@ import org.springframework.dao.CannotAcquireLockException;
 import org.springmodules.orm.ojb.OjbFactoryUtils;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Set;
 
 public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport implements DocumentRouteHeaderDAO {
 

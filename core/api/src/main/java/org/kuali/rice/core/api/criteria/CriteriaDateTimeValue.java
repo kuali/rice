@@ -15,8 +15,11 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import java.util.Calendar;
-import java.util.Date;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.joda.time.DateTime;
+import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -24,12 +27,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.joda.time.DateTime;
-import org.kuali.rice.core.util.jaxb.DateTimeAdapter;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * A CriteriaValue which stores date and time information in the form of a {@link Calendar} value.

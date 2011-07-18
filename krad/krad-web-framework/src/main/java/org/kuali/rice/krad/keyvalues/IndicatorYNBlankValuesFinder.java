@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krad.keyvalues;
 
-import java.util.List;
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
 
-import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.core.util.KeyValue;
+import java.util.List;
 
 /**
  * This class returns list of payment method key value pairs.

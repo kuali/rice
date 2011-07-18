@@ -15,30 +15,27 @@
  */
 package org.kuali.rice.kew.rule;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.junit.Test;
-import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.actionrequest.bo.RuleMaintenanceActionRequestCodeValuesFinder;
 import org.kuali.rice.kew.document.RoutingRuleMaintainable;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
-import org.kuali.rice.kns.util.KNSGlobalVariables;
-import org.kuali.rice.kns.web.struts.form.KualiForm;
-import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceDocumentBase;
 import org.kuali.rice.kns.maintenance.Maintainable;
-import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSGlobalVariables;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
+import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.Assert.*;
 
 /**
  * This class tests the code that handles the default values for the rule templates.

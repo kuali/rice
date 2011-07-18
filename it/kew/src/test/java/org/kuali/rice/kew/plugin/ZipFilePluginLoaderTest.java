@@ -16,25 +16,21 @@
 
 package org.kuali.rice.kew.plugin;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.io.File;
-
-import javax.xml.namespace.QName;
-
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.test.config.SimpleConfig;
+
+import javax.xml.namespace.QName;
+import java.io.File;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests the ZipFilePluginLoader. The zip file which is checked in has the following format:

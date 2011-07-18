@@ -15,17 +15,17 @@
  */
 package org.kuali.rice.krad.util;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.metadata.ConnectionRepository;
 import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.apache.ojb.broker.metadata.MetadataManager;
-import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.DefaultResourceLoader;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OjbMetadataLoader implements InitializingBean {
     

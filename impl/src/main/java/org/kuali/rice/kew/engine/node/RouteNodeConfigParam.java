@@ -15,6 +15,12 @@
  */
 package org.kuali.rice.kew.engine.node;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.kew.api.doctype.RouteNodeConfigurationParameterContract;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -25,12 +31,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.kew.api.doctype.RouteNodeConfigurationParameterContract;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 /**
  * A route node definition configuration parameter.  RouteNodeConfigParameters are

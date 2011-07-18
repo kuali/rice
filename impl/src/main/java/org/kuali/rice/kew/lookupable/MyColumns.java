@@ -16,12 +16,12 @@
  */
 package org.kuali.rice.kew.lookupable;
 
+import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.kew.rule.bo.RuleBaseValuesLookupableImpl;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.kew.rule.bo.RuleBaseValuesLookupableImpl;
 
 /**
  * A bean which wraps a List of {@link <KeyValue>} objects.

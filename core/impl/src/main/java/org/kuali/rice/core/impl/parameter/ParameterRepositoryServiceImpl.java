@@ -26,7 +26,7 @@ import org.kuali.rice.core.api.parameter.Parameter;
 import org.kuali.rice.core.api.parameter.ParameterKey;
 import org.kuali.rice.core.api.parameter.ParameterQueryResults;
 import org.kuali.rice.core.api.parameter.ParameterRepositoryService;
-import org.kuali.rice.core.api.truthy.Truth;
+import org.kuali.rice.core.api.util.Truth;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.util.KRADConstants;
 

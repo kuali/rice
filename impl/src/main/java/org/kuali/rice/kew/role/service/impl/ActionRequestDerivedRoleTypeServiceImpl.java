@@ -50,9 +50,6 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 		checkRequiredAttributes = true;
 	}
 	
-	/**
-	 * @see org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase#getRoleMembersFromApplicationRole(java.lang.String, java.lang.String, org.kuali.rice.core.util.Map<String, String>)
-	 */
 	@Override
     public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Map<String, String> qualification) {
 		List<RoleMembership> members = new ArrayList<RoleMembership>();

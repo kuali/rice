@@ -16,10 +16,6 @@
 
 package org.kuali.rice.ksb.api.bus.support;
 
-import java.net.URL;
-
-import javax.xml.namespace.QName;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -30,10 +26,13 @@ import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.security.credentials.CredentialsType;
-import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.ksb.api.bus.Endpoint;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 import org.kuali.rice.ksb.api.bus.ServiceDefinition;
+
+import javax.xml.namespace.QName;
+import java.net.URL;
 
 
 /**

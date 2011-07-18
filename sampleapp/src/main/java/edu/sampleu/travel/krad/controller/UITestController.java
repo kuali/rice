@@ -15,13 +15,10 @@
  */
 package edu.sampleu.travel.krad.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.kuali.rice.core.util.type.KualiPercent;
+import edu.sampleu.travel.bo.FiscalOfficer;
+import edu.sampleu.travel.bo.TravelAccount;
+import edu.sampleu.travel.krad.form.UITestForm;
+import org.kuali.rice.core.api.util.type.KualiPercent;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -32,9 +29,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import edu.sampleu.travel.bo.FiscalOfficer;
-import edu.sampleu.travel.bo.TravelAccount;
-import edu.sampleu.travel.krad.form.UITestForm;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Controller for the Test UI Page

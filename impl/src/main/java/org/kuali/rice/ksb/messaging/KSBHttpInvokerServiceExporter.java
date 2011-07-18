@@ -15,16 +15,16 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import java.util.Arrays;
-import java.util.List;
-
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
-import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.ksb.api.bus.ServiceDefinition;
 import org.kuali.rice.ksb.messaging.bam.BAMServerProxy;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter;
 import org.springframework.remoting.support.RemoteInvocationTraceInterceptor;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 public class KSBHttpInvokerServiceExporter extends HttpInvokerServiceExporter {

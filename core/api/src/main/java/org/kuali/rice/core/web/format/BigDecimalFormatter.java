@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.core.web.format;
 
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
+
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.regex.Pattern;
-
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.RiceKeyConstants;
 
 /**
  * This class is used to format BigDecimal objects.

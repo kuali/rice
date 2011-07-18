@@ -20,9 +20,8 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
-import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;

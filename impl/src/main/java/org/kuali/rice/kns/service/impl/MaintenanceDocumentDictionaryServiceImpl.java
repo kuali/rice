@@ -15,13 +15,8 @@
  */
 package org.kuali.rice.kns.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.doctype.DocumentType;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
@@ -40,6 +35,11 @@ import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * This class is the service implementation for the MaintenanceDocumentDictionary structure. Defines the API for the interacting

@@ -17,11 +17,9 @@ package org.kuali.rice.krad.datadictionary;
 
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.exception.ClassValidationException;
-
-import java.util.Map;
 
 import java.util.Map;
 

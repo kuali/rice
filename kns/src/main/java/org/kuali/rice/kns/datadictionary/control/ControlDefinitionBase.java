@@ -18,7 +18,7 @@ package org.kuali.rice.kns.datadictionary.control;
 
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
-import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.DataDictionaryDefinitionBase;
 import org.kuali.rice.krad.datadictionary.control.ControlDefinition;

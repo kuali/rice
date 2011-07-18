@@ -22,12 +22,12 @@ import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.kns.util.IncidentReportUtils;
 import org.kuali.rice.kns.web.struts.form.KualiExceptionIncidentForm;
 import org.kuali.rice.krad.exception.KualiExceptionIncident;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiExceptionIncidentService;
-import org.kuali.rice.kns.util.IncidentReportUtils;
 import org.kuali.rice.krad.util.KRADConstants;
 
 import javax.servlet.http.HttpServletRequest;

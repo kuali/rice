@@ -15,15 +15,14 @@
  */
 package org.kuali.rice.kew.api.doctype;
 
+import org.kuali.rice.core.api.util.jaxb.StringMapEntry;
+import org.kuali.rice.core.api.util.jaxb.StringMapEntryList;
+
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-
-import org.kuali.rice.core.util.jaxb.StringMapEntry;
-import org.kuali.rice.core.util.jaxb.StringMapEntryList;
 
 /**
  * TODO...

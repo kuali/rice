@@ -20,14 +20,14 @@ package org.kuali.rice.core.web.format;
 // begin Kuali Foundation modification
 // import order changed, and java.util.Calendar, org.kuali.KeyConstants and org.kuali.rice.kradServiceLocatorInternal added
 
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.datetime.DateTimeService;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
+
 import java.sql.Date;
 import java.text.ParseException;
 import java.util.Calendar;
-
-import org.kuali.rice.core.api.datetime.DateTimeService;
-import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.util.RiceKeyConstants;
 
 /**
  * begin Kuali Foundation modification

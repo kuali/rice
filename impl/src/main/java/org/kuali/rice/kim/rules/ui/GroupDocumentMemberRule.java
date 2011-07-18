@@ -15,21 +15,22 @@
  */
 package org.kuali.rice.kim.rules.ui;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupMemberEvent;
 import org.kuali.rice.kim.rule.ui.AddGroupMemberRule;
-import org.kuali.rice.kim.api.group.GroupService;
-//import org.kuali.rice.kim.api.group.GroupServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.rules.DocumentRuleBase;
 import org.kuali.rice.krad.util.GlobalVariables;
+
+import java.util.HashMap;
+import java.util.Map;
+
+//import org.kuali.rice.kim.api.group.GroupServiceBase;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 

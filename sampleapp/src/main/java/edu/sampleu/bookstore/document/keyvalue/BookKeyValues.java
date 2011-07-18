@@ -15,15 +15,14 @@
  */
 package edu.sampleu.bookstore.document.keyvalue;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import org.kuali.rice.core.util.ConcreteKeyValue;
+import edu.sampleu.bookstore.bo.Book;
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 
-import edu.sampleu.bookstore.bo.Book;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class BookKeyValues extends KeyValuesBase {
 	

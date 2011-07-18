@@ -21,9 +21,9 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.impl.config.property.ConfigLogger;
-import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.core.util.KeyValue;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

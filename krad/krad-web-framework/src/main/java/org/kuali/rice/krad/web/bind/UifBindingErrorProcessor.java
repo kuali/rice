@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.web.bind;
 
-import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.springframework.beans.PropertyAccessException;

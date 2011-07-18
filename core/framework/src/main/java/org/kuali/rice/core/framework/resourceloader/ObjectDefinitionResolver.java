@@ -16,23 +16,20 @@
  */
 package org.kuali.rice.core.framework.resourceloader;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.beanutils.ConstructorUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.reflect.DataDefinition;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.reflect.PropertyDefinition;
-import org.kuali.rice.core.api.reflect.DataDefinition;
-import org.kuali.rice.core.api.reflect.ObjectDefinition;
-import org.kuali.rice.core.api.reflect.PropertyDefinition;
 import org.kuali.rice.core.api.resourceloader.ResourceLoaderException;
-import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.core.util.ContextClassLoaderBinder;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.ContextClassLoaderBinder;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Resolves object definitions into java Objects that are wrapped in a proxy whose classloader is the current

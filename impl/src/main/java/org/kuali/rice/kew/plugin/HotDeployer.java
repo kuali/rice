@@ -19,7 +19,7 @@ package org.kuali.rice.kew.plugin;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.kew.plugin.PluginUtils.PluginZipFileFilter;
 
 import java.io.File;

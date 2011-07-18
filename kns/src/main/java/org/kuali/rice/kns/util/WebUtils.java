@@ -28,7 +28,7 @@ import org.apache.struts.upload.FormFile;
 import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
-import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.service.KNSServiceLocator;

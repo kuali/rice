@@ -22,7 +22,7 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.kuali.rice.core.api.config.property.Config;
-import org.kuali.rice.core.util.xml.XmlException;
+import org.kuali.rice.core.api.util.xml.XmlException;
 
 import java.io.File;
 import java.io.IOException;

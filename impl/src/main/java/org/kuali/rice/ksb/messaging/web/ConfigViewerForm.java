@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.ksb.messaging.web;
 
-import java.util.List;
-
 import org.apache.struts.action.ActionForm;
-import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
+
+import java.util.List;
 
 /**
  * This is a description of what this class does - g don't forget to fill this in. 

@@ -16,18 +16,17 @@
  */
 package org.kuali.rice.kew.useroptions.dao.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
+import org.kuali.rice.kew.useroptions.UserOptions;
+import org.kuali.rice.kew.useroptions.dao.UserOptionsDAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
-import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kew.useroptions.UserOptions;
-import org.kuali.rice.kew.useroptions.dao.UserOptionsDAO;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 
 public class UserOptionsDaoJpaImpl implements UserOptionsDAO {

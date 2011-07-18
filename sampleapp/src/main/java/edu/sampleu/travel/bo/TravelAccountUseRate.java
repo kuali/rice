@@ -15,7 +15,7 @@
  */
 package edu.sampleu.travel.bo;
 
-import org.kuali.rice.core.util.type.KualiPercent;
+import org.kuali.rice.core.api.util.type.KualiPercent;
 import org.kuali.rice.krad.bo.InactivatableFromToImpl;
 
 import javax.persistence.Column;

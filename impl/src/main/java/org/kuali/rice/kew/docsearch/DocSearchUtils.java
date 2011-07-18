@@ -16,22 +16,12 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.resourceloader.ObjectDefinitionResolver;
-import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.docsearch.web.SearchAttributeFormContainer;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -42,6 +32,16 @@ import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
+
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 
 /**

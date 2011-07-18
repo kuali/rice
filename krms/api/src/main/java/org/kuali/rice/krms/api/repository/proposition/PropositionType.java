@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.krms.api.repository.proposition;
 
+import org.kuali.rice.core.api.mo.common.Coded;
+import org.kuali.rice.core.api.util.jaxb.EnumStringAdapter;
+
 import java.util.HashSet;
 import java.util.Set;
-
-import org.kuali.rice.core.api.mo.common.Coded;
-import org.kuali.rice.core.util.jaxb.EnumStringAdapter;
 
 /**
  * TODO... 

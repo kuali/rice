@@ -15,8 +15,24 @@
  */
 package org.kuali.rice.kew.batch;
 
-import static org.junit.Assert.fail;
+import org.junit.Test;
+import org.kuali.rice.core.api.util.xml.XmlJotter;
+import org.kuali.rice.kew.rule.xmlrouting.WorkflowNamespaceContext;
+import org.kuali.rice.kew.xml.ClassLoaderEntityResolver;
+import org.kuali.rice.test.RiceTestCase;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -26,24 +42,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
-
-import org.junit.Test;
-import org.kuali.rice.core.util.xml.XmlJotter;
-import org.kuali.rice.kew.rule.xmlrouting.WorkflowNamespaceContext;
-import org.kuali.rice.kew.xml.ClassLoaderEntityResolver;
-import org.kuali.rice.test.RiceTestCase;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
+import static org.junit.Assert.fail;
 
 
 /**

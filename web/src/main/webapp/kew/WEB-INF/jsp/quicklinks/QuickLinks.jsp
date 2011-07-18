@@ -41,7 +41,7 @@
 			<td class="datacell" valign="top">
 				<ul>
 					<c:forEach begin="0" end="4" var="recentSearch" items="${QuickLinksForm.recentSearches}" >
-						<li><a target="_blank" title="<c:out value="${namedSearch.value}"/>" href="${ConfigProperties.kr.url}/lookup.do?methodToCall=refresh&backLocation=${ConfigProperties.application.url}/portal.do&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&hideReturnLink=true&refreshCaller=customLookupAction&showMaintenanceLinks=Yes&savedSearchName=<c:out value="${recentSearch.key}"/>&formKey=88888888"><%=((org.kuali.rice.core.util.KeyValue)pageContext.getAttribute("recentSearch")).getValue().length() > 100 ? ((org.kuali.rice.core.util.KeyValue)pageContext.getAttribute("recentSearch")).getValue().substring(0,100) + "..." : ((org.kuali.rice.core.util.KeyValue)pageContext.getAttribute("recentSearch")).getValue()%></a></li>
+						<li><a target="_blank" title="<c:out value="${namedSearch.value}"/>" href="${ConfigProperties.kr.url}/lookup.do?methodToCall=refresh&backLocation=${ConfigProperties.application.url}/portal.do&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&hideReturnLink=true&refreshCaller=customLookupAction&showMaintenanceLinks=Yes&savedSearchName=<c:out value="${recentSearch.key}"/>&formKey=88888888"><%=((org.kuali.rice.core.api.util.KeyValue)pageContext.getAttribute("recentSearch")).getValue().length() > 100 ? ((org.kuali.rice.core.api.util.KeyValue)pageContext.getAttribute("recentSearch")).getValue().substring(0,100) + "..." : ((org.kuali.rice.core.api.util.KeyValue)pageContext.getAttribute("recentSearch")).getValue()%></a></li>
 					</c:forEach>
 				</ul>
 			</td>

@@ -17,7 +17,7 @@ package org.kuali.rice.kim.api.permission;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
-import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.common.assignee.Assignee;
 import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.util.KimConstants;

@@ -15,18 +15,18 @@
  */
 package org.kuali.rice.kim.web.struts.action;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementDocumentFormBase;
 import org.kuali.rice.kns.web.struts.action.KualiAction;
 import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 

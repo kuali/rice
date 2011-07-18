@@ -16,8 +16,8 @@
 package org.kuali.rice.krad.bo;
 
 
-import org.kuali.rice.core.util.type.KualiDecimal;
-import org.kuali.rice.core.util.type.KualiPercent;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiPercent;
 
 import java.sql.Date;
 import java.sql.Timestamp;

@@ -3,13 +3,13 @@
  */
 package edu.sampleu.bookstore.bo;
 
-import java.util.Date;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.kuali.rice.core.util.type.KualiDecimal;
-import org.kuali.rice.core.util.type.KualiInteger;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiInteger;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
 /**

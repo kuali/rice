@@ -19,7 +19,7 @@ package org.kuali.rice.krad.datadictionary;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;

@@ -16,23 +16,22 @@
  */
 package org.kuali.rice.kew.superuser.web;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.web.KewRoutingKualiForm;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 /**

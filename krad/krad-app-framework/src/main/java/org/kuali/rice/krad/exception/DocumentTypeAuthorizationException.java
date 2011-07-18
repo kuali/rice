@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.exception;
 
-import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 
 import java.util.Collections;
 import java.util.Map;

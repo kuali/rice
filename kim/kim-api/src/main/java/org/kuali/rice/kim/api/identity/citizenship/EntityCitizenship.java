@@ -8,7 +8,7 @@ import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
-import org.kuali.rice.core.util.jaxb.DateTimeAdapter;
+import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
 import org.kuali.rice.kim.api.identity.Type;
 import org.w3c.dom.Element;
 

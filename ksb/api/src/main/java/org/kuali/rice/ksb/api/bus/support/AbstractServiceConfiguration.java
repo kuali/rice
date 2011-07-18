@@ -1,8 +1,14 @@
 package org.kuali.rice.ksb.api.bus.support;
 
-import java.io.Serializable;
-import java.net.URL;
-import java.util.Collection;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.security.credentials.CredentialsType;
+import org.kuali.rice.core.api.util.jaxb.EnumStringAdapter;
+import org.kuali.rice.core.api.util.jaxb.QNameAsStringAdapter;
+import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
+import org.kuali.rice.ksb.api.bus.ServiceDefinition;
+import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -11,16 +17,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.namespace.QName;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.security.credentials.CredentialsType;
-import org.kuali.rice.core.util.jaxb.EnumStringAdapter;
-import org.kuali.rice.core.util.jaxb.QNameAsStringAdapter;
-import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
-import org.kuali.rice.ksb.api.bus.ServiceDefinition;
-import org.w3c.dom.Element;
+import java.io.Serializable;
+import java.net.URL;
+import java.util.Collection;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = AbstractServiceConfiguration.Constants.TYPE_NAME, propOrder = {

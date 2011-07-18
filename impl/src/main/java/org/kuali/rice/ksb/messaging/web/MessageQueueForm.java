@@ -20,7 +20,7 @@ import org.apache.commons.beanutils.ConversionException;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.Converter;
 import org.apache.struts.action.ActionForm;
-import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.util.CodeTranslator;
 

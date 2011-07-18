@@ -19,8 +19,8 @@ package org.kuali.rice.krad.bo;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.core.util.type.KualiDecimal;
-import org.kuali.rice.core.util.type.KualiPercent;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiPercent;
 import org.kuali.test.KRADTestCase;
 
 import java.sql.Date;

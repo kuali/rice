@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.core.framework.persistence.ojb.conversion;
 
-import java.math.BigDecimal;
-
 import org.apache.ojb.broker.accesslayer.conversions.FieldConversion;
-import org.kuali.rice.core.util.type.KualiPercent;
+import org.kuali.rice.core.api.util.type.KualiPercent;
+
+import java.math.BigDecimal;
 
 /**
  * Creates a KualiPercent object from the data field. Field is stored as a percentage.

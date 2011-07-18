@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.krms.impl.ui;
 
-import java.util.List;
-
-import org.kuali.rice.core.util.Node;
-import org.kuali.rice.core.util.Tree;
+import org.kuali.rice.core.api.util.tree.Node;
+import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.AgendaItemBo;
 import org.kuali.rice.krms.impl.repository.ContextBo;
+
+import java.util.List;
 
 /**
  * BO for the KRMS agenda editor

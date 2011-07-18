@@ -17,7 +17,7 @@ package org.kuali.rice.krad.workflow;
 
 import org.junit.Test;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.core.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.DocumentSearchContext;

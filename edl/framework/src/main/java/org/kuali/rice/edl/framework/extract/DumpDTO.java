@@ -16,6 +16,9 @@
 
 package org.kuali.rice.edl.framework.extract;
 
+import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.kew.util.KEWConstants;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -24,9 +27,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kew.util.KEWConstants;
 
 public class DumpDTO implements Serializable {
 

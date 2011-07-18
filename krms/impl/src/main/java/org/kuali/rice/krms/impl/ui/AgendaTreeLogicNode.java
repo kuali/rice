@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krms.impl.ui;
 
-import org.kuali.rice.core.util.Node;
+import org.kuali.rice.core.api.util.tree.Node;
 
 /**
  * data class for logic {@link Node}s (e.g. When TRUE, When FALSE)

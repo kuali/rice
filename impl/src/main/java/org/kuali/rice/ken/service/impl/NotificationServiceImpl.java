@@ -16,8 +16,8 @@
 
 package org.kuali.rice.ken.service.impl;
 
+import org.kuali.rice.core.api.util.xml.XmlException;
 import org.kuali.rice.core.framework.persistence.dao.GenericDao;
-import org.kuali.rice.core.util.xml.XmlException;
 import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.bo.NotificationRecipient;

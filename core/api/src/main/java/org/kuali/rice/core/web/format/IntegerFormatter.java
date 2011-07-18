@@ -18,7 +18,7 @@ package org.kuali.rice.core.web.format;
 
 // begin Kuali Foundation modification
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 
 /**
  * This class is used to format Integer objects.

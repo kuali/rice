@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krms.impl.ui;
 
-import org.kuali.rice.core.util.Node;
+import org.kuali.rice.core.api.util.tree.Node;
 
 /**
  * abstract data class for the agenda tree {@link Node}s

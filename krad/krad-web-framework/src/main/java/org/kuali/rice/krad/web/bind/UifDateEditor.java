@@ -13,7 +13,7 @@ package org.kuali.rice.krad.web.bind;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.web.format.FormatException;
 
 import java.beans.PropertyEditorSupport;

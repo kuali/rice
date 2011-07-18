@@ -15,14 +15,11 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.type.KualiDecimal;
-import org.kuali.rice.core.util.type.KualiInteger;
-import org.kuali.rice.core.util.type.KualiPercent;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiInteger;
+import org.kuali.rice.core.api.util.type.KualiPercent;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.View;
@@ -37,6 +34,8 @@ import org.kuali.rice.krad.uif.field.GroupField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+
+import java.sql.Timestamp;
 
 /**
  * Decorates a HTML Table client side with various tools

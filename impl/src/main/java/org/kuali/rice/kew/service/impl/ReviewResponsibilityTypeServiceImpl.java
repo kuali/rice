@@ -32,12 +32,7 @@ public class ReviewResponsibilityTypeServiceImpl extends DocumentTypeResponsibil
 		exactMatchStringAttributeName = KimConstants.AttributeConstants.ROUTE_NODE_NAME;
 		requiredAttributes.add( KimConstants.AttributeConstants.ROUTE_NODE_NAME );
 	}
-	
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kew.service.impl.DocumentTypeResponsibilityTypeServiceImpl#performResponsibilityMatches(org.kuali.rice.core.util.Map<String, String>, java.util.List)
-	 */
+
 	@Override
 	protected List<Responsibility> performResponsibilityMatches(
 			Map<String, String> requestedDetails,

@@ -55,7 +55,7 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="rice.ksb.Constants" class="org.kuali.rice.core.util.ConstantsMap">
+	<bean id="rice.ksb.Constants" class="org.kuali.rice.core.api.util.ConstantsMap">
 		<property name="constantClass" value="org.kuali.rice.ksb.util.KSBConstants"/>
 	</bean>
 	

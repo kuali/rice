@@ -1,12 +1,12 @@
 package org.kuali.rice.ksb.api.registry;
 
+import org.kuali.rice.core.api.mo.common.Coded;
+import org.kuali.rice.core.api.util.jaxb.EnumStringAdapter;
+
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
-import org.kuali.rice.core.api.mo.common.Coded;
-import org.kuali.rice.core.util.jaxb.EnumStringAdapter;
 
 /**
  * Defines the possible statuses for a service endpoint in the KSB registry.

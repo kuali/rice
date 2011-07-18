@@ -15,7 +15,7 @@
 
 package org.kuali.rice.kim.api.role;
 
-import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;

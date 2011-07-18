@@ -18,7 +18,7 @@ package org.kuali.rice.kns.util;
 
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.MessageMap;
 import org.springframework.util.AutoPopulatingList;

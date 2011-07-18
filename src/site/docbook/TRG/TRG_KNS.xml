@@ -4059,7 +4059,7 @@ if (parameterService.parameterExists(document.getClass(), "EXAMPLE_VALUE")) {
             <para>Client applications often overload this variable to hold not only KNS constants
                 but application specific constants as well. There is also a <emphasis role="bold"
                     >RiceConstants</emphasis> variable which holds the constants in <emphasis
-                    role="bold">org.kuali.rice.core.util.RiceConstants</emphasis>, a <emphasis
+                    role="bold">org.kuali.rice.core.api.util.RiceConstants</emphasis>, a <emphasis
                     role="bold">KEWConstants</emphasis> which holds all of the constants in
                     <emphasis role="bold">org.kuali.rice.kew.util.KEWConstants</emphasis>, and a
                     <emphasis role="bold">PropertyConstants</emphasis> which holds the values in

@@ -16,28 +16,13 @@
 
 package org.kuali.rice.edl.impl.service.impl;
 
-import java.io.InputStream;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Templates;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.api.impex.xml.XmlIngestionException;
 import org.kuali.rice.core.api.style.StyleService;
-import org.kuali.rice.core.util.xml.XmlException;
-import org.kuali.rice.core.util.xml.XmlJotter;
+import org.kuali.rice.core.api.util.xml.XmlException;
+import org.kuali.rice.core.api.util.xml.XmlJotter;
 import org.kuali.rice.edl.impl.EDLController;
 import org.kuali.rice.edl.impl.EDLControllerFactory;
 import org.kuali.rice.edl.impl.EDLGlobalConfig;
@@ -61,6 +46,20 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Templates;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**

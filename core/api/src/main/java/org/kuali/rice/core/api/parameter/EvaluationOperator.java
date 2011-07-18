@@ -1,7 +1,7 @@
 package org.kuali.rice.core.api.parameter;
 
 import org.kuali.rice.core.api.mo.common.Coded;
-import org.kuali.rice.core.util.jaxb.EnumStringAdapter;
+import org.kuali.rice.core.api.util.jaxb.EnumStringAdapter;
 
 /**
  * Defines the possible evaluation operators that can be supported on system parameters.

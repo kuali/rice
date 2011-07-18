@@ -16,14 +16,14 @@
  */
 package org.kuali.rice.core.framework.resourceloader;
 
-import javax.xml.namespace.QName;
-
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 import org.kuali.rice.core.api.resourceloader.ResourceLoaderContainer;
 import org.kuali.rice.core.api.resourceloader.ServiceLocator;
-import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
+
+import javax.xml.namespace.QName;
 
 /**
  * A simple ResourceLoader implementation which will load objects from the

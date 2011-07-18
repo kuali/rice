@@ -18,7 +18,7 @@ package org.kuali.rice.ksb.impl.bus;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.util.RiceUtilities;
+import org.kuali.rice.core.api.util.RiceUtilities;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 

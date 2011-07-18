@@ -15,20 +15,16 @@
  */
 package org.kuali.rice.kew.rule;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
 import org.junit.Test;
-import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
+
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests the RuleTemplateAttribute class.

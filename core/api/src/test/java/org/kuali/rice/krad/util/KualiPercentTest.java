@@ -16,8 +16,8 @@
 package org.kuali.rice.krad.util;
 
 import org.junit.Test;
-import org.kuali.rice.core.util.type.KualiDecimal;
-import org.kuali.rice.core.util.type.KualiPercent;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiPercent;
 import org.kuali.rice.core.web.format.Formatter;
 
 import java.math.BigDecimal;

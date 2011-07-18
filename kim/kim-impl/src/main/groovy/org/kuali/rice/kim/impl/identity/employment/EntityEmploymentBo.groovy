@@ -1,17 +1,16 @@
 package org.kuali.rice.kim.impl.identity.employment
 
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
-import org.kuali.rice.kim.api.identity.employment.EntityEmploymentContract
-import javax.persistence.Id
 import javax.persistence.Column
-import org.hibernate.annotations.Type
-import javax.persistence.ManyToOne
-import javax.persistence.JoinColumn
-import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo
-import org.kuali.rice.core.util.type.KualiDecimal
-import org.kuali.rice.kim.api.identity.employment.EntityEmployment
 import javax.persistence.FetchType
-
+import javax.persistence.Id
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
+import org.hibernate.annotations.Type
+import org.kuali.rice.core.api.util.type.KualiDecimal
+import org.kuali.rice.kim.api.identity.employment.EntityEmployment
+import org.kuali.rice.kim.api.identity.employment.EntityEmploymentContract
+import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 class EntityEmploymentBo extends PersistableBusinessObjectBase implements EntityEmploymentContract {
     	private static final long serialVersionUID = 1L;

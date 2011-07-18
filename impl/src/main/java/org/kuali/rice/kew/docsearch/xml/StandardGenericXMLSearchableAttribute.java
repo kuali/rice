@@ -18,9 +18,9 @@ package org.kuali.rice.kew.docsearch.xml;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.impex.xml.XmlConstants;
-import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.xml.XmlJotter;
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.core.api.util.xml.XmlJotter;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.attribute.XMLAttributeUtils;

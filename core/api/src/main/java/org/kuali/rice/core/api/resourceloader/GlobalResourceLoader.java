@@ -16,17 +16,16 @@
 
 package org.kuali.rice.core.api.resourceloader;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.xml.namespace.QName;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.exception.RiceRemoteServiceConnectionException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
-import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
+
+import javax.xml.namespace.QName;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Wrapper on all the Resource loaders.  This is what programmers typically use to get in the resource loading

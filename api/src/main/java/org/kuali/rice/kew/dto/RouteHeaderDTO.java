@@ -16,13 +16,13 @@
  */
 package org.kuali.rice.kew.dto;
 
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
-import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ConcreteKeyValue;
 
 /**
  * Transport object for the DocumentRouteHeaderValue.  Represents a document to the

@@ -18,7 +18,7 @@ package org.kuali.rice.kns.web.comparator;
 import org.apache.commons.collections.comparators.ComparableComparator;
 import org.apache.commons.lang.StringUtils;
 import org.displaytag.model.Cell;
-import org.kuali.rice.core.util.type.TypeUtils;
+import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.krad.comparator.NumericValueComparator;
 import org.kuali.rice.krad.comparator.StringValueComparator;
 import org.kuali.rice.krad.comparator.TemporalValueComparator;

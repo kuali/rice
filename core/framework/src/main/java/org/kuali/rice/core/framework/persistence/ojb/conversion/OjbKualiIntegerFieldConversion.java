@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.core.framework.persistence.ojb.conversion;
 
-import java.math.BigInteger;
-
 import org.apache.ojb.broker.accesslayer.conversions.FieldConversion;
-import org.kuali.rice.core.util.type.KualiInteger;
+import org.kuali.rice.core.api.util.type.KualiInteger;
+
+import java.math.BigInteger;
 
 public class OjbKualiIntegerFieldConversion implements FieldConversion {
 

@@ -16,15 +16,15 @@
 
 package edu.sampleu.financial.bo;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.util.ObjectUtils;
+
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.type.KualiDecimal;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.util.ObjectUtils;
 
 /**
  * Contains all data for a specific parent or division Vendor, including a link to the <code>VendorHeader</code>, which only

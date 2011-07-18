@@ -16,34 +16,22 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.DELEGATION_TYPE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.GROUP_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.NAMESPACE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.PARENT_RESPONSIBILITY;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.PARENT_RULE_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.PRINCIPAL_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.ROLE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_DELEGATION;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_DELEGATIONS;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_NAMESPACE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_SCHEMA_LOCATION;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_LOCATION_ATTR;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_NAMESPACE;
-
-import java.util.Iterator;
-
 import org.jdom.Element;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.impex.ExportDataSet;
+import org.kuali.rice.core.api.util.xml.XmlRenderer;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
-import org.kuali.rice.core.util.xml.XmlRenderer;
 import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.identity.principal.Principal;
+
+import java.util.Iterator;
+
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.*;
 
 /**
  * Exports rules to XML.

@@ -24,7 +24,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
-import org.kuali.rice.core.util.jaxb.SqlTimestampAdapter;
+import org.kuali.rice.core.api.util.jaxb.SqlTimestampAdapter;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;

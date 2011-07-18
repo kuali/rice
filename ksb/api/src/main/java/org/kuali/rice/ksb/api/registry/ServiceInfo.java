@@ -1,7 +1,14 @@
 package org.kuali.rice.ksb.api.registry;
 
-import java.io.Serializable;
-import java.util.Collection;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.core.api.util.jaxb.QNameAsStringAdapter;
+import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -11,16 +18,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.namespace.QName;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
-import org.kuali.rice.core.util.jaxb.QNameAsStringAdapter;
-import org.w3c.dom.Element;
+import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * Immutable implementation of the {@link ServiceInfoContract} interface.

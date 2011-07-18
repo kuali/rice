@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.api.doctype;
 
 import org.kuali.rice.core.api.mo.common.Identifiable;
-import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
 
 /**
  * TODO ewestfal don't forget to fill this in. 

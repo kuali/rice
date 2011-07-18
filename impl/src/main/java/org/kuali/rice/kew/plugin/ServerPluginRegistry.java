@@ -16,6 +16,14 @@
 
 package org.kuali.rice.kew.plugin;
 
+import org.kuali.rice.core.api.config.CoreConfigHelper;
+import org.kuali.rice.core.api.config.property.Config;
+import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.resourceloader.ResourceLoader;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
+import org.kuali.rice.kew.plugin.PluginUtils.PluginZipFileFilter;
+
+import javax.xml.namespace.QName;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -28,15 +36,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
-
-import javax.xml.namespace.QName;
-
-import org.kuali.rice.core.api.config.CoreConfigHelper;
-import org.kuali.rice.core.api.config.property.Config;
-import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.resourceloader.ResourceLoader;
-import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.kew.plugin.PluginUtils.PluginZipFileFilter;
 
 /**
  * A PluginRegistry implementation which loads plugins from the file system on the server.

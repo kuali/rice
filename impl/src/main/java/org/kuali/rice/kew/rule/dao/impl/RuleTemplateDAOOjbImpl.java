@@ -16,20 +16,20 @@
  */
 package org.kuali.rice.kew.rule.dao.impl;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
-import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.dao.RuleTemplateDAO;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 
 public class RuleTemplateDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleTemplateDAO {

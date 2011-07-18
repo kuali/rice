@@ -16,24 +16,16 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.HELP_ENTRIES;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.HELP_ENTRY;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.HELP_KEY;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.HELP_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.HELP_NAMESPACE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.HELP_SCHEMA_LOCATION;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.HELP_TEXT;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_LOCATION_ATTR;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_NAMESPACE;
+import org.jdom.Element;
+import org.kuali.rice.core.api.impex.ExportDataSet;
+import org.kuali.rice.core.api.util.xml.XmlRenderer;
+import org.kuali.rice.core.framework.impex.xml.XmlExporter;
+import org.kuali.rice.kew.export.KewExportDataSet;
+import org.kuali.rice.kew.help.HelpEntry;
 
 import java.util.Iterator;
 
-import org.jdom.Element;
-import org.kuali.rice.core.api.impex.ExportDataSet;
-import org.kuali.rice.core.framework.impex.xml.XmlExporter;
-import org.kuali.rice.core.util.xml.XmlRenderer;
-import org.kuali.rice.kew.export.KewExportDataSet;
-import org.kuali.rice.kew.help.HelpEntry;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.*;
 /**
  * Exports {@link HelpEntry}s to XML.
  *

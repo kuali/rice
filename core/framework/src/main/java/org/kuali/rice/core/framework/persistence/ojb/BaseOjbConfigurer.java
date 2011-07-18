@@ -26,7 +26,7 @@ import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
-import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.w3c.dom.Document;

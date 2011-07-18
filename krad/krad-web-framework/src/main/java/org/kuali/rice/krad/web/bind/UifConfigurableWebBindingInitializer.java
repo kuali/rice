@@ -10,10 +10,10 @@
  */
 package org.kuali.rice.krad.web.bind;
 
-import org.kuali.rice.core.util.type.AbstractKualiDecimal;
-import org.kuali.rice.core.util.type.KualiDecimal;
-import org.kuali.rice.core.util.type.KualiInteger;
-import org.kuali.rice.core.util.type.KualiPercent;
+import org.kuali.rice.core.api.util.type.AbstractKualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiInteger;
+import org.kuali.rice.core.api.util.type.KualiPercent;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.beans.propertyeditors.StringArrayPropertyEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;

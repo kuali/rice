@@ -16,10 +16,6 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.httpclient.HttpMethodRetryHandler;
 import org.apache.commons.httpclient.HttpVersion;
 import org.apache.commons.httpclient.params.HostParams;
@@ -28,7 +24,11 @@ import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
 import org.apache.commons.httpclient.params.HttpConnectionParams;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.httpclient.params.HttpParams;
-import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**

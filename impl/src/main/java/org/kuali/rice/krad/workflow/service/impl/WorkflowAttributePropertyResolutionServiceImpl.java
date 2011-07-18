@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.workflow.service.impl;
 
 
-import org.kuali.rice.core.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeFloatValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeLongValue;

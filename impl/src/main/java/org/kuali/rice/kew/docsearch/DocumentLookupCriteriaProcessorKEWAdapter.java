@@ -16,8 +16,8 @@
 package org.kuali.rice.kew.docsearch;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.RouteNode;

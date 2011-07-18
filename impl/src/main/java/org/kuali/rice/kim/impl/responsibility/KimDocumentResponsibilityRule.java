@@ -16,11 +16,10 @@
 package org.kuali.rice.kim.impl.responsibility;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
-import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.rules.DocumentRuleBase;
 import org.kuali.rice.krad.util.GlobalVariables;

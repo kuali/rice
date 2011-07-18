@@ -11,9 +11,9 @@
 package org.kuali.rice.krad.web.bind;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.RiceKeyConstants;
-import org.kuali.rice.core.util.type.KualiDecimal;
-import org.kuali.rice.core.util.type.KualiInteger;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiInteger;
 import org.kuali.rice.core.web.format.FormatException;
 
 import java.beans.PropertyEditorSupport;
@@ -23,7 +23,7 @@ import java.text.ParseException;
 
 /**
  * This class is used to format
- * <code>org.kuali.rice.core.util.type.KualiDecimal</code> in the local
+ * <code>org.kuali.rice.core.api.util.type.KualiDecimal</code> in the local
  * currency.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -91,12 +91,12 @@ public class UifCurrencyEditor extends PropertyEditorSupport {
 
     /**
      * Converts the string to a
-     * <code>org.kuali.rice.core.util.type.KualiDecimal</code> object using the
+     * <code>org.kuali.rice.core.api.util.type.KualiDecimal</code> object using the
      * local currency format.
      * 
      * @param text
      *            the text from the UI to convert
-     * @return the <code>org.kuali.rice.core.util.type.KualiDecimal</code>
+     * @return the <code>org.kuali.rice.core.api.util.type.KualiDecimal</code>
      *         object to be set on the bean
      */
     protected Object convertToObject(String text) {

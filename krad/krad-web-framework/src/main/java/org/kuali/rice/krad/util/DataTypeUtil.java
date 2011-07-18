@@ -67,7 +67,7 @@ public class DataTypeUtil {
      * @return true if it is like a "float", false otherwise
      */
 	public static boolean isDecimaltastic(Class clazz) {
-        return java.lang.Double.class.isAssignableFrom(clazz) || java.lang.Float.class.isAssignableFrom(clazz) || clazz.equals(Double.TYPE) || clazz.equals(Float.TYPE) || java.math.BigDecimal.class.isAssignableFrom(clazz) || org.kuali.rice.core.util.type.KualiDecimal.class.isAssignableFrom(clazz);
+        return java.lang.Double.class.isAssignableFrom(clazz) || java.lang.Float.class.isAssignableFrom(clazz) || clazz.equals(Double.TYPE) || clazz.equals(Float.TYPE) || java.math.BigDecimal.class.isAssignableFrom(clazz) || org.kuali.rice.core.api.util.type.KualiDecimal.class.isAssignableFrom(clazz);
     }
     
     /**

@@ -15,23 +15,22 @@
  */
 package org.kuali.rice.kew.stats.dao.impl;
 
+import org.apache.ojb.broker.accesslayer.LookupException;
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.kew.stats.Stats;
+import org.kuali.rice.kew.stats.dao.StatsDAO;
+import org.kuali.rice.kew.util.KEWConstants;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-
-import org.apache.ojb.broker.accesslayer.LookupException;
-import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.kew.stats.Stats;
-import org.kuali.rice.kew.stats.dao.StatsDAO;
-import org.kuali.rice.kew.util.KEWConstants;
 
 /**
  * This is a description of what this class does - ddean don't forget to fill this in. 

@@ -17,7 +17,7 @@
 
 <%@ attribute name="node" required="true"
               description="Node instance in the tree to be rendered"
-              type="org.kuali.rice.core.util.Node"%>
+              type="org.kuali.rice.core.api.util.tree.Node"%>
 
 <%-- this tag is part of the workaround for KULRICE-5161 --%>
 

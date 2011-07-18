@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.maintenance;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.krad.document.MaintenanceDocument;
 import org.kuali.rice.krad.exception.KualiExceptionIncident;

@@ -16,19 +16,18 @@
  */
 package org.kuali.rice.kew.engine.node;
 
-import java.util.LinkedHashMap;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import java.util.LinkedHashMap;
 
 /**
  * A KeyValuePair that adds an id fields that makes it sufficient for storing in a database.

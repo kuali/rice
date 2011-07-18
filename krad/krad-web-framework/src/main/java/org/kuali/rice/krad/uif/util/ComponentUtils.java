@@ -10,18 +10,8 @@
  */
 package org.kuali.rice.krad.uif.util;
 
-import java.beans.PropertyDescriptor;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.type.TypeUtils;
+import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
@@ -35,6 +25,15 @@ import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.OrderComparator;
+
+import java.beans.PropertyDescriptor;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Utility class providing methods to help create and modify

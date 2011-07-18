@@ -17,14 +17,15 @@ package org.kuali.rice.core.web.format;
 // end Kuali Foundation modification
 
 // begin Kuali Foundation modification
+
+import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiPercent;
+
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
-
-import org.kuali.rice.core.util.RiceKeyConstants;
-import org.kuali.rice.core.util.type.KualiDecimal;
-import org.kuali.rice.core.util.type.KualiPercent;
 
 /**
  * begin Kuali Foundation modification

@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.kim.bo;
 
+import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
+
 import java.util.List;
 import java.util.Map;
-
-import org.kuali.rice.core.util.type.KualiDecimal;
-import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 
 /**
  * Person object for use by the KNS and KNS-based applications.  This provides an abstraction layer

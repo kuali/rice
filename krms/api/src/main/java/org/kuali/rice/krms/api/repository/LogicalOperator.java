@@ -1,11 +1,11 @@
 package org.kuali.rice.krms.api.repository;
 
+import org.kuali.rice.core.api.mo.common.Coded;
+import org.kuali.rice.core.api.util.jaxb.EnumStringAdapter;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-
-import org.kuali.rice.core.api.mo.common.Coded;
-import org.kuali.rice.core.util.jaxb.EnumStringAdapter;
 
 public enum LogicalOperator implements Coded {
 	

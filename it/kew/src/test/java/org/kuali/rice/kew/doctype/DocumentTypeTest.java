@@ -16,26 +16,12 @@
 
 package org.kuali.rice.kew.doctype;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import mocks.MockPostProcessor;
-
 import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.util.xml.XmlJotter;
+import org.kuali.rice.core.api.util.xml.XmlJotter;
 import org.kuali.rice.edl.framework.workflow.EDocLitePostProcessor;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
@@ -61,6 +47,14 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.Assert.*;
 
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class DocumentTypeTest extends KEWTestCase {

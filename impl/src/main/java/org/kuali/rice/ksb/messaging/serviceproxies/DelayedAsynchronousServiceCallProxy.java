@@ -15,19 +15,12 @@
  */
 package org.kuali.rice.ksb.messaging.serviceproxies;
 
-import java.io.Serializable;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.reflect.BaseInvocationHandler;
+import org.kuali.rice.core.api.util.reflect.TargetedInvocationHandler;
 import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
-import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.core.util.reflect.BaseInvocationHandler;
-import org.kuali.rice.core.util.reflect.TargetedInvocationHandler;
 import org.kuali.rice.ksb.api.bus.Endpoint;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 import org.kuali.rice.ksb.api.messaging.AsynchronousCall;
@@ -41,6 +34,13 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;
+
+import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.List;
 
 
 /**

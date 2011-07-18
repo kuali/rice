@@ -15,18 +15,11 @@
  */
 package org.kuali.rice.edl.framework.workflow;
 
-import java.rmi.RemoteException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Attribute;
 import org.jdom.Element;
-import org.kuali.rice.core.util.xml.XmlHelper;
-import org.kuali.rice.core.util.xml.XmlJotter;
+import org.kuali.rice.core.api.util.xml.XmlHelper;
+import org.kuali.rice.core.api.util.xml.XmlJotter;
 import org.kuali.rice.edl.framework.extract.DumpDTO;
 import org.kuali.rice.edl.framework.extract.ExtractService;
 import org.kuali.rice.edl.framework.extract.FieldDTO;
@@ -42,6 +35,13 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.w3c.dom.Document;
+
+import java.rmi.RemoteException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 public class EDocLiteDatabasePostProcessor extends EDocLitePostProcessor {
 

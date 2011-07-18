@@ -18,9 +18,7 @@ package org.kuali.rice.kew.engine;
 
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.reflect.ObjectDefinition;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.kew.engine.node.BasicJoinEngine;
 import org.kuali.rice.kew.engine.node.DynamicNode;
 import org.kuali.rice.kew.engine.node.JoinEngine;

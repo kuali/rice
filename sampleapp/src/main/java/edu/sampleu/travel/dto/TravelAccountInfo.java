@@ -15,10 +15,10 @@
  */
 package edu.sampleu.travel.dto;
 
+import org.kuali.rice.core.api.util.type.KualiPercent;
+
 import java.io.Serializable;
 import java.util.Date;
-
-import org.kuali.rice.core.util.type.KualiPercent;
 
 /**
  * 

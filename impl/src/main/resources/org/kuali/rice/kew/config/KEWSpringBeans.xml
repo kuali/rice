@@ -70,7 +70,7 @@
 		<property name="serviceName" value="parameterService" />
 	</bean>
 	
-	<bean id="KEWConstants" class="org.kuali.rice.core.util.ConstantsMap">
+	<bean id="KEWConstants" class="org.kuali.rice.core.api.util.ConstantsMap">
 		<property name="constantClass" value="org.kuali.rice.kew.util.KEWConstants"/>
 	</bean>
 	

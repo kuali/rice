@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.api.jaxb;
 
-import org.kuali.rice.core.util.jaxb.StringMapEntry;
+import org.kuali.rice.core.api.util.jaxb.StringMapEntry;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

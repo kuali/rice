@@ -18,10 +18,10 @@ package org.kuali.rice.core.framework.persistence.jdbc.sql;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
-import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.core.util.type.TypeUtils;
 import org.kuali.rice.core.web.format.BooleanFormatter;
 
 import javax.persistence.Query;

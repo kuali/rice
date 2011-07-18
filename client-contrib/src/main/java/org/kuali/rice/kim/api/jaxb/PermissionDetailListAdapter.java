@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.api.jaxb;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.jaxb.StringMapEntry;
+import org.kuali.rice.core.api.util.jaxb.StringMapEntry;
 
 import javax.xml.bind.UnmarshalException;
 import javax.xml.bind.annotation.adapters.NormalizedStringAdapter;

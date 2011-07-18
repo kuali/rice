@@ -22,7 +22,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
-import org.kuali.rice.core.api.truthy.Truth;
+import org.kuali.rice.core.api.util.Truth;
 import org.kuali.rice.kns.web.struts.action.KualiPropertyMessageResources;
 import org.kuali.rice.kns.web.struts.action.KualiPropertyMessageResourcesFactory;
 import org.kuali.rice.krad.exception.DuplicateKeyException;

@@ -24,7 +24,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DispatchAction;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
-import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.LookupUtils;

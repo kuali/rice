@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.rules.ui;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
 import org.kuali.rice.kim.rule.event.ui.AddDelegationEvent;
 import org.kuali.rice.kim.rule.ui.AddDelegationRule;

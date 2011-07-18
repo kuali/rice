@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.ksb.api.bus.support.JavaServiceConfiguration;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class KSBHttpInvokerProxyFactoryBean extends HttpInvokerProxyFactoryBean {

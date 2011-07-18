@@ -29,7 +29,7 @@ import org.apache.ojb.broker.util.sequence.SequenceManagerException;
 import org.apache.ojb.broker.util.sequence.SequenceManagerNextValImpl;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
 
 import java.util.Iterator;
 import java.util.Properties;

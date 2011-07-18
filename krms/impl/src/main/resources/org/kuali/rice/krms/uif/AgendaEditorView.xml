@@ -196,10 +196,10 @@
             <bean parent="SelectControl">
                 <property name="options">
                     <list>
-                        <bean class="org.kuali.rice.core.util.ConcreteKeyValue" p:key="below" p:value="below selected"/>
-                        <bean class="org.kuali.rice.core.util.ConcreteKeyValue" p:key="above" p:value="above selected"/>
-                        <bean class="org.kuali.rice.core.util.ConcreteKeyValue" p:key="inWhenTrue" p:value="in selected's 'When TRUE'"/>
-                        <bean class="org.kuali.rice.core.util.ConcreteKeyValue" p:key="inWhenFalse" p:value="in selected's 'When FALSE'"/>
+                        <bean class="org.kuali.rice.core.api.util.ConcreteKeyValue" p:key="below" p:value="below selected"/>
+                        <bean class="org.kuali.rice.core.api.util.ConcreteKeyValue" p:key="above" p:value="above selected"/>
+                        <bean class="org.kuali.rice.core.api.util.ConcreteKeyValue" p:key="inWhenTrue" p:value="in selected's 'When TRUE'"/>
+                        <bean class="org.kuali.rice.core.api.util.ConcreteKeyValue" p:key="inWhenFalse" p:value="in selected's 'When FALSE'"/>
                     </list>
                 </property>
             </bean>

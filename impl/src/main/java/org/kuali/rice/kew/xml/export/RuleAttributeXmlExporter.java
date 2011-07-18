@@ -16,32 +16,21 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.APPLICATION_ID;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.CLASS_NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.DESCRIPTION;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.LABEL;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_ATTRIBUTE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_ATTRIBUTES;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_ATTRIBUTE_NAMESPACE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_ATTRIBUTE_SCHEMA_LOCATION;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_LOCATION_ATTR;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_NAMESPACE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.TYPE;
-
-import java.io.StringReader;
-import java.util.Iterator;
-
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.kuali.rice.core.api.impex.ExportDataSet;
+import org.kuali.rice.core.api.util.xml.XmlHelper;
+import org.kuali.rice.core.api.util.xml.XmlRenderer;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
-import org.kuali.rice.core.util.xml.XmlHelper;
-import org.kuali.rice.core.util.xml.XmlRenderer;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
+
+import java.io.StringReader;
+import java.util.Iterator;
+
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.*;
 
 /**
  * Exports {@link RuleAttribute}s to XML.

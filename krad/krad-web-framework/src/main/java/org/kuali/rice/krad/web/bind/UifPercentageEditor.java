@@ -10,9 +10,9 @@
  */
 package org.kuali.rice.krad.web.bind;
 
-import org.kuali.rice.core.util.RiceKeyConstants;
-import org.kuali.rice.core.util.type.KualiDecimal;
-import org.kuali.rice.core.util.type.KualiPercent;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiPercent;
 import org.kuali.rice.core.web.format.FormatException;
 
 import java.beans.PropertyEditorSupport;
@@ -23,7 +23,7 @@ import java.text.ParseException;
 
 /**
  * This PropertyEditor converts between percentage strings and
- * <code>org.kuali.rice.core.util.type.KualiPercent</code> objects.
+ * <code>org.kuali.rice.core.api.util.type.KualiPercent</code> objects.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -37,7 +37,7 @@ public class UifPercentageEditor extends PropertyEditorSupport {
 
     /**
      * This overridden method converts
-     * <code>org.kuali.rice.core.util.type.KualiPercent</code> objects to the
+     * <code>org.kuali.rice.core.api.util.type.KualiPercent</code> objects to the
      * display string.
      * 
      * @see java.beans.PropertyEditorSupport#getAsText()
@@ -66,7 +66,7 @@ public class UifPercentageEditor extends PropertyEditorSupport {
 
     /**
      * This overridden method converts the display string to a
-     * <code>org.kuali.rice.core.util.type.KualiPercent</code> object.
+     * <code>org.kuali.rice.core.api.util.type.KualiPercent</code> object.
      * 
      * @see java.beans.PropertyEditorSupport#setAsText(java.lang.String)
      */

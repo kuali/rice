@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.comparator;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
 
 import java.io.Serializable;
 import java.util.Comparator;

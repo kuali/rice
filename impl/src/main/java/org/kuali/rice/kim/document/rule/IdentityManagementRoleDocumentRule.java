@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.document.rule;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.responsibility.Responsibility;

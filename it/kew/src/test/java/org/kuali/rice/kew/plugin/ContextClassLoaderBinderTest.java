@@ -17,14 +17,14 @@
 
 package org.kuali.rice.kew.plugin;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import org.junit.Test;
+import org.kuali.rice.core.api.util.ContextClassLoaderBinder;
 
 import java.net.URL;
 import java.net.URLClassLoader;
 
-import org.junit.Test;
-import org.kuali.rice.core.util.ContextClassLoaderBinder;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * Tests the ContextClassLoaderBinder

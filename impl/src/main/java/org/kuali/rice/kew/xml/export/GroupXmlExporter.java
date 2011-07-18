@@ -17,8 +17,8 @@ package org.kuali.rice.kew.xml.export;
 
 import org.jdom.Element;
 import org.kuali.rice.core.api.impex.ExportDataSet;
+import org.kuali.rice.core.api.util.xml.XmlRenderer;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
-import org.kuali.rice.core.util.xml.XmlRenderer;
 import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;

@@ -18,8 +18,8 @@
 package org.kuali.rice.core.web.format;
 // end Kuali Foundation modification
 
-import org.kuali.rice.core.api.truthy.Truth;
-import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.Truth;
 
 /**
  * begin Kuali Foundation modification

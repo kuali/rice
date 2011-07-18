@@ -16,8 +16,8 @@
 
 package org.kuali.rice.core.impl.resourceloader;
 
-import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.core.util.reflect.BaseTargetedInvocationHandler;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.reflect.BaseTargetedInvocationHandler;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

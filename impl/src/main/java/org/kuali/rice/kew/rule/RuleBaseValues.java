@@ -20,7 +20,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.lookupable.MyColumns;
 import org.kuali.rice.kew.routeheader.DocumentContent;
@@ -32,16 +32,33 @@ import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
-/*import org.kuali.rice.kim.api.group.Group;*/
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.springframework.util.AutoPopulatingList;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+/*import org.kuali.rice.kim.api.group.Group;*/
 
 
 /**

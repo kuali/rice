@@ -15,16 +15,16 @@
  */
 package org.kuali.rice.shareddata.framework.campus;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 import org.kuali.rice.shareddata.api.campus.CampusService;
 import org.kuali.rice.shareddata.api.campus.CampusType;
 import org.kuali.rice.shareddata.api.services.SharedDataApiServiceLocator;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class CampusTypeValuesFinder extends KeyValuesBase {
 

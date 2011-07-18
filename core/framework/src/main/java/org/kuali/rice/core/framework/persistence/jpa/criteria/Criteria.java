@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.core.framework.persistence.jpa.criteria;
 
-import org.kuali.rice.core.api.truthy.Truth;
-import org.kuali.rice.core.util.type.TypeUtils;
+import org.kuali.rice.core.api.util.Truth;
+import org.kuali.rice.core.api.util.type.TypeUtils;
 
 import javax.persistence.Query;
 import java.util.ArrayList;

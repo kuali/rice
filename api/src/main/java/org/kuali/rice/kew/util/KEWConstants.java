@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.kew.util;
 
+import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.krad.util.KRADConstants;
+
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,9 +26,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.krad.util.KRADConstants;
 
 public final class KEWConstants {
 

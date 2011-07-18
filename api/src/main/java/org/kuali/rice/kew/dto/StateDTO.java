@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.dto;
 
-import org.kuali.rice.core.util.AbstractKeyValue;
+import org.kuali.rice.core.api.util.AbstractKeyValue;
 
 /**
  * Transport object for State.  Essentially an empty "marker" subclass of state to use as a VO

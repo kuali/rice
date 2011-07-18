@@ -18,9 +18,9 @@ package org.kuali.rice.kew.xml;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.core.util.xml.XmlException;
-import org.kuali.rice.core.util.xml.XmlHelper;
-import org.kuali.rice.core.util.xml.XmlJotter;
+import org.kuali.rice.core.api.util.xml.XmlException;
+import org.kuali.rice.core.api.util.xml.XmlHelper;
+import org.kuali.rice.core.api.util.xml.XmlJotter;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;

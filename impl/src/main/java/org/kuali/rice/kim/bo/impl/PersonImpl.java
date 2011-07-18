@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.bo.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.address.EntityAddress;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;

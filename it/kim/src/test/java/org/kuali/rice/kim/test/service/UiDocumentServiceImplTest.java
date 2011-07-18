@@ -17,7 +17,7 @@ package org.kuali.rice.kim.test.service;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.core.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.api.identity.address.EntityAddressContract;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;

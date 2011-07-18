@@ -15,16 +15,16 @@
  */
 package org.kuali.rice.core.framework.persistence.jpa.type;
 
+import org.hibernate.HibernateException;
+import org.hibernate.type.StandardBasicTypes;
+import org.hibernate.usertype.UserType;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
+
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-
-import org.hibernate.HibernateException;
-import org.hibernate.type.StandardBasicTypes;
-import org.hibernate.usertype.UserType;
-import org.kuali.rice.core.util.type.KualiDecimal;
 
 /**
  *  map between kualidecimal percentage format and numeric field from db 

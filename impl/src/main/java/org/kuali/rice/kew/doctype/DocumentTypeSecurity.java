@@ -17,8 +17,8 @@ package org.kuali.rice.kew.doctype;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.impex.xml.XmlConstants;
-import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;

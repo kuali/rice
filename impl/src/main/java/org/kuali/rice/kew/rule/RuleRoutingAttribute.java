@@ -19,7 +19,7 @@ package org.kuali.rice.kew.rule;
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
-import org.kuali.rice.core.util.xml.XmlHelper;
+import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
@@ -33,7 +33,11 @@ import org.kuali.rice.kns.web.ui.Row;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.StringReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 
 /**

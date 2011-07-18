@@ -16,19 +16,18 @@
  */
 package org.kuali.rice.edl.impl;
 
-import java.io.InputStream;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import org.kuali.rice.core.api.util.RiceUtilities;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
-
-import org.kuali.rice.core.util.RiceUtilities;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
+import java.io.InputStream;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Builds a EDLGlobalConfig.

@@ -16,8 +16,8 @@
 package org.kuali.rice.kns.web.ui;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kns.datadictionary.CollectionDefinitionI;
 import org.kuali.rice.kns.datadictionary.FieldDefinition;
@@ -26,14 +26,14 @@ import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
-import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.maintenance.Maintainable;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.MaintenanceUtils;
 import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder;
 import org.kuali.rice.krad.service.BusinessObjectDictionaryService;

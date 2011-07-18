@@ -17,7 +17,7 @@
 package org.kuali.rice.ksb.messaging.serviceproxies;
 
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.ksb.messaging.MessageServiceInvoker;
 import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.service.KSBServiceLocator;

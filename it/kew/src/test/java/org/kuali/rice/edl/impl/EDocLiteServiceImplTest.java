@@ -16,20 +16,6 @@
 
 package org.kuali.rice.edl.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.transform.Templates;
-
 import org.junit.Test;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.Config;
@@ -37,7 +23,7 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.impex.xml.XmlIngestionException;
 import org.kuali.rice.core.api.style.Style;
 import org.kuali.rice.core.api.style.StyleService;
-import org.kuali.rice.core.util.xml.XmlJotter;
+import org.kuali.rice.core.api.util.xml.XmlJotter;
 import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
 import org.kuali.rice.edl.impl.bo.EDocLiteDefinition;
 import org.kuali.rice.edl.impl.service.EDocLiteService;
@@ -46,6 +32,14 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.test.BaselineTestCase;
 import org.w3c.dom.Element;
+
+import javax.xml.transform.Templates;
+import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests EDocLiteServiceImpl

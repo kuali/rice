@@ -16,21 +16,6 @@
  */
 package org.kuali.rice.edl.impl.xml.export;
 
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.EDL_ACTIVE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.EDL_ASSOCIATION;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.EDL_DEFINITION;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.EDL_DOC_TYPE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.EDL_EDOCLITE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.EDL_NAMESPACE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.EDL_SCHEMA_LOCATION;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.EDL_STYLE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_LOCATION_ATTR;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_NAMESPACE;
-
-import java.io.StringReader;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.jdom.Element;
 import org.jdom.Namespace;
@@ -38,13 +23,19 @@ import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.api.style.Style;
 import org.kuali.rice.core.api.style.StyleService;
+import org.kuali.rice.core.api.util.xml.XmlHelper;
+import org.kuali.rice.core.api.util.xml.XmlRenderer;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
-import org.kuali.rice.core.util.xml.XmlHelper;
-import org.kuali.rice.core.util.xml.XmlRenderer;
 import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
 import org.kuali.rice.edl.impl.bo.EDocLiteDefinition;
 import org.kuali.rice.edl.impl.service.EDocLiteService;
 import org.kuali.rice.edl.impl.service.EdlServiceLocator;
+
+import java.io.StringReader;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.*;
 /**
  * Exports EDocLite definitions to XML.
  *

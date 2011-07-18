@@ -1,6 +1,8 @@
 package org.kuali.rice.ksb.api.registry;
 
-import java.util.List;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.util.jaxb.QNameAsStringAdapter;
+import org.kuali.rice.ksb.api.KsbApiConstants;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -11,10 +13,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.namespace.QName;
-
-import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.core.util.jaxb.QNameAsStringAdapter;
-import org.kuali.rice.ksb.api.KsbApiConstants;
+import java.util.List;
 
 /**
  * Defines the interface for a remotely accessible service registry.  Applications

@@ -17,7 +17,7 @@ package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.krad.bo.BusinessObjectRelationship;
 import org.kuali.rice.krad.bo.KualiCode;
@@ -29,7 +29,6 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteCons
 import org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
-import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.container.FormView;
@@ -48,6 +47,7 @@ import org.kuali.rice.krad.uif.widget.QuickFinder;
 import org.kuali.rice.krad.uif.widget.Suggest;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.valuefinder.ValueFinder;
 
 import java.util.ArrayList;
 import java.util.List;

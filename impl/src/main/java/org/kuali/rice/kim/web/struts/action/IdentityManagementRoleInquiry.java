@@ -15,10 +15,8 @@
  */
 package org.kuali.rice.kim.web.struts.action;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -26,6 +24,8 @@ import org.kuali.rice.kim.web.struts.form.IdentityManagementDocumentFormBase;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 

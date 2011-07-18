@@ -16,21 +16,20 @@
 
 package org.kuali.rice.ksb.messaging.dao.impl;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.namespace.QName;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.kuali.rice.core.api.config.CoreConfigHelper;
-import org.kuali.rice.core.util.RiceUtilities;
+import org.kuali.rice.core.api.util.RiceUtilities;
 import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.messaging.PersistedMessagePayload;
 import org.kuali.rice.ksb.messaging.dao.MessageQueueDAO;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
+
+import javax.xml.namespace.QName;
+import java.util.List;
+import java.util.Map;
 
 
 public class MessageQueueDAOOjbImpl extends PersistenceBrokerDaoSupport implements MessageQueueDAO {

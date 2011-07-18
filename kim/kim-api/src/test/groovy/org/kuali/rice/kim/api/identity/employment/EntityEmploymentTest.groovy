@@ -1,16 +1,15 @@
 package org.kuali.rice.kim.api.identity.employment
 
+import org.junit.Assert
 import org.junit.Test
-import org.kuali.rice.kim.api.test.JAXBAssert
-import org.kuali.rice.core.util.type.KualiDecimal
+import org.kuali.rice.core.api.util.type.KualiDecimal
 import org.kuali.rice.kim.api.identity.Type
 import org.kuali.rice.kim.api.identity.TypeContract
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation
+import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationContract
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationTypeContract
-import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationContract
-import org.junit.Assert
-
+import org.kuali.rice.kim.api.test.JAXBAssert
 
 class EntityEmploymentTest {
     private static final String ID = "1";

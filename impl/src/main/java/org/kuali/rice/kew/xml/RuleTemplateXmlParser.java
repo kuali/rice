@@ -16,47 +16,15 @@
  */
 package org.kuali.rice.kew.xml;
 
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.ACTIVE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.ATTRIBUTE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.ATTRIBUTES;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.DEFAULT_ACTION_REQUESTED;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.DELEGATION_TEMPLATE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.DELEGATION_TYPE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.DESCRIPTION;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.FORCE_ACTION;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.FROM_DATE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.NAME;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.REQUIRED;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_DEFAULTS;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_TEMPLATE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_TEMPLATES;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.RULE_TEMPLATE_NAMESPACE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.SUPPORTS_ACKNOWLEDGE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.SUPPORTS_APPROVE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.SUPPORTS_COMPLETE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.SUPPORTS_FYI;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.TO_DATE;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
-import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.core.util.xml.XmlException;
-import org.kuali.rice.core.util.xml.XmlHelper;
+import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.core.api.util.xml.XmlException;
+import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
@@ -67,6 +35,18 @@ import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.*;
 /**
  * Parses {@link RuleTemplate}s from XML.
  *

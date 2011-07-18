@@ -15,12 +15,11 @@
  */
 package org.kuali.rice.krad.keyvalues;
 
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 
 /**
  * This class returns list containg A = Active, I = Inactive and B = Show All

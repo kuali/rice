@@ -16,8 +16,6 @@
 
 package org.kuali.rice.ksb.security.soap;
 
-import java.util.Properties;
-
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor;
 import org.apache.log4j.Logger;
@@ -27,8 +25,10 @@ import org.apache.ws.security.handler.RequestData;
 import org.apache.ws.security.handler.WSHandlerConstants;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.ksb.config.wss4j.CryptoPasswordCallbackHandler;
+
+import java.util.Properties;
 
 //import javax.xml.ws.handler.MessageContext;
 

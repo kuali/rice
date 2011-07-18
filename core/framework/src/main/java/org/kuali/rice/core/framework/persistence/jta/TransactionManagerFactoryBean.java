@@ -19,7 +19,7 @@ package org.kuali.rice.core.framework.persistence.jta;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.core.api.util.RiceConstants;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.jndi.JndiTemplate;
 

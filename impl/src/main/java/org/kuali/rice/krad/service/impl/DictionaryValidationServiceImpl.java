@@ -15,22 +15,10 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.IdentityHashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.MutableInactivatable;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
@@ -69,6 +57,18 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.workflow.service.WorkflowAttributePropertyResolutionService;
+
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.IdentityHashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
 
 /**
  * Validates Documents, Business Objects, and Attributes against the data dictionary. Including min, max lengths, and

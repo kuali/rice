@@ -16,23 +16,22 @@
 
 package org.kuali.rice.ksb.messaging.dao.impl;
 
-import java.util.List;
-import java.util.Map;
+import org.kuali.rice.core.api.config.CoreConfigHelper;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.util.RiceUtilities;
+import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
+import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
+import org.kuali.rice.ksb.messaging.PersistedMessagePayload;
+import org.kuali.rice.ksb.messaging.dao.MessageQueueDAO;
+import org.kuali.rice.ksb.util.KSBConstants;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.xml.namespace.QName;
-
-import org.kuali.rice.core.api.config.CoreConfigHelper;
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
-import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
-import org.kuali.rice.core.util.RiceUtilities;
-import org.kuali.rice.ksb.messaging.PersistedMessageBO;
-import org.kuali.rice.ksb.messaging.PersistedMessagePayload;
-import org.kuali.rice.ksb.messaging.dao.MessageQueueDAO;
-import org.kuali.rice.ksb.util.KSBConstants;
+import java.util.List;
+import java.util.Map;
 
 
 public class MessageQueueDAOJpaImpl implements MessageQueueDAO {

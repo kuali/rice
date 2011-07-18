@@ -16,22 +16,11 @@
 
 package org.kuali.rice.edl.impl.components;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.core.api.util.xml.XmlJotter;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.core.util.xml.XmlJotter;
 import org.kuali.rice.edl.impl.EDLContext;
 import org.kuali.rice.edl.impl.EDLModelComponent;
 import org.kuali.rice.edl.impl.EDLXmlUtils;
@@ -46,6 +35,16 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 
 /**

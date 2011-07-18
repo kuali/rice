@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.processor;
 
-import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.validation.AttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.DataType;

@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.core.framework.persistence.jpa.type;
 
+import org.hibernate.HibernateException;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
+
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-
-import org.hibernate.HibernateException;
-import org.kuali.rice.core.util.type.KualiDecimal;
 
 /**
  * This is a description of what this class does - g1zhang don't forget to fill this in. 

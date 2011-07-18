@@ -20,7 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.truthy.Truth;
+import org.kuali.rice.core.api.util.Truth;
 
 import java.io.IOException;
 import java.util.HashMap;

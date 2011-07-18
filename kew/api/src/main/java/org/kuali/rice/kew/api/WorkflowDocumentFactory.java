@@ -15,20 +15,20 @@
  */
 package org.kuali.rice.kew.api;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.config.ConfigurationException;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
+import org.kuali.rice.kew.api.action.InvalidActionTakenException;
+import org.kuali.rice.kew.api.doctype.IllegalDocumentTypeException;
+import org.kuali.rice.kew.api.document.DocumentContentUpdate;
+import org.kuali.rice.kew.api.document.DocumentUpdate;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.config.ConfigurationException;
-import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.kew.api.action.InvalidActionTakenException;
-import org.kuali.rice.kew.api.doctype.IllegalDocumentTypeException;
-import org.kuali.rice.kew.api.document.DocumentContentUpdate;
-import org.kuali.rice.kew.api.document.DocumentUpdate;
 
 /**
  * TODO ..

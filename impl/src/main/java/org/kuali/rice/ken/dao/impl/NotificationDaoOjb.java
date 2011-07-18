@@ -18,8 +18,8 @@ package org.kuali.rice.ken.dao.impl;
 
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.query.Criteria;
+import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.persistence.dao.GenericDao;
-import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.dao.NotificationDao;
 import org.kuali.rice.ken.util.NotificationConstants;

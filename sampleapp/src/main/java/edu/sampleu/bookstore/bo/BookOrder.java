@@ -1,7 +1,7 @@
 package edu.sampleu.bookstore.bo;
 
-import org.kuali.rice.core.util.type.KualiPercent;
-import org.kuali.rice.core.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiPercent;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 

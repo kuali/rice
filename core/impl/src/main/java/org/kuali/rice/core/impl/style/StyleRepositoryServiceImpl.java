@@ -23,8 +23,8 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.style.Style;
 import org.kuali.rice.core.api.style.StyleRepositoryService;
+import org.kuali.rice.core.api.util.RiceUtilities;
 import org.kuali.rice.core.impl.services.CoreImplServiceLocator;
-import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.ksb.api.cache.RiceCacheAdministrator;
 
 import javax.xml.transform.Templates;

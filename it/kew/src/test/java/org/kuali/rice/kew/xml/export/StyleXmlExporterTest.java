@@ -15,9 +15,15 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import org.jdom.Document;
+import org.junit.Test;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.style.Style;
+import org.kuali.rice.core.api.util.xml.XmlHelper;
+import org.kuali.rice.core.api.util.xml.XmlJotter;
+import org.kuali.rice.core.impl.style.StyleBo;
+import org.kuali.rice.core.impl.style.StyleExportDataSet;
+import org.kuali.rice.test.BaselineTestCase;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -25,15 +31,7 @@ import java.io.StringReader;
 import java.util.Iterator;
 import java.util.List;
 
-import org.jdom.Document;
-import org.junit.Test;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.core.api.style.Style;
-import org.kuali.rice.core.impl.style.StyleBo;
-import org.kuali.rice.core.impl.style.StyleExportDataSet;
-import org.kuali.rice.core.util.xml.XmlHelper;
-import org.kuali.rice.core.util.xml.XmlJotter;
-import org.kuali.rice.test.BaselineTestCase;
+import static org.junit.Assert.*;
 
 
 /**

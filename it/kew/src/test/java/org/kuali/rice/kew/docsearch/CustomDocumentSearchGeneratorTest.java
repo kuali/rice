@@ -15,12 +15,10 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
 import org.kuali.rice.core.api.parameter.Parameter;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
@@ -32,6 +30,8 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.krad.util.KRADConstants;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  *

@@ -19,7 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.kns.web.struts.form.DisplayInactivationBlockersForm;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata;

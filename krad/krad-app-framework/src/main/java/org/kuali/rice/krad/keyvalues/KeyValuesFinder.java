@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.keyvalues;
 
-import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
 
 import java.util.List;
 import java.util.Map;

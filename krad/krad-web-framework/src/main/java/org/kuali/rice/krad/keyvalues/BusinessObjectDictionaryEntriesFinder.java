@@ -15,13 +15,12 @@
  */
 package org.kuali.rice.krad.keyvalues;
 
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.krad.keyvalues.KeyValuesBase;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 /**
  * This class returns list of business objects defined in the data dictionary.

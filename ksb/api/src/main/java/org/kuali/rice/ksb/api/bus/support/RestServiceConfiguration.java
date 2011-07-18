@@ -1,7 +1,6 @@
 package org.kuali.rice.ksb.api.bus.support;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -9,8 +8,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
+import java.util.HashMap;
+import java.util.Map;
 
 @XmlRootElement(name = RestServiceConfiguration.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)

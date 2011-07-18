@@ -15,11 +15,15 @@
  */
 package org.kuali.rice.kew.api.document;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.kew.api.KewApiConstants;
+import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -28,16 +32,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
-import org.kuali.rice.kew.api.KewApiConstants;
-import org.w3c.dom.Element;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Defines an update to document content on a particular workflow document.

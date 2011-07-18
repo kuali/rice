@@ -1,9 +1,14 @@
 package org.kuali.rice.kew.api.doctype;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.core.api.util.CollectionUtils;
+import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -12,16 +17,10 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
-import org.kuali.rice.core.util.CollectionUtils;
-import org.w3c.dom.Element;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @XmlRootElement(name = RouteNode.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)

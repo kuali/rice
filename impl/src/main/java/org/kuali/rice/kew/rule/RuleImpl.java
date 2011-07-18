@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.rule;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowException;
 

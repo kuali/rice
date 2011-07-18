@@ -10,12 +10,12 @@
  */
 package org.kuali.rice.krad.web.bind;
 
-import org.kuali.rice.core.util.type.KualiDecimal;
-import org.kuali.rice.core.util.type.KualiInteger;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiInteger;
 
 /**
  * This class is used to format
- * <code>org.kuali.rice.core.util.type.KualiInteger</code> in the local
+ * <code>org.kuali.rice.core.api.util.type.KualiInteger</code> in the local
  * currency.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -24,7 +24,7 @@ public class UifKualiIntegerCurrencyEditor extends UifCurrencyEditor {
 
     /**
      * This overridden method converts the display string to a
-     * <code>org.kuali.rice.core.util.type.KualiInteger</code> object using
+     * <code>org.kuali.rice.core.api.util.type.KualiInteger</code> object using
      * local currency format.
      * 
      * @see UifCurrencyEditor#setAsText(java.lang.String)

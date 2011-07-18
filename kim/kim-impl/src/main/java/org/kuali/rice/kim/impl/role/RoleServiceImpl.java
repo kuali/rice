@@ -3,7 +3,7 @@ package org.kuali.rice.kim.impl.role;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
 import org.kuali.rice.kim.api.group.GroupMember;

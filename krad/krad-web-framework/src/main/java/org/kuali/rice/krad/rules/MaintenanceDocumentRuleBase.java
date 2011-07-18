@@ -17,15 +17,15 @@
 package org.kuali.rice.krad.rules;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.datetime.DateTimeService;
-import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.bo.GlobalBusinessObject;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.krad.bo.MutableInactivatable;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata;

@@ -16,8 +16,8 @@
 package org.kuali.rice.core.web.parameter;
 
 import org.kuali.rice.core.api.parameter.EvaluationOperator;
-import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 
 import java.util.ArrayList;

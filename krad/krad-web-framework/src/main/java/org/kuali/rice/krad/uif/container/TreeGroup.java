@@ -1,7 +1,7 @@
 package org.kuali.rice.krad.uif.container;
 
-import org.kuali.rice.core.util.Node;
-import org.kuali.rice.core.util.Tree;
+import org.kuali.rice.core.api.util.tree.Node;
+import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.core.BindingInfo;
 import org.kuali.rice.krad.uif.core.Component;

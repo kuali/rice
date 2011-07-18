@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.bo;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.RiceUtilities;
+import org.kuali.rice.core.api.util.RiceUtilities;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 
 import javax.persistence.Column;

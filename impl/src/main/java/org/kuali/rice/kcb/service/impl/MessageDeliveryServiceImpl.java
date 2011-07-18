@@ -15,19 +15,19 @@
  */
 package org.kuali.rice.kcb.service.impl;
 
+import org.apache.log4j.Logger;
+import org.apache.ojb.broker.query.Criteria;
+import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.kcb.bo.Message;
+import org.kuali.rice.kcb.bo.MessageDelivery;
+import org.kuali.rice.kcb.bo.MessageDeliveryStatus;
+import org.kuali.rice.kcb.service.MessageDeliveryService;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
-import org.apache.ojb.broker.query.Criteria;
-import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kcb.bo.Message;
-import org.kuali.rice.kcb.bo.MessageDelivery;
-import org.kuali.rice.kcb.bo.MessageDeliveryStatus;
-import org.kuali.rice.kcb.service.MessageDeliveryService;
 
 /**
  * MessageDeliveryService implementation 

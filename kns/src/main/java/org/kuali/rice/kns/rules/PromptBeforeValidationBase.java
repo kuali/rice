@@ -15,21 +15,20 @@
  */
 package org.kuali.rice.kns.rules;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
-import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.kns.rule.event.PromptBeforeValidationEvent;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.question.ConfirmationQuestion;
 import org.kuali.rice.krad.util.KRADConstants;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * 

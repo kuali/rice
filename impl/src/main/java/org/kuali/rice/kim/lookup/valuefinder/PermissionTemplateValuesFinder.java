@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.kim.lookup.valuefinder;
 
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
+import org.kuali.rice.krad.keyvalues.KeyValuesBase;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 

@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.krad.keyvalues.KeyValuesBase;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 
 public class PropositionParameterTypeValuesFinder extends KeyValuesBase {
 

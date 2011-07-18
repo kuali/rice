@@ -17,20 +17,9 @@
 
 package org.kuali.rice.kew.xml;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
-import org.kuali.rice.core.util.xml.XmlException;
+import org.kuali.rice.core.api.util.xml.XmlException;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionType;
@@ -42,6 +31,12 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.krad.exception.GroupNotFoundException;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class DocumentTypeXmlParserTest extends KEWTestCase {
     private List testDoc(String docName, Class expectedException) throws Exception {

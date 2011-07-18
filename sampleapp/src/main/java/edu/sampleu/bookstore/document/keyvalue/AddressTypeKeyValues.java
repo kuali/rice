@@ -15,15 +15,14 @@
  */
 package edu.sampleu.bookstore.document.keyvalue;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import org.kuali.rice.core.util.ConcreteKeyValue;
+import edu.sampleu.bookstore.bo.AddressType;
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 
-import edu.sampleu.bookstore.bo.AddressType;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * This is a description of what this class does - Administrator don't forget to fill this in. 

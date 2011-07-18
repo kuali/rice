@@ -20,10 +20,9 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.ServiceLocator;
-import org.kuali.rice.core.api.reflect.ObjectDefinition;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.resourceloader.BaseResourceLoader;
-import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.core.util.RiceConstants;
 
 import javax.xml.namespace.QName;
 import java.util.Collections;

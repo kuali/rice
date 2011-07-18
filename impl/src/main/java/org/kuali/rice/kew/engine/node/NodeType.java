@@ -16,17 +16,16 @@
  */
 package org.kuali.rice.kew.engine.node;
 
+import org.kuali.rice.core.api.reflect.ObjectDefinition;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
+import org.kuali.rice.kew.exception.ResourceUnavailableException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.reflect.ObjectDefinition;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.kew.exception.ResourceUnavailableException;
 
 
 /**

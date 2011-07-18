@@ -17,9 +17,9 @@
 package org.kuali.rice.kew.web;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
-import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ConcreteKeyValue;
 
 
 /**

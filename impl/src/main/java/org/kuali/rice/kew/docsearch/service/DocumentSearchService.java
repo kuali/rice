@@ -16,8 +16,13 @@
  */
 package org.kuali.rice.kew.docsearch.service;
 
-import org.kuali.rice.kew.docsearch.*;
-import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
+import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
+import org.kuali.rice.kew.docsearch.DocumentSearchResult;
+import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
+import org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor;
+import org.kuali.rice.kew.docsearch.SavedSearchResult;
 
 import java.util.List;
 

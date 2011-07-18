@@ -41,11 +41,7 @@ import java.util.Map;
 @WebService(endpointInterface = KIMWebServiceConstants.PermissionUpdateService.INTERFACE_CLASS, serviceName = KIMWebServiceConstants.PermissionUpdateService.WEB_SERVICE_NAME, portName = KIMWebServiceConstants.PermissionUpdateService.WEB_SERVICE_PORT, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
 public class PermissionUpdateServiceImpl extends PermissionServiceBase implements PermissionUpdateService {
 	private static final Logger LOG = Logger.getLogger( PermissionUpdateServiceImpl.class );
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kim.service.PermissionUpdateService#savePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, boolean, org.kuali.rice.core.util.Map<String, String>)
-	 */
+
 	public void savePermission(String permissionId, String permissionTemplateId,
 			String namespaceCode, String name, String description, boolean active,
 			Map<String, String> permissionDetails) {

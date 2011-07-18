@@ -16,23 +16,18 @@
  */
 package org.kuali.rice.core.impl.style;
 
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_LOCATION_ATTR;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.SCHEMA_NAMESPACE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.STYLE_NAMESPACE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.STYLE_SCHEMA_LOCATION;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.STYLE_STYLE;
-import static org.kuali.rice.core.api.impex.xml.XmlConstants.STYLE_STYLES;
+import org.apache.log4j.Logger;
+import org.jdom.Element;
+import org.kuali.rice.core.api.impex.ExportDataSet;
+import org.kuali.rice.core.api.util.xml.XmlException;
+import org.kuali.rice.core.api.util.xml.XmlHelper;
+import org.kuali.rice.core.api.util.xml.XmlRenderer;
+import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 
 import java.io.StringReader;
 import java.util.Iterator;
 
-import org.apache.log4j.Logger;
-import org.jdom.Element;
-import org.kuali.rice.core.api.impex.ExportDataSet;
-import org.kuali.rice.core.framework.impex.xml.XmlExporter;
-import org.kuali.rice.core.util.xml.XmlException;
-import org.kuali.rice.core.util.xml.XmlHelper;
-import org.kuali.rice.core.util.xml.XmlRenderer;
+import static org.kuali.rice.core.api.impex.xml.XmlConstants.*;
 
 /**
  * Exports Style definitions to XML.

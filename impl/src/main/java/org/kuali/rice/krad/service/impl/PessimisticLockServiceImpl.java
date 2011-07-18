@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.PermissionService;

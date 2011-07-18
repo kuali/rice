@@ -16,7 +16,7 @@
 package edu.sampleu.travel.workflow;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;

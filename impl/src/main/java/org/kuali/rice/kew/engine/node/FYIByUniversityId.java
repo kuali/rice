@@ -19,7 +19,7 @@ package org.kuali.rice.kew.engine.node;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.jdom.Element;
-import org.kuali.rice.core.util.xml.XmlHelper;
+import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
@@ -28,8 +28,8 @@ import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.bo.Person;
 
 import java.util.ArrayList;
 import java.util.Collection;

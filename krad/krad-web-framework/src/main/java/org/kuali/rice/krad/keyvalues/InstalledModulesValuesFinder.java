@@ -15,15 +15,14 @@
  */
 package org.kuali.rice.krad.keyvalues;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.krad.keyvalues.KeyValuesBase;
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.service.ModuleService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class returns list of approved document indicator value pairs.

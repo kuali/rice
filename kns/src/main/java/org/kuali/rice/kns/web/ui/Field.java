@@ -16,7 +16,7 @@
 package org.kuali.rice.kns.web.ui;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.lookup.HtmlData;

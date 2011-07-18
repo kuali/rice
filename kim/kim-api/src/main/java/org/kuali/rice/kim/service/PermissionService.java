@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.service;
 
-import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;

@@ -344,7 +344,7 @@
   
   <bean id="ComparableInfo" class="org.kuali.rice.krad.uif.modifier.ComparableInfo" scope="prototype"/>
   
-  <bean id="KeyLabelPair" class="org.kuali.rice.core.util.ConcreteKeyValue" scope="prototype"/>
+  <bean id="KeyLabelPair" class="org.kuali.rice.core.api.util.ConcreteKeyValue" scope="prototype"/>
   
   <bean id="MethodInvokerConfig" class="org.kuali.rice.krad.uif.core.MethodInvokerConfig" scope="prototype"/>
   

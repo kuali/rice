@@ -16,10 +16,14 @@
 package org.kuali.rice.krad.util;
 
 import org.junit.Test;
-import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.springframework.util.AutoPopulatingList;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 

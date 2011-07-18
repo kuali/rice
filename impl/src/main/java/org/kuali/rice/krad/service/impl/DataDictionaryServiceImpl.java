@@ -15,25 +15,14 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Pattern;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
-import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.doctype.DocumentType;
 import org.kuali.rice.kew.api.doctype.DocumentTypeService;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.AttributeSecurity;
@@ -57,6 +46,16 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.workflow.service.KualiWorkflowInfo;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * Service implementation for a DataDictionary. It is a thin wrapper around creating, initializing, and

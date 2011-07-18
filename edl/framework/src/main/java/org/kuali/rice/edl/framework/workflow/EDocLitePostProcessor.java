@@ -16,6 +16,26 @@
  */
 package org.kuali.rice.edl.framework.workflow;
 
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.util.xml.XmlException;
+import org.kuali.rice.core.api.util.xml.XmlJotter;
+import org.kuali.rice.kew.dto.ActionTakenEventDTO;
+import org.kuali.rice.kew.dto.DeleteEventDTO;
+import org.kuali.rice.kew.dto.DocumentContentDTO;
+import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
+import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
+import org.kuali.rice.kew.postprocessor.DefaultPostProcessorRemote;
+import org.kuali.rice.kew.service.WorkflowInfo;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,27 +48,6 @@ import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.xml.XmlException;
-import org.kuali.rice.core.util.xml.XmlJotter;
-import org.kuali.rice.kew.dto.ActionTakenEventDTO;
-import org.kuali.rice.kew.dto.DeleteEventDTO;
-import org.kuali.rice.kew.dto.DocumentContentDTO;
-import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
-import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
-import org.kuali.rice.kew.postprocessor.DefaultPostProcessorRemote;
-import org.kuali.rice.kew.service.WorkflowInfo;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
 
 
 /**

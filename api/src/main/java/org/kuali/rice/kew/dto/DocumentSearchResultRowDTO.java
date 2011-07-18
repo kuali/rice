@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.kew.dto;
 
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.kuali.rice.core.util.ConcreteKeyValue;
 
 /**
  * This is a virtual object used for the DocumentSearchResult class.

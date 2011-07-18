@@ -15,6 +15,17 @@
  */
 package org.kuali.rice.ksb.messaging;
 
+import org.apache.commons.httpclient.ConnectTimeoutException;
+import org.apache.commons.httpclient.ConnectionPoolTimeoutException;
+import org.apache.commons.httpclient.NoHttpResponseException;
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.reflect.BaseTargetedInvocationHandler;
+import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
+import org.kuali.rice.ksb.api.bus.Endpoint;
+import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
+
 import java.io.InterruptedIOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -25,17 +36,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.httpclient.ConnectTimeoutException;
-import org.apache.commons.httpclient.ConnectionPoolTimeoutException;
-import org.apache.commons.httpclient.NoHttpResponseException;
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
-import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.core.util.reflect.BaseTargetedInvocationHandler;
-import org.kuali.rice.ksb.api.KsbApiServiceLocator;
-import org.kuali.rice.ksb.api.bus.Endpoint;
-import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 
 
 

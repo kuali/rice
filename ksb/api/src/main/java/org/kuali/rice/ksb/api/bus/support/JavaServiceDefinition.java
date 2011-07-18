@@ -16,12 +16,12 @@
  */
 package org.kuali.rice.ksb.api.bus.support;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.ksb.api.KsbApiConstants;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

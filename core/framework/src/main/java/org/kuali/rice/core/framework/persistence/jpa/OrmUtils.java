@@ -18,11 +18,10 @@ package org.kuali.rice.core.framework.persistence.jpa;
 
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.persistence.jpa.annotations.Sequence;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
-
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.util.RiceConstants;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;

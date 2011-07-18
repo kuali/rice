@@ -16,7 +16,8 @@
 
 package edu.sampleu.travel.bo;
 
-import java.util.Date;
+import org.kuali.rice.core.api.util.type.KualiPercent;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -26,9 +27,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.kuali.rice.core.util.type.KualiPercent;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import java.util.Date;
 
 @Entity
 @Table(name="TRV_ACCT")

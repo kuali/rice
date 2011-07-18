@@ -1184,23 +1184,23 @@
     </property>
   </bean>
 
-  <bean id="KRADConstants" class="org.kuali.rice.core.util.ConstantsMap">
+  <bean id="KRADConstants" class="org.kuali.rice.core.api.util.ConstantsMap">
     <property name="constantClass" value="org.kuali.rice.krad.util.KRADConstants"/>
   </bean>
 
-  <bean id="RiceConstants" class="org.kuali.rice.core.util.ConstantsMap">
-    <property name="constantClass" value="org.kuali.rice.core.util.RiceConstants"/>
+  <bean id="RiceConstants" class="org.kuali.rice.core.api.util.ConstantsMap">
+    <property name="constantClass" value="org.kuali.rice.core.api.util.RiceConstants"/>
   </bean>
 
-  <bean id="KRADPropertyConstants" class="org.kuali.rice.core.util.ConstantsMap">
+  <bean id="KRADPropertyConstants" class="org.kuali.rice.core.api.util.ConstantsMap">
     <property name="constantClass" value="org.kuali.rice.krad.util.KRADPropertyConstants"/>
   </bean>
 
-  <bean id="AuthorizationConstants" class="org.kuali.rice.core.util.ConstantsMap">
+  <bean id="AuthorizationConstants" class="org.kuali.rice.core.api.util.ConstantsMap">
     <property name="constantClass" value="org.kuali.rice.krad.authorization.AuthorizationConstants"/>
   </bean>
 
-  <bean id="UifConstants" class="org.kuali.rice.core.util.ConstantsMap">
+  <bean id="UifConstants" class="org.kuali.rice.core.api.util.ConstantsMap">
     <property name="constantClass" value="org.kuali.rice.krad.uif.UifConstants"/>
   </bean>
 

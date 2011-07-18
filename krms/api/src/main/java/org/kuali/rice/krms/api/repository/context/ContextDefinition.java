@@ -1,12 +1,15 @@
 package org.kuali.rice.krms.api.repository.context;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -16,17 +19,13 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
-import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
-import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
-import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * An immutable representation of a context definition.  A context definition

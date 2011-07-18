@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.core.web.format;
 
-import java.text.NumberFormat;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiInteger;
 
-import org.kuali.rice.core.util.RiceKeyConstants;
-import org.kuali.rice.core.util.type.KualiDecimal;
-import org.kuali.rice.core.util.type.KualiInteger;
+import java.text.NumberFormat;
 
 public class KualiIntegerCurrencyFormatter extends CurrencyFormatter {
 

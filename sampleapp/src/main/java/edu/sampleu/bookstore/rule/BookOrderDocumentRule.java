@@ -1,15 +1,14 @@
 package edu.sampleu.bookstore.rule;
 
-import java.util.List;
-
-import org.kuali.rice.core.util.RiceKeyConstants;
+import edu.sampleu.bookstore.bo.BookOrder;
+import edu.sampleu.bookstore.document.BookOrderDocument;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.krad.document.Document;
-
 import org.kuali.rice.krad.rules.TransactionalDocumentRuleBase;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
-import edu.sampleu.bookstore.bo.BookOrder;
-import edu.sampleu.bookstore.document.BookOrderDocument;
+
+import java.util.List;
 
 
 /*

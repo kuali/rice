@@ -16,14 +16,16 @@
  */
 package org.kuali.rice.kew.notes;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.joda.time.DateTime;
+import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.kew.api.note.NoteContract;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -37,17 +39,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.joda.time.DateTime;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kew.api.note.NoteContract;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 
 /**

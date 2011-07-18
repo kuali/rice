@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.shareddata.framework.campus;
 
-import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 import org.kuali.rice.shareddata.api.campus.Campus;
 import org.kuali.rice.shareddata.api.campus.CampusService;

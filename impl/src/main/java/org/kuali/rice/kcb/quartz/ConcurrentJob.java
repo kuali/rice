@@ -15,6 +15,19 @@
  */
 package org.kuali.rice.kcb.quartz;
 
+import org.apache.log4j.Logger;
+import org.apache.ojb.broker.OptimisticLockException;
+import org.kuali.rice.core.api.util.RiceUtilities;
+import org.kuali.rice.kcb.quartz.ProcessingResult.Failure;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.dao.DataAccessException;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionException;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.UnexpectedRollbackException;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,19 +38,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
-
-import org.apache.log4j.Logger;
-import org.apache.ojb.broker.OptimisticLockException;
-import org.kuali.rice.core.util.RiceUtilities;
-import org.kuali.rice.kcb.quartz.ProcessingResult.Failure;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.dao.DataAccessException;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionException;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.UnexpectedRollbackException;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionTemplate;
 
 /**
  * Base class for jobs that must obtain a set of work items atomically

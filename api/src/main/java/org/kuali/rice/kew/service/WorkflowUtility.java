@@ -16,8 +16,8 @@
  */
 package org.kuali.rice.kew.service;
 
-import org.kuali.rice.core.util.jaxb.MapStringStringAdapter;
-import org.kuali.rice.core.util.jaxb.SqlTimestampAdapter;
+import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.core.api.util.jaxb.SqlTimestampAdapter;
 import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenDTO;

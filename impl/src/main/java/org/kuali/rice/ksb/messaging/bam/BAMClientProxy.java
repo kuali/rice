@@ -15,19 +15,18 @@
  */
 package org.kuali.rice.ksb.messaging.bam;
 
+import org.kuali.rice.core.api.config.property.Config;
+import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.reflect.BaseTargetedInvocationHandler;
+import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
+import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
+import org.kuali.rice.ksb.messaging.bam.service.BAMService;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-
-import org.kuali.rice.core.api.config.property.Config;
-import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
-import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.core.util.reflect.BaseTargetedInvocationHandler;
-import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
-import org.kuali.rice.ksb.impl.registry.ServiceInfoBo;
-import org.kuali.rice.ksb.messaging.bam.service.BAMService;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 
 /**

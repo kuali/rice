@@ -17,8 +17,8 @@
 package org.kuali.rice.edl.impl;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.xml.XmlHelper;
-import org.kuali.rice.core.util.xml.XmlJotter;
+import org.kuali.rice.core.api.util.xml.XmlHelper;
+import org.kuali.rice.core.api.util.xml.XmlJotter;
 import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
 import org.kuali.rice.edl.impl.service.EDocLiteService;
 import org.kuali.rice.edl.impl.service.EdlServiceLocator;

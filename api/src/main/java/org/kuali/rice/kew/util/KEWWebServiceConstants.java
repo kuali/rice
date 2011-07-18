@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kew.util;
 
-import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.core.api.util.RiceConstants;
 
 
 /**

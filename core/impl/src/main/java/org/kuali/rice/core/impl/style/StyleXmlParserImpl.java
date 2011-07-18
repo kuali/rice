@@ -15,9 +15,17 @@
  */
 package org.kuali.rice.core.impl.style;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.impex.xml.XmlConstants;
+import org.kuali.rice.core.api.impex.xml.XmlIngestionException;
+import org.kuali.rice.core.api.style.Style;
+import org.kuali.rice.core.api.style.StyleService;
+import org.kuali.rice.core.api.util.xml.XmlException;
+import org.kuali.rice.core.api.util.xml.XmlJotter;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -26,18 +34,9 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.impex.xml.XmlConstants;
-import org.kuali.rice.core.api.impex.xml.XmlIngestionException;
-import org.kuali.rice.core.api.style.Style;
-import org.kuali.rice.core.api.style.StyleService;
-import org.kuali.rice.core.util.xml.XmlException;
-import org.kuali.rice.core.util.xml.XmlJotter;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**

@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.kew.actionrequest.bo;
 
-import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 

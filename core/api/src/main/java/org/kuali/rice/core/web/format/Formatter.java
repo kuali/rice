@@ -19,10 +19,10 @@ package org.kuali.rice.core.web.format;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.type.AbstractKualiDecimal;
-import org.kuali.rice.core.util.type.KualiDecimal;
-import org.kuali.rice.core.util.type.KualiInteger;
-import org.kuali.rice.core.util.type.KualiPercent;
+import org.kuali.rice.core.api.util.type.AbstractKualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiInteger;
+import org.kuali.rice.core.api.util.type.KualiPercent;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;

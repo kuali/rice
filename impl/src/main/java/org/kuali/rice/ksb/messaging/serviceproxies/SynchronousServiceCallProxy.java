@@ -16,19 +16,19 @@
 
 package org.kuali.rice.ksb.messaging.serviceproxies;
 
-import java.io.Serializable;
-import java.lang.reflect.Proxy;
-import java.util.List;
-
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.impl.resourceloader.ContextClassLoaderProxy;
-import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.ksb.api.bus.Endpoint;
 import org.kuali.rice.ksb.api.messaging.AsynchronousCallback;
 import org.kuali.rice.ksb.messaging.MessageServiceInvoker;
 import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.util.KSBConstants;
+
+import java.io.Serializable;
+import java.lang.reflect.Proxy;
+import java.util.List;
 
 
 /**

@@ -17,8 +17,7 @@
 package org.kuali.rice.core.api.config.property;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.config.ConfigurationException;
-import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;

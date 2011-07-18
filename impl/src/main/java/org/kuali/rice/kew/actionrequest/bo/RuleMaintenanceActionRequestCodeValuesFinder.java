@@ -15,17 +15,16 @@
  */
 package org.kuali.rice.kew.actionrequest.bo;
 
-import org.kuali.rice.core.util.ConcreteKeyValue;
-import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleTemplateOption;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.util.KNSGlobalVariables;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
-import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.krad.util.GlobalVariables;
 
 import java.util.ArrayList;
 import java.util.List;

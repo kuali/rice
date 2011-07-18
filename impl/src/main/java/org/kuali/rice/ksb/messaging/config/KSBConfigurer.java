@@ -16,15 +16,6 @@
 
 package org.kuali.rice.ksb.messaging.config;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.sql.DataSource;
-
 import org.apache.commons.httpclient.contrib.ssl.EasySSLProtocolSocketFactory;
 import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
@@ -36,11 +27,11 @@ import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.api.resourceloader.ResourceLoader;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.core.impl.config.module.ModuleConfigurer;
 import org.kuali.rice.core.impl.lifecycle.ServiceDelegatingLifecycle;
-import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.ksb.api.KsbApiConstants;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.bus.ServiceDefinition;
@@ -53,6 +44,14 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.quartz.Scheduler;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 
 /**

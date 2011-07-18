@@ -16,8 +16,8 @@
 package org.kuali.rice.krad.test.document;
 
 import org.hibernate.annotations.Type;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.core.framework.persistence.jpa.type.HibernateKualiDecimalFieldType;
-import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.krad.document.SessionDocument;
 import org.kuali.rice.krad.document.TransactionalDocumentBase;
 

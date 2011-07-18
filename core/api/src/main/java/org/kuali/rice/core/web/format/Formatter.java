@@ -24,7 +24,6 @@ import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.core.api.util.type.KualiInteger;
 import org.kuali.rice.core.api.util.type.KualiPercent;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
@@ -72,9 +71,7 @@ import java.util.Set;
  * atomic values (i.e., an ordinary bean property such as a <code>String</code>
  * or <code>Integer</code>, or else an element of a property typed as
  * array or Collection).
- * 
- * @see PojoActionForm#populate(HttpServletRequest)
- * @see PojoPropertyUtilsBean#getProperty(Object, String)
+ *
  */
 // end Kuali Foundation modification
 public class Formatter implements Serializable {
@@ -560,17 +557,6 @@ public class Formatter implements Serializable {
             }
         }
         return false;
-    }
-
-    protected String trimString(Object target) {
-        String stringValue = null;
-        try {
-            stringValue = (String) target;
-        }
-        catch (ClassCastException e) {
-            throw new FormatException("Can't cast " + target + " to String", e);
-        }
-        return stringValue == null ? null : stringValue.trim();
     }
 
     /**

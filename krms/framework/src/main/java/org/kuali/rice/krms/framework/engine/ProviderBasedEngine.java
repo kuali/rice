@@ -1,8 +1,8 @@
 package org.kuali.rice.krms.framework.engine;
 
-import java.util.Date;
 import java.util.Map;
 
+import org.joda.time.DateTime;
 import org.kuali.rice.krms.api.engine.Engine;
 import org.kuali.rice.krms.api.engine.EngineResults;
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
@@ -26,8 +26,8 @@ public class ProviderBasedEngine implements Engine {
 	
 	@Override
 	public EngineResults execute(SelectionCriteria selectionCriteria, Map<Term, Object> facts, ExecutionOptions executionOptions) {
-		Date start, end;
-		start = new Date();
+		DateTime start, end;
+		start = new DateTime();
 		ExecutionEnvironment environment = establishExecutionEnvironment(selectionCriteria, facts, executionOptions);
 		
 		// set execution time
@@ -41,7 +41,7 @@ public class ProviderBasedEngine implements Engine {
 			return null;
 		}
 		context.execute(environment);
-		end = new Date();
+		end = new DateTime();
 		if (KLog.isEnabled(environment)){
 			KLog.logResult(new TimingResult(ResultEvent.TimingEvent, this, environment, start, end));
 		}

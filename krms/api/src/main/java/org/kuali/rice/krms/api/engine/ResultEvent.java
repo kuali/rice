@@ -1,14 +1,15 @@
 package org.kuali.rice.krms.api.engine;
 
-import java.util.Date;
 import java.util.Map;
+
+import org.joda.time.DateTime;
 
 public interface ResultEvent {
 	public ExecutionEnvironment getEnvironment();
 
 	public String getType();
 	public Object getSource();
-	public Date getTimestamp();
+	public DateTime getTimestamp();
 	public Boolean getResult();
 	public String getDescription();
 	public Map<?,?> getResultDetails();

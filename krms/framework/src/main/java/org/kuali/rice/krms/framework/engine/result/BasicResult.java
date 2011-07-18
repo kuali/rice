@@ -2,11 +2,11 @@ package org.kuali.rice.krms.framework.engine.result;
 
 import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Date;
 import java.util.EventObject;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.engine.ResultEvent;
 
@@ -14,7 +14,7 @@ public class BasicResult extends EventObject implements ResultEvent {
 	private static final long serialVersionUID = -4124200802034785921L;
 	
 	protected String type;
-	protected Date timestamp;
+	protected DateTime timestamp;
 	protected ExecutionEnvironment environment;
 	protected Boolean result = null;
 	protected String description;
@@ -45,7 +45,7 @@ public class BasicResult extends EventObject implements ResultEvent {
 	public BasicResult(String eventType, Object source, ExecutionEnvironment environment) {
 		super(source);
 		this.type = eventType;
-		this.timestamp = new Date(); 
+		this.timestamp = new DateTime(); 
 		this.environment = environment;
 	}
 
@@ -55,8 +55,8 @@ public class BasicResult extends EventObject implements ResultEvent {
 	}
 
 	@Override
-	public Date getTimestamp() {
-		return new Date(timestamp.getTime()); // defensive copy
+	public DateTime getTimestamp() {
+		return timestamp;
 	}
 	
 	@Override

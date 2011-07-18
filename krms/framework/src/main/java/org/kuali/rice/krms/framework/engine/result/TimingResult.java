@@ -2,22 +2,25 @@ package org.kuali.rice.krms.framework.engine.result;
 
 import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Date;
 import java.util.EventObject;
 import java.util.Map;
 
+import org.joda.time.DateTime;
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.engine.ResultEvent;
 
 public class TimingResult extends EventObject implements ResultEvent {
-	private String type;
-	private Date start;
-	private Date end;
+    
+	private static final long serialVersionUID = 5335636381355236617L;
+	
+    private String type;
+	private DateTime start;
+	private DateTime end;
 	private ExecutionEnvironment environment;
 	private String description;
 	private Map<String, ?> resultDetails;
 
-	public TimingResult(String description, String type, Object source, ExecutionEnvironment environment, Date start, Date end){
+	public TimingResult(String description, String type, Object source, ExecutionEnvironment environment, DateTime start, DateTime end){
 		super(source);
 		this.type = type;
 		this.environment = environment;
@@ -26,7 +29,7 @@ public class TimingResult extends EventObject implements ResultEvent {
 		this.description = description;
 	}
 	
-	public TimingResult(String type, Object source, ExecutionEnvironment environment, Date start, Date end){
+	public TimingResult(String type, Object source, ExecutionEnvironment environment, DateTime start, DateTime end){
 		super(source);
 		this.type = type;
 		this.environment = environment;
@@ -35,7 +38,7 @@ public class TimingResult extends EventObject implements ResultEvent {
 	}
 	
 	public Long getElapsedTimeInMilliseconds(){
-		return Long.valueOf(end.getTime() - start.getTime());
+		return Long.valueOf(end.getMillis() - start.getMillis());
 	}
 	
 	public ExecutionEnvironment getEnvironment(){
@@ -60,8 +63,8 @@ public class TimingResult extends EventObject implements ResultEvent {
 	}
 
 	@Override
-	public Date getTimestamp() {
-		return new Date(end.getTime());
+	public DateTime getTimestamp() {
+		return end;
 	}
 
 	@Override

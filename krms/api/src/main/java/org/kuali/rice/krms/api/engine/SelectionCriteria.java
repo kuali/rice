@@ -1,9 +1,10 @@
 package org.kuali.rice.krms.api.engine;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.joda.time.DateTime;
 
 public final class SelectionCriteria {
 
@@ -12,14 +13,14 @@ public final class SelectionCriteria {
 	private final Map<String, String> contextQualifiers;
 	private final Map<String, String> agendaQualifiers;
 	
-	private SelectionCriteria(String eventName, Date effectiveDate) {
+	private SelectionCriteria(String eventName, DateTime effectiveDate) {
 		if (eventName == null || "".equals(eventName.trim())) {
 			throw new IllegalArgumentException("Event name must not be null or empty.");
 		}
 		this.eventName = eventName;
 		
 		if (effectiveDate != null) {
-			this.effectiveExecutionTime = effectiveDate.getTime();
+			this.effectiveExecutionTime = effectiveDate.getMillis();
 		} else {
 			this.effectiveExecutionTime = null;
 		}
@@ -37,7 +38,7 @@ public final class SelectionCriteria {
 	 * @param agendaQualifiers qualifiers used to select the agenda from the context
 	 * @return the {@link SelectionCriteria}
 	 */
-	public static SelectionCriteria createCriteria(String eventName, Date effectiveExecutionTime, Map<String, String> contextQualifiers, Map<String, String> agendaQualifiers) {
+	public static SelectionCriteria createCriteria(String eventName, DateTime effectiveExecutionTime, Map<String, String> contextQualifiers, Map<String, String> agendaQualifiers) {
 		SelectionCriteria criteria = new SelectionCriteria(eventName, effectiveExecutionTime);
 		criteria.contextQualifiers.putAll(contextQualifiers);
 		criteria.agendaQualifiers.putAll(agendaQualifiers);

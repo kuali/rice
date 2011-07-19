@@ -18,6 +18,8 @@ package edu.sampleu.travel.krad.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
@@ -66,4 +68,27 @@ public class UIComponentsTestController extends UifControllerBase {
 		return getUIFModelAndView(uiTestForm, uiTestForm.getViewId(), "page1");
 	}
 
+    /**
+     * Handles menu navigation between view pages
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=navigate")
+    public ModelAndView navigate(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        String pageId = form.getActionParamaterValue(UifParameters.NAVIGATE_TO_PAGE_ID);
+
+        if(pageId.equals("uifpage7")){
+            GlobalVariables.getMessageMap().putError("gField1", "serverTestError");
+            GlobalVariables.getMessageMap().putError("gField1", "serverTestError2");
+            GlobalVariables.getMessageMap().putError("gField2", "serverTestError");
+            GlobalVariables.getMessageMap().putError("gField3", "serverTestError");
+            GlobalVariables.getMessageMap().putWarning("gField1", "serverTestWarning");
+            GlobalVariables.getMessageMap().putWarning("gField2", "serverTestWarning");
+            GlobalVariables.getMessageMap().putInfo("gField2", "serverTestInfo");
+            GlobalVariables.getMessageMap().putInfo("gField3", "serverTestInfo");
+        }
+        // only refreshing page
+        form.setRenderFullView(false);
+
+        return getUIFModelAndView(form, form.getViewId(), pageId);
+    }
 }

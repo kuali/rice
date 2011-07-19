@@ -95,6 +95,11 @@ public class UILayoutTestForm extends UifFormBase {
     private String field63;
     private String field64;
     private String field65;
+    
+    private String gField1;
+    private String gField2;
+    private String gField3;
+    
     private List<UITestListObject> list1 = new ArrayList<UITestListObject>();
     private List<UITestListObject> list2 = new ArrayList<UITestListObject>();
     private List<UITestListObject> list3 = new ArrayList<UITestListObject>();
@@ -1146,6 +1151,48 @@ public class UILayoutTestForm extends UifFormBase {
      */
     public void setList4(List<UITestListObject> list4) {
         this.list4 = list4;
+    }
+
+    /**
+     * @return the gField1
+     */
+    public String getgField1() {
+        return this.gField1;
+    }
+
+    /**
+     * @param gField1 the gField1 to set
+     */
+    public void setgField1(String gField1) {
+        this.gField1 = gField1;
+    }
+
+    /**
+     * @return the gField2
+     */
+    public String getgField2() {
+        return this.gField2;
+    }
+
+    /**
+     * @param gField2 the gField2 to set
+     */
+    public void setgField2(String gField2) {
+        this.gField2 = gField2;
+    }
+
+    /**
+     * @return the gField3
+     */
+    public String getgField3() {
+        return this.gField3;
+    }
+
+    /**
+     * @param gField3 the gField3 to set
+     */
+    public void setgField3(String gField3) {
+        this.gField3 = gField3;
     }
     
     

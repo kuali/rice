@@ -1,0 +1,1389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<!-- Copyright 2007-2009 The Kuali Foundation Licensed under the Educational 
+		Community License, Version 2.0 (the "License"); you may not use this file 
+		except in compliance with the License. You may obtain a copy of the License 
+		at http://www.opensource.org/licenses/ecl2.php Unless required by applicable 
+		law or agreed to in writing, software distributed under the License is distributed 
+		on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either 
+		express or implied. See the License for the specific language governing permissions 
+		and limitations under the License. -->
+
+	<bean id="UifComponentsView" parent="FormView">
+		<property name="id" value="UifComponentsView" />
+		<property name="title" value="Uif Components" />
+		<property name="entryPageId" value="uifpage1" />
+		<property name="navigation">
+			<ref bean="UifComponentsViewMenu" />
+		</property>
+		<property name="items">
+			<list>
+				<bean parent="Page" p:id="uifpage1" p:title="UI Components">
+					<property name="items">
+						<list>
+							<ref bean="textFields-Section1" />
+							<ref bean="dateFields-Section2" />
+							<ref bean="selectionFields-Section3" />
+							<ref bean="fieldGroups-Section4" />
+							<ref bean="tabsSection-Section5" />
+							<ref bean="tree-Section6" />
+							<ref bean="misc-Section7" />
+						</list>
+					</property>
+				</bean>
+				<bean parent="Page" p:id="uifpage2" p:title="Validation"
+					p:summary="Take note of the constraint text underneath field inputs, they describe the validation constraint for that field.  Validation constraints are evaluated by default when a user leaves a field, if the user has not satisfied the requirement, the ui will alert them of their error.  When they return to a field the ui will dynamically remove the error as they correct it and note any additional errors they may have caused.">
+					<property name="items">
+						<list>
+							<ref bean="minMaxSection" />
+							<ref bean="requiredSection" />
+							<ref bean="preReqSection" />
+							<ref bean="mustOccursSection" />
+							<ref bean="caseConstraintSection" />
+						</list>
+					</property>
+				</bean>
+				<bean parent="Page" p:id="uifpage3"
+					p:title="Validation - Regex Patterns, the ValidCharactersConstraint">
+					<property name="items">
+						<list>
+							<ref bean="regex1" />
+						</list>
+					</property>
+				</bean>
+				<bean parent="Page" p:id="uifpage4"
+					p:title="Progressive Disclosure and Conditional Refresh"
+					p:summary="Fields and Groups (ONLY!) can have conditions in which they show themselves on the page or in which they refresh themselves.  Refreshing is defined as requesting an new component from the server (which may or may not be the same element ui wise).">
+					<property name="items">
+						<list>
+							<ref bean="prog1" />
+							<ref bean="prog2" />
+							<ref bean="prog3" />
+						</list>
+					</property>
+				</bean>
+				<bean parent="Page" p:id="uifpage5"
+					p:title="Lookups, Inquiry, and SuggestBoxes inline"
+					p:summary="Lookups and Inquiries backed by BO searches can be used on fields to fill in their values, as well as SuggestBoxes backed by a query">
+					<property name="items">
+						<list>
+							<ref bean="lookups1" />
+						</list>
+					</property>
+				</bean>
+				<bean parent="Page" p:id="uifpage6" p:title="Collections"
+					p:summary="Lists of Data Objects">
+					<property name="items">
+						<list>
+							<ref bean="collection1" />
+							<ref bean="collection2" />
+							<ref bean="collection3" />
+							<ref bean="collection4" />
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+		<property name="additionalCssFiles" ref="ks-css" />
+		<property name="formClass"
+			value="edu.sampleu.travel.krad.form.UILayoutTestForm" />
+	</bean>
+
+	<bean id="UifComponentsViewMenu" parent="NavigationGroupMenu">
+		<property name="items">
+			<list>
+				<bean parent="HeaderTwo" p:headerText="Navigation" />
+				<bean parent="NavigationActionLinkField" p:navigateToPageId="uifpage1"
+					p:actionLabel="UI Components" />
+				<bean parent="NavigationActionLinkField" p:navigateToPageId="uifpage2"
+					p:actionLabel="Validation" />
+				<bean parent="NavigationActionLinkField" p:navigateToPageId="uifpage3"
+					p:actionLabel="Validation - Regex" />
+				<bean parent="NavigationActionLinkField" p:navigateToPageId="uifpage4"
+					p:actionLabel="Progressive Disclosure" />
+				<bean parent="NavigationActionLinkField" p:navigateToPageId="uifpage5"
+					p:actionLabel="Lookups, etc" />
+				<bean parent="NavigationActionLinkField" p:navigateToPageId="uifpage6"
+					p:actionLabel="Collections" />
+			</list>
+		</property>
+		<property name="componentOptions">
+			<map>
+				<entry key="animate" value="true" />
+				<entry key="slideout" value="true" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="GenericTextArea" parent="AttributeField_Form" abstract="true"
+		p:label="Field Label" p:labelPlacement="TOP"
+		p:labelField.styleClasses="labelTop" p:labelField.renderColon="false">
+		<property name="control">
+			<bean parent="TextAreaControl" p:rows="5" p:cols="40" />
+		</property>
+	</bean>
+
+	<bean id="GenericTextField" parent="AttributeField_Form" abstract="true"
+		p:label="Field Label" p:labelPlacement="TOP"
+		p:labelField.styleClasses="labelTop" p:labelField.renderColon="false">
+		<property name="control">
+			<bean parent="TextControl" p:size="30" />
+		</property>
+	</bean>
+
+	<bean id="GenericSelection" parent="AttributeField_Form" abstract="true"
+		p:label="Select" p:labelPlacement="TOP" p:labelField.styleClasses="labelTop"
+		p:labelField.renderColon="false">
+		<property name="control">
+			<bean parent="SelectControl">
+				<property name="options">
+					<list>
+						<bean parent="KeyLabelPair" p:key="" p:value="" />
+						<bean parent="KeyLabelPair" p:key="1" p:value="Select 1" />
+						<bean parent="KeyLabelPair" p:key="2" p:value="Select 2" />
+						<bean parent="KeyLabelPair" p:key="3" p:value="Select 3" />
+						<bean parent="KeyLabelPair" p:key="4" p:value="Select 4" />
+						<bean parent="KeyLabelPair" p:key="4" p:value="Select 5" />
+					</list>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="GenericRadio" parent="AttributeField_Form" abstract="true"
+		p:label="Radio" p:labelPlacement="TOP" p:labelField.styleClasses="labelTop"
+		p:labelField.renderColon="false">
+		<property name="control">
+			<bean parent="RadioGroupControl">
+				<property name="options">
+					<list>
+						<bean parent="KeyLabelPair" p:key="1" p:value="Radio 1" />
+						<bean parent="KeyLabelPair" p:key="2" p:value="Radio 2" />
+						<bean parent="KeyLabelPair" p:key="3" p:value="Radio 3" />
+					</list>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="textFields-Section1" parent="Group"
+		p:layoutManager.orientation="VERTICAL">
+		<property name="accordion.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<ref bean="textControls1" />
+				<ref bean="textControls2" />
+				<ref bean="textControls3" />
+				<ref bean="textAreas" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="textControls1" parent="Group"
+		p:layoutManager.orientation="HORIZONTAL">
+		<property name="title" value="Attribute Field Options" />
+		<property name="accordion.render" value="false" />
+		<property name="items">
+			<list>
+				<bean parent="AttributeField_Form" abstract="true" p:label="Field Label"
+					p:labelPlacement="TOP" p:summary="Label top, no colon"
+					p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"
+					p:propertyName="field1">
+					<property name="control">
+						<bean parent="TextControl" p:size="30" />
+					</property>
+				</bean>
+				<bean parent="AttributeField_Form" abstract="true" p:label="Field Label"
+					p:labelPlacement="TOP" p:summary="Label top, with colon"
+					p:labelField.styleClasses="labelTop" p:labelField.renderColon="true"
+					p:propertyName="field1">
+					<property name="control">
+						<bean parent="TextControl" p:size="30" />
+					</property>
+				</bean>
+				<bean parent="AttributeField_Form" abstract="true" p:label="Field Label"
+					p:summary="Label left, with colon" p:labelField.renderColon="true"
+					p:propertyName="field1">
+					<property name="control">
+						<bean parent="TextControl" p:size="30" />
+					</property>
+				</bean>
+
+			</list>
+		</property>
+	</bean>
+
+	<bean id="textControls2" parent="Group"
+		p:layoutManager.orientation="HORIZONTAL">
+		<property name="accordion.render" value="false" />
+		<property name="title" value="Attribute Field Options 2" />
+		<property name="items">
+			<list>
+				<bean parent="AttributeField_Form" abstract="true" p:label="Field Label"
+					p:labelPlacement="RIGHT" p:summary="Label right" p:propertyName="field1">
+					<property name="control">
+						<bean parent="TextControl" p:size="30" />
+					</property>
+				</bean>
+				<bean parent="AttributeField_Form" abstract="true" p:label="Field Label"
+					p:labelPlacement="TOP" p:summary="With constraint text"
+					p:constraint="Constraint text" p:labelField.styleClasses="labelTop"
+					p:labelField.renderColon="false" p:propertyName="field1">
+					<property name="control">
+						<bean parent="TextControl" p:size="30" />
+					</property>
+				</bean>
+				<bean parent="AttributeField_Form" abstract="true"
+					p:labelPlacement="TOP" p:summary="No label"
+					p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"
+					p:propertyName="field1">
+					<property name="control">
+						<bean parent="TextControl" p:size="30" />
+					</property>
+				</bean>
+				<bean parent="AttributeField_Form" abstract="true"
+					p:propertyName="field1" p:labelField.renderColon="false">
+					<property name="control">
+						<bean parent="TextControl" p:size="30" />
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="textControls3" parent="Group"
+		p:layoutManager.orientation="HORIZONTAL">
+		<property name="accordion.render" value="false" />
+		<property name="title" value="TextControl options" />
+		<property name="items">
+			<list>
+				<bean parent="AttributeField_Form" abstract="true" p:label="Field Label"
+					p:labelPlacement="TOP" p:labelField.renderColon="false"
+					p:summary="With watermark text, and size=&quot;30&quot;"
+					p:propertyName="field1">
+					<property name="control">
+						<bean parent="TextControl" p:size="30" p:watermarkText="Watermark..." />
+					</property>
+				</bean>
+				<bean parent="AttributeField_Form" abstract="true" p:label="Field Label"
+					p:labelPlacement="TOP" p:labelField.renderColon="false"
+					p:summary="Size=&quot;60&quot;" p:propertyName="field1">
+					<property name="control">
+						<bean parent="TextControl" p:size="60" />
+					</property>
+				</bean>
+				<bean parent="AttributeField_Form" abstract="true" p:label="Field Label"
+					p:labelPlacement="TOP" p:labelField.renderColon="false"
+					p:summary="Text expand option" p:propertyName="field1">
+					<property name="control">
+						<bean parent="TextControl" p:size="30" p:textExpand="true" />
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="textAreas" parent="Group" p:layoutManager.orientation="HORIZONTAL">
+		<property name="accordion.render" value="false" />
+		<property name="title" value="TextAreaControl options" />
+		<property name="summary"
+			value="TextAreas have basically the same options as text controls, so only a couple examples" />
+		<property name="items">
+			<list>
+				<bean parent="AttributeField_Form" abstract="true" p:label="Field Label"
+					p:labelPlacement="TOP"
+					p:summary="With watermark, rows=&quot;5&quot;, cols=&quot;40&quot;"
+					p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"
+					p:propertyName="field1">
+					<property name="control">
+						<bean parent="TextAreaControl" p:rows="5" p:cols="40"
+							p:watermarkText="Watermark..." />
+					</property>
+				</bean>
+				<bean parent="AttributeField_Form" abstract="true" p:label="Field Label"
+					p:labelPlacement="TOP"
+					p:summary="No watermark, textExpand option, rows=&quot;10&quot;, cols=&quot;50&quot;"
+					p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"
+					p:propertyName="field1">
+					<property name="control">
+						<bean parent="TextAreaControl" p:rows="10" p:cols="50"
+							p:textExpand="true" />
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="dateFields-Section2" parent="Group"
+		p:layoutManager.orientation="HORIZONTAL">
+		<property name="title" value="Date Control" />
+		<property name="summary"
+			value="DateControl configuration options, date control uses the jQuery date picker plugin see its plugin page for more info" />
+		<property name="accordion.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="AttributeField_Form" abstract="true" p:label="Date1"
+					p:labelPlacement="TOP" p:summary="Default DateControl options"
+					p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"
+					p:propertyName="field1">
+					<property name="control">
+						<bean parent="DateControl" />
+					</property>
+				</bean>
+				<bean parent="AttributeField_Form" abstract="true" p:label="Date2"
+					p:labelPlacement="TOP"
+					p:summary="Custom options: show on focus, different animation, and show 2 months at once"
+					p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"
+					p:propertyName="field1">
+					<property name="control">
+						<bean parent="DateControl">
+							<property name="datePicker.componentOptions">
+								<map>
+									<entry key="showOn" value="both" />
+									<entry key="buttonImage"
+										value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif" />
+									<entry key="buttonImageOnly" value="true" />
+									<entry key="showAnim" value="fadeIn" />
+									<entry key="showButtonPanel" value="true" />
+									<entry key="changeMonth" value="true" />
+									<entry key="changeYear" value="true" />
+									<entry key="numberOfMonths" value="2" />
+								</map>
+							</property>
+						</bean>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="selectionFields-Section3" parent="Group"
+		p:layoutManager.orientation="VERTICAL">
+		<property name="title" value="Selection Controls" />
+		<property name="summary"
+			value="Controls used for selection of 1 or multiple items" />
+		<property name="accordion.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<ref bean="checkboxes" />
+				<ref bean="radiobuttons" />
+				<ref bean="otherSelection" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="checkboxes" parent="Group" p:layoutManager.orientation="HORIZONTAL">
+		<property name="accordion.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="AttributeField_Form" p:label="Checkbox"
+					p:summary="Single CheckboxControl with defaultValue=&quot;true&quot; so checkbox is checked by default"
+					p:defaultValue="true" p:propertyName="bField1">
+					<property name="control">
+						<bean parent="CheckboxControl" />
+					</property>
+				</bean>
+				<bean parent="AttributeField_Form" p:label="Checkboxes"
+					p:summary="CheckboxGroupControl using an optionsFinder" p:width="auto"
+					p:propertyName="field1">
+					<property name="control">
+						<bean parent="CheckboxGroupControl" />
+					</property>
+					<property name="optionsFinder">
+						<bean class="edu.sampleu.travel.document.keyvalue.AccountTypeKeyValues" />
+					</property>
+				</bean>
+				<bean parent="AttributeField_Form" p:label="Checkboxes"
+					p:summary="CheckboxGroupControl using explicitly defined key-value pairs from the DD"
+					p:width="auto" p:propertyName="field1">
+					<property name="control">
+						<bean parent="CheckboxGroupControl">
+							<property name="options">
+								<list>
+									<bean parent="KeyLabelPair" p:key="1" p:value="Option 1" />
+									<bean parent="KeyLabelPair" p:key="2" p:value="Option 2" />
+									<bean parent="KeyLabelPair" p:key="3" p:value="Option 3" />
+								</list>
+							</property>
+						</bean>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="radiobuttons" parent="Group"
+		p:layoutManager.orientation="HORIZONTAL">
+		<property name="accordion.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="AttributeField_Form" p:label="Checkboxes"
+					p:summary="RadioGroupControl using an optionsFinder" p:width="auto"
+					p:propertyName="field1">
+					<property name="control">
+						<bean parent="RadioGroupControl" />
+					</property>
+					<property name="optionsFinder">
+						<bean class="edu.sampleu.travel.document.keyvalue.AccountTypeKeyValues" />
+					</property>
+				</bean>
+				<bean parent="AttributeField_Form" p:label="Checkboxes"
+					p:summary="RadioGroupControl using explicitly defined key-value pairs from the DD"
+					p:width="auto" p:propertyName="field1">
+					<property name="control">
+						<bean parent="RadioGroupControl">
+							<property name="options">
+								<list>
+									<bean parent="KeyLabelPair" p:key="1" p:value="Radio 1" />
+									<bean parent="KeyLabelPair" p:key="2" p:value="Radio 2" />
+								</list>
+							</property>
+						</bean>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="otherSelection" parent="Group"
+		p:layoutManager.orientation="HORIZONTAL">
+		<property name="accordion.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="AttributeField_Form" p:label="Checkboxes"
+					p:summary="SelectControl using an optionsFinder" p:width="auto"
+					p:propertyName="field1">
+					<property name="control">
+						<bean parent="SelectControl" />
+					</property>
+					<property name="optionsFinder">
+						<bean class="edu.sampleu.travel.document.keyvalue.AccountTypeKeyValues" />
+					</property>
+				</bean>
+				<bean parent="AttributeField_Form" p:label="Checkboxes"
+					p:summary="SelectControl with multiple=&quot;true&quot;, size=&quot;3&quot;, using explicitly defined key-value pairs from the DD"
+					p:width="auto" p:propertyName="field1">
+					<property name="control">
+						<bean parent="SelectControl" p:multiple="true" p:size="3">
+							<property name="options">
+								<list>
+									<bean parent="KeyLabelPair" p:key="1" p:value="Select 1" />
+									<bean parent="KeyLabelPair" p:key="2" p:value="Select 2" />
+									<bean parent="KeyLabelPair" p:key="3" p:value="Select 3" />
+									<bean parent="KeyLabelPair" p:key="4" p:value="Select 4" />
+									<bean parent="KeyLabelPair" p:key="4" p:value="Select 5" />
+								</list>
+							</property>
+						</bean>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="fieldGroups-Section4" parent="Group"
+		p:layoutManager.orientation="HORIZONTAL">
+		<property name="accordion.render" value="false" />
+		<property name="title" value="GroupFields" />
+		<property name="summary"
+			value="GroupFields(ie FieldGroups) can have multiple controls but appear to the user as one logical field grouping.  
+			 The first grouping has fields with no labels with its group label on top.  The second grouping has labels on the group as well as the fields" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="FieldGroup" p:label="Field Group 1">
+					<property name="group.layoutManager.orientation" value="VERTICAL" />
+					<property name="items">
+						<list>
+							<bean parent="AttributeField_Form" p:propertyName="field1"
+								p:labelField.renderColon="false">
+								<property name="control">
+									<bean parent="TextControl" p:size="5" />
+								</property>
+							</bean>
+							<bean parent="AttributeField_Form" p:propertyName="field1"
+								p:labelField.renderColon="false">
+								<property name="control">
+									<bean parent="TextControl" p:size="21" />
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+				<bean parent="FieldGroup" p:label="Field Group 2">
+					<property name="group.layoutManager.orientation" value="HORIZONTAL" />
+					<property name="items">
+						<list>
+							<bean parent="AttributeField_Form" p:label="Field 1"
+								p:propertyName="field1">
+								<property name="control">
+									<bean parent="TextControl" p:size="5" />
+								</property>
+							</bean>
+							<bean parent="AttributeField_Form" p:label="Field 2"
+								p:propertyName="field1">
+								<property name="control">
+									<bean parent="TextControl" p:size="21" />
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tabsSection-Section5" parent="TabGroup">
+		<property name="title" value="Tabs" />
+		<property name="summary"
+			value="TabGroup holds a list of groups that can be switched between, titles are based on the groups title property" />
+		<property name="items">
+			<list>
+				<ref bean="textControls3" />
+				<ref bean="textAreas" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tree-Section6" parent="Group"
+		p:layoutManager.orientation="HORIZONTAL">
+		<property name="accordion.render" value="false" />
+		<property name="title" value="Tree" />
+		<property name="summary" value="Placeholder for tree demo" />
+		<property name="styleClasses" value="group_header" />
+	</bean>
+
+	<bean id="misc-Section7" parent="Group"
+		p:layoutManager.orientation="VERTICAL">
+		<property name="accordion.render" value="false" />
+		<property name="title" value="Miscellaneous widgets" />
+		<property name="summary" value="A variety of other widgets" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="AttributeField" p:label="FileControl, Used for file upload"
+					p:propertyName="field30">
+					<property name="control">
+						<bean parent="FileControl" p:size="30" />
+					</property>
+				</bean>
+				<bean parent="MessageField"
+					p:messageText="MessageField displays text (more options to come)" />
+				<bean parent="ImageField" p:label="Image field can show an image with alt text"
+					p:altText="pdf image"
+					p:source="@{#ConfigProperties['krad.externalizable.images.url']}pdf.png" />
+				<bean parent="ActionLinkField"
+					p:label="ActionLinkField can process a js, jquery, or js method:"
+					p:clientSideJs="alert('You clicked the link');" p:actionLabel="Click Me" />
+				<bean parent="ActionField" p:actionLabel="Click Me too"
+					p:label="ActionField has the same options as ActionLinkField, but as a button element"
+					p:clientSideJs="alert('You clicked a button');" />
+				<bean parent="LinkField" p:linkLabel="Kuali Website"
+					p:hrefText="http://www.kuali.org" p:label="LinkField is used for href links:" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="requiredSection" parent="Group"
+		p:layoutManager.orientation="HORIZONTAL">
+		<property name="accordion.render" value="false" />
+		<property name="title" value="Required constraint" />
+		<property name="summary"
+			value="An attribute field can be defined as required by setting its required property to true.  Note required fields are marked with an asterisk." />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="GenericTextField" p:required="true"
+					p:propertyName="field2" />
+				<bean parent="GenericTextArea" p:required="true"
+					p:propertyName="field3" />
+				<bean parent="GenericRadio" p:required="true" p:propertyName="field4"
+					p:summary="Interesting note is that radios and checkboxes will not check requiredness until a submit event, other constraints dealing with non-null values will still apply as normal" />
+				<bean parent="GenericSelection" p:required="true"
+					p:propertyName="field5" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="preReqSection" parent="Group"
+		p:layoutManager.orientation="HORIZONTAL">
+		<property name="accordion.render" value="false" />
+		<property name="title" value="PreRequisite constraint" />
+		<property name="summary"
+			value="When a field is filled out, it can require another field to be filled out as a result.  This is called a PrerequisiteConstraint.  
+		Whether that field comes after or before that field is irrelevant, as the ui will only notify the user when appropriate.  For example, if you havent yet 
+		visited a field that is now required, the user will only be notified of an error after they have first visited this now required field 
+		and have not filled it out.  Alternatively, if the field that is now required comes before the field that requires it, the user will be notified 
+		immediately.  These mechanisms are set up to prevent the ui from showing errors before the user had a chance to interact with the corresponding 
+		field within the overall page flow.  A useful and common technique is to put a prerequisite constraint on both fields requiring eachother 
+		(example case: a measurement requires both a value and a unit, neither make sense without the other).
+		A field can have any number of PrerequisiteConstraints in their dependencyConstraints property." />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="GenericTextField" p:label="Field A"
+					p:propertyName="field6" p:constraint="Field A requires Field B and Field C">
+					<property name="dependencyConstraints">
+						<list>
+							<bean parent="PrerequisiteConstraint" p:attributePath="field7" />
+							<bean parent="PrerequisiteConstraint" p:attributePath="field8" />
+						</list>
+					</property>
+				</bean>
+				<bean parent="GenericTextField" p:label="Field B"
+					p:propertyName="field7" p:constraint="Required when Field A has a value" />
+				<bean parent="GenericTextField" p:label="Field C"
+					p:summary="try filling out this field first, and see differences in interaction"
+					p:propertyName="field8"
+					p:constraint="Required when Field A has a value, BUT also requires Field A to be filled out">
+					<property name="dependencyConstraints">
+						<list>
+							<bean parent="PrerequisiteConstraint" p:attributePath="field6" />
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="minMaxSection" parent="Group"
+		p:layoutManager.orientation="HORIZONTAL">
+		<property name="accordion.render" value="false" />
+		<property name="title" value="MinMax length and value" />
+		<property name="summary"
+			value="You can set the min and max length of a field and the min and max value of a field.  Min and
+			Max value will only work properly on numeric value fields so it is also a good idea to require those types of
+			characters only through a ValidCharactersConstraint on the field. 
+			These can be set directly through AttributeField's properties or through its SimpleConstraint bean.
+			Note that min value is exclusive and max value is inclusive (as stated by their property names)." />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="GenericTextField" p:label="MinMax Length test"
+					p:minLength="2" p:maxLength="5" p:propertyName="field9"
+					p:constraint="MinLength 2 and MaxLength 5" />
+				<bean parent="GenericTextField" p:label="MinMax Value test"
+					p:exclusiveMin="2" p:inclusiveMax="50" p:propertyName="field10"
+					p:constraint="Must be greater than 2 and no more than 50">
+					<property name="validCharactersConstraint">
+						<bean parent="DigitsPatternConstraint" />
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="mustOccursSection" parent="Group"
+		p:layoutManager.orientation="HORIZONTAL">
+		<property name="accordion.render" value="false" />
+		<property name="title" value="MustOccursConstraint" />
+		<property name="summary"
+			value="Must Occurs constraint is used to identify fields that are required before this field can be filled out.
+				This is different from prerequisite constraints because the number of fields required from a set of fields can be set, as
+				well as alternative groups of fields that will satisfy the must occurs constraint.  See examples below:" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<ref bean="moGroup1" />
+				<ref bean="moGroup2" />
+				<ref bean="moGroup3" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="moGroup1" parent="Group" p:layoutManager.orientation="HORIZONTAL">
+		<property name="accordion.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="GenericTextField" p:label="Field 1A"
+					p:propertyName="field11" />
+				<bean parent="GenericTextField" p:label="Field 2A"
+					p:propertyName="field12" />
+				<bean parent="GenericTextField" p:label="Field 2B"
+					p:propertyName="field13" />
+				<bean parent="GenericTextField" p:label="Field With MustOccurs"
+					p:propertyName="field14"
+					p:constraint="Field 1A; OR Field 2A with Field 2B must occur when this field has a value">
+					<property name="mustOccurConstraints">
+						<list>
+							<bean parent="MustOccurConstraint">
+								<property name="min" value="1" />
+								<property name="max" value="2" />
+								<property name="prerequisiteConstraints">
+									<list>
+										<bean parent="PrerequisiteConstraint" p:attributePath="field11" />
+									</list>
+								</property>
+								<!-- essentially an OR'ed list: each MustOccur constraint in this 
+									list essentially counts towards the min max totals set at the top level, 
+									they are equivalent to having a PrerequisiteConstraint satisfied at the top 
+									level (count as one towards the total) so this constraint is saying you can 
+									fill out just field11 or you can fill out both field12 and field13, in addition 
+									filling out all 3 fields is fine in this context -->
+								<property name="mustOccurConstraints">
+									<list>
+										<bean parent="MustOccurConstraint">
+											<property name="min" value="2" />
+											<property name="max" value="2" />
+											<property name="prerequisiteConstraints">
+												<list>
+													<bean parent="PrerequisiteConstraint" p:attributePath="field12" />
+													<bean parent="PrerequisiteConstraint" p:attributePath="field13" />
+												</list>
+											</property>
+										</bean>
+									</list>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="moGroup2" parent="Group" p:layoutManager.orientation="HORIZONTAL">
+		<property name="accordion.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="GenericTextField" p:label="Field 3A"
+					p:propertyName="field15" />
+				<bean parent="GenericTextField" p:label="Field 4A"
+					p:propertyName="field16" />
+				<bean parent="GenericTextField" p:label="Field 4B"
+					p:propertyName="field17" />
+				<bean parent="GenericTextField" p:label="Field With MustOccurs"
+					p:propertyName="field18"
+					p:constraint="Field 3A; OR Field 4A with Field 4B BUT NOT BOTH (ie all 3 fields filled in) must occur when this field has a value">
+					<property name="mustOccurConstraints">
+						<list>
+							<bean parent="MustOccurConstraint">
+								<property name="min" value="1" />
+								<property name="max" value="1" />
+								<property name="prerequisiteConstraints">
+									<list>
+										<bean parent="PrerequisiteConstraint" p:attributePath="field15" />
+									</list>
+								</property>
+								<property name="mustOccurConstraints">
+									<list>
+										<bean parent="MustOccurConstraint">
+											<property name="min" value="2" />
+											<property name="max" value="2" />
+											<property name="prerequisiteConstraints">
+												<list>
+													<bean parent="PrerequisiteConstraint" p:attributePath="field16" />
+													<bean parent="PrerequisiteConstraint" p:attributePath="field17" />
+												</list>
+											</property>
+										</bean>
+									</list>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="moGroup3" parent="Group" p:layoutManager.orientation="HORIZONTAL">
+		<property name="accordion.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="GenericTextField" p:label="Field 5A"
+					p:propertyName="field19" />
+				<bean parent="GenericTextField" p:label="Field 5B"
+					p:propertyName="field20" />
+				<bean parent="GenericTextField" p:label="Field 6A"
+					p:propertyName="field21" />
+				<bean parent="GenericTextField" p:label="Field 6B"
+					p:propertyName="field22" />
+				<bean parent="GenericTextField" p:label="Field With MustOccurs"
+					p:propertyName="field23"
+					p:constraint="More complexity:(5A OR 5B) OR (6A AND 6B) is required by this field">
+					<property name="mustOccurConstraints">
+						<list>
+							<bean parent="MustOccurConstraint">
+								<property name="min" value="1" />
+								<property name="max" value="2" />
+								<property name="mustOccurConstraints">
+									<list>
+										<bean parent="MustOccurConstraint">
+											<property name="min" value="1" />
+											<property name="max" value="2" />
+											<property name="prerequisiteConstraints">
+												<list>
+													<bean parent="PrerequisiteConstraint" p:attributePath="field19" />
+													<bean parent="PrerequisiteConstraint" p:attributePath="field20" />
+												</list>
+											</property>
+										</bean>
+										<bean parent="MustOccurConstraint">
+											<property name="min" value="2" />
+											<property name="max" value="2" />
+											<property name="prerequisiteConstraints">
+												<list>
+													<bean parent="PrerequisiteConstraint" p:attributePath="field21" />
+													<bean parent="PrerequisiteConstraint" p:attributePath="field22" />
+												</list>
+											</property>
+										</bean>
+									</list>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="caseConstraintSection" parent="Group"
+		p:layoutManager.orientation="Vertical">
+		<property name="accordion.render" value="false" />
+		<property name="title" value="CaseConstraint" />
+		<property name="summary"
+			value="A case constraint can make a constraint applicable only when a certain case is satisfied." />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="AttributeField_Form" p:label="Case Radio"
+					p:summary="Chose an option to apply that constraint to the field, this is controlled by that field's CaseConstraint"
+					p:width="auto" p:propertyName="field24">
+					<property name="control">
+						<bean parent="RadioGroupControl">
+							<property name="options">
+								<list>
+									<bean parent="KeyLabelPair" p:key="case1" p:value="Make Field X Required" />
+									<bean parent="KeyLabelPair" p:key="case2"
+										p:value="Make Field X Required and Allow only AlphaNumeric characters" />
+									<bean parent="KeyLabelPair" p:key="case3"
+										p:value="Make Field Y allow values no greater than 500 and no more than 3 characters" />
+									<bean parent="KeyLabelPair" p:key="case4"
+										p:value="Make Field Z1 require Field Z2" />
+								</list>
+							</property>
+						</bean>
+					</property>
+				</bean>
+				<ref bean="ccSection1" />
+				<ref bean="ccSection2" />
+				<ref bean="ccSection3" />
+				<ref bean="ccSection4" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="ccSection1" parent="Group" p:layoutManager.orientation="Vertical">
+		<property name="accordion.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="GenericTextField" p:label="Field X"
+					p:propertyName="field25">
+					<property name="caseConstraint">
+						<bean parent="CaseConstraint">
+							<property name="fieldPath" value="field24" />
+							<property name="whenConstraint">
+								<list>
+									<bean parent="WhenConstraint">
+										<property name="values">
+											<list>
+												<value>case1</value>
+												<value>case2</value>
+											</list>
+										</property>
+										<property name="constraint">
+											<bean parent="RequiredConstraint" />
+										</property>
+									</bean>
+									<bean parent="WhenConstraint">
+										<property name="value" value="case2" />
+										<property name="constraint">
+											<bean parent="AlphaNumericPatternConstraint" />
+										</property>
+									</bean>
+								</list>
+							</property>
+						</bean>
+					</property>
+				</bean>
+
+			</list>
+		</property>
+	</bean>
+
+	<bean id="ccSection2" parent="Group" p:layoutManager.orientation="Vertical">
+		<property name="accordion.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="GenericTextField" p:label="Field Y"
+					p:propertyName="field26">
+					<property name="caseConstraint">
+						<bean parent="CaseConstraint">
+							<property name="fieldPath" value="field24" />
+							<property name="whenConstraint">
+								<list>
+									<bean parent="WhenConstraint">
+										<property name="value" value="case3" />
+										<property name="constraint">
+											<bean parent="SimpleConstraint">
+												<property name="maxLength" value="3" />
+												<property name="inclusiveMax" value="500" />
+											</bean>
+										</property>
+									</bean>
+								</list>
+							</property>
+						</bean>
+					</property>
+				</bean>
+
+			</list>
+		</property>
+	</bean>
+
+	<bean id="ccSection3" parent="Group" p:layoutManager.orientation="HORIZONTAL">
+		<property name="accordion.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="GenericTextField" p:label="Field Z1"
+					p:propertyName="field27">
+					<property name="caseConstraint">
+						<bean parent="CaseConstraint">
+							<property name="fieldPath" value="field24" />
+							<property name="whenConstraint">
+								<list>
+									<bean parent="WhenConstraint">
+										<property name="value" value="case4" />
+										<property name="constraint">
+											<bean parent="PrerequisiteConstraint" p:attributePath="field28" />
+										</property>
+									</bean>
+								</list>
+							</property>
+						</bean>
+					</property>
+				</bean>
+				<bean parent="GenericTextField" p:label="Field Z2"
+					p:propertyName="field28">
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="ccSection4" parent="Group" p:layoutManager.orientation="HORIZONTAL">
+		<property name="accordion.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="GenericTextField" p:label="Field 1"
+					p:propertyName="field31">
+				</bean>
+				<bean parent="GenericTextField" p:label="Field 2"
+					p:propertyName="field32">
+				</bean>
+				<bean parent="GenericTextField" p:label="Field 3"
+					p:summary="When Field 1 has a value AND when Field 2 does not have the value A, this field is required"
+					p:propertyName="field33">
+					<property name="caseConstraint">
+						<bean parent="CaseConstraint">
+							<property name="fieldPath" value="field31" />
+							<property name="operator" value="has_value" />
+							<property name="whenConstraint">
+								<list>
+									<bean parent="WhenConstraint">
+										<property name="value" value="true" />
+										<property name="constraint">
+											<bean parent="CaseConstraint">
+												<property name="fieldPath" value="field32" />
+												<property name="operator" value="not_equals" />
+												<property name="whenConstraint">
+													<list>
+														<bean parent="WhenConstraint">
+															<property name="value" value="A" />
+															<property name="constraint">
+																<bean parent="RequiredConstraint" />
+															</property>
+														</bean>
+													</list>
+												</property>
+											</bean>
+										</property>
+									</bean>
+								</list>
+							</property>
+						</bean>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="prog1" parent="Group" p:layoutManager.orientation="VERTICAL"
+		p:title="Progressive Disclosure of Fields">
+		<property name="accordion.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="AttributeField_Form" p:label="Progressive Disclose options"
+					p:summary="Chose an option to display the corresponding fields"
+					p:width="auto" p:propertyName="field34">
+					<property name="control">
+						<bean parent="RadioGroupControl">
+							<property name="options">
+								<list>
+									<bean parent="KeyLabelPair" p:key="show1"
+										p:value="Show Field 1 - no ajax request, the content is already on the page but hidden" />
+									<bean parent="KeyLabelPair" p:key="show2"
+										p:value="Show Field 2 - this will do an ajax request for the field the first time, then hide and show it locally" />
+									<bean parent="KeyLabelPair" p:key="show3"
+										p:value="Show Field 3 - this will do an ajax request for the field each time the condition is met" />
+								</list>
+							</property>
+						</bean>
+					</property>
+				</bean>
+				<bean parent="GenericTextField" p:label="Field 1"
+					p:progressiveRender="field34 eq 'show1'" p:propertyName="field35" />
+				<bean parent="GenericTextField" p:label="Field 2"
+					p:progressiveRenderViaAJAX="true" p:progressiveRender="field34 eq 'show2'"
+					p:propertyName="field36" />
+				<bean parent="GenericTextField" p:label="Field 3"
+					p:progressiveRenderAndRefresh="true" p:progressiveRender="field34 eq 'show3'"
+					p:propertyName="field37" />
+				<bean parent="GenericTextField" p:label="Show Field through matching"
+					p:progressiveRenderAndRefresh="true" p:maxLength="1"
+					p:summary="Demonstration of alternate progressive condition: Type in &quot;A&quot;, or &quot;B&quot; to make fields show"
+					p:propertyName="field47" />
+				<bean parent="GenericTextField" p:label="Field A"
+					p:progressiveRenderAndRefresh="true" p:progressiveRender="field47 matches '^[aA]$'"
+					p:propertyName="field48" />
+				<bean parent="GenericTextField" p:label="Field B"
+					p:progressiveRenderAndRefresh="true" p:progressiveRender="field47 matches '^[bB]$'"
+					p:propertyName="field49" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="prog2" parent="Group" p:layoutManager.orientation="VERTICAL"
+		p:title="Progressive Disclosure of Groups">
+		<property name="accordion.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="AttributeField_Form" p:label="Progressive Disclose options"
+					p:summary="Progressive Disclosure also works on displaying entire groups"
+					p:width="auto" p:propertyName="field38">
+					<property name="control">
+						<bean parent="RadioGroupControl">
+							<property name="options">
+								<list>
+									<bean parent="KeyLabelPair" p:key="show1"
+										p:value="Show Group 1 - no ajax request" />
+									<bean parent="KeyLabelPair" p:key="show2"
+										p:value="Show Group 2 - ajax request for group" />
+								</list>
+							</property>
+						</bean>
+					</property>
+				</bean>
+				<bean parent="Group" p:layoutManager.orientation="HORIZONTAL"
+					p:progressiveRender="field38 eq 'show1'" p:title="Group 1"
+					p:accordion.render="false">
+					<property name="items">
+						<list>
+							<bean parent="GenericTextField" p:label="Field 1A"
+								p:propertyName="field39" />
+							<bean parent="GenericTextField" p:label="Field 2A"
+								p:propertyName="field40" />
+							<bean parent="GenericTextField" p:label="Field 3A"
+								p:propertyName="field41" />
+						</list>
+					</property>
+				</bean>
+				<bean parent="Group" p:layoutManager.orientation="HORIZONTAL"
+					p:progressiveRenderViaAJAX="true" p:progressiveRender="field38 eq 'show2'"
+					p:title="Group 2" p:accordion.render="false">
+					<property name="items">
+						<list>
+							<bean parent="GenericTextField" p:label="Field 1B"
+								p:propertyName="field42" />
+							<bean parent="GenericTextField" p:label="Field 2B"
+								p:propertyName="field43" />
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="prog3" parent="Group" p:layoutManager.orientation="VERTICAL"
+		p:title="Conditional Refresh">
+		<property name="accordion.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="AttributeField_Form" p:label="Conditional Refresh"
+					p:summary="Chose an option cause a conditional refresh on a field"
+					p:width="auto" p:propertyName="field44">
+					<property name="control">
+						<bean parent="RadioGroupControl">
+							<property name="options">
+								<list>
+									<bean parent="KeyLabelPair" p:key="show1"
+										p:value="Refresh Field 1 - refreshes when this option is selected, conditionalRefresh statement option" />
+									<bean parent="KeyLabelPair" p:key="show2"
+										p:value="Refresh Field 2, make it read only if this is selected, otherwise editable by using refreshWhenChanged pointing to this field" />
+								</list>
+							</property>
+						</bean>
+					</property>
+				</bean>
+				<bean parent="GenericTextField" p:label="Field 1"
+					p:conditionalRefresh="field44 eq 'show1'" p:propertyName="field45" />
+				<bean parent="GenericTextField" p:label="Field 2"
+					p:progressiveRenderViaAJAX="true" p:refreshWhenChanged="field44"
+					p:conditionalReadOnly="field44 eq 'show2'" p:propertyName="field46" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="regex1" parent="Group" p:layoutManager.orientation="VERTICAL">
+		<property name="accordion.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="GenericTextField" p:label="DigitsPatternConstraint"
+					p:summary="Digits only" p:propertyName="field50">
+					<property name="validCharactersConstraint">
+						<bean parent="DigitsPatternConstraint" />
+					</property>
+				</bean>
+				<bean parent="GenericTextField" p:label="UrlPatternConstraint"
+					p:summary="Url only (http://www.kuali.org)" p:propertyName="field51">
+					<property name="validCharactersConstraint">
+						<bean parent="UrlPatternConstraint" />
+					</property>
+				</bean>
+				<bean parent="GenericTextField" p:label="DatePatternConstraint"
+					p:summary="mm/dd/yyyy" p:propertyName="field52">
+					<property name="validCharactersConstraint">
+						<bean parent="DatePatternConstraint" />
+					</property>
+				</bean>
+				<bean parent="GenericTextField" p:label="LettersWithPuncPatternConstraint"
+					p:summary="alpha with basic punctuation" p:propertyName="field53">
+					<property name="validCharactersConstraint">
+						<bean parent="LettersWithPuncPatternConstraint" />
+					</property>
+				</bean>
+				<bean parent="GenericTextField" p:label="LettersOnlyPatternConstraint"
+					p:summary="Alpha only" p:propertyName="field54">
+					<property name="validCharactersConstraint">
+						<bean parent="LettersOnlyPatternConstraint" />
+					</property>
+				</bean>
+				<bean parent="GenericTextField" p:label="NoWhitespacePatternConstraint"
+					p:summary="No whitespace" p:propertyName="field55">
+					<property name="validCharactersConstraint">
+						<bean parent="NoWhitespacePatternConstraint" />
+					</property>
+				</bean>
+				<bean parent="GenericTextField" p:label="IntegerPatternConstraint"
+					p:summary="Valid integer only" p:propertyName="field56">
+					<property name="validCharactersConstraint">
+						<bean parent="IntegerPatternConstraint" />
+					</property>
+				</bean>
+				<bean parent="GenericTextField" p:label="PhoneUSPatternConstraint"
+					p:summary="US phone numbers" p:propertyName="field57">
+					<property name="validCharactersConstraint">
+						<bean parent="PhoneUSPatternConstraint" />
+					</property>
+				</bean>
+				<bean parent="GenericTextField" p:label="TimePatternConstraint"
+					p:summary="time pattern" p:propertyName="field58">
+					<property name="validCharactersConstraint">
+						<bean parent="TimePatternConstraint" />
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="lookups1" parent="Group" p:layoutManager.orientation="VERTICAL">
+		<property name="accordion.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="GenericTextField" p:label="Inquiry"
+					p:summary="Click the button to perform an inquiry on this TravelAccount number"
+					p:propertyName="field59" p:defaultValue="2">
+					<property name="fieldInquiry.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
+					<property name="fieldInquiry.inquiryParameters">
+						<map>
+							<entry key="field59" value="number" />
+						</map>
+					</property>
+				</bean>
+				<bean parent="GenericTextField" p:label="Lookup"
+					p:summary="click the button to perform a lookup on TravelAccounts"
+					p:propertyName="field60">
+					<property name="fieldLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
+					<property name="fieldLookup.fieldConversions">
+						<map>
+							<entry key="number" value="field60" />
+						</map>
+					</property>
+				</bean>
+				<bean parent="GenericTextField" p:label="Suggest"
+					p:summary="for example, type C to see a suggestion" p:propertyName="field61">
+					<property name="fieldSuggest.render" value="true" />
+					<property name="fieldSuggest.sourcePropertyName" value="accountTypeCode" />
+					<property name="fieldSuggest.suggestQuery.dataObjectClassName"
+						value="edu.sampleu.travel.bo.TravelAccountType" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="collection1" parent="CollectionGroupTableLayout"
+		p:layoutManager.numberOfColumns="4">
+		<property name="title"
+			value="Collection Group 1 - CollectionGroupTableLayout" />
+		<property name="summary"
+			value="This is a table based layout of a collection - CollectionGroupTableLayout" />
+		<property name="collectionObjectClass"
+			value="edu.sampleu.travel.krad.form.UITestListObject" />
+		<property name="propertyName" value="list1" />
+		<property name="layoutManager.sequencePropertyName" value="field1" />
+		<property name="layoutManager.tableTools.render" value="false" />
+		<property name="items">
+			<list>
+				<bean parent="AttributeField" p:label="Field 1" p:propertyName="field1"
+					p:required="true" />
+				<bean parent="AttributeField" p:label="Field 2" p:propertyName="field2"
+					p:required="true" />
+				<bean parent="AttributeField" p:label="Field 3" p:propertyName="field3"
+					p:required="true" />
+				<bean parent="AttributeField" p:label="Field 4" p:propertyName="field4"
+					p:required="true" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="collection2" parent="CollectionGroupTableLayout"
+		p:layoutManager.numberOfColumns="4">
+		<property name="title"
+			value="Collection Group 2 - CollectionGroupTableLayout with jQuery table features on" />
+		<property name="summary"
+			value="This is a table based layout of a collection - CollectionGroupTableLayout - using jquery tableTools" />
+		<property name="collectionObjectClass"
+			value="edu.sampleu.travel.krad.form.UITestListObject" />
+		<property name="propertyName" value="list2" />
+		<property name="layoutManager.sequencePropertyName" value="field1" />
+		<property name="layoutManager.tableTools.render" value="true" />
+		<property name="items">
+			<list>
+				<bean parent="AttributeField" p:label="Field 1" p:propertyName="field1"
+					p:required="true" />
+				<bean parent="AttributeField" p:label="Field 2" p:propertyName="field2"
+					p:required="true" />
+				<bean parent="AttributeField" p:label="Field 3" p:propertyName="field3"
+					p:required="true" />
+				<bean parent="AttributeField" p:label="Field 4" p:propertyName="field4"
+					p:required="true" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="collection3" parent="CollectionGroup">
+		<property name="title" value="Collection Group 3 - Stacked" />
+		<property name="accordion.render" value="false" />
+		<property name="summary"
+			value="This is a stacked layout of a collection - CollectionGroup" />
+		<property name="collectionObjectClass"
+			value="edu.sampleu.travel.krad.form.UITestListObject" />
+		<property name="propertyName" value="list3" />
+		<property name="items">
+			<list>
+				<bean parent="AttributeField" p:label="Field 1" p:propertyName="field1"
+					p:required="true" />
+				<bean parent="AttributeField" p:label="Field 2" p:propertyName="field2"
+					p:required="true" />
+				<bean parent="AttributeField" p:label="Field 3" p:propertyName="field3"
+					p:required="true" />
+				<bean parent="AttributeField" p:label="Field 4" p:propertyName="field4"
+					p:required="true" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="collection4" parent="CollectionGroup">
+		<property name="title" value="Collection Group 4 - Stacked Collection with a Table subcollection" />
+		<property name="summary"
+			value="This is a stacked layout of a collection - CollectionGroup" />
+		<property name="accordion.render" value="false" />
+		<property name="collectionObjectClass"
+			value="edu.sampleu.travel.krad.form.UITestListObject" />
+		<property name="propertyName" value="list4" />
+		<property name="items">
+			<list>
+				<bean parent="AttributeField" p:propertyName="field1" p:label="Field 1"
+					p:required="true" />
+				<bean parent="AttributeField" p:propertyName="field2" p:label="Field 2"
+					p:required="true" />
+				<bean parent="AttributeField" p:propertyName="field3" p:label="Field 3"
+					p:required="true" />
+				<bean parent="AttributeField" p:propertyName="field4" p:label="Field 4"
+					p:required="true" />
+			</list>
+		</property>
+		<property name="subCollections">
+			<list>
+				<ref bean="subCollection1" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="subCollection1" parent="CollectionGroupTableLayout"
+		p:layoutManager.numberOfColumns="4">
+		<property name="title" value="SubCollection" />
+		<property name="summary"
+			value="A table collection within an item of a stacked collection" />
+		<property name="collectionObjectClass"
+			value="edu.sampleu.travel.krad.form.UITestListObject" />
+		<property name="propertyName" value="subList" />
+		<property name="layoutManager.sequencePropertyName" value="field1" />
+		<property name="layoutManager.tableTools.render" value="true" />
+		<property name="items">
+			<list>
+				<bean parent="AttributeField" p:propertyName="field1" p:label="SubField 1"
+					p:required="true" />
+				<bean parent="AttributeField" p:propertyName="field2" p:label="SubField 2"
+					p:required="true" />
+				<bean parent="AttributeField" p:propertyName="field3" p:label="SubField 3"
+					p:required="true" />
+				<bean parent="AttributeField" p:propertyName="field4" p:label="SubField 4"
+					p:required="true" />
+			</list>
+		</property>
+	</bean>
+
+</beans>

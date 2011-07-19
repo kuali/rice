@@ -90,7 +90,7 @@
               <entry key="showOn" value="button"/>
               <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
               <entry key="buttonImageOnly" value="true"/>
-              <entry key="showAnim" value="slide"/>
+              <entry key="showAnim" value="slideDown"/>
               <entry key="showButtonPanel" value="true"/>
               <entry key="changeMonth" value="true"/>
               <entry key="changeYear" value="true"/>

@@ -254,10 +254,10 @@ public class ClientValidationUtils {
 					// has_value case
 					if (wc.getValues().get(i) instanceof String
 							&& ((String) wc.getValues().get(i)).equalsIgnoreCase("false")) {
-						booleanStatement = booleanStatement + "!(coerceValue('" + fieldPath + "'))";
+						booleanStatement = booleanStatement + "(coerceValue('" + fieldPath + "') == '')";
 					}
 					else {
-						booleanStatement = booleanStatement + "(coerceValue('" + fieldPath + "'))";
+						booleanStatement = booleanStatement + "(coerceValue('" + fieldPath + "') != '')";
 					}
 				}
 				else {
@@ -362,6 +362,7 @@ public class ClientValidationUtils {
 					}
 					rule = rule + "minLengthConditional: [" + ((SimpleConstraint) constraint).getMinLength()
 							+ ", function(){return " + booleanStatement + ";}]";
+					constraintCount++;
 				}
 				if (((SimpleConstraint) constraint).getMaxLength() != null) {
 					if (constraintCount > 0) {
@@ -369,6 +370,7 @@ public class ClientValidationUtils {
 					}
 					rule = rule + "maxLengthConditional: [" + ((SimpleConstraint) constraint).getMaxLength()
 							+ ", function(){return " + booleanStatement + ";}]";
+					constraintCount++;
 				}
 
 				if (((SimpleConstraint) constraint).getExclusiveMin() != null) {
@@ -377,6 +379,7 @@ public class ClientValidationUtils {
 					}
 					rule = rule + "minExclusive: [" + ((SimpleConstraint) constraint).getExclusiveMin()
 							+ ", function(){return " + booleanStatement + ";}]";
+					constraintCount++;
 				}
 
 				if (((SimpleConstraint) constraint).getInclusiveMax() != null) {
@@ -385,6 +388,7 @@ public class ClientValidationUtils {
 					}
 					rule = rule + "maxInclusive: [" + ((SimpleConstraint) constraint).getInclusiveMax()
 							+ ", function(){return " + booleanStatement + ";}]";
+					constraintCount++;
 				}
 
 				rule = "jq('[name=\"" + field.getBindingInfo().getBindingPath() + "\"]').rules(\"add\", {" + rule + "\n});";

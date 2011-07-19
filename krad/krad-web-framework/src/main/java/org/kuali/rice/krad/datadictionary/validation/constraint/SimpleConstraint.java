@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlElement;
 public class SimpleConstraint extends BaseConstraint {
     
 	@XmlElement
-	private Boolean required;
+	private Boolean required = false;
 	
 	@XmlElement
 	private Integer maxLength;

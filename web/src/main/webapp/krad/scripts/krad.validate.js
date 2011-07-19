@@ -36,7 +36,13 @@ function runValidationScript(scriptFunction){
 //on them as well which will either add errors or remove them
 //Note: with the way that validation work the field must have been previously validated (ie validated)
 function dependsOnCheck(element){
-	var name = jq(element).attr('name');
+	var name;
+	if(jq(element).is("option")){
+		name = jq(element).parent().attr('name');
+	}
+	else{
+		name = jq(element).attr('name');
+	}
 	name = name.replace(/\./, "\\.");
 	jq(".dependsOn-" + name).each(function(){
 		if (jq(this).hasClass("valid") || jq(this).hasClass("error")) {

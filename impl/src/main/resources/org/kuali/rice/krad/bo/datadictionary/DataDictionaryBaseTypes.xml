@@ -162,13 +162,13 @@
 	    parent="ValidCharactersConstraint"
 		abstract="true" 
 		p:labelKey="email"
-		p:value="regex:^[A-Za-z0-9][A-Za-z0-9_.\-]*[A-Za-z0-9]@([A-Za-z0-9][A-Za-z0-9_-]*\\.)+[A-Za-z]{2,}$"/>
+		p:value="^[A-Za-z0-9][A-Za-z0-9_.\-]*[A-Za-z0-9]@([A-Za-z0-9][A-Za-z0-9_-]*\\.)+[A-Za-z]{2,}$"/>
 	
 	<bean id="FloatingPointNumberPatternConstraint" 
 	    parent="ValidCharactersConstraint"
 		abstract="true" 
 		p:labelKey="number"
-		p:value="regex:^([0-9]*\\.)?[0-9]+$"/>
+		p:value="^([0-9]*\\.)?[0-9]+$"/>
 	
 	<!-- Client side only - Warning:
 	none of these have their Java equivalent and we may want to redo their js definition,

@@ -15,6 +15,9 @@
  */
 package edu.sampleu.travel.krad.form;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -26,7 +29,7 @@ import org.kuali.rice.krad.web.form.UifFormBase;
  */
 public class UILayoutTestForm extends UifFormBase {
     private static final long serialVersionUID = -7525378097732916418L;
-    
+
     private String field1;
     private String field2;
     private String field3;
@@ -57,9 +60,75 @@ public class UILayoutTestForm extends UifFormBase {
     private String field28;
     private String field29;
     private String field30;
+    private String field31;
+    private String field32;
+    private String field33;
+    private String field34;
+    private String field35;
+    private String field36;
+    private String field37;
+    private String field38;
+    private String field39;
+    private String field40;
+    private String field41;
+    private String field42;
+    private String field43;
+    private String field44;
+    private String field45;
+    private String field46;
+    private String field47 = "";
+    private String field48;
+    private String field49;
+    private String field50;
+    private String field51;
+    private String field52;
+    private String field53;
+    private String field54;
+    private String field55;
+    private String field56;
+    private String field57;
+    private String field58;
+    private String field59;
+    private String field60;
+    private String field61;
+    private String field62;
+    private String field63;
+    private String field64;
+    private String field65;
+    private List<UITestListObject> list1 = new ArrayList<UITestListObject>();
+    private List<UITestListObject> list2 = new ArrayList<UITestListObject>();
+    private List<UITestListObject> list3 = new ArrayList<UITestListObject>();
+    private List<UITestListObject> list4 = new ArrayList<UITestListObject>();
+
+    private boolean bField1;
+    private boolean bField2;
+    private boolean bField3;
 
     public UILayoutTestForm() {
         super();
+        list1.add(new UITestListObject("A","B","C","D"));
+        list1.add(new UITestListObject("1","2","3","4"));
+        list1.add(new UITestListObject("W","X","Y","Z"));
+        list1.add(new UITestListObject("a","b","c","d"));
+        list1.add(new UITestListObject("a","s","d","f"));
+        
+        list2.add(new UITestListObject("A","B","C","D"));
+        list2.add(new UITestListObject("1","2","3","4"));
+        list2.add(new UITestListObject("W","X","Y","Z"));
+        list2.add(new UITestListObject("a","b","c","d"));
+        list2.add(new UITestListObject("a","s","d","f"));
+        
+        list3.add(new UITestListObject("A","B","C","D"));
+        list3.add(new UITestListObject("1","2","3","4"));
+        list3.add(new UITestListObject("W","X","Y","Z"));
+        
+        list4.add(new UITestListObject("A","B","C","D"));
+        list4.get(0).getSubList().add(new UITestListObject("A","B","C","D"));
+        list4.get(0).getSubList().add(new UITestListObject("1","2","3","4"));
+        list4.get(0).getSubList().add(new UITestListObject("W","X","Y","Z"));
+        list4.add(new UITestListObject("1","2","3","4"));
+        list4.get(1).getSubList().add(new UITestListObject("a","b","C","D"));
+        list4.get(1).getSubList().add(new UITestListObject("a","s","D","F"));
     }
 
     @Override
@@ -486,6 +555,599 @@ public class UILayoutTestForm extends UifFormBase {
     public void setField30(String field30) {
         this.field30 = field30;
     }
+
+    /**
+     * @return the field31
+     */
+    public String getField31() {
+        return this.field31;
+    }
+
+    /**
+     * @param field31 the field31 to set
+     */
+    public void setField31(String field31) {
+        this.field31 = field31;
+    }
+
+    /**
+     * @return the field32
+     */
+    public String getField32() {
+        return this.field32;
+    }
+
+    /**
+     * @param field32 the field32 to set
+     */
+    public void setField32(String field32) {
+        this.field32 = field32;
+    }
+
+    /**
+     * @return the field33
+     */
+    public String getField33() {
+        return this.field33;
+    }
+
+    /**
+     * @param field33 the field33 to set
+     */
+    public void setField33(String field33) {
+        this.field33 = field33;
+    }
+
+    /**
+     * @return the field34
+     */
+    public String getField34() {
+        return this.field34;
+    }
     
     
+
+    /**
+     * @return the field35
+     */
+    public String getField35() {
+        return this.field35;
+    }
+
+    /**
+     * @param field35 the field35 to set
+     */
+    public void setField35(String field35) {
+        this.field35 = field35;
+    }
+
+    /**
+     * @return the field36
+     */
+    public String getField36() {
+        return this.field36;
+    }
+
+    /**
+     * @param field36 the field36 to set
+     */
+    public void setField36(String field36) {
+        this.field36 = field36;
+    }
+
+    /**
+     * @return the field37
+     */
+    public String getField37() {
+        return this.field37;
+    }
+
+    /**
+     * @param field37 the field37 to set
+     */
+    public void setField37(String field37) {
+        this.field37 = field37;
+    }
+
+    /**
+     * @return the field38
+     */
+    public String getField38() {
+        return this.field38;
+    }
+
+    /**
+     * @param field38 the field38 to set
+     */
+    public void setField38(String field38) {
+        this.field38 = field38;
+    }
+
+    /**
+     * @return the field39
+     */
+    public String getField39() {
+        return this.field39;
+    }
+
+    /**
+     * @param field39 the field39 to set
+     */
+    public void setField39(String field39) {
+        this.field39 = field39;
+    }
+
+    /**
+     * @return the field40
+     */
+    public String getField40() {
+        return this.field40;
+    }
+
+    /**
+     * @param field40 the field40 to set
+     */
+    public void setField40(String field40) {
+        this.field40 = field40;
+    }
+
+    /**
+     * @return the field41
+     */
+    public String getField41() {
+        return this.field41;
+    }
+
+    /**
+     * @param field41 the field41 to set
+     */
+    public void setField41(String field41) {
+        this.field41 = field41;
+    }
+
+    /**
+     * @return the field42
+     */
+    public String getField42() {
+        return this.field42;
+    }
+
+    /**
+     * @param field42 the field42 to set
+     */
+    public void setField42(String field42) {
+        this.field42 = field42;
+    }
+
+    /**
+     * @return the field43
+     */
+    public String getField43() {
+        return this.field43;
+    }
+
+    /**
+     * @param field43 the field43 to set
+     */
+    public void setField43(String field43) {
+        this.field43 = field43;
+    }
+
+    /**
+     * @return the field44
+     */
+    public String getField44() {
+        return this.field44;
+    }
+
+    /**
+     * @param field44 the field44 to set
+     */
+    public void setField44(String field44) {
+        this.field44 = field44;
+    }
+
+    /**
+     * @return the field45
+     */
+    public String getField45() {
+        return this.field45;
+    }
+
+    /**
+     * @param field45 the field45 to set
+     */
+    public void setField45(String field45) {
+        this.field45 = field45;
+    }
+
+    /**
+     * @return the field46
+     */
+    public String getField46() {
+        return this.field46;
+    }
+
+    /**
+     * @param field46 the field46 to set
+     */
+    public void setField46(String field46) {
+        this.field46 = field46;
+    }
+
+    /**
+     * @return the field47
+     */
+    public String getField47() {
+        return this.field47;
+    }
+
+    /**
+     * @param field47 the field47 to set
+     */
+    public void setField47(String field47) {
+        this.field47 = field47;
+    }
+
+    /**
+     * @return the field48
+     */
+    public String getField48() {
+        return this.field48;
+    }
+
+    /**
+     * @param field48 the field48 to set
+     */
+    public void setField48(String field48) {
+        this.field48 = field48;
+    }
+
+    /**
+     * @return the field49
+     */
+    public String getField49() {
+        return this.field49;
+    }
+
+    /**
+     * @param field49 the field49 to set
+     */
+    public void setField49(String field49) {
+        this.field49 = field49;
+    }
+
+    /**
+     * @return the field50
+     */
+    public String getField50() {
+        return this.field50;
+    }
+
+    /**
+     * @param field50 the field50 to set
+     */
+    public void setField50(String field50) {
+        this.field50 = field50;
+    }
+    
+    
+
+    /**
+     * @return the field51
+     */
+    public String getField51() {
+        return this.field51;
+    }
+
+    /**
+     * @param field51 the field51 to set
+     */
+    public void setField51(String field51) {
+        this.field51 = field51;
+    }
+
+    /**
+     * @return the field52
+     */
+    public String getField52() {
+        return this.field52;
+    }
+
+    /**
+     * @param field52 the field52 to set
+     */
+    public void setField52(String field52) {
+        this.field52 = field52;
+    }
+
+    /**
+     * @return the field53
+     */
+    public String getField53() {
+        return this.field53;
+    }
+
+    /**
+     * @param field53 the field53 to set
+     */
+    public void setField53(String field53) {
+        this.field53 = field53;
+    }
+
+    /**
+     * @return the field54
+     */
+    public String getField54() {
+        return this.field54;
+    }
+
+    /**
+     * @param field54 the field54 to set
+     */
+    public void setField54(String field54) {
+        this.field54 = field54;
+    }
+
+    /**
+     * @return the field55
+     */
+    public String getField55() {
+        return this.field55;
+    }
+
+    /**
+     * @param field55 the field55 to set
+     */
+    public void setField55(String field55) {
+        this.field55 = field55;
+    }
+
+    /**
+     * @return the field56
+     */
+    public String getField56() {
+        return this.field56;
+    }
+
+    /**
+     * @param field56 the field56 to set
+     */
+    public void setField56(String field56) {
+        this.field56 = field56;
+    }
+
+    /**
+     * @return the field57
+     */
+    public String getField57() {
+        return this.field57;
+    }
+
+    /**
+     * @param field57 the field57 to set
+     */
+    public void setField57(String field57) {
+        this.field57 = field57;
+    }
+
+    /**
+     * @return the field58
+     */
+    public String getField58() {
+        return this.field58;
+    }
+
+    /**
+     * @param field58 the field58 to set
+     */
+    public void setField58(String field58) {
+        this.field58 = field58;
+    }
+
+    /**
+     * @return the field59
+     */
+    public String getField59() {
+        return this.field59;
+    }
+
+    /**
+     * @param field59 the field59 to set
+     */
+    public void setField59(String field59) {
+        this.field59 = field59;
+    }
+
+    /**
+     * @return the field60
+     */
+    public String getField60() {
+        return this.field60;
+    }
+
+    /**
+     * @param field60 the field60 to set
+     */
+    public void setField60(String field60) {
+        this.field60 = field60;
+    }
+
+    /**
+     * @return the field61
+     */
+    public String getField61() {
+        return this.field61;
+    }
+
+    /**
+     * @param field61 the field61 to set
+     */
+    public void setField61(String field61) {
+        this.field61 = field61;
+    }
+
+    /**
+     * @return the field62
+     */
+    public String getField62() {
+        return this.field62;
+    }
+
+    /**
+     * @param field62 the field62 to set
+     */
+    public void setField62(String field62) {
+        this.field62 = field62;
+    }
+
+    /**
+     * @return the field63
+     */
+    public String getField63() {
+        return this.field63;
+    }
+
+    /**
+     * @param field63 the field63 to set
+     */
+    public void setField63(String field63) {
+        this.field63 = field63;
+    }
+
+    /**
+     * @return the field64
+     */
+    public String getField64() {
+        return this.field64;
+    }
+
+    /**
+     * @param field64 the field64 to set
+     */
+    public void setField64(String field64) {
+        this.field64 = field64;
+    }
+
+    /**
+     * @return the field65
+     */
+    public String getField65() {
+        return this.field65;
+    }
+
+    /**
+     * @param field65 the field65 to set
+     */
+    public void setField65(String field65) {
+        this.field65 = field65;
+    }
+
+    /**
+     * @param field34 the field34 to set
+     */
+    public void setField34(String field34) {
+        this.field34 = field34;
+    }
+
+    /**
+     * @return the bField1
+     */
+    public boolean isbField1() {
+        return this.bField1;
+    }
+
+    /**
+     * @param bField1 the bField1 to set
+     */
+    public void setbField1(boolean bField1) {
+        this.bField1 = bField1;
+    }
+
+    /**
+     * @return the bField2
+     */
+    public boolean isbField2() {
+        return this.bField2;
+    }
+
+    /**
+     * @param bField2 the bField2 to set
+     */
+    public void setbField2(boolean bField2) {
+        this.bField2 = bField2;
+    }
+
+    /**
+     * @return the bField3
+     */
+    public boolean isbField3() {
+        return this.bField3;
+    }
+
+    /**
+     * @param bField3 the bField3 to set
+     */
+    public void setbField3(boolean bField3) {
+        this.bField3 = bField3;
+    }
+
+    /**
+     * @return the list1
+     */
+    public List<UITestListObject> getList1() {
+        return this.list1;
+    }
+
+    /**
+     * @param list1 the list1 to set
+     */
+    public void setList1(List<UITestListObject> list1) {
+        this.list1 = list1;
+    }
+
+    /**
+     * @return the list2
+     */
+    public List<UITestListObject> getList2() {
+        return this.list2;
+    }
+
+    /**
+     * @param list2 the list2 to set
+     */
+    public void setList2(List<UITestListObject> list2) {
+        this.list2 = list2;
+    }
+
+    /**
+     * @return the list3
+     */
+    public List<UITestListObject> getList3() {
+        return this.list3;
+    }
+
+    /**
+     * @param list3 the list3 to set
+     */
+    public void setList3(List<UITestListObject> list3) {
+        this.list3 = list3;
+    }
+
+    /**
+     * @return the list4
+     */
+    public List<UITestListObject> getList4() {
+        return this.list4;
+    }
+
+    /**
+     * @param list4 the list4 to set
+     */
+    public void setList4(List<UITestListObject> list4) {
+        this.list4 = list4;
+    }
+    
+    
+
 }

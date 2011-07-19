@@ -109,7 +109,16 @@ public class CollectionGroup extends Group implements DataBinding {
         if (bindingInfo != null) {
             bindingInfo.setDefaults(view, getPropertyName());
         }
+        
+        if (StringUtils.isNotBlank(getFieldBindByNamePrefix())) {
+            String bindByNamePrefixToSet = getFieldBindByNamePrefix();
 
+            if (StringUtils.isNotBlank(getBindingInfo().getBindByNamePrefix())) {
+                bindByNamePrefixToSet += "." + getBindingInfo().getBindByNamePrefix();
+            }
+            getBindingInfo().setBindByNamePrefix(bindByNamePrefixToSet);
+        }
+        
         if (addLineBindingInfo != null) {
             // add line binds to model property
             if (StringUtils.isNotBlank(addLinePropertyName)) {

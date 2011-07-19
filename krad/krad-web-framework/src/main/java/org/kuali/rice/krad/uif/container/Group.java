@@ -81,7 +81,7 @@ public class Group extends ContainerBase {
 		for (Component component : getItems()) {
 			// append group's field bind by name prefix (if set) to each
 			// attribute field's binding prefix
-			if (component instanceof AttributeField) {
+			if (component instanceof AttributeField && !(this instanceof CollectionGroup)) {
 				AttributeField attributeField = (AttributeField) component;
 
 				if (StringUtils.isNotBlank(getFieldBindByNamePrefix())) {
@@ -110,6 +110,15 @@ public class Group extends ContainerBase {
 						groupField.getGroup().setFieldBindingObjectPath(fieldBindingObjectPath);
 					}
 				}
+			}else if (component instanceof Group) {
+			    Group subGroup = (Group)component;
+			    if (StringUtils.isNotBlank(getFieldBindByNamePrefix())) {
+			        if (StringUtils.isNotBlank(subGroup.getFieldBindByNamePrefix())){
+			            subGroup.setFieldBindByNamePrefix(getFieldBindByNamePrefix() + "." + subGroup.getFieldBindByNamePrefix());    
+			        }else{
+			            subGroup.setFieldBindByNamePrefix(getFieldBindByNamePrefix());
+			        }
+                }
 			}
 		}
 	}

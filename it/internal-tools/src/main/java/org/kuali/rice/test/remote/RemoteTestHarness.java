@@ -15,8 +15,13 @@ import javax.xml.ws.Endpoint;
  * this harness should pass in a @WebService annotated interface class and an object of an implementing class
  * of that interface to the publishEndpointAndReturnProxy method in @Before or setUp methods used in tests.
  * <p/>
+ * The endpoint will always be published at a URL like http://localhost:1025/service where the port number changes
+ * each time publishEndpointAndReturnProxy is called and guarantees that an open port is used.
+ * <p/
  * After each test is run, stopEndPoint should be called in @After or tearDown methods in order to unpublish the
  * endpoint.
+ * <p/>
+ *
  */
 public class RemoteTestHarness {
 
@@ -45,10 +50,10 @@ public class RemoteTestHarness {
             factory.setAddress(endpointUrl);
 
             T serviceProxy = (T) factory.create();
+
+            /* Add the ImmutableCollectionsInInterceptor to mimic interceptors added in the KSB */
             Client cxfClient = ClientProxy.getClient(serviceProxy);
             cxfClient.getInInterceptors().add(new ImmutableCollectionsInInterceptor());
-
-//            waitAndCheck(endpoint, false);
 
             return serviceProxy;
         } else {
@@ -65,7 +70,6 @@ public class RemoteTestHarness {
     public void stopEndpoint() {
         if (endpoint != null) {
             endpoint.stop();
-//            waitAndCheck(endpoint, true);
         }
     }
 
@@ -73,20 +77,4 @@ public class RemoteTestHarness {
         String port = Integer.toString(AvailablePortFinder.getNextAvailable());
         return ENDPOINT_ROOT + ":" + port + ENDPOINT_PATH;
     }
-
-    /*private static void waitAndCheck(Endpoint ep, boolean published) {
-        //Thread.sleep() seems to be causing deadlock...using another mechanism for wait
-        if (ep.isPublished() == published) {
-            for (int i = 0; i < MAX_WAIT_ITR; i++) {
-                if (ep.isPublished() != published) {
-                    LOG.info("took " + i + " iterations to change published state of endpoint: " + ep);
-                    break;
-                }
-            }
-        }
-
-        if (ep.isPublished() == published) {
-            LOG.warn("endpoint: " + ep + " published: " + published);
-        }
-    }*/
 }

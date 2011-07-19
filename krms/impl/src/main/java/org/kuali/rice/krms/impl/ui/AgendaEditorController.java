@@ -16,14 +16,15 @@
 package org.kuali.rice.krms.impl.ui;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.MapUtils;
-import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.web.controller.MaintenanceDocumentController;
 import org.kuali.rice.krad.web.form.MaintenanceForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -79,17 +80,34 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             AgendaEditor editorDocument =
                     ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
             agendaId = editorDocument.getAgenda().getId();
-            AgendaBo agenda = getBoService().findBySinglePrimaryKey(AgendaBo.class, agendaId);
+            AgendaBo agenda = getBusinessObjectService().findBySinglePrimaryKey(AgendaBo.class, agendaId);
             editorDocument.setAgenda(agenda);
 
             if (agenda.getContextId() != null) {
-                ContextBo context = getBoService().findBySinglePrimaryKey(ContextBo.class, agenda.getContextId());
+                ContextBo context = getBusinessObjectService().findBySinglePrimaryKey(ContextBo.class, agenda.getContextId());
                 editorDocument.setContext(context);
             }
         }
         
         return super.refresh(form, result, request, response);
     }
+
+    public ModelAndView updateComponent(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
+        AgendaEditor editorDocument =
+                ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
+        final Map<String, Object> map = new HashMap<String, Object>();
+        map.put("name", editorDocument.getAgenda().getName());
+        map.put("contextId", editorDocument.getContext().getId());
+
+        AgendaBo agenda = getBusinessObjectService().findByPrimaryKey(AgendaBo.class, Collections.unmodifiableMap(map));
+        editorDocument.setAgenda(agenda);
+
+        return super.updateComponent(form, result, request, response);
+    }
+
     
     /**
      * @return the ALWAYS {@link AgendaItemInstanceChildAccessor} for the last ALWAYS child of the instance accessed by the parameter.
@@ -613,11 +631,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             }
         }
         return false;
-    }
-
-
-    private BusinessObjectService getBoService() {
-        return KRADServiceLocator.getBusinessObjectService();
     }
 
     /**

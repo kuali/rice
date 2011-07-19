@@ -54,19 +54,19 @@
     <property name="template" value="/krad/WEB-INF/jsp/templates/widget/agendaTree.jsp"/>
   </bean>
 
-  <bean id="Editor-MaintenanceView" parent="MaintenanceView">
-    <property name="additionalCssFiles" ref="krms-css" /> 
+  <bean id="Editor-MaintenanceView" parent="MaintenanceView" p:refreshWhenChanged="document.newMaintainableObject.dataObject.agenda.name">
+    <property name="additionalCssFiles" ref="krms-css" />
     <property name="title" value="Business Rules"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.ui.AgendaEditor"/>
     <property name="items">
       <list> 
-        <ref bean="contextSection" />
-        <ref bean="agendaSection" />
+        <ref bean="AgendaEditorView-ContextSection" />
+        <ref bean="AgendaEditorView-AgendaSection" />
       </list>
     </property>
   </bean>
 
-  <bean id="contextSection" parent="GroupSection" p:accordion.render="false">
+  <bean id="AgendaEditorView-ContextSection" parent="GroupSection" p:accordion.render="false">
     <property name="fieldBindByNamePrefix" value="context"/>
     <property name="items">
       <list>
@@ -106,16 +106,11 @@
                   value="org.kuali.rice.krms.impl.repository.ContextBo" />
                 <property name="fieldAttributeQuery">
                       <bean parent="FieldAttributeQuery" p:dataObjectClassName="org.kuali.rice.krms.impl.repository.ContextBo"
-                        p:queryFieldMapping="name:name" p:returnFieldMapping="name:name,namespace:namespace,id:id"/>
+                        p:queryFieldMapping="name:name" p:returnFieldMapping="namespace:namespace,id:id"/>
                 </property>
               </bean>
-              <bean parent="AttributeField" p:propertyName="namespace"
-                p:label="Namespace" p:labelPlacement="LEFT">
-                <property name="control">
-                  <bean parent="TextControl" p:size="30"
-                    p:watermarkText="namespace" />
-                </property>
-              </bean>
+              <bean parent="AttributeField" p:propertyName="namespace" p:readOnly="true"
+                p:label="Namespace" p:labelPlacement="LEFT"/>
               <bean parent="AttributeField" p:propertyName="id"
                 p:showLabel="false" p:label="id" p:maxLength="40">
                 <property name="control">
@@ -131,15 +126,15 @@
     <property name="title" value="Context" />
   </bean>
 
-  <bean id="agendaSection" parent="GroupSection">
+  <bean id="AgendaEditorView-AgendaSection" parent="GroupSection">
     <property name="title" value="Agenda Editor" />
     <property name="items">
       <list>
         <bean parent="GroupGridBodyOnly" p:layoutManager.numberOfColumns="4">
           <property name="items">
             <list>
-              <ref bean="agendaName" />
-              <ref bean="agendaActive" />
+              <ref bean="AgendaEditorView-AgendaName" />
+              <ref bean="AgendaEditorView-AgendaActive" />
             </list>
           </property>
         </bean>
@@ -150,12 +145,12 @@
               <bean parent="GroupGridBodyOnly" p:style="margin-bottom: 5pt;">
                 <property name="items">
                   <list>
-                    <ref bean="treeControls" />
+                    <ref bean="AgendaEditorView-TreeControls" />
                   </list>
                 </property>
               </bean>
-              <ref bean="treeExpandCollapse" />
-              <ref bean="tree" />
+              <ref bean="AgendaEditorView-TreeExpandCollapse" />
+              <ref bean="AgendaEditorView-Tree" />
             </list>
           </property>
         </bean>
@@ -165,7 +160,7 @@
     </property>
   </bean>
 
-  <bean id="treeExpandCollapse" parent="FieldGroup" p:label="Field Group 4" 
+  <bean id="AgendaEditorView-TreeExpandCollapse" parent="FieldGroup" p:label="Field Group 4"
     p:conditionalRender="document.newMaintainableObject.dataObject.agenda != null and document.newMaintainableObject.dataObject.agenda.name != null and !document.newMaintainableObject.dataObject.agenda.name.isEmpty()"
     p:style="font-size: smaller;">
     <property name="group.layoutManager.orientation" value="HORIZONTAL"/>
@@ -182,8 +177,8 @@
       </list>
     </property>
   </bean>
-  
-  <bean id="treeControls" parent="FieldGroup" p:showLabel="false" p:group.layoutManager.orientation="HORIZONTAL">
+
+  <bean id="AgendaEditorView-TreeControls" parent="FieldGroup" p:showLabel="false" p:group.layoutManager.orientation="HORIZONTAL">
     <property name="items">
       <list>
         <bean parent="ActionField" p:methodToCall="add" p:actionLabel="add rule"  p:clientSideJs="alert('Not Yet Implemented');" 
@@ -228,7 +223,7 @@
   </bean>
   
   
-  <bean id="agendaName" parent="FieldGroup" p:label="Name" p:colSpan="3" p:labelField.colSpan="1"
+  <bean id="AgendaEditorView-AgendaName" parent="FieldGroup" p:label="Name" p:colSpan="3" p:labelField.colSpan="1"
         p:group.layoutManager.orientation="HORIZONTAL">
     <property name="items">
       <list>
@@ -254,33 +249,33 @@
           <property name="fieldSuggest.render" value="true" />
           <property name="fieldSuggest.sourcePropertyName" value="name" />
           <property name="fieldSuggest.suggestQuery.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.AgendaBo" />
-          <property name="fieldSuggest.suggestQuery.queryFieldMapping" value="namespace:context.namespace" />
+          <property name="fieldSuggest.suggestQuery.queryFieldMapping" value="contextId:context.id" />
           <property name="fieldSuggest.suggestQuery.additionalCriteria">
             <map>
               <entry key="active" value="true" />
             </map>
           </property>
-        </bean>
-        <bean parent="ActionField" p:methodToCall="saveAgenda"
-              p:actionLabel="save" p:clientSideJs="alert('Not Yet Implemented');" p:styleClasses-ref="buttonClasses"/>
-        <bean parent="AttributeField" p:propertyName="agenda.id"
-                            p:showLabel="false" p:label="id" p:maxLength="40">
-          <property name="control">
-            <bean parent="HiddenControl"/>
+
+          <!-- The fieldAttributeQuery displays a not found message if the user enters a non existing agenda
+               but because of the refreshWhenChanged the message is not displayed. -->
+          <property name="fieldAttributeQuery">
+                <bean parent="FieldAttributeQuery" p:dataObjectClassName="org.kuali.rice.krms.impl.repository.AgendaBo"
+                  p:queryFieldMapping="name:agenda.name,contextId:context.id"/>
           </property>
+
         </bean>
       </list>
     </property>
   </bean>
 
-  <bean id="agendaActive" parent="AttributeField" p:propertyName="agenda.active"
+  <bean id="AgendaEditorView-AgendaActive" parent="AttributeField" p:propertyName="agenda.active"
         p:label="Active" p:colSpan="3" p:labelField.colSpan="1" p:maxLength="29">
     <property name="control">
       <bean parent="CheckboxControl"/>
     </property>
   </bean>
-              
-  <bean id="tree" parent="TreeGroup" p:accordion.render="false" p:header.render="false" p:style="float:left; margin-left: 2em;">
+
+    <bean id="AgendaEditorView-Tree" parent="TreeGroup" p:accordion.render="false" p:header.render="false" p:style="float:left; margin-left: 2em;">
     <property name="title" value="Agenda Items"/>
     <property name="propertyName" value="agendaRuleTree"/>
     <property name="treeWidget">

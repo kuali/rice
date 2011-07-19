@@ -73,15 +73,12 @@ import org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo;
 import org.kuali.rice.kim.impl.identity.residency.EntityResidencyBo;
 import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo;
 import org.kuali.rice.kim.impl.identity.visa.EntityVisaBo;
-import org.kuali.rice.kim.service.IdentityUpdateService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
-import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.PersistenceService;
 
-import javax.jws.WebService;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -98,7 +95,7 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public class IdentityServiceImpl implements IdentityService, IdentityUpdateService {
+public class IdentityServiceImpl implements IdentityService {
 
     private CriteriaLookupService criteriaLookupService;
 	private BusinessObjectService businessObjectService;

@@ -74,14 +74,15 @@ public class IdentityArchiveServiceTest extends KIMTestCase {
 			builder.setEntityId("bogusUser" + i);
 			EntityDefault bogusUserInfo = builder.build();
 
-			EntityDefault retrieved = identityArchiveService.getEntityDefaultInfoFromArchiveByPrincipalId(builder.getPrincipalId());
+			EntityDefault retrieved = identityArchiveService.getEntityDefaultFromArchiveByPrincipalId(
+                    builder.getPrincipalId());
 			assertNull(retrieved);
-			retrieved = identityArchiveService.getEntityDefaultInfoFromArchiveByPrincipalName(builder.getPrincipalName());
+			retrieved = identityArchiveService.getEntityDefaultFromArchiveByPrincipalName(builder.getPrincipalName());
 			assertNull(retrieved);
-			retrieved = identityArchiveService.getEntityDefaultInfoFromArchive(builder.getEntityId());
+			retrieved = identityArchiveService.getEntityDefaultFromArchive(builder.getEntityId());
 			assertNull(retrieved);
 
-			identityArchiveService.saveDefaultInfoToArchive(bogusUserInfo);
+			identityArchiveService.saveEntityDefaultToArchive(bogusUserInfo);
 			added.add(bogusUserInfo);
 		}
 
@@ -94,11 +95,13 @@ public class IdentityArchiveServiceTest extends KIMTestCase {
 
 		for (EntityDefault kedi : added) {
 			// retrieve it every way we can
-			EntityDefault retrieved = identityArchiveService.getEntityDefaultInfoFromArchiveByPrincipalId(kedi.getPrincipals().get(0).getPrincipalId());
+			EntityDefault retrieved = identityArchiveService.getEntityDefaultFromArchiveByPrincipalId(
+                    kedi.getPrincipals().get(0).getPrincipalId());
 			assertTrue(kedi.getPrincipals().get(0).getPrincipalId().equals(retrieved.getPrincipals().get(0).getPrincipalId()));
-			retrieved = identityArchiveService.getEntityDefaultInfoFromArchiveByPrincipalName(kedi.getPrincipals().get(0).getPrincipalName());
+			retrieved = identityArchiveService.getEntityDefaultFromArchiveByPrincipalName(
+                    kedi.getPrincipals().get(0).getPrincipalName());
 			assertTrue(kedi.getPrincipals().get(0).getPrincipalId().equals(retrieved.getPrincipals().get(0).getPrincipalId()));
-			retrieved = identityArchiveService.getEntityDefaultInfoFromArchive(kedi.getEntityId());
+			retrieved = identityArchiveService.getEntityDefaultFromArchive(kedi.getEntityId());
 			assertTrue(kedi.getPrincipals().get(0).getPrincipalId().equals(retrieved.getPrincipals().get(0).getPrincipalId()));
 		}
 	}

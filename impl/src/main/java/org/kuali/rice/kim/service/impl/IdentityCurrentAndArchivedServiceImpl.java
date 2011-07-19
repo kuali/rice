@@ -41,7 +41,6 @@ import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.identity.residency.EntityResidency;
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
 import org.kuali.rice.kim.api.identity.visa.EntityVisa;
-import org.kuali.rice.kim.service.IdentityUpdateService;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
 import javax.jws.WebParam;
@@ -58,7 +57,7 @@ import java.util.Map;
  */
 
 @WebService(endpointInterface = KIMWebServiceConstants.IdentityService.INTERFACE_CLASS, serviceName = KIMWebServiceConstants.IdentityService.WEB_SERVICE_NAME, portName = KIMWebServiceConstants.IdentityService.WEB_SERVICE_PORT, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
-public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, IdentityUpdateService {
+public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 
 	private final IdentityArchiveService identityArchiveService;
 	private final IdentityService innerIdentityService;
@@ -182,9 +181,9 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 	public EntityDefault getEntityDefault(String entityId) {
 		EntityDefault entity = getInnerIdentityService().getEntityDefault(entityId);
     	if ( entity == null ) {
-    		entity = getIdentityArchiveService().getEntityDefaultInfoFromArchive( entityId );
+    		entity = getIdentityArchiveService().getEntityDefaultFromArchive(entityId);
     	} else {
-			getIdentityArchiveService().saveDefaultInfoToArchive(entity);
+			getIdentityArchiveService().saveEntityDefaultToArchive(entity);
     	}
 		return entity;
 	}
@@ -198,9 +197,9 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 	public EntityDefault getEntityDefaultByPrincipalId(String principalId) {
 		EntityDefault entity = getInnerIdentityService().getEntityDefaultByPrincipalId(principalId);
     	if ( entity == null ) {
-    		entity = getIdentityArchiveService().getEntityDefaultInfoFromArchiveByPrincipalId( principalId );
+    		entity = getIdentityArchiveService().getEntityDefaultFromArchiveByPrincipalId(principalId);
     	} else {
-			getIdentityArchiveService().saveDefaultInfoToArchive(entity);
+			getIdentityArchiveService().saveEntityDefaultToArchive(entity);
     	}
     	return entity;
 	}
@@ -214,9 +213,9 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService, I
 	public EntityDefault getEntityDefaultByPrincipalName(String principalName) {
 		EntityDefault entity = getInnerIdentityService().getEntityDefaultByPrincipalName(principalName);
     	if ( entity == null ) {
-    		entity = getIdentityArchiveService().getEntityDefaultInfoFromArchiveByPrincipalName( principalName );
+    		entity = getIdentityArchiveService().getEntityDefaultFromArchiveByPrincipalName(principalName);
     	} else {
-			getIdentityArchiveService().saveDefaultInfoToArchive(entity);
+			getIdentityArchiveService().saveEntityDefaultToArchive(entity);
     	}
     	return entity;
 	}

@@ -16,6 +16,13 @@
 package org.kuali.rice.kim.api.identity;
 
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
+import org.kuali.rice.kim.util.KimConstants;
+
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
 
 /**
  * 
@@ -26,26 +33,75 @@ import org.kuali.rice.kim.api.identity.entity.EntityDefault;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@WebService(name = "IdentityArchiveServiceSoap", targetNamespace = KimConstants.Namespaces.KIM_NAMESPACE_2_0)
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface IdentityArchiveService {
 
-	/**
-	 * Gets the EntityDefault from the cache for the given entityId.
-	 */
-    EntityDefault getEntityDefaultInfoFromArchive( String entityId );
+    /**
+     * Gets a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} with an id from the archive.
+     * {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} is a condensed version of {@link org.kuali.rice.kim.api.identity.entity.Entity} that contains
+     * default values of its subclasses
+     *
+     * <p>
+     *   This method will return null if the Entity does not exist.
+     * </p>
+     *
+     * @param id the unique id to retrieve the entity by. cannot be null.
+     * @return a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} or null
+     * @throws IllegalArgumentException if the id is blank
+     */
+    @WebMethod(operationName = "getEntityDefaultFromArchive")
+    @WebResult(name = "entityDefault")
+    EntityDefault getEntityDefaultFromArchive(@WebParam(name = "id") String entityId );
 
 	/**
-	 * Gets the EntityDefault from the cache for the identity with the given principalId.
-	 */
-    EntityDefault getEntityDefaultInfoFromArchiveByPrincipalId( String principalId );
+     * Gets a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} with an principalId from the archive.
+     * {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} is a condensed version of {@link org.kuali.rice.kim.api.identity.entity.Entity} that contains
+     * default values of its subclasses
+     *
+     * <p>
+     *   This method will return null if the Entity does not exist.
+     * </p>
+     *
+     * @param principalId the unique principalId to retrieve the entity by. cannot be null.
+     * @return a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} or null
+     * @throws IllegalArgumentException if the principalId is blank
+     */
+    @WebMethod(operationName = "getEntityDefaultFromArchiveByPrincipalId")
+    @WebResult(name = "entityDefault")
+    EntityDefault getEntityDefaultFromArchiveByPrincipalId(@WebParam(name = "principalId") String principalId);
 
 	/**
-	 * Gets the EntityDefault from the cache for the identity with the given principalName.
-	 */
-	EntityDefault getEntityDefaultInfoFromArchiveByPrincipalName( String principalName );
+     * Gets a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} with an principalName from the archive.
+     * {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} is a condensed version of {@link org.kuali.rice.kim.api.identity.entity.Entity} that contains
+     * default values of its subclasses
+     *
+     * <p>
+     *   This method will return null if the Entity does not exist.
+     * </p>
+     *
+     * @param principalName the unique principalName to retrieve the entity by. cannot be null.
+     * @return a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} or null
+     * @throws IllegalArgumentException if the principalName is blank
+     */
+    @WebMethod(operationName = "getEntityDefaultFromArchiveByPrincipalName")
+    @WebResult(name = "entityDefault")
+	EntityDefault getEntityDefaultFromArchiveByPrincipalName(@WebParam(name = "principalName") String principalName);
 	
 	/**
-	 * Saves the given EntityDefault into the cache.
-	 */
-	void saveDefaultInfoToArchive( EntityDefault entity );
+     * Saves a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} to the archive.
+     * {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} is a condensed version of {@link org.kuali.rice.kim.api.identity.entity.Entity} that contains
+     * default values of its subclasses
+     *
+     * <p>
+     *   This method will return the saved EntityDefault object
+     * </p>
+     *
+     * @param entityDefault the unique principalName to retrieve the entity by. cannot be null.
+     * @return a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} or null
+     * @throws IllegalArgumentException if the principalName is blank
+     */
+    @WebMethod(operationName = "saveEntityDefaultToArchive")
+	void saveEntityDefaultToArchive(@WebParam(name = "entityDefault") EntityDefault entityDefault);
 	
 }

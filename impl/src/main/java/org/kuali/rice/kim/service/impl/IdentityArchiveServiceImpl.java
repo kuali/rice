@@ -102,48 +102,40 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 	}
 
 	@Override
-	public EntityDefault getEntityDefaultInfoFromArchive( String entityId ) {
+	public EntityDefault getEntityDefaultFromArchive( String entityId ) {
     	Map<String,String> criteria = new HashMap<String, String>(1);
     	criteria.put(KimConstants.PrimaryKeyConstants.ENTITY_ID, entityId);
-    	KimEntityDefaultInfoCacheImpl cachedValue = getBusinessObjectService().findByPrimaryKey(KimEntityDefaultInfoCacheImpl.class, criteria);
+    	KimEntityDefaultInfoCacheImpl cachedValue = businessObjectService.findByPrimaryKey(KimEntityDefaultInfoCacheImpl.class, criteria);
     	return (cachedValue == null) ? null : cachedValue.convertCacheToEntityDefaultInfo();
     }
 
     @Override
-	public EntityDefault getEntityDefaultInfoFromArchiveByPrincipalId( String principalId ) {
+	public EntityDefault getEntityDefaultFromArchiveByPrincipalId(String principalId) {
     	Map<String,String> criteria = new HashMap<String, String>(1);
     	criteria.put("principalId", principalId);
-    	KimEntityDefaultInfoCacheImpl cachedValue = getBusinessObjectService().findByPrimaryKey(KimEntityDefaultInfoCacheImpl.class, criteria);
+    	KimEntityDefaultInfoCacheImpl cachedValue = businessObjectService.findByPrimaryKey(KimEntityDefaultInfoCacheImpl.class, criteria);
     	return (cachedValue == null) ? null : cachedValue.convertCacheToEntityDefaultInfo();
     }
 
     @Override
-	public EntityDefault getEntityDefaultInfoFromArchiveByPrincipalName( String principalName ) {
+	public EntityDefault getEntityDefaultFromArchiveByPrincipalName(String principalName) {
     	Map<String,String> criteria = new HashMap<String, String>(1);
     	criteria.put("principalName", principalName);
-    	Collection<KimEntityDefaultInfoCacheImpl> entities = getBusinessObjectService().findMatching(KimEntityDefaultInfoCacheImpl.class, criteria);
-    	return (entities == null || entities.size() == 0) ? null : entities.iterator().next().convertCacheToEntityDefaultInfo();
+    	Collection<KimEntityDefaultInfoCacheImpl> entities = businessObjectService.findMatching(KimEntityDefaultInfoCacheImpl.class, criteria);
+    	return (entities == null || entities.isEmpty()) ? null : entities.iterator().next().convertCacheToEntityDefaultInfo();
     }
 
     @Override
-	public void saveDefaultInfoToArchive( EntityDefault entity ) {
+	public void saveEntityDefaultToArchive(EntityDefault entity) {
     	// if the max size has been reached, schedule now
     	if (getMaxWriteQueueSize() <= writeQueue.offerAndGetSize(entity) /* <- this enqueues the KEDI */ &&
     			writer.requestSubmit()) {
     		KSBServiceLocator.getThreadPool().execute(maxQueueSizeExceededWriter);
     	}
     }
-    
-	public BusinessObjectService getBusinessObjectService() {
-		return this.businessObjectService;
-	}
 
 	public void setBusinessObjectService(BusinessObjectService businessObjectService) {
 		this.businessObjectService = businessObjectService;
-	}
-
-	public ConfigurationService getKualiConfigurationService() {
-		return this.kualiConfigurationService;
 	}
 
 	public void setKualiConfigurationService(
@@ -277,7 +269,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 						Collections.sort(entitiesToInsert, kediComparator);
 
 						for (EntityDefault entityToInsert : entitiesToInsert) {
-							getBusinessObjectService().save( new KimEntityDefaultInfoCacheImpl( entityToInsert ) );
+							businessObjectService.save( new KimEntityDefaultInfoCacheImpl( entityToInsert ) );
 						}
 						return null;
 					}

@@ -39,7 +39,6 @@ public final class KIMServiceLocatorInternal {
 
 	public static final String KIM_RUN_MODE_PROPERTY = "kim.mode";
 
-    public static final String KIM_IDENTITY_UPDATE_SERVICE = "kimIdentityUpdateService";
 	public static final String KIM_IDENTITY_ARCHIVE_SERVICE = "kimIdentityArchiveService";
     public static final String KIM_ROLE_UPDATE_SERVICE = "kimRoleUpdateService";
 	public static final String KIM_PERMISSION_UPDATE_SERVICE = "kimPermissionUpdateService";
@@ -59,10 +58,6 @@ public final class KIMServiceLocatorInternal {
                 (RunMode.REMOTE.equals(RunMode.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KIM_RUN_MODE_PROPERTY)))) ?
                         new QName(KimConstants.KIM_MODULE_NAMESPACE, serviceName) : new QName(serviceName));
 	}
-
-    public static IdentityUpdateService getIdentityUpdateService() {
-    	return (IdentityUpdateService)getService(KIM_IDENTITY_UPDATE_SERVICE);
-    }
 
     public static IdentityArchiveService getIdentityArchiveService() {
     	return (IdentityArchiveService)getService(KIM_IDENTITY_ARCHIVE_SERVICE);

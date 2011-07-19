@@ -18,7 +18,6 @@ package org.kuali.rice.kim.api.identity;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
-import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.address.EntityAddress;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
@@ -43,7 +42,6 @@ import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
 import org.kuali.rice.kim.api.identity.visa.EntityVisa;
 import org.kuali.rice.kim.api.jaxb.StringToKimEntityNameInfoMapAdapter;
 import org.kuali.rice.kim.api.jaxb.StringToKimEntityNamePrincipalInfoMapAdapter;
-import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimConstants;
 
 import javax.jws.WebMethod;
@@ -73,11 +71,7 @@ import java.util.Map;
  * 
  * <p>This service also provides operations for querying various pieces of reference data, such as 
  * address types, affiliation types, phone types, etc.
- * 
- * <p>This service provides read-only operations.  For write operations, see
- * {@link org.kuali.rice.kim.service.IdentityUpdateService}.
- * 
- * @see org.kuali.rice.kim.service.IdentityUpdateService
+ *
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

@@ -131,8 +131,8 @@
           p:criteriaLookupService-ref="criteriaLookupService" />
 
   <bean id="kimIdentityArchiveService" class="org.kuali.rice.kim.service.impl.IdentityArchiveServiceImpl"
-  	p:businessObjectService-ref="businessObjectService"
-  	p:kualiConfigurationService-ref="kualiConfigurationService"
+          p:businessObjectService-ref="businessObjectService"
+          p:kualiConfigurationService-ref="kualiConfigurationService"
   />
 
   <bean id="kimIdentityService" class="org.kuali.rice.kim.service.impl.IdentityCurrentAndArchivedServiceImpl">

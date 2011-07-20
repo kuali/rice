@@ -52,8 +52,8 @@
     <impex.oracle.defaultTablespace>users</impex.oracle.defaultTablespace>
     <impex.oracle.temporaryTablespace>temp</impex.oracle.temporaryTablespace>
     <impex.oracle.quota>UNLIMITED</impex.oracle.quota>
-    <impex.oracle.error.sqlcode.userDoesNotExist>-01918</impex.oracle.error.sqlcode.userDoesNotExist>
-    <impex.oracle.error.sqlcode.userAlreadyExists>-01920</impex.oracle.error.sqlcode.userAlreadyExists>
+    <impex.oracle.error.userDoesNotExist>-01918</impex.oracle.error.userDoesNotExist>
+    <impex.oracle.error.userAlreadyExists>-01920</impex.oracle.error.userAlreadyExists>
     <impex.oracle.dba.username>SYSTEM</impex.oracle.dba.username>
     <impex.oracle.dba.password>change_on_install</impex.oracle.dba.password>
 
@@ -68,7 +68,7 @@
       EXECUTE IMMEDIATE 'DROP USER ${impex.username} CASCADE';
       EXCEPTION WHEN OTHERS THEN
       IF
-      SQLCODE != ${impex.oracle.error.sqlcode.userDoesNotExist} THEN
+      SQLCODE != ${impex.oracle.error.userDoesNotExist} THEN
       RAISE;
       END IF;
       END;
@@ -79,11 +79,9 @@
     <impex.oracle.sql.create>
       CREATE USER ${impex.username}
       IDENTIFIED BY ${impex.password}
-      DEFAULT TABLESPACE
-      ${impex.oracle.defaultTablespace}
+      DEFAULT TABLESPACE ${impex.oracle.defaultTablespace}
       TEMPORARY TABLESPACE ${impex.oracle.temporaryTablespace}
-      QUOTA
-      ${impex.oracle.quota} ON ${impex.oracle.defaultTablespace}
+      QUOTA ${impex.oracle.quota} ON ${impex.oracle.defaultTablespace}
       /
     </impex.oracle.sql.create>
 
@@ -94,8 +92,7 @@
       , CREATE SESSION
       , CREATE SYNONYM
       , CREATE TABLE
-      ,
-      CREATE TRIGGER
+      , CREATE TRIGGER
       , CREATE TYPE
       , CREATE VIEW
       TO ${impex.username}

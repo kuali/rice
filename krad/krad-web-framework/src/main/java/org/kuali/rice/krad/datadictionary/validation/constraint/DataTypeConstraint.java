@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
-import org.kuali.rice.krad.datadictionary.validation.DataType;
+import org.kuali.rice.core.api.uif.control.DataType;
 
 /**
  * A data type constraint is one that enforces a specific data type for an object.  

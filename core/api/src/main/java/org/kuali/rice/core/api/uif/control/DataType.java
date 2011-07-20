@@ -1,4 +1,4 @@
-package org.kuali.rice.krad.datadictionary.validation;
+package org.kuali.rice.core.api.uif.control;
 
 import javax.xml.bind.annotation.XmlEnum;
 import java.util.Date;
@@ -13,7 +13,7 @@ import java.util.Date;
 public enum DataType {
 	STRING(String.class), DATE(Date.class), TRUNCATED_DATE(Date.class), BOOLEAN(Boolean.class), INTEGER(Integer.class), FLOAT(Float.class), DOUBLE(Double.class), LONG(Long.class), COMPLEX(Object.class);
 	
-	private Class<?> type;
+	private final Class<?> type;
 	
 	private DataType(Class<?> type) {
 		this.type = type;

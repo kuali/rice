@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.processor;
 
+import org.kuali.rice.core.api.uif.control.DataType;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.validation.AttributeValueReader;
-import org.kuali.rice.krad.datadictionary.validation.DataType;
 import org.kuali.rice.krad.datadictionary.validation.DictionaryObjectAttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.ValidationUtils;
 import org.kuali.rice.krad.datadictionary.validation.capability.Constrainable;

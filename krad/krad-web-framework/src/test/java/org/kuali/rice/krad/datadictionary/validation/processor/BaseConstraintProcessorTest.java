@@ -16,10 +16,10 @@
 package org.kuali.rice.krad.datadictionary.validation.processor;
 
 import org.junit.Before;
+import org.kuali.rice.core.api.uif.control.DataType;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.datadictionary.validation.AttributeValueReader;
-import org.kuali.rice.krad.datadictionary.validation.DataType;
 import org.kuali.rice.krad.datadictionary.validation.DictionaryObjectAttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.ErrorLevel;
 import org.kuali.rice.krad.datadictionary.validation.constraint.CaseConstraint;

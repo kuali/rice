@@ -17,7 +17,7 @@ package org.kuali.rice.krad.datadictionary.validation;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.datetime.DateTimeService;
-import org.kuali.rice.core.api.uif.control.DataType;
+import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 
 import java.math.BigDecimal;

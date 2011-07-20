@@ -4,58 +4,50 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = Select.Constants.TYPE_NAME)
-public class Select extends AbstractControl implements SelectContract {
+public class Select extends AbstractControl implements Sized, KeyLabeled {
 
     @XmlElement(name = Elements.SIZE, required = false)
     private final Integer size;
 
-    @XmlElement(name = Elements.DEFAULT_VALUE, required = false)
-    private final String defaultValue;
+    @XmlElement(name = Elements.KEY_LABELS, required = false)
+    private final Map<String, String> keyLabels;
+
+    private Select() {
+        size = null;
+        keyLabels = null;
+    }
+
+    private Select(Builder b) {
+        size = b.size;
+        keyLabels = b.keyLabels;
+    }
+
+    @Override
+    public Map<String, String> getKeyLabels() {
+        return keyLabels;
+    }
 
     @Override
     public Integer getSize() {
         return size;
     }
 
-    @Override
-    public String getDefaultValue() {
-        return defaultValue;
-    }
-
-    private Select() {
-        size = null;
-        defaultValue = null;
-    }
-
-    private Select(Builder b) {
-        super(b);
-        size = b.size;
-        defaultValue = b.defaultValue;
-    }
-
-    public static final class Builder extends AbstractControl.Builder implements SelectContract {
+    public static final class Builder extends AbstractControl.Builder implements Sized, KeyLabeled {
         private Integer size;
-        private String defaultValue;
+        private Map<String, String> keyLabels;
 
-        private Builder(String name) {
-            super(name);
+        private Builder(Map<String, String> keyLabels) {
+            setKeyLabels(keyLabels);
         }
 
-        public static Builder create(String name) {
-            return new Builder(name);
-        }
-
-        public static Builder create(SelectContract contract) {
-            Builder b = create(contract.getName());
-
-            partialCreate(contract, b);
-
-            b.setSize(contract.getSize());
-            b.setDefaultValue(contract.getDefaultValue());
-            return b;
+        public static Builder create(Map<String, String> keyLabels) {
+            return new Builder(keyLabels);
         }
 
         @Override
@@ -72,12 +64,16 @@ public class Select extends AbstractControl implements SelectContract {
         }
 
         @Override
-        public String getDefaultValue() {
-            return defaultValue;
+        public Map<String, String> getKeyLabels() {
+            return keyLabels;
         }
 
-        public void setDefaultValue(String defaultValue) {
-            this.defaultValue = defaultValue;
+        public void setKeyLabels(Map<String, String> keyLabels) {
+            if (keyLabels == null || keyLabels.isEmpty()) {
+                throw new IllegalArgumentException("keyLabels must be non-null & non-empty");
+            }
+
+            this.keyLabels = Collections.unmodifiableMap(new HashMap<String, String>(keyLabels));
         }
 
         @Override
@@ -95,6 +91,6 @@ public class Select extends AbstractControl implements SelectContract {
 
     static final class Elements {
         static final String SIZE = "size";
-        static final String DEFAULT_VALUE = "defaultValue";
+        static final String KEY_LABELS = "keyLabels";
     }
 }

@@ -4,60 +4,50 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = MultiSelect.Constants.TYPE_NAME)
-public class MultiSelect extends AbstractControl implements MultiSelectContract {
+public class MultiSelect extends AbstractControl implements Sized, KeyLabeled {
+
     @XmlElement(name = Elements.SIZE, required = false)
     private final Integer size;
 
-    @XmlElement(name = Elements.DEFAULT_VALUES, required = false)
-    private final Collection<String> defaultValues;
+    @XmlElement(name = Elements.KEY_LABELS, required = false)
+    private final Map<String, String> keyLabels;
+
+    private MultiSelect() {
+        size = null;
+        keyLabels = null;
+    }
+
+    private MultiSelect(Builder b) {
+        size = b.size;
+        keyLabels = b.keyLabels;
+    }
+
+    @Override
+    public Map<String, String> getKeyLabels() {
+        return keyLabels;
+    }
 
     @Override
     public Integer getSize() {
         return size;
     }
 
-    @Override
-    public Collection<String> getDefaultValues() {
-        return Collections.unmodifiableCollection(defaultValues);
-    }
-
-    private MultiSelect() {
-        size = null;
-        defaultValues = null;
-    }
-
-    private MultiSelect(Builder b) {
-        super(b);
-        size = b.size;
-        defaultValues = b.defaultValues;
-    }
-
-    public static final class Builder extends AbstractControl.Builder implements MultiSelectContract {
+    public static final class Builder extends AbstractControl.Builder implements Sized, KeyLabeled {
         private Integer size;
-        private Collection<String> defaultValues;
+        private Map<String, String> keyLabels;
 
-        private Builder(String name) {
-            super(name);
+        private Builder(Map<String, String> keyLabels) {
+            setKeyLabels(keyLabels);
         }
 
-        public static Builder create(String name) {
-            return new Builder(name);
-        }
-
-        public static Builder create(MultiSelectContract contract) {
-            Builder b = create(contract.getName());
-
-            partialCreate(contract, b);
-
-            b.setSize(contract.getSize());
-            b.setDefaultValues(contract.getDefaultValues());
-            return b;
+        public static Builder create(Map<String, String> keyLabels) {
+            return new Builder(keyLabels);
         }
 
         @Override
@@ -74,12 +64,16 @@ public class MultiSelect extends AbstractControl implements MultiSelectContract 
         }
 
         @Override
-        public Collection<String> getDefaultValues() {
-            return Collections.unmodifiableCollection(defaultValues);
+        public Map<String, String> getKeyLabels() {
+            return keyLabels;
         }
 
-        public void setDefaultValues(Collection<String> defaultValues) {
-            this.defaultValues = new ArrayList<String>(defaultValues);
+        public void setKeyLabels(Map<String, String> keyLabels) {
+            if (keyLabels == null || keyLabels.isEmpty()) {
+                throw new IllegalArgumentException("keyLabels must be non-null & non-empty");
+            }
+
+            this.keyLabels = Collections.unmodifiableMap(new HashMap<String, String>(keyLabels));
         }
 
         @Override
@@ -92,11 +86,11 @@ public class MultiSelect extends AbstractControl implements MultiSelectContract 
      * Defines some internal constants used on this class.
      */
     static final class Constants {
-        static final String TYPE_NAME = "SelectType";
+        static final String TYPE_NAME = "MultiSelectType";
     }
 
     static final class Elements {
         static final String SIZE = "size";
-        static final String DEFAULT_VALUES = "defaultValues";
+        static final String KEY_LABELS = "keyLabels";
     }
 }

@@ -1,6 +1,6 @@
 package org.kuali.rice.core.api.uif.control;
 
-public interface TextareaContract extends AbstractControlContract, Watermarked, SingleValued {
+public interface RowsCols {
     Integer getRows();
     Integer getCols();
 }

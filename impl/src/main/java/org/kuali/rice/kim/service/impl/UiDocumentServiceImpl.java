@@ -2289,8 +2289,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
                             (origRoleMemberImpl.getMemberId()!=null && StringUtils.equals(origRoleMemberImpl.getMemberId(), newRoleMember.getMemberId())) &&
                             (origRoleMemberImpl.getMemberTypeCode()!=null && StringUtils.equals(origRoleMemberImpl.getMemberTypeCode(), newRoleMember.getMemberTypeCode())) &&
                             !origRoleMemberImpl.isActive(new Timestamp(System.currentTimeMillis())) &&
-                            !kimTypeService.validateUniqueAttributes(identityManagementRoleDocument.getKimType().getId(),
-                                    documentRoleMember.getQualifierAsMap(), origRoleMemberImpl.getAttributes())) {
+                            !kimTypeService.validateAttributesAgainstExisting(identityManagementRoleDocument.getKimType().getId(),
+                                    documentRoleMember.getQualifierAsMap(), origRoleMemberImpl.getAttributes()).isEmpty()) {
 
                             //TODO: verify if you want to add  && newRoleMember.isActive() condition to if...
 

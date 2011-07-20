@@ -14,13 +14,20 @@ import java.util.Map;
  *
  */
 public interface KimTypeServiceTemp {
+
     /**
-	 * Get the workflow document type which
-	 * will be used for the role qualifiers when routing objects with this type.
-	 *
-	 * If no special document type is needed, this method must return null.
-	 */
-	String getWorkflowDocumentTypeName();
+    * Returns the name of a workflow document type that should be passed as a qualifier with
+    * the "documentTypeName" key when resolving responsibilities when routing a KIM document
+    * which uses this KIM type (such as a group, role, or person document).
+    */
+    String getWorkflowDocumentTypeName();
+
+    /**
+    * Returns an unmodifiable list of strings identifying the name of the attributes of the KIM object which uses this
+    * type that should be included in the Map of qualifiers that are provided to the KIM responsibility service when
+    * resolving responsibility-based routing at the node with the given name.
+    */
+    List<String> getWorkflowRoutingAttributes(String nodeName);
 
 	/**
 	 * Perform validation on the attributes of an object.  The resultant map
@@ -33,15 +40,5 @@ public interface KimTypeServiceTemp {
 	Map<String, String> validateAttributes(String kimTypeId, Map<String, String> attributes);
 
 	Map<String, String> validateAttributesAgainstExisting(String kimTypeId, Map<String, String> newAttributes, Map<String, String> oldAttributes);
-
-	Map<String, String> validateUnmodifiableAttributes(String kimTypeId, Map<String, String> mainAttributes, Map<String, String> delegationAttributes);
-
-	boolean validateUniqueAttributes(String kimTypeId, Map<String, String> newAttributes, Map<String, String> oldAttributes);
-
-    Map<String, String> getAttributeValidValues(String kimTypeId, String attributeName);
-
-    List<String> getWorkflowRoutingAttributes( String routeLevel );
-
-    List<String> getUniqueAttributes(String kimTypeId);
 }
 

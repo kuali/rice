@@ -1,63 +1,50 @@
 package org.kuali.rice.core.api.uif.control;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * This control is a group of checkboxes.  Checkboxes can have multiple selected values.
- */
-@XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = CheckboxGroup.Constants.TYPE_NAME)
-public class CheckboxGroup extends AbstractControl implements CheckboxGroupContract {
-    @XmlElement(name = Elements.DEFAULT_VALUES, required = false)
-    private final Collection<String> defaultValues;
+public class CheckboxGroup extends AbstractControl implements KeyLabeled {
+
+    @XmlElement(name = Elements.KEY_LABELS, required = false)
+    private final Map<String, String> keyLabels;
 
     @Override
-    public Collection<String> getDefaultValues() {
-        return Collections.unmodifiableCollection(defaultValues);
+    public Map<String, String> getKeyLabels() {
+        return keyLabels;
     }
 
     private CheckboxGroup() {
-        defaultValues = null;
+        keyLabels = null;
     }
 
     private CheckboxGroup(Builder b) {
-        super(b);
-        defaultValues = b.defaultValues;
+        keyLabels = b.keyLabels;
     }
 
-    public static final class Builder extends AbstractControl.Builder implements CheckboxGroupContract {
-        private Collection<String> defaultValues;
+    public static final class Builder extends AbstractControl.Builder implements KeyLabeled {
+        private Map<String, String> keyLabels;
 
-        private Builder(String name) {
-            super(name);
+        private Builder(Map<String, String> keyLabels) {
+            setKeyLabels(keyLabels);
         }
 
-        public static Builder create(String name) {
-            return new Builder(name);
-        }
-
-        public static Builder create(MultiSelectContract contract) {
-            Builder b = create(contract.getName());
-
-            partialCreate(contract, b);
-
-            b.setDefaultValues(contract.getDefaultValues());
-            return b;
+        public static Builder create(Map<String, String> keyLabels) {
+            return new Builder(keyLabels);
         }
 
         @Override
-        public Collection<String> getDefaultValues() {
-            return Collections.unmodifiableCollection(defaultValues);
+        public Map<String, String> getKeyLabels() {
+            return keyLabels;
         }
 
-        public void setDefaultValues(Collection<String> defaultValues) {
-            this.defaultValues = new ArrayList<String>(defaultValues);
+        public void setKeyLabels(Map<String, String> keyLabels) {
+            if (keyLabels == null || keyLabels.isEmpty()) {
+                throw new IllegalArgumentException("keyLabels must be non-null & non-empty");
+            }
+
+            this.keyLabels = Collections.unmodifiableMap(new HashMap<String, String>(keyLabels));
         }
 
         @Override
@@ -74,6 +61,6 @@ public class CheckboxGroup extends AbstractControl implements CheckboxGroupContr
     }
 
     static final class Elements {
-        static final String DEFAULT_VALUES = "defaultValues";
+        static final String KEY_LABELS = "keyLabels";
     }
 }

@@ -6,6 +6,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.core.api.uif.control.Control;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -16,7 +17,7 @@ import java.util.Collection;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = AbstractWidget.Constants.TYPE_NAME)
-public class AbstractWidget implements ModelObjectComplete {
+public abstract class AbstractWidget implements Widget, ModelObjectComplete {
 
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -37,10 +38,13 @@ public class AbstractWidget implements ModelObjectComplete {
         return ToStringBuilder.reflectionToString(this);
     }
 
-    abstract static class Builder implements ModelBuilder {
+    public abstract static class Builder implements Widget, ModelBuilder {
         Builder() {
             super();
         }
+
+        //todo make ModelBuilder generic so I don't have to do this.
+        public abstract AbstractWidget build();
     }
 
     /**

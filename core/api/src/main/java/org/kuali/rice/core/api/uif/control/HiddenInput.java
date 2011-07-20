@@ -5,56 +5,48 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-/**
- * This is a hidden imput control.
- */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = HiddenInput.Constants.TYPE_NAME)
-public class HiddenInput extends AbstractControl implements HiddenInputContract {
-    @XmlElement(name = Elements.DEFAULT_VALUE, required = false)
-    private final String defaultValue;
+public class HiddenInput extends AbstractControl implements Sized {
+
+    @XmlElement(name = Elements.SIZE, required = false)
+    private final Integer size;
 
     @Override
-    public String getDefaultValue() {
-        return defaultValue;
+    public Integer getSize() {
+        return size;
     }
 
     private HiddenInput() {
-        defaultValue = null;
+        size = null;
     }
 
     private HiddenInput(Builder b) {
-        super(b);
-        defaultValue = b.defaultValue;
+        size = b.size;
     }
 
-    public static final class Builder extends AbstractControl.Builder implements HiddenInputContract {
-        private String defaultValue;
+    public static final class Builder extends AbstractControl.Builder implements Sized {
+        private Integer size;
 
-        private Builder(String name) {
-            super(name);
+        private Builder() {
+            super();
         }
 
-        public static Builder create(String name) {
-            return new Builder(name);
-        }
-
-        public static Builder create(TextInputContract contract) {
-            Builder b = create(contract.getName());
-
-            partialCreate(contract, b);
-
-            b.setDefaultValue(contract.getDefaultValue());
-            return b;
+        public static Builder create() {
+            return new Builder();
         }
 
         @Override
-        public String getDefaultValue() {
-            return defaultValue;
+        public Integer getSize() {
+            return size;
         }
 
-        public void setDefaultValue(String defaultValue) {
-            this.defaultValue = defaultValue;
+        public void setSize(Integer size) {
+            if (size != null && size < 1) {
+                throw new IllegalArgumentException("size was < 1");
+            }
+
+            this.size = size;
         }
 
         @Override
@@ -71,6 +63,6 @@ public class HiddenInput extends AbstractControl implements HiddenInputContract 
     }
 
     static final class Elements {
-        static final String DEFAULT_VALUE = "defaultValue";
+        static final String SIZE = "size";
     }
 }

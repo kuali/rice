@@ -65,15 +65,15 @@ public class RoleDocumentDelegationMemberRule extends DocumentRuleBase implement
 			mapToValidate = attributeValidationHelper.convertQualifiersToMap(roleMember.getQualifiers());
 			mapListToValidate.add(mapToValidate);
     	}
-		boolean attributesUnique;
+
 
 	    int i = 0;
 	    for (RoleDocumentDelegationMember member: document.getDelegationMembers()){
-	    	attributesUnique = kimTypeService.validateUniqueAttributes(
+	    	Map<String, String> localErrors = kimTypeService.validateAttributesAgainstExisting(
 					document.getKimType().getId(),
 					attributeValidationHelper.convertQualifiersToMap(newMember.getQualifiers()), 
 					attributeValidationHelper.convertQualifiersToMap(member.getQualifiers()));
-	    	if (!attributesUnique && (member.getMemberId().equals(newMember.getMemberId()) && 
+	    	if (!localErrors.isEmpty() && (member.getMemberId().equals(newMember.getMemberId()) &&
 	    			member.getMemberTypeCode().equals(newMember.getMemberTypeCode()))){
 	            rulePassed = false;
 	            GlobalVariables.getMessageMap().putError("delegationMember.memberId", RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Delegation Member"});

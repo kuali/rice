@@ -1,16 +1,16 @@
 package org.kuali.rice.core.api.uif.control;
 
-import org.kuali.rice.core.api.uif.control.widget.AbstractWidget;
+import org.kuali.rice.core.api.uif.control.widget.Widget;
 
 import java.util.Collection;
 
-public interface AbstractControlContract {
+public interface AttributeFieldContract {
     
     String getName();
     String getShortLabel();
     String getLongLabel();
     String getHelpSummary();
-    String getHelpConstraInteger();
+    String getHelpConstraint();
     String getHelpDescription();
     boolean isForceUpperCase();
     Integer getMinLength();
@@ -20,5 +20,8 @@ public interface AbstractControlContract {
     String getRegexConstraint();
     String getRegexContraintMsg();
     boolean isRequired();
-    Collection<? extends AbstractWidget> getWidgets();
+    Collection<String> getDefaultValues();
+    Control getControl();
+    Collection<? extends Widget> getWidgets();
+
 }

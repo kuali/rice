@@ -713,7 +713,6 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
         KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(KimTypeBo.to(role.getKimRoleType()));
 
-        boolean attributesUnique;
 		Map<String, String> errorsAttributesAgainstExisting;
 	    int i = 0;
 	    boolean rulePassed = true;
@@ -729,13 +728,6 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 					attributeValidationHelper.convertErrors(errorPath, attributeValidationHelper
                             .convertQualifiersToAttrIdxMap(kimDocumentRoleMember.getQualifiers()),
                             errorsAttributesAgainstExisting));
-
-	    	attributesUnique = kimTypeService.validateUniqueAttributes(
-	    			role.getKimRoleType().getId(), newMemberQualifiers, oldMemberQualifiers);
-	    	if (!attributesUnique){
-	            GlobalVariables.getMessageMap().putError("document."+errorPath+".qualifiers[0].attrVal", RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Role Qualifier"});
-	            return false;
-	    	}
 	    	i++;
 	    }
 
@@ -786,8 +778,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 				valid = false;
 				GlobalVariables.getMessageMap().putError("document."+errorPath, RiceKeyConstants.ERROR_DELEGATE_ROLE_MEMBER_ASSOCIATION, new String[]{});
 			} else{
-				errorsTemp = kimTypeService.validateUnmodifiableAttributes(
-								kimType.getId(), roleMember.getAttributes(), mapToValidate);
+				kimTypeService.validateAttributesAgainstExisting(kimType.getId(), roleMember.getAttributes(), mapToValidate);
 				validationErrors.putAll(
 						attributeValidationHelper.convertErrors(errorPath, attributeValidationHelper
                                 .convertQualifiersToAttrIdxMap(delegationMember.getQualifiers()), errorsTemp));

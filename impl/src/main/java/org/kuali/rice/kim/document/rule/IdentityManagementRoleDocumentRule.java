@@ -464,7 +464,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 				valid = false;
 				GlobalVariables.getMessageMap().putError("document.delegationMembers["+memberCounter+"]", RiceKeyConstants.ERROR_DELEGATE_ROLE_MEMBER_ASSOCIATION, new String[]{});
 			} else{
-				errorsTemp = kimTypeService.validateUnmodifiableAttributes(
+				errorsTemp = kimTypeService.validateAttributesAgainstExisting(
 								kimType.getId(),
 								attributeValidationHelper.convertQualifiersToMap(roleMember.getQualifiers()),
 								mapToValidate);

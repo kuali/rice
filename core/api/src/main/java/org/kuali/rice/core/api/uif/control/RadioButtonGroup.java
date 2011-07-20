@@ -1,53 +1,50 @@
 package org.kuali.rice.core.api.uif.control;
 
 import javax.xml.bind.annotation.XmlElement;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
-public class RadioButtonGroup extends AbstractControl implements RadioButtonGroupContract {
+public class RadioButtonGroup extends AbstractControl implements KeyLabeled {
 
-    @XmlElement(name = Elements.DEFAULT_VALUE, required = false)
-    private final String defaultValue;
+    @XmlElement(name = Elements.KEY_LABELS, required = false)
+    private final Map<String, String> keyLabels;
 
     @Override
-    public String getDefaultValue() {
-        return defaultValue;
+    public Map<String, String> getKeyLabels() {
+        return keyLabels;
     }
 
     private RadioButtonGroup() {
-        defaultValue = null;
+        keyLabels = null;
     }
 
     private RadioButtonGroup(Builder b) {
-        super(b);
-        defaultValue = b.defaultValue;
+        keyLabels = b.keyLabels;
     }
 
-    public static final class Builder extends AbstractControl.Builder implements RadioButtonGroupContract {
-        private String defaultValue;
+    public static final class Builder extends AbstractControl.Builder implements KeyLabeled {
+        private Map<String, String> keyLabels;
 
-        private Builder(String name) {
-            super(name);
+        private Builder(Map<String, String> keyLabels) {
+            setKeyLabels(keyLabels);
         }
 
-        public static Builder create(String name) {
-            return new Builder(name);
-        }
-
-        public static Builder create(TextInputContract contract) {
-            Builder b = create(contract.getName());
-
-            partialCreate(contract, b);
-
-            b.setDefaultValue(contract.getDefaultValue());
-            return b;
+        public static Builder create(Map<String, String> keyLabels) {
+            return new Builder(keyLabels);
         }
 
         @Override
-        public String getDefaultValue() {
-            return defaultValue;
+        public Map<String, String> getKeyLabels() {
+            return keyLabels;
         }
 
-        public void setDefaultValue(String defaultValue) {
-            this.defaultValue = defaultValue;
+        public void setKeyLabels(Map<String, String> keyLabels) {
+            if (keyLabels == null || keyLabels.isEmpty()) {
+                throw new IllegalArgumentException("keyLabels must be non-null & non-empty");
+            }
+
+            this.keyLabels = Collections.unmodifiableMap(new HashMap<String, String>(keyLabels));
         }
 
         @Override
@@ -64,6 +61,6 @@ public class RadioButtonGroup extends AbstractControl implements RadioButtonGrou
     }
 
     static final class Elements {
-        static final String DEFAULT_VALUE = "defaultValue";
+        static final String KEY_LABELS = "keyLabels";
     }
 }

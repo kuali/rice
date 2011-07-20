@@ -15,18 +15,24 @@
  */
 package org.kuali.rice.krad.keyvalues;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
+import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
+import org.kuali.rice.krad.datadictionary.AttributeDefinition;
+import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.krad.service.DataDictionaryService;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -37,6 +43,14 @@ public class KimAttributeValuesFinder extends KeyValuesBase {
 
 	protected String kimTypeId;
 	protected String kimAttributeName;
+    private DataDictionaryService dataDictionaryService;
+
+    protected DataDictionaryService getDataDictionaryService() {
+		if ( dataDictionaryService == null ) {
+			dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
+		}
+		return this.dataDictionaryService;
+	}
 
 	/**
 	 * @see KeyValuesFinder#getKeyValues()
@@ -47,7 +61,7 @@ public class KimAttributeValuesFinder extends KeyValuesBase {
         if ( kimType != null ) {
 	        KimTypeService service = KIMServiceLocatorWeb.getKimTypeService(kimType);
 	        if ( service != null ) {
-				return toKeyValues(service.getAttributeValidValues(kimTypeId,kimAttributeName));
+				return getAttributeValidValues(kimTypeId,kimAttributeName);
 	        } 
 	        LOG.error( "Unable to get type service " + kimType.getServiceName() );
         } else {
@@ -56,18 +70,81 @@ public class KimAttributeValuesFinder extends KeyValuesBase {
         return Collections.emptyList();
 	}
 
-    private static List<KeyValue> toKeyValues(Map<String, String> m) {
-        if (m == null) {
-            return Collections.emptyList();
-        }
+    private List<KeyValue> getAttributeValidValues(String kimTypeId, String attributeName) {
+		if ( LOG.isDebugEnabled() ) {
+			LOG.debug( "getAttributeValidValues(" + kimTypeId + "," + attributeName + ")");
+		}
+		KimTypeAttribute attrib = KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId).getAttributeDefinitionByName(attributeName);
+		if ( LOG.isDebugEnabled() ) {
+			LOG.debug( "Found Attribute definition: " + attrib );
+		}
+		List<KeyValue> pairs = null;
+		if ( StringUtils.isNotBlank(attrib.getKimAttribute().getComponentName()) ) {
+			try {
+				Class.forName(attrib.getKimAttribute().getComponentName());
+				try {
+					pairs = getLocalDataDictionaryAttributeValues(attrib);
+				} catch ( ClassNotFoundException ex ) {
+					LOG.error( "Got a ClassNotFoundException resolving a values finder - since this should have been executing in the context of the host system - this should not happen.");
+					return Collections.emptyList();
+				}
+			} catch ( ClassNotFoundException ex ) {
+				LOG.error( "Got a ClassNotFoundException resolving a component name (" + attrib.getKimAttribute().getComponentName() + ") - since this should have been executing in the context of the host system - this should not happen.");
+			}
+		} else {
+			pairs = getCustomValueFinderValues(attrib);
+		}
+        return pairs;
+	}
 
-        final List<KeyValue> kv = new ArrayList<KeyValue>();
-        for (Map.Entry<String, String> e : m.entrySet()) {
-            kv.add(new ConcreteKeyValue(e));
-        }
+    protected List<KeyValue> getCustomValueFinderValues(KimTypeAttribute attrib) {
+		return Collections.emptyList();
+	}
 
-        return Collections.unmodifiableList(kv);
-    }
+    protected List<KeyValue> getLocalDataDictionaryAttributeValues(KimTypeAttribute attr) throws ClassNotFoundException {
+
+		BusinessObjectEntry entry = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(attr.getKimAttribute().getComponentName());
+		if ( entry == null ) {
+			LOG.warn( "Unable to obtain BusinessObjectEntry for component name: " + attr.getKimAttribute().getComponentName() );
+			return Collections.emptyList();
+		}
+		AttributeDefinition definition = entry.getAttributeDefinition(attr.getKimAttribute().getAttributeName());
+		if ( definition == null ) {
+			LOG.warn( "No attribute named " + attr.getKimAttribute().getAttributeName() + " found on BusinessObjectEntry for: " + attr.getKimAttribute().getComponentName() );
+			return Collections.emptyList();
+		}
+
+        List<KeyValue> pairs = new ArrayList<KeyValue>();
+		String keyValuesFinderName = definition.getControl().getValuesFinderClass();
+		if ( StringUtils.isNotBlank(keyValuesFinderName)) {
+			try {
+				KeyValuesFinder finder = (KeyValuesFinder)Class.forName(keyValuesFinderName).newInstance();
+				if (finder instanceof PersistableBusinessObjectValuesFinder) {
+	                ((PersistableBusinessObjectValuesFinder) finder).setBusinessObjectClass(
+                            ClassLoaderUtils.getClass(definition.getControl().getBusinessObjectClass()));
+	                ((PersistableBusinessObjectValuesFinder) finder).setKeyAttributeName(definition.getControl().getKeyAttribute());
+	                ((PersistableBusinessObjectValuesFinder) finder).setLabelAttributeName(definition.getControl().getLabelAttribute());
+	                if (definition.getControl().getIncludeBlankRow() != null) {
+		                ((PersistableBusinessObjectValuesFinder) finder).setIncludeBlankRow(definition.getControl().getIncludeBlankRow());
+	                }
+	                ((PersistableBusinessObjectValuesFinder) finder).setIncludeKeyInDescription(definition.getControl().getIncludeKeyInLabel());
+				}
+
+                for (KeyValue pair : finder.getKeyValues()) {
+                    pairs.add(new ConcreteKeyValue(pair));
+                }
+
+			} catch ( ClassNotFoundException ex ) {
+				LOG.info( "Unable to find class: " + keyValuesFinderName + " in the current context." );
+				throw ex;
+			} catch (Exception e) {
+				LOG.error("Unable to build a KeyValuesFinder for " + attr.getKimAttribute().getAttributeName(), e);
+			}
+		} else {
+			LOG.warn( "No values finder class defined on the control definition (" + definition.getControl() + ") on BO / attr = " + attr.getKimAttribute().getComponentName() + " / " + attr.getKimAttribute().getAttributeName() );
+		}
+		return pairs;
+	}
 
 	/**
 	 * @return the kimAttributeName

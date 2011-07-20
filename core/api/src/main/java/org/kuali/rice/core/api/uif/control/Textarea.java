@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = Textarea.Constants.TYPE_NAME)
-public class Textarea extends AbstractControl implements TextareaContract {
+public class Textarea extends AbstractControl implements Watermarked, RowsCols {
 
     @XmlElement(name = Elements.ROWS, required = false)
     private final Integer rows;
@@ -17,9 +17,6 @@ public class Textarea extends AbstractControl implements TextareaContract {
 
     @XmlElement(name = Elements.WATERMARK, required = false)
     private final String watermark;
-
-    @XmlElement(name = Elements.DEFAULT_VALUE, required = false)
-    private final String defaultValue;
 
     @Override
     public Integer getRows() {
@@ -36,50 +33,29 @@ public class Textarea extends AbstractControl implements TextareaContract {
         return watermark;
     }
 
-    @Override
-    public String getDefaultValue() {
-        return defaultValue;
-    }
-
     private Textarea() {
         rows = null;
         cols = null;
         watermark = null;
-        defaultValue = null;
     }
 
     private Textarea(Builder b) {
-        super(b);
         rows = b.rows;
         cols = b.cols;
         watermark = b.watermark;
-        defaultValue = b.defaultValue;
     }
 
-    public static final class Builder extends AbstractControl.Builder implements TextareaContract {
+    public static final class Builder extends AbstractControl.Builder implements Watermarked, RowsCols {
         private Integer rows;
         private Integer cols;
         private String watermark;
-        private String defaultValue;
 
-        private Builder(String name) {
-            super(name);
+        private Builder() {
+            super();
         }
 
-        public static Builder create(String name) {
-            return new Builder(name);
-        }
-
-        public static Builder create(TextareaContract contract) {
-            Builder b = create(contract.getName());
-
-            partialCreate(contract, b);
-
-            b.setCols(contract.getCols());
-            b.setRows(contract.getRows());
-            b.setWatermark(contract.getWatermark());
-            b.setDefaultValue(contract.getDefaultValue());
-            return b;
+        public static Builder create() {
+            return new Builder();
         }
 
         @Override
@@ -118,15 +94,6 @@ public class Textarea extends AbstractControl implements TextareaContract {
         }
 
         @Override
-        public String getDefaultValue() {
-            return defaultValue;
-        }
-
-        public void setDefaultValue(String defaultValue) {
-            this.defaultValue = defaultValue;
-        }
-
-        @Override
         public Textarea build() {
             return new Textarea(this);
         }
@@ -143,6 +110,5 @@ public class Textarea extends AbstractControl implements TextareaContract {
         static final String COLS = "cols";
         static final String ROWS = "rows";
         static final String WATERMARK = "watermark";
-        static final String DEFAULT_VALUE = "defaultValue";
     }
 }

@@ -62,7 +62,6 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
         Long newMemberFromTime = newMember.getActiveFromDate() == null ? 0L : newMember.getActiveFromDate().getTime();
         Long newMemberToTime = newMember.getActiveToDate() == null ? Long.MAX_VALUE : newMember.getActiveToDate().getTime();
         
-        boolean attributesUnique;
 		Map<String, String> errorsAttributesAgainstExisting;
 	    int i = 0;
 	    Map<String, String> newMemberQualifiers;
@@ -76,10 +75,7 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 	    			document.getKimType().getId(), newMemberQualifiers, oldMemberQualifiers);
 			validationErrors.putAll( 
 					attributeValidationHelper.convertErrorsForMappedFields(ERROR_PATH, errorsAttributesAgainstExisting));
-
-	    	attributesUnique = kimTypeService.validateUniqueAttributes(
-	    			document.getKimType().getId(), newMemberQualifiers, oldMemberQualifiers);
-	    	if (!attributesUnique && (member.getMemberId().equals(newMember.getMemberId()) && 
+	    	if (!errorsAttributesAgainstExisting.isEmpty() && (member.getMemberId().equals(newMember.getMemberId()) &&
 	    			member.getMemberTypeCode().equals(newMember.getMemberTypeCode()))
 	    			&& ((newMemberFromTime >= memberFromTime && newMemberFromTime < memberToTime) 
         					|| (newMemberToTime >= memberFromTime && newMemberToTime <= memberToTime))

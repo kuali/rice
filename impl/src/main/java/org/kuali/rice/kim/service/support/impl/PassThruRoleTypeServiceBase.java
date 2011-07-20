@@ -113,21 +113,6 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
 		}
 		// base implementation - do nothing
 	}
-
-    @Override
-	public boolean validateUniqueAttributes(String kimTypeId, Map<String, String> newAttributes, Map<String, String> oldAttributes){
-        return true;
-    }
-
-    @Override
-	public Map<String, String> validateUnmodifiableAttributes(String kimTypeId, Map<String, String> mainAttributes, Map<String, String> delegationAttributes){
-        return Collections.emptyMap();
-    }
-    
-    @Override
-	public List<String> getUniqueAttributes(String kimTypeId){
-        return Collections.emptyList();
-    }
     
 	@Override
 	public Map<String, String> validateAttributesAgainstExisting(String kimTypeId, Map<String, String> newAttributes, Map<String, String> oldAttributes){

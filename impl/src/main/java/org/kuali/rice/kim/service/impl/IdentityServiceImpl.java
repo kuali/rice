@@ -194,6 +194,9 @@ public class IdentityServiceImpl implements IdentityService {
         if (StringUtils.isBlank(principalName)) {
             throw new RiceIllegalArgumentException("principalName is blank");
         }
+        if (StringUtils.isBlank(password)) {
+            throw new RiceIllegalArgumentException("password is blank");
+        }
 		Map<String,Object> criteria = new HashMap<String,Object>(3);
         criteria.put(KIMPropertyConstants.Principal.PRINCIPAL_NAME, principalName);
         criteria.put(KIMPropertyConstants.Principal.PASSWORD, password);

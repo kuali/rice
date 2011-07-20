@@ -14,6 +14,7 @@ import org.kuali.rice.kim.impl.identity.personal.EntityBioDemographicsBo
 import java.text.SimpleDateFormat
 import org.kuali.rice.krad.service.PersistenceService
 import org.kuali.rice.kim.impl.identity.principal.PrincipalBo
+import org.kuali.rice.kim.api.identity.principal.Principal
 
 class IdentityServiceImplTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
@@ -25,7 +26,8 @@ class IdentityServiceImplTest {
     IdentityService identityService;
     IdentityServiceImpl identityServiceImpl;
 
-    static Map<String, EntityBo> sampleEntities = new HashMap<String, EntityBo>()
+    static Map<String, EntityBo> sampleEntities = new HashMap<String, EntityBo>();
+    static Map<String, EntityBo> samplePrincipals = new HashMap<String, PrincipalBo>();
 
     @BeforeClass
     static void createSampleBOs() {
@@ -36,20 +38,24 @@ class IdentityServiceImplTest {
         Date birthDate = formatter.parse(birthDateString);
         Date deceasedDate = formatter.parse(deceasedDateString);
         EntityBioDemographicsBo firstEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "AAA", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", countryOfBirthCode: "US", birthStateCode: "IN", cityOfBirth: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
-        PrincipalBo firstEntityPrincipal = new PrincipalBo(entityId: "AAA", principalId: "P1", active: true, principalName: "FirstPrincipal", versionNumber: 1);
+        PrincipalBo firstEntityPrincipal = new PrincipalBo(entityId: "AAA", principalId: "P1", active: true, principalName: "first", versionNumber: 1, password: "first_password");
         List<PrincipalBo> firstPrincipals = new ArrayList<PrincipalBo>();
         firstPrincipals.add(firstEntityPrincipal);
         EntityBo firstEntityBo = new EntityBo(active: true, id: "AAA", privacyPreferences: firstEntityPrivacyPreferencesBo, bioDemographics: firstEntityBioDemographicsBo, principals: firstPrincipals);
 
         EntityPrivacyPreferencesBo secondEntityPrivacyPreferencesBo = new EntityPrivacyPreferencesBo(entityId: "BBB", suppressName: true, suppressEmail: true, suppressAddress: true, suppressPhone: true, suppressPersonal: false);
         EntityBioDemographicsBo secondEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "BBB", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", countryOfBirthCode: "US", birthStateCode: "IN", cityOfBirth: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
-        PrincipalBo secondEntityPrincipal = new PrincipalBo(entityId: "BBB", principalId: "P2", active: true, principalName: "SecondPrincipal", versionNumber: 1);
+        PrincipalBo secondEntityPrincipal = new PrincipalBo(entityId: "BBB", principalId: "P2", active: true, principalName: "second", versionNumber: 1, password: "second_password");
         List<PrincipalBo> secondPrincipals = new ArrayList<PrincipalBo>();
         secondPrincipals.add(secondEntityPrincipal);
         EntityBo secondEntityBo = new EntityBo(active: true, id: "BBB", privacyPreferences: secondEntityPrivacyPreferencesBo, bioDemographics: secondEntityBioDemographicsBo, principals: secondPrincipals);
 
         for (bo in [firstEntityBo, secondEntityBo]) {
             sampleEntities.put(bo.id, bo)
+        }
+
+        for (bo in [firstEntityPrincipal, secondEntityPrincipal]) {
+            samplePrincipals.put(bo.principalId, bo);
         }
     }
 
@@ -154,6 +160,84 @@ class IdentityServiceImplTest {
 
         for (EntityBo entityBo in sampleEntities.values()) {
             Assert.assertEquals(EntityBo.to(entityBo), identityService.getEntityByPrincipalId(entityBo.principals[0].principalId));
+        }
+
+        mockBoService.verify(boService)
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetEntityByPrincipalNameWithEmptyNameFails() {
+        Entity entity = identityService.getEntityByPrincipalName("");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetEntityByPrincipalNameWithNullNameFails() {
+        Entity entity = identityService.getEntityByPrincipalName(null);
+    }
+
+    @Test
+    public void testGetEntityByPrincipalNameSucceeds() {
+        mockBoService.demand.findMatching(1..sampleEntities.size()) {
+            Class clazz, Map map -> for (EntityBo entityBo in sampleEntities.values()) {
+                for (PrincipalBo principalBo in entityBo.principals) {
+                    if (principalBo.principalName.equals(map.get("principals.principalName")))
+                    {
+                        Collection<EntityBo> entities = new ArrayList<EntityBo>();
+                        entities.add(entityBo);
+                        return entities;
+                    }
+                }
+            }
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        for (EntityBo entityBo in sampleEntities.values()) {
+            Assert.assertEquals(EntityBo.to(entityBo), identityService.getEntityByPrincipalName(entityBo.principals[0].principalName));
+        }
+
+        mockBoService.verify(boService)
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetPrincipalByPrincipalNameAndPasswordWithEmptyNameFails() {
+        Principal principal = identityService.getPrincipalByPrincipalNameAndPassword("", "password");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetPrincipalByPrincipalNameAndPasswordWithEmptyPasswordFails() {
+        Principal principal = identityService.getPrincipalByPrincipalNameAndPassword("name", "");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetPrincipalByPrincipalNameAndPasswordWithNullNameFails() {
+        Principal principal = identityService.getPrincipalByPrincipalNameAndPassword(null, "password");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetPrincipalByPrincipalNameAndPasswordWithNullPasswordFails() {
+        Principal principal = identityService.getPrincipalByPrincipalNameAndPassword("name", null);
+    }
+
+    @Test
+    public void testGetPrincipalByPrincipalNameAndPasswordSucceeds() {
+        mockBoService.demand.findMatching(1..samplePrincipals.size()) {
+            Class clazz, Map map -> for (PrincipalBo principalBo in samplePrincipals.values()) {
+                if (principalBo.principalName.equals(map.get("principalName"))
+                    && principalBo.password.equals(map.get("password"))
+                    && principalBo.active)
+                {
+                    Collection<PrincipalBo> principals = new ArrayList<PrincipalBo>();
+                    principals.add(principalBo);
+                    return principals;
+                }
+            }
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        for (PrincipalBo principalBo in samplePrincipals.values()) {
+            Assert.assertEquals(PrincipalBo.to(principalBo), identityService.getPrincipalByPrincipalNameAndPassword(principalBo.principalName, principalBo.password));
         }
 
         mockBoService.verify(boService)

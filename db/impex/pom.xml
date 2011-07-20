@@ -48,16 +48,63 @@
     <impex.masterdb.password>RICEMASTER</impex.masterdb.password>
     <impex.oracle.driver>oracle.jdbc.driver.OracleDriver</impex.oracle.driver>
     <impex.oracle.default.url>jdbc:oracle:thin:@localhost:1521:XE</impex.oracle.default.url>
+    <impex.oracle.dba.url>${impex.oracle.default.url}</impex.oracle.dba.url>
     <impex.oracle.delimiter>/</impex.oracle.delimiter>
     <impex.oracle.defaultTablespace>users</impex.oracle.defaultTablespace>
     <impex.oracle.temporaryTablespace>temp</impex.oracle.temporaryTablespace>
     <impex.oracle.quota>UNLIMITED</impex.oracle.quota>
-    <impex.oracle.error.userDoesNotExist>-01918</impex.oracle.error.userDoesNotExist>
-    <impex.oracle.error.userAlreadyExists>-01920</impex.oracle.error.userAlreadyExists>
+    <sql.oracle.error.userDoesNotExist>-01918</sql.oracle.error.userDoesNotExist>
+    <sql.oracle.error.userAlreadyExists>-01920</sql.oracle.error.userAlreadyExists>
     <impex.oracle.dba.username>SYSTEM</impex.oracle.dba.username>
     <impex.oracle.dba.password>change_on_install</impex.oracle.dba.password>
 
-    <!-- Simple select query for validating connection properties -->
+    <impex.mysql.driver>com.mysql.jdbc.Driver</impex.mysql.driver>
+    <impex.mysql.default.url>jdbc:mysql://localhost/${impex.database}</impex.mysql.default.url>
+    <impex.mysql.dba.url>jdbc:mysql://localhost/</impex.mysql.dba.url>
+    <impex.mysql.delimiter>/</impex.mysql.delimiter>
+    <impex.mysql.database>rice</impex.mysql.database>
+    <impex.mysql.dba.username>root</impex.mysql.dba.username>
+    <impex.mysql.dba.password>change_on_install</impex.mysql.dba.password>
+    <sql.mysql.character.set>utf8</sql.mysql.character.set>
+    <sql.mysql.collate>utf8_bin</sql.mysql.collate>
+
+    <!-- Simple queries for validating connection properties -->
+    <impex.mysql.sql.validate>
+      SELECT 1
+    </impex.mysql.sql.validate>
+    <!--
+      MySQL does not have DROP USER IF EXISTS.  So we grant permissions on *.*
+      This creates a user if they don't exist (but doesn't error out if they already do),
+      Then immediately drop them
+     -->
+    <impex.mysql.sql.drop>
+      DROP DATABASE IF EXISTS ${impex.database}
+      /
+      GRANT USAGE ON *.* TO '${impex.username}'@'%'
+      IDENTIFIED BY '${impex.password}'
+      /
+      DROP
+      USER ${impex.username}
+      /
+    </impex.mysql.sql.drop>
+    <impex.mysql.sql.create>
+      CREATE DATABASE IF NOT EXISTS ${impex.database}
+      DEFAULT CHARACTER SET
+      '${sql.mysql.character.set}'
+      DEFAULT COLLATE '${sql.mysql.collate}'
+      /
+
+      CREATE USER '${impex.username}'@'%' IDENTIFIED
+      BY '${impex.password}'
+      /
+    </impex.mysql.sql.create>
+    <impex.mysql.sql.grants>
+      GRANT ALL ON ${impex.database}.*
+      TO '${impex.username}'@'%'
+      WITH GRANT OPTION
+      /
+    </impex.mysql.sql.grants>
+
     <impex.oracle.sql.validate>
       SELECT SYSDATE FROM DUAL
     </impex.oracle.sql.validate>
@@ -68,7 +115,7 @@
       EXECUTE IMMEDIATE 'DROP USER ${impex.username} CASCADE';
       EXCEPTION WHEN OTHERS THEN
       IF
-      SQLCODE != ${impex.oracle.error.userDoesNotExist} THEN
+      SQLCODE != ${sql.oracle.error.userDoesNotExist} THEN
       RAISE;
       END IF;
       END;
@@ -79,9 +126,11 @@
     <impex.oracle.sql.create>
       CREATE USER ${impex.username}
       IDENTIFIED BY ${impex.password}
-      DEFAULT TABLESPACE ${impex.oracle.defaultTablespace}
+      DEFAULT TABLESPACE
+      ${impex.oracle.defaultTablespace}
       TEMPORARY TABLESPACE ${impex.oracle.temporaryTablespace}
-      QUOTA ${impex.oracle.quota} ON ${impex.oracle.defaultTablespace}
+      QUOTA
+      ${impex.oracle.quota} ON ${impex.oracle.defaultTablespace}
       /
     </impex.oracle.sql.create>
 
@@ -91,8 +140,9 @@
       , CREATE SEQUENCE
       , CREATE SESSION
       , CREATE SYNONYM
-      , CREATE TABLE
       , CREATE TRIGGER
+      ,
+      CREATE TABLE
       , CREATE TYPE
       , CREATE VIEW
       TO ${impex.username}
@@ -138,6 +188,7 @@
                 <goal>execute</goal>
               </goals>
               <configuration>
+                <url>${impex.dba.url}</url>
                 <username>${impex.dba.username}</username>
                 <password>${impex.dba.password}</password>
                 <sqlCommand>${impex.sql.validate}</sqlCommand>
@@ -162,6 +213,7 @@
                 <goal>execute</goal>
               </goals>
               <configuration>
+                <url>${impex.dba.url}</url>
                 <username>${impex.dba.username}</username>
                 <password>${impex.dba.password}</password>
                 <sqlCommand>${impex.sql.drop}</sqlCommand>
@@ -174,6 +226,7 @@
                 <goal>execute</goal>
               </goals>
               <configuration>
+                <url>${impex.dba.url}</url>
                 <username>${impex.dba.username}</username>
                 <password>${impex.dba.password}</password>
                 <sqlCommand>${impex.sql.initialize}</sqlCommand>
@@ -221,6 +274,7 @@
             </dependency>
           </dependencies>
           <configuration>
+            <targetDatabase>${db.vendor}</targetDatabase>
             <username>${impex.username}</username>
             <password>${impex.password}</password>
             <url>${impex.url}</url>
@@ -288,15 +342,34 @@
   </build>
   <profiles>
     <profile>
-      <!--
-        This profile sets properties for Oracle specific SQL that handles dropping and creating
-        Oracle schemas as well as granting permissions
-      -->
+      <id>mysql</id>
+      <properties>
+        <db.vendor>mysql</db.vendor>
+        <impex.database>${impex.mysql.database}</impex.database>
+        <impex.delimiter>${impex.mysql.delimiter}</impex.delimiter>
+        <impex.url>${impex.mysql.default.url}</impex.url>
+        <impex.driver>${impex.mysql.driver}</impex.driver>
+        <impex.dba.url>${impex.mysql.dba.url}</impex.dba.url>
+        <impex.dba.username>${impex.mysql.dba.username}</impex.dba.username>
+        <impex.dba.password>${impex.mysql.dba.password}</impex.dba.password>
+        <impex.sql.validate>${impex.mysql.sql.validate}</impex.sql.validate>
+        <impex.sql.drop>${impex.mysql.sql.drop}</impex.sql.drop>
+        <impex.sql.pre.export>${impex.mysql.sql.pre.export}</impex.sql.pre.export>
+        <impex.sql.initialize>
+          ${impex.mysql.sql.create}
+          ${impex.mysql.sql.grants}
+        </impex.sql.initialize>
+        <impex.generate.sql.oracle.phase>none</impex.generate.sql.oracle.phase>
+      </properties>
+    </profile>
+    <profile>
       <id>oracle</id>
       <properties>
+        <db.vendor>oracle</db.vendor>
         <impex.delimiter>${impex.oracle.delimiter}</impex.delimiter>
         <impex.url>${impex.oracle.default.url}</impex.url>
         <impex.driver>${impex.oracle.driver}</impex.driver>
+        <impex.dba.url>${impex.oracle.dba.url}</impex.dba.url>
         <impex.dba.username>${impex.oracle.dba.username}</impex.dba.username>
         <impex.dba.password>${impex.oracle.dba.password}</impex.dba.password>
         <impex.sql.validate>${impex.oracle.sql.validate}</impex.sql.validate>

@@ -109,8 +109,8 @@
                         p:queryFieldMapping="name:name" p:returnFieldMapping="namespace:namespace,id:id"/>
                 </property>
               </bean>
-              <bean parent="AttributeField" p:propertyName="namespace" p:readOnly="true"
-                p:label="Namespace" p:labelPlacement="LEFT"/>
+              <bean parent="AttributeField" p:propertyName="namespace" p:readOnly="true" p:conditionalReadOnly=""
+                p:label="Namespace" p:labelPlacement="LEFT" />
               <bean parent="AttributeField" p:propertyName="id"
                 p:showLabel="false" p:label="id" p:maxLength="40">
                 <property name="control">

@@ -54,7 +54,7 @@
     <impex.oracle.quota>UNLIMITED</impex.oracle.quota>
     <impex.oracle.error.sqlcode.userDoesNotExist>-01918</impex.oracle.error.sqlcode.userDoesNotExist>
     <impex.oracle.error.sqlcode.userAlreadyExists>-01920</impex.oracle.error.sqlcode.userAlreadyExists>
-    <impex.oracle.dba.username>SYS AS SYSDBA</impex.oracle.dba.username>
+    <impex.oracle.dba.username>SYSTEM</impex.oracle.dba.username>
     <impex.oracle.dba.password>change_on_install</impex.oracle.dba.password>
 
     <!-- Simple select query for validating connection properties -->
@@ -94,7 +94,8 @@
       , CREATE SESSION
       , CREATE SYNONYM
       , CREATE TABLE
-      , CREATE TRIGGER
+      ,
+      CREATE TRIGGER
       , CREATE TYPE
       , CREATE VIEW
       TO ${impex.username}
@@ -207,9 +208,9 @@
           </dependencies>
         </plugin>
         <plugin>
-          <groupId>org.kuali.maven.impex</groupId>
+          <groupId>org.kuali.maven.plugins</groupId>
           <artifactId>maven-impex-plugin</artifactId>
-          <version>1.0.17</version>
+          <version>1.0.23</version>
           <dependencies>
             <dependency>
               <groupId>mysql</groupId>
@@ -326,7 +327,7 @@
         </resources>
         <plugins>
           <plugin>
-            <groupId>org.kuali.maven.impex</groupId>
+            <groupId>org.kuali.maven.plugins</groupId>
             <artifactId>maven-impex-plugin</artifactId>
             <executions>
               <execution>

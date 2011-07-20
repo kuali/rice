@@ -350,7 +350,7 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry, In
     		AttributeDefinition nestedAttribute = copyAttributeDefinition(attribute);
     		nestedAttribute.setName(nestedAttributeName);
     		
-    		if (!attributeMap.containsValue(nestedAttributeName)){
+    		if (!attributeMap.containsKey(nestedAttributeName)){
     			this.attributes.add(nestedAttribute);
     			this.attributeMap.put(nestedAttributeName, nestedAttribute);
     		}

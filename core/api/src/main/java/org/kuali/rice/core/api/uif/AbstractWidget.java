@@ -1,4 +1,4 @@
-package org.kuali.rice.core.api.uif.control.widget;
+package org.kuali.rice.core.api.uif;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -6,7 +6,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
-import org.kuali.rice.core.api.uif.control.Control;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;

@@ -1,4 +1,4 @@
-package org.kuali.rice.core.api.uif.control;
+package org.kuali.rice.core.api.uif;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -6,8 +6,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = HiddenInput.Constants.TYPE_NAME)
-public class HiddenInput extends AbstractControl implements Sized {
+@XmlType(name = PasswordInput.Constants.TYPE_NAME)
+public class PasswordInput extends AbstractControl implements Sized {
 
     @XmlElement(name = Elements.SIZE, required = false)
     private final Integer size;
@@ -17,11 +17,11 @@ public class HiddenInput extends AbstractControl implements Sized {
         return size;
     }
 
-    private HiddenInput() {
+    private PasswordInput() {
         size = null;
     }
 
-    private HiddenInput(Builder b) {
+    private PasswordInput(Builder b) {
         size = b.size;
     }
 
@@ -50,8 +50,8 @@ public class HiddenInput extends AbstractControl implements Sized {
         }
 
         @Override
-        public HiddenInput build() {
-            return new HiddenInput(this);
+        public PasswordInput build() {
+            return new PasswordInput(this);
         }
     }
 
@@ -59,7 +59,7 @@ public class HiddenInput extends AbstractControl implements Sized {
      * Defines some internal constants used on this class.
      */
     static final class Constants {
-        static final String TYPE_NAME = "HiddenInputType";
+        static final String TYPE_NAME = "PasswordInputType";
     }
 
     static final class Elements {

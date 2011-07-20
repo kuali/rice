@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 @javax.xml.bind.annotation.XmlSchema(namespace = CoreConstants.Namespaces.CORE_NAMESPACE_2_0, elementFormDefault = XmlNsForm.QUALIFIED)
-package org.kuali.rice.core.api.uif.control.widget;
+package org.kuali.rice.core.api.uif;
 import org.kuali.rice.core.api.CoreConstants;
 
 import javax.xml.bind.annotation.XmlNsForm;

@@ -1,6 +1,4 @@
-package org.kuali.rice.core.api.uif.control;
-
-import org.kuali.rice.core.api.uif.control.widget.Widget;
+package org.kuali.rice.core.api.uif;
 
 import java.util.Collection;
 

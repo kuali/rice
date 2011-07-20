@@ -1,11 +1,10 @@
-package org.kuali.rice.core.api.uif.control;
+package org.kuali.rice.core.api.uif;
 
 import javax.xml.bind.annotation.XmlEnum;
 import java.util.Date;
 
 /**
- * A simple data type enum inherited from the Kuali Student project, that can be used to define a specific data type for a dictionary object 
- * or one of its member attributes. 
+ * A enum that defines the type of an attribute definition.  Some of these enum values may not be supported in certain contexts.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

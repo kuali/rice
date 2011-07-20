@@ -1,4 +1,4 @@
-package org.kuali.rice.core.api.uif.control;
+package org.kuali.rice.core.api.uif;
 
 import javax.xml.bind.annotation.XmlElement;
 import java.util.Collections;

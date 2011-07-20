@@ -1,4 +1,4 @@
-package org.kuali.rice.core.api.uif.control;
+package org.kuali.rice.core.api.uif;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -6,38 +6,27 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = TextInput.Constants.TYPE_NAME)
-public class TextInput extends AbstractControl implements Sized, Watermarked {
+@XmlType(name = HiddenInput.Constants.TYPE_NAME)
+public class HiddenInput extends AbstractControl implements Sized {
 
     @XmlElement(name = Elements.SIZE, required = false)
     private final Integer size;
-
-    @XmlElement(name = Elements.WATERMARK, required = false)
-    private final String watermark;
 
     @Override
     public Integer getSize() {
         return size;
     }
 
-    @Override
-    public String getWatermark() {
-        return watermark;
-    }
-
-    private TextInput() {
+    private HiddenInput() {
         size = null;
-        watermark = null;
     }
 
-    private TextInput(Builder b) {
+    private HiddenInput(Builder b) {
         size = b.size;
-        watermark = b.watermark;
     }
 
-    public static final class Builder extends AbstractControl.Builder implements Sized, Watermarked {
+    public static final class Builder extends AbstractControl.Builder implements Sized {
         private Integer size;
-        private String watermark;
 
         private Builder() {
             super();
@@ -61,17 +50,8 @@ public class TextInput extends AbstractControl implements Sized, Watermarked {
         }
 
         @Override
-        public String getWatermark() {
-            return watermark;
-        }
-
-        public void setWatermark(String watermark) {
-            this.watermark = watermark;
-        }
-
-        @Override
-        public TextInput build() {
-            return new TextInput(this);
+        public HiddenInput build() {
+            return new HiddenInput(this);
         }
     }
 
@@ -79,11 +59,10 @@ public class TextInput extends AbstractControl implements Sized, Watermarked {
      * Defines some internal constants used on this class.
      */
     static final class Constants {
-        static final String TYPE_NAME = "TextInputType";
+        static final String TYPE_NAME = "HiddenInputType";
     }
 
     static final class Elements {
         static final String SIZE = "size";
-        static final String WATERMARK = "watermark";
     }
 }

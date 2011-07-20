@@ -1,4 +1,4 @@
-package org.kuali.rice.core.api.uif.control.widget;
+package org.kuali.rice.core.api.uif;
 
 import org.apache.commons.lang.StringUtils;
 

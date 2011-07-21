@@ -1,11 +1,13 @@
 package org.kuali.rice.core.api.uif;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,9 +26,11 @@ public final class RemotableQuickFinder extends RemotableAbstractWidget {
     private final String dataObjectClass;
 
     @XmlElement(name = Elements.LOOKUP_PARAMETERS, required = false)
+    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
     private final Map<String, String> lookupParameters;
 
     @XmlElement(name = Elements.FIELD_CONVERSIONS, required = false)
+    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
     private final Map<String, String> fieldConversions;
 
     private RemotableQuickFinder() {

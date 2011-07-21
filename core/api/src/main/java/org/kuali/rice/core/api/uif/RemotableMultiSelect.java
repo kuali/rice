@@ -1,9 +1,12 @@
 package org.kuali.rice.core.api.uif;
 
+import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +21,8 @@ public final class RemotableMultiSelect extends RemotableAbstractControl impleme
     @XmlElement(name = Elements.SIZE, required = false)
     private final Integer size;
 
-    @XmlElement(name = Elements.KEY_LABELS, required = false)
+    @XmlElement(name = Elements.KEY_LABELS, required = true)
+    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
     private final Map<String, String> keyLabels;
 
     private RemotableMultiSelect() {

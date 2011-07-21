@@ -103,7 +103,6 @@ public final class RemotableAttributeField implements AttributeField, ModelObjec
     @XmlElements(value = {
         @XmlElement(name = RemotableCheckboxGroup.Constants.ROOT_ELEMENT_NAME, type = RemotableCheckboxGroup.class, required = false),
         @XmlElement(name = RemotableHiddenInput.Constants.ROOT_ELEMENT_NAME, type = RemotableHiddenInput.class, required = false),
-        @XmlElement(name = RemotableMultiSelect.Constants.ROOT_ELEMENT_NAME, type = RemotableMultiSelect.class, required = false),
         @XmlElement(name = RemotablePasswordInput.Constants.ROOT_ELEMENT_NAME, type = RemotablePasswordInput.class, required = false),
         @XmlElement(name = RemotableRadioButtonGroup.Constants.ROOT_ELEMENT_NAME, type = RemotableRadioButtonGroup.class, required = false),
         @XmlElement(name = RemotableSelect.Constants.ROOT_ELEMENT_NAME, type = RemotableSelect.class, required = false),

@@ -14,6 +14,9 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlType;
 import java.util.Collection;
 
+/**
+ * An abstract control that all controls inherit from.
+ */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = AbstractControl.Constants.TYPE_NAME)
 public abstract class AbstractControl implements Control, ModelObjectComplete {

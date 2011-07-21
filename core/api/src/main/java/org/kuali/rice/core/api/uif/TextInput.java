@@ -5,9 +5,12 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+/**
+ * A text input control type.
+ */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = TextInput.Constants.TYPE_NAME)
-public class TextInput extends AbstractControl implements Sized, Watermarked {
+public final class TextInput extends AbstractControl implements Sized, Watermarked {
 
     @XmlElement(name = Elements.SIZE, required = false)
     private final Integer size;

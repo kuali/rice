@@ -5,7 +5,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CheckboxGroup extends AbstractControl implements KeyLabeled {
+/**
+ * A radio button group control type.
+ */
+public final class CheckboxGroup extends AbstractControl implements KeyLabeled {
 
     @XmlElement(name = Elements.KEY_LABELS, required = false)
     private final Map<String, String> keyLabels;

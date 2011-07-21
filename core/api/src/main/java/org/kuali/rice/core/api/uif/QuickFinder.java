@@ -10,9 +10,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A quick finder widget that can be used by a TextInput, HiddenInput, Select, or MultiSelect control types.
+ */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = QuickFinder.Constants.TYPE_NAME)
-public class QuickFinder extends AbstractWidget {
+public final class QuickFinder extends AbstractWidget {
 
     @XmlElement(name = Elements.BASE_LOOKUP_URL, required = true)
     private final String baseLookupUrl;

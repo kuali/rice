@@ -8,9 +8,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A multi-select control type.
+ */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = MultiSelect.Constants.TYPE_NAME)
-public class MultiSelect extends AbstractControl implements Sized, KeyLabeled {
+public final class MultiSelect extends AbstractControl implements Sized, KeyLabeled {
 
     @XmlElement(name = Elements.SIZE, required = false)
     private final Integer size;

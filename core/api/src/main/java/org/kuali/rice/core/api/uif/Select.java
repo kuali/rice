@@ -8,9 +8,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A select control type.
+ */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = Select.Constants.TYPE_NAME)
-public class Select extends AbstractControl implements Sized, KeyLabeled {
+public final class Select extends AbstractControl implements Sized, KeyLabeled {
 
     @XmlElement(name = Elements.SIZE, required = false)
     private final Integer size;

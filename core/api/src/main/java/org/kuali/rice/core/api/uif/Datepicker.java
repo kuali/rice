@@ -4,9 +4,12 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
+/**
+ * A datepicker widget that can be used by a TextInput or HiddenInput control.
+ */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = Datepicker.Constants.TYPE_NAME)
-public class Datepicker extends AbstractWidget {
+public final class Datepicker extends AbstractWidget {
 
     private Datepicker() {
         super();

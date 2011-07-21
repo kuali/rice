@@ -5,9 +5,12 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+/**
+ * A textarea control type.
+ */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = Textarea.Constants.TYPE_NAME)
-public class Textarea extends AbstractControl implements Watermarked, RowsCols {
+public final class Textarea extends AbstractControl implements Watermarked, RowsCols {
 
     @XmlElement(name = Elements.ROWS, required = false)
     private final Integer rows;

@@ -5,9 +5,12 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+/**
+ * A password input control type.
+ */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = PasswordInput.Constants.TYPE_NAME)
-public class PasswordInput extends AbstractControl implements Sized {
+public final class PasswordInput extends AbstractControl implements Sized {
 
     @XmlElement(name = Elements.SIZE, required = false)
     private final Integer size;

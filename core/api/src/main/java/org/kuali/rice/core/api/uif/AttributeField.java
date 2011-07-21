@@ -20,7 +20,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * This is the base class for all ui controls.  It defines the elements common to all ui controls.
+ * This class describes an attribute.  It can be considered the definition for an attribute.
+ * It also contains preferred rendering instructions for an attribute. ie when rendering an attribute
+ * in a user interface use this control with these widgets.
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = AttributeField.Constants.TYPE_NAME)

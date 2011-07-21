@@ -14,6 +14,9 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlType;
 import java.util.Collection;
 
+/**
+ * An abstract widget that all widgets inherit from.
+ */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = AbstractWidget.Constants.TYPE_NAME)
 public abstract class AbstractWidget implements Widget, ModelObjectComplete {

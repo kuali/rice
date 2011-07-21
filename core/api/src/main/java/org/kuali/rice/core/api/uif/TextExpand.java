@@ -4,9 +4,12 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
+/**
+ * A text expand widget.  This can be used along side a textarea control.
+ */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = TextExpand.Constants.TYPE_NAME)
-public class TextExpand extends AbstractWidget {
+public final class TextExpand extends AbstractWidget {
 
     private TextExpand() {
         super();

@@ -25,6 +25,14 @@ public abstract class RemotableAbstractControl implements Control, ModelObjectCo
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
 
+    /**
+     * Should only be invoked by JAXB.
+     */
+    @SuppressWarnings("unused")
+    RemotableAbstractControl() {
+
+    }
+
     @Override
     public final int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);

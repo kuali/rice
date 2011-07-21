@@ -1,15 +1,21 @@
 package org.kuali.rice.core.api.uif;
 
+import org.kuali.rice.core.api.CoreConstants;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
  * A password input control type.
  */
+@XmlRootElement(name = RemotablePasswordInput.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = RemotablePasswordInput.Constants.TYPE_NAME)
+@XmlType(name = RemotablePasswordInput.Constants.TYPE_NAME, propOrder = {
+        RemotablePasswordInput.Elements.SIZE,
+		CoreConstants.CommonElements.FUTURE_ELEMENTS })
 public final class RemotablePasswordInput extends RemotableAbstractControl implements Sized {
 
     @XmlElement(name = Elements.SIZE, required = false)
@@ -19,7 +25,10 @@ public final class RemotablePasswordInput extends RemotableAbstractControl imple
     public Integer getSize() {
         return size;
     }
-
+    /**
+     * Should only be invoked by JAXB.
+     */
+    @SuppressWarnings("unused")
     private RemotablePasswordInput() {
         size = null;
     }
@@ -63,6 +72,7 @@ public final class RemotablePasswordInput extends RemotableAbstractControl imple
      */
     static final class Constants {
         static final String TYPE_NAME = "PasswordInputType";
+        final static String ROOT_ELEMENT_NAME = "passwordInput";
     }
 
     static final class Elements {

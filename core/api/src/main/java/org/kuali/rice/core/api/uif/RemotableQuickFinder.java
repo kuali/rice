@@ -1,11 +1,13 @@
 package org.kuali.rice.core.api.uif;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Collections;
@@ -15,8 +17,14 @@ import java.util.Map;
 /**
  * A quick finder widget that can be used by a TextInput, HiddenInput, Select, or MultiSelect control types.
  */
+@XmlRootElement(name = RemotableQuickFinder.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = RemotableQuickFinder.Constants.TYPE_NAME)
+@XmlType(name = RemotableQuickFinder.Constants.TYPE_NAME, propOrder = {
+		RemotableQuickFinder.Elements.BASE_LOOKUP_URL,
+        RemotableQuickFinder.Elements.DATA_OBJECT_CLASS,
+        RemotableQuickFinder.Elements.LOOKUP_PARAMETERS,
+        RemotableQuickFinder.Elements.FIELD_CONVERSIONS,
+		CoreConstants.CommonElements.FUTURE_ELEMENTS })
 public final class RemotableQuickFinder extends RemotableAbstractWidget {
 
     @XmlElement(name = Elements.BASE_LOOKUP_URL, required = true)
@@ -32,7 +40,10 @@ public final class RemotableQuickFinder extends RemotableAbstractWidget {
     @XmlElement(name = Elements.FIELD_CONVERSIONS, required = false)
     @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
     private final Map<String, String> fieldConversions;
-
+    /**
+     * Should only be invoked by JAXB.
+     */
+    @SuppressWarnings("unused")
     private RemotableQuickFinder() {
         baseLookupUrl = null;
         dataObjectClass = null;
@@ -133,6 +144,7 @@ public final class RemotableQuickFinder extends RemotableAbstractWidget {
      */
     static final class Constants {
         static final String TYPE_NAME = "QuickFinderType";
+        final static String ROOT_ELEMENT_NAME = "quickFinder";
     }
 
     static final class Elements {

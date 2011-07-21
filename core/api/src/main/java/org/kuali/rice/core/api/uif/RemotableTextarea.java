@@ -1,15 +1,23 @@
 package org.kuali.rice.core.api.uif;
 
+import org.kuali.rice.core.api.CoreConstants;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
  * A textarea control type.
  */
+@XmlRootElement(name = RemotableTextarea.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = RemotableTextarea.Constants.TYPE_NAME)
+@XmlType(name = RemotableTextarea.Constants.TYPE_NAME, propOrder = {
+        RemotableTextarea.Elements.ROWS,
+        RemotableTextarea.Elements.COLS,
+        RemotableTextarea.Elements.WATERMARK,
+		CoreConstants.CommonElements.FUTURE_ELEMENTS })
 public final class RemotableTextarea extends RemotableAbstractControl implements Watermarked, RowsCols {
 
     @XmlElement(name = Elements.ROWS, required = false)
@@ -20,6 +28,22 @@ public final class RemotableTextarea extends RemotableAbstractControl implements
 
     @XmlElement(name = Elements.WATERMARK, required = false)
     private final String watermark;
+
+    /**
+     * Should only be invoked by JAXB.
+     */
+    @SuppressWarnings("unused")
+    private RemotableTextarea() {
+        rows = null;
+        cols = null;
+        watermark = null;
+    }
+
+    private RemotableTextarea(Builder b) {
+        rows = b.rows;
+        cols = b.cols;
+        watermark = b.watermark;
+    }
 
     @Override
     public Integer getRows() {
@@ -34,18 +58,6 @@ public final class RemotableTextarea extends RemotableAbstractControl implements
     @Override
     public String getWatermark() {
         return watermark;
-    }
-
-    private RemotableTextarea() {
-        rows = null;
-        cols = null;
-        watermark = null;
-    }
-
-    private RemotableTextarea(Builder b) {
-        rows = b.rows;
-        cols = b.cols;
-        watermark = b.watermark;
     }
 
     public static final class Builder extends RemotableAbstractControl.Builder implements Watermarked, RowsCols {
@@ -107,6 +119,7 @@ public final class RemotableTextarea extends RemotableAbstractControl implements
      */
     static final class Constants {
         static final String TYPE_NAME = "TextareaType";
+        final static String ROOT_ELEMENT_NAME = "textarea";
     }
 
     static final class Elements {

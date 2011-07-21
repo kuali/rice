@@ -1,10 +1,12 @@
 package org.kuali.rice.core.api.uif;
 
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Collections;
@@ -14,8 +16,11 @@ import java.util.Map;
 /**
  * A radio button group control type.
  */
+@XmlRootElement(name = RemotableCheckboxGroup.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = RemotableCheckboxGroup.Constants.TYPE_NAME)
+@XmlType(name = RemotableCheckboxGroup.Constants.TYPE_NAME, propOrder = {
+		RemotableCheckboxGroup.Elements.KEY_LABELS,
+		CoreConstants.CommonElements.FUTURE_ELEMENTS })
 public final class RemotableCheckboxGroup extends RemotableAbstractControl implements KeyLabeled {
 
     @XmlElement(name = Elements.KEY_LABELS, required = true)
@@ -27,6 +32,10 @@ public final class RemotableCheckboxGroup extends RemotableAbstractControl imple
         return keyLabels;
     }
 
+    /**
+     * Should only be invoked by JAXB.
+     */
+    @SuppressWarnings("unused")
     private RemotableCheckboxGroup() {
         keyLabels = null;
     }
@@ -70,6 +79,7 @@ public final class RemotableCheckboxGroup extends RemotableAbstractControl imple
      */
     static final class Constants {
         static final String TYPE_NAME = "CheckboxGroupType";
+        final static String ROOT_ELEMENT_NAME = "checkboxGroup";
     }
 
     static final class Elements {

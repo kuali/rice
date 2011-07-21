@@ -13,6 +13,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlElements;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.ArrayList;
@@ -23,8 +26,29 @@ import java.util.List;
 /**
  * @see AttributeField for more info.
  */
+@XmlRootElement(name = RemotableAttributeField.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = RemotableAttributeField.Constants.TYPE_NAME)
+@XmlType(name = RemotableAttributeField.Constants.TYPE_NAME, propOrder = {
+		RemotableAttributeField.Elements.NAME,
+		RemotableAttributeField.Elements.DATA_TYPE,
+		RemotableAttributeField.Elements.SHORT_LABEL,
+		RemotableAttributeField.Elements.LONG_LABEL,
+		RemotableAttributeField.Elements.HELP_SUMMARY,
+		RemotableAttributeField.Elements.HELP_CONSTRAINT,
+		RemotableAttributeField.Elements.HELP_DESCRIPTION,
+		RemotableAttributeField.Elements.FORCE_UPPERCASE,
+		RemotableAttributeField.Elements.MIN_LENGTH,
+		RemotableAttributeField.Elements.MAX_LENGTH,
+		RemotableAttributeField.Elements.MIN_VALUE,
+		RemotableAttributeField.Elements.MAX_VALUE,
+		RemotableAttributeField.Elements.REGEX_CONSTRAINT,
+		RemotableAttributeField.Elements.REGEX_CONSTRAINT_MSG,
+		RemotableAttributeField.Elements.REQUIRED,
+		RemotableAttributeField.Elements.DEFAULT_VALUES,
+		RemotableAttributeField.Elements.CONTROL,
+		RemotableAttributeField.Elements.REQUIRED,
+		RemotableAttributeField.Elements.WIDGETS,
+		CoreConstants.CommonElements.FUTURE_ELEMENTS })
 public final class RemotableAttributeField implements AttributeField, ModelObjectComplete {
 
     @XmlElement(name = Elements.NAME, required = true)
@@ -76,15 +100,80 @@ public final class RemotableAttributeField implements AttributeField, ModelObjec
     @XmlElement(name = Elements.DEFAULT_VALUES, required = false)
     private final Collection<String> defaultValues;
 
-    @XmlElement(name = Elements.CONTROL, required = false)
+    @XmlElements(value = {
+        @XmlElement(name = RemotableCheckboxGroup.Constants.ROOT_ELEMENT_NAME, type = RemotableCheckboxGroup.class, required = false),
+        @XmlElement(name = RemotableHiddenInput.Constants.ROOT_ELEMENT_NAME, type = RemotableHiddenInput.class, required = false),
+        @XmlElement(name = RemotableMultiSelect.Constants.ROOT_ELEMENT_NAME, type = RemotableMultiSelect.class, required = false),
+        @XmlElement(name = RemotablePasswordInput.Constants.ROOT_ELEMENT_NAME, type = RemotablePasswordInput.class, required = false),
+        @XmlElement(name = RemotableRadioButtonGroup.Constants.ROOT_ELEMENT_NAME, type = RemotableRadioButtonGroup.class, required = false),
+        @XmlElement(name = RemotableSelect.Constants.ROOT_ELEMENT_NAME, type = RemotableSelect.class, required = false),
+        @XmlElement(name = RemotableTextarea.Constants.ROOT_ELEMENT_NAME, type = RemotableTextarea.class, required = false),
+        @XmlElement(name = RemotableTextInput.Constants.ROOT_ELEMENT_NAME, type = RemotableTextInput.class, required = false),
+    })
     private final RemotableAbstractControl control;
-    
-    @XmlElement(name = Elements.WIDGETS, required = false)
+
+    @XmlElementWrapper(name = Elements.WIDGETS, required = false)
+    @XmlElements(value = {
+        @XmlElement(name = RemotableDatepicker.Constants.ROOT_ELEMENT_NAME, type = RemotableDatepicker.class, required = false),
+        @XmlElement(name = RemotableQuickFinder.Constants.ROOT_ELEMENT_NAME, type = RemotableQuickFinder.class, required = false),
+        @XmlElement(name = RemotableTextExpand.Constants.ROOT_ELEMENT_NAME, type = RemotableTextExpand.class, required = false),
+    })
     private final Collection<? extends RemotableAbstractWidget> widgets;
 
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
+
+    /**
+     * Should only be invoked by JAXB.
+     */
+    @SuppressWarnings("unused")
+    private RemotableAttributeField() {
+        this.name = null;
+        this.dataType = null;
+        this.shortLabel = null;
+        this.longLabel = null;
+        this.helpSummary = null;
+        this.helpConstraint = null;
+        this.helpDescription = null;
+        this.forceUpperCase = false;
+        this.minLength = null;
+        this.maxLength = null;
+        this.minValue = null;
+        this.maxValue = null;
+        this.regexConstraint = null;
+        this.regexContraintMsg = null;
+        this.required = false;
+        this.defaultValues = null;
+        this.control = null;
+        this.widgets = null;
+    }
+
+    private RemotableAttributeField(Builder b) {
+        this.name = b.name;
+        this.dataType = b.dataType;
+        this.shortLabel = b.shortLabel;
+        this.longLabel = b.longLabel;
+        this.helpSummary = b.helpSummary;
+        this.helpConstraint = b.helpConstraint;
+        this.helpDescription = b.helpDescription;
+        this.forceUpperCase = b.forceUpperCase;
+        this.minLength = b.minLength;
+        this.maxLength = b.maxLength;
+        this.minValue = b.minValue;
+        this.maxValue = b.maxValue;
+        this.regexConstraint = b.regexConstraint;
+        this.regexContraintMsg = b.regexContraintMsg;
+        this.required = b.required;
+        this.defaultValues = b.defaultValues;
+        this.control = b.control.build();
+
+        final List<RemotableAbstractWidget> temp = new ArrayList<RemotableAbstractWidget>();
+        for (RemotableAbstractWidget.Builder attr : b.widgets) {
+            temp.add(attr.build());
+        }
+        this.widgets = Collections.unmodifiableList(temp);
+    }
 
     @Override
     public String getName() {
@@ -174,53 +263,6 @@ public final class RemotableAttributeField implements AttributeField, ModelObjec
     @Override
     public Collection<? extends RemotableAbstractWidget> getWidgets() {
         return widgets;
-    }
-
-    private RemotableAttributeField() {
-        this.name = null;
-        this.dataType = null;
-        this.shortLabel = null;
-        this.longLabel = null;
-        this.helpSummary = null;
-        this.helpConstraint = null;
-        this.helpDescription = null;
-        this.forceUpperCase = false;
-        this.minLength = null;
-        this.maxLength = null;
-        this.minValue = null;
-        this.maxValue = null;
-        this.regexConstraint = null;
-        this.regexContraintMsg = null;
-        this.required = false;
-        this.defaultValues = null;
-        this.control = null;
-        this.widgets = null;
-    }
-
-    private RemotableAttributeField(Builder b) {
-        this.name = b.name;
-        this.dataType = b.dataType;
-        this.shortLabel = b.shortLabel;
-        this.longLabel = b.longLabel;
-        this.helpSummary = b.helpSummary;
-        this.helpConstraint = b.helpConstraint;
-        this.helpDescription = b.helpDescription;
-        this.forceUpperCase = b.forceUpperCase;
-        this.minLength = b.minLength;
-        this.maxLength = b.maxLength;
-        this.minValue = b.minValue;
-        this.maxValue = b.maxValue;
-        this.regexConstraint = b.regexConstraint;
-        this.regexContraintMsg = b.regexContraintMsg;
-        this.required = b.required;
-        this.defaultValues = b.defaultValues;
-        this.control = b.control.build();
-
-        final List<RemotableAbstractWidget> temp = new ArrayList<RemotableAbstractWidget>();
-        for (RemotableAbstractWidget.Builder attr : b.widgets) {
-            temp.add(attr.build());
-        }
-        this.widgets = Collections.unmodifiableList(temp);
     }
 
     @Override
@@ -459,6 +501,7 @@ public final class RemotableAttributeField implements AttributeField, ModelObjec
      */
     static final class Constants {
         static final String TYPE_NAME = "AbstractControlType";
+        final static String ROOT_ELEMENT_NAME = "attributeField";
         static final String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
 

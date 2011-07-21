@@ -1,15 +1,22 @@
 package org.kuali.rice.core.api.uif;
 
+import org.kuali.rice.core.api.CoreConstants;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
  * A text input control type.
  */
+@XmlRootElement(name = RemotableTextInput.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = RemotableTextInput.Constants.TYPE_NAME)
+@XmlType(name = RemotableTextInput.Constants.TYPE_NAME, propOrder = {
+        RemotableTextInput.Elements.SIZE,
+        RemotableTextInput.Elements.WATERMARK,
+		CoreConstants.CommonElements.FUTURE_ELEMENTS })
 public final class RemotableTextInput extends RemotableAbstractControl implements Sized, Watermarked {
 
     @XmlElement(name = Elements.SIZE, required = false)
@@ -18,16 +25,10 @@ public final class RemotableTextInput extends RemotableAbstractControl implement
     @XmlElement(name = Elements.WATERMARK, required = false)
     private final String watermark;
 
-    @Override
-    public Integer getSize() {
-        return size;
-    }
-
-    @Override
-    public String getWatermark() {
-        return watermark;
-    }
-
+    /**
+     * Should only be invoked by JAXB.
+     */
+    @SuppressWarnings("unused")
     private RemotableTextInput() {
         size = null;
         watermark = null;
@@ -36,6 +37,15 @@ public final class RemotableTextInput extends RemotableAbstractControl implement
     private RemotableTextInput(Builder b) {
         size = b.size;
         watermark = b.watermark;
+    }
+    @Override
+    public Integer getSize() {
+        return size;
+    }
+
+    @Override
+    public String getWatermark() {
+        return watermark;
     }
 
     public static final class Builder extends RemotableAbstractControl.Builder implements Sized, Watermarked {
@@ -83,6 +93,7 @@ public final class RemotableTextInput extends RemotableAbstractControl implement
      */
     static final class Constants {
         static final String TYPE_NAME = "TextInputType";
+        final static String ROOT_ELEMENT_NAME = "textInput";
     }
 
     static final class Elements {

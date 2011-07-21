@@ -1,16 +1,24 @@
 package org.kuali.rice.core.api.uif;
 
+import org.kuali.rice.core.api.CoreConstants;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
  * A datepicker widget that can be used by a TextInput or HiddenInput control.
  */
+@XmlRootElement(name = RemotableDatepicker.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = RemotableDatepicker.Constants.TYPE_NAME)
+@XmlType(name = RemotableDatepicker.Constants.TYPE_NAME, propOrder = {
+		CoreConstants.CommonElements.FUTURE_ELEMENTS })
 public final class RemotableDatepicker extends RemotableAbstractWidget {
-
+    /**
+     * Should only be invoked by JAXB.
+     */
+    @SuppressWarnings("unused")
     private RemotableDatepicker() {
         super();
     }
@@ -41,5 +49,6 @@ public final class RemotableDatepicker extends RemotableAbstractWidget {
      */
     static final class Constants {
         static final String TYPE_NAME = "DatepickerType";
+        final static String ROOT_ELEMENT_NAME = "datepicker";
     }
 }

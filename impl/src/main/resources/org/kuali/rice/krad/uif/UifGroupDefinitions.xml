@@ -334,7 +334,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 							    <bean parent="FileControl" p:size="15"/>
 							  </property>
 							</bean>
-							<bean parent="ActionField" p:methodToCall="cancelBOAttachment"
+							<bean parent="ActionField_Small" p:methodToCall="cancelAttachment"
 								p:actionLabel="cancel" p:title="Cancel Attachment" />
 						</list>
 					</property>
@@ -343,11 +343,13 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 							<bean parent="PropertyReplacer" p:propertyName="items" p:condition="!#isAddLine and #line.attachment?.complete" >
 								<property name="replacement">
 								  <list>
-						            <bean parent="ActionField" p:methodToCall="downloadBOAttachment"
-								          p:actionLabel="download attachment" p:title="download attachment" />
-								    <bean parent="AttributeField" p:propertyName="attachment.attachmentFileName"/> 
+						            <bean parent="ActionField_Small" p:methodToCall="downloadAttachment"
+								          p:actionLabel="download attachment" p:title="download attachment" 
+								          p:onClickScript="writeHiddenToForm(&quot;unblockUIOnLoading&quot;, &quot;true&quot;);writeHiddenToForm(&quot;actionParameters[selectedLineIndex]&quot;, &quot;@{#index}&quot;);"/>
+								    <bean parent="MessageField" p:messageText="@{#line.attachment?.attachmentFileName}" /> 
                                     <bean parent="MessageField" 
-                                          p:messageText="(@{#line.attachment.attachmentFileSizeWithUnits}, @{#line.attachment.attachmentMimeTypeCode})" />   
+                                          p:messageText="(@{#line.attachment?.attachmentFileSizeWithUnits}, @{#line.attachment?.attachmentMimeTypeCode})" />
+                                             
 						          </list>
 								</property>
 							</bean>	
@@ -373,12 +375,12 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 		<property name="errorsField.additionalKeysToMatch" value="attachmentFile" />
 	    <property name="addLineActionFields">
 		   <list>
-			   <bean parent="ActionField_Small" p:methodToCall="insertBONote" p:actionLabel="add" p:title="Add a Note" />
+			   <bean parent="ActionField_Small" p:methodToCall="insertNote" p:actionLabel="add" p:title="Add a Note" />
 		   </list>
 	    </property>
 	    <property name="actionFields">
 	  	   <list>
-			  <bean parent="ActionField_Small" p:methodToCall="deleteBONote" p:actionLabel="delete" p:title="Delete a Note"/>
+			  <bean parent="ActionField_Small" p:methodToCall="deleteNote" p:actionLabel="delete" p:title="Delete a Note"/>
 			  <bean parent="ActionField_Small" p:methodToCall="sendNoteWorkflowNotification" p:actionLabel="send" p:title="Send FYI"
 			        p:conditionalRender="#DocumentEntry.allowsNoteFYI and #actionFlags[#Constants.KUALI_ACTION_CAN_SEND_NOTE_FYI]"/>
 		   </list>

@@ -16,12 +16,17 @@
 package org.kuali.rice.krad.web.controller;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.framework.parameter.ParameterConstants;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.krad.bo.AdHocRouteRecipient;
+import org.kuali.rice.krad.bo.Attachment;
+import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.exception.DocumentAuthorizationException;
 import org.kuali.rice.krad.exception.UnknownDocumentIdException;
@@ -33,18 +38,30 @@ import org.kuali.rice.krad.service.DocumentHelperService;
 import org.kuali.rice.krad.service.DocumentService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.container.CollectionGroup;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.SessionTicket;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
+import org.kuali.rice.krad.web.form.UifFormBase;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -245,6 +262,142 @@ public abstract class DocumentControllerBase extends UifControllerBase {
 		return getUIFModelAndView(form);
 	}
 
+    
+    /**
+     * Called by the add note action for adding a note. Method
+     * validates, saves attachment and adds the time stamp and author.
+     * Calls the UifControllerBase.addLine method to handle 
+     * generic actions.
+     *
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=insertNote")
+    public ModelAndView insertNote(@ModelAttribute("KualiForm") UifFormBase uifForm,
+            BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+        
+        // TODO : finish method , make sure it aligns with current KNS functionality
+        
+        // Get the note add line
+        String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
+        CollectionGroup collectionGroup = uifForm.getPreviousView().getViewIndex().getCollectionGroupByPath(selectedCollectionPath);
+        String addLinePath = collectionGroup.getAddLineBindingInfo().getBindingPath();
+        Object addLine = ObjectPropertyUtils.getPropertyValue(uifForm, addLinePath);
+        Note newNote = (Note)addLine;
+        newNote.setNotePostedTimestampToCurrent();
+        
+        // Get the attachment file
+        String attachmentTypeCode = null;
+        MultipartFile attachmentFile = uifForm.getAttachmentFile();
+        if (attachmentFile == null) {
+            GlobalVariables.getMessageMap().putError(
+                    String.format("%s.%s",
+                            KRADConstants.NEW_DOCUMENT_NOTE_PROPERTY_NAME,
+                            KRADConstants.NOTE_ATTACHMENT_FILE_PROPERTY_NAME),
+                    RiceKeyConstants.ERROR_UPLOADFILE_NULL);
+            // This line was removed in order to continue to validates other
+            // return mapping.findForward(RiceConstants.MAPPING_BASIC);
+        }
+        
+        if (newNote.getAttachment() != null) {
+            attachmentTypeCode = newNote.getAttachment().getAttachmentTypeCode();
+        }
+
+        // TODO check authorization for adding notes
+//        DocumentAuthorizer documentAuthorizer = getDocumentHelperService().getDocumentAuthorizer(document);
+//        if (!documentAuthorizer.canAddNoteAttachment(document, attachmentTypeCode, GlobalVariables.getUserSession().getPerson())) {
+//            throw buildAuthorizationException("annotate", document);
+//        }
+        
+        Attachment attachment = null;
+        if (attachmentFile != null && !StringUtils.isBlank(attachmentFile.getOriginalFilename())) {
+            if (attachmentFile.getSize() == 0) {
+                GlobalVariables.getMessageMap().putError(
+                        String.format("%s.%s",
+                                KRADConstants.NEW_DOCUMENT_NOTE_PROPERTY_NAME,
+                                KRADConstants.NOTE_ATTACHMENT_FILE_PROPERTY_NAME),
+                        RiceKeyConstants.ERROR_UPLOADFILE_EMPTY,
+                        attachmentFile.getOriginalFilename());
+                // This line was removed in order to continue to validates other
+//                return mapping.findForward(RiceConstants.MAPPING_BASIC);
+            } else {
+                String attachmentType = null;
+                try {
+                    attachment = KRADServiceLocator.getAttachmentService().createAttachment(((DocumentFormBase)uifForm).getDocument().getNoteTarget(), attachmentFile.getOriginalFilename(), attachmentFile.getContentType(), (int)attachmentFile.getSize(), attachmentFile.getInputStream(), "");
+                    newNote.addAttachment(attachment);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }      
+        
+        // Add the author
+        Person kualiUser = GlobalVariables.getUserSession().getPerson();
+        if (kualiUser == null) {
+            throw new IllegalStateException("Current UserSession has a null Person.");
+        }
+        newNote.setAuthorUniversalIdentifier(kualiUser.getPrincipalId());
+        
+        Note tmpNote = KRADServiceLocator.getNoteService().createNote(newNote, ((DocumentFormBase)uifForm).getDocument().getNoteTarget(), kualiUser.getPrincipalId());
+        
+        return addLine(uifForm, result, request, response);
+    }    
+    
+    /**
+     * Called by the delete note action for deleting a note. 
+     * Calls the UifControllerBase.deleteLine method to handle 
+     * generic actions.
+     * 
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=deleteNote")
+    public ModelAndView deleteNote(@ModelAttribute("KualiForm") UifFormBase uifForm,
+            BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+        // TODO : add note specific logic
+        return deleteLine(uifForm, result, request, response);
+    }     
+    
+    /**
+     * Called by the download attachment action on a note. Method
+     * gets the attachment input stream from the AttachmentService
+     * and writes it to the request output stream.
+     * 
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=downloadAttachment")
+    public ModelAndView downloadAttachment(@ModelAttribute("KualiForm") UifFormBase uifForm,
+            BindingResult result, HttpServletRequest request, HttpServletResponse response) throws ServletRequestBindingException, FileNotFoundException, IOException {
+        // Get the attachment input stream
+        String selectedLineIndex = uifForm.getActionParamaterValue("selectedLineIndex");
+        Note note = ((DocumentFormBase)uifForm).getDocument().getNote(Integer.parseInt(selectedLineIndex));
+        Attachment attachment = note.getAttachment();
+        InputStream is = KRADServiceLocator.getAttachmentService().retrieveAttachmentContents(attachment);
+        
+        // Set the response headers
+        response.setContentType(attachment.getAttachmentMimeTypeCode());
+        response.setContentLength(attachment.getAttachmentFileSize().intValue());
+        response.setHeader("Expires", "0");
+        response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+        response.setHeader("Pragma", "public");
+        response.setHeader("Content-Disposition","attachment; filename=\"" + attachment.getAttachmentFileName() + "\"");
+        
+        // Copy the input stream to the response
+        FileCopyUtils.copy(is, response.getOutputStream());
+        return null;
+    }     
+
+    /**
+     * Called by the cancel attachment action on a note. Method
+     * removes the attachment file from the form.
+     * 
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=cancelAttachment")
+    public ModelAndView cancelAttachment(@ModelAttribute("KualiForm") UifFormBase uifForm,
+            BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+        // Remove the attached file
+        uifForm.setAttachmentFile(null);
+        return getUIFModelAndView(uifForm);
+    }
+    	
+	
+	
+	
 	/**
 	 * Does all special processing on a document that should happen on each HTTP
 	 * post (ie, save, route, approve, etc).

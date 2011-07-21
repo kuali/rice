@@ -22,6 +22,7 @@ import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DocumentHeader;
+import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.document.MaintenanceDocument;
 import org.kuali.rice.krad.document.MaintenanceLock;
@@ -423,8 +424,9 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
     @Override
     protected void processAfterAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
         super.processAfterAddLine(view, collectionGroup, model, addLine);
-
-        if (model instanceof MaintenanceForm && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceForm)model).getMaintenanceAction())) {
+        
+        // Check for maintenance documents in edit but exclude notes
+        if (model instanceof MaintenanceForm && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceForm)model).getMaintenanceAction()) && !(addLine instanceof Note)) {
             MaintenanceForm maintenanceForm = (MaintenanceForm) model;
             MaintenanceDocument document = maintenanceForm.getDocument();
 
@@ -452,8 +454,10 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
     @Override
     protected void processAfterDeleteLine(View view, CollectionGroup collectionGroup, Object model, int lineIndex) {
         super.processAfterDeleteLine(view, collectionGroup, model, lineIndex);
-
-        if (model instanceof MaintenanceForm && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceForm)model).getMaintenanceAction())) {
+        
+        // Check for maintenance documents in edit but exclude notes
+        if (model instanceof MaintenanceForm && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceForm)model).getMaintenanceAction()) 
+                && !collectionGroup.getCollectionObjectClass().getName().equals(Note.class.getName())) {
             MaintenanceForm maintenanceForm = (MaintenanceForm) model;
             MaintenanceDocument document = maintenanceForm.getDocument();
 

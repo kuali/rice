@@ -194,7 +194,9 @@ public class AttachmentServiceImpl implements AttachmentService {
         
         String parentDirectory = "";
         if(attachment.getNote()!=null) {
-            parentDirectory = attachment.getNote().getRemoteObjectIdentifier(); 
+            // TODO : Samuel check why had to change from getRemoteObjectIdentifier for KRAD
+            // and what is impact on KNS
+            parentDirectory = attachment.getNote().getObjectId();
         }
          
         return new BufferedInputStream(new FileInputStream(getDocumentDirectory(parentDirectory) + File.separator + attachment.getAttachmentIdentifier()));

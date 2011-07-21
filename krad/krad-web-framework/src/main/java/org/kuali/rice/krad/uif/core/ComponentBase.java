@@ -24,6 +24,7 @@ import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -769,8 +770,30 @@ public abstract class ComponentBase implements Component {
         if (this.context == null) {
             this.context = new HashMap<String, Object>();
         }
-
+        pushToPropertyReplacerContext(objectName, object);
         this.context.put(objectName, object);
+    }
+    
+    /*
+     * This method adds the object to the context of the components in the 
+     * PropertyReplacer object. Only checks for a list or component.
+     */
+    private void pushToPropertyReplacerContext(String objectName, Object object) {
+        if (propertyReplacers != null && propertyReplacers.size() > 0) {
+            for (Object rep : propertyReplacers) {
+                Object replacement = ((PropertyReplacer)rep).getReplacement();
+                if (replacement instanceof Component) {
+                    ((Component)replacement).pushObjectToContext(objectName, object);
+                }
+                if (replacement instanceof List) {
+                    for (Object repInner : (List)replacement) {
+                        if (repInner instanceof Component) {
+                            ((Component)repInner).pushObjectToContext(objectName, object);
+                        }
+                    }
+                }
+            }
+        }        
     }
 
     public Map<String, String> getPropertyExpressions() {

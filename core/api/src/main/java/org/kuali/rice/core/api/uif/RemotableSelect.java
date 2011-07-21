@@ -12,8 +12,8 @@ import java.util.Map;
  * A select control type.
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = Select.Constants.TYPE_NAME)
-public final class Select extends AbstractControl implements Sized, KeyLabeled {
+@XmlType(name = RemotableSelect.Constants.TYPE_NAME)
+public final class RemotableSelect extends RemotableAbstractControl implements Sized, KeyLabeled {
 
     @XmlElement(name = Elements.SIZE, required = false)
     private final Integer size;
@@ -21,12 +21,12 @@ public final class Select extends AbstractControl implements Sized, KeyLabeled {
     @XmlElement(name = Elements.KEY_LABELS, required = false)
     private final Map<String, String> keyLabels;
 
-    private Select() {
+    private RemotableSelect() {
         size = null;
         keyLabels = null;
     }
 
-    private Select(Builder b) {
+    private RemotableSelect(Builder b) {
         size = b.size;
         keyLabels = b.keyLabels;
     }
@@ -41,7 +41,7 @@ public final class Select extends AbstractControl implements Sized, KeyLabeled {
         return size;
     }
 
-    public static final class Builder extends AbstractControl.Builder implements Sized, KeyLabeled {
+    public static final class Builder extends RemotableAbstractControl.Builder implements Sized, KeyLabeled {
         private Integer size;
         private Map<String, String> keyLabels;
 
@@ -80,8 +80,8 @@ public final class Select extends AbstractControl implements Sized, KeyLabeled {
         }
 
         @Override
-        public Select build() {
-            return new Select(this);
+        public RemotableSelect build() {
+            return new RemotableSelect(this);
         }
     }
 

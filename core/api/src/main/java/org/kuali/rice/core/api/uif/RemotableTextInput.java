@@ -9,8 +9,8 @@ import javax.xml.bind.annotation.XmlType;
  * A text input control type.
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = TextInput.Constants.TYPE_NAME)
-public final class TextInput extends AbstractControl implements Sized, Watermarked {
+@XmlType(name = RemotableTextInput.Constants.TYPE_NAME)
+public final class RemotableTextInput extends RemotableAbstractControl implements Sized, Watermarked {
 
     @XmlElement(name = Elements.SIZE, required = false)
     private final Integer size;
@@ -28,17 +28,17 @@ public final class TextInput extends AbstractControl implements Sized, Watermark
         return watermark;
     }
 
-    private TextInput() {
+    private RemotableTextInput() {
         size = null;
         watermark = null;
     }
 
-    private TextInput(Builder b) {
+    private RemotableTextInput(Builder b) {
         size = b.size;
         watermark = b.watermark;
     }
 
-    public static final class Builder extends AbstractControl.Builder implements Sized, Watermarked {
+    public static final class Builder extends RemotableAbstractControl.Builder implements Sized, Watermarked {
         private Integer size;
         private String watermark;
 
@@ -73,8 +73,8 @@ public final class TextInput extends AbstractControl implements Sized, Watermark
         }
 
         @Override
-        public TextInput build() {
-            return new TextInput(this);
+        public RemotableTextInput build() {
+            return new RemotableTextInput(this);
         }
     }
 

@@ -15,11 +15,11 @@ import javax.xml.bind.annotation.XmlType;
 import java.util.Collection;
 
 /**
- * An abstract control that all controls inherit from.
+ * An abstract widget that all widgets inherit from.
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = AbstractControl.Constants.TYPE_NAME)
-public abstract class AbstractControl implements Control, ModelObjectComplete {
+@XmlType(name = RemotableAbstractWidget.Constants.TYPE_NAME)
+public abstract class RemotableAbstractWidget implements Widget, ModelObjectComplete {
 
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -40,20 +40,20 @@ public abstract class AbstractControl implements Control, ModelObjectComplete {
         return ToStringBuilder.reflectionToString(this);
     }
 
-    abstract static class Builder implements Control, ModelBuilder {
+    public abstract static class Builder implements Widget, ModelBuilder {
         Builder() {
             super();
         }
 
         //todo make ModelBuilder generic so I don't have to do this.
-        public abstract AbstractControl build();
+        public abstract RemotableAbstractWidget build();
     }
 
     /**
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        final static String TYPE_NAME = "AbstractControlType";
+        final static String TYPE_NAME = "AbstractWidgetType";
         final static String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
 }

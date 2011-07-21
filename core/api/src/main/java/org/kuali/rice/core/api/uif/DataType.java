@@ -1,5 +1,7 @@
 package org.kuali.rice.core.api.uif;
 
+import org.kuali.rice.core.api.util.jaxb.EnumStringAdapter;
+
 import javax.xml.bind.annotation.XmlEnum;
 import java.util.Date;
 
@@ -8,7 +10,6 @@ import java.util.Date;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@XmlEnum
 public enum DataType {
 	STRING(String.class), DATE(Date.class), TRUNCATED_DATE(Date.class), BOOLEAN(Boolean.class), INTEGER(Integer.class), FLOAT(Float.class), DOUBLE(Double.class), LONG(Long.class), COMPLEX(Object.class);
 	
@@ -20,5 +21,13 @@ public enum DataType {
 	
 	public Class<?> getType() {
 		return type;
+	}
+
+    public static final class Adapter extends EnumStringAdapter<DataType> {
+
+        @Override
+		protected Class<DataType> getEnumClass() {
+			return DataType.class;
+		}
 	}
 }

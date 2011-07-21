@@ -9,8 +9,8 @@ import javax.xml.bind.annotation.XmlType;
  * A password input control type.
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = PasswordInput.Constants.TYPE_NAME)
-public final class PasswordInput extends AbstractControl implements Sized {
+@XmlType(name = RemotablePasswordInput.Constants.TYPE_NAME)
+public final class RemotablePasswordInput extends RemotableAbstractControl implements Sized {
 
     @XmlElement(name = Elements.SIZE, required = false)
     private final Integer size;
@@ -20,15 +20,15 @@ public final class PasswordInput extends AbstractControl implements Sized {
         return size;
     }
 
-    private PasswordInput() {
+    private RemotablePasswordInput() {
         size = null;
     }
 
-    private PasswordInput(Builder b) {
+    private RemotablePasswordInput(Builder b) {
         size = b.size;
     }
 
-    public static final class Builder extends AbstractControl.Builder implements Sized {
+    public static final class Builder extends RemotableAbstractControl.Builder implements Sized {
         private Integer size;
 
         private Builder() {
@@ -53,8 +53,8 @@ public final class PasswordInput extends AbstractControl implements Sized {
         }
 
         @Override
-        public PasswordInput build() {
-            return new PasswordInput(this);
+        public RemotablePasswordInput build() {
+            return new RemotablePasswordInput(this);
         }
     }
 

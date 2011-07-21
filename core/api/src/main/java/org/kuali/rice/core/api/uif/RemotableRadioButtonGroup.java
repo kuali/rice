@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * A radio button group control type.
  */
-public final class CheckboxGroup extends AbstractControl implements KeyLabeled {
+public final class RemotableRadioButtonGroup extends RemotableAbstractControl implements KeyLabeled {
 
     @XmlElement(name = Elements.KEY_LABELS, required = false)
     private final Map<String, String> keyLabels;
@@ -18,15 +18,15 @@ public final class CheckboxGroup extends AbstractControl implements KeyLabeled {
         return keyLabels;
     }
 
-    private CheckboxGroup() {
+    private RemotableRadioButtonGroup() {
         keyLabels = null;
     }
 
-    private CheckboxGroup(Builder b) {
+    private RemotableRadioButtonGroup(Builder b) {
         keyLabels = b.keyLabels;
     }
 
-    public static final class Builder extends AbstractControl.Builder implements KeyLabeled {
+    public static final class Builder extends RemotableAbstractControl.Builder implements KeyLabeled {
         private Map<String, String> keyLabels;
 
         private Builder(Map<String, String> keyLabels) {
@@ -51,8 +51,8 @@ public final class CheckboxGroup extends AbstractControl implements KeyLabeled {
         }
 
         @Override
-        public CheckboxGroup build() {
-            return new CheckboxGroup(this);
+        public RemotableRadioButtonGroup build() {
+            return new RemotableRadioButtonGroup(this);
         }
     }
 
@@ -60,7 +60,7 @@ public final class CheckboxGroup extends AbstractControl implements KeyLabeled {
      * Defines some internal constants used on this class.
      */
     static final class Constants {
-        static final String TYPE_NAME = "CheckboxGroupType";
+        static final String TYPE_NAME = "RadioButtonGroupType";
     }
 
     static final class Elements {

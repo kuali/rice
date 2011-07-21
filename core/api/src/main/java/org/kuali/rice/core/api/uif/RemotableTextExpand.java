@@ -8,18 +8,18 @@ import javax.xml.bind.annotation.XmlType;
  * A text expand widget.  This can be used along side a textarea control.
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = TextExpand.Constants.TYPE_NAME)
-public final class TextExpand extends AbstractWidget {
+@XmlType(name = RemotableTextExpand.Constants.TYPE_NAME)
+public final class RemotableTextExpand extends RemotableAbstractWidget {
 
-    private TextExpand() {
+    private RemotableTextExpand() {
         super();
     }
 
-    private TextExpand(Builder b) {
+    private RemotableTextExpand(Builder b) {
         super();
     }
 
-    public static final class Builder extends AbstractWidget.Builder {
+    public static final class Builder extends RemotableAbstractWidget.Builder {
 
         private Builder() {
             super();
@@ -30,8 +30,8 @@ public final class TextExpand extends AbstractWidget {
         }
 
         @Override
-        public TextExpand build() {
-            return new TextExpand(this);
+        public RemotableTextExpand build() {
+            return new RemotableTextExpand(this);
         }
     }
 

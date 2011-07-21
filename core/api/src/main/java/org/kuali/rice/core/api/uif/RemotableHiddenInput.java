@@ -9,8 +9,8 @@ import javax.xml.bind.annotation.XmlType;
  * A hidden input control type.
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = HiddenInput.Constants.TYPE_NAME)
-public final class HiddenInput extends AbstractControl implements Sized {
+@XmlType(name = RemotableHiddenInput.Constants.TYPE_NAME)
+public final class RemotableHiddenInput extends RemotableAbstractControl implements Sized {
 
     @XmlElement(name = Elements.SIZE, required = false)
     private final Integer size;
@@ -20,15 +20,15 @@ public final class HiddenInput extends AbstractControl implements Sized {
         return size;
     }
 
-    private HiddenInput() {
+    private RemotableHiddenInput() {
         size = null;
     }
 
-    private HiddenInput(Builder b) {
+    private RemotableHiddenInput(Builder b) {
         size = b.size;
     }
 
-    public static final class Builder extends AbstractControl.Builder implements Sized {
+    public static final class Builder extends RemotableAbstractControl.Builder implements Sized {
         private Integer size;
 
         private Builder() {
@@ -53,8 +53,8 @@ public final class HiddenInput extends AbstractControl implements Sized {
         }
 
         @Override
-        public HiddenInput build() {
-            return new HiddenInput(this);
+        public RemotableHiddenInput build() {
+            return new RemotableHiddenInput(this);
         }
     }
 

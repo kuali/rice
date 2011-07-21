@@ -14,8 +14,8 @@ import java.util.Map;
  * A quick finder widget that can be used by a TextInput, HiddenInput, Select, or MultiSelect control types.
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = QuickFinder.Constants.TYPE_NAME)
-public final class QuickFinder extends AbstractWidget {
+@XmlType(name = RemotableQuickFinder.Constants.TYPE_NAME)
+public final class RemotableQuickFinder extends RemotableAbstractWidget {
 
     @XmlElement(name = Elements.BASE_LOOKUP_URL, required = true)
     private final String baseLookupUrl;
@@ -29,14 +29,14 @@ public final class QuickFinder extends AbstractWidget {
     @XmlElement(name = Elements.FIELD_CONVERSIONS, required = false)
     private final Map<String, String> fieldConversions;
 
-    private QuickFinder() {
+    private RemotableQuickFinder() {
         baseLookupUrl = null;
         dataObjectClass = null;
         lookupParameters = null;
         fieldConversions = null;
     }
 
-    private QuickFinder(Builder b) {
+    private RemotableQuickFinder(Builder b) {
         baseLookupUrl = b.baseLookupUrl;
         dataObjectClass = b.dataObjectClass;
         lookupParameters = b.lookupParameters;
@@ -59,7 +59,7 @@ public final class QuickFinder extends AbstractWidget {
         return Collections.unmodifiableMap(fieldConversions);
     }
 
-    public static final class Builder extends AbstractWidget.Builder {
+    public static final class Builder extends RemotableAbstractWidget.Builder {
         private String baseLookupUrl;
         private String dataObjectClass;
         private Map<String, String> lookupParameters = Collections.emptyMap();
@@ -119,8 +119,8 @@ public final class QuickFinder extends AbstractWidget {
         }
 
         @Override
-        public QuickFinder build() {
-            return new QuickFinder(this);
+        public RemotableQuickFinder build() {
+            return new RemotableQuickFinder(this);
         }
     }
 

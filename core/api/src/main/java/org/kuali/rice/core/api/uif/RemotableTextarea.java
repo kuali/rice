@@ -9,8 +9,8 @@ import javax.xml.bind.annotation.XmlType;
  * A textarea control type.
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = Textarea.Constants.TYPE_NAME)
-public final class Textarea extends AbstractControl implements Watermarked, RowsCols {
+@XmlType(name = RemotableTextarea.Constants.TYPE_NAME)
+public final class RemotableTextarea extends RemotableAbstractControl implements Watermarked, RowsCols {
 
     @XmlElement(name = Elements.ROWS, required = false)
     private final Integer rows;
@@ -36,19 +36,19 @@ public final class Textarea extends AbstractControl implements Watermarked, Rows
         return watermark;
     }
 
-    private Textarea() {
+    private RemotableTextarea() {
         rows = null;
         cols = null;
         watermark = null;
     }
 
-    private Textarea(Builder b) {
+    private RemotableTextarea(Builder b) {
         rows = b.rows;
         cols = b.cols;
         watermark = b.watermark;
     }
 
-    public static final class Builder extends AbstractControl.Builder implements Watermarked, RowsCols {
+    public static final class Builder extends RemotableAbstractControl.Builder implements Watermarked, RowsCols {
         private Integer rows;
         private Integer cols;
         private String watermark;
@@ -97,8 +97,8 @@ public final class Textarea extends AbstractControl implements Watermarked, Rows
         }
 
         @Override
-        public Textarea build() {
-            return new Textarea(this);
+        public RemotableTextarea build() {
+            return new RemotableTextarea(this);
         }
     }
 

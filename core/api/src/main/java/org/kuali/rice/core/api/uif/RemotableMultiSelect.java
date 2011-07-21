@@ -12,8 +12,8 @@ import java.util.Map;
  * A multi-select control type.
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = MultiSelect.Constants.TYPE_NAME)
-public final class MultiSelect extends AbstractControl implements Sized, KeyLabeled {
+@XmlType(name = RemotableMultiSelect.Constants.TYPE_NAME)
+public final class RemotableMultiSelect extends RemotableAbstractControl implements Sized, KeyLabeled {
 
     @XmlElement(name = Elements.SIZE, required = false)
     private final Integer size;
@@ -21,12 +21,12 @@ public final class MultiSelect extends AbstractControl implements Sized, KeyLabe
     @XmlElement(name = Elements.KEY_LABELS, required = false)
     private final Map<String, String> keyLabels;
 
-    private MultiSelect() {
+    private RemotableMultiSelect() {
         size = null;
         keyLabels = null;
     }
 
-    private MultiSelect(Builder b) {
+    private RemotableMultiSelect(Builder b) {
         size = b.size;
         keyLabels = b.keyLabels;
     }
@@ -41,7 +41,7 @@ public final class MultiSelect extends AbstractControl implements Sized, KeyLabe
         return size;
     }
 
-    public static final class Builder extends AbstractControl.Builder implements Sized, KeyLabeled {
+    public static final class Builder extends RemotableAbstractControl.Builder implements Sized, KeyLabeled {
         private Integer size;
         private Map<String, String> keyLabels;
 
@@ -80,8 +80,8 @@ public final class MultiSelect extends AbstractControl implements Sized, KeyLabe
         }
 
         @Override
-        public MultiSelect build() {
-            return new MultiSelect(this);
+        public RemotableMultiSelect build() {
+            return new RemotableMultiSelect(this);
         }
     }
 

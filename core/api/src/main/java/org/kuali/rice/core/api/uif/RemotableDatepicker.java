@@ -8,18 +8,18 @@ import javax.xml.bind.annotation.XmlType;
  * A datepicker widget that can be used by a TextInput or HiddenInput control.
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = Datepicker.Constants.TYPE_NAME)
-public final class Datepicker extends AbstractWidget {
+@XmlType(name = RemotableDatepicker.Constants.TYPE_NAME)
+public final class RemotableDatepicker extends RemotableAbstractWidget {
 
-    private Datepicker() {
+    private RemotableDatepicker() {
         super();
     }
 
-    private Datepicker(Builder b) {
+    private RemotableDatepicker(Builder b) {
         super();
     }
 
-    public static final class Builder extends AbstractWidget.Builder {
+    public static final class Builder extends RemotableAbstractWidget.Builder {
 
         private Builder() {
             super();
@@ -30,8 +30,8 @@ public final class Datepicker extends AbstractWidget {
         }
 
         @Override
-        public Datepicker build() {
-            return new Datepicker(this);
+        public RemotableDatepicker build() {
+            return new RemotableDatepicker(this);
         }
     }
 

@@ -1,12 +1,15 @@
 package org.kuali.rice.core.api.uif;
 
 import org.kuali.rice.core.api.CoreConstants;
+import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.Collection;
 
 /**
  * A text input control type.
@@ -24,6 +27,10 @@ public final class RemotableTextInput extends RemotableAbstractControl implement
 
     @XmlElement(name = Elements.WATERMARK, required = false)
     private final String watermark;
+
+    @SuppressWarnings("unused")
+    @XmlAnyElement
+    private final Collection<Element> _futureElements = null;
 
     /**
      * Should only be invoked by JAXB.

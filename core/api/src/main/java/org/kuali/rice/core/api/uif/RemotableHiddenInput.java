@@ -1,12 +1,15 @@
 package org.kuali.rice.core.api.uif;
 
 import org.kuali.rice.core.api.CoreConstants;
+import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.Collection;
 
 /**
  * A hidden input control type.
@@ -21,10 +24,10 @@ public final class RemotableHiddenInput extends RemotableAbstractControl impleme
     @XmlElement(name = Elements.SIZE, required = false)
     private final Integer size;
 
-    @Override
-    public Integer getSize() {
-        return size;
-    }
+    @SuppressWarnings("unused")
+    @XmlAnyElement
+    private final Collection<Element> _futureElements = null;
+
     /**
      * Should only be invoked by JAXB.
      */
@@ -35,6 +38,11 @@ public final class RemotableHiddenInput extends RemotableAbstractControl impleme
 
     private RemotableHiddenInput(Builder b) {
         size = b.size;
+    }
+
+    @Override
+    public Integer getSize() {
+        return size;
     }
 
     public static final class Builder extends RemotableAbstractControl.Builder implements Sized {

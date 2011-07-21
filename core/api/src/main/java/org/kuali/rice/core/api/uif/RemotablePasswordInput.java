@@ -1,12 +1,15 @@
 package org.kuali.rice.core.api.uif;
 
 import org.kuali.rice.core.api.CoreConstants;
+import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.Collection;
 
 /**
  * A password input control type.
@@ -25,6 +28,11 @@ public final class RemotablePasswordInput extends RemotableAbstractControl imple
     public Integer getSize() {
         return size;
     }
+
+    @SuppressWarnings("unused")
+    @XmlAnyElement
+    private final Collection<Element> _futureElements = null;
+
     /**
      * Should only be invoked by JAXB.
      */

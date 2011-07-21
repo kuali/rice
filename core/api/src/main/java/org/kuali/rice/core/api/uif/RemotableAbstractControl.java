@@ -21,10 +21,6 @@ import java.util.Collection;
 @XmlType(name = RemotableAbstractControl.Constants.TYPE_NAME)
 public abstract class RemotableAbstractControl implements Control, ModelObjectComplete {
 
-    @SuppressWarnings("unused")
-    @XmlAnyElement
-    private final Collection<Element> _futureElements = null;
-
     /**
      * Should only be invoked by JAXB.
      */

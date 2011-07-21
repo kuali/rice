@@ -1,11 +1,14 @@
 package org.kuali.rice.core.api.uif;
 
 import org.kuali.rice.core.api.CoreConstants;
+import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.Collection;
 
 /**
  * A text expand widget.  This can be used along side a textarea control.
@@ -15,6 +18,11 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = RemotableTextExpand.Constants.TYPE_NAME, propOrder = {
 		CoreConstants.CommonElements.FUTURE_ELEMENTS })
 public final class RemotableTextExpand extends RemotableAbstractWidget {
+
+    @SuppressWarnings("unused")
+    @XmlAnyElement
+    private final Collection<Element> _futureElements = null;
+
     /**
      * Should only be invoked by JAXB.
      */

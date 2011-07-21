@@ -168,6 +168,10 @@ public class UifConstants {
         public static final String PAGE_ID = "pageId";
         public static final String HISTORY = "history";
     }
+    
+    public static class Messages {
+        public static final String VALIDATION_MSG_KEY_PREFIX = "validation.";
+    }
 
     public static class MessageKeys {
         public static final String QUERY_DATA_NOT_FOUND = "query.dataNotFound";

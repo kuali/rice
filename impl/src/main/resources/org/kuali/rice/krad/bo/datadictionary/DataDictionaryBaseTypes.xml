@@ -157,73 +157,6 @@
 	<bean id="ValidCharactersConstraint" 
 		abstract="true" 
 		class="org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint" />
-		
-	<bean id="EmailPatternConstraint" 
-	    parent="ValidCharactersConstraint"
-		abstract="true" 
-		p:labelKey="email"
-		p:value="^[A-Za-z0-9][A-Za-z0-9_.\-]*[A-Za-z0-9]@([A-Za-z0-9][A-Za-z0-9_-]*\\.)+[A-Za-z]{2,}$"/>
-	
-	<bean id="FloatingPointNumberPatternConstraint" 
-	    parent="ValidCharactersConstraint"
-		abstract="true" 
-		p:labelKey="number"
-		p:value="^([0-9]*\\.)?[0-9]+$"/>
-	
-	<!-- Client side only - Warning:
-	none of these have their Java equivalent and we may want to redo their js definition,
-	as well -->
-	<bean id="UrlPatternConstraint" 
-	    parent="ValidCharactersConstraint"
-		abstract="true" 
-		p:labelKey="url"/>
-	
-	<bean id="DatePatternConstraint" 
-	    parent="ValidCharactersConstraint"
-		abstract="true" 
-		p:labelKey="date"/>
-	
-	<bean id="DigitsPatternConstraint" 
-	    parent="ValidCharactersConstraint"
-		abstract="true" 
-		p:labelKey="digits"/>
-		
-	<bean id="CreditcardPatternConstraint" 
-	    parent="ValidCharactersConstraint"
-		abstract="true" 
-		p:labelKey="creditcard"/>
-	
-	<bean id="LettersWithPuncPatternConstraint" 
-	    parent="ValidCharactersConstraint"
-		abstract="true" 
-		p:labelKey="letterswithbasicpunc"/>
-	
-	<bean id="LettersOnlyPatternConstraint" 
-	    parent="ValidCharactersConstraint"
-		abstract="true" 
-		p:labelKey="lettersonly"/>
-	
-	<bean id="NoWhitespacePatternConstraint" 
-	    parent="ValidCharactersConstraint"
-		abstract="true" 
-		p:labelKey="nowhitespace"/>
-	
-	<bean id="IntegerPatternConstraint" 
-	    parent="ValidCharactersConstraint"
-		abstract="true" 
-		p:labelKey="integer"/>
-
-	<bean id="PhoneUSPatternConstraint" 
-	    parent="ValidCharactersConstraint"
-		abstract="true" 
-		p:labelKey="phoneUS"/>
-		
-	<bean id="TimePatternConstraint" 
-	    parent="ValidCharactersConstraint"
-		abstract="true" 
-		p:labelKey="time"/>
-
-	<!-- end clientside only constraints -->
 
     <!-- Begin Character Level Constraints -->
 
@@ -247,62 +180,58 @@
         abstract="true" 
         class="org.kuali.rice.krad.datadictionary.validation.constraint.NumericPatternConstraint" />
 
-    <bean id="RegexPatternConstraint" 
-        abstract="true" 
-        class="org.kuali.rice.krad.datadictionary.validation.constraint.RegexPatternConstraint" />
-
     <!-- End Character Level Constraints -->
     <!-- Begin Field Level Constraints -->
 
     <bean id="FixedPointPatternConstraint" 
         abstract="true" 
         class="org.kuali.rice.krad.datadictionary.validation.constraint.FixedPointPatternConstraint"
-        p:patternTypeKey="validationPatternRegex.fixedPoint" />
+        p:labelKey="validation.fixedPoint" p:patternTypeKey="validationPatternRegex.fixedPoint"/>
 
     <bean id="FloatingPointPatternConstraint" 
         abstract="true" 
         class="org.kuali.rice.krad.datadictionary.validation.constraint.FloatingPointPatternConstraint"
-        p:patternTypeKey="validationPatternRegex.floatingPoint" />
+        p:labelKey="validation.floatingPoint" p:patternTypeKey="validationPatternRegex.floatingPoint"/>
 
     <bean id="PhoneNumberPatternConstraint" 
         abstract="true" 
         class="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
-        p:patternTypeKey="validationPatternRegex.phoneNumber" />
+        p:labelKey="validation.phoneNumber" p:patternTypeKey="validationPatternRegex.phoneNumber"/>
 
     <bean id="JavaClassPatternConstraint" 
         abstract="true" 
         class="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
-        p:patternTypeKey="validationPatternRegex.javaClass" />
+        p:labelKey="validation.javaClass" p:patternTypeKey="validationPatternRegex.javaClass"/>
 
     <bean id="EmailAddressPatternConstraint" 
         abstract="true" 
         class="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
-        p:patternTypeKey="validationPatternRegex.emailAddress" />
+        p:labelKey="validation.emailAddress" p:patternTypeKey="validationPatternRegex.emailAddress"/>
 
     <bean id="DateConfigPatternConstraint" 
         abstract="true" 
         class="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
-        p:patternTypeKey="validationPatternRegex.date" />
+        p:labelKey="validation.date" p:patternTypeKey="validationPatternRegex.date"  />
 
     <bean id="TimestampPatternConstraint" 
         abstract="true" 
         class="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
-        p:patternTypeKey="validationPatternRegex.timestamp" />
+        p:labelKey="validation.timestamp" p:patternTypeKey="validationPatternRegex.timestamp"/>
 
     <bean id="YearPatternConstraint" 
         abstract="true" 
         class="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
-        p:patternTypeKey="validationPatternRegex.year" />
+        p:labelKey="validation.year" p:patternTypeKey="validationPatternRegex.year"  />
 
     <bean id="MonthPatternConstraint" 
         abstract="true" 
         class="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
-        p:patternTypeKey="validationPatternRegex.month" />
+        p:labelKey="validation.month" p:patternTypeKey="validationPatternRegex.month"/>
 
     <bean id="ZipcodePatternConstraint" 
         abstract="true" 
         class="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
-        p:patternTypeKey="validationPatternRegex.zipcode" />
+        p:labelKey="validation.zipcode" p:patternTypeKey="validationPatternRegex.zipcode"/>
 
     <!-- End Field Level Constraints -->
 

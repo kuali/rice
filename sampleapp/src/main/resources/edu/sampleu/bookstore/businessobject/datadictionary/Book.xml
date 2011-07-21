@@ -89,7 +89,7 @@
     <property name="shortLabel" value="ISBN"/>
     <property name="maxLength" value="24"/>
     <property name="validCharactersConstraint">
-      <bean  parent="RegexPatternConstraint" p:validationErrorMessageKey="error.invalidISBN" p:pattern="^(97(8|9))?\d{9}(\d|X)$"/>
+      <bean  parent="ValidCharactersConstraint" p:labelKey="error.invalidISBN" p:value="^(97(8|9))?\d{9}(\d|X)$"/>
     </property>
     <property name="controlField">
       <bean parent="TextControl" p:size="24"/>
@@ -119,9 +119,9 @@
     <property name="name" value="publicationDate"/>
     <property name="label" value="Publication Date"/>
     <property name="shortLabel" value="Pub Date"/>   
-    <property name="validCharactersConstraint">
+<!--     <property name="validCharactersConstraint">
       <bean parent="DatePatternConstraint"/>
-    </property>  
+    </property>   -->
     <property name="controlField">
       <bean parent="DateControl"/>
     </property>

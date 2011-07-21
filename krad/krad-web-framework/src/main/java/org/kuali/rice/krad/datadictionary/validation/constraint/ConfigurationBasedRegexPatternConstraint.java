@@ -21,7 +21,7 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ConfigurationBasedRegexPatternConstraint extends ValidDataPatternConstraint {
+public class ConfigurationBasedRegexPatternConstraint extends ValidDataPatternConstraint {
 
 	/**
 	 * This method implementation uses the key returned by {@link #getPatternTypePropertyString()} to fetch the 

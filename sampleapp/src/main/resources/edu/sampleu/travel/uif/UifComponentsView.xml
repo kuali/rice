@@ -704,7 +704,7 @@
 					p:exclusiveMin="2" p:inclusiveMax="50" p:propertyName="field10"
 					p:constraint="Must be greater than 2 and no more than 50">
 					<property name="validCharactersConstraint">
-						<bean parent="DigitsPatternConstraint" />
+						<bean parent="NumericPatternConstraint" />
 					</property>
 				</bean>
 			</list>
@@ -1198,58 +1198,113 @@
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
-				<bean parent="GenericTextField" p:label="DigitsPatternConstraint"
-					p:summary="Digits only" p:propertyName="field50">
+				<bean parent="GenericTextField" p:label="FixedPointPatternConstraint"
+					p:summary="Fixed point pattern constraint with precision 5(max numbers total) and scale 2 (max numbers after decimal)" p:propertyName="field50">
 					<property name="validCharactersConstraint">
-						<bean parent="DigitsPatternConstraint" />
+						<bean parent="FixedPointPatternConstraint" p:precision="5" p:scale="2" />
 					</property>
 				</bean>
-				<bean parent="GenericTextField" p:label="UrlPatternConstraint"
-					p:summary="Url only (http://www.kuali.org)" p:propertyName="field51">
+				<bean parent="GenericTextField" p:label="FloatingPointPatternConstraint"
+					p:summary="Floating point number, allow negative on" p:propertyName="field51">
 					<property name="validCharactersConstraint">
-						<bean parent="UrlPatternConstraint" />
+						<bean parent="FloatingPointPatternConstraint" p:allowNegative="true"/>
 					</property>
 				</bean>
-				<bean parent="GenericTextField" p:label="DatePatternConstraint"
-					p:summary="mm/dd/yyyy" p:propertyName="field52">
+				<bean parent="GenericTextField" p:label="PhoneNumberPatternConstraint"
+					p:summary="###-###-####" p:propertyName="field52">
 					<property name="validCharactersConstraint">
-						<bean parent="DatePatternConstraint" />
+						<bean parent="PhoneNumberPatternConstraint" />
 					</property>
 				</bean>
-				<bean parent="GenericTextField" p:label="LettersWithPuncPatternConstraint"
-					p:summary="alpha with basic punctuation" p:propertyName="field53">
+				<bean parent="GenericTextField" p:label="JavaClassPatternConstraint"
+					p:summary="valid java class names accepted" p:propertyName="field53">
 					<property name="validCharactersConstraint">
-						<bean parent="LettersWithPuncPatternConstraint" />
+						<bean parent="JavaClassPatternConstraint" />
 					</property>
 				</bean>
-				<bean parent="GenericTextField" p:label="LettersOnlyPatternConstraint"
-					p:summary="Alpha only" p:propertyName="field54">
+				<bean parent="GenericTextField" p:label="EmailAddressPatternConstraint"
+					p:summary="email address" p:propertyName="field54">
 					<property name="validCharactersConstraint">
-						<bean parent="LettersOnlyPatternConstraint" />
+						<bean parent="EmailAddressPatternConstraint" />
 					</property>
 				</bean>
-				<bean parent="GenericTextField" p:label="NoWhitespacePatternConstraint"
-					p:summary="No whitespace" p:propertyName="field55">
+				<bean parent="GenericTextField" p:label="DateConfigPatternConstraint"
+					p:summary="Date - does not work currently" p:propertyName="field55">
 					<property name="validCharactersConstraint">
-						<bean parent="NoWhitespacePatternConstraint" />
+						<bean parent="DateConfigPatternConstraint" />
 					</property>
 				</bean>
-				<bean parent="GenericTextField" p:label="IntegerPatternConstraint"
-					p:summary="Valid integer only" p:propertyName="field56">
+				<bean parent="GenericTextField" p:label="TimestampPatternConstraint"
+					p:summary="Timestamp - under revamp" p:propertyName="field56">
 					<property name="validCharactersConstraint">
-						<bean parent="IntegerPatternConstraint" />
+						<bean parent="TimestampPatternConstraint" />
 					</property>
 				</bean>
-				<bean parent="GenericTextField" p:label="PhoneUSPatternConstraint"
-					p:summary="US phone numbers" p:propertyName="field57">
+				<bean parent="GenericTextField" p:label="YearPatternConstraint"
+					p:summary="Valid years 1600s to 2000s only" p:propertyName="field57">
 					<property name="validCharactersConstraint">
-						<bean parent="PhoneUSPatternConstraint" />
+						<bean parent="YearPatternConstraint" />
 					</property>
 				</bean>
-				<bean parent="GenericTextField" p:label="TimePatternConstraint"
-					p:summary="time pattern" p:propertyName="field58">
+				<bean parent="GenericTextField" p:label="MonthPatternConstraint"
+					p:summary="any valid month number" p:propertyName="field58">
 					<property name="validCharactersConstraint">
-						<bean parent="TimePatternConstraint" />
+						<bean parent="MonthPatternConstraint" />
+					</property>
+				</bean>
+				<bean parent="GenericTextField" p:label="ZipcodePatternConstraint"
+					p:summary="any valid zipcode with or without -" p:propertyName="field61">
+					<property name="validCharactersConstraint">
+						<bean parent="ZipcodePatternConstraint" />
+					</property>
+				</bean>
+				<bean parent="GenericTextField" p:label="AlphaNumericPatternConstraint"
+					p:summary="alpha numeric characters only - no options on" p:propertyName="field62">
+					<property name="validCharactersConstraint">
+						<bean parent="AlphaNumericPatternConstraint" />
+					</property>
+				</bean>
+				<bean parent="GenericTextField" p:label="AlphaNumericPatternConstraint with Options"
+					p:summary="alpha numeric characters with whitespace, underscore, and forward slash allowed" 
+					p:propertyName="field63">
+					<property name="validCharactersConstraint">
+						<bean parent="AlphaNumericPatternConstraint" p:allowWhitespace="true" p:allowUnderscore="true" p:allowForwardSlash="true"/>
+					</property>
+				</bean>
+				<bean parent="GenericTextField" p:label="AlphaPatternConstraint"
+					p:summary="alpha characters with whitespace allowed" 
+					p:propertyName="field64">
+					<property name="validCharactersConstraint">
+						<bean parent="AlphaPatternConstraint" p:allowWhitespace="true"/>
+					</property>
+				</bean>
+				<bean parent="GenericTextField" p:label="AnyCharacterPatternConstraint"
+					p:summary="any characters with no whitespace allowed" 
+					p:propertyName="field65">
+					<property name="validCharactersConstraint">
+						<bean parent="AnyCharacterPatternConstraint" p:allowWhitespace="false"/>
+					</property>
+				</bean>
+				<bean parent="GenericTextField" p:label="CharsetPatternConstraint"
+					p:summary="only allow a set of characters - example allows a, b, c, A, B, or C" 
+					p:propertyName="field66">
+					<property name="validCharactersConstraint">
+						<bean parent="CharsetPatternConstraint" p:validChars="abcABC"/>
+					</property>
+				</bean>
+				<bean parent="GenericTextField" p:label="NumericPatternConstraint"
+					p:summary="allows positive whole numbers only" 
+					p:propertyName="field67">
+					<property name="validCharactersConstraint">
+						<bean parent="NumericPatternConstraint"/>
+					</property>
+				</bean>
+				<bean parent="GenericTextField" p:label="ValidCharactersConstraint - custom"
+					p:summary="custom valid characters constraint - this one accepts only 1 alpha character followed by a period  and then followed by a number (a.8, b.0, etc)" 
+					p:propertyName="field68">
+					<property name="validCharactersConstraint">
+						<bean parent="ValidCharactersConstraint" p:value="^[a-zA-Z]\.[0-9]$"
+						p:labelKey="validation.aDotNumTest"/>
 					</property>
 				</bean>
 			</list>

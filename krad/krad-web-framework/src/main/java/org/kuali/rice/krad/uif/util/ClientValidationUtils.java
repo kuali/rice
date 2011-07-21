@@ -26,6 +26,7 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.WhenConstraint;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.field.AttributeField;
@@ -52,7 +53,7 @@ public class ClientValidationUtils {
 	
 	public static final String LABEL_KEY_SPLIT_PATTERN = ",";
 	
-	public static final String VALIDATION_MSG_KEY_PREFIX = "validation.";
+	
 	public static final String PREREQ_MSG_KEY = "prerequisite";
 	public static final String POSTREQ_MSG_KEY = "postrequisite";
 	public static final String MUSTOCCURS_MSG_KEY = "mustOccurs";
@@ -71,20 +72,7 @@ public class ClientValidationUtils {
 		MIN_EXCLUSIVE("minExclusive"), 
 		MAX_INCLUSIVE("maxInclusive"),
 		MIN_LENGTH("minLengthConditional"),
-		MAX_LENGTH("maxLengthConditional"),
-		EMAIL("email"),
-		URL("url"),
-		DATE("date"),
-		NUMBER("number"),
-		DIGITS("digits"),
-		CREDITCARD("creditcard"),
-		LETTERS_WITH_BASIC_PUNC("letterswithbasicpunc"),
-		ALPHANUMERIC("alphanumeric"),
-		LETTERS_ONLY("lettersonly"),
-		NO_WHITESPACE("nowhitespace"),
-		INTEGER("integer"),
-		PHONE_US("phoneUS"),
-		TIME("time");
+		MAX_LENGTH("maxLengthConditional");
 		
 		private ValidationMessageKeys(String name) {
 			this.name = name;
@@ -107,27 +95,19 @@ public class ClientValidationUtils {
 		}
 	}
 	
-	public static String generateMessageFromLabelKey(String labelKey){
+	public static String generateMessageFromLabelKey(List<String> params, String labelKey){
 		String message = "NO MESSAGE";
 		if(StringUtils.isNotEmpty(labelKey)){
-			if(labelKey.contains(LABEL_KEY_SPLIT_PATTERN)){
-				message = "";
-				String[] tokens = labelKey.split(LABEL_KEY_SPLIT_PATTERN);
-				int i = 0;
-				for(String s: tokens){
-					String ps = configService.getPropertyValueAsString(VALIDATION_MSG_KEY_PREFIX + s);
-					i++;
-					if(i != tokens.length){
-						message = message + ps + ", ";
-					}
-					else{
-						message = message + ps;
-					}
-				}
+			message = configService.getPropertyValueAsString(labelKey);
+			if(params != null && !params.isEmpty() && StringUtils.isNotEmpty(message)){
+			    message = MessageFormat.format(message, params.toArray());
 			}
-			else{
-				message = configService.getPropertyValueAsString(VALIDATION_MSG_KEY_PREFIX + labelKey);
-			}
+		}
+		if(StringUtils.isEmpty(message)){
+		    message = labelKey;
+		}
+		else if(message.contains("\"")){
+		    message = message.replaceAll("\"", "&quot;");
 		}
 		return message;
 	}
@@ -143,7 +123,7 @@ public class ClientValidationUtils {
 		String keyValuePairs = "";
 		for(ValidationMessageKeys element : EnumSet.allOf(ValidationMessageKeys.class)){
 			String key = element.toString();
-			String message = configService.getPropertyValueAsString(VALIDATION_MSG_KEY_PREFIX + key);
+			String message = configService.getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + key);
 			if(StringUtils.isNotEmpty(message)){
 				keyValuePairs = keyValuePairs + "\n" + key + ": '"+ message + "',";
 				
@@ -166,12 +146,17 @@ public class ClientValidationUtils {
 	 * @return js validator.addMethod script
 	 */
 	public static String getRegexMethod(AttributeField field, ValidCharactersConstraint validCharactersConstraint) {
-		String message = generateMessageFromLabelKey(validCharactersConstraint.getLabelKey());
+		String message = generateMessageFromLabelKey(validCharactersConstraint.getValidationMessageParams(), validCharactersConstraint.getLabelKey());
 		String key = "validChar-" + field.getBindingInfo().getBindingPath() + methodKey;
+		
+		String regex = validCharactersConstraint.getValue();
+		if(regex.contains("\\\\")){
+		    regex.replaceAll("\\\\", "\\\\\\\\");
+		}
 		
 		return "\njQuery.validator.addMethod(\"" + key
 				+ "\", function(value, element) {\n" + " return this.optional(element) || "
-				+ "/" + validCharactersConstraint.getValue() + "/.test(value); " + "}, \""
+				+ "/" + regex + "/.test(value); " + "}, \""
 				+ message + "\");";
 	}
 	
@@ -477,10 +462,10 @@ public class ClientValidationUtils {
 		methodKey++;
 		String message = "";
 		if(StringUtils.isEmpty(constraint.getLabelKey())){
-			message = configService.getPropertyValueAsString(VALIDATION_MSG_KEY_PREFIX + "prerequisite");
+			message = configService.getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "prerequisite");
 		}
 		else{
-			message = generateMessageFromLabelKey(constraint.getLabelKey());
+			message = generateMessageFromLabelKey(constraint.getValidationMessageParams(), constraint.getLabelKey());
 		}
 		if(StringUtils.isEmpty(message)){
 			message = "prerequisite - No message";
@@ -526,10 +511,10 @@ public class ClientValidationUtils {
 		// field occurs after case
 		String message = "";
 		if(StringUtils.isEmpty(constraint.getLabelKey())){
-			message = configService.getPropertyValueAsString(VALIDATION_MSG_KEY_PREFIX + "postrequisite");
+			message = configService.getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "postrequisite");
 		}
 		else{
-			message = generateMessageFromLabelKey(constraint.getLabelKey());
+			message = generateMessageFromLabelKey(constraint.getValidationMessageParams(), constraint.getLabelKey());
 		}
 		
 		if(StringUtils.isEmpty(constraint.getLabelKey())){
@@ -653,7 +638,7 @@ public class ClientValidationUtils {
 	private static String getMustOccursMessage(View view, MustOccurConstraint constraint){
 		String message = "";
 		if(StringUtils.isNotEmpty(constraint.getLabelKey())){
-			message = generateMessageFromLabelKey(constraint.getLabelKey());
+			message = generateMessageFromLabelKey(constraint.getValidationMessageParams(), constraint.getLabelKey());
 		}
 		else{
 			String and = configService.getPropertyValueAsString(AND_MSG_KEY);
@@ -662,7 +647,7 @@ public class ClientValidationUtils {
 			String atMost = configService.getPropertyValueAsString(ATMOST_MSG_KEY);
 			String genericLabel = configService.getPropertyValueAsString(GENERIC_FIELD_MSG_KEY);
 			String mustOccursMsg = configService.getPropertyValueAsString(
-                    VALIDATION_MSG_KEY_PREFIX + MUSTOCCURS_MSG_KEY);
+			        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + MUSTOCCURS_MSG_KEY);
 			//String postfix = configService.getPropertyValueAsString(VALIDATION_MSG_KEY_PREFIX + MUSTOCCURS_POST_MSG_KEY);
 			String statement="";
 			for(int i=0; i< mustOccursPathNames.size(); i++){

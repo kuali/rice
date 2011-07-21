@@ -1,5 +1,7 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -20,6 +22,8 @@ public class BaseConstraint implements Constraint {
     protected String labelKey; 
     @XmlElement
     protected Boolean applyClientSide;
+    
+    List<String> validationMessageParams;
     
     public BaseConstraint(){
     	applyClientSide = Boolean.valueOf(true);
@@ -60,6 +64,22 @@ public class BaseConstraint implements Constraint {
 	public void setApplyClientSide(Boolean applyClientSide) {
 		this.applyClientSide = applyClientSide;
 	}
+	
+
+    /**
+     * Parameters to be used in the string retrieved by this constraint's labelKey
+     * @return the validationMessageParams
+     */
+    public List<String> getValidationMessageParams() {
+        return this.validationMessageParams;
+    }
+
+    /**
+     * @param validationMessageParams the validationMessageParams to set
+     */
+    public void setValidationMessageParams(List<String> validationMessageParams) {
+        this.validationMessageParams = validationMessageParams;
+    }
 	
 
 }

@@ -15,6 +15,13 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.uif.UifConstants;
+
 /**
  * Validation pattern for matching floating point numbers, optionally matching negative numbers
  * 
@@ -40,18 +47,6 @@ public class FloatingPointPatternConstraint extends ConfigurationBasedRegexPatte
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.validation.constraint.ValidDataPatternConstraint#getLabelKey()
-     */
-    @Override
-    public String getLabelKey() {
-        StringBuffer buf = new StringBuffer("validation.format." + getPatternTypeKey());
-        if (isAllowNegative()) {
-            buf.append(".allowNegative");
-        }
-        return buf.toString();
-    }
-
-    /**
      * @return the allowNegative
      */
     public boolean isAllowNegative() {
@@ -65,16 +60,25 @@ public class FloatingPointPatternConstraint extends ConfigurationBasedRegexPatte
         this.allowNegative = allowNegative;
     }
 
-    /*******************************************************************************/
-
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.krad.datadictionary.validation.ValidationPattern#getValidationErrorMessageParameters(java.lang.String)
+     * @see org.kuali.rice.krad.datadictionary.validation.constraint.ValidDataPatternConstraint#getValidationMessageParams()
      */
-    //    @Override
-    //    public String[] getValidationErrorMessageParameters(String attributeLabel) {
-    //        return new String[]{attributeLabel, String.valueOf(precision), String.valueOf(scale)};
-    //    }
-
+    @Override
+    public List<String> getValidationMessageParams() {
+        if (validationMessageParams == null) {
+            validationMessageParams = new ArrayList<String>();
+            ConfigurationService configService = KRADServiceLocator.getKualiConfigurationService();
+            if (allowNegative) {
+                validationMessageParams.add(configService
+                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX
+                                + "positiveOrNegative"));
+            } else {
+                validationMessageParams.add(configService
+                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "positive"));
+            }
+        }
+        return validationMessageParams;
+    }
 }

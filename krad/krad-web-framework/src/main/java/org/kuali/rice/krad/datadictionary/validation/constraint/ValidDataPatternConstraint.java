@@ -15,7 +15,11 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.uif.UifConstants;
 
 /**
  * Class used to 
@@ -60,9 +64,14 @@ public abstract class ValidDataPatternConstraint extends ValidCharactersConstrai
      */
     @Override
     public String getLabelKey() {
-        StringBuilder buf = new StringBuilder();
-        buf.append("validation.format.").append(getPatternTypeKey());
-        return buf.toString();
+        if(StringUtils.isNotEmpty(labelKey)){
+            return labelKey;
+        }
+        else{
+            StringBuilder buf = new StringBuilder();
+            buf.append(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX).append(getPatternTypeKey());
+            return buf.toString();
+        }
     }
 
     /**
@@ -70,7 +79,7 @@ public abstract class ValidDataPatternConstraint extends ValidCharactersConstrai
      * include the start(^) and end($) symbols
      */
     abstract protected String getRegexString();
-
+    
     /**
      * the key used to identify the validation pattern
      * 

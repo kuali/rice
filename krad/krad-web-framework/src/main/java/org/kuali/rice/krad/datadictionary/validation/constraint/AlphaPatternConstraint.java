@@ -15,7 +15,13 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.uif.UifConstants;
 
 
 /**
@@ -66,20 +72,26 @@ public class AlphaPatternConstraint extends ValidCharactersPatternConstraint {
 		if (StringUtils.isNotEmpty(labelKey)) {
 			return labelKey;
 		}
-		StringBuilder key = new StringBuilder("");
-		key.append("alphaPattern,");
-		if (getAllowWhitespace()) {
-			key.append("whitespace");
-		}
-		return key.toString();
+		
+		return UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "alphaPattern";
 	}
 
-//	@Override
-//	protected String getValidationErrorMessageKeyOptions() {
-//		if (getAllowWhitespace()) {
-//			return ".allowWhitespace";
-//		}
-//		return KRADConstants.EMPTY_STRING;
-//	}
+    /**
+     * Parameters to be used in the string retrieved by this constraint's labelKey
+     * @return the validationMessageParams
+     */
+    public List<String> getValidationMessageParams() {
+        if(validationMessageParams == null){
+            validationMessageParams = new ArrayList<String>();
+            ConfigurationService configService = KRADServiceLocator.getKualiConfigurationService();
+            StringBuilder paramString = new StringBuilder("");
+            if (getAllowWhitespace()) {
+                paramString.append(", " + configService
+                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "whitespace"));
+            }
+            validationMessageParams.add(paramString.toString());
+        }
+        return this.validationMessageParams;
+    }
 
 }

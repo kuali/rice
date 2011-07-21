@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.uif.UifConstants;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -46,9 +47,7 @@ public class NumericPatternConstraint extends ValidCharactersPatternConstraint {
 		if (StringUtils.isNotEmpty(labelKey)) {
 			return labelKey;
 		}
-		StringBuilder key = new StringBuilder("");
-		key.append("numericPattern,");
-		return key.toString();
+		return UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "numericPattern";
 	}
 
 }

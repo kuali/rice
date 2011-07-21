@@ -318,7 +318,7 @@
                         <bean parent="TextControl" p:size="3" p:watermarkText="#"/>
                     </property>
                     <property name="validCharactersConstraint">
-                        <bean parent="DigitsPatternConstraint"/>
+                        <bean parent="NumericPatternConstraint"/>
                     </property>
                     <property name="caseConstraint">
                         <bean parent="CaseConstraint">
@@ -347,7 +347,7 @@
                         <bean parent="TextControl" p:size="8" p:watermarkText="Beagle"/>
                     </property>
                     <property name="validCharactersConstraint">
-                        <bean parent="LettersOnlyPatternConstraint"/>
+                        <bean parent="AlphaPatternConstraint"/>
                     </property>
                     <property name="caseConstraint">
                         <bean parent="CaseConstraint">
@@ -372,7 +372,7 @@
                         <bean parent="TextControl" p:size="4" p:watermarkText="25"/>
                     </property>
                     <property name="validCharactersConstraint">
-                        <bean parent="FloatingPointNumberPatternConstraint"/>
+                        <bean parent="FloatingPointPatternConstraint"/>
                     </property>
                     <property name="dependencyConstraints">
                         <list>
@@ -407,17 +407,17 @@
                         <bean parent="TextControl"/>
                     </property>
                     <property name="validCharactersConstraint">
-                        <bean parent="LettersOnlyPatternConstraint"/>
+                        <bean parent="AlphaPatternConstraint"/>
                     </property>
                 </bean>
                 <bean parent="AttributeField_Form" p:propertyName="field18" p:label="Zip" p:minLength="5"
                       p:maxLength="5"
-                      p:constraint="Must be 5 digits only, This field requires that Address 1, City, and State MUST OCCUR before it can be filled out">
+                      p:constraint="Must be valid zip only, This field requires that Address 1, City, and State MUST OCCUR before it can be filled out">
                     <property name="control">
                         <bean parent="TextControl"/>
                     </property>
                     <property name="validCharactersConstraint">
-                        <bean parent="DigitsPatternConstraint"/>
+                        <bean parent="ZipcodePatternConstraint"/>
                     </property>
                     <property name="mustOccurConstraints">
                         <list>

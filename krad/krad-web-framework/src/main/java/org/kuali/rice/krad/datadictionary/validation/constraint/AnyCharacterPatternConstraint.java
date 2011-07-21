@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.uif.UifConstants;
 
 
 /**
@@ -68,12 +69,12 @@ public class AnyCharacterPatternConstraint extends ValidCharactersPatternConstra
 		if (StringUtils.isNotEmpty(labelKey)) {
 			return labelKey;
 		}
-		StringBuilder key = new StringBuilder("");
-		key.append("anyCharacterPattern,");
 		if (getAllowWhitespace()) {
-			key.append("whitespace");
+			return UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "noWhitespace";
 		}
-		return key.toString();
+		else{
+		    return UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "anyCharacterPattern";
+		}
 	}
 
 //	@Override

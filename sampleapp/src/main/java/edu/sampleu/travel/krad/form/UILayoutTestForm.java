@@ -95,6 +95,11 @@ public class UILayoutTestForm extends UifFormBase {
     private String field63;
     private String field64;
     private String field65;
+    private String field66;
+    private String field67;
+    private String field68;
+    private String field69;
+    private String field70;
     
     private String gField1;
     private String gField2;
@@ -1193,6 +1198,76 @@ public class UILayoutTestForm extends UifFormBase {
      */
     public void setgField3(String gField3) {
         this.gField3 = gField3;
+    }
+
+    /**
+     * @return the field66
+     */
+    public String getField66() {
+        return this.field66;
+    }
+
+    /**
+     * @param field66 the field66 to set
+     */
+    public void setField66(String field66) {
+        this.field66 = field66;
+    }
+
+    /**
+     * @return the field67
+     */
+    public String getField67() {
+        return this.field67;
+    }
+
+    /**
+     * @param field67 the field67 to set
+     */
+    public void setField67(String field67) {
+        this.field67 = field67;
+    }
+
+    /**
+     * @return the field68
+     */
+    public String getField68() {
+        return this.field68;
+    }
+
+    /**
+     * @param field68 the field68 to set
+     */
+    public void setField68(String field68) {
+        this.field68 = field68;
+    }
+
+    /**
+     * @return the field69
+     */
+    public String getField69() {
+        return this.field69;
+    }
+
+    /**
+     * @param field69 the field69 to set
+     */
+    public void setField69(String field69) {
+        this.field69 = field69;
+    }
+
+    /**
+     * @return the field70
+     */
+    public String getField70() {
+        return this.field70;
+    }
+
+    /**
+     * @param field70 the field70 to set
+     */
+    public void setField70(String field70) {
+        this.field70 = field70;
     }
     
     

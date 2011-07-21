@@ -108,7 +108,7 @@ public final class RemotableAttributeField implements AttributeField, ModelObjec
         @XmlElement(name = RemotableRadioButtonGroup.Constants.ROOT_ELEMENT_NAME, type = RemotableRadioButtonGroup.class, required = false),
         @XmlElement(name = RemotableSelect.Constants.ROOT_ELEMENT_NAME, type = RemotableSelect.class, required = false),
         @XmlElement(name = RemotableTextarea.Constants.ROOT_ELEMENT_NAME, type = RemotableTextarea.class, required = false),
-        @XmlElement(name = RemotableTextInput.Constants.ROOT_ELEMENT_NAME, type = RemotableTextInput.class, required = false),
+        @XmlElement(name = RemotableTextInput.Constants.ROOT_ELEMENT_NAME, type = RemotableTextInput.class, required = false)
     })
     private final RemotableAbstractControl control;
 
@@ -116,7 +116,7 @@ public final class RemotableAttributeField implements AttributeField, ModelObjec
     @XmlElements(value = {
         @XmlElement(name = RemotableDatepicker.Constants.ROOT_ELEMENT_NAME, type = RemotableDatepicker.class, required = false),
         @XmlElement(name = RemotableQuickFinder.Constants.ROOT_ELEMENT_NAME, type = RemotableQuickFinder.class, required = false),
-        @XmlElement(name = RemotableTextExpand.Constants.ROOT_ELEMENT_NAME, type = RemotableTextExpand.class, required = false),
+        @XmlElement(name = RemotableTextExpand.Constants.ROOT_ELEMENT_NAME, type = RemotableTextExpand.class, required = false)
     })
     private final Collection<? extends RemotableAbstractWidget> widgets;
 

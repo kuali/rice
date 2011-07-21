@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.service.impl;
 
+import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.datadictionary.exporter.DataDictionaryMap;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.kns.service.DataDictionaryService;
@@ -44,9 +45,13 @@ public class DataDictionaryServiceImpl extends org.kuali.rice.krad.service.impl.
     public Class<? extends PromptBeforeValidation> getPromptBeforeValidationClass(String docTypeName) {
         Class preRulesCheckClass = null;
 
-        DocumentEntry documentEntry = (DocumentEntry) getDataDictionary().getDocumentEntry(docTypeName);
-        if (documentEntry != null) {
-            preRulesCheckClass = documentEntry.getPromptBeforeValidationClass();
+        org.kuali.rice.krad.datadictionary.DocumentEntry documentEntry =
+                getDataDictionary().getDocumentEntry(docTypeName);
+        if (documentEntry instanceof MaintenanceDocumentEntry) {
+            preRulesCheckClass = ((MaintenanceDocumentEntry) documentEntry).getPromptBeforeValidationClass();
+        }
+        if (documentEntry instanceof DocumentEntry) {
+            preRulesCheckClass = ((DocumentEntry) documentEntry).getPromptBeforeValidationClass();
         }
 
         return preRulesCheckClass;

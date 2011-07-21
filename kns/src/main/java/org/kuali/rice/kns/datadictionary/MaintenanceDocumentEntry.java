@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.datadictionary;
 
+import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.kns.web.derivedvaluesetter.DerivedValuesSetter;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
@@ -56,6 +57,7 @@ public class MaintenanceDocumentEntry extends org.kuali.rice.krad.datadictionary
 
     protected boolean translateCodes = false;
 
+    protected Class<? extends PromptBeforeValidation> promptBeforeValidationClass;
     protected Class<? extends DerivedValuesSetter> derivedValuesSetterClass;
     protected List<String> webScriptFiles = new ArrayList<String>(3);
     protected List<HeaderNavigation> headerNavigationList = new ArrayList<HeaderNavigation>();
@@ -67,6 +69,25 @@ public class MaintenanceDocumentEntry extends org.kuali.rice.krad.datadictionary
 
     public MaintenanceDocumentEntry() {
         super();
+    }
+
+     /**
+     * @return Returns the preRulesCheckClass.
+     */
+    public Class<? extends PromptBeforeValidation> getPromptBeforeValidationClass() {
+        return promptBeforeValidationClass;
+    }
+
+    /**
+     * The promptBeforeValidationClass element is the full class name of the java
+     * class which determines whether the user should be asked any questions prior to running validation.
+     *
+     * @see KualiDocumentActionBase#promptBeforeValidation(org.apache.struts.action.ActionMapping,
+     *      org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest,
+     *      javax.servlet.http.HttpServletResponse, String)
+     */
+    public void setPromptBeforeValidationClass(Class<? extends PromptBeforeValidation> preRulesCheckClass) {
+        this.promptBeforeValidationClass = preRulesCheckClass;
     }
 
     @Override

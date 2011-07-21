@@ -17,12 +17,8 @@ import java.util.Collection;
 @XmlRootElement(name = RemotableHiddenInput.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = RemotableHiddenInput.Constants.TYPE_NAME, propOrder = {
-		RemotableHiddenInput.Elements.SIZE,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS })
-public final class RemotableHiddenInput extends RemotableAbstractControl implements Sized {
-
-    @XmlElement(name = Elements.SIZE, required = false)
-    private final Integer size;
+public final class RemotableHiddenInput extends RemotableAbstractControl {
 
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -33,20 +29,12 @@ public final class RemotableHiddenInput extends RemotableAbstractControl impleme
      */
     @SuppressWarnings("unused")
     private RemotableHiddenInput() {
-        size = null;
     }
 
     private RemotableHiddenInput(Builder b) {
-        size = b.size;
     }
 
-    @Override
-    public Integer getSize() {
-        return size;
-    }
-
-    public static final class Builder extends RemotableAbstractControl.Builder implements Sized {
-        private Integer size;
+    public static final class Builder extends RemotableAbstractControl.Builder {
 
         private Builder() {
             super();
@@ -54,19 +42,6 @@ public final class RemotableHiddenInput extends RemotableAbstractControl impleme
 
         public static Builder create() {
             return new Builder();
-        }
-
-        @Override
-        public Integer getSize() {
-            return size;
-        }
-
-        public void setSize(Integer size) {
-            if (size != null && size < 1) {
-                throw new IllegalArgumentException("size was < 1");
-            }
-
-            this.size = size;
         }
 
         @Override
@@ -84,6 +59,5 @@ public final class RemotableHiddenInput extends RemotableAbstractControl impleme
     }
 
     static final class Elements {
-        static final String SIZE = "size";
     }
 }

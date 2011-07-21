@@ -16,15 +16,15 @@
 package org.kuali.rice.kew.routemanager;
 
 import org.junit.Test;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.InvalidActionTakenException;
-import org.kuali.rice.kew.dto.ActionRequestDTO;
-import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
+import org.kuali.rice.kew.api.document.RouteNodeInstance;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kim.api.group.Group;
@@ -34,6 +34,7 @@ import org.kuali.rice.test.BaselineTestCase;
 
 import javax.xml.namespace.QName;
 import java.util.Collection;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -67,13 +68,11 @@ public class ExceptionRoutingTest extends KEWTestCase {
 
         doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), doc.getDocumentId());
         assertTrue("Document should be in exception status", doc.isException());
-        
-        WorkflowInfo info = new WorkflowInfo();
-        ActionRequestDTO[] actionRequests = info.getActionRequests(doc.getDocumentId());
 
-        assertEquals("Should be a single exception request", 1, actionRequests.length);
-        for (int i = 0; i < actionRequests.length; i++) {
-            ActionRequestDTO actionRequest = actionRequests[i];
+        List<ActionRequest> actionRequests = KewApiServiceLocator.getWorkflowDocumentService().getRootActionRequests(doc.getDocumentId());
+
+        assertEquals("Should be a single exception request", 1, actionRequests.size());
+        for (ActionRequest actionRequest : actionRequests) {
             Group group = KimApiServiceLocator.getGroupService().getGroup(actionRequest.getGroupId());
             assertTrue("Request should be an exception request.", actionRequest.isExceptionRequest());
             assertTrue("Complete should be requested", actionRequest.isCompleteRequest());
@@ -139,10 +138,11 @@ public class ExceptionRoutingTest extends KEWTestCase {
         assertTrue("User should have an approve request", doc.isApprovalRequested());
         doc = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), doc.getDocumentId());
         assertTrue("User should have an approve request", doc.isApprovalRequested());
-        RouteNodeInstanceDTO[] nodes = new WorkflowInfo().getActiveNodeInstances(doc.getDocumentId());
+        List<RouteNodeInstance> nodes = KewApiServiceLocator.getWorkflowDocumentService().getActiveRouteNodeInstances(
+                doc.getDocumentId());
 
         // at this point we should be at RouteNode1 and RouteNode3
-        assertEquals("There should be two active nodes", 2, nodes.length);
+        assertEquals("There should be two active nodes", 2, nodes.size());
         TestUtilities.assertAtNode(doc, "RouteNode1");
         TestUtilities.assertAtNode(doc, "RouteNode3");
 
@@ -153,10 +153,9 @@ public class ExceptionRoutingTest extends KEWTestCase {
         }
 
         TestUtilities.getExceptionThreader().join();//this is necessary to ensure that the exception request will be generated.
-        WorkflowInfo info = new WorkflowInfo();
-        ActionRequestDTO[] actionRequests = info.getActionRequests(doc.getDocumentId());
-        RouteNodeInstanceDTO routeNode1 = null;
-        for (RouteNodeInstanceDTO nodeInstanceVO : nodes) {
+        List<ActionRequest> actionRequests = KewApiServiceLocator.getWorkflowDocumentService().getRootActionRequests(doc.getDocumentId());
+        RouteNodeInstance routeNode1 = null;
+        for (RouteNodeInstance nodeInstanceVO : nodes) {
         	if (nodeInstanceVO.getName().equals("RouteNode1")) {
         		routeNode1 = nodeInstanceVO;
         	}
@@ -164,16 +163,13 @@ public class ExceptionRoutingTest extends KEWTestCase {
         assertNotNull("Could not locate the routeNode1 node instance.", routeNode1);
 
         boolean hasCompleteRequest = false;
-        for (int i = 0; i < actionRequests.length; i++) {
-            ActionRequestDTO actionRequest = actionRequests[i];
+        for (ActionRequest actionRequest : actionRequests) {
             if (actionRequest.isCompleteRequest()) {
             	Group group = KimApiServiceLocator.getGroupService().getGroup(actionRequest.getGroupId());
                 assertTrue("Complete should be requested", actionRequest.isCompleteRequest());
                 assertTrue("Request should be a workgroup request", actionRequest.isGroupRequest());
-                assertNull("For exception routing, node instance should have a null id.", actionRequest.getNodeInstanceId());
+                assertNull("For exception routing, node instance should have a null id.", actionRequest.getRouteNodeInstanceId());
                 //assertEquals("Node instance id should be id of routeNode1", routeNode1.getRouteNodeInstanceId(), actionRequest.getNodeInstanceId());
-                // routeMethod name should be null as well
-                assertNull("Exception request routeMethodName wrong", actionRequest.getRouteMethodName());
                 assertEquals("Request should be to 'ExceptionRoutingGroup'", "ExceptionRoutingGroup", group.getName());
                 hasCompleteRequest = true;
             }

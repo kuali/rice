@@ -24,10 +24,9 @@ import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.ActionType;
-import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
+import org.kuali.rice.kew.api.document.RouteNodeInstance;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -37,7 +36,6 @@ import org.kuali.rice.krad.bo.AdHocRouteRecipient;
 import org.kuali.rice.krad.exception.UnknownDocumentIdException;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.workflow.service.KualiWorkflowInfo;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,8 +52,6 @@ import java.util.Set;
 @Transactional
 public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(WorkflowDocumentServiceImpl.class);
-
-    private KualiWorkflowInfo workflowInfoService;
 
     @Override
     public boolean workflowDocumentExists(String documentId) {
@@ -300,10 +296,9 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
             String currentNode = null;
             Set<String> currentNodes = workflowDocument.getNodeNames();
             if (currentNodes.isEmpty()) {
-                WorkflowInfo workflowInfo = new WorkflowInfo();
-                RouteNodeInstanceDTO[] nodes = workflowInfo.getTerminalNodeInstances(workflowDocument.getDocumentId());
+                List<RouteNodeInstance> nodes = KewApiServiceLocator.getWorkflowDocumentService().getTerminalNodeInstances(workflowDocument.getDocumentId());
                 currentNodes = new HashSet<String>();
-                for (RouteNodeInstanceDTO node : nodes) {
+                for (RouteNodeInstance node : nodes) {
                     currentNodes.add(node.getName());
                 }
             }
@@ -365,12 +360,4 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         return realAdHocRecipients;
     }
 
-
-    public void setWorkflowInfoService(KualiWorkflowInfo workflowInfoService) {
-        this.workflowInfoService = workflowInfoService;
-    }
-
-    public KualiWorkflowInfo getWorkflowInfoService() {
-        return workflowInfoService;
-    }
 }

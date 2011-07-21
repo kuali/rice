@@ -17,15 +17,20 @@ package org.kuali.rice.kew.server;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.parameter.Parameter;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequestType;
+import org.kuali.rice.kew.api.document.DocumentDetail;
 import org.kuali.rice.kew.api.document.DocumentStatus;
+import org.kuali.rice.kew.api.document.WorkflowDocumentService;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeDateTime;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeFloat;
@@ -93,11 +98,12 @@ public class WorkflowUtilityTest extends KEWTestCase {
 	}
 
 	@Test
-    public void testFindByAppId() throws WorkflowException{
+    public void testGetDocumentDetailByAppId() throws WorkflowException{
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
         document.setApplicationDocumentId("123456789");
         document.route("");
-    	DocumentDetailDTO doc=getWorkflowUtility().getDocumentDetailFromAppId(SeqSetup.DOCUMENT_TYPE_NAME, "123456789");
+        WorkflowDocumentService documentService = KewApiServiceLocator.getWorkflowDocumentService();
+        DocumentDetail doc= documentService.getDocumentDetailByAppId(SeqSetup.DOCUMENT_TYPE_NAME, "123456789");
     	
     	assertNotNull(doc);
     	
@@ -106,30 +112,30 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document.route("");
 
         try{
-        	getWorkflowUtility().getDocumentDetailFromAppId(SeqSetup.DOCUMENT_TYPE_NAME, "123456789");
+        	documentService.getDocumentDetailByAppId(SeqSetup.DOCUMENT_TYPE_NAME, "123456789");
         	assertTrue(false);
-        }catch(WorkflowException e){
+        }catch(RiceIllegalStateException e){
         	assertTrue(true);
         }
         
         try{
-        	getWorkflowUtility().getDocumentDetailFromAppId("notExist", "wrong");
+        	documentService.getDocumentDetailByAppId("notExist", "wrong");
         	assertTrue(false);
-        }catch(WorkflowException e){
+        }catch(RiceIllegalStateException e){
         	assertTrue(true);
         }
         
         try{
-        	getWorkflowUtility().getDocumentDetailFromAppId("notExist", null);
+        	documentService.getDocumentDetailByAppId("notExist", null);
         	assertTrue(false);
-        }catch(RuntimeException e){
+        }catch(RiceIllegalArgumentException e){
         	assertTrue(true);
         }
     	
         try{
-        	getWorkflowUtility().getDocumentDetailFromAppId(null, null);
+        	documentService.getDocumentDetailByAppId(null, null);
         	assertTrue(false);
-        }catch(RuntimeException e){
+        }catch(RiceIllegalArgumentException e){
         	assertTrue(true);
         }
         

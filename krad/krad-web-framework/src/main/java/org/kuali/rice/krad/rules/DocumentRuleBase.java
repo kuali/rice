@@ -53,7 +53,6 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.MessageMap;
-import org.kuali.rice.krad.workflow.service.KualiWorkflowInfo;
 
 
 /**
@@ -64,7 +63,6 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 
     private static PersonService personService;
     private static DictionaryValidationService dictionaryValidationService;
-    private static KualiWorkflowInfo workflowInfoService;
     private static ConfigurationService kualiConfigurationService;
     private static DocumentHelperService documentHelperService;
     private static GroupService groupService;
@@ -109,13 +107,6 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
             dictionaryValidationService = KRADServiceLocatorWeb.getDictionaryValidationService();
         }
         return dictionaryValidationService;
-    }
-
-    protected KualiWorkflowInfo getWorkflowInfoService() {
-        if ( workflowInfoService == null ) {
-            workflowInfoService = KRADServiceLocatorWeb.getWorkflowInfoService();
-        }
-        return workflowInfoService;
     }
 
     protected ConfigurationService getKualiConfigurationService() {

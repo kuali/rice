@@ -7,7 +7,6 @@ import org.kuali.rice.krad.uif.service.AttributeQueryService;
 import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
 import org.kuali.rice.krad.uif.service.ViewService;
-import org.kuali.rice.krad.workflow.service.KualiWorkflowInfo;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
 
 /**
@@ -32,7 +31,6 @@ public class KRADServiceLocatorWeb {
     public static final String DOCUMENT_HELPER_SERVICE = "documentHelperService";
     public static final String KUALI_RULE_SERVICE = "kualiRuleService";
     public static final String DOCUMENT_SERVICE = "documentService";
-    public static final String WORKFLOW_INFO_SERVICE = "workflowInfoService";
     public static final String DOCUMENT_SERIALIZER_SERVICE = "documentSerializerService";
     public static final String LOOKUP_SERVICE = "lookupService";
     public static final String DICTIONARY_VALIDATION_SERVICE = "dictionaryValidationService";
@@ -110,10 +108,6 @@ public class KRADServiceLocatorWeb {
 
     public static DocumentService getDocumentService() {
         return getService(DOCUMENT_SERVICE);
-    }
-
-    public static KualiWorkflowInfo getWorkflowInfoService() {
-	return (KualiWorkflowInfo) getService(WORKFLOW_INFO_SERVICE);
     }
 
     public static DocumentSerializerService getDocumentSerializerService() {

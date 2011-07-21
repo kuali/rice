@@ -42,7 +42,6 @@ import org.kuali.rice.krad.datadictionary.validation.ValidationPattern;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.service.DataDictionaryService;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.workflow.service.KualiWorkflowInfo;
@@ -904,13 +903,6 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
             return Collections.emptySet();
         }
         return blockingClasses;
-    }
-
-    public KualiWorkflowInfo getWorkflowInfoService() {
-        if (workflowInfoService == null) {
-            workflowInfoService = KRADServiceLocatorWeb.getWorkflowInfoService();
-        }
-        return workflowInfoService;
     }
     
     public DocumentTypeService getDocumentTypeService() {

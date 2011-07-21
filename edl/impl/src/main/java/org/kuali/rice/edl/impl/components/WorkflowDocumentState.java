@@ -27,10 +27,11 @@ import org.kuali.rice.edl.impl.EDLXmlUtils;
 import org.kuali.rice.edl.impl.RequestParser;
 import org.kuali.rice.edl.impl.UserAction;
 import org.kuali.rice.edl.impl.service.EdlServiceLocator;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.document.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.w3c.dom.Document;
@@ -88,7 +89,6 @@ public class WorkflowDocumentState implements EDLModelComponent {
 			showAttachments.appendChild(dom.createTextNode(Boolean.valueOf(showConstants).toString()));
 
 			WorkflowDocument document = (WorkflowDocument)edlContext.getRequestParser().getAttribute(RequestParser.WORKFLOW_DOCUMENT_SESSION_KEY);
-			WorkflowInfo info = new WorkflowInfo();
 
 			boolean documentEditable = false;
 			if (document != null) {
@@ -112,9 +112,10 @@ public class WorkflowDocumentState implements EDLModelComponent {
 					EDLXmlUtils.createTextElementOnParent(previousNodes, "node", nodeNames.get(i));
 				    }
 				}
-				String[] currentNodeNames = info.getCurrentNodeNames(document.getDocumentId());
-				for (String currentNodeName : currentNodeNames) {
-				    EDLXmlUtils.createTextElementOnParent(documentState, "currentNodeName", currentNodeName);
+                List<RouteNodeInstance> routeNodeInstances = KewApiServiceLocator.getWorkflowDocumentService().getCurrentNodeInstances(document.getDocumentId());
+
+				for (RouteNodeInstance currentNode : routeNodeInstances) {
+				    EDLXmlUtils.createTextElementOnParent(documentState, "currentNodeName", currentNode.getName());
 				}
 
 			}

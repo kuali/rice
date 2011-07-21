@@ -55,8 +55,6 @@ import java.util.Map;
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface WorkflowUtility {
 
-    public DocumentDetailDTO getDocumentDetailFromAppId(String documentTypeName, String appId) throws WorkflowException;
-
 	public DocumentDetailDTO getDocumentDetail(
 			@WebParam(name = "documentId") String documentId)
 			throws WorkflowException;

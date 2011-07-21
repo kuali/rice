@@ -21,9 +21,9 @@ import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.web.KewRoutingKualiForm;
 
 import javax.servlet.http.HttpServletRequest;
@@ -205,7 +205,7 @@ public class SuperUserForm extends KewRoutingKualiForm {
     }
 
     public Set<KeyValue> getPreviousNodes() throws Exception {
-    	String[] nodeNames = new WorkflowInfo().getPreviousRouteNodeNames(routeHeader.getDocumentId());
+    	List<String> nodeNames = KewApiServiceLocator.getWorkflowDocumentService().getPreviousRouteNodeNames(routeHeader.getDocumentId());
         Set<KeyValue> previousNodes = new HashSet<KeyValue>();
         for (String nodeName : nodeNames) {
 			previousNodes.add(new ConcreteKeyValue(nodeName, nodeName));

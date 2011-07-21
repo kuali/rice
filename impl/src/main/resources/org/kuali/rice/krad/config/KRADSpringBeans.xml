@@ -480,11 +480,7 @@
     </property>
   </bean>
 
-  <bean id="workflowDocumentService" class="org.kuali.rice.krad.workflow.service.impl.WorkflowDocumentServiceImpl">
-    <property name="workflowInfoService">
-      <ref bean="workflowInfoService"/>
-    </property>
-  </bean>
+  <bean id="workflowDocumentService" class="org.kuali.rice.krad.workflow.service.impl.WorkflowDocumentServiceImpl"/>
 
   <bean id="maintenanceDocumentService" class="org.kuali.rice.krad.service.impl.MaintenanceDocumentServiceImpl">
     <property name="maintenanceDocumentDao">

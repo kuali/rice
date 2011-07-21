@@ -16,28 +16,25 @@
  */
 package org.kuali.rice.kew.actions;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.Collection;
-import java.util.List;
-
 import org.junit.Test;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.AdHocRevoke;
 import org.kuali.rice.kew.api.action.InvalidActionTakenException;
-import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.util.KimConstants;
+
+import java.util.Collection;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class RevokeAdHocActionTest extends KEWTestCase {
 
@@ -67,9 +64,9 @@ public class RevokeAdHocActionTest extends KEWTestCase {
     	} catch (InvalidActionTakenException e) {}
 
     	// revoke by the real action request id
-    	ActionRequestDTO[] actionRequestVOs = new WorkflowInfo().getActionRequests(docId);
-    	assertEquals(1, actionRequestVOs.length);
-    	String actionRequestId = actionRequestVOs[0].getActionRequestId().toString();
+    	List<ActionRequest> actionRequestVOs = KewApiServiceLocator.getWorkflowDocumentService().getRootActionRequests(docId);
+    	assertEquals(1, actionRequestVOs.size());
+    	String actionRequestId = actionRequestVOs.get(0).getId();
     	doc.revokeAdHocRequestById(actionRequestId, "");
 
     	// there should now be no pending requests
@@ -81,11 +78,11 @@ public class RevokeAdHocActionTest extends KEWTestCase {
     	assertTrue(doc.isApprovalRequested());
 
     	// now attempt to revoke this non-adhoc request by id, it should throw an error
-    	actionRequestVOs = new WorkflowInfo().getActionRequests(docId);
-    	for (int index = 0; index < actionRequestVOs.length; index++) {
-    		if (actionRequestVOs[index].isPending()) {
+    	actionRequestVOs = KewApiServiceLocator.getWorkflowDocumentService().getRootActionRequests(docId);
+    	for (int index = 0; index < actionRequestVOs.size(); index++) {
+    		if (actionRequestVOs.get(index).isPending()) {
     			try {
-    				doc.revokeAdHocRequestById(actionRequestVOs[index].getActionRequestId().toString(), "");
+    				doc.revokeAdHocRequestById(actionRequestVOs.get(index).getId().toString(), "");
     				fail("Attempted to revoke by an invalid action request id, should have thrown an error!");
     			} catch (InvalidActionTakenException e) {}
     		}
@@ -213,16 +210,14 @@ public class RevokeAdHocActionTest extends KEWTestCase {
     	assertTrue("Document should still be intitiated.", doc.isInitiated());
 
     	// check and revoke the actual ActionRequestVOs
-    	WorkflowInfo info = new WorkflowInfo();
     	// reaquire the document as the initiator
     	doc = getDocument("rkirkend");
-    	ActionRequestDTO[] actionRequestVOs = info.getActionRequests(doc.getDocumentId());
-    	assertEquals("There should be 2 ad hoc requests.", 2, actionRequestVOs.length);
-    	for (int index = 0; index < actionRequestVOs.length; index++) {
-    		ActionRequestDTO requestVO = actionRequestVOs[index];
+    	List<ActionRequest> actionRequestVOs = KewApiServiceLocator.getWorkflowDocumentService().getRootActionRequests(doc.getDocumentId());
+    	assertEquals("There should be 2 ad hoc requests.", 2, actionRequestVOs.size());
+    	for (ActionRequest requestVO : actionRequestVOs) {
     		assertTrue("Should be an ad hoc request.", requestVO.isAdHocRequest());
     		// revoke by id
-    		doc.revokeAdHocRequestById(requestVO.getActionRequestId().toString(), "");
+    		doc.revokeAdHocRequestById(requestVO.getId().toString(), "");
     	}
 
     	// now the document should have no pending action requests on it

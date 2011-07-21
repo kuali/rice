@@ -15,11 +15,10 @@
  */
 package org.kuali.rice.kew.role.service.impl;
 
-
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
-import org.kuali.rice.kew.dto.ActionRequestDTO;
-import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
@@ -43,7 +42,6 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 	private static final String APPROVE_REQUEST_RECIPIENT_ROLE_NAME = "Approve Request Recipient";
 	private static final String ACKNOWLEDGE_REQUEST_RECIPIENT_ROLE_NAME = "Acknowledge Request Recipient";
 	private static final String FYI_REQUEST_RECIPIENT_ROLE_NAME = "FYI Request Recipient";
-	protected WorkflowInfo workflowInfo = new WorkflowInfo();
 
 	{
 		requiredAttributes.add( KimConstants.AttributeConstants.DOCUMENT_NUMBER );
@@ -71,9 +69,9 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 		validateRequiredAttributesAgainstReceived(qualification);
 		try {
 			if ( (qualification != null && !qualification.isEmpty()))  {
-				ActionRequestDTO[] actionRequests = workflowInfo.getActionRequests(qualification.get(KimConstants.AttributeConstants.DOCUMENT_NUMBER), null, principalId);
-				if (APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName) || NON_AD_HOC_APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
-					for ( ActionRequestDTO ar : actionRequests ) {
+				List<ActionRequest> actionRequests = KewApiServiceLocator.getWorkflowDocumentService().getActionRequests(qualification.get(KimConstants.AttributeConstants.DOCUMENT_NUMBER), null, principalId);
+                if (APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName) || NON_AD_HOC_APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
+					for ( ActionRequest ar : actionRequests ) {
 						if ( ar.getActionRequested().equals( KEWConstants.ACTION_REQUEST_APPROVE_REQ )
 								&& ar.getStatus().equals( ActionRequestStatus.ACTIVATED.getCode() ) ) {
 							return APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName) || (NON_AD_HOC_APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName) && !ar.isAdHocRequest());
@@ -82,7 +80,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 					return false;
 				}
 				if (ACKNOWLEDGE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
-					for ( ActionRequestDTO ar : actionRequests ) {
+					for ( ActionRequest ar : actionRequests ) {
 						if ( ar.getActionRequested().equals( KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ ) 
 							&& ar.getStatus().equals( ActionRequestStatus.ACTIVATED.getCode() ) ) {
 							return true;
@@ -91,7 +89,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 					return false;
 				}
 				if (FYI_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
-					for ( ActionRequestDTO ar : actionRequests ) {
+					for ( ActionRequest ar : actionRequests ) {
 						if ( ar.getActionRequested().equals( KEWConstants.ACTION_REQUEST_FYI_REQ ) 
 							&& ar.getStatus().equals( ActionRequestStatus.ACTIVATED.getCode() ) ) {
 							return true;
@@ -101,7 +99,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 				}
 			}
 			return false;
-		} catch (WorkflowException e) {
+		} catch (RiceIllegalArgumentException e) {
 			throw new RuntimeException("Unable to load route header", e);
 		}
 	}

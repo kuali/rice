@@ -26,13 +26,11 @@ import org.kuali.rice.edl.framework.extract.FieldDTO;
 import org.kuali.rice.edl.framework.services.EdlFrameworkServiceLocator;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.doctype.DocumentType;
+import org.kuali.rice.kew.api.document.RouteNodeInstance;
 import org.kuali.rice.kew.dto.ActionTakenEventDTO;
 import org.kuali.rice.kew.dto.DeleteEventDTO;
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
-import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
-import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.w3c.dom.Document;
 
@@ -99,19 +97,15 @@ public class EDocLiteDatabasePostProcessor extends EDocLitePostProcessor {
     //	    }
 
     private String[] getNodeNames(String documentId) {
-        try {
-            RouteNodeInstanceDTO[] activeNodeInstances = new WorkflowInfo().getActiveNodeInstances(documentId);
-            if (activeNodeInstances == null || activeNodeInstances.length == 0) {
-                activeNodeInstances = new WorkflowInfo().getTerminalNodeInstances(documentId);
-            }
-            String[] nodeNames = new String[(activeNodeInstances == null ? 0 : activeNodeInstances.length)];
-            for (int index = 0; index < activeNodeInstances.length; index++) {
-                nodeNames[index] = activeNodeInstances[index].getName();
-            }
-            return nodeNames;
-        } catch (WorkflowException e) {
-            throw new RuntimeException(e);
+        List<RouteNodeInstance> activeNodeInstances = KewApiServiceLocator.getWorkflowDocumentService().getActiveRouteNodeInstances(documentId);
+        if (activeNodeInstances == null || activeNodeInstances.size() == 0) {
+            activeNodeInstances = KewApiServiceLocator.getWorkflowDocumentService().getTerminalNodeInstances(documentId);
         }
+        String[] nodeNames = new String[(activeNodeInstances == null ? 0 : activeNodeInstances.size())];
+        for (int index = 0; index < activeNodeInstances.size(); index++) {
+            nodeNames[index] = activeNodeInstances.get(index).getName();
+        }
+        return nodeNames;
     }
 
     private void extractEDLData(String documentId, String[] nodeNames, Document documentContent) {

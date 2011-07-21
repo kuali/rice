@@ -19,14 +19,14 @@ package org.kuali.rice.edl.framework.util;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
-import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
+import org.kuali.rice.kew.api.document.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
 
-
+import java.util.List;
 
 /**
  * A collection of handy workflow queries to be used from style sheets.
@@ -115,10 +115,9 @@ public class EDLFunctions {
 		LOG.debug("nodeName came in as: " + nodeName);
 		LOG.debug("id came in as: " + id);
 		//get list of previous node names
-		String[] previousNodeNames;
-		WorkflowInfo workflowInfo = new WorkflowInfo();
+		List<String> previousNodeNames;
 		try {
-			previousNodeNames = workflowInfo.getPreviousRouteNodeNames(id);
+			previousNodeNames = KewApiServiceLocator.getWorkflowDocumentService().getPreviousRouteNodeNames(id);
 		} catch (Exception e) {
 			throw new WorkflowRuntimeException("Problem generating list of previous node names for documentID = " + id, e);
 		}
@@ -148,9 +147,8 @@ public class EDLFunctions {
 	}
 
 	public static boolean isAtNode(String documentId, String nodeName) throws Exception {
-	    WorkflowInfo workflowInfo = new WorkflowInfo();
-	    RouteNodeInstanceDTO[] activeNodeInstances = workflowInfo.getActiveNodeInstances(documentId);
-	    for (RouteNodeInstanceDTO nodeInstance : activeNodeInstances) {
+	    List<RouteNodeInstance> activeNodeInstances = KewApiServiceLocator.getWorkflowDocumentService().getActiveRouteNodeInstances(documentId);
+	    for (RouteNodeInstance nodeInstance : activeNodeInstances) {
 	        if (nodeInstance.getName().equals(nodeName)) {
 	            return true;
 	        }
@@ -159,10 +157,9 @@ public class EDLFunctions {
 	}
 
 	public static boolean hasActiveNode(String documentId) throws Exception {
-	    WorkflowInfo workflowInfo = new WorkflowInfo();
-	    RouteNodeInstanceDTO[] activeNodeInstances = workflowInfo.getActiveNodeInstances(documentId);
-	    if (activeNodeInstances.length > 0) {
-	            return true;
+	    List<RouteNodeInstance> activeNodeInstances = KewApiServiceLocator.getWorkflowDocumentService().getActiveRouteNodeInstances(documentId);
+	    if (!activeNodeInstances.isEmpty()) {
+            return true;
 	    }
 	    return false;
 	}

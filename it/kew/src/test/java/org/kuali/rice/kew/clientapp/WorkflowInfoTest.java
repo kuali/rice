@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.kew.clientapp;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
-
 import org.junit.Test;
 import org.kuali.rice.kew.actions.BlanketApproveTest;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
@@ -28,7 +23,6 @@ import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -37,6 +31,8 @@ import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
+
+import static org.junit.Assert.*;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in.
@@ -79,17 +75,17 @@ public class WorkflowInfoTest extends KEWTestCase {
 
     @Test
     public void testGetDocumentStatus() throws Exception {
-        WorkflowInfo info = new WorkflowInfo();
         // verify that a null document id throws an exception
         try {
-            String status = info.getDocumentStatus(null);
+            String status = KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(null);
             fail("A WorkflowException should have been thrown, instead returned status: " + status);
-        } catch (WorkflowException e) {} catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException e) {}
+
         // verify that a bad document id throws an exception
         try {
-            String status = info.getDocumentStatus("-1");
-            fail("A WorkflowException Should have been thrown, instead returned status: " + status);
-        } catch (WorkflowException e) {}
+            String status = KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus("-1");
+            fail("A IllegalStateException Should have been thrown, instead returned status: " + status);
+        } catch (IllegalStateException e) {}
 
         // now create a doc and load it's status
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"),
@@ -97,12 +93,12 @@ public class WorkflowInfoTest extends KEWTestCase {
         String documentId = document.getDocumentId();
         assertNotNull(documentId);
 
-        String status = info.getDocumentStatus(documentId);
+        String status = KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(documentId);
         assertEquals("Document should be INITIATED.", KEWConstants.ROUTE_HEADER_INITIATED_CD, status);
 
         // cancel the doc, it's status should be updated
         document.cancel("");
-        status = info.getDocumentStatus(documentId);
+        status = KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(documentId);
         assertEquals("Document should be CANCELED.", KEWConstants.ROUTE_HEADER_CANCEL_CD, status);
     }
 
@@ -119,7 +115,8 @@ public class WorkflowInfoTest extends KEWTestCase {
                 "BlanketApproveParallelTest");
         document.blanketApprove("");
 
-        String routedByPrincipalId = new WorkflowInfo().getDocumentRoutedByPrincipalId(document.getDocumentId());
+        String routedByPrincipalId = KewApiServiceLocator.getWorkflowDocumentService().getDocumentRoutedByPrincipalId(
+                document.getDocumentId());
         assertEquals("the blanket approver should be the routed by", blanketApprover.getPrincipalId(),
                 routedByPrincipalId);
     }
@@ -130,14 +127,14 @@ public class WorkflowInfoTest extends KEWTestCase {
                 "TestDocumentType");
         document.saveDocumentData();
 
-        String appDocId = new WorkflowInfo().getAppDocId(document.getDocumentId());
+        String appDocId = KewApiServiceLocator.getWorkflowDocumentService().getAppDocId(document.getDocumentId());
         assertNull("appDocId should be null", appDocId);
 
         String appDocIdValue = "1234";
         document.setApplicationDocumentId(appDocIdValue);
         document.saveDocumentData();
 
-        appDocId = new WorkflowInfo().getAppDocId(document.getDocumentId());
+        appDocId = KewApiServiceLocator.getWorkflowDocumentService().getAppDocId(document.getDocumentId());
         assertEquals("Incorrect appDocId", appDocIdValue, appDocId);
     }
 

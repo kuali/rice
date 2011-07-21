@@ -40,6 +40,8 @@ import org.kuali.rice.kew.api.action.AdHocRevoke;
 import org.kuali.rice.kew.api.action.DocumentActionParameters;
 import org.kuali.rice.kew.api.action.ReturnPoint;
 import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
+import org.kuali.rice.kew.api.document.RouteNodeInstance;
+import org.kuali.rice.kew.api.document.WorkflowDocumentService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -516,15 +518,15 @@ public class SuperUserAction extends KewKualiAction {
     }
 
     protected String getAdHocRouteNodeName(String documentId) throws WorkflowException {
-        WorkflowInfo info = new WorkflowInfo();
-        RouteNodeInstanceDTO[] nodeInstances = info.getActiveNodeInstances(documentId);
-        if (nodeInstances == null || nodeInstances.length == 0) {
-            nodeInstances = info.getTerminalNodeInstances(documentId);
+        WorkflowDocumentService workflowDocumentService = KewApiServiceLocator.getWorkflowDocumentService();
+        List<RouteNodeInstance> nodeInstances = workflowDocumentService.getActiveRouteNodeInstances(documentId);
+        if (nodeInstances == null || nodeInstances.isEmpty()) {
+            nodeInstances = workflowDocumentService.getTerminalNodeInstances(documentId);
         }
-        if (nodeInstances == null || nodeInstances.length == 0) {
+        if (nodeInstances == null || nodeInstances.isEmpty()) {
             throw new WorkflowException("Could not locate a node on the document to send the ad hoc request to.");
         }
-        return nodeInstances[0].getName();
+        return nodeInstances.get(0).getName();
     }
 
     private GroupService getGroupService() {

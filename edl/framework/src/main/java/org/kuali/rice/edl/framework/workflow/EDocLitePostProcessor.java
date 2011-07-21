@@ -19,13 +19,13 @@ package org.kuali.rice.edl.framework.workflow;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.util.xml.XmlException;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.document.DocumentContent;
 import org.kuali.rice.kew.dto.ActionTakenEventDTO;
 import org.kuali.rice.kew.dto.DeleteEventDTO;
-import org.kuali.rice.kew.dto.DocumentContentDTO;
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kew.postprocessor.DefaultPostProcessorRemote;
-import org.kuali.rice.kew.service.WorkflowInfo;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -247,8 +247,7 @@ public class EDocLitePostProcessor extends DefaultPostProcessorRemote {
 
     public static Document getEDLContent(String documentId) {
     	try {
-    		WorkflowInfo workflowInfo = new WorkflowInfo();
-    		DocumentContentDTO documentContent = workflowInfo.getDocumentContent(documentId);
+    		DocumentContent documentContent = KewApiServiceLocator.getWorkflowDocumentService().getDocumentContent(documentId);
     		String content = documentContent.getFullContent();
     		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(content)));
     		return doc;

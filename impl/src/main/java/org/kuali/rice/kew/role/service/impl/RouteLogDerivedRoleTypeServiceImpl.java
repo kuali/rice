@@ -16,6 +16,8 @@
 package org.kuali.rice.kew.role.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.document.WorkflowDocumentService;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kim.api.role.Role;
@@ -66,8 +68,10 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 			String documentId = qualification.get(KimConstants.AttributeConstants.DOCUMENT_NUMBER);
 			if (StringUtils.isNotBlank(documentId)) {
 				try{
+                    WorkflowDocumentService workflowDocumentService = KewApiServiceLocator.getWorkflowDocumentService();
 					if (INITIATOR_ROLE_NAME.equals(roleName)) {
-					    String principalId = workflowInfo.getDocumentInitiatorPrincipalId(documentId);
+					    String principalId = KewApiServiceLocator.getWorkflowDocumentService().getDocumentInitiatorPrincipalId(
+                                documentId);
                         RoleMembership roleMembership = RoleMembership.Builder.create(null,null,principalId, Role.PRINCIPAL_MEMBER_TYPE,null).build();
 	                    members.add(roleMembership);
 					} else if(INITIATOR_OR_REVIEWER_ROLE_NAME.equals(roleName)) {
@@ -79,7 +83,7 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 					    	}
 					    }
 					} else if(ROUTER_ROLE_NAME.equals(roleName)) {
-                        String principalId = workflowInfo.getDocumentRoutedByPrincipalId(documentId);
+                        String principalId = workflowDocumentService.getDocumentRoutedByPrincipalId(documentId);
                         RoleMembership roleMembership = RoleMembership.Builder.create(null,null,principalId, Role.PRINCIPAL_MEMBER_TYPE,null).build();
 	                    members.add(roleMembership);
 					}
@@ -100,13 +104,14 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
         boolean isUserInRouteLog = false;
 		if(qualification!=null && !qualification.isEmpty()){
 			String documentId = qualification.get(KimConstants.AttributeConstants.DOCUMENT_NUMBER);
+            WorkflowDocumentService workflowDocumentService = KewApiServiceLocator.getWorkflowDocumentService();
 			try {
 				if (INITIATOR_ROLE_NAME.equals(roleName)){
-					isUserInRouteLog = principalId.equals(workflowInfo.getDocumentInitiatorPrincipalId(documentId));
+					isUserInRouteLog = principalId.equals(workflowDocumentService.getDocumentInitiatorPrincipalId(documentId));
 				} else if(INITIATOR_OR_REVIEWER_ROLE_NAME.equals(roleName)){
 					isUserInRouteLog = workflowInfo.isUserAuthenticatedByRouteLog(documentId, principalId, true);
 				} else if(ROUTER_ROLE_NAME.equals(roleName)){
-					isUserInRouteLog = principalId.equals(workflowInfo.getDocumentRoutedByPrincipalId(documentId));
+					isUserInRouteLog = principalId.equals(workflowDocumentService.getDocumentRoutedByPrincipalId(documentId));
 				}
 			} catch (WorkflowException wex) {
 				throw new RuntimeException("Error in determining whether the principal Id: " + principalId + " is in route log " +

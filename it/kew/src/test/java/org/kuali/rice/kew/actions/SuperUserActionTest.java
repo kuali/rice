@@ -15,27 +15,24 @@
  */
 package org.kuali.rice.kew.actions;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.junit.Test;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.actions.BlanketApproveTest.NotifySetup;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.action.ActionType;
+import org.kuali.rice.kew.api.document.DocumentStatus;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kew.test.TestUtilities;
+import org.kuali.rice.test.BaselineTestCase;
 
 import java.util.Iterator;
 import java.util.List;
 
-import org.junit.Test;
-import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.actions.BlanketApproveTest.NotifySetup;
-import org.kuali.rice.kew.api.WorkflowDocument;
-import org.kuali.rice.kew.api.WorkflowDocumentFactory;
-import org.kuali.rice.kew.api.action.ActionType;
-import org.kuali.rice.kew.api.document.DocumentStatus;
-import org.kuali.rice.kew.dto.ActionRequestDTO;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowInfo;
-import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.test.BaselineTestCase;
+import static org.junit.Assert.*;
 
 /**
  * Tests the super user actions available on the API.
@@ -209,15 +206,14 @@ public class SuperUserActionTest extends KEWTestCase {
         try {
         	String actionRequestId = null;
             // get actionRequestId to use... there should only be one active action request
-            ActionRequestDTO[] actionRequests = new WorkflowInfo().getActionRequests(document.getDocumentId());
-            for (int i = 0; i < actionRequests.length; i++) {
-                ActionRequestDTO actionRequestVO = actionRequests[i];
-                if (actionRequestVO.isActivated()) {
+            List<ActionRequest> actionRequests = KewApiServiceLocator.getWorkflowDocumentService().getRootActionRequests(document.getDocumentId());
+            for (ActionRequest actionRequest : actionRequests) {
+                if (actionRequest.isActivated()) {
                     // if we already found an active action request fail the test
                     if (actionRequestId != null) {
-                        fail("Found two active action requests for document.  Ids: " + actionRequestId + "  &  " + actionRequestVO.getActionRequestId());
+                        fail("Found two active action requests for document.  Ids: " + actionRequestId + "  &  " + actionRequest.getId());
                     }
-                    actionRequestId = actionRequestVO.getActionRequestId();
+                    actionRequestId = actionRequest.getId();
                 }
             }
             

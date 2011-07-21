@@ -37,39 +37,30 @@ public interface WorkflowDocumentService {
 	
 	List<ActionRequest> getRootActionRequests(@WebParam(name = "documentId") String documentId);
 
-	public List<ActionRequest> getActionRequests(String documentId, String nodeName, String principalId);
+	List<ActionRequest> getActionRequests(String documentId, String nodeName, String principalId);
 	
 	List<ActionTaken> getActionsTaken(@WebParam(name = "documentId") String documentId);
 	
-//    public DocumentDetailDTO getDocumentDetailFromAppId(String documentTypeName, String appId) throws WorkflowException;
-//
-//	public RouteHeaderDTO getRouteHeaderWithPrincipal(
-//			@WebParam(name = "principalId") String principalId,
-//			@WebParam(name = "documentId") String documentId)
-//			throws WorkflowException;
+    DocumentDetail getDocumentDetailByAppId(String documentTypeName, String appId);
+
+/*	public RouteHeaderDTO getRouteHeaderWithPrincipal(
+			@WebParam(name = "principalId") String principalId,
+			@WebParam(name = "documentId") String documentId)
+			throws WorkflowException;*/
 //
 //	public RouteHeaderDTO getRouteHeader(
 //			@WebParam(name = "documentId") String documentId)
 //			throws WorkflowException;
 //
 
-	public DocumentDetail getDocumentDetail(@WebParam(name = "documentId") String documentId);
+	DocumentDetail getDocumentDetail(@WebParam(name = "documentId") String documentId);
 
-//	public RouteNodeInstanceDTO getNodeInstance(
-//			@WebParam(name = "nodeInstanceId") Long nodeInstanceId)
-//			throws WorkflowException;
-//
-//	public Long getNewResponsibilityId() throws WorkflowException;
-//	
-//
-//	public ActionRequestDTO[] getActionRequests(
-//			@WebParam(name = "documentId") String documentId,
-//			@WebParam(name = "nodeName") String nodeName,
-//			@WebParam(name = "principalId") String principalId)
-//			throws WorkflowException;
-//
-//	public String getAppDocId(
-//			@WebParam(name = "documentId") String documentId);
+	RouteNodeInstance getNodeInstance(@WebParam(name = "nodeInstanceId") String nodeInstanceId);
+
+	String getNewResponsibilityId();
+
+
+	String getAppDocId(@WebParam(name = "documentId") String documentId);
 //
 //	
 //	public DocumentSearchResultDTO performDocumentSearch(
@@ -80,54 +71,36 @@ public interface WorkflowDocumentService {
 //			@WebParam(name = "principalId") String principalId,
 //			@WebParam(name = "criteriaVO") DocumentSearchCriteriaDTO criteriaVO)
 //			throws WorkflowException;
-//	
-//	public RouteNodeInstanceDTO[] getDocumentRouteNodeInstances(
-//			@WebParam(name = "documentId") String documentId)
-//			throws WorkflowException;
+//
 
-	public List<RouteNodeInstance> getRouteNodeInstances(String documentId);
+	List<RouteNodeInstance> getRouteNodeInstances(String documentId);
 	
-	public List<RouteNodeInstance> getActiveRouteNodeInstances(
+	List<RouteNodeInstance> getActiveRouteNodeInstances(
 			@WebParam(name = "documentId") String documentId);
 
-//	public RouteNodeInstanceDTO[] getTerminalNodeInstances(
-//			@WebParam(name = "documentId") String documentId)
-//			throws WorkflowException;
-//
-//	public DocumentContentDTO getDocumentContent(
-//			@WebParam(name = "documentId") String documentId)
-//			throws WorkflowException;
+	List<RouteNodeInstance> getTerminalNodeInstances(
+			@WebParam(name = "documentId") String documentId);
 
-	public List<String> getPreviousRouteNodeNames(@WebParam(name = "documentId") String documentId);
+	List<String> getPreviousRouteNodeNames(@WebParam(name = "documentId") String documentId);
 
 	
-//	public String getDocumentStatus(
-//			@WebParam(name = "documentId") String documentId)
-//			throws WorkflowException;
-//
-//	public RouteNodeInstanceDTO[] getCurrentNodeInstances(
-//			@WebParam(name = "documentId") String documentId)
-//			throws WorkflowException;
-//	
-//	public String[] getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(
-//			@WebParam(name = "actionRequestedCd") String actionRequestedCd,
-//			@WebParam(name = "documentId") String documentId)
-//			throws WorkflowException;
-//
-//	
-//	public String getDocumentInitiatorPrincipalId(
-//			@WebParam(name = "documentId") String documentId)
-//			throws WorkflowException;
-//
-//	/**
-//	 * Returns the principal ID of the user who routed the given document.
-//	 * <b>null</b> if the document can not be found.
-//	 * 
-//	 * @throws WorkflowException
-//	 */
-//	public String getDocumentRoutedByPrincipalId(
-//			@WebParam(name = "documentId") String documentId)
-//			throws WorkflowException;
+	String getDocumentStatus(@WebParam(name = "documentId") String documentId);
+
+	List<RouteNodeInstance> getCurrentNodeInstances(@WebParam(name = "documentId") String documentId);
+
+	List<String> getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(
+		@WebParam(name = "actionRequestedCd") String actionRequestedCd,
+		@WebParam(name = "documentId") String documentId);
+
+
+	String getDocumentInitiatorPrincipalId(@WebParam(name = "documentId") String documentId);
+
+	/**
+	 * Returns the principal ID of the user who routed the given document.
+	 * <b>null</b> if the document can not be found.
+	 */
+	public String getDocumentRoutedByPrincipalId(
+			@WebParam(name = "documentId") String documentId);
 //
 //	@XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
 //	public Map<String, String> getActionsRequested(

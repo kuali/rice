@@ -16,24 +16,22 @@
  */
 package org.kuali.rice.kew.actions;
 
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.MovePoint;
+import org.kuali.rice.kew.api.document.RouteNodeInstance;
+import org.kuali.rice.kew.api.document.WorkflowDocumentService;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kew.test.TestUtilities;
 
 import java.util.List;
 import java.util.Set;
 
-import org.junit.Test;
-import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.api.WorkflowDocument;
-import org.kuali.rice.kew.api.WorkflowDocumentFactory;
-import org.kuali.rice.kew.api.action.MovePoint;
-import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowInfo;
-import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.test.TestUtilities;
+import static org.junit.Assert.*;
 
 public class MoveDocumentTest extends KEWTestCase {
 
@@ -118,19 +116,19 @@ public class MoveDocumentTest extends KEWTestCase {
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertTrue("rkirkend should have approve", document.isApprovalRequested());
         document.approve("");
-        
-        WorkflowInfo info = new WorkflowInfo();
-        RouteNodeInstanceDTO[] activeNodeInstances = info.getActiveNodeInstances(document.getDocumentId());
-        assertEquals("Should be 1 active node instance.", 1, activeNodeInstances.length);
-        RouteNodeInstanceDTO node2 = activeNodeInstances[0];
+
+        WorkflowDocumentService workflowDocumentService = KewApiServiceLocator.getWorkflowDocumentService();
+        List<RouteNodeInstance> activeNodeInstances = workflowDocumentService.getActiveRouteNodeInstances(document.getDocumentId());
+        assertEquals("Should be 1 active node instance.", 1, activeNodeInstances.size());
+        RouteNodeInstance node2 = activeNodeInstances.get(0);
         assertEquals("Should be at the WorkflowDocument2 node.", SeqSetup.WORKFLOW_DOCUMENT_2_NODE, node2.getName());
         assertTrue("Node should be in a process.", node2.getProcessId() != null);
         
         // now try to move the document forward one which will keep us inside the subprocess
         document.move(MovePoint.create(SeqSetup.WORKFLOW_DOCUMENT_2_NODE, 1), "");
         
-        activeNodeInstances = info.getActiveNodeInstances(document.getDocumentId());
-        RouteNodeInstanceDTO node3 = activeNodeInstances[0];
+        activeNodeInstances = workflowDocumentService.getActiveRouteNodeInstances(document.getDocumentId());
+        RouteNodeInstance node3 = activeNodeInstances.get(0);
         assertEquals("Should be at the WorkflowDocument3 node.", SeqSetup.WORKFLOW_DOCUMENT_3_NODE, node3.getName());
         assertTrue("Node should be in a process.", node3.getProcessId() != null);
         assertEquals("Node 2 and 3 should be in the same process.", node2.getProcessId(), node3.getProcessId());

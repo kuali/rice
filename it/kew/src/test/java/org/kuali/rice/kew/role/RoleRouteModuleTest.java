@@ -16,14 +16,13 @@
 package org.kuali.rice.kew.role;
 
 import org.junit.Test;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.api.document.RouteNodeInstance;
-import org.kuali.rice.kew.dto.ActionRequestDTO;
-import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -620,14 +619,14 @@ public class RoleRouteModuleTest extends KEWTestCase {
 		assertTrue("Approval should be requested.", document.isApprovalRequested());
 
 		// examine the action requests
-		ActionRequestDTO[] actionRequests = new WorkflowInfo().getActionRequests(document.getDocumentId());
+		List<ActionRequest> actionRequests = KewApiServiceLocator.getWorkflowDocumentService().getRootActionRequests(document.getDocumentId());
 		// there should be 2 root action requests returned here, 1 containing the 2 requests for "BL", and one containing the request for "IN"
-		assertEquals("Should have 3 action requests.", 3, actionRequests.length);
+		assertEquals("Should have 3 action requests.", 3, actionRequests.size());
 		int numRoots = 0;
-		for (ActionRequestDTO actionRequest : actionRequests) {
+		for (ActionRequest actionRequest : actionRequests) {
 			// each of these should be "first approve"
-			if (actionRequest.getApprovePolicy() != null) {
-				assertEquals(ActionRequestPolicy.FIRST.getCode(), actionRequest.getApprovePolicy());
+			if (actionRequest.getRequestPolicy() != null) {
+				assertEquals(ActionRequestPolicy.FIRST.getCode(), actionRequest.getRequestPolicy());
 			}
 			if (actionRequest.getParentActionRequestId() == null) {
 				numRoots++;
@@ -672,12 +671,13 @@ public class RoleRouteModuleTest extends KEWTestCase {
 		assertTrue("Approval should be requested.", document.isApprovalRequested());
 
 		// examine the action requests
-		ActionRequestDTO[] actionRequests = new WorkflowInfo().getActionRequests(document.getDocumentId());
-		assertEquals("Should have 3 action requests.", 3, actionRequests.length);
+		List<ActionRequest> actionRequests = KewApiServiceLocator
+                .getWorkflowDocumentService().getRootActionRequests(document.getDocumentId());
+		assertEquals("Should have 3 action requests.", 3, actionRequests.size());
 		int numRoots = 0;
-		for (ActionRequestDTO actionRequest : actionRequests) {
-			if (actionRequest.getApprovePolicy() != null) {
-				assertEquals(ActionRequestPolicy.ALL.getCode(), actionRequest.getApprovePolicy());
+		for (ActionRequest actionRequest : actionRequests) {
+			if (actionRequest.getRequestPolicy() != null) {
+				assertEquals(ActionRequestPolicy.ALL.getCode(), actionRequest.getRequestPolicy());
 			}
 			if (actionRequest.getParentActionRequestId() == null) {
 				numRoots++;

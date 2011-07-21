@@ -24,9 +24,11 @@ import java.util.Set;
 
 import javax.jws.WebParam;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.action.ActionRequest;
@@ -38,6 +40,9 @@ import org.kuali.rice.kew.api.document.DocumentLink;
 import org.kuali.rice.kew.api.document.RouteNodeInstance;
 import org.kuali.rice.kew.api.document.WorkflowDocumentService;
 import org.kuali.rice.kew.dto.DTOConverter;
+import org.kuali.rice.kew.dto.DocumentDetailDTO;
+import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -69,6 +74,64 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	    DocumentRouteHeaderValue documentBo = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 	    return documentBo != null;
 	}
+
+    public DocumentDetail getDocumentDetailByAppId(String documentTypeName, String appId) {
+        if (StringUtils.isEmpty(documentTypeName)) {
+            throw new RiceIllegalArgumentException("documentTypeName was blank or null");
+        }
+        if (StringUtils.isEmpty(appId)) {
+            throw new RiceIllegalArgumentException("appId was blank or null");
+        }
+
+        Collection documentIds = KEWServiceLocator.getRouteHeaderService().findByDocTypeAndAppId(documentTypeName, appId);
+        if(documentIds==null||documentIds.isEmpty()){
+            throw new RiceIllegalStateException("No RouteHeader Ids found for documentTypName: " + documentTypeName + ", appId: " + appId);
+        }
+        if(documentIds.size()>1){
+            throw new RiceIllegalStateException("Multiple RouteHeader Ids found for documentTypName: " + documentTypeName + ", appId: " + appId);
+		}
+
+        return getDocumentDetail((String)documentIds.iterator().next());
+	}
+
+    public RouteNodeInstance getNodeInstance(String nodeInstanceId)  {
+        if (StringUtils.isEmpty(nodeInstanceId)) {
+            throw new RiceIllegalArgumentException("nodeInstanceId was blank or null");
+        }
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("Fetching RouteNodeInstanceVO [id="+nodeInstanceId+"]");
+        }
+        org.kuali.rice.kew.engine.node.RouteNodeInstance nodeInstance = KEWServiceLocator.getRouteNodeService().findRouteNodeInstanceById(nodeInstanceId);
+        return org.kuali.rice.kew.engine.node.RouteNodeInstance.to(nodeInstance);
+    }
+
+    public String getNewResponsibilityId() {
+        String rid = KEWServiceLocator.getResponsibilityIdService().getNewResponsibilityId();
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("returning responsibility Id " + rid);
+        }
+        return rid;
+    }
+
+    @Override
+    public String getDocumentStatus(String documentId) {
+        if (StringUtils.isEmpty(documentId)) {
+            throw new RiceIllegalArgumentException("documentId was blank or null");
+        }
+        String documentStatus = KEWServiceLocator.getRouteHeaderService().getDocumentStatus(documentId);
+        if (StringUtils.isEmpty(documentStatus)) {
+            throw new RiceIllegalStateException("DocumentStatus not found for documentId: " + documentId);
+        }
+        return documentStatus;
+    }
+
+    @Override
+    public String getAppDocId(String documentId) {
+        if (documentId == null) {
+            throw new RiceIllegalArgumentException("documentId was blank or null");
+        }
+ 	 	return KEWServiceLocator.getRouteHeaderService().getAppDocId(documentId);
+ 	}
 	
 	@Override
 	public DocumentContent getDocumentContent(String documentId) {
@@ -174,6 +237,21 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         return convertRouteNodeInstances(KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(documentId));
 	}
 
+    @Override
+    public List<RouteNodeInstance> getTerminalNodeInstances(String documentId) {
+    	if ( LOG.isDebugEnabled() ) {
+    		LOG.debug("Fetching terminal RouteNodeInstanceVOs [docId=" + documentId + "]");
+    	}
+        return convertRouteNodeInstances(KEWServiceLocator.getRouteNodeService().getTerminalNodeInstances(documentId));
+    }
+
+    public List<RouteNodeInstance> getCurrentNodeInstances(String documentId) {
+    	if ( LOG.isDebugEnabled() ) {
+    		LOG.debug("Fetching current RouteNodeInstanceVOs [docId=" + documentId + "]");
+    	}
+    	return convertRouteNodeInstances(KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(documentId));
+    }
+
 	private List<RouteNodeInstance> convertRouteNodeInstances(List<org.kuali.rice.kew.engine.node.RouteNodeInstance> routeNodeInstanceBos) {
 		List<RouteNodeInstance> routeNodeInstances = new ArrayList<RouteNodeInstance>();
         for (org.kuali.rice.kew.engine.node.RouteNodeInstance routeNodeInstanceBo : routeNodeInstanceBos) {
@@ -230,7 +308,43 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 			return Collections.emptyList();
 		}
 	}
-	
+
+
+    public List<String> getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(String actionRequestedCd, String documentId){
+    	if (StringUtils.isEmpty(actionRequestedCd)) {
+            throw new RiceIllegalArgumentException("actionRequestCd was blank or null");
+        }
+        if (StringUtils.isEmpty(documentId)) {
+            throw new RiceIllegalArgumentException("documentId was blank or null");
+        }
+        return KEWServiceLocator.getActionRequestService().
+    				getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(actionRequestedCd, documentId);
+    }
+
+    public String getDocumentInitiatorPrincipalId(String documentId) {
+        if (StringUtils.isEmpty(documentId)) {
+            throw new RiceIllegalArgumentException("documentId was blank or null");
+        }
+
+        DocumentRouteHeaderValue header = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId, false);
+        if ( header == null) {
+        	return null;
+        }
+    	return header.getInitiatorWorkflowId();
+    }
+
+    public String getDocumentRoutedByPrincipalId(String documentId) {
+        if (StringUtils.isEmpty(documentId)) {
+            throw new RiceIllegalArgumentException("documentId was blank or null");
+        }
+
+        DocumentRouteHeaderValue header = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId, false);
+        if ( header == null) {
+        	return null;
+        }
+    	return header.getRoutedByUserWorkflowId();
+    }
+
 	@Override
 	public DocumentLink addDocumentLink(DocumentLink documentLink) throws RiceIllegalArgumentException {
 		if (documentLink == null) {

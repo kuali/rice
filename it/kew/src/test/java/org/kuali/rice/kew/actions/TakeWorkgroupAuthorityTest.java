@@ -16,26 +16,25 @@
  */
 package org.kuali.rice.kew.actions;
 
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionlist.service.ActionListService;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.ActionTaken;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.junit.Test;
-import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actionlist.service.ActionListService;
-import org.kuali.rice.kew.api.WorkflowDocument;
-import org.kuali.rice.kew.api.WorkflowDocumentFactory;
-import org.kuali.rice.kew.dto.ActionTakenDTO;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowInfo;
-import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.util.KimConstants;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -92,11 +91,10 @@ public class TakeWorkgroupAuthorityTest extends KEWTestCase {
         }
 
         //verify the action was recorded and by rkirkend
-        WorkflowInfo wUtil = new WorkflowInfo();
-        ActionTakenDTO[] actionsTaken = wUtil.getActionsTaken(doc.getDocumentId());
+        List<ActionTaken> actionsTaken = KewApiServiceLocator.getWorkflowDocumentService().getActionsTaken(
+                doc.getDocumentId());
         boolean rkirkendATFound = false;
-        for (int i = 0; i < actionsTaken.length; i++) {
-            ActionTakenDTO at = actionsTaken[i];
+        for (ActionTaken at : actionsTaken) {
             if (at.getPrincipalId().equals(getPrincipalIdForName("rkirkend"))) {
                 assertEquals("Incorrect action code recorded", KEWConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD, at.getActionTaken());
                 rkirkendATFound = true;

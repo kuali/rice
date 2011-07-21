@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat
 import org.kuali.rice.krad.service.PersistenceService
 import org.kuali.rice.kim.impl.identity.principal.PrincipalBo
 import org.kuali.rice.kim.api.identity.principal.Principal
+import org.kuali.rice.core.api.exception.RiceIllegalStateException
 
 class IdentityServiceImplTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
@@ -236,10 +237,44 @@ class IdentityServiceImplTest {
 
         injectBusinessObjectServiceIntoIdentityService();
 
-        for (PrincipalBo principalBo in samplePrincipals.values()) {
-            Assert.assertEquals(PrincipalBo.to(principalBo), identityService.getPrincipalByPrincipalNameAndPassword(principalBo.principalName, principalBo.password));
+        String id = "P2";
+        String name = "second";
+        String password = "second_password";
+        Assert.assertEquals(PrincipalBo.to(samplePrincipals.get(id)), identityService.getPrincipalByPrincipalNameAndPassword(name, password));
+
+        mockBoService.verify(boService);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddPrincipalToEntityWithNullPrincipalFails()
+    {
+        Principal principal = identityService.addPrincipalToEntity(null);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testAddPrincipalToEntityWithBlankEntityIdFails()
+    {
+        PrincipalBo principalBo = new PrincipalBo(entityId: "", principalName: "name", principalId: "P1");
+        principalBo = identityService.addPrincipalToEntity(PrincipalBo.to(principalBo));
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testAddPrincipalToEntityWithExistingPrincipalFails()
+    {
+        mockBoService.demand.findMatching(1..samplePrincipals.size()) {
+            Class clazz, Map map -> for (PrincipalBo principalBo in samplePrincipals.values()) {
+                if (principalBo.principalName.equals(map.get("principalName")))
+                {
+                    Collection<PrincipalBo> principals = new ArrayList<PrincipalBo>();
+                    principals.add(principalBo);
+                    return principals;
+                }
+            }
         }
 
-        mockBoService.verify(boService)
+        injectBusinessObjectServiceIntoIdentityService();
+
+        PrincipalBo principalBo = new PrincipalBo(entityId: "ABC", principalName: "first", principalId: "P1");
+        principalBo = identityService.addPrincipalToEntity(PrincipalBo.to(principalBo));
     }
 }

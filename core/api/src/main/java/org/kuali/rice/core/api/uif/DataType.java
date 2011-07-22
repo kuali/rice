@@ -11,7 +11,7 @@ import java.util.Date;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public enum DataType {
-	STRING(String.class), DATE(Date.class), TRUNCATED_DATE(Date.class), BOOLEAN(Boolean.class), INTEGER(Integer.class), FLOAT(Float.class), DOUBLE(Double.class), LONG(Long.class), COMPLEX(Object.class);
+	STRING(String.class), DATE(Date.class), TRUNCATED_DATE(Date.class), BOOLEAN(Boolean.class), INTEGER(Integer.class), FLOAT(Float.class), DOUBLE(Double.class), LONG(Long.class);
 	
 	private final Class<?> type;
 	

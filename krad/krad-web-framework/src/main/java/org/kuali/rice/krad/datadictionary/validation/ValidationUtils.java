@@ -298,8 +298,6 @@ public class ValidationUtils {
 			}
 			break;
 		case STRING:
-		case COMPLEX:
-			break;
 		}
 		
 		return returnValue;

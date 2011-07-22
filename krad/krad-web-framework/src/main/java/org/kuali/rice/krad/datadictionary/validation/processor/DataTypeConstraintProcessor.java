@@ -84,8 +84,6 @@ public class DataTypeConstraintProcessor extends MandatoryElementConstraintProce
 			case DATE:
 				return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_BIG_DECIMAL);
 			case STRING:
-			case COMPLEX:
-				return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_CUSTOM, e.getMessage());
 			}
 		}
 		

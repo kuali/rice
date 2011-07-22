@@ -368,9 +368,12 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry, In
     private AttributeDefinition copyAttributeDefinition(AttributeDefinition attrDefToCopy){
     	AttributeDefinition attrDefCopy = new AttributeDefinition();
     	
-    	try {
-    		
+    	try {    		
 			BeanUtils.copyProperties(attrDefToCopy, attrDefCopy, new String[] { "formatterClass" });
+			
+			//BeanUtils doesn't copy properties w/o "get" read methods, manually copy those here
+			attrDefCopy.setRequired(attrDefToCopy.isRequired());
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -92,5 +92,12 @@ public class LinkField extends FieldBase {
 	public LightBox getLightBox() {
 		return lightBox;
 	}
+	
+    /**
+     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getSupportsOnClick()
+     */
+    public boolean getSupportsOnClick() {
+        return true;
+    }	
 
 }

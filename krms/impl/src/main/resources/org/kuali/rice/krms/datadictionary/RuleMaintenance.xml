@@ -16,6 +16,11 @@
       </list>
     </property>
   </bean>
+  
+  <bean id="RuleTreeWidget" parent="TreeWidget">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/widget/agendaTree.jsp"/>
+  </bean>
+  
 
   <bean id="RuleBo-MaintenanceView" parent="MaintenanceView">
     <property name="title" value="Rule Editor" />
@@ -44,17 +49,36 @@
     </property>
     <property name="items">
       <list>
-        <ref bean="loadRuleGroup" />
         <ref bean="ruleInfoSection" />
         <ref bean="propositionSection" />
+        <ref bean="ruleActionsSection" />
       </list>
     </property>
   </bean>
 
-  <bean id="loadRuleGroup" parent="loadRuleGroup-parent" />
-  <bean id="loadRuleGroup-parent" parent="GroupSection">
-    <property name="title" value="Source" />
+  <bean id="ruleInfoSection" parent="ruleInfoSection-parent"/>
+  <bean id="ruleInfoSection-parent" parent="GroupSection">
+    <property name="title" value="Rule Information" />
     <property name="renderHeader" value="true" />
+    <property name="accordion.render" value="true" />
+    <property name="accordion.defaultOpen" value="false" />
+    <property name="layoutManager">
+      <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL"
+        p:styleClasses="datatable display" />
+    </property>
+    <property name="items">
+      <list>
+        <ref bean="loadRuleGroup"/>
+        <ref bean="ruleInfoGrid"/>
+        <ref bean="ruleAttributesSection"/>
+      </list>
+    </property>
+  </bean>
+  
+  <bean id="loadRuleGroup" parent="loadRuleGroup-parent" />
+  <bean id="loadRuleGroup-parent" parent="Group">
+    <property name="title" value="Source" />
+    <property name="renderHeader" value="false" />
     <property name="accordion.render" value="false" />
     <property name="layoutManager">
       <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL"
@@ -62,24 +86,27 @@
     </property>
     <property name="items">
       <list>
-        <bean parent="AttributeField" p:propertyName="name">
-          <property name="label" value="Load Existing Rule" />
+        <bean parent="AttributeField" p:propertyName="name" p:style="font-size: smaller;">
+          <property name="label" value="Copy from Existing Rule" />
+          <property name="fieldLookup.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.RuleBo"/>
+          <property name="control">
+            <bean parent="TextControl" p:size="40"
+              p:watermarkText="Existing Rule Name" />
+            </property>
         </bean>
-        <bean parent="LabelField" p:labelText=" or "
+<!--         
+        <bean parent="LabelField" p:labelText="or " p:style="padding: 10px;" 
           p:requiredMessageField="" p:renderColon="false" />
         <bean parent="ActionField" p:actionLabel="Create New Rule"
-          p:methodToCall="foo" p:styleClasses="fg-button  button-secondary1" />
+          p:methodToCall="foo" p:styleClasses="ui-button  ui-widget" />
+ -->          
       </list>
     </property>
   </bean>
 
-  <bean id="ruleInfoSection" parent="ruleInfoSection-parent">
-    <!-- <property name="componentModifiers"> <list> </list> </property> 
-      <property name="layoutManager"> <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL"/> 
-      </property> -->
-  </bean>
-
-  <bean id="ruleInfoSection-parent" parent="GroupSectionGridLayout">
+  
+  
+  <bean id="ruleInfoGrid" parent="GroupSectionGridLayout">
     <property name="title" value="Rule Information" />
     <property name="renderHeader" value="true" />
     <property name="accordion.render" value="false" />
@@ -90,17 +117,25 @@
       <list>
         <bean parent="AttributeField" p:propertyName="name" />
         <bean parent="AttributeField" p:propertyName="namespace" />
-        <bean parent="AttributeField" p:propertyName="typeId" />
-        <bean parent="AttributeField" p:propertyName="description"
-          p:labelField.colSpan="1" p:colSpan="5" />
+        <bean parent="AttributeField" p:propertyName="typeId">
+          <property name="control">
+            <bean parent="TextControl" p:size="20" p:readOnly="true" p:style="border: 0px"/>
+          </property>
+        </bean>
+        <bean parent="AttributeField" p:propertyName="description" p:labelField.colSpan="1" p:colSpan="5">
+          <property name="control">
+            <bean parent="TextAreaControl" p:rows="4" p:cols="100"/>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>
+  
 
   <bean name="propositionSection" parent="propositionSection-parent" />
   <bean name="propositionSection-parent" parent="GroupSection">
     <property name="title" value="Proposition" />
-    <property name="accordion.render" value="false" />
+    <property name="accordion.render" value="true" />
     <property name="items">
       <list>
         <bean parent="GroupGridLayout">
@@ -111,55 +146,221 @@
               <bean parent="AttributeField" p:propertyName="proposition.description"
                 p:colSpan="6" />
               <bean parent="ActionField" p:actionLabel="Save"
-                p:methodToCall="foo" p:styleClasses="fg-button  button-secondary1" />
+                p:methodToCall="foo" p:styleClasses="ui-button  ui-widget" />
             </list>
           </property>
         </bean>
-        <bean parent="CollectionGroupTableLayout"
-          p:layoutManager.numberOfColumns="3">
-          <property name="title" value="campusCode = &quot;BL&quot;" />
-          <property name="collectionObjectClass"
-            value="org.kuali.rice.krms.impl.repository.PropositionParameterBo" />
-          <property name="propertyName" value="proposition.parameters" />
-          <property name="layoutManager.renderSequenceField"
-            value="false" />
-          <property name="accordion.defaultOpen" value="false" />
-          <property name="items">
-            <list>
-              <bean parent="AttributeField" p:propertyName="sequenceNumber" />
-              <bean parent="AttributeField" p:propertyName="value" />
-              <bean parent="AttributeField" p:propertyName="parameterType" />
-            </list>
+        
+  <bean id="ruleTreeExpandCollapse" parent="FieldGroup" p:label="Field Group 4" 
+    p:style="font-size: smaller;">
+    <property name="group.layoutManager.orientation" value="HORIZONTAL"/>
+    <property name="items">
+      <list>                            
+        <bean parent="ActionLinkField" p:clientSideJs="jq('.jstree').jstree('open_all');" 
+          p:actionLabel="[+] expand all" p:style="font-size: smaller; margin-left: 2em;">
+          <property name="actionImageField"><null/></property>
+        </bean>
+        <bean parent="ActionLinkField" p:clientSideJs="jq('.jstree').jstree('close_all');" 
+          p:actionLabel="[-] collapse all" p:style="font-size: smaller; margin-right: 15pt;">
+          <property name="actionImageField"><null/></property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="ruleTreeControls" parent="FieldGroup" p:showLabel="false" p:group.layoutManager.orientation="HORIZONTAL">
+    <property name="items">
+      <list>
+        <bean parent="ActionField" p:methodToCall="add" p:actionLabel="Add Proposition"  p:clientSideJs="alert('Not Yet Implemented');" 
+          p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt;"/>        
+        <bean parent="MessageField" p:messageText="Move: [" p:style="display: inline;"/>
+        <bean parent="ActionField" p:methodToCall="moveLeft"
+          p:actionLabel="&lt; Left" p:styleClasses-ref="buttonClasses" />
+        <bean parent="ActionField" p:methodToCall="moveUp" p:actionLabel="Up ^"
+          p:styleClasses-ref="buttonClasses" />
+        <bean parent="ActionField" p:methodToCall="moveDown"
+          p:actionLabel="v Down" p:styleClasses-ref="buttonClasses" />
+        <bean parent="ActionField" p:methodToCall="moveRight"
+          p:actionLabel="Right &gt;" p:styleClasses-ref="buttonClasses" />
+        <bean parent="MessageField" p:messageText="]" p:style="display: inline;"/>
+        
+        <bean parent="ActionField" p:methodToCall="cut" p:actionLabel="Cut" p:clientSideJs="alert('Not Yet Implemented');" p:styleClasses-ref="buttonClasses" p:style="margin-left: 15pt;"/>
+        <bean parent="ActionField" p:methodToCall="paste" p:actionLabel="Paste" p:clientSideJs="alert('Not Yet Implemented');" p:styleClasses-ref="buttonClasses"/>
+        <bean parent="ActionField" p:methodToCall="delete" p:actionLabel="Delete" p:styleClasses-ref="buttonClasses" 
+          p:style="margin-right: 15pt;"/>
+        <bean parent="ActionField" p:methodToCall="refresh" p:actionLabel="refresh" p:styleClasses-ref="buttonClasses"/>
+      </list> 
+    </property> 
+  </bean>
+        
+  <bean id="ruleTree" parent="TreeGroup" p:accordion.render="false" p:header.render="false" p:style="float:left; margin-left: 2em;">
+    <property name="title" value="Rule Propositions"/>
+    <property name="propertyName" value="propositionTree"/>
+    <property name="treeWidget">
+      <bean parent="RuleTreeWidget">
+        <property name="componentOptions">
+          <map>
+            <entry key="'plugins'"
+              value="['themes','html_data', 'ui', 'crrm', 'dnd']" />
+            <entry key="'themes'"
+              value="{'theme':'default','dots':'false','icons':'false'}" />
+            <entry key="'ui'" value="{ 'select_limit' : 1 }" />
+            <entry key="'dnd'" value="{ 'drag_target' : false, 'drop_target' : false }" />
+          </map>
+        </property>
+      </bean>
+    </property>
+    <property name="nodeProtypeMap">
+      <map key-type="java.lang.Class">
+        <entry>
+          <key>
+            <bean class="java.lang.Class" factory-method="forName">
+              <constructor-arg value="org.kuali.rice.krms.impl.ui.RuleTreeNode"/>
+            </bean>
+          </key> 
+          <bean class="org.kuali.rice.krad.uif.container.TreeGroup.NodePrototype">
+            <property name="labelPrototype">
+              <bean parent="MessageField"/>
+            </property>
+            <property name="dataGroupPrototype">
+              <!-- float:right is a hack to get the group for this hidden control out of the way -->
+              <bean parent="GroupBodyOnly" p:hidden="true" p:style="float: right;">
+                <property name="items">
+                  <list>
+                    <bean parent="AttributeField" p:propertyName="proposition.id"
+                            p:showLabel="false" p:label="id" p:maxLength="255">
+                      <property name="control">
+                        <bean parent="HiddenControl"/>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+              </bean>
+            </property>
+          </bean>
+        </entry>
+        <entry>
+          <key>
+            <bean class="java.lang.Class" factory-method="forName">
+              <constructor-arg value="org.kuali.rice.krms.impl.ui.RuleTreeSimplePropositionParameterNode"/>
+            </bean>
+          </key> 
+          <bean class="org.kuali.rice.krad.uif.container.TreeGroup.NodePrototype">
+            <property name="labelPrototype">
+              <bean parent="MessageField"/>
+            </property>
+            <property name="dataGroupPrototype">
+              <!-- float:right is a hack to get the group for this hidden control out of the way -->
+              <bean parent="GroupBodyOnly" p:hidden="true" p:style="float: right;">
+                <property name="items">
+                  <list>
+                    <bean parent="AttributeField" p:propertyName="proposition.id"
+                            p:showLabel="false" p:label="id" p:maxLength="255">
+                      <property name="control">
+                        <bean parent="HiddenControl"/>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+              </bean>
+            </property>
+          </bean>
+        </entry>
+      </map>
+    </property>
+  </bean>
+        
+        
+      </list>
+    </property>
+  </bean>
+
+  <bean name="ruleAttributesSection" parent="ruleAttributesSection-parent" />
+  <bean name="ruleAttributesSection-parent" parent="GroupSection">
+    <property name="title" value="Rule Attributes" />
+    <property name="accordion.render" value="true" />
+    <property name="accordion.defaultOpen" value="false" />
+    <property name="items">
+      <list>
+  <bean name="ruleAttributeTable" parent="CollectionGroupTableLayout"
+    p:layoutManager.numberOfColumns="2">
+    <property name="title" value="Rule Attributes" />
+    <property name="collectionObjectClass"
+      value="org.kuali.rice.krms.impl.repository.RuleAttributeBo" />
+    <property name="propertyName" value="attributeBos" />
+    <property name="renderAddLine" value="false" />
+    <property name="renderLineActions" value="false" />
+    <property name="accordion.render" value="false" />
+    <property name="header.render" value="false" />
+    <property name="layoutManager.renderSequenceField" value="false" />
+    <property name="layoutManager.useShortLabels" value="true" />
+    <property name="layoutManager.repeatHeader" value="false" />
+    <property name="layoutManager.applyAlternatingRowStyles" value="true"/>
+    <property name="layoutManager.applyDefaultCellWidths" value="false"/>
+    <property name="layoutManager.tableTools.disableTableSort" value="true" />
+    <property name="layoutManager.tableTools">
+        <ref bean="TableTools-ScrollInfinite"/>
+    </property>   
+    <property name="items">
+      <list>
+        <bean parent="AttributeField" p:propertyName="attributeDefinition.name" p:readOnly="true">
+          <property name="control">
+            <bean parent="TextControl" p:size="20" p:readOnly="true" p:style="border: 0"/>
           </property>
         </bean>
+        <bean parent="AttributeField" p:propertyName="value" />
+      </list>
+    </property>
+  </bean>
+      </list>
+    </property>
+  </bean>
+ 
+  <bean name="ruleActionsSection" parent="ruleActionsSection-parent" />
+  <bean name="ruleActionsSection-parent" parent="GroupSection">
+    <property name="title" value="Rule Actions" />
+    <property name="accordion.render" value="true" />
+    <property name="accordion.defaultOpen" value="false" />
+    <property name="items">
+      <list>
+  
+  <bean name="ruleActiontable" parent="CollectionGroupTableLayout"
+    p:colSpan="1" p:layoutManager.numberOfColumns="1">
+    <property name="title" value="Rule Actions" />
+    <property name="collectionObjectClass"
+      value="org.kuali.rice.krms.impl.repository.ActionBo" />
+    <property name="propertyName" value="actions" />
+<!-- 
+    
+    <property name="conditionalRender" value="document.newMaintainableObject.dataObject.actions != null and !document.newMaintainableObject.dataObject.actions.isEmpty()"/>
+-->
+    <property name="layoutManager.renderSequenceField" value="false" />
+<!-- 
+      <property name="layoutManager.tableTools">
+        <ref bean="TableTools-ScrollInfinite"/>
+      </property>
+-->
+    <property name="header.render" value="false" />
+    <property name="accordion.render" value="false" />
+    <property name="layoutManager.repeatHeader" value="false" />
+    <property name="renderAddLine" value="true" />
+    <property name="renderLineActions" value="true" />
+    <property name="items">
+      <list>
+        <bean parent="AttributeField" p:propertyName="name">
+          <property name="control">
+            <bean parent="TextControl" p:size="20"/>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
       </list>
     </property>
   </bean>
 
   <!--  This section below are pieces that are works in progress and not yet attached to the main body -->
   
-  <bean name="ruleAttributeSection" parent="CollectionGroupTableLayout"
-    p:layoutManager.numberOfColumns="2">
-    <property name="title" value="Rule Attributes" />
-    <property name="collectionObjectClass"
-      value="org.kuali.rice.krms.impl.repository.RuleAttributeBo" />
-    <property name="propertyName" value="attributeBos" />
-    <property name="layoutManager.renderSequenceField" value="false" />
-    <property name="layoutManager.useShortLabels" value="true" />
-    <property name="layoutManager.repeatHeader" value="false" />
-    <property name="layoutManager.tableTools.disableTableSort"
-      value="true" />
-    <property name="renderAddLine" value="false" />
-    <property name="renderLineActions" value="false" />
-    <property name="accordion.render" value="false" />
-    <property name="header.render" value="false" />
-    <property name="items">
-      <list>
-        <bean parent="AttributeField" p:propertyName="attributeDefinition.name" />
-        <bean parent="AttributeField" p:propertyName="value" />
-      </list>
-    </property>
-  </bean>
 
   <bean parent="CollectionGroupTableLayout"
     p:layoutManager.numberOfColumns="4">
@@ -178,18 +379,26 @@
     </property>
   </bean>
 
-  <bean name="ruleActionsSection" parent="CollectionGroupSectionTableLayout"
-    p:layoutManager.numberOfColumns="4">
-    <property name="title" value="Rule Actions" />
-    <property name="collectionObjectClass"
-      value="org.kuali.rice.krms.impl.repository.ActionBo" />
-    <property name="propertyName" value="actions" />
-    <property name="layoutManager.renderSequenceField" value="false" />
-    <property name="items">
-      <list>
-        <bean parent="AttributeField" p:propertyName="name" />
-      </list>
-    </property>
-  </bean>
+
+<!--  Table view of proposition parameters           
+        <bean parent="CollectionGroupTableLayout"
+          p:layoutManager.numberOfColumns="3" >
+          <property name="title" value="campusCode = &quot;BL&quot;" />
+          <property name="collectionObjectClass"
+            value="org.kuali.rice.krms.impl.repository.PropositionParameterBo" />
+          <property name="propertyName" value="proposition.parameters" />
+          <property name="layoutManager.renderSequenceField"
+            value="false" />
+          <property name="accordion.defaultOpen" value="false" />
+          <property name="items">
+            <list>
+              <bean parent="AttributeField" p:propertyName="sequenceNumber" />
+              <bean parent="AttributeField" p:propertyName="value" />
+              <bean parent="AttributeField" p:propertyName="parameterType" />
+            </list>
+          </property>
+        </bean>
+        
+ -->          
 
 </beans>

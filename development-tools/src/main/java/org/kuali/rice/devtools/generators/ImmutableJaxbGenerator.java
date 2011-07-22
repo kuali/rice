@@ -38,6 +38,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 
@@ -110,7 +111,7 @@ public class ImmutableJaxbGenerator {
 			JDefinedClass classModel = codeModel._class(JMod.PUBLIC | JMod.FINAL, className, ClassType.CLASS);
 			Class<?> contractInterface = Class.forName(contractInterfaceName);
 			classModel._implements(contractInterface);
-			classModel._implements(ModelObjectComplete.class);
+            classModel._extends(AbstractJaxbModelObject.class);
 			
 			List<FieldModel> fields = determineFields(contractInterface);
 			
@@ -123,7 +124,7 @@ public class ImmutableJaxbGenerator {
 			renderBuilderConstructor(classModel, fields);
 			renderGetters(classModel, fields);
 			renderBuilderClass(classModel, fields, contractInterface);
-			renderStandardObjectMethods(classModel);
+			//renderStandardObjectMethods(classModel);
 			
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 			codeModel.build(new SingleStreamCodeWriter(outputStream));
@@ -171,12 +172,12 @@ public class ImmutableJaxbGenerator {
 			typeNameField.init(JExpr.lit(classModel.name() + Util.TYPE_NAME_SUFFIX));
 			
 			// hash code excludes array
-			JFieldVar hashCodeExcludesField = constantsClass.field(JMod.FINAL | JMod.STATIC, String[].class, Util.HASH_CODE_EQUALS_EXCLUDE_FIELD);
+			/*JFieldVar hashCodeExcludesField = constantsClass.field(JMod.FINAL | JMod.STATIC, String[].class, Util.HASH_CODE_EQUALS_EXCLUDE_FIELD);
 			JArray excludeArray = JExpr.newArray(codeModel.ref(String.class));
 			JClass coreConstants = codeModel.ref(CoreConstants.class);
 			JFieldRef futureElementsRef = coreConstants.staticRef(Util.COMMON_ELEMENTS_CLASS).ref(Util.FUTURE_ELEMENTS_FIELD);
 			excludeArray.add(futureElementsRef);
-			hashCodeExcludesField.init(excludeArray);
+			hashCodeExcludesField.init(excludeArray);*/
 			
 		}
 		

@@ -1,9 +1,6 @@
 package org.kuali.rice.core.api.uif;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 
@@ -16,7 +13,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = RemotableAbstractControl.Constants.TYPE_NAME)
-public abstract class RemotableAbstractControl implements Control, ModelObjectComplete {
+public abstract class RemotableAbstractControl extends AbstractJaxbModelObject implements Control, ModelObjectComplete {
 
     /**
      * Should only be invoked by JAXB.
@@ -26,20 +23,7 @@ public abstract class RemotableAbstractControl implements Control, ModelObjectCo
 
     }
 
-    @Override
-    public final int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
 
-    @Override
-    public final boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(obj, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public final String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
 
     abstract static class Builder implements Control, ModelBuilder {
         Builder() {
@@ -55,6 +39,5 @@ public abstract class RemotableAbstractControl implements Control, ModelObjectCo
      */
     static class Constants {
         final static String TYPE_NAME = "AbstractControlType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
 }

@@ -80,14 +80,12 @@ class RemotableSelectTest {
         RemotableSelect.Builder o = RemotableSelect.Builder.create(null)
     }
 
-    @Ignore
     @Test
 	void testJAXB1() {
 		RemotableSelect o = create().build();
 		JAXBAssert.assertEqualXmlMarshalUnmarshal(o, XML1, RemotableSelect.class);
 	}
 
-    @Ignore
     @Test
 	void testJAXB2() {
 		RemotableSelect o = create2().build();

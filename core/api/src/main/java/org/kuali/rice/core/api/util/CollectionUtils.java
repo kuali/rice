@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.core.api.util;
 
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -97,6 +98,22 @@ public final class CollectionUtils {
     }
 
     /**
+     * Functions as per {@link Collections#unmodifiableList(Collection)} with the exception that if the
+     * given collection is null, this method will return an unmodifiable empty collection as per
+     * {@link Collections#emptyList()}.
+     *
+     * @param collection the collection for which an unmodifiable view is to be returned
+     * @return an unmodifiable view of the specified collection, or an unmodifiable empty collection if the
+     *         given collection is null
+     */
+    public static <T> Collection<T> unmodifiableCollectionNullSafe(Collection<? extends T> collection) {
+        if (collection == null) {
+            return Collections.emptyList();
+        }
+        return Collections.unmodifiableCollection(collection);
+    }
+
+    /**
      * Functions as per {@link Collections#unmodifiableList(List)} with the exception that if the
      * given list is null, this method will return an unmodifiable empty list as per
      * {@link Collections#emptyList()}.
@@ -133,7 +150,7 @@ public final class CollectionUtils {
      * given map is null, this method will return an unmodifiable empty map as per
      * {@link Collections#emptyMap()}.
      * 
-     * @param set the set for which an unmodifiable view is to be returned
+     * @param map the map for which an unmodifiable view is to be returned
      * @return an unmodifiable view of the specified set, or an unmodifiable empty set if the given
      *         set is null
      */
@@ -142,6 +159,40 @@ public final class CollectionUtils {
             return Collections.emptyMap();
         }
         return Collections.unmodifiableMap(map);
+    }
+
+    /**
+     * This method will iterate over all the fields on an object searching for declared fields defined as
+     * Collection, List, Set, Map type.  If those fields are null they will be set to empty unmodifiable
+     * instances.  If those fields are not null then it will force them to be unmodifiable.
+     *
+     * This method does not handle nested types.
+     *
+     * @param o the object to modify.  a null object will do nothing.
+     */
+    public static void makeUnmodifiableAndNullSafe(Object o) throws IllegalAccessException {
+        if (o == null) {
+            return;
+        }
+
+        Class<?> targetClass = o.getClass();
+        for (Field f : targetClass.getDeclaredFields()) {
+            try {
+                f.setAccessible(true);
+
+                if (f.getType().isAssignableFrom(List.class)) {
+                    f.set(o, unmodifiableListNullSafe((List<?>) f.get(o)));
+                } else if (f.getType().isAssignableFrom(Set.class)) {
+                    f.set(o, unmodifiableSetNullSafe((Set<?>) f.get(o)));
+                } else if (f.getType().isAssignableFrom(Collection.class)) {
+                    f.set(o, unmodifiableCollectionNullSafe((Collection<?>) f.get(o)));
+                } else if (f.getType().isAssignableFrom(Map.class)) {
+                    f.set(o, unmodifiableMapNullSafe((Map<?, ?>) f.get(o)));
+                }
+            } finally {
+                f.setAccessible(false);
+            }
+        }
     }
 
     /**

@@ -4,6 +4,7 @@ import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.AbstractPhaseInterceptor;
 import org.apache.cxf.phase.Phase;
+import org.kuali.rice.core.api.util.CollectionUtils;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
@@ -34,59 +35,10 @@ public class ImmutableCollectionsInInterceptor extends AbstractPhaseInterceptor<
         try {
             List contents = message.getContent(List.class);
             for (Object o : contents) {
-                makeCollectionFieldsImmutable(o);
+                CollectionUtils.makeUnmodifiableAndNullSafe(o);
             }
-        } catch (Exception e) {
+        } catch (IllegalAccessException e) {
             throw new Fault(e);
-        }
-    }
-
-    /**
-     * Accepts an object whose fields of type List, Set, or Collection need to be made immutable irrespective of field
-     * visibility.  The passed in object is mutated as a result.
-     *
-     * @param o - The object whose List, Set, or Collection fields will be made immutable
-     * @throws IllegalAccessException
-     */
-    @SuppressWarnings("unchecked")
-    void makeCollectionFieldsImmutable(Object o) throws IllegalAccessException {
-        Class<?> targetClass = o.getClass();
-        for (Field f : targetClass.getDeclaredFields()) {
-
-            f.setAccessible(true);
-
-            if (f.getType().isAssignableFrom(List.class)) {
-                List original = (List) f.get(o);
-                if (original == null) {
-                    original = Collections.emptyList();
-                }
-                List immutable = Collections.unmodifiableList(original);
-                f.set(o, immutable);
-
-            } else if (f.getType().isAssignableFrom(Set.class)) {
-                Set original = (Set) f.get(o);
-                if (original == null) {
-                    original = Collections.emptySet();
-                }
-                Set immutable = Collections.unmodifiableSet(original);
-                f.set(o, immutable);
-            } else if (f.getType().isAssignableFrom(Collection.class)) {
-                Collection original = (Collection) f.get(o);
-                if (original == null) {
-                    original = Collections.emptyList();
-                }
-                Collection immutable = Collections.unmodifiableCollection(original);
-                f.set(o, immutable);
-            } else if (f.getType().isAssignableFrom(Map.class)) {
-                Map original = (Map) f.get(o);
-                if (original == null) {
-                    original = Collections.emptyMap();
-                }
-                Map immutable = Collections.unmodifiableMap(original);
-                f.set(o, immutable);
-            }
-
-            f.setAccessible(false);
         }
     }
 }

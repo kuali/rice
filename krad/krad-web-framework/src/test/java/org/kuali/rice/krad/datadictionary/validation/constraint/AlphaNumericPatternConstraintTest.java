@@ -27,7 +27,6 @@ import org.kuali.rice.krad.datadictionary.validation.Address;
 import org.kuali.rice.krad.datadictionary.validation.AttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.DictionaryObjectAttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.ErrorLevel;
-import org.kuali.rice.krad.datadictionary.validation.constraint.AlphaPatternConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.krad.datadictionary.validation.processor.ValidCharactersConstraintProcessor;
 import org.kuali.rice.krad.datadictionary.validation.result.ConstraintValidationResult;

@@ -57,7 +57,7 @@ public class StringToKimEntityNameInfoMapAdapter extends XmlAdapter<StringEntity
 		Map<String, EntityName> resultMap = new HashMap<String, EntityName>(entryArray.length);
 		for (int i = 0; i < entryArray.length; i++) {
 			StringEntityNameInfoMapEntry entry = entryArray[i];
-			resultMap.put(entry.key, entry.value);
+			resultMap.put(entry.getKey(), entry.getValue());
 		}
 		return resultMap;
 	}

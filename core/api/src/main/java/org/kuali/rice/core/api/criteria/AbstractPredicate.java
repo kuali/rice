@@ -15,8 +15,7 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 
 /**
  * An abstract class from which all {@link Predicate} instances should extend.
@@ -25,19 +24,9 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-abstract class AbstractPredicate implements Predicate {
+abstract class AbstractPredicate extends AbstractJaxbModelObject implements Predicate {
 
 	private static final long serialVersionUID = 7035792141358213138L;
-
-	@Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(obj, this);
-    }
 
     @Override
     public abstract String toString();

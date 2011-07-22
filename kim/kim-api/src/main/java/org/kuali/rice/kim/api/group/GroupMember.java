@@ -22,6 +22,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
@@ -52,7 +53,7 @@ import java.util.Collection;
         CoreConstants.CommonElements.OBJECT_ID,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class GroupMember implements GroupMemberContract, ModelObjectComplete  {
+public class GroupMember extends AbstractJaxbModelObject implements GroupMemberContract  {
 
     @XmlElement(name = Elements.ID, required = false)
     private final String id;
@@ -105,6 +106,43 @@ public class GroupMember implements GroupMemberContract, ModelObjectComplete  {
         this.objectId = builder.getObjectId();
         this.activeFromDate = builder.getActiveFromDate();
         this.activeToDate = builder.getActiveToDate();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public String getMemberId() {
+        return memberId;
+    }
+
+    public String getTypeCode() {
+        return typeCode;
+    }
+
+    public DateTime getActiveFromDate() {
+        return activeFromDate;
+    }
+
+    public DateTime getActiveToDate() {
+        return activeToDate;
+    }
+
+    public Long getVersionNumber() {
+        return versionNumber;
+    }
+
+    public String getObjectId() {
+        return objectId;
+    }
+
+    @Override
+    public boolean isActive(DateTime activeAsOf) {
+        return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, activeAsOf);
     }
 
     public static class Builder implements GroupMemberContract, ModelBuilder, Serializable {
@@ -241,65 +279,12 @@ public class GroupMember implements GroupMemberContract, ModelObjectComplete  {
         }
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getGroupId() {
-        return groupId;
-    }
-
-    public String getMemberId() {
-        return memberId;
-    }
-
-    public String getTypeCode() {
-        return typeCode;
-    }
-
-    public DateTime getActiveFromDate() {
-        return activeFromDate;
-    }
-
-    public DateTime getActiveToDate() {
-        return activeToDate;
-    }
-
-    public Long getVersionNumber() {
-        return versionNumber;
-    }
-
-    public String getObjectId() {
-        return objectId;
-    }
-
-    @Override
-    public boolean isActive(DateTime activeAsOf) {
-        return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, activeAsOf);
-    }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(obj, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
-
     /**
      * Defines some internal constants used on this class.
      */
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "groupMember";
         final static String TYPE_NAME = "GroupMemberType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
 
     /**

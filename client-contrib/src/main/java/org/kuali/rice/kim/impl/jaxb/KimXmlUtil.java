@@ -67,7 +67,7 @@ public final class KimXmlUtil {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(DataXmlDTO.class);
             Marshaller marshaller = jaxbContext.createMarshaller();
-            marshaller.marshal(new DataXmlDTO(permissionData, roleData, null), outputStream);
+            marshaller.marshal(new DataXmlDTO(permissionData, roleData), outputStream);
         } catch (JAXBException e) {
             throw new RuntimeException(e);
         }

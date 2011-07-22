@@ -14,6 +14,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
@@ -30,8 +31,8 @@ import org.w3c.dom.Element;
     CoreConstants.CommonElements.OBJECT_ID,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class EntityExternalIdentifier
-    implements ModelObjectComplete, EntityExternalIdentifierContract
+public final class EntityExternalIdentifier extends AbstractJaxbModelObject
+    implements EntityExternalIdentifierContract
 {
     @XmlElement(name = Elements.ENTITY_ID, required = false)
     private final String entityId;
@@ -109,22 +110,6 @@ public final class EntityExternalIdentifier
     public String getId() {
         return this.id;
     }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
-
 
     /**
      * A builder which can be used to construct {@link EntityExternalIdentifier} instances.  Enforces the constraints of the {@link EntityExternalIdentifierContract}.
@@ -247,8 +232,6 @@ public final class EntityExternalIdentifier
 
         final static String ROOT_ELEMENT_NAME = "entityExternalIdentifier";
         final static String TYPE_NAME = "EntityExternalIdentifierType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] {CoreConstants.CommonElements.FUTURE_ELEMENTS };
-
     }
 
 

@@ -26,6 +26,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.w3c.dom.Element;
 
 @XmlRootElement(name = PropertyDefinition.Constants.ROOT_ELEMENT_NAME)
@@ -35,7 +36,7 @@ import org.w3c.dom.Element;
         PropertyDefinition.Elements.VALUE,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class PropertyDefinition {
+public final class PropertyDefinition extends AbstractJaxbModelObject {
 
     @XmlElement(name = Elements.NAME, required = true)
     private final String name;
@@ -79,7 +80,6 @@ public final class PropertyDefinition {
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "propertyDefinition";
         final static String TYPE_NAME = "PropertyDefinitionType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[]{CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
 
     /**

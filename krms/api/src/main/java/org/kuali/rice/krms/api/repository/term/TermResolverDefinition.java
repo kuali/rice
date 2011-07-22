@@ -20,6 +20,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
@@ -60,7 +61,7 @@ import java.util.Set;
         CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class TermResolverDefinition implements TermResolverDefinitionContract, ModelObjectComplete {
+public final class TermResolverDefinition extends AbstractJaxbModelObject implements TermResolverDefinitionContract {
 	
     private static final long serialVersionUID = 1L;
 	
@@ -444,31 +445,6 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
     public Long getVersionNumber() {
         return versionNumber;
     }
-    
-	/**
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) return false;
-		return EqualsBuilder.reflectionEquals(this, obj, Constants.HASH_CODE_EQUALS_EXCLUDE);
-	}
-	
-	/**
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-	}
-	
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
-	}
 	
 	/**
 	 * Defines some internal constants used on this class.
@@ -476,7 +452,6 @@ public final class TermResolverDefinition implements TermResolverDefinitionContr
 	static class Constants {
 		final static String ROOT_ELEMENT_NAME = "termResolverDefinition";
 		final static String TYPE_NAME = "termResolverDefinitionType";
-		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS };
 	}
 	
 	static class Elements {

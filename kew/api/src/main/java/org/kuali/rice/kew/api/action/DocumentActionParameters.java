@@ -31,6 +31,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.kew.api.document.DocumentContentUpdate;
 import org.kuali.rice.kew.api.document.DocumentUpdate;
@@ -46,7 +47,7 @@ import org.w3c.dom.Element;
 		DocumentActionParameters.Elements.DOCUMENT_CONTENT_UPDATE,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class DocumentActionParameters implements Serializable {
+public final class DocumentActionParameters extends AbstractJaxbModelObject {
     
 	private static final long serialVersionUID = -7589214734683758734L;
 
@@ -114,21 +115,6 @@ public final class DocumentActionParameters implements Serializable {
 	public DocumentContentUpdate getDocumentContentUpdate() {
 		return documentContentUpdate;
 	}
-
-	@Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
     
     /**
      * A builder which can be used to construct {@link DocumentActionParameters} instances.
@@ -211,7 +197,6 @@ public final class DocumentActionParameters implements Serializable {
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "documentActionParameters";
         final static String TYPE_NAME = "DocumentActionParametersType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] { CoreConstants.CommonElements.FUTURE_ELEMENTS };
     }
     
     /**

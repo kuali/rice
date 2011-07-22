@@ -15,6 +15,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
@@ -30,7 +31,7 @@ import org.w3c.dom.Element;
         CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class Process implements ModelObjectComplete, ProcessContract {
+public final class Process extends AbstractJaxbModelObject implements ProcessContract {
 
     private static final long serialVersionUID = 1076976038764944504L;
 
@@ -109,21 +110,6 @@ public final class Process implements ModelObjectComplete, ProcessContract {
     @Override
     public Long getVersionNumber() {
         return this.versionNumber;
-    }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
     }
 
     /**
@@ -234,7 +220,6 @@ public final class Process implements ModelObjectComplete, ProcessContract {
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "process";
         final static String TYPE_NAME = "ProcessType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[]{CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
 
     /**

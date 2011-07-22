@@ -3,6 +3,7 @@ package org.kuali.rice.ksb.api.bus.support;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.security.credentials.CredentialsType;
 import org.kuali.rice.core.api.util.jaxb.EnumStringAdapter;
 import org.kuali.rice.core.api.util.jaxb.QNameAsStringAdapter;
@@ -37,7 +38,7 @@ import java.util.Collection;
 		AbstractServiceConfiguration.Elements.CREDENTIALS_TYPE,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public abstract class AbstractServiceConfiguration implements ServiceConfiguration {
+public abstract class AbstractServiceConfiguration extends AbstractJaxbModelObject implements ServiceConfiguration {
 
 	private static final long serialVersionUID = 2681595879406587302L;
 
@@ -116,37 +117,6 @@ public abstract class AbstractServiceConfiguration implements ServiceConfigurati
 		CredentialsType cred = builder.getCredentialsType();
 		this.credentialsType = cred == null ? null : cred.name();
 	}
-	
-	/**
-	 * Compares this configuration with another service configuration to determine if
-	 * they are equal.  This method utilizes reflection to automatically compares all
-	 * fields of the service configuration (with the exception of the internal
-	 * {@link #_futureElements} field) so determine equality.  This includes private
-	 * fields declared on the subclass.
-	 * 
-	 * <p>Subclasses should generally not need to override this provided the default
-	 * reflection-based comparison will produce an accurate result for additional
-	 * fields that are introduced in the subclass.
-	 */
-	@Override
-    public boolean equals(Object object) {
-		return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-	/**
-	 * Produces a hash code value for this service configuration.  This method utilizes
-	 * reflection to automatically generate a hashcode using fields from the service
-	 * configuration.  This includes all fields (with the exception of the internal
-	 * {@link #_futureElements} field) including private fields declared on the subclass.
-	 * 
-	 * <p>Subclasses should generally not need to override this provded the default
-	 * reflect-based comparison will produce an accurate result for additional
-	 * fields that are introduced in the subclass.
-	 */
-	@Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
 	
 	public QName getServiceName() {
 		return serviceName;
@@ -313,7 +283,6 @@ public abstract class AbstractServiceConfiguration implements ServiceConfigurati
      */
     protected static class Constants {
         protected final static String TYPE_NAME = "ServiceConfigurationType";
-        private final static String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
 
     /**

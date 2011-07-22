@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public final class GenericQueryResults<T> implements QueryResults<T>, ModelObjectComplete{
+public final class GenericQueryResults<T> implements QueryResults<T> {
 
 	private final List<T> results;
 	private final Integer totalRowCount;

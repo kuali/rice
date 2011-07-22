@@ -20,6 +20,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.kim.api.common.attribute.KimAttribute;
@@ -53,7 +54,7 @@ import java.util.Collection;
         CoreConstants.CommonElements.OBJECT_ID,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class KimTypeAttribute implements KimTypeAttributeContract, ModelObjectComplete {
+public final class KimTypeAttribute extends AbstractJaxbModelObject implements KimTypeAttributeContract {
     private static final long serialVersionUID = 1L;
 
     @XmlElement(name = KimTypeAttribute.Elements.ID, required = false)
@@ -138,21 +139,6 @@ public final class KimTypeAttribute implements KimTypeAttributeContract, ModelOb
     @Override
     public String getObjectId() {
         return objectId;
-    }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(obj, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
     }
 
     /**
@@ -273,7 +259,6 @@ public final class KimTypeAttribute implements KimTypeAttributeContract, ModelOb
     static class Constants {
         static final String ROOT_ELEMENT_NAME = "kimTypeAttribute";
         static final String TYPE_NAME = "KimTypeAttributeType";
-        static final String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
 
     /**

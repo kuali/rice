@@ -21,6 +21,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
@@ -48,7 +49,7 @@ import java.util.List;
         DelegateType.Elements.ACTIVE,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class DelegateType implements DelegateTypeContract, ModelObjectComplete {
+public final class DelegateType extends AbstractJaxbModelObject implements DelegateTypeContract {
 
     private static final long serialVersionUID = 1L;
 
@@ -132,22 +133,6 @@ public final class DelegateType implements DelegateTypeContract, ModelObjectComp
     public List<DelegateMember> getMembers() {
         return Collections.unmodifiableList(this.members);
     }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(obj, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
-
 
     public static final class Builder implements DelegateTypeContract, ModelBuilder, ModelObjectComplete {
         private String roleId;
@@ -255,12 +240,12 @@ public final class DelegateType implements DelegateTypeContract, ModelObjectComp
 
         @Override
         public int hashCode() {
-            return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
+            return HashCodeBuilder.reflectionHashCode(this);
         }
 
         @Override
         public boolean equals(Object obj) {
-            return EqualsBuilder.reflectionEquals(obj, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
+            return EqualsBuilder.reflectionEquals(obj, this);
         }
 
         @Override
@@ -289,6 +274,5 @@ public final class DelegateType implements DelegateTypeContract, ModelObjectComp
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "delegateType";
         final static String TYPE_NAME = "DelegateTypeType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
 }

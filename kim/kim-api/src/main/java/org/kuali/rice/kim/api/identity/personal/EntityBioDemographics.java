@@ -5,6 +5,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.kim.util.KimConstants;
@@ -50,8 +51,8 @@ import java.util.Date;
     CoreConstants.CommonElements.OBJECT_ID,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class EntityBioDemographics
-    implements ModelObjectComplete, EntityBioDemographicsContract
+public final class EntityBioDemographics extends AbstractJaxbModelObject
+    implements EntityBioDemographicsContract
 {
 
     @XmlElement(name = Elements.ENTITY_ID, required = false)
@@ -274,22 +275,6 @@ public final class EntityBioDemographics
     public String getObjectId() {
         return this.objectId;
     }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
-
 
     /**
      * A builder which can be used to construct {@link EntityBioDemographics} instances.  Enforces the constraints of the {@link EntityBioDemographicsContract}.
@@ -589,8 +574,6 @@ public final class EntityBioDemographics
 
         final static String ROOT_ELEMENT_NAME = "entityBioDemographics";
         final static String TYPE_NAME = "EntityBioDemographicsType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] {CoreConstants.CommonElements.FUTURE_ELEMENTS };
-
     }
 
 

@@ -14,6 +14,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
@@ -34,7 +35,7 @@ import org.w3c.dom.Element;
 		ServiceEndpoint.Elements.DESCRIPTOR,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class ServiceEndpoint implements ModelObjectComplete, ServiceEndpointContract {
+public final class ServiceEndpoint extends AbstractJaxbModelObject implements ServiceEndpointContract {
 
 	private static final long serialVersionUID = -2295962329997871877L;
     
@@ -69,21 +70,6 @@ public final class ServiceEndpoint implements ModelObjectComplete, ServiceEndpoi
     @Override
     public ServiceDescriptor getDescriptor() {
         return this.descriptor;
-    }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
     }
 
     /**
@@ -151,7 +137,6 @@ public final class ServiceEndpoint implements ModelObjectComplete, ServiceEndpoi
 
         final static String ROOT_ELEMENT_NAME = "serviceEndpoint";
         final static String TYPE_NAME = "ServiceEndpointType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] {CoreConstants.CommonElements.FUTURE_ELEMENTS };
 
     }
 

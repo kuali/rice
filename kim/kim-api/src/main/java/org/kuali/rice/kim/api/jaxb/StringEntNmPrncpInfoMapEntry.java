@@ -15,38 +15,37 @@
  */
 package org.kuali.rice.kim.api.jaxb;
 
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
+import org.w3c.dom.Element;
 
+import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import java.util.Collection;
 
-/**
- * This is a description of what this class does - jim7 don't forget to fill this in. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
- *
- */
-public class StringEntNmPrncpInfoMapEntry {
+public class StringEntNmPrncpInfoMapEntry extends AbstractJaxbModelObject {
 	
 	private static final long serialVersionUID = 1L;
 	
 	@XmlAttribute
-	String key;
+	private final String key;
 	
-	@XmlElement(required=true) // maxoccurs == minoccurs == 1
-    EntityNamePrincipalName value;
-	
-	/**
-	 *
-	 */
-	public StringEntNmPrncpInfoMapEntry() {
-	    super();
+	@XmlElement(required=true)
+    private final EntityNamePrincipalName value;
+
+    @SuppressWarnings("unused")
+    @XmlAnyElement
+    private final Collection<Element> _futureElements = null;
+
+    /**
+     * Private constructor used only by JAXB.
+     */
+	private StringEntNmPrncpInfoMapEntry() {
+	    key = null;
+        value = null;
 	}
-	
-	/**
-	 * @param name
-	 * @param value
-	 */
+
 	public StringEntNmPrncpInfoMapEntry(String key, EntityNamePrincipalName value) {
 	    super();
 	    
@@ -54,4 +53,11 @@ public class StringEntNmPrncpInfoMapEntry {
 	    this.value = value;
 	}
 
+    public String getKey() {
+        return key;
+    }
+
+    public EntityNamePrincipalName getValue() {
+        return value;
+    }
 }

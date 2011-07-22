@@ -17,6 +17,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
 
@@ -35,7 +36,7 @@ import org.w3c.dom.Element;
 		RemoveAndPublishResult.Elements.SERVICES_PUBLISHED,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class RemoveAndPublishResult implements ModelObjectComplete {
+public class RemoveAndPublishResult extends AbstractJaxbModelObject {
 
 	private static final long serialVersionUID = 4279564869510247725L;
 
@@ -96,21 +97,6 @@ public class RemoveAndPublishResult implements ModelObjectComplete {
 		return Collections.unmodifiableList(servicesPublished);
 	}
 	
-	@Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
-	
 	/**
      * Defines some internal constants used on this class.
      */
@@ -118,8 +104,6 @@ public class RemoveAndPublishResult implements ModelObjectComplete {
 
     	final static String ROOT_ELEMENT_NAME = "removeAndPublishResult";
         final static String TYPE_NAME = "RemoveAndPublishResultType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] {CoreConstants.CommonElements.FUTURE_ELEMENTS };
-    
     }
 	
 	/**

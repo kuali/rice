@@ -5,6 +5,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
@@ -43,7 +44,7 @@ import java.util.Map;
         CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class ActionDefinition implements ActionDefinitionContract, ModelObjectComplete{
+public final class ActionDefinition extends AbstractJaxbModelObject implements ActionDefinitionContract {
 	private static final long serialVersionUID = 2783959459503209577L;
 
 	@XmlElement(name = Elements.ID, required=true)
@@ -330,20 +331,6 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
         }
 		
     }
-	@Override
-	public int hashCode() {
-		return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		return EqualsBuilder.reflectionEquals(obj, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-	}
-
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
-	}
 	
 	/**
 	 * Defines some internal constants used on this class.
@@ -351,7 +338,6 @@ public final class ActionDefinition implements ActionDefinitionContract, ModelOb
 	static class Constants {
 		final static String ROOT_ELEMENT_NAME = "action";
 		final static String TYPE_NAME = "ActionType";
-		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS };
 	}
 	
 	/**

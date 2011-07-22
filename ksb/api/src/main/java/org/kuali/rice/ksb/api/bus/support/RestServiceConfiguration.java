@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,7 +44,7 @@ public final class RestServiceConfiguration extends AbstractServiceConfiguration
 		if (builder.getResourceToClassNameMap() != null) {
 			this.resourceToClassNameMap = new HashMap<String, String>(builder.getResourceToClassNameMap());
 		} else {
-			this.resourceToClassNameMap = null;
+			this.resourceToClassNameMap = Collections.emptyMap();
 		}
 	}
 	

@@ -6,6 +6,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
@@ -68,8 +69,8 @@ import java.util.List;
     Entity.Elements.ACTIVE,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class Entity
-    implements ModelObjectComplete, EntityContract
+public final class Entity extends AbstractJaxbModelObject
+    implements EntityContract
 {
     @XmlElement(name = Elements.ID, required = false)
     private final String id;
@@ -341,22 +342,6 @@ public final class Entity
         }
         return null;
     }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
-
 
     /**
      * A builder which can be used to construct {@link Entity} instances.  Enforces the constraints of the {@link EntityContract}.

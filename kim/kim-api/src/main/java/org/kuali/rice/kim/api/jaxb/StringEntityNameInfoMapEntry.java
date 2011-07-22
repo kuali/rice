@@ -15,38 +15,37 @@
  */
 package org.kuali.rice.kim.api.jaxb;
 
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.kim.api.identity.name.EntityName;
+import org.w3c.dom.Element;
 
+import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import java.util.Collection;
 
-/**
- * This is a description of what this class does - jim7 don't forget to fill this in. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
- *
- */
-public class StringEntityNameInfoMapEntry {
+public class StringEntityNameInfoMapEntry extends AbstractJaxbModelObject {
 	
 	private static final long serialVersionUID = 1L;
 	
 	@XmlAttribute
-	String key;
+	private final String key;
 	
-	@XmlElement(required=true) // maxoccurs == minoccurs == 1
-    EntityName value;
-	
-	/**
-	 * 
-	 */
+	@XmlElement(required=true)
+    private final EntityName value;
+
+    @SuppressWarnings("unused")
+    @XmlAnyElement
+    private final Collection<Element> _futureElements = null;
+
+    /**
+     * Private constructor used only by JAXB.
+     */
 	public StringEntityNameInfoMapEntry() {
-	    super();
+	    key = null;
+        value = null;
 	}
-	
-	/**
-	 * @param name
-	 * @param value
-	 */
+
 	public StringEntityNameInfoMapEntry(String key, EntityName value) {
 	    super();
 	    
@@ -54,4 +53,11 @@ public class StringEntityNameInfoMapEntry {
 	    this.value = value;
 	}
 
+    public String getKey() {
+        return key;
+    }
+
+    public EntityName getValue() {
+        return value;
+    }
 }

@@ -32,6 +32,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
@@ -42,7 +43,7 @@ import org.w3c.dom.Element;
     ValidActions.Elements.VALID_ACTION_CODES,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class ValidActions implements ModelObjectComplete {
+public final class ValidActions extends AbstractJaxbModelObject {
 
 	private static final long serialVersionUID = 8074175291030982905L;
 
@@ -83,22 +84,6 @@ public final class ValidActions implements ModelObjectComplete {
     	}
         return Collections.unmodifiableSet(validActions);
     }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
-
 
     /**
      * A builder which can be used to construct {@link ValidActions} instances.
@@ -147,7 +132,6 @@ public final class ValidActions implements ModelObjectComplete {
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "validActions";
         final static String TYPE_NAME = "ValidActionsType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] { CoreConstants.CommonElements.FUTURE_ELEMENTS };
     }
 
 

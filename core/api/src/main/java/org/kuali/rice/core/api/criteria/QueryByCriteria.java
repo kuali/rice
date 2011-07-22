@@ -15,9 +15,10 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Collection;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -27,14 +28,9 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
-import org.w3c.dom.Element;
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * Defines a criteria-based query.  Consists of a {@link Predicate} definition
@@ -66,7 +62,7 @@ import org.w3c.dom.Element;
 		QueryByCriteria.Elements.MAX_RESULTS,
 		QueryByCriteria.Elements.COUNT_FLAG,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS })
-public final class QueryByCriteria implements ModelObjectComplete {
+public final class QueryByCriteria extends AbstractJaxbModelObject {
 
 	private static final long serialVersionUID = 2210627777648920180L;
 
@@ -181,23 +177,6 @@ public final class QueryByCriteria implements ModelObjectComplete {
 		return this.countFlag == null ? null : CountFlag.valueOf(this.countFlag);
 	}
 
-	@Override
-	public int hashCode() {
-		return HashCodeBuilder.reflectionHashCode(this,
-				Constants.HASH_CODE_EQUALS_EXCLUDE);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		return EqualsBuilder.reflectionEquals(obj, this,
-				Constants.HASH_CODE_EQUALS_EXCLUDE);
-	}
-
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
-	}
-
 	public static final class Builder implements ModelBuilder, Serializable {
 
 		private Predicate[] predicates;
@@ -285,7 +264,6 @@ public final class QueryByCriteria implements ModelObjectComplete {
 	static class Constants {
 		final static String ROOT_ELEMENT_NAME = "queryByCriteria";
 		final static String TYPE_NAME = "QueryByCriteriaType";
-		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS };
 	}
 
 	/**

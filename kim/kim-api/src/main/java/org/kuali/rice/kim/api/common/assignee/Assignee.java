@@ -22,6 +22,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
@@ -50,7 +51,7 @@ import java.util.List;
         Assignee.Elements.DELEGATES,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class Assignee implements AssigneeContract, ModelObjectComplete {
+public class Assignee extends AbstractJaxbModelObject implements AssigneeContract {
     @XmlElement(name = Elements.PRINCIPAL_ID, required = false)
     private final String principalId;
 
@@ -59,7 +60,6 @@ public class Assignee implements AssigneeContract, ModelObjectComplete {
 
     @XmlElementWrapper(name = Elements.DELEGATES, required = false)
     @XmlElement(name = Elements.DELEGATE, required = false)
-    // TODO Need modelized DelegateInfo
     private final List<DelegateType> delegates;
 
     @SuppressWarnings("unused")
@@ -116,21 +116,6 @@ public class Assignee implements AssigneeContract, ModelObjectComplete {
 	public List<DelegateType> getDelegates() {
 		return this.delegates;
 	}
-	
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(obj, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
 
     /**
      * This builder constructs a PermissionAssignee enforcing the constraints of the {@link AssigneeContract}.
@@ -215,7 +200,6 @@ public class Assignee implements AssigneeContract, ModelObjectComplete {
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "assignee";
         final static String TYPE_NAME = "assigneeType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
 
     /**

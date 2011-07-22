@@ -28,6 +28,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
 
@@ -40,7 +41,7 @@ import org.w3c.dom.Element;
 		RequestedActions.Elements.FYI_REQUESTED,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class RequestedActions implements ModelObjectComplete {
+public final class RequestedActions extends AbstractJaxbModelObject {
     
 	private static final long serialVersionUID = -6600754341497697330L;
 
@@ -92,21 +93,6 @@ public final class RequestedActions implements ModelObjectComplete {
 
 	public boolean isFyiRequested() {
 		return fyiRequested;
-	}
-
-	@Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
     }
     
     /**
@@ -115,7 +101,6 @@ public final class RequestedActions implements ModelObjectComplete {
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "requestedActions";
         final static String TYPE_NAME = "RequestedActionsType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] { CoreConstants.CommonElements.FUTURE_ELEMENTS };
     }
     
     /**

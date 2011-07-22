@@ -5,6 +5,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
@@ -49,7 +50,7 @@ import java.util.List;
 		RemotableAttributeField.Elements.REQUIRED,
 		RemotableAttributeField.Elements.WIDGETS,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS })
-public final class RemotableAttributeField implements AttributeField, ModelObjectComplete {
+public final class RemotableAttributeField extends AbstractJaxbModelObject implements AttributeField {
 
     @XmlElement(name = Elements.NAME, required = true)
     private final String name;
@@ -262,21 +263,6 @@ public final class RemotableAttributeField implements AttributeField, ModelObjec
     @Override
     public Collection<? extends RemotableAbstractWidget> getWidgets() {
         return widgets;
-    }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(obj, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
     }
 
     public static final class Builder implements AttributeField, ModelBuilder {

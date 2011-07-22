@@ -22,6 +22,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
@@ -54,7 +55,7 @@ import java.util.Map;
         CoreConstants.CommonElements.ACTIVE_TO_DATE,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class RoleMember implements RoleMemberContract, ModelObjectComplete {
+public class RoleMember extends AbstractJaxbModelObject implements RoleMemberContract {
 
     private static final long serialVersionUID = 1L;
 
@@ -167,22 +168,6 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
     public boolean isActive(DateTime activeAsOfDate) {
         return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, activeAsOfDate);
     }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(obj, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
-
 
     public static final class Builder implements ModelBuilder, RoleMemberContract, ModelObjectComplete {
 
@@ -310,12 +295,12 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
 
         @Override
         public int hashCode() {
-            return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
+            return HashCodeBuilder.reflectionHashCode(this);
         }
 
         @Override
         public boolean equals(Object obj) {
-            return EqualsBuilder.reflectionEquals(obj, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
+            return EqualsBuilder.reflectionEquals(obj, this);
         }
 
         @Override
@@ -343,6 +328,5 @@ public class RoleMember implements RoleMemberContract, ModelObjectComplete {
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "roleMember";
         final static String TYPE_NAME = "RoleMemberType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
 }

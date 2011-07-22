@@ -5,6 +5,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
@@ -27,7 +28,7 @@ import java.util.Collection;
         CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class CategoryDefinition implements CategoryDefinitionContract, ModelObjectComplete {
+public class CategoryDefinition extends AbstractJaxbModelObject implements CategoryDefinitionContract {
 
     private static final long serialVersionUID = -4748818967880857017L;
 
@@ -211,20 +212,6 @@ public class CategoryDefinition implements CategoryDefinitionContract, ModelObje
         }
 
     }
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(obj, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
 
     /**
      * Defines some internal constants used on this class.
@@ -232,7 +219,6 @@ public class CategoryDefinition implements CategoryDefinitionContract, ModelObje
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "category";
         final static String TYPE_NAME = "CategoryType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS };
     }
 
     /**

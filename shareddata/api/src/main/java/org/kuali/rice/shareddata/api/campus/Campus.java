@@ -32,6 +32,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
@@ -54,7 +55,7 @@ import org.w3c.dom.Element;
         CoreConstants.CommonElements.OBJECT_ID,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class Campus implements CampusContract, ModelObjectComplete {
+public final class Campus extends AbstractJaxbModelObject implements CampusContract {
 	private static final long serialVersionUID = 2288194493838509380L;
 
 	@XmlElement(name = Elements.CODE, required=true)
@@ -289,28 +290,13 @@ public final class Campus implements CampusContract, ModelObjectComplete {
         }
 		
     }
-	@Override
-	public int hashCode() {
-		return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-	}
 
-	@Override
-	public boolean equals(Object obj) {
-		return EqualsBuilder.reflectionEquals(obj, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-	}
-
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
-	}
-	
 	/**
 	 * Defines some internal constants used on this class.
 	 */
 	static class Constants {
 		final static String ROOT_ELEMENT_NAME = "campus";
 		final static String TYPE_NAME = "CampusType";
-		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS};
 	}
 	
 	/**

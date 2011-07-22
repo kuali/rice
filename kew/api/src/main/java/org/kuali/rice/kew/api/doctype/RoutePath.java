@@ -4,6 +4,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.api.util.CollectionUtils;
@@ -27,7 +28,7 @@ import java.util.List;
         RoutePath.Elements.PROCESSES,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class RoutePath implements ModelObjectComplete, RoutePathContract {
+public final class RoutePath extends AbstractJaxbModelObject implements RoutePathContract {
 
     private static final long serialVersionUID = -7177305375323986864L;
 
@@ -67,21 +68,6 @@ public final class RoutePath implements ModelObjectComplete, RoutePathContract {
     @Override
     public List<Process> getProcesses() {
         return CollectionUtils.unmodifiableListNullSafe(this.processes);
-    }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
     }
 
     /**
@@ -136,7 +122,6 @@ public final class RoutePath implements ModelObjectComplete, RoutePathContract {
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "routePath";
         final static String TYPE_NAME = "RoutePathType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[]{CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
 
     /**

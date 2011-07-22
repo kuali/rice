@@ -34,6 +34,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.w3c.dom.Element;
 
 @XmlRootElement(name = WorkflowAttributeDefinition.Constants.ROOT_ELEMENT_NAME)
@@ -44,7 +45,7 @@ import org.w3c.dom.Element;
 		WorkflowAttributeDefinition.Elements.PROPERTY_DEFINITIONS,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class WorkflowAttributeDefinition {
+public final class WorkflowAttributeDefinition extends AbstractJaxbModelObject {
     
 	@XmlElement(name = Elements.ATTRIBUTE_NAME, required = true)
     private final String attributeName;
@@ -94,21 +95,6 @@ public final class WorkflowAttributeDefinition {
     
     public List<PropertyDefinition> getPropertyDefinitions() {
     	return Collections.unmodifiableList(propertyDefinitions);
-    }
-        
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
     }
     
     public final static class Builder implements Serializable {
@@ -219,7 +205,6 @@ public final class WorkflowAttributeDefinition {
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "workflowAttributeDefinition";
         final static String TYPE_NAME = "WorkflowAttributeDefinitionType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] { CoreConstants.CommonElements.FUTURE_ELEMENTS };
     }
 
     /**

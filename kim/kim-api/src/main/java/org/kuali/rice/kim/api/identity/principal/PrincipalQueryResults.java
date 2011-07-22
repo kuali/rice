@@ -20,6 +20,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.criteria.QueryResults;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -47,7 +48,7 @@ import java.util.List;
 		PrincipalQueryResults.Elements.TOTAL_ROW_COUNT,
 		PrincipalQueryResults.Elements.MORE_RESULTS_AVAILALBE,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS })
-public class PrincipalQueryResults implements QueryResults<Principal>, ModelObjectComplete {
+public class PrincipalQueryResults extends AbstractJaxbModelObject implements QueryResults<Principal> {
 
 	@XmlElementWrapper(name = Elements.RESULTS, required = false)
 	@XmlElement(name = Elements.RESULT_ELEM, required = false)
@@ -96,21 +97,6 @@ public class PrincipalQueryResults implements QueryResults<Principal>, ModelObje
 	public boolean isMoreResultsAvailable() {
 		return moreResultsAvailable;
 	}
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(obj, this);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
 
 	public static class Builder implements ModelBuilder, QueryResults<Principal.Builder> {
 
@@ -167,7 +153,6 @@ public class PrincipalQueryResults implements QueryResults<Principal>, ModelObje
 	public static class Constants {
 		public final static String ROOT_ELEMENT_NAME = "principalQueryResults";
 		public final static String TYPE_NAME = "principalQueryResultsType";
-		public final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS };
 	}
 
 	/**

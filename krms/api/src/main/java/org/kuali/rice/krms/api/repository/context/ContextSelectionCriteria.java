@@ -19,6 +19,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.w3c.dom.Element;
 
@@ -47,7 +48,7 @@ import java.util.Map;
 		ContextSelectionCriteria.Elements.CONTEXT_QUALIFIERS,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class ContextSelectionCriteria {
+public final class ContextSelectionCriteria extends AbstractJaxbModelObject {
 
 	@XmlElement(name = Elements.NAMESPACE_CODE, required = true)
 	private final String namespaceCode;
@@ -105,21 +106,6 @@ public final class ContextSelectionCriteria {
 	public Map<String, String> getContextQualifiers() {
 		return this.contextQualifiers;
 	}
-
-	@Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(obj, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
 	
     /**
      * Defines some internal constants used on this class.
@@ -127,7 +113,6 @@ public final class ContextSelectionCriteria {
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "contextSelectionCriteria";
         final static String TYPE_NAME = "ContextSelectionCriteriaType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
     
 	/**

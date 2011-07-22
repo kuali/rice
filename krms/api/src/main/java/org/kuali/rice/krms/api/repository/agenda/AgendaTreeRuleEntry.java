@@ -30,6 +30,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 
 /**
@@ -47,7 +48,7 @@ import org.kuali.rice.core.api.mo.ModelBuilder;
 		AgendaTreeRuleEntry.Elements.IF_FALSE,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class AgendaTreeRuleEntry implements AgendaTreeEntryDefinition {
+public final class AgendaTreeRuleEntry extends AbstractJaxbModelObject implements AgendaTreeEntryDefinition {
 
 	private static final long serialVersionUID = 8594116503548506936L;
 
@@ -166,21 +167,6 @@ public final class AgendaTreeRuleEntry implements AgendaTreeEntryDefinition {
         }
 		
     }
-    
-	@Override
-	public int hashCode() {
-		return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		return EqualsBuilder.reflectionEquals(obj, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-	}
-
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
-	}
 	
 	/**
 	 * Defines some internal constants used on this class.
@@ -188,7 +174,6 @@ public final class AgendaTreeRuleEntry implements AgendaTreeEntryDefinition {
 	static class Constants {
 		final static String ROOT_ELEMENT_NAME = "agendaTreeRuleEntry";
 		final static String TYPE_NAME = "AgendaTreeRuleEntryType";
-		final static String[] HASH_CODE_EQUALS_EXCLUDE = { "_futureElements" };
 	}
 	
 	/**

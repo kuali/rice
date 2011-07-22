@@ -5,6 +5,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.kim.api.KimConstants;
@@ -36,7 +37,7 @@ import java.util.Collection;
     CoreConstants.CommonElements.OBJECT_ID,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class EntityEmail implements ModelObjectComplete, EntityEmailContract{
+public class EntityEmail extends AbstractJaxbModelObject implements EntityEmailContract{
     
     @XmlElement(name = Elements.ID, required = false)
     private final String id;
@@ -150,22 +151,6 @@ public class EntityEmail implements ModelObjectComplete, EntityEmailContract{
     public boolean isActive() {
         return this.active;
     }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
-
 
     /**
      * A builder which can be used to construct {@link EntityEmail} instances.  Enforces the constraints of the {@link org.kuali.rice.kim.api.identity.email.EntityEmailContract}.
@@ -330,8 +315,6 @@ public class EntityEmail implements ModelObjectComplete, EntityEmailContract{
 
         final static String ROOT_ELEMENT_NAME = "entityEmail";
         final static String TYPE_NAME = "EntityEmailType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] {CoreConstants.CommonElements.FUTURE_ELEMENTS };
-
     }
 
 

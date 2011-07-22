@@ -5,6 +5,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.api.util.jaxb.QNameAsStringAdapter;
@@ -46,7 +47,7 @@ import java.util.Collection;
     CoreConstants.CommonElements.VERSION_NUMBER,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class ServiceInfo implements ModelObjectComplete, ServiceInfoContract {
+public final class ServiceInfo extends AbstractJaxbModelObject implements ServiceInfoContract {
 
 	private static final long serialVersionUID = 4793306414624564991L;
 	
@@ -185,21 +186,6 @@ public final class ServiceInfo implements ModelObjectComplete, ServiceInfoContra
     @Override
     public Long getVersionNumber() {
         return this.versionNumber;
-    }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
     }
 
     /**
@@ -445,8 +431,6 @@ public final class ServiceInfo implements ModelObjectComplete, ServiceInfoContra
 
         final static String ROOT_ELEMENT_NAME = "serviceInfo";
         final static String TYPE_NAME = "ServiceInfoType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] {CoreConstants.CommonElements.FUTURE_ELEMENTS };
-
     }
 
 

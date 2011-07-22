@@ -82,16 +82,15 @@ public class PredicateTest {
 		assertEquals(new CriteriaDateTimeValue(ltBirthDate), foundLt.getValue());
 		
 		assertEquals("OrPredicate should have 2 expressions", 2, foundOr.getPredicates().size());
-		
-		// note that the expressions within the or should be ordered, we should be able to fetch them out in the same order they were put in
-		EqualPredicate nameFirstPredicate = (EqualPredicate)foundOr.getPredicates().asList().get(0);
-		EqualPredicate nameLastPredicate = (EqualPredicate)foundOr.getPredicates().asList().get(1);
-		
+
+		EqualPredicate nameFirstPredicate = (EqualPredicate)foundOr.getPredicates().asList().get(1);
+		EqualPredicate nameLastPredicate = (EqualPredicate)foundOr.getPredicates().asList().get(0);
+
 		assertEquals("name.first", nameFirstPredicate.getPropertyPath());
 		assertEquals("Eric", nameFirstPredicate.getValue().getValue());
 		assertEquals("name.last", nameLastPredicate.getPropertyPath());
 		assertEquals("Westfall", nameLastPredicate.getValue().getValue());
-		
+
 	}
 
 

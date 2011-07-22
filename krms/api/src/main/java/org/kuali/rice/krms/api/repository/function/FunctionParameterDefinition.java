@@ -30,6 +30,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameter.Elements;
@@ -55,7 +56,7 @@ import org.w3c.dom.Element;
         CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class FunctionParameterDefinition implements FunctionParameterDefinitionContract, ModelObjectComplete {
+public class FunctionParameterDefinition extends AbstractJaxbModelObject implements FunctionParameterDefinitionContract {
 
 	private static final long serialVersionUID = 1391030685309770560L;
 
@@ -333,28 +334,12 @@ public class FunctionParameterDefinition implements FunctionParameterDefinitionC
 
 	}
 	
-	@Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(obj, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
-	
 	/**
      * Defines some internal constants used on this class.
      */
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "functionParameter";
         final static String TYPE_NAME = "FunctionParameterType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
 
     /**

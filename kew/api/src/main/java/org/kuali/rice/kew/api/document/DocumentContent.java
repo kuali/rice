@@ -30,6 +30,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.kew.api.KewApiConstants;
@@ -45,7 +46,7 @@ import org.w3c.dom.Element;
     DocumentContent.Elements.FORMAT_VERSION,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class DocumentContent implements ModelObjectComplete, DocumentContentContract {
+public final class DocumentContent extends AbstractJaxbModelObject implements DocumentContentContract {
 
 	private static final long serialVersionUID = 6110079520547685342L;
 
@@ -126,22 +127,6 @@ public final class DocumentContent implements ModelObjectComplete, DocumentConte
         fullContent.append("</").append(KewApiConstants.DOCUMENT_CONTENT_ELEMENT).append(">");
         return fullContent.toString();
     }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
-
 
     /**
      * A builder which can be used to construct {@link DocumentContent} instances.  Enforces the constraints of the {@link DocumentContentContract}.
@@ -241,8 +226,6 @@ public final class DocumentContent implements ModelObjectComplete, DocumentConte
 
         final static String ROOT_ELEMENT_NAME = "documentContent";
         final static String TYPE_NAME = "DocumentContentType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] { CoreConstants.CommonElements.FUTURE_ELEMENTS };
-
     }
 
     /**

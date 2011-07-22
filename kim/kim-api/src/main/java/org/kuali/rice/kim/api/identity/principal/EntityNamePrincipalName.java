@@ -4,6 +4,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.kim.api.identity.name.EntityName;
@@ -25,7 +26,7 @@ import java.util.Collection;
     EntityNamePrincipalName.Elements.PRINCIPAL_NAME,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class EntityNamePrincipalName implements ModelObjectComplete {
+public class EntityNamePrincipalName extends AbstractJaxbModelObject {
     @XmlElement(name = Elements.PRINCIPAL_NAME, required = false)
     private final String principalName;
     @XmlElement(name = Elements.DEFAULT_NAME, required = false)
@@ -106,21 +107,6 @@ public class EntityNamePrincipalName implements ModelObjectComplete {
 
     }
 
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
-
     /**
      * Defines some internal constants used on this class.
      *
@@ -129,8 +115,6 @@ public class EntityNamePrincipalName implements ModelObjectComplete {
 
         final static String ROOT_ELEMENT_NAME = "entityNamePrincipalName";
         final static String TYPE_NAME = "EntityNamePrincipalNameType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] {CoreConstants.CommonElements.FUTURE_ELEMENTS };
-
     }
 
 

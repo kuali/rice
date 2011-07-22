@@ -21,6 +21,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
@@ -50,7 +51,7 @@ import java.util.Collection;
     ActionTaken.Elements.CURRENT,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class ActionTaken implements ModelObjectComplete, ActionTakenContract {
+public final class ActionTaken extends AbstractJaxbModelObject implements ActionTakenContract {
 
 	private static final long serialVersionUID = 8411150332911080837L;
 
@@ -157,21 +158,6 @@ public final class ActionTaken implements ModelObjectComplete, ActionTakenContra
     @Override
     public boolean isCurrent() {
         return this.current;
-    }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
     }
 
     /**
@@ -325,7 +311,6 @@ public final class ActionTaken implements ModelObjectComplete, ActionTakenContra
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "actionTaken";
         final static String TYPE_NAME = "ActionTakenType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] {CoreConstants.CommonElements.FUTURE_ELEMENTS };
     }
 
 

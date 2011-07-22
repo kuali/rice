@@ -21,6 +21,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
@@ -54,7 +55,7 @@ import java.util.Map;
         RoleMembership.Elements.DELEGATES,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class RoleMembership implements RoleMembershipContract, ModelObjectComplete {
+public class RoleMembership extends AbstractJaxbModelObject implements RoleMembershipContract {
     private static final long serialVersionUID = 1L;
 
     @XmlElement(name=Elements.ROLE_ID)
@@ -148,21 +149,6 @@ public class RoleMembership implements RoleMembershipContract, ModelObjectComple
 
     public List<DelegateType> getDelegates() {
         return Collections.unmodifiableList(delegates);
-    }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(obj, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
     }
 
 
@@ -289,12 +275,12 @@ public class RoleMembership implements RoleMembershipContract, ModelObjectComple
 
         @Override
         public int hashCode() {
-            return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
+            return HashCodeBuilder.reflectionHashCode(this);
         }
 
         @Override
         public boolean equals(Object obj) {
-            return EqualsBuilder.reflectionEquals(obj, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
+            return EqualsBuilder.reflectionEquals(obj, this);
         }
 
         @Override
@@ -326,6 +312,5 @@ public class RoleMembership implements RoleMembershipContract, ModelObjectComple
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "roleMembership";
         final static String TYPE_NAME = "RoleMembershipType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
 }

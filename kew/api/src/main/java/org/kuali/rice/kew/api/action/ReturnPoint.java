@@ -29,6 +29,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.w3c.dom.Element;
 
 @XmlRootElement(name = ReturnPoint.Constants.ROOT_ELEMENT_NAME)
@@ -37,7 +38,7 @@ import org.w3c.dom.Element;
 		ReturnPoint.Elements.NODE_NAME,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class ReturnPoint {
+public final class ReturnPoint extends AbstractJaxbModelObject {
     
 	@XmlElement(name = Elements.NODE_NAME, required = true)
     private final String nodeName;
@@ -65,28 +66,12 @@ public final class ReturnPoint {
         return nodeName;
     }
     
-	@Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
-    
     /**
      * Defines some internal constants used on this class.
      */
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "returnPoint";
         final static String TYPE_NAME = "ReturnPointType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] { CoreConstants.CommonElements.FUTURE_ELEMENTS };
     }
     
     /**

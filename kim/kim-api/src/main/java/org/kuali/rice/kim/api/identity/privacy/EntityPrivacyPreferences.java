@@ -14,6 +14,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
@@ -31,8 +32,8 @@ import org.w3c.dom.Element;
     CoreConstants.CommonElements.OBJECT_ID,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class EntityPrivacyPreferences
-    implements ModelObjectComplete, EntityPrivacyPreferencesContract
+public final class EntityPrivacyPreferences extends AbstractJaxbModelObject
+    implements EntityPrivacyPreferencesContract
 {
 
     @XmlElement(name = Elements.ENTITY_ID, required = false)
@@ -118,21 +119,6 @@ public final class EntityPrivacyPreferences
     @Override
     public String getObjectId() {
         return this.objectId;
-    }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
     }
 
 
@@ -273,7 +259,6 @@ public final class EntityPrivacyPreferences
 
         final static String ROOT_ELEMENT_NAME = "entityPrivacyPreferences";
         final static String TYPE_NAME = "EntityPrivacyPreferencesType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] {CoreConstants.CommonElements.FUTURE_ELEMENTS };
 
     }
 

@@ -14,6 +14,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
@@ -30,8 +31,8 @@ import org.w3c.dom.Element;
     CoreConstants.CommonElements.OBJECT_ID,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class EntityAffiliationType
-    implements ModelObjectComplete, EntityAffiliationTypeContract
+public final class EntityAffiliationType extends AbstractJaxbModelObject
+    implements EntityAffiliationTypeContract
 {
     @XmlElement(name = Elements.CODE, required = true)
     private final String code;
@@ -109,22 +110,6 @@ public final class EntityAffiliationType
     public boolean isActive() {
         return this.active;
     }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
-
 
     /**
      * A builder which can be used to construct {@link Type} instances.  Enforces the constraints of the {@link TypeContract}.
@@ -243,11 +228,8 @@ public final class EntityAffiliationType
      * 
      */
     static class Constants {
-
         final static String ROOT_ELEMENT_NAME = "entityAffiliationType";
         final static String TYPE_NAME = "entityAffiliationTypeType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] {CoreConstants.CommonElements.FUTURE_ELEMENTS };
-
     }
 
 

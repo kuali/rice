@@ -19,6 +19,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.krms.api.repository.LogicalOperator;
@@ -60,7 +61,7 @@ import org.kuali.rice.krms.api.repository.rule.RuleDefinition.Elements;
         CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class PropositionDefinition implements PropositionDefinitionContract, ModelObjectComplete{
+public final class PropositionDefinition extends AbstractJaxbModelObject implements PropositionDefinitionContract {
 	private static final long serialVersionUID = 2783959459503209577L;
 
 	// TODO: change this to field name to id
@@ -395,22 +396,6 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
         }
 		
     }
-    
-    
-	@Override
-	public int hashCode() {
-		return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		return EqualsBuilder.reflectionEquals(obj, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-	}
-
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
-	}
 	
 	/**
 	 * Defines some internal constants used on this class.
@@ -418,7 +403,6 @@ public final class PropositionDefinition implements PropositionDefinitionContrac
 	static class Constants {
 		final static String ROOT_ELEMENT_NAME = "proposition";
 		final static String TYPE_NAME = "PropositionType";
-		final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS };
 	}
 	
 	/**

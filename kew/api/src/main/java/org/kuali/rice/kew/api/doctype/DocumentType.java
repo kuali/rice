@@ -18,6 +18,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
@@ -44,7 +45,7 @@ import org.w3c.dom.Element;
         CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class DocumentType implements ModelObjectComplete, DocumentTypeContract {
+public final class DocumentType extends AbstractJaxbModelObject implements DocumentTypeContract {
 
     private static final long serialVersionUID = 6866926296038814812L;
 
@@ -230,21 +231,6 @@ public final class DocumentType implements ModelObjectComplete, DocumentTypeCont
     @Override
     public Long getVersionNumber() {
         return this.versionNumber;
-    }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
     }
 
     /**
@@ -476,7 +462,6 @@ public final class DocumentType implements ModelObjectComplete, DocumentTypeCont
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "documentType";
         final static String TYPE_NAME = "DocumentTypeType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[]{CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
 
     /**

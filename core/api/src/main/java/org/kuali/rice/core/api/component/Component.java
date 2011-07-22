@@ -17,12 +17,9 @@
 package org.kuali.rice.core.api.component;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -53,7 +50,7 @@ import java.util.Collection;
     CoreConstants.CommonElements.OBJECT_ID,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class Component implements ComponentContract, ModelObjectComplete {
+public final class Component extends AbstractJaxbModelObject implements ComponentContract {
 	
 	private static final long serialVersionUID = -5114772381708593543L;
 
@@ -303,28 +300,12 @@ public final class Component implements ComponentContract, ModelObjectComplete {
 
     }
 	
-	@Override
-	public int hashCode() {
-		return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		return EqualsBuilder.reflectionEquals(obj, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-	}
-
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
-	}
-	
 	/**
 	 * Defines some internal constants used on this class.
 	 */
 	static class Constants {
 	   final static String ROOT_ELEMENT_NAME = "component";
 	   final static String TYPE_NAME = "ComponentType";
-	   final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS};
 	}
    
 	/**

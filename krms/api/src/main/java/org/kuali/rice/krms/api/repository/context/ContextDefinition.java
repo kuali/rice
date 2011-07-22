@@ -5,6 +5,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
@@ -51,7 +52,7 @@ import java.util.Set;
         CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class ContextDefinition implements ContextDefinitionContract, ModelObjectComplete {
+public final class ContextDefinition extends AbstractJaxbModelObject implements ContextDefinitionContract {
 	
 	private static final long serialVersionUID = -6639428234851623868L;
 
@@ -350,21 +351,6 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
 			this.versionNumber = versionNumber;
 		}
 		
-	}
-
-	@Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(obj, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
     }
 	
 	/**
@@ -373,7 +359,6 @@ public final class ContextDefinition implements ContextDefinitionContract, Model
     public static class Constants {
         final static String ROOT_ELEMENT_NAME = "context";
         final static String TYPE_NAME = "ContextDefinitionType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
 
     /**

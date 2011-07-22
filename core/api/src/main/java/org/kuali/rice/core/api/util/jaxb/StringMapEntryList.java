@@ -15,23 +15,32 @@
  */
 package org.kuali.rice.core.api.util.jaxb;
 
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.w3c.dom.Element;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "StringMapEntryListType")
-public class StringMapEntryList implements Serializable {
+public class StringMapEntryList extends AbstractJaxbModelObject {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@XmlElement(name = "entry")
 	private final List<StringMapEntry> entries;
+
+    @SuppressWarnings("unused")
+    @XmlAnyElement
+    private final Collection<Element> _futureElements = null;
 
 	@SuppressWarnings("unused")
 	private StringMapEntryList() {

@@ -32,6 +32,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.kew.api.action.ActionRequest;
@@ -47,7 +48,7 @@ import org.w3c.dom.Element;
     DocumentDetail.Elements.ROUTE_NODE_INSTANCES,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class DocumentDetail implements ModelObjectComplete, DocumentDetailContract {
+public final class DocumentDetail extends AbstractJaxbModelObject implements DocumentDetailContract {
 
 	private static final long serialVersionUID = -8569515693892958719L;
 
@@ -105,21 +106,6 @@ public final class DocumentDetail implements ModelObjectComplete, DocumentDetail
     @Override
     public List<RouteNodeInstance> getRouteNodeInstances() {
         return this.routeNodeInstances;
-    }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
     }
 
 
@@ -219,7 +205,6 @@ public final class DocumentDetail implements ModelObjectComplete, DocumentDetail
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "documentDetail";
         final static String TYPE_NAME = "DocumentDetailType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] {CoreConstants.CommonElements.FUTURE_ELEMENTS };
     }
 
     /**

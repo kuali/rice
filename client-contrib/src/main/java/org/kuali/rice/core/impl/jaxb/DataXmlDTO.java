@@ -27,6 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.util.jaxb.RiceXmlImportList;
 import org.kuali.rice.core.util.jaxb.RiceXmlListAdditionListener;
 import org.kuali.rice.kim.impl.jaxb.PermissionDataXmlDTO;
@@ -44,7 +45,7 @@ import org.w3c.dom.Element;
 @XmlRootElement(name="data")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name="DataType", propOrder={"permissionData", "roleData", CoreConstants.CommonElements.FUTURE_ELEMENTS})
-public class DataXmlDTO implements RiceXmlListAdditionListener<Element>, Serializable {
+public class DataXmlDTO  extends AbstractJaxbModelObject implements RiceXmlListAdditionListener<Element> {
 
     private static final long serialVersionUID = 1L;
     
@@ -55,14 +56,13 @@ public class DataXmlDTO implements RiceXmlListAdditionListener<Element>, Seriali
     private RoleDataXmlDTO roleData;
     
     @XmlAnyElement
-    private List<Element> _futureElements = null;
+    private final List<Element> _futureElements = null;
     
     public DataXmlDTO() {}
     
-    public DataXmlDTO(PermissionDataXmlDTO permissionData, RoleDataXmlDTO roleData, List<Element> _futureElements) {
+    public DataXmlDTO(PermissionDataXmlDTO permissionData, RoleDataXmlDTO roleData) {
         this.permissionData = permissionData;
         this.roleData = roleData;
-        this._futureElements = _futureElements;
     }
 
     /**
@@ -91,28 +91,6 @@ public class DataXmlDTO implements RiceXmlListAdditionListener<Element>, Seriali
      */
     public void setRoleData(RoleDataXmlDTO roleData) {
         this.roleData = roleData;
-    }
-
-    /**
-     * @return the _futureElements
-     */
-    public List<Element> get_futureElements() {
-        return this._futureElements;
-    }
-
-    /**
-     * @param _futureElements the _futureElements to set
-     */
-    public void set_futureElements(List<Element> _futureElements) {
-        this._futureElements = _futureElements;
-    }
-
-    void beforeUnmarshal(Unmarshaller unmarshaller, Object parent) {
-        this._futureElements = new RiceXmlImportList<Element>(this);
-    }
-    
-    void afterUnmarshal(Unmarshaller unmarshaller, Object parent) {
-        this._futureElements = null;
     }
 
     /**

@@ -21,6 +21,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
@@ -60,7 +61,7 @@ import java.util.Map;
         CoreConstants.CommonElements.OBJECT_ID,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class Responsibility implements ResponsibilityContract, ModelObjectComplete{
+public final class Responsibility extends AbstractJaxbModelObject implements ResponsibilityContract {
 
 	private static final long serialVersionUID = 1L;
 
@@ -201,21 +202,6 @@ public final class Responsibility implements ResponsibilityContract, ModelObject
 	public String getObjectId() {
 		return objectId;
 	}
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(obj, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
 
     /**
      * This builder constructs a Responsibility enforcing the constraints of the {@link ResponsibilityContract}.
@@ -366,7 +352,6 @@ public final class Responsibility implements ResponsibilityContract, ModelObject
     static class Constants {
         static final String ROOT_ELEMENT_NAME = "responsibility";
         static final String TYPE_NAME = "ResponsibilityType";
-        static final String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
 
     /**

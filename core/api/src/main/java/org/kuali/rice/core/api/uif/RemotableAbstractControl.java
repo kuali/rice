@@ -23,8 +23,6 @@ public abstract class RemotableAbstractControl extends AbstractJaxbModelObject i
 
     }
 
-
-
     abstract static class Builder implements Control, ModelBuilder {
         Builder() {
             super();

@@ -5,6 +5,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.kim.api.identity.EntityUtils;
@@ -49,7 +50,7 @@ import java.util.List;
     EntityDefault.Elements.ACTIVE,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class EntityDefault implements ModelObjectComplete {
+public class EntityDefault extends AbstractJaxbModelObject {
     @XmlElement(name = Elements.ENTITY_ID, required = false)
     private final String entityId;
     @XmlElement(name = Elements.NAME, required = false)
@@ -143,21 +144,6 @@ public class EntityDefault implements ModelObjectComplete {
         }
         this.privacyPreferences = builder.getPrivacyPreferences() == null ? null : builder.getPrivacyPreferences().build();
         this.active = builder.isActive();
-    }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
     }
 
     public String getEntityId() {
@@ -382,8 +368,6 @@ public class EntityDefault implements ModelObjectComplete {
 
         final static String ROOT_ELEMENT_NAME = "entityDefault";
         final static String TYPE_NAME = "EntityDefaultType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] {CoreConstants.CommonElements.FUTURE_ELEMENTS };
-
     }
 
 

@@ -31,6 +31,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
@@ -46,7 +47,7 @@ import org.w3c.dom.Element;
 		CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class Note implements ModelObjectComplete, NoteContract {
+public final class Note extends AbstractJaxbModelObject implements NoteContract {
 
 	private static final long serialVersionUID = 6619061362854480922L;
 
@@ -123,22 +124,6 @@ public final class Note implements ModelObjectComplete, NoteContract {
     public Long getVersionNumber() {
         return this.versionNumber;
     }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
-
 
     /**
      * A builder which can be used to construct {@link Note} instances.  Enforces the constraints of the {@link NoteContract}.
@@ -248,7 +233,6 @@ public final class Note implements ModelObjectComplete, NoteContract {
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "note";
         final static String TYPE_NAME = "NoteType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] {CoreConstants.CommonElements.FUTURE_ELEMENTS };
     }
 
     /**

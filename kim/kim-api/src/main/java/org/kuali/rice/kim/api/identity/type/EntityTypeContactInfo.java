@@ -6,6 +6,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.kim.api.identity.EntityUtils;
@@ -48,8 +49,8 @@ import java.util.List;
     EntityTypeContactInfo.Elements.ACTIVE,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class EntityTypeContactInfo
-    implements ModelObjectComplete, EntityTypeContactInfoContract
+public final class EntityTypeContactInfo extends AbstractJaxbModelObject
+    implements EntityTypeContactInfoContract
 {
 
     @XmlElement(name = Elements.ENTITY_ID, required = true)
@@ -190,21 +191,6 @@ public final class EntityTypeContactInfo
     @Override
     public boolean isActive() {
         return this.active;
-    }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
     }
 
 
@@ -383,8 +369,6 @@ public final class EntityTypeContactInfo
 
         final static String ROOT_ELEMENT_NAME = "entityTypeContactInfo";
         final static String TYPE_NAME = "EntityTypeContactInfoType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] {CoreConstants.CommonElements.FUTURE_ELEMENTS };
-
     }
 
 

@@ -6,6 +6,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
@@ -35,8 +36,8 @@ import java.util.Collection;
         CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class DelegateMember
-        implements ModelObjectComplete, DelegateMemberContract {
+public final class DelegateMember extends AbstractJaxbModelObject
+        implements DelegateMemberContract {
 
     @XmlElement(name = Elements.DELEGATION_MEMBER_ID, required = true)
     private final String delegationMemberId;
@@ -139,22 +140,6 @@ public final class DelegateMember
     public boolean isActive(DateTime activeAsOfDate) {
         return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, activeAsOfDate);
     }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
-
 
     /**
      * A builder which can be used to construct {@link DelegateMember} instances.  Enforces the constraints of the {@link DelegateMemberContract}.
@@ -289,7 +274,6 @@ public final class DelegateMember
 
         final static String ROOT_ELEMENT_NAME = "delegateMember";
         final static String TYPE_NAME = "DelegateMemberType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[]{CoreConstants.CommonElements.FUTURE_ELEMENTS};
 
     }
 

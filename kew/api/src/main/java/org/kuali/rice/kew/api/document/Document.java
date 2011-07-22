@@ -21,6 +21,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
@@ -61,7 +62,7 @@ import java.util.Map;
     Document.Elements.VARIABLES,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class Document implements ModelObjectComplete, DocumentContract {
+public final class Document extends AbstractJaxbModelObject implements DocumentContract {
 
 	private static final long serialVersionUID = -6954090887747605047L;
 
@@ -246,22 +247,6 @@ public final class Document implements ModelObjectComplete, DocumentContract {
     public Map<String, String> getVariables() {
         return Collections.unmodifiableMap(this.variables);
     }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
-
 
     /**
      * A builder which can be used to construct {@link Document} instances.  Enforces the constraints of the {@link DocumentContract}.
@@ -514,7 +499,6 @@ public final class Document implements ModelObjectComplete, DocumentContract {
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "document";
         final static String TYPE_NAME = "DocumentType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] {CoreConstants.CommonElements.FUTURE_ELEMENTS };
     }
 
     /**

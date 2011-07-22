@@ -4,6 +4,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.kim.api.identity.address.EntityAddress;
@@ -29,7 +30,7 @@ import java.util.Collection;
     EntityTypeContactInfoDefault.Elements.DEFAULT_PHONE_NUMBER,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class EntityTypeContactInfoDefault implements ModelObjectComplete
+public final class EntityTypeContactInfoDefault extends AbstractJaxbModelObject
 {
     @XmlElement(name = Elements.ENTITY_TYPE_CODE, required = true)
     private final String entityTypeCode;
@@ -83,21 +84,6 @@ public final class EntityTypeContactInfoDefault implements ModelObjectComplete
 
     public EntityPhone getDefaultPhoneNumber() {
         return this.defaultPhoneNumber;
-    }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return EqualsBuilder.reflectionEquals(object, this, Constants.HASH_CODE_EQUALS_EXCLUDE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
     }
 
     public final static class Builder
@@ -197,8 +183,6 @@ public final class EntityTypeContactInfoDefault implements ModelObjectComplete
 
         final static String ROOT_ELEMENT_NAME = "entityTypeDataDefault";
         final static String TYPE_NAME = "EntityTypeDataDefaultType";
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = new String[] {CoreConstants.CommonElements.FUTURE_ELEMENTS };
-
     }
 
 

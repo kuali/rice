@@ -277,4 +277,94 @@ class IdentityServiceImplTest {
         PrincipalBo principalBo = new PrincipalBo(entityId: "ABC", principalName: "first", principalId: "P1");
         principalBo = identityService.addPrincipalToEntity(PrincipalBo.to(principalBo));
     }
+
+    @Test
+    public void testAddPrincipalToEntitySucceeds()
+    {
+        PrincipalBo newPrincipalBo = new PrincipalBo(entityId: "ABC", principalName: "new", principalId: "New");
+
+        mockBoService.demand.findMatching(1..samplePrincipals.size()) {
+            Class clazz, Map map -> for (PrincipalBo principalBo in samplePrincipals.values()) {
+                if (principalBo.principalName.equals(map.get("principalName")))
+                {
+                    Collection<PrincipalBo> principals = new ArrayList<PrincipalBo>();
+                    principals.add(principalBo);
+                    return principals;
+                }
+            }
+
+            return new ArrayList<PrincipalBo>();
+        }
+
+        mockBoService.demand.save(1..1) {
+            PrincipalBo bo -> return newPrincipalBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        Principal newPrincipal = identityService.addPrincipalToEntity(PrincipalBo.to(newPrincipalBo));
+
+        Assert.assertEquals(PrincipalBo.to(newPrincipalBo), newPrincipal);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testUpdatePrincipalWithNullPrincipalFails()
+    {
+        Principal principal = identityService.updatePrincipal(null);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testUpdatePrincipalWithBlankEntityIdFails()
+    {
+        PrincipalBo principalBo = new PrincipalBo(entityId: "", principalName: "name", principalId: "P1");
+        principalBo = identityService.updatePrincipal(PrincipalBo.to(principalBo));
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testUpdatePrincipalWithNonExistingPrincipalFails()
+    {
+        // create a matching scenario where no results are returned
+        mockBoService.demand.findMatching(1..samplePrincipals.size()) {
+            Class clazz, Map map -> return new ArrayList<PrincipalBo>();
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        PrincipalBo principalBo = new PrincipalBo(entityId: "CCC", principalName: "fifth", principalId: "P5");
+        principalBo = identityService.updatePrincipal(PrincipalBo.to(principalBo));
+    }
+
+    @Test
+    public void testUpdatePrincipalSucceeds()
+    {
+        PrincipalBo existingPrincipalBo = samplePrincipals.get("P1");
+
+        mockBoService.demand.findMatching(1..samplePrincipals.size()) {
+            Class clazz, Map map -> for (PrincipalBo principalBo in samplePrincipals.values()) {
+                if (principalBo.principalName.equals(map.get("principalName")))
+                {
+                    Collection<PrincipalBo> principals = new ArrayList<PrincipalBo>();
+                    principals.add(principalBo);
+                    return principals;
+                }
+            }
+
+            return new ArrayList<PrincipalBo>();
+        }
+
+        mockBoService.demand.save(1..1) {
+            PrincipalBo bo -> return existingPrincipalBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        Principal existingPrincipal = identityService.updatePrincipal(PrincipalBo.to(existingPrincipalBo));
+
+        Assert.assertEquals(PrincipalBo.to(existingPrincipalBo), existingPrincipal);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testInactivatePrincipalWithEmptyIdFails() {
+        Principal principal = identityService.inactivatePrincipal("");
+    }
 }

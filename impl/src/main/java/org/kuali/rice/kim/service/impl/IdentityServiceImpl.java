@@ -248,6 +248,10 @@ public class IdentityServiceImpl implements IdentityService {
 
     @Override
     public Principal inactivatePrincipal(String principalId) {
+        if (principalId == null || StringUtils.isEmpty(principalId)) {
+            throw new RiceIllegalArgumentException("principalId is null or empty");
+        }
+
         Principal principal = getPrincipal(principalId);
         if (principal == null) {
             throw new RiceIllegalStateException("Principal with principalId: " + principalId + " does not exist");

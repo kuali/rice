@@ -42,18 +42,18 @@ public abstract class AbstractJaxbModelObject implements ModelObjectComplete {
     }
 
     @SuppressWarnings("unused")
-    void beforeUnmarshal(Unmarshaller u, Object parent) throws Exception {
+    protected void beforeUnmarshal(Unmarshaller u, Object parent) throws Exception {
     }
 
     @SuppressWarnings("unused")
-    void afterUnmarshal(Unmarshaller u, Object parent) throws Exception {
+    protected void afterUnmarshal(Unmarshaller u, Object parent) throws Exception {
         CollectionUtils.makeUnmodifiableAndNullSafe(this);
     }
 
     /**
      * Defines some internal constants used on this class.
      */
-    static class Constants {
+    protected static class Constants {
         final static String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
 }

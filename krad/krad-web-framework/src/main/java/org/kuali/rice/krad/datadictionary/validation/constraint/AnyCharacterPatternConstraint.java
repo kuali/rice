@@ -52,7 +52,7 @@ public class AnyCharacterPatternConstraint extends ValidCharactersPatternConstra
 
         regexString.append("\\x21-\\x7E");
         if (allowWhitespace) {
-            regexString.append("\\t\\r\\n\\v\\f");
+            regexString.append("\\t\\r\\n\\v\\f\\s");
         }
         regexString.append("]");
 

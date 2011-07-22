@@ -78,6 +78,7 @@ public class CollectionGroup extends Group implements DataBinding {
         renderAddLine = true;
         renderLineActions = true;
         showInactive = false;
+        showHideInactiveButton = true;
 
         actionFields = new ArrayList<ActionField>();
         addLineFields = new ArrayList<Field>();

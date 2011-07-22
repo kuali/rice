@@ -303,11 +303,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
      */
     @Override
     public boolean isNotesEnabled() {
-        if (BusinessObject.class.isAssignableFrom(dataObjectClass)) {
-            return getDataObjectMetaDataService().areNotesSupported(dataObjectClass);
-        }
-
-        return false;
+        return getDataObjectMetaDataService().areNotesSupported(dataObjectClass);
     }
 
     /**

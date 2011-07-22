@@ -172,8 +172,8 @@ public class DataDictionaryIndex implements Runnable {
 
     private void buildDDInactivationBlockingIndices() {
         inactivationBlockersForClass = new HashMap<Class, Set<InactivationBlockingMetadata>>();
-        Map<String,BusinessObjectEntry> boBeans = ddBeans.getBeansOfType(BusinessObjectEntry.class);
-        for ( BusinessObjectEntry entry : boBeans.values() ) {
+        Map<String,DataObjectEntry> doBeans = ddBeans.getBeansOfType(DataObjectEntry.class);
+        for ( DataObjectEntry entry : doBeans.values() ) {
             List<InactivationBlockingDefinition> inactivationBlockingDefinitions = entry.getInactivationBlockingDefinitions();
             if (inactivationBlockingDefinitions != null && !inactivationBlockingDefinitions.isEmpty()) {
                 for (InactivationBlockingDefinition inactivationBlockingDefinition : inactivationBlockingDefinitions) {

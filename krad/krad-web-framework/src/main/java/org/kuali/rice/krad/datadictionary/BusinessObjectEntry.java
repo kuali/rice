@@ -34,10 +34,6 @@ public class BusinessObjectEntry extends DataObjectEntry {
 
     protected Class<? extends BusinessObject> baseBusinessObjectClass;
 
-    protected boolean boNotesEnabled = false;
-
-    protected List<InactivationBlockingDefinition> inactivationBlockingDefinitions;
-
     public void setBusinessObjectClass(Class<? extends BusinessObject> businessObjectClass) {
         super.setDataObjectClass(businessObjectClass);
 
@@ -70,21 +66,6 @@ public class BusinessObjectEntry extends DataObjectEntry {
         return baseBusinessObjectClass;
     }
 
-    public boolean isBoNotesEnabled() {
-        return boNotesEnabled;
-    }
-
-    /**
-     * boNotesEnabled = true or false
-     * true indicates that notes and attachments will be permanently
-     * associated with the business object
-     * false indicates that notes and attachments are associated
-     * with the document used to create or edit the business object.
-     */
-    public void setBoNotesEnabled(boolean boNotesEnabled) {
-        this.boNotesEnabled = boNotesEnabled;
-    }
-
     /**
      * Directly validate simple fields, call completeValidation on Definition fields.
      */
@@ -110,15 +91,6 @@ public class BusinessObjectEntry extends DataObjectEntry {
         } catch (Exception ex) {
             throw new DataDictionaryException("Exception validating " + this, ex);
         }
-    }
-
-    public List<InactivationBlockingDefinition> getInactivationBlockingDefinitions() {
-        return this.inactivationBlockingDefinitions;
-    }
-
-    public void setInactivationBlockingDefinitions(
-            List<InactivationBlockingDefinition> inactivationBlockingDefinitions) {
-        this.inactivationBlockingDefinitions = inactivationBlockingDefinitions;
     }
 
     /**

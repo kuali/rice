@@ -17,6 +17,7 @@ package org.kuali.rice.krad.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.Exporter;
+import org.kuali.rice.krad.datadictionary.InactivationBlockingDefinition;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.validation.capability.MustOccurConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstraint;
@@ -47,6 +48,11 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
 
     protected HelpDefinition helpDefinition;
 
+
+    protected boolean boNotesEnabled = false;
+
+    protected List<InactivationBlockingDefinition> inactivationBlockingDefinitions;
+    
     @Override
     public void completeValidation() {
         //KFSMI-1340 - Object label should never be blank
@@ -254,4 +260,49 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
     public void setGroupByAttributesForEffectiveDating(List<String> groupByAttributesForEffectiveDating) {
         this.groupByAttributesForEffectiveDating = groupByAttributesForEffectiveDating;
     }
+    
+    
+    /**
+     * Gets the boNotesEnabled flag for the Data object
+     *
+     * <p>
+     * true indicates that notes and attachments will be permanently
+     * associated with the business object
+     * false indicates that notes and attachments are associated
+     * with the document used to create or edit the business object.
+     * </p>
+     * 
+     * @return the boNotesEnabled flag
+     */    
+    public boolean isBoNotesEnabled() {
+        return boNotesEnabled;
+    }
+
+    /**
+     * Setter for the boNotesEnabled flag
+     */    
+    public void setBoNotesEnabled(boolean boNotesEnabled) {
+        this.boNotesEnabled = boNotesEnabled;
+    }
+    
+    /**
+     * Gets the inactivationBlockingDefinitions for the Data object
+     *
+     * <p>
+     * 
+     * </p>
+     * 
+     * @return the list of <code>InactivationBlockingDefinition</code> 
+     */ 
+    public List<InactivationBlockingDefinition> getInactivationBlockingDefinitions() {
+        return this.inactivationBlockingDefinitions;
+    }
+
+    /**
+     * Setter for the inactivationBlockingDefinitions
+     */
+    public void setInactivationBlockingDefinitions(
+            List<InactivationBlockingDefinition> inactivationBlockingDefinitions) {
+        this.inactivationBlockingDefinitions = inactivationBlockingDefinitions;
+    }    
 }

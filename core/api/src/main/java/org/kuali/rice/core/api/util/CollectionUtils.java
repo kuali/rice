@@ -177,9 +177,8 @@ public final class CollectionUtils {
 
         Class<?> targetClass = o.getClass();
         for (Field f : targetClass.getDeclaredFields()) {
+            f.setAccessible(true);
             try {
-                f.setAccessible(true);
-
                 if (f.getType().isAssignableFrom(List.class)) {
                     f.set(o, unmodifiableListNullSafe((List<?>) f.get(o)));
                 } else if (f.getType().isAssignableFrom(Set.class)) {

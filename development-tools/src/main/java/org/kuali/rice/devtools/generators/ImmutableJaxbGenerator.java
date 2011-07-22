@@ -18,7 +18,6 @@ package org.kuali.rice.devtools.generators;
 import com.sun.codemodel.ClassType;
 import com.sun.codemodel.JAnnotationArrayMember;
 import com.sun.codemodel.JAnnotationUse;
-import com.sun.codemodel.JArray;
 import com.sun.codemodel.JBlock;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JCodeModel;
@@ -38,9 +37,8 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -111,7 +109,7 @@ public class ImmutableJaxbGenerator {
 			JDefinedClass classModel = codeModel._class(JMod.PUBLIC | JMod.FINAL, className, ClassType.CLASS);
 			Class<?> contractInterface = Class.forName(contractInterfaceName);
 			classModel._implements(contractInterface);
-            classModel._extends(AbstractJaxbModelObject.class);
+            classModel._extends(AbstractDataTransferObject.class);
 			
 			List<FieldModel> fields = determineFields(contractInterface);
 			

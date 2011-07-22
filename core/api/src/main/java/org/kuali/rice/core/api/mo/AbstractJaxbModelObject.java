@@ -16,8 +16,8 @@ import javax.xml.bind.Unmarshaller;
  *     <li>Defines jaxb callback method to ensure that Collection and Map types are unmarshalled into immutable empty forms rather than null values</li>
  *     <li>Defines equals/hashcode/toString</li>
  *
- *     Note: the equals/hashCode implements excludes {@value CoreConstants.CommonElements.FUTURE_ELEMENTS} element.
- *     This element should be included on all jaxb annotated classes.
+ *     Note: the equals/hashCode implementation excludes {@value CoreConstants.CommonElements.FUTURE_ELEMENTS} field.
+ *     This element should be present on all jaxb annotated classes.
  * </ol>
  */
 public abstract class AbstractJaxbModelObject implements ModelObjectComplete {

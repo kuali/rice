@@ -32,6 +32,12 @@ public interface KrmsAttributeDefinitionContract extends Identifiable, Inactivat
 	 * @return the label of the KrmsAttributeDefinition
 	 */
 	public String getLabel();
+
+    /**
+     * this is the optional description for the {@link KrmsAttributeDefinition}
+     * @return the description text
+     */
+    public String getDescription();
 	
 	/**
 	 * This is the component name of the KrmsAttributeDefinition

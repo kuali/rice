@@ -16,7 +16,6 @@
       <artifactId>rice-core-impl</artifactId>
       <version>${project.version}</version>
     </dependency>
-
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-krms-framework</artifactId>
@@ -27,6 +26,16 @@
       <artifactId>rice-krms-api</artifactId>
       <version>${project.version}</version>
     </dependency>
+
+    <!-- Bring in test classes from krms api -->
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-krms-api</artifactId>
+      <version>${project.version}</version>
+      <classifier>tests</classifier>
+      <scope>test</scope>
+    </dependency>
+
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-krad-app-framework</artifactId>

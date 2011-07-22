@@ -57,6 +57,13 @@ public interface ContextDefinitionContract extends Versioned, Identifiable {
 	String getTypeId();
 	
 	
+    /**
+     * Returns the description of the context definition.
+     *
+     * @return the description of the context definition. May be null.
+     */
+    String getDescription();
+
 	// TODO: this java doc is confusing
 	/**
 	 * Returns the set of agendas contained within the context definition. 

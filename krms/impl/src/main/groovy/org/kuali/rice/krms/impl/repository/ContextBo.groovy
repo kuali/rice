@@ -13,6 +13,7 @@ public class ContextBo extends PersistableBusinessObjectBase implements ContextD
 	def String name
 	def String namespace
 	def String typeId
+    def String description
 
 	def Set<AgendaBo> agendas
 
@@ -60,6 +61,7 @@ public class ContextBo extends PersistableBusinessObjectBase implements ContextD
 		bo.namespace = im.namespace
 		bo.name = im.name
 		bo.typeId = im.typeId
+        bo.description = im.description
 		bo.agendas = new HashSet<AgendaBo>()
 		for (agenda in im.agendas){
 			bo.agendas.add( AgendaBo.from(agenda) )

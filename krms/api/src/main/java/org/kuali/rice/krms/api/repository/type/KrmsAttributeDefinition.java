@@ -28,7 +28,8 @@ import org.kuali.rice.core.api.mo.ModelBuilder;
 		KrmsAttributeDefinition.Elements.ID,
 		KrmsAttributeDefinition.Elements.NAME,
 		KrmsAttributeDefinition.Elements.NAMESPACE,
-		KrmsAttributeDefinition.Elements.LABEL,
+        KrmsAttributeDefinition.Elements.LABEL,
+        KrmsAttributeDefinition.Elements.DESCRIPTION,
 		KrmsAttributeDefinition.Elements.ACTIVE,
 		KrmsAttributeDefinition.Elements.COMPONENT_NAME,
         CoreConstants.CommonElements.VERSION_NUMBER,
@@ -38,17 +39,19 @@ public final class KrmsAttributeDefinition extends AbstractDataTransferObject im
 	private static final long serialVersionUID = -6356968810972165031L;
 	
 	@XmlElement(name = Elements.ID, required=true)
-	private String id;
+	private final String id;
 	@XmlElement(name = Elements.NAME, required=true)
-	private String name;
+	private final String name;
 	@XmlElement(name = Elements.NAMESPACE, required=true)
-	private String namespace;
-	@XmlElement(name = Elements.LABEL, required=false)
-	private String label;
+	private final String namespace;
+    @XmlElement(name = Elements.LABEL, required=false)
+    private final String label;
+    @XmlElement(name = Elements.DESCRIPTION, required=false)
+    private final String description;
 	@XmlElement(name = Elements.ACTIVE, required=false)
-	private boolean active;
+	private final boolean active;
 	@XmlElement(name = Elements.COMPONENT_NAME, required=false)
-	private String componentName;
+	private final String componentName;
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
 	
@@ -64,6 +67,7 @@ public final class KrmsAttributeDefinition extends AbstractDataTransferObject im
     	this.name = null;
     	this.namespace = null;
     	this.label = null;
+        this.description = null;
     	this.active = false;
     	this.componentName = null;
         this.versionNumber = null;
@@ -80,6 +84,7 @@ public final class KrmsAttributeDefinition extends AbstractDataTransferObject im
         this.name = builder.getName();
         this.namespace = builder.getNamespace();
         this.label = builder.getLabel();
+        this.description = builder.getDescription();
         this.active = builder.isActive();
         this.componentName = builder.getComponentName();
         this.versionNumber = builder.getVersionNumber();
@@ -100,8 +105,12 @@ public final class KrmsAttributeDefinition extends AbstractDataTransferObject im
 	public String getLabel() {
 		return this.label;
 	}
-	
-	public boolean isActive() {
+
+    public String getDescription() {
+        return description;
+    }
+
+    public boolean isActive() {
 		return this.active; 
 	}
 
@@ -124,6 +133,7 @@ public final class KrmsAttributeDefinition extends AbstractDataTransferObject im
         private String name;
         private String namespace;
         private String label;
+        private String description;
         private boolean active;
         private String componentName;
         private Long versionNumber;
@@ -172,6 +182,7 @@ public final class KrmsAttributeDefinition extends AbstractDataTransferObject im
             Builder builder =  new Builder(contract.getId(), contract.getName(), contract.getNamespace());
             builder.setActive(contract.isActive());
             builder.setLabel(contract.getLabel());
+            builder.setDescription(contract.getDescription());
             builder.setComponentName(contract.getComponentName());
             builder.setVersionNumber(contract.getVersionNumber());
             return builder;
@@ -207,7 +218,12 @@ public final class KrmsAttributeDefinition extends AbstractDataTransferObject im
 		public void setLabel(String label) {
 			this.label = label;
 		}
-		
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+
 		public void setComponentName(String componentName) {
 			this.componentName = componentName;
 		}
@@ -245,7 +261,12 @@ public final class KrmsAttributeDefinition extends AbstractDataTransferObject im
 			return label;
 		}
 
-		@Override
+        @Override
+        public String getDescription() {
+            return description;
+        }
+
+        @Override
 		public boolean isActive() {
 			return active;
 		}
@@ -284,7 +305,8 @@ public final class KrmsAttributeDefinition extends AbstractDataTransferObject im
 		final static String NAME = "name";
 		final static String NAMESPACE = "namespace";
 		final static String LABEL = "label";
+        final static String DESCRIPTION = "description";
 		final static String COMPONENT_NAME = "componentName";
 		final static String ACTIVE = "active";
-	}
+    }
 }

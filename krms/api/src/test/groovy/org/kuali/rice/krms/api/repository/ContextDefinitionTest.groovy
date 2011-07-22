@@ -24,7 +24,8 @@ import javax.xml.bind.Unmarshaller
 import org.junit.Assert
 import org.junit.Test
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
-import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition
+import org.kuali.rice.krms.api.repository.context.ContextDefinition.Builder;
 
 
 /**
@@ -37,7 +38,8 @@ class ContextDefinitionTest {
 	
 	private static final String NAMESPACE = "KRMS_TEST"
 	private static final String CONTEXT_ID_1 = "CONTEXTID001"
-	private static final String CONTEXT_NAME = "Context1"
+    private static final String CONTEXT_NAME = "Context1"
+    private static final String CONTEXT_DESCRIPTION = "Context1 Description ..."
 	private static final String TYPE_ID = "1234XYZ"
 
 	private static final String AGENDA_ID = "500Agenda"
@@ -59,6 +61,7 @@ class ContextDefinitionTest {
     <blah:namespace>Context1</blah:namespace>
     <blah:name>KRMS_TEST</blah:name>
     <blah:typeId>1234XYZ</blah:typeId>
+    <blah:description>Context1 Description ...</blah:description>
     <blah:agendas/>
     <blah:attributes/>
 </blah:context> """
@@ -69,6 +72,7 @@ class ContextDefinitionTest {
     <namespace>Context1</namespace>
     <name>KRMS_TEST</name>
     <typeId>1234XYZ</typeId>
+    <description>Context1 Description ...</description>
     <agendas/>
     <attributes/>
 </context> """
@@ -167,10 +171,7 @@ class ContextDefinitionTest {
 	
 	@Test
 	public void testXmlMarshaling_small_ContextDefinition() {
-		ContextDefinition.Builder builder = ContextDefinition.Builder.create(CONTEXT_NAME, NAMESPACE)
-		builder.setId(CONTEXT_ID_1)
-		builder.setTypeId(TYPE_ID)
-		ContextDefinition myContext = builder.build()
+        ContextDefinition myContext = buildFullContextDefinition()
 
 		JAXBContext jc = JAXBContext.newInstance(ContextDefinition.class, AgendaDefinition.class)
 		Marshaller marshaller = jc.createMarshaller()
@@ -191,7 +192,16 @@ class ContextDefinitionTest {
 //		Assert.assertEquals(expected, actual)
 	}
 
-	@Test
+    public static ContextDefinition buildFullContextDefinition() {
+        Builder builder = Builder.create(CONTEXT_NAME, NAMESPACE)
+        builder.setId(CONTEXT_ID_1)
+        builder.setTypeId(TYPE_ID)
+        builder.setDescription(CONTEXT_DESCRIPTION);
+        ContextDefinition myContext = builder.build()
+        return myContext
+    }
+
+    @Test
 	public void testXmlUnmarshal_small_ContextDefinition() {
 //	  JAXBContext jc = JAXBContext.newInstance(ContextDefinition.class)
 //	  Unmarshaller unmarshaller = jc.createUnmarshaller()

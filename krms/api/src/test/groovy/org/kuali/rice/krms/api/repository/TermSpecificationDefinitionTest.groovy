@@ -20,7 +20,8 @@ import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
 import org.junit.Test
 import org.junit.Assert
-import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
+import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition
+import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition.Builder;
 
 
 /**
@@ -36,6 +37,7 @@ class TermSpecificationDefinitionTest {
 	private static final String TERM_SPEC_CONTEXT_ID = "1001"
 	private static final String TERM_SPEC_NAME = "total"
 	private static final String TERM_SPEC_TYPE = "java.math.BigDecimal"
+    private static final String TERM_SPEC_DESCRIPTION = "the total number of widgets sold in the last quarter"
 
 	private static final Integer SEQUENCE_NUMBER_1 = new Integer(1)
 	private static final String EXPECTED_XML = """
@@ -44,6 +46,7 @@ class TermSpecificationDefinitionTest {
 			<contextId>1001</contextId>
 			<name>total</name>
 			<type>java.math.BigDecimal</type>
+			<description>the total number of widgets sold in the last quarter</description>
 			<categories>
 			</categories>
 		</TermSpecification>
@@ -78,8 +81,8 @@ class TermSpecificationDefinitionTest {
 
 	@Test
 	public void testXmlMarshaling() {
-		TermSpecificationDefinition termSpecDef =
-				TermSpecificationDefinition.Builder.create(TERM_SPEC_ID_1, TERM_SPEC_CONTEXT_ID, TERM_SPEC_NAME, TERM_SPEC_TYPE).build();
+        TermSpecificationDefinition termSpecDef = buildFullTermSpecificationDefinition();
+
 		JAXBContext jc = JAXBContext.newInstance(TermSpecificationDefinition.class)
 		Marshaller marshaller = jc.createMarshaller()
 		StringWriter sw = new StringWriter()
@@ -95,6 +98,15 @@ class TermSpecificationDefinitionTest {
 		Assert.assertEquals(expected, actual)
 	}
 
-	// TODO: more complete testing
+    public static TermSpecificationDefinition buildFullTermSpecificationDefinition() {
+        Builder termSpecDefBuilder =
+        Builder.create(TERM_SPEC_ID_1, TERM_SPEC_CONTEXT_ID, TERM_SPEC_NAME, TERM_SPEC_TYPE);
+        termSpecDefBuilder.setDescription(TERM_SPEC_DESCRIPTION);
+
+        TermSpecificationDefinition termSpecDef = termSpecDefBuilder.build()
+        return termSpecDef
+    }
+
+    // TODO: more complete testing
 	
 }

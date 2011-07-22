@@ -10,6 +10,7 @@ public class TermBo extends PersistableBusinessObjectBase implements TermDefinit
 
 	def String id
 	def String specificationId
+    def String description
 
 	def TermSpecificationBo specification
 	def List<TermParameterBo> parameters
@@ -35,6 +36,7 @@ public class TermBo extends PersistableBusinessObjectBase implements TermDefinit
 	   TermBo bo = new TermBo()
 	   bo.id = im.id
 	   bo.specificationId = im.specification.id
+       bo.description = im.description
 	   bo.specification = TermSpecificationBo.from(im.specification)
 	   bo.parameters = new ArrayList<TermParameterBo>()
 	   for (parm in im.parameters){

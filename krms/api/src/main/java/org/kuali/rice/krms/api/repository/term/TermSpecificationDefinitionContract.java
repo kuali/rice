@@ -22,16 +22,32 @@ import org.kuali.rice.krms.api.repository.category.CategoryDefinitionContract;
 import java.util.List;
 
 /**
- * This is a description of what this class does - gilesp don't forget to fill this in. 
+ * Interface for classes specifying term specifications
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface TermSpecificationDefinitionContract extends Identifiable, Versioned {
 
+    /**
+     * @return the unique id for the context that this {@link TermSpecificationDefinitionContract} is associated with.
+     */
 	String getContextId();
+
+    /**
+     * @return the name for this {@link TermSpecificationDefinitionContract}
+     */
 	String getName();
+
+    /**
+     * @return the fully qualified class name for this {@link TermSpecificationDefinitionContract}
+     */
 	String getType();
+
+    /**
+     * @return the description for this {@link TermSpecificationDefinitionContract}
+     */
+    String getDescription();
 
     /**
      * Returns an ordered, immutable list of the categories which this term specification

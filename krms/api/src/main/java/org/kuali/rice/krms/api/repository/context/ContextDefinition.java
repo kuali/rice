@@ -42,7 +42,8 @@ import java.util.Set;
 		ContextDefinition.Elements.ID,
 		ContextDefinition.Elements.NAMESPACE,
 		ContextDefinition.Elements.NAME,
-		ContextDefinition.Elements.TYPE_ID,
+        ContextDefinition.Elements.TYPE_ID,
+        ContextDefinition.Elements.DESCRIPTION,
 		ContextDefinition.Elements.AGENDAS,
 		ContextDefinition.Elements.ATTRIBUTES,
         CoreConstants.CommonElements.VERSION_NUMBER,
@@ -64,6 +65,9 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
 	@XmlElement(name = Elements.TYPE_ID, required = false)
     private final String typeId;
 	
+    @XmlElement(name = Elements.DESCRIPTION, required = false)
+    private final String description;
+    
 	@XmlElementWrapper(name = Elements.AGENDAS)
 	@XmlElement(name = Elements.AGENDA, required = false)
 	private final Set<AgendaDefinition> agendas;
@@ -87,6 +91,7 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
     	this.name = null;
     	this.namespace = null;
     	this.typeId = null;
+    	this.description = null;
     	this.agendas = null;
     	this.versionNumber = null;
     	this.attributes = null;
@@ -96,6 +101,9 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
     	this.id = builder.getId();
     	this.name = builder.getName();
     	this.namespace = builder.getNamespace();
+
+    	this.description = builder.getDescription();
+
     	this.typeId = builder.getTypeId();
     	this.agendas = constructAgendas(builder.getAgendas());
     	this.versionNumber = builder.getVersionNumber();
@@ -135,6 +143,11 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
 	public String getTypeId() {
 		return typeId;
 	}
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
 	
 	@Override
 	public Set<AgendaDefinition> getAgendas() {
@@ -167,6 +180,7 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
 		private String namespace;
         private String name;
         private String typeId;
+        private String description;
         private Set<AgendaDefinition.Builder> agendas;
         private Map<String, String> attributes;
         private Long versionNumber;
@@ -211,6 +225,7 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
         	Builder builder = create(contract.getNamespace(), contract.getName());
         	builder.setId(contract.getId());
         	builder.setTypeId(contract.getTypeId());
+            builder.setDescription(contract.getDescription());
         	builder.setVersionNumber(contract.getVersionNumber());
         	builder.setAgendas(contract.getAgendas());
             if (contract.getAttributes() != null) {
@@ -248,8 +263,13 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
 		public String getTypeId() {
 			return this.typeId;
 		}
-		
-		@Override
+
+        @Override
+        public String getDescription() {
+            return description;
+        }
+
+        @Override
 		public Set<AgendaDefinition.Builder> getAgendas() {
 			return agendas;
 		}
@@ -319,6 +339,15 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
 			this.typeId = typeId;
 		}
 		
+        /**
+         * Sets the typeId for the context definition that will be created by this builder.
+         *
+         * @param typeId the typeId to set
+         */
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
 		public void setAgendas(Set<? extends AgendaDefinitionContract> agendaContracts) {
 			this.agendas = new HashSet<AgendaDefinition.Builder>();
 			if (agendaContracts != null) for (AgendaDefinitionContract agendaContract : agendaContracts) {
@@ -366,6 +395,7 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
         final static String NAMESPACE = "namespace";
         final static String NAME = "name";
         final static String TYPE_ID = "typeId";
+        final static String DESCRIPTION = "description";
         final static String AGENDA = "agenda";
         final static String AGENDAS = "agendas";
 		final static String ATTRIBUTES = "attributes";

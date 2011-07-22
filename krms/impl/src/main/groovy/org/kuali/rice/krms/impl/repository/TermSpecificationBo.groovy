@@ -12,6 +12,7 @@ public class TermSpecificationBo extends PersistableBusinessObjectBase implement
 	def String contextId
 	def String name
 	def String type
+    def String description
 
     def List<CategoryBo> categories
 
@@ -38,6 +39,7 @@ public class TermSpecificationBo extends PersistableBusinessObjectBase implement
 	   bo.contextId = im.contextId
 	   bo.name = im.name
 	   bo.type = im.type
+       bo.description = im.description
        bo.categories = new ArrayList<CategoryBo>()
        for (category in im.categories) {
            bo.categories.add(CategoryBo.from(category))
@@ -47,4 +49,4 @@ public class TermSpecificationBo extends PersistableBusinessObjectBase implement
 	   return bo
    }
  
-} 
+}

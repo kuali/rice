@@ -44,7 +44,8 @@ import org.kuali.rice.krms.api.repository.BuilderUtils;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = TermDefinition.Constants.TYPE_NAME, propOrder = {
 		TermDefinition.Elements.ID,
-		TermDefinition.Elements.SPECIFICATION,
+        TermDefinition.Elements.SPECIFICATION,
+        TermDefinition.Elements.DESCRIPTION,
 		TermDefinition.Elements.PARAMETERS,
         CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
@@ -57,6 +58,8 @@ public final class TermDefinition extends AbstractDataTransferObject implements 
 	private final String id;
 	@XmlElement(name = Elements.SPECIFICATION, required=true)
 	private final TermSpecificationDefinition specification;
+    @XmlElement(name = Elements.DESCRIPTION, required=false)
+    private final String description;
 	@XmlElementWrapper(name = Elements.PARAMETERS, required=false)
 	@XmlElement(name = "parameter", required=false)
 	private final List<TermParameterDefinition> parameters;
@@ -73,6 +76,7 @@ public final class TermDefinition extends AbstractDataTransferObject implements 
 	private TermDefinition() {
 		id = null;
 		specification = null;
+        description = null;
 		parameters = null;
         versionNumber = null;
 	}
@@ -80,6 +84,7 @@ public final class TermDefinition extends AbstractDataTransferObject implements 
 	private TermDefinition(Builder builder) {
 		id = builder.getId();
 		specification = builder.getSpecification().build();
+        description = builder.getDescription();
 		parameters = BuilderUtils.convertFromBuilderList(builder.getParameters());
 		versionNumber = builder.getVersionNumber();
 	}
@@ -95,6 +100,7 @@ public final class TermDefinition extends AbstractDataTransferObject implements 
 		private static final long serialVersionUID = 1L;
 		
 		private String id;
+        private String description;
 		private TermSpecificationDefinition.Builder specification;
 		private List<TermParameterDefinition.Builder> parameters;
         private Long versionNumber;
@@ -136,11 +142,16 @@ public final class TermDefinition extends AbstractDataTransferObject implements 
 					// this is made immutable in the setter
 					outParams 
 					);
+            builder.setDescription(term.getDescription());
 			builder.setVersionNumber(term.getVersionNumber());
 			return builder;
 		}
-		
-		// Builder setters:
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        // Builder setters:
 		
 		/**
 		 * @param id the id to set.  Should be null to build {@link TermDefinition}s for creation operations.
@@ -195,10 +206,13 @@ public final class TermDefinition extends AbstractDataTransferObject implements 
 		public TermSpecificationDefinition.Builder getSpecification() {
 			return specification;
 		}
-		
-		
 
-		/**
+        @Override
+        public String getDescription() {
+            return description;
+        }
+
+        /**
 		 * @return the termParameters
 		 */
 		@Override
@@ -240,7 +254,13 @@ public final class TermDefinition extends AbstractDataTransferObject implements 
 	public TermSpecificationDefinition getSpecification() {
 		return this.specification;
 	}
-	/**
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    /**
 	 * @return the parameters.  May be empty, but will never be null.
 	 */
 	@Override
@@ -265,7 +285,8 @@ public final class TermDefinition extends AbstractDataTransferObject implements 
 		public static final String ID = "id";
 		public static final String SPECIFICATION = "specification";
 		public static final String PARAMETERS = "parameters";
-	}
+        public static final String DESCRIPTION = "description";
+    }
 	
 	
 }

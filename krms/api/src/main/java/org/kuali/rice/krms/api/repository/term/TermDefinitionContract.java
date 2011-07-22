@@ -32,9 +32,14 @@ public interface TermDefinitionContract extends Identifiable, Versioned {
 	 * @return the associated {@link TermSpecificationDefinitionContract}
 	 */
 	TermSpecificationDefinitionContract getSpecification();
+
+    /**
+     * @return the description for this {@link TermDefinitionContract}
+     */
+    String getDescription();
 	
 	/**
-	 * @return any 
+	 * @return any parameters specified on this {@link TermDefinitionContract} 
 	 */
 	List<? extends TermParameterDefinitionContract> getParameters();
 	

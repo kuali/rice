@@ -11,6 +11,7 @@ public class KrmsAttributeDefinitionBo extends PersistableBusinessObjectBase imp
 	def String name
 	def String namespace
 	def String label
+    def String description
 	def boolean active
 	def String componentName
 		
@@ -37,6 +38,7 @@ public class KrmsAttributeDefinitionBo extends PersistableBusinessObjectBase imp
 	   bo.name = im.name
 	   bo.namespace = im.namespace
 	   bo.label = im.label
+       bo.description = im.description
 	   bo.active = im.active
 	   bo.componentName = im.componentName
 	   bo.versionNumber = im.versionNumber

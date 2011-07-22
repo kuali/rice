@@ -20,7 +20,8 @@ import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
 import org.junit.Test
 import org.junit.Assert
-import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
+import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition
+import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition.Builder;
 
 
 /**
@@ -166,10 +167,7 @@ class KrmsAttributeDefinitionTest {
 
 	@Test
 	public void testXmlMarshaling() {
-		KrmsAttributeDefinition myAttr = KrmsAttributeDefinition.Builder.create(ID_1, ORG_NAME, NAMESPACE)
-				.label(ORG_LABEL)
-				.componentName(COMPONENT)
-				.build()
+        KrmsAttributeDefinition myAttr = buildFullKrmsAttributeDefinition()
 		JAXBContext jc = JAXBContext.newInstance(KrmsAttributeDefinition.class)
 		Marshaller marshaller = jc.createMarshaller()
 		StringWriter sw = new StringWriter()
@@ -184,7 +182,12 @@ class KrmsAttributeDefinitionTest {
 		Assert.assertEquals(expected, actual)
 	}
 
-	@Test
+    public static KrmsAttributeDefinition buildFullKrmsAttributeDefinition() {
+        KrmsAttributeDefinition myAttr = Builder.create(ID_1, ORG_NAME, NAMESPACE).label(ORG_LABEL).componentName(COMPONENT).build()
+        return myAttr
+    }
+
+    @Test
 	public void testXmlUnmarshal() {
 		JAXBContext jc = JAXBContext.newInstance(KrmsAttributeDefinition.class)
 		Unmarshaller unmarshaller = jc.createUnmarshaller();

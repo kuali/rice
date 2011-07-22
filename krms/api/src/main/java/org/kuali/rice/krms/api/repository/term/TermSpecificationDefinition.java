@@ -50,7 +50,8 @@ import org.kuali.rice.krms.api.repository.category.CategoryDefinitionContract;
 		TermSpecificationDefinition.Elements.ID,
 		TermSpecificationDefinition.Elements.CONTEXT_ID,
 		TermSpecificationDefinition.Elements.NAME,
-		TermSpecificationDefinition.Elements.TYPE,
+        TermSpecificationDefinition.Elements.TYPE,
+        TermSpecificationDefinition.Elements.DESCRIPTION,
         CoreConstants.CommonElements.VERSION_NUMBER,
         TermSpecificationDefinition.Elements.CATEGORIES,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
@@ -67,6 +68,8 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 	private final String name;
 	@XmlElement(name = Elements.TYPE, required=true)
 	private final String type;
+    @XmlElement(name = Elements.DESCRIPTION, required=false)
+    private final String description;
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
 
@@ -87,6 +90,7 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 		contextId = null;
 		name = null;
 		type = null;
+        description = null;
         versionNumber = null;
         this.categories = null;
 	}
@@ -101,6 +105,7 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 		contextId = b.getContextId();
 		name = b.getName();
 		type = b.getType();
+        description = b.getDescription();
 		versionNumber = b.getVersionNumber();
         this.categories = constructCategories(b.getCategories());
 	}
@@ -128,6 +133,7 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 		private String contextId;
 		private String name;
 		private String type;
+        private String description;
         private Long versionNumber;
         private List<CategoryDefinition.Builder> categories;
 
@@ -180,6 +186,7 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 					termSpecification.getContextId(), 
 					termSpecification.getName(), 
 					termSpecification.getType());
+            builder.setDescription(termSpecification.getDescription());
 			builder.setVersionNumber(termSpecification.getVersionNumber());
             for (CategoryDefinitionContract category : termSpecification.getCategories()) {
                 builder.getCategories().add(CategoryDefinition.Builder.create(category));
@@ -187,8 +194,12 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 
 			return builder;
 		}
-		
-		// Setters
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        // Setters
 		
 		/**
 		 * @param termSpecificationId the key for this {@link TermSpecificationDefinition}.  Must be null for
@@ -281,7 +292,12 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 			return this.type;
 		}
 
-		/**
+        @Override
+        public String getDescription() {
+            return this.description;
+        }
+
+        /**
 		 * @return the version number
 		 */
         @Override
@@ -342,8 +358,13 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 	public String getType() {
 		return type;
 	}
-	
-	/**
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    /**
 	 * @see org.kuali.rice.core.api.mo.common.Versioned#getVersionNumber()
 	 */
     @Override
@@ -371,7 +392,8 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 		public static final String ID = "id";
 		public static final String CONTEXT_ID = "contextId";
 		public static final String NAME = "name";
-		public static final String TYPE = "type";
+        public static final String TYPE = "type";
+        public static final String DESCRIPTION = "description";
         public final static String CATEGORIES = "categories";
         public final static String CATEGORY = "category";
 	}

@@ -13,12 +13,8 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.w3c.dom.Element;
 
 /**
@@ -36,7 +32,7 @@ import org.w3c.dom.Element;
 		RemoveAndPublishResult.Elements.SERVICES_PUBLISHED,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class RemoveAndPublishResult extends AbstractJaxbModelObject {
+public class RemoveAndPublishResult extends AbstractDataTransferObject {
 
 	private static final long serialVersionUID = 4279564869510247725L;
 

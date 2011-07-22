@@ -1,12 +1,8 @@
 package org.kuali.rice.kim.api.identity.principal;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.w3c.dom.Element;
 
@@ -26,7 +22,7 @@ import java.util.Collection;
     EntityNamePrincipalName.Elements.PRINCIPAL_NAME,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class EntityNamePrincipalName extends AbstractJaxbModelObject {
+public class EntityNamePrincipalName extends AbstractDataTransferObject {
     @XmlElement(name = Elements.PRINCIPAL_NAME, required = false)
     private final String principalName;
     @XmlElement(name = Elements.DEFAULT_NAME, required = false)

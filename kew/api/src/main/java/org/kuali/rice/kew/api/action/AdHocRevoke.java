@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kew.api.action;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
@@ -29,11 +28,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.w3c.dom.Element;
 
 @XmlRootElement(name = AdHocRevoke.Constants.ROOT_ELEMENT_NAME)
@@ -44,7 +40,7 @@ import org.w3c.dom.Element;
 		AdHocRevoke.Elements.GROUP_IDS,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class AdHocRevoke extends AbstractJaxbModelObject {
+public final class AdHocRevoke extends AbstractDataTransferObject {
 
 	private static final long serialVersionUID = 5848714514445793355L;
 	

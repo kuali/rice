@@ -30,13 +30,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.krms.api.repository.BuilderUtils;
 import org.kuali.rice.krms.api.repository.BuilderUtils.Transformer;
 import org.kuali.rice.krms.api.repository.category.CategoryDefinition;
@@ -59,7 +55,7 @@ import org.kuali.rice.krms.api.repository.category.CategoryDefinitionContract;
         TermSpecificationDefinition.Elements.CATEGORIES,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class TermSpecificationDefinition extends AbstractJaxbModelObject implements TermSpecificationDefinitionContract {
+public final class TermSpecificationDefinition extends AbstractDataTransferObject implements TermSpecificationDefinitionContract {
 	
 	private static final long serialVersionUID = 1L;
 	

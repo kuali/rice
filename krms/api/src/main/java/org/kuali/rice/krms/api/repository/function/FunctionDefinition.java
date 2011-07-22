@@ -30,13 +30,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.krms.api.repository.category.CategoryDefinition;
 import org.kuali.rice.krms.api.repository.category.CategoryDefinitionContract;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
@@ -65,7 +61,7 @@ import org.w3c.dom.Element;
         FunctionDefinition.Elements.CATEGORIES,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class FunctionDefinition extends AbstractJaxbModelObject implements FunctionDefinitionContract {
+public class FunctionDefinition extends AbstractDataTransferObject implements FunctionDefinitionContract {
 
 	private static final long serialVersionUID = 1391030685309770560L;
 

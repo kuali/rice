@@ -16,14 +16,10 @@
 package org.kuali.rice.kew.api.action;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.w3c.dom.Element;
@@ -72,7 +68,7 @@ import java.util.List;
 		ActionRequest.Elements.CHILD_REQUESTS,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class ActionRequest extends AbstractJaxbModelObject implements ActionRequestContract {
+public final class ActionRequest extends AbstractDataTransferObject implements ActionRequestContract {
 
 	private static final long serialVersionUID = -7581089059447119201L;
 

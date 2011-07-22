@@ -1,13 +1,9 @@
 package org.kuali.rice.ksb.api.registry;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.api.util.jaxb.QNameAsStringAdapter;
 import org.w3c.dom.Element;
 
@@ -47,7 +43,7 @@ import java.util.Collection;
     CoreConstants.CommonElements.VERSION_NUMBER,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class ServiceInfo extends AbstractJaxbModelObject implements ServiceInfoContract {
+public final class ServiceInfo extends AbstractDataTransferObject implements ServiceInfoContract {
 
 	private static final long serialVersionUID = 4793306414624564991L;
 	

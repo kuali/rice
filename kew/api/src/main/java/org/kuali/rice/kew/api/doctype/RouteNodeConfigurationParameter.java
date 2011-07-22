@@ -11,13 +11,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
 
 @XmlRootElement(name = RouteNodeConfigurationParameter.Constants.ROOT_ELEMENT_NAME)
@@ -29,7 +25,7 @@ import org.w3c.dom.Element;
         RouteNodeConfigurationParameter.Elements.VALUE,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class RouteNodeConfigurationParameter extends AbstractJaxbModelObject
+public final class RouteNodeConfigurationParameter extends AbstractDataTransferObject
         implements RouteNodeConfigurationParameterContract {
 
     private static final long serialVersionUID = 3494982096398369148L;

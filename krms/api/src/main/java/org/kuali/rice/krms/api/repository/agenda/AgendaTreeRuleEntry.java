@@ -26,11 +26,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 
 /**
@@ -48,7 +45,7 @@ import org.kuali.rice.core.api.mo.ModelBuilder;
 		AgendaTreeRuleEntry.Elements.IF_FALSE,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class AgendaTreeRuleEntry extends AbstractJaxbModelObject implements AgendaTreeEntryDefinition {
+public final class AgendaTreeRuleEntry extends AbstractDataTransferObject implements AgendaTreeEntryDefinition {
 
 	private static final long serialVersionUID = 8594116503548506936L;
 

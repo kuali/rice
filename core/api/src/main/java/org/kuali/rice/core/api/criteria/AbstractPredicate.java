@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 
 /**
  * An abstract class from which all {@link Predicate} instances should extend.
@@ -24,7 +24,7 @@ import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-abstract class AbstractPredicate extends AbstractJaxbModelObject implements Predicate {
+abstract class AbstractPredicate extends AbstractDataTransferObject implements Predicate {
 
 	private static final long serialVersionUID = 7035792141358213138L;
 

@@ -10,13 +10,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
 
 /**
@@ -35,7 +31,7 @@ import org.w3c.dom.Element;
 		ServiceEndpoint.Elements.DESCRIPTOR,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class ServiceEndpoint extends AbstractJaxbModelObject implements ServiceEndpointContract {
+public final class ServiceEndpoint extends AbstractDataTransferObject implements ServiceEndpointContract {
 
 	private static final long serialVersionUID = -2295962329997871877L;
     

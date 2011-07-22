@@ -17,14 +17,10 @@
 package org.kuali.rice.kim.api.group;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
 import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
 import org.w3c.dom.Element;
@@ -37,7 +33,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Collection;
 
 @XmlRootElement(name = GroupMember.Constants.ROOT_ELEMENT_NAME)
@@ -53,7 +48,7 @@ import java.util.Collection;
         CoreConstants.CommonElements.OBJECT_ID,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class GroupMember extends AbstractJaxbModelObject implements GroupMemberContract  {
+public class GroupMember extends AbstractDataTransferObject implements GroupMemberContract  {
 
     @XmlElement(name = Elements.ID, required = false)
     private final String id;

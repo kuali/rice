@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.w3c.dom.Element;
 
 @XmlRootElement(name = PropertyDefinition.Constants.ROOT_ELEMENT_NAME)
@@ -36,7 +36,7 @@ import org.w3c.dom.Element;
         PropertyDefinition.Elements.VALUE,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class PropertyDefinition extends AbstractJaxbModelObject {
+public final class PropertyDefinition extends AbstractDataTransferObject {
 
     @XmlElement(name = Elements.NAME, required = true)
     private final String name;

@@ -21,7 +21,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
@@ -55,7 +55,7 @@ import java.util.Map;
         RoleMembership.Elements.DELEGATES,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class RoleMembership extends AbstractJaxbModelObject implements RoleMembershipContract {
+public class RoleMembership extends AbstractDataTransferObject implements RoleMembershipContract {
     private static final long serialVersionUID = 1L;
 
     @XmlElement(name=Elements.ROLE_ID)

@@ -15,11 +15,8 @@
  */
 package org.kuali.rice.krms.api.repository.context;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.w3c.dom.Element;
 
@@ -48,7 +45,7 @@ import java.util.Map;
 		ContextSelectionCriteria.Elements.CONTEXT_QUALIFIERS,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class ContextSelectionCriteria extends AbstractJaxbModelObject {
+public final class ContextSelectionCriteria extends AbstractDataTransferObject {
 
 	@XmlElement(name = Elements.NAMESPACE_CODE, required = true)
 	private final String namespaceCode;

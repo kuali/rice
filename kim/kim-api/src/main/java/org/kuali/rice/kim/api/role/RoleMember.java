@@ -22,7 +22,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
@@ -55,7 +55,7 @@ import java.util.Map;
         CoreConstants.CommonElements.ACTIVE_TO_DATE,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class RoleMember extends AbstractJaxbModelObject implements RoleMemberContract {
+public class RoleMember extends AbstractDataTransferObject implements RoleMemberContract {
 
     private static final long serialVersionUID = 1L;
 

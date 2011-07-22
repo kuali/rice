@@ -1,14 +1,10 @@
 package org.kuali.rice.kim.api.identity.citizenship;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
 import org.kuali.rice.kim.api.identity.Type;
 import org.w3c.dom.Element;
@@ -37,7 +33,7 @@ import java.util.Collection;
     EntityCitizenship.Elements.ACTIVE,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class EntityCitizenship extends AbstractJaxbModelObject
+public final class EntityCitizenship extends AbstractDataTransferObject
     implements EntityCitizenshipContract
 {
     @XmlElement(name = Elements.ID, required = false)

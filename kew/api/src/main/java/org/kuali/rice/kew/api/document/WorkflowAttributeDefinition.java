@@ -30,11 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.w3c.dom.Element;
 
 @XmlRootElement(name = WorkflowAttributeDefinition.Constants.ROOT_ELEMENT_NAME)
@@ -45,7 +42,7 @@ import org.w3c.dom.Element;
 		WorkflowAttributeDefinition.Elements.PROPERTY_DEFINITIONS,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class WorkflowAttributeDefinition extends AbstractJaxbModelObject {
+public final class WorkflowAttributeDefinition extends AbstractDataTransferObject {
     
 	@XmlElement(name = Elements.ATTRIBUTE_NAME, required = true)
     private final String attributeName;

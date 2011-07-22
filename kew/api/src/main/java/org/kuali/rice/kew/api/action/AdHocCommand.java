@@ -25,11 +25,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.w3c.dom.Element;
 
 @XmlRootElement(name = AdHocCommand.Constants.ROOT_ELEMENT_NAME)
@@ -42,7 +39,7 @@ import org.w3c.dom.Element;
 		AdHocCommand.Elements.REQUEST_LABEL,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-abstract class AdHocCommand extends AbstractJaxbModelObject {
+abstract class AdHocCommand extends AbstractDataTransferObject {
 
 	private static final long serialVersionUID = -4181802858756667726L;
 

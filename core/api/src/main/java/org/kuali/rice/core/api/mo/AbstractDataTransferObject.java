@@ -20,9 +20,9 @@ import javax.xml.bind.Unmarshaller;
  *     This element should be present on all jaxb annotated classes.
  * </ol>
  */
-public abstract class AbstractJaxbModelObject implements ModelObjectComplete {
+public abstract class AbstractDataTransferObject implements ModelObjectComplete {
 
-    protected AbstractJaxbModelObject() {
+    protected AbstractDataTransferObject() {
         super();
     }
 

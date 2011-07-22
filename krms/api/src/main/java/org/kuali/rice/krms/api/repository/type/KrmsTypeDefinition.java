@@ -14,13 +14,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
 
 /**
  * Concrete model object implementation of KRMS KrmsType. 
@@ -41,7 +37,7 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
         CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class KrmsTypeDefinition extends AbstractJaxbModelObject implements KrmsTypeDefinitionContract{
+public final class KrmsTypeDefinition extends AbstractDataTransferObject implements KrmsTypeDefinitionContract{
 	private static final long serialVersionUID = -8314397393380856301L;
 
 	@XmlElement(name = Elements.ID, required=true)

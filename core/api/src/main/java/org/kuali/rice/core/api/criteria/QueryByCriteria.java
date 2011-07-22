@@ -16,7 +16,7 @@
 package org.kuali.rice.core.api.criteria;
 
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.w3c.dom.Element;
 
@@ -62,7 +62,7 @@ import java.util.Collection;
 		QueryByCriteria.Elements.MAX_RESULTS,
 		QueryByCriteria.Elements.COUNT_FLAG,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS })
-public final class QueryByCriteria extends AbstractJaxbModelObject {
+public final class QueryByCriteria extends AbstractDataTransferObject {
 
 	private static final long serialVersionUID = 2210627777648920180L;
 

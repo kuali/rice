@@ -1,13 +1,9 @@
 package org.kuali.rice.kim.api.identity.email;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.Type;
 
@@ -37,7 +33,7 @@ import java.util.Collection;
     CoreConstants.CommonElements.OBJECT_ID,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class EntityEmail extends AbstractJaxbModelObject implements EntityEmailContract{
+public class EntityEmail extends AbstractDataTransferObject implements EntityEmailContract{
     
     @XmlElement(name = Elements.ID, required = false)
     private final String id;

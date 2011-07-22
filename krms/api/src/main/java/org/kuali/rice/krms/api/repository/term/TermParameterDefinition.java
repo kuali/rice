@@ -26,16 +26,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.krms.api.repository.BuilderUtils.Transformer;
-import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
-import org.kuali.rice.krms.api.repository.rule.RuleDefinition.Constants;
 
 /**
  * Immutable DTO for TermParameters.  An instance represents a single parameter on a Term. 
@@ -53,7 +47,7 @@ import org.kuali.rice.krms.api.repository.rule.RuleDefinition.Constants;
         CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class TermParameterDefinition extends AbstractJaxbModelObject implements TermParameterDefinitionContract {
+public final class TermParameterDefinition extends AbstractDataTransferObject implements TermParameterDefinitionContract {
 
 	private static final long serialVersionUID = 1L;
 	

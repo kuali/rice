@@ -1,13 +1,9 @@
 package org.kuali.rice.kim.api.identity.entity;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.kim.api.identity.EntityUtils;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationContract;
@@ -50,7 +46,7 @@ import java.util.List;
     EntityDefault.Elements.ACTIVE,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class EntityDefault extends AbstractJaxbModelObject {
+public class EntityDefault extends AbstractDataTransferObject {
     @XmlElement(name = Elements.ENTITY_ID, required = false)
     private final String entityId;
     @XmlElement(name = Elements.NAME, required = false)

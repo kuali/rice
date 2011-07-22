@@ -1,13 +1,9 @@
 package org.kuali.rice.kim.api.identity.phone;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.Type;
 import org.w3c.dom.Element;
@@ -43,7 +39,7 @@ import java.util.Collection;
     CoreConstants.CommonElements.OBJECT_ID,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class EntityPhone extends AbstractJaxbModelObject
+public final class EntityPhone extends AbstractDataTransferObject
     implements EntityPhoneContract
 {
 

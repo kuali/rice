@@ -25,11 +25,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.w3c.dom.Element;
 
 @XmlRootElement(name = MovePoint.Constants.ROOT_ELEMENT_NAME)
@@ -39,7 +36,7 @@ import org.w3c.dom.Element;
 		MovePoint.Elements.STEPS_TO_MOVE,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class MovePoint extends AbstractJaxbModelObject {
+public final class MovePoint extends AbstractDataTransferObject {
     
 	@XmlElement(name = Elements.START_NODE_NAME, required = true)
     private final String startNodeName;

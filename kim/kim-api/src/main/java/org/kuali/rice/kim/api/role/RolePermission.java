@@ -17,13 +17,9 @@
 package org.kuali.rice.kim.api.role;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -47,7 +43,7 @@ import java.util.Collection;
         CoreConstants.CommonElements.OBJECT_ID,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class RolePermission extends AbstractJaxbModelObject implements RolePermissionContract {
+public class RolePermission extends AbstractDataTransferObject implements RolePermissionContract {
     @XmlElement(name = Elements.ID, required = false)
     private final String id;
 

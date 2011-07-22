@@ -15,10 +15,8 @@
  */
 package org.kuali.rice.core.impl.jaxb;
 
-import java.io.Serializable;
 import java.util.List;
 
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
@@ -27,8 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
-import org.kuali.rice.core.util.jaxb.RiceXmlImportList;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.util.jaxb.RiceXmlListAdditionListener;
 import org.kuali.rice.kim.impl.jaxb.PermissionDataXmlDTO;
 import org.kuali.rice.kim.impl.jaxb.RoleDataXmlDTO;
@@ -45,7 +42,7 @@ import org.w3c.dom.Element;
 @XmlRootElement(name="data")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name="DataType", propOrder={"permissionData", "roleData", CoreConstants.CommonElements.FUTURE_ELEMENTS})
-public class DataXmlDTO  extends AbstractJaxbModelObject implements RiceXmlListAdditionListener<Element> {
+public class DataXmlDTO  extends AbstractDataTransferObject implements RiceXmlListAdditionListener<Element> {
 
     private static final long serialVersionUID = 1L;
     

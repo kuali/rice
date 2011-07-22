@@ -18,13 +18,9 @@ package org.kuali.rice.kim.api.common.assignee;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
 import org.kuali.rice.kim.api.common.delegate.DelegateTypeContract;
 import org.w3c.dom.Element;
@@ -51,7 +47,7 @@ import java.util.List;
         Assignee.Elements.DELEGATES,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class Assignee extends AbstractJaxbModelObject implements AssigneeContract {
+public class Assignee extends AbstractDataTransferObject implements AssigneeContract {
     @XmlElement(name = Elements.PRINCIPAL_ID, required = false)
     private final String principalId;
 

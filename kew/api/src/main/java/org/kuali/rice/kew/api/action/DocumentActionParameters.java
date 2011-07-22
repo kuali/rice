@@ -27,11 +27,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.kew.api.document.DocumentContentUpdate;
 import org.kuali.rice.kew.api.document.DocumentUpdate;
@@ -47,7 +44,7 @@ import org.w3c.dom.Element;
 		DocumentActionParameters.Elements.DOCUMENT_CONTENT_UPDATE,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class DocumentActionParameters extends AbstractJaxbModelObject {
+public final class DocumentActionParameters extends AbstractDataTransferObject {
     
 	private static final long serialVersionUID = -7589214734683758734L;
 

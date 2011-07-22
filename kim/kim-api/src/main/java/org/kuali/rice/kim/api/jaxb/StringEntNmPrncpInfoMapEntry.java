@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.api.jaxb;
 
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
 import org.w3c.dom.Element;
 
@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import java.util.Collection;
 
-public class StringEntNmPrncpInfoMapEntry extends AbstractJaxbModelObject {
+public class StringEntNmPrncpInfoMapEntry extends AbstractDataTransferObject {
 	
 	private static final long serialVersionUID = 1L;
 	

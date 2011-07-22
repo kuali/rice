@@ -1,13 +1,9 @@
 package org.kuali.rice.kew.api.doctype;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.api.util.CollectionUtils;
 import org.w3c.dom.Element;
 
@@ -44,7 +40,7 @@ import java.util.List;
         CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class RouteNode extends AbstractJaxbModelObject implements RouteNodeContract {
+public final class RouteNode extends AbstractDataTransferObject implements RouteNodeContract {
 
     private static final long serialVersionUID = -1756380702013287285L;
 

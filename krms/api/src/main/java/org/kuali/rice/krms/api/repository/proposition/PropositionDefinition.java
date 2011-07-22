@@ -15,17 +15,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.krms.api.repository.LogicalOperator;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
-import org.kuali.rice.krms.api.repository.rule.RuleDefinition.Elements;
-
 
 /**
  * Concrete model object implementation of KRMS Proposition. 
@@ -61,7 +55,7 @@ import org.kuali.rice.krms.api.repository.rule.RuleDefinition.Elements;
         CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class PropositionDefinition extends AbstractJaxbModelObject implements PropositionDefinitionContract {
+public final class PropositionDefinition extends AbstractDataTransferObject implements PropositionDefinitionContract {
 	private static final long serialVersionUID = 2783959459503209577L;
 
 	// TODO: change this to field name to id

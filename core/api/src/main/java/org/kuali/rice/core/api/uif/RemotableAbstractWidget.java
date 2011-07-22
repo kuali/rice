@@ -1,6 +1,6 @@
 package org.kuali.rice.core.api.uif;
 
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = RemotableAbstractWidget.Constants.TYPE_NAME)
-public abstract class RemotableAbstractWidget extends AbstractJaxbModelObject implements Widget {
+public abstract class RemotableAbstractWidget extends AbstractDataTransferObject implements Widget {
 
     /**
      * Should only be invoked by JAXB.

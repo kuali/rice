@@ -15,14 +15,10 @@
  */
 package org.kuali.rice.kim.api.common.template;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.criteria.QueryResults;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -47,7 +43,7 @@ import java.util.List;
 		TemplateQueryResults.Elements.TOTAL_ROW_COUNT,
 		TemplateQueryResults.Elements.MORE_RESULTS_AVAILALBE,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS })
-public final class TemplateQueryResults extends AbstractJaxbModelObject implements QueryResults<Template> {
+public final class TemplateQueryResults extends AbstractDataTransferObject implements QueryResults<Template> {
 
 	@XmlElementWrapper(name = Elements.RESULTS, required = false)
 	@XmlElement(name = Elements.RESULT_ELEM, required = false)

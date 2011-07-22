@@ -18,7 +18,7 @@ package org.kuali.rice.core.api.component;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.w3c.dom.Element;
 
@@ -50,7 +50,7 @@ import java.util.Collection;
     CoreConstants.CommonElements.OBJECT_ID,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class Component extends AbstractJaxbModelObject implements ComponentContract {
+public final class Component extends AbstractDataTransferObject implements ComponentContract {
 	
 	private static final long serialVersionUID = -5114772381708593543L;
 

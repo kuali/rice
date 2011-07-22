@@ -16,7 +16,6 @@
  */
 package org.kuali.rice.kew.api.action;
 
-import java.io.Serializable;
 import java.util.Collection;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -26,11 +25,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.kew.api.document.Document;
 import org.w3c.dom.Element;
 
@@ -42,7 +38,7 @@ import org.w3c.dom.Element;
 		DocumentActionResult.Elements.REQUESTED_ACTIONS,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class DocumentActionResult extends AbstractJaxbModelObject {
+public final class DocumentActionResult extends AbstractDataTransferObject {
     
 	private static final long serialVersionUID = -3916503634900791018L;
 

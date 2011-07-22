@@ -8,9 +8,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 
 /**
@@ -18,7 +17,7 @@ import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
  *
  */
 @XmlTransient
-public abstract class BaseAttribute extends AbstractJaxbModelObject implements BaseAttributeContract {
+public abstract class BaseAttribute extends AbstractDataTransferObject implements BaseAttributeContract {
 	private static final long serialVersionUID = -6126133049308968098L;
 	
 	@XmlElement(name = Elements.ID, required=true)

@@ -1,12 +1,8 @@
 package org.kuali.rice.kew.api.doctype;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.api.util.CollectionUtils;
 import org.w3c.dom.Element;
 
@@ -28,7 +24,7 @@ import java.util.List;
         RoutePath.Elements.PROCESSES,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class RoutePath extends AbstractJaxbModelObject implements RoutePathContract {
+public final class RoutePath extends AbstractDataTransferObject implements RoutePathContract {
 
     private static final long serialVersionUID = -7177305375323986864L;
 

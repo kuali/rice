@@ -1,9 +1,7 @@
 package org.kuali.rice.ksb.api.bus.support;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.security.credentials.CredentialsType;
 import org.kuali.rice.core.api.util.jaxb.EnumStringAdapter;
 import org.kuali.rice.core.api.util.jaxb.QNameAsStringAdapter;
@@ -38,7 +36,7 @@ import java.util.Collection;
 		AbstractServiceConfiguration.Elements.CREDENTIALS_TYPE,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public abstract class AbstractServiceConfiguration extends AbstractJaxbModelObject implements ServiceConfiguration {
+public abstract class AbstractServiceConfiguration extends AbstractDataTransferObject implements ServiceConfiguration {
 
 	private static final long serialVersionUID = 2681595879406587302L;
 

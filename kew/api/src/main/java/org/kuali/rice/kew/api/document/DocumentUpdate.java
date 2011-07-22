@@ -16,11 +16,8 @@
 package org.kuali.rice.kew.api.document;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kew.api.KewApiConstants;
@@ -60,7 +57,7 @@ import java.util.Map;
     DocumentUpdate.Elements.VARIABLES,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class DocumentUpdate extends AbstractJaxbModelObject {
+public final class DocumentUpdate extends AbstractDataTransferObject {
 
 	private static final long serialVersionUID = 608839901744771499L;
 

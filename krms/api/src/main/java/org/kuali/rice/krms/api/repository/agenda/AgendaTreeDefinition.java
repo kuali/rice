@@ -15,13 +15,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
 
 /**
  * Concrete model object implementation of KRMS Repository Agenda 
@@ -37,7 +33,7 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
 		AgendaTreeDefinition.Elements.ENTRIES,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class AgendaTreeDefinition extends AbstractJaxbModelObject {
+public final class AgendaTreeDefinition extends AbstractDataTransferObject {
 	
 	private static final long serialVersionUID = 3355519740298280591L;
 

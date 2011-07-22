@@ -2,13 +2,9 @@ package org.kuali.rice.kim.api.responsibility;
 
 import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractJaxbModelObject;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
 import org.kuali.rice.kim.api.common.delegate.DelegateTypeContract;
@@ -48,7 +44,7 @@ import java.util.Map;
         ResponsibilityAction.Elements.ROLE_ID,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class ResponsibilityAction extends AbstractJaxbModelObject
+public final class ResponsibilityAction extends AbstractDataTransferObject
         implements ResponsibilityActionContract {
 
     @XmlElement(name = Elements.PRINCIPAL_ID, required = false)

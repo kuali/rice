@@ -465,6 +465,11 @@ public class AttributeField extends FieldBase implements DataBinding {
         // required
         if (getRequired() == null) {
             setRequired(attributeDefinition.isRequired());
+            
+            //if still null, default to false
+            if (getRequired() == null) {
+                setRequired(false);
+            }
         }
 
         // control

@@ -2644,6 +2644,7 @@
         <column default="Y" name="ACTV" required="true" size="1" type="VARCHAR"/>
         <column name="CMPNT_NM" size="100" type="VARCHAR"/>
         <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <column default="null" name="DESC_TXT" size="255" type="VARCHAR"/>
     </table>
     <table name="KRMS_CMPND_PROP_PROPS_T">
         <column name="CMPND_PROP_ID" primaryKey="true" size="40" type="VARCHAR"/>
@@ -2688,6 +2689,7 @@
         <column name="TYP_ID" required="true" size="40" type="VARCHAR"/>
         <column default="Y" name="ACTV" required="true" size="1" type="VARCHAR"/>
         <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <column default="null" name="DESC_TXT" size="255" type="VARCHAR"/>
     </table>
     <table name="KRMS_CNTXT_TERM_SPEC_PREREQ_T">
         <column name="CNTXT_TERM_SPEC_PREREQ_ID" primaryKey="true"
@@ -2983,6 +2985,7 @@
         <column name="TYP" required="true" size="255" type="VARCHAR"/>
         <column default="Y" name="ACTV" required="true" size="1" type="VARCHAR"/>
         <column name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <column default="null" name="DESC_TXT" size="255" type="VARCHAR"/>
         <foreign-key foreignTable="KRMS_CNTXT_T" name="KRMS_ASSET_FK1">
             <reference foreign="CNTXT_ID" local="CNTXT_ID"/>
         </foreign-key>
@@ -2998,6 +3001,7 @@
         <column name="TERM_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="TERM_SPEC_ID" required="true" size="40" type="VARCHAR"/>
         <column name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <column default="null" name="DESC_TXT" size="255" type="VARCHAR"/>
         <foreign-key foreignTable="KRMS_TERM_SPEC_T" name="KRMS_TERM_T__FK1">
             <reference foreign="TERM_SPEC_ID" local="TERM_SPEC_ID"/>
         </foreign-key>

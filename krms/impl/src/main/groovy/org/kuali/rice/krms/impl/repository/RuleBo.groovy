@@ -69,7 +69,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
     *
     * @return Tree representing a rule proposition.
     */
-   public Tree<? extends RuleTreeNode, String> getPropositionTree() {
+   public Tree getPropositionTree() {
        Tree<RuleTreeNode, String> propositionTree = new Tree<RuleTreeNode, String>();
 
        Node<RuleTreeNode, String> rootNode = new Node<RuleTreeNode, String>();

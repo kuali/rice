@@ -18,6 +18,10 @@ import org.kuali.rice.kim.impl.identity.principal.PrincipalBo
 import org.kuali.rice.kim.api.identity.principal.Principal
 import org.kuali.rice.core.api.exception.RiceIllegalStateException
 import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo
+import org.kuali.rice.kim.impl.identity.address.EntityAddressBo
+import org.apache.cxf.wsdl.http.AddressType
+import org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo
+import org.kuali.rice.kim.api.identity.address.EntityAddress
 
 class IdentityServiceImplTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
@@ -32,6 +36,7 @@ class IdentityServiceImplTest {
     static Map<String, EntityBo> sampleEntities = new HashMap<String, EntityBo>();
     static Map<String, PrincipalBo> samplePrincipals = new HashMap<String, PrincipalBo>();
     static Map<String, EntityTypeContactInfoBo> sampleEntityTypeContactInfos = new HashMap<String, EntityTypeContactInfoBo>();
+    static Map<String, EntityAddressBo> sampleEntityAddresses = new HashMap<String, EntityAddressBo>();
 
     @BeforeClass
     static void createSampleBOs() {
@@ -43,7 +48,9 @@ class IdentityServiceImplTest {
         Date deceasedDate = formatter.parse(deceasedDateString);
         EntityBioDemographicsBo firstEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "AAA", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", countryOfBirthCode: "US", birthStateCode: "IN", cityOfBirth: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
         PrincipalBo firstEntityPrincipal = new PrincipalBo(entityId: "AAA", principalId: "P1", active: true, principalName: "first", versionNumber: 1, password: "first_password");
-        EntityTypeContactInfoBo firstEntityTypeContactInfoBo = new EntityTypeContactInfoBo(entityId: "AAA", entityTypeCode: "ETypeCodeOne", active: true);
+        EntityTypeContactInfoBo firstEntityTypeContactInfoBo = new EntityTypeContactInfoBo(entityId: "AAA", entityTypeCode: "typecodeone", active: true);
+        EntityAddressTypeBo firstAddressTypeBo = new EntityAddressTypeBo(code: "addresscodeone");
+        EntityAddressBo firstEntityAddressBo = new EntityAddressBo(entityId: "AAA", entityTypeCode: "typecodeone", addressType: firstAddressTypeBo, addressTypeCode: "addresscodeone", active: true);
         List<PrincipalBo> firstPrincipals = new ArrayList<PrincipalBo>();
         firstPrincipals.add(firstEntityPrincipal);
         EntityBo firstEntityBo = new EntityBo(active: true, id: "AAA", privacyPreferences: firstEntityPrivacyPreferencesBo, bioDemographics: firstEntityBioDemographicsBo, principals: firstPrincipals);
@@ -51,7 +58,9 @@ class IdentityServiceImplTest {
         EntityPrivacyPreferencesBo secondEntityPrivacyPreferencesBo = new EntityPrivacyPreferencesBo(entityId: "BBB", suppressName: true, suppressEmail: true, suppressAddress: true, suppressPhone: true, suppressPersonal: false);
         EntityBioDemographicsBo secondEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "BBB", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", countryOfBirthCode: "US", birthStateCode: "IN", cityOfBirth: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
         PrincipalBo secondEntityPrincipal = new PrincipalBo(entityId: "BBB", principalId: "P2", active: true, principalName: "second", versionNumber: 1, password: "second_password");
-        EntityTypeContactInfoBo secondEntityTypeContactInfoBo = new EntityTypeContactInfoBo(entityId: "BBB", entityTypeCode: "ETypeCodeTwo", active: true);
+        EntityTypeContactInfoBo secondEntityTypeContactInfoBo = new EntityTypeContactInfoBo(entityId: "BBB", entityTypeCode: "typecodetwo", active: true);
+        EntityAddressTypeBo secondAddressTypeBo = new EntityAddressTypeBo(code: "addresscodetwo");
+        EntityAddressBo secondEntityAddressBo = new EntityAddressBo(entityId: "BBB", entityTypeCode: "typecodetwo", addressType: secondAddressTypeBo, addressTypeCode: "addresscodetwo", active: true);
         List<PrincipalBo> secondPrincipals = new ArrayList<PrincipalBo>();
         secondPrincipals.add(secondEntityPrincipal);
         EntityBo secondEntityBo = new EntityBo(active: true, id: "BBB", privacyPreferences: secondEntityPrivacyPreferencesBo, bioDemographics: secondEntityBioDemographicsBo, principals: secondPrincipals);
@@ -66,6 +75,10 @@ class IdentityServiceImplTest {
 
         for (bo in [firstEntityTypeContactInfoBo, secondEntityTypeContactInfoBo]) {
             sampleEntityTypeContactInfos.put(bo.entityTypeCode, bo);
+        }
+
+        for (bo in [firstEntityAddressBo, secondEntityAddressBo]) {
+            sampleEntityAddresses.put(bo.entityId, bo);
         }
     }
 
@@ -392,8 +405,7 @@ class IdentityServiceImplTest {
     public void testInactivatePrincipalSucceeds()
     {
         PrincipalBo existingPrincipalBo = samplePrincipals.get("P1");
-        PrincipalBo inactivePrincipalBo = samplePrincipals.get("P1");
-        inactivePrincipalBo.setActive(false);
+        PrincipalBo inactivePrincipalBo = new PrincipalBo(entityId: "AAA", principalId: "P1", active: false, principalName: "first", versionNumber: 1, password: "first_password");
 
         mockBoService.demand.findByPrimaryKey(1..samplePrincipals.size()) {
             Class clazz, Map map -> return samplePrincipals.get(map.get("principalId"))
@@ -425,8 +437,7 @@ class IdentityServiceImplTest {
     public void testInactivatePrincipalByNameSucceeds()
     {
         PrincipalBo existingPrincipalBo = samplePrincipals.get("P1");
-        PrincipalBo inactivePrincipalBo = samplePrincipals.get("P1");
-        inactivePrincipalBo.setActive(false);
+        PrincipalBo inactivePrincipalBo = new PrincipalBo(entityId: "AAA", principalId: "P1", active: false, principalName: "first", versionNumber: 1, password: "first_password");
 
         mockBoService.demand.findMatching(1..samplePrincipals.size()) {
             Class clazz, Map map -> for (PrincipalBo principalBo in samplePrincipals.values()) {
@@ -452,7 +463,7 @@ class IdentityServiceImplTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testAddEntityTypeContactInfoToEntityWithNullFails() {
-        Principal principal = identityService.addEntityTypeContactInfoToEntity(null);
+        EntityTypeContactInfo entityTypeContactInfo = identityService.addEntityTypeContactInfoToEntity(null);
     }
 
     @Test(expected = RiceIllegalStateException.class)
@@ -470,13 +481,13 @@ class IdentityServiceImplTest {
 
         injectBusinessObjectServiceIntoIdentityService();
 
-        EntityTypeContactInfoBo newEntityTypeContactInfoBo = new EntityTypeContactInfoBo(active: true, entityId: "AAA", entityTypeCode: "ETypeCodeOne");
+        EntityTypeContactInfoBo newEntityTypeContactInfoBo = new EntityTypeContactInfoBo(active: true, entityId: "AAA", entityTypeCode: "typecodeone");
         EntityTypeContactInfo entityTypeContactInfo = identityService.addEntityTypeContactInfoToEntity(EntityTypeContactInfoBo.to(newEntityTypeContactInfoBo));
     }
 
     @Test
     public void testAddEntityTypeContactInfoToEntitySucceeds() {
-        EntityTypeContactInfoBo newEntityTypeContactInfoBo = new EntityTypeContactInfoBo(active: true, entityId: "CCC", entityTypeCode: "ETypeCodeThree");
+        EntityTypeContactInfoBo newEntityTypeContactInfoBo = new EntityTypeContactInfoBo(active: true, entityId: "CCC", entityTypeCode: "typecodethree");
 
         mockBoService.demand.findByPrimaryKey(1..sampleEntityTypeContactInfos.size()) {
             Class clazz, Map map -> for (EntityTypeContactInfoBo entityTypeContactInfoBo in sampleEntityTypeContactInfos.values()) {
@@ -498,5 +509,141 @@ class IdentityServiceImplTest {
         EntityTypeContactInfo entityTypeContactInfo = identityService.addEntityTypeContactInfoToEntity(EntityTypeContactInfoBo.to(newEntityTypeContactInfoBo));
 
         Assert.assertEquals(EntityTypeContactInfoBo.to(newEntityTypeContactInfoBo), entityTypeContactInfo);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testUpdateEntityTypeContactInfoWithNullFails() {
+        EntityTypeContactInfo entityTypeContactInfo = identityService.updateEntityTypeContactInfo(null);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testUpdateEntityTypeContactInfoWithNonExistingObjectFails() {
+        mockBoService.demand.findByPrimaryKey(1..1) {
+            Class clazz, Map map -> return null;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityTypeContactInfoBo newEntityTypeContactInfoBo = new EntityTypeContactInfoBo(active: true, entityId: "AAA", entityTypeCode: "typecodeone");
+        EntityTypeContactInfo entityTypeContactInfo = identityService.updateEntityTypeContactInfo(EntityTypeContactInfoBo.to(newEntityTypeContactInfoBo));
+    }
+
+    @Test
+    public void testUpdateEntityTypeContactInfoSucceeds() {
+        EntityTypeContactInfoBo existingEntityTypeContactInfoBo = new EntityTypeContactInfoBo(active: true, entityId: "AAA", entityTypeCode: "typecodeone");
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityTypeContactInfos.size()) {
+            Class clazz, Map map -> for (EntityTypeContactInfoBo entityTypeContactInfoBo in sampleEntityTypeContactInfos.values()) {
+                if (entityTypeContactInfoBo.entityId.equals(map.get("entityId"))
+                    && entityTypeContactInfoBo.entityTypeCode.equals(map.get("entityTypeCode"))
+                    && entityTypeContactInfoBo.active)
+                {
+                    return entityTypeContactInfoBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityTypeContactInfoBo bo -> return existingEntityTypeContactInfoBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityTypeContactInfo entityTypeContactInfo = identityService.updateEntityTypeContactInfo(EntityTypeContactInfoBo.to(existingEntityTypeContactInfoBo));
+
+        Assert.assertEquals(EntityTypeContactInfoBo.to(existingEntityTypeContactInfoBo), entityTypeContactInfo);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testInactivateEntityTypeContactInfoWithNonExistentObjectFails() {
+        mockBoService.demand.findByPrimaryKey(1..1) {
+            Class clazz, Map map -> return null;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityTypeContactInfo entityTypeContactInfo = identityService.inactivateEntityTypeContactInfo("new", "new");
+    }
+
+    @Test
+    public void testInactivateEntityTypeContactInfoSucceeds()
+    {
+        EntityTypeContactInfoBo existingEntityTypeContactInfoBo = sampleEntityTypeContactInfos.get("typecodeone");
+        EntityTypeContactInfoBo inactiveEntityTypeContactInfoBo = new EntityTypeContactInfoBo(entityId: "AAA", entityTypeCode: "typecodeone", active: false);
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityTypeContactInfos.size()) {
+            Class clazz, Map map -> for (EntityTypeContactInfoBo entityTypeContactInfoBo in sampleEntityTypeContactInfos.values()) {
+                if (entityTypeContactInfoBo.entityId.equals(map.get("entityId"))
+                    && entityTypeContactInfoBo.entityTypeCode.equals(map.get("entityTypeCode"))
+                    && entityTypeContactInfoBo.active)
+                {
+                    return entityTypeContactInfoBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityTypeContactInfoBo bo -> return inactiveEntityTypeContactInfoBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityTypeContactInfo inactiveEntityTypeContactInfo = identityService.inactivateEntityTypeContactInfo(existingEntityTypeContactInfoBo.entityId, existingEntityTypeContactInfoBo.entityTypeCode);
+
+        Assert.assertEquals(EntityTypeContactInfoBo.to(inactiveEntityTypeContactInfoBo), inactiveEntityTypeContactInfo);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddAddressToEntityWithNullFails() {
+        EntityAddress entityAddress = identityService.addAddressToEntity(null);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testAddAddressToEntityWithExistingAddressFails() {
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityAddresses.size()) {
+            Class clazz, Map map -> for (EntityAddressBo entityAddressBo in sampleEntityAddresses.values()) {
+                if (entityAddressBo.entityId.equals(map.get("entityId"))
+                    && entityAddressBo.entityTypeCode.equals(map.get("entityTypeCode"))
+                    && entityAddressBo.addressTypeCode.equals(map.get("addressTypeCode"))
+                    && entityAddressBo.active)
+                {
+                    return entityAddressBo;
+                }
+            }
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityAddressTypeBo firstAddressTypeBo = new EntityAddressTypeBo(code: "addresscodeone");
+        EntityAddressBo newEntityAddressBo = new EntityAddressBo(entityId: "AAA", entityTypeCode: "typecodeone", addressType: firstAddressTypeBo, addressTypeCode: "addresscodeone");
+        EntityAddress entityAddress = identityService.addAddressToEntity(EntityAddressBo.to(newEntityAddressBo));
+    }
+
+    @Test
+    public void testAddAddressToEntitySucceeds() {
+        EntityAddressTypeBo firstAddressTypeBo = new EntityAddressTypeBo(code: "addresscodeone");
+        EntityAddressBo newEntityAddressBo = new EntityAddressBo(entityId: "CCC", entityTypeCode: "typecodethree", addressType: firstAddressTypeBo, addressTypeCode: "addresscodethree");
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityAddresses.size()) {
+            Class clazz, Map map -> for (EntityAddressBo entityAddressBo in sampleEntityAddresses.values()) {
+                if (entityAddressBo.entityId.equals(map.get("entityId"))
+                    && entityAddressBo.entityTypeCode.equals(map.get("entityTypeCode"))
+                    && entityAddressBo.addressTypeCode.equals(map.get("addressTypeCode"))
+                    && entityAddressBo.active)
+                {
+                    return entityAddressBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityAddressBo bo -> return newEntityAddressBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityAddress entityAddress = identityService.addAddressToEntity(EntityAddressBo.to(newEntityAddressBo));
+
+        Assert.assertEquals(EntityAddressBo.to(newEntityAddressBo), entityAddress);
     }
 }

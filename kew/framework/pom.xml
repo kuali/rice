@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>rice-kew</artifactId>
@@ -8,11 +9,33 @@
   <artifactId>rice-kew-framework</artifactId>
   <version>2.0.0-m7-SNAPSHOT</version>
   <name>Rice KEW Framework</name>
-  <dependencies>             
-    	<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>rice-api</artifactId>
-			<version>${project.version}</version>
-		</dependency>  
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-java2ws-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>searchableAttribute-wsdl</id>
+            <phase>${rice.java2ws.phase}</phase>
+            <configuration>
+              <className>org.kuali.rice.kew.framework.docsearch.SearchableAttribute</className>
+              <outputFile>${project.build.outputDirectory}/wsdl/SearchableAttribute.wsdl</outputFile>
+              <serviceName>SearchableAttribute</serviceName>
+            </configuration>
+            <goals>
+              <goal>java2ws</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>

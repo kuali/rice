@@ -64,58 +64,58 @@ public final class Document extends AbstractDataTransferObject implements Docume
 
 	@XmlElement(name = Elements.DOCUMENT_ID, required = true)
     private final String documentId;
-	
+
     @XmlElement(name = Elements.STATUS, required = true)
     private final String status;
-    
+
     @XmlElement(name = Elements.DATE_CREATED, required = true)
     @XmlJavaTypeAdapter(DateTimeAdapter.class)
     private final DateTime dateCreated;
-    
+
     @XmlElement(name = Elements.DATE_LAST_MODIFIED, required = true)
     @XmlJavaTypeAdapter(DateTimeAdapter.class)
     private final DateTime dateLastModified;
-    
+
     @XmlElement(name = Elements.DATE_APPROVED, required = false)
     @XmlJavaTypeAdapter(DateTimeAdapter.class)
     private final DateTime dateApproved;
-    
+
     @XmlElement(name = Elements.DATE_FINALIZED, required = false)
     @XmlJavaTypeAdapter(DateTimeAdapter.class)
     private final DateTime dateFinalized;
-    
+
     @XmlElement(name = Elements.TITLE, required = false)
     private final String title;
-    
+
     @XmlElement(name = Elements.APPLICATION_DOCUMENT_ID, required = false)
     private final String applicationDocumentId;
-    
+
     @XmlElement(name = Elements.INITIATOR_PRINCIPAL_ID, required = true)
     private final String initiatorPrincipalId;
-    
+
     @XmlElement(name = Elements.ROUTED_BY_PRINCIPAL_ID, required = false)
     private final String routedByPrincipalId;
-    
+
     @XmlElement(name = Elements.DOCUMENT_TYPE_NAME, required = true)
     private final String documentTypeName;
-    
+
     @XmlElement(name = Elements.DOCUMENT_TYPE_ID, required = true)
     private final String documentTypeId;
-    
+
     @XmlElement(name = Elements.DOCUMENT_HANDLER_URL, required = false)
     private final String documentHandlerUrl;
-    
+
     @XmlElement(name = Elements.APPLICATION_DOCUMENT_STATUS, required = false)
     private final String applicationDocumentStatus;
-    
+
     @XmlElement(name = Elements.APPLICATION_DOCUMENT_STATUS_DATE, required = false)
     @XmlJavaTypeAdapter(DateTimeAdapter.class)
     private final DateTime applicationDocumentStatusDate;
-    
+
     @XmlElement(name = Elements.VARIABLES, required = false)
     @XmlJavaTypeAdapter(MapStringStringAdapter.class)
     private final Map<String, String> variables;
-        
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -246,7 +246,7 @@ public final class Document extends AbstractDataTransferObject implements Docume
 
     /**
      * A builder which can be used to construct {@link Document} instances.  Enforces the constraints of the {@link DocumentContract}.
-     * 
+     *
      */
     public final static class Builder
         implements Serializable, ModelBuilder, DocumentContract
@@ -285,7 +285,7 @@ public final class Document extends AbstractDataTransferObject implements Docume
         public static Builder create(String documentId, DocumentStatus status, DateTime dateCreated, String initiatorPrincipalId, String documentTypeName, String documentTypeId) {
             return new Builder(documentId, status, dateCreated, initiatorPrincipalId, documentTypeName, documentTypeId);
         }
-        
+
         public static Builder create(String documentId, String initiatorPrinicpalId, String documentTypeName, String documentTypeId) {
         	return new Builder(documentId, DocumentStatus.INITIATED, new DateTime(), initiatorPrinicpalId, documentTypeName, documentTypeId);
         }

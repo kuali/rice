@@ -43,7 +43,6 @@ import java.util.List;
 		RemotableAttributeField.Elements.REQUIRED,
 		RemotableAttributeField.Elements.DEFAULT_VALUES,
 		RemotableAttributeField.Elements.CONTROL,
-		RemotableAttributeField.Elements.REQUIRED,
 		RemotableAttributeField.Elements.WIDGETS,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS })
 public final class RemotableAttributeField extends AbstractDataTransferObject implements AttributeField {
@@ -52,8 +51,8 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
     private final String name;
 
     @XmlJavaTypeAdapter(DataType.Adapter.class)
-	@XmlElement(name = Elements.DATA_TYPE, required = false)
-    private final DataType dataType;
+    @XmlElement(name = Elements.DATA_TYPE, required = false)
+    private final String dataType;
 
     @XmlElement(name = Elements.SHORT_LABEL, required = false)
     private final String shortLabel;
@@ -147,7 +146,11 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
 
     private RemotableAttributeField(Builder b) {
         this.name = b.name;
-        this.dataType = b.dataType;
+        if (b.dataType == null) {
+            this.dataType = null;
+        } else {
+            this.dataType = b.dataType.name();
+        }
         this.shortLabel = b.shortLabel;
         this.longLabel = b.longLabel;
         this.helpSummary = b.helpSummary;
@@ -178,7 +181,10 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
 
     @Override
     public DataType getDataType() {
-        return dataType;
+        if (dataType == null) {
+            return null;
+        }
+        return DataType.valueOf(dataType);
     }
 
     @Override
@@ -481,7 +487,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
      * Defines some internal constants used on this class.
      */
     static final class Constants {
-        static final String TYPE_NAME = "AbstractControlType";
+        static final String TYPE_NAME = "AttributeFieldType";
         final static String ROOT_ELEMENT_NAME = "attributeField";
         static final String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }

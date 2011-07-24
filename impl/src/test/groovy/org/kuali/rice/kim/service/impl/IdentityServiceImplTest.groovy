@@ -22,6 +22,9 @@ import org.kuali.rice.kim.impl.identity.address.EntityAddressBo
 import org.apache.cxf.wsdl.http.AddressType
 import org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo
 import org.kuali.rice.kim.api.identity.address.EntityAddress
+import org.kuali.rice.kim.api.identity.email.EntityEmail
+import org.kuali.rice.kim.impl.identity.email.EntityEmailBo
+import org.kuali.rice.kim.impl.identity.email.EntityEmailTypeBo
 
 class IdentityServiceImplTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
@@ -37,6 +40,7 @@ class IdentityServiceImplTest {
     static Map<String, PrincipalBo> samplePrincipals = new HashMap<String, PrincipalBo>();
     static Map<String, EntityTypeContactInfoBo> sampleEntityTypeContactInfos = new HashMap<String, EntityTypeContactInfoBo>();
     static Map<String, EntityAddressBo> sampleEntityAddresses = new HashMap<String, EntityAddressBo>();
+    static Map<String, EntityEmailBo> sampleEntityEmails = new HashMap<String, EntityEmailBo>();
 
     @BeforeClass
     static void createSampleBOs() {
@@ -51,6 +55,8 @@ class IdentityServiceImplTest {
         EntityTypeContactInfoBo firstEntityTypeContactInfoBo = new EntityTypeContactInfoBo(entityId: "AAA", entityTypeCode: "typecodeone", active: true);
         EntityAddressTypeBo firstAddressTypeBo = new EntityAddressTypeBo(code: "addresscodeone");
         EntityAddressBo firstEntityAddressBo = new EntityAddressBo(entityId: "AAA", entityTypeCode: "typecodeone", addressType: firstAddressTypeBo, id: "addressidone", addressTypeCode: "addresscodeone", active: true);
+        EntityEmailTypeBo firstEmailTypeBo = new EntityEmailTypeBo(code: "emailcodeone");
+        EntityEmailBo firstEntityEmailBo = new EntityEmailBo(entityId: "AAA", entityTypeCode: "typecodeone", emailType: firstEmailTypeBo, id:"emailidone", emailTypeCode: "emailcodeone", active: true);
         List<PrincipalBo> firstPrincipals = new ArrayList<PrincipalBo>();
         firstPrincipals.add(firstEntityPrincipal);
         EntityBo firstEntityBo = new EntityBo(active: true, id: "AAA", privacyPreferences: firstEntityPrivacyPreferencesBo, bioDemographics: firstEntityBioDemographicsBo, principals: firstPrincipals);
@@ -61,6 +67,8 @@ class IdentityServiceImplTest {
         EntityTypeContactInfoBo secondEntityTypeContactInfoBo = new EntityTypeContactInfoBo(entityId: "BBB", entityTypeCode: "typecodetwo", active: true);
         EntityAddressTypeBo secondAddressTypeBo = new EntityAddressTypeBo(code: "addresscodetwo");
         EntityAddressBo secondEntityAddressBo = new EntityAddressBo(entityId: "BBB", entityTypeCode: "typecodetwo", addressType: secondAddressTypeBo, id: "addressidtwo", addressTypeCode: "addresscodetwo", active: true);
+        EntityEmailTypeBo secondEmailTypeBo = new EntityEmailTypeBo(code: "emailcodetwo");
+        EntityEmailBo secondEntityEmailBo = new EntityEmailBo(entityId: "BBB", entityTypeCode: "typecodetwo", emailType: secondEmailTypeBo, id:"emailidtwo", emailTypeCode: "emailcodetwo", active: true);
         List<PrincipalBo> secondPrincipals = new ArrayList<PrincipalBo>();
         secondPrincipals.add(secondEntityPrincipal);
         EntityBo secondEntityBo = new EntityBo(active: true, id: "BBB", privacyPreferences: secondEntityPrivacyPreferencesBo, bioDemographics: secondEntityBioDemographicsBo, principals: secondPrincipals);
@@ -77,8 +85,8 @@ class IdentityServiceImplTest {
             sampleEntityTypeContactInfos.put(bo.entityTypeCode, bo);
         }
 
-        for (bo in [firstEntityAddressBo, secondEntityAddressBo]) {
-            sampleEntityAddresses.put(bo.entityId, bo);
+        for (bo in [firstEntityEmailBo, secondEntityEmailBo]) {
+            sampleEntityEmails.put(bo.entityId, bo);
         }
     }
 
@@ -738,5 +746,151 @@ class IdentityServiceImplTest {
         EntityAddress inactiveEntityAddress = identityService.inactivateAddress(existingEntityAddressBo.id);
 
         Assert.assertEquals(EntityAddressBo.to(inactiveEntityAddressBo), inactiveEntityAddress);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testaddEmailToEntityWithNullFails() {
+        EntityEmail entityEmail = identityService.addEmailToEntity(null);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testAddEmailToEntityWithExistingEmailFails() {
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityEmails.size()) {
+            Class clazz, Map map -> for (EntityEmailBo entityEmailBo in sampleEntityEmails.values()) {
+                if (entityEmailBo.entityId.equals(map.get("entityId"))
+                    && entityEmailBo.entityTypeCode.equals(map.get("entityTypeCode"))
+                    && entityEmailBo.emailTypeCode.equals(map.get("emailTypeCode"))
+                    && entityEmailBo.active)
+                {
+                    return entityEmailBo;
+                }
+            }
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityEmailTypeBo firstEmailTypeBo = new EntityEmailTypeBo(code: "emailcodeone");
+        EntityEmailBo newEntityEmailBo = new EntityEmailBo(entityId: "AAA", entityTypeCode: "typecodeone", emailType: firstEmailTypeBo, emailTypeCode: "emailcodeone", active: true);
+        EntityEmail entityEmail = identityService.addEmailToEntity(EntityEmailBo.to(newEntityEmailBo));
+    }
+
+    @Test
+    public void testAddEmailToEntitySucceeds() {
+        EntityEmailTypeBo firstEmailTypeBo = new EntityEmailTypeBo(code: "emailcodethree");
+        EntityEmailBo newEntityEmailBo = new EntityEmailBo(entityId: "CCC", entityTypeCode: "typecodethree", emailType: firstEmailTypeBo, emailTypeCode: "emailcodethree", active: true);
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityEmails.size()) {
+            Class clazz, Map map -> for (EntityEmailBo entityEmailBo in sampleEntityEmails.values()) {
+                if (entityEmailBo.entityId.equals(map.get("entityId"))
+                    && entityEmailBo.entityTypeCode.equals(map.get("entityTypeCode"))
+                    && entityEmailBo.emailTypeCode.equals(map.get("emailTypeCode"))
+                    && entityEmailBo.active)
+                {
+                    return entityEmailBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityEmailBo bo -> return newEntityEmailBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityEmail entityEmail = identityService.addEmailToEntity(EntityEmailBo.to(newEntityEmailBo));
+
+        Assert.assertEquals(EntityEmailBo.to(newEntityEmailBo), entityEmail);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testUpdateEmailWithNullFails() {
+        EntityEmail entityEmail = identityService.updateEmail(null);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testUpdateEmailWithNonExistingEmailFails() {
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityEmails.size()) {
+            Class clazz, Map map -> for (EntityEmailBo entityEmailBo in sampleEntityEmails.values()) {
+                if (entityEmailBo.entityId.equals(map.get("entityId"))
+                    && entityEmailBo.entityTypeCode.equals(map.get("entityTypeCode"))
+                    && entityEmailBo.emailTypeCode.equals(map.get("emailTypeCode"))
+                    && entityEmailBo.active)
+                {
+                    return entityEmailBo;
+                }
+            }
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityEmailTypeBo firstEmailTypeBo = new EntityEmailTypeBo(code: "emailcodethree");
+        EntityEmailBo newEntityEmailBo = new EntityEmailBo(entityId: "CCC", entityTypeCode: "typecodethree", emailType: firstEmailTypeBo, emailTypeCode: "emailcodethree", active: true);
+        EntityEmail entityEmail = identityService.updateEmail(EntityEmailBo.to(newEntityEmailBo));
+    }
+
+    @Test
+    public void testUpdateEmailSucceeds() {
+        EntityEmailTypeBo firstEmailTypeBo = new EntityEmailTypeBo(code: "emailcodeone");
+        EntityEmailBo existingEntityEmailBo = new EntityEmailBo(entityId: "AAA", entityTypeCode: "typecodeone", emailType: firstEmailTypeBo, id:"emailidone", emailTypeCode: "emailcodeone", active: true);
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityEmails.size()) {
+            Class clazz, Map map -> for (EntityEmailBo entityEmailBo in sampleEntityEmails.values()) {
+                if (entityEmailBo.entityId.equals(map.get("entityId"))
+                    && entityEmailBo.entityTypeCode.equals(map.get("entityTypeCode"))
+                    && entityEmailBo.emailTypeCode.equals(map.get("emailTypeCode"))
+                    && entityEmailBo.active)
+                {
+                    return entityEmailBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityEmailBo bo -> return existingEntityEmailBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityEmail entityEmail = identityService.updateEmail(EntityEmailBo.to(existingEntityEmailBo));
+
+        Assert.assertEquals(EntityEmailBo.to(existingEntityEmailBo), entityEmail);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testInactivateEmailWithNonExistentEmailFails() {
+        mockBoService.demand.findByPrimaryKey(1..1) {
+            Class clazz, Map map -> return null;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityEmail entityEmail = identityService.inactivateEmail("new");
+    }
+
+    @Test
+    public void testInactivateEmailSucceeds()
+    {
+        EntityEmailBo existingEntityEmailBo = sampleEntityEmails.get("AAA");
+        EntityEmailTypeBo firstEmailTypeBo = new EntityEmailTypeBo(code: "emailcodeone");
+        EntityEmailBo inactiveEntityEmailBo = new EntityEmailBo(entityId: "AAA", entityTypeCode: "typecodeone", emailType: firstEmailTypeBo, id:"emailidone", emailTypeCode: "emailcodeone", active: false);
+
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityEmails.size()) {
+            Class clazz, Map map -> for (EntityEmailBo entityEmailBo in sampleEntityEmails.values()) {
+                if (entityEmailBo.id.equals(map.get("id"))) {
+                    return entityEmailBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityEmailBo bo -> return inactiveEntityEmailBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityEmail inactiveEntityEmail = identityService.inactivateEmail(existingEntityEmailBo.id);
+
+        Assert.assertEquals(EntityEmailBo.to(inactiveEntityEmailBo), inactiveEntityEmail);
     }
 }

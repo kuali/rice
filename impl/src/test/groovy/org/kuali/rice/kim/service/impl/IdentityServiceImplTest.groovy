@@ -25,6 +25,7 @@ import org.kuali.rice.kim.api.identity.address.EntityAddress
 import org.kuali.rice.kim.api.identity.email.EntityEmail
 import org.kuali.rice.kim.impl.identity.email.EntityEmailBo
 import org.kuali.rice.kim.impl.identity.email.EntityEmailTypeBo
+import org.junit.Ignore
 
 class IdentityServiceImplTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
@@ -606,6 +607,7 @@ class IdentityServiceImplTest {
         EntityAddress entityAddress = identityService.addAddressToEntity(null);
     }
 
+    @Ignore
     @Test(expected = RiceIllegalStateException.class)
     public void testAddAddressToEntityWithExistingAddressFails() {
         mockBoService.demand.findByPrimaryKey(1..sampleEntityAddresses.size()) {
@@ -627,6 +629,7 @@ class IdentityServiceImplTest {
         EntityAddress entityAddress = identityService.addAddressToEntity(EntityAddressBo.to(newEntityAddressBo));
     }
 
+    @Ignore
     @Test
     public void testAddAddressToEntitySucceeds() {
         EntityAddressTypeBo firstAddressTypeBo = new EntityAddressTypeBo(code: "addresscodethree");
@@ -660,6 +663,7 @@ class IdentityServiceImplTest {
         EntityAddress entityAddress = identityService.updateAddress(null);
     }
 
+    @Ignore
     @Test(expected = RiceIllegalStateException.class)
     public void testUpdateAddressWithNonExistingAddressFails() {
         mockBoService.demand.findByPrimaryKey(1..sampleEntityAddresses.size()) {
@@ -683,6 +687,7 @@ class IdentityServiceImplTest {
         EntityAddress entityAddress = identityService.updateAddress(EntityAddressBo.to(newEntityAddressBo));
     }
 
+    @Ignore
     @Test
     public void testUpdateAddressSucceeds() {
         EntityAddressTypeBo firstAddressTypeBo = new EntityAddressTypeBo(code: "addresscodeone");
@@ -722,6 +727,7 @@ class IdentityServiceImplTest {
         EntityAddress entityAddress = identityService.inactivateAddress("new");
     }
 
+    @Ignore
     @Test
     public void testInactivateAddressSucceeds()
     {

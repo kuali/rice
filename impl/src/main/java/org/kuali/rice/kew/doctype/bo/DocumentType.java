@@ -451,7 +451,10 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
             if (KEWConstants.SEARCHABLE_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
                 ObjectDefinition objDef = getAttributeObjectDefinition(ruleAttribute);
                 try {
-                    searchableAttribute = (SearchableAttributeOld) GlobalResourceLoader.getObject(objDef);
+                    Object object = GlobalResourceLoader.getObject(objDef);
+                    if (object instanceof SearchableAttributeOld) {
+                        searchableAttribute = (SearchableAttributeOld)object;
+                    }
                 } catch (RiceRemoteServiceConnectionException e) {
                     LOG.warn("Unable to connect to load searchable attributes for " + this.getName());
                     LOG.warn(e.getMessage());

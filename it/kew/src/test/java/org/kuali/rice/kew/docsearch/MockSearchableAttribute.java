@@ -21,16 +21,47 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
+import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
+import javax.jws.WebParam;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 public class MockSearchableAttribute implements SearchableAttributeOld {
 
+    public static final String SEARCH_CONTENT = "<mockContent>MockSearchableAttribute Search Content</mockContent>";
+
+    // TODO - uncomment below and re-implement once this is switched over to implement SearchableAttribute instead of SearchableAttributeOld!
+//    @Override
+//    public String generateSearchContent(String documentTypeName, WorkflowAttributeDefinition attributeDefinition) {
+//        return SEARCH_CONTENT;
+//    }
+//
+//    @Override
+//    public List<DocumentAttribute<?>> getDocumentAttributes(DocumentSearchContext documentSearchContext) {
+//        return null;  //To change body of implemented methods use File | Settings | File Templates.
+//    }
+//
+//    @Override
+//    public List<RemotableAttributeField> getAttributeFields(DocumentSearchContext documentSearchContext) {
+//        return null;  //To change body of implemented methods use File | Settings | File Templates.
+//    }
+//
+//    @Override
+//    public List<org.kuali.rice.kew.api.document.attribute.WorkflowAttributeValidationError> validateSearchParameters(
+//            Map<String, String> parameters,
+//            DocumentSearchContext searchContext) {
+//        return null;  //To change body of implemented methods use File | Settings | File Templates.
+//    }
+
     public String getSearchContent(DocumentSearchContext documentSearchContext) {
-        return "MockSearchableAttribute Search Content";
+        return SEARCH_CONTENT;
     }
 
     public List<SearchableAttributeValue> getSearchStorageValues(DocumentSearchContext documentSearchContext) {

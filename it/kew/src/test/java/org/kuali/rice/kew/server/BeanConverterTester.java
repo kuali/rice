@@ -21,6 +21,9 @@ import org.junit.Test;
 import org.kuali.rice.core.api.util.xml.XmlException;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.api.action.DelegationType;
+import org.kuali.rice.kew.api.document.DocumentContent;
+import org.kuali.rice.kew.api.document.DocumentContentUpdate;
+import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.DocumentContentDTO;
@@ -115,26 +118,27 @@ public class BeanConverterTester extends KEWTestCase {
          */
 
         // test no content, this should return empty document content
-        DocumentContentDTO contentVO = new DocumentContentDTO();
-        //routeHeaderVO.setDocumentContent(contentVO);
-        String content = DTOConverter.buildUpdatedDocumentContent(contentVO);
+        DocumentContent contentVO = DocumentContent.Builder.create("1234").build();
+        String content = contentVO.getFullContent();
         assertEquals("Invalid content conversion.", KEWConstants.DEFAULT_DOCUMENT_CONTENT, content);
 
         // test simple case, no attributes
         String attributeContent = "<attribute1><id value=\"3\"/></attribute1>";
         String searchableContent = "<searchable1><data>hello</data></searchable1>";
-        contentVO = new DocumentContentDTO();
-        contentVO.setAttributeContent(constructContent(ATTRIBUTE_CONTENT, attributeContent));
-        contentVO.setSearchableContent(constructContent(SEARCHABLE_CONTENT, searchableContent));
-        content = DTOConverter.buildUpdatedDocumentContent(contentVO);
+        DocumentContent.Builder contentBuilder = DocumentContent.Builder.create("1234");
+        contentBuilder.setAttributeContent(constructContent(ATTRIBUTE_CONTENT, attributeContent));
+        contentBuilder.setSearchableContent(constructContent(SEARCHABLE_CONTENT, searchableContent));
+        contentVO = contentBuilder.build();
+        content = contentVO.getFullContent();
         String fullContent = startContent+constructContent(ATTRIBUTE_CONTENT, attributeContent)+constructContent(SEARCHABLE_CONTENT, searchableContent)+endContent;
         assertEquals("Invalid content conversion.", StringUtils.deleteWhitespace(fullContent), StringUtils.deleteWhitespace(content));
 
         // now, add an attribute
         String testAttributeContent = new TestRuleAttribute().getDocContent();
-        WorkflowAttributeDefinitionDTO attributeDefinition = new WorkflowAttributeDefinitionDTO(TestRuleAttribute.class.getName());
-        contentVO.addAttributeDefinition(attributeDefinition);
-        content = DTOConverter.buildUpdatedDocumentContent(contentVO);
+        WorkflowAttributeDefinition attributeDefinition = WorkflowAttributeDefinition.Builder.create(TestRuleAttribute.class.getName()).build();
+        DocumentContentUpdate.Builder contentUpdate = DocumentContentUpdate.Builder.create();
+        contentUpdate.getAttributeDefinitions().add(attributeDefinition);
+        content = DTOConverter.buildUpdatedDocumentContent(KEWConstants.DEFAULT_DOCUMENT_CONTENT, contentUpdate.build(), null);
         fullContent = startContent+
             constructContent(ATTRIBUTE_CONTENT, attributeContent+testAttributeContent)+
             constructContent(SEARCHABLE_CONTENT, searchableContent)+

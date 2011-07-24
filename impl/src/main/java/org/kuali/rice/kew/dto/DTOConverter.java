@@ -64,6 +64,7 @@ import org.kuali.rice.kew.engine.node.State;
 import org.kuali.rice.kew.engine.simulation.SimulationActionToTake;
 import org.kuali.rice.kew.engine.simulation.SimulationCriteria;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.framework.docsearch.SearchableAttribute;
 import org.kuali.rice.kew.notes.Note;
 import org.kuali.rice.kew.notes.service.NoteService;
 import org.kuali.rice.kew.postprocessor.ActionTakenEvent;
@@ -301,146 +302,6 @@ public class DTOConverter {
         return actionItemVO;
     }
 
-    /**
-     * Converts the given DocumentContentVO to a document content string. This method considers existing content on the
-     * document and updates approriately. The string returned will be the new document content for the document. If null is
-     * returned, then the document content is unchanged.
-     */
-    public static String buildUpdatedDocumentContent(DocumentContentDTO documentContentVO) throws WorkflowException {
-        DocumentType documentType = null;
-        String documentContent = KEWConstants.DEFAULT_DOCUMENT_CONTENT;
-        try {
-            // parse the existing content on the document
-            String existingDocContent = KEWConstants.DEFAULT_DOCUMENT_CONTENT;
-            if (documentContentVO.getDocumentId() != null) {
-                DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentContentVO.getDocumentId());
-                documentType = document.getDocumentType();
-                existingDocContent = document.getDocContent();
-            }
-            StandardDocumentContent standardDocContent = new StandardDocumentContent(existingDocContent);
-            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document document = builder.newDocument();
-            Element root = document.createElement(KEWConstants.DOCUMENT_CONTENT_ELEMENT);
-            document.appendChild(root);
-            Element applicationContentElement = standardDocContent.getApplicationContent();
-            if (documentContentVO.getApplicationContent() != null) {
-                // application content has changed
-                if (!org.apache.commons.lang.StringUtils.isEmpty(documentContentVO.getApplicationContent())) {
-                    applicationContentElement = document.createElement(KEWConstants.APPLICATION_CONTENT_ELEMENT);
-                    XmlHelper.appendXml(applicationContentElement, documentContentVO.getApplicationContent());
-                } else {
-                    // they've cleared the application content
-                    applicationContentElement = null;
-                }
-            }
-            Element attributeContentElement = createDocumentContentSection(document, standardDocContent.getAttributeContent(), documentContentVO.getAttributeDefinitions(), documentContentVO.getAttributeContent(), KEWConstants.ATTRIBUTE_CONTENT_ELEMENT, documentType);
-            Element searchableContentElement = createDocumentContentSection(document, standardDocContent.getSearchableContent(), documentContentVO.getSearchableDefinitions(), documentContentVO.getSearchableContent(), KEWConstants.SEARCHABLE_CONTENT_ELEMENT, documentType);
-            if (applicationContentElement != null) {
-                root.appendChild(applicationContentElement);
-            }
-            if (attributeContentElement != null) {
-                root.appendChild(attributeContentElement);
-            }
-            if (searchableContentElement != null) {
-                root.appendChild(searchableContentElement);
-            }
-            documentContent = XmlJotter.jotNode(document);
-        } catch (Exception e) {
-            handleException("Error parsing document content.", e);
-        }
-        return documentContent;
-    }
-
-    private static Element createDocumentContentSection(Document document, Element existingAttributeElement, WorkflowAttributeDefinitionDTO[] definitions, String content, String elementName, DocumentType documentType) throws Exception {
-        Element contentSectionElement = existingAttributeElement;
-        // if they've updated the content, we're going to re-build the content section element from scratch
-        if (content != null) {
-            if (!org.apache.commons.lang.StringUtils.isEmpty(content)) {
-                contentSectionElement = document.createElement(elementName);
-                // if they didn't merely clear the content, let's build the content section element by combining the children
-                // of the incoming XML content
-                Element incomingAttributeElement = XmlHelper.readXml(content).getDocumentElement();
-                NodeList children = incomingAttributeElement.getChildNodes();
-                for (int index = 0; index < children.getLength(); index++) {
-                    contentSectionElement.appendChild(document.importNode(children.item(index), true));
-                }
-            } else {
-                contentSectionElement = null;
-            }
-        }
-        // if they have new definitions we're going to append those to the existing content section
-        if (!ArrayUtils.isEmpty(definitions)) {
-            String errorMessage = "";
-            boolean inError = false;
-            if (contentSectionElement == null) {
-                contentSectionElement = document.createElement(elementName);
-            }
-            for (WorkflowAttributeDefinitionDTO definitionVO : definitions) {
-                AttributeDefinition definition = convertWorkflowAttributeDefinitionVO(definitionVO, documentType);
-                RuleAttribute ruleAttribute = definition.getRuleAttribute();
-                Object attribute = GlobalResourceLoader.getResourceLoader().getObject(definition.getObjectDefinition());
-                boolean propertiesAsMap = false;
-                if (KEWConstants.RULE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
-                    ((GenericXMLRuleAttribute) attribute).setRuleAttribute(ruleAttribute);
-                    propertiesAsMap = true;
-                } else if (KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
-                    ((GenericXMLSearchableAttribute) attribute).setRuleAttribute(ruleAttribute);
-                    propertiesAsMap = true;
-                }
-                if (propertiesAsMap) {
-                    for (PropertyDefinitionDTO propertyDefinitionVO : definitionVO.getProperties()) {
-                        if (attribute instanceof GenericXMLRuleAttribute) {
-                            ((GenericXMLRuleAttribute) attribute).getParamMap().put(propertyDefinitionVO.getName(), propertyDefinitionVO.getValue());
-                        } else if (attribute instanceof GenericXMLSearchableAttribute) {
-                            ((GenericXMLSearchableAttribute) attribute).getParamMap().put(propertyDefinitionVO.getName(), propertyDefinitionVO.getValue());
-                        }
-                    }
-                }
-
-                // validate inputs from client application if the attribute is capable
-                if (attribute instanceof WorkflowAttributeXmlValidator) {
-                    List<WorkflowAttributeValidationError> errors = ((WorkflowAttributeXmlValidator) attribute).validateClientRoutingData();
-                    if (!errors.isEmpty()) {
-                        inError = true;
-                        errorMessage += "Error validating attribute " + definitionVO.getAttributeName() + " ";
-                        for (WorkflowAttributeValidationError error : errors) {
-                            errorMessage += error.getMessage() + " ";
-                        }
-                    }
-                }
-                // dont add to xml if attribute is in error
-                if (!inError) {
-                    if (attribute instanceof WorkflowAttribute) {
-                        String attributeDocContent = ((WorkflowAttribute) attribute).getDocContent();
-                        if (!StringUtils.isEmpty(attributeDocContent)) {
-                            XmlHelper.appendXml(contentSectionElement, attributeDocContent);
-                        }
-                    } else if (attribute instanceof SearchableAttributeOld) {
-                        String searcheAttributeContent =
-                        	((SearchableAttributeOld) attribute).getSearchContent(DocSearchUtils.getDocumentSearchContext("", documentType.getName(), ""));
-                        if (!StringUtils.isEmpty(searcheAttributeContent)) {
-                            XmlHelper.appendXml(contentSectionElement, searcheAttributeContent);
-                        }
-                    }
-                }
-            }
-            if (inError) {
-                throw new WorkflowRuntimeException(errorMessage);
-            }
-
-        }
-        if (contentSectionElement != null) {
-            // always be sure and import the element into the new document, if it originated from the existing doc content
-            // and
-            // appended to it, it will need to be imported
-            contentSectionElement = (Element) document.importNode(contentSectionElement, true);
-        }
-        return contentSectionElement;
-    }
-
-    /**
-     * New in Rice 2.0
-     */
     public static String buildUpdatedDocumentContent(String existingDocContent, DocumentContentUpdate documentContentUpdate, String documentTypeName) {
     	if (existingDocContent == null) {
     		existingDocContent = KEWConstants.DEFAULT_DOCUMENT_CONTENT;
@@ -486,14 +347,7 @@ public class DTOConverter {
 		}
         return documentContent;
     }
-    
-    /**
-     * New in Rice 2.0
-     * @throws TransformerException 
-     * @throws ParserConfigurationException 
-     * @throws IOException 
-     * @throws SAXException 
-     */
+
     private static Element createDocumentContentSection(Document document, Element existingAttributeElement, List<WorkflowAttributeDefinition> definitions, String content, String elementName, String documentTypeName) throws TransformerException, SAXException, IOException, ParserConfigurationException {
         Element contentSectionElement = existingAttributeElement;
         // if they've updated the content, we're going to re-build the content section element from scratch
@@ -521,7 +375,8 @@ public class DTOConverter {
             for (WorkflowAttributeDefinition definitionVO : definitions) {
                 AttributeDefinition definition = convertWorkflowAttributeDefinition(definitionVO);
                 RuleAttribute ruleAttribute = definition.getRuleAttribute();
-                Object attribute = GlobalResourceLoader.getResourceLoader().getObject(definition.getObjectDefinition());
+                Object attribute = KEWServiceLocator.getRuleAttributeService().loadRuleAttributeService(ruleAttribute,
+                        null);
                 boolean propertiesAsMap = false;
                 if (KEWConstants.RULE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
                     ((GenericXMLRuleAttribute) attribute).setRuleAttribute(ruleAttribute);
@@ -559,10 +414,17 @@ public class DTOConverter {
                             XmlHelper.appendXml(contentSectionElement, attributeDocContent);
                         }
                     } else if (attribute instanceof SearchableAttributeOld) {
+                        // TODO remove this section once we remove SearchableAttributeOld
                         String searcheAttributeContent =
                         	((SearchableAttributeOld) attribute).getSearchContent(DocSearchUtils.getDocumentSearchContext("", documentTypeName, ""));
                         if (!StringUtils.isEmpty(searcheAttributeContent)) {
                             XmlHelper.appendXml(contentSectionElement, searcheAttributeContent);
+                        }
+                    } else if (attribute instanceof SearchableAttribute) {
+                        SearchableAttribute searchableAttribute = (SearchableAttribute)attribute;
+                        String searchableAttributeContent = searchableAttribute.generateSearchContent(documentTypeName, definitionVO);
+                        if (!StringUtils.isBlank(searchableAttributeContent)) {
+                            XmlHelper.appendXml(contentSectionElement, searchableAttributeContent);
                         }
                     }
                 }

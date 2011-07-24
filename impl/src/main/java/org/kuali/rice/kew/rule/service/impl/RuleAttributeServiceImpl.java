@@ -131,7 +131,7 @@ public class RuleAttributeServiceImpl implements RuleAttributeService {
     }
 
     protected ObjectDefinition getAttributeObjectDefinition(RuleAttribute ruleAttribute, String defaultApplicationId) {
-        if (ruleAttribute.getApplicationId() == null) {
+        if (ruleAttribute.getApplicationId() == null && defaultApplicationId != null) {
             return new ObjectDefinition(ruleAttribute.getClassName(), defaultApplicationId);
         } else {
             return new ObjectDefinition(ruleAttribute.getClassName(), ruleAttribute.getApplicationId());

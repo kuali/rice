@@ -22,6 +22,9 @@ import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.action.DelegationType;
+import org.kuali.rice.kew.api.document.DocumentContentUpdate;
+import org.kuali.rice.kew.api.document.InvalidDocumentContentException;
+import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
@@ -83,7 +86,7 @@ public class DTOConverterTest extends KEWTestCase {
         try {
             contentVO = DTOConverter.convertDocumentContent(constructContent(attributeContent, searchableContent, applicationContent), null);
             fail("Parsing bad xml should have thrown an XmlException.");
-        } catch (XmlException e) {
+        } catch (InvalidDocumentContentException e) {
             log.info("Expected XmlException was thrown.");
             // if we got the exception we are good to go
         }
@@ -118,26 +121,27 @@ public class DTOConverterTest extends KEWTestCase {
          */
 
         // test no content, this should return empty document content
-        DocumentContentDTO contentVO = new DocumentContentDTO();
+        DocumentContentUpdate contentUpdate = DocumentContentUpdate.Builder.create().build();
         //routeHeaderVO.setDocumentContent(contentVO);
-        String content = DTOConverter.buildUpdatedDocumentContent(contentVO);
+        String content = DTOConverter.buildUpdatedDocumentContent(KEWConstants.DEFAULT_DOCUMENT_CONTENT, contentUpdate,
+                null);
         assertEquals("Invalid content conversion.", StringUtils.deleteWhitespace(KEWConstants.DEFAULT_DOCUMENT_CONTENT), StringUtils.deleteWhitespace(content));
 
         // test simple case, no attributes
         String attributeContent = "<attribute1><id value=\"3\"/></attribute1>";
         String searchableContent = "<searchable1><data>hello</data></searchable1>";
-        contentVO = new DocumentContentDTO();
-        contentVO.setAttributeContent(constructContent(ATTRIBUTE_CONTENT, attributeContent));
-        contentVO.setSearchableContent(constructContent(SEARCHABLE_CONTENT, searchableContent));
-        content = DTOConverter.buildUpdatedDocumentContent(contentVO);
+        DocumentContentUpdate.Builder contentUpdateBuilder = DocumentContentUpdate.Builder.create();
+        contentUpdateBuilder.setAttributeContent(constructContent(ATTRIBUTE_CONTENT, attributeContent));
+        contentUpdateBuilder.setSearchableContent(constructContent(SEARCHABLE_CONTENT, searchableContent));
+        content = DTOConverter.buildUpdatedDocumentContent(KEWConstants.DEFAULT_DOCUMENT_CONTENT, contentUpdateBuilder.build(), null);
         String fullContent = startContent+"\n"+constructContent(ATTRIBUTE_CONTENT, attributeContent)+"\n"+constructContent(SEARCHABLE_CONTENT, searchableContent)+"\n"+endContent;
         assertEquals("Invalid content conversion.", StringUtils.deleteWhitespace(fullContent), StringUtils.deleteWhitespace(content));
 
         // now, add an attribute
         String testAttributeContent = new TestRuleAttribute().getDocContent();
-        WorkflowAttributeDefinitionDTO attributeDefinition = new WorkflowAttributeDefinitionDTO(TestRuleAttribute.class.getName());
-        contentVO.addAttributeDefinition(attributeDefinition);
-        content = DTOConverter.buildUpdatedDocumentContent(contentVO);
+        WorkflowAttributeDefinition attributeDefinition = WorkflowAttributeDefinition.Builder.create(TestRuleAttribute.class.getName()).build();
+        contentUpdateBuilder.getAttributeDefinitions().add(attributeDefinition);
+        content = DTOConverter.buildUpdatedDocumentContent(KEWConstants.DEFAULT_DOCUMENT_CONTENT, contentUpdateBuilder.build(), null);
         fullContent = startContent+
             constructContent(ATTRIBUTE_CONTENT, attributeContent+testAttributeContent)+
             constructContent(SEARCHABLE_CONTENT, searchableContent)+

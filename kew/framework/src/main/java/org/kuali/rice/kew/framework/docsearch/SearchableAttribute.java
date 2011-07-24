@@ -17,10 +17,16 @@ import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
+import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeValidationError;
 
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.List;
@@ -36,12 +42,30 @@ import java.util.Map;
 public interface SearchableAttribute extends Serializable {
 
 
-    public String generateSearchContent(DocumentSearchContext documentSearchContext);
+    @WebMethod(operationName = "generateSearchContent")
+    @WebResult(name = "searchContent")
+    public String generateSearchContent(@WebParam(name = "documentTypeName") String documentTypeName,
+            @WebParam(name = "attributeDefinition") WorkflowAttributeDefinition attributeDefinition);
 
-    public List<DocumentAttribute<?>> getDocumentAttributes(DocumentSearchContext documentSearchContext);
+    @WebMethod(operationName = "getDocumentAttributes")
+    @WebResult(name = "documentAttributes")
+    @XmlElementWrapper(name = "documentAttributes", required = false)
+    @XmlElement(name = "documentAttribute", required = false)
+    public List<DocumentAttribute<?>> getDocumentAttributes(@WebParam(name = "documentSearchContext") DocumentSearchContext documentSearchContext);
 
-    public List<RemotableAttributeField> getAttributeFields(DocumentSearchContext documentSearchContext);
+    @WebMethod(operationName = "getAttributeFields")
+    @WebResult(name = "attributeFields")
+    @XmlElementWrapper(name = "attributeFields", required = false)
+    @XmlElement(name = "attributeField", required = false)
+    public List<RemotableAttributeField> getAttributeFields(@WebParam(name = "documentSearchContext") DocumentSearchContext documentSearchContext);
 
-    public List<WorkflowAttributeValidationError> validateUserSearchInputs(@XmlJavaTypeAdapter(MapStringStringAdapter.class) Map<String, String> paramMap, DocumentSearchContext searchContext);
+    @WebMethod(operationName = "validateSearchParameters")
+    @WebResult(name = "validationErrors")
+    @XmlElementWrapper(name = "validationErrors", required = false)
+    @XmlElement(name = "validationError", required = false)
+    public List<WorkflowAttributeValidationError> validateSearchParameters(
+            @WebParam(name = "parameters")
+            @XmlJavaTypeAdapter(MapStringStringAdapter.class) Map<String, String> parameters,
+            @WebParam(name = "documentSearchContext") DocumentSearchContext searchContext);
 
 }

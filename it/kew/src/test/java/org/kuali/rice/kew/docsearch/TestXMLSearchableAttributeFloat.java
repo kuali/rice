@@ -25,7 +25,7 @@ import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
-public class TestXMLSearchableAttributeFloat implements SearchableAttribute {
+public class TestXMLSearchableAttributeFloat implements SearchableAttributeOld {
 
     private static final long serialVersionUID = -2656250483031095594L;
 

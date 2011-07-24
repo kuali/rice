@@ -1,4 +1,4 @@
-package org.kuali.rice.kew.api.document;
+package org.kuali.rice.kew.api.document.attribute;
 
 /**
  * TODO...
@@ -9,49 +9,50 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.math.BigDecimal;
 
-@XmlRootElement(name = DocumentAttributeString.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = DocumentAttributeDecimal.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = DocumentAttributeString.Constants.TYPE_NAME, propOrder = {
-    DocumentAttributeString.Elements.VALUE
+@XmlType(name = DocumentAttributeDecimal.Constants.TYPE_NAME, propOrder = {
+    DocumentAttributeDecimal.Elements.VALUE
 })
-public final class DocumentAttributeString extends DocumentAttribute<String> {
+public final class DocumentAttributeDecimal extends DocumentAttribute<BigDecimal> {
 
     @XmlElement(name = Elements.VALUE, required = false)
-    private final String value;
+    private final BigDecimal value;
 
     /**
      * Private constructor used only by JAXB.
      */
-    private DocumentAttributeString() {
+    private DocumentAttributeDecimal() {
         this.value = null;
     }
 
-    public DocumentAttributeString(String name, String value) {
+    public DocumentAttributeDecimal(String name, BigDecimal value) {
         super(name);
         this.value = value;
     }
 
-    public static DocumentAttributeString create(String name, String value) {
-        return new DocumentAttributeString(name, value);
+    public static DocumentAttributeDecimal create(String name, BigDecimal value) {
+        return new DocumentAttributeDecimal(name, value);
     }
 
     @Override
-    public String getValue() {
+    public BigDecimal getValue() {
         return value;
     }
 
     @Override
     public DocumentAttributeDataType getDataType() {
-        return DocumentAttributeDataType.STRING;
+        return DocumentAttributeDataType.DECIMAL;
     }
 
     /**
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        final static String ROOT_ELEMENT_NAME = "documentAttributeString";
-        final static String TYPE_NAME = "DocumentAttributeStringType";
+        final static String ROOT_ELEMENT_NAME = "documentAttributeDecimal";
+        final static String TYPE_NAME = "DocumentAttributeDecimalType";
     }
 
     /**

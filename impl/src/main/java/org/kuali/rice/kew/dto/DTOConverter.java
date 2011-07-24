@@ -45,13 +45,13 @@ import org.kuali.rice.kew.api.action.MovePoint;
 import org.kuali.rice.kew.api.document.DocumentContentUpdate;
 import org.kuali.rice.kew.api.document.DocumentDetail;
 import org.kuali.rice.kew.api.document.InvalidDocumentContentException;
-import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
+import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.definition.AttributeDefinition;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.DocumentSearchResult;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
-import org.kuali.rice.kew.docsearch.SearchableAttribute;
+import org.kuali.rice.kew.docsearch.SearchableAttributeOld;
 import org.kuali.rice.kew.docsearch.web.SearchAttributeFormContainer;
 import org.kuali.rice.kew.docsearch.xml.GenericXMLSearchableAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -415,9 +415,9 @@ public class DTOConverter {
                         if (!StringUtils.isEmpty(attributeDocContent)) {
                             XmlHelper.appendXml(contentSectionElement, attributeDocContent);
                         }
-                    } else if (attribute instanceof SearchableAttribute) {
+                    } else if (attribute instanceof SearchableAttributeOld) {
                         String searcheAttributeContent =
-                        	((SearchableAttribute) attribute).getSearchContent(DocSearchUtils.getDocumentSearchContext("", documentType.getName(), ""));
+                        	((SearchableAttributeOld) attribute).getSearchContent(DocSearchUtils.getDocumentSearchContext("", documentType.getName(), ""));
                         if (!StringUtils.isEmpty(searcheAttributeContent)) {
                             XmlHelper.appendXml(contentSectionElement, searcheAttributeContent);
                         }
@@ -558,9 +558,9 @@ public class DTOConverter {
                         if (!StringUtils.isEmpty(attributeDocContent)) {
                             XmlHelper.appendXml(contentSectionElement, attributeDocContent);
                         }
-                    } else if (attribute instanceof SearchableAttribute) {
+                    } else if (attribute instanceof SearchableAttributeOld) {
                         String searcheAttributeContent =
-                        	((SearchableAttribute) attribute).getSearchContent(DocSearchUtils.getDocumentSearchContext("", documentTypeName, ""));
+                        	((SearchableAttributeOld) attribute).getSearchContent(DocSearchUtils.getDocumentSearchContext("", documentTypeName, ""));
                         if (!StringUtils.isEmpty(searcheAttributeContent)) {
                             XmlHelper.appendXml(contentSectionElement, searcheAttributeContent);
                         }
@@ -1085,7 +1085,7 @@ public class DTOConverter {
             nodeInstances.put(nodeInstance.getRouteNodeInstanceId(), nodeInstance);
         }
         detail.setActionRequests(actionRequestVOs);
-        List<org.kuali.rice.kew.api.document.RouteNodeInstance> nodeInstanceVOs = new ArrayList<org.kuali.rice.kew.api.document.RouteNodeInstance>();
+        List<org.kuali.rice.kew.api.document.node.RouteNodeInstance> nodeInstanceVOs = new ArrayList<org.kuali.rice.kew.api.document.node.RouteNodeInstance>();
         for (Iterator<RouteNodeInstance> iterator = nodeInstances.values().iterator(); iterator.hasNext();) {
             RouteNodeInstance nodeInstance = iterator.next();
             nodeInstanceVOs.add(RouteNodeInstance.to(nodeInstance));

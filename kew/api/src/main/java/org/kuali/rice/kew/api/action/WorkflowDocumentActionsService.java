@@ -35,9 +35,8 @@ import org.kuali.rice.kew.api.document.DocumentContentUpdate;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.DocumentUpdate;
 import org.kuali.rice.kew.api.document.InvalidDocumentContentException;
-import org.kuali.rice.kew.api.document.RouteNodeInstance;
-import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
-import org.kuali.rice.kew.api.document.WorkflowAttributeValidationError;
+import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
+import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.api.document.WorkflowDocumentService;
 
 /**
@@ -147,7 +146,7 @@ public interface WorkflowDocumentActionsService {
      * </ul>
      * 
      * <p>
-     * Additionally, the initial {@link RouteNodeInstance} for the workflow process on the document
+     * Additionally, the initial {@link org.kuali.rice.kew.api.document.node.RouteNodeInstance} for the workflow process on the document
      * will be created and linked to the document as it's initial node. Once the document is
      * created, the {@link #route(DocumentActionParameters)} operation must be invoked in order to
      * submit it to the workflow engine for initial processing.

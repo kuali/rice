@@ -44,7 +44,7 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.kew.api.document.RouteNodeInstanceState;
+import org.kuali.rice.kew.api.document.node.RouteNodeInstanceState;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -295,11 +295,12 @@ public class RouteNodeInstance implements Serializable {
 		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
 	}
 	
-	public static org.kuali.rice.kew.api.document.RouteNodeInstance to(RouteNodeInstance routeNodeInstance) {
+	public static org.kuali.rice.kew.api.document.node.RouteNodeInstance to(RouteNodeInstance routeNodeInstance) {
 		if (routeNodeInstance == null) {
 			return null;
 		}
-		org.kuali.rice.kew.api.document.RouteNodeInstance.Builder builder = org.kuali.rice.kew.api.document.RouteNodeInstance.Builder.create();
+		org.kuali.rice.kew.api.document.node.RouteNodeInstance.Builder builder = org.kuali.rice.kew.api.document.node
+                .RouteNodeInstance.Builder.create();
 		builder.setActive(routeNodeInstance.isActive());
 		builder.setBranchId(routeNodeInstance.getBranch().getBranchId().toString());
 		builder.setComplete(routeNodeInstance.isComplete());

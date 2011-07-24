@@ -81,7 +81,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     private static final String DATABASE_WILDCARD_CHARACTER_STRING = "%";
     private static final char DATABASE_WILDCARD_CHARACTER = DATABASE_WILDCARD_CHARACTER_STRING.toCharArray()[0];
 
-    private static List<SearchableAttribute> searchableAttributes;
+    private static List<SearchableAttributeOld> searchableAttributes;
     private static DocSearchCriteriaDTO criteria;
     private static String searchingUser;
 
@@ -94,13 +94,13 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
     public StandardDocumentSearchGenerator() {
         super();
-        searchableAttributes = new ArrayList<SearchableAttribute>();
+        searchableAttributes = new ArrayList<SearchableAttributeOld>();
     }
 
     /**
      * @param searchableAttributes in a list
      */
-    public StandardDocumentSearchGenerator(List<SearchableAttribute> searchableAttributes) {
+    public StandardDocumentSearchGenerator(List<SearchableAttributeOld> searchableAttributes) {
         this();
         StandardDocumentSearchGenerator.searchableAttributes = searchableAttributes;
     }
@@ -113,11 +113,11 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         StandardDocumentSearchGenerator.criteria = criteria;
     }
 
-    public List<SearchableAttribute> getSearchableAttributes() {
+    public List<SearchableAttributeOld> getSearchableAttributes() {
         return searchableAttributes;
     }
 
-    public void setSearchableAttributes(List<SearchableAttribute> searchableAttributes) {
+    public void setSearchableAttributes(List<SearchableAttributeOld> searchableAttributes) {
         this.searchableAttributes = searchableAttributes;
     }
 
@@ -194,7 +194,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             }
             DocumentType documentType = getValidDocumentType(criteria.getDocTypeFullName());
             try {
-                for (SearchableAttribute searchableAttribute : documentType.getSearchableAttributes()) {
+                for (SearchableAttributeOld searchableAttribute : documentType.getSearchableAttributesOld()) {
                     List<WorkflowAttributeValidationError> searchableErrors = validateSearchableAttribute(
                             searchableAttribute, paramMap, DocSearchUtils.getDocumentSearchContext("", documentType.getName(), ""));
                     if(!CollectionUtils.isEmpty(searchableErrors)){
@@ -217,7 +217,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     }
 
     public List<WorkflowAttributeValidationError> validateSearchableAttribute(
-            SearchableAttribute searchableAttribute, Map searchAttributesParameterMap, DocumentSearchContext documentSearchContext) {
+            SearchableAttributeOld searchableAttribute, Map searchAttributesParameterMap, DocumentSearchContext documentSearchContext) {
         return searchableAttribute.validateUserSearchInputs(searchAttributesParameterMap, documentSearchContext);
     }
 

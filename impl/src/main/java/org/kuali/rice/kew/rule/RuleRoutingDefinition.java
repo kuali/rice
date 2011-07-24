@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.rule;
 
-import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
+import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 
 /**

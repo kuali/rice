@@ -33,6 +33,7 @@ import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionTaken;
+import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
 import org.w3c.dom.Element;
 
 @XmlRootElement(name = DocumentDetail.Constants.ROOT_ELEMENT_NAME)

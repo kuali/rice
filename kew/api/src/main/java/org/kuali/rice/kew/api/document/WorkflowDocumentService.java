@@ -18,6 +18,7 @@ package org.kuali.rice.kew.api.document;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionTaken;
+import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
 
 import javax.jws.WebParam;
 import java.util.List;

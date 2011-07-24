@@ -27,7 +27,7 @@ import org.kuali.rice.kew.docsearch.DocumentSearchContext;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor;
-import org.kuali.rice.kew.docsearch.SearchableAttribute;
+import org.kuali.rice.kew.docsearch.SearchableAttributeOld;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.docsearch.StandardDocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.StandardDocumentSearchResultProcessor;
@@ -36,11 +36,11 @@ import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.util.MessageMap;
 
-public class DataDictionaryDocumentSearchCustomizer implements SearchableAttribute, DocumentSearchGenerator, DocumentSearchResultProcessor {
+public class DataDictionaryDocumentSearchCustomizer implements SearchableAttributeOld, DocumentSearchGenerator, DocumentSearchResultProcessor {
     // SEARCH GENERATOR IMPLEMENTATION
     protected StandardDocumentSearchGenerator documentSearchGenerator = null;
     // SEARCHABLE ATTRIBUTE IMPLEMENTATION
-    protected SearchableAttribute searchableAttribute = null;
+    protected SearchableAttributeOld searchableAttribute = null;
     // SEARCH RESULT PROCESSOR IMPLEMENTATION
     protected DocumentSearchResultProcessor searchResultProcessor = null;
     
@@ -158,21 +158,21 @@ public class DataDictionaryDocumentSearchCustomizer implements SearchableAttribu
 	 * 
 	 * @param searchableAttributes
 	 */
-	public void setSearchableAttributes(List<SearchableAttribute> searchableAttributes) {
+	public void setSearchableAttributes(List<SearchableAttributeOld> searchableAttributes) {
 		getDocumentSearchGenerator().setSearchableAttributes(searchableAttributes);
     }
 	
 	/**
 	 * @param searchableAttribute the searchableAttribute to set
 	 */
-	public void setSearchableAttribute(SearchableAttribute searchableAttribute) {
+	public void setSearchableAttribute(SearchableAttributeOld searchableAttribute) {
 		this.searchableAttribute = searchableAttribute;
 	}
 	
 	/**
 	 * @return the searchableAttribute
 	 */
-	public SearchableAttribute getSearchableAttribute() {
+	public SearchableAttributeOld getSearchableAttribute() {
 		if(this.searchableAttribute == null){
 			this.searchableAttribute = new DataDictionarySearchableAttribute();
 		}

@@ -623,7 +623,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 //				LOG.error("buildSearchableAttributesFromString() " + errorMsg);
 //				throw new RuntimeException(errorMsg);
 //			}
-//			for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
+//			for (SearchableAttributeOld searchableAttribute : docType.getSearchableAttributesOld()) {
 //				for (Row row : searchableAttribute.getSearchingRows()) {
 //					for (Field field : row.getFields()) {
 //						SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType());
@@ -651,10 +651,10 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 //				if (index != -1) {
 //					String key = searchableAttribute.substring(0, index);
 ////					String savedKey = key;
-////					if (key.indexOf(SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX) == 0) {
-////						savedKey = key.substring(SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX.length());
-////					} else if (key.indexOf(SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX) == 0) {
-////						savedKey = key.substring(SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX.length());
+////					if (key.indexOf(SearchableAttributeOld.RANGE_LOWER_BOUND_PROPERTY_PREFIX) == 0) {
+////						savedKey = key.substring(SearchableAttributeOld.RANGE_LOWER_BOUND_PROPERTY_PREFIX.length());
+////					} else if (key.indexOf(SearchableAttributeOld.RANGE_UPPER_BOUND_PROPERTY_PREFIX) == 0) {
+////						savedKey = key.substring(SearchableAttributeOld.RANGE_UPPER_BOUND_PROPERTY_PREFIX.length());
 ////					}
 //					String value = searchableAttribute.substring(index + 1);
 //					SearchAttributeCriteriaComponent critComponent = (SearchAttributeCriteriaComponent) criteriaComponentsByKey.get(key);

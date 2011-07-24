@@ -20,7 +20,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 /**
- * Interface to get SearchableAttribute data
+ * Interface to get SearchableAttributeOld data
  *
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)

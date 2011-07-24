@@ -24,7 +24,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.docsearch.DocumentSearchContext;
-import org.kuali.rice.kew.docsearch.SearchableAttribute;
+import org.kuali.rice.kew.docsearch.SearchableAttributeOld;
 import org.kuali.rice.kew.docsearch.SearchableAttributeStringValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -63,14 +63,14 @@ import org.kuali.rice.krad.workflow.service.WorkflowAttributePropertyResolutionS
 /**
  * This class...
  */
-public class DataDictionarySearchableAttribute implements SearchableAttribute {
+public class DataDictionarySearchableAttribute implements SearchableAttributeOld {
 
     private static final long serialVersionUID = 173059488280366451L;
 	private static final Logger LOG = Logger.getLogger(DataDictionarySearchableAttribute.class);
     public static final String DATA_TYPE_BOOLEAN = "boolean";
 
     /**
-     * @see org.kuali.rice.kew.docsearch.SearchableAttribute#getSearchContent(org.kuali.rice.kew.docsearch.DocumentSearchContext)
+     * @see org.kuali.rice.kew.docsearch.SearchableAttributeOld#getSearchContent(org.kuali.rice.kew.docsearch.DocumentSearchContext)
      */
     public String getSearchContent(DocumentSearchContext documentSearchContext) {
 
@@ -78,7 +78,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
     }
 
     /**
-     * @see org.kuali.rice.kew.docsearch.SearchableAttribute#getSearchStorageValues(org.kuali.rice.kew.docsearch.DocumentSearchContext)
+     * @see org.kuali.rice.kew.docsearch.SearchableAttributeOld#getSearchStorageValues(org.kuali.rice.kew.docsearch.DocumentSearchContext)
      */
     public List<SearchableAttributeValue> getSearchStorageValues(DocumentSearchContext documentSearchContext) {
         List<SearchableAttributeValue> saValues = new ArrayList<SearchableAttributeValue>();
@@ -150,7 +150,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
     }
 
     /**
-     * @see org.kuali.rice.kew.docsearch.SearchableAttribute#getSearchingRows(org.kuali.rice.kew.docsearch.DocumentSearchContext)
+     * @see org.kuali.rice.kew.docsearch.SearchableAttributeOld#getSearchingRows(org.kuali.rice.kew.docsearch.DocumentSearchContext)
      */
     public List<Row> getSearchingRows(DocumentSearchContext documentSearchContext) {
 

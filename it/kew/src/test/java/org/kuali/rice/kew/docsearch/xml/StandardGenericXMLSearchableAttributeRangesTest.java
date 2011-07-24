@@ -32,7 +32,7 @@ import org.junit.Test;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
-import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
+import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.DocumentSearchContext;
@@ -83,7 +83,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
 //    }
 //
 //    protected SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,Boolean isLowerBoundValue,DocumentType docType) {
-//    	String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX + key : SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX + key);
+//    	String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? SearchableAttributeOld.RANGE_LOWER_BOUND_PROPERTY_PREFIX + key : SearchableAttributeOld.RANGE_UPPER_BOUND_PROPERTY_PREFIX + key);
 //    	String savedKey = key;
 //    	SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(formKey,value,savedKey);
 //    	Field field = getFieldByFormKey(docType, formKey);
@@ -105,7 +105,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
 //    	if (docType == null) {
 //    		return null;
 //    	}
-//		for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
+//		for (SearchableAttributeOld searchableAttribute : docType.getSearchableAttributesOld()) {
 //			for (Row row : searchableAttribute.getSearchingRows()) {
 //				for (Field field : row.getFields()) {
 //					if (field.getPropertyName().equals(formKey)) {

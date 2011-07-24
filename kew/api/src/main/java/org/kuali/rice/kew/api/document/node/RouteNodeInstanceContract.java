@@ -13,14 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.api.document;
+package org.kuali.rice.kew.api.document.node;
+
+import java.util.List;
 
 import org.kuali.rice.core.api.mo.common.Identifiable;
 
-public interface RouteNodeInstanceStateContract extends Identifiable {
+public interface RouteNodeInstanceContract extends Identifiable {
 
-	String getKey();
+	String getDocumentId();
+
+	String getBranchId();
 	
-	String getValue();
+	String getRouteNodeId();
+	
+	String getProcessId();
+	
+	String getName();
+	
+	boolean isActive();
+	
+	boolean isComplete();
+	
+	boolean isInitial();
+	
+	List<? extends RouteNodeInstanceStateContract> getState();
 	
 }

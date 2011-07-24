@@ -131,10 +131,10 @@ public class DictionaryValidationServiceImpl extends org.kuali.rice.krad.service
     }
 
     /**
-     * The attributeDataType parameter should be one of the data types specified by the SearchableAttribute
+     * The attributeDataType parameter should be one of the data types specified by the SearchableAttributeOld
      * interface;
      * will
-     * default to DATA_TYPE_STRING if a data type other than the ones from SearchableAttribute is specified.
+     * default to DATA_TYPE_STRING if a data type other than the ones from SearchableAttributeOld is specified.
      *
      * @see org.kuali.rice.krad.service.DictionaryValidationService#validateAttributeFormat(java.lang.String,
      *      java.lang.String, java.lang.String, java.lang.String, java.lang.String)

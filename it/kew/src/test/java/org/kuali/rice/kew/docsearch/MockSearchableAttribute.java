@@ -27,7 +27,7 @@ import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
 
-public class MockSearchableAttribute implements SearchableAttribute {
+public class MockSearchableAttribute implements SearchableAttributeOld {
 
     public String getSearchContent(DocumentSearchContext documentSearchContext) {
         return "MockSearchableAttribute Search Content";

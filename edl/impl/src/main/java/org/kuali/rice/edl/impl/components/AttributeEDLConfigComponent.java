@@ -23,8 +23,8 @@ import org.kuali.rice.edl.impl.EDLContext;
 import org.kuali.rice.edl.impl.RequestParser;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.document.PropertyDefinition;
-import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
-import org.kuali.rice.kew.api.document.WorkflowAttributeValidationError;
+import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
+import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeValidationError;
 import org.w3c.dom.Element;
 
 /**

@@ -31,7 +31,7 @@ import java.util.Map;
 import org.junit.Test;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
-import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
+import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -62,7 +62,7 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
     }
 
 //    private SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,Boolean isLowerBoundValue,DocumentType docType) {
-//    	String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX : SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX);
+//    	String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? SearchableAttributeOld.RANGE_LOWER_BOUND_PROPERTY_PREFIX : SearchableAttributeOld.RANGE_UPPER_BOUND_PROPERTY_PREFIX);
 //    	String savedKey = key;
 //    	SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(formKey,value,savedKey);
 //    	Field field = getFieldByFormKey(docType, formKey);
@@ -84,7 +84,7 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
 //    	if (docType == null) {
 //    		return null;
 //    	}
-//		for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
+//		for (SearchableAttributeOld searchableAttribute : docType.getSearchableAttributesOld()) {
 //			for (Row row : searchableAttribute.getSearchingRows()) {
 //				for (Field field : row.getFields()) {
 //					if (field.getPropertyName().equals(formKey)) {
@@ -348,7 +348,7 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         result = docSearchService.getList(user.getPrincipalId(), criteria);
         assertEquals(2, result.getSearchResults().size());
 
-        // search with specific SearchableAttribute value
+        // search with specific SearchableAttributeOld value
         criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setFromDateCreated("01/01/2004");
@@ -358,7 +358,7 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         result = docSearchService.getList(user.getPrincipalId(), criteria);
         assertEquals(1, result.getSearchResults().size());
 
-        // search with any SearchableAttribute value
+        // search with any SearchableAttributeOld value
         criteria = new DocSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
         criteria.setFromDateCreated("01/01/2004");

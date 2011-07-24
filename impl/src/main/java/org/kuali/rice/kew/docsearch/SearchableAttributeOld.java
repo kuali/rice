@@ -22,11 +22,11 @@ import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kns.web.ui.Row;
 
 /**
- * SearchableAttribute must implement this interface
+ * SearchableAttributeOld must implement this interface
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface SearchableAttribute extends Serializable {
+public interface SearchableAttributeOld extends Serializable {
 
     public static final List SEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST = Arrays.asList(SearchableAttributeStringValue.class, SearchableAttributeFloatValue.class, SearchableAttributeLongValue.class,
             SearchableAttributeDateTimeValue.class);

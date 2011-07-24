@@ -1,11 +1,10 @@
-package org.kuali.rice.kew.api.document;
+package org.kuali.rice.kew.api.document.attribute;
 
 /**
  * TODO...
  */
 
 import org.apache.commons.lang.StringUtils;
-import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.w3c.dom.Element;

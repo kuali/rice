@@ -24,7 +24,7 @@ import org.kuali.rice.kew.docsearch.DocumentSearchContext;
 import org.kuali.rice.kew.docsearch.DocumentSearchResult;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.docsearch.SearchAttributeCriteriaComponent;
-import org.kuali.rice.kew.docsearch.SearchableAttribute;
+import org.kuali.rice.kew.docsearch.SearchableAttributeOld;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -269,7 +269,7 @@ public class DataDictionarySearchableAttributeTest extends KRADTestCase {
 		if (docType == null) {
 			return null;
 		}
-		for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
+		for (SearchableAttributeOld searchableAttribute : docType.getSearchableAttributesOld()) {
 			for (Row row : searchableAttribute.getSearchingRows(DocSearchUtils.getDocumentSearchContext("", docType.getName(), ""))) {
 				for (Field field : row.getFields()) {
 					if (field instanceof Field) {

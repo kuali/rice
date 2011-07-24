@@ -171,7 +171,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
 
     protected void queueDeferredWork(ActionTakenValue actionTaken) {
         try {
-        	final boolean shouldIndex = getRouteHeader().getDocumentType().hasSearchableAttributes() && RouteContext.getCurrentRouteContext().isSearchIndexingRequestedForContext();
+        	final boolean shouldIndex = getRouteHeader().getDocumentType().hasSearchableAttributesOld() && RouteContext.getCurrentRouteContext().isSearchIndexingRequestedForContext();
         	
             BlanketApproveProcessorService blanketApprove = MessageServiceNames.getBlanketApproveProcessorService(routeHeader);
             blanketApprove.doBlanketApproveWork(routeHeader.getDocumentId(), getPrincipal().getPrincipalId(), actionTaken.getActionTakenId(), nodeNames, shouldIndex);

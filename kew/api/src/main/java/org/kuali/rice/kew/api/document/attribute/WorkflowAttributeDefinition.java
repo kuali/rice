@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.api.document;
+package org.kuali.rice.kew.api.document.attribute;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
+import org.kuali.rice.kew.api.document.PropertyDefinition;
 import org.w3c.dom.Element;
 
 @XmlRootElement(name = WorkflowAttributeDefinition.Constants.ROOT_ELEMENT_NAME)

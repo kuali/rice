@@ -72,7 +72,6 @@ import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -199,7 +198,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	 */
 	protected void indexForSearchAfterActionIfNecessary(DocumentRouteHeaderValue routeHeader) {
 		RouteContext routeContext = RouteContext.getCurrentRouteContext();
-		if (routeHeader.getDocumentType().hasSearchableAttributes() && routeContext.isSearchIndexingRequestedForContext()) {
+		if (routeHeader.getDocumentType().hasSearchableAttributesOld() && routeContext.isSearchIndexingRequestedForContext()) {
 			SearchableAttributeProcessingService searchableAttService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(routeHeader);
 			searchableAttService.indexDocument(routeHeader.getDocumentId()); 
 		}
@@ -324,7 +323,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
  	 	}
 
  	 	RouteContext routeContext = RouteContext.getCurrentRouteContext();
- 	 	if (routeHeader.getDocumentType().hasSearchableAttributes() && !routeContext.isSearchIndexingRequestedForContext()) {
+ 	 	if (routeHeader.getDocumentType().hasSearchableAttributesOld() && !routeContext.isSearchIndexingRequestedForContext()) {
  	 		routeContext.requestSearchIndexingForContext();
  	 		
 			SearchableAttributeProcessingService searchableAttService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(routeHeader);

@@ -1,4 +1,4 @@
-package org.kuali.rice.kew.api.document;
+package org.kuali.rice.kew.api.document.attribute;
 
 /**
  * TODO...
@@ -9,50 +9,49 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.math.BigInteger;
 
-@XmlRootElement(name = DocumentAttributeInteger.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = DocumentAttributeString.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = DocumentAttributeInteger.Constants.TYPE_NAME, propOrder = {
-    DocumentAttributeInteger.Elements.VALUE
+@XmlType(name = DocumentAttributeString.Constants.TYPE_NAME, propOrder = {
+    DocumentAttributeString.Elements.VALUE
 })
-public final class DocumentAttributeInteger extends DocumentAttribute<BigInteger> {
+public final class DocumentAttributeString extends DocumentAttribute<String> {
 
     @XmlElement(name = Elements.VALUE, required = false)
-    private final BigInteger value;
+    private final String value;
 
     /**
      * Private constructor used only by JAXB.
      */
-    private DocumentAttributeInteger() {
+    private DocumentAttributeString() {
         this.value = null;
     }
 
-    public DocumentAttributeInteger(String name, BigInteger value) {
+    public DocumentAttributeString(String name, String value) {
         super(name);
         this.value = value;
     }
 
-    public static DocumentAttributeInteger create(String name, BigInteger value) {
-        return new DocumentAttributeInteger(name, value);
+    public static DocumentAttributeString create(String name, String value) {
+        return new DocumentAttributeString(name, value);
     }
 
     @Override
-    public BigInteger getValue() {
+    public String getValue() {
         return value;
     }
 
     @Override
     public DocumentAttributeDataType getDataType() {
-        return DocumentAttributeDataType.INTEGER;
+        return DocumentAttributeDataType.STRING;
     }
 
     /**
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        final static String ROOT_ELEMENT_NAME = "documentAttributeInteger";
-        final static String TYPE_NAME = "DocumentAttributeIntegerType";
+        final static String ROOT_ELEMENT_NAME = "documentAttributeString";
+        final static String TYPE_NAME = "DocumentAttributeStringType";
     }
 
     /**

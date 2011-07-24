@@ -100,7 +100,7 @@ public class DocumentLookupCriteriaBuilder  {
 			criteria.getSearchableAttributes().clear();
 			if (!propertyFields.isEmpty()) {
 				Map<String, SearchAttributeCriteriaComponent> criteriaComponentsByFormKey = new HashMap<String, SearchAttributeCriteriaComponent>();
-				for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
+				for (SearchableAttributeOld searchableAttribute : docType.getSearchableAttributesOld()) {
 					for (Row row : searchableAttribute.getSearchingRows(
 							DocSearchUtils.getDocumentSearchContext("", docType.getName(), ""))) {
 						for (Field field : row.getFields()) {

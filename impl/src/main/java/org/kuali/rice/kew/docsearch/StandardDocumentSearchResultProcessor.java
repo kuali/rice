@@ -360,8 +360,8 @@ public class StandardDocumentSearchResultProcessor implements
 				.getDocTypeFullName());
 		if (documentType != null) {
 			List<Field> allFields = new ArrayList<Field>();
-			for (SearchableAttribute searchableAttribute : documentType
-					.getSearchableAttributes()) {
+			for (SearchableAttributeOld searchableAttribute : documentType
+					.getSearchableAttributesOld()) {
 				List<Row> searchRows = searchableAttribute
 						.getSearchingRows(DocSearchUtils
 								.getDocumentSearchContext("", documentType

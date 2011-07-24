@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionTaken;
+import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
 
 public interface DocumentDetailContract {
 

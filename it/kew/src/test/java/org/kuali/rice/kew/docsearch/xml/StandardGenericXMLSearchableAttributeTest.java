@@ -38,7 +38,7 @@ import javax.xml.xpath.XPathFactory;
 import org.junit.Test;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
-import org.kuali.rice.kew.api.document.WorkflowAttributeDefinition;
+import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.DocumentSearchContext;
@@ -569,7 +569,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
     }
 
     /**
-     * Tests searching with client-generated documentContent which will not match what the SearchableAttribute
+     * Tests searching with client-generated documentContent which will not match what the SearchableAttributeOld
      * is configured to look for.  This should pass with zero search results, but should not throw an exception.
      * @throws Exception
      */
@@ -615,7 +615,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
     }
 
     /**
-     * Tests searching with client-generated documentContent which will not match what the SearchableAttribute
+     * Tests searching with client-generated documentContent which will not match what the SearchableAttributeOld
      * is configured to look for.  This should pass with zero search results, but should not throw an exception.
      * @throws Exception
      */

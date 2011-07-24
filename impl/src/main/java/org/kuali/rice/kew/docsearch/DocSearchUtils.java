@@ -59,7 +59,7 @@ public final class DocSearchUtils {
     
     public static List<SearchableAttributeValue> getSearchableAttributeValueObjectTypes() {
         List<SearchableAttributeValue> searchableAttributeValueClasses = new ArrayList<SearchableAttributeValue>();
-        for (Object aSEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST : SearchableAttribute.SEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST)
+        for (Object aSEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST : SearchableAttributeOld.SEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST)
         {
             Class searchAttributeValueClass = (Class) aSEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST;
             ObjectDefinition objDef = new ObjectDefinition(searchAttributeValueClass);
@@ -121,7 +121,7 @@ public final class DocSearchUtils {
 
         if (docType != null) {
 
-            for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
+            for (SearchableAttributeOld searchableAttribute : docType.getSearchableAttributesOld()) {
             	//KFSMI-1466 - DocumentSearchContext
                 for (Row row : searchableAttribute.getSearchingRows(
                 		DocSearchUtils.getDocumentSearchContext("", docType.getName(), ""))) {
@@ -152,10 +152,10 @@ public final class DocSearchUtils {
                 if (index != -1) {
                     String key = searchableAttribute.substring(0, index);
                     // String savedKey = key;
-                    // if (key.indexOf(SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX) == 0) {
-                    // savedKey = key.substring(SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX.length());
-                    // } else if (key.indexOf(SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX) == 0) {
-                    // savedKey = key.substring(SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX.length());
+                    // if (key.indexOf(SearchableAttributeOld.RANGE_LOWER_BOUND_PROPERTY_PREFIX) == 0) {
+                    // savedKey = key.substring(SearchableAttributeOld.RANGE_LOWER_BOUND_PROPERTY_PREFIX.length());
+                    // } else if (key.indexOf(SearchableAttributeOld.RANGE_UPPER_BOUND_PROPERTY_PREFIX) == 0) {
+                    // savedKey = key.substring(SearchableAttributeOld.RANGE_UPPER_BOUND_PROPERTY_PREFIX.length());
                     // }
                     String value = searchableAttribute.substring(index + 1);
                     if (value.startsWith(CURRENT_USER_PREFIX)) {
@@ -296,7 +296,7 @@ public final class DocSearchUtils {
             }
             if (!propertyFields.isEmpty()) {
                 Map<String, SearchAttributeCriteriaComponent> criteriaComponentsByFormKey = new HashMap<String, SearchAttributeCriteriaComponent>();
-                for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
+                for (SearchableAttributeOld searchableAttribute : docType.getSearchableAttributesOld()) {
                 	//KFSMI-1466 - DocumentSearchContext
                     for (Row row : searchableAttribute.getSearchingRows(
                     		DocSearchUtils.getDocumentSearchContext("", docType.getName(), ""))) {

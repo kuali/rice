@@ -23,16 +23,24 @@ import java.util.Collection;
 import java.util.List;
 
 import org.jdom.Element;
+import org.kuali.rice.core.api.exception.RiceRemoteServiceConnectionException;
 import org.kuali.rice.core.api.impex.ExportDataSet;
+import org.kuali.rice.core.api.reflect.ObjectDefinition;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
+import org.kuali.rice.kew.docsearch.SearchableAttributeOld;
+import org.kuali.rice.kew.docsearch.xml.GenericXMLSearchableAttribute;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.dao.RuleAttributeDAO;
 import org.kuali.rice.kew.rule.service.RuleAttributeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.xml.RuleAttributeXmlParser;
 import org.kuali.rice.kew.xml.export.RuleAttributeXmlExporter;
 
+import javax.xml.namespace.QName;
 
 public class RuleAttributeServiceImpl implements RuleAttributeService {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RuleAttributeServiceImpl.class);
@@ -105,6 +113,28 @@ public class RuleAttributeServiceImpl implements RuleAttributeService {
         LOG.debug("end validating ruleAttribute");
         if (!errors.isEmpty()) {
             throw new WorkflowServiceErrorException("RuleAttribute Validation Error", errors);
+        }
+    }
+
+    @Override
+    public Object loadRuleAttributeService(RuleAttribute attribute, String defaultApplicationId) {
+        Object attributeService = null;
+        // first check if the class name is a valid and available java class
+        String attributeName = attribute.getClassName();
+        ObjectDefinition attributeObjectDefinition = getAttributeObjectDefinition(attribute, defaultApplicationId);
+        attributeService = GlobalResourceLoader.getObject(attributeObjectDefinition);
+        if (attributeService == null) {
+            // if we can't find a class, try a service
+            attributeService = GlobalResourceLoader.getService(QName.valueOf(attributeName));
+        }
+        return attributeService;
+    }
+
+    protected ObjectDefinition getAttributeObjectDefinition(RuleAttribute ruleAttribute, String defaultApplicationId) {
+        if (ruleAttribute.getApplicationId() == null) {
+            return new ObjectDefinition(ruleAttribute.getClassName(), defaultApplicationId);
+        } else {
+            return new ObjectDefinition(ruleAttribute.getClassName(), ruleAttribute.getApplicationId());
         }
     }
 

@@ -1,59 +1,58 @@
-package org.kuali.rice.kew.api.document;
+package org.kuali.rice.kew.api.document.attribute;
 
 /**
  * TODO...
  */
-
-import org.joda.time.DateTime;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.math.BigInteger;
 
-@XmlRootElement(name = DocumentAttributeDateTime.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = DocumentAttributeInteger.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = DocumentAttributeDateTime.Constants.TYPE_NAME, propOrder = {
-    DocumentAttributeDateTime.Elements.VALUE
+@XmlType(name = DocumentAttributeInteger.Constants.TYPE_NAME, propOrder = {
+    DocumentAttributeInteger.Elements.VALUE
 })
-public final class DocumentAttributeDateTime extends DocumentAttribute<DateTime> {
+public final class DocumentAttributeInteger extends DocumentAttribute<BigInteger> {
 
     @XmlElement(name = Elements.VALUE, required = false)
-    private final DateTime value;
+    private final BigInteger value;
 
     /**
      * Private constructor used only by JAXB.
      */
-    private DocumentAttributeDateTime() {
+    private DocumentAttributeInteger() {
         this.value = null;
     }
 
-    public DocumentAttributeDateTime(String name, DateTime value) {
+    public DocumentAttributeInteger(String name, BigInteger value) {
         super(name);
         this.value = value;
     }
 
-    public static DocumentAttributeDateTime create(String name, DateTime value) {
-        return new DocumentAttributeDateTime(name, value);
+    public static DocumentAttributeInteger create(String name, BigInteger value) {
+        return new DocumentAttributeInteger(name, value);
     }
 
     @Override
-    public DateTime getValue() {
+    public BigInteger getValue() {
         return value;
     }
 
     @Override
     public DocumentAttributeDataType getDataType() {
-        return DocumentAttributeDataType.DATE_TIME;
+        return DocumentAttributeDataType.INTEGER;
     }
 
     /**
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        final static String ROOT_ELEMENT_NAME = "documentAttributeDateTime";
-        final static String TYPE_NAME = "DocumentAttributeDateTimeType";
+        final static String ROOT_ELEMENT_NAME = "documentAttributeInteger";
+        final static String TYPE_NAME = "DocumentAttributeIntegerType";
     }
 
     /**

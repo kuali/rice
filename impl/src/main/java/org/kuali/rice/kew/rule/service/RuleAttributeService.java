@@ -39,5 +39,7 @@ public interface RuleAttributeService extends XmlLoader, XmlExporter {
     public List<RuleAttribute> findAll();
     public RuleAttribute findByName(String name);
     public RuleAttribute findByClassName(String className);
+
+    public Object loadRuleAttributeService(RuleAttribute ruleAttribute, String defaultApplicationId);
     
 }

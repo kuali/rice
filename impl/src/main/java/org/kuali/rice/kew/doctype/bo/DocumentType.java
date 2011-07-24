@@ -33,7 +33,7 @@ import org.kuali.rice.kew.api.doctype.DocumentTypeContract;
 import org.kuali.rice.kew.docsearch.DocumentSearchCriteriaProcessor;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor;
-import org.kuali.rice.kew.docsearch.SearchableAttribute;
+import org.kuali.rice.kew.docsearch.SearchableAttributeOld;
 import org.kuali.rice.kew.docsearch.StandardDocumentSearchCriteriaProcessor;
 import org.kuali.rice.kew.docsearch.xml.DocumentSearchXMLResultProcessor;
 import org.kuali.rice.kew.docsearch.xml.GenericXMLSearchableAttribute;
@@ -45,6 +45,7 @@ import org.kuali.rice.kew.doctype.DocumentTypeSecurity;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.engine.node.Process;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
+import org.kuali.rice.kew.framework.docsearch.SearchableAttribute;
 import org.kuali.rice.kew.mail.CustomEmailAttribute;
 import org.kuali.rice.kew.notes.CustomNoteAttribute;
 import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
@@ -415,19 +416,28 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         return getParentDocType() != null && getParentDocType().isPolicyDefined(policyToCheck);
     }
 
-    public void addSearchableAttribute(DocumentTypeAttribute searchableAttribute) {
+    /**
+     * TODO - remove this method once the old SearchableAttributeOld class is removed in Rice 2.0
+     */
+    public void addSearchableAttributeOld(DocumentTypeAttribute searchableAttribute) {
         documentTypeAttributes.add(searchableAttribute);
     }
 
-    public boolean hasSearchableAttributes() {
-        return !getSearchableAttributes().isEmpty();
+    /**
+     * TODO - remove this method once the old SearchableAttributeOld class is removed in Rice 2.0
+     */
+    public boolean hasSearchableAttributesOld() {
+        return !getSearchableAttributesOld().isEmpty();
     }
 
-    public List<SearchableAttribute> getSearchableAttributes() {
-        List<SearchableAttribute> searchAtts = new ArrayList<SearchableAttribute>();
+    /**
+     * TODO - remove this method once the old SearchableAttributeOld class is removed in Rice 2.0
+     */
+    public List<SearchableAttributeOld> getSearchableAttributesOld() {
+        List<SearchableAttributeOld> searchAtts = new ArrayList<SearchableAttributeOld>();
         if ((documentTypeAttributes == null || documentTypeAttributes.isEmpty())) {
             if (getParentDocType() != null) {
-                return getParentDocType().getSearchableAttributes();
+                return getParentDocType().getSearchableAttributesOld();
             } else {
                 return searchAtts;
             }
@@ -437,11 +447,11 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
             DocumentTypeAttribute attribute = (DocumentTypeAttribute) iterator.next();
 //			String attributeType = attribute.getRuleAttribute().getType();
             RuleAttribute ruleAttribute = attribute.getRuleAttribute();
-            SearchableAttribute searchableAttribute = null;
+            SearchableAttributeOld searchableAttribute = null;
             if (KEWConstants.SEARCHABLE_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
                 ObjectDefinition objDef = getAttributeObjectDefinition(ruleAttribute);
                 try {
-                    searchableAttribute = (SearchableAttribute) GlobalResourceLoader.getObject(objDef);
+                    searchableAttribute = (SearchableAttributeOld) GlobalResourceLoader.getObject(objDef);
                 } catch (RiceRemoteServiceConnectionException e) {
                     LOG.warn("Unable to connect to load searchable attributes for " + this.getName());
                     LOG.warn(e.getMessage());
@@ -449,12 +459,46 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
                 }
             } else if (KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
                 ObjectDefinition objDef = getAttributeObjectDefinition(ruleAttribute);
-                searchableAttribute = (SearchableAttribute) GlobalResourceLoader.getObject(objDef);
+                searchableAttribute = (SearchableAttributeOld) GlobalResourceLoader.getObject(objDef);
                 //required to make it work because ruleAttribute XML is required to construct fields
                 ((GenericXMLSearchableAttribute) searchableAttribute).setRuleAttribute(ruleAttribute);
             }
             if (searchableAttribute != null) {
                 searchAtts.add(searchableAttribute);
+            }
+        }
+        return searchAtts;
+    }
+
+    public List<SearchableAttribute> getSearchableAttributes() {
+        List<SearchableAttribute> searchAtts = new ArrayList<SearchableAttribute>();
+        if (documentTypeAttributes == null || documentTypeAttributes.isEmpty()) {
+            if (getParentDocType() != null) {
+                return getParentDocType().getSearchableAttributes();
+            } else {
+                return searchAtts;
+            }
+        }
+
+        for (Iterator iterator = documentTypeAttributes.iterator(); iterator.hasNext();) {
+            DocumentTypeAttribute attribute = (DocumentTypeAttribute) iterator.next();
+            RuleAttribute ruleAttribute = attribute.getRuleAttribute();
+            if (KEWConstants.SEARCHABLE_ATTRIBUTE_TYPE.equals(ruleAttribute.getType()) || KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
+                try {
+                    Object attributeService = KEWServiceLocator.getRuleAttributeService().loadRuleAttributeService(ruleAttribute, getApplicationId());
+                    if (attributeService == null) {
+                        throw new WorkflowRuntimeException("Failed to locate searchable attribute, attribute did not exist: " + ruleAttribute);
+                    }
+                    if (!(attributeService instanceof SearchableAttribute)) {
+                        throw new WorkflowRuntimeException("Service for given attribute was found, but it does not implement SearchableAttribute: " + attributeService);
+                    }
+                    if (KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
+                         ((GenericXMLSearchableAttribute) attributeService).setRuleAttribute(ruleAttribute);
+                    }
+                    searchAtts.add((SearchableAttribute)attributeService);
+                } catch (RiceRemoteServiceConnectionException e) {
+                    LOG.warn("Unable to connect to load searchable attribute for " + ruleAttribute, e);
+                }
             }
         }
         return searchAtts;

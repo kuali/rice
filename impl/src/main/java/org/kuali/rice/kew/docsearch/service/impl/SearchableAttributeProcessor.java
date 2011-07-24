@@ -23,7 +23,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
-import org.kuali.rice.kew.docsearch.SearchableAttribute;
+import org.kuali.rice.kew.docsearch.SearchableAttributeOld;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -67,8 +67,8 @@ public class SearchableAttributeProcessor implements SearchableAttributeProcessi
 		}
 		List<SearchableAttributeValue> searchableAttributeValues = new ArrayList<SearchableAttributeValue>();
 
-		for (Iterator iterator = docType.getSearchableAttributes().iterator(); iterator.hasNext();) {
-			SearchableAttribute searchableAttribute = (SearchableAttribute) iterator.next();
+		for (Iterator iterator = docType.getSearchableAttributesOld().iterator(); iterator.hasNext();) {
+			SearchableAttributeOld searchableAttribute = (SearchableAttributeOld) iterator.next();
 			List searchStorageValues = searchableAttribute.getSearchStorageValues(
 					DocSearchUtils.getDocumentSearchContext(documentId, docType.getName(), docContent));
 			if (searchStorageValues != null) {

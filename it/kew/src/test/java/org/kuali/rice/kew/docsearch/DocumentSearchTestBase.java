@@ -99,7 +99,7 @@ public class DocumentSearchTestBase extends KEWTestCase {
         if (docType == null) {
             return null;
         }
-        for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
+        for (SearchableAttributeOld searchableAttribute : docType.getSearchableAttributesOld()) {
             for (Row row : searchableAttribute.getSearchingRows(DocSearchUtils.getDocumentSearchContext("", docType.getName(), ""))) {
                 for (Field field : row.getFields()) {
                     if (field instanceof Field) {

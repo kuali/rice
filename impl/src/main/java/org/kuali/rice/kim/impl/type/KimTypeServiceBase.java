@@ -15,12 +15,9 @@
  */
 package org.kuali.rice.kim.impl.type;
 
-import com.google.common.collect.Maps;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
-import org.kuali.rice.core.api.util.ConcreteKeyValue;
-import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.core.web.format.Formatter;
@@ -37,16 +34,13 @@ import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.comparator.StringValueComparator;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
-import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.datadictionary.KimAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
 import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.krad.datadictionary.validation.ValidationPattern;
-import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.keyvalues.KimAttributeValuesFinder;
-import org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DictionaryValidationService;
@@ -839,7 +833,6 @@ public class KimTypeServiceBase implements KimTypeService {
 	public Map<String, String> validateAttributesAgainstExisting(String kimTypeId, Map<String, String> newAttributes, Map<String, String> oldAttributes){
         Map<String, String> errors = new HashMap<String, String>();
         errors.putAll(validateUniqueAttributes(kimTypeId, newAttributes, oldAttributes));
-               ;
         return validateUnmodifiableAttributes(kimTypeId, newAttributes, oldAttributes);
 	}
 

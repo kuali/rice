@@ -114,7 +114,7 @@ public final class RemotableQuickFinder extends RemotableAbstractWidget {
         }
 
         public void setDataObjectClass(String dataObjectClass) {
-            if (StringUtils.isBlank(baseLookupUrl)) {
+            if (StringUtils.isBlank(dataObjectClass)) {
                 throw new IllegalArgumentException("dataObjectClass is blank");
             }
 

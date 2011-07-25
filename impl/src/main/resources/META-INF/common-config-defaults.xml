@@ -503,7 +503,6 @@
       enRouteNodeService,
       enBranchService,
       enExceptionRoutingService,
-      enHelpService,
       enEDocLiteService,
       enStyleService,
       enXmlDigesterService,

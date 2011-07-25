@@ -44,7 +44,6 @@ import org.kuali.rice.kew.engine.node.service.BranchService;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.engine.simulation.SimulationWorkflowEngine;
 import org.kuali.rice.kew.exception.WorkflowDocumentExceptionRoutingService;
-import org.kuali.rice.kew.help.service.HelpService;
 import org.kuali.rice.kew.identity.service.IdentityHelperService;
 import org.kuali.rice.kew.impl.document.WorkflowDocumentPrototype;
 import org.kuali.rice.kew.mail.service.ActionListEmailService;
@@ -191,8 +190,6 @@ public final class KEWServiceLocator {
 
 	public static final String TRANSACTION_TEMPLATE = "transactionTemplate";
 
-	public static final String HELP_SERVICE = "enHelpService";
-
 	public static final String WORKFLOW_DOCUMENT_SERVICE = "enWorkflowDocumentService";
 
 	public static final String EXTENSION_SERVICE = "enExtensionService";
@@ -298,10 +295,6 @@ public final class KEWServiceLocator {
 
 	public static RuleDelegationService getRuleDelegationService() {
 		return (RuleDelegationService) getBean(RULE_DELEGATION_SERVICE);
-	}
-
-	public static HelpService getHelpService() {
-		return (HelpService) getBean(HELP_SERVICE);
 	}
 
 	public static RoutingReportService getRoutingReportService() {

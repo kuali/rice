@@ -23,7 +23,6 @@ import java.util.List;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.help.HelpEntry;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
@@ -71,8 +70,6 @@ public class DataExporter implements Exporter {
 				dataSet.getRuleTemplates().add((RuleTemplate)dataObject);
 			} else if (dataObjectClass.equals(DocumentType.class)) {
 				dataSet.getDocumentTypes().add((DocumentType)dataObject);
-			} else if (dataObjectClass.equals(HelpEntry.class)) {
-				dataSet.getHelp().add((HelpEntry)dataObject);
 			} else if (dataObjectClass.equals(RuleBaseValues.class)) {
 				dataSet.getRules().add((RuleBaseValues)dataObject);
 			} else if (dataObjectClass.equals(RuleDelegation.class)) {

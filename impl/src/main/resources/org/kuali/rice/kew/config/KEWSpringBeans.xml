@@ -142,7 +142,6 @@
 				<idref local="enRouteNodeService" />
 				<idref local="enBranchService" />
 				<idref local="enExceptionRoutingService" />
-                <idref local="enHelpService" />
                 <idref local="enStatsService" />
                 <idref local="enNoteService" />
                 <idref local="enDocumentRoutingService" />
@@ -416,10 +415,6 @@
 	</bean>
 	
 	-->
-
-    <bean id="enHelpService" class="org.kuali.rice.kew.help.service.impl.HelpServiceImpl" lazy-init="true">
-        <property name="helpDAO" ref="enHelpDAO" />
-    </bean>
 
 
     <!-- <bean id="enEncryptionService" class="org.kuali.rice.core.service.impl.DESEncryptionService" lazy-init="true"/> -->
@@ -695,7 +690,6 @@
              <ref local="enDocumentTypeService" />
              <ref local="enRuleService" />
              <ref local="enRuleDelegationService" />
-             <ref local="enHelpService" />
              <!--<ref local="kimImporterAndExporter" />-->
              <!--  ref local="enEDocLiteService" / -->
 		   </list>
@@ -708,7 +702,6 @@
              <ref local="enDocumentTypeService" />
              <ref local="enRuleService" />
              <ref local="enRuleDelegationService" />
-             <ref local="enHelpService" />
              <!--<ref local="kimImporterAndExporter" />-->
              <!-- ref local="enEDocLiteService" / -->
 		   </list>

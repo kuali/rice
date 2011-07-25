@@ -205,18 +205,19 @@
         <bean parent="MessageField" p:messageText="Move: [" p:style="display: inline;"/>
         <bean parent="ActionField" p:methodToCall="moveLeft"
           p:actionLabel="&lt; Left" p:styleClasses-ref="buttonClasses" />
+        <bean parent="ActionField" p:methodToCall="moveRight"
+          p:actionLabel="Right &gt;" p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt;"/>
         <bean parent="ActionField" p:methodToCall="moveUp" p:actionLabel="Up ^"
           p:styleClasses-ref="buttonClasses" />
         <bean parent="ActionField" p:methodToCall="moveDown"
           p:actionLabel="v Down" p:styleClasses-ref="buttonClasses" />
-        <bean parent="ActionField" p:methodToCall="moveRight"
-          p:actionLabel="Right &gt;" p:styleClasses-ref="buttonClasses" />
         <bean parent="MessageField" p:messageText="]" p:style="display: inline;"/>
         
         <bean parent="ActionField" p:methodToCall="cut" p:actionLabel="Cut" p:clientSideJs="alert('Not Yet Implemented');" p:styleClasses-ref="buttonClasses" p:style="margin-left: 15pt;"/>
         <bean parent="ActionField" p:methodToCall="paste" p:actionLabel="Paste" p:clientSideJs="alert('Not Yet Implemented');" p:styleClasses-ref="buttonClasses"/>
+        <bean parent="ActionField" p:clientSideJs="ajaxDelete('AgendaEditorView-Tree');" p:actionLabel="Delete (ajax)" p:styleClasses-ref="buttonClasses"/>
         <bean parent="ActionField" p:methodToCall="delete" p:actionLabel="Delete" p:styleClasses-ref="buttonClasses" 
-          p:style="margin-right: 15pt;"/>
+          p:style="margin-right: 15pt;" />
         <bean parent="ActionField" p:methodToCall="refresh" p:actionLabel="refresh" p:styleClasses-ref="buttonClasses"/>
       </list> 
     </property> 
@@ -275,7 +276,7 @@
     </property>
   </bean>
 
-    <bean id="AgendaEditorView-Tree" parent="TreeGroup" p:accordion.render="false" p:header.render="false" p:style="float:left; margin-left: 2em;">
+  <bean id="AgendaEditorView-Tree" parent="TreeGroup" p:accordion.render="false" p:header.render="false" p:style="float:left; margin-left: 2em;">
     <property name="title" value="Agenda Items"/>
     <property name="propertyName" value="agendaRuleTree"/>
     <property name="treeWidget">

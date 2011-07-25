@@ -46,6 +46,8 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = "/krmsAgendaEditor")
 public class AgendaEditorController extends MaintenanceDocumentController {
 
+    private static final String AGENDA_ITEM_SELECTED = "agenda_item_selected";
+
     @Override
     public MaintenanceForm createInitialForm(HttpServletRequest request) {
         return new MaintenanceForm();
@@ -174,7 +176,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         // this is the root of the tree:
         AgendaItemBo firstItem = getFirstAgendaItem(agenda);
 
-        String selectedItemId = request.getParameter("agenda_item_selected");
+        String selectedItemId = request.getParameter(AGENDA_ITEM_SELECTED);
         AgendaItemBo node = getAgendaItemById(firstItem, selectedItemId);
         AgendaItemBo parent = getParent(firstItem, selectedItemId);
         AgendaItemBo parentsOlderCousin = (parent == null) ? null : getNextOldestOfSameGeneration(firstItem, parent.getId());
@@ -254,7 +256,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         // this is the root of the tree:
         AgendaItemBo firstItem = getFirstAgendaItem(agenda);
 
-        String selectedItemId = request.getParameter("agenda_item_selected");
+        String selectedItemId = request.getParameter(AGENDA_ITEM_SELECTED);
         AgendaItemBo node = getAgendaItemById(firstItem, selectedItemId);
         AgendaItemBo parent = getParent(firstItem, selectedItemId);
         AgendaItemBo parentsYoungerCousin = (parent == null) ? null : getNextYoungestOfSameGeneration(firstItem, parent.getId());
@@ -320,7 +322,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         // this is the root of the tree:
         AgendaItemBo firstItem = getFirstAgendaItem(agenda);
 
-        String selectedItemId = request.getParameter("agenda_item_selected");
+        String selectedItemId = request.getParameter(AGENDA_ITEM_SELECTED);
         AgendaItemBo node = getAgendaItemById(firstItem, selectedItemId);
         AgendaItemBo parent = getParent(firstItem, selectedItemId);
 
@@ -350,7 +352,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         // this is the root of the tree:
         AgendaItemBo firstItem = getFirstAgendaItem(agenda);
 
-        String selectedItemId = request.getParameter("agenda_item_selected");
+        String selectedItemId = request.getParameter(AGENDA_ITEM_SELECTED);
         AgendaItemBo node = getAgendaItemById(firstItem, selectedItemId);
         AgendaItemBo parent = getParent(firstItem, selectedItemId);
 
@@ -595,7 +597,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaBo agenda = getAgenda(form, request);
         AgendaItemBo firstItem = getFirstAgendaItem(agenda);
 
-        String agendaItemSelected = request.getParameter("agenda_item_selected");
+        String agendaItemSelected = request.getParameter(AGENDA_ITEM_SELECTED);
         
         if (firstItem != null) {
             // need to handle the first item here, our recursive method won't handle it.  
@@ -609,6 +611,29 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return super.refresh(form, result, request, response);
     }
 
+    @RequestMapping(params = "methodToCall=" + "ajaxDelete")
+    public ModelAndView ajaxDelete(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        
+        AgendaBo agenda = getAgenda(form, request);
+        AgendaItemBo firstItem = getFirstAgendaItem(agenda);
+
+        String agendaItemSelected = request.getParameter(AGENDA_ITEM_SELECTED);
+        
+        if (firstItem != null) {
+            // need to handle the first item here, our recursive method won't handle it.  
+            if (agendaItemSelected.equals(firstItem.getAgendaId())) {
+                agenda.setFirstItemId(firstItem.getAlwaysId());
+            } else {
+                deleteAgendaItem(firstItem, agendaItemSelected);
+            }
+        }
+        
+        return updateComponent(form, result, request, response);
+    }
+
+    
     // TODO: smarter delete would be desirable.
     private void deleteAgendaItem(AgendaItemBo root, String agendaItemIdToDelete) {
         if (deleteAgendaItem(root, AgendaItemChildAccessor.whenTrue, agendaItemIdToDelete) || 

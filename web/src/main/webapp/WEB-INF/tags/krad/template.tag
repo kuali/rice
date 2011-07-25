@@ -20,6 +20,12 @@
 <%@ attribute name="component" required="true"
 	description="The UIF component for which the template will be generated"
 	type="org.kuali.rice.krad.uif.core.Component"%>
+<%@ attribute name="body" required="false"
+	description="If the template takes a body (wraps content) that content should be passed with this parameter" %>
+
+<c:if test="${empty body}">
+  <c:set var="body" value=""/>
+</c:if>
 
 <%-- verify the component is not null and should be rendered --%>
 
@@ -49,6 +55,7 @@ still render, but render in a hidden container --%>
 		<c:otherwise>
 			<tiles:insertTemplate template="${component.template}">
 				<tiles:putAttribute name="${component.componentTypeName}" value="${component}" />
+        <tiles:putAttribute name="body"	value="${body}" />
 				<c:forEach items="${templateParameters}" var="parameter">
 					<tiles:putAttribute name="${parameter.key}"	value="${parameter.value}" />
 				</c:forEach>

@@ -43,6 +43,8 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.codehaus.groovy:groovy-all:1.8.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.google.guava:guava:r09" level="project" />
     <orderEntry type="module" module-name="rice-kew-api" scope="TEST" />
+    <orderEntry type="module" module-name="rice-ksb-api" scope="TEST" />
+    <orderEntry type="library" scope="TEST" name="Maven: javax.ws.rs:jsr311-api:1.1.1" level="project" />
     <orderEntry type="module" module-name="rice-kim-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-kim-api" scope="TEST" />
     <orderEntry type="module" module-name="rice-api" scope="TEST" />
@@ -102,8 +104,6 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.mortbay.jetty:cometd:6.1.4" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.mortbay.jetty:jetty-util:6.1.4" level="project" />
     <orderEntry type="module" module-name="rice-core-impl" scope="TEST" />
-    <orderEntry type="module" module-name="rice-ksb-api" scope="TEST" />
-    <orderEntry type="library" scope="TEST" name="Maven: javax.ws.rs:jsr311-api:1.1.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.bouncycastle:bcprov-jdk16:1.46" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.cxf:cxf-rt-frontend-jaxws:2.3.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: xml-resolver:xml-resolver:1.2" level="project" />

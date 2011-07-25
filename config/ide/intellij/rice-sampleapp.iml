@@ -9,6 +9,12 @@
         <webroots>
           <root url="file://$MODULE_DIR$/../../../sampleapp/src/main/webapp" relative="/" />
         </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/annotations" />
+          <root url="file://$MODULE_DIR$/../../../sampleapp/src/main/java" />
+          <root url="file://$MODULE_DIR$/../../../sampleapp/src/main/groovy" />
+          <root url="file://$MODULE_DIR$/../../../sampleapp/src/main/resources" />
+        </sourceRoots>
       </configuration>
       <facet type="struts" name="Struts">
         <configuration>
@@ -31,17 +37,16 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/it/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/it/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/test-annotations" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/annotations" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/test/groovy" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/rice-sampleapp-2.0.0-m7-SNAPSHOT" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/surefire" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/test-classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/war" />
     </content>
@@ -73,6 +78,8 @@
     <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.8.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:r09" level="project" />
     <orderEntry type="module" module-name="rice-kew-api" />
+    <orderEntry type="module" module-name="rice-ksb-api" />
+    <orderEntry type="library" name="Maven: javax.ws.rs:jsr311-api:1.1.1" level="project" />
     <orderEntry type="module" module-name="rice-kim-impl" />
     <orderEntry type="module" module-name="rice-kim-api" />
     <orderEntry type="module" module-name="rice-api" />
@@ -132,8 +139,6 @@
     <orderEntry type="library" name="Maven: org.mortbay.jetty:cometd:6.1.4" level="project" />
     <orderEntry type="library" name="Maven: org.mortbay.jetty:jetty-util:6.1.4" level="project" />
     <orderEntry type="module" module-name="rice-core-impl" />
-    <orderEntry type="module" module-name="rice-ksb-api" />
-    <orderEntry type="library" name="Maven: javax.ws.rs:jsr311-api:1.1.1" level="project" />
     <orderEntry type="library" name="Maven: org.bouncycastle:bcprov-jdk16:1.46" level="project" />
     <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-frontend-jaxws:2.3.5" level="project" />
     <orderEntry type="library" name="Maven: xml-resolver:xml-resolver:1.2" level="project" />

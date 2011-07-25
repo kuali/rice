@@ -93,7 +93,8 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
     @XmlElement(name = Elements.REQUIRED, required = false)
     private final boolean required;
 
-    @XmlElement(name = Elements.DEFAULT_VALUES, required = false)
+    @XmlElementWrapper(name = Elements.DEFAULT_VALUES, required = false)
+    @XmlElement(name = Elements.DEFAULT_VALUE, required = false)
     private final Collection<String> defaultValues;
 
     @XmlElements(value = {
@@ -165,11 +166,17 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         this.regexContraintMsg = b.regexContraintMsg;
         this.required = b.required;
         this.defaultValues = b.defaultValues;
-        this.control = b.control.build();
+        if (b.control == null) {
+            this.control = null;
+        } else {
+            this.control = b.control.build();
+        }
 
         final List<RemotableAbstractWidget> temp = new ArrayList<RemotableAbstractWidget>();
-        for (RemotableAbstractWidget.Builder attr : b.widgets) {
-            temp.add(attr.build());
+        if (b.widgets != null) {
+            for (RemotableAbstractWidget.Builder attr : b.widgets) {
+                temp.add(attr.build());
+            }
         }
         this.widgets = Collections.unmodifiableList(temp);
     }
@@ -290,10 +297,10 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
 
         private boolean required;
 
-        private Collection<String> defaultValues;
+        private Collection<String> defaultValues = Collections.emptyList();
         private RemotableAbstractControl.Builder control;
 
-        private Collection<RemotableAbstractWidget.Builder> widgets;
+        private Collection<RemotableAbstractWidget.Builder> widgets = Collections.emptyList();
 
         private Builder(String name) {
             setName(name);
@@ -489,7 +496,6 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
     static final class Constants {
         static final String TYPE_NAME = "AttributeFieldType";
         final static String ROOT_ELEMENT_NAME = "attributeField";
-        static final String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS};
     }
 
     static final class Elements {
@@ -509,6 +515,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         static final String REGEX_CONSTRAINT_MSG = "regexContraintMsg";
         static final String REQUIRED = "required";
         static final String DEFAULT_VALUES = "defaultValues";
+        static final String DEFAULT_VALUE = "defaultValue";
         static final String CONTROL = "control";
         static final String WIDGETS = "widgets";
     }

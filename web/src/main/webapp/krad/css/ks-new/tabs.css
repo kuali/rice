@@ -20,7 +20,7 @@
 .ui-tabs .ui-tabs-nav li a, .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a { cursor: pointer; } /* first selector in group seems obsolete, but required to overcome bug in Opera applying cursor: text overall if defined elsewhere... */
 .ui-tabs .ui-tabs-panel {
 	background: none repeat scroll 0 0 transparent;
-    border-top: 1px solid;
+    border: 1px solid;
     border-width: 1px 0 0;
     clear: left;
     display: block;

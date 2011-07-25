@@ -1,10 +1,11 @@
-/*-- Base Styles ------ */
+
 /* -- note, base font style as defined in reset.css is 13px.
 
 All em sizes are a result of intended pixel size divided by the containing specified size (most often the base size).
 For instance, 11px would equal (11 / 13) which equals 0.84615385em
 */
 
+/* General */
 a {
 	color:#3F7826;
 	font-weight:normal;
@@ -21,10 +22,15 @@ table td, table th {
 	margin: 0;
 	padding: 0;
 }
+#testValidationGroup1_layout td, #testValidationGroup1_layout th {
+	margin: 0px;
+	padding: 15px 15px 15px 0px;
+}
 .summary {           /* fixing a pixel specification in kuali-stacked.css */
 	font-size:0.92307692em;     /* 12px divided by 13px */
 }
-/* -------------------- General Layout --------------------*/
+
+/* -------------------- Containers --------------------*/
 #viewpage_div {
 	margin-left: 120px;
 	margin-right: 20px;
@@ -33,15 +39,12 @@ table td, table th {
 	margin: 10px 15px 30px 20px;
 }
 /* Form Groups (in tables). This may be temporary for Kuali Student */
-#testValidationGroup1_layout td, #testValidationGroup1_layout th {
-	margin: 0px;
-	padding: 15px 15px 15px 0px;
-}
+
 .boxLayoutHorizontalItem {
 	float:left;
 	display:block;
 }
-/*  -------------------  BUTTON STYLES  -------------------  */
+/*  -------------------  Components  -------------------  */
 
 .fl-theme-ks .button-primary {
 	border-color:#469C3D;
@@ -99,7 +102,7 @@ table td, table th {
 	background: linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%);
 	color: #3F7826;
 	border: 1px solid #999;
-s
+    cursor:pointer;
 }
 .fl-theme-ks .button-primary a, .button-primary a:link, .button-primary a:visited {
 	color: #eeeeee;
@@ -145,9 +148,9 @@ s
 	background-color:#CCC;
 	text-shadow: none;
 }
-/* Data Table Styles */
 
-    .dataTables_info {
+
+.dataTables_info {
 	margin-top:5px;
 }
 th.sorting, th.sorting_asc, th.sorting_desc, th.sorting_disabled {
@@ -157,8 +160,22 @@ th.sorting, th.sorting_asc, th.sorting_desc, th.sorting_disabled {
 th.sorting_asc, th.sorting_desc {
 	background-color:transparent;
 }
-.datatable thead tr {
+.datatable .field_attribute {
+    float:none;
+}
+/*.datatable thead tr {
 	background-image: url(../../images/pattern_dotted.png);
+} */
+.sorting_asc {
+    background-image: url(../../images/sort_asc.png), url(../../images/pattern_dotted.png);
+    background-position: center right;
+    background-repeat: no-repeat;
+}
+
+.sorting_desc {
+	background-image: url(../../images/sort_desc.png), url(../../images/pattern_dotted.png);
+    background-position: center right;
+    background-repeat: no-repeat;
 }
 .datatable thead tr th.sorting, .datatable thead tr th.sorting_disabled {
 	background-color:#fff;
@@ -203,6 +220,9 @@ tr.even, tr.odd {
 input:focus, textarea:focus {
 	background: none repeat scroll 0 0 #ECFCE8;
 }
+.field_attribute {
+    float:left;
+}
 .field_attribute label {
 	margin: 0px 5px 0px 5px;
 }
@@ -232,10 +252,11 @@ input:focus, textarea:focus {
     /*
  * ErrorsField
 */
-    .errorsField {
+.errorsField {
 	padding-left: 10px;
 	overflow: hidden;
  *zoom: 1;
+}
 }
 .errorsFieldForContainer {
 	float: none;
@@ -390,10 +411,7 @@ Tab menu
 	float: left;
 	width: 219px;
 }
-/* error messaging */
-.errorsField {
-	float:right; /* validation errors should appear to the right of the field group */
-}
+
 .clientError img {
 	margin-left:10px;   /* adds spacing between tab label and the icon */
 }
@@ -669,6 +687,13 @@ Navigation Slide Control
 }
 .ui-tabs-nav li.ui-state-hover a {
 	color: #ffffff;
+}
+.ui-tabs .ui-tabs-panel {
+    background: none repeat scroll 0 0 transparent;
+    border: 1px solid;
+    clear: left;
+    display: block;
+    padding: 1em 1.4em;
 }
 /* Lightbox Styles */
 .view_header {          /* remove background image for lightbox headers */

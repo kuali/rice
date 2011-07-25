@@ -58,7 +58,6 @@
       enNoteService,
       enDocumentRoutingService,
       enBlanketApproveProcessor,
-      enSearchableAttributeProcessor,
       enMoveDocumentService,
       enActionInvocationService,
       enImmediateEmailReminderService,

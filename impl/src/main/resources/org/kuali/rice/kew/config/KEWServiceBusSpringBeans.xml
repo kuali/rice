@@ -186,21 +186,6 @@
 		<property name="serviceDefinition">
         <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
           <property name="service">
-            <ref bean="enSearchableAttributeProcessor" />
-          </property>
-          <property name="localServiceName" value="SearchableAttributeProcessorService" />
-          <property name="priority" value="30"/>
-          <property name="retryAttempts" value="1" />
-          <property name="messageExceptionHandler" value="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler" />
-        </bean>
-		</property>
-	</bean>
-
-	<bean parent="kewEmbeddedServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
-		<property name="serviceDefinition">
-        <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
-          <property name="service">
             <ref bean="enDocumentRequeuerService" />
           </property>
           <property name="localServiceName" value="DocumentRequeueProcessorService" />

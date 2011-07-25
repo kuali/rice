@@ -23,7 +23,7 @@ import org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService;
 import org.kuali.rice.kew.actions.asyncservices.ActionInvocationService;
 import org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessorService;
 import org.kuali.rice.kew.actions.asyncservices.MoveDocumentService;
-import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttributeIndexingQueue;
 import org.kuali.rice.kew.mail.service.ActionListImmediateEmailReminderService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.service.RuleCacheProcessor;
@@ -43,8 +43,6 @@ public class MessageServiceNames {
 	public static final String ACTION_LIST_IMMEDIATE_REMINDER_SERVICE = "ImmediateEmailService";
 
 	public static final String BLANKET_APPROVE_PROCESSING_SERVICE = "BlanketApproveProcessorService";
-
-	public static final String SEARCHABLE_ATTRIBUTE_PROCESSING_SERVICE = "SearchableAttributeProcessorService";
 
 	public static final String DOCUMENT_REQUEUE_PROCESSING_SERVICE = "DocumentRequeueProcessorService";
 
@@ -94,10 +92,6 @@ public class MessageServiceNames {
 
 	public static ActionListImmediateEmailReminderService getImmediateEmailService() {
 		return (ActionListImmediateEmailReminderService) getServiceAsynchronously(getQName(ACTION_LIST_IMMEDIATE_REMINDER_SERVICE, (DocumentRouteHeaderValue) null), (String)null);
-	}
-
-	public static SearchableAttributeProcessingService getSearchableAttributeService(DocumentRouteHeaderValue document) {
-		return (SearchableAttributeProcessingService) getServiceAsynchronously(getQName(SEARCHABLE_ATTRIBUTE_PROCESSING_SERVICE, document), document);
 	}
 
 	public static RuleCacheProcessor getRuleCacheProcessor() {

@@ -47,11 +47,12 @@ import org.kuali.rice.kew.actions.asyncservices.ActionInvocation;
 import org.kuali.rice.kew.actions.asyncservices.ActionInvocationService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.AdHocRevoke;
 import org.kuali.rice.kew.api.action.MovePoint;
 import org.kuali.rice.kew.api.doctype.IllegalDocumentTypeException;
-import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttributeIndexingQueue;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.OrchestrationConfig;
 import org.kuali.rice.kew.engine.RouteContext;
@@ -198,9 +199,9 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	 */
 	protected void indexForSearchAfterActionIfNecessary(DocumentRouteHeaderValue routeHeader) {
 		RouteContext routeContext = RouteContext.getCurrentRouteContext();
-		if (routeHeader.getDocumentType().hasSearchableAttributesOld() && routeContext.isSearchIndexingRequestedForContext()) {
-			SearchableAttributeProcessingService searchableAttService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(routeHeader);
-			searchableAttService.indexDocument(routeHeader.getDocumentId()); 
+		if (routeHeader.getDocumentType().hasSearchableAttributes() && routeContext.isSearchIndexingRequestedForContext()) {
+            DocumentAttributeIndexingQueue queue = KewApiServiceLocator.getDocumentAttributeIndexingQueue(routeHeader.getDocumentType().getApplicationId());
+            queue.indexDocument(routeHeader.getDocumentId());
 		}
 	}
 
@@ -325,9 +326,8 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
  	 	RouteContext routeContext = RouteContext.getCurrentRouteContext();
  	 	if (routeHeader.getDocumentType().hasSearchableAttributesOld() && !routeContext.isSearchIndexingRequestedForContext()) {
  	 		routeContext.requestSearchIndexingForContext();
- 	 		
-			SearchableAttributeProcessingService searchableAttService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(routeHeader);
-			searchableAttService.indexDocument(routeHeader.getDocumentId());
+            DocumentAttributeIndexingQueue queue = KewApiServiceLocator.getDocumentAttributeIndexingQueue(routeHeader.getDocumentType().getApplicationId());
+            queue.indexDocument(routeHeader.getDocumentId());
 		}
 		return finish(routeHeader);
 	}

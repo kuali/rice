@@ -224,18 +224,18 @@
 		</property>
 	</bean>
 
-	<bean parent="kewEmbeddedServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus" />
-		<property name="serviceDefinition">
-			<bean parent="kewServiceNamespaceSoapService">
-				<property name="service">
-					<ref bean="enSearchableAttributeProcessor" />
-				</property>
-				<property name="localServiceName" value="SearchableAttributeProcessorService" />
-				<property name="priority" value="30" />
-			</bean>
-		</property>
-	</bean>
+  <bean id="rice.kew.documentAttributeIndexingQueueSoap.exporter" parent="kewEmbeddedServiceExporter">
+    <property name="serviceBus" ref="rice.ksb.serviceBus" />
+    <property name="serviceDefinition">
+      <bean parent="kewJaxWsSoapService">
+        <property name="service">
+          <ref bean="rice.kew.documentAttributeIndexingQueue" />
+        </property>
+        <property name="localServiceName" value="documentAttributeIndexingQueueSoap" />
+        <property name="busSecurity" value="${rice.kew.documentAttributeIndexingQueueSoap.secure}" />
+      </bean>
+    </property>
+  </bean>
 
 	<bean parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />

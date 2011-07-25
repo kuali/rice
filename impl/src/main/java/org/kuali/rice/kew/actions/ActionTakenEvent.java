@@ -23,8 +23,9 @@ import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
-import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttributeIndexingQueue;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
@@ -169,9 +170,8 @@ public abstract class ActionTakenEvent {
 		RouteContext routeContext = RouteContext.getCurrentRouteContext();
 		if (routeHeader.getDocumentType().hasSearchableAttributesOld() && !routeContext.isSearchIndexingRequestedForContext()) {
 			routeContext.requestSearchIndexingForContext();
-			
-			SearchableAttributeProcessingService searchableAttService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(getRouteHeader());
-			searchableAttService.indexDocument(getDocumentId());
+            DocumentAttributeIndexingQueue queue = KewApiServiceLocator.getDocumentAttributeIndexingQueue(routeHeader.getDocumentType().getApplicationId());
+            queue.indexDocument(getDocumentId());
 		}
 	}
 

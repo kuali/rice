@@ -53,11 +53,11 @@ public interface SearchableAttribute extends Serializable {
     @XmlElement(name = "documentAttribute", required = false)
     public List<DocumentAttribute<?>> getDocumentAttributes(@WebParam(name = "documentSearchContext") DocumentSearchContext documentSearchContext);
 
-    @WebMethod(operationName = "getAttributeFields")
-    @WebResult(name = "attributeFields")
-    @XmlElementWrapper(name = "attributeFields", required = false)
-    @XmlElement(name = "attributeField", required = false)
-    public List<RemotableAttributeField> getAttributeFields(@WebParam(name = "documentSearchContext") DocumentSearchContext documentSearchContext);
+    @WebMethod(operationName = "getSearchFields")
+    @WebResult(name = "searchFields")
+    @XmlElementWrapper(name = "searchFields", required = false)
+    @XmlElement(name = "searchField", required = false)
+    public List<RemotableAttributeField> getSearchFields(@WebParam(name = "documentSearchContext") DocumentSearchContext documentSearchContext);
 
     @WebMethod(operationName = "validateSearchParameters")
     @WebResult(name = "validationErrors")

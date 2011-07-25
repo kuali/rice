@@ -46,7 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Implementation of {@link org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService}.
+ * Reference implementation of the DocumentAttributeIndexingQueue.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

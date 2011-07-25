@@ -147,7 +147,7 @@
                 <idref local="enNoteService" />
                 <idref local="enDocumentRoutingService" />
                 <idref local="enBlanketApproveProcessor" />
-                <idref local="enSearchableAttributeProcessor" />
+                <idref local="rice.kew.documentAttributeIndexingQueue" />
                 <idref local="enMoveDocumentService" />
                 <idref local="enActionInvocationService" />
                 <idref local="enImmediateEmailReminderService" />
@@ -488,11 +488,12 @@
 	<bean id="enWorkflowUtilityService" class="org.kuali.rice.kew.service.impl.WorkflowUtilityWebServiceImpl" lazy-init="true" />
     <bean id="enDocumentRoutingService" class="org.kuali.rice.kew.messaging.RouteDocumentMessageService"/>
     <bean id="enBlanketApproveProcessor" class="org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessor"/>
-    <bean id="enSearchableAttributeProcessor" class="org.kuali.rice.kew.docsearch.service.impl.SearchableAttributeProcessor"/>
     <bean id="enMoveDocumentService" class="org.kuali.rice.kew.actions.asyncservices.MoveDocumentProcessor" />
     <bean id="enActionInvocationService" class="org.kuali.rice.kew.actions.asyncservices.ActionInvocationProcessor" />
     <bean id="enImmediateEmailReminderService" class="org.kuali.rice.kew.mail.service.impl.ActionListImmediateProcessorImpl" />
     <bean id="enDocumentRequeuerService" class="org.kuali.rice.kew.actionrequest.service.impl.DocumentRequeuerImpl" />
+
+  <bean id="rice.kew.documentAttributeIndexingQueue" class="org.kuali.rice.kew.impl.document.attribute.DocumentAttributeIndexingQueueImpl" />
 
 	<bean id="dataDictionaryService"
 		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">

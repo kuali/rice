@@ -473,6 +473,10 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         return searchAtts;
     }
 
+    public boolean hasSearchableAttributes() {
+        return !getSearchableAttributes().isEmpty();
+    }
+
     public List<SearchableAttribute> getSearchableAttributes() {
         List<SearchableAttribute> searchAtts = new ArrayList<SearchableAttribute>();
         if (documentTypeAttributes == null || documentTypeAttributes.isEmpty()) {

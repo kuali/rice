@@ -23,11 +23,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.namespace.QName;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
@@ -92,26 +94,31 @@ public class MessageHelperImpl implements MessageHelper {
     }
 
     public Object getServiceAsynchronously(QName qname) {
-        return getAsynchronousServiceCallProxy(qname, null, null, null, null);
+        return getAsynchronousServiceCallProxy(qname, null, null, null, null, null);
+    }
+
+    public Object getServiceAsynchronously(QName qname, String applicationId) {
+        return getAsynchronousServiceCallProxy(qname, applicationId, null, null, null, null);
     }
 
     public Object getServiceAsynchronously(QName qname, AsynchronousCallback callback) {
-        return getAsynchronousServiceCallProxy(qname, callback, null, null, null);
+        return getAsynchronousServiceCallProxy(qname, null, callback, null, null, null);
     }
 
     public Object getServiceAsynchronously(QName qname, AsynchronousCallback callback, Serializable context) {
-        return getAsynchronousServiceCallProxy(qname, callback, context, null, null);
+        return getAsynchronousServiceCallProxy(qname, null, callback, context, null, null);
     }
 
     public Object getServiceAsynchronously(QName qname, AsynchronousCallback callback, Serializable context, String value1, String value2) {
-        return getAsynchronousServiceCallProxy(qname, callback, context, value1, value2);
+        return getAsynchronousServiceCallProxy(qname, null, callback, context, value1, value2);
     }
 
-    public Object getAsynchronousServiceCallProxy(QName qname, AsynchronousCallback callback, Serializable context, String value1, String value2) {
+    public Object getAsynchronousServiceCallProxy(QName qname, String applicationId, AsynchronousCallback callback, Serializable context, String value1, String value2) {
 
     	List<Endpoint> endpoints = KsbApiServiceLocator.getServiceBus().getEndpoints(qname);
+        endpoints = filterEndpointsByApplicationId(endpoints, applicationId);
     	if (endpoints.isEmpty()) {
-    		throw new RuntimeException("Cannot create service proxy, failed to locate any endpoints with the given service name: " + qname);
+    		throw new RuntimeException("Cannot create service proxy, failed to locate any endpoints with the given service name: " + qname + (applicationId != null ? ", and application id: " + applicationId : ""));
     	}
         if (KSBConstants.MESSAGING_SYNCHRONOUS.equals(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.MESSAGE_DELIVERY))) {
             return SynchronousServiceCallProxy.createInstance(endpoints, callback, context, value1, value2);
@@ -121,8 +128,9 @@ public class MessageHelperImpl implements MessageHelper {
 
     }
 
-    public Object getDelayedAsynchronousServiceCallProxy(QName qname, Serializable context, String value1, String value2, long delayMilliseconds) {
+    public Object getDelayedAsynchronousServiceCallProxy(QName qname, String applicationId, Serializable context, String value1, String value2, long delayMilliseconds) {
     	List<Endpoint> endpoints = KsbApiServiceLocator.getServiceBus().getEndpoints(qname);
+        endpoints = filterEndpointsByApplicationId(endpoints, applicationId);
     	if (endpoints.isEmpty()) {
     		throw new RuntimeException("Cannot create service proxy, failed to locate any endpoints with the given service name: " + qname);
     	}
@@ -134,7 +142,24 @@ public class MessageHelperImpl implements MessageHelper {
     }
 
     public Object getServiceAsynchronously(QName qname, Serializable context, String value1, String value2, long delayMilliseconds) {
-        return getDelayedAsynchronousServiceCallProxy(qname, context, value1, value2, delayMilliseconds);
+        return getDelayedAsynchronousServiceCallProxy(qname, null, context, value1, value2, delayMilliseconds);
+    }
+
+    public Object getServiceAsynchronously(QName qname, String applicationId, Serializable context, String value1, String value2, long delayMilliseconds) {
+        return getDelayedAsynchronousServiceCallProxy(qname, applicationId, context, value1, value2, delayMilliseconds);
+    }
+
+    private List<Endpoint> filterEndpointsByApplicationId(List<Endpoint> endpoints, String applicationId) {
+        if (StringUtils.isBlank(applicationId)) {
+            return endpoints;
+        }
+        List<Endpoint> filteredEndpoints = new ArrayList<Endpoint>();
+        for (Endpoint endpoint : endpoints) {
+            if (endpoint.getServiceConfiguration().getApplicationId().equals(applicationId)) {
+                filteredEndpoints.add(endpoint);
+            }
+        }
+        return filteredEndpoints;
     }
 
 }

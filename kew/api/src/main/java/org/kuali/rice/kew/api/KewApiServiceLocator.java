@@ -19,7 +19,11 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
 import org.kuali.rice.kew.api.doctype.DocumentTypeService;
 import org.kuali.rice.kew.api.document.WorkflowDocumentService;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttributeIndexingQueue;
 import org.kuali.rice.kew.api.note.NoteService;
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
+
+import javax.xml.namespace.QName;
 
 /**
  * A static service locator which aids in locating the various services that
@@ -31,6 +35,8 @@ public class KewApiServiceLocator {
 	public static final String WORKFLOW_DOCUMENT_SERVICE = "rice.kew.workflowDocumentService";
 	public static final String DOCUMENT_TYPE_SERVICE = "rice.kew.documentTypeService";
 	public static final String NOTE_SERVICE = "rice.kew.noteService";
+
+    public static final QName DOCUMENT_ATTRIBUTE_INDEXING_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "documentAttributeIndexingQueueSoap");
 
     static <T> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
@@ -50,6 +56,14 @@ public class KewApiServiceLocator {
     
     public static NoteService getNoteService() {
     	return getService(NOTE_SERVICE);
+    }
+
+    public static DocumentAttributeIndexingQueue getDocumentAttributeIndexingQueue() {
+        return getDocumentAttributeIndexingQueue(null);
+    }
+
+    public static DocumentAttributeIndexingQueue getDocumentAttributeIndexingQueue(String applicationId) {
+        return (DocumentAttributeIndexingQueue)KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(DOCUMENT_ATTRIBUTE_INDEXING_QUEUE_NAME, applicationId);
     }
     
 }

@@ -35,10 +35,11 @@ import org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessorService;
 import org.kuali.rice.kew.actions.asyncservices.MoveDocumentService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.actiontaken.service.ActionTakenService;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
-import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttributeIndexingQueue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.engine.node.Branch;
@@ -741,8 +742,8 @@ public class DocumentOperationAction extends KewKualiAction {
 
 	public ActionForward indexSearchableAttributes(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		DocumentOperationForm docForm = (DocumentOperationForm) form;
-		SearchableAttributeProcessingService searchableAttributeService = MessageServiceNames.getSearchableAttributeService(docForm.getRouteHeader());
-		searchableAttributeService.indexDocument(docForm.getRouteHeader().getDocumentId());
+        DocumentAttributeIndexingQueue queue = KewApiServiceLocator.getDocumentAttributeIndexingQueue(docForm.getRouteHeader().getDocumentType().getApplicationId());
+        queue.indexDocument(docForm.getRouteHeader().getDocumentId());
 		ActionMessages messages = new ActionMessages();
 		messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.message", "Searchable Attribute Indexing was successfully scheduled"));
 		saveMessages(request, messages);

@@ -27,11 +27,15 @@ import javax.xml.namespace.QName;
  * 
  */
 public interface MessageHelper {
+
 	public String serializeObject(Serializable object);
 	public Object deserializeObject(String serializedObject);
 	public Object getServiceAsynchronously(QName qname);
+    public Object getServiceAsynchronously(QName qname, String applicationId);
 	public Object getServiceAsynchronously(QName qname, AsynchronousCallback callback);
 	public Object getServiceAsynchronously(QName qname, AsynchronousCallback callback, Serializable context);
 	public Object getServiceAsynchronously(QName qname, AsynchronousCallback callback, Serializable context, String value1, String value2);
 	public Object getServiceAsynchronously(QName qname, Serializable context, String value1, String value2, long delayMilliseconds);
+    public Object getServiceAsynchronously(QName qname, String applicationId, Serializable context, String value1, String value2, long delayMilliseconds);
+    
 }

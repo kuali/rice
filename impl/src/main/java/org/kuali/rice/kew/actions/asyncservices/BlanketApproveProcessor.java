@@ -20,8 +20,9 @@ import java.util.Set;
 
 import org.kuali.rice.kew.actions.BlanketApproveAction;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
-import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttributeIndexingQueue;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -55,8 +56,8 @@ public class BlanketApproveProcessor implements BlanketApproveProcessorService {
 			throw new WorkflowRuntimeException(e);
 		}
 		if (shouldSearchIndex) {
-			SearchableAttributeProcessingService searchableAttService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId));
-			searchableAttService.indexDocument(documentId);
+            DocumentAttributeIndexingQueue queue = KewApiServiceLocator.getDocumentAttributeIndexingQueue(document.getDocumentType().getApplicationId());
+            queue.indexDocument(documentId);
 		}
 		LOG.debug("Work done and document requeued, document " + document.getDocumentId());
 	}

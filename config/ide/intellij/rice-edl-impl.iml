@@ -26,9 +26,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/test/groovy" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../edl/impl/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../edl/impl/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../edl/impl/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -676,15 +676,6 @@
     </reference-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kew.help.HelpEntry" table="KREW_HLP_T">
-    <field-descriptor column="HLP_ID" name="helpId" jdbc-type="VARCHAR" primarykey="true"
-        autoincrement="true" sequence-name="KREW_HLP_S" />
-    <field-descriptor column="NM" name="helpName" jdbc-type="VARCHAR" />
-    <field-descriptor column="KEY_CD" name="helpKey" jdbc-type="VARCHAR" />
-    <field-descriptor column="HLP_TXT" name="helpText" jdbc-type="VARCHAR" />
-    <field-descriptor column="VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true" />
-  </class-descriptor>
-
   <class-descriptor class="org.kuali.rice.kew.engine.node.RouteNode" table="KREW_RTE_NODE_T">
     <field-descriptor column="RTE_NODE_ID" name="routeNodeId" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KREW_RTE_NODE_S"/>
     <field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="VARCHAR" />

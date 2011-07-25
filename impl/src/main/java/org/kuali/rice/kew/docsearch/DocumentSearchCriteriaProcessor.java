@@ -24,6 +24,9 @@ import java.util.List;
  * This interface is used to define pre document search screen display processes for
  * a particular document type.
  *
+ * <p>This intended for internal document search use only and should not be customized,
+ * implemented, or remoted by a client application.</p>
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */

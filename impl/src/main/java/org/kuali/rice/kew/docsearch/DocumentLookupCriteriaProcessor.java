@@ -21,13 +21,17 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kns.web.ui.Row;
 
 /**
- * This is a description of what this class does - chris don't forget to fill this in. 
+ * Used by the KNS lookup framework to produce rows to render for document search.
+ *
+ * <p>Client applications should not need to implement this interface, it is intended for internal use only.</p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface DocumentLookupCriteriaProcessor {
-	public List<Row>getRows(DocumentType documentType, List<Row> defaultRows, boolean detailed, boolean superSearch);
+
+	public List<Row> getRows(DocumentType documentType, List<Row> defaultRows, boolean detailed, boolean superSearch);
 	public boolean shouldDisplayHeaderNonMaintActions();
 	public boolean shouldDisplayLookupCriteria();
+    
 }

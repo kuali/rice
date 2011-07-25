@@ -34,27 +34,27 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * This is a description of what this class does - chris don't forget to fill this in.
+ * This class adapts the RemotableAttributeField instances from the various attributes
+ * associated with a document type and combines with the "default" rows for the search,
+ * returning the final List of Row objects to render for the document search.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class DocumentLookupCriteriaProcessorKEWAdapter implements
-		DocumentLookupCriteriaProcessor {
-	DocumentSearchCriteriaProcessor criteriaProcessor;
+public class DocumentLookupCriteriaProcessorKEWAdapter implements DocumentLookupCriteriaProcessor {
+
+    /**
+     * TODO as of Rice 2.0, this is no longer customizable at a DocumentType-by-DocumentType level
+     * it was not being used by existing client applications and references "implementation" classes
+     * which we do not want to expose through the API
+     */
+	DocumentSearchCriteriaProcessor criteriaProcessor = new StandardDocumentSearchCriteriaProcessor();
+
 	//TODO: remove this and use service locator or try helper in WorkflowUtils if sufficient
 	DataDictionaryService dataDictionaryService;
 
-	/**
-	 * @return the criteriaProcessor
-	 */
-	public DocumentSearchCriteriaProcessor getCriteriaProcessor() {
+	protected DocumentSearchCriteriaProcessor getCriteriaProcessor() {
 		return this.criteriaProcessor;
-	}
-
-	public void setCriteriaProcessor(
-			DocumentSearchCriteriaProcessor criteriaProcessor) {
-		this.criteriaProcessor = criteriaProcessor;
 	}
 
 	public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
@@ -70,9 +70,9 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 		List<Row> searchAttRows = new ArrayList<Row>();
 		List<List<StandardDocSearchCriteriaFieldContainer>> preSearchAttFields;
 			if(!detailed) {
-				 preSearchAttFields = criteriaProcessor.getBasicSearchManager().getColumnsPreSearchAttributes();
+				 preSearchAttFields = getCriteriaProcessor().getBasicSearchManager().getColumnsPreSearchAttributes();
 			} else {
-				 preSearchAttFields = criteriaProcessor.getAdvancedSearchManager().getColumnsPreSearchAttributes();
+				 preSearchAttFields = getCriteriaProcessor().getAdvancedSearchManager().getColumnsPreSearchAttributes();
 			}
 		List<Row> preSearchAttRows = standardNonSearchAttRows(documentType,preSearchAttFields);
 
@@ -89,9 +89,9 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 		//post atts
 		List<List<StandardDocSearchCriteriaFieldContainer>> postSearchAttFields;
 		if(!detailed) {
-			postSearchAttFields = criteriaProcessor.getBasicSearchManager().getColumnsPostSearchAttributes();
+			postSearchAttFields = getCriteriaProcessor().getBasicSearchManager().getColumnsPostSearchAttributes();
 		} else {
-			postSearchAttFields = criteriaProcessor.getAdvancedSearchManager().getColumnsPostSearchAttributes();
+			postSearchAttFields = getCriteriaProcessor().getAdvancedSearchManager().getColumnsPostSearchAttributes();
 		}
 
 
@@ -358,7 +358,7 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#shouldDisplayHeaderNonMaintActions()
 	 */
 	public boolean shouldDisplayHeaderNonMaintActions() {
-		return criteriaProcessor.isHeaderBarDisplayed();
+		return getCriteriaProcessor().isHeaderBarDisplayed();
 	}
 
 	/**
@@ -367,6 +367,6 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 	 */
 	public boolean shouldDisplayLookupCriteria() {
 		//TODO: chris - How should this handle advanced?  I thought we were only hiding main
-		return criteriaProcessor.isBasicSearchCriteriaDisplayed();
+		return getCriteriaProcessor().isBasicSearchCriteriaDisplayed();
 	}
 }

@@ -350,64 +350,19 @@ public class DocumentRouteHeaderValueLookupableHelperServiceImpl extends KualiLo
 
 
 	/**
-	 * This overridden method ...
-	 *
-	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#setRows()
+	 * Call the criteria processor (either standard or custom) and massage the data into the proper format
+     * this is called by setbo in super(which is called by form) so should be called when the page needs refreshing
 	 */
 	@Override
 	protected void setRows() {
-		// TODO chris - this method should call the criteria processor adapter which will
-		//call the criteria processor (either standard or custom) and massage the data into the proper format
-		//this is called by setbo in super(which is called by form) so should be called when the page needs refreshing
-
-		//TODO: move over code that checks for doctype (actually should that be in the refresh, since that's where the doc type will be coming back to?)
-
-
-		//###START LOOKUP ROW CODE Not sure if we need these but they may be valuable for eventually forcing all standard field customization in the xml
 		super.setRows();
-		List<Row> lookupRows = new ArrayList<Row>();
-		//copy the current rows
-		for (Row row : super.getRows()) {
-			lookupRows.add(row);
-		}
-		//clear out
+		List<Row> lookupRows = new ArrayList<Row>(super.getRows());
+		//clear the default rows, we are going to rebuild them
 		super.getRows().clear();
-		//###END LOOKUP ROW CODE TODO: do something with lookupRows or delete above code
-
-
         processor = new DocumentLookupCriteriaProcessorKEWAdapter();
-
-
-
-		//TODO: get this from parameters (or bo?)
-		DocumentType docType = null;
-		if(processor != null) {
-			//TODO: same Doc type
-//			if(docType==oldDocType) {
-			((DocumentLookupCriteriaProcessorKEWAdapter)processor).setCriteriaProcessor(new StandardDocumentSearchCriteriaProcessor());
-//			} else {
-
-//			}
-		} else {
-			//TODO: same Doc type
-			if(docType==null) {
-				((DocumentLookupCriteriaProcessorKEWAdapter)processor).setCriteriaProcessor(new StandardDocumentSearchCriteriaProcessor());
-			}// else {
-
-//			}
-		}
-
 		//call get rows
-		List<Row> rows = processor.getRows(docType,lookupRows,false,false);
+		List<Row> rows = processor.getRows(null, lookupRows, false, false);
 		super.getRows().addAll(rows);
-
-		//are we in basic or detailed, are we in super.
-		//TODO: ctk Add this code back in when KNS impacting changes are worked back
-
-
-
-
-
 	}
 
 

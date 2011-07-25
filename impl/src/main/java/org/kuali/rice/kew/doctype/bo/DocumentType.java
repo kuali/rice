@@ -30,11 +30,9 @@ import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.doctype.DocumentTypeContract;
-import org.kuali.rice.kew.docsearch.DocumentSearchCriteriaProcessor;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor;
 import org.kuali.rice.kew.docsearch.SearchableAttributeOld;
-import org.kuali.rice.kew.docsearch.StandardDocumentSearchCriteriaProcessor;
 import org.kuali.rice.kew.docsearch.xml.DocumentSearchXMLResultProcessor;
 import org.kuali.rice.kew.docsearch.xml.GenericXMLSearchableAttribute;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
@@ -1170,22 +1168,6 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         }
 
         return (DocumentSearchGenerator) searchGenerator;
-    }
-
-    public DocumentSearchCriteriaProcessor getDocumentSearchCriteriaProcessor() {
-        ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.SEARCH_CRITERIA_PROCESSOR_ATTRIBUTE_TYPE);
-        if (objDef == null) {
-            if (getParentDocType() != null) {
-                return getParentDocType().getDocumentSearchCriteriaProcessor();
-            } else {
-                return new StandardDocumentSearchCriteriaProcessor();
-            }
-        }
-        Object criteriaProcessor = GlobalResourceLoader.getObject(objDef);
-        if (criteriaProcessor == null) {
-            throw new WorkflowRuntimeException("Could not locate DocumentSearchCriteriaProcessor in this JVM or at application id " + getApplicationId() + ": " + objDef.getClassName());
-        }
-        return (DocumentSearchCriteriaProcessor) criteriaProcessor;
     }
 
     public DocumentSearchResultProcessor getDocumentSearchResultProcessor() {

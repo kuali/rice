@@ -508,19 +508,7 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 		}
 
 		DocumentLookupCriteriaProcessorKEWAdapter documentLookupCriteriaProcessorKEWAdapter = (DocumentLookupCriteriaProcessorKEWAdapter)processor;
-		if(processor != null && documentLookupCriteriaProcessorKEWAdapter.getCriteriaProcessor()!=null) {
-			if(docType==null) {
-				documentLookupCriteriaProcessorKEWAdapter.setCriteriaProcessor(new StandardDocumentSearchCriteriaProcessor());
-			} else if(!StringUtils.equals(docTypeName, documentLookupCriteriaProcessorKEWAdapter.getCriteriaProcessor().getDocSearchCriteriaDTO().getDocTypeFullName())){
-				documentLookupCriteriaProcessorKEWAdapter.setCriteriaProcessor(docType.getDocumentSearchCriteriaProcessor());
-			}
-		} else {
-			if(docType==null) {
-				documentLookupCriteriaProcessorKEWAdapter.setCriteriaProcessor(new StandardDocumentSearchCriteriaProcessor());
-			} else {
-				documentLookupCriteriaProcessorKEWAdapter.setCriteriaProcessor(docType.getDocumentSearchCriteriaProcessor());
-			}
-		}
+		
 		//TODO: This should probably be moved into spring injection since it's a constant
 		documentLookupCriteriaProcessorKEWAdapter.setDataDictionaryService(getDataDictionaryService());
 
@@ -589,19 +577,7 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 	        }
 
 	        DocumentLookupCriteriaProcessorKEWAdapter documentLookupCriteriaProcessorKEWAdapter = (DocumentLookupCriteriaProcessorKEWAdapter)processor;
-	        if(processor != null && documentLookupCriteriaProcessorKEWAdapter.getCriteriaProcessor()!=null) {
-	            if(docType==null) {
-	                documentLookupCriteriaProcessorKEWAdapter.setCriteriaProcessor(new StandardDocumentSearchCriteriaProcessor());
-	            } else if(!StringUtils.equals(docTypeName, documentLookupCriteriaProcessorKEWAdapter.getCriteriaProcessor().getDocSearchCriteriaDTO().getDocTypeFullName())){
-	                documentLookupCriteriaProcessorKEWAdapter.setCriteriaProcessor(docType.getDocumentSearchCriteriaProcessor());
-	            }
-	        } else {
-	            if(docType==null) {
-	                documentLookupCriteriaProcessorKEWAdapter.setCriteriaProcessor(new StandardDocumentSearchCriteriaProcessor());
-	            } else {
-	                documentLookupCriteriaProcessorKEWAdapter.setCriteriaProcessor(docType.getDocumentSearchCriteriaProcessor());
-	            }
-	        }
+	        
 	        //TODO: This should probably be moved into spring injection since it's a constant
 	        documentLookupCriteriaProcessorKEWAdapter.setDataDictionaryService(getDataDictionaryService());
 

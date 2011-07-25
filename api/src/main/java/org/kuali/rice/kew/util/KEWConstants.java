@@ -680,7 +680,6 @@ public final class KEWConstants {
     public static final String NOTE_ATTRIBUTE_TYPE = "NoteAttribute";
     public static final String ACTION_LIST_ATTRIBUTE_TYPE = "ActionListAttribute";
     public static final String RULE_VALIDATION_ATTRIBUTE_TYPE = "RuleValidationAttribute";
-    public static final String SEARCH_CRITERIA_PROCESSOR_ATTRIBUTE_TYPE = "DocumentSearchCriteriaProcessorAttribute";
     public static final String SEARCH_GENERATOR_ATTRIBUTE_TYPE = "DocumentSearchGeneratorAttribute";
     public static final String SEARCH_RESULT_PROCESSOR_ATTRIBUTE_TYPE = "DocumentSearchResultProcessorAttribute";
     public static final String SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE = "DocumentSearchXMLResultProcessorAttribute";
@@ -696,7 +695,6 @@ public final class KEWConstants {
     public static final String NOTE_ATTRIBUTE_TYPE_LABEL = "Note Attribute";
     public static final String ACTION_LIST_ATTRIBUTE_TYPE_LABEL = "Action List Attribute";
     public static final String RULE_VALIDATION_ATTRIBUTE_TYPE_LABEL = "Rule Validation Attribute";
-    public static final String SEARCH_CRITERIA_PROCESSOR_ATTRIBUTE_TYPE_LABEL = "Document Search Criteria Processor Attribute";
     public static final String SEARCH_GENERATOR_ATTRIBUTE_TYPE_LABEL = "Document Search Generator Attribute";
     public static final String SEARCH_RESULT_PROCESSOR_ATTRIBUTE_TYPE_LABEL = "Document Search Result Processor Attribute";
     public static final String SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE_LABEL = "Document Search Result Processor XML Attribute";
@@ -713,7 +711,6 @@ public final class KEWConstants {
         NOTE_ATTRIBUTE_TYPE,
         ACTION_LIST_ATTRIBUTE_TYPE,
         RULE_VALIDATION_ATTRIBUTE_TYPE,
-        SEARCH_CRITERIA_PROCESSOR_ATTRIBUTE_TYPE,
         SEARCH_GENERATOR_ATTRIBUTE_TYPE,
         SEARCH_RESULT_PROCESSOR_ATTRIBUTE_TYPE,
         SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE,
@@ -733,7 +730,6 @@ public final class KEWConstants {
        	RULE_ATTRIBUTE_TYPE_MAP.put(NOTE_ATTRIBUTE_TYPE, NOTE_ATTRIBUTE_TYPE_LABEL);
         RULE_ATTRIBUTE_TYPE_MAP.put(ACTION_LIST_ATTRIBUTE_TYPE, ACTION_LIST_ATTRIBUTE_TYPE_LABEL);
         RULE_ATTRIBUTE_TYPE_MAP.put(RULE_VALIDATION_ATTRIBUTE_TYPE, RULE_VALIDATION_ATTRIBUTE_TYPE_LABEL);
-        RULE_ATTRIBUTE_TYPE_MAP.put(SEARCH_CRITERIA_PROCESSOR_ATTRIBUTE_TYPE, SEARCH_CRITERIA_PROCESSOR_ATTRIBUTE_TYPE_LABEL);
         RULE_ATTRIBUTE_TYPE_MAP.put(SEARCH_GENERATOR_ATTRIBUTE_TYPE, SEARCH_GENERATOR_ATTRIBUTE_TYPE_LABEL);
         RULE_ATTRIBUTE_TYPE_MAP.put(SEARCH_RESULT_PROCESSOR_ATTRIBUTE_TYPE, SEARCH_RESULT_PROCESSOR_ATTRIBUTE_TYPE_LABEL);
         RULE_ATTRIBUTE_TYPE_MAP.put(SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE, SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE_LABEL);

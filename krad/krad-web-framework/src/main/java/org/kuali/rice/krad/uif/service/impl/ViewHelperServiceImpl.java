@@ -171,7 +171,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
         Component origComponent = form.getView().getViewIndex().getComponentById(origId);
         
         Component parent = (Component) origComponent.getContext().get(UifConstants.ContextVariableNames.PARENT);
-        component.getContext().putAll(origComponent.getContext());
+        component.pushAllToContext(origComponent.getContext());
 
         performComponentInitialization(form.getView(), component);
         performComponentApplyModel(form.getView(), component, form);
@@ -453,7 +453,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
      *            - object containing the view data
      */
     protected void setViewContext(View view, Object model) {
-        view.getContext().putAll(getPreModelContext(view));
+        view.pushAllToContext(getPreModelContext(view));
 
         // evaluate view expressions for further context
         for (Entry<String, String> variableExpression : view.getExpressionVariables().entrySet()) {
@@ -509,7 +509,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
         }
 
         // evaluate expressions on properties
-        component.getContext().putAll(getCommonContext(view, component));
+        component.pushAllToContext(getCommonContext(view, component));
         getExpressionEvaluatorService().evaluateObjectProperties(component, model, component.getContext());
 
         if (component instanceof Container) {

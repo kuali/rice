@@ -225,9 +225,17 @@ public interface ViewHelperService {
     
     /**
      * Performs the complete component lifecycle on the component passed in
+     *
+     * <p>
+     * Retrieves a new component instance from the <code>ComponentFactory</code> and then runs the three
+     * lifecycles. The component within the view (contained on the form) is retrieved to obtain the context
+     * to use (such as parent). The created components id is then updated to match the current id within the
+     * view.
+     * </p>
      * 
-     * @param form
-     * @param component
+     * @param form - object containing the full view data
+     * @param component - component instance to perform lifecycle for
+     * @param origId - id of the component within the view, used to pull the current component from the view
      */
     public void performComponentLifecycle(UifFormBase form, Component component, String origId);
 }

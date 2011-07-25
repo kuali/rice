@@ -220,7 +220,7 @@ function performCollectionAction(collectionGroupId){
 	    };
 	    
 	    var methodToCall = jq("input[name='methodToCall']").val();
-		ajaxSubmitForm(methodToCall, updateCollectionCallback, {reqComponentId: collectionGroupId}, 
+		ajaxSubmitForm(methodToCall, updateCollectionCallback, {reqComponentId: collectionGroupId, skipViewInit: "true"},
 				elementToBlock);
 	}
 }

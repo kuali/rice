@@ -198,7 +198,7 @@ public abstract class UifControllerBase {
         View view = uifForm.getPreviousView();
         view.getViewHelperService().processCollectionAddLine(view, uifForm, selectedCollectionPath);
 
-        return getUIFModelAndView(uifForm);
+        return updateComponent(uifForm, result, request, response);
     }
 
     /**
@@ -230,7 +230,7 @@ public abstract class UifControllerBase {
         view.getViewHelperService().processCollectionDeleteLine(view, uifForm, selectedCollectionPath,
                 selectedLineIndex);
 
-        return getUIFModelAndView(uifForm);
+        return updateComponent(uifForm, result, request, response);
     }
 
     /**

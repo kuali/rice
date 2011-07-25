@@ -773,27 +773,39 @@ public abstract class ComponentBase implements Component {
         pushToPropertyReplacerContext(objectName, object);
         this.context.put(objectName, object);
     }
-    
+
     /*
-     * This method adds the object to the context of the components in the 
-     * PropertyReplacer object. Only checks for a list or component.
-     */
-    private void pushToPropertyReplacerContext(String objectName, Object object) {
+    * Adds the object to the context of the components in the
+    * PropertyReplacer object. Only checks for a list or component.
+    */
+    protected void pushToPropertyReplacerContext(String objectName, Object object) {
         if (propertyReplacers != null && propertyReplacers.size() > 0) {
             for (Object rep : propertyReplacers) {
-                Object replacement = ((PropertyReplacer)rep).getReplacement();
+                Object replacement = ((PropertyReplacer) rep).getReplacement();
                 if (replacement instanceof Component) {
-                    ((Component)replacement).pushObjectToContext(objectName, object);
+                    ((Component) replacement).pushObjectToContext(objectName, object);
                 }
+
                 if (replacement instanceof List) {
-                    for (Object repInner : (List)replacement) {
+                    for (Object repInner : (List) replacement) {
                         if (repInner instanceof Component) {
-                            ((Component)repInner).pushObjectToContext(objectName, object);
+                            ((Component) repInner).pushObjectToContext(objectName, object);
                         }
                     }
                 }
             }
-        }        
+        }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.core.ComponentBase#pushAllToContext
+     */
+    public void pushAllToContext(Map<String, Object> objects) {
+        if (objects != null) {
+            for (Map.Entry<String, Object> objectEntry : objects.entrySet()) {
+                pushObjectToContext(objectEntry.getKey(), objectEntry.getValue());
+            }
+        }
     }
 
     public Map<String, String> getPropertyExpressions() {

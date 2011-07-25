@@ -477,6 +477,11 @@ public interface Component extends Serializable, Ordered, ScriptEventSupport {
      * expressions containing the variable should evaluate against
      * </p>
      *
+     * <p>
+     * NOTE: Calling getContext().putAll() will skip updating any configured property replacers for the
+     * component. Instead you should call #pushAllToContext
+     * </p>
+     *
      * @return Map<String, Object> context
      */
     public Map<String, Object> getContext();
@@ -492,10 +497,30 @@ public interface Component extends Serializable, Ordered, ScriptEventSupport {
      * Places the given object into the context Map for the component with the
      * given name
      *
+     * <p>
+     * Note this also will push context to property replacers configured on the component.
+     * To place multiple objects in the context, you should use #pushAllToContext since that
+     * will call this method for each and update property replacers. Using #getContext().putAll()
+     * will bypass property replacers.
+     * </p>
+     *
      * @param objectName - name the object should be exposed under in the context map
      * @param object - object instance to place into context
      */
     public void pushObjectToContext(String objectName, Object object);
+
+    /**
+     * Places each entry of the given Map into the context for the component
+     *
+     * <p>
+     * Note this will call #pushObjectToContext for each entry which will update any configured property
+     * replacers as well. This should be used in place of getContext().putAll()
+     * </p>
+     *
+     * @param objects - Map<String, Object> objects to add to context, where the entry key will be the context key
+     * and the entry value will be the context value
+     */
+    public void pushAllToContext(Map<String, Object> objects);
 
     /**
      * List of <code>PropertyReplacer</code> instances that will be evaluated

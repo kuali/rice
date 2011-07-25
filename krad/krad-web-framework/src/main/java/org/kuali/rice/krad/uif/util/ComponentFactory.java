@@ -139,8 +139,8 @@ public class ComponentFactory {
                         StringUtils.replaceOnce(field.getId(), field.getBaseId(), field.getBaseId() + suffix));
                 if (origField != null) {
                     field.setBindingInfo(origField.getBindingInfo());
+                    field.setLabelFieldRendered(origField.isLabelFieldRendered());
                 }
-                field.setLabelFieldRendered(origField.isLabelFieldRendered());
             }
 
             List<CollectionGroup> collections =

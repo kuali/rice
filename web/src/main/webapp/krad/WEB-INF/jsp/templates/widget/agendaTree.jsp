@@ -29,27 +29,7 @@
 <%--
     Invokes JS method to implement a tree plug-in
  --%>
-<script type="text/javascript">
-      jq(document).ready(function() {
-    	  // rule nodes should set the selected item
-    	  jq('a.ruleNode').click( function() {
-        	  var agendaItemId = jq(this.parentNode).find('input').attr('value');
-        	  var selectedItemTracker = jq('input[name="agenda_item_selected"]');
-        	  selectedItemTracker.val(agendaItemId);
-        	  // make li show containment of children
-        	  jq('li').each( function() {
-        		  jq(this).removeClass('ruleBlockSelected');
-        	  });
-        	  jq(this.parentNode).addClass('ruleBlockSelected');
-          });
-    	  // logic nodes should clear the selected item
-          jq('a.logicNode').click( function() {
-              var selectedItemTracker = jq('input[name="agenda_item_selected"]');
-              selectedItemTracker.val('');
-          });
-      });
 
-</script> 
 <!-- keep track of the agenda item that is selected: -->
 <input type="hidden" name="agenda_item_selected" value=""/>
 
@@ -61,9 +41,9 @@ jq('#' + '${componentId}').bind('loaded.jstree', function (event, data) {
     });
 
 /* create the tree */
-createTree('${componentId}', { 
-    'plugins' : ['themes','html_data', 'ui', 'crrm', /*, 'dnd' */ ], // disabled drag and drop plugin 
-    'ui' : { 'select_limit' : 1 }, 
+createTree('${componentId}', {
+    'plugins' : ['themes','html_data', 'ui', 'crrm', /*, 'dnd' */ ], // disabled drag and drop plugin
+    'ui' : { 'select_limit' : 1 },
     'themes' : { 'theme':'krms','dots': true ,'icons': false },
     'crrm' : {
         /* This is where you can control what is draggable onto what within the tree: */
@@ -72,21 +52,20 @@ createTree('${componentId}', {
                 * m.o - the node being dragged
                 * m.r - the target node
                 */
-                'check_move' : function (m) { 
+                'check_move' : function (m) {
                     var p = this._get_parent(m.o);
                     if(!p) return false;
                     p = p == -1 ? this.get_container() : p;
-                    
+
                     if (m.o.hasClass('logicNode')) return false;
-                    
+
                     if(p === m.np) return true;
                     if(p[0] && m.np[0] && p[0] === m.np[0]) return true;
                     return false;
                 }
             }
         },
-  'dnd' : { 'drag_target' : false, 'drop_target' : false } 
+  'dnd' : { 'drag_target' : false, 'drop_target' : false }
 } );
-
 
 "/>

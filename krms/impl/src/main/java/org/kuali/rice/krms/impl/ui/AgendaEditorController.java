@@ -629,8 +629,9 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 deleteAgendaItem(firstItem, agendaItemSelected);
             }
         }
-        
-        return updateComponent(form, result, request, response);
+
+        // call the super method to avoid the agenda tree being reloaded from the db
+        return super.updateComponent(form, result, request, response);
     }
 
     

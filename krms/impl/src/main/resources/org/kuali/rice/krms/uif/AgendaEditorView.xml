@@ -54,7 +54,7 @@
     <property name="template" value="/krad/WEB-INF/jsp/templates/widget/agendaTree.jsp"/>
   </bean>
 
-  <bean id="Editor-MaintenanceView" parent="MaintenanceView" p:refreshWhenChanged="document.newMaintainableObject.dataObject.agenda.name">
+  <bean id="Editor-MaintenanceView" parent="MaintenanceView" p:refreshWhenChanged="document.newMaintainableObject.agenda.name" p:additionalScriptFiles="/krms/scripts/agendaTree.js">
     <property name="additionalCssFiles" ref="krms-css" />
     <property name="title" value="Business Rules"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.ui.AgendaEditor"/>
@@ -89,12 +89,9 @@
                   <!-- Spring shortcuts for maps and lists: [12:20:06 PDT] 
                     Jerry Neal: prop="one,two,three" [12:20:18 PDT] Jerry Neal: map="key:value,key:value" -->
                   <map>
-                    <entry key="name"
-                      value="document.newMaintainableObject.dataObject.context.name" />
-                    <entry key="namespace"
-                      value="document.newMaintainableObject.dataObject.context.namespace" />
-                    <entry key="id"
-                      value="document.newMaintainableObject.dataObject.context.id" />
+                    <entry key="name" value="context.name" />
+                    <entry key="namespace" value="context.namespace" />
+                    <entry key="id" value="context.id" />
                   </map>
                 </property>
                 <property name="label" value="Name" />
@@ -237,14 +234,14 @@
                     value="org.kuali.rice.krms.impl.repository.AgendaBo"/>
           <property name="fieldLookup.lookupParameters">
             <map>
-              <entry key="document.newMaintainableObject.dataObject.context.id" value="contextId"/>
+              <entry key="context.id" value="contextId"/>
             </map>
           </property>
           <property name="fieldLookup.fieldConversions">
             <map>
-              <entry key="name" value="document.newMaintainableObject.dataObject.agenda.name"/>
-              <entry key="id" value="document.newMaintainableObject.dataObject.agenda.id"/>
-              <entry key="active" value="document.newMaintainableObject.dataObject.agenda.active"/>
+              <entry key="name" value="agenda.name"/>
+              <entry key="id" value="agenda.id"/>
+              <entry key="active" value="agenda.active"/>
             </map>
           </property>
           <property name="fieldSuggest.render" value="true" />

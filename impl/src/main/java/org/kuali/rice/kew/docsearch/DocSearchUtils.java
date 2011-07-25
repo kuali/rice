@@ -53,15 +53,22 @@ public final class DocSearchUtils {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocSearchUtils.class);
 
+    public static final List<Class<? extends SearchableAttributeValue>> SEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST =
+            new ArrayList<Class<? extends SearchableAttributeValue>>();
+    static {
+        SEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST.add(SearchableAttributeStringValue.class);
+        SEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST.add(SearchableAttributeFloatValue.class);
+        SEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST.add(SearchableAttributeLongValue.class);
+        SEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST.add(SearchableAttributeDateTimeValue.class);
+    }
+
     private DocSearchUtils() {
     	throw new UnsupportedOperationException("do not call");
     }
     
     public static List<SearchableAttributeValue> getSearchableAttributeValueObjectTypes() {
         List<SearchableAttributeValue> searchableAttributeValueClasses = new ArrayList<SearchableAttributeValue>();
-        for (Object aSEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST : SearchableAttributeOld.SEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST)
-        {
-            Class searchAttributeValueClass = (Class) aSEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST;
+        for (Class<? extends SearchableAttributeValue> searchAttributeValueClass : SEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST) {
             ObjectDefinition objDef = new ObjectDefinition(searchAttributeValueClass);
             SearchableAttributeValue attributeValue = (SearchableAttributeValue) ObjectDefinitionResolver.createObject(objDef, ClassLoaderUtils.getDefaultClassLoader(), false);
             searchableAttributeValueClasses.add(attributeValue);

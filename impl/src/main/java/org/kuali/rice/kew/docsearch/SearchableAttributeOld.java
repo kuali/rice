@@ -28,9 +28,6 @@ import org.kuali.rice.kns.web.ui.Row;
  */
 public interface SearchableAttributeOld extends Serializable {
 
-    public static final List SEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST = Arrays.asList(SearchableAttributeStringValue.class, SearchableAttributeFloatValue.class, SearchableAttributeLongValue.class,
-            SearchableAttributeDateTimeValue.class);
-
     /**
      * this gives the xml representation of the attribute; returning a standard java xml object might be a better
      * approach here

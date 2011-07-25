@@ -70,12 +70,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-/**
- * This is a description of what this class does - jonathan don't forget to fill this in.
- *
- * @author Kuali Rice Team (rice.collab@kuali.org)
- *
- */
 public class KimTypeServiceBase implements KimTypeService {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KimTypeServiceBase.class);
@@ -147,22 +141,6 @@ public class KimTypeServiceBase implements KimTypeService {
 	public Map<String, String> translateInputAttributes(Map<String, String> qualification){
 		return qualification;
 	}
-
-	/**
-	 *
-	 * This method ...
-	 */
-    /*
-	public boolean performMatches(Map<String, String> inputAttributes, List<Map<String, String>> storedAttributess){
-		for ( Map<String, String> storedAttributes : storedAttributess ) {
-			// if one matches, return true
-			if ( performMatch(inputAttributes, storedAttributes) ) {
-				return true;
-			}
-		}
-		return false;
-	}
-	*/
 
 	/**
 	 * This is the default implementation.  It calls into the service for each attribute to
@@ -799,33 +777,6 @@ public class KimTypeServiceBase implements KimTypeService {
 		}
 		return true;
 	}
-
-    /*
-	protected Map<String, String> getErrorAttributes(String attributeNameKey, String errorKey, String[] errorArguments){
-		Map<String, String> validationErrors = new HashMap<String, String>();
-		GlobalVariables.getMessageMap().putError(attributeNameKey, errorKey, errorArguments);
-		List<String> attributeErrors = extractErrorsFromGlobalVariablesErrorMap(attributeNameKey);
-		if(attributeErrors!=null){
-			for(String err:attributeErrors){
-				validationErrors.put(attributeNameKey, err);
-			}
-		}
-		return validationErrors;
-	}
-	
-    protected boolean areAllAttributeValuesEmpty(Map<String, String> attributes){
-    	boolean areAllAttributesEmpty = true;
-    	if(attributes!=null) {
-			for(String attributeNameKey: attributes.keySet()){
-				if(StringUtils.isNotEmpty(attributes.get(attributeNameKey))){
-					areAllAttributesEmpty = false;
-					break;
-				}
-			}
-		}
-    	return areAllAttributesEmpty;
-    }
-    */
 
 	protected String getAttributeValue(Map<String, String> aSet, String attributeName){
 		if(StringUtils.isEmpty(attributeName)) {

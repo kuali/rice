@@ -89,9 +89,9 @@
     <dom4j.version>1.6.1</dom4j.version>
     <dwr.version>3.0.M1</dwr.version>
     <filemonitor.version>1.0-kuali</filemonitor.version>
-    <groovy.version>1.8.0</groovy.version>
+    <groovy.version>1.8.1</groovy.version>
     <guava.version>r09</guava.version>
-    <hibernate.version>3.6.5.Final</hibernate.version>
+    <hibernate.version>3.6.6.Final</hibernate.version>
     <mail.version>1.4.4</mail.version>
     <jackson.version>1.8.3</jackson.version>
     <javassist.version>3.15.0-GA</javassist.version>

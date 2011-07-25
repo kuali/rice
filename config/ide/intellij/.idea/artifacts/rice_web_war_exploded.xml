@@ -44,6 +44,10 @@
           <element id="archive" name="rice-kew-api-2.0.0-m7-SNAPSHOT.jar">
             <element id="module-output" name="rice-kew-api" />
           </element>
+          <element id="archive" name="rice-ksb-api-2.0.0-m7-SNAPSHOT.jar">
+            <element id="module-output" name="rice-ksb-api" />
+          </element>
+          <element id="library" level="project" name="Maven: javax.ws.rs:jsr311-api:1.1.1" />
           <element id="archive" name="rice-core-framework-2.0.0-m7-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-framework" />
           </element>
@@ -97,10 +101,6 @@
           <element id="library" level="project" name="Maven: org.apache.tiles:tiles-template:2.2.2" />
           <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-core-asl:1.8.3" />
           <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.8.3" />
-          <element id="archive" name="rice-ksb-api-2.0.0-m7-SNAPSHOT.jar">
-            <element id="module-output" name="rice-ksb-api" />
-          </element>
-          <element id="library" level="project" name="Maven: javax.ws.rs:jsr311-api:1.1.1" />
           <element id="library" level="project" name="Maven: org.bouncycastle:bcprov-jdk16:1.46" />
           <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-frontend-jaxws:2.3.5" />
           <element id="library" level="project" name="Maven: xml-resolver:xml-resolver:1.2" />

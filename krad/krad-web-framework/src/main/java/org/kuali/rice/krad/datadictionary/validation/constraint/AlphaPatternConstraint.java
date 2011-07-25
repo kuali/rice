@@ -27,7 +27,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 /**
  * Pattern for matching alpha characters
  * 
- * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AlphaPatternConstraint extends ValidCharactersPatternConstraint {
     protected boolean allowWhitespace = false;

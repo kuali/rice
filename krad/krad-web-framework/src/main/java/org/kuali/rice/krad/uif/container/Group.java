@@ -74,56 +74,55 @@ public class Group extends ContainerBase {
 	 * 
 	 * @see org.kuali.rice.krad.uif.core.ComponentBase#performInitialization(org.kuali.rice.krad.uif.container.View)
 	 */
-	@Override
-	public void performInitialization(View view) {
-		super.performInitialization(view);
+    @Override
+    public void performInitialization(View view) {
+        super.performInitialization(view);
 
-		for (Component component : getItems()) {
-			// append group's field bind by name prefix (if set) to each
-			// attribute field's binding prefix
-			if (component instanceof AttributeField) {
-				AttributeField attributeField = (AttributeField) component;
+        for (Component component : getItems()) {
+            // append group's field bind by name prefix (if set) to each
+            // attribute field's binding prefix
+            if (component instanceof AttributeField) {
+                AttributeField attributeField = (AttributeField) component;
 
-				if (!(this instanceof CollectionGroup)){
-    				if (StringUtils.isNotBlank(getFieldBindByNamePrefix())) {
-    					String bindByNamePrefixToSet = getFieldBindByNamePrefix();
-    
-    					if (StringUtils.isNotBlank(attributeField.getBindingInfo().getBindByNamePrefix())) {
-    						bindByNamePrefixToSet += "." + attributeField.getBindingInfo().getBindByNamePrefix();
-    					}
-    					attributeField.getBindingInfo().setBindByNamePrefix(bindByNamePrefixToSet);
-    				}
-				}
+                if (StringUtils.isNotBlank(getFieldBindByNamePrefix())) {
+                    String bindByNamePrefixToSet = getFieldBindByNamePrefix();
 
-				if (StringUtils.isNotBlank(fieldBindingObjectPath)
-						&& StringUtils.isBlank(attributeField.getBindingInfo().getBindingObjectPath())) {
-					attributeField.getBindingInfo().setBindingObjectPath(fieldBindingObjectPath);
-				}
-			}
-			// set on GroupField's group to recursively set AttributeFields
-			else if (component instanceof GroupField) {
-				GroupField groupField = (GroupField) component;
-
-				if (groupField.getGroup() != null) {
-					if (StringUtils.isBlank(groupField.getGroup().getFieldBindByNamePrefix())) {
-						groupField.getGroup().setFieldBindByNamePrefix(fieldBindByNamePrefix);
-					}
-					if (StringUtils.isBlank(groupField.getGroup().getFieldBindingObjectPath())) {
-						groupField.getGroup().setFieldBindingObjectPath(fieldBindingObjectPath);
-					}
-				}
-			}else if (component instanceof Group) {
-			    Group subGroup = (Group)component;
-			    if (StringUtils.isNotBlank(getFieldBindByNamePrefix())) {
-			        if (StringUtils.isNotBlank(subGroup.getFieldBindByNamePrefix())){
-			            subGroup.setFieldBindByNamePrefix(getFieldBindByNamePrefix() + "." + subGroup.getFieldBindByNamePrefix());    
-			        }else{
-			            subGroup.setFieldBindByNamePrefix(getFieldBindByNamePrefix());
-			        }
+                    if (StringUtils.isNotBlank(attributeField.getBindingInfo().getBindByNamePrefix())) {
+                        bindByNamePrefixToSet += "." + attributeField.getBindingInfo().getBindByNamePrefix();
+                    }
+                    attributeField.getBindingInfo().setBindByNamePrefix(bindByNamePrefixToSet);
                 }
-			}
-		}
-	}
+
+                if (StringUtils.isNotBlank(fieldBindingObjectPath) &&
+                        StringUtils.isBlank(attributeField.getBindingInfo().getBindingObjectPath())) {
+                    attributeField.getBindingInfo().setBindingObjectPath(fieldBindingObjectPath);
+                }
+            }
+            // set on GroupField's group to recursively set AttributeFields
+            else if (component instanceof GroupField) {
+                GroupField groupField = (GroupField) component;
+
+                if (groupField.getGroup() != null) {
+                    if (StringUtils.isBlank(groupField.getGroup().getFieldBindByNamePrefix())) {
+                        groupField.getGroup().setFieldBindByNamePrefix(fieldBindByNamePrefix);
+                    }
+                    if (StringUtils.isBlank(groupField.getGroup().getFieldBindingObjectPath())) {
+                        groupField.getGroup().setFieldBindingObjectPath(fieldBindingObjectPath);
+                    }
+                }
+            } else if (component instanceof Group) {
+                Group subGroup = (Group) component;
+                if (StringUtils.isNotBlank(getFieldBindByNamePrefix())) {
+                    if (StringUtils.isNotBlank(subGroup.getFieldBindByNamePrefix())) {
+                        subGroup.setFieldBindByNamePrefix(
+                                getFieldBindByNamePrefix() + "." + subGroup.getFieldBindByNamePrefix());
+                    } else {
+                        subGroup.setFieldBindByNamePrefix(getFieldBindByNamePrefix());
+                    }
+                }
+            }
+        }
+    }
 
 	/**
 	 * @see org.kuali.rice.krad.uif.core.ComponentBase#getNestedComponents()

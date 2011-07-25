@@ -28,7 +28,7 @@ import org.kuali.rice.kns.datadictionary.FieldDefinition;
 import org.kuali.rice.kns.datadictionary.InquirySectionDefinition;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.BusinessObjectRelationship;
+import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.krad.datadictionary.PrimitiveAttributeDefinition;
@@ -155,7 +155,7 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 		}
 		if (obj != null) {
 			BusinessObject bo = (BusinessObject) obj;
-			BusinessObjectRelationship relationship = getBusinessObjectRelationship(bo, attributeName);
+			DataObjectRelationship relationship = getBusinessObjectRelationship(bo, attributeName);
 
 			if (relationship != null && relationship.getRelatedClass() != null
 					&& BusinessObject.class.isAssignableFrom(relationship.getRelatedClass())) {
@@ -185,21 +185,21 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 		return lookupable;
 	}
 
-	public BusinessObjectRelationship getBusinessObjectRelationship(BusinessObject bo, String attributeName) {
+	public DataObjectRelationship getBusinessObjectRelationship(BusinessObject bo, String attributeName) {
 		return getBusinessObjectRelationship(bo, bo.getClass(), attributeName, "", true);
 	}
 
 	// TODO: four different exit points?!
-	public BusinessObjectRelationship getBusinessObjectRelationship(RelationshipDefinition ddReference,
+	public DataObjectRelationship getBusinessObjectRelationship(RelationshipDefinition ddReference,
 			BusinessObject bo, Class boClass, String attributeName, String attributePrefix, boolean keysOnly) {
 
-		BusinessObjectRelationship relationship = null;
+		DataObjectRelationship relationship = null;
 
 		// if it is nested then replace the bo and attributeName with the
 		// sub-refs
 		if (ObjectUtils.isNestedAttribute(attributeName)) {
 			if (ddReference != null) {
-				relationship = new BusinessObjectRelationship(boClass, ddReference.getObjectAttributeName(),
+				relationship = new DataObjectRelationship(boClass, ddReference.getObjectAttributeName(),
 						ddReference.getTargetClass());
 				for (PrimitiveAttributeDefinition def : ddReference.getPrimitiveAttributes()) {
 					if (StringUtils.isNotBlank(attributePrefix)) {
@@ -251,10 +251,10 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 		// try persistable reference first
 		if (PersistableBusinessObject.class.isAssignableFrom(boClass)
 				&& getPersistenceStructureService().isPersistable(boClass)) {
-			Map<String, BusinessObjectRelationship> rels = getPersistenceStructureService().getRelationshipMetadata(boClass,
+			Map<String, DataObjectRelationship> rels = getPersistenceStructureService().getRelationshipMetadata(boClass,
 					attributeName, attributePrefix);
 			if (rels.size() > 0) {
-				for (BusinessObjectRelationship rel : rels.values()) {
+				for (DataObjectRelationship rel : rels.values()) {
 					if (rel.getParentToChildReferences().size() < maxSize && isLookupable(rel.getRelatedClass())) {
 						maxSize = rel.getParentToChildReferences().size();
 						relationship = rel;
@@ -282,7 +282,7 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 		// primitiveReference
 		if (ddReference != null && isLookupable(ddReference.getTargetClass()) && bo != null
 				&& ddReference.getPrimitiveAttributes().size() < maxSize) {
-			relationship = new BusinessObjectRelationship(boClass, ddReference.getObjectAttributeName(),
+			relationship = new DataObjectRelationship(boClass, ddReference.getObjectAttributeName(),
 					ddReference.getTargetClass());
 			for (PrimitiveAttributeDefinition def : ddReference.getPrimitiveAttributes()) {
 				relationship.getParentToChildReferences().put(def.getSourceName(), def.getTargetName());
@@ -308,7 +308,7 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 		return getBusinessObjectRelationshipDefinition(bo.getClass(), attributeName);
 	}
 
-	public BusinessObjectRelationship getBusinessObjectRelationship(BusinessObject bo, Class boClass,
+	public DataObjectRelationship getBusinessObjectRelationship(BusinessObject bo, Class boClass,
 			String attributeName, String attributePrefix, boolean keysOnly) {
 		RelationshipDefinition ddReference = getBusinessObjectRelationshipDefinition(boClass, attributeName);
 		return getBusinessObjectRelationship(ddReference, bo, boClass, attributeName, attributePrefix, keysOnly);
@@ -378,7 +378,7 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 		return clazz;
 	}
 
-	public List<BusinessObjectRelationship> getBusinessObjectRelationships(BusinessObject bo) {
+	public List<DataObjectRelationship> getBusinessObjectRelationships(BusinessObject bo) {
 		if (bo == null) {
 			return null;
 		}
@@ -386,7 +386,7 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<BusinessObjectRelationship> getBusinessObjectRelationships(Class<? extends BusinessObject> boClass) {
+	public List<DataObjectRelationship> getBusinessObjectRelationships(Class<? extends BusinessObject> boClass) {
 		if (boClass == null) {
 			return null;
 		}
@@ -400,7 +400,7 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 				boClass.getName());
 		List<RelationshipDefinition> ddRelationships = (ddEntry == null ? new ArrayList<RelationshipDefinition>()
 				: ddEntry.getRelationships());
-		List<BusinessObjectRelationship> relationships = new ArrayList<BusinessObjectRelationship>();
+		List<DataObjectRelationship> relationships = new ArrayList<DataObjectRelationship>();
 
 		// loop over all relationships
 		if (referenceClasses != null) {
@@ -408,7 +408,7 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 				if (isLookupable(entry.getValue())) {
 					Map<String, String> fkToPkRefs = getPersistenceStructureService().getForeignKeysForReference(boClass,
 							entry.getKey());
-					BusinessObjectRelationship rel = new BusinessObjectRelationship(boClass, entry.getKey(),
+					DataObjectRelationship rel = new DataObjectRelationship(boClass, entry.getKey(),
 							entry.getValue());
 					for (Map.Entry<String, String> ref : fkToPkRefs.entrySet()) {
 						rel.getParentToChildReferences().put(ref.getKey(), ref.getValue());
@@ -420,7 +420,7 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 
 		for (RelationshipDefinition rd : ddRelationships) {
 			if (isLookupable(rd.getTargetClass())) {
-				BusinessObjectRelationship rel = new BusinessObjectRelationship(boClass, rd.getObjectAttributeName(),
+				DataObjectRelationship rel = new DataObjectRelationship(boClass, rd.getObjectAttributeName(),
 						rd.getTargetClass());
 				for (PrimitiveAttributeDefinition def : rd.getPrimitiveAttributes()) {
 					rel.getParentToChildReferences().put(def.getSourceName(), def.getTargetName());
@@ -437,13 +437,13 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 	 *      java.lang.String)
 	 */
 	public Map<String, Class> getReferencesForForeignKey(BusinessObject bo, String attributeName) {
-		List<BusinessObjectRelationship> businessObjectRelationships = getBusinessObjectRelationships(bo);
+		List<DataObjectRelationship> dataObjectRelationships = getBusinessObjectRelationships(bo);
 		Map<String, Class> referencesForForeignKey = new HashMap<String, Class>();
-		for (BusinessObjectRelationship businessObjectRelationship : businessObjectRelationships) {
-			if (businessObjectRelationship != null && businessObjectRelationship.getParentToChildReferences() != null
-					&& businessObjectRelationship.getParentToChildReferences().containsKey(attributeName)) {
-				referencesForForeignKey.put(businessObjectRelationship.getParentAttributeName(),
-						businessObjectRelationship.getRelatedClass());
+		for (DataObjectRelationship dataObjectRelationship : dataObjectRelationships) {
+			if (dataObjectRelationship != null && dataObjectRelationship.getParentToChildReferences() != null
+					&& dataObjectRelationship.getParentToChildReferences().containsKey(attributeName)) {
+				referencesForForeignKey.put(dataObjectRelationship.getParentAttributeName(),
+						dataObjectRelationship.getRelatedClass());
 			}
 		}
 		return referencesForForeignKey;

@@ -201,7 +201,7 @@ public class ComponentUtils {
             if (field instanceof DataBinding) {
                 prefixBindingPath((DataBinding) field, addBindingPrefix);
             }
-            else if (field instanceof GroupField) {
+            else if ((field instanceof GroupField) && (((GroupField) field).getItems() != null) ) {
                 List<Field> groupFields = getComponentsOfType(((GroupField) field).getItems(), Field.class);
                 prefixBindingPath(groupFields, addBindingPrefix);
             }
@@ -229,16 +229,6 @@ public class ComponentUtils {
             bindingPrefix += "." + field.getBindingInfo().getBindByNamePrefix();
         }
         field.getBindingInfo().setBindByNamePrefix(bindingPrefix);
-        
-        if (field instanceof AttributeField){
-        	AttributeField attrfield = (AttributeField)field;
-        	if (StringUtils.isNotBlank(attrfield.getAdditionalDisplayPropertyName())){
-        		attrfield.getAdditionalDisplayPropertyBindingInfo().setBindByNamePrefix(bindingPrefix);
-        	}
-        	if (StringUtils.isNotBlank(attrfield.getAlternateDisplayPropertyName())){
-        		attrfield.getAlternateDisplayPropertyBindingInfo().setBindByNamePrefix(bindingPrefix);
-        	}
-        }
     }
 
     public static void updateIdsWithSuffixNested(List<? extends Component> components, String idSuffix) {
@@ -442,7 +432,7 @@ public class ComponentUtils {
     }
     
     /**
-     * This method takes in an expression and a list to be filled in with names(property names)
+     * Takes in an expression and a list to be filled in with names(property names)
      * of controls found in the expression. This method returns a js expression which can
      * be executed on the client to determine if the original exp was satisfied before
      * interacting with the server - ie, this js expression is equivalent to the one passed in.
@@ -572,24 +562,24 @@ public class ComponentUtils {
        }
     }
 
-    public static String getLinePathValue(Component component){
-        CollectionGroup collectionGroup = (CollectionGroup)(component.getContext().get(UifConstants.ContextVariableNames.COLLECTION_GROUP));
+    public static String getLinePathValue(Component component) {
+        CollectionGroup collectionGroup =
+                (CollectionGroup) (component.getContext().get(UifConstants.ContextVariableNames.COLLECTION_GROUP));
         String linePath = "";
-        if(collectionGroup != null){
+        if (collectionGroup != null) {
             Object indexObj = component.getContext().get(UifConstants.ContextVariableNames.INDEX);
-            if(indexObj != null){
-                int index = (Integer)indexObj;
+            if (indexObj != null) {
+                int index = (Integer) indexObj;
                 boolean addLine = false;
                 Object addLineObj = component.getContext().get(UifConstants.ContextVariableNames.IS_ADD_LINE);
-                
-                if(addLineObj != null){
-                    addLine = (Boolean)addLineObj;
+
+                if (addLineObj != null) {
+                    addLine = (Boolean) addLineObj;
                 }
                 if (addLine) {
-                  linePath = collectionGroup.getAddLineBindingInfo().getBindingPath();
-                }
-                else {
-                  linePath = collectionGroup.getBindingInfo().getBindingPath() + "[" + index + "]";
+                    linePath = collectionGroup.getAddLineBindingInfo().getBindingPath();
+                } else {
+                    linePath = collectionGroup.getBindingInfo().getBindingPath() + "[" + index + "]";
                 }
             }
         }

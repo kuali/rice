@@ -184,6 +184,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
      * Performs initialization of a component by these steps:
      * 
      * <ul>
+     * <li>If component id not set, assigns to next available int for view</li>
      * <li>For <code>AttributeField</code> instances, set defaults from the data
      * dictionary.</li>
      * <li>Invoke the initialize method on the component. Here the component can
@@ -207,6 +208,11 @@ public class ViewHelperServiceImpl implements ViewHelperService {
     public void performComponentInitialization(View view, Component component) {
         if (component == null) {
             return;
+        }
+
+        // assign ID if necessary
+        if (StringUtils.isBlank(component.getId())) {
+            component.setId(view.getNextId());
         }
 
         LOG.debug("Initializing component: " + component.getId() + " with type: " + component.getClass());
@@ -349,7 +355,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
         }
 
         if (StringUtils.isNotBlank(parentPath)) {
-            Class<?> dictionaryModelClass = ViewModelUtils.getPropertyType(view, parentPath);
+            Class<?> dictionaryModelClass = ViewModelUtils.getPropertyTypeByClassAndView(view, parentPath);
             if (dictionaryModelClass != null) {
                 dictionaryObjectEntry = dictionaryModelClass.getName();
 

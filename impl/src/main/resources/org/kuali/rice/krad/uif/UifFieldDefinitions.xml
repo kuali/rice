@@ -34,12 +34,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="bindingInfo">
         <ref bean="BindingInfo"/>
       </property>
-      <property name="alternateDisplayPropertyBindingInfo">
-        <ref bean="BindingInfo"/>
-      </property>
-      <property name="additionalDisplayPropertyBindingInfo">
-        <ref bean="BindingInfo"/>
-      </property>
       <property name="fieldLookup">
         <bean parent="QuickFinder"/>
       </property> 
@@ -64,15 +58,11 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="AttributeField_Form" parent="AttributeField_Form-parentBean"/>
   <bean id="AttributeField_Form-parentBean" abstract="true" parent="AttributeField">
       <property name="bindingInfo.bindToForm" value="true"/>
-      <property name="alternateDisplayPropertyBindingInfo.bindToForm" value="true"/>
-      <property name="additionalDisplayPropertyBindingInfo.bindToForm" value="true"/>
-  </bean>    
+  </bean>
   
   <bean id="LookupCriteriaAttributeField" abstract="true" parent="LookupCriteriaAttributeField-parentBean"/>
-  <bean id="LookupCriteriaAttributeField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.LookupCriteriaAttributeField" parent="AttributeField">
+  <bean id="LookupCriteriaAttributeField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.LookupAttributeField" parent="AttributeField">
       <property name="bindingInfo.bindToMap" value="true"/>
-      <property name="alternateDisplayPropertyBindingInfo.bindToForm" value="true"/>
-      <property name="additionalDisplayPropertyBindingInfo.bindToForm" value="true"/>
   </bean>
   
   <bean id="LabelField" parent="LabelField-parentBean"/>

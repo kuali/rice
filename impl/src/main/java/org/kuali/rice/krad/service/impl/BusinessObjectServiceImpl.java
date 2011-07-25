@@ -24,7 +24,7 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.BusinessObjectRelationship;
+import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.dao.BusinessObjectDao;
@@ -256,7 +256,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
         // get the list of foreign-keys for this reference. if the reference
         // does not exist, or is not a reference-descriptor, an exception will
         // be thrown here.
-        BusinessObjectRelationship boRel = businessObjectMetaDataService.getBusinessObjectRelationship( bo, referenceName );
+        DataObjectRelationship boRel = businessObjectMetaDataService.getBusinessObjectRelationship( bo, referenceName );
         final Map<String,String> fkMap = boRel != null ? boRel.getParentToChildReferences() : Collections.<String, String>emptyMap();
 
         boolean allFkeysHaveValues = true;
@@ -337,8 +337,8 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
         Person person;
         for (PersistableBusinessObject bo : bos) {
             // get a list of the reference objects on the BO
-            List<BusinessObjectRelationship> relationships = businessObjectMetaDataService.getBusinessObjectRelationships( bo );
-            for ( BusinessObjectRelationship rel : relationships ) {
+            List<DataObjectRelationship> relationships = businessObjectMetaDataService.getBusinessObjectRelationships( bo );
+            for ( DataObjectRelationship rel : relationships ) {
                 if ( Person.class.isAssignableFrom( rel.getRelatedClass() ) ) {
                     person = (Person) ObjectUtils.getPropertyValue(bo, rel.getParentAttributeName() );
                     if (person != null) {

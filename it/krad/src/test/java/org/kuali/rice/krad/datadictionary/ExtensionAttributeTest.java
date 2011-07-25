@@ -24,7 +24,7 @@ import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.BusinessObjectRelationship;
+import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.krad.exception.ValidationException;
@@ -123,7 +123,7 @@ public class ExtensionAttributeTest extends KRADTestCase {
 	@Test
 	public void testBOMetaDataService() throws Exception {
 		Account ta = new Account();
-	BusinessObjectRelationship br = KNSServiceLocator.getBusinessObjectMetaDataService().getBusinessObjectRelationship(
+	DataObjectRelationship br = KNSServiceLocator.getBusinessObjectMetaDataService().getBusinessObjectRelationship(
 		ta, "extension.accountType");
 		assertEquals( "mismatch on parent class", Account.class, br.getParentClass() );
 		assertEquals( "mismatch on related class", AccountType.class, br.getRelatedClass() );

@@ -38,7 +38,7 @@ import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.BusinessObjectRelationship;
+import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.lookup.CollectionIncomplete;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
@@ -736,7 +736,7 @@ public class PersonServiceImpl implements PersonService, InitializingBean {
                     	// host business object to put back into the map now that the principal ID
                     	// (the value stored in application tables) has been resolved
                         String propName = ObjectUtils.getNestedAttributePrimitive( personReferenceObjectPropertyName );
-                        BusinessObjectRelationship rel = getBusinessObjectMetaDataService().getBusinessObjectRelationship( targetBusinessObject, propName );
+                        DataObjectRelationship rel = getBusinessObjectMetaDataService().getBusinessObjectRelationship( targetBusinessObject, propName );
                         if ( rel != null ) {
                             String sourcePrimitivePropertyName = rel.getParentAttributeForChildAttribute(KIMPropertyConstants.Person.PRINCIPAL_ID);
                             resolvedPrincipalIdPropertyName.append(sourcePrimitivePropertyName);
@@ -793,11 +793,11 @@ public class PersonServiceImpl implements PersonService, InitializingBean {
                         if (collectionBusinessObjectClass != null) {
                             // we are adding to a collection; get the relationships for that object; 
                         	// is there one for personUniversalIdentifier?
-                            List<BusinessObjectRelationship> relationships = 
+                            List<DataObjectRelationship> relationships =
                             		getBusinessObjectMetaDataService().getBusinessObjectRelationships( collectionBusinessObjectClass );
                             // JHK: this seems like a hack - looking at all relationships for a BO does not guarantee that we get the right one
                             // JHK: why not inspect the objects like above?  Is it the property path problems because of the .add. portion?
-                            for ( BusinessObjectRelationship rel : relationships ) {
+                            for ( DataObjectRelationship rel : relationships ) {
                             	String parentAttribute = rel.getParentAttributeForChildAttribute( KIMPropertyConstants.Person.PRINCIPAL_ID );
                             	if ( parentAttribute == null ) {
                             		continue;

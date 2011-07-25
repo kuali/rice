@@ -101,10 +101,10 @@
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.PropositionParameterBo" />
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="id" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="description" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="ruleId" />        
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="typeId" />        
+        <bean parent="LookupAttributeField" p:propertyName="id" />
+        <bean parent="LookupAttributeField" p:propertyName="description" />
+        <bean parent="LookupAttributeField" p:propertyName="ruleId" />
+        <bean parent="LookupAttributeField" p:propertyName="typeId" />
       </list>
     </property>
     <property name="resultFields">

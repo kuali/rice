@@ -88,9 +88,11 @@ public class UifConstants {
         public static final String ADD_LINE = "_addLine";
         public static final String ATTRIBUTE = "_attribute";
         public static final String CONSTRAINT = "_constraint";
+        public static final String DIRECT_INQUIRY = "_directinquiry";
         public static final String DIV = "_div";
         public static final String ERRORS = "_errors";
         public static final String LABEL = "_label";
+        public static final String SUGGEST = "_suggest";
         public static final String SUMMARY = "_summary";
         public static final String QUICK_FINDER = "_quickfinder";
     }
@@ -110,7 +112,8 @@ public class UifConstants {
     public static final String EL_PLACEHOLDER_PREFIX = "@{";
     public static final String EL_PLACEHOLDER_SUFFIX = "}";
     public static final String EL_CONDITIONAL_PROPERTY_PREFIX = "conditional";
-    public static final String NO_BIND_ADJUST_PREFIX = "form:";
+    public static final String NO_BIND_ADJUST_PREFIX = "form.";
+    public static final String DATA_OBJECT_BIND_ADJUST_PREFIX = "do.";
 
     public static class ContextVariableNames {
         public static final String COLLECTION_GROUP = "collectionGroup";

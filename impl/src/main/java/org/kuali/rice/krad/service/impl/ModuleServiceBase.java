@@ -19,7 +19,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.BusinessObjectRelationship;
+import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.bo.ModuleConfiguration;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
@@ -404,7 +404,7 @@ public class ModuleServiceBase implements ModuleService {
 		}
 	}
 
-	public BusinessObjectRelationship getBusinessObjectRelationship(Class boClass, String attributeName, String attributePrefix){
+	public DataObjectRelationship getBusinessObjectRelationship(Class boClass, String attributeName, String attributePrefix){
 		return null;
 	}
 

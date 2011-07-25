@@ -10,11 +10,14 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import org.codehaus.groovy.tools.javac.JavaAwareCompilationUnit;
+import org.hibernate.dialect.Oracle10gDialect;
 import org.kuali.rice.krad.uif.core.ReferenceCopy;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;

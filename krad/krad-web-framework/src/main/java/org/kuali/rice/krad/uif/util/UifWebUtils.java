@@ -56,6 +56,7 @@ public class UifWebUtils {
      */
     public static UifFormBase getFormFromRequest(HttpServletRequest request) {
         UifFormBase form = null;
+
         String formKeyParam = request.getParameter(UifParameters.FORM_KEY);
         String docId = request.getParameter(KRADConstants.DOCUMENT_DOCUMENT_NUMBER);
         if (StringUtils.isNotBlank(formKeyParam)) {
@@ -68,6 +69,7 @@ public class UifWebUtils {
                         .getDocumentForm(docId, formKeyParam, userSession, request.getRemoteAddr());
             }
         }
+
         return form;
     }
 
@@ -115,43 +117,18 @@ public class UifWebUtils {
             UifControllerBase controller = (UifControllerBase) handler;
             UifFormBase form = null;
 
-            //Check to see if this is a full view request
+            // check to see if this is a full view request
             if (modelAndView.getViewName().equals(UifConstants.SPRING_VIEW_ID)) {
                 Object model = modelAndView.getModelMap().get(UifConstants.DEFAULT_MODEL_NAME);
                 if (model instanceof UifFormBase) {
                     form = (UifFormBase) model;
 
-                    View view = form.getView();
-
-                    //Determining the property name to use as part of the breadcrumb/title
-                    view.determineViewLabelPropertyName();
-
-                    //Main history/breadcrumb tracking support
-                    History history = form.getFormHistory();
-                    if (history == null || request.getMethod().equals("GET")) {
-                        history = new History();
-                        history.setHomewardPath(view.getBreadcrumbs().getHomewardPathList());
-                        history.setAppendHomewardPath(view.getBreadcrumbs().isDisplayHomewardPath());
-                        history.setAppendPassedHistory(view.getBreadcrumbs().isDisplayPassedHistory());
-
-                        //Passed settings ALWAYS override the defaults
-                        if (StringUtils.isNotBlank(request.getParameter(UifConstants.UrlParams.SHOW_HOME))) {
-                            history.setAppendHomewardPath(
-                                    Boolean.parseBoolean(request.getParameter(UifConstants.UrlParams.SHOW_HOME)));
-                        }
-                        if (StringUtils.isNotBlank(request.getParameter(UifConstants.UrlParams.SHOW_HISTORY))) {
-                            history.setAppendPassedHistory(
-                                    Boolean.parseBoolean(request.getParameter(UifConstants.UrlParams.SHOW_HISTORY)));
-                        }
-
-                        history.setCurrent(form, request);
-                        history.buildHistoryFromParameterString(request.getParameter(UifConstants.UrlParams.HISTORY));
-                        form.setFormHistory(history);
-                    }
-
                     form.setPreviousView(null);
 
-                    //Store form to session and persist document form to db as well
+                    // update history for view
+                    prepareHistory(request, form);
+
+                    // store form to session and persist document form to db as well
                     request.getSession().setAttribute(form.getFormKey(), model);
                     if (form instanceof DocumentFormBase) {
                         UserSession userSession =
@@ -197,6 +174,41 @@ public class UifWebUtils {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("'" + methodToCall + "' is exempt from auth checks.");
             }
+        }
+    }
+
+    /**
+     * Updates the history object (or constructs a new History) for the view we are getting ready
+     * to render
+     *
+     * @param request - Http request object containing the request parameters
+     * @param form - object containing the view data
+     */
+    public static void prepareHistory(HttpServletRequest request, UifFormBase form) {
+        View view = form.getView();
+
+        // main history/breadcrumb tracking support
+        History history = form.getFormHistory();
+        if (history == null || request.getMethod().equals("GET")) {
+            history = new History();
+            history.setHomewardPath(view.getBreadcrumbs().getHomewardPathList());
+            history.setAppendHomewardPath(view.getBreadcrumbs().isDisplayHomewardPath());
+            history.setAppendPassedHistory(view.getBreadcrumbs().isDisplayPassedHistory());
+
+            // passed settings ALWAYS override the defaults
+            if (StringUtils.isNotBlank(request.getParameter(UifConstants.UrlParams.SHOW_HOME))) {
+                history.setAppendHomewardPath(
+                        Boolean.parseBoolean(request.getParameter(UifConstants.UrlParams.SHOW_HOME)));
+            }
+
+            if (StringUtils.isNotBlank(request.getParameter(UifConstants.UrlParams.SHOW_HISTORY))) {
+                history.setAppendPassedHistory(
+                        Boolean.parseBoolean(request.getParameter(UifConstants.UrlParams.SHOW_HISTORY)));
+            }
+
+            history.setCurrent(form, request);
+            history.buildHistoryFromParameterString(request.getParameter(UifConstants.UrlParams.HISTORY));
+            form.setFormHistory(history);
         }
     }
 

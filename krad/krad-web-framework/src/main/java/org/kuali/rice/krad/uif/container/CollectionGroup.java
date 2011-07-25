@@ -45,7 +45,7 @@ import org.kuali.rice.krad.uif.util.ComponentUtils;
  * name. The collectionObjectClass property is used to lookup attributes from
  * the data dictionary.
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CollectionGroup extends Group implements DataBinding {
@@ -110,16 +110,7 @@ public class CollectionGroup extends Group implements DataBinding {
         if (bindingInfo != null) {
             bindingInfo.setDefaults(view, getPropertyName());
         }
-        
-        if (StringUtils.isNotBlank(getFieldBindByNamePrefix())) {
-            String bindByNamePrefixToSet = getFieldBindByNamePrefix();
 
-            if (StringUtils.isNotBlank(getBindingInfo().getBindByNamePrefix())) {
-                bindByNamePrefixToSet += "." + getBindingInfo().getBindByNamePrefix();
-            }
-            getBindingInfo().setBindByNamePrefix(bindByNamePrefixToSet);
-        }
-        
         if (addLineBindingInfo != null) {
             // add line binds to model property
             if (StringUtils.isNotBlank(addLinePropertyName)) {
@@ -196,7 +187,8 @@ public class CollectionGroup extends Group implements DataBinding {
         pushCollectionGroupToReference();
 
         getCollectionGroupBuilder().build(view, model, this);
-        
+
+        // TODO: is this necessary to call again?
         pushCollectionGroupToReference();
     }
 

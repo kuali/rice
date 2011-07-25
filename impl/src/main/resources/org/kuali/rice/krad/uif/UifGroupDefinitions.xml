@@ -126,11 +126,11 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="bindingInfo">
         <ref bean="BindingInfo"/>
       </property>
-      <property name="nodeProtypeMap">
+      <property name="nodePrototypeMap">
         <map/>
       </property>
       <property name="defaultNodePrototype">
-        <bean class="org.kuali.rice.krad.uif.container.TreeGroup.NodePrototype">
+        <bean class="org.kuali.rice.krad.uif.container.NodePrototype">
             <property name="labelPrototype">
                 <bean parent="MessageField"/>
             </property>
@@ -151,8 +151,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="emptyLinkGroupString" value="&amp;nbsp;"/>
   </bean>
 
-  <bean id="ChildLinkGroup" abstract="true" parent="ChildLinkGroup-parentBean"/>
-  <bean id="ChildLinkGroup-parentBean" abstract="true" parent="LinkGroup">
+  <bean id="LinkGroupNested" abstract="true" parent="LinkGroupNested-parentBean"/>
+  <bean id="LinkGroupNested-parentBean" abstract="true" parent="LinkGroup">
       <property name="linkSeparator" value="&amp;nbsp;|&amp;nbsp;"/>
       <property name="groupBeginDelimiter" value="&amp;nbsp;["/>
       <property name="groupEndDelimiter" value="]"/>
@@ -392,11 +392,13 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="title" value="Ad Hoc Recipients"/>
       <property name="items">
         <list>
-            <bean id="CollectionGroup_AdHocPerson" parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="2">
+            <bean id="CollectionGroup_AdHocPerson" parent="CollectionGroupTableLayout"
+                  p:layoutManager.numberOfColumns="2" p:accordion.render="false">
                 <property name="collectionObjectClass" value="org.kuali.rice.krad.bo.AdHocRoutePerson" />
                 <property name="propertyName" value="adHocRoutePersons" />
                 <property name="bindingInfo.bindingObjectPath" value="document" />
                 <property name="title" value="Person Requests:" />
+                <property name="layoutManager.renderSequenceField" value="false" />
                 <property name="layoutManager.tableTools.render" value="false" />
                 <property name="styleClasses" value="tableborders wrap" />
                 <property name="items">
@@ -409,7 +411,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                                 <bean class="org.kuali.rice.krad.keyvalues.AdHocActionRequestCodesValuesFinder"/>
                             </property>
                         </bean>
-                        <bean parent="AttributeField" p:propertyName="name" p:label="Person" p:required="True">
+                        <bean parent="AttributeField" p:propertyName="name" p:label="Person" p:required="true">
                             <property name="control">
                                 <bean parent="UserControl" p:principalIdPropertyName="id" p:personNamePropertyName="person.name" />
                             </property>
@@ -417,11 +419,13 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                     </list>
                 </property>
             </bean>
-            <bean id="CollectionGroup_AdHocWorkgroup" parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="3">
+            <bean id="CollectionGroup_AdHocWorkgroup" parent="CollectionGroupTableLayout"
+                  p:layoutManager.numberOfColumns="3" p:accordion.render="false">
                 <property name="collectionObjectClass" value="org.kuali.rice.krad.bo.AdHocRouteWorkgroup" />
                 <property name="propertyName" value="adHocRouteWorkgroups" />
                 <property name="title" value="Ad Hoc Group Requests:" />
                 <property name="bindingInfo.bindingObjectPath" value="document" />
+                <property name="layoutManager.renderSequenceField" value="false" />
                 <property name="layoutManager.tableTools.render" value="false" />
                 <property name="styleClasses" value="tableborders wrap" />
                 <property name="items">

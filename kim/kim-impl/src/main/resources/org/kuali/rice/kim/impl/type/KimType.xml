@@ -45,6 +45,9 @@
 		<property name="control">
 			<bean parent="TextControlDefinition" p:size="5"/>
 		</property>
+        <property name="controlField">
+            <bean parent="TextControl" p:size="5"/>
+        </property>
 	</bean>
 
 	<bean id="KimType-name" parent="KimType-name-parentBean"/>
@@ -60,6 +63,9 @@
 		<property name="control">
 			<bean parent="TextControlDefinition" p:size="40"/>
 		</property>
+        <property name="controlField">
+            <bean parent="TextControl" p:size="40"/>
+        </property>
 		<property name="summary" value="Nm"/>
 		<property name="description" value="Nm"/>
 	</bean>
@@ -77,6 +83,9 @@
 		<property name="control">
 			<bean parent="TextControlDefinition" p:size="40"/>
 		</property>
+        <property name="controlField">
+            <bean parent="TextControl" p:size="40"/>
+        </property>
 		<property name="summary" value="Srvc Nm"/>
 		<property name="description" value="Srvc Nm"/>
 	</bean>

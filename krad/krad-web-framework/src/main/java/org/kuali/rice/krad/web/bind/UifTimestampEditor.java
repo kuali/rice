@@ -20,7 +20,7 @@ import java.sql.Timestamp;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UifDateViewTimestampEditor extends UifDateEditor {
+public class UifTimestampEditor extends UifDateEditor {
 
     /**
      * This overridden method uses the

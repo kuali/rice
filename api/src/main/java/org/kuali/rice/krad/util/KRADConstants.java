@@ -375,8 +375,6 @@ public final class KRADConstants {
     public static final String ANCHOR_TOP_OF_FORM = "topOfForm";
     public static final String QUESTION_ANCHOR = "questionAnchor";
     public static final String NOT_AVAILABLE_STRING = "N/A";
-//    public static final int NEGATIVE_ONE = -1;
-//    public static final String CONTEXT_PATH = "contextPath";
     public static final String QUESTION_ACTION = "questionPrompt.do";
     public static final String QUESTION_CLICKED_BUTTON = "buttonClicked";
     public static final String QUESTION_ERROR_KEY = "questionErrorKey";
@@ -390,14 +388,15 @@ public final class KRADConstants {
     public static final String QUESTION_TEXT_ATTRIBUTE_NAME = "questionText";
     public static final String QUESTION_REASON_ATTRIBUTE_NAME = "reason";
     public static final String QUESTION_SHOW_REASON_FIELD = "showReasonField";
-//    public static final String RELOAD_METHOD_TO_CALL = "reload";
+
     public static final String REFRESH_CALLER = "refreshCaller";
+    public static final String REFRESH_DATA_OBJECT_CLASS = "refreshDataObjectClass";
     public static final String REFRESH_MAPPING_PREFIX = "/Refresh";
+
     // below field used in tag files
     public static final String REQUIRED_FIELD_SYMBOL = "*";
     public static final String RETURN_LOCATION_PARAMETER = "returnLocation";
     public static final String RETURN_METHOD_TO_CALL = "refresh";
-//    public static final String ROUTE_METHOD = "route";
     // Another possible value for the "refreshCaller" request parameter, as a fix for KULRICE-2903.
     public static final String TEXT_AREA_REFRESH = "TextAreaRefresh";
     // below field used in tag files

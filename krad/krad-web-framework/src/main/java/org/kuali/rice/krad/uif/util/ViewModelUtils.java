@@ -12,7 +12,6 @@ package org.kuali.rice.krad.uif.util;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.container.View;
-import org.kuali.rice.krad.uif.core.BindingInfo;
 import org.kuali.rice.krad.uif.field.AttributeField;
 
 import java.util.Collection;
@@ -21,7 +20,7 @@ import java.util.Map;
 /**
  * Provides methods for getting property values, types, and paths within the
  * context of a <code>View</code>
- * 
+ *
  * <p>
  * The view provides a special map named 'abstractTypeClasses' that indicates
  * concrete classes that should be used in place of abstract property types that
@@ -33,12 +32,28 @@ import java.util.Map;
  * type for name. Using the view map, we can replace document with a concrete
  * class and then use it to get the name property
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewModelUtils {
 
-    public static Class<?> getPropertyType(View view, String propertyPath) {
+    /**
+     * Determines the associated type for the property within the View context
+     *
+     * <p>
+     * Property path is full path to property from the View Form class. The abstract type classes
+     * map configured on the View will be consulted for any entries that match the property path. If the
+     * property path given contains a partial match to an abstract class (somewhere on path is an abstract
+     * class), the property type will be retrieved based on the given concrete class to use and the part
+     * of the path remaining. If no matching entry is found, standard reflection is used to get the type
+     * </p>
+     *
+     * @param view - view instance providing the context (abstract map)
+     * @param propertyPath - full path to property to retrieve type for (relative to the form class)
+     * @return Class<?> type of property in model, or Null if type could not be determined
+     * @see org.kuali.rice.krad.uif.container.View#getAbstractTypeClasses()
+     */
+    public static Class<?> getPropertyTypeByClassAndView(View view, String propertyPath) {
         Class<?> propertyType = null;
 
         if (StringUtils.isBlank(propertyPath)) {
@@ -106,7 +121,24 @@ public class ViewModelUtils {
     public static Class<?> getParentObjectClassForMetadata(View view, AttributeField field) {
         String parentObjectPath = getParentObjectPath(field);
 
-        return getPropertyType(view, parentObjectPath);
+        return getPropertyTypeByClassAndView(view, parentObjectPath);
+    }
+
+    public static Class<?> getParentObjectClassForMetadata(View view, Object model, AttributeField field) {
+        String parentObjectPath = getParentObjectPath(field);
+
+        return getObjectClassForMetadata(view, model, parentObjectPath);
+    }
+
+    public static Class<?> getObjectClassForMetadata(View view, Object model, String propertyPath) {
+        // get class by object instance if not null
+        Object parentObject = ObjectPropertyUtils.getPropertyValue(model, propertyPath);
+        if (parentObject != null) {
+            return parentObject.getClass();
+        }
+
+        // get class by property type with abstract map check
+        return getPropertyTypeByClassAndView(view, propertyPath);
     }
 
     public static Object getParentObjectForMetadata(View view, Object model, AttributeField field) {
@@ -119,16 +151,14 @@ public class ViewModelUtils {
 
             // attempt to create new instance if parent is null or is a
             // collection or map
-            if ((parentObject == null) || Collection.class.isAssignableFrom(parentObject.getClass())
-                    || Map.class.isAssignableFrom(parentObject.getClass())) {
+            if ((parentObject == null) || Collection.class.isAssignableFrom(parentObject.getClass()) ||
+                    Map.class.isAssignableFrom(parentObject.getClass())) {
                 try {
-                    Class<?> parentObjectClass = getPropertyType(view, parentObjectPath);
+                    Class<?> parentObjectClass = getPropertyTypeByClassAndView(view, parentObjectPath);
                     parentObject = parentObjectClass.newInstance();
-                }
-                catch (InstantiationException e) {
+                } catch (InstantiationException e) {
                     // swallow exception and let null be returned
-                }
-                catch (IllegalAccessException e) {
+                } catch (IllegalAccessException e) {
                     // swallow exception and let null be returned
                 }
             }
@@ -136,24 +166,4 @@ public class ViewModelUtils {
 
         return parentObject;
     }
-    
-    public static Object getValue(View view, Object model, String propertyName, BindingInfo bindingInfo){
-        Object value = null;
-        if(bindingInfo == null && StringUtils.isNotBlank(propertyName)){
-            if(StringUtils.isNotBlank(view.getDefaultBindingObjectPath())){
-                value = ObjectPropertyUtils.getPropertyValue(model, view.getDefaultBindingObjectPath() + "." + propertyName);
-            }
-            else{
-                value = ObjectPropertyUtils.getPropertyValue(model, propertyName);
-            }
-            
-        }
-        else if(bindingInfo != null){
-            if(StringUtils.isNotBlank(bindingInfo.getBindingPath()) && !bindingInfo.getBindingPath().equals("null")){
-                value = ObjectPropertyUtils.getPropertyValue(model, bindingInfo.getBindingPath());
-            }
-        }
-        return value;
-    }
-
 }

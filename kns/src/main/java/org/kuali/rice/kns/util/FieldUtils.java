@@ -43,7 +43,7 @@ import org.kuali.rice.kns.web.ui.PropertyRenderingConfigElement;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kns.web.ui.Section;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.BusinessObjectRelationship;
+import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.KualiCode;
 import org.kuali.rice.krad.bo.MutableInactivatable;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
@@ -385,7 +385,7 @@ public final class FieldUtils {
 	 */
 	public static void setAdditionalDisplayPropertyForCodes(Class businessObjectClass, String attributeName, PropertyRenderingConfigElement field) {
 		try {
-			BusinessObjectRelationship relationship = getBusinessObjectMetaDataService().getBusinessObjectRelationship(
+			DataObjectRelationship relationship = getBusinessObjectMetaDataService().getBusinessObjectRelationship(
 					(BusinessObject) businessObjectClass.newInstance(), attributeName);
 
 			if (relationship != null && attributeName.startsWith(relationship.getParentAttributeName())

@@ -17,6 +17,7 @@
 
 <tiles:useAttribute name="field"
 	classname="org.kuali.rice.krad.uif.field.LinkField" />
+<tiles:useAttribute name="body"/>
 
 <%--
     Standard HTML Link     
@@ -32,5 +33,9 @@
 	<c:set var="tabindex" value="tabindex=-1" />
 </c:if>
 
+<c:if test="${empty fn:trim(body)}">
+    <c:set var="body" value="${field.linkLabel}" />
+</c:if>
+
 <a id="${field.id}" href="${field.hrefText}" target="${field.target}" title="${field.title}"
-   ${style} ${styleClass}  ${tabindex} >${field.linkLabel}</a>
+   ${style} ${styleClass} ${tabindex} >${body}</a>

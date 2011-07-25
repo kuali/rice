@@ -10,7 +10,6 @@ import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.widget.TreeWidget;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +26,7 @@ public class TreeGroup extends Group {
     private String propertyName;
     private BindingInfo bindingInfo;
 
-    private Map<Class<?>, NodePrototype> nodeProtypeMap;
+    private Map<Class<?>, NodePrototype> nodePrototypeMap;
     private NodePrototype defaultNodePrototype;
 
     private Tree<Group, MessageField> treeGroups;
@@ -68,7 +67,8 @@ public class TreeGroup extends Group {
     }
 
     /**
-     * This method initializes {@link org.kuali.rice.kns.uif.core.Component}s within the {@link NodePrototype}s
+     * This method initializes {@link org.kuali.rice.kns.uif.core.Component}s within the {@link
+     * org.kuali.rice.krad.uif.container.NodePrototype.NodePrototype}s
      *
      * @param view
      */
@@ -76,8 +76,8 @@ public class TreeGroup extends Group {
         view.getViewHelperService().performComponentInitialization(view, defaultNodePrototype.getLabelPrototype());
         view.getViewHelperService().performComponentInitialization(view, defaultNodePrototype.getDataGroupPrototype());
 
-        if (nodeProtypeMap != null)
-            for (Map.Entry<Class<?>, NodePrototype> prototypeEntry : nodeProtypeMap.entrySet()) {
+        if (nodePrototypeMap != null)
+            for (Map.Entry<Class<?>, NodePrototype> prototypeEntry : nodePrototypeMap.entrySet()) {
                 NodePrototype prototype = prototypeEntry.getValue();
                 if (prototype != null) {
 
@@ -132,8 +132,8 @@ public class TreeGroup extends Group {
         Tree<Group, MessageField> treeGroups = new Tree<Group, MessageField>();
 
         String bindingPrefix = getBindingInfo().getBindingPrefixForNested();
-        Node<Group, MessageField> rootNode = buildTreeNode(treeData.getRootElement(), 
-                bindingPrefix + /* TODO: hack */ ".rootElement", 0);
+        Node<Group, MessageField> rootNode =
+                buildTreeNode(treeData.getRootElement(), bindingPrefix + /* TODO: hack */ ".rootElement", 0);
         treeGroups.setRootElement(rootNode);
 
         setTreeGroups(treeGroups);
@@ -182,12 +182,12 @@ public class TreeGroup extends Group {
         NodePrototype result = null;
         if (nodeData != null && nodeData.getData() != null) {
             Class<?> dataClass = nodeData.getData().getClass();
-            result = nodeProtypeMap.get(dataClass);
+            result = nodePrototypeMap.get(dataClass);
 
             // somewhat lame fallback - to do this right we'd find all entries that are assignable from the data class
             // and then figure out which one is the closest relative
             if (result == null)
-                for (Map.Entry<Class<?>, NodePrototype> prototypeEntry : nodeProtypeMap.entrySet()) {
+                for (Map.Entry<Class<?>, NodePrototype> prototypeEntry : nodePrototypeMap.entrySet()) {
                     if (prototypeEntry.getKey().isAssignableFrom(dataClass)) {
                         result = prototypeEntry.getValue();
                         break;
@@ -261,17 +261,17 @@ public class TreeGroup extends Group {
     }
 
     /**
-     * @return the nodeProtypeMap
+     * @return the nodePrototypeMap
      */
-    public Map<Class<?>, NodePrototype> getNodeProtypeMap() {
-        return this.nodeProtypeMap;
+    public Map<Class<?>, NodePrototype> getNodePrototypeMap() {
+        return this.nodePrototypeMap;
     }
 
     /**
-     * @param nodeProtypeMap the nodeProtypeMap to set
+     * @param nodePrototypeMap the nodePrototypeMap to set
      */
-    public void setNodeProtypeMap(Map<Class<?>, NodePrototype> nodeProtypeMap) {
-        this.nodeProtypeMap = nodeProtypeMap;
+    public void setNodePrototypeMap(Map<Class<?>, NodePrototype> nodePrototypeMap) {
+        this.nodePrototypeMap = nodePrototypeMap;
     }
 
     public Tree<Group, MessageField> getTreeGroups() {
@@ -288,41 +288,5 @@ public class TreeGroup extends Group {
 
     public void setTreeWidget(TreeWidget treeWidget) {
         this.treeWidget = treeWidget;
-    }
-
-    public static class NodePrototype implements Serializable {
-
-        private static final long serialVersionUID = 1L;
-
-        MessageField labelPrototype;
-        Group dataGroupPrototype;
-
-        /**
-         * @param labelPrototype the labelPrototype to set
-         */
-        public void setLabelPrototype(MessageField labelPrototype) {
-            this.labelPrototype = labelPrototype;
-        }
-
-        /**
-         * @return the labelPrototype
-         */
-        public MessageField getLabelPrototype() {
-            return this.labelPrototype;
-        }
-
-        /**
-         * @param dataGroupPrototype the dataGroupPrototype to set
-         */
-        public void setDataGroupPrototype(Group dataGroupPrototype) {
-            this.dataGroupPrototype = dataGroupPrototype;
-        }
-
-        /**
-         * @return the dataGroupPrototype
-         */
-        public Group getDataGroupPrototype() {
-            return this.dataGroupPrototype;
-        }
     }
 }

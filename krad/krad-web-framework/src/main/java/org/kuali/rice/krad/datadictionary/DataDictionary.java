@@ -151,40 +151,41 @@ public class DataDictionary  {
     public void parseDataDictionaryConfigurationFiles( boolean allowConcurrentValidation ) {
 		// configure the bean factory, setup component decorator post processor
 		// and allow Spring EL
-		try {
-			BeanPostProcessor idPostProcessor = ComponentBeanPostProcessor.class.newInstance();
-			ddBeans.addBeanPostProcessor(idPostProcessor);
-			ddBeans.setBeanExpressionResolver(new StandardBeanExpressionResolver());
+        try {
+            BeanPostProcessor idPostProcessor = ComponentBeanPostProcessor.class.newInstance();
+            ddBeans.addBeanPostProcessor(idPostProcessor);
+            ddBeans.setBeanExpressionResolver(new StandardBeanExpressionResolver());
 
             GenericConversionService conversionService = new GenericConversionService();
             conversionService.addConverter(new StringMapConverter());
             conversionService.addConverter(new StringListConverter());
             ddBeans.setConversionService(conversionService);
-		}
-		catch (Exception e1) {
-			LOG.error("Cannot create component decorator post processor: " + e1.getMessage(), e1);
-			throw new RuntimeException("Cannot create component decorator post processor: " + e1.getMessage(), e1);
-		}
-    	
+        } catch (Exception e1) {
+            LOG.error("Cannot create component decorator post processor: " + e1.getMessage(), e1);
+            throw new RuntimeException("Cannot create component decorator post processor: " + e1.getMessage(), e1);
+        }
+
         // expand configuration locations into files
-        LOG.info( "Starting DD XML File Load" );
-        
+        LOG.info("Starting DD XML File Load");
+
         String[] configFileLocationsArray = new String[configFileLocations.size()];
-        configFileLocationsArray = configFileLocations.toArray( configFileLocationsArray );
+        configFileLocationsArray = configFileLocations.toArray(configFileLocationsArray);
         configFileLocations.clear(); // empty the list out so other items can be added
         try {
-            xmlReader.loadBeanDefinitions( configFileLocationsArray );
+            xmlReader.loadBeanDefinitions(configFileLocationsArray);
         } catch (Exception e) {
             LOG.error("Error loading bean definitions", e);
             throw new DataDictionaryException("Error loading bean definitions: " + e.getLocalizedMessage());
         }
-        LOG.info( "Completed DD XML File Load" );
-        if ( allowConcurrentValidation ) {
+        LOG.info("Completed DD XML File Load");
+
+        // indexing
+        if (allowConcurrentValidation) {
             Thread t = new Thread(ddIndex);
             t.start();
-            
+
             Thread t2 = new Thread(uifIndex);
-            t2.start();   
+            t2.start();
         } else {
             ddIndex.run();
             uifIndex.run();
@@ -689,4 +690,5 @@ public class DataDictionary  {
 			LOG.info("DataDictionary.performOverrides(): Performing override on bean: " + bean.toString());
 		}
     }
+
 }

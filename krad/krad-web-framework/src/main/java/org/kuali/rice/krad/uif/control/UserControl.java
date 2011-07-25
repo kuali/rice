@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.control;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.core.Component;
@@ -24,6 +25,7 @@ import org.kuali.rice.krad.uif.core.MethodInvokerConfig;
 import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.field.AttributeQuery;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
+import org.springframework.scheduling.quartz.SimpleTriggerBean;
 
 /**
  * Represents a user control, which is a special control to handle
@@ -39,78 +41,85 @@ public class UserControl extends TextControl {
     private String personObjectPropertyName;
 
     public UserControl() {
-		super();
-	}
+        super();
+    }
 
     @Override
     public void performApplyModel(View view, Object model, Component parent) {
         super.performApplyModel(view, model, parent);
 
-        if (parent instanceof AttributeField) {
-            AttributeField field = (AttributeField) parent;
-            field.getHiddenPropertyNames().add(principalIdPropertyName);
+        if (!(parent instanceof AttributeField)) {
+            return;
+        }
 
-            if (!field.isReadOnly())
-            {
-                if (StringUtils.isNotBlank(personNamePropertyName)) {
-                    field.getInformationalDisplayPropertyNames().add(personNamePropertyName);
-                }
-                else
-                {
-                    field.getInformationalDisplayPropertyNames().add(personObjectPropertyName + ".name");
-                }
-            }
+        AttributeField field = (AttributeField) parent;
+        field.getHiddenPropertyNames().add(principalIdPropertyName);
 
-            if (field.isReadOnly() && StringUtils.isBlank(field.getAdditionalDisplayPropertyName())) {
-                field.setAdditionalDisplayPropertyName(personObjectPropertyName + ".name");
-            }
-
-            AttributeQuery attributeQuery = new AttributeQuery();
-            MethodInvokerConfig methodInvokerConfig = new MethodInvokerConfig();
-            PersonService personService = KimApiServiceLocator.getPersonService();
-            methodInvokerConfig.setTargetObject(personService);
-            attributeQuery.setQueryMethodInvokerConfig(methodInvokerConfig);
-            attributeQuery.setQueryMethodToCall("getPersonByPrincipalName");
-            attributeQuery.getQueryMethodArgumentFieldList().add(field.getPropertyName());
-            attributeQuery.getReturnFieldMapping().put("principalId", principalIdPropertyName);
-
+        if (!field.isReadOnly()) {
+            // add information fields
             if (StringUtils.isNotBlank(personNamePropertyName)) {
-                attributeQuery.getReturnFieldMapping().put("name", personNamePropertyName);
+                field.getInformationalDisplayPropertyNames().add(personNamePropertyName);
+            } else {
+                field.getInformationalDisplayPropertyNames().add(personObjectPropertyName + ".name");
             }
-            else {
-                attributeQuery.getReturnFieldMapping().put("name", personObjectPropertyName + ".name");
+
+            // setup script to clear id field when name is modified
+            String idPropertyPath = field.getBindingInfo().getPropertyAdjustedBindingPath(principalIdPropertyName);
+            String onChangeScript = "setValue('" + idPropertyPath + "','');";
+
+            if (StringUtils.isNotBlank(field.getOnChangeScript())) {
+                onChangeScript = field.getOnChangeScript() + onChangeScript;
+            }
+            field.setOnChangeScript(onChangeScript);
+        }
+
+        if (field.isReadOnly() && StringUtils.isBlank(field.getAdditionalDisplayPropertyName())) {
+            field.setAdditionalDisplayPropertyName(personObjectPropertyName + ".name");
+        }
+
+        // setup field query for displaying name
+        AttributeQuery attributeQuery = new AttributeQuery();
+        MethodInvokerConfig methodInvokerConfig = new MethodInvokerConfig();
+        PersonService personService = KimApiServiceLocator.getPersonService();
+        methodInvokerConfig.setTargetObject(personService);
+        attributeQuery.setQueryMethodInvokerConfig(methodInvokerConfig);
+        attributeQuery.setQueryMethodToCall("getPersonByPrincipalName");
+        attributeQuery.getQueryMethodArgumentFieldList().add(field.getPropertyName());
+        attributeQuery.getReturnFieldMapping().put("principalId", principalIdPropertyName);
+
+        if (StringUtils.isNotBlank(personNamePropertyName)) {
+            attributeQuery.getReturnFieldMapping().put("name", personNamePropertyName);
+        } else {
+            attributeQuery.getReturnFieldMapping().put("name", personObjectPropertyName + ".name");
+        }
+        field.setFieldAttributeQuery(attributeQuery);
+
+        // setup field lookup
+        QuickFinder quickFinder = field.getFieldLookup();
+        if (quickFinder.isRender()) {
+            if (StringUtils.isBlank(quickFinder.getDataObjectClassName())) {
+                quickFinder.setDataObjectClassName(Person.class.getName());
             }
 
-            field.setFieldAttributeQuery(attributeQuery);
+            if (quickFinder.getFieldConversions().isEmpty()) {
+                quickFinder.getFieldConversions().put("principalId", principalIdPropertyName);
 
-            QuickFinder quickFinder = field.getFieldLookup();
-
-            if (quickFinder.isRender()) {
-                if (StringUtils.isBlank(quickFinder.getDataObjectClassName())) {
-                    quickFinder.setDataObjectClassName("org.kuali.rice.kim.bo.Person");
+                if (StringUtils.isNotBlank(personNamePropertyName)) {
+                    quickFinder.getFieldConversions().put("name", personNamePropertyName);
+                } else {
+                    quickFinder.getFieldConversions().put("name", personObjectPropertyName + ".name");
                 }
 
-                if (quickFinder.getFieldConversions().isEmpty()) {
-                    quickFinder.getFieldConversions().put("principalId", principalIdPropertyName);
-
-                    if (StringUtils.isNotBlank(personNamePropertyName)) {
-                        quickFinder.getFieldConversions().put("name", personNamePropertyName);
-                    }
-                    else {
-                        quickFinder.getFieldConversions().put("name", personObjectPropertyName + ".name");
-                    }
-
-                    quickFinder.getFieldConversions().put("principalName", field.getPropertyName());
-                }
+                quickFinder.getFieldConversions().put("principalName", field.getPropertyName());
             }
         }
     }
 
     /**
-	 * The name of the property on the parent object that holds the principal id
-	 *
-	 * @return String principalIdPropertyName
-	 */
+     * The name of the property on the parent object that holds the principal id
+     *
+     * @return String principalIdPropertyName
+     */
     public String getPrincipalIdPropertyName() {
         return principalIdPropertyName;
     }
@@ -125,10 +134,10 @@ public class UserControl extends TextControl {
     }
 
     /**
-	 * The name of the property on the parent object that holds the person name
-	 *
-	 * @return String personNamePropertyName
-	 */
+     * The name of the property on the parent object that holds the person name
+     *
+     * @return String personNamePropertyName
+     */
     public String getPersonNamePropertyName() {
         return personNamePropertyName;
     }
@@ -143,10 +152,10 @@ public class UserControl extends TextControl {
     }
 
     /**
-	 * The name of the property on the parent object that holds the person object
-	 *
-	 * @return String personObjectPropertyName
-	 */
+     * The name of the property on the parent object that holds the person object
+     *
+     * @return String personObjectPropertyName
+     */
     public String getPersonObjectPropertyName() {
         return personObjectPropertyName;
     }

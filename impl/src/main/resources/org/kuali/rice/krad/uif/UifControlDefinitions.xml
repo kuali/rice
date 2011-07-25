@@ -60,7 +60,13 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="delimiter">
         <value><![CDATA[</br>]]></value>
       </property>
-  </bean>   
+  </bean>
+
+  <bean id="RadioGroupControlHorizontal" parent="RadioGroupControlHorizontal-parentBean"/>
+  <bean id="RadioGroupControlHorizontal-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.RadioGroupControl" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/control/radioGroup.jsp"/>
+      <property name="delimiter" value="&amp;nbsp;"/>
+  </bean>
   
   <bean id="CheckboxGroupControl" parent="CheckboxGroupControl-parentBean"/>
   <bean id="CheckboxGroupControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.CheckboxGroupControl" scope="prototype">
@@ -69,7 +75,14 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="delimiter">
         <value><![CDATA[</br>]]></value>
       </property>
-  </bean>   
+  </bean>
+
+  <bean id="CheckboxGroupControlHorizontal" parent="CheckboxGroupControlHorizontal-parentBean"/>
+  <bean id="CheckboxGroupControlHorizontal-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.CheckboxGroupControl" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/control/checkboxGroup.jsp"/>
+      <property name="styleClasses" value="checkbox" />
+      <property name="delimiter" value="&amp;nbsp;" />
+  </bean>
   
   <bean id="FileControl" parent="FileControl-parentBean"/>
   <bean id="FileControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.FileControl" scope="prototype">

@@ -18,6 +18,7 @@
 <td class="content" valign="top">
 <mainChannel:workflow />
 <mainChannel:rules />
+<mainChannel:knsConvert />
 </td>
 <td class="content" valign="top">
 <mainChannel:notification />

@@ -20,7 +20,7 @@ import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.BusinessObjectRelationship;
+import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.datadictionary.exception.UnknownBusinessClassAttributeException;
@@ -241,7 +241,7 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
         }
 
         // if not title, then get primary relationship
-        BusinessObjectRelationship relationship = null;
+        DataObjectRelationship relationship = null;
         if (inquiryObjectClass == null) {
             relationship = getDataObjectMetaDataService()
                     .getDataObjectRelationship(dataObject, objectClass, propertyName, "", true, false, true);

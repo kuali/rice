@@ -29,11 +29,13 @@ import java.util.Map;
 /**
  * TODO we should not be referencing kew constants from this class and wedding ourselves to that workflow application Ad Hoc Route
  * Recipient Business Object
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @MappedSuperclass
-public abstract class AdHocRouteRecipient extends PersistableBusinessObjectBase {
-
+public class AdHocRouteRecipient extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = -6499610180752232494L;
+
     private static Map actionRequestCds = CodeTranslator.arLabels;
     public static final Integer PERSON_TYPE = new Integer(0);
     public static final Integer WORKGROUP_TYPE = new Integer(1);
@@ -41,14 +43,18 @@ public abstract class AdHocRouteRecipient extends PersistableBusinessObjectBase 
     @Id
 	@Column(name="RECIP_TYP_CD")
 	protected Integer type;
+
     @Id
 	@Column(name="ACTN_RQST_CD")
 	protected String actionRequested;
+
     @Id
 	@Column(name="ACTN_RQST_RECIP_ID")
 	protected String id; // can be networkId or group id
+
     @Transient
     protected String name;
+
     @Column(name="DOC_HDR_ID")
 	protected String documentNumber;
 
@@ -74,10 +80,12 @@ public abstract class AdHocRouteRecipient extends PersistableBusinessObjectBase 
         this.id = id;
     }
 
-    public abstract String getName();
+    public String getName() {
+        return name;
+    }
 
-    public void setName( String name ) {
-        // do nothing, assume names come from subclasses
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getType() {
@@ -101,6 +109,7 @@ public abstract class AdHocRouteRecipient extends PersistableBusinessObjectBase 
         if (StringUtils.isNotBlank(getActionRequested())) {
             actionRequestedValue = (String) actionRequestCds.get(getActionRequested());
         }
+
         return actionRequestedValue;
     }
 }

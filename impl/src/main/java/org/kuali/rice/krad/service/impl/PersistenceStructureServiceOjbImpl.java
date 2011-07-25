@@ -32,7 +32,7 @@ import org.apache.ojb.broker.metadata.CollectionDescriptor;
 import org.apache.ojb.broker.metadata.FieldDescriptor;
 import org.apache.ojb.broker.metadata.ObjectReferenceDescriptor;
 import org.apache.ojb.broker.metadata.SuperReferenceDescriptor;
-import org.kuali.rice.krad.bo.BusinessObjectRelationship;
+import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.exception.ClassNotPersistableException;
 import org.kuali.rice.krad.exception.IntrospectionException;
@@ -181,7 +181,7 @@ public class PersistenceStructureServiceOjbImpl extends PersistenceServiceImplBa
 	 *      java.lang.String)
 	 */
 	@Cached
-	public Map<String, BusinessObjectRelationship> getRelationshipMetadata(Class persistableClass, String attributeName, String attributePrefix) {
+	public Map<String, DataObjectRelationship> getRelationshipMetadata(Class persistableClass, String attributeName, String attributePrefix) {
 		if (persistableClass == null) {
 			throw new IllegalArgumentException("invalid (null) persistableClass");
 		}
@@ -189,14 +189,14 @@ public class PersistenceStructureServiceOjbImpl extends PersistenceServiceImplBa
 			throw new IllegalArgumentException("invalid (blank) attributeName");
 		}
 
-		Map<String, BusinessObjectRelationship> relationships = new HashMap<String, BusinessObjectRelationship>();
+		Map<String, DataObjectRelationship> relationships = new HashMap<String, DataObjectRelationship>();
 		ClassDescriptor classDescriptor = getClassDescriptor(persistableClass);
 		Vector<ObjectReferenceDescriptor> references = classDescriptor.getObjectReferenceDescriptors();
 		for (ObjectReferenceDescriptor objRef : references) {
 			Vector fks = objRef.getForeignKeyFields();
 			if (fks.contains(attributeName) || objRef.getAttributeName().equals(attributeName)) {
 				Map<String, String> fkToPkRefs = getForeignKeysForReference(persistableClass, objRef.getAttributeName());
-				BusinessObjectRelationship rel = new BusinessObjectRelationship(persistableClass, objRef.getAttributeName(), objRef.getItemClass());
+				DataObjectRelationship rel = new DataObjectRelationship(persistableClass, objRef.getAttributeName(), objRef.getItemClass());
 				for (Map.Entry<String, String> ref : fkToPkRefs.entrySet()) {
 					if (StringUtils.isBlank(attributePrefix)) {
 						rel.getParentToChildReferences().put(ref.getKey(), ref.getValue());
@@ -212,7 +212,7 @@ public class PersistenceStructureServiceOjbImpl extends PersistenceServiceImplBa
 
 	@Cached
 	// Unit tests only
-	public Map<String, BusinessObjectRelationship> getRelationshipMetadata(Class persistableClass, String attributeName) {
+	public Map<String, DataObjectRelationship> getRelationshipMetadata(Class persistableClass, String attributeName) {
 		return getRelationshipMetadata(persistableClass, attributeName, null);
 	}
 

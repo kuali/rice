@@ -58,7 +58,7 @@ public class LookupView extends FormView {
     private List<Component> resultFields;
     private List<String> defaultSortAttributeNames;
 
-    protected boolean sortAscending = true;
+    protected boolean defaultSortAscending = true;
 
     @RequestParameter
     private boolean hideReturnLinks = false;
@@ -301,12 +301,12 @@ public class LookupView extends FormView {
         this.defaultSortAttributeNames = defaultSortAttributeNames;
     }
 
-    public boolean isSortAscending() {
-        return this.sortAscending;
+    public boolean isDefaultSortAscending() {
+        return this.defaultSortAscending;
     }
 
-    public void setSortAscending(boolean sortAscending) {
-        this.sortAscending = sortAscending;
+    public void setDefaultSortAscending(boolean defaultSortAscending) {
+        this.defaultSortAscending = defaultSortAscending;
     }
 
     /**

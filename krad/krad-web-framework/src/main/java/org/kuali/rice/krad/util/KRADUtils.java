@@ -237,7 +237,8 @@ public final class KRADUtils {
         if (StringUtils.isNotBlank(parameter)) {
             if (StringUtils.contains(parameter, ",")) {
                 String[] parameters = StringUtils.split(parameter, ",");
-                list = Arrays.asList(parameters);
+                List arraysList = Arrays.asList(parameters);
+                list.addAll(arraysList);
             } else {
                 list.add(parameter);
             }

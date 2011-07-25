@@ -15,11 +15,10 @@
  */
 package org.kuali.rice.krad.uif.field;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.web.format.Formatter;
-import org.kuali.rice.krad.bo.BusinessObjectRelationship;
+import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.KualiCode;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.AttributeSecurity;
@@ -41,6 +40,7 @@ import org.kuali.rice.krad.uif.core.DataBinding;
 import org.kuali.rice.krad.uif.util.ClientValidationUtils;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.widget.DirectInquiry;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
@@ -55,7 +55,7 @@ import java.util.List;
 /**
  * Field that encapsulates data input/output captured by an attribute within the
  * application
- * 
+ *
  * <p>
  * The <code>AttributField</code> provides the majority of the data input/output
  * for the screen. Through these fields the model can be displayed and updated.
@@ -67,7 +67,7 @@ import java.util.List;
  * due to invalid input or business rule failures. Security can also be
  * configured to restrict who may view the fields value.
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AttributeField extends FieldBase implements DataBinding {
@@ -113,22 +113,18 @@ public class AttributeField extends FieldBase implements DataBinding {
     // Alternate and additional display properties
     protected String alternateDisplayPropertyName;
     protected String additionalDisplayPropertyName;
-    
-    private BindingInfo alternateDisplayPropertyBindingInfo;
-	private BindingInfo additionalDisplayPropertyBindingInfo;
 
-	private String alternateDisplayValue;
-	private String additionalDisplayValue;
-    
+    private String alternateDisplayValue;
+    private String additionalDisplayValue;
+
     private List<String> informationalDisplayPropertyNames;
-
     private List<String> hiddenPropertyNames;
 
     private AttributeQuery fieldAttributeQuery;
-	
+
     private boolean escapeHtmlInPropertyValue;
-    
-	// widgets
+
+    // widgets
     private Inquiry fieldInquiry;
     private QuickFinder fieldLookup;
     private DirectInquiry fieldDirectInquiry;
@@ -169,7 +165,7 @@ public class AttributeField extends FieldBase implements DataBinding {
      * <li>Sets up the client side validation for constraints on this field. In
      * addition, it sets up the messages applied to this field</li>
      * </ul>
-     * 
+     *
      * @see org.kuali.rice.krad.uif.core.ComponentBase#performFinalize(org.kuali.rice.krad.uif.container.View,
      *      java.lang.Object, org.kuali.rice.krad.uif.core.Component)
      */
@@ -190,45 +186,8 @@ public class AttributeField extends FieldBase implements DataBinding {
         }
 
         // Additional and Alternate display value
-       	setAlternateAndAdditionalDisplayValue(view,model);
+        setAlternateAndAdditionalDisplayValue(view, model);
 
-        // if read only or the control is not set no need to set client side
-        // validation
-        if (isReadOnly() || getControl() == null) {
-            return;
-        }
-
-        setupInformationalFieldQuery();
-
-        // Adjust the path for hidden fields
-        List<String> hiddenPropertyPaths = new ArrayList<String>();
-
-        for (String hiddenPropertyName : getHiddenPropertyNames()) {
-            String hiddenPropertyPath = getBindingInfo().getPropertyAdjustedBindingPath(hiddenPropertyName);
-            hiddenPropertyPaths.add(hiddenPropertyPath);
-        }
-
-        this.hiddenPropertyNames = hiddenPropertyPaths;
-
-        // TODO: remove later, this should be done within the service lifecycle
-        if ((optionsFinder != null) && (control != null) && control instanceof MultiValueControlBase) {
-            MultiValueControlBase multiValueControl = (MultiValueControlBase) control;
-            if ((multiValueControl.getOptions() == null) || multiValueControl.getOptions().isEmpty()) {
-                multiValueControl.setOptions(optionsFinder.getKeyValues());
-            }
-        }
-        
-        if(view instanceof FormView && ((FormView) view).isValidateClientSide()){
-            ClientValidationUtils.processAndApplyConstraints(this, view);
-        }
-    }
-    
-    /**
-     * Performs setup of the field attribute query and informational display properties. Paths
-     * are adjusted to match the binding for the this field, and the necessary onblur script for
-     * triggering the query client side is constructed
-     */
-    protected void setupInformationalFieldQuery() {
         // adjust paths on informational property names
         List<String> informationalPropertyPaths = new ArrayList<String>();
         for (String infoPropertyName : getInformationalDisplayPropertyNames()) {
@@ -237,6 +196,42 @@ public class AttributeField extends FieldBase implements DataBinding {
         }
         this.informationalDisplayPropertyNames = informationalPropertyPaths;
 
+        // adjust the path for hidden fields
+        // TODO: should this check the view#readOnly?
+        List<String> hiddenPropertyPaths = new ArrayList<String>();
+        for (String hiddenPropertyName : getHiddenPropertyNames()) {
+            String hiddenPropertyPath = getBindingInfo().getPropertyAdjustedBindingPath(hiddenPropertyName);
+            hiddenPropertyPaths.add(hiddenPropertyPath);
+        }
+        this.hiddenPropertyNames = hiddenPropertyPaths;
+
+        // if read only or the control is not set no need to set client side
+        // validation
+        if (isReadOnly() || getControl() == null) {
+            return;
+        }
+
+        setupFieldQuery();
+
+        // TODO: remove later, this should be done within the service lifecycle
+        if ((optionsFinder != null) && (control != null) && control instanceof MultiValueControlBase) {
+            MultiValueControlBase multiValueControl = (MultiValueControlBase) control;
+            if ((multiValueControl.getOptions() == null) || multiValueControl.getOptions().isEmpty()) {
+                multiValueControl.setOptions(optionsFinder.getKeyValues());
+            }
+        }
+
+        if (view instanceof FormView && ((FormView) view).isValidateClientSide()) {
+            ClientValidationUtils.processAndApplyConstraints(this, view);
+        }
+    }
+
+    /**
+     * Performs setup of the field attribute query and informational display properties. Paths
+     * are adjusted to match the binding for the this field, and the necessary onblur script for
+     * triggering the query client side is constructed
+     */
+    protected void setupFieldQuery() {
         if (getFieldAttributeQuery() != null) {
             // adjust paths on query mappings
             getFieldAttributeQuery().updateQueryFieldMapping(getBindingInfo());
@@ -256,110 +251,107 @@ public class AttributeField extends FieldBase implements DataBinding {
         }
     }
 
-     /**
+    /**
      * Sets alternate and additional property value for this field.
      *
      * <p>
-     * If <code>AttributeSecurity</code> present in this field, make sure the current user has permission to view the field value. If user doesn't
-     * have permission to view the value, mask the value as configured and set it as alternate value for display. If security doesn't exists for
-     * this field but <code>alternateDisplayPropertyName</code> present, get its value and format it based on that fields formatting and set for display.
+     * If <code>AttributeSecurity</code> present in this field, make sure the current user has permission to view the
+     * field value. If user doesn't have permission to view the value, mask the value as configured and set it
+     * as alternate value for display. If security doesn't exists for this field but
+     * <code>alternateDisplayPropertyName</code> present, get its value and format it based on that
+     * fields formatting and set for display.
      * </p>
      *
      * <p>
-     * For additional display value, if <code>AttributeSecurity</code> not present, sets the value if <code>additionalDisplayPropertyName</code> present.
-     * If not present, check whether this field is a <code>KualiCode</code> and get the relationship configured in the datadictionary file and set the name
-     * additional display value which will be displayed along with the code. If additional display property not present, check whether this field is has
-     * <code>MultiValueControlBase</code>. If yes, get the Label for the value and set it as additional display value.
+     * For additional display value, if <code>AttributeSecurity</code> not present, sets the value if
+     * <code>additionalDisplayPropertyName</code> present. If not present, check whether this field is a
+     * <code>KualiCode</code> and get the relationship configured in the datadictionary file and set the name
+     * additional display value which will be displayed along with the code. If additional display property not
+     * present,
+     * check whether this field is has <code>MultiValueControlBase</code>. If yes, get the Label for the value and
+     * set it as additional display value.
      * </p>
      *
      * @param view - the current view instance
      * @param model - model instance
      */
-    private void setAlternateAndAdditionalDisplayValue(View view, Object model){
-    	boolean isSecure = false;
-    	boolean additionalValueSet = false;
-    	boolean alternateValueSet = false;
+    protected void setAlternateAndAdditionalDisplayValue(View view, Object model) {
+        boolean additionalValueSet = false;
+        boolean alternateValueSet = false;
 
-    	if (getAttributeSecurity() != null){
-    		//TODO: Check authorization
-    		// if (attributeSecurity.isMask() && !boAuthzService.canFullyUnmaskField(user,dataObjectClass, field.getPropertyName(), null)) {
-    		Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
-			alternateDisplayValue = getSecuredFieldValue(attributeSecurity, fieldValue);
-			setReadOnly(true);
-			isSecure = true;
-    	}
+        // check whether field value needs to be masked, and if so apply masking as alternateDisplayValue
+        if (getAttributeSecurity() != null) {
+            //TODO: Check authorization
+            // if (attributeSecurity.isMask() && !boAuthzService.canFullyUnmaskField(user,dataObjectClass, field.getPropertyName(), null)) {
+            Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
+            alternateDisplayValue = getSecuredFieldValue(attributeSecurity, fieldValue);
 
-    	//If not read only, return without trying to set alternate and additional values
-    	if (!isReadOnly()){
-    		return;
-    	}
+            setReadOnly(true);
+            return;
+        }
 
-    	// If AttributeSecurity not found, check for AlternateDisplayPropertyName
-    	if (!isSecure && StringUtils.isNotBlank(getAlternateDisplayPropertyName())){
-    		alternateDisplayPropertyBindingInfo.setDefaults(view, getAlternateDisplayPropertyName());
-    		AttributeField alternateField = view.getViewIndex().getAttributeField(getAlternateDisplayPropertyBindingInfo());
+        // if not read only, return without trying to set alternate and additional values
+        if (!isReadOnly()) {
+            return;
+        }
 
-    		if (alternateField != null){
-    			Object alterateFieldValue = ObjectPropertyUtils.getPropertyValue(model, getAlternateDisplayPropertyBindingInfo().getBindingPath());
-    			if (alternateField.getFormatter() != null){
-    				alternateDisplayValue = (String)alternateField.getFormatter().formatForPresentation(alterateFieldValue);
-    			}else{
-    				alternateDisplayValue = org.apache.commons.lang.ObjectUtils.toString(alterateFieldValue);
-    			}
-    			if (alternateField.isEscapeHtmlInPropertyValue()){
-    				alternateDisplayValue = StringEscapeUtils.escapeHtml(alternateDisplayValue);
-    			}
-    			alternateValueSet = true;
-    		}
-    	}
+        // if field is not secure, check for alternate and additional display properties
+        if (StringUtils.isNotBlank(getAlternateDisplayPropertyName())) {
+            String alternateDisplayPropertyPath =
+                    getBindingInfo().getPropertyAdjustedBindingPath(getAlternateDisplayPropertyName());
 
-    	if (!isSecure){
+            Object alternateFieldValue = ObjectPropertyUtils.getPropertyValue(model, alternateDisplayPropertyPath);
+            if (alternateFieldValue != null) {
+                // TODO: format by type
+                alternateDisplayValue = alternateFieldValue.toString();
+                alternateValueSet = true;
+            }
+        }
 
-    		//If additional display property name present, set it to display
-    		if (StringUtils.isNotBlank(getAdditionalDisplayPropertyName())) {
-        		additionalDisplayPropertyBindingInfo.setDefaults(view, getAdditionalDisplayPropertyName());
-        		AttributeField additionalPropertyField = view.getViewIndex().getAttributeField(getAdditionalDisplayPropertyBindingInfo());
-        		Object additionalFieldValue = ObjectPropertyUtils.getPropertyValue(model, additionalDisplayPropertyBindingInfo.getBindingPath());
-        		additionalValueSet = true;
-        		if (additionalPropertyField != null && additionalPropertyField.getFormatter() != null){
-        			additionalDisplayValue = (String)additionalPropertyField.getFormatter().formatForPresentation(additionalFieldValue);
-        		}else {
-        			additionalDisplayValue = org.apache.commons.lang.ObjectUtils.toString(additionalFieldValue);
-        		}
-        		if (additionalPropertyField != null && additionalPropertyField.isEscapeHtmlInPropertyValue()){
-        			additionalDisplayValue = StringEscapeUtils.escapeHtml(additionalDisplayValue);
-    			}
-    		}else if (view.isTranslateCodes()){
-    			//If translate code is enabled, check for any relationship present for this field and it's of type KualiCode
-        		BusinessObjectRelationship relationship = KRADServiceLocatorWeb.getDataObjectMetaDataService().getDataObjectRelationship(model,model.getClass(),getBindingInfo().getBindingPath(),"",true,true,true);
-        		if (relationship != null && getPropertyName().startsWith(relationship.getParentAttributeName())
-    					&& KualiCode.class.isAssignableFrom(relationship.getRelatedClass())) {
-        			additionalDisplayPropertyName = relationship.getParentAttributeName() + "." + KRADPropertyConstants.NAME;
-        			additionalDisplayPropertyBindingInfo.setDefaults(view, getAdditionalDisplayPropertyName());
-        			Object value = ObjectPropertyUtils.getPropertyValue(model, additionalDisplayPropertyBindingInfo.getBindingPath());
-        			additionalDisplayValue = org.apache.commons.lang.ObjectUtils.toString(value);;
-        			additionalValueSet = true;
-    			}
-    		}
+        // perform automatic translation for code references if enabled on view
+        if (StringUtils.isBlank(getAdditionalDisplayPropertyName()) && view.isTranslateCodes()) {
+            // check for any relationship present for this field and it's of type KualiCode
+            Class<?> parentObjectClass = ViewModelUtils.getParentObjectClassForMetadata(view, model, this);
+            DataObjectRelationship relationship = KRADServiceLocatorWeb.getDataObjectMetaDataService()
+                    .getDataObjectRelationship(null, parentObjectClass, getBindingInfo().getBindingName(), "", true,
+                            false, false);
 
-    		// alternateValue and additionalValue not set yet? Check whether the field has multi value control
-    		if (!alternateValueSet && !additionalValueSet && (control != null && control instanceof MultiValueControlBase)){
-    			MultiValueControlBase multiValueControl = (MultiValueControlBase) control;
-    			if (multiValueControl.getOptions() != null){
-    				for (KeyValue keyValue : multiValueControl.getOptions()) {
-    					Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
-						if (StringUtils.equals((String)fieldValue, keyValue.getKey())){
-							alternateDisplayValue = keyValue.getValue();
-							break;
-						}
-					}
-    			}
-    		}
+            if (relationship != null && getPropertyName().startsWith(relationship.getParentAttributeName()) &&
+                    KualiCode.class.isAssignableFrom(relationship.getRelatedClass())) {
+                additionalDisplayPropertyName =
+                        relationship.getParentAttributeName() + "." + KRADPropertyConstants.NAME;
+            }
+        }
 
-    	}
+        // now check for an additional display property and if set get the value
+        if (StringUtils.isNotBlank(getAdditionalDisplayPropertyName())) {
+            String additionalDisplayPropertyPath =
+                    getBindingInfo().getPropertyAdjustedBindingPath(getAdditionalDisplayPropertyName());
 
+            Object additionalFieldValue = ObjectPropertyUtils.getPropertyValue(model, additionalDisplayPropertyPath);
+            if (additionalFieldValue != null) {
+                // TODO: format by type
+                additionalDisplayValue = additionalFieldValue.toString();
+                additionalValueSet = true;
+            }
+        }
+
+        // if alternateValue and additionalValue not set yet check whether the field has multi value control
+        if (!alternateValueSet && !additionalValueSet &&
+                (control != null && control instanceof MultiValueControlBase)) {
+            MultiValueControlBase multiValueControl = (MultiValueControlBase) control;
+            if (multiValueControl.getOptions() != null) {
+                for (KeyValue keyValue : multiValueControl.getOptions()) {
+                    Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
+
+                    if (StringUtils.equals((String) fieldValue, keyValue.getKey())) {
+                        alternateDisplayValue = keyValue.getValue();
+                        break;
+                    }
+                }
+            }
+        }
     }
-
 
     /**
      * Helper method which returns the masked value based on the <code>AttributeSecurity</code>
@@ -368,16 +360,16 @@ public class AttributeField extends FieldBase implements DataBinding {
      * @param fieldValue field value
      * @return masked value
      */
-    private String getSecuredFieldValue(AttributeSecurity attributeSecurity, Object fieldValue){
-    	if(attributeSecurity.isMask()){
-			return attributeSecurity.getMaskFormatter().maskValue(fieldValue);
-		}else if(getAttributeSecurity().isPartialMask()){
-			return attributeSecurity.getPartialMaskFormatter().maskValue(fieldValue);
-		}else{
-			throw new RuntimeException("Encountered unsupported Attribute Security..");
-		}
+    private String getSecuredFieldValue(AttributeSecurity attributeSecurity, Object fieldValue) {
+        if (attributeSecurity.isMask()) {
+            return attributeSecurity.getMaskFormatter().maskValue(fieldValue);
+        } else if (getAttributeSecurity().isPartialMask()) {
+            return attributeSecurity.getPartialMaskFormatter().maskValue(fieldValue);
+        } else {
+            throw new RuntimeException("Encountered unsupported Attribute Security..");
+        }
     }
-    
+
     /**
      * Sets the ids on all components the attribute field uses so they will all
      * contain this attribute's id in their ids. This is useful for jQuery
@@ -394,6 +386,8 @@ public class AttributeField extends FieldBase implements DataBinding {
         setNestedComponentIdAndSuffix(getSummaryMessageField(), UifConstants.IdSuffixes.SUMMARY);
         setNestedComponentIdAndSuffix(getConstraintMessageField(), UifConstants.IdSuffixes.CONSTRAINT);
         setNestedComponentIdAndSuffix(getFieldLookup(), UifConstants.IdSuffixes.QUICK_FINDER);
+        setNestedComponentIdAndSuffix(getFieldDirectInquiry(), UifConstants.IdSuffixes.DIRECT_INQUIRY);
+        setNestedComponentIdAndSuffix(getFieldSuggest(), UifConstants.IdSuffixes.SUGGEST);
 
         setId(getId() + UifConstants.IdSuffixes.ATTRIBUTE);
     }
@@ -419,10 +413,9 @@ public class AttributeField extends FieldBase implements DataBinding {
      * retrieved from the dictionary (if such an entry exists). If the field
      * already contains a value for a property, the definitions value is not
      * used.
-     * 
-     * @param attributeDefinition
-     *            - AttributeDefinition instance the property values should be
-     *            copied from
+     *
+     * @param attributeDefinition - AttributeDefinition instance the property values should be
+     * copied from
      */
     public void copyFromAttributeDefinition(AttributeDefinition attributeDefinition) {
         // label
@@ -465,7 +458,7 @@ public class AttributeField extends FieldBase implements DataBinding {
         // required
         if (getRequired() == null) {
             setRequired(attributeDefinition.isRequired());
-            
+
             //if still null, default to false
             if (getRequired() == null) {
                 setRequired(false);
@@ -490,7 +483,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 
         // security
         if (getAttributeSecurity() == null) {
-        	attributeSecurity = attributeDefinition.getAttributeSecurity();
+            attributeSecurity = attributeDefinition.getAttributeSecurity();
         }
 
         // constraint
@@ -498,20 +491,22 @@ public class AttributeField extends FieldBase implements DataBinding {
             setConstraint(attributeDefinition.getConstraint());
             getConstraintMessageField().setMessageText(attributeDefinition.getConstraint());
         }
-        
+
         // options
         if (getOptionsFinder() == null) {
             setOptionsFinder(attributeDefinition.getOptionsFinder());
         }
 
         //alternate property name and binding object
-        if (getAlternateDisplayPropertyName() == null && StringUtils.isNotBlank(attributeDefinition.getAlternateDisplayAttributeName())){
-        	setAlternateDisplayPropertyName(attributeDefinition.getAlternateDisplayAttributeName());
+        if (getAlternateDisplayPropertyName() == null &&
+                StringUtils.isNotBlank(attributeDefinition.getAlternateDisplayAttributeName())) {
+            setAlternateDisplayPropertyName(attributeDefinition.getAlternateDisplayAttributeName());
         }
 
         //additional property display name and binding object
-        if (getAdditionalDisplayPropertyName() == null && StringUtils.isNotBlank(attributeDefinition.getAdditionalDisplayAttributeName())){
-        	setAdditionalDisplayPropertyName(attributeDefinition.getAdditionalDisplayAttributeName());
+        if (getAdditionalDisplayPropertyName() == null &&
+                StringUtils.isNotBlank(attributeDefinition.getAdditionalDisplayAttributeName())) {
+            setAdditionalDisplayPropertyName(attributeDefinition.getAdditionalDisplayAttributeName());
         }
 
         if (getFormatter() == null && StringUtils.isNotBlank(attributeDefinition.getFormatterClass())) {
@@ -554,7 +549,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 
     /**
      * Setter for the component's property name
-     * 
+     *
      * @param propertyName
      */
     public void setPropertyName(String propertyName) {
@@ -563,13 +558,13 @@ public class AttributeField extends FieldBase implements DataBinding {
 
     /**
      * Default value for the model property the field points to
-     * 
+     *
      * <p>
      * When a new <code>View</code> instance is requested, the corresponding
      * model will be newly created. During this initialization process the value
      * for the model property will be set to the given default value (if set)
      * </p>
-     * 
+     *
      * @return String default value
      */
     public String getDefaultValue() {
@@ -578,7 +573,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 
     /**
      * Setter for the fields default value
-     * 
+     *
      * @param defaultValue
      */
     public void setDefaultValue(String defaultValue) {
@@ -588,7 +583,7 @@ public class AttributeField extends FieldBase implements DataBinding {
     /**
      * Gives Class that should be invoked to produce the default value for the
      * field
-     * 
+     *
      * @return Class<? extends ValueFinder> default value finder class
      */
     public Class<? extends ValueFinder> getDefaultValueFinderClass() {
@@ -597,7 +592,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 
     /**
      * Setter for the default value finder class
-     * 
+     *
      * @param defaultValueFinderClass
      */
     public void setDefaultValueFinderClass(Class<? extends ValueFinder> defaultValueFinderClass) {
@@ -607,12 +602,12 @@ public class AttributeField extends FieldBase implements DataBinding {
     /**
      * <code>Formatter</code> instance that should be used when displaying and
      * accepting the field's value in the user interface
-     * 
+     *
      * <p>
      * Formatters can provide conversion between datatypes in addition to
      * special string formatting such as currency display
      * </p>
-     * 
+     *
      * @return Formatter instance
      * @see org.kuali.rice.krad.web.format.Formatter
      */
@@ -622,7 +617,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 
     /**
      * Setter for the field's formatter
-     * 
+     *
      * @param formatter
      */
     public void setFormatter(Formatter formatter) {
@@ -638,7 +633,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 
     /**
      * Setter for the field's binding info
-     * 
+     *
      * @param bindingInfo
      */
     public void setBindingInfo(BindingInfo bindingInfo) {
@@ -648,13 +643,13 @@ public class AttributeField extends FieldBase implements DataBinding {
     /**
      * <code>Control</code> instance that should be used to input data for the
      * field
-     * 
+     *
      * <p>
      * When the field is editable, the control will be rendered so the user can
      * input a value(s). Controls typically are part of a Form and render
      * standard HTML control elements such as text input, select, and checkbox
      * </p>
-     * 
+     *
      * @return Control instance
      */
     public Control getControl() {
@@ -663,7 +658,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 
     /**
      * Setter for the field's control
-     * 
+     *
      * @param control
      */
     public void setControl(Control control) {
@@ -682,7 +677,7 @@ public class AttributeField extends FieldBase implements DataBinding {
      * Field that contains the messages (errors) for the attribute field. The
      * <code>ErrorsField</code> holds configuration on associated messages along
      * with information on rendering the messages in the user interface
-     * 
+     *
      * @return ErrorsField instance
      */
     public ErrorsField getErrorsField() {
@@ -691,7 +686,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 
     /**
      * Setter for the attribute field's errors field
-     * 
+     *
      * @param errorsField
      */
     public void setErrorsField(ErrorsField errorsField) {
@@ -701,7 +696,7 @@ public class AttributeField extends FieldBase implements DataBinding {
     /**
      * Name of the attribute within the data dictionary the attribute field is
      * associated with
-     * 
+     *
      * <p>
      * During the initialize phase for the <code>View</code>, properties for
      * attribute fields are defaulted from a corresponding
@@ -715,7 +710,7 @@ public class AttributeField extends FieldBase implements DataBinding {
      * The attribute name is used along with the dictionary object entry to find
      * the <code>AttributeDefinition</code>
      * </p>
-     * 
+     *
      * @return String attribute name
      */
     public String getDictionaryAttributeName() {
@@ -724,7 +719,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 
     /**
      * Setter for the dictionary attribute name
-     * 
+     *
      * @param dictionaryAttributeName
      */
     public void setDictionaryAttributeName(String dictionaryAttributeName) {
@@ -734,7 +729,7 @@ public class AttributeField extends FieldBase implements DataBinding {
     /**
      * Object entry name in the data dictionary the associated attribute is
      * apart of
-     * 
+     *
      * <p>
      * During the initialize phase for the <code>View</code>, properties for
      * attribute fields are defaulted from a corresponding
@@ -743,12 +738,12 @@ public class AttributeField extends FieldBase implements DataBinding {
      * associated attribute. However the object entry can be set in the field's
      * configuration to use another object entry for the attribute
      * </p>
-     * 
+     *
      * <p>
      * The attribute name is used along with the dictionary object entry to find
      * the <code>AttributeDefinition</code>
      * </p>
-     * 
+     *
      * @return
      */
     public String getDictionaryObjectEntry() {
@@ -757,7 +752,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 
     /**
      * Setter for the dictionary object entry
-     * 
+     *
      * @param dictionaryObjectEntry
      */
     public void setDictionaryObjectEntry(String dictionaryObjectEntry) {
@@ -769,7 +764,7 @@ public class AttributeField extends FieldBase implements DataBinding {
      * provide a List of values the field can have. Generally used to provide
      * the options for a multi-value control or to validate the submitted field
      * value
-     * 
+     *
      * @return KeyValuesFinder instance
      */
     public KeyValuesFinder getOptionsFinder() {
@@ -778,17 +773,17 @@ public class AttributeField extends FieldBase implements DataBinding {
 
     /**
      * Setter for the field's KeyValuesFinder instance
-     * 
+     *
      * @param optionsFinder
      */
     public void setOptionsFinder(KeyValuesFinder optionsFinder) {
         this.optionsFinder = optionsFinder;
     }
-    
+
     /**
      * Setter that takes in the class name for the options finder and creates a
      * new instance to use as the finder for the attribute field
-     * 
+     *
      * @param optionsFinderClass
      */
     public void setOptionsFinderClass(Class<? extends KeyValuesFinder> optionsFinderClass) {
@@ -798,7 +793,7 @@ public class AttributeField extends FieldBase implements DataBinding {
     /**
      * Brief statement of the field (attribute) purpose. Used to display helpful
      * information to the user on the form
-     * 
+     *
      * @return String summary message
      */
     public String getSummary() {
@@ -807,7 +802,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 
     /**
      * Setter for the summary message
-     * 
+     *
      * @param summary
      */
     public void setSummary(String summary) {
@@ -816,7 +811,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 
     /**
      * Full explanation of the field (attribute). Used in help contents
-     * 
+     *
      * @return String description message
      */
     public String getDescription() {
@@ -825,7 +820,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 
     /**
      * Setter for the description message
-     * 
+     *
      * @param description
      */
     public void setDescription(String description) {
@@ -836,7 +831,7 @@ public class AttributeField extends FieldBase implements DataBinding {
      * Holds security configuration for the attribute field. This triggers
      * corresponding permission checks in KIM and can result in an update to the
      * field state (such as read-only or hidden) and masking of the value
-     * 
+     *
      * @return AttributeSecurity instance configured for field or Null if no
      *         restrictions are defined
      */
@@ -847,7 +842,7 @@ public class AttributeField extends FieldBase implements DataBinding {
     /**
      * Setter for the AttributeSecurity instance that defines restrictions for
      * the field
-     * 
+     *
      * @param attributeSecurity
      */
     public void setAttributeSecurity(AttributeSecurity attributeSecurity) {
@@ -864,7 +859,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 
     /**
      * Lookup finder widget for the field
-     * 
+     *
      * <p>
      * The quickfinder widget places a small icon next to the field that allows
      * the user to bring up a search screen for finding valid field values. The
@@ -873,7 +868,7 @@ public class AttributeField extends FieldBase implements DataBinding {
      * field with a lookup based on its metadata (in particular its
      * relationships in the model)
      * </p>
-     * 
+     *
      * @return QuickFinder lookup widget
      */
     public QuickFinder getFieldLookup() {
@@ -882,7 +877,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 
     /**
      * Setter for the lookup widget
-     * 
+     *
      * @param fieldLookup
      */
     public void setFieldLookup(QuickFinder fieldLookup) {
@@ -891,7 +886,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 
     /**
      * Inquiry widget for the field
-     * 
+     *
      * <p>
      * The inquiry widget will render a link for the field value when read-only
      * that points to the associated inquiry view for the field. The inquiry can
@@ -899,7 +894,7 @@ public class AttributeField extends FieldBase implements DataBinding {
      * framework will attempt to associate the field with a inquiry based on its
      * metadata (in particular its relationships in the model)
      * </p>
-     * 
+     *
      * @return Inquiry field inquiry
      */
     public Inquiry getFieldInquiry() {
@@ -908,7 +903,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 
     /**
      * Setter for the inquiry widget
-     * 
+     *
      * @param fieldInquiry
      */
     public void setFieldInquiry(Inquiry fieldInquiry) {
@@ -953,9 +948,8 @@ public class AttributeField extends FieldBase implements DataBinding {
     /**
      * Sets the summary message field. Developers can use the setSummary method
      * which would set the summary text.
-     * 
-     * @param summary
-     *            field to set
+     *
+     * @param summary field to set
      * @see setSummary
      */
     public void setSummaryMessageField(MessageField summaryField) {
@@ -964,7 +958,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 
     /**
      * Returns the contraint set on the field
-     * 
+     *
      * @return the constraint
      */
     public String getConstraint() {
@@ -974,9 +968,8 @@ public class AttributeField extends FieldBase implements DataBinding {
     /**
      * Sets the constraint text. This text will be displayed below the
      * component.
-     * 
-     * @param constraint
-     *            for this field
+     *
+     * @param constraint for this field
      */
     public void setConstraint(String constraint) {
         this.constraint = constraint;
@@ -985,9 +978,8 @@ public class AttributeField extends FieldBase implements DataBinding {
     /**
      * Sets the constraint message field. Developers can use the setContraint
      * method which would set the constraint text.
-     * 
-     * @param constraint
-     *            field to set
+     *
+     * @param constraint field to set
      * @see setContraint
      */
     public void setConstraintMessageField(MessageField constraintMessageField) {
@@ -996,7 +988,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 
     /**
      * Returns the contraint message field.
-     * 
+     *
      * @return constraint Message Field
      */
     public MessageField getConstraintMessageField() {
@@ -1006,7 +998,7 @@ public class AttributeField extends FieldBase implements DataBinding {
     /**
      * Valid character constraint that defines regular expressions for the valid
      * characters for this field
-     * 
+     *
      * @return the validCharactersConstraint
      */
     public ValidCharactersConstraint getValidCharactersConstraint() {
@@ -1014,8 +1006,7 @@ public class AttributeField extends FieldBase implements DataBinding {
     }
 
     /**
-     * @param validCharactersConstraint
-     *            the validCharactersConstraint to set
+     * @param validCharactersConstraint the validCharactersConstraint to set
      */
     public void setValidCharactersConstraint(ValidCharactersConstraint validCharactersConstraint) {
         this.validCharactersConstraint = validCharactersConstraint;
@@ -1029,8 +1020,7 @@ public class AttributeField extends FieldBase implements DataBinding {
     }
 
     /**
-     * @param caseConstraint
-     *            the caseConstraint to set
+     * @param caseConstraint the caseConstraint to set
      */
     public void setCaseConstraint(CaseConstraint caseConstraint) {
         this.caseConstraint = caseConstraint;
@@ -1044,8 +1034,7 @@ public class AttributeField extends FieldBase implements DataBinding {
     }
 
     /**
-     * @param dependencyConstraints
-     *            the dependencyConstraints to set
+     * @param dependencyConstraints the dependencyConstraints to set
      */
     public void setDependencyConstraints(List<PrerequisiteConstraint> dependencyConstraints) {
         this.dependencyConstraints = dependencyConstraints;
@@ -1059,8 +1048,7 @@ public class AttributeField extends FieldBase implements DataBinding {
     }
 
     /**
-     * @param mustOccurConstraints
-     *            the mustOccurConstraints to set
+     * @param mustOccurConstraints the mustOccurConstraints to set
      */
     public void setMustOccurConstraints(List<MustOccurConstraint> mustOccurConstraints) {
         this.mustOccurConstraints = mustOccurConstraints;
@@ -1069,7 +1057,7 @@ public class AttributeField extends FieldBase implements DataBinding {
     /**
      * A simple constraint which store the values for required, min/max length,
      * and min/max value
-     * 
+     *
      * @return the simpleConstraint
      */
     public SimpleConstraint getSimpleConstraint() {
@@ -1080,9 +1068,8 @@ public class AttributeField extends FieldBase implements DataBinding {
      * When a simple constraint is set on this object ALL simple validation
      * constraints set directly will be overridden - recommended to use this or
      * the other gets/sets for defining simple constraints, not both
-     * 
-     * @param simpleConstraint
-     *            the simpleConstraint to set
+     *
+     * @param simpleConstraint the simpleConstraint to set
      */
     public void setSimpleConstraint(SimpleConstraint simpleConstraint) {
         this.simpleConstraint = simpleConstraint;
@@ -1092,7 +1079,7 @@ public class AttributeField extends FieldBase implements DataBinding {
      * Maximum number of the characters the attribute value is allowed to have.
      * Used to set the maxLength for supporting controls. Note this can be
      * smaller or longer than the actual control size
-     * 
+     *
      * @return Integer max length
      */
     public Integer getMaxLength() {
@@ -1101,7 +1088,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 
     /**
      * Setter for attributes max length
-     * 
+     *
      * @param maxLength
      */
     public void setMaxLength(Integer maxLength) {
@@ -1116,8 +1103,7 @@ public class AttributeField extends FieldBase implements DataBinding {
     }
 
     /**
-     * @param minLength
-     *            the minLength to set
+     * @param minLength the minLength to set
      */
     public void setMinLength(Integer minLength) {
         simpleConstraint.setMinLength(minLength);
@@ -1149,8 +1135,7 @@ public class AttributeField extends FieldBase implements DataBinding {
     }
 
     /**
-     * @param minValue
-     *            the minValue to set
+     * @param minValue the minValue to set
      */
     public void setExclusiveMin(String exclusiveMin) {
         simpleConstraint.setExclusiveMin(exclusiveMin);
@@ -1160,7 +1145,7 @@ public class AttributeField extends FieldBase implements DataBinding {
      * The inclusiveMax element determines the maximum allowable value for data
      * entry editing purposes. Value can be an integer or decimal value such as
      * -.001 or 99.
-     * 
+     *
      * JSTL: This field is mapped into the field named "exclusiveMax".
      */
     public String getInclusiveMax() {
@@ -1168,97 +1153,58 @@ public class AttributeField extends FieldBase implements DataBinding {
     }
 
     /**
-     * @param maxValue
-     *            the maxValue to set
+     * @param maxValue the maxValue to set
      */
     public void setInclusiveMax(String inclusiveMax) {
         simpleConstraint.setInclusiveMax(inclusiveMax);
     }
 
-      /**
+    /**
      * Additional display attribute name, which will be displayed next to the actual field value
      * when the field is readonly with hypen inbetween like PropertyValue - AdditionalPropertyValue
      *
      * @param additionalDisplayPropertyName - Name of the additional display property
      */
-	public void setAdditionalDisplayPropertyName(String additionalDisplayPropertyName) {
-		this.additionalDisplayPropertyName = additionalDisplayPropertyName;
-	}
+    public void setAdditionalDisplayPropertyName(String additionalDisplayPropertyName) {
+        this.additionalDisplayPropertyName = additionalDisplayPropertyName;
+    }
 
-	/**
-	 * Returns the additional display attribute name to be displayed when the field is readonly
-	 *
-	 * @return Additional Display Attribute Name
-	 */
-	public String getAdditionalDisplayPropertyName() {
-		return this.additionalDisplayPropertyName;
-	}
-
-	/**
-     * Additional display attribute's binding info. Based on the object path, the additional display
-     * attribute's value will be used to display when the field is readonly
+    /**
+     * Returns the additional display attribute name to be displayed when the field is readonly
      *
-     * @param alternateDisplayPropertyBindingInfo - <code>BindingInfo</code> for the additional display property to set
+     * @return Additional Display Attribute Name
      */
-	public void setAdditionalDisplayPropertyBindingInfo(BindingInfo additionalDisplayPropertyBindingInfo) {
-		this.additionalDisplayPropertyBindingInfo = additionalDisplayPropertyBindingInfo;
-	}
+    public String getAdditionalDisplayPropertyName() {
+        return this.additionalDisplayPropertyName;
+    }
 
-	/**
-	 * Returns the additional display attribute's binding info object
-	 *
-	 * @return <code>BindingInfo</code> of the additional display property
-	 */
-	public BindingInfo getAdditionalDisplayPropertyBindingInfo() {
-		return this.additionalDisplayPropertyBindingInfo;
-	}
+    /**
+     * Sets the alternate display attribute name to be displayed when the field is readonly.
+     * This properties value will be displayed instead of actual fields value when the field is readonly.
+     *
+     * @param alternateDisplayPropertyName - alternate display property name
+     */
+    public void setAlternateDisplayPropertyName(String alternateDisplayPropertyName) {
+        this.alternateDisplayPropertyName = alternateDisplayPropertyName;
+    }
 
-	/**
-	 * Sets the alternate display attribute name to be displayed when the field is readonly.
-	 * This properties value will be displayed instead of actual fields value when the field is readonly.
-	 *
-	 * @param alternateDisplayPropertyName - alternate display property name
-	 */
-	public void setAlternateDisplayPropertyName(String alternateDisplayPropertyName) {
-		this.alternateDisplayPropertyName = alternateDisplayPropertyName;
-	}
+    /**
+     * Returns the alternate display attribute name to be displayed when the field is readonly.
+     *
+     * @return alternate Display Property Name
+     */
+    public String getAlternateDisplayPropertyName() {
+        return this.alternateDisplayPropertyName;
+    }
 
-	/**
-	 * Returns the alternate display attribute name to be displayed when the field is readonly.
-	 *
-	 * @return alternate Display Property Name
-	 */
-	public String getAlternateDisplayPropertyName() {
-		return this.alternateDisplayPropertyName;
-	}
-
-	/**
-	 * Sets the binding info for the alternate display attribute name. If it's set, it's object path
-	 * will be used to determine the alternate display attributes value.
-	 *
-	 * @param alternateDisplayPropertyBindingInfo - <code>BindingInfo</code> of the alternate display property to set
-	 */
-	public void setAlternateDisplayPropertyBindingInfo(BindingInfo alternateDisplayPropertyBindingInfo) {
-		this.alternateDisplayPropertyBindingInfo = alternateDisplayPropertyBindingInfo;
-	}
-
-	/**
-	 * Returns the binding info object of the alternate display attribute
-	 *
-	 * @return <code>BindingInfo</code> of the alternate display property
-	 */
-	public BindingInfo getAlternateDisplayPropertyBindingInfo() {
-		return this.alternateDisplayPropertyBindingInfo;
-	}
-
-	/**
-	 * Returns the alternate display value
-	 *
-	 * @return the alternate display value set for this field
-	 */
-	public String getAlternateDisplayValue(){
-		return alternateDisplayValue;
-	}
+    /**
+     * Returns the alternate display value
+     *
+     * @return the alternate display value set for this field
+     */
+    public String getAlternateDisplayValue() {
+        return alternateDisplayValue;
+    }
 
     /**
      * Returns the additional display value.
@@ -1268,15 +1214,15 @@ public class AttributeField extends FieldBase implements DataBinding {
     public String getAdditionalDisplayValue() {
         return additionalDisplayValue;
     }
-	
-	/**
-	 * Setter for the direct inquiry widget
-	 * 
-	 * @param the <code>DirectInquiry</code> field DirectInquiry to set
-	 */
-	public void setFieldDirectInquiry(DirectInquiry fieldDirectInquiry) {
-		this.fieldDirectInquiry = fieldDirectInquiry;
-	}
+
+    /**
+     * Setter for the direct inquiry widget
+     *
+     * @param the <code>DirectInquiry</code> field DirectInquiry to set
+     */
+    public void setFieldDirectInquiry(DirectInquiry fieldDirectInquiry) {
+        this.fieldDirectInquiry = fieldDirectInquiry;
+    }
 
     /**
      * DirectInquiry widget for the field
@@ -1289,7 +1235,7 @@ public class AttributeField extends FieldBase implements DataBinding {
      * field with a inquiry based on its metadata (in particular its
      * relationships in the model)
      * </p>
-     * 
+     *
      * @return the <code>DirectInquiry</code> field DirectInquiry
      */
     public DirectInquiry getFieldDirectInquiry() {
@@ -1372,22 +1318,21 @@ public class AttributeField extends FieldBase implements DataBinding {
     public void setFieldAttributeQuery(AttributeQuery fieldAttributeQuery) {
         this.fieldAttributeQuery = fieldAttributeQuery;
     }
-    
+
     /**
-	 * Sets HTML escaping for this property value. HTML escaping will be handled in alternate and additional fields also.
-	 * 
-	 */
-	public void setEscapeHtmlInPropertyValue(boolean escapeHtmlInPropertyValue) {
-		this.escapeHtmlInPropertyValue = escapeHtmlInPropertyValue;
-	}
-	
+     * Sets HTML escaping for this property value. HTML escaping will be handled in alternate and additional fields
+     * also.
+     */
+    public void setEscapeHtmlInPropertyValue(boolean escapeHtmlInPropertyValue) {
+        this.escapeHtmlInPropertyValue = escapeHtmlInPropertyValue;
+    }
+
     /**
      * Returns true if HTML escape allowed for this field
-     * 
-	 * @return true if escaping allowed
-	 */
-	public boolean isEscapeHtmlInPropertyValue() {
-		return this.escapeHtmlInPropertyValue;
-	}
-	
+     *
+     * @return true if escaping allowed
+     */
+    public boolean isEscapeHtmlInPropertyValue() {
+        return this.escapeHtmlInPropertyValue;
+    }
 }

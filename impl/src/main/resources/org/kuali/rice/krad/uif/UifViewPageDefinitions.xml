@@ -52,8 +52,7 @@
 	<bean id="FormView-parentBean" abstract="true"
 		class="org.kuali.rice.krad.uif.container.FormView" parent="View">
 		<property name="template" value="/krad/WEB-INF/jsp/templates/view/view.jsp" />
-		<property name="onSubmitScript"
-			value="createLoading(true);return hasFormAlreadyBeenSubmitted();" />
+		<property name="onSubmitScript"	value="createLoading(true);" />
 		<property name="footer">
 			<ref bean="Footer_SaveCloseCancel" />
 		</property>

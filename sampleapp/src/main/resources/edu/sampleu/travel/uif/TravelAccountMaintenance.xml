@@ -30,7 +30,16 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 <bean parent="AttributeField" p:propertyName="number"/>
                 <bean parent="AttributeField" p:propertyName="name"/>
                 <bean parent="AttributeField" p:propertyName="extension.accountTypeCode"/>
-                <bean parent="AttributeField" p:propertyName="subAccount"/>
+                <bean parent="AttributeField" p:propertyName="subAccount">
+                              <property name="fieldLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
+            <property name="fieldLookup.fieldConversions">
+              <map>
+                <entry key="number" value="subAccount"/>
+                <entry key="name" value="subAccountName"/>
+              </map>
+            </property>
+                  <property name="fieldLookup.lookupParameters" value="subAccountName:name"/>
+                </bean>
                 <bean parent="AttributeField" p:propertyName="subAccountName"/>
                 <bean parent="AttributeField" p:propertyName="createDate"/>
                 <bean parent="AttributeField" p:propertyName="subsidizedPercent"/>

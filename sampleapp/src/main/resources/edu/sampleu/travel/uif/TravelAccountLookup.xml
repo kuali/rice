@@ -60,7 +60,7 @@
         <bean parent="AttributeField" p:propertyName="subAccountName" />
         <bean parent="AttributeField" p:propertyName="subsidizedPercent" />
         <bean parent="AttributeField" p:propertyName="createDate" />
-        <bean parent="AttributeField" p:propertyName="extension.accountType.codeAndDescription" /> <!-- p:forceInquiry="true" -->
+        <!--bean parent="AttributeField" p:propertyName="extension.accountType.codeAndDescription" -->
         <bean parent="AttributeField" p:propertyName="foId" /> <!-- p:forceInquiry="true" -->
       </list>
     </property>

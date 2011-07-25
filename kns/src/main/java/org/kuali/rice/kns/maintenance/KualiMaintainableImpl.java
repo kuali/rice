@@ -17,7 +17,6 @@ package org.kuali.rice.kns.maintenance;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.dialect.Oracle10gDialect;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -39,7 +38,7 @@ import org.kuali.rice.kns.util.MaintenanceUtils;
 import org.kuali.rice.kns.web.ui.Section;
 import org.kuali.rice.kns.web.ui.SectionBridge;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.BusinessObjectRelationship;
+import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeSecurity;
 import org.kuali.rice.krad.datadictionary.exception.UnknownBusinessClassAttributeException;
@@ -1002,7 +1001,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 		}
 
 		BusinessObjectMetaDataService businessObjectMetaDataService = getBusinessObjectMetaDataService();
-		BusinessObjectRelationship relationship = businessObjectMetaDataService.getBusinessObjectRelationship(baseBO,
+		DataObjectRelationship relationship = businessObjectMetaDataService.getBusinessObjectRelationship(baseBO,
 				attributeName);
 		if (relationship == null) {
 			return new ArrayList<String>();

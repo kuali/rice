@@ -43,18 +43,21 @@ import java.util.Set;
  * Root of the component tree which encompasses a set of related
  * <code>GroupContainer</code> instances tied together with a common page layout
  * and navigation.
+ *
  * <p>
  * The <code>View</code> component ties together all the components and
  * configuration of the User Interface for a piece of functionality. In Rice
  * applications the view is typically associated with a <code>Document</code>
  * instance.
  * </p>
+ *
  * <p>
  * The view template lays out the common header, footer, and navigation for the
  * related pages. In addition the view renders the HTML head element bringing in
  * common script files and style sheets, along with optionally rendering a form
  * element for pages that need to post data back to the server.
  * </p>
+ *
  * <p>
  * Configuration of UIF features such as model validation is also done through
  * the <code>View</code>
@@ -67,10 +70,11 @@ public class View extends ContainerBase {
 
     private String viewName;
 
+    private int idSequence;
+
     // Breadcrumbs
     private BreadCrumbs breadcrumbs;
     private String viewLabelFieldPropertyName;
-    private BindingInfo viewLabelFieldBindingInfo;
     private String appendOption;
 
     // Growls support
@@ -133,6 +137,8 @@ public class View extends ContainerBase {
         viewTypeName = ViewType.DEFAULT;
         viewStatus = UifConstants.ViewStatus.CREATED;
 
+        idSequence = 0;
+
         additionalScriptFiles = new ArrayList<String>();
         additionalCssFiles = new ArrayList<String>();
         items = new ArrayList<Group>();
@@ -143,11 +149,10 @@ public class View extends ContainerBase {
 
     /**
      * The following initialization is performed:
+     *
      * <ul>
      * <li>If a single paged view, set items in page group and put the page in
      * the items list</li>
-     * <li>If current page id is not set, it is set to the configured entry page
-     * or first item in list id</li>
      * </ul>
      *
      * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(org.kuali.rice.krad.uif.container.View)
@@ -169,6 +174,24 @@ public class View extends ContainerBase {
                 throw new RuntimeException("For single paged views the page Group must be set.");
             }
         }
+    }
+
+    /**
+     * The following is performed:
+     *
+     * <ul>
+     * <li>If current page id is not set, it is set to the configured entry page
+     * or first item in list id</li>
+     * <li>Adds to its document ready script the setupValidator js function for setting
+     * up the validator for this view</li>
+     * </ul>
+     *
+     * @see org.kuali.rice.krad.uif.container.ContainerBase#performFinalize(org.kuali.rice.krad.uif.container.View,
+     *      java.lang.Object, org.kuali.rice.krad.uif.core.Component)
+     */
+    @Override
+    public void performFinalize(View view, Object model, Component parent) {
+        super.performFinalize(view, model, parent);
 
         // set the entry page
         if (StringUtils.isNotBlank(entryPageId)) {
@@ -177,55 +200,6 @@ public class View extends ContainerBase {
             Group firstPageGroup = getItems().get(0);
             currentPageId = firstPageGroup.getId();
         }
-    }
-
-    /**
-     * This method is used to determine what property name is to be used for
-     * view label appendage, called before the generation of
-     * history/breadcrumb/title, but cannot be called from performInitialize
-     * because the abstractTypeClasses map may not be populated before
-     * super.performInitialize is called from a view child class (required for
-     * ViewModelUtils#getPropertyType determination used in this method)
-     * Currently called from UifControllerHandlerInterceptor...
-     *
-     * @see View#setViewLabelFieldPropertyName(String)
-     * @see View#setViewLabelFieldBindingInfo(BindingInfo)
-     * @see ViewModelUtils#getPropertyType
-     * @see org.kuali.rice.krad.web.controller.UifControllerHandlerInterceptor#postHandle
-     */
-    public void determineViewLabelPropertyName() {
-        // We have binding info but a custom viewLabelFieldPropertyName is set
-        if (viewLabelFieldBindingInfo != null && StringUtils.isNotBlank(viewLabelFieldPropertyName)) {
-            viewLabelFieldBindingInfo.setDefaults(this, viewLabelFieldPropertyName);
-        }
-        // Nothing is preset, auto determine title
-        else if (viewLabelFieldBindingInfo == null && StringUtils.isBlank(viewLabelFieldPropertyName)) {
-            Class<?> doClass;
-            if (StringUtils.isNotBlank(this.getDefaultBindingObjectPath())) {
-                doClass = ViewModelUtils.getPropertyType(this, this.getDefaultBindingObjectPath());
-            } else {
-                doClass = this.getFormClass();
-            }
-            DataObjectMetaDataService mds = KRADServiceLocatorWeb.getDataObjectMetaDataService();
-            if (doClass != null) {
-                String title = mds.getTitleAttribute(doClass);
-                viewLabelFieldPropertyName = title;
-            }
-        }
-        // else assumption is to use whatever is in viewLabelFieldBindingInfo or
-        // viewLabelFieldPropertyName
-    }
-
-    /**
-     * Perform finalize here adds to its document ready script the
-     * setupValidator js function for setting up the validator for this view.
-     *
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#performFinalize(org.kuali.rice.krad.uif.container.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.core.Component)
-     */
-    @Override
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
 
         String prefixScript = "";
         if (this.getOnDocumentReadyScript() != null) {
@@ -308,6 +282,15 @@ public class View extends ContainerBase {
      */
     public void setViewName(String viewName) {
         this.viewName = viewName;
+    }
+
+    /**
+     * Returns the next unique id available for components within the view instance
+     *
+     * @return String next id available
+     */
+    public String getNextId() {
+        return Integer.toString(idSequence++);
     }
 
     /**
@@ -420,6 +403,7 @@ public class View extends ContainerBase {
     /**
      * Configures the concrete classes that will be used for properties in the
      * form object graph that have an abstract or interface type
+     *
      * <p>
      * For properties that have an abstract or interface type, it is not
      * possible to perform operations like getting/settings property values and
@@ -427,6 +411,7 @@ public class View extends ContainerBase {
      * encountered in the object graph, this <code>Map</code> will be consulted
      * to determine the concrete type to use.
      * </p>
+     *
      * <p>
      * e.g. Suppose we have a property document.accountingLine.accountNumber and
      * the accountingLine property on the document instance has an interface
@@ -1000,11 +985,13 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Indicates whether the form should be validated for dirtyness.
+     * Indicates whether the form should be validated for dirtyness
      *
-     * <p>For FormView, it's necessary to validate when the user tries to navigate out of the form. If set, all the AttributeFields
-     * will be validated on refresh, navigate, cancel or close Action or on form unload and if dirty, displays a message and user
-     * can decide whether to continue with the action or stay on the form. For lookup and inquiry, it's not needed to validate.
+     * <p>
+     * For FormView, it's necessary to validate when the user tries to navigate out of the form. If set, all the
+     * AttributeFields will be validated on refresh, navigate, cancel or close Action or on form
+     * unload and if dirty, displays a message and user can decide whether to continue with
+     * the action or stay on the form. For lookup and inquiry, it's not needed to validate.
      * </p>
      *
      * @return true if dirty validation is set
@@ -1039,25 +1026,29 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @return the viewLabelFieldPropertyName
+     * The property name to be used to determine what will be used in the
+     * breadcrumb title of this view
+     *
+     * <p>
+     * The title can be determined from a combination of this and viewLabelFieldbindingInfo: If only
+     * viewLabelFieldPropertyName is set, the title we be determined against the
+     * defaultBindingObjectPath. If only viewLabelFieldbindingInfo is set it
+     * must provide information about what object(bindToForm or explicit) and
+     * path to use. If both viewLabelFieldbindingInfo and viewLabelFieldPropertyName are set,
+     * the bindingInfo will be used with a
+     * the viewLabelFieldPropertyName as its bindingPath. If neither are set,
+     * the default title attribute from the dataObject's metadata (determined by the
+     * defaultBindingObjectPath's object) will be used.
+     * </p>
+     *
+     * @return String property name whose value should be displayed in view label
      */
     public String getViewLabelFieldPropertyName() {
         return this.viewLabelFieldPropertyName;
     }
 
     /**
-     * Sets the property name to be used to determine what will be used in the
-     * breadcrumb title of this view
-     * The title can be determined from a
-     * combination of this and viewLabelFieldbindingInfo: If only
-     * viewLabelFieldPropertyName is set, the title we be determined against the
-     * defaultBindingObjectPath. If only viewLabelFieldbindingInfo is set it
-     * must provide information about what object(bindToForm or explicit) and
-     * path to use. If both viewLabelFieldbindingInfo and
-     * viewLabelFieldPropertyName are set, the bindingInfo will be used with a
-     * the viewLabelFieldPropertyName as its bindingPath. If neither are set,
-     * the default title attribute from the dataObject's metadata (determined by the
-     * defaultBindingObjectPath's object) will be used.
+     * Setter for the view label property name
      *
      * @param viewLabelFieldPropertyName the viewLabelFieldPropertyName to set
      */
@@ -1066,33 +1057,11 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @return the viewLabelFieldBindingInfo
-     */
-    public BindingInfo getViewLabelFieldBindingInfo() {
-        return this.viewLabelFieldBindingInfo;
-    }
-
-    /**
-     * The binding info settings to use when selecting a field to use in the
-     * breadcrumb title for this view.
-     * The title can be determined from a
-     * combination of this and viewLabelFieldPropertyName: If only
-     * viewLabelFieldPropertyName is set, the title we be determined against the
-     * defaultBindingObjectPath. If only viewLabelFieldbindingInfo is set it
-     * must provide information about what object(bindToForm or explicit) and
-     * path to use. If both viewLabelFieldbindingInfo and
-     * viewLabelFieldPropertyName are set, the bindingInfo will be used with a
-     * the viewLabelFieldPropertyName as its bindingPath. If neither are set,
-     * the default title attribute from the dataObject's metadata (determined by the
-     * defaultBindingObjectPath's object) will be used.
+     * The option to use when appending the view label on the breadcrumb title.
+     * Available options: 'dash', 'parenthesis', and 'replace'(don't append -
+     * simply replace the title). MUST be set for the viewLabelField to be used
+     * in the breadcrumb, if not set no appendage will be added.
      *
-     * @param viewLabelFieldBindingInfo the viewLabelFieldBindingInfo to set
-     */
-    public void setViewLabelFieldBindingInfo(BindingInfo viewLabelFieldBindingInfo) {
-        this.viewLabelFieldBindingInfo = viewLabelFieldBindingInfo;
-    }
-
-    /**
      * @return the appendOption
      */
     public String getAppendOption() {
@@ -1100,10 +1069,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * The option to use when appending the view label on the breadcrumb title.
-     * Available options: 'dash', 'parenthesis', and 'replace'(don't append -
-     * simply replace the title). MUST be set for the viewLabelField to be used
-     * in the breadcrumb, if not set no appendage will be added.
+     * Setter for the append option
      *
      * @param appendOption the appendOption to set
      * @see View#setViewLabelFieldPropertyName(String)

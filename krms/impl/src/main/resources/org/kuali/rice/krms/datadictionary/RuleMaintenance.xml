@@ -210,7 +210,7 @@
         </property>
       </bean>
     </property>
-    <property name="nodeProtypeMap">
+    <property name="nodePrototypeMap">
       <map key-type="java.lang.Class">
         <entry>
           <key>
@@ -218,7 +218,7 @@
               <constructor-arg value="org.kuali.rice.krms.impl.ui.RuleTreeNode"/>
             </bean>
           </key> 
-          <bean class="org.kuali.rice.krad.uif.container.TreeGroup.NodePrototype">
+          <bean class="org.kuali.rice.krad.uif.container.NodePrototype">
             <property name="labelPrototype">
               <bean parent="MessageField"/>
             </property>
@@ -245,7 +245,7 @@
               <constructor-arg value="org.kuali.rice.krms.impl.ui.RuleTreeSimplePropositionParameterNode"/>
             </bean>
           </key> 
-          <bean class="org.kuali.rice.krad.uif.container.TreeGroup.NodePrototype">
+          <bean class="org.kuali.rice.krad.uif.container.NodePrototype">
             <property name="labelPrototype">
               <bean parent="MessageField"/>
             </property>

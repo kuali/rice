@@ -29,7 +29,7 @@ public class FiscalOfficerInfoMaintenanceNewIT extends SeleneseTestCase{
     
     @Before
     public void setUp() throws Exception {
-        selenium = new DefaultSelenium("127.0.0.1", 4444, "*googlechrome", "http://127.0.0.1:8080/");
+        selenium = new DefaultSelenium("129.79.44.122", 4444, "*googlechrome", "http://129.79.44.122:8080/");
         selenium.start();
     }
     

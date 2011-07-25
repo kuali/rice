@@ -18,7 +18,7 @@ package org.kuali.rice.krad.service.impl;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.BusinessObjectRelationship;
+import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.MutableInactivatable;
 import org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.krad.service.BusinessObjectService;
@@ -110,13 +110,13 @@ public class InactivationBlockingDetectionServiceImpl implements InactivationBlo
 		BusinessObject blockingBo = (BusinessObject) ObjectUtils.createNewObjectFromClass(inactivationBlockingMetadata
 				.getBlockingReferenceBusinessObjectClass());
 
-		BusinessObjectRelationship businessObjectRelationship = businessObjectMetaDataService
+		DataObjectRelationship dataObjectRelationship = businessObjectMetaDataService
 				.getBusinessObjectRelationship(blockingBo,
 						inactivationBlockingMetadata.getBlockedReferencePropertyName());
 
 		// note, this method assumes that all PK fields of the blockedBo have a non-null and, for strings, non-blank values
-		if (businessObjectRelationship != null) {
-			Map<String, String> parentToChildReferences = businessObjectRelationship.getParentToChildReferences();
+		if (dataObjectRelationship != null) {
+			Map<String, String> parentToChildReferences = dataObjectRelationship.getParentToChildReferences();
 			Map<String, String> queryMap = new HashMap<String, String>();
 			for (Map.Entry<String, String> parentToChildReference : parentToChildReferences.entrySet()) {
 				String fieldName = parentToChildReference.getKey();

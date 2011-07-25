@@ -11,10 +11,11 @@
 package org.kuali.rice.krad.uif.widget;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.bo.BusinessObjectRelationship;
+import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.container.View;
+import org.kuali.rice.krad.uif.core.BindingInfo;
 import org.kuali.rice.krad.uif.core.Component;
 import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.AttributeField;
@@ -27,7 +28,7 @@ import java.util.Map;
 
 /**
  * Widget for navigating to a lookup from a field (called a quickfinder)
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class QuickFinder extends WidgetBase {
@@ -81,7 +82,7 @@ public class QuickFinder extends WidgetBase {
         // determine lookup class, field conversions and lookup parameters in
         // not set
         if (StringUtils.isBlank(dataObjectClassName)) {
-            BusinessObjectRelationship relationship = getRelationshipForField(view, model, field);
+            DataObjectRelationship relationship = getRelationshipForField(view, model, field);
 
             // if no relationship found cannot have a quickfinder
             if (relationship == null) {
@@ -99,6 +100,10 @@ public class QuickFinder extends WidgetBase {
                 generateLookupParameters(field, relationship);
             }
         }
+
+        // adjust paths based on associated attribute field
+        updateFieldConversions(field.getBindingInfo());
+        updateLookupParameters(field.getBindingInfo());
 
         quickfinderActionField.addActionParameter(UifParameters.BASE_LOOKUP_URL, baseLookupUrl);
         quickfinderActionField.addActionParameter(UifParameters.DATA_OBJECT_CLASS_NAME, dataObjectClassName);
@@ -136,7 +141,7 @@ public class QuickFinder extends WidgetBase {
         }
     }
 
-    protected BusinessObjectRelationship getRelationshipForField(View view, Object model, AttributeField field) {
+    protected DataObjectRelationship getRelationshipForField(View view, Object model, AttributeField field) {
         String propertyName = field.getBindingInfo().getBindingName();
 
         // get object instance and class for parent
@@ -147,13 +152,11 @@ public class QuickFinder extends WidgetBase {
         }
 
         // get relationship from metadata service
-        return KRADServiceLocatorWeb.getDataObjectMetaDataService().getDataObjectRelationship(parentObject,
-                parentObjectClass, propertyName, "", true, true, false);
+        return KRADServiceLocatorWeb.getDataObjectMetaDataService()
+                .getDataObjectRelationship(parentObject, parentObjectClass, propertyName, "", true, true, false);
     }
 
-    protected void generateFieldConversions(AttributeField field, BusinessObjectRelationship relationship) {
-        String parentObjectPath = ViewModelUtils.getParentObjectPath(field);
-
+    protected void generateFieldConversions(AttributeField field, DataObjectRelationship relationship) {
         fieldConversions = new HashMap<String, String>();
         for (Map.Entry<String, String> entry : relationship.getParentToChildReferences().entrySet()) {
             String fromField = entry.getValue();
@@ -161,24 +164,13 @@ public class QuickFinder extends WidgetBase {
 
             // TODO: displayedFieldnames in
             // org.kuali.rice.kns.lookup.LookupUtils.generateFieldConversions(BusinessObject,
-            // String, BusinessObjectRelationship, String, List, String)
-
-            if (StringUtils.isNotBlank(parentObjectPath)) {
-                if (field.getBindingInfo().isBindToMap()) {
-                    toField = parentObjectPath + "['" + toField + "']";
-                }
-                else {
-                    toField = parentObjectPath + "." + toField;
-                }
-            }
+            // String, DataObjectRelationship, String, List, String)
 
             fieldConversions.put(fromField, toField);
         }
     }
 
-    protected void generateLookupParameters(AttributeField field, BusinessObjectRelationship relationship) {
-        String parentObjectPath = ViewModelUtils.getParentObjectPath(field);
-
+    protected void generateLookupParameters(AttributeField field, DataObjectRelationship relationship) {
         lookupParameters = new HashMap<String, String>();
         for (Map.Entry<String, String> entry : relationship.getParentToChildReferences().entrySet()) {
             String fromField = entry.getKey();
@@ -186,22 +178,49 @@ public class QuickFinder extends WidgetBase {
 
             // TODO: displayedFieldnames and displayedQFFieldNames in
             // generateLookupParameters(BusinessObject,
-            // String, BusinessObjectRelationship, String, List, String)
+            // String, DataObjectRelationship, String, List, String)
 
-            if (relationship.getUserVisibleIdentifierKey() == null
-                    || relationship.getUserVisibleIdentifierKey().equals(fromField)) {
-                if (StringUtils.isNotBlank(parentObjectPath)) {
-                    if (field.getBindingInfo().isBindToMap()) {
-                        fromField = parentObjectPath + "['" + fromField + "']";
-                    }
-                    else {
-                        fromField = parentObjectPath + "." + fromField;
-                    }
-                }
-
+            if (relationship.getUserVisibleIdentifierKey() == null ||
+                    relationship.getUserVisibleIdentifierKey().equals(fromField)) {
                 lookupParameters.put(fromField, toField);
             }
         }
+    }
+
+    /**
+     * Adjusts the path on the field conversion to property to match the binding
+     * path prefix of the given <code>BindingInfo</code>
+     *
+     * @param bindingInfo - binding info instance to copy binding path prefix from
+     */
+    public void updateFieldConversions(BindingInfo bindingInfo) {
+        Map<String, String> adjustedFieldConversions = new HashMap<String, String>();
+        for (String fromField : fieldConversions.keySet()) {
+            String toField = fieldConversions.get(fromField);
+            String adjustedToFieldPath = bindingInfo.getPropertyAdjustedBindingPath(toField);
+
+            adjustedFieldConversions.put(fromField, adjustedToFieldPath);
+        }
+
+        this.fieldConversions = adjustedFieldConversions;
+    }
+
+    /**
+     * Adjusts the path on the lookup parameter from property to match the binding
+     * path prefix of the given <code>BindingInfo</code>
+     *
+     * @param bindingInfo - binding info instance to copy binding path prefix from
+     */
+    public void updateLookupParameters(BindingInfo bindingInfo) {
+        Map<String, String> adjustedLookupParameters = new HashMap<String, String>();
+        for (String fromField : lookupParameters.keySet()) {
+            String toField = lookupParameters.get(fromField);
+            String adjustedFromFieldPath = bindingInfo.getPropertyAdjustedBindingPath(fromField);
+
+            adjustedLookupParameters.put(adjustedFromFieldPath, toField);
+        }
+
+        this.lookupParameters = adjustedLookupParameters;
     }
 
     /**
@@ -343,5 +362,4 @@ public class QuickFinder extends WidgetBase {
     public void setQuickfinderActionField(ActionField quickfinderActionField) {
         this.quickfinderActionField = quickfinderActionField;
     }
-
 }

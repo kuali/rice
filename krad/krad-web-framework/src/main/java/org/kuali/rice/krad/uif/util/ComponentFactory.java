@@ -11,8 +11,6 @@
 package org.kuali.rice.krad.uif.util;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.service.DataDictionaryService;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.control.RadioGroupControl;
@@ -43,6 +41,7 @@ public class ComponentFactory {
     protected static final String MESSAGE_FIELD = "MessageField";
     protected static final String TEXT_CONTROL = "TextControl";
     protected static final String RADIO_GROUP_CONTROL = "RadioGroupControl";
+    protected static final String RADIO_GROUP_CONTROL_HORIZONTAL = "RadioGroupControlHorizontal";
 
     /**
      * Adds a component instance to the factories map of components indexed by the given dictionary id
@@ -88,6 +87,10 @@ public class ComponentFactory {
         return (RadioGroupControl) getNewComponentInstance(RADIO_GROUP_CONTROL);
     }
 
+    public static RadioGroupControl getRadioGroupControlHorizontal() {
+        return (RadioGroupControl) getNewComponentInstance(RADIO_GROUP_CONTROL_HORIZONTAL);
+    }
+
     /**
      * Gets a fresh copy of the component by the id passed in which is translated to the
      * corresponding dictionary id
@@ -113,50 +116,47 @@ public class ComponentFactory {
     public static Component getComponentByIdWithLifecycle(UifFormBase form, String id) {
         Component origComponent = form.getView().getViewIndex().getComponentById(id);
         Component component = getComponentById(form, id);
-        
-        form.getView().getViewHelperService().performComponentLifecycle(form, component, id);
-        
 
-        if(component instanceof Field){
-            ((Field) component).setLabelFieldRendered(((Field)origComponent).isLabelFieldRendered());
+        form.getView().getViewHelperService().performComponentLifecycle(form, component, id);
+
+        if (component instanceof Field) {
+            ((Field) component).setLabelFieldRendered(((Field) origComponent).isLabelFieldRendered());
         }
-        
-        if(component instanceof AttributeField){
-            ((AttributeField) component).setBindingInfo(((AttributeField)origComponent).getBindingInfo());
+
+        if (component instanceof AttributeField) {
+            ((AttributeField) component).setBindingInfo(((AttributeField) origComponent).getBindingInfo());
         }
-        
-        if(component instanceof CollectionGroup){
-            ((CollectionGroup) component).setBindingInfo(((CollectionGroup)origComponent).getBindingInfo());
+
+        if (component instanceof CollectionGroup) {
+            ((CollectionGroup) component).setBindingInfo(((CollectionGroup) origComponent).getBindingInfo());
         }
-        
-        if(component instanceof Group || component instanceof GroupField){
+
+        if (component instanceof Group || component instanceof GroupField) {
             List<AttributeField> fields = ComponentUtils.getComponentsOfTypeDeep(component, AttributeField.class);
             String suffix = StringUtils.replaceOnce(component.getId(), component.getBaseId(), "");
-            for(AttributeField field: fields){
-                AttributeField origField = (AttributeField)form.getView().getViewIndex().getComponentById(StringUtils.replaceOnce(field.getId(), field.getBaseId(), field.getBaseId() + suffix));
-                if(origField != null){
+            for (AttributeField field : fields) {
+                AttributeField origField = (AttributeField) form.getView().getViewIndex().getComponentById(
+                        StringUtils.replaceOnce(field.getId(), field.getBaseId(), field.getBaseId() + suffix));
+                if (origField != null) {
                     field.setBindingInfo(origField.getBindingInfo());
                 }
                 field.setLabelFieldRendered(origField.isLabelFieldRendered());
             }
-            
-            List<CollectionGroup> collections = ComponentUtils.getComponentsOfTypeDeep(component, CollectionGroup.class);
-            for(CollectionGroup collection: collections){
-                CollectionGroup origField = (CollectionGroup)form.getView().getViewIndex().getComponentById(StringUtils.replaceOnce(collection.getId(), collection.getBaseId(), collection.getBaseId() + suffix));
-                if(origField != null){
+
+            List<CollectionGroup> collections =
+                    ComponentUtils.getComponentsOfTypeDeep(component, CollectionGroup.class);
+            for (CollectionGroup collection : collections) {
+                CollectionGroup origField = (CollectionGroup) form.getView().getViewIndex().getComponentById(StringUtils
+                        .replaceOnce(collection.getId(), collection.getBaseId(), collection.getBaseId() + suffix));
+                if (origField != null) {
                     collection.setBindingInfo(origField.getBindingInfo());
                 }
             }
         }
-        
+
         form.getView().getViewIndex().indexComponent(component);
-        
+
         return component;
     }
-    
 
-
-    protected static DataDictionaryService getDataDictionaryService() {
-        return KRADServiceLocatorWeb.getDataDictionaryService();
-    }
 }

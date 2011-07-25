@@ -32,6 +32,8 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MaintenanceDocumentEntry extends DocumentEntry {
+    private static final long serialVersionUID = 4990040987835057251L;
+
     protected Class<?> dataObjectClass;
     protected Class<? extends Maintainable> maintainableClass;
 

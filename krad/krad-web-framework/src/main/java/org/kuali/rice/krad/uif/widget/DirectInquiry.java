@@ -10,6 +10,7 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.container.View;
@@ -30,18 +31,17 @@ import java.util.Properties;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DirectInquiry extends Inquiry {
-    
     private static final long serialVersionUID = -2490979579285984314L;
     
     private ActionField directInquiryActionField;
-    
-    // Binding Info fields used by direct inquiry to access html fields
-    private String bindingPrefix;
-    
-    private boolean bindToMap;
+
+    private boolean adjustInquiryParameters;
+    private BindingInfo fieldBindingInfo;
 
     public DirectInquiry() {
         super();
+
+        adjustInquiryParameters = false;
     }
 
     /**
@@ -61,18 +61,15 @@ public class DirectInquiry extends Inquiry {
         setRender(false);
 
         AttributeField field = (AttributeField) parent;
-        
-        // If this is a direct inquiry (not read only) then set the binding prefix
-        // for mapping to the field names used in the script to get values from the form
-    	BindingInfo bindingInfo = field.getBindingInfo();
-    	if (bindingInfo.isBindToForm()) {
-    		bindingPrefix = bindingInfo.getBindByNamePrefix();
-    	}else if (bindingInfo.isBindToMap()){
-    		bindToMap = true;
-    		bindingPrefix = bindingInfo.getBindingObjectPath();
-    	}else{
-    		bindingPrefix = bindingInfo.getBindingObjectPath() + (bindingInfo.getBindByNamePrefix()==null?"":("." + bindingInfo.getBindByNamePrefix()));
-    	}
+
+        // determine whether inquiry parameters will need adjusted
+        if (StringUtils.isBlank(getDataObjectClassName())
+                || (getInquiryParameters() == null)
+                || getInquiryParameters().isEmpty()) {
+            // if inquiry parameters not given, they will not be adjusted by super
+            adjustInquiryParameters = true;
+            fieldBindingInfo = field.getBindingInfo();
+        }
 
     	setupLink(view, model, field);
     }
@@ -103,6 +100,7 @@ public class DirectInquiry extends Inquiry {
 		String inquiryUrl = UrlFactory.parameterizeUrl(getBaseInquiryUrl(),
 				urlParameters);
 		StringBuilder paramMapString = new StringBuilder();
+
 		// Check if lightbox is set. Get lightbox options.
 		String lightBoxOptions = "";
 		boolean lightBoxShow = directInquiryActionField.getLightBox() != null;
@@ -113,21 +111,16 @@ public class DirectInquiry extends Inquiry {
 
 		// Build parameter string using the actual names of the fields as on the
 		// html page
-		for (Entry<String, String> inquiryParameter : inquiryParms.entrySet()) {
-			if (bindToMap) {
-				paramMapString.append(bindingPrefix);
-				paramMapString.append("['");
-				paramMapString.append(inquiryParameter.getKey());
-				paramMapString.append("']");
-			} else {
-				paramMapString.append(bindingPrefix);
-				paramMapString.append(".");
-				paramMapString.append(inquiryParameter.getKey());
-			}
-			paramMapString.append(":");
-			paramMapString.append(inquiryParameter.getValue());
-			paramMapString.append(",");
-		}
+        for (Entry<String, String> inquiryParameter : inquiryParms.entrySet()) {
+            String inquiryParameterFrom = inquiryParameter.getKey();
+            if (adjustInquiryParameters && (fieldBindingInfo != null)) {
+                inquiryParameterFrom = fieldBindingInfo.getPropertyAdjustedBindingPath(inquiryParameterFrom);
+            }
+            paramMapString.append(inquiryParameterFrom);
+            paramMapString.append(":");
+            paramMapString.append(inquiryParameter.getValue());
+            paramMapString.append(",");
+        }
 		paramMapString.deleteCharAt(paramMapString.length() - 1);
 
 		// Create onlick script to open the inquiry window on the click event
@@ -141,6 +134,7 @@ public class DirectInquiry extends Inquiry {
 		onClickScript.append(", ");
 		onClickScript.append(lightBoxOptions);
 		onClickScript.append(");");
+
 		directInquiryActionField.setBlockValidateDirty(true);
 		directInquiryActionField.setClientSideJs(onClickScript.toString());
 
@@ -171,34 +165,6 @@ public class DirectInquiry extends Inquiry {
 	 */
 	public void setDirectInquiryActionField(ActionField directInquiryActionField) {
 		this.directInquiryActionField = directInquiryActionField;
-	}
-
-	/**
-	 * @return the bindingPrefix
-	 */
-	public String getBindingPrefix() {
-		return this.bindingPrefix;
-	}
-
-	/**
-	 * @param bindingPrefix the bindingPrefix to set
-	 */
-	public void setBindingPrefix(String bindingPrefix) {
-		this.bindingPrefix = bindingPrefix;
-	}
-
-	/**
-	 * @param bindToMap the bindToMap to set
-	 */
-	public void setBindToMap(boolean bindToMap) {
-		this.bindToMap = bindToMap;
-	}
-
-	/**
-	 * @return the bindToMap
-	 */
-	public boolean isBindToMap() {
-		return bindToMap;
 	}
 
 }

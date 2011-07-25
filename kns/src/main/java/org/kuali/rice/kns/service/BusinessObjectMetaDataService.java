@@ -16,7 +16,7 @@
 package org.kuali.rice.kns.service;
 
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.BusinessObjectRelationship;
+import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.service.DataObjectMetaDataService;
@@ -36,7 +36,7 @@ import java.util.Map;
 public interface BusinessObjectMetaDataService extends DataObjectMetaDataService {
 
 	@Deprecated
-	public BusinessObjectRelationship getBusinessObjectRelationship(RelationshipDefinition ddReference,
+	public DataObjectRelationship getBusinessObjectRelationship(RelationshipDefinition ddReference,
 			BusinessObject bo, Class boClass, String attributeName, String attributePrefix, boolean keysOnly);
 
 	@Deprecated
@@ -179,10 +179,10 @@ public interface BusinessObjectMetaDataService extends DataObjectMetaDataService
 	 * @return related class
 	 */
 	@Deprecated
-	public BusinessObjectRelationship getBusinessObjectRelationship(BusinessObject bo, String attributeName);
+	public DataObjectRelationship getBusinessObjectRelationship(BusinessObject bo, String attributeName);
 
 	@Deprecated
-	public BusinessObjectRelationship getBusinessObjectRelationship(BusinessObject bo, Class boClass,
+	public DataObjectRelationship getBusinessObjectRelationship(BusinessObject bo, Class boClass,
 			String attributeName, String attributePrefix, boolean keysOnly);
 
 
@@ -193,7 +193,7 @@ public interface BusinessObjectMetaDataService extends DataObjectMetaDataService
 	 * dictionary.
 	 */
 	@Deprecated
-	public List<BusinessObjectRelationship> getBusinessObjectRelationships(BusinessObject bo);
+	public List<DataObjectRelationship> getBusinessObjectRelationships(BusinessObject bo);
 
 	/**
 	 * Get all the business object relationships for the given class. These
@@ -201,7 +201,7 @@ public interface BusinessObjectMetaDataService extends DataObjectMetaDataService
 	 * dictionary.
 	 */
 	@Deprecated
-	public List<BusinessObjectRelationship> getBusinessObjectRelationships(Class<? extends BusinessObject> boClass);
+	public List<DataObjectRelationship> getBusinessObjectRelationships(Class<? extends BusinessObject> boClass);
 
 	/**
 	 * This method accepts a business object and one of its foreign key

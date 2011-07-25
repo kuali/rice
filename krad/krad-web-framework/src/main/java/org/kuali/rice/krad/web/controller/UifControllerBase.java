@@ -75,6 +75,7 @@ public abstract class UifControllerBase {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UifControllerBase.class);
 
     protected static final String REDIRECT_PREFIX = "redirect:";
+
     private SessionDocumentService sessionDocumentService;
 
     /**

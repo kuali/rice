@@ -33,7 +33,7 @@ import org.kuali.rice.kns.util.InactiveRecordsHidingUtils;
 import org.kuali.rice.kns.web.ui.Section;
 import org.kuali.rice.kns.web.ui.SectionBridge;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.BusinessObjectRelationship;
+import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeSecurity;
@@ -313,14 +313,14 @@ public class KualiInquirableImpl extends InquirableImpl implements Inquirable {
 			keys = Collections.emptyList();
 		}
 
-		BusinessObjectRelationship businessObjectRelationship = null;
+		DataObjectRelationship dataObjectRelationship = null;
 
 		if (attributeRefName != null && !"".equals(attributeRefName)) {
-			businessObjectRelationship = getBusinessObjectMetaDataService().getBusinessObjectRelationship(
+			dataObjectRelationship = getBusinessObjectMetaDataService().getBusinessObjectRelationship(
 					businessObject, attributeRefName);
 
-			if (businessObjectRelationship != null && businessObjectRelationship.getParentToChildReferences() != null) {
-				for (String targetNamePrimaryKey : businessObjectRelationship.getParentToChildReferences().values()) {
+			if (dataObjectRelationship != null && dataObjectRelationship.getParentToChildReferences() != null) {
+				for (String targetNamePrimaryKey : dataObjectRelationship.getParentToChildReferences().values()) {
 					keys.add(targetNamePrimaryKey);
 				}
 			}
@@ -352,7 +352,7 @@ public class KualiInquirableImpl extends InquirableImpl implements Inquirable {
 				if (isPkReference) {
 					keyConversion = keyName;
 				}
-				else if (businessObjectRelationship != null) {
+				else if (dataObjectRelationship != null) {
 					// Using BusinessObjectMetaDataService instead of
 					// PersistenceStructureService
 					// since otherwise, relationship information from
@@ -362,12 +362,12 @@ public class KualiInquirableImpl extends InquirableImpl implements Inquirable {
 					// so both datadictionary and the persistance layer get
 					// covered
 					/*
-					 * BusinessObjectRelationship businessObjectRelationship =
+					 * DataObjectRelationship dataObjectRelationship =
 					 * getBusinessObjectMetaDataService
 					 * ().getBusinessObjectRelationship( businessObject,
 					 * attributeRefName);
 					 */
-					BidiMap bidiMap = new DualHashBidiMap(businessObjectRelationship.getParentToChildReferences());
+					BidiMap bidiMap = new DualHashBidiMap(dataObjectRelationship.getParentToChildReferences());
 					keyConversion = (String) bidiMap.getKey(keyName);
 					// keyConversion =
 					// getPersistenceStructureService().getForeignKeyFieldName(businessObject.getClass(),

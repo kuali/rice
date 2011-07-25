@@ -33,49 +33,51 @@ public class GroupControl extends TextControl {
     private String groupIdPropertyName;
 
     public GroupControl() {
-		super();
-	}
+        super();
+    }
 
     @Override
     public void performApplyModel(View view, Object model, Component parent) {
         super.performApplyModel(view, model, parent);
 
-        if (parent instanceof AttributeField) {
-            AttributeField field = (AttributeField) parent;
+        if (!(parent instanceof AttributeField)) {
+            return;
+        }
 
+        AttributeField field = (AttributeField) parent;
+
+        if (StringUtils.isNotBlank(groupIdPropertyName)) {
+            field.getHiddenPropertyNames().add(groupIdPropertyName);
+        }
+
+        if (StringUtils.isBlank(field.getFieldLookup().getDataObjectClassName())) {
+            field.getFieldLookup().setDataObjectClassName("org.kuali.rice.kim.impl.group.GroupBo");
+        }
+
+        if (field.getFieldLookup().getFieldConversions().isEmpty()) {
             if (StringUtils.isNotBlank(groupIdPropertyName)) {
-                field.getHiddenPropertyNames().add(groupIdPropertyName);
+                field.getFieldLookup().getFieldConversions().put("id", groupIdPropertyName);
             }
 
-            if (StringUtils.isBlank(field.getFieldLookup().getDataObjectClassName())) {
-                field.getFieldLookup().setDataObjectClassName(Group.class.getName());
+            field.getFieldLookup().getFieldConversions().put("name", field.getPropertyName());
+
+            if (StringUtils.isNotBlank(namespaceCodePropertyName)) {
+                field.getFieldLookup().getFieldConversions().put("namespaceCode", namespaceCodePropertyName);
             }
+        }
 
-            if (field.getFieldLookup().getFieldConversions().isEmpty()) {
-                if (StringUtils.isNotBlank(groupIdPropertyName)) {
-                    field.getFieldLookup().getFieldConversions().put("id", groupIdPropertyName);
-                }
-
-                field.getFieldLookup().getFieldConversions().put("name", field.getPropertyName());
-
-                if (StringUtils.isNotBlank(namespaceCodePropertyName)) {
-                    field.getFieldLookup().getFieldConversions().put("namespaceCode", namespaceCodePropertyName);
-                }
-            }
-
-            if (field.getFieldLookup().getLookupParameters().isEmpty()) {
-                if (StringUtils.isNotBlank(namespaceCodePropertyName)) {
-                    field.getFieldLookup().getLookupParameters().put("namespaceCode", namespaceCodePropertyName);
-                }
+        if (field.getFieldLookup().getLookupParameters().isEmpty()) {
+            if (StringUtils.isNotBlank(namespaceCodePropertyName)) {
+                field.getFieldLookup().getLookupParameters().put("namespaceCode", namespaceCodePropertyName);
             }
         }
     }
 
     /**
-	 * The name of the property on the parent object that holds the group namespace
-	 *
-	 * @return String namespaceCodePropertyName
-	 */
+     * The name of the property on the parent object that holds the group namespace
+     *
+     * @return String namespaceCodePropertyName
+     */
     public String getNamespaceCodePropertyName() {
         return namespaceCodePropertyName;
     }
@@ -90,10 +92,10 @@ public class GroupControl extends TextControl {
     }
 
     /**
-	 * The name of the property on the parent object that holds the group id
-	 *
-	 * @return String groupIdPropertyName
-	 */
+     * The name of the property on the parent object that holds the group id
+     *
+     * @return String groupIdPropertyName
+     */
     public String getGroupIdPropertyName() {
         return groupIdPropertyName;
     }

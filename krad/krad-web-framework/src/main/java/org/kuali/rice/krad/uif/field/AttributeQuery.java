@@ -76,11 +76,11 @@ public class AttributeQuery implements Serializable {
      */
     public void updateQueryFieldMapping(BindingInfo bindingInfo) {
         Map<String, String> adjustedQueryFieldMapping = new HashMap<String, String>();
-        for (String toField : getQueryFieldMapping().keySet()) {
-            String fromFieldPath = getQueryFieldMapping().get(toField);
+        for (String fromFieldPath : getQueryFieldMapping().keySet()) {
+            String toField = getQueryFieldMapping().get(fromFieldPath);
             String adjustedFromFieldPath = bindingInfo.getPropertyAdjustedBindingPath(fromFieldPath);
 
-            adjustedQueryFieldMapping.put(toField, adjustedFromFieldPath);
+            adjustedQueryFieldMapping.put(adjustedFromFieldPath, toField);
         }
 
         this.queryFieldMapping = adjustedQueryFieldMapping;

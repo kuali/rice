@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.uif.container;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.uif.core.BindingInfo;
 import org.kuali.rice.krad.uif.core.Component;
 import org.kuali.rice.krad.uif.field.AttributeField;
 
@@ -172,63 +171,5 @@ public class ViewIndex implements Serializable {
      */
     public CollectionGroup getCollectionGroupByPath(String collectionPath) {
         return collectionsIndex.get(collectionPath);
-    }
-
-    /**
-     * Searches for the <code>AttributeField</code> based on the given binding path.
-     *
-     * <p>It first searches for the matching <code>AttributeField</code> by path. If not
-     * matching field found, it searches in the <code>CollectionGroup</code>
-     * </p>
-     *
-     * @param bindingInfo - <code>AttributeField</code> will be searched based on this binding path
-     * @return the attribute field for the binding path
-     */
-    public AttributeField getAttributeField(BindingInfo bindingInfo) {
-        // Find in the attribute index first.
-        AttributeField attributeField = getAttributeFieldByPath(bindingInfo.getBindingPath());
-
-        if (attributeField == null) {
-            // Lets search the collections (by collection's binding path)
-            String path = bindingInfo.getBindingObjectPath() + "." + bindingInfo.getBindByNamePrefix();
-
-            CollectionGroup collectionGroup = getCollectionGroupByPath(stripIndexesFromPropertyPath(path));
-            if (collectionGroup != null) {
-                for (Component item : ((CollectionGroup) collectionGroup).getItems()) {
-                    if (item instanceof AttributeField) {
-                        if (StringUtils
-                                .equals(((AttributeField) item).getPropertyName(), bindingInfo.getBindingName())) {
-                            attributeField = (AttributeField) item;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        return attributeField;
-    }
-
-    /**
-     * Strips indexes from the property path.
-     *
-     * <p> For example, it returns bo.fiscalOfficer.accounts.name for the input bo.fiscalOfficer.accounts[0].name,
-     * which can be used to find the components from the CollectionGroup index
-     * </p>
-     *
-     * @param propertyPath - property path
-     * @return the stripped index path
-     */
-    private String stripIndexesFromPropertyPath(String propertyPath) {
-
-        String returnValue = propertyPath;
-        String index = StringUtils.substringBetween(propertyPath, "[", "]");
-
-        if (StringUtils.isNotBlank(index)) {
-            returnValue = StringUtils.remove(propertyPath, "[" + index + "]");
-            return stripIndexesFromPropertyPath(returnValue);
-        } else {
-            return returnValue;
-        }
     }
 }

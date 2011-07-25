@@ -30,7 +30,7 @@ import org.kuali.rice.core.framework.persistence.jpa.metadata.EntityDescriptor;
 import org.kuali.rice.core.framework.persistence.jpa.metadata.JoinColumnDescriptor;
 import org.kuali.rice.core.framework.persistence.jpa.metadata.MetadataManager;
 import org.kuali.rice.core.framework.persistence.jpa.metadata.ObjectDescriptor;
-import org.kuali.rice.krad.bo.BusinessObjectRelationship;
+import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.exception.ObjectNotABusinessObjectRuntimeException;
 import org.kuali.rice.krad.exception.ReferenceAttributeDoesntExistException;
@@ -162,7 +162,7 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 	 *      java.lang.String)
 	 */
 	@Cached
-	public Map<String, BusinessObjectRelationship> getRelationshipMetadata(Class persistableClass, String attributeName, String attributePrefix) {
+	public Map<String, DataObjectRelationship> getRelationshipMetadata(Class persistableClass, String attributeName, String attributePrefix) {
 		if (persistableClass == null) {
 			throw new IllegalArgumentException("invalid (null) persistableClass");
 		}
@@ -170,14 +170,15 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 			throw new IllegalArgumentException("invalid (blank) attributeName");
 		}
 
-		Map<String, BusinessObjectRelationship> relationships = new HashMap<String, BusinessObjectRelationship>();
+		Map<String, DataObjectRelationship> relationships = new HashMap<String, DataObjectRelationship>();
 
 		EntityDescriptor descriptor = MetadataManager.getEntityDescriptor(persistableClass);
 		for (ObjectDescriptor objectDescriptor : descriptor.getObjectRelationships()) {
 			List<String> fks = objectDescriptor.getForeignKeyFields();
 			if (fks.contains(attributeName) || objectDescriptor.getAttributeName().equals(attributeName)) {
 				Map<String, String> fkToPkRefs = getForeignKeysForReference(persistableClass, objectDescriptor.getAttributeName());
-				BusinessObjectRelationship rel = new BusinessObjectRelationship(persistableClass, objectDescriptor.getAttributeName(), objectDescriptor.getTargetEntity());
+				DataObjectRelationship
+                        rel = new DataObjectRelationship(persistableClass, objectDescriptor.getAttributeName(), objectDescriptor.getTargetEntity());
 				for (Map.Entry<String, String> ref : fkToPkRefs.entrySet()) {
 					if (StringUtils.isBlank(attributePrefix)) {
 						rel.getParentToChildReferences().put(ref.getKey(), ref.getValue());
@@ -194,7 +195,7 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 
 	@Cached
 	// Unit tests only
-	public Map<String, BusinessObjectRelationship> getRelationshipMetadata(Class persistableClass, String attributeName) {
+	public Map<String, DataObjectRelationship> getRelationshipMetadata(Class persistableClass, String attributeName) {
 		return getRelationshipMetadata(persistableClass, attributeName, null);
 	}
 

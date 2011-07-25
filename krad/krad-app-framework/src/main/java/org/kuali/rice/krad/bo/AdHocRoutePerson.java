@@ -30,14 +30,15 @@ import org.kuali.rice.kim.bo.Person;
 
 /**
  * Ad Hoc Route Person Business Object
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @IdClass(AdHocRoutePersonId.class)
 @Entity
-@Table(name="KRNS_ADHOC_RTE_ACTN_RECIP_T")
+@Table(name = "KRNS_ADHOC_RTE_ACTN_RECIP_T")
 public class AdHocRoutePerson extends AdHocRouteRecipient {
-
     private static final long serialVersionUID = 1L;
-    
+
     @Transient
     private transient Person person;
 
@@ -46,9 +47,8 @@ public class AdHocRoutePerson extends AdHocRouteRecipient {
 
         // TODO: need some way of handling types that cannot be instantiated due to module dependencies
         try {
-            person = (Person)Class.forName("org.kuali.rice.kim.bo.impl.PersonImpl").newInstance();
-        }
-        catch (Exception e) {
+            person = (Person) Class.forName("org.kuali.rice.kim.bo.impl.PersonImpl").newInstance();
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -62,24 +62,30 @@ public class AdHocRoutePerson extends AdHocRouteRecipient {
     }
 
     @Override
-    public String getName() {
-        if ( person == null || person.getPrincipalName() == null || !person.getPrincipalName().equalsIgnoreCase( getId() ) ) {
-            if (getId() != null) {
-                person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName( getId() );
-            }
-            else {
-                return "";
-            }
+    public void setId(String id) {
+        super.setId(id);
+
+        if (StringUtils.isNotBlank(id)) {
+            person = KimApiServiceLocator.getPersonService().getPerson(id);
+            setPerson(person);
         }
-        if ( person == null ) {
-            return "";
+    }
+
+    @Override
+    public void setName(String name) {
+        super.setName(name);
+
+        if (StringUtils.isNotBlank(name) &&
+                !((person != null) && StringUtils.equals(person.getPrincipalName(), name))) {
+            person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(name);
+            setPerson(person);
         }
-        return person.getName();
     }
 
     public Person getPerson() {
         if ((person == null) || !StringUtils.equals(person.getPrincipalId(), getId())) {
             person = KimApiServiceLocator.getPersonService().getPerson(getId());
+
             if (person == null) {
                 try {
                     person = (Person) Class.forName("org.kuali.rice.kim.bo.impl.PersonImpl").newInstance();
@@ -94,6 +100,8 @@ public class AdHocRoutePerson extends AdHocRouteRecipient {
 
     public void setPerson(Person person) {
         this.person = person;
+        this.id = person.getPrincipalId();
+        this.name = person.getPrincipalName();
     }
 }
 

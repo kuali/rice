@@ -29,7 +29,7 @@ import org.kuali.rice.kns.web.comparator.NullValueComparator;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.BusinessObjectRelationship;
+import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
 import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.krad.exception.ClassNotPersistableException;
@@ -284,7 +284,7 @@ public class LookupUtils {
         if (noLookupField) {
             return field;
         }
-        BusinessObjectRelationship relationship = null;
+        DataObjectRelationship relationship = null;
         if ( LOG.isDebugEnabled() ) {
             LOG.debug( "setFieldQuickfinder("+businessObject.getClass().getName()+","+attributeName+","+field+","+displayedFieldNames+")" );
         }
@@ -571,7 +571,7 @@ public class LookupUtils {
     }
 
     @Deprecated
-    private static String generateFieldConversions(BusinessObject businessObject, String collectionName, BusinessObjectRelationship relationship, String propertyPrefix, List displayedFieldNames, String nestedObjectPrefix) {
+    private static String generateFieldConversions(BusinessObject businessObject, String collectionName, DataObjectRelationship relationship, String propertyPrefix, List displayedFieldNames, String nestedObjectPrefix) {
         String fieldConversions = "";
 
         if ( LOG.isDebugEnabled() ) {
@@ -607,7 +607,7 @@ public class LookupUtils {
     }
 
     @Deprecated
-    private static String generateLookupParameters(BusinessObject businessObject, String collectionName, BusinessObjectRelationship relationship, String propertyPrefix, List displayedFieldNames, String nestedObjectPrefix) {
+    private static String generateLookupParameters(BusinessObject businessObject, String collectionName, DataObjectRelationship relationship, String propertyPrefix, List displayedFieldNames, String nestedObjectPrefix) {
 
         String lookupParameters = "";
 

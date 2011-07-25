@@ -113,11 +113,23 @@ function coerceValue(name){
 			value = jq(nameSelect).val();
 		}
 	}
+
 	if(value == null){
 		value = "";
 	}
 
 	return value;
+}
+
+/**
+ * Sets a value on the control with the given name attribute
+ *
+ * @param name - name on control to set value for
+ * @param value - value to set
+ */
+function setValue(name, value) {
+    var nameSelect = "[name='" + name + "']";
+    jq(nameSelect).val(value);
 }
 
 function isValueEmpty(value){

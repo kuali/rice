@@ -42,7 +42,7 @@ import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.control.HiddenControl;
 import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.field.LinkField;
-import org.kuali.rice.krad.uif.field.LookupCriteriaAttributeField;
+import org.kuali.rice.krad.uif.field.LookupAttributeField;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -128,7 +128,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      */
     protected void initializeLookupViewHelperService(LookupView lookupView) {
         setDefaultSortAttributeNames(lookupView.getDefaultSortAttributeNames());
-        setSortAscending(lookupView.isSortAscending());
+        setSortAscending(lookupView.isDefaultSortAscending());
         setDataObjectClass(lookupView.getDataObjectClassName());
     }
 
@@ -487,8 +487,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         }
 
         String attributeLabel = attributeField.getLabel();
-        if ((LookupCriteriaAttributeField.class.isAssignableFrom(attributeField.getClass())) &&
-                (((LookupCriteriaAttributeField) attributeField).isTreatWildcardsAndOperatorsAsLiteral())) {
+        if ((LookupAttributeField.class.isAssignableFrom(attributeField.getClass())) &&
+                (((LookupAttributeField) attributeField).isTreatWildcardsAndOperatorsAsLiteral())) {
             Object dataObjectExample = null;
             try {
                 dataObjectExample = getDataObjectClass().newInstance();
@@ -537,7 +537,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
         Object dataObject = returnLinkField.getContext().get(UifConstants.ContextVariableNames.LINE);
 
-        // return a non-breaking space if the object is null or if the row is not returnable
+        // don't render return link if the object is null or if the row is not returnable
         if ((dataObject == null) || (!isResultReturnable(dataObject))) {
             returnLinkField.setRender(false);
             return;
@@ -617,6 +617,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         }
 
         props.put(KRADConstants.REFRESH_CALLER, lookupView.getId());
+        props.put(KRADConstants.REFRESH_DATA_OBJECT_CLASS, getDataObjectClass());
 
         if (StringUtils.isNotBlank(lookupForm.getDocNum())) {
             props.put(UifParameters.DOC_NUM, lookupForm.getDocNum());

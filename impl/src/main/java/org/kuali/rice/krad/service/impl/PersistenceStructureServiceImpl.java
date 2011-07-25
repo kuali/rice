@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.krad.bo.BusinessObjectRelationship;
+import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.util.ForeignKeyFieldsPopulationState;
@@ -112,13 +112,13 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
 	 *      java.lang.String)
 	 */
 	@CacheNoCopy
-	public Map<String, BusinessObjectRelationship> getRelationshipMetadata(Class persistableClass, String attributeName, String attributePrefix) {
+	public Map<String, DataObjectRelationship> getRelationshipMetadata(Class persistableClass, String attributeName, String attributePrefix) {
 		return getService(persistableClass).getRelationshipMetadata(persistableClass, attributeName, attributePrefix);
 	}
 
 	@CacheNoCopy
 	// Unit tests only
-	public Map<String, BusinessObjectRelationship> getRelationshipMetadata(Class persistableClass, String attributeName) {
+	public Map<String, DataObjectRelationship> getRelationshipMetadata(Class persistableClass, String attributeName) {
 		return getService(persistableClass).getRelationshipMetadata(persistableClass, attributeName);
 	}
 

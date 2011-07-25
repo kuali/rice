@@ -19,7 +19,7 @@ import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.BusinessObjectRelationship;
+import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.krad.datadictionary.DataObjectEntry;
@@ -139,7 +139,7 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
      *      java.lang.Class, java.lang.String, java.lang.String, boolean,
      *      boolean, boolean)
      */
-    public BusinessObjectRelationship getDataObjectRelationship(Object dataObject, Class<?> dataObjectClass,
+    public DataObjectRelationship getDataObjectRelationship(Object dataObject, Class<?> dataObjectClass,
             String attributeName, String attributePrefix, boolean keysOnly, boolean supportsLookup,
             boolean supportsInquiry) {
         RelationshipDefinition ddReference = getDictionaryRelationship(dataObjectClass, attributeName);
@@ -148,12 +148,12 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
                 keysOnly, supportsLookup, supportsInquiry);
     }
 
-    protected BusinessObjectRelationship getDataObjectRelationship(RelationshipDefinition ddReference,
+    protected DataObjectRelationship getDataObjectRelationship(RelationshipDefinition ddReference,
             Object dataObject, Class<?> dataObjectClass, String attributeName, String attributePrefix,
             boolean keysOnly, boolean supportsLookup, boolean supportsInquiry) {
-        BusinessObjectRelationship relationship = null;
+        DataObjectRelationship relationship = null;
 
-        // if it is nested then replace the bo and attributeName with the
+        // if it is nested then replace the data object and attributeName with the
         // sub-refs
         if (ObjectUtils.isNestedAttribute(attributeName)) {
             if (ddReference != null) {
@@ -198,10 +198,10 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
 
         // try persistable reference first
         if (getPersistenceStructureService().isPersistable(dataObjectClass)) {
-            Map<String, BusinessObjectRelationship> rels = getPersistenceStructureService().getRelationshipMetadata(
+            Map<String, DataObjectRelationship> rels = getPersistenceStructureService().getRelationshipMetadata(
                     dataObjectClass, attributeName, attributePrefix);
             if (rels.size() > 0) {
-                for (BusinessObjectRelationship rel : rels.values()) {
+                for (DataObjectRelationship rel : rels.values()) {
                     if (rel.getParentToChildReferences().size() < maxSize) {
                         if ((supportsLookup && getViewDictionaryService().isLookupable(rel.getRelatedClass()))
                                 || (supportsInquiry && getViewDictionaryService().isInquirable(rel.getRelatedClass()))) {
@@ -279,9 +279,9 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
         return relationship;
     }
 
-    protected BusinessObjectRelationship populateRelationshipFromDictionaryReference(Class<?> dataObjectClass,
+    protected DataObjectRelationship populateRelationshipFromDictionaryReference(Class<?> dataObjectClass,
             RelationshipDefinition ddReference, String attributePrefix, boolean keysOnly) {
-        BusinessObjectRelationship relationship = new BusinessObjectRelationship(dataObjectClass,
+        DataObjectRelationship relationship = new DataObjectRelationship(dataObjectClass,
                 ddReference.getObjectAttributeName(), ddReference.getTargetClass());
 
         for (PrimitiveAttributeDefinition def : ddReference.getPrimitiveAttributes()) {
@@ -313,7 +313,7 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
         return relationship;
     }
 
-    protected BusinessObjectRelationship getRelationshipMetadata(Class<?> dataObjectClass, String attributeName,
+    protected DataObjectRelationship getRelationshipMetadata(Class<?> dataObjectClass, String attributeName,
             String attributePrefix) {
 
         RelationshipDefinition relationshipDefinition = getDictionaryRelationship(dataObjectClass, attributeName);
@@ -321,7 +321,7 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
             return null;
         }
 
-        BusinessObjectRelationship businessObjectRelationship = new BusinessObjectRelationship(
+        DataObjectRelationship dataObjectRelationship = new DataObjectRelationship(
                 relationshipDefinition.getSourceClass(), relationshipDefinition.getObjectAttributeName(),
                 relationshipDefinition.getTargetClass());
 
@@ -331,12 +331,12 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
 
         List<PrimitiveAttributeDefinition> primitives = relationshipDefinition.getPrimitiveAttributes();
         for (PrimitiveAttributeDefinition primitiveAttributeDefinition : primitives) {
-            businessObjectRelationship.getParentToChildReferences().put(
+            dataObjectRelationship.getParentToChildReferences().put(
                     attributePrefix + primitiveAttributeDefinition.getSourceName(),
                     primitiveAttributeDefinition.getTargetName());
         }
 
-        return businessObjectRelationship;
+        return dataObjectRelationship;
     }
 
     /**

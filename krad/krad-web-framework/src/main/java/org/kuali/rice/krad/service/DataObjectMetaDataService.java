@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.service;
 
-import org.kuali.rice.krad.bo.BusinessObjectRelationship;
+import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
 
 import java.util.List;
@@ -103,7 +103,7 @@ public interface DataObjectMetaDataService {
      * @return BusinessObjectRelationship for the attribute, or null if not
      *         found
      */
-    public BusinessObjectRelationship getDataObjectRelationship(Object dataObject, Class<?> dataObjectClass,
+    public DataObjectRelationship getDataObjectRelationship(Object dataObject, Class<?> dataObjectClass,
             String attributeName, String attributePrefix, boolean keysOnly, boolean supportsLookup,
             boolean supportInquiry);
 

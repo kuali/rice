@@ -21,6 +21,7 @@ import org.kuali.rice.krad.exception.ValidationException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.InitializingBean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -30,10 +31,9 @@ import java.util.Set;
 /**
  * Contains common properties and methods for data dictionary entries.
  * 
- * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-abstract public class DataDictionaryEntryBase implements DataDictionaryEntry, InitializingBean {
-
+abstract public class DataDictionaryEntryBase implements DataDictionaryEntry, Serializable, InitializingBean {
     protected List<AttributeDefinition> attributes;
     protected List<ComplexAttributeDefinition> complexAttributes;
     protected List<CollectionDefinition> collections;

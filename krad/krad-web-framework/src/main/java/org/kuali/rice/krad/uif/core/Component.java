@@ -749,8 +749,8 @@ public interface Component extends Serializable, Ordered, ScriptEventSupport {
     public List<String> getRefreshWhenChangedControlNames();
 
     /**
-     * The original generated id.  During the component lifecycle the id may get manipulated
-     * and changed based on the type of component it is.  This id represents the original id
+     * The original generated id assigned for the underlying Spring bean. During the component lifecycle
+     * the id may get manipulated and changed based on the type of component it is. This id represents the original id
      * assigned before any additional suffixes were appended.
      *
      * @return the baseId

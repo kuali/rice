@@ -41,6 +41,7 @@ import java.util.Map;
  */
 abstract public class DocumentEntry extends DataDictionaryEntryBase {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentEntry.class);
+    private static final long serialVersionUID = 8231730871830055356L;
 
     protected String documentTypeName;
 

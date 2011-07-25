@@ -23,15 +23,18 @@ import javax.persistence.Transient;
 
 /**
  * Ad Hoc Route Workgroup Business Object
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @IdClass(org.kuali.rice.krad.bo.AdHocRouteWorkgroupId.class)
 @Entity
 @Table(name="KRNS_ADHOC_RTE_ACTN_RECIP_T")
 public class AdHocRouteWorkgroup extends AdHocRouteRecipient {
-
     private static final long serialVersionUID = 1L;
+
     @Transient
     private String recipientNamespaceCode;
+
     @Transient
     private String recipientName;
 

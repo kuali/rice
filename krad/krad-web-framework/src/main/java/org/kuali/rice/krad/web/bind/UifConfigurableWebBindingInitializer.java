@@ -41,7 +41,7 @@ public class UifConfigurableWebBindingInitializer extends ConfigurableWebBinding
 
         binder.registerCustomEditor(java.sql.Date.class, new UifDateEditor());
         binder.registerCustomEditor(java.util.Date.class, new UifDateEditor());
-        binder.registerCustomEditor(Timestamp.class, new UifDateViewTimestampEditor());
+        binder.registerCustomEditor(Timestamp.class, new UifTimestampEditor());
 
         // TODO do we need this since we are switching to spring tags
         binder.registerCustomEditor(boolean.class, new UifBooleanEditor());

@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.service;
 
-import org.kuali.rice.krad.bo.BusinessObjectRelationship;
+import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.util.ForeignKeyFieldsPopulationState;
@@ -109,9 +109,9 @@ public interface PersistenceStructureService {
      * @throws IllegalArgumentException if the given relationshipName is blanks
      * @throws org.kuali.rice.krad.exception.ClassNotPersistableException if the given Class is a type not described in the OJB repository
      */
-    public Map<String,BusinessObjectRelationship> getRelationshipMetadata(Class persistableClass, String attributeName, String attributePrefix );
+    public Map<String,DataObjectRelationship> getRelationshipMetadata(Class persistableClass, String attributeName, String attributePrefix );
 
-    public Map<String,BusinessObjectRelationship> getRelationshipMetadata(Class persistableClass, String attributeName);
+    public Map<String,DataObjectRelationship> getRelationshipMetadata(Class persistableClass, String attributeName);
     
     public String getForeignKeyFieldName(Class persistableObjectClass, String attributeName, String pkName);
 

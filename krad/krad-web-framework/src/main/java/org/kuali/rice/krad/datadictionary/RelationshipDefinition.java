@@ -48,7 +48,7 @@ import java.util.List;
 public class RelationshipDefinition extends DataDictionaryDefinitionBase {
     private static final long serialVersionUID = 2946722646095412576L;
     
-	protected String objectAttributeName; //Same as parentAttributeName of BusinessObjectRelationship
+	protected String objectAttributeName; //Same as parentAttributeName of DataObjectRelationship
 	protected Class<?> sourceClass; //parentClass
 	
     /**

@@ -6,16 +6,13 @@
     <content url="file://$MODULE_DIR$/../../../kim/kim-api">
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-api/target/generated-sources/wsdl" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-api/target/generated-sources/test-annotations" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-api/target/generated-sources/annotations" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-api/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-api/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-api/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-api/src/test/groovy" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-api/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../kim/kim-api/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../kim/kim-api/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../kim/kim-api/target/maven-archiver" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../kim/kim-api/target/surefire" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../kim/kim-api/target/surefire-reports" />
       <excludeFolder url="file://$MODULE_DIR$/../../../kim/kim-api/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -40,7 +37,7 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.jdom:jdom:1.1" level="project" />
     <orderEntry type="library" name="Maven: joda-time:joda-time:1.6.2" level="project" />
-    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.8.0" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.8.1" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:r09" level="project" />
     <orderEntry type="module" module-name="rice-api" />
     <orderEntry type="module" module-name="rice-kew-api" />

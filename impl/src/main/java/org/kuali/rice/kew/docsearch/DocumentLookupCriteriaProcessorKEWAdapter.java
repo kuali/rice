@@ -64,7 +64,7 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements DocumentLookup
 	/**
 	 * @see org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessor#getRows(org.kuali.rice.kew.doctype.bo.DocumentType, java.util.List, boolean, boolean)
 	 */
-	public List<Row> getRows(DocumentType documentType, List<Row> knsRows, boolean detailed, boolean superSearch) {
+	public List<Row> getRows(DocumentType documentType, List<Row> defaultRows, boolean detailed, boolean superSearch) {
 		List<Row> rows = new ArrayList<Row>();
 
 		List<Row> searchAttRows = new ArrayList<Row>();

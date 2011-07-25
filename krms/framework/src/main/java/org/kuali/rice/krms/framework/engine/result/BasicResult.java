@@ -1,18 +1,21 @@
 package org.kuali.rice.krms.framework.engine.result;
 
-import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.EventObject;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.engine.ResultEvent;
 
 public class BasicResult extends EventObject implements ResultEvent {
 	private static final long serialVersionUID = -4124200802034785921L;
-	
+
+    private static final DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH.mm.ss.SSS");
+
 	protected String type;
 	protected DateTime timestamp;
 	protected ExecutionEnvironment environment;
@@ -82,11 +85,10 @@ public class BasicResult extends EventObject implements ResultEvent {
 	        return Collections.unmodifiableMap(resultDetails);
 	    }
 	}
-	
+
 	public String toString(){
 		StringBuffer sb = new StringBuffer();
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss.SSS");
-		sb.append(df.format(this.getTimestamp()));
+        sb.append(fmt.print(this.getTimestamp()));
 		sb.append(" EventType: "+ getType());
 		sb.append(" ( "+ this.getSource().toString());
 		if (this.getResult() != null){

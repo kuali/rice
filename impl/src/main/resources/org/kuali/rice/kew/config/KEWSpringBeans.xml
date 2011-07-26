@@ -159,6 +159,7 @@
                 <idref local="rice.kew.workflowDocumentService" />
                 <idref local="rice.kew.documentTypeService" />
                 <idref local="rice.kew.noteService" />
+                <idref local="rice.kew.documentSearchCustomizationService" />
                 
                 <!-- it's important that this service remains non-transactionally proxied for various reasons
                 <idref local="enUserOptionsService"/>

@@ -28,11 +28,6 @@ public interface KualiCode extends MutableInactivatable, Coded {
 	public void setCode(String code);
 
 	/**
-	 * @return code value as string
-	 */
-	public String getCode();
-
-	/**
 	 * @param name - Setter for the name.
 	 */
 	public void setName(String name);
@@ -41,14 +36,4 @@ public interface KualiCode extends MutableInactivatable, Coded {
 	 * @return name value as String
 	 */
 	public String getName();
-
-	/**
-	 * @return Getter for the active field.
-	 */
-	public boolean isActive();
-
-	/**
-	 * @param name - Setter for the active field.
-	 */
-	public void setActive(boolean a);
 }

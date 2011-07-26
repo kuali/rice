@@ -25,6 +25,9 @@ import org.kuali.rice.kim.api.identity.address.EntityAddress
 import org.kuali.rice.kim.api.identity.email.EntityEmail
 import org.kuali.rice.kim.impl.identity.email.EntityEmailBo
 import org.kuali.rice.kim.impl.identity.email.EntityEmailTypeBo
+import org.kuali.rice.kim.api.identity.phone.EntityPhone
+import org.kuali.rice.kim.impl.identity.phone.EntityPhoneBo
+import org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo
 import org.junit.Ignore
 
 class IdentityServiceImplTest {
@@ -42,6 +45,7 @@ class IdentityServiceImplTest {
     static Map<String, EntityTypeContactInfoBo> sampleEntityTypeContactInfos = new HashMap<String, EntityTypeContactInfoBo>();
     static Map<String, EntityAddressBo> sampleEntityAddresses = new HashMap<String, EntityAddressBo>();
     static Map<String, EntityEmailBo> sampleEntityEmails = new HashMap<String, EntityEmailBo>();
+    static Map<String, EntityPhoneBo> sampleEntityPhones = new HashMap<String, EntityPhoneBo>();
 
     @BeforeClass
     static void createSampleBOs() {
@@ -58,6 +62,8 @@ class IdentityServiceImplTest {
         EntityAddressBo firstEntityAddressBo = new EntityAddressBo(entityId: "AAA", entityTypeCode: "typecodeone", addressType: firstAddressTypeBo, id: "addressidone", addressTypeCode: "addresscodeone", active: true);
         EntityEmailTypeBo firstEmailTypeBo = new EntityEmailTypeBo(code: "emailcodeone");
         EntityEmailBo firstEntityEmailBo = new EntityEmailBo(entityId: "AAA", entityTypeCode: "typecodeone", emailType: firstEmailTypeBo, id:"emailidone", emailTypeCode: "emailcodeone", active: true);
+        EntityPhoneTypeBo firstPhoneType = new EntityPhoneTypeBo(code: "phonecodeone");
+        EntityPhoneBo firstEntityPhoneBo = new EntityPhoneBo(entityId: "AAA", entityTypeCode: "typecodeone", phoneType: firstPhoneType, id: "phoneidone", phoneTypeCode: "phonetypecodeone", active: true);
         List<PrincipalBo> firstPrincipals = new ArrayList<PrincipalBo>();
         firstPrincipals.add(firstEntityPrincipal);
         EntityBo firstEntityBo = new EntityBo(active: true, id: "AAA", privacyPreferences: firstEntityPrivacyPreferencesBo, bioDemographics: firstEntityBioDemographicsBo, principals: firstPrincipals);
@@ -70,6 +76,8 @@ class IdentityServiceImplTest {
         EntityAddressBo secondEntityAddressBo = new EntityAddressBo(entityId: "BBB", entityTypeCode: "typecodetwo", addressType: secondAddressTypeBo, id: "addressidtwo", addressTypeCode: "addresscodetwo", active: true);
         EntityEmailTypeBo secondEmailTypeBo = new EntityEmailTypeBo(code: "emailcodetwo");
         EntityEmailBo secondEntityEmailBo = new EntityEmailBo(entityId: "BBB", entityTypeCode: "typecodetwo", emailType: secondEmailTypeBo, id:"emailidtwo", emailTypeCode: "emailcodetwo", active: true);
+        EntityPhoneTypeBo secondPhoneType = new EntityPhoneTypeBo(code: "phonecodetwo");
+        EntityPhoneBo secondEntityPhoneBo = new EntityPhoneBo(entityId: "BBB", entityTypeCode: "typecodetwo", phoneType: secondPhoneType, id: "phoneidtwo", phoneTypeCode: "phonetypecodetwo", active: true);
         List<PrincipalBo> secondPrincipals = new ArrayList<PrincipalBo>();
         secondPrincipals.add(secondEntityPrincipal);
         EntityBo secondEntityBo = new EntityBo(active: true, id: "BBB", privacyPreferences: secondEntityPrivacyPreferencesBo, bioDemographics: secondEntityBioDemographicsBo, principals: secondPrincipals);
@@ -82,12 +90,20 @@ class IdentityServiceImplTest {
             samplePrincipals.put(bo.principalId, bo);
         }
 
+        for (bo in [firstEntityAddressBo, secondEntityAddressBo]) {
+            sampleEntityAddresses.put(bo.entityId, bo);
+        }
+
         for (bo in [firstEntityTypeContactInfoBo, secondEntityTypeContactInfoBo]) {
             sampleEntityTypeContactInfos.put(bo.entityTypeCode, bo);
         }
 
         for (bo in [firstEntityEmailBo, secondEntityEmailBo]) {
             sampleEntityEmails.put(bo.entityId, bo);
+        }
+
+        for (bo in [firstEntityPhoneBo, secondEntityPhoneBo]) {
+            sampleEntityPhones.put(bo.entityId, bo);
         }
     }
 
@@ -607,7 +623,6 @@ class IdentityServiceImplTest {
         EntityAddress entityAddress = identityService.addAddressToEntity(null);
     }
 
-    @Ignore
     @Test(expected = RiceIllegalStateException.class)
     public void testAddAddressToEntityWithExistingAddressFails() {
         mockBoService.demand.findByPrimaryKey(1..sampleEntityAddresses.size()) {
@@ -629,7 +644,6 @@ class IdentityServiceImplTest {
         EntityAddress entityAddress = identityService.addAddressToEntity(EntityAddressBo.to(newEntityAddressBo));
     }
 
-    @Ignore
     @Test
     public void testAddAddressToEntitySucceeds() {
         EntityAddressTypeBo firstAddressTypeBo = new EntityAddressTypeBo(code: "addresscodethree");
@@ -663,7 +677,6 @@ class IdentityServiceImplTest {
         EntityAddress entityAddress = identityService.updateAddress(null);
     }
 
-    @Ignore
     @Test(expected = RiceIllegalStateException.class)
     public void testUpdateAddressWithNonExistingAddressFails() {
         mockBoService.demand.findByPrimaryKey(1..sampleEntityAddresses.size()) {
@@ -687,7 +700,6 @@ class IdentityServiceImplTest {
         EntityAddress entityAddress = identityService.updateAddress(EntityAddressBo.to(newEntityAddressBo));
     }
 
-    @Ignore
     @Test
     public void testUpdateAddressSucceeds() {
         EntityAddressTypeBo firstAddressTypeBo = new EntityAddressTypeBo(code: "addresscodeone");
@@ -727,7 +739,6 @@ class IdentityServiceImplTest {
         EntityAddress entityAddress = identityService.inactivateAddress("new");
     }
 
-    @Ignore
     @Test
     public void testInactivateAddressSucceeds()
     {
@@ -898,5 +909,150 @@ class IdentityServiceImplTest {
         EntityEmail inactiveEntityEmail = identityService.inactivateEmail(existingEntityEmailBo.id);
 
         Assert.assertEquals(EntityEmailBo.to(inactiveEntityEmailBo), inactiveEntityEmail);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testaddPhoneToEntityWithNullFails() {
+        EntityPhone entityPhone = identityService.addPhoneToEntity(null);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testAddPhoneToEntityWithExistingPhoneFails() {
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityPhones.size()) {
+            Class clazz, Map map -> for (EntityPhoneBo entityPhoneBo in sampleEntityPhones.values()) {
+                if (entityPhoneBo.entityId.equals(map.get("entityId"))
+                    && entityPhoneBo.entityTypeCode.equals(map.get("entityTypeCode"))
+                    && entityPhoneBo.phoneTypeCode.equals(map.get("phoneTypeCode"))
+                    && entityPhoneBo.active)
+                {
+                    return entityPhoneBo;
+                }
+            }
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityPhoneTypeBo firstPhoneType = new EntityPhoneTypeBo(code: "phonetypecodeone");
+        EntityPhoneBo newEntityPhoneBo = new EntityPhoneBo(entityId: "AAA", entityTypeCode: "typecodeone", phoneType: firstPhoneType, id: "phoneidone", phoneTypeCode: "phonetypecodeone", active: true);
+        EntityPhone entityPhone = identityService.addPhoneToEntity(EntityPhoneBo.to(newEntityPhoneBo));
+    }
+
+    @Test
+    public void testAddPhoneToEntitySucceeds() {
+        EntityPhoneTypeBo firstPhoneType = new EntityPhoneTypeBo(code: "phonetypecodethree");
+        EntityPhoneBo newEntityPhoneBo = new EntityPhoneBo(entityId: "CCC", entityTypeCode: "typecodethree", phoneType: firstPhoneType, id: "phoneidthree", phoneTypeCode: "phonetypecodethree", active: true);
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityPhones.size()) {
+            Class clazz, Map map -> for (EntityPhoneBo entityPhoneBo in sampleEntityPhones.values()) {
+                if (entityPhoneBo.entityId.equals(map.get("entityId"))
+                    && entityPhoneBo.entityTypeCode.equals(map.get("entityTypeCode"))
+                    && entityPhoneBo.phoneTypeCode.equals(map.get("phoneTypeCode"))
+                    && entityPhoneBo.active)
+                {
+                    return entityPhoneBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityPhoneBo bo -> return newEntityPhoneBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityPhone entityPhone = identityService.addPhoneToEntity(EntityPhoneBo.to(newEntityPhoneBo));
+
+        Assert.assertEquals(EntityPhoneBo.to(newEntityPhoneBo), entityPhone);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testUpdatePhoneWithNullFails() {
+        EntityPhone entityPhone = identityService.updatePhone(null);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testUpdatePhoneWithNonExistingPhoneFails() {
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityPhones.size()) {
+            Class clazz, Map map -> for (EntityPhoneBo entityPhoneBo in sampleEntityPhones.values()) {
+                if (entityPhoneBo.entityId.equals(map.get("entityId"))
+                    && entityPhoneBo.entityTypeCode.equals(map.get("entityTypeCode"))
+                    && entityPhoneBo.phoneTypeCode.equals(map.get("phoneTypeCode"))
+                    && entityPhoneBo.active)
+                {
+                    return entityPhoneBo;
+                }
+            }
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityPhoneTypeBo firstPhoneType = new EntityPhoneTypeBo(code: "phonetypecodethree");
+        EntityPhoneBo newEntityPhoneBo = new EntityPhoneBo(entityId: "CCC", entityTypeCode: "typecodethree", phoneType: firstPhoneType, id: "phoneidthree", phoneTypeCode: "phonetypecodethree", active: true);
+        EntityPhone entityPhone = identityService.updatePhone(EntityPhoneBo.to(newEntityPhoneBo));
+    }
+
+    @Test
+    public void testUpdatePhoneSucceeds() {
+        EntityPhoneTypeBo firstPhoneType = new EntityPhoneTypeBo(code: "phonetypecodeone");
+        EntityPhoneBo existingEntityPhoneBo = new EntityPhoneBo(entityId: "AAA", entityTypeCode: "typecodeone", phoneType: firstPhoneType, id: "phoneidone", phoneTypeCode: "phonetypecodeone", active: true);
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityPhones.size()) {
+            Class clazz, Map map -> for (EntityPhoneBo entityPhoneBo in sampleEntityPhones.values()) {
+                if (entityPhoneBo.entityId.equals(map.get("entityId"))
+                    && entityPhoneBo.entityTypeCode.equals(map.get("entityTypeCode"))
+                    && entityPhoneBo.phoneTypeCode.equals(map.get("phoneTypeCode"))
+                    && entityPhoneBo.active)
+                {
+                    return entityPhoneBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityPhoneBo bo -> return existingEntityPhoneBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityPhone entityPhone = identityService.updatePhone(EntityPhoneBo.to(existingEntityPhoneBo));
+
+        Assert.assertEquals(EntityPhoneBo.to(existingEntityPhoneBo), entityPhone);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testInactivatePhoneWithNonExistentPhoneFails() {
+        mockBoService.demand.findByPrimaryKey(1..1) {
+            Class clazz, Map map -> return null;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityPhone entityPhone = identityService.inactivatePhone("new");
+    }
+
+    @Test
+    public void testInactivatePhoneSucceeds()
+    {
+        EntityPhoneBo existingEntityPhoneBo = sampleEntityPhones.get("AAA");
+        EntityPhoneTypeBo firstPhoneType = new EntityPhoneTypeBo(code: "phonetypecodeone");
+        EntityPhoneBo inactiveEntityPhoneBo = new EntityPhoneBo(entityId: "AAA", entityTypeCode: "typecodeone", phoneType: firstPhoneType, id: "phoneidone", phoneTypeCode: "phonetypecodeone", active: false);
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityPhones.size()) {
+            Class clazz, Map map -> for (EntityPhoneBo entityPhoneBo in sampleEntityPhones.values()) {
+                if (entityPhoneBo.id.equals(map.get("id"))) {
+                    return entityPhoneBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityPhoneBo bo -> return inactiveEntityPhoneBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityPhone inactiveEntityPhone = identityService.inactivatePhone(existingEntityPhoneBo.id);
+
+        Assert.assertEquals(EntityPhoneBo.to(inactiveEntityPhoneBo), inactiveEntityPhone);
     }
 }

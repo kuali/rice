@@ -193,18 +193,6 @@
           <forward name="finalStateError" path="/WEB-INF/jsp/stats/StatsReport.jsp"/>
       </action>
 
-      <action path="/Help" name="HelpForm" type="org.kuali.rice.kew.help.web.HelpAction" input="/WEB-INF/jsp/help/HelpEntry.jsp"
-      	scope="request" validate="false" parameter="methodToCall">
-      	<forward name="basic" path="/WEB-INF/jsp/help/HelpEntry.jsp"/>
-      	<forward name="summary" path="/WEB-INF/jsp/help/HelpSummary.jsp"/>
-      	<forward name="getSearch" path="/WEB-INF/jsp/help/HelpSearch.jsp"/>
- 		<forward name="report" path="/WEB-INF/jsp/help/HelpReport.jsp"/>
-		<forward name="popHelp" path="/WEB-INF/jsp/help/HelpPop.jsp"/>
-		<forward name="requiredStateError" path="/WEB-INF/jsp/help/HelpReport.jsp"/>
-        <forward name="finalStateError" path="/WEB-INF/jsp/help/HelpReport.jsp"/>
-        <forward name="delete" path="/WEB-INF/jsp/help/HelpDelete.jsp"/>
-      </action>
-
       <action path="/Ingester" name="IngesterForm" scope="request" validate="false"
       	type="org.kuali.rice.kew.batch.web.IngesterAction"  input="/WEB-INF/jsp/batch/ingester.jsp">
       	<forward name="view" path="/WEB-INF/jsp/batch/ingester.jsp"/>

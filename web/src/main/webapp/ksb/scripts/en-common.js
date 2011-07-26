@@ -43,10 +43,6 @@ function quick_finder(searchTarget, formname, action) {
   return post_to_action(formname, action);
 }
 
-function workflowHelpPop(helpKey){
-  window.open("Help.do?methodToCall=getHelpEntry&helpKey=" + helpKey, "_blank", "width=640, height=365, scrollbars=yes");
-}
-
 var open_file 	= 'images/tinybutton-hide1.gif';
 var closed_file	= 'images/tinybutton-show.gif';
 img1 = new Image();

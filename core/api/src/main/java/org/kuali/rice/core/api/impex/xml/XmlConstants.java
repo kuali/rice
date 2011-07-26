@@ -177,13 +177,6 @@ public final class XmlConstants {
     public static final String IS_MEMBER_OF_WORKGROUP = "isMemberOfWorkgroup";
     public static final String IS_MEMBER_OF_GROUP = "isMemberOfGroup";
 
-    // help
-    public static final String HELP_ENTRIES = "helpEntries";
-    public static final String HELP_ENTRY = "helpEntry";
-    public static final String HELP_NAME = "helpName";
-    public static final String HELP_KEY = "helpKey";
-    public static final String HELP_TEXT = "helpText";
-
     //edoclite
     public static final String EDL_EDOCLITE = "edoclite";
     public static final String EDL_STYLE = "style";

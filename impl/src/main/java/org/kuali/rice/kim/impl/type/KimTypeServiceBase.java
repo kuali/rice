@@ -17,6 +17,7 @@ package org.kuali.rice.kim.impl.type;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.api.util.type.TypeUtils;
@@ -76,7 +77,7 @@ public class KimTypeServiceBase implements KimTypeService {
 	
 	protected final List<String> workflowRoutingAttributes = new ArrayList<String>();
 	protected final List<String> requiredAttributes = new ArrayList<String>();
-	protected boolean checkRequiredAttributes = false;
+	protected boolean checkRequiredAttributes;
 
 	@Override
 	public String getWorkflowDocumentTypeName() {
@@ -105,7 +106,7 @@ public class KimTypeServiceBase implements KimTypeService {
 
                 if (definition != null) {
                     if(uniqueAttributes!=null && uniqueAttributes.contains(definition.getName())){
-                        definition.setUnique(true);
+                        definition.setUnique(Boolean.TRUE);
                     }
                     definitions.put(typeAttribute.getSortCode(), definition);
                 }
@@ -123,10 +124,10 @@ public class KimTypeServiceBase implements KimTypeService {
 	 * by overriding this method.
 	 */
 	@Override
-	public Map<String, String> validateAttributes(String kimTypeId, Map<String, String> attributes) {
-		Map<String,String> validationErrors = new HashMap<String, String>();
+	public List<RemotableAttributeError> validateAttributes(String kimTypeId, Map<String, String> attributes) {
+		final List<RemotableAttributeError> validationErrors = new ArrayList<RemotableAttributeError>();
 		if ( attributes == null ) {
-			return Collections.emptyMap();
+			return Collections.emptyList();
 		}
 		KimType kimType = getTypeInfoService().getKimType(kimTypeId);
 
@@ -140,28 +141,22 @@ public class KimTypeServiceBase implements KimTypeService {
             }
 
 			if ( attributeErrors != null ) {
-				for ( String err : attributeErrors ) {
-					validationErrors.put(entry.getKey(), err);
-				}
+                validationErrors.add(RemotableAttributeError.Builder.create(entry.getKey(), attributeErrors).build());
 			}
 		}
 
-		Map<String, List<String>> referenceCheckErrors = validateReferencesExistAndActive(kimType, attributes, validationErrors);
-		for ( Map.Entry<String, List<String>> entry : referenceCheckErrors.entrySet() ) {
-			for ( String err : entry.getValue() ) {
-				validationErrors.put(entry.getKey(), err);
-			}
-		}
+		final List<RemotableAttributeError> referenceCheckErrors = validateReferencesExistAndActive(kimType, attributes, validationErrors);
+        validationErrors.addAll(referenceCheckErrors);
 
 		return validationErrors;
 	}
 
     @Override
-	public Map<String, String> validateAttributesAgainstExisting(String kimTypeId, Map<String, String> newAttributes, Map<String, String> oldAttributes){
-        final Map<String, String> errors = new HashMap<String, String>();
-        errors.putAll(validateUniqueAttributes(kimTypeId, newAttributes, oldAttributes));
-        errors.putAll(validateUnmodifiableAttributes(kimTypeId, newAttributes, oldAttributes));
-        return Collections.unmodifiableMap(errors);
+	public List<RemotableAttributeError> validateAttributesAgainstExisting(String kimTypeId, Map<String, String> newAttributes, Map<String, String> oldAttributes){
+        final List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
+        errors.addAll(validateUniqueAttributes(kimTypeId, newAttributes, oldAttributes));
+        errors.addAll(validateUnmodifiableAttributes(kimTypeId, newAttributes, oldAttributes));
+        return Collections.unmodifiableList(errors);
 	}
 
 	/**
@@ -191,7 +186,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		Object attributeValueObject = null;
 		if(propertyDescriptor!=null && attributeValue!=null){
 			Class<?> propertyType = propertyDescriptor.getPropertyType();
-			if(propertyType != String.class){
+			if(String.class.equals(propertyType)){
 				attributeValueObject = KRADUtils
                         .createObject(propertyType, new Class[]{String.class}, new Object[]{attributeValue});
 			} else {
@@ -201,9 +196,9 @@ public class KimTypeServiceBase implements KimTypeService {
 		return attributeValueObject;
 	}
 	
-	protected Map<String, List<String>> validateReferencesExistAndActive( KimType kimType, Map<String, String> attributes, Map<String, String> previousValidationErrors) {
+	protected List<RemotableAttributeError> validateReferencesExistAndActive( KimType kimType, Map<String, String> attributes, List<RemotableAttributeError> previousValidationErrors) {
 		Map<String, BusinessObject> componentClassInstances = new HashMap<String, BusinessObject>();
-		Map<String, List<String>> errors = new HashMap<String, List<String>>();
+		List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
 		
 		for ( String attributeName : attributes.keySet() ) {
 			KimTypeAttribute attr = kimType.getAttributeDefinitionByName(attributeName);
@@ -227,7 +222,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		
 		// now that we have instances for each component class, try to populate them with any attribute we can, assuming there were no other validation errors associated with it
 		for ( Map.Entry<String, String> entry : attributes.entrySet() ) {
-			if (!previousValidationErrors.containsKey(entry.getKey())) {
+			if (!RemotableAttributeError.containsAttribute(entry.getKey(), previousValidationErrors)) {
 				for (Object componentInstance : componentClassInstances.values()) {
 					try {
 						ObjectUtils.setObjectProperty(componentInstance, entry.getKey(), entry.getValue());
@@ -272,8 +267,7 @@ public class KimTypeServiceBase implements KimTypeService {
 					getDictionaryValidationService().validateReferenceExistsAndIsActive(entry.getValue(), relationshipDefinition.getObjectAttributeName(),
 							attributeToHighlightOnFail, attributeDisplayLabel);
 				}
-				
-				errors.put(attributeToHighlightOnFail, extractErrorsFromGlobalVariablesErrorMap(attributeToHighlightOnFail));
+				errors.add(RemotableAttributeError.Builder.create(attributeToHighlightOnFail, extractErrorsFromGlobalVariablesErrorMap(attributeToHighlightOnFail)).build());
 			}
 		}
 		return errors;
@@ -473,7 +467,13 @@ public class KimTypeServiceBase implements KimTypeService {
             }
         }
     }
-    
+
+    /*
+     * will create a list of errors in the following format:
+     *
+     *
+     * error_key:param1;param2;param3;
+     */
 	protected List<String> extractErrorsFromGlobalVariablesErrorMap(String attributeName) {
 		Object results = GlobalVariables.getMessageMap().getErrorMessagesForProperty(attributeName);
 		List<String> errors = new ArrayList<String>();
@@ -701,22 +701,22 @@ public class KimTypeServiceBase implements KimTypeService {
 
 
 	
-	protected Map<String, String> validateUniqueAttributes(String kimTypeId, Map<String, String> newAttributes, Map<String, String> oldAttributes) {
+	protected List<RemotableAttributeError> validateUniqueAttributes(String kimTypeId, Map<String, String> newAttributes, Map<String, String> oldAttributes) {
 		List<String> uniqueAttributes = getUniqueAttributes(kimTypeId);
 		if(uniqueAttributes==null || uniqueAttributes.isEmpty()){
-			return Collections.emptyMap();
+			return Collections.emptyList();
 		} else{
-			Map<String, String> m = new HashMap<String, String>();
+			List<RemotableAttributeError> m = new ArrayList<RemotableAttributeError>();
             if(areAttributesEqual(uniqueAttributes, newAttributes, oldAttributes)){
 				//add all unique attrs to error map
                 for (String a : uniqueAttributes) {
-                    m.put(a, RiceKeyConstants.ERROR_DUPLICATE_ENTRY);
+                    m.add(RemotableAttributeError.Builder.create(a, RiceKeyConstants.ERROR_DUPLICATE_ENTRY).build());
                 }
 
                 return m;
 			}
 		}
-		return Collections.emptyMap();
+		return Collections.emptyList();
 	}
 	
 	protected boolean areAttributesEqual(List<String> uniqueAttributeNames, Map<String, String> aSet1, Map<String, String> aSet2){
@@ -756,8 +756,8 @@ public class KimTypeServiceBase implements KimTypeService {
         return Collections.unmodifiableList(uniqueAttributes);
 	}
 
-	protected Map<String, String> validateUnmodifiableAttributes(String kimTypeId, Map<String, String> originalAttributes, Map<String, String> newAttributes){
-		Map<String, String> validationErrors = new HashMap<String, String>();
+	protected List<RemotableAttributeError> validateUnmodifiableAttributes(String kimTypeId, Map<String, String> originalAttributes, Map<String, String> newAttributes){
+		List<RemotableAttributeError> validationErrors = new ArrayList<RemotableAttributeError>();
 		KimType kimType = getTypeInfoService().getKimType(kimTypeId);
 		List<String> uniqueAttributes = getUniqueAttributes(kimTypeId);
 		for(String attributeNameKey: uniqueAttributes){
@@ -772,9 +772,7 @@ public class KimTypeServiceBase implements KimTypeService {
 				attributeErrors = extractErrorsFromGlobalVariablesErrorMap(attributeNameKey);
 			}
 			if(attributeErrors!=null){
-				for(String err:attributeErrors){
-					validationErrors.put(attributeNameKey, err);
-				}
+				validationErrors.add(RemotableAttributeError.Builder.create(attributeNameKey, attributeErrors).build());
 			}
 		}
 		return validationErrors;
@@ -808,11 +806,11 @@ public class KimTypeServiceBase implements KimTypeService {
 
     protected static class KimTypeAttributeValidationException extends RuntimeException {
 
-        public KimTypeAttributeValidationException(String message) {
+        protected KimTypeAttributeValidationException(String message) {
             super( message );
         }
 
-        public KimTypeAttributeValidationException(Throwable cause) {
+        protected KimTypeAttributeValidationException(Throwable cause) {
             super( cause );
         }
 

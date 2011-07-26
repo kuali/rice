@@ -17,6 +17,7 @@ package org.kuali.rice.kim.document.rule;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.bo.ui.KimDocumentAttributeDataBusinessObjectBase;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
@@ -28,6 +29,7 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -117,44 +119,47 @@ public class AttributeValidationHelper {
 		return businessObjectService;
 	}
 	
-    public void moveValidationErrorsToErrorMap(Map<String, String> validationErrors) {
+    public void moveValidationErrorsToErrorMap(List<RemotableAttributeError> validationErrors) {
 		// FIXME: This does not use the correct error path yet - may need to be moved up so that the error path is known
 		// Also, the above code would overwrite messages on the same attributes (namespaceCode) but on different rows
-		for ( String key : validationErrors.keySet() ) {
-    		String[] errorMsg = StringUtils.split(validationErrors.get( key ), ":");
-    		
-			GlobalVariables.getMessageMap().putError( key, errorMsg[0], errorMsg.length > 1 ? StringUtils.split(errorMsg[1], ";") : new String[] {} );
+		for ( RemotableAttributeError error : validationErrors) {
+    		for (String errMsg : error.getErrors()) {
+                String[] splitMsg = StringUtils.split(errMsg, ":");
+			    GlobalVariables.getMessageMap().putError( error.getAttributeName(), splitMsg[0], splitMsg.length > 1 ? StringUtils.split(splitMsg[1], ";") : new String[] {} );
+            }
 		}
     }
 
-	public Map<String, String> convertErrorsForMappedFields(String errorPath, Map<String, String> localErrors) {
-		Map<String, String> errors = new HashMap<String, String>();
+	public List<RemotableAttributeError> convertErrorsForMappedFields(String errorPath, List<RemotableAttributeError> localErrors) {
+		List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
 		if (errorPath == null) {
 			errorPath = KRADConstants.EMPTY_STRING;
 		}
 		else if (StringUtils.isNotEmpty(errorPath)) {
 			errorPath = errorPath + ".";
 		}
-		for ( String key : localErrors.keySet() ) {
+		for ( RemotableAttributeError error : localErrors) {
 			Map<String,String> criteria = new HashMap<String,String>();
-			criteria.put(KRADPropertyConstants.ATTRIBUTE_NAME, key);
+			criteria.put(KRADPropertyConstants.ATTRIBUTE_NAME, error.getAttributeName());
 			KimAttributeBo attribute = getBusinessObjectService().findByPrimaryKey(KimAttributeBo.class, criteria);
 			String attributeDefnId = attribute==null?"":attribute.getId();
-			errors.put(errorPath+"qualifier("+attributeDefnId+").attrVal", localErrors.get(key));
+			errors.add(RemotableAttributeError.Builder.create(errorPath+"qualifier("+attributeDefnId+").attrVal", error.getErrors()).build());
 		}
 		return errors;
 	}
 
-	public Map<String, String> convertErrors(String errorPath, Map<String, String> attrIdxMap, Map<String, String> localErrors) {
-		Map<String, String> errors = new HashMap<String, String>();
+	public List<RemotableAttributeError> convertErrors(String errorPath, Map<String, String> attrIdxMap, List<RemotableAttributeError> localErrors) {
+		List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
 		if (errorPath == null) {
 			errorPath = KRADConstants.EMPTY_STRING;
 		}
 		else if (StringUtils.isNotEmpty(errorPath)) {
 			errorPath = errorPath + ".";
 		}
-		for ( String key : localErrors.keySet() ) {
-			errors.put(errorPath+"qualifiers["+attrIdxMap.get(key)+"].attrVal", localErrors.get(key));
+		for ( RemotableAttributeError error : localErrors ) {
+			for (String errMsg : error.getErrors()) {
+                errors.add(RemotableAttributeError.Builder.create(errorPath+"qualifiers["+attrIdxMap.get(error.getAttributeName())+"].attrVal", errMsg).build());
+            }
 		}
 		return errors;
 	}

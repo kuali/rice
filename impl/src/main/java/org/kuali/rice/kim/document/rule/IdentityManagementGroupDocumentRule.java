@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.document.rule;
 
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.IdentityService;
@@ -38,6 +39,7 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.MessageMap;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -128,15 +130,15 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
     }
 
     protected boolean validateGroupQualifier(List<GroupDocumentQualifier> groupQualifiers, KimType kimType){
-		Map<String, String> validationErrors = new HashMap<String, String>();
+		List<RemotableAttributeError> validationErrors = new ArrayList<RemotableAttributeError>();
 
-		Map<String, String> errorsTemp;
+		List<RemotableAttributeError> errorsTemp;
 		Map<String, String> mapToValidate;
         KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(kimType);
         GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
 		mapToValidate = attributeValidationHelper.convertQualifiersToMap(groupQualifiers);
 		errorsTemp = kimTypeService.validateAttributes(kimType.getId(), mapToValidate);
-		validationErrors.putAll( attributeValidationHelper.convertErrors("",
+		validationErrors.addAll(attributeValidationHelper.convertErrors("",
                 attributeValidationHelper.convertQualifiersToAttrIdxMap(groupQualifiers), errorsTemp));
 		GlobalVariables.getMessageMap().addToErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
 		

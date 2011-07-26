@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.document.rule;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
@@ -27,6 +28,7 @@ import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.krad.util.GlobalVariables;
 
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -74,11 +76,13 @@ public class GenericPermissionMaintenanceDocumentRule extends MaintenanceDocumen
 				if ( !GlobalVariables.getMessageMap().hasErrors() ) {
 					KimPermissionTypeService service = getPermissionTypeService( kimType.getServiceName() );
 					if ( service != null ) {
-						Map<String, String> validationErrors = service.validateAttributes( kimType.getId(), details);
+						List<RemotableAttributeError> validationErrors = service.validateAttributes( kimType.getId(), details);
 						if ( validationErrors != null && !validationErrors.isEmpty() ) {
-							for ( String attributeName : validationErrors.keySet() ) {
+							for ( RemotableAttributeError error : validationErrors ) {
 								GlobalVariables.getMessageMap().addToErrorPath( MAINTAINABLE_ERROR_PATH );
-								GlobalVariables.getMessageMap().putError( DETAIL_VALUES_PROPERTY, ERROR_ATTRIBUTE_VALIDATION, attributeName, validationErrors.get(attributeName) );
+								for (String errMsg : error.getErrors()) {
+                                    GlobalVariables.getMessageMap().putError( DETAIL_VALUES_PROPERTY, ERROR_ATTRIBUTE_VALIDATION, error.getAttributeName(), errMsg );
+                                }
 								GlobalVariables.getMessageMap().removeFromErrorPath( MAINTAINABLE_ERROR_PATH );
 							}
 							rulesPassed = false;

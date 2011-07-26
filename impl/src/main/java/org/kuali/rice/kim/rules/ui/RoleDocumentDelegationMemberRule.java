@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.rules.ui;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
@@ -58,7 +59,7 @@ public class RoleDocumentDelegationMemberRule extends DocumentRuleBase implement
         }
 		List<Map<String, String>> mapListToValidate = new ArrayList<Map<String, String>>();
 		Map<String, String> mapToValidate;
-		Map<String, String> validationErrors = new HashMap<String, String>();
+		List<RemotableAttributeError> validationErrors = new ArrayList<RemotableAttributeError>();
         KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(document.getKimType());
 
 		for(RoleDocumentDelegationMember roleMember: document.getDelegationMembers()) {
@@ -69,7 +70,7 @@ public class RoleDocumentDelegationMemberRule extends DocumentRuleBase implement
 
 	    int i = 0;
 	    for (RoleDocumentDelegationMember member: document.getDelegationMembers()){
-	    	Map<String, String> localErrors = kimTypeService.validateAttributesAgainstExisting(
+	    	List<RemotableAttributeError> localErrors = kimTypeService.validateAttributesAgainstExisting(
 					document.getKimType().getId(),
 					attributeValidationHelper.convertQualifiersToMap(newMember.getQualifiers()), 
 					attributeValidationHelper.convertQualifiersToMap(member.getQualifiers()));
@@ -83,8 +84,8 @@ public class RoleDocumentDelegationMemberRule extends DocumentRuleBase implement
 	    }
         
         if ( kimTypeService != null && !newMember.isRole()) {
-    		Map<String, String> localErrors = kimTypeService.validateAttributes( document.getKimType().getId(), attributeValidationHelper.convertQualifiersToMap( newMember.getQualifiers() ) );
-	        validationErrors.putAll( attributeValidationHelper.convertErrors("delegationMember",
+    		List<RemotableAttributeError> localErrors = kimTypeService.validateAttributes( document.getKimType().getId(), attributeValidationHelper.convertQualifiersToMap( newMember.getQualifiers() ) );
+	        validationErrors.addAll( attributeValidationHelper.convertErrors("delegationMember",
                     attributeValidationHelper.convertQualifiersToAttrIdxMap(newMember.getQualifiers()), localErrors) );
         }
     	if (!validationErrors.isEmpty()) {

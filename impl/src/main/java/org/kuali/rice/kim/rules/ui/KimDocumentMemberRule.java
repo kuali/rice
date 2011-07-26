@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.rules.ui;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
@@ -28,7 +29,9 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.rules.DocumentRuleBase;
 import org.kuali.rice.krad.util.GlobalVariables;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -56,13 +59,13 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
     	if(!validAssignRole(newMember, document)) {
     		return false;
         }
-		Map<String,String> validationErrors = new HashMap<String,String>();
+		List<RemotableAttributeError> validationErrors = new ArrayList<RemotableAttributeError>();
         KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(document.getKimType());
         
         Long newMemberFromTime = newMember.getActiveFromDate() == null ? 0L : newMember.getActiveFromDate().getTime();
         Long newMemberToTime = newMember.getActiveToDate() == null ? Long.MAX_VALUE : newMember.getActiveToDate().getTime();
         
-		Map<String, String> errorsAttributesAgainstExisting;
+		List<RemotableAttributeError> errorsAttributesAgainstExisting;
 	    int i = 0;
 	    Map<String, String> newMemberQualifiers;
 	    Map<String, String> oldMemberQualifiers;
@@ -73,7 +76,7 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 	    	oldMemberQualifiers = attributeValidationHelper.convertQualifiersToMap(member.getQualifiers());
 	    	errorsAttributesAgainstExisting = kimTypeService.validateAttributesAgainstExisting(
 	    			document.getKimType().getId(), newMemberQualifiers, oldMemberQualifiers);
-			validationErrors.putAll( 
+			validationErrors.addAll(
 					attributeValidationHelper.convertErrorsForMappedFields(ERROR_PATH, errorsAttributesAgainstExisting));
 	    	if (!errorsAttributesAgainstExisting.isEmpty() && (member.getMemberId().equals(newMember.getMemberId()) &&
 	    			member.getMemberTypeCode().equals(newMember.getMemberTypeCode()))
@@ -88,8 +91,8 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 	    }
 	    
         if ( kimTypeService != null && !newMember.isRole()) {
-    		Map<String, String> localErrors = kimTypeService.validateAttributes( document.getKimType().getId(), attributeValidationHelper.convertQualifiersToMap( newMember.getQualifiers() ) );
-	        validationErrors.putAll( attributeValidationHelper.convertErrors("member",
+    		List<RemotableAttributeError> localErrors = kimTypeService.validateAttributes( document.getKimType().getId(), attributeValidationHelper.convertQualifiersToMap( newMember.getQualifiers() ) );
+	        validationErrors.addAll( attributeValidationHelper.convertErrors("member",
                     attributeValidationHelper.convertQualifiersToAttrIdxMap(newMember.getQualifiers()), localErrors) );
         }
     	if (!validationErrors.isEmpty()) {

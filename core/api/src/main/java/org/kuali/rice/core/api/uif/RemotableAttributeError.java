@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -24,11 +27,12 @@ import org.w3c.dom.Element;
 @XmlType(name = RemotableAttributeError.Constants.TYPE_NAME,
         propOrder = {RemotableAttributeError.Elements.ATTRIBUTE_NAME, RemotableAttributeError.Elements.ERRORS,
                 CoreConstants.CommonElements.FUTURE_ELEMENTS})
-public class RemotableAttributeError extends AbstractDataTransferObject implements AttributeError {
+public final class RemotableAttributeError extends AbstractDataTransferObject implements AttributeError {
 
     @XmlElement(name = Elements.ATTRIBUTE_NAME, required = false)
     private final String attributeName;
-    @XmlElement(name = Elements.ERRORS, required = false)
+    @XmlElementWrapper(name = Elements.ERRORS, required = true )
+    @XmlElement(name = Elements.ERROR, required = false)
     private final List<String> errors;
     @SuppressWarnings("unused") @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -57,6 +61,63 @@ public class RemotableAttributeError extends AbstractDataTransferObject implemen
     }
 
     /**
+     * Utility method to search a collection of attribute errors and check in the collection
+     * contains a error for a give attribute name.
+     *
+     * @param attributeName the name of the attribute to search for.  Cannot be blank or null.
+     * @param errors cannot be null.
+     *
+     * @return true if list contains an error class for attribute name.
+     */
+    public static boolean containsAttribute(String attributeName, Collection<RemotableAttributeError> errors) {
+        if (StringUtils.isBlank(attributeName)) {
+            throw new IllegalArgumentException("attributeName is blank");
+        }
+
+        if (errors == null) {
+            throw new IllegalArgumentException("errors is null");
+        }
+
+        for (AttributeError error : errors) {
+            if (attributeName.equals(error.getAttributeName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Utility method that iterates over a collection of AttributeErrors searching for multiple
+     * AttributeError instances for the same attributeName.  If found those instances are combined.
+     *
+     * @param errors the errors.  cannot be null
+     * @return a normalized list
+     */
+    public static List<RemotableAttributeError> normalizeRemotableAttributes(List<RemotableAttributeError> errors) {
+        if (errors == null) {
+            throw new IllegalArgumentException("errors is null");
+        }
+
+        final List<RemotableAttributeError> normalized = new ArrayList<RemotableAttributeError>();
+        final Map<String, Integer> map = new HashMap<String, Integer>();
+
+        for (final RemotableAttributeError error :  errors) {
+            final Integer prevIndex = map.get(error.getAttributeName());
+            if (prevIndex == null) {
+                final int insertIdx = normalized.size();
+                map.put(error.getAttributeName(), insertIdx);
+                normalized.add(insertIdx, error);
+            } else {
+                final RemotableAttributeError prevError = normalized.get(prevIndex.intValue());
+                final RemotableAttributeError.Builder b  = RemotableAttributeError.Builder.create(error.getAttributeName(), error.getErrors());
+                b.addErrors(prevError.getErrors());
+                normalized.set(prevIndex.intValue(), b.build());
+            }
+        }
+        return normalized;
+    }
+
+    /**
      * A builder which can be used to construct {@link RemotableAttributeError} instances.  Enforces the constraints of
      * the {@link AttributeError}.
      */
@@ -76,6 +137,12 @@ public class RemotableAttributeError extends AbstractDataTransferObject implemen
         public static Builder create(String attributeName, List<String> errors) {
             Builder b = new Builder(attributeName);
             b.setErrors(errors);
+            return b;
+        }
+
+        public static Builder create(String attributeName, String... errors) {
+            Builder b = new Builder(attributeName);
+            b.addErrors(errors);
             return b;
         }
 
@@ -131,19 +198,27 @@ public class RemotableAttributeError extends AbstractDataTransferObject implemen
         /**
          * Adds errors to the AttributeError.  The passed in errors cannot be null.
          *
-         * @param firstError the first error to add
-         * @param restErrors any subsequent errors to add
+         * @param errors any subsequent errors to add
          */
-        public void addErrors(String firstError, String... restErrors) {
-            if (firstError == null) {
+        public void addErrors(String... errors) {
+            if (errors == null) {
                 throw new IllegalArgumentException("errors is null");
             }
 
-            this.errors.add(firstError);
+            this.errors.addAll(Arrays.asList(errors));
+        }
 
-            if (restErrors != null) {
-                this.errors.addAll(Arrays.asList(restErrors));
+        /**
+         * Adds errors to the AttributeError.  The passed in errors cannot be null.
+         *
+         * @param errors any subsequent errors to add
+         */
+        public void addErrors(List<String> errors) {
+            if (errors == null) {
+                throw new IllegalArgumentException("errors is null");
             }
+
+            this.errors.addAll(errors);
         }
     }
 
@@ -164,6 +239,7 @@ public class RemotableAttributeError extends AbstractDataTransferObject implemen
     static class Elements {
 
         final static String ATTRIBUTE_NAME = "attributeName";
+        final static String ERROR = "error";
         final static String ERRORS = "errors";
 
     }

@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.document.rule;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.permission.Permission;
@@ -66,6 +67,7 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.MessageMap;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -292,11 +294,11 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     }
 
     protected boolean validateRoleQualifier(List<KimDocumentRoleMember> roleMembers, KimType kimType){
-		Map<String, String> validationErrors = new HashMap<String, String>();
+		List<RemotableAttributeError> validationErrors = new ArrayList<RemotableAttributeError>();
 
 		int memberCounter = 0;
 		int roleMemberCount = 0;
-		Map<String, String> errorsTemp;
+		List<RemotableAttributeError> errorsTemp;
 		Map<String, String> mapToValidate;
         KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(kimType);
         GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
@@ -304,13 +306,12 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         final Set<String> uniqueAttributeNames = figureOutUniqueQualificationSet(roleMembers, attributeDefinitions);
 
 		for(KimDocumentRoleMember roleMember: roleMembers) {
-			errorsTemp = Collections.emptyMap();
+			errorsTemp = Collections.emptyList();
 			mapToValidate = attributeValidationHelper.convertQualifiersToMap(roleMember.getQualifiers());
 			if(!roleMember.isRole()){
 				errorsTemp = kimTypeService.validateAttributes(kimType.getId(), mapToValidate);
-				validationErrors.putAll( 
-						attributeValidationHelper.convertErrorsForMappedFields(
-                                "document.members[" + memberCounter + "]", errorsTemp));
+				validationErrors.addAll(attributeValidationHelper.convertErrorsForMappedFields(
+                        "document.members[" + memberCounter + "]", errorsTemp));
 		        memberCounter++;
 			}
 			if (uniqueAttributeNames.size() > 0) {
@@ -364,7 +365,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
      * @param validationErrors Map<String, String> of errors to report
      * @return true if all unique values are indeed unique, false otherwise
      */
-    protected boolean validateUniquePersonRoleQualifiersUniqueForRoleMembership(KimDocumentRoleMember membershipToCheck, int membershipToCheckIndex, List<KimDocumentRoleMember> memberships, Set<String> uniqueQualifierIds, Map<String, String> validationErrors) {
+    protected boolean validateUniquePersonRoleQualifiersUniqueForRoleMembership(KimDocumentRoleMember membershipToCheck, int membershipToCheckIndex, List<KimDocumentRoleMember> memberships, Set<String> uniqueQualifierIds, List<RemotableAttributeError> validationErrors) {
     	boolean foundError = false;
     	int count = 0;
 
@@ -378,7 +379,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 
     					for (KimDocumentRoleQualifier qualifier : membership.getQualifiers()) {
     						if (qualifier != null && uniqueQualifierIds.contains(qualifier.getKimAttrDefnId())) {
-    							validationErrors.put("document.members["+membershipToCheckIndex+"].qualifiers["+qualifierCount+"].attrVal", RiceKeyConstants.ERROR_DOCUMENT_IDENTITY_MANAGEMENT_PERSON_QUALIFIER_VALUE_NOT_UNIQUE+":"+qualifier.getKimAttribute().getAttributeName()+";"+qualifier.getAttrVal());
+    							validationErrors.add(RemotableAttributeError.Builder.create("document.members["+membershipToCheckIndex+"].qualifiers["+qualifierCount+"].attrVal", RiceKeyConstants.ERROR_DOCUMENT_IDENTITY_MANAGEMENT_PERSON_QUALIFIER_VALUE_NOT_UNIQUE+":"+qualifier.getKimAttribute().getAttributeName()+";"+qualifier.getAttrVal()).build());
     						}
     						qualifierCount += 1;
     					}
@@ -439,10 +440,10 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 
     protected boolean validateDelegationMemberRoleQualifier(List<KimDocumentRoleMember> roleMembers,
     		List<RoleDocumentDelegationMember> delegationMembers, KimType kimType){
-		Map<String, String> validationErrors = new HashMap<String, String>();
+		List<RemotableAttributeError> validationErrors = new ArrayList<RemotableAttributeError>();
 		boolean valid;
 		int memberCounter = 0;
-		Map<String, String> errorsTemp;
+		List<RemotableAttributeError> errorsTemp;
 		Map<String, String> mapToValidate;
         KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(kimType);
         GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
@@ -456,7 +457,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 			mapToValidate = attributeValidationHelper.convertQualifiersToMap(delegationMember.getQualifiers());
 			if(!delegationMember.isRole()){
 				errorsTemp = kimTypeService.validateAttributes(kimType.getId(), mapToValidate);
-				validationErrors.putAll(
+				validationErrors.addAll(
 						attributeValidationHelper.convertErrorsForMappedFields(errorPath, errorsTemp));
 			}
 			roleMember = getRoleMemberForDelegation(roleMembers, delegationMember);
@@ -468,7 +469,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 								kimType.getId(),
 								attributeValidationHelper.convertQualifiersToMap(roleMember.getQualifiers()),
 								mapToValidate);
-				validationErrors.putAll(
+				validationErrors.addAll(
 						attributeValidationHelper.convertErrorsForMappedFields(errorPath, errorsTemp) );
 			}
 			if (uniqueQualifierAttributes.size() > 0) {
@@ -521,7 +522,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
      * @param validationErrors Map<String, String> of errors to report
      * @return true if all unique values are indeed unique, false otherwise
      */
-    protected boolean validateUniquePersonRoleQualifiersUniqueForRoleDelegation(RoleDocumentDelegationMember delegationMembershipToCheck, int membershipToCheckIndex, List<RoleDocumentDelegationMember> delegationMemberships, Set<String> uniqueQualifierIds, Map<String, String> validationErrors) {
+    protected boolean validateUniquePersonRoleQualifiersUniqueForRoleDelegation(RoleDocumentDelegationMember delegationMembershipToCheck, int membershipToCheckIndex, List<RoleDocumentDelegationMember> delegationMemberships, Set<String> uniqueQualifierIds, List<RemotableAttributeError> validationErrors) {
     	boolean foundError = false;
     	int count = 0;
 
@@ -535,7 +536,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 
     					for (RoleDocumentDelegationMemberQualifier qualifier : delegationMembership.getQualifiers()) {
     						if (qualifier != null && uniqueQualifierIds.contains(qualifier.getKimAttrDefnId())) {
-    							validationErrors.put("document.delegationMembers["+membershipToCheckIndex+"].qualifiers["+qualifierCount+"].attrVal", RiceKeyConstants.ERROR_DOCUMENT_IDENTITY_MANAGEMENT_PERSON_QUALIFIER_VALUE_NOT_UNIQUE+":"+qualifier.getKimAttribute().getAttributeName()+";"+qualifier.getAttrVal());
+    							validationErrors.add(RemotableAttributeError.Builder.create("document.delegationMembers["+membershipToCheckIndex+"].qualifiers["+qualifierCount+"].attrVal", RiceKeyConstants.ERROR_DOCUMENT_IDENTITY_MANAGEMENT_PERSON_QUALIFIER_VALUE_NOT_UNIQUE+":"+qualifier.getKimAttribute().getAttributeName()+";"+qualifier.getAttrVal()).build());
     						}
     						qualifierCount += 1;
     					}

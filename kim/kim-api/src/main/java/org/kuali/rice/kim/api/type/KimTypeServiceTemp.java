@@ -1,5 +1,7 @@
 package org.kuali.rice.kim.api.type;
 
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
+
 import java.util.List;
 import java.util.Map;
 
@@ -36,16 +38,18 @@ public interface KimTypeServiceTemp {
     List<String> getWorkflowRoutingAttributes(String nodeName);
 
     /**
-     * Perform validation on the attributes of an object.  The resultant map
-     * will contain (attributeName,errorMessage) pairs from the validation process.
-     * An empty attributes indicates that there were no errors.
+     * Perform validation on the attributes of an object.
+     * An empty list indicates that there were no errors.
      *
      * This method can be used to perform compound validations across multiple
      * attributes attached to an object.
      */
-    Map<String, String> validateAttributes(String kimTypeId, Map<String, String> attributes);
+    List<RemotableAttributeError> validateAttributes(String kimTypeId, Map<String, String> attributes);
 
-    Map<String, String> validateAttributesAgainstExisting(String kimTypeId, Map<String, String> newAttributes,
-            Map<String, String> oldAttributes);
+    /**
+     * Perform validation on the attributes of an object.
+     * An empty list indicates that there were no errors.
+     */
+    List<RemotableAttributeError> validateAttributesAgainstExisting(String kimTypeId, Map<String, String> newAttributes, Map<String, String> oldAttributes);
 }
 

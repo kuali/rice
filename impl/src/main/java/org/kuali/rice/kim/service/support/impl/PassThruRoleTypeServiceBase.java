@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.service.support.impl;
 
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.framework.type.KimRoleTypeService;
@@ -89,7 +90,7 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
     }
 
     @Override
-	public Map<String, String> validateAttributes(String kimTypeId, Map<String, String> attributes) {
+	public List<RemotableAttributeError> validateAttributes(String kimTypeId, Map<String, String> attributes) {
         return null;
     }
     
@@ -115,8 +116,8 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
 	}
     
 	@Override
-	public Map<String, String> validateAttributesAgainstExisting(String kimTypeId, Map<String, String> newAttributes, Map<String, String> oldAttributes){
-		return Collections.emptyMap();
+	public List<RemotableAttributeError> validateAttributesAgainstExisting(String kimTypeId, Map<String, String> newAttributes, Map<String, String> oldAttributes){
+		return Collections.emptyList();
 	}
 
 	/**

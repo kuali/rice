@@ -17,6 +17,7 @@ package org.kuali.rice.kim.document.rule;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
@@ -399,7 +400,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     }
 
     protected boolean validateRoleQualifier( List<PersonDocumentRole> roles ) {
-		Map<String, String> validationErrors = new HashMap<String, String>();
+		List<RemotableAttributeError> validationErrors = new ArrayList<RemotableAttributeError>();
         GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
         int i = 0;
     	for(PersonDocumentRole role : roles ) {
@@ -407,7 +408,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         	if(CollectionUtils.isEmpty(role.getRolePrncpls()) && !role.getDefinitions().isEmpty()){
         		KimType kimTypeInfo = KimApiServiceLocator.getKimTypeInfoService().getKimType(role.getKimRoleType().getId());
         		Map<String, String> blankQualifiers = attributeValidationHelper.getBlankValueQualifiersMap(kimTypeInfo.getAttributeDefinitions());
-        		Map<String, String> localErrors = kimTypeService.validateAttributes(
+        		List<RemotableAttributeError> localErrors = kimTypeService.validateAttributes(
         			role.getKimRoleType().getId(), blankQualifiers);
         		if(localErrors!=null && !localErrors.isEmpty()){
         			GlobalVariables.getMessageMap().putError("document.roles["+i+"].newRolePrncpl.qualifiers[0].attrVal",
@@ -422,8 +423,8 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	        if ( kimTypeService != null ) {
 		        int j = 0;
 	        	for ( KimDocumentRoleMember rolePrincipal : role.getRolePrncpls() ) {
-	        		Map<String, String> localErrors = kimTypeService.validateAttributes( role.getKimRoleType().getId(), attributeValidationHelper.convertQualifiersToMap( rolePrincipal.getQualifiers() ) );
-			        validationErrors.putAll( attributeValidationHelper.convertErrors(
+	        		List<RemotableAttributeError> localErrors = kimTypeService.validateAttributes( role.getKimRoleType().getId(), attributeValidationHelper.convertQualifiersToMap( rolePrincipal.getQualifiers() ) );
+			        validationErrors.addAll( attributeValidationHelper.convertErrors(
                             "roles[" + i + "].rolePrncpls[" + j + "]",
                             attributeValidationHelper.convertQualifiersToAttrIdxMap(rolePrincipal.getQualifiers()),
                             localErrors));
@@ -455,7 +456,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
      * @param memberIndex the index of the person's membership in the role (for error reporting purposes)
      * @return true if all unique values are indeed unique, false otherwise
      */
-    protected boolean validateUniquePersonRoleQualifiersUniqueForMembership(PersonDocumentRole role, KimDocumentRoleMember membershipToCheck, int membershipToCheckIndex, Set<String> uniqueQualifierAttributes, int roleIndex, Map<String, String> validationErrors) {
+    protected boolean validateUniquePersonRoleQualifiersUniqueForMembership(PersonDocumentRole role, KimDocumentRoleMember membershipToCheck, int membershipToCheckIndex, Set<String> uniqueQualifierAttributes, int roleIndex, List<RemotableAttributeError> validationErrors) {
     	boolean foundError = false;
     	int count = 0;
 
@@ -468,7 +469,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 
 					for (KimDocumentRoleQualifier qualifier : membership.getQualifiers()) {
 						if (qualifier != null && uniqueQualifierAttributes.contains(qualifier.getKimAttrDefnId())) {
-							validationErrors.put("document.roles["+roleIndex+"].rolePrncpls["+membershipToCheckIndex+"].qualifiers["+qualifierCount+"].attrVal", RiceKeyConstants.ERROR_DOCUMENT_IDENTITY_MANAGEMENT_PERSON_QUALIFIER_VALUE_NOT_UNIQUE+":"+qualifier.getKimAttribute().getAttributeName()+";"+qualifier.getAttrVal());
+							validationErrors.add(RemotableAttributeError.Builder.create("document.roles["+roleIndex+"].rolePrncpls["+membershipToCheckIndex+"].qualifiers["+qualifierCount+"].attrVal", RiceKeyConstants.ERROR_DOCUMENT_IDENTITY_MANAGEMENT_PERSON_QUALIFIER_VALUE_NOT_UNIQUE+":"+qualifier.getKimAttribute().getAttributeName()+";"+qualifier.getAttrVal()).build());
 						}
 						qualifierCount += 1;
 					}
@@ -709,11 +710,11 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	public boolean processAddPersonDocumentRoleQualifier(IdentityManagementPersonDocument document, PersonDocumentRole role, KimDocumentRoleMember kimDocumentRoleMember, int selectedRoleIdx) {
 		boolean dateValidationSuccess = validateActiveDate("document.roles[" + selectedRoleIdx + "].newRolePrncpl.activeFromDate", kimDocumentRoleMember.getActiveFromDate(), kimDocumentRoleMember.getActiveToDate());
 		String errorPath = "roles[" + selectedRoleIdx + "].newRolePrncpl";
-		Map<String, String> validationErrors = new HashMap<String, String>();
+		List<RemotableAttributeError> validationErrors = new ArrayList<RemotableAttributeError>();
         GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
         KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(KimTypeBo.to(role.getKimRoleType()));
 
-		Map<String, String> errorsAttributesAgainstExisting;
+		List<RemotableAttributeError> errorsAttributesAgainstExisting;
 	    int i = 0;
 	    boolean rulePassed = true;
 	    Map<String, String> newMemberQualifiers = attributeValidationHelper.convertQualifiersToMap(kimDocumentRoleMember.getQualifiers());
@@ -724,7 +725,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	    	oldMemberQualifiers = member.getQualifierAsMap();
 	    	errorsAttributesAgainstExisting = kimTypeService.validateAttributesAgainstExisting(
 	    			role.getKimRoleType().getId(), newMemberQualifiers, oldMemberQualifiers);
-	    	validationErrors.putAll(
+	    	validationErrors.addAll(
 					attributeValidationHelper.convertErrors(errorPath, attributeValidationHelper
                             .convertQualifiersToAttrIdxMap(kimDocumentRoleMember.getQualifiers()),
                             errorsAttributesAgainstExisting));
@@ -732,8 +733,8 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	    }
 
         if ( kimTypeService != null ) {
-        	Map<String, String> localErrors = kimTypeService.validateAttributes( role.getKimRoleType().getId(), newMemberQualifiers );
-    	    validationErrors.putAll( attributeValidationHelper.convertErrors(errorPath,
+        	List<RemotableAttributeError> localErrors = kimTypeService.validateAttributes( role.getKimRoleType().getId(), newMemberQualifiers );
+    	    validationErrors.addAll( attributeValidationHelper.convertErrors(errorPath,
                     attributeValidationHelper.convertQualifiersToAttrIdxMap(kimDocumentRoleMember.getQualifiers()),
                     localErrors));
         }
@@ -749,10 +750,10 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	}
 
     protected boolean validateDelegationMemberRoleQualifier(List<RoleDocumentDelegationMember> delegationMembers){
-		Map<String, String> validationErrors = new HashMap<String, String>();
+		List<RemotableAttributeError> validationErrors = new ArrayList<RemotableAttributeError>();
 		boolean valid;
 		int memberCounter = 0;
-		Map<String, String> errorsTemp;
+		List<RemotableAttributeError> errorsTemp;
 		Map<String, String> mapToValidate;
         KimTypeService kimTypeService;
         GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
@@ -768,7 +769,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 			errorPath = "delegationMembers["+memberCounter+"]";
 			mapToValidate = attributeValidationHelper.convertQualifiersToMap(delegationMember.getQualifiers());
 			errorsTemp = kimTypeService.validateAttributes(kimType.getId(), mapToValidate);
-			validationErrors.putAll(
+			validationErrors.addAll(
 					attributeValidationHelper.convertErrors(errorPath,
                             attributeValidationHelper.convertQualifiersToAttrIdxMap(delegationMember.getQualifiers()),
                             errorsTemp));
@@ -779,7 +780,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 				GlobalVariables.getMessageMap().putError("document."+errorPath, RiceKeyConstants.ERROR_DELEGATE_ROLE_MEMBER_ASSOCIATION, new String[]{});
 			} else{
 				kimTypeService.validateAttributesAgainstExisting(kimType.getId(), roleMember.getAttributes(), mapToValidate);
-				validationErrors.putAll(
+				validationErrors.addAll(
 						attributeValidationHelper.convertErrors(errorPath, attributeValidationHelper
                                 .convertQualifiersToAttrIdxMap(delegationMember.getQualifiers()), errorsTemp));
 			}

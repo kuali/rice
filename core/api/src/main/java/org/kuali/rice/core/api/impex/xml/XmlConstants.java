@@ -33,7 +33,6 @@ public final class XmlConstants {
     public static final Namespace GROUP_NAMESPACE = Namespace.getNamespace("", "ns:workflow/Group");
     public static final Namespace RULE_TEMPLATE_NAMESPACE = Namespace.getNamespace("", "ns:workflow/RuleTemplate");
     public static final Namespace RULE_ATTRIBUTE_NAMESPACE = Namespace.getNamespace("", "ns:workflow/RuleAttribute");
-    public static final Namespace HELP_NAMESPACE = Namespace.getNamespace("", "ns:workflow/Help");
     public static final Namespace EDL_NAMESPACE = Namespace.getNamespace("", "ns:workflow/EDocLite");
     public static final Namespace STYLE_NAMESPACE = Namespace.getNamespace("", "ns:workflow/Style");
 

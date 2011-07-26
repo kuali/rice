@@ -35,7 +35,7 @@ function runValidationScript(scriptFunction){
 //checks to see if any fields depend on the field being validated, if they do calls validate
 //on them as well which will either add errors or remove them
 //Note: with the way that validation work the field must have been previously validated (ie validated)
-function dependsOnCheck(element){
+function dependsOnCheck(element, nameArray){
 	var name;
 	if(jq(element).is("option")){
 		name = jq(element).parent().attr('name');
@@ -43,12 +43,30 @@ function dependsOnCheck(element){
 	else{
 		name = jq(element).attr('name');
 	}
+	jq("[name='"+ name + "']").trigger("checkReq");
 	name = name.replace(/\./, "\\.");
+	nameArray.push(name);
+	
+
 	jq(".dependsOn-" + name).each(function(){
+		
+		var elementName;
+		if(jq(this).is("option")){
+			elementName = jq(this).parent().attr('name');
+		}
+		else{
+			elementName = jq(this).attr('name');
+		}
+		elementName = elementName.replace(/\./, "\\.");
+		
 		if (jq(this).hasClass("valid") || jq(this).hasClass("error")) {
 			jq.watermark.hide(this);
 			jq(this).valid();
 			jq.watermark.show(this);
+			var namePresent = jq.inArray(elementName, nameArray);
+			if(namePresent == undefined || namePresent == -1){
+				dependsOnCheck(this, nameArray);
+			}
 		}
 	});
 }
@@ -82,6 +100,10 @@ function setupShowReqIndicatorCheck(controlName, requiredName, booleanFunction){
 
 		//also check condition when corresponding control is changed
 		jq("[name='"+ controlName + "']").change(function(){
+			checkForRequiredness(controlName, requiredName, booleanFunction, indicator);
+		});
+		
+		jq("[name='"+ controlName + "']").bind("checkReq", function(){
 			checkForRequiredness(controlName, requiredName, booleanFunction, indicator);
 		});
 	}

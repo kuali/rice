@@ -154,11 +154,34 @@ public class ClientValidationUtils {
 		    regex.replaceAll("\\\\", "\\\\\\\\");
 		}
 		
-		return "\njQuery.validator.addMethod(\"" + key
-				+ "\", function(value, element) {\n" + " return this.optional(element) || "
-				+ "/" + regex + "/.test(value); " + "}, \""
-				+ message + "\");";
+        return "\njQuery.validator.addMethod(\"" + key
+                + "\", function(value, element) {\n "
+                + "return this.optional(element) || /" + regex + "/.test(value);"
+                + "}, \"" + message + "\");";
 	}
+	
+	/**
+     * Returns the add method jquery validator call for the regular expression
+     * stored in validCharactersConstraint that explicitly checks a boolean.  Needed because one method
+     * accepts params and the other doesn't.
+     * 
+     * @param validCharactersConstraint
+     * @return js validator.addMethod script
+     */
+    public static String getRegexMethodWithBooleanCheck(AttributeField field, ValidCharactersConstraint validCharactersConstraint) {
+        String message = generateMessageFromLabelKey(validCharactersConstraint.getValidationMessageParams(), validCharactersConstraint.getLabelKey());
+        String key = "validChar-" + field.getBindingInfo().getBindingPath() + methodKey;
+        
+        String regex = validCharactersConstraint.getValue();
+        if(regex.contains("\\\\")){
+            regex.replaceAll("\\\\", "\\\\\\\\");
+        }
+        
+        return "\njQuery.validator.addMethod(\"" + key
+                + "\", function(value, element, doCheck) {\n if(doCheck === false){return true;}else{"
+                + "return this.optional(element) || /" + regex + "/.test(value);}"
+                + "}, \"" + message + "\");";
+    }
 	
 
 	/**
@@ -329,7 +352,7 @@ public class ClientValidationUtils {
 		int constraintCount = 0;
 		if (constraint instanceof BaseConstraint && ((BaseConstraint) constraint).getApplyClientSide()) {
 			if (constraint instanceof SimpleConstraint) {
-				if (((SimpleConstraint) constraint).getRequired()) {
+				if (((SimpleConstraint) constraint).getRequired() != null && ((SimpleConstraint) constraint).getRequired()) {
 					rule = rule + "required: function(element){\nreturn (" + booleanStatement + ");}";
 					//special requiredness indicator handling
 					String showIndicatorScript = "";
@@ -382,7 +405,7 @@ public class ClientValidationUtils {
 				String regexMethod = "";
 				String methodName = "";
 				if(StringUtils.isNotEmpty(((ValidCharactersConstraint)constraint).getValue())) {
-					regexMethod = ClientValidationUtils.getRegexMethod(field, (ValidCharactersConstraint) constraint) + "\n";
+					regexMethod = ClientValidationUtils.getRegexMethodWithBooleanCheck(field, (ValidCharactersConstraint) constraint) + "\n";
 					methodName = "validChar-" + field.getBindingInfo().getBindingPath() + methodKey;
 					methodKey++;
 				}
@@ -436,7 +459,10 @@ public class ClientValidationUtils {
 	 */
 	public static void processPrerequisiteConstraint(AttributeField field, PrerequisiteConstraint constraint, View view, String booleanStatement) {
 		if (constraint != null && constraint.getApplyClientSide().booleanValue()) {
-			addScriptToPage(view, field, getPrerequisiteStatement(field, view, constraint, booleanStatement)
+		    String dependsClass = "dependsOn-" + constraint.getAttributePath();
+		    String addClass = "jq('[name=\""+ field.getBindingInfo().getBindingPath() + "\"]').addClass('" + dependsClass + "');" +
+		        "jq('[name=\""+ constraint.getAttributePath() + "\"]').addClass('" + "dependsOn-" + field.getBindingInfo().getBindingPath() + "');";
+			addScriptToPage(view, field, addClass + getPrerequisiteStatement(field, view, constraint, booleanStatement)
 					+ getPostrequisiteStatement(field, constraint, booleanStatement));
 	        //special requiredness indicator handling
 	        String showIndicatorScript = "setupShowReqIndicatorCheck('"+ field.getBindingInfo().getBindingPath() +"', '" + constraint.getAttributePath() + "', " + "function(){\nreturn (coerceValue('" + field.getBindingInfo().getBindingPath() + "') && " + booleanStatement + ");});\n";
@@ -481,10 +507,8 @@ public class ClientValidationUtils {
 		}
 		
 		// field occurs before case
-		String dependsClass = "dependsOn-" + constraint.getAttributePath();
 		String methodName = "prConstraint-" + field.getBindingInfo().getBindingPath()+ methodKey;
-		String addClass = "jq('[name=\""+ field.getBindingInfo().getBindingPath() + "\"]').addClass('" + dependsClass + "');\n" +
-			"jq('[name=\""+ field.getBindingInfo().getBindingPath() + "\"]').addClass('" + methodName + "');\n";
+		String addClass = "jq('[name=\""+ field.getBindingInfo().getBindingPath() + "\"]').addClass('" + methodName + "');\n";
 		String method = "\njQuery.validator.addMethod(\""+ methodName +"\", function(value, element) {\n" +
 			" if(" + booleanStatement + "){ return (this.optional(element) || (coerceValue('" + constraint.getAttributePath() + "')));}else{return true;} " +
 			"}, \"" + message + "\");";

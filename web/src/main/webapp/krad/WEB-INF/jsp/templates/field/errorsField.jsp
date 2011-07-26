@@ -36,7 +36,7 @@
 		     <ul>
 			     <c:if test="${field.displayErrorMessages}">
 				     <c:forEach var="message" items="${field.errors}">
-					    	<li><pre>${message}</pre></li>
+					    	<li class="errorLine"><pre>${message}</pre></li>
 				     </c:forEach>
 			     </c:if>
 		     </ul>

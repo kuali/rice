@@ -35,7 +35,7 @@ function setupValidator(){
 		var validateDirty = jq("[name='validateDirty']").val();
 		if (validateDirty == "true")
 		{
-			var dirty = jq(".field_attribute").find("input.dirty")
+			var dirty = jq(".field_attribute").find("input.dirty");
 			//methodToCall check is needed to skip from normal way of unloading (cancel,save,close)
 			var methodToCall = jq("[name='methodToCall']").val();
 			if (dirty.length > 0 && methodToCall == null)
@@ -51,11 +51,11 @@ function setupValidator(){
 		ignore: ".ignoreValid",
 		onclick: function(element) {
 			jq(element).valid();
-			dependsOnCheck(element);
+			dependsOnCheck(element, new Array());
 		},
 		onfocusout: function(element) {
 			jq(element).valid();
-			dependsOnCheck(element);
+			dependsOnCheck(element, new Array());
 		},
 		wrapper: "li",
 		highlight: function(element, errorClass, validClass) {

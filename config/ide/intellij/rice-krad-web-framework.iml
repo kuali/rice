@@ -4,13 +4,18 @@
     <output url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../krad/krad-web-framework">
-      <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/generated-sources/test-annotations" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/generated-sources/annotations" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/src/test/groovy" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/generated-sources/test-annotations" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/generated-sources/annotations" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/surefire" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/surefire-reports" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

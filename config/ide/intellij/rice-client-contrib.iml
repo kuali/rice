@@ -4,13 +4,16 @@
     <output url="file://$MODULE_DIR$/../../../client-contrib/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../client-contrib/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../client-contrib">
-      <sourceFolder url="file://$MODULE_DIR$/../../../client-contrib/target/generated-sources/annotations" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../client-contrib/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../client-contrib/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../client-contrib/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../client-contrib/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../client-contrib/src/test/groovy" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../client-contrib/target/generated-sources/annotations" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../client-contrib/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../client-contrib/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../client-contrib/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../client-contrib/target/surefire" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

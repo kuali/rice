@@ -9,12 +9,14 @@
     <output url="file://$MODULE_DIR$/../../../it/core/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../it/core/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../it/core">
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/core/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/core/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/core/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/core/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/core/src/test/resources/META-INF" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../it/core/target/generated-sources/test-annotations" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/core/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../it/core/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../it/core/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -164,8 +166,8 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: mysql:mysql-connector-java:5.1.17" level="project" />
     <orderEntry type="library" name="Maven: com.oracle:ojdbc14:10.2.0.3.0" level="project" />
     <orderEntry type="module" module-name="rice-it-internal-tools" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-jsp-2.1:7.4.4.v20110707" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-servlet:7.4.4.v20110707" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-jsp-2.1:7.4.5.v20110725" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-servlet:7.4.5.v20110725" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-security:7.4.2.v20110526" level="project" />
     <orderEntry type="library" name="Maven: org.mortbay.jetty:jsp-2.1-glassfish:2.1.v20100127" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jdt.core.compiler:ecj:3.5.1" level="project" />

@@ -39,8 +39,7 @@ import java.util.Map;
  */
 @WebService(name = "searchableAttributeServiceSoap", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
-public interface SearchableAttribute extends Serializable {
-
+public interface SearchableAttribute {
 
     @WebMethod(operationName = "generateSearchContent")
     @WebResult(name = "searchContent")
@@ -57,7 +56,7 @@ public interface SearchableAttribute extends Serializable {
     @WebResult(name = "searchFields")
     @XmlElementWrapper(name = "searchFields", required = false)
     @XmlElement(name = "searchField", required = false)
-    public List<RemotableAttributeField> getSearchFields(@WebParam(name = "documentSearchContext") DocumentSearchContext documentSearchContext);
+    public List<RemotableAttributeField> getSearchFields(@WebParam(name = "documentTypeName") String documentTypeName);
 
     @WebMethod(operationName = "validateSearchParameters")
     @WebResult(name = "validationErrors")

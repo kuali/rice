@@ -117,6 +117,11 @@ public class RuleAttributeServiceImpl implements RuleAttributeService {
     }
 
     @Override
+    public Object loadRuleAttributeService(RuleAttribute attribute) {
+        return loadRuleAttributeService(attribute, null);
+    }
+
+    @Override
     public Object loadRuleAttributeService(RuleAttribute attribute, String defaultApplicationId) {
         Object attributeService = null;
         // first check if the class name is a valid and available java class

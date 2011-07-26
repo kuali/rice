@@ -40,7 +40,6 @@ import org.kuali.rice.kew.docsearch.DocumentSearchResult;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.docsearch.SavedSearchResult;
 import org.kuali.rice.kew.docsearch.SearchAttributeCriteriaComponent;
-import org.kuali.rice.kew.docsearch.StandardDocumentSearchCriteriaProcessor;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
@@ -92,25 +91,18 @@ import java.util.regex.Pattern;
  */
 public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookupableHelperServiceImpl {
 
-	private static final long serialVersionUID = -5162419674659967408L;
-	DateTimeService dateTimeService;
-	DocumentLookupCriteriaProcessor processor;
-	boolean savedSearch = false;
-	private static final Pattern HREF_PATTERN = Pattern.compile("<a href=\"([^\"]+)\"");
+    private static final long serialVersionUID = -5162419674659967408L;
+    private static final Pattern HREF_PATTERN = Pattern.compile("<a href=\"([^\"]+)\"");
 
-	/**
-	 * @see org.kuali.rice.kew.bo.lookup.DocumentRouteHeaderValueLookupableHelperService#setDateTimeService(org.kuali.rice.krad.service.DateTimeService)
-	 */
-	public void setDateTimeService(DateTimeService dateTimeService) {
-		this.dateTimeService = dateTimeService;
-	}
+    protected boolean savedSearch = false;
+
+	private DocumentLookupCriteriaProcessor documentLookupCriteriaProcessor;
 
 	/**
 	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#performLookup(org.kuali.rice.krad.web.struts.form.LookupForm, java.util.Collection, boolean)
 	 */
 	@Override
-	public Collection performLookup(LookupForm lookupForm,
-			Collection resultTable, boolean bounded) {
+	public Collection performLookup(LookupForm lookupForm, Collection resultTable, boolean bounded) {
 
 		//TODO: ideally implement KNS updates to make this not require code from the parent
 
@@ -182,24 +174,10 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 		}
 
     	List<DocumentSearchResult> result = components.getSearchResults();
-//    	for (DocumentSearchResult documentSearchResult : result) {
-			displayList = result;//.getResultContainers();
-//		}
-
-		//####BEGIN COPIED CODE#########
+		displayList = result;
+        
         setBackLocation((String) lookupForm.getFieldsForLookup().get(KRADConstants.BACK_LOCATION));
         setDocFormKey((String) lookupForm.getFieldsForLookup().get(KRADConstants.DOC_FORM_KEY));
-
-//###COMENTED OUT
-//		  Collection displayList;
-//        // call search method to get results
-//        if (bounded) {
-//            displayList = getSearchResults(lookupForm.getFieldsForLookup());
-//        }
-//        else {
-//            displayList = getSearchResultsUnbounded(lookupForm.getFieldsForLookup());
-//        }
-//##COMENTED OUT
 
         HashMap<String,Class> propertyTypes = new HashMap<String, Class>();
 
@@ -211,39 +189,20 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 
         // iterate through result list and wrap rows with return url and action urls
 
-//COMMENTING THIS OUT FOR NOW
-//        for (Iterator iter = displayList.iterator(); iter.hasNext();) {
-//            BusinessObject element = (BusinessObject) iter.next();
-//        	if(element instanceof PersistableBusinessObject){
-//                lookupForm.setLookupObjectId(((PersistableBusinessObject)element).getObjectId());
-//            }
         DocumentRouteHeaderEBO element = new DocSearchCriteriaDTO();
         //TODO: additional BORestrictions through generator or component to lock down per document?
     	BusinessObjectRestrictions businessObjectRestrictions = getBusinessObjectAuthorizationService().getLookupResultRestrictions(element, user);
 
-//          String actionUrls = getActionUrls(element, pkNames, businessObjectRestrictions);
-//ADDED (4 lines)
         for (DocumentSearchResult documentSearchResult : result) {
 
-
-
-
-
         	DocumentSearchResult docSearchResult = (DocumentSearchResult)documentSearchResult;
-//TODO: where to get these from?
-//        	HtmlData returnUrl = new AnchorHtmlData();
         	String actionUrls = "";
 
-//ADDED (3)
-            List<? extends Column> origColumns = components.getColumns();//getColumns();
+            List<? extends Column> origColumns = components.getColumns();
             List<Column> newColumns = new ArrayList<Column>();
             List<KeyValueSort> keyValues = docSearchResult.getResultContainers();
             for (int i = 0; i < origColumns.size(); i++) {
 
-//            for (Iterator iterator = columns.iterator(); iterator.hasNext();) {
-
-//                Column col = (Column) iterator.next();
-//ADDED 3
             	  Column col = (Column) origColumns.get(i);
             	  KeyValueSort keyValue = null;
             	  for (KeyValueSort keyValueFromList : keyValues) {
@@ -255,7 +214,6 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
             	  if(keyValue==null) {
             		  //means we didn't find an indexed value for this, this seems bad but happens a lot we should research why
             		  keyValue = new KeyValueSort();
-//            		  System.out.println("column: "+col.getPropertyName()+"has an empty KeyValue, this should never happen");
             	  }
 
             	  //Set values from keyvalue on column
@@ -285,24 +243,19 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 
                 // pick off result column from result list, do formatting
                 String propValue = KRADConstants.EMPTY_STRING;
-//                Object prop = ObjectUtils.getPropertyValue(element, col.getPropertyName());
-//ADDED
                 Object prop=keyValue.getSortValue();
 
                 // set comparator and formatter based on property type
                 Class propClass = propertyTypes.get(propertyName);
                 if ( propClass == null ) {
                     try {
-                    	//ADDED 3
                     	if(prop!=null) {
                     		propertyTypes.put(propertyName, prop.getClass());
                     		propClass = prop.getClass();
                     	}
 
-                    	//propClass = ObjectUtils.getPropertyType( element, col.getPropertyName(), getPersistenceStructureService() );
-//                    	propertyTypes.put( col.getPropertyName(), propClass );
                     } catch (Exception e) {
-//                        throw new RuntimeException("Cannot access PropertyType for property " + "'" + col.getPropertyName() + "' " + " on an instance of '" + element.getClass().getName() + "'.", e);
+                        // TODO why are we eating this?
                     }
                 }
 
@@ -498,19 +451,11 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 		//clear out
 		getRows().clear();
 
-        processor = new DocumentLookupCriteriaProcessorKEWAdapter();
-
-
 		DocumentType docType = null;
 
 		if(StringUtils.isNotEmpty(docTypeName)) {
 			docType = getValidDocumentType((String)docTypeName);
 		}
-
-		DocumentLookupCriteriaProcessorKEWAdapter documentLookupCriteriaProcessorKEWAdapter = (DocumentLookupCriteriaProcessorKEWAdapter)processor;
-		
-		//TODO: This should probably be moved into spring injection since it's a constant
-		documentLookupCriteriaProcessorKEWAdapter.setDataDictionaryService(getDataDictionaryService());
 
 		boolean detailed=false;
 		if(this.getParameters().containsKey("isAdvancedSearch")) {
@@ -527,7 +472,7 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 		}
 
 		//call get rows
-		List<Row> rows = processor.getRows(docType,lookupRows, detailed, superSearch);
+		List<Row> rows = getDocumentLookupCriteriaProcessor().getRows(docType,lookupRows, detailed, superSearch);
 
 		BusinessObjectEntry boe = (BusinessObjectEntry) KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(this.getBusinessObjectClass().getName());
         int numCols = boe.getLookupDefinition().getNumOfColumns();
@@ -567,19 +512,12 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 	        }
 	        super.getRows().clear();
 
-	        processor = new DocumentLookupCriteriaProcessorKEWAdapter();
-
 	        String docTypeName = searchCriteria.getDocTypeFullName();
 	        DocumentType docType = null;
 
 	        if(StringUtils.isNotEmpty(docTypeName)) {
 	            docType = getValidDocumentType(docTypeName);
 	        }
-
-	        DocumentLookupCriteriaProcessorKEWAdapter documentLookupCriteriaProcessorKEWAdapter = (DocumentLookupCriteriaProcessorKEWAdapter)processor;
-	        
-	        //TODO: This should probably be moved into spring injection since it's a constant
-	        documentLookupCriteriaProcessorKEWAdapter.setDataDictionaryService(getDataDictionaryService());
 
 	        boolean detailed=false;
 	        if(this.getParameters().containsKey("isAdvancedSearch")) {
@@ -595,7 +533,7 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 	            superSearch = DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING.equalsIgnoreCase((String)fieldValues.get("superUserSearch")[0]);
 	        }
 	        //call get rows
-	        List<Row> rows = documentLookupCriteriaProcessorKEWAdapter.getRows(docType, super.getRows(), detailed, superSearch);
+	        List<Row> rows = getDocumentLookupCriteriaProcessor().getRows(docType, super.getRows(), detailed, superSearch);
 
 	        super.getRows().addAll(rows);
 
@@ -811,7 +749,7 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 	 */
 	@Override
 	public boolean shouldDisplayHeaderNonMaintActions() {
-		return this.processor.shouldDisplayHeaderNonMaintActions();
+		return getDocumentLookupCriteriaProcessor().shouldDisplayHeaderNonMaintActions();
 	}
 
 
@@ -820,7 +758,7 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 	 */
 	@Override
 	public boolean shouldDisplayLookupCriteria() {
-		return this.processor.shouldDisplayLookupCriteria();
+		return getDocumentLookupCriteriaProcessor().shouldDisplayLookupCriteria();
 	}
 
 
@@ -1206,19 +1144,12 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 	    return valueToReturn;
 	}
 
-	/*
-    @Override
-    public List<Row> getRows() {
-        if(StringUtils.isEmpty(docTypeName)) {
-            super.performClear(lookupForm);
-        } else {
-            DocSearchCriteriaDTO docCriteria = DocumentLookupCriteriaBuilder.populateCriteria(fieldsToClear);
-            //TODO: Chris - (2 stage clear) set the isOnlyDocTypeFilled, to true if only doc type coming in (besides hidden) and false otherwise)
-            docCriteria = getValidDocumentType(docTypeName).getDocumentSearchGenerator().clearSearch(docCriteria);
-        }
-
-        return super.getRows();
+	protected DocumentLookupCriteriaProcessor getDocumentLookupCriteriaProcessor() {
+        return documentLookupCriteriaProcessor;
     }
-	*/
+
+    public void setDocumentLookupCriteriaProcessor(DocumentLookupCriteriaProcessor documentLookupCriteriaProcessor) {
+        this.documentLookupCriteriaProcessor = documentLookupCriteriaProcessor;
+    }
 
 }

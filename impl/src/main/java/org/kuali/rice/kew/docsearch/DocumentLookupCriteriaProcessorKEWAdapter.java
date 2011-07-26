@@ -43,19 +43,20 @@ import java.util.Set;
  */
 public class DocumentLookupCriteriaProcessorKEWAdapter implements DocumentLookupCriteriaProcessor {
 
-    /**
-     * TODO as of Rice 2.0, this is no longer customizable at a DocumentType-by-DocumentType level
-     * it was not being used by existing client applications and references "implementation" classes
-     * which we do not want to expose through the API
-     */
-	DocumentSearchCriteriaProcessor criteriaProcessor = new StandardDocumentSearchCriteriaProcessor();
-
-	//TODO: remove this and use service locator or try helper in WorkflowUtils if sufficient
-	DataDictionaryService dataDictionaryService;
+	private DocumentSearchCriteriaProcessor criteriaProcessor;
+	private DataDictionaryService dataDictionaryService;
 
 	protected DocumentSearchCriteriaProcessor getCriteriaProcessor() {
 		return this.criteriaProcessor;
 	}
+
+    public void setCriteriaProcessor(DocumentSearchCriteriaProcessor criteriaProcessor) {
+        this.criteriaProcessor = criteriaProcessor;
+    }
+
+    protected DataDictionaryService getDataDictionaryService() {
+        return this.dataDictionaryService;
+    }
 
 	public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
 		this.dataDictionaryService = dataDictionaryService;
@@ -80,11 +81,10 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements DocumentLookup
 
 
 		if(documentType!=null) {
-
 			//search atts
 			searchAttRows = searchAttRows(documentType);
 			rows.addAll(searchAttRows);
-	}
+	    }
 
 		//post atts
 		List<List<StandardDocSearchCriteriaFieldContainer>> postSearchAttFields;

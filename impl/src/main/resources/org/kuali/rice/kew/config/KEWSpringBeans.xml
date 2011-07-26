@@ -380,7 +380,16 @@
       </property>
     </bean>
 
-    <bean id="docSearchCriteriaDTOLookupHelperService" class="org.kuali.rice.kew.bo.lookup.DocSearchCriteriaDTOLookupableHelperServiceImpl" scope="prototype"/>
+    <bean id="documentSearchCriteriaProcessor" class="org.kuali.rice.kew.docsearch.StandardDocumentSearchCriteriaProcessor" scope="prototype" />
+
+    <bean id="documentLookupCriteriaProcessor" class="org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessorKEWAdapter" scope="prototype">
+      <property name="dataDictionaryService" ref="dataDictionaryService" />
+      <property name="criteriaProcessor" ref="documentSearchCriteriaProcessor" />
+    </bean>
+
+    <bean id="docSearchCriteriaDTOLookupHelperService" class="org.kuali.rice.kew.bo.lookup.DocSearchCriteriaDTOLookupableHelperServiceImpl" scope="prototype">
+      <property name="documentLookupCriteriaProcessor" ref="documentLookupCriteriaProcessor" />
+    </bean>
 
     <bean id="docSearchCriteriaDTOLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
       <property name="lookupableHelperService">

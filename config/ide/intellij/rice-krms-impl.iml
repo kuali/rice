@@ -11,17 +11,14 @@
     <content url="file://$MODULE_DIR$/../../../krms/impl">
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/impl/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/impl/src/test/resources" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../krms/impl/target/generated-sources/annotations" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/impl/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/impl/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/impl/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/impl/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/impl/src/test/groovy" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../krms/impl/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../krms/impl/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../krms/impl/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../krms/impl/target/maven-archiver" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../krms/impl/target/surefire" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../krms/impl/target/surefire-reports" />
       <excludeFolder url="file://$MODULE_DIR$/../../../krms/impl/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />

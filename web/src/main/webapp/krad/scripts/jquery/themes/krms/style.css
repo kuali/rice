@@ -4,6 +4,9 @@
  * Supported plugins: ui (hovered, clicked), checkbox, contextmenu, search
  */
 
+/* get rid of ugly link underlines in tree */
+li a.agendaNode { text-decoration: none; }
+
 .jstree-krms > ul { background-color:transparent; }
 .jstree-krms li, 
 .jstree-krms ins { background-image:url("d.png"); background-repeat:no-repeat; background-color:transparent; }

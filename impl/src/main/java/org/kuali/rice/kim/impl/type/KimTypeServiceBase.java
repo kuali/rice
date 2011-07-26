@@ -121,8 +121,6 @@ public class KimTypeServiceBase implements KimTypeService {
 	 * This is the default implementation.  It calls into the service for each attribute to
 	 * validate it there.  No combination validation is done.  That should be done
 	 * by overriding this method.
-	 *
-	 * @see org.kuali.rice.kim.api.type.KimTypeService#validateAttributes(Map<String, String>)
 	 */
 	@Override
 	public Map<String, String> validateAttributes(String kimTypeId, Map<String, String> attributes) {

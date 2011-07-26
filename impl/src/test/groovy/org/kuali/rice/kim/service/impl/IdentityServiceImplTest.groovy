@@ -32,6 +32,9 @@ import org.junit.Ignore
 import org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierBo
 import org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierTypeBo
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifier
+import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo
+import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo
+import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation
 
 class IdentityServiceImplTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
@@ -50,6 +53,7 @@ class IdentityServiceImplTest {
     static Map<String, EntityEmailBo> sampleEntityEmails = new HashMap<String, EntityEmailBo>();
     static Map<String, EntityPhoneBo> sampleEntityPhones = new HashMap<String, EntityPhoneBo>();
     static Map<String, EntityExternalIdentifierBo> sampleEntityExternalIdentifiers = new HashMap<String, EntityExternalIdentifierBo>();
+    static Map<String, EntityAffiliationBo> sampleEntityAffiliations = new HashMap<String, EntityAffiliationBo>();
 
     @BeforeClass
     static void createSampleBOs() {
@@ -70,6 +74,8 @@ class IdentityServiceImplTest {
         EntityPhoneBo firstEntityPhoneBo = new EntityPhoneBo(entityId: "AAA", entityTypeCode: "typecodeone", phoneType: firstPhoneType, id: "phoneidone", phoneTypeCode: "phonetypecodeone", active: true);
         EntityExternalIdentifierTypeBo firstExternalIdentifierType = new EntityExternalIdentifierTypeBo(code: "exidtypecodeone");
         EntityExternalIdentifierBo firstEntityExternalIdentifierBo = new EntityExternalIdentifierBo(entityId: "AAA", externalIdentifierType: firstExternalIdentifierType, id: "exidone", externalIdentifierTypeCode: "exidtypecodeone");
+        EntityAffiliationTypeBo firstAffiliationType = new EntityAffiliationTypeBo(code: "affiliationcodeone");
+        EntityAffiliationBo firstEntityAffiliationBo = new EntityAffiliationBo(entityId: "AAA", affiliationType: firstAffiliationType, id: "affiliationidone", affiliationTypeCode: "affiliationcodeone", active: true);
         List<PrincipalBo> firstPrincipals = new ArrayList<PrincipalBo>();
         firstPrincipals.add(firstEntityPrincipal);
         EntityBo firstEntityBo = new EntityBo(active: true, id: "AAA", privacyPreferences: firstEntityPrivacyPreferencesBo, bioDemographics: firstEntityBioDemographicsBo, principals: firstPrincipals);
@@ -86,6 +92,8 @@ class IdentityServiceImplTest {
         EntityPhoneBo secondEntityPhoneBo = new EntityPhoneBo(entityId: "BBB", entityTypeCode: "typecodetwo", phoneType: secondPhoneType, id: "phoneidtwo", phoneTypeCode: "phonetypecodetwo", active: true);
         EntityExternalIdentifierTypeBo secondExternalIdentifierType = new EntityExternalIdentifierTypeBo(code: "exidtypecodetwo");
         EntityExternalIdentifierBo secondEntityExternalIdentifierBo = new EntityExternalIdentifierBo(entityId: "BBB", externalIdentifierType: secondExternalIdentifierType, id: "exidtwo", externalIdentifierTypeCode: "exidtypecodetwo");
+        EntityAffiliationTypeBo secondAffiliationType = new EntityAffiliationTypeBo(code: "affiliationcodetwo");
+        EntityAffiliationBo secondEntityAffiliationBo = new EntityAffiliationBo(entityId: "BBB", affiliationType: secondAffiliationType, id: "affiliationidtwo", affiliationTypeCode: "affiliationcodetwo", active: true);
         List<PrincipalBo> secondPrincipals = new ArrayList<PrincipalBo>();
         secondPrincipals.add(secondEntityPrincipal);
         EntityBo secondEntityBo = new EntityBo(active: true, id: "BBB", privacyPreferences: secondEntityPrivacyPreferencesBo, bioDemographics: secondEntityBioDemographicsBo, principals: secondPrincipals);
@@ -116,6 +124,10 @@ class IdentityServiceImplTest {
 
         for (bo in [firstEntityExternalIdentifierBo, secondEntityExternalIdentifierBo]) {
             sampleEntityExternalIdentifiers.put(bo.entityId, bo);
+        }
+
+        for (bo in [firstEntityAffiliationBo, secondEntityAffiliationBo]) {
+            sampleEntityAffiliations.put(bo.entityId, bo);
         }
     }
 
@@ -1166,5 +1178,140 @@ class IdentityServiceImplTest {
         EntityExternalIdentifier entityExternalIdentifier = identityService.updateExternalIdentifier(EntityExternalIdentifierBo.to(existingEntityExternalIdentifierBo));
 
         Assert.assertEquals(EntityExternalIdentifierBo.to(existingEntityExternalIdentifierBo), entityExternalIdentifier);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testaddAffiliationToEntityWithNullFails() {
+        EntityAffiliation entityAffiliation = identityService.addAffiliationToEntity(null);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testaddAffiliationToEntityWithExistingObjectFails() {
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityAffiliations.size()) {
+            Class clazz, Map map -> for (EntityAffiliationBo entityAffiliationBo in sampleEntityAffiliations.values()) {
+                if (entityAffiliationBo.id.equals(map.get("id")))
+                {
+                    return entityAffiliationBo;
+                }
+            }
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityAffiliationTypeBo firstAffiliationType = new EntityAffiliationTypeBo(code: "affiliationcodeone");
+        EntityAffiliationBo newEntityAffiliationBo = new EntityAffiliationBo(entityId: "AAA", affiliationType: firstAffiliationType, id: "affiliationidone", affiliationTypeCode: "affiliationcodeone", active: true);
+        EntityAffiliation entityAffiliation = identityService.addAffiliationToEntity(EntityAffiliationBo.to(newEntityAffiliationBo));
+    }
+
+    @Test
+    public void testAddAffiliationToEntitySucceeds() {
+        EntityAffiliationTypeBo firstAffiliationType = new EntityAffiliationTypeBo(code: "affiliationcodethree");
+        EntityAffiliationBo newEntityAffiliationBo = new EntityAffiliationBo(entityId: "CCC", affiliationType: firstAffiliationType, id: "affiliationidthree", affiliationTypeCode: "affiliationcodethree", active: true);
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityAffiliations.size()) {
+            Class clazz, Map map -> for (EntityAffiliationBo entityAffiliationBo in sampleEntityAffiliations.values()) {
+                if (entityAffiliationBo.id.equals(map.get("id")))
+                {
+                    return entityAffiliationBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityAffiliationBo bo -> return newEntityAffiliationBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityAffiliation entityAffiliation = identityService.addAffiliationToEntity(EntityAffiliationBo.to(newEntityAffiliationBo));
+
+        Assert.assertEquals(EntityAffiliationBo.to(newEntityAffiliationBo), entityAffiliation);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testUpdateAffiliationWithNullFails() {
+        EntityAffiliation entityAffiliation = identityService.updateAffiliation(null);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testUpdateAffiliationWithNonExistingObjectFails() {
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityAffiliations.size()) {
+            Class clazz, Map map -> for (EntityAffiliationBo entityAffiliationBo in sampleEntityAffiliations.values()) {
+                if (entityAffiliationBo.id.equals(map.get("id")))
+                {
+                    return entityAffiliationBo;
+                }
+            }
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityAffiliationTypeBo firstAffiliationType = new EntityAffiliationTypeBo(code: "affiliationcodethree");
+        EntityAffiliationBo newEntityAffiliationBo = new EntityAffiliationBo(entityId: "CCC", affiliationType: firstAffiliationType, id: "affiliationidthree", affiliationTypeCode: "affiliationcodethree", active: true);
+        EntityAffiliation entityAffiliation = identityService.updateAffiliation(EntityAffiliationBo.to(newEntityAffiliationBo));
+    }
+
+    @Test
+    public void testUpdateAffiliationSucceeds() {
+        EntityAffiliationTypeBo firstAffiliationType = new EntityAffiliationTypeBo(code: "affiliationcodeone");
+        EntityAffiliationBo existingEntityAffiliationBo = new EntityAffiliationBo(entityId: "AAA", affiliationType: firstAffiliationType, id: "affiliationidone", affiliationTypeCode: "affiliationcodeone", active: true);
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityAffiliations.size()) {
+            Class clazz, Map map -> for (EntityAffiliationBo entityAffiliationBo in sampleEntityAffiliations.values()) {
+                if (entityAffiliationBo.id.equals(map.get("id")))
+                {
+                    return entityAffiliationBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityAffiliationBo bo -> return existingEntityAffiliationBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityAffiliation entityAffiliation = identityService.updateAffiliation(EntityAffiliationBo.to(existingEntityAffiliationBo));
+
+        Assert.assertEquals(EntityAffiliationBo.to(existingEntityAffiliationBo), entityAffiliation);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testInactivateAffiliationWithNonExistentIdFails() {
+        mockBoService.demand.findByPrimaryKey(1..1) {
+            Class clazz, Map map -> return null;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityAffiliation entityAffiliation = identityService.inactivateAffiliation("new");
+    }
+
+    @Test
+    public void testInactivateAffiliationSucceeds()
+    {
+
+        EntityAffiliationBo existingEntityAffiliationBo = sampleEntityAffiliations.get("AAA");
+        EntityAffiliationTypeBo firstAffiliationType = new EntityAffiliationTypeBo(code: "affiliationcodeone");
+        EntityAffiliationBo inactiveEntityAffiliationBo = new EntityAffiliationBo(entityId: "AAA", affiliationType: firstAffiliationType, id: "affiliationidone", affiliationTypeCode: "affiliationcodeone", active: false);
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityAffiliations.size()) {
+            Class clazz, Map map -> for (EntityAffiliationBo entityAffiliationBo in sampleEntityAffiliations.values()) {
+                if (entityAffiliationBo.id.equals(map.get("id")))
+                {
+                    return entityAffiliationBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityAffiliationBo bo -> return inactiveEntityAffiliationBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityAffiliation inactiveEntityAffiliation = identityService.inactivateAffiliation(existingEntityAffiliationBo.id);
+
+        Assert.assertEquals(EntityAffiliationBo.to(inactiveEntityAffiliationBo), inactiveEntityAffiliation);
     }
 }

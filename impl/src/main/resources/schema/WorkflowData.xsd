@@ -22,7 +22,6 @@
         xmlns:ra="ns:workflow/RuleAttribute"
         xmlns:rt="ns:workflow/RuleTemplate"
         xmlns:rc="ns:workflow/Rule"
-        xmlns:h="ns:workflow/Help"
         xmlns:ss="ns:workflow/Style"
         xmlns:ed="ns:workflow/EDocLite"
         targetNamespace="ns:workflow"
@@ -61,7 +60,6 @@
   <import namespace="ns:workflow/RuleAttribute" schemaLocation="resource:RuleAttribute"/>
   <import namespace="ns:workflow/RuleTemplate" schemaLocation="resource:RuleTemplate"/>
   <import namespace="ns:workflow/Rule" schemaLocation="resource:Rule"/>
-  <import namespace="ns:workflow/Help" schemaLocation="resource:Help"/>
   <import namespace="ns:workflow/EDocLite" schemaLocation="resource:EDocLite"/>
   <import namespace="ns:workflow/Style" schemaLocation="resource:Style"/>
 
@@ -89,7 +87,6 @@
         <element ref="dt:documentTypes" minOccurs="0"/>
         <element ref="rc:rules" minOccurs="0"/>
         <element ref="rc:ruleDelegations" minOccurs="0"/>
-        <element ref="h:helpEntries" minOccurs="0"/>
         <element ref="ss:styles" minOccurs="0"/>
         <element ref="ed:edoclite" minOccurs="0"/>
       </all>

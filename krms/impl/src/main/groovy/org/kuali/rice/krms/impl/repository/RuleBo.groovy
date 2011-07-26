@@ -25,6 +25,7 @@ import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
+import org.kuali.rice.krms.api.repository.LogicalOperator
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.action.ActionDefinitionContract;
 import org.kuali.rice.krms.api.repository.proposition.PropositionType;
@@ -74,36 +75,77 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
 
        Node<RuleTreeNode, String> rootNode = new Node<RuleTreeNode, String>();
        propositionTree.setRootElement(rootNode);
-       
+
+       PropositionBo prop = this.getProposition();
+       buildPropTree( rootNode, prop );
+              
+       return propositionTree;
+   }
+   
+   private void buildPropTree( Node sprout, PropositionBo prop){       
        // This is a work in progress
        // will need a recursive function to walk the tree in the compound proposition
-       if (proposition != null) {
-           if (proposition.getPropositionTypeCode().equalsIgnoreCase(PropositionType.SIMPLE.getCode())){
+       if (prop != null) {
+           if (prop.getPropositionTypeCode().equalsIgnoreCase(PropositionType.SIMPLE.getCode())){
                // Simple Proposition
                // add a node for the description display with a child proposition node
                Node<RuleTreeNode, String> child = new Node<RuleTreeNode, String>();
-               child.setNodeLabel(proposition.getDescription());
+               child.setNodeLabel(prop.getDescription());
                child.setNodeType("ruleNode");
-               child.setData(new RuleTreeNode(proposition));
-               rootNode.getChildren().add(child);
+               child.setData(new RuleTreeNode(prop));
+               sprout.getChildren().add(child);
                
                Node<RuleTreeNode, String> grandChild = new Node<RuleTreeNode, String>();
-               RuleTreeSimplePropositionParameterNode pNode = new RuleTreeSimplePropositionParameterNode(proposition);
+               RuleTreeSimplePropositionParameterNode pNode = new RuleTreeSimplePropositionParameterNode(prop);
                grandChild.setNodeLabel(pNode.getParameterDisplayString());
                grandChild.setNodeType("simplePropositionParameterNode");
                grandChild.setData(pNode);
                child.getChildren().add(grandChild);
            }
-           else if (proposition.getPropositionTypeCode().equalsIgnoreCase(PropositionType.COMPOUND.getCode())){
+           else if (prop.getPropositionTypeCode().equalsIgnoreCase(PropositionType.COMPOUND.getCode())){
                // Compound Proposition
-               // TODO: implement this!!
+               Node<RuleTreeNode, String> aNode = new Node<RuleTreeNode, String>();
+               aNode.setNodeLabel(prop.getDescription());
+               aNode.setNodeType("compoundNode");
+               aNode.setData(new RuleTreeNode(prop));
+               sprout.getChildren().add(aNode);
+
+               boolean first = true;
+               List <PropositionBo> allMyChildren = prop.getCompoundComponents();
+               for (PropositionBo child : allMyChildren){
+                   if (!first){
+                       addOpCodeNode(aNode, prop);
+                   }
+                   first = false;
+                   buildPropTree(aNode, child);
+               }
            }
        }
-       
-       return propositionTree;
    }
    
    /**
+    * 
+    * This method adds an opCode Node to separate components in a compound proposition.
+    * 
+    * @param currentNode
+    * @param prop
+    * @return
+    */
+   private addOpCodeNode(Node currentNode, PropositionBo prop){
+       String opCodeLabel = "";
+       if (LogicalOperator.AND.getCode() == prop.getCompoundOpCode()){
+           opCodeLabel = "AND";
+       } else if (LogicalOperator.OR.getCode() == prop.getCompoundOpCode()){
+           opCodeLabel = "OR";
+       }
+       Node<RuleTreeNode, String> aNode = new Node<RuleTreeNode, String>();
+       aNode.setNodeLabel(opCodeLabel);
+       aNode.setNodeType("compoundOpCodeNode");
+       aNode.setData(new RuleTreeNode(prop));
+       currentNode.getChildren().add(aNode);
+   }
+   /**
+    * 
    * Converts a mutable bo to it's immutable counterpart
    * @param bo the mutable business object
    * @return the immutable object

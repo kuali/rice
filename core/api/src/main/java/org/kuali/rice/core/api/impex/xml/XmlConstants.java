@@ -45,7 +45,6 @@ public final class XmlConstants {
     public static final String DOCUMENT_TYPE_SCHEMA_LOCATION = "ns:workflow/DocumentType resource:DocumentType";
     public static final String RULE_TEMPLATE_SCHEMA_LOCATION = "ns:workflow/RuleTemplate resource:RuleTemplate";
     public static final String RULE_ATTRIBUTE_SCHEMA_LOCATION = "ns:workflow/RuleAttribute resource:RuleAttribute";
-    public static final String HELP_SCHEMA_LOCATION = "ns:workflow/Help resource:Help";
     public static final String EDL_SCHEMA_LOCATION = "ns:workflow/EDocLite resource:EDocLite";
     public static final String STYLE_SCHEMA_LOCATION = "ns:workflow/Style resource:Style";
 

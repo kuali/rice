@@ -56,6 +56,10 @@ function setupValidator(){
 		onfocusout: function(element) {
 			jq(element).valid();
 			dependsOnCheck(element, new Array());
+			if((element.type == "select-one" || element.type == "select-multiple") && jq(element).hasClass("valid")){
+				applyErrorColors(getAttributeId(element.id, element.type) + "_errors_div", 0, 0, 0, true);
+				showFieldIcon(getAttributeId(element.id, element.type) + "_errors_div", 0);
+			}
 		},
 		wrapper: "li",
 		highlight: function(element, errorClass, validClass) {

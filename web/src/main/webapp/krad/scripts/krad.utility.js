@@ -211,7 +211,7 @@ function checkDirty(event){
  */
 function getAttributeId(elementId, elementType){
 	var id = elementId;
-	if(elementType == "radio" || elementType == "checkbox"){
+	if(elementType == "radio" || elementType == "checkbox" || elementType == "select-one" || elementType == "select-multiple"){
 		id = elementId.replace(/_attribute\S*/, "");
 	}
 	return id;

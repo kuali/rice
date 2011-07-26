@@ -33,10 +33,10 @@
 		     <c:if test="${field.displayErrorTitle}">
 		       <strong>${field.errorTitle}</strong>
 		     </c:if>
-		     <ul>
+		     <ul class="errorLines">
 			     <c:if test="${field.displayErrorMessages}">
 				     <c:forEach var="message" items="${field.errors}">
-					    	<li class="errorLine"><pre>${message}</pre></li>
+					    	<li>${message}</li>
 				     </c:forEach>
 			     </c:if>
 		     </ul>
@@ -55,7 +55,7 @@
 	    <ul>
 		     <c:if test="${field.displayWarningMessages}">
 		     	<c:forEach var="message" items="${field.warnings}">
-			    	<li><pre>${message}</pre></li>
+			    	<li>${message}</li>
 		      	</c:forEach>
 		     </c:if>
 	    </ul>
@@ -74,7 +74,7 @@
     	<ul>
 	     	<c:if test="${field.displayInfoMessages}">
 	     		<c:forEach var="message" items="${field.infos}">
-				    <li><pre>${message}</pre></li>
+				    <li>${message}</li>
 			    </c:forEach>
 	     	</c:if>
     	</ul>

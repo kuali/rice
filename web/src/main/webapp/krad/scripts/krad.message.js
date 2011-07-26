@@ -123,11 +123,17 @@ function applyErrorColors(errorDivId, errorNum, warningNum, infoNum, clientSide)
 				else{
 					//we are only removing errors client side - no knowledge of warnings/infos
 					if(div.parent().hasClass("errorsField")){
-						var error_li = div.parent().find(".errorMessages").find("li.errorLine");
+						var error_ul = div.parent().find(".errorMessages").find("ul.errorLines");
 						var moreErrors = false;
-						error_li.each(function(){
-							if(jq(this).css("display") != "none"){
-								moreErrors = true;
+						error_ul.each(function(){
+							jq(this).children().each(function(){
+								if(jq(this).css("display") != "none"){
+									moreErrors = true;
+									return false;
+								}
+							});
+							if(moreErrors){
+								return false;
 							}
 						});
 

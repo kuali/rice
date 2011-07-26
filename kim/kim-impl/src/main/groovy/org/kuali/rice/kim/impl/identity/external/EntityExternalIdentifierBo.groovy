@@ -74,7 +74,7 @@ class EntityExternalIdentifierBo extends PersistableBusinessObjectBase implement
         bo.externalId = immutable.externalId
         bo.entityId = immutable.entityId
         bo.externalIdentifierTypeCode = immutable.externalIdentifierTypeCode
-        bo.externalIdentifierType = immutable.externalIdentifierType
+        bo.externalIdentifierType = EntityExternalIdentifierTypeBo.from(immutable.externalIdentifierType)
         bo.versionNumber = immutable.versionNumber
         bo.objectId = immutable.objectId
 

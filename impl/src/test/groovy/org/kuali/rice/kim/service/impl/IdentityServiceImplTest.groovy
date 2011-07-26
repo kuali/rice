@@ -29,6 +29,9 @@ import org.kuali.rice.kim.api.identity.phone.EntityPhone
 import org.kuali.rice.kim.impl.identity.phone.EntityPhoneBo
 import org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo
 import org.junit.Ignore
+import org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierBo
+import org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierTypeBo
+import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifier
 
 class IdentityServiceImplTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
@@ -46,6 +49,7 @@ class IdentityServiceImplTest {
     static Map<String, EntityAddressBo> sampleEntityAddresses = new HashMap<String, EntityAddressBo>();
     static Map<String, EntityEmailBo> sampleEntityEmails = new HashMap<String, EntityEmailBo>();
     static Map<String, EntityPhoneBo> sampleEntityPhones = new HashMap<String, EntityPhoneBo>();
+    static Map<String, EntityExternalIdentifierBo> sampleEntityExternalIdentifiers = new HashMap<String, EntityExternalIdentifierBo>();
 
     @BeforeClass
     static void createSampleBOs() {
@@ -64,6 +68,8 @@ class IdentityServiceImplTest {
         EntityEmailBo firstEntityEmailBo = new EntityEmailBo(entityId: "AAA", entityTypeCode: "typecodeone", emailType: firstEmailTypeBo, id:"emailidone", emailTypeCode: "emailcodeone", active: true);
         EntityPhoneTypeBo firstPhoneType = new EntityPhoneTypeBo(code: "phonecodeone");
         EntityPhoneBo firstEntityPhoneBo = new EntityPhoneBo(entityId: "AAA", entityTypeCode: "typecodeone", phoneType: firstPhoneType, id: "phoneidone", phoneTypeCode: "phonetypecodeone", active: true);
+        EntityExternalIdentifierTypeBo firstExternalIdentifierType = new EntityExternalIdentifierTypeBo(code: "exidtypecodeone");
+        EntityExternalIdentifierBo firstEntityExternalIdentifierBo = new EntityExternalIdentifierBo(entityId: "AAA", externalIdentifierType: firstExternalIdentifierType, id: "exidone", externalIdentifierTypeCode: "exidtypecodeone");
         List<PrincipalBo> firstPrincipals = new ArrayList<PrincipalBo>();
         firstPrincipals.add(firstEntityPrincipal);
         EntityBo firstEntityBo = new EntityBo(active: true, id: "AAA", privacyPreferences: firstEntityPrivacyPreferencesBo, bioDemographics: firstEntityBioDemographicsBo, principals: firstPrincipals);
@@ -78,6 +84,8 @@ class IdentityServiceImplTest {
         EntityEmailBo secondEntityEmailBo = new EntityEmailBo(entityId: "BBB", entityTypeCode: "typecodetwo", emailType: secondEmailTypeBo, id:"emailidtwo", emailTypeCode: "emailcodetwo", active: true);
         EntityPhoneTypeBo secondPhoneType = new EntityPhoneTypeBo(code: "phonecodetwo");
         EntityPhoneBo secondEntityPhoneBo = new EntityPhoneBo(entityId: "BBB", entityTypeCode: "typecodetwo", phoneType: secondPhoneType, id: "phoneidtwo", phoneTypeCode: "phonetypecodetwo", active: true);
+        EntityExternalIdentifierTypeBo secondExternalIdentifierType = new EntityExternalIdentifierTypeBo(code: "exidtypecodetwo");
+        EntityExternalIdentifierBo secondEntityExternalIdentifierBo = new EntityExternalIdentifierBo(entityId: "BBB", externalIdentifierType: secondExternalIdentifierType, id: "exidtwo", externalIdentifierTypeCode: "exidtypecodetwo");
         List<PrincipalBo> secondPrincipals = new ArrayList<PrincipalBo>();
         secondPrincipals.add(secondEntityPrincipal);
         EntityBo secondEntityBo = new EntityBo(active: true, id: "BBB", privacyPreferences: secondEntityPrivacyPreferencesBo, bioDemographics: secondEntityBioDemographicsBo, principals: secondPrincipals);
@@ -104,6 +112,10 @@ class IdentityServiceImplTest {
 
         for (bo in [firstEntityPhoneBo, secondEntityPhoneBo]) {
             sampleEntityPhones.put(bo.entityId, bo);
+        }
+
+        for (bo in [firstEntityExternalIdentifierBo, secondEntityExternalIdentifierBo]) {
+            sampleEntityExternalIdentifiers.put(bo.entityId, bo);
         }
     }
 
@@ -1054,5 +1066,105 @@ class IdentityServiceImplTest {
         EntityPhone inactiveEntityPhone = identityService.inactivatePhone(existingEntityPhoneBo.id);
 
         Assert.assertEquals(EntityPhoneBo.to(inactiveEntityPhoneBo), inactiveEntityPhone);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testaddExternalIdentifierToEntityWithNullFails() {
+        EntityExternalIdentifier entityExternalIdentifier = identityService.addExternalIdentifierToEntity(null);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testAddExternalIdentifierToEntityWithExistingObjectFails() {
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityExternalIdentifiers.size()) {
+            Class clazz, Map map -> for (EntityExternalIdentifierBo entityExternalIdentifierBo in sampleEntityExternalIdentifiers.values()) {
+                if (entityExternalIdentifierBo.entityId.equals(map.get("entityId"))
+                    && entityExternalIdentifierBo.externalIdentifierTypeCode.equals(map.get("externalIdentifierTypeCode")))
+                {
+                    return entityExternalIdentifierBo;
+                }
+            }
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityExternalIdentifierTypeBo firstExternalIdentifierType = new EntityExternalIdentifierTypeBo(code: "exidtypecodeone");
+        EntityExternalIdentifierBo newEntityExternalIdentifierBo = new EntityExternalIdentifierBo(entityId: "AAA", externalIdentifierType: firstExternalIdentifierType, id: "exidone", externalIdentifierTypeCode: "exidtypecodeone");
+        EntityExternalIdentifier entityExternalIdentifier = identityService.addExternalIdentifierToEntity(EntityExternalIdentifierBo.to(newEntityExternalIdentifierBo));
+    }
+
+    @Test
+    public void testAddExternalIdentifierToEntitySucceeds() {
+        EntityExternalIdentifierTypeBo firstExternalIdentifierType = new EntityExternalIdentifierTypeBo(code: "exidtypecodethree");
+        EntityExternalIdentifierBo newEntityExternalIdentifierBo = new EntityExternalIdentifierBo(entityId: "CCC", externalIdentifierType: firstExternalIdentifierType, id: "exidthree", externalIdentifierTypeCode: "exidtypecodethree");
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityExternalIdentifiers.size()) {
+            Class clazz, Map map -> for (EntityExternalIdentifierBo entityExternalIdentifierBo in sampleEntityExternalIdentifiers.values()) {
+                if (entityExternalIdentifierBo.entityId.equals(map.get("entityId"))
+                    && entityExternalIdentifierBo.externalIdentifierTypeCode.equals(map.get("externalIdentifierTypeCode")))
+                {
+                    return entityExternalIdentifierBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityExternalIdentifierBo bo -> return newEntityExternalIdentifierBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityExternalIdentifier entityExternalIdentifier = identityService.addExternalIdentifierToEntity(EntityExternalIdentifierBo.to(newEntityExternalIdentifierBo));
+
+        Assert.assertEquals(EntityExternalIdentifierBo.to(newEntityExternalIdentifierBo), entityExternalIdentifier);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testUpdateExternalIdentifierWithNullFails() {
+        EntityExternalIdentifier entityExternalIdentifier = identityService.updateExternalIdentifier(null);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testUpdateExternalIdentifierWithNonExistingObjectFails() {
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityExternalIdentifiers.size()) {
+            Class clazz, Map map -> for (EntityExternalIdentifierBo entityExternalIdentifierBo in sampleEntityExternalIdentifiers.values()) {
+                if (entityExternalIdentifierBo.entityId.equals(map.get("entityId"))
+                    && entityExternalIdentifierBo.externalIdentifierTypeCode.equals(map.get("externalIdentifierTypeCode")))
+                {
+                    return entityExternalIdentifierBo;
+                }
+            }
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityExternalIdentifierTypeBo firstExternalIdentifierType = new EntityExternalIdentifierTypeBo(code: "exidtypecodethree");
+        EntityExternalIdentifierBo newEntityExternalIdentifierBo = new EntityExternalIdentifierBo(entityId: "CCC", externalIdentifierType: firstExternalIdentifierType, id: "exidthree", externalIdentifierTypeCode: "exidtypecodethree");
+        EntityExternalIdentifier entityExternalIdentifier = identityService.updateExternalIdentifier(EntityExternalIdentifierBo.to(newEntityExternalIdentifierBo));
+    }
+
+    @Test
+    public void testUpdateExternalIdentifierSucceeds() {
+        EntityExternalIdentifierTypeBo firstExternalIdentifierType = new EntityExternalIdentifierTypeBo(code: "exidtypecodeone");
+        EntityExternalIdentifierBo existingEntityExternalIdentifierBo = new EntityExternalIdentifierBo(entityId: "AAA", externalIdentifierType: firstExternalIdentifierType, id: "exidone", externalIdentifierTypeCode: "exidtypecodeone");
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityExternalIdentifiers.size()) {
+            Class clazz, Map map -> for (EntityExternalIdentifierBo entityExternalIdentifierBo in sampleEntityExternalIdentifiers.values()) {
+                if (entityExternalIdentifierBo.entityId.equals(map.get("entityId"))
+                    && entityExternalIdentifierBo.externalIdentifierTypeCode.equals(map.get("externalIdentifierTypeCode")))
+                {
+                    return entityExternalIdentifierBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityExternalIdentifierBo bo -> return existingEntityExternalIdentifierBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityExternalIdentifier entityExternalIdentifier = identityService.updateExternalIdentifier(EntityExternalIdentifierBo.to(existingEntityExternalIdentifierBo));
+
+        Assert.assertEquals(EntityExternalIdentifierBo.to(existingEntityExternalIdentifierBo), entityExternalIdentifier);
     }
 }

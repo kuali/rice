@@ -73,6 +73,12 @@ public class RemotableAttributeError extends AbstractDataTransferObject implemen
             return new Builder(attributeName);
         }
 
+        public static Builder create(String attributeName, List<String> errors) {
+            Builder b = new Builder(attributeName);
+            b.setErrors(errors);
+            return b;
+        }
+
         public static Builder create(AttributeError contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");

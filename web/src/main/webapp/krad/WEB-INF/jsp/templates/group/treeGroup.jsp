@@ -25,7 +25,8 @@
       </c:forEach>
 	</ul>
   </div>
-</krad:group>
 
-<%-- invoke tree widget --%>
-<krad:template component="${group.treeWidget}" componentId="${group.id}_tree"/>
+  <%-- invoke tree widget --%>
+  <krad:template component="${group.treeWidget}" componentId="${group.id}_tree"/>
+
+</krad:group>

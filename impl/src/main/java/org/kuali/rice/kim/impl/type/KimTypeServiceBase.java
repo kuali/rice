@@ -133,7 +133,7 @@ public class KimTypeServiceBase implements KimTypeService {
 
 		for ( Map.Entry<String, String> entry : attributes.entrySet() ) {
             KimTypeAttribute attr = kimType.getAttributeDefinitionByName(entry.getKey());
-			final List<String> attributeErrors;
+			final List<RemotableAttributeError> attributeErrors;
             if ( attr.getKimAttribute().getComponentName() == null) {
                 attributeErrors = validateNonDataDictionaryAttribute(attr, entry.getKey(), entry.getValue());
             } else {
@@ -141,7 +141,7 @@ public class KimTypeServiceBase implements KimTypeService {
             }
 
 			if ( attributeErrors != null ) {
-                validationErrors.add(RemotableAttributeError.Builder.create(entry.getKey(), attributeErrors).build());
+                validationErrors.addAll(attributeErrors);
 			}
 		}
 
@@ -273,7 +273,8 @@ public class KimTypeServiceBase implements KimTypeService {
 		return errors;
 	}
 	
-    protected void validateAttributeRequired(String kimTypeId, String objectClassName, String attributeName, Object attributeValue, String errorKey) {
+    protected List<RemotableAttributeError> validateAttributeRequired(String kimTypeId, String objectClassName, String attributeName, Object attributeValue, String errorKey) {
+        List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
         // check if field is a required field for the business object
         if (attributeValue == null || (attributeValue instanceof String && StringUtils.isBlank((String) attributeValue))) {
         	AttributeDefinitionMap map = getAttributeDefinitions(kimTypeId);
@@ -286,17 +287,18 @@ public class KimTypeServiceBase implements KimTypeService {
 
                 // get label of attribute for message
                 String errorLabel = getAttributeErrorLabel(definition);
-                GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_REQUIRED, errorLabel);
+                errors.add(RemotableAttributeError.Builder.create(errorKey, createErrorString(RiceKeyConstants.ERROR_REQUIRED, errorLabel)).build());
             }
         }
+        return errors;
     }
     
-	protected List<String> validateDataDictionaryAttribute(String kimTypeId, String entryName, Object object, PropertyDescriptor propertyDescriptor) {
-		validatePrimitiveFromDescriptor(kimTypeId, entryName, object, propertyDescriptor);
-		return extractErrorsFromGlobalVariablesErrorMap(propertyDescriptor.getName());
+	protected List<RemotableAttributeError> validateDataDictionaryAttribute(String kimTypeId, String entryName, Object object, PropertyDescriptor propertyDescriptor) {
+		return validatePrimitiveFromDescriptor(kimTypeId, entryName, object, propertyDescriptor);
 	}
 
-    protected void validatePrimitiveFromDescriptor(String kimTypeId, String entryName, Object object, PropertyDescriptor propertyDescriptor) {
+    protected List<RemotableAttributeError> validatePrimitiveFromDescriptor(String kimTypeId, String entryName, Object object, PropertyDescriptor propertyDescriptor) {
+        List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
         // validate the primitive attributes if defined in the dictionary
         if (null != propertyDescriptor && getDataDictionaryService().isAttributeDefined(entryName, propertyDescriptor.getName())) {
             Object value = ObjectUtils.getPropertyValue(object, propertyDescriptor.getName());
@@ -307,15 +309,16 @@ public class KimTypeServiceBase implements KimTypeService {
                 // check value format against dictionary
                 if (value != null && StringUtils.isNotBlank(value.toString())) {
                     if (!TypeUtils.isTemporalClass(propertyType)) {
-                        validateAttributeFormat(kimTypeId, entryName, propertyDescriptor.getName(), value.toString(), propertyDescriptor.getName());
+                        errors.addAll(validateAttributeFormat(kimTypeId, entryName, propertyDescriptor.getName(), value.toString(), propertyDescriptor.getName()));
                     }
                 }
                 else {
                 	// if it's blank, then we check whether the attribute should be required
-                    validateAttributeRequired(kimTypeId, entryName, propertyDescriptor.getName(), value, propertyDescriptor.getName());
+                    errors.addAll(validateAttributeRequired(kimTypeId, entryName, propertyDescriptor.getName(), value, propertyDescriptor.getName()));
                 }
             }
         }
+        return errors;
     }
     
     /**
@@ -388,8 +391,10 @@ public class KimTypeServiceBase implements KimTypeService {
         return definition == null ? null : definition.getInclusiveMax();
     }
 	
-    protected void validateAttributeFormat(String kimTypeId, String objectClassName, String attributeName, String attributeValue, String errorKey) {
-    	AttributeDefinitionMap attributeDefinitions = getAttributeDefinitions(kimTypeId);
+    protected List<RemotableAttributeError> validateAttributeFormat(String kimTypeId, String objectClassName, String attributeName, String attributeValue, String errorKey) {
+    	List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
+
+        AttributeDefinitionMap attributeDefinitions = getAttributeDefinitions(kimTypeId);
     	AttributeDefinition definition = attributeDefinitions.getByAttributeName(attributeName);
     	
         String errorLabel = getAttributeErrorLabel(definition);
@@ -401,8 +406,8 @@ public class KimTypeServiceBase implements KimTypeService {
         if (StringUtils.isNotBlank(attributeValue)) {
             Integer maxLength = definition.getMaxLength();
             if ((maxLength != null) && (maxLength.intValue() < attributeValue.length())) {
-                GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_MAX_LENGTH, new String[] { errorLabel, maxLength.toString() });
-                return;
+                errors.add(RemotableAttributeError.Builder.create(errorKey, createErrorString(RiceKeyConstants.ERROR_MAX_LENGTH, errorLabel, maxLength.toString())).build());
+                return errors;
             }
             Pattern validationExpression = getAttributeValidatingExpression(definition);
             if (validationExpression != null && !".*".equals(validationExpression.pattern())) {
@@ -430,9 +435,9 @@ public class KimTypeServiceBase implements KimTypeService {
                     if (isError) {
                     	String errorMessageKey = getAttributeValidatingErrorMessageKey(definition);
                     	List<String> errorMessageParameters = getAttributeValidatingErrorMessageParameters(definition);
-                        GlobalVariables.getMessageMap().putError(errorKey, errorMessageKey, errorMessageParameters.toArray(new String[] {}));
+                        errors.add(RemotableAttributeError.Builder.create(errorKey, createErrorString(errorMessageKey, errorMessageParameters.toArray(new String[] {}))).build());
                     }
-                    return;
+                    return errors;
                 }
             }
             String exclusiveMin = getAttributeExclusiveMin(definition);
@@ -440,10 +445,8 @@ public class KimTypeServiceBase implements KimTypeService {
                 try {
                 	BigDecimal exclusiveMinBigDecimal = new BigDecimal(exclusiveMin);
                     if (exclusiveMinBigDecimal.compareTo(new BigDecimal(attributeValue)) >= 0) {
-                        GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_EXCLUSIVE_MIN,
-                        // todo: Formatter for currency?
-                                new String[] { errorLabel, exclusiveMin.toString() });
-                        return;
+                        errors.add(RemotableAttributeError.Builder.create(errorKey, createErrorString(RiceKeyConstants.ERROR_EXCLUSIVE_MIN, errorLabel, exclusiveMin.toString())).build());
+                        return errors;
                     }
                 }
                 catch (NumberFormatException e) {
@@ -455,10 +458,8 @@ public class KimTypeServiceBase implements KimTypeService {
                 try {
                 	BigDecimal inclusiveMaxBigDecimal = new BigDecimal(inclusiveMax);
                     if (inclusiveMaxBigDecimal.compareTo(new BigDecimal(attributeValue)) < 0) {
-                        GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_INCLUSIVE_MAX,
-                        // todo: Formatter for currency?
-                                new String[] { errorLabel, inclusiveMax.toString() });
-                        return;
+                        errors.add(RemotableAttributeError.Builder.create(errorKey, createErrorString(RiceKeyConstants.ERROR_INCLUSIVE_MAX, errorLabel, inclusiveMax.toString())).build());
+                        return errors;
                     }
                 }
                 catch (NumberFormatException e) {
@@ -466,6 +467,27 @@ public class KimTypeServiceBase implements KimTypeService {
                 }
             }
         }
+        return errors;
+    }
+
+    /** will create a string like the following:
+     * errorKey:param1;param2;param3;
+     *
+     * @param errorKey the errorKey
+     * @param params the error params
+     * @return error string
+     */
+    private static String createErrorString(String errorKey, String... params) {
+        final StringBuilder s = new StringBuilder(errorKey).append(':');
+        if (params != null) {
+            for (String p : params) {
+                if (p != null) {
+                    s.append(p);
+                    s.append(';');
+                }
+            }
+        }
+        return s.toString();
     }
 
     /*
@@ -484,11 +506,7 @@ public class KimTypeServiceBase implements KimTypeService {
 	        	List<?> errorList = (List<?>)results;
 	        	for (Object msg : errorList) {
 	        		ErrorMessage errorMessage = (ErrorMessage)msg;
-	        		String retVal = errorMessage.getErrorKey()+":";
-	        		for (String param : errorMessage.getMessageParameters()) {
-	        			retVal = retVal + param +";";
-	        		}
-	        		errors.add(retVal);
+	        		errors.add(createErrorString(errorMessage.getErrorKey(), errorMessage.getMessageParameters()));
 				}
 	        } else {
 	        	String [] temp = (String []) results;
@@ -500,12 +518,12 @@ public class KimTypeServiceBase implements KimTypeService {
         GlobalVariables.getMessageMap().removeAllErrorMessagesForProperty(attributeName);
         return errors;
 	}
-	
-	protected List<String> validateNonDataDictionaryAttribute(KimTypeAttribute attr, String key, String value) {
+
+	protected List<RemotableAttributeError> validateNonDataDictionaryAttribute(KimTypeAttribute attr, String key, String value) {
 		return Collections.emptyList();
 	}
 
-    protected List<String> validateDataDictionaryAttribute(KimTypeAttribute attr, String key, String value) {
+    protected List<RemotableAttributeError> validateDataDictionaryAttribute(KimTypeAttribute attr, String key, String value) {
 		try {
             // create an object of the proper type per the component
             Object componentObject = Class.forName( attr.getKimAttribute().getComponentName() ).newInstance();
@@ -764,15 +782,10 @@ public class KimTypeServiceBase implements KimTypeService {
 			KimTypeAttribute attr = kimType.getAttributeDefinitionByName(attributeNameKey);
 			String mainAttributeValue = getAttributeValue(originalAttributes, attributeNameKey);
 			String delegationAttributeValue = getAttributeValue(newAttributes, attributeNameKey);
-			List<String> attributeErrors = null;
+
 			if(!StringUtils.equals(mainAttributeValue, delegationAttributeValue)){
-				GlobalVariables.getMessageMap().putError(
-					attributeNameKey, RiceKeyConstants.ERROR_CANT_BE_MODIFIED, 
-					dataDictionaryService.getAttributeLabel(attr.getKimAttribute().getComponentName(), attributeNameKey));
-				attributeErrors = extractErrorsFromGlobalVariablesErrorMap(attributeNameKey);
-			}
-			if(attributeErrors!=null){
-				validationErrors.add(RemotableAttributeError.Builder.create(attributeNameKey, attributeErrors).build());
+				validationErrors.add(RemotableAttributeError.Builder.create(attributeNameKey, createErrorString(RiceKeyConstants.ERROR_CANT_BE_MODIFIED,
+					dataDictionaryService.getAttributeLabel(attr.getKimAttribute().getComponentName(), attributeNameKey))).build());
 			}
 		}
 		return validationErrors;

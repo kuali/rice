@@ -34,6 +34,18 @@
               <goal>java2ws</goal>
             </goals>
           </execution>
+          <execution>
+						<id>documentSearchCustomizationService-wsdl</id>
+						<phase>${rice.java2ws.phase}</phase>
+						<configuration>
+							<className>org.kuali.rice.kew.framework.docsearch.DocumentSearchCustomizationService</className>
+							<outputFile>${project.build.outputDirectory}/wsdl/DocumentSearchCustomizationService.wsdl</outputFile>
+							<serviceName>DocumentSearchCustomizationService</serviceName>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
         </executions>
       </plugin>
     </plugins>

@@ -22,8 +22,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-jsp-2.1:7.4.2.v20110526" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-jsp-2.1:7.4.2.v20110526" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-jsp-2.1:7.4.5.v20110725" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-servlet:7.4.5.v20110725" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.2" level="project" />
     <orderEntry type="module" module-name="rice-core-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-api" />

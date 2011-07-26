@@ -109,6 +109,19 @@
 		</property>
 	</bean>
 
+  <bean id="rice.kew.documentSearchCustomizationService.exporter" parent="kewEmbeddedServiceExporter">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
+		<property name="serviceDefinition">
+			<bean parent="kewJaxWsSoapService">
+				<property name="service">
+					<ref bean="rice.kew.documentSearchCustomizationService" />
+				</property>
+				<property name="localServiceName" value="documentSearchCustomizationServiceSoap" />
+				<property name="busSecurity" value="${rice.kew.documentSearchCustomizationServiceSoap.secure}" />
+			</bean>
+		</property>
+	</bean>
+
 	<bean parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">

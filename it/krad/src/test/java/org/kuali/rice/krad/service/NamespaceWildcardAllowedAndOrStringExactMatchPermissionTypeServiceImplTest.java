@@ -40,11 +40,15 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
     @Before
     public void setUp() throws Exception {
         permissionService = 
-            new NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl();
+            new NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl() {
+                {
+                    setCheckRequiredAttributes(true);
+                }
+            };
         
         permissionService.setExactMatchStringAttributeName("actionClass");
         permissionService.setNamespaceRequiredOnStoredMap(false);
-        permissionService.setCheckRequiredAttributes(true);
+
     }
 
     @Test

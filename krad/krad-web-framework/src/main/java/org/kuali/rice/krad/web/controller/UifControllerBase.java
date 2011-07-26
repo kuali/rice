@@ -27,6 +27,8 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.core.Component;
 import org.kuali.rice.krad.uif.field.AttributeQueryResult;
+import org.kuali.rice.krad.uif.history.History;
+import org.kuali.rice.krad.uif.history.HistoryEntry;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
@@ -49,6 +51,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -300,6 +303,30 @@ public abstract class UifControllerBase {
 
         return performRedirect(form, returnUrl, props);
     }
+
+    /**
+     * Invoked to navigate back one page in history. This will be the same as clicking on the bread
+     * crumbs. This action should only be allowed if there are at least one history entry
+     * (!formHistory.historyEntries.empty).
+     * 
+     * @param form - form object that should contain the history object
+     */
+    @RequestMapping(params = "methodToCall=back")
+    public ModelAndView back(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        // Get the history from the form
+        History hist = form.getFormHistory();
+        List<HistoryEntry> histEntries = hist.getHistoryEntries();
+
+        // Get the previous page url.
+        String histUrl = histEntries.get(histEntries.size() - 1).getUrl();
+
+        // Redirect to the previous page
+        ModelAndView modelAndView = new ModelAndView(REDIRECT_PREFIX + histUrl);
+
+        return modelAndView;
+    }  
 
     /**
      * Handles menu navigation between view pages

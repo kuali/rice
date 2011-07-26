@@ -145,15 +145,6 @@ delete from krew_edl_dmp_t
 delete from krew_usr_optn_t where PRSN_OPTN_ID like 'RELOAD_ACTION_LIST%'
 /
 
--- Remove/Replace Document Tables - clear all data
-
-delete from krew_rmv_rplc_doc_t
-/
-delete from krew_rmv_rplc_grp_t
-/
-delete from krew_rmv_rplc_rule_t
-/
-
 -- ##############
 -- # KSB Tables #
 -- ##############

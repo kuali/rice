@@ -39,8 +39,7 @@
         <form-bean name="SuperUserForm" type="org.kuali.rice.kew.superuser.web.SuperUserForm"/>
         <form-bean name="QuickLinksForm" type="org.kuali.rice.kew.quicklinks.web.QuickLinksForm"/>
         <form-bean name="StatsForm" type="org.kuali.rice.kew.stats.web.StatsForm" />
-        <form-bean name="HelpForm" type="org.kuali.rice.kew.help.web.HelpForm" />
-        <form-bean name="IngesterForm" type="org.kuali.rice.kew.batch.web.IngesterForm" />
+        <form-bean name="IngesterForm" type="org.kuali.rice.core.web.impex.IngesterForm" />
         <form-bean name="FeedbackForm" type="org.kuali.rice.kew.feedback.web.FeedbackForm"/>
         <form-bean name="NoteForm" type="org.kuali.rice.kew.notes.web.NoteForm" />
     </form-beans>

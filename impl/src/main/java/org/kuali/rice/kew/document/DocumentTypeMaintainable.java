@@ -97,7 +97,7 @@ public class DocumentTypeMaintainable extends KualiMaintainableImpl {
     
     private Set<String> constructUserInterfaceEditablePropertyNamesList() {
         Set<String> propertyNames = new HashSet<String>();
-        List<MaintainableSectionDefinition> sectionDefinitions = getMaintenanceDocumentDictionaryService().getMaintainableSections(docTypeName);
+        List<MaintainableSectionDefinition> sectionDefinitions = getMaintenanceDocumentDictionaryService().getMaintainableSections(getDocumentTypeName());
         for (MaintainableSectionDefinition maintainableSectionDefinition : sectionDefinitions) {
             for (MaintainableItemDefinition maintainableItemDefinition : maintainableSectionDefinition.getMaintainableItems()) {
                 propertyNames.add(maintainableItemDefinition.getName());

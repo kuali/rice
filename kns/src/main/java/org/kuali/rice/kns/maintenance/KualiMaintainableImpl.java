@@ -84,8 +84,6 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 	protected Map<String, PersistableBusinessObject> newCollectionLines = new HashMap<String, PersistableBusinessObject>();
 	protected Map<String, Boolean> inactiveRecordDisplay = new HashMap<String, Boolean>();
 
-	protected String docTypeName;
-
     // TODO: rename once 'newCollectionLines' is removed
     protected Set<String> newCollectionLineNames = new HashSet<String>();
 
@@ -641,7 +639,6 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 	 */
 	public void setBoClass(Class boClass) {
 		setDataObjectClass(boClass);
-		this.docTypeName = getDocumentTypeName();
 	}
 
 	/**
@@ -828,7 +825,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 		PersistableBusinessObject addLine;
 		try {
 			addLine = (PersistableBusinessObject) getMaintenanceDocumentDictionaryService()
-					.getCollectionBusinessObjectClass(docTypeName, collectionName).newInstance();
+					.getCollectionBusinessObjectClass(getDocumentTypeName(), collectionName).newInstance();
 		}
 		catch (Exception ex) {
 			LOG.error("unable to instantiate new collection line", ex);
@@ -857,7 +854,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 
 		// loop over all collections with an enabled add line
 		List<MaintainableCollectionDefinition> collections = getMaintenanceDocumentDictionaryService()
-				.getMaintainableCollections(docTypeName);
+				.getMaintainableCollections(getDocumentTypeName());
 
 		for (MaintainableCollectionDefinition coll : collections) {
 			// get the collection name
@@ -1137,7 +1134,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 
 			String fieldName = propertyDescriptor.getName();
 			Class propertyType = propertyDescriptor.getPropertyType();
-			String value = getMaintenanceDocumentDictionaryService().getCollectionFieldDefaultValue(docTypeName,
+			String value = getMaintenanceDocumentDictionaryService().getCollectionFieldDefaultValue(getDocumentTypeName(),
 					collectionName, fieldName);
 
 			if (value != null) {
@@ -1158,7 +1155,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 	 */
 	public void clearBusinessObjectOfRestrictedValues(MaintenanceDocumentRestrictions maintenanceDocumentRestrictions) {
 		List<MaintainableSectionDefinition> sections = getMaintenanceDocumentDictionaryService()
-				.getMaintainableSections(docTypeName);
+				.getMaintainableSections(getDocumentTypeName());
 		for (MaintainableSectionDefinition sectionDefinition : sections) {
 			for (MaintainableItemDefinition itemDefinition : sectionDefinition.getMaintainableItems()) {
 				if (itemDefinition instanceof MaintainableFieldDefinition) {
@@ -1218,7 +1215,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 				catch (Exception e) {
 					defaultValue = null;
 					LOG.error("Error trying to instantiate ValueFinder or to determine ValueFinder for doc type: "
-							+ docTypeName + " field name " + fieldDefinition.getName() + " with field prefix: "
+							+ getDocumentTypeName() + " field name " + fieldDefinition.getName() + " with field prefix: "
 							+ fieldNamePrefix, e);
 				}
 			}
@@ -1238,7 +1235,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 
 	protected void performForceUpperCase(Map fieldValues) {
 		List<MaintainableSectionDefinition> sections = getMaintenanceDocumentDictionaryService()
-				.getMaintainableSections(docTypeName);
+				.getMaintainableSections(getDocumentTypeName());
 		for (MaintainableSectionDefinition sectionDefinition : sections) {
 			for (MaintainableItemDefinition itemDefinition : sectionDefinition.getMaintainableItems()) {
 				if (itemDefinition instanceof MaintainableFieldDefinition) {

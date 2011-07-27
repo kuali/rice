@@ -147,31 +147,55 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         
         return null;
     }
-    
+
+    @RequestMapping(params = "methodToCall=" + "ajaxRefresh")
+    public ModelAndView ajaxRefresh(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        // call the super method to avoid the agenda tree being reloaded from the db
+        return super.updateComponent(form, result, request, response);
+    }
+
     @RequestMapping(params = "methodToCall=" + "moveUp")
     public ModelAndView moveUp(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        moveSelectedSubtreeUp(form, request);
 
-       /* Rough algorithm for moving a node up.  This is a "level order" move.  Note that in this tree,
-        * level order means something a bit funky.  We are defining a level as it would be displayed in the browser, 
-        * so only the traversal of When FALSE or When TRUE links increments the level, since ALWAYS linked nodes are
-        * considered siblings.
-        *
-        * find the following: 
-        *   node := the selected node
-        *   parent := the selected node's parent, its containing node (via when true or when false relationship)
-        *   parentsOlderCousin := the parent's level-order predecessor (sibling or cousin)
-        *
-        * if (node is first child in sibling group)
-        *     if (node is in When FALSE group) 
-        *         move node to last position in When TRUE group
-        *     else 
-        *         find youngest child of parentsOlderCousin and put node after it
-        * else 
-        *     move node up within its sibling group
-        */
-        
+        return super.refresh(form, result, request, response);
+    }
+
+    @RequestMapping(params = "methodToCall=" + "ajaxMoveUp")
+    public ModelAndView ajaxMoveUp(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        moveSelectedSubtreeUp(form, request);
+
+        // call the super method to avoid the agenda tree being reloaded from the db
+        return super.updateComponent(form, result, request, response);
+    }
+
+    private void moveSelectedSubtreeUp(UifFormBase form, HttpServletRequest request) {
+
+        /* Rough algorithm for moving a node up.  This is a "level order" move.  Note that in this tree,
+         * level order means something a bit funky.  We are defining a level as it would be displayed in the browser,
+         * so only the traversal of When FALSE or When TRUE links increments the level, since ALWAYS linked nodes are
+         * considered siblings.
+         *
+         * find the following:
+         *   node := the selected node
+         *   parent := the selected node's parent, its containing node (via when true or when false relationship)
+         *   parentsOlderCousin := the parent's level-order predecessor (sibling or cousin)
+         *
+         * if (node is first child in sibling group)
+         *     if (node is in When FALSE group)
+         *         move node to last position in When TRUE group
+         *     else
+         *         find youngest child of parentsOlderCousin and put node after it
+         * else
+         *     move node up within its sibling group
+         */
+
         AgendaBo agenda = getAgenda(form, request);
         // this is the root of the tree:
         AgendaItemBo firstItem = getFirstAgendaItem(agenda);
@@ -179,36 +203,36 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         String selectedItemId = request.getParameter(AGENDA_ITEM_SELECTED);
         AgendaItemBo node = getAgendaItemById(firstItem, selectedItemId);
         AgendaItemBo parent = getParent(firstItem, selectedItemId);
-        AgendaItemBo parentsOlderCousin = (parent == null) ? null : getNextOldestOfSameGeneration(firstItem, parent.getId());
+        AgendaItemBo parentsOlderCousin = (parent == null) ? null : getNextOldestOfSameGeneration(firstItem, parent);
 
         AgendaItemChildAccessor childAccessor = getOldestChildAccessor(node, parent);
         if (childAccessor != null) { // node is first child in sibling group
             if (childAccessor == AgendaItemChildAccessor.whenFalse) {
                 // move node to last position in When TRUE group
-                AgendaItemInstanceChildAccessor youngestWhenTrueSiblingInsertionPoint = 
+                AgendaItemInstanceChildAccessor youngestWhenTrueSiblingInsertionPoint =
                         getLastChildsAlwaysAccessor(new AgendaItemInstanceChildAccessor(AgendaItemChildAccessor.whenTrue, parent));
                 youngestWhenTrueSiblingInsertionPoint.setChild(node);
                 AgendaItemChildAccessor.whenFalse.setChild(parent, node.getAlways());
                 AgendaItemChildAccessor.always.setChild(node, null);
-                
+
             } else if (parentsOlderCousin != null) {
                 // find youngest child of parentsOlderCousin and put node after it
-                AgendaItemInstanceChildAccessor youngestWhenFalseSiblingInsertionPoint = 
+                AgendaItemInstanceChildAccessor youngestWhenFalseSiblingInsertionPoint =
                         getLastChildsAlwaysAccessor(new AgendaItemInstanceChildAccessor(AgendaItemChildAccessor.whenFalse, parentsOlderCousin));
                 youngestWhenFalseSiblingInsertionPoint.setChild(node);
                 AgendaItemChildAccessor.whenTrue.setChild(parent, node.getAlways());
                 AgendaItemChildAccessor.always.setChild(node, null);
             }
         } else if (!selectedItemId.equals(firstItem.getId())) { // conditional to miss special case of first node
-            
+
             AgendaItemBo bogusRootNode = null;
             if (parent == null) {
                 // special case, this is a top level sibling. rig up special parent node
                 bogusRootNode = new AgendaItemBo();
                 AgendaItemChildAccessor.whenTrue.setChild(bogusRootNode, firstItem);
                 parent = bogusRootNode;
-            } 
-            
+            }
+
             // move node up within its sibling group
             AgendaItemInstanceChildAccessor accessorToSelectedNode = getInstanceAccessorToChild(parent, node.getId());
             AgendaItemBo olderSibling = accessorToSelectedNode.getInstance();
@@ -217,40 +241,53 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             accessorToOlderSibling.setChild(node);
             accessorToSelectedNode.setChild(node.getAlways());
             AgendaItemChildAccessor.always.setChild(node, olderSibling);
-            
+
             if (bogusRootNode != null) {
                 // clean up special case with bogus root node
                 agenda.setFirstItemId(bogusRootNode.getWhenTrueId());
             }
         }
-        
-        return super.refresh(form, result, request, response);
     }
-    
+
     @RequestMapping(params = "methodToCall=" + "moveDown")
     public ModelAndView moveDown(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        moveSelectedSubtreeDown(form, request);
+        
+        return super.refresh(form, result, request, response);
+    }
+
+    @RequestMapping(params = "methodToCall=" + "ajaxMoveDown")
+    public ModelAndView ajaxMoveDown(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        moveSelectedSubtreeDown(form, request);
+
+        // call the super method to avoid the agenda tree being reloaded from the db
+        return super.updateComponent(form, result, request, response);
+    }
+
+    private void moveSelectedSubtreeDown(UifFormBase form, HttpServletRequest request) {
 
         /* Rough algorithm for moving a node down.  This is a "level order" move.  Note that in this tree,
-         * level order means something a bit funky.  We are defining a level as it would be displayed in the browser, 
+         * level order means something a bit funky.  We are defining a level as it would be displayed in the browser,
          * so only the traversal of When FALSE or When TRUE links increments the level, since ALWAYS linked nodes are
          * considered siblings.
          *
-         * find the following: 
+         * find the following:
          *   node := the selected node
          *   parent := the selected node's parent, its containing node (via when true or when false relationship)
          *   parentsYoungerCousin := the parent's level-order successor (sibling or cousin)
          *
          * if (node is last child in sibling group)
-         *     if (node is in When TRUE group) 
+         *     if (node is in When TRUE group)
          *         move node to first position in When FALSE group
-         *     else 
+         *     else
          *         move to first child of parentsYoungerCousin
-         * else 
+         * else
          *     move node down within its sibling group
          */
-        
 
         AgendaBo agenda = getAgenda(form, request);
         // this is the root of the tree:
@@ -259,13 +296,13 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         String selectedItemId = request.getParameter(AGENDA_ITEM_SELECTED);
         AgendaItemBo node = getAgendaItemById(firstItem, selectedItemId);
         AgendaItemBo parent = getParent(firstItem, selectedItemId);
-        AgendaItemBo parentsYoungerCousin = (parent == null) ? null : getNextYoungestOfSameGeneration(firstItem, parent.getId());
+        AgendaItemBo parentsYoungerCousin = (parent == null) ? null : getNextYoungestOfSameGeneration(firstItem, parent);
 
-        if (node.getAlways() == null) { // node is last child in sibling group
+        if (node.getAlways() == null && parent != null) { // node is last child in sibling group
             // set link to selected node to null
             if (parent.getWhenTrue() != null && isSiblings(parent.getWhenTrue(), node)) { // node is in When TRUE group
                 // move node to first child under When FALSE
-                
+
                 AgendaItemInstanceChildAccessor accessorToSelectedNode = getInstanceAccessorToChild(parent, node.getId());
                 accessorToSelectedNode.setChild(null);
 
@@ -274,49 +311,63 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 AgendaItemChildAccessor.always.setChild(node, parentsFirstChild);
             } else if (parentsYoungerCousin != null) { // node is in the When FALSE group
                 // move to first child of parentsYoungerCousin under When TRUE
-                
+
                 AgendaItemInstanceChildAccessor accessorToSelectedNode = getInstanceAccessorToChild(parent, node.getId());
                 accessorToSelectedNode.setChild(null);
 
                 AgendaItemBo parentsYoungerCousinsFirstChild = parentsYoungerCousin.getWhenTrue();
-                AgendaItemChildAccessor.whenTrue.setChild(parent, node);
+                AgendaItemChildAccessor.whenTrue.setChild(parentsYoungerCousin, node);
                 AgendaItemChildAccessor.always.setChild(node, parentsYoungerCousinsFirstChild);
             }
-        } else { // move node down within its sibling group
-            
+        } else if (node.getAlways() != null) { // move node down within its sibling group
+
             AgendaItemBo bogusRootNode = null;
             if (parent == null) {
                 // special case, this is a top level sibling. rig up special parent node
                 bogusRootNode = new AgendaItemBo();
                 AgendaItemChildAccessor.whenFalse.setChild(bogusRootNode, firstItem);
                 parent = bogusRootNode;
-            } 
-            
+            }
+
             // move node down within its sibling group
             AgendaItemInstanceChildAccessor accessorToSelectedNode = getInstanceAccessorToChild(parent, node.getId());
             AgendaItemBo youngerSibling = node.getAlways();
             accessorToSelectedNode.setChild(youngerSibling);
             AgendaItemChildAccessor.always.setChild(node, youngerSibling.getAlways());
             AgendaItemChildAccessor.always.setChild(youngerSibling, node);
-            
+
             if (bogusRootNode != null) {
                 // clean up special case with bogus root node
                 agenda.setFirstItemId(bogusRootNode.getWhenFalseId());
             }
         }
-        
-        return super.refresh(form, result, request, response);
     }
 
     @RequestMapping(params = "methodToCall=" + "moveLeft")
     public ModelAndView moveLeft(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        moveSelectedSubtreeLeft(form, request);
+        
+        return super.refresh(form, result, request, response);
+    }
 
-        /* 
+    @RequestMapping(params = "methodToCall=" + "ajaxMoveLeft")
+    public ModelAndView ajaxMoveLeft(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+
+        moveSelectedSubtreeLeft(form, request);
+
+        // call the super method to avoid the agenda tree being reloaded from the db
+        return super.updateComponent(form, result, request, response);
+    }
+
+    private void moveSelectedSubtreeLeft(UifFormBase form, HttpServletRequest request) {
+
+        /*
          * Move left means make it a younger sibling of it's parent.
          */
-        
 
         AgendaBo agenda = getAgenda(form, request);
         // this is the root of the tree:
@@ -329,20 +380,37 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         if (parent != null) {
             AgendaItemInstanceChildAccessor accessorToSelectedNode = getInstanceAccessorToChild(parent, node.getId());
             accessorToSelectedNode.setChild(node.getAlways());
-            
+
             AgendaItemChildAccessor.always.setChild(node, parent.getAlways());
             AgendaItemChildAccessor.always.setChild(parent, node);
         }
-        
-        return super.refresh(form, result, request, response);
     }
-    
+
+
     @RequestMapping(params = "methodToCall=" + "moveRight")
     public ModelAndView moveRight(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        /* 
+        moveSelectedSubtreeRight(form, request);
+
+        return super.refresh(form, result, request, response);
+    }
+
+    @RequestMapping(params = "methodToCall=" + "ajaxMoveRight")
+    public ModelAndView ajaxMoveRight(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+
+        moveSelectedSubtreeRight(form, request);
+
+        // call the super method to avoid the agenda tree being reloaded from the db
+        return super.updateComponent(form, result, request, response);
+    }
+
+    private void moveSelectedSubtreeRight(UifFormBase form, HttpServletRequest request) {
+
+        /*
          * Move right prefers moving to bottom of upper sibling's When FALSE branch
          * ... otherwise ..
          * moves to top of lower sibling's When TRUE branch
@@ -362,14 +430,14 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             bogusRootNode = new AgendaItemBo();
             AgendaItemChildAccessor.whenFalse.setChild(bogusRootNode, firstItem);
             parent = bogusRootNode;
-        } 
+        }
 
         AgendaItemInstanceChildAccessor accessorToSelectedNode = getInstanceAccessorToChild(parent, node.getId());
         AgendaItemBo olderSibling = (accessorToSelectedNode.getInstance() == parent) ? null : accessorToSelectedNode.getInstance();
 
         if (olderSibling != null) {
             accessorToSelectedNode.setChild(node.getAlways());
-            AgendaItemInstanceChildAccessor yougestWhenFalseSiblingInsertionPoint = 
+            AgendaItemInstanceChildAccessor yougestWhenFalseSiblingInsertionPoint =
                     getLastChildsAlwaysAccessor(new AgendaItemInstanceChildAccessor(AgendaItemChildAccessor.whenFalse, olderSibling));
             yougestWhenFalseSiblingInsertionPoint.setChild(node);
             AgendaItemChildAccessor.always.setChild(node, null);
@@ -379,17 +447,13 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             AgendaItemChildAccessor.whenTrue.setChild(node.getAlways(), node);
             AgendaItemChildAccessor.always.setChild(node, childsWhenTrue);
         }
-        
+
         if (bogusRootNode != null) {
             // clean up special case with bogus root node
             agenda.setFirstItemId(bogusRootNode.getWhenFalseId());
         }
-        
-        return super.refresh(form, result, request, response);
     }
 
-    
-    
     private boolean isSiblings(AgendaItemBo cousin1, AgendaItemBo cousin2) {
         if (cousin1.equals(cousin2)) return true; // this is a bit abusive
         
@@ -447,77 +511,76 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * @return the closest younger sibling of the agenda item with the given ID, and if there is no such sibling, the closest younger cousin.
      * If there is no such cousin either, then null is returned.
      */
-    private AgendaItemBo getNextYoungestOfSameGeneration(AgendaItemBo root, String agendaItemId) {
-        AgendaItemBo result = getNextYoungestOfSameGenerationHelper(root, 0, new ArrayList<AgendaItemBo>(), agendaItemId);
-        if (result == NULL_AGENDA_ITEM) result = null;
-        return result;
+    private AgendaItemBo getNextYoungestOfSameGeneration(AgendaItemBo root, AgendaItemBo agendaItem) {
+
+        int genNumber = getAgendaItemGenerationNumber(0, root, agendaItem.getId());
+        List<AgendaItemBo> genList = new ArrayList<AgendaItemBo>();
+        buildAgendaItemGenerationList(genList, root, 0, genNumber);
+
+        int itemIndex = genList.indexOf(agendaItem);
+        if (genList.size() > itemIndex + 1) return genList.get(itemIndex + 1);
+
+        return null;
     }
-    
-    private AgendaItemBo getNextYoungestOfSameGenerationHelper(AgendaItemBo node, int level, ArrayList<AgendaItemBo> youngerCousinByLevel, String agendaItemId) {
-        AgendaItemBo result = null;
+
+    private int getAgendaItemGenerationNumber(int currentLevel, AgendaItemBo node, String agendaItemId) {
+        int result = -1;
         if (agendaItemId.equals(node.getId())) {
-            result = (youngerCousinByLevel.size() > level) ? youngerCousinByLevel.get(level) : NULL_AGENDA_ITEM;
-        } else {
-            for (int i=AgendaItemChildAccessor.linkedNodes.length; i >= 0; --i) {
-                AgendaItemChildAccessor childAccessor = AgendaItemChildAccessor.linkedNodes[i];
-                AgendaItemBo child = childAccessor.getChild(node);
-                if (child != null) {
-                    int levelNext = level;
-                    // we don't change the level order parent when we traverse ALWAYS links
-                    // and we only adjust the olderCousinByLevel when we traverse ALWAYS links
-                    if (childAccessor == AgendaItemChildAccessor.always) {
-                        // ensure that we can set the element at index=level
-                        while (youngerCousinByLevel.size() <= level) youngerCousinByLevel.add(null);
-                        youngerCousinByLevel.set(level, node);
-                    } else {
-                        levelNext = level +1;
-                    }
-                    result = getNextYoungestOfSameGenerationHelper(child, levelNext, youngerCousinByLevel, agendaItemId);
-                    if (result != null) break;
-                }
-            }
-        }
-        return result;
-    }
-    
-    /**
-     * @return the closest older sibling of the agenda item with the given ID, and if there is no such sibling, the closest older cousin.
-     * If there is no such cousin either, then null is returned.
-     */
-    private AgendaItemBo getNextOldestOfSameGeneration(AgendaItemBo root, String agendaItemId) {
-        AgendaItemBo result = getNextOldestOfSameGenerationHelper(root, 0, new ArrayList<AgendaItemBo>(), agendaItemId);
-        if (result == NULL_AGENDA_ITEM) result = null;
-        return result;
-    }
-    
-    // null object used for detecting when there is no predecessor without walking the whole tree needlessly.
-    private static final AgendaItemBo NULL_AGENDA_ITEM = new AgendaItemBo();
-    
-    private AgendaItemBo getNextOldestOfSameGenerationHelper(AgendaItemBo node, int level, ArrayList<AgendaItemBo> olderCousinByLevel, String agendaItemId) {
-        AgendaItemBo result = null;
-        if (agendaItemId.equals(node.getId())) {
-            result = (olderCousinByLevel.size() > level) ? olderCousinByLevel.get(level) : NULL_AGENDA_ITEM;
+            result = currentLevel;
         } else {
             for (AgendaItemChildAccessor childAccessor : AgendaItemChildAccessor.linkedNodes) {
                 AgendaItemBo child = childAccessor.getChild(node);
                 if (child != null) {
-                    int levelNext = level;
+                    int nextLevel = currentLevel;
                     // we don't change the level order parent when we traverse ALWAYS links
-                    // and we only adjust the olderCousinByLevel when we traverse ALWAYS links
-                    if (childAccessor == AgendaItemChildAccessor.always) {
-                        // ensure that we can set the element at index=level
-                        while (olderCousinByLevel.size() <= level) olderCousinByLevel.add(null);
-                        olderCousinByLevel.set(level, node);
-                    } else {
-                        levelNext = level +1;
+                    if (childAccessor != AgendaItemChildAccessor.always) {
+                        nextLevel = currentLevel +1;
                     }
-                    result = getNextOldestOfSameGenerationHelper(child, levelNext, olderCousinByLevel, agendaItemId);
-                    if (result != null) break;
+                    result = getAgendaItemGenerationNumber(nextLevel, child, agendaItemId);
+                    if (result != -1) break;
                 }
             }
         }
         return result;
     }
+
+    private void buildAgendaItemGenerationList(List<AgendaItemBo> genList, AgendaItemBo node, int currentLevel, int generation) {
+        if (currentLevel == generation) {
+            genList.add(node);
+        }
+
+        if (currentLevel > generation) return;
+
+        for (AgendaItemChildAccessor childAccessor : AgendaItemChildAccessor.linkedNodes) {
+            AgendaItemBo child = childAccessor.getChild(node);
+            if (child != null) {
+                int nextLevel = currentLevel;
+                // we don't change the level order parent when we traverse ALWAYS links
+                if (childAccessor != AgendaItemChildAccessor.always) {
+                    nextLevel = currentLevel +1;
+                }
+                buildAgendaItemGenerationList(genList, child, nextLevel, generation);
+            }
+        }
+    }
+    
+
+    /**
+     * @return the closest older sibling of the agenda item with the given ID, and if there is no such sibling, the closest older cousin.
+     * If there is no such cousin either, then null is returned.
+     */
+    private AgendaItemBo getNextOldestOfSameGeneration(AgendaItemBo root, AgendaItemBo agendaItem) {
+
+        int genNumber = getAgendaItemGenerationNumber(0, root, agendaItem.getId());
+        List<AgendaItemBo> genList = new ArrayList<AgendaItemBo>();
+        buildAgendaItemGenerationList(genList, root, 0, genNumber);
+
+        int itemIndex = genList.indexOf(agendaItem);
+        if (itemIndex >= 1) return genList.get(itemIndex - 1);
+
+        return null;
+    }
+    
 
     /**
      * returns the parent of the item with the passed in id.  Note that {@link AgendaItemBo}s related by ALWAYS relationships are considered siblings.
@@ -593,21 +656,9 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     public ModelAndView delete(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        
-        AgendaBo agenda = getAgenda(form, request);
-        AgendaItemBo firstItem = getFirstAgendaItem(agenda);
 
-        String agendaItemSelected = request.getParameter(AGENDA_ITEM_SELECTED);
-        
-        if (firstItem != null) {
-            // need to handle the first item here, our recursive method won't handle it.  
-            if (agendaItemSelected.equals(firstItem.getAgendaId())) {
-                agenda.setFirstItemId(firstItem.getAlwaysId());
-            } else {
-                deleteAgendaItem(firstItem, agendaItemSelected);
-            }
-        }
-        
+        deleteSelectedSubtree(form, request);
+
         return super.refresh(form, result, request, response);
     }
 
@@ -615,27 +666,29 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     public ModelAndView ajaxDelete(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        
-        AgendaBo agenda = getAgenda(form, request);
-        AgendaItemBo firstItem = getFirstAgendaItem(agenda);
 
-        String agendaItemSelected = request.getParameter(AGENDA_ITEM_SELECTED);
-        
-        if (firstItem != null) {
-            // need to handle the first item here, our recursive method won't handle it.  
-            if (agendaItemSelected.equals(firstItem.getAgendaId())) {
-                agenda.setFirstItemId(firstItem.getAlwaysId());
-            } else {
-                deleteAgendaItem(firstItem, agendaItemSelected);
-            }
-        }
+        deleteSelectedSubtree(form, request);
 
         // call the super method to avoid the agenda tree being reloaded from the db
         return super.updateComponent(form, result, request, response);
     }
 
     
-    // TODO: smarter delete would be desirable.
+    private void deleteSelectedSubtree(UifFormBase form, HttpServletRequest request) {AgendaBo agenda = getAgenda(form, request);
+        AgendaItemBo firstItem = getFirstAgendaItem(agenda);
+
+        String agendaItemSelected = request.getParameter(AGENDA_ITEM_SELECTED);
+
+        if (firstItem != null) {
+            // need to handle the first item here, our recursive method won't handle it.
+            if (agendaItemSelected.equals(firstItem.getAgendaId())) {
+                agenda.setFirstItemId(firstItem.getAlwaysId());
+            } else {
+                deleteAgendaItem(firstItem, agendaItemSelected);
+            }
+        }
+    }
+
     private void deleteAgendaItem(AgendaItemBo root, String agendaItemIdToDelete) {
         if (deleteAgendaItem(root, AgendaItemChildAccessor.whenTrue, agendaItemIdToDelete) || 
                 deleteAgendaItem(root, AgendaItemChildAccessor.whenFalse, agendaItemIdToDelete) || 

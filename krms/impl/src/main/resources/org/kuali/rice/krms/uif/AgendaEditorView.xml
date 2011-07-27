@@ -171,6 +171,11 @@
           p:actionLabel="[-] collapse all" p:style="font-size: smaller; margin-right: 15pt;">
           <property name="actionImageField"><null/></property>
         </bean>
+        <bean parent="GeneratedField" p:id="agenda_item_selected">
+          <property name="renderingMethodInvoker">
+            <bean class="org.springframework.util.MethodInvoker" p:targetClass="org.kuali.rice.krms.impl.ui.HiddenGenerator" p:targetMethod="generate" />
+          </property>
+        </bean>
       </list>
     </property>
   </bean>
@@ -200,23 +205,35 @@
          -->
          
         <bean parent="MessageField" p:messageText="Move: [" p:style="display: inline;"/>
+
+        <bean parent="ActionField" p:clientSideJs="ajaxCall('ajaxMoveLeft', 'AgendaEditorView-Tree');"
+              p:actionLabel="&lt; Left" p:styleClasses-ref="buttonClasses" />
+<!--
         <bean parent="ActionField" p:methodToCall="moveLeft"
           p:actionLabel="&lt; Left" p:styleClasses-ref="buttonClasses" />
-        <bean parent="ActionField" p:methodToCall="moveRight"
-          p:actionLabel="Right &gt;" p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt;"/>
-        <bean parent="ActionField" p:methodToCall="moveUp" p:actionLabel="Up ^"
+-->
+        <bean parent="ActionField" p:clientSideJs="ajaxCall('ajaxMoveRight', 'AgendaEditorView-Tree');"
+          p:actionLabel="Right &gt;" p:styleClasses-ref="buttonClasses"
+          p:style="margin-right: 15pt;"/> <!-- Horiz whitespace -->
+
+        <bean parent="ActionField" p:clientSideJs="ajaxCall('ajaxMoveUp', 'AgendaEditorView-Tree');" p:actionLabel="Up ^"
           p:styleClasses-ref="buttonClasses" />
-        <bean parent="ActionField" p:methodToCall="moveDown"
+
+        <bean parent="ActionField" p:clientSideJs="ajaxCall('ajaxMoveDown', 'AgendaEditorView-Tree');"
           p:actionLabel="v Down" p:styleClasses-ref="buttonClasses" />
+
         <bean parent="MessageField" p:messageText="]" p:style="display: inline;"/>
         
-        <bean parent="ActionField" p:methodToCall="cut" p:actionLabel="Cut" p:clientSideJs="alert('Not Yet Implemented');" p:styleClasses-ref="buttonClasses" p:style="margin-left: 15pt;"/>
+        <bean parent="ActionField" p:methodToCall="cut" p:actionLabel="Cut" p:clientSideJs="alert('Not Yet Implemented');" p:styleClasses-ref="buttonClasses"
+              p:style="margin-left: 15pt;"/> <!-- Horiz whitespace -->
+
         <bean parent="ActionField" p:methodToCall="paste" p:actionLabel="Paste" p:clientSideJs="alert('Not Yet Implemented');" p:styleClasses-ref="buttonClasses"/>
-        <bean parent="ActionField" p:clientSideJs="ajaxDelete('AgendaEditorView-Tree');" p:actionLabel="Delete (ajax)" p:styleClasses-ref="buttonClasses"/>
-        <bean parent="ActionField" p:methodToCall="delete" p:actionLabel="Delete" p:styleClasses-ref="buttonClasses" 
-          p:style="margin-right: 15pt;" />
+
+        <bean parent="ActionField" p:clientSideJs="ajaxCall('ajaxDelete', 'AgendaEditorView-Tree');" p:actionLabel="Delete" p:styleClasses-ref="buttonClasses"
+              p:style="margin-right: 15pt;" /> <!-- Horiz whitespace -->
+
         <bean parent="ActionField" p:methodToCall="refresh" p:actionLabel="refresh" p:styleClasses-ref="buttonClasses"/>
-      </list> 
+      </list>
     </property> 
   </bean>
   

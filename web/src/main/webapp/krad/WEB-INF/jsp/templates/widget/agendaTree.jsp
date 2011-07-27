@@ -30,15 +30,54 @@
     Invokes JS method to implement a tree plug-in
  --%>
 
-<!-- keep track of the agenda item that is selected: -->
+<!-- keep track of the agenda item that is selected:
 <input type="hidden" name="agenda_item_selected" value=""/>
-
+-->
 <krad:script value="
 
-/* make the tree load with all nodes expanded */
+
+// binding to tree loaded event
 jq('#' + '${componentId}').bind('loaded.jstree', function (event, data) {
-        jq('#' + '${componentId}').jstree('open_all');
+    /* make the tree load with all nodes expanded */
+    jq('#' + '${componentId}').jstree('open_all');
+
+
+    // rule nodes should set the selected item
+    jq('a.ruleNode').click( function() {
+        var agendaItemId = jq(this.parentNode).find('input').attr('value');
+        var selectedItemTracker = jq('input[name=\"agenda_item_selected\"]');
+        selectedItemTracker.val(agendaItemId);
+        // make li show containment of children
+        jq('li').each( function() {
+            jq(this).removeClass('ruleBlockSelected');
+        });
+        jq(this.parentNode).addClass('ruleBlockSelected');
     });
+
+    // logic nodes should clear the selected item
+    jq('a.logicNode').click( function() {
+        var selectedItemTracker = jq('input[name=\"agenda_item_selected\"]');
+        selectedItemTracker.val('');
+    });
+
+    jq('a.ruleNode').each( function() {
+        var agendaItemId = jq(this.parentNode).find('input').attr('value');
+        var selectedItemTracker = jq('input[name=\"agenda_item_selected\"]');
+        var selectedItemId = selectedItemTracker.val();
+        /*
+        // make li show containment of children
+        if (selectedItemId == agendaItemId) {
+            jq(this.parentNode).addClass('ruleBlockSelected');
+        }
+        */
+
+        if (selectedItemId == agendaItemId) {
+            // simulate click
+            jq(this).click();
+        }
+    });
+});
+
 
 /* create the tree */
 createTree('${componentId}', {
@@ -67,5 +106,8 @@ createTree('${componentId}', {
         },
   'dnd' : { 'drag_target' : false, 'drop_target' : false }
 } );
+
+jq('#' + '${componentId}').bind('loaded.jstree', function (event, data) {
+});
 
 "/>

@@ -21,5 +21,18 @@
     Field that contains a nested Group
     
  --%>
- 
+
+<%-- check to see if label has been rendered in another field (grid layout)--%>
+<c:set var="renderLabel" value="${!field.labelFieldRendered}"/>
+
+<%-- render field label left --%>
+<c:if test="${renderLabel && ((field.labelPlacement eq 'LEFT') || (field.labelPlacement eq 'TOP'))}">
+  <krad:template component="${field.labelField}"/>
+</c:if>
+
 <krad:template component="${field.group}"/>
+
+<%-- render field label right --%>
+<c:if test="${renderLabel && (field.labelPlacement eq 'RIGHT')}">
+  <krad:template component="${field.labelField}"/>
+</c:if>

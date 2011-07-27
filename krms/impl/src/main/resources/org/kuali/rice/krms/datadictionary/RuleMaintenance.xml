@@ -147,6 +147,13 @@
                 p:colSpan="6" />
               <bean parent="ActionField" p:actionLabel="Save"
                 p:methodToCall="foo" p:styleClasses="ui-button  ui-widget" />
+              <bean parent="AttributeField" p:propertyName="propositionSummary"
+                p:colSpan="8">
+                <property name="label" value="Summary" />
+                <property name="control">
+                  <bean parent="TextControl" p:size="100" p:readOnly="true" p:style="border: 0px"/>
+                </property>
+              </bean>
             </list>
           </property>
         </bean>

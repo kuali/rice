@@ -48,7 +48,13 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
    def List<ActionBo> actions;
    def List<RuleAttributeBo> attributeBos;
    //def List<PropositionBo> allChildPropositions
+   
+   // for Rule editor display
    def Tree<RuleTreeNode, String> propositionTree;
+   
+   // for rule editor display
+   def String propositionSummary;
+   private StringBuffer propositionSummaryBuffer;
    
    public PropositionBo getProposition(){
        return proposition;
@@ -65,6 +71,10 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
        return attributes;
    }
    
+   public String getPropositionSummary(){
+       return propositionSummaryBuffer.toString();
+   }
+   
    /**
     * This method is used by the RuleEditor to display the proposition in tree form.
     *
@@ -76,6 +86,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
        Node<RuleTreeNode, String> rootNode = new Node<RuleTreeNode, String>();
        propositionTree.setRootElement(rootNode);
 
+       propositionSummaryBuffer = new StringBuffer();
        PropositionBo prop = this.getProposition();
        buildPropTree( rootNode, prop );
               
@@ -101,9 +112,12 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
                grandChild.setNodeType("simplePropositionParameterNode");
                grandChild.setData(pNode);
                child.getChildren().add(grandChild);
+               
+               propositionSummaryBuffer.append(pNode.getParameterDisplayString())
            }
            else if (prop.getPropositionTypeCode().equalsIgnoreCase(PropositionType.COMPOUND.getCode())){
                // Compound Proposition
+               propositionSummaryBuffer.append(" ( ");
                Node<RuleTreeNode, String> aNode = new Node<RuleTreeNode, String>();
                aNode.setNodeLabel(prop.getDescription());
                aNode.setNodeType("compoundNode");
@@ -119,6 +133,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
                    first = false;
                    buildPropTree(aNode, child);
                }
+               propositionSummaryBuffer.append(" ) ");
            }
        }
    }
@@ -138,12 +153,15 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
        } else if (LogicalOperator.OR.getCode() == prop.getCompoundOpCode()){
            opCodeLabel = "OR";
        }
+       propositionSummaryBuffer.append(" "+opCodeLabel+" ");
        Node<RuleTreeNode, String> aNode = new Node<RuleTreeNode, String>();
        aNode.setNodeLabel(opCodeLabel);
        aNode.setNodeType("compoundOpCodeNode");
        aNode.setData(new RuleTreeNode(prop));
        currentNode.getChildren().add(aNode);
    }
+   
+   
    /**
     * 
    * Converts a mutable bo to it's immutable counterpart

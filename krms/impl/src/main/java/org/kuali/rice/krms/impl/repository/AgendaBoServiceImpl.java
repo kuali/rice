@@ -277,6 +277,15 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 		return businessObjectService;
 	}
     
+    /**
+     * Sets the sequenceAccessorService attribute value.
+     *
+     * @param sequenceAccessorService The sequenceAccessorService to set.
+     */
+    public void setSequenceAccessorService(final SequenceAccessorService sequenceAccessorService) {
+        this.sequenceAccessorService = sequenceAccessorService;
+    }
+
 	protected SequenceAccessorService getSequenceAccessorService() {
 		if ( sequenceAccessorService == null ) {
 			sequenceAccessorService = KRADServiceLocator.getSequenceAccessorService();

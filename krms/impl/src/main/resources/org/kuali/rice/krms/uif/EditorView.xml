@@ -129,7 +129,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 <property name="title" value="Agenda Items" />
                 <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.AgendaItemBo" />
                 <property name="propertyName" value="agenda.items" />
-                <property name="addLinePropertyName" value="agendaItemAddLine"/>
+                <property name="addLinePropertyName" value="agendaItemLine"/>
                 <!-- property name="layoutManager.tableTools">
                   <bean parent="TableTools-ScrollInfinite" />
                 </property -->

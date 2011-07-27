@@ -50,7 +50,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
    //def List<PropositionBo> allChildPropositions
    
    // for Rule editor display
-   def Tree<RuleTreeNode, String> propositionTree;
+//   def Tree<RuleTreeNode, String> propositionTree;
    
    // for rule editor display
    def String propositionSummary;
@@ -97,7 +97,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
        // This is a work in progress
        // will need a recursive function to walk the tree in the compound proposition
        if (prop != null) {
-           if (prop.getPropositionTypeCode().equalsIgnoreCase(PropositionType.SIMPLE.getCode())){
+           if (PropositionType.SIMPLE.getCode().equalsIgnoreCase(prop.getPropositionTypeCode())){
                // Simple Proposition
                // add a node for the description display with a child proposition node
                Node<RuleTreeNode, String> child = new Node<RuleTreeNode, String>();
@@ -115,7 +115,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
                
                propositionSummaryBuffer.append(pNode.getParameterDisplayString())
            }
-           else if (prop.getPropositionTypeCode().equalsIgnoreCase(PropositionType.COMPOUND.getCode())){
+           else if (PropositionType.COMPOUND.getCode().equalsIgnoreCase(prop.getPropositionTypeCode())){
                // Compound Proposition
                propositionSummaryBuffer.append(" ( ");
                Node<RuleTreeNode, String> aNode = new Node<RuleTreeNode, String>();

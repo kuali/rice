@@ -37,8 +37,13 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
 	
 	private ContextBo context;
 	private AgendaBo agenda;
-	private AgendaItemBo agendaItemAddLine;
-	
+	private AgendaItemBo agendaItemLine;
+    private String selectedAgendaItemId;
+
+    public AgendaEditor() {
+        agendaItemLine = new AgendaItemBo();
+    }
+
 	private void addAgendaItemAndChildren(Node<AgendaTreeNode, String> parent, AgendaItemBo agendaItem) {
 	    Node<AgendaTreeNode, String> child = new Node<AgendaTreeNode, String>();
 	    child.setNodeLabel(agendaItem.getRuleText());
@@ -97,16 +102,28 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
     }	
 	
 	/**
-     * @return the agendaItemAddLine
+     * @return the agendaItemLine
      */
-    public AgendaItemBo getAgendaItemAddLine() {
-        return this.agendaItemAddLine;
+    public AgendaItemBo getAgendaItemLine() {
+        return this.agendaItemLine;
     }
     /**
-     * @param agendaItemAddLine the agendaItemAddLine to set
+     * @param agendaItemLine the agendaItemLine to set
      */
-    public void setAgendaItemAddLine(AgendaItemBo agendaItemAddLine) {
-        this.agendaItemAddLine = agendaItemAddLine;
+    public void setAgendaItemLine(AgendaItemBo agendaItemLine) {
+        this.agendaItemLine = agendaItemLine;
+    }
+    /**
+     * @return the selectedAgendaItemId
+     */
+    public String getSelectedAgendaItemId() {
+        return this.selectedAgendaItemId;
+    }
+    /**
+     * @param selectedAgendaItemId the selectedAgendaItemId to set
+     */
+    public void setSelectedAgendaItemId(String selectedAgendaItemId) {
+        this.selectedAgendaItemId = selectedAgendaItemId;
     }
     /**
 	 * @return the context

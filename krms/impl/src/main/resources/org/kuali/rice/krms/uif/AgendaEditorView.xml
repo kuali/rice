@@ -60,10 +60,72 @@
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.ui.AgendaEditor"/>
     <property name="items">
       <list> 
+        <ref bean="AgendaEditorView-Agenda-Page"/>
+        <ref bean="AgendaEditorView-AddRule-Page"/>
+        <ref bean="AgendaEditorView-EditRule-Page"/>
+      </list>
+    </property>
+    <property name="singlePageView" value="false"/>
+    <property name="entryPageId" value="AgendaEditorView-Agenda-Page"/>
+    <!-- Since we want different footers for each page we override the footer section with an empty footer -->
+    <property name="footer">
+      <bean parent="Footer" />
+    </property>
+  </bean>
+
+  <bean id="AgendaEditorView-Agenda-Page" parent="AgendaEditorView-Agenda-Page-Parent"/>
+  <bean id="AgendaEditorView-Agenda-Page-Parent" parent="Page">
+    <property name="items">
+      <list>
         <ref bean="AgendaEditorView-ContextSection" />
         <ref bean="AgendaEditorView-AgendaSection" />
       </list>
     </property>
+    <property name="footer">
+      <bean parent="FooterDocument" />
+    </property>
+  </bean>
+
+  <bean id="AgendaEditorView-AddRule-Page" parent="AgendaEditorView-AddRule-Page-Parent"/>
+  <bean id="AgendaEditorView-AddRule-Page-Parent" parent="Page">
+    <property name="items">
+      <list>
+        <bean parent="ruleEditorBody">
+          <property name="fieldBindByNamePrefix" value="agendaItemLine.rule"/>
+        </bean>
+      </list>
+    </property>
+    <property name="footer">
+      <bean parent="Footer">
+        <property name="items">
+          <list>
+            <bean parent="NavigationActionField" p:methodToCall="addRule" p:actionLabel="Add Rule"/>
+            <bean parent="NavigationActionField" p:navigateToPageId="AgendaEditorView-Agenda-Page" p:actionLabel="Cancel"/>
+          </list>
+        </property>
+      </bean>
+   </property>
+  </bean>
+
+  <bean id="AgendaEditorView-EditRule-Page" parent="AgendaEditorView-EditRule-Page-Parent"/>
+  <bean id="AgendaEditorView-EditRule-Page-Parent" parent="Page">
+    <property name="items">
+      <list>
+        <bean parent="ruleEditorBody">
+          <property name="fieldBindByNamePrefix" value="agendaItemLine.rule"/>
+        </bean>
+      </list>
+    </property>
+    <property name="footer">
+      <bean parent="Footer">
+        <property name="items">
+          <list>
+            <bean parent="NavigationActionField" p:methodToCall="editRule" p:actionLabel="Update Rule"/>
+            <bean parent="NavigationActionField" p:navigateToPageId="AgendaEditorView-Agenda-Page" p:actionLabel="Cancel"/>
+          </list>
+        </property>
+      </bean>
+   </property>
   </bean>
 
   <bean id="AgendaEditorView-ContextSection" parent="GroupSection" p:accordion.render="false">
@@ -101,17 +163,13 @@
                 <property
                   name="fieldSuggest.suggestQuery.dataObjectClassName"
                   value="org.kuali.rice.krms.impl.repository.ContextBo" />
-                <property name="fieldAttributeQuery">
-                      <bean parent="FieldAttributeQuery" p:dataObjectClassName="org.kuali.rice.krms.impl.repository.ContextBo"
-                        p:queryFieldMapping="name:name" p:returnFieldMapping="namespace:namespace,id:id"/>
-                </property>
               </bean>
               <bean parent="AttributeField" p:propertyName="namespace" p:readOnly="true" p:conditionalReadOnly=""
                 p:label="Namespace" p:labelPlacement="LEFT" />
               <bean parent="AttributeField" p:propertyName="id"
-                p:showLabel="false" p:label="id" p:maxLength="40">
+                p:showLabel="true" p:label="id" p:maxLength="40">
                 <property name="control">
-                  <bean parent="HiddenControl" />
+                  <bean parent="TextControl" />
                 </property>
               </bean>
             </list>
@@ -183,10 +241,12 @@
   <bean id="AgendaEditorView-TreeControls" parent="FieldGroup" p:showLabel="false" p:group.layoutManager.orientation="HORIZONTAL">
     <property name="items">
       <list>
-        <bean parent="ActionField" p:methodToCall="add" p:actionLabel="add rule"  p:clientSideJs="alert('Not Yet Implemented');" 
+        <bean parent="NavigationActionField" p:methodToCall="goToAddRule" p:actionLabel="Add Rule"
           p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt;"/>
-        
-        <!-- 
+        <bean parent="NavigationActionField" p:methodToCall="goToEditRule" p:actionLabel="Edit Rule"
+          p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt;"/>
+
+        <!--
         <bean parent="AttributeField_Form" p:propertyName="maintenanceAction" p:label="" 
            p:defaultValue="below" p:style="float:none; margin-right: 15px;">
           <property name="control">

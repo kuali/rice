@@ -24,7 +24,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.collections.MapUtils;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.SequenceAccessorService;
+import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.controller.MaintenanceDocumentController;
 import org.kuali.rice.krad.web.form.MaintenanceForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -35,6 +40,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -47,6 +53,8 @@ import org.springframework.web.servlet.ModelAndView;
 public class AgendaEditorController extends MaintenanceDocumentController {
 
     private static final String AGENDA_ITEM_SELECTED = "agenda_item_selected";
+
+    private SequenceAccessorService sequenceAccessorService;
 
     @Override
     public MaintenanceForm createInitialForm(HttpServletRequest request) {
@@ -94,6 +102,12 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return super.refresh(form, result, request, response);
     }
 
+    /**
+     * This override is used to populate the agenda from the agenda name and context selection of the user.
+     * It is triggered by the refreshWhenChanged property of the MaintenanceView.
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=updateComponent")
+    @Override
     public ModelAndView updateComponent(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 
@@ -110,7 +124,165 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return super.updateComponent(form, result, request, response);
     }
 
-    
+    /**
+     * This method updates the existing rule in the agenda.
+     */
+    @RequestMapping(params = "methodToCall=" + "goToAddRule")
+    public ModelAndView goToAddRule(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+        AgendaBo agenda = getAgenda(form, request);
+        // this is the root of the tree:
+        AgendaItemBo firstItem = getFirstAgendaItem(agenda);
+        String selectedItemId = request.getParameter(AGENDA_ITEM_SELECTED);
+
+        if (selectedItemId == null) {
+            setSelectedAgendaItemId(form, null);
+        } else {
+            setSelectedAgendaItemId(form, selectedItemId);
+        }
+        setAgendaItemLine(form, null);
+
+        form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-AddRule-Page");
+        return super.navigate(form, result, request, response);
+    }
+
+    /**
+     * This method sets the agendaItemLine for adding/editing AgendaItems.
+     * The agendaItemLine is a copy of the agendaItem so that changes are not applied when
+     * they are abandoned.  If the agendaItem is null a new empty agendaItemLine is created.
+     *
+     * @param form
+     * @param agendaItem
+     */
+    private void setAgendaItemLine(UifFormBase form, AgendaItemBo agendaItem) {
+        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
+        AgendaEditor editorDocument = ((AgendaEditor)maintenanceForm.getDocument().getDocumentDataObject());
+        if (agendaItem == null) {
+            editorDocument.setAgendaItemLine(new AgendaItemBo());
+        } else {
+            // TODO: Add a copy not the reference
+            editorDocument.setAgendaItemLine((AgendaItemBo) ObjectUtils.deepCopy(agendaItem));
+        }
+    }
+
+    /**
+     * This method returns the agendaItemLine from adding/editing AgendaItems.
+     *
+     * @param form
+     * @return agendaItem
+     */
+    private AgendaItemBo getAgendaItemLine(UifFormBase form) {
+        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
+        AgendaEditor editorDocument = ((AgendaEditor)maintenanceForm.getDocument().getDocumentDataObject());
+        return editorDocument.getAgendaItemLine();
+    }
+
+    /**
+     * This method sets the id of the selected agendaItem.
+     *
+     * @param form
+     * @param selectedItemId
+     */
+    private void setSelectedAgendaItemId(UifFormBase form, String selectedAgendaItemId) {
+        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
+        AgendaEditor editorDocument = ((AgendaEditor)maintenanceForm.getDocument().getDocumentDataObject());
+        editorDocument.setSelectedAgendaItemId(selectedAgendaItemId);
+    }
+
+    /**
+     * This method returns the id of the selected agendaItem.
+     *
+     * @param form
+     * @return selectedAgendaItemId
+     */
+    private String getSelectedAgendaItemId(UifFormBase form) {
+        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
+        AgendaEditor editorDocument = ((AgendaEditor)maintenanceForm.getDocument().getDocumentDataObject());
+        return editorDocument.getSelectedAgendaItemId();
+    }
+
+    /**
+     * This method updates the existing rule in the agenda.
+     */
+    @RequestMapping(params = "methodToCall=" + "goToEditRule")
+    public ModelAndView goToEditRule(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        AgendaBo agenda = getAgenda(form, request);
+        // this is the root of the tree:
+        AgendaItemBo firstItem = getFirstAgendaItem(agenda);
+        String selectedItemId = request.getParameter(AGENDA_ITEM_SELECTED);
+        AgendaItemBo node = getAgendaItemById(firstItem, selectedItemId);
+
+        setSelectedAgendaItemId(form, selectedItemId);
+        setAgendaItemLine(form, node);
+
+        form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-EditRule-Page");
+        return super.navigate(form, result, request, response);
+    }
+
+    /**
+     *  This method adds the newly create rule to the agenda.
+     */
+    @RequestMapping(params = "methodToCall=" + "addRule")
+    public ModelAndView addRule(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
+        AgendaEditor editorDocument =
+                ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
+        AgendaBo agenda = editorDocument.getAgenda();
+        AgendaItemBo newAgendaItem = editorDocument.getAgendaItemLine();
+        newAgendaItem.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_AGENDA_ITM_S").toString());
+        newAgendaItem.setAgendaId(agenda.getId());
+        if (agenda.getItems() == null) {
+            agenda.setItems(new ArrayList<AgendaItemBo>());
+        }
+        if (agenda.getFirstItemId() == null) {
+            agenda.setFirstItemId(newAgendaItem.getId());
+            agenda.getItems().add(newAgendaItem);
+        } else {
+            // insert agenda in tree
+            String selectedAgendaItemId = getSelectedAgendaItemId(form);
+            if (StringUtils.isBlank(selectedAgendaItemId)) {
+                // add after the last root node
+                AgendaItemBo node = getFirstAgendaItem(agenda);
+                while (node.getAlways() != null) {
+                    node = node.getAlways();
+                }
+                node.setAlwaysId(newAgendaItem.getId());
+                node.setAlways(newAgendaItem);
+            } else {
+                // add after selected node
+                AgendaItemBo firstItem = getFirstAgendaItem(agenda);
+                AgendaItemBo node = getAgendaItemById(firstItem, getSelectedAgendaItemId(form));
+                newAgendaItem.setAlwaysId(node.getAlwaysId());
+                newAgendaItem.setAlways(node.getAlways());
+                node.setAlwaysId(newAgendaItem.getId());
+                node.setAlways(newAgendaItem);
+            }
+        }
+
+        form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-Agenda-Page");
+        return super.navigate(form, result, request, response);
+    }
+
+    /**
+     * This method updates the existing rule in the agenda.
+     */
+    @RequestMapping(params = "methodToCall=" + "editRule")
+    public ModelAndView editRule(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+        AgendaBo agenda = getAgenda(form, request);
+        // this is the root of the tree:
+        AgendaItemBo firstItem = getFirstAgendaItem(agenda);
+        AgendaItemBo node = getAgendaItemById(firstItem, getSelectedAgendaItemId(form));
+        AgendaItemBo agendaItemLine = getAgendaItemLine(form);
+        node.setRule(agendaItemLine.getRule());
+
+        form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-Agenda-Page");
+        return super.navigate(form, result, request, response);
+    }
+
     /**
      * @return the ALWAYS {@link AgendaItemInstanceChildAccessor} for the last ALWAYS child of the instance accessed by the parameter.
      * It will by definition refer to null.  If the instanceAccessor parameter refers to null, then it will be returned.  This is useful
@@ -642,7 +814,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaBo agenda = editorDocument.getAgenda();
         return agenda;
     }
-    
+
     private void treeToInOrderList(AgendaItemBo agendaItem, List<AgendaItemBo> listToBuild) {
         listToBuild.add(agendaItem);
         for (AgendaItemChildAccessor childAccessor : AgendaItemChildAccessor.linkedNodes) {
@@ -747,7 +919,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         private static final AgendaItemChildAccessor whenTrue = new AgendaItemChildAccessor(Child.WHEN_TRUE); 
         private static final AgendaItemChildAccessor whenFalse = new AgendaItemChildAccessor(Child.WHEN_FALSE); 
         private static final AgendaItemChildAccessor always = new AgendaItemChildAccessor(Child.ALWAYS); 
-        
+
         /**
          * Accessors for all linked items
          */
@@ -799,4 +971,11 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         }
     }
 
+    protected SequenceAccessorService getSequenceAccessorService() {
+        if ( sequenceAccessorService == null ) {
+            sequenceAccessorService = KRADServiceLocator.getSequenceAccessorService();
+        }
+        return sequenceAccessorService;
+    }
+    
 }

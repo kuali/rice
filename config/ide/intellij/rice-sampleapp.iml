@@ -9,6 +9,12 @@
         <webroots>
           <root url="file://$MODULE_DIR$/../../../sampleapp/src/main/webapp" relative="/" />
         </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/annotations" />
+          <root url="file://$MODULE_DIR$/../../../sampleapp/src/main/java" />
+          <root url="file://$MODULE_DIR$/../../../sampleapp/src/main/groovy" />
+          <root url="file://$MODULE_DIR$/../../../sampleapp/src/main/resources" />
+        </sourceRoots>
       </configuration>
       <facet type="struts" name="Struts">
         <configuration>

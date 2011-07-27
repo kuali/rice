@@ -34,6 +34,7 @@ import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actions.ActionRegistry;
 import org.kuali.rice.kew.actiontaken.service.ActionTakenService;
 import org.kuali.rice.kew.batch.XmlPollerService;
+import org.kuali.rice.kew.docsearch.DocumentSearchCustomizationMediator;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.service.DocumentSecurityService;
 import org.kuali.rice.kew.doctype.service.DocumentTypePermissionService;
@@ -210,6 +211,7 @@ public final class KEWServiceLocator {
 	
 	public static final String WORKFLOW_DOCUMENT_PROTOTYPE = "rice.kew.workflowDocumentPrototype";
 
+    public static final String DOCUMENT_SEARCH_CUSTOMIZATION_MEDIATOR = "rice.kew.documentSearchCustomizationMediator";
 
     public static EntityManagerFactory getEntityManagerFactory() {
         return (EntityManagerFactory) getService(ENTITY_MANAGER_FACTORY);
@@ -404,5 +406,9 @@ public final class KEWServiceLocator {
     
     public static WorkflowDocumentPrototype getWorkflowDocumentPrototype() {
     	return getBean(WORKFLOW_DOCUMENT_PROTOTYPE);
+    }
+
+    public static DocumentSearchCustomizationMediator getDocumentSearchCustomizationMediator() {
+        return getBean(DOCUMENT_SEARCH_CUSTOMIZATION_MEDIATOR);
     }
 }

@@ -275,6 +275,9 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements DocumentLookup
      * @return list of rows
      */
 	protected List<Row> searchAttRows(DocumentType documentType) {
+
+        // TODO use the customization mediator here!!
+
 		List<Row> customSearchAttRows = new ArrayList<Row>();
 		List<SearchableAttributeOld> searchAtts = documentType.getSearchableAttributesOld();
 		for (SearchableAttributeOld searchableAttribute : searchAtts) {

@@ -86,7 +86,7 @@ public class DocumentAttributeIndexingQueueImpl implements DocumentAttributeInde
 	private List<SearchableAttributeValue> buildSearchableAttributeValues(Document document, DocumentContent documentContent) {
 		List<SearchableAttributeValue> searchableAttributeValues = new ArrayList<SearchableAttributeValue>();
         DocumentType documentTypeBo = KEWServiceLocator.getDocumentTypeService().findByName(document.getDocumentTypeName());
-		for (SearchableAttribute searchableAttribute : documentTypeBo.getSearchableAttributes()) {
+		for (SearchableAttribute searchableAttribute : documentTypeBo.loadSearchableAttributes()) {
             DocumentSearchContext context = DocumentSearchContext.createFullContext(document, documentContent, document.getDocumentTypeName());
             List<DocumentAttribute<?>> documentAttributes = searchableAttribute.getDocumentAttributes(context);
 			if (documentAttributes != null) {

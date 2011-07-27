@@ -155,11 +155,7 @@
       </facet-type>
       <facet-type id="Osmorc">
         <modules>
-          <module name="rice-sampleapp">
-            <directories>
-              <directory url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
-            </directories>
-          </module>
+          <module name="rice-sampleapp" />
           <module name="rice-standalone">
             <directories>
               <directory url="file://$PROJECT_DIR$/../../../standalone/overlays" />

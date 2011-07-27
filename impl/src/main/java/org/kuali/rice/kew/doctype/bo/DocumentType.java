@@ -33,6 +33,7 @@ import org.kuali.rice.kew.api.doctype.DocumentTypeContract;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor;
 import org.kuali.rice.kew.docsearch.SearchableAttributeOld;
+import org.kuali.rice.kew.docsearch.SearchableAttributeStringValue;
 import org.kuali.rice.kew.docsearch.xml.DocumentSearchXMLResultProcessor;
 import org.kuali.rice.kew.docsearch.xml.GenericXMLSearchableAttribute;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
@@ -79,9 +80,11 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -471,42 +474,58 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         return searchAtts;
     }
 
+    public List<DocumentTypeAttribute> getDocumentTypeAttributes(String... attributeTypes) {
+        if (documentTypeAttributes == null || documentTypeAttributes.isEmpty()) {
+            if (getParentDocType() != null) {
+                return getParentDocType().getDocumentTypeAttributes(attributeTypes);
+            }
+            return Collections.emptyList();
+        }
+        if (attributeTypes == null) {
+            // match all
+            return Collections.unmodifiableList(documentTypeAttributes);
+        }
+        List<String> attributeTypeList = Arrays.asList(attributeTypes);
+        List<DocumentTypeAttribute> filteredAttributes = new ArrayList<DocumentTypeAttribute>();
+        for (DocumentTypeAttribute documentTypeAttribute : documentTypeAttributes) {
+            RuleAttribute ruleAttribute = documentTypeAttribute.getRuleAttribute();
+            if (attributeTypeList.contains(ruleAttribute.getType())) {
+                filteredAttributes.add(documentTypeAttribute);
+            }
+        }
+        return Collections.unmodifiableList(filteredAttributes);
+    }
+
     public boolean hasSearchableAttributes() {
         return !getSearchableAttributes().isEmpty();
     }
 
-    public List<SearchableAttribute> getSearchableAttributes() {
-        List<SearchableAttribute> searchAtts = new ArrayList<SearchableAttribute>();
-        if (documentTypeAttributes == null || documentTypeAttributes.isEmpty()) {
-            if (getParentDocType() != null) {
-                return getParentDocType().getSearchableAttributes();
-            } else {
-                return searchAtts;
-            }
-        }
-
-        for (Iterator iterator = documentTypeAttributes.iterator(); iterator.hasNext();) {
-            DocumentTypeAttribute attribute = (DocumentTypeAttribute) iterator.next();
-            RuleAttribute ruleAttribute = attribute.getRuleAttribute();
-            if (KEWConstants.SEARCHABLE_ATTRIBUTE_TYPE.equals(ruleAttribute.getType()) || KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
-                try {
-                    Object attributeService = KEWServiceLocator.getRuleAttributeService().loadRuleAttributeService(ruleAttribute, getApplicationId());
-                    if (attributeService == null) {
-                        throw new WorkflowRuntimeException("Failed to locate searchable attribute, attribute did not exist: " + ruleAttribute);
-                    }
-                    if (!(attributeService instanceof SearchableAttribute)) {
-                        throw new WorkflowRuntimeException("Service for given attribute was found, but it does not implement SearchableAttribute: " + attributeService);
-                    }
-                    if (KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
-                         ((GenericXMLSearchableAttribute) attributeService).setRuleAttribute(ruleAttribute);
-                    }
-                    searchAtts.add((SearchableAttribute)attributeService);
-                } catch (RiceRemoteServiceConnectionException e) {
-                    LOG.warn("Unable to connect to load searchable attribute for " + ruleAttribute, e);
+    public List<DocumentTypeAttribute> getSearchableAttributes() {
+        return getDocumentTypeAttributes(KEWConstants.SEARCHABLE_ATTRIBUTE_TYPE, KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE);
+    }
+    
+    public List<SearchableAttribute> loadSearchableAttributes() {
+        List<DocumentTypeAttribute> searchableAttributes = getSearchableAttributes();
+        List<SearchableAttribute> loadedAttributes = new ArrayList<SearchableAttribute>();
+        for (DocumentTypeAttribute documentTypeAttribute : searchableAttributes) {
+            RuleAttribute ruleAttribute = documentTypeAttribute.getRuleAttribute();
+            try {
+                Object attributeService = KEWServiceLocator.getRuleAttributeService().loadRuleAttributeService(ruleAttribute, getApplicationId());
+                if (attributeService == null) {
+                    throw new WorkflowRuntimeException("Failed to locate searchable attribute, attribute did not exist: " + ruleAttribute);
                 }
+                if (!(attributeService instanceof SearchableAttribute)) {
+                    throw new WorkflowRuntimeException("Service for given attribute was found, but it does not implement SearchableAttribute: " + attributeService);
+                }
+                if (KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
+                    ((GenericXMLSearchableAttribute) attributeService).setRuleAttribute(ruleAttribute);
+                }
+                loadedAttributes.add((SearchableAttribute)attributeService);
+            } catch (RiceRemoteServiceConnectionException e) {
+                LOG.warn("Unable to connect to load searchable attribute for " + ruleAttribute, e);
             }
         }
-        return searchAtts;
+        return loadedAttributes;
     }
 
     public DocumentTypeAttribute getDocumentTypeAttribute(int index) {
@@ -1515,7 +1534,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     }
 
     /**
-     * @param actionalApplicationId the actionalApplicationId to set
+     * @param actualApplicationId the actualApplicationId to set
      */
     public void setActualApplicationId(String actualApplicationId) {
         this.actualApplicationId = actualApplicationId;

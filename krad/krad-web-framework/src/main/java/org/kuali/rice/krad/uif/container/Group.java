@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.container;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.core.DataBinding;
 import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.GroupField;
@@ -81,21 +82,21 @@ public class Group extends ContainerBase {
         for (Component component : getItems()) {
             // append group's field bind by name prefix (if set) to each
             // attribute field's binding prefix
-            if (component instanceof AttributeField) {
-                AttributeField attributeField = (AttributeField) component;
+            if (component instanceof DataBinding) {
+                DataBinding field = (DataBinding) component;
 
                 if (StringUtils.isNotBlank(getFieldBindByNamePrefix())) {
                     String bindByNamePrefixToSet = getFieldBindByNamePrefix();
 
-                    if (StringUtils.isNotBlank(attributeField.getBindingInfo().getBindByNamePrefix())) {
-                        bindByNamePrefixToSet += "." + attributeField.getBindingInfo().getBindByNamePrefix();
+                    if (StringUtils.isNotBlank(field.getBindingInfo().getBindByNamePrefix())) {
+                        bindByNamePrefixToSet += "." + field.getBindingInfo().getBindByNamePrefix();
                     }
-                    attributeField.getBindingInfo().setBindByNamePrefix(bindByNamePrefixToSet);
+                    field.getBindingInfo().setBindByNamePrefix(bindByNamePrefixToSet);
                 }
 
                 if (StringUtils.isNotBlank(fieldBindingObjectPath) &&
-                        StringUtils.isBlank(attributeField.getBindingInfo().getBindingObjectPath())) {
-                    attributeField.getBindingInfo().setBindingObjectPath(fieldBindingObjectPath);
+                        StringUtils.isBlank(field.getBindingInfo().getBindingObjectPath())) {
+                    field.getBindingInfo().setBindingObjectPath(fieldBindingObjectPath);
                 }
             }
             // set on GroupField's group to recursively set AttributeFields

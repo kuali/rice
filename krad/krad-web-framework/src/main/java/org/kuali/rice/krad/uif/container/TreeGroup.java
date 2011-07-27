@@ -5,6 +5,7 @@ import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.core.BindingInfo;
 import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.core.DataBinding;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -20,7 +21,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TreeGroup extends Group {
+public class TreeGroup extends Group implements DataBinding{
     private static final long serialVersionUID = 5841343037089286740L;
 
     private String propertyName;

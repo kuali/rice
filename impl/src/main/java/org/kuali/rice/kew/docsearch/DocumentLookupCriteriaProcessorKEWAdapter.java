@@ -16,6 +16,7 @@
 package org.kuali.rice.kew.docsearch;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
@@ -24,6 +25,7 @@ import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.lookup.valuefinder.DocumentRouteStatusValuesFinder;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.KEWWebServiceConstants;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
@@ -279,11 +281,21 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements DocumentLookup
         // TODO use the customization mediator here!!
 
 		List<Row> customSearchAttRows = new ArrayList<Row>();
+
+        // legacy search attributes
 		List<SearchableAttributeOld> searchAtts = documentType.getSearchableAttributesOld();
 		for (SearchableAttributeOld searchableAttribute : searchAtts) {
 			DocumentSearchContext documentSearchContext = DocSearchUtils.getDocumentSearchContext("", documentType.getName(), "");
 			customSearchAttRows.addAll(searchableAttribute.getSearchingRows(documentSearchContext));
 		}
+
+        // Rice 2.0 search attributes
+        List<RemotableAttributeField> remotableAttributeFields =
+                KEWServiceLocator.getDocumentSearchCustomizationMediator().getSearchFields(documentType);
+        if (remotableAttributeFields != null && !remotableAttributeFields.isEmpty()) {
+            customSearchAttRows.addAll(FieldUtils.convertRemotableAttributeFields(remotableAttributeFields));
+        }
+
 		List<Row> fixedCustomSearchAttRows = new ArrayList<Row>();
 		for (Row row : customSearchAttRows) {
 			List<Field> fields = row.getFields();

@@ -43,6 +43,10 @@ public class DocumentSearchCustomizationServiceImpl implements DocumentSearchCus
                     throw new RiceIllegalArgumentException("Failed to locate a searchable attribute with the given name: " + searchableAttributeName);
                 }
                 SearchableAttribute searchableAttribute = loadSearchableAttribute(ruleAttribute);
+
+                // TODO temporary, remove once SearchableAttributeOld has been removed from the picture
+                if (searchableAttribute == null) continue;
+
                 List<RemotableAttributeField> attributeSearchFields = searchableAttribute.getSearchFields(documentTypeName);
                 searchAttributeFields.add(AttributeFields.create(searchableAttributeName, attributeSearchFields));
             }
@@ -58,6 +62,12 @@ public class DocumentSearchCustomizationServiceImpl implements DocumentSearchCus
         if (ruleAttributeService == null) {
             throw new RiceIllegalArgumentException("Failed to load search attribute for: " + ruleAttribute);
         }
+
+        // TODO temporary, remove once SearchableAttributeOld has been removed from the picture
+        if (!(ruleAttributeService instanceof SearchableAttribute)) {
+            return null;
+        }
+
         if (KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
             //required to make it work because ruleAttribute XML is required to construct fields
             ((GenericXMLSearchableAttribute) ruleAttributeService).setRuleAttribute(ruleAttribute);

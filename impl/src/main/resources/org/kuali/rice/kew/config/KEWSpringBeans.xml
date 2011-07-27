@@ -788,5 +788,7 @@
   <bean id="rice.kew.documentSearchCustomizationService" class="org.kuali.rice.kew.docsearch.DocumentSearchCustomizationServiceImpl">
 		<property name="ruleAttributeService" ref="enRuleAttributeService"/>
 	</bean>
+
+  <bean id="rice.kew.documentSearchCustomizationMediator" class="org.kuali.rice.kew.docsearch.DocumentSearchCustomizationMediatorImpl" />
     
 </beans>

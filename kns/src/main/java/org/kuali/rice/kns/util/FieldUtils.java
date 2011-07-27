@@ -19,6 +19,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
+import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -1422,6 +1423,17 @@ public final class FieldUtils {
      */
     public static String scrubWhitespace(String s) {
         return s.replaceAll("(\\s)(\\s+)", " ");
+    }
+
+    public static List<Row> convertRemotableAttributeFields(List<RemotableAttributeField> remotableAttributeFields) {
+        List<Row> rows = new ArrayList<Row>();
+        for (RemotableAttributeField remotableAttributeField : remotableAttributeFields) {
+            Field field = new Field(remotableAttributeField.getName(), remotableAttributeField.getLongLabel());
+
+            // TODO figure out the rest of this nasty conversion...
+            
+        }
+        return rows;
     }
 
     private static DataDictionaryService getDataDictionaryService() {

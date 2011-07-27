@@ -50,7 +50,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
    //def List<PropositionBo> allChildPropositions
    
    // for Rule editor display
-//   def Tree<RuleTreeNode, String> propositionTree;
+   def Tree<RuleTreeNode, String> propositionTree;
    
    // for rule editor display
    def String propositionSummary;
@@ -148,9 +148,9 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
     */
    private addOpCodeNode(Node currentNode, PropositionBo prop){
        String opCodeLabel = "";
-       if (LogicalOperator.AND.getCode() == prop.getCompoundOpCode()){
+       if (LogicalOperator.AND.getCode().equalsIgnoreCase(prop.getCompoundOpCode())){
            opCodeLabel = "AND";
-       } else if (LogicalOperator.OR.getCode() == prop.getCompoundOpCode()){
+       } else if (LogicalOperator.OR.getCode().equalsIgnoreCase(prop.getCompoundOpCode())){
            opCodeLabel = "OR";
        }
        propositionSummaryBuffer.append(" "+opCodeLabel+" ");

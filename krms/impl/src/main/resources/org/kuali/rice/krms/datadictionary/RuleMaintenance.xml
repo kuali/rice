@@ -157,8 +157,26 @@
             </list>
           </property>
         </bean>
+        <bean parent="GroupBodyOnly" p:style="border: 1px solid #999999; padding: 5px; margin: 5px; background: white; " >
+          <property name="items">
+            <list>
+              <bean parent="GroupGridBodyOnly" p:style="margin-bottom: 5pt;">
+                <property name="items">
+                  <list>
+                    <ref bean="RuleEditorView-RuleTreeControls" />
+                  </list>
+                </property>
+              </bean>
+              <ref bean="RuleEditorView-TreeExpandCollapse" />
+              <ref bean="RuleEditorView-Tree" />
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
         
-  <bean id="ruleTreeExpandCollapse" parent="FieldGroup" p:label="Field Group 4" 
+  <bean id="RuleEditorView-TreeExpandCollapse" parent="FieldGroup" p:label="Field Group 4" 
     p:style="font-size: smaller;">
     <property name="group.layoutManager.orientation" value="HORIZONTAL"/>
     <property name="items">
@@ -175,7 +193,7 @@
     </property>
   </bean>
 
-  <bean id="ruleTreeControls" parent="FieldGroup" p:showLabel="false" p:group.layoutManager.orientation="HORIZONTAL">
+  <bean id="RuleEditorView-RuleTreeControls" parent="FieldGroup" p:showLabel="false" p:group.layoutManager.orientation="HORIZONTAL">
     <property name="items">
       <list>
         <bean parent="ActionField" p:methodToCall="add" p:actionLabel="Add Proposition"  p:clientSideJs="alert('Not Yet Implemented');" 
@@ -200,6 +218,7 @@
     </property> 
   </bean>
         
+  <bean id="RuleEditorView-Tree" parent="ruleTree"/>        
   <bean id="ruleTree" parent="TreeGroup" p:accordion.render="false" p:header.render="false" p:style="float:left; margin-left: 2em;">
     <property name="title" value="Rule Propositions"/>
     <property name="propertyName" value="propositionTree"/>
@@ -278,9 +297,6 @@
   </bean>
         
         
-      </list>
-    </property>
-  </bean>
 
   <bean name="ruleAttributesSection" parent="ruleAttributesSection-parent" />
   <bean name="ruleAttributesSection-parent" parent="GroupSection">

@@ -16,9 +16,13 @@
 package org.kuali.rice.krad.web.form;
 
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.inquiry.Inquirable;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
+import org.kuali.rice.krad.uif.container.InquiryView;
 
 /**
  * Form class for <code>InquiryView</code> screens
@@ -34,6 +38,19 @@ public class InquiryForm extends UifFormBase {
 
     public InquiryForm() {
         setViewTypeName(ViewType.INQUIRY);
+    }
+
+    /**
+     * Picks out business object name from the request to get retrieve a
+     * lookupable and set properties
+     */
+    @Override
+    public void postBind(HttpServletRequest request) {
+        super.postBind(request);
+
+        if (StringUtils.isBlank(getDataObjectClassName())) {
+            setDataObjectClassName(((InquiryView) getView()).getDataObjectClassName().getName());
+        }
     }
 
     /**

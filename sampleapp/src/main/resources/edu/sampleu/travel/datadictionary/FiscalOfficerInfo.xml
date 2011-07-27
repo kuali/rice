@@ -184,6 +184,25 @@
     </property>
   </bean>
   
+  <bean id="FiscalOfficerInfo-LookupView_username" parent="LookupView">
+    <property name="id" value="FiscalOfficerInfo-LookupView2"/>
+    <property name="viewName" value="FiscalOfficerInfo-LookupView2"/>
+    <property name="title" value="Fiscal Officer Lookup" />
+    <property name="dataObjectClassName" value="edu.sampleu.travel.dto.FiscalOfficerInfo" />
+    <property name="viewHelperServiceClassName" value="edu.sampleu.travel.service.FiscalOfficerInfoLookupViewHelperServiceImpl" />
+    <property name="criteriaFields">
+      <list>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="userName" />
+      </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean parent="AttributeField" p:propertyName="id" />
+        <bean parent="AttributeField" p:propertyName="userName" />
+      </list>
+    </property>
+  </bean>
+  
   <bean id="FiscalOfficerInfo-MaintenanceView" parent="MaintenanceView">
     <property name="title" value="Fiscal Officer Maintenance" />
     <property name="dataObjectClassName" value="edu.sampleu.travel.dto.FiscalOfficerInfo" />

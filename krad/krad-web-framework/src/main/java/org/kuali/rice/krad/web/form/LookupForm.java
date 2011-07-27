@@ -82,6 +82,9 @@ public class LookupForm extends UifFormBase {
                 throw new RuntimeException("Lookupable not found for view id " + getView().getId());
             }
 
+            if (StringUtils.isBlank(getDataObjectClassName())) {
+                setDataObjectClassName(((LookupView) getView()).getDataObjectClassName().getName());
+            }
             // init lookupable with data object class
             Class<?> dataObjectClass = Class.forName(getDataObjectClassName());
             lookupable.setDataObjectClass(dataObjectClass);

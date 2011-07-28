@@ -85,7 +85,7 @@
 	<classpathentry kind="var" path="M2_REPO/mysql/mysql-connector-java/5.1.5/mysql-connector-java-5.1.5.jar"/>
 	<classpathentry kind="var" path="M2_REPO/nekohtml/nekohtml/0.9.5/nekohtml-0.9.5.jar" sourcepath="M2_REPO/nekohtml/nekohtml/0.9.5/nekohtml-0.9.5-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/net/sf/ehcache/ehcache/1.2.3/ehcache-1.2.3.jar" sourcepath="M2_REPO/net/sf/ehcache/ehcache/1.2.3/ehcache-1.2.3-sources.jar"/>
-	<classpathentry kind="var" path="M2_REPO/ojb/db-ojb/1.0.4-patch4/db-ojb-1.0.4-patch4.jar" sourcepath="M2_REPO/ojb/db-ojb/1.0.4-patch4/db-ojb-1.0.4-patch4-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/kuali/db/ojb/db-ojb/1.0.4-patch6/db-ojb-1.0.4-patch6.jar" sourcepath="M2_REPO/org/kuali/db/ojb/db-ojb/1.0.4-patch6/db-ojb-1.0.4-patch6-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/opensymphony/oscache/2.3.2/oscache-2.3.2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/opensymphony/quartz/1.6.0/quartz-1.6.0.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/acegisecurity/acegi-security-cas/1.0.6/acegi-security-cas-1.0.6.jar" sourcepath="M2_REPO/org/acegisecurity/acegi-security-cas/1.0.6/acegi-security-cas-1.0.6-sources.jar"/>

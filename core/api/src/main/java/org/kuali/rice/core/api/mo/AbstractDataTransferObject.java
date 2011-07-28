@@ -19,6 +19,8 @@ import javax.xml.bind.Unmarshaller;
  *     Note: the equals/hashCode implementation excludes {@value CoreConstants.CommonElements.FUTURE_ELEMENTS} field.
  *     This element should be present on all jaxb annotated classes.
  * </ol>
+ *
+ * <b>Important: all classes extending this class must be immutable</b>
  */
 public abstract class AbstractDataTransferObject implements ModelObjectComplete {
 

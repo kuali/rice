@@ -16,12 +16,13 @@
   ~ limitations under the License.
 -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.kuali</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>16</version>
+    <version>17</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
@@ -235,7 +236,8 @@
           This plugin also enforces that plugins specify a version number. Using meta version tags or not specifing a version
           on a plugin is a decrecated feature as it leads to build instability.
 
-          Finally, the DependencyConvergence rule helps ensure that all of our submodules are resolving the same versions of
+          Finally, the DependencyConvergence rule helps ensure that all of our submodules are resolving the same versions 
+          of
           artifacts by making sure that all deps converge. This managed at the dep management section which is critical.
         -->
         <plugin>
@@ -616,7 +618,8 @@
             <forkMode>${maven.failsafe.forkmode}</forkMode>
             <forkedProcessTimeoutInSeconds>${maven.failsafe.forkedProcessTimeoutInSeconds}</forkedProcessTimeoutInSeconds>
             <reportFormat>plain</reportFormat>
-            <argLine>-Dalt.config.location="${build.alt.config.location}" -Xmx1024m -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled</argLine>
+            <argLine>-Dalt.config.location="${build.alt.config.location}" -Xmx1024m -XX:MaxPermSize=512m
+              -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled</argLine>
           </configuration>
         </plugin>
         <plugin>

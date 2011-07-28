@@ -43,7 +43,7 @@ public class GenericPermission extends PersistableBusinessObjectBase {
 	
 	@Id
 	@Column(name="PERM_ID")
-	protected String permissionId;
+	protected String id;
 	@Column(name="NMSPC_CD")
 	protected String namespaceCode;
 	@Column(name="NM")
@@ -157,7 +157,7 @@ public class GenericPermission extends PersistableBusinessObjectBase {
 	 * @see org.kuali.rice.kim.bo.role.KimPermission#getPermissionId()
 	 */
 	public String getPermissionId() {
-		return permissionId;
+		return id;
 	}
 
 	/**
@@ -201,7 +201,7 @@ public class GenericPermission extends PersistableBusinessObjectBase {
 	}
 
 	public void setPermissionId(String permissionId) {
-		this.permissionId = permissionId;
+		this.id = permissionId;
 	}
 
 

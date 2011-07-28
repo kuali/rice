@@ -17,7 +17,7 @@
 
   <bean id="PermissionBo" parent="PermissionBo-parentBean"/>
 
-  <bean id="PermissionBo-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.impl.permission.PermissionBo" p:titleAttribute="id" p:objectLabel="Permission" p:inquiryDefinition-ref="PermissionBo-inquiryDefinition">
+  <bean id="PermissionBo-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.impl.permission.PermissionBo" p:titleAttribute="id" p:objectLabel="Permission" p:inquiryDefinition-ref="PermissionBo-inquiryDefinition" p:lookupDefinition-ref="PermissionBo-lookupDefinition">
     <property name="attributes">
       <list>
         <ref bean="PermissionBo-template.namespaceCode"/>
@@ -122,7 +122,44 @@
         </bean>
       </list>
     </property>
-    <property name="inquirableClass" value="org.kuali.rice.kim.inquiry.PermissionInquirableImpl"/>
+    <property name="inquirableClass" value="org.kuali.rice.kim.impl.permission.PermissionInquirableImpl"/>
   </bean>
 
+  <bean id="PermissionBo-lookupDefinition" parent="PermissionBo-lookupDefinition-parentBean"/>
+
+  <bean id="PermissionBo-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition" p:title="Permission Lookup">
+    <property name="lookupableID" value="permissionLookupable"/>
+    <property name="defaultSort">
+      <bean parent="SortDefinition">
+        <property name="attributeNames">
+          <list>
+            <value>id</value>
+          </list>
+        </property>
+        <property name="sortAscending" value="true"/>
+      </bean>
+    </property>
+    <property name="lookupFields">
+      <list>
+        <bean parent="FieldDefinition" p:attributeName="id"/>
+        <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
+        <bean parent="FieldDefinition" p:attributeName="name"/>
+        <bean parent="FieldDefinition" p:attributeName="description"/>
+        <bean parent="FieldDefinition" p:attributeName="active" p:defaultValue="Y"/>
+        <!--
+             Note that kimTypeId and PrincipalName fields
+             are overwritten/created in GroupLookupableHelperServiceImpl
+        -->
+      </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean parent="FieldDefinition" p:attributeName="kimTypeInfo.name"/>
+        <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
+        <bean parent="FieldDefinition" p:attributeName="name"/>
+        <bean parent="FieldDefinition" p:attributeName="description"/>
+      </list>
+    </property>
+  </bean>
+  
 </beans>

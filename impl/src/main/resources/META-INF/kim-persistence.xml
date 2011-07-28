@@ -94,7 +94,7 @@
     <class>org.kuali.rice.kim.bo.ui.GroupDocumentMember</class>
     <class>org.kuali.rice.kim.bo.ui.GroupDocumentQualifier</class>
     <class>org.kuali.rice.kim.impl.responsibility.ReviewResponsibilityBo</class>
-    <class>org.kuali.rice.kim.bo.impl.GenericPermission</class>
+    <class>org.kuali.rice.kim.impl.permission.GenericPermissionBo</class>
     
     <!-- mapped superclasses -->
     <class>org.kuali.rice.kim.bo.impl.KimAbstractMemberImpl</class>

@@ -582,7 +582,7 @@
 		        <value>classpath:org/kuali/rice/kim/impl/permission/PermissionBo.xml</value>
 		        <value>classpath:org/kuali/rice/kim/impl/responsibility/UberResponsibility.xml</value>
                 <value>classpath:org/kuali/rice/kim/impl/responsibility/IdentityManagementReviewResponsibilityMaintenanceDocument.xml</value>
-		        <value>classpath:org/kuali/rice/kim/bo/datadictionary/PermissionImpl.xml</value>
+		        <value>classpath:org/kuali/rice/kim/impl/permission/PermissionBo.xml</value>
 		        <value>classpath:org/kuali/rice/kim/impl/common/delegate/DelegateBo.xml</value>
                 <value>classpath:org/kuali/rice/kim/impl/common/attribute/KimAttribute.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/PermissionAttributeDataImpl.xml</value>

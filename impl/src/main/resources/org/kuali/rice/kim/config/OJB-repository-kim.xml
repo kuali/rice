@@ -1183,7 +1183,7 @@
     <field-descriptor name="id" column="RSP_ID" jdbc-type="VARCHAR" primarykey="true" />
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kim.bo.impl.GenericPermission" table="KRIM_PERM_T">
+  <class-descriptor class="org.kuali.rice.kim.impl.permission.GenericPermissionBo" table="KRIM_PERM_T">
     <field-descriptor name="permissionId" column="PERM_ID" jdbc-type="VARCHAR" primarykey="true" />
   </class-descriptor>
 

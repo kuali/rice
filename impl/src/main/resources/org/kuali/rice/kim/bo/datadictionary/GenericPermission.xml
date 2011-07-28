@@ -13,12 +13,31 @@
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
--->
 
+
+  <bean id="PermissionImpl-permissionId" parent="PermissionImpl-permissionId-parentBean"/>
+  <bean id="PermissionImpl-permissionId-parentBean" parent="AttributeDefinition" abstract="true" p:name="permissionId" p:label="Permission Identifier" p:shortLabel="Permission Identifier" p:maxLength="10" p:required="false">
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="10"/>
+    </property>
+  </bean>
+  <bean id="PermissionImpl-name" parent="PermissionImpl-name-parentBean"/>
+  <bean id="PermissionImpl-name-parentBean" abstract="true" parent="KimType-name" p:name="name" p:label="Permission Name" p:shortLabel="Permission Name">
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="40"/>
+    </property>
+    <property name="validationPattern">
+			<bean parent="AlphaNumericValidationPattern" p:allowWhitespace="true" p:allowUnderscore="true" p:allowPeriod="true" p:allowParenthesis="true" p:allowDollar="true" p:allowForwardSlash="true"/>
+	</property>
+  </bean>
+  <bean id="PermissionImpl-active" parent="PermissionImpl-active-parentBean"/>
+  <bean id="PermissionImpl-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
+    <property name="name" value="active"/>
+  </bean>
   <bean id="GenericPermission" parent="GenericPermission-parentBean"/>
 
   <bean id="GenericPermission-parentBean" abstract="true" parent="BusinessObjectEntry" 
-        p:businessObjectClass="org.kuali.rice.kim.bo.impl.GenericPermission"
+        p:businessObjectClass="org.kuali.rice.kim.impl.permission.GenericGenericPermissionBo"
         p:titleAttribute="permissionId" 
         p:objectLabel="Permission">
     <property name="attributes">
@@ -68,4 +87,155 @@
         p:label="Permission Details"
         p:shortLabel="Perm. Dtls." />
 
+</beans>
+-->
+  <bean id="GenericPermissionBo" parent="GenericPermissionBo-parentBean"/>
+
+  <bean id="GenericPermissionBo-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.impl.permission.GenericPermissionBo" p:titleAttribute="id" p:objectLabel="Permission" p:inquiryDefinition-ref="GenericPermissionBo-inquiryDefinition" p:lookupDefinition-ref="GenericPermissionBo-lookupDefinition">
+    <property name="attributes">
+      <list>
+        <ref bean="GenericPermissionBo-template.namespaceCode"/>
+        <ref bean="GenericPermissionBo-template.name"/>
+        <ref bean="GenericPermissionBo-namespaceCode"/>
+        <ref bean="GenericPermissionBo-name"/>
+        <ref bean="GenericPermissionBo-description"/>
+        <!-- ref bean="GenericPermissionBo-attributeDetails"/ --> 
+        <ref bean="GenericPermissionBo-templateId"/>
+        <!-- ref bean="GenericPermissionBo-detailObjectsValues"/ -->
+      </list>
+    </property>
+	<property name="relationships">
+      <list>
+        <bean parent="RelationshipDefinition">
+          <property name="objectAttributeName" value="template"/>
+          <property name="primitiveAttributes">
+            <list>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="templateId" p:targetName="id"/>
+            </list>
+          </property>
+          <property name="supportAttributes">
+            <list>
+              <bean parent="SupportAttributeDefinition" p:sourceName="template.namespaceCode" p:targetName="namespaceCode"/>
+              <bean parent="SupportAttributeDefinition" p:sourceName="template.name" p:targetName="name"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="GenericPermissionBo-template.namespaceCode" parent="GenericPermissionBo-template.namespaceCode-parentBean"/>
+  <bean id="GenericPermissionBo-template.namespaceCode-parentBean" parent="Parameter-namespaceCode" abstract="true" p:name="template.namespaceCode" p:label="Template Namespace" p:shortLabel="Template Namespace">
+  </bean>
+    
+  <bean id="GenericPermissionBo-templateId" parent="GenericPermissionBo-templateId-parentBean"/>
+  <bean id="GenericPermissionBo-templateId-parentBean" parent="AttributeDefinition" abstract="true" p:name="templateId" p:label="Template Id" p:shortLabel="Template Id" p:maxLength="40" p:required="false">
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="40"/>
+    </property>
+  </bean>
+    
+  <bean id="GenericPermissionBo-template.name" parent="GenericPermissionBo-template.name-parentBean"/>
+  <bean id="GenericPermissionBo-template.name-parentBean" parent="AttributeDefinition" abstract="true" p:name="template.name" p:label="Template Name" p:shortLabel="Template Name" p:maxLength="40" p:required="false">
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="40"/>
+    </property>
+  </bean>
+  
+  
+  <bean id="GenericPermissionBo-namespaceCode" parent="GenericPermissionBo-namespaceCode-parentBean"/>
+  <bean id="GenericPermissionBo-namespaceCode-parentBean" parent="Parameter-namespaceCode" abstract="true" p:name="namespaceCode" p:label="Permission Namespace" p:shortLabel="Permission Namespace">
+  </bean>
+  
+  <bean id="GenericPermissionBo-name" parent="GenericPermissionBo-name-parentBean"/>
+  <bean id="GenericPermissionBo-name-parentBean" abstract="true" parent="KimType-name" p:name="name" p:label="Permission Name" p:shortLabel="Permission Name">
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="40"/>
+    </property>
+  </bean>
+
+  <bean id="GenericPermissionBo-description" parent="GenericPermissionBo-description-parentBean"/>
+  <bean id="GenericPermissionBo-description-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="Desc"/>
+    <property name="maxLength" value="400"/>
+    <property name="validationPattern">
+      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true" p:maxLength="400"/>
+    </property>
+    <property name="control">
+      <bean parent="TextareaControlDefinition" p:cols="40" p:rows="3"/>
+    </property>
+    <property name="name" value="description"/>
+    <property name="label" value="Permission Description"/>
+  </bean>
+
+  <!-- 
+  <bean id="GenericPermissionBo-attributeDetails" parent="GenericPermissionBo-attributeDetails-parentBean"/>
+  <bean id="GenericPermissionBo-attributeDetails-parentBean" parent="AttributeDefinition" abstract="true" p:name="attributeDetails" p:label="Permission Attribute Detail Values" p:shortLabel="Attribute Details" p:maxLength="40" p:required="false">
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="40"/>
+    </property>
+  </bean>
+
+  <bean id="GenericPermissionBo-detailObjectsValues" parent="GenericPermissionBo-attributeDetails" p:name="detailObjectsValues">
+  </bean>
+   -->
+
+  <bean id="GenericPermissionBo-inquiryDefinition" parent="GenericPermissionBo-inquiryDefinition-parentBean"/>
+  <bean id="GenericPermissionBo-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition" p:title="Permission Inquiry">
+    <property name="inquirySections">
+      <list>
+        <bean parent="InquirySectionDefinition" p:title="Permission Attributes" p:numberOfColumns="1">
+          <property name="inquiryFields">
+            <list>
+              <bean parent="FieldDefinition" p:attributeName="template.namespaceCode"/>
+              <bean parent="FieldDefinition" p:attributeName="template.name"/>
+        	  <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
+        	  <bean parent="FieldDefinition" p:attributeName="name"/>
+	       	  <!-- bean parent="FieldDefinition" p:attributeName="detailObjectsValues"/ -->
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+    <property name="inquirableClass" value="org.kuali.rice.kim.impl.permission.PermissionInquirableImpl"/>
+  </bean>
+
+  <bean id="GenericPermissionBo-lookupDefinition" parent="GenericPermissionBo-lookupDefinition-parentBean"/>
+
+  <bean id="GenericPermissionBo-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition" p:title="Permission Lookup">
+    <property name="lookupableID" value="permissionLookupable"/>
+    <property name="defaultSort">
+      <bean parent="SortDefinition">
+        <property name="attributeNames">
+          <list>
+            <value>id</value>
+          </list>
+        </property>
+        <property name="sortAscending" value="true"/>
+      </bean>
+    </property>
+    <property name="lookupFields">
+      <list>
+        <bean parent="FieldDefinition" p:attributeName="id"/>
+        <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
+        <bean parent="FieldDefinition" p:attributeName="name"/>
+        <bean parent="FieldDefinition" p:attributeName="description"/>
+        <bean parent="FieldDefinition" p:attributeName="active" p:defaultValue="Y"/>
+        <!--
+             Note that kimTypeId and PrincipalName fields
+             are overwritten/created in GroupLookupableHelperServiceImpl
+        -->
+      </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean parent="FieldDefinition" p:attributeName="kimTypeInfo.name"/>
+        <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
+        <bean parent="FieldDefinition" p:attributeName="name"/>
+        <bean parent="FieldDefinition" p:attributeName="description"/>
+      </list>
+    </property>
+  </bean>
+  
 </beans>

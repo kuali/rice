@@ -13,18 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.inquiry;
+package org.kuali.rice.kim.impl.permission;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.kuali.rice.core.impl.namespace.NamespaceBo;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.impl.PermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl;
-import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.impl.role.RolePermissionBo;
+import org.kuali.rice.kim.inquiry.RoleMemberInquirableImpl;
 import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.util.KimConstants;
@@ -55,7 +54,7 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
 		if(NAME.equals(propertyName) || NAME_TO_DISPLAY.equals(propertyName)){
 			Map<String, String> primaryKeys = new HashMap<String, String>();
 			primaryKeys.put(KimConstants.PrimaryKeyConstants.PERMISSION_ID, KimConstants.PrimaryKeyConstants.PERMISSION_ID);
-			inquiry.buildInquiryLink(dataObject, propertyName, PermissionImpl.class, primaryKeys);
+			inquiry.buildInquiryLink(dataObject, propertyName, UberPermissionBo.class, primaryKeys);
 		} else if(NAMESPACE_CODE.equals(propertyName) || TEMPLATE_NAMESPACE_CODE.equals(propertyName)){
 			Map<String, String> primaryKeys = new HashMap<String, String>();
 			primaryKeys.put(propertyName, "code");
@@ -81,7 +80,7 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
 		if(NAME.equals(attributeName) || NAME_TO_DISPLAY.equals(attributeName)){
 			List<String> primaryKeys = new ArrayList<String>();
 			primaryKeys.add(KimConstants.PrimaryKeyConstants.PERMISSION_ID);
-			return getInquiryUrlForPrimaryKeys(PermissionImpl.class, businessObject, primaryKeys, null);
+			return getInquiryUrlForPrimaryKeys(UberPermissionBo.class, businessObject, primaryKeys, null);
 		} else if(NAMESPACE_CODE.equals(attributeName) || TEMPLATE_NAMESPACE_CODE.equals(attributeName)){
 			List<String> primaryKeys = new ArrayList<String>();
 			primaryKeys.add("code");
@@ -113,7 +112,7 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
     }
 
     protected HtmlData getAssignedRoleInquiryUrl(BusinessObject businessObject){
-    	PermissionImpl permission = (PermissionImpl)businessObject;
+    	UberPermissionBo permission = (UberPermissionBo)businessObject;
     	List<RoleBo> assignedToRoles = permission.getAssignedToRoles();
     	List<HtmlData.AnchorHtmlData> htmlData = new ArrayList<HtmlData.AnchorHtmlData>();
 		List<String> primaryKeys = new ArrayList<String>();
@@ -158,8 +157,8 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
 		return permissionService;
 	}
 	
-	private PermissionImpl getPermissionsSearchResultsCopy(PermissionBo permissionSearchResult){
-		PermissionImpl permissionSearchResultCopy = new PermissionImpl();
+	private PermissionBo getPermissionsSearchResultsCopy(PermissionBo permissionSearchResult){
+		UberPermissionBo permissionSearchResultCopy = new UberPermissionBo();
 		try{
 			PropertyUtils.copyProperties(permissionSearchResultCopy, permissionSearchResult);
 		} catch(Exception ex){
@@ -167,7 +166,7 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
 			ex.printStackTrace();
 		}
 		Map<String, String> criteria = new HashMap<String, String>();
-		criteria.put("permissionId", permissionSearchResultCopy.getPermissionId());
+		criteria.put("permissionId", permissionSearchResultCopy.getId());
 		List<RolePermissionBo> rolePermissions =
 			(List<RolePermissionBo>) KRADServiceLocator.getBusinessObjectService().findMatching(RolePermissionBo.class, criteria);
 		List<RoleBo> assignedToRoles = new ArrayList<RoleBo>();

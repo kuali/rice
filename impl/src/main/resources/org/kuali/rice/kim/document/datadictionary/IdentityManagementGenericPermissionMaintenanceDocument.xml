@@ -18,7 +18,7 @@
   <bean id="GenericPermissionMaintenanceDocument" parent="GenericPermissionMaintenanceDocument-parentBean"/>
 
   <bean id="GenericPermissionMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
-    <property name="dataObjectClass" value="org.kuali.rice.kim.bo.impl.GenericPermission"/>
+    <property name="dataObjectClass" value="org.kuali.rice.kim.impl.permission.GenericPermissionBo"/>
     <property name="maintainableClass" value="org.kuali.rice.kim.document.GenericPermissionMaintainable"/>
     <property name="maintainableSections">
       <list>
@@ -28,7 +28,7 @@
     </property>
     <property name="lockingKeys">
       <list>
-        <value>permissionId</value>
+        <value>id</value>
       </list>
     </property>
     
@@ -50,7 +50,7 @@
   <bean id="GenericPermissionMaintenanceDocument-Main-parentBean" abstract="true" parent="MaintainableSectionDefinition">
     <property name="maintainableItems">
       <list>
-        <bean parent="MaintainableFieldDefinition" p:name="permissionId"
+        <bean parent="MaintainableFieldDefinition" p:name="id"
             p:unconditionallyReadOnly="true" p:required="true" 
             p:defaultValueFinderClass="org.kuali.rice.kim.impl.permission.NextPermissionIdValuesFinder" />
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="templateId"/>

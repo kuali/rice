@@ -311,7 +311,7 @@
 		</bean>
       </list>
     </property>
-    <property name="inquirableClass" value="org.kuali.rice.kim.inquiry.PermissionInquirableImpl"/>
+    <property name="inquirableClass" value="org.kuali.rice.kim.impl.Permission.PermissionInquirableImpl"/>
   </bean>
 
   <bean id="PermissionImpl-lookupDefinition" parent="PermissionImpl-lookupDefinition-parentBean"/>

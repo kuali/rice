@@ -337,6 +337,10 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         }
 
         public static Builder create(AttributeField field) {
+            if (field == null) {
+                throw new IllegalArgumentException("field was null");
+            }
+
             Builder b = new Builder(field.getName());
             b.setDataType(field.getDataType());
             b.setShortLabel(field.getShortLabel());
@@ -353,17 +357,18 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
             b.setRegexContraintMsg(field.getRegexContraintMsg());
             b.setRequired(field.isRequired());
             b.setDefaultValues(field.getDefaultValues());
-            //FIXME: create a way to copy Controls & Widgets
-            //b.setControl(RemotableAbstractControl.Builder field.getControl());
-            /*
+            if (field.getControl() != null) {
+                b.setControl(ControlCopy.toBuilder(field.getControl()));
+            }
+
             final List<RemotableAbstractWidget.Builder> temp = new ArrayList<RemotableAbstractWidget.Builder>();
             if (field.getWidgets() != null) {
                 for (Widget w : field.getWidgets()) {
-                    temp.add(w);
+                    temp.add(WidgetCopy.toBuilder(w));
                 }
             }
             b.setWidgets(Collections.unmodifiableList(temp));
-            */
+
             return b;
         }
 

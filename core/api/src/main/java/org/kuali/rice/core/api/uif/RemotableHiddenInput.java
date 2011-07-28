@@ -20,6 +20,8 @@ import java.util.Collection;
 		CoreConstants.CommonElements.FUTURE_ELEMENTS })
 public final class RemotableHiddenInput extends RemotableAbstractControl {
 
+    private static final RemotableHiddenInput INSTANCE = new RemotableHiddenInput(Builder.INSTANCE);
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -36,17 +38,20 @@ public final class RemotableHiddenInput extends RemotableAbstractControl {
 
     public static final class Builder extends RemotableAbstractControl.Builder {
 
+        private static final Builder INSTANCE = new Builder();
+
         private Builder() {
             super();
         }
 
+        //no important state in these classes so returning a singleton
         public static Builder create() {
-            return new Builder();
+            return INSTANCE;
         }
 
         @Override
         public RemotableHiddenInput build() {
-            return new RemotableHiddenInput(this);
+            return RemotableHiddenInput.INSTANCE;
         }
     }
 

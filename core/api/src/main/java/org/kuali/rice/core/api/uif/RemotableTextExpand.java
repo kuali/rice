@@ -19,6 +19,8 @@ import java.util.Collection;
 		CoreConstants.CommonElements.FUTURE_ELEMENTS })
 public final class RemotableTextExpand extends RemotableAbstractWidget {
 
+    private static final RemotableTextExpand INSTANCE = new RemotableTextExpand(Builder.INSTANCE);
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -37,17 +39,20 @@ public final class RemotableTextExpand extends RemotableAbstractWidget {
 
     public static final class Builder extends RemotableAbstractWidget.Builder {
 
+        private static final Builder INSTANCE = new Builder();
+
         private Builder() {
             super();
         }
 
+        //no important state in these classes so returning a singleton
         public static Builder create() {
-            return new Builder();
+            return INSTANCE;
         }
 
         @Override
         public RemotableTextExpand build() {
-            return new RemotableTextExpand(this);
+            return RemotableTextExpand.INSTANCE;
         }
     }
 

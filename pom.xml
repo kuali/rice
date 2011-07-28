@@ -21,7 +21,7 @@
   <parent>
     <groupId>org.kuali</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>12</version>
+    <version>16</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
@@ -43,6 +43,7 @@
   </ciManagement>
 
   <properties>
+    <checkstyle.suppressions.location>org/kuali/cm/checkstyle/rice-legacy-suppressions.xml</checkstyle.suppressions.location>
     <oracle.ojdbc.version>10.2.0.3.0</oracle.ojdbc.version>
     <mysql.connector.version>5.1.13</mysql.connector.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -633,6 +634,14 @@
                 <exclude>org/kuali/rice/**/test/**/*.class</exclude>
               </excludes>
             </instrumentation>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <configuration>
+            <suppressionsLocation>${checkstyle.suppressions.location}</suppressionsLocation>
           </configuration>
         </plugin>
 

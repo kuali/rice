@@ -63,10 +63,10 @@ public class ComponentBeanPostProcessor implements BeanPostProcessor {
                 }
             }
      
-            component.setBaseId(component.getId());
+            component.setBaseId(beanName);
 
             // hold definition in component factory
-            ComponentFactory.addComponentDefinition(component.getId(), component);
+            ComponentFactory.addComponentDefinition(beanName, component);
         }
 
         return bean;

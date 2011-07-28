@@ -820,7 +820,7 @@
     </table>
     <table name="KREW_INIT_RTE_NODE_INSTN_T">
         <column name="DOC_HDR_ID" primaryKey="true" size="40" type="VARCHAR"/>
-        <column name="RTE_NODE_INSTN_ID" primaryKey="true" size="19" type="DECIMAL"/>
+        <column name="RTE_NODE_INSTN_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <index name="KREW_INIT_RTE_NODE_INSTN_TI1">
             <index-column name="DOC_HDR_ID"/>
         </index>

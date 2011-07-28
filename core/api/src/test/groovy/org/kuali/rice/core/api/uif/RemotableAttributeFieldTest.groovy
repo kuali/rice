@@ -92,7 +92,7 @@ class RemotableAttributeFieldTest {
 
     @Test(expected=IllegalArgumentException.class)
     void testNullName() {
-        RemotableAttributeField.Builder o = RemotableAttributeField.Builder.create(null);
+        RemotableAttributeField.Builder o = RemotableAttributeField.Builder.create((String) null);
 
         assertNotNull(o.build());
     }

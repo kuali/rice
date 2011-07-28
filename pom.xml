@@ -14,10 +14,9 @@
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
-  -->
+-->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.kuali</groupId>
@@ -57,7 +56,7 @@
     <maven.failsafe.includes>**/*Test.java</maven.failsafe.includes>
 
     <!-- must provide an explicit pattern - surefire default does not work
-			b/c of non-unit test classes that are included in default expression -->
+      b/c of non-unit test classes that are included in default expression -->
     <maven.surefire.includes>**/*Test.java</maven.surefire.includes>
     <maven.surefire.skip>false</maven.surefire.skip>
 
@@ -80,8 +79,8 @@
     <commons-validator.version>1.3.1</commons-validator.version>
     <connector-api.version>1.5</connector-api.version>
     <!--
-        http://cxf.apache.org/docs/24-migration-guide.html
-        <cxf.version>2.4.1</cxf.version>
+      http://cxf.apache.org/docs/24-migration-guide.html
+      <cxf.version>2.4.1</cxf.version>
     -->
     <cxf.version>2.3.5</cxf.version>
     <db-ojb.version>1.0.4-patch7</db-ojb.version>
@@ -113,8 +112,8 @@
     <oscache.version>2.4.1</oscache.version>
     <persistence.version>1.0.1.Final</persistence.version>
     <!--
-        http://www.quartz-scheduler.org/docs/2.0/migrationGuide.html
-        <quartz.version>2.0.1</quartz.version>
+      http://www.quartz-scheduler.org/docs/2.0/migrationGuide.html
+      <quartz.version>2.0.1</quartz.version>
     -->
     <quartz.version>1.8.4</quartz.version>
     <selenium-java-client-driver.version>1.0.2</selenium-java-client-driver.version>
@@ -150,7 +149,7 @@
     <assembly.plugin.version>2.2.1</assembly.plugin.version>
     <web.launch.context.path>/kr-dev</web.launch.context.path>
 
-    <!-- Connect documentation generate to site generation -->
+    <!-- Connect documentation generation to site generation -->
     <rice.docbook.phase>pre-site</rice.docbook.phase>
     <!-- Where the original documentation source is located -->
     <rice.docbook.src>${basedir}/src/site/docbook</rice.docbook.src>
@@ -170,17 +169,17 @@
 
   <build>
     <testResources>
-            <!-- NOTE: Because Maven test runs can be spawned in a new JVM, the system
-                   properties on the initial Maven command line are not necessarily propagated
-                   to the spawned test run. This means we cannot automatically use System property
-                   definitions to override configuration parameters. To work around this, we
-                   have configured the test resources to be pre-filtered by maven prior to running,
-                   which results in config parameter tokens being replaced by System property
-                   definitions (because the ${token} syntax happens to be the same. So. If you
-                   need to introduce a new configuration property that needs to be overridable
-                   by Bamboo/CI, make sure to set the property in one of the below config files,
-                   so that it can be pre-emptively replaced by Maven prior to kicking off the
-                   test run. E.g. <param name="my.new.param">${my.new.param}</param> -->
+      <!-- NOTE: Because Maven test runs can be spawned in a new JVM, the system
+        properties on the initial Maven command line are not necessarily propagated
+        to the spawned test run. This means we cannot automatically use System property
+        definitions to override configuration parameters. To work around this, we
+        have configured the test resources to be pre-filtered by maven prior to running,
+        which results in config parameter tokens being replaced by System property
+        definitions (because the ${token} syntax happens to be the same. So. If you
+        need to introduce a new configuration property that needs to be overridable
+        by Bamboo/CI, make sure to set the property in one of the below config files,
+        so that it can be pre-emptively replaced by Maven prior to kicking off the
+        test run. E.g. <param name="my.new.param">${my.new.param}</param> -->
       <testResource>
         <filtering>true</filtering>
         <directory>${basedir}/src/test/resources/META-INF</directory>
@@ -214,30 +213,30 @@
           </dependencies>
         </plugin>
 
-                <!--
-                        This plugin helps enforce that excluded dependencies stay excluded
-                        and don't sneak back in through another dependency (a global ban). Here are
-                        a few common situations this plugin helps with:
+        <!--
+          This plugin helps enforce that excluded dependencies stay excluded
+          and don't sneak back in through another dependency (a global ban). Here are
+          a few common situations this plugin helps with:
 
-                        1) multiple implementations of a dependency - you only want to use one implementation
-                           (ex: commons-logging vs jcl-over-slf4j, javax.mail vs geronimo-javamail_1.4_spec)
-                        2) similar maven artifacts are produced for the same project - you only need to include one
-                           (ex: cglib vs cglib-nodep)
-                        3) an artifact's group id or artifact id has been renamed - maven considers these different
-                           artifacts and you only want to include one
-                           (ex: opensymphony:quartz vs org.opensymphony.quartz:quartz vs org.quartz-scheduler:quartz)
-                        4) an artifact was added to the container and no longer is needed
-                           (ex: jaxb in java 6)
+          1) multiple implementations of a dependency - you only want to use one implementation
+          (ex: commons-logging vs jcl-over-slf4j, javax.mail vs geronimo-javamail_1.4_spec)
+          2) similar maven artifacts are produced for the same project - you only need to include one
+          (ex: cglib vs cglib-nodep)
+          3) an artifact's group id or artifact id has been renamed - maven considers these different
+          artifacts and you only want to include one
+          (ex: opensymphony:quartz vs org.opensymphony.quartz:quartz vs org.quartz-scheduler:quartz)
+          4) an artifact was added to the container and no longer is needed
+          (ex: jaxb in java 6)
 
-                        This plugin also helps enforce consistent a consistent Java & Maven version are used.  This helps the
-                        stability of builds across systems.
+          This plugin also helps enforce consistent a consistent Java & Maven version are used. This helps the
+          stability of builds across systems.
 
-                        This plugin also enforces that plugins specify a version number.  Using meta version tags or not specifing a version
-                        on a plugin is a decrecated feature as it leads to build instability.
+          This plugin also enforces that plugins specify a version number. Using meta version tags or not specifing a version
+          on a plugin is a decrecated feature as it leads to build instability.
 
-                        Finally, the DependencyConvergence rule helps ensure that all of our submodules are resolving the same versions of
-                        artifacts by making sure that all deps converge.  This managed at the dep management section which is critical.
-                    -->
+          Finally, the DependencyConvergence rule helps ensure that all of our submodules are resolving the same versions of
+          artifacts by making sure that all deps converge. This managed at the dep management section which is critical.
+        -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-enforcer-plugin</artifactId>
@@ -257,22 +256,22 @@
                     <version>[3.0,4.0)</version>
                   </requireMavenVersion>
                   <!-- has problems with snapshots
-                  <DependencyConvergence />-->
+                    <DependencyConvergence /> -->
 
-                                    <!-- Maven 3 Migration: This rule is not supported by Maven 3. See:
-                                                 http://jira.codehaus.org/browse/MENFORCER-98 -->
-                                    <!-- <requirePluginVersions>
-                                                 <message>Specifying a plugin w/o a version is a deprecated
-                                                     feature b/c it can cause non-reproducible builds</message>
-                                                 <banLatest>true</banLatest>
-                                                 <banRelease>true</banRelease>
-                                                 <banSnapshots>true</banSnapshots>
-                                                 <phases>clean,deploy,site</phases>
-                                             </requirePluginVersions>-->
+                  <!-- Maven 3 Migration: This rule is not supported by Maven 3. See:
+                    http://jira.codehaus.org/browse/MENFORCER-98 -->
+                  <!-- <requirePluginVersions>
+                    <message>Specifying a plugin w/o a version is a deprecated
+                    feature b/c it can cause non-reproducible builds</message>
+                    <banLatest>true</banLatest>
+                    <banRelease>true</banRelease>
+                    <banSnapshots>true</banSnapshots>
+                    <phases>clean,deploy,site</phases>
+                    </requirePluginVersions> -->
 
                   <bannedDependencies>
                     <excludes>
-                                            <!-- using the kuali version of ojb -->
+                      <!-- using the kuali version of ojb -->
                       <exclude>ojb</exclude>
 
                       <!-- renamed (decrecated) groupids -->
@@ -340,7 +339,7 @@
                       <exclude>org.apache.geronimo.specs:geronimo-ws-metadata_2.0_spec</exclude>
 
                       <!-- These are repackaged parser apis - some of these apis are
-                                                           included in jdk 6. The non-jdk parsers can be added indivually if needed. -->
+                        included in jdk 6. The non-jdk parsers can be added indivually if needed. -->
                       <exclude>xerces:xmlParserAPIs</exclude>
                       <exclude>xml-apis</exclude>
 
@@ -385,10 +384,10 @@
                       <exclude>org.apache.servicemix.specs:org.apache.servicemix.specs.saaj-api-1.3</exclude>
 
                       <!--
-                      excluding standard release - we are using a patches kuali version
-                      because of
-                      http://bugs.sun.com/view_bug.do?bug_id=6528714
-                      https://issues.apache.org/jira/browse/BEANUTILS-340
+                        excluding standard release - we are using a patches kuali version
+                        because of
+                        http://bugs.sun.com/view_bug.do?bug_id=6528714
+                        https://issues.apache.org/jira/browse/BEANUTILS-340
                       -->
                       <exclude>commons-beanutils:commons-beanutils</exclude>
                       <exclude>org.apache.commons:commons-beanutils</exclude>
@@ -448,8 +447,8 @@
                 <goal>generateStubs</goal>
                 <goal>compile</goal>
                 <!-- test stubs aren't needed now since we are not creating
-                     groovy test code for reference in java test code-->
-                <!--<goal>generateTestStubs</goal>-->
+                  groovy test code for reference in java test code -->
+                <!--<goal>generateTestStubs</goal> -->
                 <goal>testCompile</goal>
               </goals>
             </execution>
@@ -616,14 +615,13 @@
             <forkMode>${maven.failsafe.forkmode}</forkMode>
             <forkedProcessTimeoutInSeconds>${maven.failsafe.forkedProcessTimeoutInSeconds}</forkedProcessTimeoutInSeconds>
             <reportFormat>plain</reportFormat>
-            <argLine>-Dalt.config.location="${build.alt.config.location}" -Xmx1024m -XX:MaxPermSize=512m
-              -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled</argLine>
+            <argLine>-Dalt.config.location="${build.alt.config.location}" -Xmx1024m -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled</argLine>
           </configuration>
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
-		  <artifactId>selenium-maven-plugin</artifactId>
-	      <version>1.1</version>
+          <artifactId>selenium-maven-plugin</artifactId>
+          <version>1.1</version>
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
@@ -955,7 +953,7 @@
         <groupId>com.oracle</groupId>
         <artifactId>ojdbc14</artifactId>
         <version>${ojdbc14.version}</version>
-        <!--<scope>provided</scope>-->
+        <!--<scope>provided</scope> -->
       </dependency>
 
       <dependency>
@@ -1541,11 +1539,11 @@
       </dependency>
 
       <dependency>
-		<groupId>org.seleniumhq.selenium.client-drivers</groupId>
-		<artifactId>selenium-java-client-driver</artifactId>
-		<version>${selenium-java-client-driver.version}</version>
-		<scope>test</scope>
-	  </dependency>
+        <groupId>org.seleniumhq.selenium.client-drivers</groupId>
+        <artifactId>selenium-java-client-driver</artifactId>
+        <version>${selenium-java-client-driver.version}</version>
+        <scope>test</scope>
+      </dependency>
 
       <dependency>
         <groupId>org.slf4j</groupId>

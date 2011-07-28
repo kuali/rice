@@ -84,14 +84,14 @@ public interface AttributeField {
      *
      * @return minimum value.
      */
-    Integer getMinValue();
+    Double getMinValue();
 
     /**
      * The inclusive maximum value of the attribute. Can be null.
      *
      * @return maximum value.
      */
-    Integer getMaxValue();
+    Double getMaxValue();
 
     /**
      * The regex constraint to apply to the attribute field for validation. Can be null.

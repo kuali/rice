@@ -79,10 +79,10 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
     private final Integer maxLength;
 
     @XmlElement(name = Elements.MIN_VALUE, required = false)
-    private final Integer minValue;
+    private final Double minValue;
 
     @XmlElement(name = Elements.MAX_VALUE, required = false)
-    private final Integer maxValue;
+    private final Double maxValue;
 
     @XmlElement(name = Elements.REGEX_CONSTRAINT, required = false)
     private final String regexConstraint;
@@ -235,12 +235,12 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
     }
 
     @Override
-    public Integer getMinValue() {
+    public Double getMinValue() {
         return minValue;
     }
 
     @Override
-    public Integer getMaxValue() {
+    public Double getMaxValue() {
         return maxValue;
     }
 
@@ -274,6 +274,33 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         return widgets;
     }
 
+    /**
+     * Utility method to search a collection of attribute fields and returns
+     * a field for a give attribute name.
+     *
+     * @param attributeName the name of the attribute to search for.  Cannot be blank or null.
+     * @param fields cannot be null.
+     *
+     * @return the attribute field or null if not found.
+     */
+    public static RemotableAttributeField findAttribute(String attributeName, Collection<RemotableAttributeField> fields) {
+        if (StringUtils.isBlank(attributeName)) {
+            throw new IllegalArgumentException("attributeName is blank");
+        }
+
+        if (fields == null) {
+            throw new IllegalArgumentException("errors is null");
+        }
+
+        for (RemotableAttributeField field : fields) {
+            if (attributeName.equals(field.getName())) {
+                return field;
+            }
+        }
+        return null;
+    }
+
+
     public static final class Builder implements AttributeField, ModelBuilder {
         private String name;
         private DataType dataType;
@@ -289,9 +316,8 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         private Integer minLength;
         private Integer maxLength;
 
-        private Integer minValue;
-        private Integer maxValue;
-
+        private Double minValue;
+         private Double maxValue;
         private String regexConstraint;
         private String regexContraintMsg;
 
@@ -308,6 +334,37 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
 
         public static Builder create(String name) {
             return new Builder(name);
+        }
+
+        public static Builder create(AttributeField field) {
+            Builder b = new Builder(field.getName());
+            b.setDataType(field.getDataType());
+            b.setShortLabel(field.getShortLabel());
+            b.setLongLabel(field.getLongLabel());
+            b.setHelpSummary(field.getHelpSummary());
+            b.setHelpConstraint(field.getHelpConstraint());
+            b.setHelpDescription(field.getHelpDescription());
+            b.setForceUpperCase(field.isForceUpperCase());
+            b.setMinLength(field.getMinLength());
+            b.setMaxLength(field.getMaxLength());
+            b.setMinValue(field.getMinValue());
+            b.setMaxValue(field.getMaxValue());
+            b.setRegexConstraint(field.getRegexConstraint());
+            b.setRegexContraintMsg(field.getRegexContraintMsg());
+            b.setRequired(field.isRequired());
+            b.setDefaultValues(field.getDefaultValues());
+            //FIXME: create a way to copy Controls & Widgets
+            //b.setControl(RemotableAbstractControl.Builder field.getControl());
+            /*
+            final List<RemotableAbstractWidget.Builder> temp = new ArrayList<RemotableAbstractWidget.Builder>();
+            if (field.getWidgets() != null) {
+                for (Widget w : field.getWidgets()) {
+                    temp.add(w);
+                }
+            }
+            b.setWidgets(Collections.unmodifiableList(temp));
+            */
+            return b;
         }
 
         @Override
@@ -413,20 +470,20 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         }
 
         @Override
-        public Integer getMinValue() {
+        public Double getMinValue() {
             return minValue;
         }
 
-        public void setMinValue(Integer minValue) {
+        public void setMinValue(Double minValue) {
             this.minValue = minValue;
         }
 
         @Override
-        public Integer getMaxValue() {
+        public Double getMaxValue() {
             return maxValue;
         }
 
-        public void setMaxValue(Integer maxValue) {
+        public void setMaxValue(Double maxValue) {
             this.maxValue = maxValue;
         }
 

@@ -22,13 +22,28 @@ import javax.xml.bind.Unmarshaller;
  */
 public abstract class AbstractDataTransferObject implements ModelObjectComplete {
 
+    private transient volatile Integer _hashCode;
+    private transient volatile String _toString;
+
     protected AbstractDataTransferObject() {
         super();
     }
 
     @Override
     public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE);
+        //using DCL idiom to cache hashCodes.  Hashcodes on immutable objects never change.  They can be safely cached.
+        //see effective java 2nd ed. pg. 71
+        Integer h = _hashCode;
+        if (h == null) {
+            synchronized (this) {
+                h = _hashCode;
+                if (h == null) {
+                    _hashCode = h = Integer.valueOf(HashCodeBuilder.reflectionHashCode(this, Constants.HASH_CODE_EQUALS_EXCLUDE));
+                }
+            }
+        }
+
+        return h.intValue();
     }
 
     @Override
@@ -38,7 +53,19 @@ public abstract class AbstractDataTransferObject implements ModelObjectComplete 
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        //using DCL idiom to cache toString.  toStrings on immutable objects never change.  They can be safely cached.
+        //see effective java 2nd ed. pg. 71
+        String t = _toString;
+        if (t == null) {
+            synchronized (this) {
+                t = _toString;
+                if (t == null) {
+                    _toString = t = ToStringBuilder.reflectionToString(this);
+                }
+            }
+        }
+
+        return t;
     }
 
     @SuppressWarnings("unused")

@@ -17,7 +17,7 @@ public interface AttributeField {
     String getName();
 
     /**
-     * The dataType of the attribute.  Currently {@link DataType.COMPLEX} is not supported. Can be null.
+     * The dataType of the attribute. Can be null.
      *
      * @return the datatype or null.
      */

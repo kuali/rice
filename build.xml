@@ -597,7 +597,7 @@ in order to package the various Rice datasets.
 				<sysproperty key="maven.home" value="${maven.home.directory}" />
 				<classpath>
 					<fileset dir="${maven.home.directory}/boot">
-						<include name="classworlds-*.jar" />
+						<include name="*classworlds-*.jar" />
 					</fileset>
 				</classpath>
 			</java>

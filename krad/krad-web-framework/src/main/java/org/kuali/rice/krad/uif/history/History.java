@@ -165,10 +165,12 @@ public class History implements Serializable {
             }
         }
         // add current
-        if (historyString.equals("")) {
-            historyString = historyString + current.toParam();
-        } else {
-            historyString = historyString + ENTRY_TOKEN + current.toParam();
+        if (current != null) {
+            if (historyString.equals("")) {
+                historyString = historyString + current.toParam();
+            } else {
+                historyString = historyString + ENTRY_TOKEN + current.toParam();
+            }
         }
         try {
             historyString = URLEncoder.encode(historyString, "UTF-8");

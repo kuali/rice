@@ -305,28 +305,65 @@ public abstract class UifControllerBase {
     }
 
     /**
-     * Invoked to navigate back one page in history. This will be the same as clicking on the bread
-     * crumbs. This action should only be allowed if there are at least one history entry
-     * (!formHistory.historyEntries.empty).
+     * Invoked to navigate back one page in history..
      * 
      * @param form - form object that should contain the history object
      */
-    @RequestMapping(params = "methodToCall=back")
-    public ModelAndView back(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(params = "methodToCall=returnToPrevious")
+    public ModelAndView returnToPrevious(@ModelAttribute("KualiForm") UifFormBase form) {
+
+        return returnToHistory(form, false);
+    } 
+    
+    /**
+     * Invoked to navigate back to the first page in history.
+     * 
+     * @param form - form object that should contain the history object
+     */
+    @RequestMapping(params = "methodToCall=returnToHub")
+    public ModelAndView returnToHub(@ModelAttribute("KualiForm") UifFormBase form) {
+        
+        return returnToHistory(form, true);
+    } 
+    
+    /**
+     * Invoked to navigate back to a history entry. The homeFlag will determine whether navigation
+     * will be back to the first or last history entry.
+     * 
+     * @param form - form object that should contain the history object
+     * @param homeFlag - if true will navigate back to first entry else will navigate to last entry
+     *        in the history
+     */
+    public ModelAndView returnToHistory(UifFormBase form, boolean homeFlag) {
 
         // Get the history from the form
         History hist = form.getFormHistory();
         List<HistoryEntry> histEntries = hist.getHistoryEntries();
 
-        // Get the previous page url.
-        String histUrl = histEntries.get(histEntries.size() - 1).getUrl();
+        // Get the history page url. Default to the application url if there is no history.
+        String histUrl = null;
+        if (histEntries.isEmpty()) {
+            histUrl = ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.APPLICATION_URL_KEY);
+        }else{
+            // For home get the first entry, for previous get the last entry.
+            // Remove history up to where page is opened
+            if (homeFlag) {
+                histUrl = histEntries.get(0).getUrl();
+                histEntries.clear();
+            }else{
+                histUrl = histEntries.get(histEntries.size() - 1).getUrl();
+                histEntries.remove(histEntries.size() - 1);
+                hist.setCurrent(null);
+            }
+        }
+        // Add the refresh call
+        Properties props = new Properties();
+        props.put(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.REFRESH);                
 
-        // Redirect to the previous page
-        ModelAndView modelAndView = new ModelAndView(REDIRECT_PREFIX + histUrl);
-
-        return modelAndView;
-    }  
+        return performRedirect(form, histUrl, props);
+    }     
+    
+    
 
     /**
      * Handles menu navigation between view pages

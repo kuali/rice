@@ -55,8 +55,8 @@ public class UrlFactory {
 
 
         StringBuffer ret = new StringBuffer(baseUrl);
-
-        String delimiter = "?";
+        // Only start with ? if it has not been added to the url
+        String delimiter = (ret.indexOf("?") == -1) ? "?" : "&";
         for ( Object key : params.keySet() ) {
             String paramName = StringUtils.trim( (String)key );
             String paramValue = params.getProperty(paramName);

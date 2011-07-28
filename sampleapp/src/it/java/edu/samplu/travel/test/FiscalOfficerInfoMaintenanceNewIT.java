@@ -28,8 +28,9 @@ import org.junit.Test;
 public class FiscalOfficerInfoMaintenanceNewIT extends SeleneseTestCase{
     
     @Before
-    public void setUp() throws Exception {
-        selenium = new DefaultSelenium("129.79.44.122", 4444, "*googlechrome", "http://129.79.44.122:8080/");
+    public void setUp() throws Exception { 
+        //---- 3rd parameter(*firefox) can also be replaced by *chrome , *googlechrome.
+        selenium = new DefaultSelenium("localhost", 4444, "*firefox", "http://localhost:8080/"); 
         selenium.start();
     }
     
@@ -37,18 +38,16 @@ public class FiscalOfficerInfoMaintenanceNewIT extends SeleneseTestCase{
     public void testUntitled() throws Exception {
         selenium.open("/kr-dev/portal.do?selectedTab=main");
         selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        //selenium.click("link=FiscalOfficerInfo Maintenance (New)");
-        selenium.waitForPageToLoad("50000");
+        selenium.click("//input[@value='Login']");     
+        selenium.waitForPageToLoad("50000");    
         selenium.click("//a[@title='FiscalOfficerInfo Maintenance (New)']");
         selenium.waitForPageToLoad("50000");
-        selenium.selectFrame("iframeportlet");
-        //selenium.type("document.documentHeader.documentDescription", "New FO Doc");
-        selenium.type("//input[@name='document.documentHeader.documentDescription']", "New FO Doc");
-        //selenium.type("document.newMaintainableObject.dataObject.id", "6");
-        selenium.type("//input[@name='document.newMaintainableObject.dataObject.id']", "11");
-        //selenium.type("document.newMaintainableObject.dataObject.userName", "Chris");
-        selenium.type("//input[@name='document.newMaintainableObject.dataObject.userName']", "Fletcher");
+        selenium.selectFrame("iframeportlet");       
+        String docId = selenium.getText("//span[contains(@id , '_attribute_span')][position()=1]");
+        selenium.type("//input[@name='document.documentHeader.documentDescription']", "New FO Doc");      
+        selenium.type("//input[@name='document.newMaintainableObject.dataObject.id']", "5");      
+        selenium.type("//input[@name='document.newMaintainableObject.dataObject.userName']", "Jigar");
+        
 //        selenium.type("newCollectionLines['document.newMaintainableObject.dataObject.accounts'].number", "123123");       
 //        selenium.type("xpath = //input[@name='document.newMaintainableObject.dataObject.accounts[0].number']", "123123");
 //        selenium.type("//input[contains(@name , '.number')]", "123123");
@@ -59,16 +58,63 @@ public class FiscalOfficerInfoMaintenanceNewIT extends SeleneseTestCase{
 //        selenium.click("//input[@value='add']");
 //        System.out.println("adding Row");
 //        selenium.wait(90000);
-        System.out.println("Waiting Test");
+    
         selenium.click("//input[@value='save']");
-//      selenium.click("link=FiscalOfficerInfo Maintenance (New)");
-        selenium.waitForPageToLoad("50000");
-        selenium.click("//input[@value='submit']");
-        selenium.waitForPageToLoad("50000");
-        System.out.println("Submiting Test");
-//      selenium.waitForPageToLoad("60000");
         
-        System.out.println("Test complete");
+        int docIdInt = Integer.valueOf(docId).intValue(); 
+        
+        selenium.waitForPageToLoad("50000");
+        selenium.selectFrame("relative=up");
+        selenium.click("//img[@alt='action list']");     
+        selenium.waitForPageToLoad("50000");      
+        
+        selenium.selectFrame("iframeportlet");
+        if(selenium.isElementPresent("link=Last")){
+            selenium.click("link=Last");
+            selenium.waitForPageToLoad("50000");
+            selenium.click("link="+docIdInt);
+            System.out.println("--------------------- :: doc found at last : " + docId + " :: --------------------------");
+        } else {                                  
+            selenium.click("link="+docIdInt);
+            System.out.println("--------------------- :: doc found : " + docId + " :: --------------------------");
+            
+        }
+        
+        Thread.sleep(5000); 
+        String[] windowTitles = selenium.getAllWindowTitles();
+              
+        selenium.selectWindow(windowTitles[1]);  
+        selenium.windowFocus();
+        assertEquals(windowTitles[1], selenium.getTitle());
+        //------submit-----//
+        selenium.selectFrame("relative=up");
+        selenium.click("//input[@value='submit']");
+        selenium.waitForPageToLoad("50000");       
+        selenium.close();             
+        System.out.println("--------------- :: Submitted and Closed :: -------------- ");
+      
+        //------submit over---//        
+        
+        //----step 2----//  
+        selenium.selectWindow("null");
+        selenium.windowFocus();
+        selenium.click("//img[@alt='doc search']");
+        selenium.waitForPageToLoad("50000");
+        assertEquals(windowTitles[0], selenium.getTitle());
+        selenium.selectFrame("iframeportlet");
+        selenium.click("//input[@name='methodToCall.search' and @value='search']");
+        selenium.waitForPageToLoad("50000");
+        //----step 2 over ----//
+        
+        //-----Step 3 verifies that doc is final-------//        
+        assertEquals("FINAL", selenium.getText("//table[@id='row']/tbody/tr[1]/td[4]"));
+        selenium.selectFrame("relative=up");
+        selenium.click("link=Main Menu");
+        selenium.waitForPageToLoad("50000");
+        assertEquals(windowTitles[0], selenium.getTitle());
+        System.out.println("---------------------- :: Test complete :: ----------------------");
+        //-----Step 3 verified that doc is final -------//      
+     
     }
     
     

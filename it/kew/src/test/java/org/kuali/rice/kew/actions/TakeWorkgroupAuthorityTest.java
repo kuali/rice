@@ -96,7 +96,7 @@ public class TakeWorkgroupAuthorityTest extends KEWTestCase {
         boolean rkirkendATFound = false;
         for (ActionTaken at : actionsTaken) {
             if (at.getPrincipalId().equals(getPrincipalIdForName("rkirkend"))) {
-                assertEquals("Incorrect action code recorded", KEWConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD, at.getActionTaken());
+                assertEquals("Incorrect action code recorded", KEWConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD, at.getActionTaken().getCode());
                 rkirkendATFound = true;
             }
         }

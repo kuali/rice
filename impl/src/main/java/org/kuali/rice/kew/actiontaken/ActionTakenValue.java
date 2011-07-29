@@ -311,11 +311,13 @@ public class ActionTakenValue implements Serializable {
     	if (actionTakenBo == null) {
     		return null;
     	}
-    	ActionTaken.Builder builder = ActionTaken.Builder.create(actionTakenBo.getActionTakenId().toString(),
+    	ActionTaken.Builder builder = ActionTaken.Builder.create(actionTakenBo.getActionTakenId(),
     			actionTakenBo.getDocumentId(),
     			actionTakenBo.getPrincipalId(),
     			ActionType.fromCode(actionTakenBo.getActionTaken()));
-    	builder.setActionDate(new DateTime(actionTakenBo.getActionDate().getTime()));
+        if (actionTakenBo.getActionDate() != null) {
+    	    builder.setActionDate(new DateTime(actionTakenBo.getActionDate().getTime()));
+        }
     	builder.setAnnotation(actionTakenBo.getAnnotation());
     	builder.setCurrent(actionTakenBo.getCurrentIndicator().booleanValue());
     	builder.setDelegatorGroupId(actionTakenBo.getDelegatorGroupId());

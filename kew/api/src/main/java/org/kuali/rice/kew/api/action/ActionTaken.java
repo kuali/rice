@@ -249,8 +249,8 @@ public final class ActionTaken extends AbstractDataTransferObject implements Act
         }
 
         public void setId(String id) {
-            if (StringUtils.isBlank(id)) {
-            	throw new IllegalArgumentException("id was null or blank");
+            if (StringUtils.isWhitespace(id)) {
+            	throw new IllegalArgumentException("id was blank");
             }
             this.id = id;
         }

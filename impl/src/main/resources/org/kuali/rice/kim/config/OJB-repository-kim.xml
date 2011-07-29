@@ -712,7 +712,7 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo" table="KRIM_ROLE_RSP_ACTN_T">
-    <field-descriptor name="roleResponsibilityActionId" column="ROLE_RSP_ACTN_ID" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="id" column="ROLE_RSP_ACTN_ID" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="roleResponsibilityId" column="ROLE_RSP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="roleMemberId" column="ROLE_MBR_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="actionTypeCode" column="ACTN_TYP_CD" jdbc-type="VARCHAR" />

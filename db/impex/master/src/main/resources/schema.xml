@@ -2622,7 +2622,6 @@
     </table>
     <table name="KRMS_AGENDA_T">
         <column name="AGENDA_ID" primaryKey="true" size="40" type="VARCHAR"/>
-        <column name="NMSPC_CD" required="true" size="40" type="VARCHAR"/>
         <column name="NM" required="true" size="100" type="VARCHAR"/>
         <column name="CNTXT_ID" required="true" size="40" type="VARCHAR"/>
         <column name="INIT_AGENDA_ITM_ID" size="40" type="VARCHAR"/>
@@ -2632,6 +2631,10 @@
         <foreign-key foreignTable="KRMS_CNTXT_T" name="KRMS_AGENDA_FK1">
             <reference foreign="CNTXT_ID" local="CNTXT_ID"/>
         </foreign-key>
+        <unique name="KRMS_AGENDA_TC1">
+            <unique-column name="NM"/>
+            <unique-column name="CNTXT_ID"/>
+        </unique>
         <index name="KRMS_AGENDA_TI1">
             <index-column name="CNTXT_ID"/>
         </index>
@@ -2645,6 +2648,10 @@
         <column name="CMPNT_NM" size="100" type="VARCHAR"/>
         <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column default="null" name="DESC_TXT" size="255" type="VARCHAR"/>
+        <unique name="KRMS_ATTR_DEFN_TC1">
+            <unique-column name="NM"/>
+            <unique-column name="NMSPC_CD"/>
+        </unique>
     </table>
     <table name="KRMS_CMPND_PROP_PROPS_T">
         <column name="CMPND_PROP_ID" primaryKey="true" size="40" type="VARCHAR"/>
@@ -2690,24 +2697,10 @@
         <column default="Y" name="ACTV" required="true" size="1" type="VARCHAR"/>
         <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column default="null" name="DESC_TXT" size="255" type="VARCHAR"/>
-    </table>
-    <table name="KRMS_CNTXT_TERM_SPEC_PREREQ_T">
-        <column name="CNTXT_TERM_SPEC_PREREQ_ID" primaryKey="true"
-            size="40" type="VARCHAR"/>
-        <column name="CNTXT_ID" required="true" size="40" type="VARCHAR"/>
-        <column name="TERM_SPEC_ID" required="true" size="40" type="VARCHAR"/>
-        <foreign-key foreignTable="KRMS_CNTXT_T" name="KRMS_CNTXT_ASSET_PREREQ_FK1">
-            <reference foreign="CNTXT_ID" local="CNTXT_ID"/>
-        </foreign-key>
-        <foreign-key foreignTable="KRMS_TERM_SPEC_T" name="KRMS_CNTXT_ASSET_PREREQ_FK2">
-            <reference foreign="TERM_SPEC_ID" local="TERM_SPEC_ID"/>
-        </foreign-key>
-        <index name="KRMS_CNTXT_ASSET_PREREQ_TI1">
-            <index-column name="CNTXT_ID"/>
-        </index>
-        <index name="KRMS_CNTXT_ASSET_PREREQ_TI2">
-            <index-column name="TERM_SPEC_ID"/>
-        </index>
+        <unique name="KRMS_CNTXT_TC1">
+            <unique-column name="NM"/>
+            <unique-column name="NMSPC_CD"/>
+        </unique>
     </table>
     <table name="KRMS_CNTXT_VLD_ACTN_T">
         <column name="CNTXT_VLD_ACTN_ID" primaryKey="true" size="40" type="VARCHAR"/>
@@ -2757,6 +2750,19 @@
             <index-column name="CNTXT_ID"/>
         </index>
     </table>
+    <table name="KRMS_CNTXT_VLD_TERM_SPEC_T">
+        <column name="CNTXT_TERM_SPEC_PREREQ_ID" primaryKey="true"
+            size="40" type="VARCHAR"/>
+        <column name="CNTXT_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="TERM_SPEC_ID" required="true" size="40" type="VARCHAR"/>
+        <column default="n" name="PREREQ" size="1" type="VARCHAR"/>
+        <foreign-key foreignTable="KRMS_TERM_SPEC_T" name="KRMS_CNTXT_VLD_TERM_SPEC_TI2">
+            <reference foreign="TERM_SPEC_ID" local="TERM_SPEC_ID"/>
+        </foreign-key>
+        <foreign-key foreignTable="KRMS_CNTXT_T" name="KRMS_CNTXT_VLD_TERM_SPEC_TI1">
+            <reference foreign="CNTXT_ID" local="CNTXT_ID"/>
+        </foreign-key>
+    </table>
     <table name="KRMS_CTGRY_T">
         <column name="CTGRY_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="NM" required="true" size="255" type="VARCHAR"/>
@@ -2803,6 +2809,10 @@
         <foreign-key foreignTable="KRMS_TYP_T" name="KRMS_FUNC_FK1">
             <reference foreign="TYP_ID" local="TYP_ID"/>
         </foreign-key>
+        <unique name="KRMS_FUNC_TC1">
+            <unique-column name="NM"/>
+            <unique-column name="NMSPC_CD"/>
+        </unique>
         <index name="KRMS_FUNC_TI1">
             <index-column name="TYP_ID"/>
         </index>
@@ -2873,6 +2883,10 @@
         <foreign-key foreignTable="KRMS_PROP_T" name="KRMS_RULE_FK1">
             <reference foreign="PROP_ID" local="PROP_ID"/>
         </foreign-key>
+        <unique name="KRMS_RULE_TC1">
+            <unique-column name="NM"/>
+            <unique-column name="NMSPC_CD"/>
+        </unique>
         <index name="KRMS_RULE_TI1">
             <index-column name="PROP_ID"/>
         </index>
@@ -2896,16 +2910,16 @@
         <column name="ATTR_DEFN_ID" required="true" size="40" type="VARCHAR"/>
         <column name="ATTR_VAL" size="400" type="VARCHAR"/>
         <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <foreign-key foreignTable="KRMS_ATTR_DEFN_T" name="KRMS_ASSET_RSLVR_ATTR_FK2">
-            <reference foreign="ATTR_DEFN_ID" local="ATTR_DEFN_ID"/>
-        </foreign-key>
-        <foreign-key foreignTable="KRMS_TERM_RSLVR_T" name="KRMS_ASSET_RSLVR_ATTR_FK1">
+        <foreign-key foreignTable="KRMS_TERM_RSLVR_T" name="KRMS_TERM_RSLVR_ATTR_FK1">
             <reference foreign="TERM_RSLVR_ID" local="TERM_RSLVR_ID"/>
         </foreign-key>
-        <index name="KRMS_ASSET_RSLVR_ATTR_TI1">
+        <foreign-key foreignTable="KRMS_ATTR_DEFN_T" name="KRMS_TERM_RSLVR_ATTR_FK2">
+            <reference foreign="ATTR_DEFN_ID" local="ATTR_DEFN_ID"/>
+        </foreign-key>
+        <index name="KRMS_TERM_RSLVR_ATTR_TI1">
             <index-column name="TERM_RSLVR_ID"/>
         </index>
-        <index name="KRMS_ASSET_RSLVR_ATTR_TI2">
+        <index name="KRMS_TERM_RSLVR_ATTR_TI2">
             <index-column name="ATTR_DEFN_ID"/>
         </index>
     </table>
@@ -2944,26 +2958,18 @@
         <column name="NM" required="true" size="100" type="VARCHAR"/>
         <column name="TYP_ID" required="true" size="40" type="VARCHAR"/>
         <column name="OUTPUT_TERM_SPEC_ID" required="true" size="40" type="VARCHAR"/>
-        <column name="CNTXT_ID" size="40" type="VARCHAR"/>
         <column default="Y" name="ACTV" required="true" size="1" type="VARCHAR"/>
         <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <foreign-key foreignTable="KRMS_TERM_SPEC_T" name="KRMS_TERM_RSLVR_FK1">
             <reference foreign="TERM_SPEC_ID" local="OUTPUT_TERM_SPEC_ID"/>
         </foreign-key>
-        <foreign-key foreignTable="KRMS_CNTXT_T" name="KRMS_TERM_RSLVR_FK2">
-            <reference foreign="CNTXT_ID" local="CNTXT_ID"/>
-        </foreign-key>
         <foreign-key foreignTable="KRMS_TYP_T" name="KRMS_TERM_RSLVR_FK3">
             <reference foreign="TYP_ID" local="TYP_ID"/>
         </foreign-key>
         <unique name="KRMS_TERM_RSLVR_TC1">
-            <unique-column name="NMSPC_CD"/>
             <unique-column name="NM"/>
-            <unique-column name="CNTXT_ID"/>
+            <unique-column name="NMSPC_CD"/>
         </unique>
-        <index name="KRMS_TERM_RSLVR_TI1">
-            <index-column name="CNTXT_ID"/>
-        </index>
         <index name="KRMS_TERM_RSLVR_TI2">
             <index-column name="TYP_ID"/>
         </index>
@@ -2980,22 +2986,16 @@
     </table>
     <table name="KRMS_TERM_SPEC_T">
         <column name="TERM_SPEC_ID" primaryKey="true" size="40" type="VARCHAR"/>
-        <column name="CNTXT_ID" size="40" type="VARCHAR"/>
         <column name="NM" required="true" size="255" type="VARCHAR"/>
         <column name="TYP" required="true" size="255" type="VARCHAR"/>
         <column default="Y" name="ACTV" required="true" size="1" type="VARCHAR"/>
         <column name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column default="null" name="DESC_TXT" size="255" type="VARCHAR"/>
-        <foreign-key foreignTable="KRMS_CNTXT_T" name="KRMS_ASSET_FK1">
-            <reference foreign="CNTXT_ID" local="CNTXT_ID"/>
-        </foreign-key>
-        <unique name="KRMS_ASSET_TC1">
+        <column name="NMSPC_CD" required="true" size="40" type="VARCHAR"/>
+        <unique name="KRMS_TERM_SPEC_TC1">
             <unique-column name="NM"/>
-            <unique-column name="CNTXT_ID"/>
+            <unique-column name="NMSPC_CD"/>
         </unique>
-        <index name="KRMS_ASSET_TI1">
-            <index-column name="CNTXT_ID"/>
-        </index>
     </table>
     <table name="KRMS_TERM_T">
         <column name="TERM_ID" primaryKey="true" size="40" type="VARCHAR"/>
@@ -3040,6 +3040,10 @@
         <column name="SRVC_NM" size="200" type="VARCHAR"/>
         <column default="Y" name="ACTV" required="true" size="1" type="VARCHAR"/>
         <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <unique name="KRMS_TYP_TC1">
+            <unique-column name="NM"/>
+            <unique-column name="NMSPC_CD"/>
+        </unique>
     </table>
     <table name="KRNS_ADHOC_RTE_ACTN_RECIP_T">
         <column name="RECIP_TYP_CD" primaryKey="true" size="1" type="DECIMAL"/>

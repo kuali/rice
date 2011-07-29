@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Document plus it's requests and actions.  Primarily used by the routingReport method 
+ * Document plus it's requests and actions.  Primarily used by the executeSimulation method
  * on WorkflowInfo
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)

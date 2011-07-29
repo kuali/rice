@@ -32,6 +32,7 @@ import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.doctype.IllegalDocumentTypeException;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentContentUpdate;
+import org.kuali.rice.kew.api.document.DocumentDetail;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.DocumentUpdate;
 import org.kuali.rice.kew.api.document.InvalidDocumentContentException;
@@ -1006,18 +1007,16 @@ public interface WorkflowDocumentActionsService {
 
     // TODO add the following methods to this service
 
-    //	boolean isUserInRouteLog(
-    //			@WebParam(name = "documentId") String documentId,
-    //			@WebParam(name = "principalId") String principalId,
-    //			@WebParam(name = "lookFuture") boolean lookFuture)
-    //			throws WorkflowException;
-    //
-    //	boolean isUserInRouteLogWithOptionalFlattening(
-    //			@WebParam(name = "documentId") String documentId,
-    //			@WebParam(name = "principalId") String principalId,
-    //			@WebParam(name = "lookFuture") boolean lookFuture,
-    //			@WebParam(name = "flattenNodes") boolean flattenNodes)
-    //			throws WorkflowException;
+    	boolean isUserInRouteLog(
+    			@WebParam(name = "documentId") String documentId,
+    			@WebParam(name = "principalId") String principalId,
+    			@WebParam(name = "lookFuture") boolean lookFuture);
+
+    	boolean isUserInRouteLogWithOptionalFlattening(
+    			@WebParam(name = "documentId") String documentId,
+    			@WebParam(name = "principalId") String principalId,
+    			@WebParam(name = "lookFuture") boolean lookFuture,
+    			@WebParam(name = "flattenNodes") boolean flattenNodes);
     //
     //	void reResolveRoleByDocTypeName(
     //			@WebParam(name = "documentTypeName") String documentTypeName,
@@ -1031,9 +1030,7 @@ public interface WorkflowDocumentActionsService {
     //			@WebParam(name = "qualifiedRoleNameLabel") String qualifiedRoleNameLabel)
     //			throws WorkflowException;
     //
-    //	DocumentDetailDTO routingReport(
-    //			@WebParam(name = "reportCriteria") ReportCriteriaDTO reportCriteria)
-    //			throws WorkflowException;
+    	DocumentDetail executeSimulation(@WebParam(name = "reportCriteria") RoutingReportCriteria reportCriteria);
     //
     //	boolean isFinalApprover(
     //			@WebParam(name = "documentId") String documentId,
@@ -1052,15 +1049,14 @@ public interface WorkflowDocumentActionsService {
     //			@WebParam(name = "nodeName") String nodeName)
     //			throws WorkflowException;
     //	
-    //	boolean documentWillHaveAtLeastOneActionRequest(
-    //			@WebParam(name = "reportCriteriaDTO") ReportCriteriaDTO reportCriteriaDTO,
-    //			@WebParam(name = "actionRequestedCodes") String[] actionRequestedCodes,
-    //			@WebParam(name = "ignoreCurrentActionRequests") boolean ignoreCurrentActionRequests);
-    //    	
-    //	
-    //	String[] getPrincipalIdsInRouteLog(
-    //			@WebParam(name = "documentId") String documentId,
-    //			@WebParam(name = "lookFuture") boolean lookFuture)
-    //			throws WorkflowException;
+    	boolean documentWillHaveAtLeastOneActionRequest(
+    			@WebParam(name = "reportCriteria") RoutingReportCriteria reportCriteria,
+    			@WebParam(name = "actionRequestedCodes") List<String> actionRequestedCodes,
+    			@WebParam(name = "ignoreCurrentActionRequests") boolean ignoreCurrentActionRequests);
+
+
+    	List<String> getPrincipalIdsInRouteLog(
+    			@WebParam(name = "documentId") String documentId,
+    			@WebParam(name = "lookFuture") boolean lookFuture);
 
 }

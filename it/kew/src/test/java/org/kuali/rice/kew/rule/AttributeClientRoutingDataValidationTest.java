@@ -16,16 +16,16 @@
  */
 package org.kuali.rice.kew.rule;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import org.junit.Test;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
-import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
-import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
-import org.kuali.rice.kew.service.WorkflowInfo;
+import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
+import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.test.KEWTestCase;
+
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests that an attribute implementing WorkflowAttributeXmlValidator interface can be validated from the 
@@ -44,14 +44,14 @@ public class AttributeClientRoutingDataValidationTest extends KEWTestCase {
     }    
 	
 	@Test public void testClientApplicationValidationImplementsWorkflowAttributeXmlValidator() throws Exception {
-		WorkflowAttributeDefinitionDTO attDef = new WorkflowAttributeDefinitionDTO(TestRuleAttributeThree.class.getName());
-		WorkflowAttributeValidationErrorDTO[] validationErrors = new WorkflowInfo().validAttributeDefinition(attDef);
-		assertTrue("Validation errors should not be empty", validationErrors.length != 0);
-		assertEquals("Should be 2 validation errors", 2, validationErrors.length);
+		WorkflowAttributeDefinition attDef = WorkflowAttributeDefinition.Builder.create(TestRuleAttributeThree.class.getName()).build();
+        List<WorkflowAttributeValidationError> validationErrors = KewApiServiceLocator.getWorkflowDocumentActionsService().validateWorkflowAttributeDefinition(
+                attDef);
+		assertTrue("Validation errors should not be empty", !validationErrors.isEmpty());
+		assertEquals("Should be 2 validation errors", 2, validationErrors.size());
 		boolean foundKey1 = false;
 		boolean foundKey2 = false;
-		for (int i = 0; i < validationErrors.length; i++) {
-			WorkflowAttributeValidationErrorDTO error = validationErrors[i];
+		for (org.kuali.rice.kew.api.document.attribute.WorkflowAttributeValidationError error : validationErrors) {
 			if (error.getKey().equals("key1")) {
 				assertEquals("key1 key should have message of value1", "value1", error.getMessage());
 				foundKey1 = true;
@@ -66,15 +66,16 @@ public class AttributeClientRoutingDataValidationTest extends KEWTestCase {
 	}
 	
 	@Test public void testClientApplicationValidationNoImplementsWorkflowAttributeXmlValidator() throws Exception {
-		WorkflowAttributeDefinitionDTO attDef = new WorkflowAttributeDefinitionDTO(TestRuleAttributeDuex.class.getName());
-		WorkflowAttributeValidationErrorDTO[] validationErrors = new WorkflowInfo().validAttributeDefinition(attDef);
-		assertTrue("Validation errors should be empty because WorkflowAttributeXmlValidator interface is not implemented", validationErrors.length == 0);
+		WorkflowAttributeDefinition attDef = WorkflowAttributeDefinition.Builder.create(TestRuleAttributeDuex.class.getName()).build();
+		List<WorkflowAttributeValidationError> validationErrors = KewApiServiceLocator.getWorkflowDocumentActionsService().validateWorkflowAttributeDefinition(
+                attDef);
+		assertTrue("Validation errors should be empty because WorkflowAttributeXmlValidator interface is not implemented", validationErrors.isEmpty());
 	}
 	
 	@Test public void testThrowWorkflowExceptionNoneExistentAttribute() throws Exception {
-		WorkflowAttributeDefinitionDTO attDef = new WorkflowAttributeDefinitionDTO("FakeyMcAttribute");
+        WorkflowAttributeDefinition attDef = WorkflowAttributeDefinition.Builder.create("FakeyMcAttribute").build();
 		try {
-			new WorkflowInfo().validAttributeDefinition(attDef);
+            KewApiServiceLocator.getWorkflowDocumentActionsService().validateWorkflowAttributeDefinition(attDef);
 			fail("Should have thrown WorkflowException attempting to lookup non-existent attribute");
 		} catch (WorkflowRuntimeException e) {
 			assertTrue("This is the correct exception to throw", true);

@@ -47,7 +47,7 @@ public interface ActionTakenService {
 
     public Collection findByDocIdAndAction(String docId, String action);
 
-    public List findByDocumentIdWorkflowId(String documentId, String workflowId);
+    public List<ActionTakenValue> findByDocumentIdWorkflowId(String documentId, String workflowId);
 
     public void delete(ActionTakenValue actionTaken);
 

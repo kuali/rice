@@ -67,12 +67,12 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(StandardWorkflowEngine.class);
 
 	protected final RouteHelper helper = new RouteHelper();
-	protected final RouteNodeService routeNodeService;
-    protected final RouteHeaderService routeHeaderService;
-    protected final ParameterService parameterService;
-    protected final OrchestrationConfig config;
+	protected RouteNodeService routeNodeService;
+    protected RouteHeaderService routeHeaderService;
+    protected ParameterService parameterService;
+    protected OrchestrationConfig config;
 
-//    public StandardWorkflowEngine() {}
+    public StandardWorkflowEngine() {}
 
 	protected StandardWorkflowEngine(RouteNodeService routeNodeService, RouteHeaderService routeHeaderService, 
 	        ParameterService parameterService, OrchestrationConfig config) {
@@ -743,15 +743,15 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		return parameterService;
 	}
 
-//    public void setRouteNodeService(RouteNodeService routeNodeService) {
-//        this.routeNodeService = routeNodeService;
-//    }
-//
-//    public void setRouteHeaderService(RouteHeaderService routeHeaderService) {
-//        this.routeHeaderService = routeHeaderService;
-//    }
-//
-//    public void setParameterService(ParameterService parameterService) {
-//        this.parameterService = parameterService;
-//    }
+    public void setRouteNodeService(RouteNodeService routeNodeService) {
+        this.routeNodeService = routeNodeService;
+    }
+
+    public void setRouteHeaderService(RouteHeaderService routeHeaderService) {
+        this.routeHeaderService = routeHeaderService;
+    }
+
+    public void setParameterService(ParameterService parameterService) {
+        this.parameterService = parameterService;
+    }
 }

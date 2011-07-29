@@ -404,8 +404,6 @@
     <property name="incidentMailingList" value="${kr.incident.mailing.list}"/>
   </bean>
 
-  <bean id="workflowInfoService" class="org.kuali.rice.krad.workflow.service.impl.KualiWorkflowInfoImpl"/>
-
   <bean id="xmlObjectSerializerService" class="org.kuali.rice.krad.service.impl.XmlObjectSerializerServiceImpl"></bean>
 
   <bean id="documentHelperService" class="org.kuali.rice.krad.service.impl.DocumentHelperServiceImpl"/>

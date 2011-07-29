@@ -16,12 +16,13 @@
  */
 package org.kuali.rice.kew.routemodule;
 
-import java.rmi.RemoteException;
-
-import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.dto.DocumentContentDTO;
 import org.kuali.rice.kew.dto.ResponsiblePartyDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
+
+import java.rmi.RemoteException;
+import java.util.List;
 
 
 /**
@@ -37,7 +38,7 @@ public interface RouteModuleRemote {
    *
    * @return ActionRequestVO[] the generated action requests
    */
-  public ActionRequestDTO[] findActionRequests(RouteHeaderDTO routeHeader, DocumentContentDTO documentContent) throws RemoteException;
+  public List<ActionRequest> findActionRequests(RouteHeaderDTO routeHeader, DocumentContentDTO documentContent) throws RemoteException;
 
   /**
    * The route module will resolve the given responsibilityId and return an object that contains the key to

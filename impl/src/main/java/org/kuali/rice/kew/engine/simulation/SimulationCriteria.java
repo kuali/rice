@@ -17,24 +17,31 @@
 package org.kuali.rice.kew.engine.simulation;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
+import org.kuali.rice.kew.api.action.RoutingReportActionToTake;
+import org.kuali.rice.kew.api.action.RoutingReportCriteria;
+import org.kuali.rice.kew.api.action.RoutingReportCriteriaContract;
+import org.kuali.rice.kew.dto.ReportActionToTakeDTO;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * Criteria which acts as input to the {@link SimulationEngine}.
  *
- * @see SimulationEngine
- *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @see SimulationEngine
  */
 public class SimulationCriteria {
 
-	// fields related to document simulation
-	private String documentId;
+    // fields related to document simulation
+    private String documentId;
     private String destinationNodeName;
     private List<Recipient> destinationRecipients = new ArrayList<Recipient>();
 
@@ -51,26 +58,26 @@ public class SimulationCriteria {
     private boolean flattenNodes;
 
     public SimulationCriteria() {
-    	this.activateRequests = null;
-    	this.flattenNodes = false;
+        this.activateRequests = null;
+        this.flattenNodes = false;
     }
 
-	public static SimulationCriteria createSimulationCritUsingDocumentId(String documentId) {
-		return new SimulationCriteria(null, documentId);
-	}
-	
-	public static SimulationCriteria createSimulationCritUsingDocTypeName(String documentTypeName) {
-		return new SimulationCriteria(documentTypeName, null);
-	}
-	
-    private SimulationCriteria(String documentTypeName, String documentId) {
-    	if (StringUtils.isNotBlank(documentId)) { 
-    		this.documentId = documentId;
-    	} else if (StringUtils.isNotBlank(documentTypeName)) {
-    		this.documentTypeName = documentTypeName;
-    	}
+    public static SimulationCriteria createSimulationCritUsingDocumentId(String documentId) {
+        return new SimulationCriteria(null, documentId);
     }
-    
+
+    public static SimulationCriteria createSimulationCritUsingDocTypeName(String documentTypeName) {
+        return new SimulationCriteria(documentTypeName, null);
+    }
+
+    private SimulationCriteria(String documentTypeName, String documentId) {
+        if (StringUtils.isNotBlank(documentId)) {
+            this.documentId = documentId;
+        } else if (StringUtils.isNotBlank(documentTypeName)) {
+            this.documentTypeName = documentTypeName;
+        }
+    }
+
     public Boolean isActivateRequests() {
         return this.activateRequests;
     }
@@ -80,14 +87,14 @@ public class SimulationCriteria {
     }
 
     public String getDocumentId() {
-		return documentId;
-	}
+        return documentId;
+    }
 
-	public void setDocumentId(String documentId) {
-		this.documentId = documentId;
-	}
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
+    }
 
-	public String getDestinationNodeName() {
+    public String getDestinationNodeName() {
         return destinationNodeName;
     }
 
@@ -103,68 +110,110 @@ public class SimulationCriteria {
         this.destinationRecipients = destinationRecipients;
     }
 
-	public String getDocumentTypeName() {
-		return documentTypeName;
-	}
+    public String getDocumentTypeName() {
+        return documentTypeName;
+    }
 
-	public void setDocumentTypeName(String documentTypeName) {
-		this.documentTypeName = documentTypeName;
-	}
+    public void setDocumentTypeName(String documentTypeName) {
+        this.documentTypeName = documentTypeName;
+    }
 
-	public List<String> getRuleTemplateNames() {
-		return ruleTemplateNames;
-	}
+    public List<String> getRuleTemplateNames() {
+        return ruleTemplateNames;
+    }
 
-	public void setRuleTemplateNames(List<String> ruleTemplateNames) {
-		this.ruleTemplateNames = ruleTemplateNames;
-	}
+    public void setRuleTemplateNames(List<String> ruleTemplateNames) {
+        this.ruleTemplateNames = ruleTemplateNames;
+    }
 
-	public String getXmlContent() {
-		return xmlContent;
-	}
+    public String getXmlContent() {
+        return xmlContent;
+    }
 
-	public void setXmlContent(String xmlContent) {
-		this.xmlContent = xmlContent;
-	}
+    public void setXmlContent(String xmlContent) {
+        this.xmlContent = xmlContent;
+    }
 
-	public List<String> getNodeNames() {
-		return nodeNames;
-	}
+    public List<String> getNodeNames() {
+        return nodeNames;
+    }
 
-	public void setNodeNames(List<String> nodeNames) {
-		this.nodeNames = nodeNames;
-	}
+    public void setNodeNames(List<String> nodeNames) {
+        this.nodeNames = nodeNames;
+    }
 
-	public boolean isDocumentSimulation() {
-		return documentId != null;
-	}
+    public boolean isDocumentSimulation() {
+        return documentId != null;
+    }
 
-	public boolean isDocumentTypeSimulation() {
-		return !org.apache.commons.lang.StringUtils.isEmpty(documentTypeName);
-	}
+    public boolean isDocumentTypeSimulation() {
+        return !org.apache.commons.lang.StringUtils.isEmpty(documentTypeName);
+    }
 
-	public List<SimulationActionToTake> getActionsToTake() {
-		return actionsToTake;
-	}
+    public List<SimulationActionToTake> getActionsToTake() {
+        return actionsToTake;
+    }
 
-	public void setActionsToTake(List<SimulationActionToTake> actionsToTake) {
-		this.actionsToTake = actionsToTake;
-	}
+    public void setActionsToTake(List<SimulationActionToTake> actionsToTake) {
+        this.actionsToTake = actionsToTake;
+    }
 
-	public Person getRoutingUser() {
-		return routingUser;
-	}
+    public Person getRoutingUser() {
+        return routingUser;
+    }
 
-	public void setRoutingUser(Person routingUser) {
-		this.routingUser = routingUser;
-	}
+    public void setRoutingUser(Person routingUser) {
+        this.routingUser = routingUser;
+    }
 
-	public boolean isFlattenNodes() {
-		return this.flattenNodes;
-	}
+    public boolean isFlattenNodes() {
+        return this.flattenNodes;
+    }
 
-	public void setFlattenNodes(boolean flattenNodes) {
-		this.flattenNodes = flattenNodes;
-	}
+    public void setFlattenNodes(boolean flattenNodes) {
+        this.flattenNodes = flattenNodes;
+    }
 
+    public static SimulationCriteria from(RoutingReportCriteria criteriaVO) {
+        if (criteriaVO == null) {
+            return null;
+        }
+        SimulationCriteria criteria = new SimulationCriteria();
+        criteria.setDestinationNodeName(criteriaVO.getTargetNodeName());
+        criteria.setDocumentId(criteriaVO.getDocumentId());
+        criteria.setDocumentTypeName(criteriaVO.getDocumentTypeName());
+        criteria.setXmlContent(criteriaVO.getXmlContent());
+        criteria.setActivateRequests(criteriaVO.isActivateRequests());
+        criteria.setFlattenNodes(criteriaVO.isFlattenNodes());
+        if (criteriaVO.getRoutingPrincipalId() != null) {
+            Principal kPrinc = KEWServiceLocator.getIdentityHelperService().
+                    getPrincipal(criteriaVO.getRoutingPrincipalId());
+            Person user = KimApiServiceLocator.getPersonService().getPerson(kPrinc.getPrincipalId());
+            if (user == null) {
+                throw new RiceRuntimeException(
+                        "Could not locate user for the given id: " + criteriaVO.getRoutingPrincipalId());
+            }
+            criteria.setRoutingUser(user);
+        }
+        if (criteriaVO.getRuleTemplateNames() != null) {
+            criteria.setRuleTemplateNames(criteriaVO.getRuleTemplateNames());
+        }
+        if (criteriaVO.getNodeNames() != null) {
+            criteria.setNodeNames(criteriaVO.getNodeNames());
+        }
+        if (criteriaVO.getTargetPrincipalIds() != null) {
+            for (String targetPrincipalId : criteriaVO.getTargetPrincipalIds()) {
+                Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(targetPrincipalId);
+                criteria.getDestinationRecipients().add(new KimPrincipalRecipient(principal));
+            }
+        }
+
+        if (criteriaVO.getActionsToTake() != null) {
+            for (RoutingReportActionToTake actionToTake : criteriaVO.getActionsToTake()) {
+                criteria.getActionsToTake().add(SimulationActionToTake.from(actionToTake));
+            }
+        }
+
+        return criteria;
+    }
 }

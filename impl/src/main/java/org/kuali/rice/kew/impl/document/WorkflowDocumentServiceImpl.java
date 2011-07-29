@@ -15,15 +15,6 @@
  */
 package org.kuali.rice.kew.impl.document;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.jws.WebParam;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
@@ -36,12 +27,21 @@ import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentContent;
 import org.kuali.rice.kew.api.document.DocumentDetail;
 import org.kuali.rice.kew.api.document.DocumentLink;
-import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
 import org.kuali.rice.kew.api.document.WorkflowDocumentService;
+import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
 import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
+import org.kuali.rice.kew.routeheader.DocumentStatusTransition;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+
+import javax.jws.WebParam;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * TODO
@@ -71,6 +71,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	    return documentBo != null;
 	}
 
+    @Override
     public DocumentDetail getDocumentDetailByAppId(String documentTypeName, String appId) {
         if (StringUtils.isEmpty(documentTypeName)) {
             throw new RiceIllegalArgumentException("documentTypeName was blank or null");
@@ -212,6 +213,27 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         }
         return documentDetailVO;
 	}
+
+    @Override
+    public List<org.kuali.rice.kew.api.document.DocumentStatusTransition> getDocumentStatusTransitionHistory(String documentId) {
+        if (documentId == null) {
+            LOG.error("null documentId passed in.");
+            throw new RuntimeException("null documentId passed in");
+        }
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("Fetching document status transition history [id="+documentId+"]");
+        }
+        DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);;
+
+        List<DocumentStatusTransition> list = document.getAppDocStatusHistory();
+
+        List<org.kuali.rice.kew.api.document.DocumentStatusTransition> transitionHistory = new ArrayList<org.kuali.rice.kew.api.document.DocumentStatusTransition>(list.size());
+
+        for (DocumentStatusTransition transition : list) {
+            transitionHistory.add(DocumentStatusTransition.to(transition));
+        }
+        return transitionHistory;
+    }
 	
 	@Override
 	public List<RouteNodeInstance> getRouteNodeInstances(String documentId) {
@@ -305,7 +327,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		}
 	}
 
-
+    @Override
     public List<String> getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(String actionRequestedCd, String documentId){
     	if (StringUtils.isEmpty(actionRequestedCd)) {
             throw new RiceIllegalArgumentException("actionRequestCd was blank or null");
@@ -317,6 +339,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     				getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(actionRequestedCd, documentId);
     }
 
+    @Override
     public String getDocumentInitiatorPrincipalId(String documentId) {
         if (StringUtils.isEmpty(documentId)) {
             throw new RiceIllegalArgumentException("documentId was blank or null");
@@ -329,6 +352,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     	return header.getInitiatorWorkflowId();
     }
 
+    @Override
     public String getDocumentRoutedByPrincipalId(String documentId) {
         if (StringUtils.isEmpty(documentId)) {
             throw new RiceIllegalArgumentException("documentId was blank or null");

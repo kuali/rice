@@ -16,23 +16,20 @@
  */
 package org.kuali.rice.kew.routeheader;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-import java.util.Set;
-
 import org.junit.Test;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.document.Document;
-import org.kuali.rice.kew.dto.DocumentStatusTransitionDTO;
-import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
+
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.Assert.*;
 
 public class AppDocStatusTest extends KEWTestCase {
     	    
@@ -111,15 +108,16 @@ public class AppDocStatusTest extends KEWTestCase {
     	assertTrue("Application Document Status:" + appDocStatus +" is invalid", "Completed".equalsIgnoreCase(appDocStatus));
     	
         // check app doc status transition history
-        WorkflowInfo info = new WorkflowInfo();
-        DocumentStatusTransitionDTO[] history = info.getDocumentStatusTransitionHistory(document.getDocumentId());
+        List<org.kuali.rice.kew.api.document.DocumentStatusTransition> history = KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatusTransitionHistory(
+                document.getDocumentId());
         
-        assertEquals(3, history.length);
-    	assertTrue("First History record has incorrect status", "Approval In Progress".equalsIgnoreCase(history[0].getNewAppDocStatus()));
-    	assertTrue("Second History record has incorrect old status", "Approval In Progress".equalsIgnoreCase(history[1].getOldAppDocStatus()));
-    	assertTrue("Second History record has incorrect new status", "Submitted".equalsIgnoreCase(history[1].getNewAppDocStatus()));
-    	assertTrue("Third History record has incorrect old status", "Submitted".equalsIgnoreCase(history[2].getOldAppDocStatus()));
-    	assertTrue("Third History record has incorrect new status", "Completed".equalsIgnoreCase(history[2].getNewAppDocStatus()));
+        assertEquals(3, history.size());
+    	assertTrue("First History record has incorrect status", "Approval In Progress".equalsIgnoreCase(history.get(0).getNewStatus()));
+    	assertTrue("Second History record has incorrect old status", "Approval In Progress".equalsIgnoreCase(
+                history.get(1).getOldStatus()));
+    	assertTrue("Second History record has incorrect new status", "Submitted".equalsIgnoreCase(history.get(1).getNewStatus()));
+    	assertTrue("Third History record has incorrect old status", "Submitted".equalsIgnoreCase(history.get(2).getOldStatus()));
+    	assertTrue("Third History record has incorrect new status", "Completed".equalsIgnoreCase(history.get(2).getNewStatus()));
                
     	// TODO when we are able to, we should also verify the RouteNodeInstances are correct
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
@@ -191,15 +189,19 @@ public class AppDocStatusTest extends KEWTestCase {
     	assertTrue("Application Document Status:" + appDocStatus +" is invalid", "Some Random Value".equalsIgnoreCase(appDocStatus));
     	
         // check app doc status transition history
-        WorkflowInfo info = new WorkflowInfo();
-        DocumentStatusTransitionDTO[] history = info.getDocumentStatusTransitionHistory(document.getDocumentId());
+        List<org.kuali.rice.kew.api.document.DocumentStatusTransition> history = KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatusTransitionHistory(
+                document.getDocumentId());
         
-        assertEquals(3, history.length);
-    	assertTrue("First History record has incorrect status", "Approval In Progress".equalsIgnoreCase(history[0].getNewAppDocStatus()));
-    	assertTrue("Second History record has incorrect old status", "Approval In Progress".equalsIgnoreCase(history[1].getOldAppDocStatus()));
-    	assertTrue("Second History record has incorrect new status", "Submitted".equalsIgnoreCase(history[1].getNewAppDocStatus()));
-    	assertTrue("Third History record has incorrect old status", "Submitted".equalsIgnoreCase(history[2].getOldAppDocStatus()));
-    	assertTrue("Third History record has incorrect new status", "Some Random Value".equalsIgnoreCase(history[2].getNewAppDocStatus()));
+        assertEquals(3, history.size());
+    	assertTrue("First History record has incorrect status", "Approval In Progress".equalsIgnoreCase(history.get(0)
+                .getNewStatus()));
+    	assertTrue("Second History record has incorrect old status", "Approval In Progress".equalsIgnoreCase(
+                history.get(1).getOldStatus()));
+    	assertTrue("Second History record has incorrect new status", "Submitted".equalsIgnoreCase(history.get(1)
+                .getNewStatus()));
+    	assertTrue("Third History record has incorrect old status", "Submitted".equalsIgnoreCase(history.get(2).getOldStatus()));
+    	assertTrue("Third History record has incorrect new status", "Some Random Value".equalsIgnoreCase(history.get(2)
+                .getNewStatus()));
                
     	// TODO when we are able to, we should also verify the RouteNodeInstances are correct
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());

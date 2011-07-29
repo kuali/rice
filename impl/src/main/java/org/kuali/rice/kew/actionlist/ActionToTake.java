@@ -16,12 +16,14 @@
  */
 package org.kuali.rice.kew.actionlist;
 
+import java.io.Serializable;
+
 /**
  * Represents a mass action taken from the action list
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ActionToTake {
+public class ActionToTake implements Serializable {
 
 	private String actionItemId;
     private String actionTakenCd;

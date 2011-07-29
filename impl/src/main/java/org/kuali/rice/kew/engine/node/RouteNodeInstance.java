@@ -294,7 +294,8 @@ public class RouteNodeInstance implements Serializable {
 	public void beforeInsert(){
 		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
 	}
-	
+
+
 	public static org.kuali.rice.kew.api.document.node.RouteNodeInstance to(RouteNodeInstance routeNodeInstance) {
 		if (routeNodeInstance == null) {
 			return null;
@@ -302,26 +303,39 @@ public class RouteNodeInstance implements Serializable {
 		org.kuali.rice.kew.api.document.node.RouteNodeInstance.Builder builder = org.kuali.rice.kew.api.document.node
                 .RouteNodeInstance.Builder.create();
 		builder.setActive(routeNodeInstance.isActive());
-		builder.setBranchId(routeNodeInstance.getBranch().getBranchId().toString());
+		builder.setBranchId(routeNodeInstance.getBranch().getBranchId());
 		builder.setComplete(routeNodeInstance.isComplete());
 		builder.setDocumentId(routeNodeInstance.getDocumentId());
-		builder.setId(routeNodeInstance.getRouteNodeInstanceId().toString());
+		builder.setId(routeNodeInstance.getRouteNodeInstanceId());
 		builder.setInitial(routeNodeInstance.isInitial());
 		builder.setName(routeNodeInstance.getName());
 		if (routeNodeInstance.getProcess() != null) {
-			builder.setProcessId(routeNodeInstance.getProcess().getRouteNodeInstanceId().toString());
+			builder.setProcessId(routeNodeInstance.getProcess().getRouteNodeInstanceId());
 		}
-		builder.setRouteNodeId(routeNodeInstance.getRouteNode().getRouteNodeId().toString());
-		List<RouteNodeInstanceState> states = new ArrayList<RouteNodeInstanceState>();
+		builder.setRouteNodeId(routeNodeInstance.getRouteNode().getRouteNodeId());
+		List<RouteNodeInstanceState.Builder> states = new ArrayList<RouteNodeInstanceState.Builder>();
 		for (NodeState stateBo : routeNodeInstance.getState()) {
 			RouteNodeInstanceState.Builder stateBuilder = RouteNodeInstanceState.Builder.create();
-			stateBuilder.setId(stateBo.getStateId().toString());
+			stateBuilder.setId(stateBo.getStateId());
 			stateBuilder.setKey(stateBo.getKey());
 			stateBuilder.setValue(stateBo.getValue());
-			states.add(stateBuilder.build());
+			states.add(stateBuilder);
 		}
 		builder.setState(states);
+
+        List<org.kuali.rice.kew.api.document.node.RouteNodeInstance.Builder> nextNodes = new ArrayList<org.kuali.rice.kew.api.document.node.RouteNodeInstance.Builder>();
+        if (routeNodeInstance.getNextNodeInstances() != null) {
+            for (RouteNodeInstance next : routeNodeInstance.getNextNodeInstances()) {
+                // will this make things blow up?
+                nextNodes.add(org.kuali.rice.kew.api.document.node.RouteNodeInstance.Builder.create(RouteNodeInstance.to(next)));
+            }
+        }
+        builder.setNextNodeInstances(nextNodes);
+
 		return builder.build();
+
+
+
 	}
     
 }

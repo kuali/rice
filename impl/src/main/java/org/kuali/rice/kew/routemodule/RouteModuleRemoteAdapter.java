@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.DocumentContentDTO;
@@ -60,19 +62,20 @@ public class RouteModuleRemoteAdapter implements RouteModule {
             List actionRequests = new ArrayList();
             RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(routeHeader, null);
             DocumentContentDTO documentContentVO = DTOConverter.convertDocumentContent(routeHeader.getDocContent(), routeHeaderVO.getDocumentId());
-            ActionRequestDTO[] actionRequestVOs = routeModule.findActionRequests(routeHeaderVO, documentContentVO);
-            if (actionRequestVOs != null && actionRequestVOs.length > 0) {
+            List<ActionRequest> actionRequestVOs = routeModule.findActionRequests(routeHeaderVO, documentContentVO);
+            if (actionRequestVOs != null && actionRequestVOs.size() > 0) {
             	assertRootRequests(actionRequestVOs);
 
-                for (ActionRequestDTO actionRequestVO : actionRequestVOs) {
-                    actionRequestVO.setDocumentId(routeHeader.getDocumentId());
+                for (ActionRequest actionRequestVO : actionRequestVOs) {
+                    ActionRequest.Builder builder = ActionRequest.Builder.create(actionRequestVO);
+                    builder.setDocumentId(routeHeader.getDocumentId());
                     
                     // TODO this should be moved to a validate somewhere's...
                     if (actionRequestVO.getPrincipalId() == null && actionRequestVO.getGroupId() == null) {
                     	throw new RiceRuntimeException("Post processor didn't set a user or workgroup on the request");
                     }
                     
-                    actionRequests.add(DTOConverter.convertActionRequestDTO(actionRequestVO));
+                    actionRequests.add(ActionRequestValue.from(builder.build()));
                 }
             }
             return actionRequests;
@@ -98,8 +101,8 @@ public class RouteModuleRemoteAdapter implements RouteModule {
     /**
      * Asserts that the given array of ActionRequestDTOs are only root requests (as required by the RouteModuleRemote API)
      */
-    private void assertRootRequests(ActionRequestDTO[] actionRequestVOs) throws WorkflowException {
-    	for (ActionRequestDTO actionRequest : actionRequestVOs) {
+    private void assertRootRequests(List<ActionRequest> actionRequestVOs) throws WorkflowException {
+    	for (ActionRequest actionRequest : actionRequestVOs) {
     		if (actionRequest.getParentActionRequestId() != null) {
     			throw new WorkflowException("Encountered an action request in the graph which was NOT a root request.  RouteModuleRemote.findActionRequests should only produce root ActionRequestDTO objects.");
     		}

@@ -21,7 +21,6 @@ import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -57,17 +56,14 @@ public class EDLFunctions {
 
 	public static boolean isUserRouteLogAuthenticated(String documentId) {
 		boolean authenticated=false;
-		WorkflowInfo workflowInfo = new WorkflowInfo();
 		UserSession userSession=GlobalVariables.getUserSession();
 		if(userSession!=null){
 			String principalId = userSession.getPrincipalId();
 			try {
-				authenticated = workflowInfo.isUserAuthenticatedByRouteLog(documentId, principalId, true);
+				authenticated = KewApiServiceLocator.getWorkflowDocumentActionsService().isUserInRouteLog(documentId,
+                        principalId, true);
 			} catch (NumberFormatException e) {
 				LOG.debug("Invalid format documentId (should be LONG): " + documentId);
-			} catch (WorkflowException e) {
-				LOG.debug("Error checking if user is route log authenticated: userId: " + principalId + ";documentId: " + documentId);
-
 		    } catch (RiceRuntimeException e) {
 		    	LOG.error("Runtime Exception checking if user is route log authenticated: userId: " + principalId + ";documentId: " + documentId);
 

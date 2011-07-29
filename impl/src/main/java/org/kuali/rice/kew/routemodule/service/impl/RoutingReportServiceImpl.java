@@ -26,7 +26,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 
 public class RoutingReportServiceImpl implements RoutingReportService {
 
-    public DocumentRouteHeaderValue report(SimulationCriteria criteria) throws WorkflowException {
+    public DocumentRouteHeaderValue report(SimulationCriteria criteria) {
     	try {
     		SimulationWorkflowEngine simulationEngine = KEWServiceLocator.getSimulationEngine();
     		SimulationResults results = simulationEngine.runSimulation(criteria);
@@ -35,7 +35,7 @@ public class RoutingReportServiceImpl implements RoutingReportService {
         	if (e instanceof RuntimeException) {
         		throw (RuntimeException)e;
         	}
-            throw new WorkflowException("Problem running report: " + e.getMessage(), e);
+            throw new IllegalStateException("Problem running report: " + e.getMessage(), e);
         }
     }
 

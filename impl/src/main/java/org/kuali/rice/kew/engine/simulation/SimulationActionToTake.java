@@ -18,6 +18,12 @@ package org.kuali.rice.kew.engine.simulation;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.kew.api.action.RoutingReportActionToTake;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.Person;
 
 
@@ -59,5 +65,27 @@ public class SimulationActionToTake implements Serializable {
 	public void setUser(Person user) {
 		this.user = user;
 	}
+
+    public static SimulationActionToTake from(RoutingReportActionToTake actionToTake) {
+        if (actionToTake == null) {
+            return null;
+        }
+        SimulationActionToTake simActionToTake = new SimulationActionToTake();
+        simActionToTake.setNodeName(actionToTake.getNodeName());
+        if (StringUtils.isBlank(actionToTake.getActionToPerform())) {
+            throw new IllegalArgumentException("ReportActionToTakeVO must contain an action taken code and does not");
+        }
+        simActionToTake.setActionToPerform(actionToTake.getActionToPerform());
+        if (actionToTake.getPrincipalId() == null) {
+            throw new IllegalArgumentException("ReportActionToTakeVO must contain a principalId and does not");
+        }
+        Principal kPrinc = KEWServiceLocator.getIdentityHelperService().getPrincipal(actionToTake.getPrincipalId());
+        Person user = KimApiServiceLocator.getPersonService().getPerson(kPrinc.getPrincipalId());
+        if (user == null) {
+            throw new IllegalStateException("Could not locate Person for the given id: " + actionToTake.getPrincipalId());
+        }
+        simActionToTake.setUser(user);
+        return simActionToTake;
+    }
 
 }

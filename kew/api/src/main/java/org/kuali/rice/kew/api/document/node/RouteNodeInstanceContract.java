@@ -38,5 +38,7 @@ public interface RouteNodeInstanceContract extends Identifiable {
 	boolean isInitial();
 	
 	List<? extends RouteNodeInstanceStateContract> getState();
+
+    List<? extends RouteNodeInstanceContract> getNextNodeInstances();
 	
 }

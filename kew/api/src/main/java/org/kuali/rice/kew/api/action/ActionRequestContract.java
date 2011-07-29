@@ -37,6 +37,8 @@ public interface ActionRequestContract extends Identifiable {
 	String getDocumentId();
 		
 	int getPriority();
+
+    int getRouteLevel();
 	
 	String getAnnotation();
 		

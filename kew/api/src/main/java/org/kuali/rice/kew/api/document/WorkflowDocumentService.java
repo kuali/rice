@@ -170,11 +170,9 @@ public interface WorkflowDocumentService {
 //
 //	public String getClearFutureRequestsValue();
 //	
-//	 public DocumentStatusTransitionDTO[] getDocumentStatusTransitionHistory(
-//	    		@WebParam(name = "documentId") String documentId)
-//	    		throws WorkflowException;
-//
-	
+	 public List<DocumentStatusTransition> getDocumentStatusTransitionHistory(
+	    		@WebParam(name = "documentId") String documentId);
+
 	/**
 	 * TODO - document that this "ignores" the request to create the link if it already exists,
 	 * returning the existing link if there is one

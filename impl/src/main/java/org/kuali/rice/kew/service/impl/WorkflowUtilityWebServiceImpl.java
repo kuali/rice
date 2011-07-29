@@ -28,6 +28,7 @@ import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.definition.AttributeDefinition;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
@@ -217,39 +218,6 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return returnActionItems;
     }
 
-    public ActionRequestDTO[] getAllActionRequests(String documentId) throws WorkflowException {
-        return getActionRequests(documentId, null, null);
-    }
-
-    /**
-     * Returns a flattened list of ActionRequests which match the given criteria.
-     * Because the list is flattened, that means that all children requests from
-     * all graphs are returned in the top-level list.
-     */
-    public ActionRequestDTO[] getActionRequests(String documentId, String nodeName, String principalId) throws WorkflowException {
-        if (documentId == null) {
-            LOG.error("null documentId passed in.");
-            throw new RuntimeException("null documentId passed in.");
-        }
-        if ( LOG.isDebugEnabled() ) {
-        	LOG.debug("Fetching ActionRequestVOs [docId="+documentId+"]");
-        }
-        List actionRequests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByDocumentId(documentId);
-        List matchingActionRequests = new ArrayList();
-        for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
-            ActionRequestValue actionRequestValue = (ActionRequestValue) iterator.next();
-            if (actionRequestMatches(actionRequestValue, nodeName, principalId)) {
-                matchingActionRequests.add(actionRequestValue);
-            }
-        }
-        ActionRequestDTO[] actionRequestVOs = new ActionRequestDTO[matchingActionRequests.size()];
-        int i = 0;
-        for (Iterator iter = matchingActionRequests.iterator(); iter.hasNext(); i++) {
-            ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
-            actionRequestVOs[i] = DTOConverter.convertActionRequest(actionRequest);
-        }
-        return actionRequestVOs;
-    }
 
     private boolean actionRequestMatches(ActionRequestValue actionRequest, String nodeName, String principalId) throws WorkflowException {
         boolean matchesUserId = true;  // assume a match in case user is empty
@@ -682,7 +650,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     }
 
     /**
-     * Really this method needs to be implemented using the routingReport functionality (the SimulationEngine).
+     * Really this method needs to be implemented using the executeSimulation functionality (the SimulationEngine).
      * This would get rid of the needs for us to call to FlexRM directly.
      */
     private boolean routeNodeHasApproverActionRequest(DocumentType documentType, String docContent, RouteNode node, Integer routeLevel) throws WorkflowException {

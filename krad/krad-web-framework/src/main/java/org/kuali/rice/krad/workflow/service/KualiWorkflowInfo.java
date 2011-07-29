@@ -36,9 +36,7 @@ public interface KualiWorkflowInfo {
 
     public abstract String getNewResponsibilityId() throws WorkflowException;
 
-    public abstract ActionRequestDTO[] getActionRequests(String documentId) throws WorkflowException;
-
-    public abstract ActionRequestDTO[] getActionRequests(String documentId, String nodeName, String principalId) throws WorkflowException;
+    /*public abstract ActionRequestDTO[] getActionRequests(String documentId) throws WorkflowException;*/
     
     public abstract ActionTakenDTO[] getActionsTaken(String documentId) throws WorkflowException;
 

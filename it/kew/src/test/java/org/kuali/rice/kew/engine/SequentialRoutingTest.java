@@ -29,6 +29,7 @@ import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
+import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -69,7 +70,7 @@ public class SequentialRoutingTest extends KEWTestCase {
         assertEquals(1, requests.size());
         ActionRequest request = requests.get(0);
         assertEquals(getPrincipalIdForName("bmcgough"), request.getPrincipalId());
-        assertEquals(KEWConstants.ACTION_REQUEST_APPROVE_REQ, request.getActionRequested());
+        assertEquals(ActionRequestType.APPROVE, request.getActionRequested());
         TestUtilities.assertAtNode(document, WORKFLOW_DOCUMENT_NODE);
         assertTrue(document.isApprovalRequested());
         document.approve("Test approve by bmcgough");
@@ -84,12 +85,12 @@ public class SequentialRoutingTest extends KEWTestCase {
             ActionRequest requestVO = requests.get(i);
             if (requestVO.getPrincipalId().equals(getPrincipalIdForName("temay"))) {
                 toTemay = true;
-                assertEquals(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
+                assertEquals(ActionRequestType.ACKNOWLEDGE, requestVO.getActionRequested());
                 TestUtilities.assertAtNode(document, ACKNOWLEDGE_1_NODE);
                 assertEquals(ActionRequestStatus.ACTIVATED.getCode(), requestVO.getStatus());
             } else if (requestVO.getPrincipalId().equals(getPrincipalIdForName("jhopf"))) {
                 toJhopf = true;
-                assertEquals(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
+                assertEquals(ActionRequestType.ACKNOWLEDGE, requestVO.getActionRequested());
                 TestUtilities.assertAtNode(document, ACKNOWLEDGE_2_NODE);
                 assertEquals(ActionRequestStatus.ACTIVATED.getCode(), requestVO.getStatus());
             }

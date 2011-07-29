@@ -6,13 +6,15 @@
     <content url="file://$MODULE_DIR$/../../../kns">
       <sourceFolder url="file://$MODULE_DIR$/../../../kns/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kns/target/generated-sources/test-annotations" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../kns/target/generated-sources/annotations" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kns/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kns/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kns/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kns/src/test/groovy" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../kns/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../kns/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../kns/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../kns/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../kns/target/surefire" />
       <excludeFolder url="file://$MODULE_DIR$/../../../kns/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />

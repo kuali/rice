@@ -980,10 +980,10 @@ public class ActionRequestValue implements Serializable {
 	}
 	
 	private static ActionRequest.Builder createActionRequestBuilder(ActionRequestValue actionRequestBo) {
-		ActionRequest.Builder builder = ActionRequest.Builder.create(actionRequestBo.getActionRequestId().toString(),
+		ActionRequest.Builder builder = ActionRequest.Builder.create(actionRequestBo.getActionRequestId(),
 				ActionRequestType.fromCode(actionRequestBo.getActionRequested()),
 				ActionRequestStatus.fromCode(actionRequestBo.getStatus()),
-				actionRequestBo.getResponsibilityId().toString(),
+				actionRequestBo.getResponsibilityId(),
 				actionRequestBo.getDocumentId(),
 				RecipientType.fromCode(actionRequestBo.getRecipientTypeCd()));
 		if (actionRequestBo.getActionTaken() != null) {
@@ -999,12 +999,19 @@ public class ActionRequestValue implements Serializable {
 		builder.setGroupId(actionRequestBo.getGroupId());
 		builder.setNodeName(actionRequestBo.getPotentialNodeName());
 		if (actionRequestBo.getParentActionRequestId() != null) {
-			builder.setParentActionRequestId(actionRequestBo.getParentActionRequestId().toString());
+			builder.setParentActionRequestId(actionRequestBo.getParentActionRequestId());
 		}
 		builder.setPrincipalId(actionRequestBo.getPrincipalId());
 		if (actionRequestBo.getPriority() == null) {
 			builder.setPriority(KEWConstants.ACTION_REQUEST_DEFAULT_PRIORITY);
-		}
+		} else {
+            builder.setPriority(actionRequestBo.getPriority().intValue());
+        }
+        if (actionRequestBo.getRouteLevel() == null ) {
+            builder.setRouteLevel(0);
+        } else {
+            builder.setRouteLevel(actionRequestBo.getRouteLevel().intValue());
+        }
 		builder.setQualifiedRoleName(actionRequestBo.getQualifiedRoleName());
 		builder.setQualifiedRoleNameLabel(actionRequestBo.getQualifiedRoleNameLabel());
 		builder.setRequestLabel(actionRequestBo.getRequestLabel());
@@ -1014,7 +1021,7 @@ public class ActionRequestValue implements Serializable {
 		builder.setResponsibilityDescription(actionRequestBo.getResponsibilityDesc());
 		builder.setRoleName(actionRequestBo.getRoleName());
 		if (actionRequestBo.getNodeInstance() != null) {
-			builder.setRouteNodeInstanceId(actionRequestBo.getNodeInstance().getRouteNodeInstanceId().toString());
+			builder.setRouteNodeInstanceId(actionRequestBo.getNodeInstance().getRouteNodeInstanceId());
 		}
 		
 		List<ActionRequest.Builder> childRequests = new ArrayList<ActionRequest.Builder>();
@@ -1100,6 +1107,7 @@ public class ActionRequestValue implements Serializable {
         //actionRequestBo.setDocVersion(actionRequest.?);
         actionRequestBo.setForceAction(actionRequest.isForceAction());
         actionRequestBo.setPriority(actionRequest.getPriority());
+        actionRequestBo.setRouteLevel(actionRequest.getRouteLevel());
         actionRequestBo.setQualifiedRoleName(actionRequest.getQualifiedRoleName());
         actionRequestBo.setQualifiedRoleNameLabel(actionRequest.getQualifiedRoleNameLabel());
         actionRequestBo.setRecipientTypeCd(actionRequest.getRecipientType().getCode());

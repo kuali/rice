@@ -20,6 +20,7 @@ import java.io.Serializable;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actions.ActionSet;
+import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.mail.CustomEmailAttribute;
@@ -33,7 +34,7 @@ public class TestCustomActionList implements CustomActionListAttribute, Serializ
 	private static final long serialVersionUID = -7212208304658959134L;
 
 	private RouteHeaderDTO routeHeaderVO;
-    private ActionRequestDTO actionRequestVO;
+    private ActionRequest actionRequestVO;
     private UserSession userSession;
     
     public TestCustomActionList() {}
@@ -77,11 +78,11 @@ public class TestCustomActionList implements CustomActionListAttribute, Serializ
         this.routeHeaderVO = routeHeaderVO;
     }
 
-	public ActionRequestDTO getActionRequestVO() {
+	public ActionRequest getActionRequestVO() {
 		return actionRequestVO;
 	}
 
-	public void setActionRequestVO(ActionRequestDTO actionRequestVO) {
+	public void setActionRequestVO(ActionRequest actionRequestVO) {
 		this.actionRequestVO = actionRequestVO;
 	}
 

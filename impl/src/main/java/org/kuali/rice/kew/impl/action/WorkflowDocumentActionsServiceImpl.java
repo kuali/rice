@@ -1,9 +1,15 @@
 package org.kuali.rice.kew.impl.action;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
+import org.kuali.rice.kew.actionrequest.Recipient;
+import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.ActionType;
@@ -16,12 +22,14 @@ import org.kuali.rice.kew.api.action.InvalidActionTakenException;
 import org.kuali.rice.kew.api.action.MovePoint;
 import org.kuali.rice.kew.api.action.RequestedActions;
 import org.kuali.rice.kew.api.action.ReturnPoint;
+import org.kuali.rice.kew.api.action.RoutingReportCriteria;
 import org.kuali.rice.kew.api.action.ValidActions;
 import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
 import org.kuali.rice.kew.api.doctype.DocumentTypeService;
 import org.kuali.rice.kew.api.doctype.IllegalDocumentTypeException;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentContentUpdate;
+import org.kuali.rice.kew.api.document.DocumentDetail;
 import org.kuali.rice.kew.api.document.DocumentUpdate;
 import org.kuali.rice.kew.api.document.PropertyDefinition;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
@@ -29,6 +37,9 @@ import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeValidationErro
 import org.kuali.rice.kew.definition.AttributeDefinition;
 import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.engine.simulation.SimulationCriteria;
+import org.kuali.rice.kew.engine.simulation.SimulationResults;
+import org.kuali.rice.kew.engine.simulation.SimulationWorkflowEngine;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.WorkflowAttribute;
@@ -36,8 +47,10 @@ import org.kuali.rice.kew.rule.WorkflowAttributeXmlValidator;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -326,6 +339,15 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
             }
         }
         return RequestedActions.create(completeRequested, approveRequested, acknowledgeRequested, fyiRequested);
+    }
+
+    public DocumentDetail executeSimulation(RoutingReportCriteria reportCriteria) {
+        incomingParamCheck(reportCriteria, "reportCriteria");
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("Executing routing report [docId=" + reportCriteria.getDocumentId() + ", docTypeName=" + reportCriteria.getDocumentTypeName() + "]");
+        }
+        SimulationCriteria criteria = SimulationCriteria.from(reportCriteria);
+        return DTOConverter.convertDocumentDetailNew(KEWServiceLocator.getRoutingReportService().report(criteria));
     }
 
     protected DocumentActionResult constructDocumentActionResult(DocumentRouteHeaderValue documentBo, String principalId) {
@@ -766,6 +788,62 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     }
 
     @Override
+    public boolean documentWillHaveAtLeastOneActionRequest(RoutingReportCriteria reportCriteria, List<String> actionRequestedCodes, boolean ignoreCurrentActionRequests) {
+        try {
+	        SimulationWorkflowEngine simulationEngine = KEWServiceLocator.getSimulationEngine();
+	        SimulationCriteria criteria = SimulationCriteria.from(reportCriteria);
+	        // set activate requests to true by default so force action works correctly
+	        criteria.setActivateRequests(Boolean.TRUE);
+	        SimulationResults results = simulationEngine.runSimulation(criteria);
+            List<ActionRequestValue> actionRequestsToProcess = results.getSimulatedActionRequests();
+            if (!ignoreCurrentActionRequests) {
+                actionRequestsToProcess.addAll(results.getDocument().getActionRequests());
+            }
+            for (ActionRequestValue actionRequest : actionRequestsToProcess) {
+                if (actionRequest.isDone()) {
+                    // an action taken has eliminated this request from being active
+                    continue;
+                }
+				// if no action request codes are passed in.... assume any request found is
+		    	if (CollectionUtils.isEmpty(actionRequestedCodes) ) {
+		    		// we found an action request
+		    		return true;
+		    	}
+		    	// check the action requested codes passed in
+		    	for (String requestedActionRequestCode : actionRequestedCodes) {
+					if (requestedActionRequestCode.equals(actionRequest.getActionRequested())) {
+					    boolean satisfiesDestinationUserCriteria = (criteria.getDestinationRecipients().isEmpty()) || (isRecipientRoutedRequest(actionRequest,criteria.getDestinationRecipients()));
+					    if (satisfiesDestinationUserCriteria) {
+					        if (StringUtils.isBlank(criteria.getDestinationNodeName())) {
+					            return true;
+					        } else if (StringUtils.equals(criteria.getDestinationNodeName(),actionRequest.getNodeInstance().getName())) {
+					            return true;
+					        }
+					    }
+					}
+				}
+			}
+	        return false;
+        } catch (Exception ex) {
+        	String error = "Problems evaluating documentWillHaveAtLeastOneActionRequest: " + ex.getMessage();
+            LOG.error(error,ex);
+            if (ex instanceof RuntimeException) {
+            	throw (RuntimeException)ex;
+            }
+            throw new RuntimeException(error, ex);
+        }
+    }
+
+    private boolean isRecipientRoutedRequest(ActionRequestValue actionRequest, List<Recipient> recipients) throws WorkflowException {
+        for (Recipient recipient : recipients) {
+            if (actionRequest.isRecipientRoutedRequest(recipient)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public List<WorkflowAttributeValidationError> validateWorkflowAttributeDefinition(
             WorkflowAttributeDefinition definition) {
         if (definition == null) {
@@ -800,6 +878,136 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
         }
         return errors;
     }
+
+    @Override
+    public boolean isUserInRouteLog(String documentId, String principalId, boolean lookFuture) {
+    	return isUserInRouteLogWithOptionalFlattening(documentId, principalId, lookFuture, false);
+    }
+
+    @Override
+    public boolean isUserInRouteLogWithOptionalFlattening(String documentId, String principalId, boolean lookFuture, boolean flattenNodes) {
+        if (StringUtils.isEmpty(documentId)) {
+            throw new IllegalArgumentException("documentId passed in is null or blank");
+        }
+        if (StringUtils.isEmpty(documentId)) {
+            throw new IllegalArgumentException("princpalId passed in is null or blank");
+        }
+        boolean authorized = false;
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("Evaluating isUserInRouteLog [docId=" + documentId + ", principalId=" + principalId + ", lookFuture=" + lookFuture + "]");
+        }
+        DocumentRouteHeaderValue routeHeader = loadDocument(documentId);
+        Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
+        List<ActionTakenValue> actionsTaken = KEWServiceLocator.getActionTakenService().findByDocumentIdWorkflowId(documentId, principal.getPrincipalId());
+
+        if(routeHeader.getInitiatorWorkflowId().equals(principal.getPrincipalId())){
+        	return true;
+        }
+
+        if (!actionsTaken.isEmpty()) {
+        	LOG.debug("found action taken by user");
+        	authorized = true;
+        }
+
+        List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByDocumentId(documentId);
+        if (actionRequestListHasPrincipal(principal, actionRequests)) {
+        	authorized = true;
+        }
+
+        if (!lookFuture) {
+        	return authorized;
+        }
+
+
+        SimulationWorkflowEngine simulationEngine = KEWServiceLocator.getSimulationEngine();
+        SimulationCriteria criteria = SimulationCriteria.createSimulationCritUsingDocumentId(documentId);
+        criteria.setDestinationNodeName(null); // process entire document to conclusion
+        criteria.getDestinationRecipients().add(new KimPrincipalRecipient(principal));
+        criteria.setFlattenNodes(flattenNodes);
+
+        try {
+        	SimulationResults results = simulationEngine.runSimulation(criteria);
+        	if (actionRequestListHasPrincipal(principal, results.getSimulatedActionRequests())) {
+        		authorized = true;
+        	}
+        } catch (Exception e) {
+        	throw new RiceRuntimeException(e);
+        }
+
+        return authorized;
+    }
+
+    private boolean actionRequestListHasPrincipal(Principal principal, List<ActionRequestValue> actionRequests) {
+        for (ActionRequestValue actionRequest : actionRequests) {
+            if (actionRequest.isRecipientRoutedRequest(new KimPrincipalRecipient(principal))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public List<String> getPrincipalIdsInRouteLog(String documentId, boolean lookFuture) {
+        if (StringUtils.isEmpty(documentId)) {
+            throw new IllegalArgumentException("documentId passed in is null or blank");
+        }
+    	Set<String> principalIds = new HashSet<String>();
+        try {
+        	if ( LOG.isDebugEnabled() ) {
+        		LOG.debug("Evaluating isUserInRouteLog [docId=" + documentId + ", lookFuture=" + lookFuture + "]");
+        	}
+            DocumentRouteHeaderValue routeHeader = loadDocument(documentId);
+            List<ActionTakenValue> actionsTakens =
+            	(List<ActionTakenValue>)KEWServiceLocator.getActionTakenService().findByDocumentId(documentId);
+            //TODO: confirm that the initiator is not already there in the actionstaken
+            principalIds.add(routeHeader.getInitiatorWorkflowId());
+            for(ActionTakenValue actionTaken: actionsTakens){
+            	principalIds.add(actionTaken.getPrincipalId());
+            }
+            List<ActionRequestValue> actionRequests =
+            	KEWServiceLocator.getActionRequestService().findAllActionRequestsByDocumentId(documentId);
+            for(ActionRequestValue actionRequest: actionRequests){
+            	principalIds.addAll(getPrincipalIdsForActionRequest(actionRequest));
+            }
+            if (!lookFuture) {
+            	return new ArrayList<String>(principalIds);
+            }
+            SimulationWorkflowEngine simulationEngine = KEWServiceLocator.getSimulationEngine();
+            SimulationCriteria criteria = SimulationCriteria.createSimulationCritUsingDocumentId(documentId);
+            criteria.setDestinationNodeName(null); // process entire document to conclusion
+            SimulationResults results = simulationEngine.runSimulation(criteria);
+            actionRequests = (List<ActionRequestValue>)results.getSimulatedActionRequests();
+            for(ActionRequestValue actionRequest: actionRequests){
+            	principalIds.addAll(getPrincipalIdsForActionRequest(actionRequest));
+            }
+        } catch (Exception ex) {
+            LOG.warn("Problems getting principalIds in Route Log for documentId: "+documentId+". Exception:"+ex.getMessage(),ex);
+        }
+    	return new ArrayList<String>(principalIds);
+    }
+
+    private DocumentRouteHeaderValue loadDocument(String documentId) {
+        return KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
+    }
+
+    /**
+	 * This method gets all of the principalIds for the given ActionRequestValue.  It drills down into
+	 * groups if need be.
+	 *
+	 * @param actionRequest
+	 */
+	private List<String> getPrincipalIdsForActionRequest(ActionRequestValue actionRequest) {
+		List<String> results = Collections.emptyList();
+		if (actionRequest.getPrincipalId() != null) {
+			results = Collections.singletonList(actionRequest.getPrincipalId());
+		} else if (actionRequest.getGroupId() != null) {
+			List<String> principalIdsForGroup =
+				KimApiServiceLocator.getGroupService().getMemberPrincipalIds(actionRequest.getGroupId());
+			if (principalIdsForGroup != null) {
+				results = principalIdsForGroup;
+			}
+		}
+		return results;
+	}
 
     private void incomingParamCheck(Object object, String name) {
         if (object == null) {

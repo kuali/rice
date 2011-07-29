@@ -125,7 +125,7 @@ public class RevokeAdHocAction extends ActionTakenEvent {
 			return false;
 		}		
 		if (actionRequestId != null) {
-			return actionRequestId.equals(actionRequest.getActionRequestId().toString());
+			return actionRequestId.equals(actionRequest.getActionRequestId());
 		} else if (adHocRevokeCommand != null) {
 			boolean principalOrGroupId = !CollectionUtils.isEmpty(adHocRevokeCommand.getPrincipalIds()) || !CollectionUtils.isEmpty(adHocRevokeCommand.getGroupIds());
 			if (!CollectionUtils.isEmpty(adHocRevokeCommand.getNodeNames()) && !adHocRevokeCommand.getNodeNames().contains(actionRequest.getNodeInstance().getName())) {

@@ -15,7 +15,7 @@
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
-<c:set var="responsibilityAttributes" value="${DataDictionary.ResponsibilityImpl.attributes}" />
+<c:set var="responsibilityAttributes" value="${DataDictionary.UberResponsibilityBo.attributes}" />
 
 <kul:tab tabTitle="Responsibilities" defaultOpen="true" tabErrorKey="document.resp*">
 	<div class="tab-container" align="center">
@@ -28,7 +28,7 @@
 	                <div align="center">
 	                	<br/>
 						<b>Add Responsibility ID:</b>
-						<kul:htmlControlAttribute property="responsibility.responsibilityId" attributeEntry="${responsibilityAttributes.responsibilityId}"/>
+						<kul:htmlControlAttribute property="responsibility.id" attributeEntry="${responsibilityAttributes.id}"/>
 	                	<kul:lookup boClassName="org.kuali.rice.kim.impl.responsibility.UberResponsibilityBo" fieldConversions=
 	                	"template.name:responsibility.kimResponsibility.template.name,responsibilityId:responsibility.responsibilityId,name:responsibility.kimResponsibility.name,namespaceCode:responsibility.kimResponsibility.namespaceCode" anchor="${tabKey}" />
 						<html:hidden property="responsibility.kimResponsibility.name" />

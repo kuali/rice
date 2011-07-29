@@ -104,7 +104,7 @@ public class ActionTakenServiceImpl implements ActionTakenService {
         return getActionTakenDAO().findByDocumentId(documentId);
     }
 
-    public List findByDocumentIdWorkflowId(String documentId, String workflowId) {
+    public List<ActionTakenValue> findByDocumentIdWorkflowId(String documentId, String workflowId) {
         return getActionTakenDAO().findByDocumentIdWorkflowId(documentId, workflowId);
     }
 

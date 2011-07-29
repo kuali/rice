@@ -37,6 +37,7 @@ import org.kuali.rice.core.mail.Mailer;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
@@ -190,8 +191,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 					ActionRequestValue actionRequest = KEWServiceLocator
 							.getActionRequestService().findByActionRequestId(
 									actionItem.getActionRequestId());
-					ActionRequestDTO actionRequestVO = DTOConverter
-							.convertActionRequest(actionRequest);
+					ActionRequest actionRequestVO = ActionRequestValue.to(actionRequest);
 					customEmailAttribute.setRouteHeaderVO(routeHeaderVO);
 					customEmailAttribute.setActionRequestVO(actionRequestVO);
 					String customBody = customEmailAttribute

@@ -36,7 +36,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-
 /**
  * Struts form for action ActionListAction
  *
@@ -65,7 +64,7 @@ public class ActionListForm extends KualiForm {
     private String primaryDelegateId;
 
     private Boolean hasDisplayParameters;
-    
+
     // "sticky" parameters for paginated action list
     private Integer currentPage;
     private String currentSort;
@@ -86,207 +85,207 @@ public class ActionListForm extends KualiForm {
     private List<ExtraButton> headerButtons = new ArrayList<ExtraButton>();
 
     public String getHelpDeskActionListUserName() {
-	return helpDeskActionListUserName;
+        return helpDeskActionListUserName;
     }
 
     public void setHelpDeskActionListUserName(String helpDeskActionListUserName) {
-	this.helpDeskActionListUserName = helpDeskActionListUserName;
+        this.helpDeskActionListUserName = helpDeskActionListUserName;
     }
 
     @Override
-	public String getMethodToCall() {
-	return methodToCall;
+    public String getMethodToCall() {
+        return methodToCall;
     }
 
     @Override
-	public void setMethodToCall(String methodToCall) {
-	this.methodToCall = methodToCall;
+    public void setMethodToCall(String methodToCall) {
+        this.methodToCall = methodToCall;
     }
 
     public String getDelegator() {
-	return delegator;
+        return delegator;
     }
 
     public void setDelegator(String delegator) {
-	this.delegator = delegator;
+        this.delegator = delegator;
     }
 
-	public String getDocType() {
-	return docType;
+    public String getDocType() {
+        return docType;
     }
 
     public void setDocType(String docType) {
-	this.docType = docType;
+        this.docType = docType;
     }
 
     public String getFilterLegend() {
-	return filterLegend;
+        return filterLegend;
     }
 
     public void setFilterLegend(String filterLegend) {
-	this.filterLegend = filterLegend;
+        this.filterLegend = filterLegend;
     }
 
     public String getActionListType() {
-	if (actionListType == null) {
-	    setActionListType("all");
-	}
-	return actionListType;
+        if (actionListType == null) {
+            setActionListType("all");
+        }
+        return actionListType;
     }
 
     public void setActionListType(String actionListType) {
-	this.actionListType = actionListType;
+        this.actionListType = actionListType;
     }
 
     public Boolean getCustomActionList() {
-	return customActionList;
+        return customActionList;
     }
 
     public void setCustomActionList(Boolean customActionList) {
-	this.customActionList = customActionList;
+        this.customActionList = customActionList;
     }
 
     public String getDefaultActionToTake() {
-	return defaultActionToTake;
+        return defaultActionToTake;
     }
 
     public void setDefaultActionToTake(String defaultActionToTake) {
-	this.defaultActionToTake = defaultActionToTake;
+        this.defaultActionToTake = defaultActionToTake;
     }
 
     public List<ActionToTake> getActionsToTake() {
-	return actionsToTake;
+        return actionsToTake;
     }
 
     public void setActionsToTake(List<ActionToTake> actionsToTake) {
-	this.actionsToTake = actionsToTake;
+        this.actionsToTake = actionsToTake;
     }
 
     public ActionToTake getActions(int index) {
-	while (getActionsToTake().size() <= index) {
-	    getActionsToTake().add(new ActionToTake());
-	}
-	return getActionsToTake().get(index);
+        while (getActionsToTake().size() <= index) {
+            getActionsToTake().add(new ActionToTake());
+        }
+        return getActionsToTake().get(index);
     }
 
     public Map<?, ?> getDefaultActions() {
-	return defaultActions;
+        return defaultActions;
     }
 
     public void setDefaultActions(Map<?, ?> defaultActions) {
-	this.defaultActions = defaultActions;
+        this.defaultActions = defaultActions;
     }
 
     public String getDelegationId() {
-	return delegationId;
+        return delegationId;
     }
 
     public void setDelegationId(String delegationId) {
-	this.delegationId = delegationId;
+        this.delegationId = delegationId;
     }
 
     public List<?> getDelegators() {
-	return delegators;
+        return delegators;
     }
 
     public void setDelegators(List<?> delegators) {
-	this.delegators = delegators;
+        this.delegators = delegators;
     }
 
     public Boolean getHasCustomActions() {
-	return hasCustomActions;
+        return hasCustomActions;
     }
 
     public void setHasCustomActions(Boolean hasCustomActions) {
-	this.hasCustomActions = hasCustomActions;
+        this.hasCustomActions = hasCustomActions;
     }
 
     public String getDir() {
-	return dir;
+        return dir;
     }
 
     public void setDir(String dir) {
-	this.dir = dir;
+        this.dir = dir;
     }
 
     public Integer getPage() {
-	return page;
+        return page;
     }
 
     public void setPage(Integer page) {
-	this.page = page;
+        this.page = page;
     }
 
     public String getSort() {
-	return sort;
+        return sort;
     }
 
     public void setSort(String sort) {
-	this.sort = sort;
+        this.sort = sort;
     }
 
     public Integer getCurrentPage() {
-	return currentPage;
+        return currentPage;
     }
 
     public void setCurrentPage(Integer currentPage) {
-	this.currentPage = currentPage;
+        this.currentPage = currentPage;
     }
 
     public String getCurrentDir() {
-	return currentDir;
+        return currentDir;
     }
 
     public void setCurrentDir(String currentDir) {
-	this.currentDir = currentDir;
+        this.currentDir = currentDir;
     }
 
     public String getCurrentSort() {
-	return currentSort;
+        return currentSort;
     }
 
     public void setCurrentSort(String currentSort) {
-	this.currentSort = currentSort;
+        this.currentSort = currentSort;
     }
 
     public int getCount() {
-	return count;
+        return count;
     }
 
     public void setCount(int count) {
-	this.count = count;
+        this.count = count;
     }
 
     public String getCssFile() {
-	return cssFile;
+        return cssFile;
     }
 
     public void setCssFile(String cssFile) {
-	this.cssFile = cssFile;
+        this.cssFile = cssFile;
     }
 
     public String getLogoAlign() {
-	return logoAlign;
+        return logoAlign;
     }
 
     public void setLogoAlign(String logoAlign) {
-	this.logoAlign = logoAlign;
+        this.logoAlign = logoAlign;
     }
 
     public String getViewOutbox() {
-	return this.viewOutbox;
+        return this.viewOutbox;
     }
 
     public void setViewOutbox(String viewOutbox) {
-	this.viewOutbox = viewOutbox;
+        this.viewOutbox = viewOutbox;
     }
 
     public String[] getOutboxItems() {
-	return outboxItems;
+        return outboxItems;
     }
 
     public void setOutboxItems(String[] outboxItems) {
-	this.outboxItems = outboxItems;
+        this.outboxItems = outboxItems;
     }
 
     public boolean isOutBoxEmpty() {
@@ -305,25 +304,29 @@ public class ActionListForm extends KualiForm {
         this.showOutbox = showOutbox;
     }
 
-	public List<ExtraButton> getHeaderButtons() {
-		return this.headerButtons;
-	}
+    public List<ExtraButton> getHeaderButtons() {
+        return this.headerButtons;
+    }
 
-	public void setHeaderButtons(List<ExtraButton> headerButtons) {
-		this.headerButtons = headerButtons;
-	}
-	
-	public String getMenuBar(){
-		String url = "";
-		Properties parameters = new Properties();
-		url = UrlFactory.parameterizeUrl(KRADConstants.MAINTENANCE_ACTION, parameters);
-		String krBaseUrl = ConfigContext.getCurrentContextConfig().getKRBaseURL();
-		url = "<a href=\"" + url + "\"><img src=\""+krBaseUrl+"/images/tinybutton-preferences.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
-		return url;
-	}
+    public void setHeaderButtons(List<ExtraButton> headerButtons) {
+        this.headerButtons = headerButtons;
+    }
 
-	@Override
-	public void populate(HttpServletRequest request) {
+    public String getMenuBar() {
+        String url = "";
+        Properties parameters = new Properties();
+        url = UrlFactory.parameterizeUrl(KRADConstants.MAINTENANCE_ACTION, parameters);
+        String krBaseUrl = ConfigContext.getCurrentContextConfig().getKRBaseURL();
+        url = "<a href=\""
+                + url
+                + "\"><img src=\""
+                + krBaseUrl
+                + "/images/tinybutton-preferences.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
+        return url;
+    }
+
+    @Override
+    public void populate(HttpServletRequest request) {
         setHeaderButtons(getHeaderButtons());
 
         // take the UserSession from the HttpSession and add it to the request
@@ -333,11 +336,14 @@ public class ActionListForm extends KualiForm {
         request.setAttribute("preferences", GlobalVariables.getUserSession().retrieveObject(KEWConstants.PREFERENCES));
 
         String principalId = GlobalVariables.getUserSession().getPrincipalId();
-        final Principal hdalPrinc = (Principal) GlobalVariables.getUserSession().retrieveObject(KEWConstants.HELP_DESK_ACTION_LIST_PRINCIPAL_ATTR_NAME);
+        final Principal hdalPrinc = (Principal) GlobalVariables.getUserSession().retrieveObject(
+                KEWConstants.HELP_DESK_ACTION_LIST_PRINCIPAL_ATTR_NAME);
         if (hdalPrinc != null) {
-        	setHelpDeskActionListUserName(hdalPrinc.getPrincipalName());
+            setHelpDeskActionListUserName(hdalPrinc.getPrincipalName());
         }
-        boolean isHelpDeskAuthorized = KimApiServiceLocator.getPermissionService().isAuthorized(principalId, KEWConstants.KEW_NAMESPACE,	KEWConstants.PermissionNames.VIEW_OTHER_ACTION_LIST, new HashMap<String, String>(), new HashMap<String, String>());
+        boolean isHelpDeskAuthorized = KimApiServiceLocator.getPermissionService().isAuthorized(principalId,
+                KEWConstants.KEW_NAMESPACE, KEWConstants.PermissionNames.VIEW_OTHER_ACTION_LIST,
+                new HashMap<String, String>(), new HashMap<String, String>());
         if (isHelpDeskAuthorized) {
             request.setAttribute("helpDeskActionList", "true");
         }
@@ -351,11 +357,16 @@ public class ActionListForm extends KualiForm {
         //if (documentPopupInd) {
         //    documentPopup = "true";
         //}
-        setRouteLogPopup(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND));
-        setDocumentPopup(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_DOCUMENT_POPUP_IND));
-        request.setAttribute("noRefresh", Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.ACTION_LIST_NO_REFRESH)));
-		super.populate(request);
-	}
+        setRouteLogPopup(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
+                KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE,
+                KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND));
+        setDocumentPopup(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
+                KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE,
+                KEWConstants.ACTION_LIST_DOCUMENT_POPUP_IND));
+        request.setAttribute("noRefresh", Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(
+                KEWConstants.ACTION_LIST_NO_REFRESH)));
+        super.populate(request);
+    }
 
     public Boolean getRouteLogPopup() {
         return this.routeLogPopup;
@@ -373,28 +384,28 @@ public class ActionListForm extends KualiForm {
         this.documentPopup = documentPopup;
     }
 
-	public Boolean getHasDisplayParameters() {
-		return this.hasDisplayParameters;
-	}
+    public Boolean getHasDisplayParameters() {
+        return this.hasDisplayParameters;
+    }
 
-	public void setHasDisplayParameters(Boolean hasDisplayParameters) {
-		this.hasDisplayParameters = hasDisplayParameters;
-	}
+    public void setHasDisplayParameters(Boolean hasDisplayParameters) {
+        this.hasDisplayParameters = hasDisplayParameters;
+    }
 
-	public List<WebFriendlyRecipient> getPrimaryDelegates() {
-		return this.primaryDelegates;
-	}
+    public List<WebFriendlyRecipient> getPrimaryDelegates() {
+        return this.primaryDelegates;
+    }
 
-	public void setPrimaryDelegates(List<WebFriendlyRecipient> primaryDelegates) {
-		this.primaryDelegates = primaryDelegates;
-	}
+    public void setPrimaryDelegates(List<WebFriendlyRecipient> primaryDelegates) {
+        this.primaryDelegates = primaryDelegates;
+    }
 
-	public String getPrimaryDelegateId() {
-		return this.primaryDelegateId;
-	}
+    public String getPrimaryDelegateId() {
+        return this.primaryDelegateId;
+    }
 
-	public void setPrimaryDelegateId(String primaryDelegateId) {
-		this.primaryDelegateId = primaryDelegateId;
-	}
-	
+    public void setPrimaryDelegateId(String primaryDelegateId) {
+        this.primaryDelegateId = primaryDelegateId;
+    }
+
 }

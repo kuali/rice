@@ -15,29 +15,28 @@
  */
 package org.kuali.rice.kew.actions;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
-import org.kuali.rice.kew.dto.DocumentDetailDTO;
-import org.kuali.rice.kew.dto.ReportActionToTakeDTO;
-import org.kuali.rice.kew.dto.ReportCriteriaDTO;
+import org.kuali.rice.kew.api.action.RoutingReportActionToTake;
+import org.kuali.rice.kew.api.action.RoutingReportCriteria;
+import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
+import org.kuali.rice.kew.api.document.DocumentDetail;
 import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.TestRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.FutureRequestDocumentStateManager;
 import org.kuali.rice.kew.util.KEWConstants;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests users requesting to see all future requests, not seeing any future requests on documents and the clearing of those
@@ -164,7 +163,7 @@ public class FutureRequestsTest extends KEWTestCase {
     }
 
     /**
-     * Tests future requests operation in conjunction with the {@link WorkflowInfo#documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO, String[])} method
+     * Tests future requests operation
      *
      * @throws Exception
      */
@@ -181,29 +180,30 @@ public class FutureRequestsTest extends KEWTestCase {
         // Node1
         //user1 should have approval requested
         document = WorkflowDocumentFactory.loadDocument(user1PrincipalId, document.getDocumentId());
-        WorkflowInfo info = new WorkflowInfo();
-        ReportCriteriaDTO reportCriteriaDTO = ReportCriteriaDTO.createReportCritByDocId(document.getDocumentId());
-        reportCriteriaDTO.setTargetPrincipalIds(new String[]{user1PrincipalId});
+        WorkflowDocumentActionsService actionService = KewApiServiceLocator.getWorkflowDocumentActionsService();
+        RoutingReportCriteria.Builder reportCriteria = RoutingReportCriteria.Builder.createByDocumentId(document.getDocumentId());
+        reportCriteria.setTargetPrincipalIds(Collections.singletonList(user1PrincipalId));
         String actionToTakeNode = "Node1";
-        reportCriteriaDTO.setActionsToTake(new ReportActionToTakeDTO[]{new ReportActionToTakeDTO(KEWConstants.ACTION_TAKEN_APPROVED_CD, user1PrincipalId, actionToTakeNode)});
-        assertTrue("User " + user1PrincipalId + " should have approval requests on the document", info.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ}, false));
+        reportCriteria.setActionsToTake(Collections.singletonList(RoutingReportActionToTake.Builder.create(
+                KEWConstants.ACTION_TAKEN_APPROVED_CD, user1PrincipalId, actionToTakeNode)));
+        assertTrue("User " + user1PrincipalId + " should have approval requests on the document",
+                actionService.documentWillHaveAtLeastOneActionRequest(reportCriteria.build(),
+                        Collections.singletonList(KEWConstants.ACTION_REQUEST_APPROVE_REQ), false));
 
-        info = new WorkflowInfo();
-        reportCriteriaDTO = ReportCriteriaDTO.createReportCritByDocId(document.getDocumentId());
-        reportCriteriaDTO.setTargetPrincipalIds(new String[]{user1PrincipalId});
+        reportCriteria = RoutingReportCriteria.Builder.createByDocumentId(document.getDocumentId());
+        reportCriteria.setTargetPrincipalIds(Collections.singletonList(user1PrincipalId));
         actionToTakeNode = "Node1";
-        reportCriteriaDTO.setActionsToTake(new ReportActionToTakeDTO[]{new ReportActionToTakeDTO(KEWConstants.ACTION_TAKEN_APPROVED_CD, user1PrincipalId, actionToTakeNode)});
-        DocumentDetailDTO documentVO = info.routingReport(reportCriteriaDTO);
-        assertTrue("User " + user1PrincipalId + " should have one or more approval requests on the document", documentVO.getActionRequests().length > 0);
+        reportCriteria.setActionsToTake(Collections.singletonList(RoutingReportActionToTake.Builder.create(KEWConstants.ACTION_TAKEN_APPROVED_CD, user1PrincipalId, actionToTakeNode)));
+        DocumentDetail documentVO = KewApiServiceLocator.getWorkflowDocumentActionsService().executeSimulation(reportCriteria.build());
+        assertTrue("User " + user1PrincipalId + " should have one or more approval requests on the document", documentVO.getActionRequests().size() > 0);
 
-        info = new WorkflowInfo();
-        reportCriteriaDTO = ReportCriteriaDTO.createReportCritByDocId(document.getDocumentId());
+        reportCriteria = RoutingReportCriteria.Builder.createByDocumentId(document.getDocumentId());
         String delyeaPrincipalId = getPrincipalIdForName("delyea");
-        reportCriteriaDTO.setTargetPrincipalIds(new String[]{user1PrincipalId});
+        reportCriteria.setTargetPrincipalIds(Collections.singletonList(user1PrincipalId));
         actionToTakeNode = "Node1";
-        reportCriteriaDTO.setActionsToTake(new ReportActionToTakeDTO[]{new ReportActionToTakeDTO(KEWConstants.ACTION_TAKEN_APPROVED_CD, user1PrincipalId, actionToTakeNode)});
-        documentVO = info.routingReport(reportCriteriaDTO);
-        assertTrue("User " + delyeaPrincipalId + " should not have any requests on the document but routingReport() method should return all action requests anyway", documentVO.getActionRequests().length > 0);
+        reportCriteria.setActionsToTake(Collections.singletonList(RoutingReportActionToTake.Builder.create(KEWConstants.ACTION_TAKEN_APPROVED_CD, user1PrincipalId, actionToTakeNode)));
+        documentVO = actionService.executeSimulation(reportCriteria.build());
+        assertTrue("User " + delyeaPrincipalId + " should not have any requests on the document but executeSimulation() method should return all action requests anyway", documentVO.getActionRequests().size() > 0);
 
         document = WorkflowDocumentFactory.createDocument(user1PrincipalId, "FutureRequestsDoc");
         document.setDoNotReceiveFutureRequests();
@@ -213,16 +213,14 @@ public class FutureRequestsTest extends KEWTestCase {
         assertFalse(document.isApprovalRequested());
 
         // user1 should not have approval requested
-        info = new WorkflowInfo();
-        reportCriteriaDTO = ReportCriteriaDTO.createReportCritByDocId(document.getDocumentId());
-        reportCriteriaDTO.setTargetPrincipalIds(new String[]{user1PrincipalId});
-        assertFalse("User " + user1PrincipalId + " should not have any approval request on the document", info.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ}, false));
+        reportCriteria = RoutingReportCriteria.Builder.createByDocumentId(document.getDocumentId());
+        reportCriteria.setTargetPrincipalIds(Collections.singletonList(user1PrincipalId));
+        assertFalse("User " + user1PrincipalId + " should not have any approval request on the document", actionService.documentWillHaveAtLeastOneActionRequest(reportCriteria.build(), Collections.singletonList(KEWConstants.ACTION_REQUEST_APPROVE_REQ), false));
 
         // user2 should have approval requested
-        info = new WorkflowInfo();
-        reportCriteriaDTO = ReportCriteriaDTO.createReportCritByDocId(document.getDocumentId());
-        reportCriteriaDTO.setTargetPrincipalIds(new String[]{user2PrincipalId});
-        assertTrue("User " + user2PrincipalId + " should have any approval request on the document", info.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ}, false));
+        reportCriteria = RoutingReportCriteria.Builder.createByDocumentId(document.getDocumentId());
+        reportCriteria.setTargetPrincipalIds(Collections.singletonList(user2PrincipalId));
+        assertTrue("User " + user2PrincipalId + " should have any approval request on the document", actionService.documentWillHaveAtLeastOneActionRequest(reportCriteria.build(), Collections.singletonList(KEWConstants.ACTION_REQUEST_APPROVE_REQ), false));
 
     }
     

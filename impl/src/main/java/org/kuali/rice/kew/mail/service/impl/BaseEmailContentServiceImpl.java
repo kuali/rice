@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.DTOConverter;
@@ -78,7 +79,7 @@ public abstract class BaseEmailContentServiceImpl implements EmailContentService
         if (customEmailAttribute != null) {
             RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(routeHeader, user.getPrincipalId());
             ActionRequestValue actionRequest = KEWServiceLocator.getActionRequestService().findByActionRequestId(actionItem.getActionRequestId());
-            ActionRequestDTO actionRequestVO = DTOConverter.convertActionRequest(actionRequest);
+            ActionRequest actionRequestVO = ActionRequestValue.to(actionRequest);
             customEmailAttribute.setRouteHeaderVO(routeHeaderVO);
             customEmailAttribute.setActionRequestVO(actionRequestVO);
         }

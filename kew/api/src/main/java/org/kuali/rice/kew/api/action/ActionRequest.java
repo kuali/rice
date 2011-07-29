@@ -49,6 +49,7 @@ import java.util.List;
 	    ActionRequest.Elements.RESPONSIBILITY_ID,
 	    ActionRequest.Elements.DOCUMENT_ID,
 		ActionRequest.Elements.PRIORITY,
+        ActionRequest.Elements.ROUTE_LEVEL,
 		ActionRequest.Elements.ANNOTATION,
 		ActionRequest.Elements.RECIPIENT_TYPE_CODE,
 		ActionRequest.Elements.PRINCIPAL_ID,
@@ -96,6 +97,9 @@ public final class ActionRequest extends AbstractDataTransferObject implements A
         
     @XmlElement(name = Elements.PRIORITY, required = true)
     private final int priority;
+
+    @XmlElement(name = Elements.ROUTE_LEVEL, required = true)
+    private final int routeLevel;
 
     @XmlElement(name = Elements.ANNOTATION, required = false)
     private final String annotation;
@@ -165,6 +169,7 @@ public final class ActionRequest extends AbstractDataTransferObject implements A
         this.responsibilityId = null;
         this.documentId = null;
         this.priority = 0;
+        this.routeLevel = 0;
     	this.annotation = null;
         this.recipientTypeCode = null;
         this.principalId = null;
@@ -193,6 +198,7 @@ public final class ActionRequest extends AbstractDataTransferObject implements A
         this.responsibilityId = builder.getResponsibilityId();
         this.documentId = builder.getDocumentId();
         this.priority = builder.getPriority();
+        this.routeLevel = builder.getRouteLevel();
     	this.annotation = builder.getAnnotation();
         this.recipientTypeCode = builder.getRecipientType().getCode();
         this.principalId = builder.getPrincipalId();
@@ -239,6 +245,11 @@ public final class ActionRequest extends AbstractDataTransferObject implements A
     @Override
     public int getPriority() {
         return this.priority;
+    }
+
+    @Override
+    public int getRouteLevel() {
+        return this.routeLevel;
     }
 
     @Override
@@ -454,6 +465,7 @@ public final class ActionRequest extends AbstractDataTransferObject implements A
         private String responsibilityId;
         private String documentId;
         private int priority;
+        private int routeLevel;
         private String annotation;
         private RecipientType recipientType;
         private String principalId;
@@ -496,6 +508,7 @@ public final class ActionRequest extends AbstractDataTransferObject implements A
             builder.setCurrent(contract.isCurrent());
             builder.setDateCreated(contract.getDateCreated());
             builder.setPriority(contract.getPriority());
+            builder.setRouteLevel(contract.getRouteLevel());
             builder.setAnnotation(contract.getAnnotation());
             builder.setPrincipalId(contract.getPrincipalId());
             builder.setGroupId(contract.getGroupId());
@@ -562,6 +575,11 @@ public final class ActionRequest extends AbstractDataTransferObject implements A
         @Override
         public int getPriority() {
             return this.priority;
+        }
+
+        @Override
+        public int getRouteLevel() {
+            return this.routeLevel;
         }
 
         @Override
@@ -650,7 +668,7 @@ public final class ActionRequest extends AbstractDataTransferObject implements A
         }
 
         public void setId(String id) {
-            if (StringUtils.isBlank(id)) {
+            if (StringUtils.isWhitespace(id)) {
             	throw new IllegalArgumentException("id was null or blank");
             }
             this.id = id;
@@ -697,6 +715,10 @@ public final class ActionRequest extends AbstractDataTransferObject implements A
 
         public void setPriority(int priority) {
             this.priority = priority;
+        }
+
+        public void setRouteLevel(int routeLevel) {
+            this.routeLevel = routeLevel;
         }
 
         public void setAnnotation(String annotation) {
@@ -794,6 +816,7 @@ public final class ActionRequest extends AbstractDataTransferObject implements A
         final static String ACTION_REQUESTED_CODE = "actionRequestedCode";
         final static String STATUS_CODE = "statusCode";
         final static String CURRENT = "current";
+        final static String ROUTE_LEVEL = "routeLevel";
         final static String DATE_CREATED = "dateCreated";
         final static String RESPONSIBILITY_ID = "responsibilityId";
         final static String DOCUMENT_ID = "documentId";

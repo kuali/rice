@@ -17,6 +17,7 @@
 package org.kuali.rice.kew.routelog.web;
 
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.krad.util.UrlFactory;
 
@@ -37,7 +38,7 @@ public class RouteLogForm extends KualiForm {
     private String documentId;
     private List rootRequests = new ArrayList();
     private int pendingActionRequestCount;
-    private List futureRootRequests = new ArrayList();
+    private List<ActionRequestValue> futureRootRequests = new ArrayList<ActionRequestValue>();
     private int futureActionRequestCount;
     private boolean showFuture;
     private String showFutureError;

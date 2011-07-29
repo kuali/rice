@@ -41,7 +41,7 @@ public interface DocumentRouteHeaderDAO {
   public Collection<DocumentRouteHeaderValue> findRouteHeaders(Collection<String> documentIds, boolean clearCache);
   public void deleteRouteHeader(DocumentRouteHeaderValue routeHeader);
   public String getNextDocumentId();
-  public Collection findPendingByResponsibilityIds(Set responsibilityIds);
+  public Collection<String> findPendingByResponsibilityIds(Set<String> responsibilityIds);
   public void clearRouteHeaderSearchValues(String documentId);
   public String getApplicationIdByDocumentId(String documentId);
   public DocumentRouteHeaderValueContent getContent(String documentId);

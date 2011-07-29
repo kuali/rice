@@ -195,8 +195,8 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
     	return (DatabasePlatform)GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
     }
 
-    public Collection findPendingByResponsibilityIds(Set responsibilityIds) {
-        Collection documentIds = new ArrayList();
+    public Collection<String> findPendingByResponsibilityIds(Set<String> responsibilityIds) {
+        Collection<String> documentIds = new ArrayList();
         if (responsibilityIds.isEmpty()) {
             return documentIds;
         }
@@ -209,8 +209,7 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
             conn = broker.serviceConnectionManager().getConnection();
             String respIds = "(";
             int index = 0;
-            for (Iterator iterator = responsibilityIds.iterator(); iterator.hasNext(); index++) {
-                Long responsibilityId = (Long) iterator.next();
+            for (String responsibilityId : responsibilityIds) {
                 respIds += responsibilityId + (index == responsibilityIds.size()-1 ? "" : ",");
             }
             respIds += ")";

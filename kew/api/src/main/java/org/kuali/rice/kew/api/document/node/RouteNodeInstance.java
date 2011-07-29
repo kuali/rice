@@ -16,13 +16,16 @@
 package org.kuali.rice.kew.api.document.node;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -34,6 +37,7 @@ import org.w3c.dom.Element;
 @XmlRootElement(name = RouteNodeInstance.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = RouteNodeInstance.Constants.TYPE_NAME, propOrder = {
+    RouteNodeInstance.Elements.ID,
     RouteNodeInstance.Elements.NAME,
     RouteNodeInstance.Elements.STATE,
     RouteNodeInstance.Elements.DOCUMENT_ID,
@@ -43,7 +47,7 @@ import org.w3c.dom.Element;
     RouteNodeInstance.Elements.ACTIVE,
     RouteNodeInstance.Elements.COMPLETE,
     RouteNodeInstance.Elements.INITIAL,
-    RouteNodeInstance.Elements.ID,
+    RouteNodeInstance.Elements.NEXT_NODE_INSTANCES,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class RouteNodeInstance extends AbstractDataTransferObject
@@ -52,8 +56,9 @@ public final class RouteNodeInstance extends AbstractDataTransferObject
 
     @XmlElement(name = Elements.NAME, required = false)
     private final String name;
-    @XmlElement(name = Elements.STATE, required = false)
-    private final List state;
+    @XmlElementWrapper(name = Elements.STATE, required = false)
+    @XmlElement(name = Elements.ROUTE_NODE_INSTANCE_STATE, required = false)
+    private final List<RouteNodeInstanceState> state;
     @XmlElement(name = Elements.DOCUMENT_ID, required = false)
     private final String documentId;
     @XmlElement(name = Elements.BRANCH_ID, required = false)
@@ -70,6 +75,10 @@ public final class RouteNodeInstance extends AbstractDataTransferObject
     private final boolean initial;
     @XmlElement(name = Elements.ID, required = false)
     private final String id;
+    @XmlElementWrapper(name = Elements.NEXT_NODE_INSTANCES, required = false)
+    @XmlElement(name = Elements.NEXT_NODE_INSTANCE, required = false)
+    private final List<RouteNodeInstance> nextNodeInstances;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -89,11 +98,32 @@ public final class RouteNodeInstance extends AbstractDataTransferObject
         this.complete = false;
         this.initial = false;
         this.id = null;
+        this.nextNodeInstances = null;
     }
 
     private RouteNodeInstance(Builder builder) {
         this.name = builder.getName();
-        this.state = builder.getState();
+        if (builder.getState() != null) {
+            List<RouteNodeInstanceState> states = new ArrayList<RouteNodeInstanceState>();
+            for(RouteNodeInstanceState.Builder stateBuilder : builder.getState()) {
+                states.add(stateBuilder.build());
+            }
+            this.state = states;
+        } else {
+            this.state = Collections.emptyList();
+        }
+
+        if (builder.getNextNodeInstances() != null) {
+            List<RouteNodeInstance> nextInstances = new ArrayList<RouteNodeInstance>();
+            for (RouteNodeInstance.Builder instance : builder.getNextNodeInstances()) {
+                nextInstances.add(instance.build());
+            }
+            this.nextNodeInstances = nextInstances;
+        } else {
+            this.nextNodeInstances = Collections.emptyList();
+        }
+
+
         this.documentId = builder.getDocumentId();
         this.branchId = builder.getBranchId();
         this.routeNodeId = builder.getRouteNodeId();
@@ -110,7 +140,7 @@ public final class RouteNodeInstance extends AbstractDataTransferObject
     }
 
     @Override
-    public List getState() {
+    public List<RouteNodeInstanceState> getState() {
         return this.state;
     }
 
@@ -154,6 +184,12 @@ public final class RouteNodeInstance extends AbstractDataTransferObject
         return this.id;
     }
 
+    @Override
+    public List<RouteNodeInstance> getNextNodeInstances() {
+        return this.nextNodeInstances;
+    }
+
+
     /**
      * A builder which can be used to construct {@link RouteNodeInstance} instances.  Enforces the constraints of the {@link RouteNodeInstanceContract}.
      * 
@@ -163,7 +199,7 @@ public final class RouteNodeInstance extends AbstractDataTransferObject
     {
 
         private String name;
-        private List state;
+        private List<RouteNodeInstanceState.Builder> state;
         private String documentId;
         private String branchId;
         private String routeNodeId;
@@ -172,6 +208,7 @@ public final class RouteNodeInstance extends AbstractDataTransferObject
         private boolean complete;
         private boolean initial;
         private String id;
+        private List<RouteNodeInstance.Builder> nextNodeInstances;
 
         private Builder() {
             // TODO modify this constructor as needed to pass any required values and invoke the appropriate 'setter' methods
@@ -189,7 +226,14 @@ public final class RouteNodeInstance extends AbstractDataTransferObject
             // TODO if create() is modified to accept required parameters, this will need to be modified
             Builder builder = create();
             builder.setName(contract.getName());
-            builder.setState(contract.getState());
+            if (contract.getState() != null) {
+                List<RouteNodeInstanceState.Builder> stateBuilders = new ArrayList<RouteNodeInstanceState.Builder>();
+                for (RouteNodeInstanceStateContract stateContract : contract.getState()) {
+                    stateBuilders.add(RouteNodeInstanceState.Builder.create(stateContract));
+                }
+                builder.setState(stateBuilders);
+            }
+
             builder.setDocumentId(contract.getDocumentId());
             builder.setBranchId(contract.getBranchId());
             builder.setRouteNodeId(contract.getRouteNodeId());
@@ -198,6 +242,13 @@ public final class RouteNodeInstance extends AbstractDataTransferObject
             builder.setComplete(contract.isComplete());
             builder.setInitial(contract.isInitial());
             builder.setId(contract.getId());
+            if (contract.getNextNodeInstances() != null) {
+                List<RouteNodeInstance.Builder> instanceBuilders = new ArrayList<RouteNodeInstance.Builder>();
+                for(RouteNodeInstanceContract instanceContract : contract.getNextNodeInstances()) {
+                    instanceBuilders.add(RouteNodeInstance.Builder.create(instanceContract));
+                }
+                builder.setNextNodeInstances(instanceBuilders);
+            }
             return builder;
         }
 
@@ -211,7 +262,7 @@ public final class RouteNodeInstance extends AbstractDataTransferObject
         }
 
         @Override
-        public List getState() {
+        public List<RouteNodeInstanceState.Builder> getState() {
             return this.state;
         }
 
@@ -255,12 +306,22 @@ public final class RouteNodeInstance extends AbstractDataTransferObject
             return this.id;
         }
 
+        @Override
+        public List<RouteNodeInstance.Builder> getNextNodeInstances() {
+            return this.nextNodeInstances;
+        }
+
+        public void setNextNodeInstances(List<RouteNodeInstance.Builder> nextNodeInstances) {
+            // TODO add validation of input value if required and throw IllegalArgumentException if needed
+            this.nextNodeInstances = Collections.unmodifiableList(nextNodeInstances);
+        }
+
         public void setName(String name) {
             // TODO add validation of input value if required and throw IllegalArgumentException if needed
             this.name = name;
         }
 
-        public void setState(List state) {
+        public void setState(List<RouteNodeInstanceState.Builder> state) {
             // TODO add validation of input value if required and throw IllegalArgumentException if needed
             this.state = state;
         }
@@ -327,6 +388,7 @@ public final class RouteNodeInstance extends AbstractDataTransferObject
 
         final static String NAME = "name";
         final static String STATE = "state";
+        final static String ROUTE_NODE_INSTANCE_STATE = "routeNodeInstanceState";
         final static String DOCUMENT_ID = "documentId";
         final static String BRANCH_ID = "branchId";
         final static String ROUTE_NODE_ID = "routeNodeId";
@@ -335,7 +397,8 @@ public final class RouteNodeInstance extends AbstractDataTransferObject
         final static String COMPLETE = "complete";
         final static String INITIAL = "initial";
         final static String ID = "id";
-
+        final static String NEXT_NODE_INSTANCES = "nextNodeInstances";
+        final static String NEXT_NODE_INSTANCE = "nextNodeInstance";
     }
 
 }

@@ -201,7 +201,8 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
     	return (DatabasePlatform) GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
     }
 
-    public Collection findPendingByResponsibilityIds(Set responsibilityIds) {
+    @Override
+    public Collection<String> findPendingByResponsibilityIds(Set<String> responsibilityIds) {
 
         if (responsibilityIds.isEmpty()) {
             return new ArrayList();
@@ -209,8 +210,7 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
 
         String respIds = "(";
         int index = 0;
-        for (Iterator iterator = responsibilityIds.iterator(); iterator.hasNext(); index++) {
-            Long responsibilityId = (Long) iterator.next();
+        for (String responsibilityId : responsibilityIds) {
             respIds += responsibilityId + (index == responsibilityIds.size()-1 ? "" : ",");
         }
         respIds += ")";
@@ -224,9 +224,9 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
 
         LOG.debug("Query to find pending documents for requeue: " + query);
         
-        List<Long> idList = new ArrayList<Long>();
+        List<String> idList = new ArrayList<String>();
         for (Object tempId : entityManager.createNativeQuery(query).getResultList()) {
-        	idList.add(((BigDecimal) tempId).longValueExact());
+        	idList.add(((String) tempId));
         }
 
         return idList; //(List<Long>)entityManager.createNativeQuery(query).getResultList();

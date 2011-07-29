@@ -16,27 +16,23 @@
  */
 package org.kuali.rice.kew.routemodule;
 
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.junit.Test;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.action.ActionRequestStatus;
+import org.kuali.rice.kew.api.action.RoutingReportCriteria;
+import org.kuali.rice.kew.api.document.DocumentDetail;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import java.util.Collection;
 import java.util.List;
 
-import org.junit.Test;
-import org.kuali.rice.kew.api.WorkflowDocument;
-import org.kuali.rice.kew.api.WorkflowDocumentFactory;
-import org.kuali.rice.kew.api.action.ActionRequestStatus;
-import org.kuali.rice.kew.dto.ActionRequestDTO;
-import org.kuali.rice.kew.dto.DocumentDetailDTO;
-import org.kuali.rice.kew.dto.ReportCriteriaDTO;
-import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowInfo;
-import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
+import static org.junit.Assert.*;
 
 public class RoutingReportServiceTest extends KEWTestCase {
     
@@ -62,24 +58,23 @@ public class RoutingReportServiceTest extends KEWTestCase {
         String activeNodeId = ((RouteNodeInstance)activeNodeInstances.iterator().next()).getRouteNodeInstanceId();
         assertEquals("Should be 2 pending requests.", 2, requests.size());
         
-        // now, lets "get our report on", the WorkflowInfo.routingReport method will call the service's report method.
-        WorkflowInfo info = new WorkflowInfo();
-        ReportCriteriaDTO criteria = ReportCriteriaDTO.createReportCritByDocId(document.getDocumentId());
+        // now, lets "get our report on", the WorkflowInfo.executeSimulation method will call the service's report method.
+        RoutingReportCriteria criteria = RoutingReportCriteria.Builder.createByDocumentId(document.getDocumentId()).build();
         
         long start = System.currentTimeMillis();
-        DocumentDetailDTO documentDetail = info.routingReport(criteria);
+        DocumentDetail documentDetail = KewApiServiceLocator.getWorkflowDocumentActionsService().executeSimulation(
+                criteria);
         long end = System.currentTimeMillis();
         System.out.println("Time to run routing report: " + (end-start)+" milliseconds.");
         
         // document detail should have all of our requests on it, 2 activated approves, 1 initialized approve, 2 initialized acknowledges
-        assertEquals("There should be 5 requests.", 5, documentDetail.getActionRequests().length);
+        assertEquals("There should be 5 requests.", 5, documentDetail.getActionRequests().size());
         boolean approveToBmcgough = false;
         boolean approveToRkirkend = false;
         boolean approveToPmckown = false;
         boolean ackToTemay = false;
         boolean ackToJhopf = false;
-        for (int index = 0; index < documentDetail.getActionRequests().length; index++) {
-            ActionRequestDTO requestVO = documentDetail.getActionRequests()[index];
+        for (ActionRequest requestVO : documentDetail.getActionRequests()) {
             String netId = getPrincipalNameForId(requestVO.getPrincipalId()); 
             if (netId.equals("bmcgough")) {
                 assertEquals("Should be approve.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, requestVO.getActionRequested());
@@ -107,7 +102,7 @@ public class RoutingReportServiceTest extends KEWTestCase {
                 assertEquals("Wrong node name", SeqSetup.ACKNOWLEDGE_2_NODE, requestVO.getNodeName());
                 ackToJhopf = true;
             } 
-            assertNotNull(requestVO.getNodeInstanceId());            
+            assertNotNull(requestVO.getId());
         }
         assertTrue("There should be an approve to bmcgough", approveToBmcgough);
         assertTrue("There should be an approve to rkirkend", approveToRkirkend);
@@ -123,14 +118,13 @@ public class RoutingReportServiceTest extends KEWTestCase {
         assertEquals("Should be 2 pending requests.", 2, requests.size());
         
         // test reporting to a specified target node
-        criteria = ReportCriteriaDTO.createReportCritByDocIdAndTargetNdNm(document.getDocumentId(), SeqSetup.ACKNOWLEDGE_1_NODE);
-        documentDetail = info.routingReport(criteria);
+        criteria = RoutingReportCriteria.Builder.createByDocumentIdAndTargetNodeName(document.getDocumentId(), SeqSetup.ACKNOWLEDGE_1_NODE).build();
+        documentDetail = KewApiServiceLocator.getWorkflowDocumentActionsService().executeSimulation(criteria);
         
         // document detail should have all of our requests except for the final acknowledge
-        assertEquals("There should be 4 requets.", 4, documentDetail.getActionRequests().length);
+        assertEquals("There should be 4 requets.", 4, documentDetail.getActionRequests().size());
         // assert that we don't have an acknowledge to jhopf
-        for (int index = 0; index < documentDetail.getActionRequests().length; index++) {
-            ActionRequestDTO requestVO = documentDetail.getActionRequests()[index];
+        for (ActionRequest requestVO : documentDetail.getActionRequests()) {
             if (requestVO.getPrincipalId().equals(getPrincipalIdForName("jhopf"))) {
                 fail("There should be no request to jhopf");
             }

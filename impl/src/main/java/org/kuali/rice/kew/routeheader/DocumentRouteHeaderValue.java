@@ -1170,7 +1170,9 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
         if (document.getDateApproved() != null) {
             documentBo.setApprovedDate(new Timestamp(document.getDateApproved().getMillis()));
         }
-        documentBo.setCreateDate(new Timestamp(document.getDateApproved().getMillis()));
+        if (document.getDateCreated() != null) {
+            documentBo.setCreateDate(new Timestamp(document.getDateCreated().getMillis()));
+        }
         if (StringUtils.isEmpty(documentBo.getDocContent())) {
             documentBo.setDocContent(KEWConstants.DEFAULT_DOCUMENT_CONTENT);
         }

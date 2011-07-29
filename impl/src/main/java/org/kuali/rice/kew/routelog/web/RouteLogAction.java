@@ -16,6 +16,39 @@
  */
 package org.kuali.rice.kew.routelog.web;
 
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
+import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.action.ActionRequestStatus;
+import org.kuali.rice.kew.api.action.RoutingReportCriteria;
+import org.kuali.rice.kew.api.document.DocumentDetail;
+import org.kuali.rice.kew.api.document.node.RouteNodeInstanceState;
+import org.kuali.rice.kew.doctype.SecuritySession;
+import org.kuali.rice.kew.doctype.service.DocumentSecurityService;
+import org.kuali.rice.kew.dto.DTOConverter;
+import org.kuali.rice.kew.dto.DTOConverter.RouteNodeInstanceLoader;
+import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
+import org.kuali.rice.kew.engine.node.Branch;
+import org.kuali.rice.kew.engine.node.NodeState;
+import org.kuali.rice.kew.engine.node.RouteNode;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.engine.node.service.RouteNodeService;
+import org.kuali.rice.kew.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.web.KewKualiAction;
+import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.util.GlobalVariables;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -25,42 +58,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.namespace.QName;
-
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
-import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.api.WorkflowRuntimeException;
-import org.kuali.rice.kew.api.action.ActionRequestStatus;
-import org.kuali.rice.kew.doctype.SecuritySession;
-import org.kuali.rice.kew.doctype.service.DocumentSecurityService;
-import org.kuali.rice.kew.dto.ActionRequestDTO;
-import org.kuali.rice.kew.dto.DTOConverter;
-import org.kuali.rice.kew.dto.DTOConverter.RouteNodeInstanceLoader;
-import org.kuali.rice.kew.dto.DocumentDetailDTO;
-import org.kuali.rice.kew.dto.ReportCriteriaDTO;
-import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
-import org.kuali.rice.kew.dto.StateDTO;
-import org.kuali.rice.kew.engine.node.Branch;
-import org.kuali.rice.kew.engine.node.NodeState;
-import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.engine.node.service.RouteNodeService;
-import org.kuali.rice.kew.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowUtility;
-import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.web.KewKualiAction;
-import org.kuali.rice.krad.UserSession;
-import org.kuali.rice.krad.util.GlobalVariables;
 
 
 /**
@@ -215,16 +212,15 @@ public class RouteLogAction extends KewKualiAction {
      */
     public void populateRouteLogFutureRequests(RouteLogForm rlForm, DocumentRouteHeaderValue document) throws Exception {
 
-        ReportCriteriaDTO reportCriteria = ReportCriteriaDTO.createReportCritByDocId(document.getDocumentId());
+        RoutingReportCriteria reportCriteria = RoutingReportCriteria.Builder.createByDocumentId(document.getDocumentId()).build();
         String applicationId = document.getDocumentType().getApplicationId();
-        WorkflowUtility workflowUtility = 
-        	(WorkflowUtility) GlobalResourceLoader.getService(new QName(applicationId, "WorkflowUtilityService"));
 
         // gather the IDs for action requests that predate the simulation
 		Set<String> preexistingActionRequestIds = getActionRequestIds(document);
         
 		// run the simulation via WorkflowUtility
-        DocumentDetailDTO documentDetail = workflowUtility.routingReport(reportCriteria);
+        DocumentDetail documentDetail = KewApiServiceLocator.getWorkflowDocumentActionsService().executeSimulation(
+                reportCriteria);
 
         // fabricate our ActionRequestValueS from the results
         List<ActionRequestValue> futureActionRequests = 
@@ -274,32 +270,32 @@ public class RouteLogAction extends KewKualiAction {
 	}
 
 	/**
-	 * This method creates ActionRequestValue objects from the DocumentDetailDTO output from 
-	 * {@link WorkflowUtility#routingReport(ReportCriteriaDTO)}Report()
+	 * This method creates ActionRequestValue objects from the DocumentDetailDTO output from
 	 * 
 	 * @param documentDetail contains the DTOs from which the ActionRequestValues are reconstituted
 	 * @param preexistingActionRequestIds this is a Set of ActionRequest IDs that will not be reconstituted
 	 * @return the ActionRequestValueS that have been created
 	 */
-	private List<ActionRequestValue> reconstituteActionRequestValues(DocumentDetailDTO documentDetail,
+	private List<ActionRequestValue> reconstituteActionRequestValues(DocumentDetail documentDetail,
 			Set<String> preexistingActionRequestIds) {
 
         RouteNodeInstanceFabricator routeNodeInstanceFabricator = 
     		new RouteNodeInstanceFabricator(KEWServiceLocator.getRouteNodeService());
 
-        if (documentDetail.getNodeInstances() != null && documentDetail.getNodeInstances().length > 0) {
-        	for (RouteNodeInstanceDTO routeNodeInstanceVO : documentDetail.getNodeInstances()) {
+        if (documentDetail.getRouteNodeInstances() != null && !documentDetail.getRouteNodeInstances().isEmpty()) {
+        	for (org.kuali.rice.kew.api.document.node.RouteNodeInstance routeNodeInstanceVO : documentDetail.getRouteNodeInstances()) {
         		routeNodeInstanceFabricator.importRouteNodeInstanceDTO(routeNodeInstanceVO);
         	}
 		}
         
-        ActionRequestDTO[] actionRequestVOs = documentDetail.getActionRequests();
+        List<ActionRequest> actionRequestVOs = documentDetail.getActionRequests();
         List<ActionRequestValue> futureActionRequests = new ArrayList<ActionRequestValue>();
         if (actionRequestVOs != null) {
-			for (ActionRequestDTO actionRequestVO : actionRequestVOs) {
+			for (ActionRequest actionRequestVO : actionRequestVOs) {
 				if (actionRequestVO != null) {
-					if (!preexistingActionRequestIds.contains(actionRequestVO.getActionRequestId())) {
-						ActionRequestValue converted = DTOConverter.convertActionRequestDTO(actionRequestVO, routeNodeInstanceFabricator);
+					if (!preexistingActionRequestIds.contains(actionRequestVO.getId())) {
+						ActionRequestValue converted = ActionRequestValue.from(actionRequestVO,
+                                routeNodeInstanceFabricator);
 						futureActionRequests.add(converted);
 					}
 				}
@@ -326,7 +322,8 @@ public class RouteLogAction extends KewKualiAction {
     private static class RouteNodeInstanceFabricator implements RouteNodeInstanceLoader {
 
     	private Map<String,Branch> branches = new HashMap<String, Branch>();
-    	private Map<String,RouteNodeInstance> routeNodeInstances = new HashMap<String, RouteNodeInstance>();
+    	private Map<String, RouteNodeInstance> routeNodeInstances =
+                new HashMap<String, RouteNodeInstance>();
     	private Map<String,RouteNode> routeNodes = new HashMap<String, RouteNode>();
     	private Map<String,NodeState> nodeStates = new HashMap<String, NodeState>();
 
@@ -348,7 +345,7 @@ public class RouteLogAction extends KewKualiAction {
 		 * 
 		 * @param nodeInstanceDTO
 		 */
-		public void importRouteNodeInstanceDTO(RouteNodeInstanceDTO nodeInstanceDTO) {
+		public void importRouteNodeInstanceDTO(org.kuali.rice.kew.api.document.node.RouteNodeInstance nodeInstanceDTO) {
 			_importRouteNodeInstanceDTO(nodeInstanceDTO);
 		}
 		
@@ -361,7 +358,7 @@ public class RouteLogAction extends KewKualiAction {
 		 * @param nodeInstanceDTO
 		 * @return
 		 */
-    	private RouteNodeInstance _importRouteNodeInstanceDTO(RouteNodeInstanceDTO nodeInstanceDTO) {
+    	private RouteNodeInstance _importRouteNodeInstanceDTO(org.kuali.rice.kew.api.document.node.RouteNodeInstance nodeInstanceDTO) {
     		if (nodeInstanceDTO == null) {
     			return null;
     		}
@@ -393,17 +390,17 @@ public class RouteLogAction extends KewKualiAction {
     		RouteNodeInstance process = getRouteNodeInstance(nodeInstanceDTO.getProcessId());
     		nodeInstance.setProcess(process);
 
-    		nodeInstance.setRouteNodeInstanceId(nodeInstanceDTO.getRouteNodeInstanceId());
+    		nodeInstance.setRouteNodeInstanceId(nodeInstanceDTO.getId());
     		DTOConverter.convertState(null);
 
     		List<NodeState> nodeState = new ArrayList<NodeState>();
     		if (nodeInstanceDTO.getState() != null) {
-				for (StateDTO stateDTO : nodeInstanceDTO.getState()) {
-					NodeState state = getNodeState(stateDTO.getStateId());
+				for (RouteNodeInstanceState stateDTO : nodeInstanceDTO.getState()) {
+					NodeState state = getNodeState(stateDTO.getId());
 					if (state != null) {
 						state.setKey(stateDTO.getKey());
 						state.setValue(stateDTO.getValue());
-						state.setStateId(stateDTO.getStateId());
+						state.setStateId(stateDTO.getId());
 						state.setNodeInstance(nodeInstance);
 						nodeState.add(state);
 					}
@@ -412,12 +409,13 @@ public class RouteLogAction extends KewKualiAction {
     		nodeInstance.setState(nodeState);
 
     		List<RouteNodeInstance> nextNodeInstances = new ArrayList<RouteNodeInstance>();
-    		nodeInstance.setNextNodeInstances(nextNodeInstances);
 
-    		for (RouteNodeInstanceDTO nextNodeInstanceVO : nodeInstanceDTO.getNextNodes()) {
+
+    		for (org.kuali.rice.kew.api.document.node.RouteNodeInstance nextNodeInstanceVO : nodeInstanceDTO.getNextNodeInstances()) {
     			// recurse to populate nextNodeInstances
     			nextNodeInstances.add(_importRouteNodeInstanceDTO(nextNodeInstanceVO));
     		}
+            nodeInstance.setNextNodeInstances(nextNodeInstances);
 
     		routeNodeInstances.put(nodeInstance.getRouteNodeInstanceId(), nodeInstance);
     		return nodeInstance;
@@ -491,7 +489,7 @@ public class RouteLogAction extends KewKualiAction {
     		if (routeNodeInstanceId != null) {
     			// if RouteNodeInstance doesn't exist, create it
     			if (!routeNodeInstances.containsKey(routeNodeInstanceId)) {
-    				result = new RouteNodeInstance();
+                    result = new RouteNodeInstance();
     				result.setRouteNodeInstanceId(routeNodeInstanceId);
     				routeNodeInstances.put(routeNodeInstanceId, result);
     			} else {

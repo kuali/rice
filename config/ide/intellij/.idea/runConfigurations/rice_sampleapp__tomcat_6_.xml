@@ -1,9 +1,8 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="rice sampleapp (tomcat 6)" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 6.0.32">
+  <configuration default="false" name="rice sampleapp (tomcat 6)" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 6">
     <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/kr-dev/" />
     <option name="COMMON_VM_ARGUMENTS" value="-Xms512m -Xmx1024m -XX:PermSize=256m  -XX:MaxPermSize=512m -Dweb.bootstrap.spring.file=classpath:SampleAppBeans.xml" />
     <option name="UPDATE_ON_FRAME_DEACTIVATION" value="true" />
-    <option name="UPDATING_POLICY" value="update-resources" />
     <deployment>
       <artifact name="rice-sampleapp:war exploded">
         <settings>

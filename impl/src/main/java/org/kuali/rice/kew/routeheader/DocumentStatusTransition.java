@@ -15,8 +15,10 @@
  */
 package org.kuali.rice.kew.routeheader;
 
+import org.bouncycastle.ocsp.OCSPReqGenerator;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.joda.time.DateTime;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.*;
@@ -104,4 +106,29 @@ public class DocumentStatusTransition extends PersistableBusinessObjectBase {
 	public void setStatusTransitionDate(java.sql.Timestamp statusTransitionDate) {
 		this.statusTransitionDate = statusTransitionDate;
 	}
+
+    public static DocumentStatusTransition from(org.kuali.rice.kew.api.document.DocumentStatusTransition im) {
+        if (im == null) {
+            return null;
+        }
+        DocumentStatusTransition transition = new DocumentStatusTransition(im.getDocumentId(), im.getOldStatus(), im.getNewStatus());
+        transition.setStatusTransitionId(im.getId());
+        if (im.getStatusTransitionDate() != null) {
+            transition.setStatusTransitionDate(new Timestamp(im.getStatusTransitionDate().getMillis()));
+        }
+        return transition;
+    }
+
+    public static org.kuali.rice.kew.api.document.DocumentStatusTransition to(DocumentStatusTransition bo) {
+        if (bo == null) {
+            return null;
+        }
+
+        org.kuali.rice.kew.api.document.DocumentStatusTransition.Builder builder = org.kuali.rice.kew.api.document.DocumentStatusTransition.Builder.create(bo.getDocumentId(), bo.getOldAppDocStatus(), bo.getNewAppDocStatus());
+        builder.setId(bo.getStatusTransitionId());
+        if (bo.getStatusTransitionDate() != null) {
+            builder.setStatusTransitionDate(new DateTime(bo.getStatusTransitionDate().getTime()));
+        }
+        return builder.build();
+    }
 }

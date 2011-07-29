@@ -78,6 +78,9 @@ import java.util.Set;
  */
 public class SimulationEngine extends StandardWorkflowEngine implements SimulationWorkflowEngine {
 
+    public SimulationEngine () {
+        super();
+    }
     public SimulationEngine(RouteNodeService routeNodeService, RouteHeaderService routeHeaderService,
             ParameterService parameterService, OrchestrationConfig config) {
         super(routeNodeService, routeHeaderService, parameterService, config);

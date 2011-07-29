@@ -72,8 +72,8 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 				List<ActionRequest> actionRequests = KewApiServiceLocator.getWorkflowDocumentService().getActionRequests(qualification.get(KimConstants.AttributeConstants.DOCUMENT_NUMBER), null, principalId);
                 if (APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName) || NON_AD_HOC_APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
 					for ( ActionRequest ar : actionRequests ) {
-						if ( ar.getActionRequested().equals( KEWConstants.ACTION_REQUEST_APPROVE_REQ )
-								&& ar.getStatus().equals( ActionRequestStatus.ACTIVATED.getCode() ) ) {
+						if ( ar.getActionRequested().getCode().equals( KEWConstants.ACTION_REQUEST_APPROVE_REQ )
+								&& ar.getStatus().getCode().equals( ActionRequestStatus.ACTIVATED.getCode() ) ) {
 							return APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName) || (NON_AD_HOC_APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName) && !ar.isAdHocRequest());
 						}
 					}
@@ -81,8 +81,8 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 				}
 				if (ACKNOWLEDGE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
 					for ( ActionRequest ar : actionRequests ) {
-						if ( ar.getActionRequested().equals( KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ ) 
-							&& ar.getStatus().equals( ActionRequestStatus.ACTIVATED.getCode() ) ) {
+						if ( ar.getActionRequested().getCode().equals( KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ )
+							&& ar.getStatus().getCode().equals( ActionRequestStatus.ACTIVATED.getCode() ) ) {
 							return true;
 						}
 					}
@@ -91,7 +91,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 				if (FYI_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
 					for ( ActionRequest ar : actionRequests ) {
 						if ( ar.getActionRequested().equals( KEWConstants.ACTION_REQUEST_FYI_REQ ) 
-							&& ar.getStatus().equals( ActionRequestStatus.ACTIVATED.getCode() ) ) {
+							&& ar.getStatus().getCode().equals( ActionRequestStatus.ACTIVATED.getCode() ) ) {
 							return true;
 						}
 					}

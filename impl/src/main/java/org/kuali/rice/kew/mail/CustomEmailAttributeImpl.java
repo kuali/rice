@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.mail;
 
+import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 
@@ -28,7 +29,7 @@ import org.kuali.rice.kew.dto.RouteHeaderDTO;
 public class CustomEmailAttributeImpl implements CustomEmailAttribute {
 
     private RouteHeaderDTO routeHeaderVO;
-    private ActionRequestDTO actionRequestVO;
+    private ActionRequest actionRequestVO;
 
     public CustomEmailAttributeImpl() {}
     
@@ -48,11 +49,11 @@ public class CustomEmailAttributeImpl implements CustomEmailAttribute {
         this.routeHeaderVO = routeHeaderVO;
     }
 
-	public ActionRequestDTO getActionRequestVO() {
+	public ActionRequest getActionRequestVO() {
 		return actionRequestVO;
 	}
 
-	public void setActionRequestVO(ActionRequestDTO actionRequestVO) {
+	public void setActionRequestVO(ActionRequest actionRequestVO) {
 		this.actionRequestVO = actionRequestVO;
 	}
 

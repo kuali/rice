@@ -34,6 +34,6 @@ public interface RoutingReportService {
 	
 	//public DocumentRouteHeaderValue simulationReport(DocumentRouteHeaderValue document, List actionsToTake) throws WorkflowException;
     
-    public DocumentRouteHeaderValue report(SimulationCriteria criteria) throws WorkflowException;
+    public DocumentRouteHeaderValue report(SimulationCriteria criteria);
 	
 }

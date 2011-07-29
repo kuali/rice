@@ -78,15 +78,9 @@ public interface WorkflowUtility {
 			@WebParam(name = "actionRequestedCodes") String[] actionRequestedCodes)
 			throws WorkflowException;
 
-	public ActionRequestDTO[] getAllActionRequests(
+	/*public ActionRequestDTO[] getAllActionRequests(
 			@WebParam(name = "documentId") String documentId)
-			throws WorkflowException;
-
-	public ActionRequestDTO[] getActionRequests(
-			@WebParam(name = "documentId") String documentId,
-			@WebParam(name = "nodeName") String nodeName,
-			@WebParam(name = "principalId") String principalId)
-			throws WorkflowException;
+			throws WorkflowException;*/
 
 	public ActionTakenDTO[] getActionsTaken(
 			@WebParam(name = "documentId") String documentId)

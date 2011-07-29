@@ -79,7 +79,7 @@ public class RepositoryToEngineTranslatorImpl implements RepositoryToEngineTrans
 		}
 		
 		List<TermResolverDefinition> termResolverDefs = 
-			termBoService.getTermResolversByContextId(contextDefinition.getId());
+			termBoService.getTermResolversByNamespace(contextDefinition.getNamespace());
 		
 		List<TermResolver<?>> termResolvers = new ArrayList<TermResolver<?>>();
 

@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krms.api.repository
 
-import java.util.Set;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
@@ -41,10 +39,9 @@ class TermResolverTest {
 	private static final String ID="123TERMRESOLVER"
 	private static final String NAMESPACE_CODE="foo-namespace"
 	private static final String NAME="termResolver-name"
-    private static final String CONTEXT_ID="1234CTXT"
     private static final String TYPE_ID="1234TYPE"
 	private static final Integer SEQUENCE_NUMBER_1 = new Integer(1)
-	private static final String TERM_SPEC_CONTEXT_ID ="1234CONTEXT"
+	private static final String TERM_SPEC_NAMESPACE ="foo-namespace"
 	private static final String TERM_SPEC_NAME="termSpec-name"
 	private static final String TERM_SPEC_TYPE="term.spec.Type"
 	private static final String ATTR_ID="123ATTR"
@@ -57,13 +54,12 @@ class TermResolverTest {
 	<termResolverDefinition xmlns:ns2="http://rice.kuali.org/core/v2_0" xmlns="http://rice.kuali.org/krms/repository/v2_0">
     <id>123TERMRESOLVER</id>
     <name>termResolver-name</name>
-    <namespaceCode>foo-namespace</namespaceCode>
-    <contextId>1234CTXT</contextId>
+    <namespace>foo-namespace</namespace>
     <typeId>1234TYPE</typeId>
     <output>
         <id>123TERMRESOLVER</id>
-        <contextId>1234CONTEXT</contextId>
         <name>termSpec-name</name>
+        <namespace>foo-namespace</namespace>
         <type>term.spec.Type</type>
         <categories>
         </categories>
@@ -71,8 +67,8 @@ class TermResolverTest {
     <prerequisites>
         <termSpecificationDefinition>
             <id>PREREQ123TERMRESOLVER</id>
-            <contextId>1234CONTEXT</contextId>
             <name>PREREQtermSpec-name</name>
+            <namespace>foo-namespace</namespace>
             <type>PREREQterm.spec.Type</type>
             <categories>
             </categories>
@@ -91,13 +87,13 @@ class TermResolverTest {
 	@Test
 	public void testXmlMarshaling() {
 		// create(String termSpecificationId, String contextId, String name, String type)
-		TermSpecificationDefinition.Builder output = TermSpecificationDefinition.Builder.create(ID, TERM_SPEC_CONTEXT_ID, TERM_SPEC_NAME, TERM_SPEC_TYPE); 
+		TermSpecificationDefinition.Builder output = TermSpecificationDefinition.Builder.create(ID, TERM_SPEC_NAME, TERM_SPEC_NAMESPACE, TERM_SPEC_TYPE);
 		
-		TermSpecificationDefinition.Builder prereq = TermSpecificationDefinition.Builder.create("PREREQ"+ID, TERM_SPEC_CONTEXT_ID, "PREREQ"+TERM_SPEC_NAME, "PREREQ"+TERM_SPEC_TYPE); 
+		TermSpecificationDefinition.Builder prereq = TermSpecificationDefinition.Builder.create("PREREQ" + ID, "PREREQ" + TERM_SPEC_NAME, TERM_SPEC_NAMESPACE, "PREREQ" + TERM_SPEC_TYPE);
 				
 		/*
 		public Builder create(String id,
-		   String namespaceCode,
+		   String namespace,
 		   String name,
 		   String typeId,
 		   TermSpecificationDefinition.Builder output,
@@ -110,7 +106,7 @@ class TermResolverTest {
 		attributes.put(ATTR_NAME, ATTR_VALUE);
 		java.util.Set<String> params = [PARAM_NAME+"1",PARAM_NAME+2];
 		
-		TermResolverDefinition termResolver = TermResolverDefinition.Builder.create(ID, NAMESPACE_CODE, NAME, CONTEXT_ID, TYPE_ID, output, prereqs, attributes, params).build()
+		TermResolverDefinition termResolver = TermResolverDefinition.Builder.create(ID, NAMESPACE_CODE, NAME, TYPE_ID, output, prereqs, attributes, params).build()
 				
 		JAXBContext jc = JAXBContext.newInstance(TermResolverDefinition.class)
 		Marshaller marshaller = jc.createMarshaller()

@@ -10,8 +10,8 @@
     <property name="attributes">
       <list>
         <ref bean="TermSpecificationBo-id"/>
-        <ref bean="TermSpecificationBo-contextId"/>
         <ref bean="TermSpecificationBo-name"/>
+        <ref bean="TermSpecificationBo-namespace"/>
         <ref bean="TermSpecificationBo-type"/>
       </list>
     </property>
@@ -32,11 +32,6 @@
     <property name="label" value="Term Specification Id"/>
   </bean>
 
-  <bean id="TermSpecificationBo-contextId" parent="TermSpecificationBo-contextId-parentBean"/>
-  <bean id="TermSpecificationBo-contextId-parentBean" abstract="true" parent="ContextBo-id">
-    <property name="name" value="contextId" />
-  </bean>
-
   <bean id="TermSpecificationBo-name" parent="TermSpecificationBo-name-parentBean"/>
   <bean id="TermSpecificationBo-name-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false"/>
@@ -47,6 +42,17 @@
     <property name="name" value="name"/>
     <property name="label" value="Term Specification Name"/>
   </bean>
+
+  <bean id="TermSpecificationBo-namespace" parent="TermSpecificationBo-namespace-parentBean"/>
+  <bean id="TermSpecificationBo-namespace-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="Namespace"/>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="255"/>
+    </property>
+    <property name="name" value="namespace"/>
+    <property name="label" value="Term Specification Namespace"/>
+   </bean>
 
   <bean id="TermSpecificationBo-type" parent="TermSpecificationBo-type-parentBean"/>
   <bean id="TermSpecificationBo-type-parentBean" abstract="true" parent="AttributeDefinition">
@@ -90,7 +96,7 @@
       <list>
         <bean parent="AttributeField" p:propertyName="id"/>
         <bean parent="AttributeField" p:propertyName="name"/>
-        <bean parent="AttributeField" p:propertyName="contextId"/>
+        <bean parent="AttributeField" p:propertyName="namespace"/>
         <bean parent="AttributeField" p:propertyName="type"/>
       </list>
     </property>

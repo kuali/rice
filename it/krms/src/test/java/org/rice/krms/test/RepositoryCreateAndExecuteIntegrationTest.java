@@ -201,7 +201,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
         KrmsTypeDefinition krmsGenericTypeDefinition = createKrmsGenericTypeDefinition(nameSpace);
 
         AgendaDefinition agendaDef =
-            AgendaDefinition.Builder.create(null, "testAgenda", nameSpace, krmsGenericTypeDefinition.getId(), contextDefinition.getId()).build();
+            AgendaDefinition.Builder.create(null, "testAgenda", krmsGenericTypeDefinition.getId(), contextDefinition.getId()).build();
         agendaDef = agendaBoService.createAgenda(agendaDef);
 
         AgendaItem.Builder agendaItemBuilder1 = AgendaItem.Builder.create(null, agendaDef.getId());
@@ -343,8 +343,8 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
     private TermDefinition createTermDefinition1(ContextDefinition contextDefinition) {
         // campusCode TermSpec
         TermSpecificationDefinition campusCodeTermSpec =
-            TermSpecificationDefinition.Builder.create(null, contextDefinition.getId(),
-                    "campusCodeTermSpec", "java.lang.String").build();
+            TermSpecificationDefinition.Builder.create(null, "campusCodeTermSpec", contextDefinition.getId(),
+                    "java.lang.String").build();
         campusCodeTermSpec = termBoService.createTermSpecification(campusCodeTermSpec);
 
         // Term 1
@@ -461,14 +461,14 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
     private TermDefinition createTermDefinition2(ContextDefinition contextDefinition, String nameSpace) {
         // output TermSpec
         TermSpecificationDefinition outputTermSpec =
-            TermSpecificationDefinition.Builder.create(null, contextDefinition.getId(),
-                    "outputTermSpec", "java.lang.String").build();
+            TermSpecificationDefinition.Builder.create(null, "outputTermSpec", contextDefinition.getId(),
+                    "java.lang.String").build();
         outputTermSpec = termBoService.createTermSpecification(outputTermSpec);
 
         // prereq TermSpec
         TermSpecificationDefinition prereqTermSpec =
-            TermSpecificationDefinition.Builder.create(null, contextDefinition.getId(),
-                    "prereqTermSpec", "java.lang.String").build();
+            TermSpecificationDefinition.Builder.create(null, "prereqTermSpec", contextDefinition.getId(),
+                    "java.lang.String").build();
         prereqTermSpec = termBoService.createTermSpecification(prereqTermSpec);
 
         // Term Param
@@ -488,7 +488,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 
         // TermResolver
 		TermResolverDefinition termResolverDef =
-			TermResolverDefinition.Builder.create(null, nameSpace, "testResolver1", contextDefinition.getId(), krmsTermResolverTypeDefinition.getId(),
+			TermResolverDefinition.Builder.create(null, nameSpace, "testResolver1", krmsTermResolverTypeDefinition.getId(),
 					TermSpecificationDefinition.Builder.create(outputTermSpec),
 					Collections.singleton(TermSpecificationDefinition.Builder.create(prereqTermSpec)),
 					null,

@@ -41,8 +41,6 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 
 	/**
 	 * This overridden method creates a KRMS Agenda in the repository
-	 * 
-	 * @see org.kuali.rice.krms.impl.repository.AgendaBoService#createAgenda(org.kuali.rice.krms.api.repository.agenda.AgendaDefinition)
 	 */
 	@Override
 	public AgendaDefinition createAgenda(AgendaDefinition agenda) {
@@ -50,8 +48,8 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 			throw new IllegalArgumentException("agenda is null");
 		}
 		final String nameKey = agenda.getName();
-		final String namespaceKey = agenda.getNamespaceCode();
-		final AgendaDefinition existing = getAgendaByNameAndNamespace(nameKey, namespaceKey);
+        final String contextId = agenda.getContextId();
+		final AgendaDefinition existing = getAgendaByNameAndContextId(nameKey, contextId);
 		if (existing != null){
 			throw new IllegalStateException("the agenda to create already exists: " + agenda);			
 		}	
@@ -63,8 +61,6 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 
 	/**
 	 * This overridden method updates an existing Agenda in the repository
-	 * 
-	 * @see org.kuali.rice.krms.impl.repository.AgendaBoService#updateAgenda(org.kuali.rice.krms.api.repository.agenda.AgendaDefinition)
 	 */
 	@Override
 	public void updateAgenda(AgendaDefinition agenda) {
@@ -79,14 +75,14 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 			throw new IllegalStateException("the agenda does not exist: " + agenda);
 		}
 		final AgendaDefinition toUpdate;
-		if (!existing.getId().equals(agenda.getId())){
-			// if passed in id does not match existing id, correct it
-			final AgendaDefinition.Builder builder = AgendaDefinition.Builder.create(agenda);
-			builder.setId(existing.getId());
-			toUpdate = builder.build();
-		} else {
-			toUpdate = agenda;
-		}
+        if (existing.getId().equals(agenda.getId())) {
+            toUpdate = agenda;
+        } else {
+            // if passed in id does not match existing id, correct it
+            final AgendaDefinition.Builder builder = AgendaDefinition.Builder.create(agenda);
+            builder.setId(existing.getId());
+            toUpdate = builder.build();
+        }
 
 		// copy all updateable fields to bo
 		AgendaBo boToUpdate = from(toUpdate);
@@ -102,8 +98,6 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 
 	/**
 	 * This overridden method retrieves an Agenda from the repository
-	 * 
-	 * @see org.kuali.rice.krms.impl.repository.AgendaBoService#getAgendaByAgendaId(java.lang.String)
 	 */
 	@Override
 	public AgendaDefinition getAgendaByAgendaId(String agendaId) {
@@ -116,21 +110,19 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 
 	/**
 	 * This overridden method retrieves an agenda from the repository
-	 * 
-	 * @see org.kuali.rice.krms.impl.repository.AgendaBoService#getAgendaByNameAndNamespace(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public AgendaDefinition getAgendaByNameAndNamespace(String name, String namespace) {
+	public AgendaDefinition getAgendaByNameAndContextId(String name, String contextId) {
         if (StringUtils.isBlank(name)) {
             throw new IllegalArgumentException("name is blank");
         }
-        if (StringUtils.isBlank(namespace)) {
-            throw new IllegalArgumentException("namespace is blank");
+        if (StringUtils.isBlank(contextId)) {
+            throw new IllegalArgumentException("contextId is blank");
         }
 
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("name", name);
-        map.put("namespace", namespace);
+        map.put("contextId", contextId);
 
         AgendaBo myAgenda = businessObjectService.findByPrimaryKey(AgendaBo.class, Collections.unmodifiableMap(map));
 		return to(myAgenda);
@@ -138,8 +130,6 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 
 	/**
 	 * This overridden method retrieves a set of agendas from the repository
-	 * 
-	 * @see org.kuali.rice.krms.impl.repository.AgendaBoService#getAgendasByContextId(java.lang.String)
 	 */
 	@Override
 	public Set<AgendaDefinition> getAgendasByContextId(String contextId) {
@@ -154,8 +144,6 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 
 	/**
 	 * This overridden method creates a new Agenda in the repository
-	 * 
-	 * @see org.kuali.rice.krms.impl.repository.AgendaBoService#createAgendaItem(org.kuali.rice.krms.api.repository.agenda.AgendaItem)
 	 */
 	@Override
 	public AgendaItem createAgendaItem(AgendaItem agendaItem) {
@@ -176,9 +164,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 
 	/**
 	 * This overridden method updates an existing Agenda in the repository
-	 * 
-	 * @see org.kuali.rice.krms.impl.repository.AgendaBoService#updateAgendaItem(org.kuali.rice.krms.api.repository.agenda.AgendaItem)
-	 */
+    */
 	@Override
 	public void updateAgendaItem(AgendaItem agendaItem) {
 		if (agendaItem == null){
@@ -190,22 +176,20 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 			throw new IllegalStateException("the agenda item does not exist: " + agendaItem);
 		}
 		final AgendaItem toUpdate;
-		if (!existing.getId().equals(agendaItem.getId())){
-			final AgendaItem.Builder builder = AgendaItem.Builder.create(agendaItem);
-			builder.setId(existing.getId());
-			toUpdate = builder.build();
-		} else {
-			toUpdate = agendaItem;
-		}
+        if (existing.getId().equals(agendaItem.getId())) {
+            toUpdate = agendaItem;
+        } else {
+            final AgendaItem.Builder builder = AgendaItem.Builder.create(agendaItem);
+            builder.setId(existing.getId());
+            toUpdate = builder.build();
+        }
 
 		businessObjectService.save(AgendaItemBo.from(toUpdate));
 	}
 
 	/**
 	 * This overridden method adds a new AgendaItem to the repository
-	 * 
-	 * @see org.kuali.rice.krms.impl.repository.AgendaBoService#addAgendaItem(org.kuali.rice.krms.api.repository.agenda.AgendaItem, java.lang.String, java.lang.String)
-	 */
+     */
 	@Override
 	public void addAgendaItem(AgendaItem agendaItem, String parentId, Boolean position) {
 		if (agendaItem == null){
@@ -233,13 +217,13 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 		createAgendaItem(toCreate);
 		
 		// link it to it's parent (for whenTrue/whenFalse, sibling for always
-		if (parentId != null){			
+		if (parentId != null) {
 			final AgendaItem.Builder builder = AgendaItem.Builder.create(parent);
 			if (position == null){
 				builder.setAlwaysId( toCreate.getId() );
-			} else if (position.booleanValue() == true){
+			} else if (position.booleanValue()){
 				builder.setWhenTrueId( toCreate.getId() );
-			} else if (position.booleanValue() == false){
+			} else if (!position.booleanValue()){
 				builder.setWhenFalseId( toCreate.getId() );
 			}
 			final AgendaItem parentToUpdate = builder.build();
@@ -249,9 +233,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 
 	/**
 	 * This overridden method retrieves an AgendaItem from the repository
-	 * 
-	 * @see org.kuali.rice.krms.impl.repository.AgendaBoService#addAgendaItem(org.kuali.rice.krms.api.repository.agenda.AgendaItem, java.lang.String, java.lang.String)
-	 */
+    */
 	@Override
 	public AgendaItem getAgendaItemById(String id) {
 		if (StringUtils.isBlank(id)){
@@ -296,7 +278,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 	/**
 	 * Converts a Set<AgendaBo> to an Unmodifiable Set<Agenda>
 	 *
-	 * @param AgendaBos a mutable Set<AgendaBo> to made completely immutable.
+	 * @param agendaBos a mutable Set<AgendaBo> to made completely immutable.
 	 * @return An unmodifiable Set<Agenda>
 	 */
 	public Set<AgendaDefinition> convertListOfBosToImmutables(final Collection<AgendaBo> agendaBos) {
@@ -332,8 +314,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 	   if (im == null) { return null; }
 
 	   AgendaBo bo = new AgendaBo();
-	   bo.setId( im.getId() );
-	   bo.setNamespace( im.getNamespaceCode() );
+	   bo.setId(im.getId());
 	   bo.setName( im.getName() );
 	   bo.setTypeId( im.getTypeId() );
 	   bo.setContextId( im.getContextId() );
@@ -343,14 +324,15 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 	   // build the set of agenda attribute BOs
 	   Set<AgendaAttributeBo> attributes = new HashSet<AgendaAttributeBo>();
 
+       ContextBo context = getBusinessObjectService().findBySinglePrimaryKey(ContextBo.class, im.getContextId());
+
 	   // for each converted pair, build an AgendaAttributeBo and add it to the set
-	   AgendaAttributeBo attributeBo;
-	   for (Entry<String,String> entry  : im.getAttributes().entrySet()){
+        for (Entry<String,String> entry  : im.getAttributes().entrySet()){
 		   KrmsAttributeDefinitionBo attrDefBo = KrmsRepositoryServiceLocator
 		   		.getKrmsAttributeDefinitionService()
-		   		.getKrmsAttributeBo(entry.getKey(), im.getNamespaceCode());
-		   attributeBo = new AgendaAttributeBo();
-		   attributeBo.setAgendaId( im.getId() );
+		   		.getKrmsAttributeBo(entry.getKey(), context.getNamespace());
+            AgendaAttributeBo attributeBo = new AgendaAttributeBo();
+            attributeBo.setAgendaId( im.getId() );
 		   attributeBo.setAttributeDefinitionId( attrDefBo.getId() );
 		   attributeBo.setValue( entry.getValue() );
 		   attributeBo.setAttributeDefinition( attrDefBo );

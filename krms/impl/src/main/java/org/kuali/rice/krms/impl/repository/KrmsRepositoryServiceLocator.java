@@ -16,6 +16,7 @@
 package org.kuali.rice.krms.impl.repository;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.criteria.CriteriaLookupService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 
 /**
@@ -29,6 +30,7 @@ public final class KrmsRepositoryServiceLocator {
 	private static final Logger LOG = Logger.getLogger(KrmsRepositoryServiceLocator.class);
 
     public static final String KRMS_ATTRIBUTE_DEFINITION_SERVICE = "krmsAttributeDefinitionService";
+    public static final String CRITERIA_LOOKUP_SERVICE = "criteriaLookupService";
 	
 	private static KrmsAttributeDefinitionService krmsAttributeDefinitionService;
 	
@@ -48,6 +50,10 @@ public final class KrmsRepositoryServiceLocator {
 			krmsAttributeDefinitionService = getService(KRMS_ATTRIBUTE_DEFINITION_SERVICE);
 		}
 		return krmsAttributeDefinitionService;
+    }
+
+    public static CriteriaLookupService getCriteriaLookupService() {
+        return getService(CRITERIA_LOOKUP_SERVICE);
     }
 
 	public static void setKrmsAttributeDefinitionService(final KrmsAttributeDefinitionService service) {

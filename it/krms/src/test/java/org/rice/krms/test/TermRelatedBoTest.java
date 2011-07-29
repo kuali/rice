@@ -57,14 +57,14 @@ public class TermRelatedBoTest extends AbstractBoTest {
 		
 		// output TermSpec
 		TermSpecificationDefinition outputTermSpec = 
-			TermSpecificationDefinition.Builder.create(null, contextDefinition.getId(), 
-					"outputTermSpec", "java.lang.String").build();
+			TermSpecificationDefinition.Builder.create(null, "outputTermSpec", contextDefinition.getId(),
+                    "java.lang.String").build();
 		outputTermSpec = termBoService.createTermSpecification(outputTermSpec);
 
 		// prereq TermSpec
 		TermSpecificationDefinition prereqTermSpec = 
-			TermSpecificationDefinition.Builder.create(null, contextDefinition.getId(), 
-					"prereqTermSpec", "java.lang.String").build();
+			TermSpecificationDefinition.Builder.create(null, "prereqTermSpec", contextDefinition.getId(),
+                    "java.lang.String").build();
 		prereqTermSpec = termBoService.createTermSpecification(prereqTermSpec);
 
 		// KrmsType for TermResolver
@@ -73,7 +73,7 @@ public class TermRelatedBoTest extends AbstractBoTest {
 
 		// TermResolver
 		TermResolverDefinition termResolverDef = 
-			TermResolverDefinition.Builder.create(null, "KRMS", "testResolver", null, krmsTermResolverTypeDefinition.getId(), 
+			TermResolverDefinition.Builder.create(null, "KRMS", "testResolver", krmsTermResolverTypeDefinition.getId(),
 					TermSpecificationDefinition.Builder.create(outputTermSpec), 
 					Collections.singleton(TermSpecificationDefinition.Builder.create(prereqTermSpec)), 
 					null, 

@@ -142,7 +142,6 @@
     <class-descriptor class="org.kuali.rice.krms.impl.repository.AgendaBo" table="KRMS_AGENDA_T">
         <field-descriptor name="id" column="AGENDA_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRMS_AGENDA_S"/>
         <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
-        <field-descriptor name="namespace" column="NMSPC_CD" jdbc-type="VARCHAR" />
         <field-descriptor name="typeId" column="TYP_ID" jdbc-type="VARCHAR"  />
         <field-descriptor name="contextId" column="CNTXT_ID" jdbc-type="VARCHAR"  />
         <field-descriptor name="firstItemId" column="INIT_AGENDA_ITM_ID" jdbc-type="VARCHAR"  />
@@ -289,8 +288,8 @@
   	
   	<class-descriptor class="org.kuali.rice.krms.impl.repository.TermSpecificationBo" table="KRMS_TERM_SPEC_T">
   	    <field-descriptor name="id" column="TERM_SPEC_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRMS_TERM_SPEC_S"/>
-        <field-descriptor name="contextId" column="CNTXT_ID" jdbc-type="VARCHAR" />
         <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
+      <field-descriptor name="namespace" column="NMSPC_CD" jdbc-type="VARCHAR" />
         <field-descriptor name="type" column="TYP" jdbc-type="VARCHAR" />
         <field-descriptor name="description" column="DESC_TXT" jdbc-type="VARCHAR" />
         <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
@@ -345,9 +344,8 @@
     <class-descriptor class="org.kuali.rice.krms.impl.repository.TermResolverBo" table="KRMS_TERM_RSLVR_T">
         <field-descriptor name="id" column="TERM_RSLVR_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRMS_TERM_RSLVR_S"/>
         <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
-        <field-descriptor name="namespaceCode" column="NMSPC_CD" jdbc-type="VARCHAR" />
+        <field-descriptor name="namespace" column="NMSPC_CD" jdbc-type="VARCHAR" />
         <field-descriptor name="typeId" column="TYP_ID" jdbc-type="VARCHAR"  />
-        <field-descriptor name="contextId" column="CNTXT_ID" jdbc-type="VARCHAR" />
         <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
         <field-descriptor name="outputId" column="OUTPUT_TERM_SPEC_ID" jdbc-type="VARCHAR"  />
         <reference-descriptor name="output" class-ref="org.kuali.rice.krms.impl.repository.TermSpecificationBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">

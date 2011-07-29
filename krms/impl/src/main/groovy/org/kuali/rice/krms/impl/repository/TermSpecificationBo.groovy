@@ -9,8 +9,8 @@ public class TermSpecificationBo extends PersistableBusinessObjectBase implement
 	private static final long serialVersionUID = 1L;
 
 	def String id
-	def String contextId
 	def String name
+    def String namespace
 	def String type
     def String description
 
@@ -36,7 +36,7 @@ public class TermSpecificationBo extends PersistableBusinessObjectBase implement
 
 	   TermSpecificationBo bo = new TermSpecificationBo()
 	   bo.id = im.id
-	   bo.contextId = im.contextId
+	   bo.namespace = im.namespace
 	   bo.name = im.name
 	   bo.type = im.type
        bo.description = im.description

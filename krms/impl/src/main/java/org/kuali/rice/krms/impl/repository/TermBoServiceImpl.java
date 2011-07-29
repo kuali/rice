@@ -142,34 +142,29 @@ public class TermBoServiceImpl implements TermBoService {
 		return result;
 	}
 	
-	/**
-	 * @see org.kuali.rice.krms.impl.repository.TermBoService#getTermResolversByContextId(java.lang.String)
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<TermResolverDefinition> getTermResolversByContextId(String id) {
-		List<TermResolverDefinition> results = null;
-		
-		if (StringUtils.isBlank(id)) {
-			throw new IllegalArgumentException("id must not be blank or null");
-		}
-		
-		Map fieldValues = new HashMap();
-		fieldValues.put("contextId", id);
-		
-		Collection<TermResolverBo> termResolverBos = businessObjectService.findMatching(TermResolverBo.class, fieldValues);
-		
-		if (!CollectionUtils.isEmpty(termResolverBos)) {
-			results = new ArrayList<TermResolverDefinition>(termResolverBos.size());
-			
-			for (TermResolverBo termResolverBo : termResolverBos) if (termResolverBo != null) {
-				results.add(TermResolverBo.to(termResolverBo));
-			}
-		} else {
-			results = Collections.emptyList();
-		}
-		
-		return results;
-	}
+    @Override
+    public List<TermResolverDefinition> getTermResolversByNamespace(String namespace) {
+        List<TermResolverDefinition> results = null;
 
+        if (StringUtils.isBlank(namespace)) {
+            throw new IllegalArgumentException("namespace must not be blank or null");
+        }
+
+        Map fieldValues = new HashMap();
+        fieldValues.put("namespace", namespace);
+
+        Collection<TermResolverBo> termResolverBos = businessObjectService.findMatching(TermResolverBo.class, fieldValues);
+
+        if (!CollectionUtils.isEmpty(termResolverBos)) {
+            results = new ArrayList<TermResolverDefinition>(termResolverBos.size());
+
+            for (TermResolverBo termResolverBo : termResolverBos) if (termResolverBo != null) {
+                results.add(TermResolverBo.to(termResolverBo));
+            }
+        } else {
+            results = Collections.emptyList();
+        }
+
+        return results;
+    }
 }

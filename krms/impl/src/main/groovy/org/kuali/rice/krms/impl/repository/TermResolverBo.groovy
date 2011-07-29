@@ -10,7 +10,7 @@ import org.kuali.rice.krms.api.repository.term.TermResolverDefinitionContract;
 public class TermResolverBo extends PersistableBusinessObjectBase implements TermResolverDefinitionContract {
     
     def String id
-    def String namespaceCode
+    def String namespace
     def String name
     def String contextId
     def String typeId
@@ -73,9 +73,8 @@ public class TermResolverBo extends PersistableBusinessObjectBase implements Ter
 
         TermResolverBo bo = new TermResolverBo()
         bo.id = im.id
-        bo.namespaceCode = im.namespaceCode
+        bo.namespace = im.namespace
         bo.name = im.name
-        bo.contextId = im.contextId
         bo.typeId = im.typeId
         bo.output = TermSpecificationBo.from(im.output)
         bo.outputId = im.output.id
@@ -96,7 +95,7 @@ public class TermResolverBo extends PersistableBusinessObjectBase implements Ter
 		for (Entry<String,String> entry  : im.getAttributes().entrySet()){
 			KrmsAttributeDefinitionBo attrDefBo = KrmsRepositoryServiceLocator
 					.getKrmsAttributeDefinitionService()
-					.getKrmsAttributeBo(entry.getKey(), im.getNamespaceCode());
+					.getKrmsAttributeBo(entry.getKey(), im.getNamespace());
 			attributeBo = new TermResolverAttributeBo();
 			attributeBo.setTermResolverId( im.getId() );
 			attributeBo.setAttributeDefinitionId( attrDefBo.getId() );

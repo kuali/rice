@@ -21,7 +21,7 @@ public class TestBoService implements BusinessObjectService {
 
 	{
 		idFieldNamesMap.put(KrmsTypeBo.class, "id");
-		idFieldNamesMap.put(ContextBo.class, "contextId");
+		idFieldNamesMap.put(ContextBo.class, "id");
 		idFieldNamesMap.put(TermSpecificationBo.class, "id");
 	}
 

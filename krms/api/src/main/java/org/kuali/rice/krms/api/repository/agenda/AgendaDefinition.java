@@ -32,7 +32,6 @@ import java.util.Map;
 @XmlType(name = AgendaDefinition.Constants.TYPE_NAME, propOrder = {
 		AgendaDefinition.Elements.AGENDA_ID,
 		AgendaDefinition.Elements.NAME,
-		AgendaDefinition.Elements.NAMESPACE_CODE,
 		AgendaDefinition.Elements.TYPE_ID,
 		AgendaDefinition.Elements.CONTEXT_ID,
         AgendaDefinition.Elements.ACTIVE,
@@ -49,9 +48,6 @@ public final class AgendaDefinition extends AbstractDataTransferObject implement
 	
 	@XmlElement(name = Elements.NAME, required = true)
 	private final String name;
-	
-	@XmlElement(name = Elements.NAMESPACE_CODE, required = true)
-	private final String namespaceCode;
 	
 	@XmlElement(name = Elements.TYPE_ID, required = false)
 	private final String typeId;
@@ -83,7 +79,6 @@ public final class AgendaDefinition extends AbstractDataTransferObject implement
     private AgendaDefinition() {
     	this.id = null;
     	this.name = null;
-    	this.namespaceCode = null;
     	this.typeId = null;
     	this.contextId = null;
         this.active = false;
@@ -101,7 +96,6 @@ public final class AgendaDefinition extends AbstractDataTransferObject implement
     private AgendaDefinition(Builder builder) {
         this.id = builder.getId();
         this.name = builder.getName();
-        this.namespaceCode = builder.getNamespaceCode();
         this.typeId = builder.getTypeId();
         this.contextId = builder.getContextId();
         this.active = builder.isActive();
@@ -122,11 +116,6 @@ public final class AgendaDefinition extends AbstractDataTransferObject implement
 	@Override
 	public String getName() {
 		return this.name;
-	}
-
-	@Override
-	public String getNamespaceCode() {
-		return this.namespaceCode;
 	}
 
 	@Override
@@ -168,7 +157,6 @@ public final class AgendaDefinition extends AbstractDataTransferObject implement
         
 		private String id;
         private String name;
-        private String namespaceCode;
         private String typeId;
         private String contextId;
         private boolean active;
@@ -179,18 +167,17 @@ public final class AgendaDefinition extends AbstractDataTransferObject implement
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
 		 */
-        private Builder(String id, String name, String namespaceCode, String typeId, String contextId) {
+        private Builder(String id, String name, String typeId, String contextId) {
         	setId(id);
             setName(name);
-            setNamespaceCode(namespaceCode);
             setTypeId(typeId);
             setContextId(contextId);
             setActive(true);
             setAttributes(new HashMap<String, String>());
         }
         
-        public static Builder create(String id, String name, String namespaceCode, String typeId, String contextId){
-        	return new Builder(id, name, namespaceCode, typeId, contextId);
+        public static Builder create(String id, String name, String typeId, String contextId){
+        	return new Builder(id, name, typeId, contextId);
         }
         /**
          * Creates a builder by populating it with data from the given {@link AgendaDefinitionContract}.
@@ -202,8 +189,7 @@ public final class AgendaDefinition extends AbstractDataTransferObject implement
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }
-            Builder builder =  new Builder(contract.getId(), contract.getName(),
-            		contract.getNamespaceCode(), contract.getTypeId(), contract.getContextId());
+            Builder builder =  new Builder(contract.getId(), contract.getName(), contract.getTypeId(), contract.getContextId());
             builder.setActive(contract.isActive());
             builder.setFirstItemId( contract.getFirstItemId() );
             if (contract.getAttributes() != null) {
@@ -232,13 +218,6 @@ public final class AgendaDefinition extends AbstractDataTransferObject implement
                 throw new IllegalArgumentException("name is blank");
             }
 			this.name = name;
-		}
-     
-        public void setNamespaceCode(String namespaceCode) {
-            if (StringUtils.isBlank(namespaceCode)) {
-                throw new IllegalArgumentException("namespace is blank");
-            }
-			this.namespaceCode = namespaceCode;
 		}
      
 		public void setTypeId(String typeId) {
@@ -292,11 +271,6 @@ public final class AgendaDefinition extends AbstractDataTransferObject implement
 		@Override
 		public String getName() {
 			return name;
-		}
-
-		@Override
-		public String getNamespaceCode() {
-			return namespaceCode;
 		}
 
 		@Override
@@ -358,7 +332,6 @@ public final class AgendaDefinition extends AbstractDataTransferObject implement
 	public static class Elements {
 		final static String AGENDA_ID = "id";
 		final static String NAME = "name";
-		final static String NAMESPACE_CODE = "namespaceCode";
 		final static String TYPE_ID = "typeId";
 		final static String CONTEXT_ID = "contextId";
         final static String ACTIVE = "active";

@@ -55,9 +55,16 @@ class AgendaBoServiceImplTest {
 	
 	private static AgendaDefinition TEST_AGENDA_ITEM_DEF;
 	private static AgendaBo TEST_AGENDA_ITEM_BO;
-	
+
+    private static ContextBo CONTEXT1;
 	private static KrmsAttributeDefinitionBo ADB1;
 	private static KrmsAttributeDefinitionBo ADB2;
+
+    static {
+        CONTEXT1 = new ContextBo();
+        CONTEXT1.setId(CONTEXT_ID_1);
+        CONTEXT1.setNamespace("KRMS_TEST");
+    }
 	
 	@BeforeClass
 	static void createSamples() {
@@ -67,13 +74,13 @@ class AgendaBoServiceImplTest {
 		myAttrs.put(ATTR_NAME_2, ATTR_VALUE_2)
 		
 		// create a new agenda definition (null id, null version number)
-		AgendaDefinition.Builder builder = AgendaDefinition.Builder.create(null, AGENDA_NAME, NAMESPACE, TYPE_ID, CONTEXT_ID_1)
+		AgendaDefinition.Builder builder = AgendaDefinition.Builder.create(null, AGENDA_NAME, TYPE_ID, CONTEXT_ID_1)
 		builder.setFirstItemId(AGENDA_ITEM_ID_1)
 		builder.setAttributes(myAttrs);
 		TEST_NEW_AGENDA_DEF = builder.build()
 		
 		// create existing definition (with id and version number)
-		builder = AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, NAMESPACE, TYPE_ID, CONTEXT_ID_1)
+		builder = AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, TYPE_ID, CONTEXT_ID_1)
 		builder.setFirstItemId(AGENDA_ITEM_ID_1)
 		builder.setVersionNumber( VERSION_NUMBER_1 )
 		builder.setAttributes(myAttrs);
@@ -82,7 +89,6 @@ class AgendaBoServiceImplTest {
 		// create Agenda bo
 		TEST_AGENDA_BO = new AgendaBo()
 		TEST_AGENDA_BO.setId( AGENDA_ID_1 )
-		TEST_AGENDA_BO.setNamespace( NAMESPACE )
 		TEST_AGENDA_BO.setName( AGENDA_NAME )
 		TEST_AGENDA_BO.setTypeId( TYPE_ID )
 		TEST_AGENDA_BO.setContextId( CONTEXT_ID_1 )
@@ -161,56 +167,56 @@ class AgendaBoServiceImplTest {
 	}
 	
 	@Test
-	public void test_getAgendaByNameAndNamespace() {
+	public void test_getAgendaByNameAndContextId() {
 		mockBusinessObjectService.demand.findByPrimaryKey(1..1) {clazz, map -> TEST_AGENDA_BO}
 		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 
 		AgendaBoService service = new AgendaBoServiceImpl()
 		service.setBusinessObjectService(bos)
-		AgendaDefinition myAgenda = service.getAgendaByNameAndNamespace(AGENDA_ID_1, NAMESPACE)
+		AgendaDefinition myAgenda = service.getAgendaByNameAndContextId(AGENDA_ID_1, CONTEXT_ID_1)
 
 		Assert.assertEquals(service.to(TEST_AGENDA_BO), myAgenda)
 		mockBusinessObjectService.verify(bos)
 	}
 
 	@Test
-	public void test_getAgendaByNameAndNamespace_when_none_found() {
+	public void test_getAgendaByNameAndContextId_when_none_found() {
 		mockBusinessObjectService.demand.findByPrimaryKey(1..1) {Class clazz, Map map -> null}
 		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 
 		AgendaBoService service = new AgendaBoServiceImpl()
 		service.setBusinessObjectService(bos)
-		AgendaDefinition myAgenda = service.getAgendaByNameAndNamespace("I_DONT_EXIST", NAMESPACE)
+		AgendaDefinition myAgenda = service.getAgendaByNameAndContextId("I_DONT_EXIST", CONTEXT_ID_1)
 
 		Assert.assertNull(myAgenda)
 		mockBusinessObjectService.verify(bos)
 	}
 
 	@Test
-	public void test_getAgendaByNameAndNamespace_empty_name() {
+	public void test_getAgendaByNameAndContextId_empty_name() {
 		shouldFail(IllegalArgumentException.class) {
-			new AgendaBoServiceImpl().getAgendaByNameAndNamespace("", NAMESPACE)
+			new AgendaBoServiceImpl().getAgendaByNameAndContextId("", CONTEXT_ID_1)
 		}
 	}
 
 	@Test
-	public void test_getAgendaByNameAndNamespace_null_name() {
+	public void test_getAgendaByNameAndContextId_null_name() {
 		shouldFail(IllegalArgumentException.class) {
-			new AgendaBoServiceImpl().getAgendaByNameAndNamespace(null, NAMESPACE)
+			new AgendaBoServiceImpl().getAgendaByNameAndContextId(null, CONTEXT_ID_1)
 		}
 	}
 
 	@Test
-	public void test_getAgendaByNameAndNamespace_empty_namespace() {
+	public void test_getAgendaByNameAndContextId_empty_context_id() {
 		shouldFail(IllegalArgumentException.class) {
-			new AgendaBoServiceImpl().getAgendaByNameAndNamespace(AGENDA_ID_1, "")
+			new AgendaBoServiceImpl().getAgendaByNameAndContextId(AGENDA_ID_1, "")
 		}
 	}
 
 	@Test
-	public void test_getAgendaByNameAndNamespace_null_namespace() {
+	public void test_getAgendaByNameAndContextId_null_context_id() {
 		shouldFail(IllegalArgumentException.class) {
-			new AgendaBoServiceImpl().getAgendaByNameAndNamespace(AGENDA_ID_1, null)
+			new AgendaBoServiceImpl().getAgendaByNameAndContextId(AGENDA_ID_1, null)
 		}
 	}
 
@@ -285,6 +291,7 @@ class AgendaBoServiceImplTest {
   @Test
   void test_createAgenda_success() {
 		mockBusinessObjectService.demand.findByPrimaryKey(1..1) {Class clazz, Map map -> null}
+        mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) { Class clazz, Object obj -> CONTEXT1 }
 		mockBusinessObjectService.demand.findMatching(1..1) { Class clazz, Map map -> [ADB1] }
 		mockBusinessObjectService.demand.findMatching(1..1) { Class clazz, Map map -> [ADB2] }
 		mockBusinessObjectService.demand.save { PersistableBusinessObject bo -> }
@@ -328,6 +335,7 @@ class AgendaBoServiceImplTest {
   @Test
   void test_updateAgenda_success() {
 		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {Class clazz, String id -> TEST_AGENDA_BO}
+        mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) { Class clazz, Object obj -> CONTEXT1 }
 		mockBusinessObjectService.demand.findMatching(1..1) { Class clazz, Map map -> [ADB1] }
 		mockBusinessObjectService.demand.findMatching(1..1) { Class clazz, Map map -> [ADB2] }
 		mockBusinessObjectService.demand.deleteMatching(1) { Class clazz, Map map -> }

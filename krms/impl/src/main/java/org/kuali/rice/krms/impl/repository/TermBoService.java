@@ -38,6 +38,6 @@ public interface TermBoService {
 	TermDefinition createTermDefinition(TermDefinition termDef);
 	
 	TermResolverDefinition getTermResolverById(String id);
-	List<TermResolverDefinition> getTermResolversByContextId(String id);
+	List<TermResolverDefinition> getTermResolversByNamespace(String namespace);
 	TermResolverDefinition createTermResolver(TermResolverDefinition termResolver);
 }

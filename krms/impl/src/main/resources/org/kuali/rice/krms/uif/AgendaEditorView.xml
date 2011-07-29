@@ -132,7 +132,7 @@
     <property name="fieldBindByNamePrefix" value="context"/>
     <property name="items">
       <list>
-        <bean parent="FieldGroup" p:label="Field Group 4">
+        <bean parent="FieldGroup" p:showLabel="false">
           <!-- p:width="40%" p:labelField.width="10%" -->
           <property name="group.layoutManager.orientation"
             value="HORIZONTAL" />
@@ -215,7 +215,7 @@
     </property>
   </bean>
 
-  <bean id="AgendaEditorView-TreeExpandCollapse" parent="FieldGroup" p:label="Field Group 4"
+  <bean id="AgendaEditorView-TreeExpandCollapse" parent="FieldGroup" p:showLabel="false"
     p:conditionalRender="document.newMaintainableObject.dataObject.agenda != null and document.newMaintainableObject.dataObject.agenda.name != null and !document.newMaintainableObject.dataObject.agenda.name.isEmpty()"
     p:style="font-size: smaller;">
     <property name="group.layoutManager.orientation" value="HORIZONTAL"/>

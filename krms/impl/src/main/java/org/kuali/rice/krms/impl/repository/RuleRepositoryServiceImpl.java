@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.Predicate;
@@ -47,7 +48,7 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
     		throw new IllegalArgumentException("selection criteria namespace code is null or blank");
     	}
     	QueryByCriteria queryCriteria = buildQuery(contextSelectionCriteria);
-        GenericQueryResults<ContextBo> results = criteriaLookupService.lookup(ContextBo.class, queryCriteria);
+        GenericQueryResults<ContextBo> results = getCriteriaLookupService().lookup(ContextBo.class, queryCriteria);
 
     	List<ContextBo> resultBos = results.getResults();
 
@@ -214,6 +215,7 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
 
     protected BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
+            // TODO: inject this instead
 			businessObjectService = KRADServiceLocator.getBusinessObjectService();
 		}
 		return businessObjectService;
@@ -226,6 +228,14 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
      */
     public void setCriteriaLookupService(final CriteriaLookupService criteriaLookupService) {
         this.criteriaLookupService = criteriaLookupService;
+    }
+
+    protected CriteriaLookupService getCriteriaLookupService() {
+        if (criteriaLookupService == null) {
+            // TODO: inject this instead
+            criteriaLookupService = KrmsRepositoryServiceLocator.getCriteriaLookupService();
+        }
+        return criteriaLookupService;
     }
     
 }

@@ -48,8 +48,8 @@ import org.kuali.rice.krms.api.repository.category.CategoryDefinitionContract;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = TermSpecificationDefinition.Constants.TYPE_NAME, propOrder = {
 		TermSpecificationDefinition.Elements.ID,
-		TermSpecificationDefinition.Elements.CONTEXT_ID,
 		TermSpecificationDefinition.Elements.NAME,
+        TermSpecificationDefinition.Elements.NAMESPACE,
         TermSpecificationDefinition.Elements.TYPE,
         TermSpecificationDefinition.Elements.DESCRIPTION,
         CoreConstants.CommonElements.VERSION_NUMBER,
@@ -62,10 +62,10 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 	
 	@XmlElement(name = Elements.ID, required=false)
 	private final String id;
-	@XmlElement(name = Elements.CONTEXT_ID, required=true)
-	private final String contextId;
-	@XmlElement(name = Elements.NAME, required=true)
-	private final String name;
+    @XmlElement(name = Elements.NAME, required=true)
+    private final String name;
+    @XmlElement(name = Elements.NAMESPACE, required=true)
+    private final String namespace;
 	@XmlElement(name = Elements.TYPE, required=true)
 	private final String type;
     @XmlElement(name = Elements.DESCRIPTION, required=false)
@@ -87,8 +87,8 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 	 */
 	private TermSpecificationDefinition() {
 		id = null;
-		contextId = null;
 		name = null;
+        namespace = null;
 		type = null;
         description = null;
         versionNumber = null;
@@ -102,8 +102,8 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 	 */
 	private TermSpecificationDefinition(Builder b) {
 		id = b.getId();
-		contextId = b.getContextId();
 		name = b.getName();
+        namespace = b.getNamespace();
 		type = b.getType();
         description = b.getDescription();
 		versionNumber = b.getVersionNumber();
@@ -130,8 +130,8 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 		private static final long serialVersionUID = 1L;
 		
 		private String termSpecificationId;
-		private String contextId;
 		private String name;
+        private String namespace;
 		private String type;
         private String description;
         private Long versionNumber;
@@ -149,10 +149,10 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 			}
 		};
 		
-		private Builder(String termSpecificationId, String contextId, String name, String type) {
+		private Builder(String termSpecificationId, String name, String namespace, String type) {
 			// weird to use setters in constructor .. oh well.
 			setId(termSpecificationId);
-			setContextId(contextId);
+			setNamespace(namespace);
 			setName(name);
 			setType(type);
             setCategories(new ArrayList<CategoryDefinition.Builder>());
@@ -161,17 +161,17 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 		/**
 		 * static factory for a {@link Builder} from a complete set of field values for this object.
 		 * 
-		 * @param termSpecificationId the primary key field.  Must be null for service methods that 
-		 * create {@link TermSpecificationDefinitionContract}s, and must be non-null & contain non-whitespace 
-		 * chars otherwise.
-		 * @param contextId key relates the {@link TermSpecificationDefinition} to a context.
-		 * @param name the name for the {@link TermSpecificationDefinition}.  Must be non-null;.
-		 * @param type the type for the {@link TermSpecificationDefinition}
-		 * @return a {@link Builder} object
+		 *
+         * @param termSpecificationId the primary key field.  Must be null for service methods that
+         * create {@link org.kuali.rice.krms.api.repository.term.TermSpecificationDefinitionContract}s, and must be non-null & contain non-whitespace
+         * chars otherwise.
+         * @param name the name for the {@link org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition}.  Must be non-null;.
+         * @param namespace the namespace for the {@link org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition}.  Must be non-null & contain non-whitespace.
+         *@param type the type for the {@link org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition}  @return a {@link Builder} object
 		 * @throws IllegalArgumentException if invalid parameters are supplied.
 		 */
-		public static Builder create(String termSpecificationId, String contextId, String name, String type) {
-			return new Builder(termSpecificationId, contextId, name, type);
+		public static Builder create(String termSpecificationId, String name, String namespace, String type) {
+			return new Builder(termSpecificationId, name, namespace, type);
 		}
 		
 		/**
@@ -182,10 +182,8 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 		 */
 		public static Builder create(TermSpecificationDefinitionContract termSpecification) {
 			if (termSpecification == null) throw new IllegalArgumentException("termSpecification must be non-null");
-			Builder builder =new Builder(termSpecification.getId(), 
-					termSpecification.getContextId(), 
-					termSpecification.getName(), 
-					termSpecification.getType());
+			Builder builder =new Builder(termSpecification.getId(), termSpecification.getName(), termSpecification.getNamespace(),
+                    termSpecification.getType());
             builder.setDescription(termSpecification.getDescription());
 			builder.setVersionNumber(termSpecification.getVersionNumber());
             for (CategoryDefinitionContract category : termSpecification.getCategories()) {
@@ -213,13 +211,13 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 		}
 		
 		/**
-		 * @param contextId the contextId to set.  Must be non-null and contain non-whitespace chars;
+		 * @param namespace the namespace to set.  Must be non-null and contain non-whitespace chars;
 		 */
-		public void setContextId(String contextId) {
-			if (StringUtils.isBlank(contextId)) {
-				throw new IllegalArgumentException("contextId" + NON_NULL_NON_EMPTY_ERROR);
+		public void setNamespace(String namespace) {
+			if (StringUtils.isBlank(namespace)) {
+				throw new IllegalArgumentException("namespace" + NON_NULL_NON_EMPTY_ERROR);
 			}
-			this.contextId = contextId;
+			this.namespace = namespace;
 		}
 		
 		/**
@@ -269,11 +267,11 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 		}
 
 		/**
-		 * @return the contextId
+		 * @return the namespace
 		 */
 		@Override
-		public String getContextId() {
-			return this.contextId;
+		public String getNamespace() {
+			return this.namespace;
 		}
 
 		/**
@@ -334,22 +332,17 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 	}
 
 	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.krms.api.repository.term.TermSpecificationDefinitionContract#getContextId()
-	 */
-	@Override
-	public String getContextId() {
-		return contextId;
-	}
-
-	/**
 	 * @see org.kuali.rice.krms.api.repository.term.TermSpecificationDefinitionContract#getName()
 	 */
 	@Override
 	public String getName() {
 		return name;
 	}
+
+    @Override
+    public String getNamespace() {
+        return namespace;
+    }
 
 	/**
 	 * @see org.kuali.rice.krms.api.repository.term.TermSpecificationDefinitionContract#getType()
@@ -390,13 +383,13 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 	
 	static class Elements {
 		public static final String ID = "id";
-		public static final String CONTEXT_ID = "contextId";
 		public static final String NAME = "name";
+        public final static String NAMESPACE = "namespace";
         public static final String TYPE = "type";
         public static final String DESCRIPTION = "description";
         public final static String CATEGORIES = "categories";
         public final static String CATEGORY = "category";
-	}
+    }
 	
 
 }

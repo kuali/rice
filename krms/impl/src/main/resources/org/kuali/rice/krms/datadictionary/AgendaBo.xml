@@ -28,7 +28,6 @@
       <list>
         <ref bean="AgendaBo-id"/>
         <ref bean="AgendaBo-name"/>
-        <ref bean="AgendaBo-namespace"/>
         <ref bean="AgendaBo-typeId"/>
         <ref bean="AgendaBo-contextId"/>
       </list>
@@ -61,17 +60,6 @@
     <property name="label" value="Agenda Name"/>
   </bean>  
   
-  <bean id="AgendaBo-namespace" parent="AgendaBo-namespace-parentBean"/>
-  <bean id="AgendaBo-namespace-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="forceUppercase" value="false"/>
-    <property name="shortLabel" value="Namespace"/>
-    <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
-    </property>
-    <property name="name" value="namespace"/>
-    <property name="label" value="Agenda Namespace"/>
-  </bean>  
-  
   <bean id="AgendaBo-typeId" parent="AgendaBo-typeId-parentBean"/>
   <bean id="AgendaBo-typeId-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false"/>
@@ -101,7 +89,6 @@
       <list>
         <bean parent="LookupCriteriaAttributeField" p:propertyName="id" />
         <bean parent="LookupCriteriaAttributeField" p:propertyName="name" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="namespace" />
         <bean parent="LookupCriteriaAttributeField" p:propertyName="typeId" />
         <bean parent="LookupCriteriaAttributeField" p:propertyName="contextId" />
       </list>
@@ -110,7 +97,6 @@
       <list>
         <bean parent="AttributeField" p:propertyName="id" />
         <bean parent="AttributeField" p:propertyName="name" />
-        <bean parent="AttributeField" p:propertyName="namespace" />
         <bean parent="AttributeField" p:propertyName="typeId" />
         <bean parent="AttributeField" p:propertyName="contextId"/>
       </list>

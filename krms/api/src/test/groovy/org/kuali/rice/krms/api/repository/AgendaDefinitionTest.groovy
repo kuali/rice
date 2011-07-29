@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krms.api.repository
 
-import java.util.List
-
 import javax.xml.bind.JAXBContext
 import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
@@ -50,7 +48,7 @@ class AgendaDefinitionTest {
 <agenda xmlns:ns2="http://rice.kuali.org/core/v2_0" xmlns="http://rice.kuali.org/krms/repository/v2_0">
     <id>AGENDAID001</id>
     <name>Agenda1</name>
-    <namespaceCode>KRMS_TEST</namespaceCode>
+    <namespace>KRMS_TEST</namespace>
     <typeId>1234XYZ</typeId>
     <contextId>CONTEXT-001</contextId>
     <active>true</active>
@@ -66,93 +64,78 @@ class AgendaDefinitionTest {
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_AgendaDefinition_Builder_create_fail_all_null() {
-		AgendaDefinition.Builder.create(null, null, null, null, null)
+		AgendaDefinition.Builder.create(null, null, null, null)
 	}	
 
 	@Test
 	void test_AgendaDefinition_Builder_create_null_agenda_id() {
         // null ID is legit
-		AgendaDefinition.Builder.create(null, AGENDA_NAME, NAMESPACE, TYPE_ID, CONTEXT_ID_1)
+		AgendaDefinition.Builder.create(null, AGENDA_NAME, TYPE_ID, CONTEXT_ID_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_AgendaDefinition_Builder_create_fail_empty_agenda_id() {
-		AgendaDefinition.Builder.create("", AGENDA_NAME, NAMESPACE, TYPE_ID, CONTEXT_ID_1)
+		AgendaDefinition.Builder.create("", AGENDA_NAME, TYPE_ID, CONTEXT_ID_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_AgendaDefinition_Builder_create_fail_whitespace_agenda_id() {
-		AgendaDefinition.Builder.create("  	", AGENDA_NAME, NAMESPACE, TYPE_ID, CONTEXT_ID_1)
+		AgendaDefinition.Builder.create("  	", AGENDA_NAME, TYPE_ID, CONTEXT_ID_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_AgendaDefinition_Builder_create_fail_null_agenda_name() {
-		AgendaDefinition.Builder.create(AGENDA_ID_1, null, NAMESPACE, TYPE_ID, CONTEXT_ID_1)
+		AgendaDefinition.Builder.create(AGENDA_ID_1, null, TYPE_ID, CONTEXT_ID_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_AgendaDefinition_Builder_create_fail_empty_agenda_name() {
-		AgendaDefinition.Builder.create(AGENDA_ID_1, "", NAMESPACE, TYPE_ID, CONTEXT_ID_1)
+		AgendaDefinition.Builder.create(AGENDA_ID_1, "", TYPE_ID, CONTEXT_ID_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_AgendaDefinition_Builder_create_fail_whitespace_agenda_name() {
-		AgendaDefinition.Builder.create(AGENDA_ID_1, "  	", NAMESPACE, TYPE_ID, CONTEXT_ID_1)
-	}
-
-	@Test(expected=IllegalArgumentException.class)
-	void test_AgendaDefinition_Builder_create_fail_null_agenda_namespace() {
-		AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, null, TYPE_ID, CONTEXT_ID_1)
-	}
-
-	@Test(expected=IllegalArgumentException.class)
-	void test_AgendaDefinition_Builder_create_fail_empty_agenda_namespace() {
-		AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME,"", TYPE_ID, CONTEXT_ID_1)
-	}
-
-	@Test(expected=IllegalArgumentException.class)
-	void test_AgendaDefinition_Builder_create_fail_whitespace_agenda_namespace() {
-		AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, "  	", TYPE_ID, CONTEXT_ID_1)
+		AgendaDefinition.Builder.create(AGENDA_ID_1, "  	", TYPE_ID, CONTEXT_ID_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_AgendaDefinition_Builder_create_fail_null_type_id() {
-		AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, NAMESPACE, null, CONTEXT_ID_1)
+		AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, null, CONTEXT_ID_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_AgendaDefinition_Builder_create_fail_empty_type_id() {
-		AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, NAMESPACE, "", CONTEXT_ID_1)
+		AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, "", CONTEXT_ID_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_AgendaDefinition_Builder_create_fail_whitespace_type_id() {
-		AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, NAMESPACE, "    ", CONTEXT_ID_1)
+		AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, "    ", CONTEXT_ID_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_AgendaDefinition_Builder_create_fail_null_context_id() {
-		AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, NAMESPACE, TYPE_ID, null)
+		AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, TYPE_ID, null)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_AgendaDefinition_Builder_create_fail_empty_context_id() {
-		AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, NAMESPACE, TYPE_ID, "")
+		AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, TYPE_ID, "")
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_AgendaDefinition_Builder_create_fail_whitespace_context_id() {
-		AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, NAMESPACE, TYPE_ID, "    ")
+		AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, TYPE_ID, "    ")
 	}
 
 	@Test
 	void test_AgendaDefinition_Builder_create() {
-		AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, NAMESPACE, TYPE_ID, CONTEXT_ID_1)
+		AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, TYPE_ID, CONTEXT_ID_1)
 	}
 	
 	@Test
 	void test_AgendaDefinition_Builder_create_with_item() {
-		AgendaDefinition.Builder builder = AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, NAMESPACE, TYPE_ID, CONTEXT_ID_1)
+		AgendaDefinition.Builder builder = AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, TYPE_ID, CONTEXT_ID_1)
 		builder.setFirstItemId(AGENDA_ITEM_ID_1)
 	}
 	
@@ -160,7 +143,7 @@ class AgendaDefinitionTest {
 	void test_AgendaDefinition_Builder_create_with_attributes() {
 		Map<String,String> myAttrs = new HashMap<String,String>()
 		myAttrs.put(ATTR_NAME_1, ATTR_VALUE_1)
-		AgendaDefinition.Builder builder = AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, NAMESPACE, TYPE_ID, CONTEXT_ID_1)
+		AgendaDefinition.Builder builder = AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, TYPE_ID, CONTEXT_ID_1)
 		builder.setFirstItemId(AGENDA_ITEM_ID_1)
 		builder.setAttributes(myAttrs);
 	}
@@ -169,7 +152,7 @@ class AgendaDefinitionTest {
 	void test_AgendaDefinition_Builder_create_and_build() {
 		Map<String,String> myAttrs = new HashMap<String,String>()
 		myAttrs.put(ATTR_NAME_1, ATTR_VALUE_1)
-		AgendaDefinition.Builder builder = AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, NAMESPACE, TYPE_ID, CONTEXT_ID_1)
+		AgendaDefinition.Builder builder = AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, TYPE_ID, CONTEXT_ID_1)
 		builder.setFirstItemId(AGENDA_ITEM_ID_1)
 		builder.setAttributes(myAttrs);
 		builder.build()
@@ -180,7 +163,7 @@ class AgendaDefinitionTest {
 		Map<String,String> myAttrs = new HashMap<String,String>()
 		myAttrs.put(ATTR_NAME_1, ATTR_VALUE_1)
 		myAttrs.put(ATTR_NAME_2, ATTR_VALUE_2)
-		AgendaDefinition.Builder builder = AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, NAMESPACE, TYPE_ID, CONTEXT_ID_1)
+		AgendaDefinition.Builder builder = AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, TYPE_ID, CONTEXT_ID_1)
 		builder.setFirstItemId(AGENDA_ITEM_ID_1)
 		builder.setAttributes(myAttrs);
 		AgendaDefinition myAgenda = builder.build()

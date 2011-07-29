@@ -91,7 +91,7 @@
       <list>
         <bean parent="AttributeField" p:propertyName="specification.id"/>
         <bean parent="AttributeField" p:propertyName="specification.name"/>
-        <bean parent="AttributeField" p:propertyName="specification.contextId"/>
+        <bean parent="AttributeField" p:propertyName="specification.namespace"/>
         <bean parent="AttributeField" p:propertyName="specification.type"/>
       </list>
     </property>

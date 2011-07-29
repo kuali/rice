@@ -87,7 +87,7 @@
     <property name="title" value="Fiscal Officer Inquiry"/>
     <property name="dataObjectClassName" value="edu.sampleu.travel.dto.FiscalOfficerInfo"/>
     <property name="viewHelperServiceClassName" value="edu.sampleu.travel.service.FiscalOfficerInfoInquiryViewHelperServiceImpl" />
-    <property name="Items">
+    <property name="items">
       <list>
         <ref bean="information" />
         <ref bean="accounts" />    

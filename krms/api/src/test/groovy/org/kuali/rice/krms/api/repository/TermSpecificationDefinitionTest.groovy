@@ -34,7 +34,7 @@ import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition.Build
 class TermSpecificationDefinitionTest {
 
 	private static final String TERM_SPEC_ID_1 = "1001"
-	private static final String TERM_SPEC_CONTEXT_ID = "1001"
+	private static final String TERM_SPEC_NAMESPACE = "KRMS_TEST"
 	private static final String TERM_SPEC_NAME = "total"
 	private static final String TERM_SPEC_TYPE = "java.math.BigDecimal"
     private static final String TERM_SPEC_DESCRIPTION = "the total number of widgets sold in the last quarter"
@@ -43,8 +43,8 @@ class TermSpecificationDefinitionTest {
 	private static final String EXPECTED_XML = """
 		<TermSpecification xmlns="http://rice.kuali.org/krms/repository/v2_0">
 			<id>1001</id>
-			<contextId>1001</contextId>
 			<name>total</name>
+			<namespace>KRMS_TEST</namespace>
 			<type>java.math.BigDecimal</type>
 			<description>the total number of widgets sold in the last quarter</description>
 			<categories>
@@ -57,24 +57,24 @@ class TermSpecificationDefinitionTest {
 		TermSpecificationDefinition.Builder.create(null, null, null, null);
 	}
 
-	//	TermSpecificationDefinition.Builder.create(TERM_SPEC_ID, TERM_SPEC_CONTEXT_ID, TERM_SPEC_NAME, TERM_SPEC_TYPE);
+	//	TermSpecificationDefinition.Builder.create(TERM_SPEC_ID, TERM_SPEC_NAMESPACE, TERM_SPEC_NAME, TERM_SPEC_TYPE);
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_empty_context_id() {
-		TermSpecificationDefinition.Builder.create(TERM_SPEC_ID_1, null, TERM_SPEC_NAME, TERM_SPEC_TYPE);
+		TermSpecificationDefinition.Builder.create(TERM_SPEC_ID_1, TERM_SPEC_NAME, null, TERM_SPEC_TYPE);
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_whitespace_id() {
-		TermSpecificationDefinition.Builder.create(TERM_SPEC_ID_1, null, TERM_SPEC_NAME, TERM_SPEC_TYPE);
+		TermSpecificationDefinition.Builder.create(TERM_SPEC_ID_1, TERM_SPEC_NAME, null, TERM_SPEC_TYPE);
 	}
 
 	@Test
 	void test_Builder_create_success_null_id() {
 		TermSpecificationDefinition termSpecDef =
-				TermSpecificationDefinition.Builder.create(null, TERM_SPEC_CONTEXT_ID, TERM_SPEC_NAME, TERM_SPEC_TYPE).build();
+				TermSpecificationDefinition.Builder.create(null, TERM_SPEC_NAME, TERM_SPEC_NAMESPACE, TERM_SPEC_TYPE).build();
 		Assert.assertEquals(null, termSpecDef.getId())
-		Assert.assertEquals(TERM_SPEC_CONTEXT_ID, termSpecDef.getContextId())
+		Assert.assertEquals(TERM_SPEC_NAMESPACE, termSpecDef.getNamespace())
 		Assert.assertEquals(TERM_SPEC_NAME, termSpecDef.getName())
 		Assert.assertEquals(TERM_SPEC_TYPE, termSpecDef.getType())
 	}
@@ -100,7 +100,7 @@ class TermSpecificationDefinitionTest {
 
     public static TermSpecificationDefinition buildFullTermSpecificationDefinition() {
         Builder termSpecDefBuilder =
-        Builder.create(TERM_SPEC_ID_1, TERM_SPEC_CONTEXT_ID, TERM_SPEC_NAME, TERM_SPEC_TYPE);
+        Builder.create(TERM_SPEC_ID_1, TERM_SPEC_NAME, TERM_SPEC_NAMESPACE, TERM_SPEC_TYPE);
         termSpecDefBuilder.setDescription(TERM_SPEC_DESCRIPTION);
 
         TermSpecificationDefinition termSpecDef = termSpecDefBuilder.build()

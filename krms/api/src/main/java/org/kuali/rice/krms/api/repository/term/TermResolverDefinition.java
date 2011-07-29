@@ -47,8 +47,7 @@ import java.util.Set;
 @XmlType(name = TermResolverDefinition.Constants.TYPE_NAME, propOrder = {
 		TermResolverDefinition.Elements.ID,
 		TermResolverDefinition.Elements.NAME,
-        TermResolverDefinition.Elements.NAMESPACE_CODE,
-        TermResolverDefinition.Elements.CONTEXT_ID,
+        TermResolverDefinition.Elements.NAMESPACE,
 		TermResolverDefinition.Elements.TYPE_ID,
 		TermResolverDefinition.Elements.OUTPUT,
 		TermResolverDefinition.Elements.PREREQUISITES,
@@ -63,12 +62,10 @@ public final class TermResolverDefinition extends AbstractDataTransferObject imp
 	
 	@XmlElement(name = Elements.ID, required=false)
 	private final String id;
-	@XmlElement(name = Elements.NAMESPACE_CODE, required=true)
-	private final String namespaceCode;
+	@XmlElement(name = Elements.NAMESPACE, required=true)
+	private final String namespace;
 	@XmlElement(name = Elements.NAME, required=true)
 	private final String name;
-    @XmlElement(name = Elements.CONTEXT_ID, required=false)
-    private final String contextId;
     @XmlElement(name = Elements.TYPE_ID, required=true)
     private final String typeId;
 	@XmlElement(name = Elements.OUTPUT, required=false)
@@ -98,9 +95,8 @@ public final class TermResolverDefinition extends AbstractDataTransferObject imp
 	 */
 	private TermResolverDefinition() {
 		id = null;
-		namespaceCode = null;
+		namespace = null;
 		name = null;
-		contextId = null;
 		typeId = null;
 		output = null;
 		prerequisites = null;
@@ -111,9 +107,8 @@ public final class TermResolverDefinition extends AbstractDataTransferObject imp
 	
 	private TermResolverDefinition(Builder builder) {
 		this.id = builder.getId();
-		this.namespaceCode = builder.getNamespaceCode();
+		this.namespace = builder.getNamespace();
 		this.name = builder.getName();
-		this.contextId = builder.getContextId();
 		this.typeId = builder.getTypeId();
 		this.output = builder.getOutput().build();
 		this.prerequisites = BuilderUtils.convertFromBuilderSet(builder.getPrerequisites());
@@ -132,9 +127,8 @@ public final class TermResolverDefinition extends AbstractDataTransferObject imp
 		private static final long serialVersionUID = 1L;
 		
 		private String id;
-		private String namespaceCode;
+		private String namespace;
 		private String name;
-        private String contextId;
         private String typeId;
 		private TermSpecificationDefinition.Builder output;
 		private Set<TermSpecificationDefinition.Builder> prerequisites;
@@ -142,19 +136,11 @@ public final class TermResolverDefinition extends AbstractDataTransferObject imp
 		private Set<String> parameterNames;
         private Long versionNumber;
 		
-		private Builder(String id,
-				String namespaceCode,
-				String name,
-                String contextId,
-                String typeId,
-				TermSpecificationDefinition.Builder output,
-				Set<TermSpecificationDefinition.Builder> prerequisites,
-				Map<String, String> attributes,
-				Set<String> parameterNames) {
+		private Builder(String id, String namespaceCode, String name, String typeId, TermSpecificationDefinition.Builder output,
+                Set<TermSpecificationDefinition.Builder> prerequisites, Map<String, String> attributes, Set<String> parameterNames) {
 			setId(id);
-			setNamespaceCode(namespaceCode);
+			setNamespace(namespaceCode);
 			setName(name);
-			setContextId(contextId);
 			setTypeId(typeId);
 			setOutput(output);
 			setPrerequisites(prerequisites);
@@ -166,9 +152,8 @@ public final class TermResolverDefinition extends AbstractDataTransferObject imp
 		
 		private Builder(TermResolverDefinitionContract termResolver) {
 			setId(termResolver.getId());
-			setNamespaceCode(termResolver.getNamespaceCode());
+			setNamespace(termResolver.getNamespace());
 			setName(termResolver.getName());
-			setContextId(termResolver.getContextId());
 			setTypeId(termResolver.getTypeId());
 			setOutput(TermSpecificationDefinition.Builder.create(termResolver.getOutput()));
 			setPrerequisites(BuilderUtils.transform(termResolver.getPrerequisites(), TermSpecificationDefinition.Builder.toBuilder));
@@ -181,16 +166,10 @@ public final class TermResolverDefinition extends AbstractDataTransferObject imp
 			return new Builder(termResolver);
 		}
 		
-		public static Builder create(String id,
-				String namespaceCode,
-				String name,
-				String contextId,
-				String typeId,
-				TermSpecificationDefinition.Builder output,
-				Set<TermSpecificationDefinition.Builder> prerequisites,
-				Map<String, String> attributes,
-				Set<String> parameterNames) {
-			return new Builder(id, namespaceCode, name, contextId, typeId, output, prerequisites, attributes, parameterNames); 
+		public static Builder create(String id, String namespaceCode, String name, String typeId,
+                TermSpecificationDefinition.Builder output, Set<TermSpecificationDefinition.Builder> prerequisites, Map<String, String> attributes,
+                Set<String> parameterNames) {
+			return new Builder(id, namespaceCode, name, typeId, output, prerequisites, attributes, parameterNames);
 		}
 
 		// Builder setters:
@@ -207,13 +186,13 @@ public final class TermResolverDefinition extends AbstractDataTransferObject imp
 		}
 
 		/**
-		 * @param namespaceCode the namespaceCode to set
+		 * @param namespace the namespace to set
 		 */
-		public void setNamespaceCode(String namespaceCode) {
-			if (StringUtils.isBlank(namespaceCode)) {
+		public void setNamespace(String namespace) {
+			if (StringUtils.isBlank(namespace)) {
 				throw new IllegalArgumentException(/* TODO */);
 			}
-			this.namespaceCode = namespaceCode;
+			this.namespace = namespace;
 		}
 
 		/**
@@ -226,13 +205,6 @@ public final class TermResolverDefinition extends AbstractDataTransferObject imp
 			this.name = name;
 		}
 
-        /**
-         * @param contextId the contextId to set
-         */
-        public void setContextId(String contextId) {
-            this.contextId = contextId;
-        }
-		
 		/**
 		 * @param typeId the typeId to set
 		 */
@@ -296,10 +268,10 @@ public final class TermResolverDefinition extends AbstractDataTransferObject imp
 		}
 		
 		/**
-		 * @return the namespaceCode
+		 * @return the namespace
 		 */
-		public String getNamespaceCode() {
-			return this.namespaceCode;
+		public String getNamespace() {
+			return this.namespace;
 		}
 		/**
 		 * @return the name
@@ -307,12 +279,6 @@ public final class TermResolverDefinition extends AbstractDataTransferObject imp
 		public String getName() {
 			return this.name;
 		}
-        /**
-         * @return the contextId
-         */
-        public String getContextId() {
-            return this.contextId;
-        }
 		/**
 		 * @return the typeId
 		 */
@@ -373,11 +339,11 @@ public final class TermResolverDefinition extends AbstractDataTransferObject imp
 	}
 	
 	/**
-	 * @return the namespaceCode
+	 * @return the namespace
 	 */
 	@Override
-	public String getNamespaceCode() {
-		return this.namespaceCode;
+	public String getNamespace() {
+		return this.namespace;
 	}
 	
 	/**
@@ -388,13 +354,6 @@ public final class TermResolverDefinition extends AbstractDataTransferObject imp
 		return this.name;
 	}
 	
-    /**
-     * @return the contextId
-     */
-    public String getContextId() {
-        return this.contextId;
-    }
-
 	/**
 	 * @return the typeId
 	 */
@@ -452,9 +411,8 @@ public final class TermResolverDefinition extends AbstractDataTransferObject imp
 	
 	static class Elements {
 		public static final String ID = "id";
-		public static final String NAMESPACE_CODE = "namespaceCode";
+		public static final String NAMESPACE = "namespace";
 		public static final String NAME = "name";
-        public static final String CONTEXT_ID = "contextId";
         public static final String TYPE_ID = "typeId";
 		public static final String OUTPUT = "output";
 		public static final String PREREQUISITES = "prerequisites";

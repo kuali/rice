@@ -18,16 +18,6 @@ public interface AgendaDefinitionContract extends Identifiable, Inactivatable, V
 	public String getName();
 
 	/**
-	 * This is the namespace of the Agenda 
-	 *
-	 * <p>
-	 * The namespace of the Agenda
-	 * </p>
-	 * @return the namespace of the Agenda
-	 */
-	public String getNamespaceCode();
-
-	/**
 	 * This is the KrmsType of the Agenda
 	 *
 	 * @return id for KRMS type related of the Agenda

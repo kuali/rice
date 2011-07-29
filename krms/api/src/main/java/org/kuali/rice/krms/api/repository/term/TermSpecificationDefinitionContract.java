@@ -30,14 +30,19 @@ import java.util.List;
 public interface TermSpecificationDefinitionContract extends Identifiable, Versioned {
 
     /**
-     * @return the unique id for the context that this {@link TermSpecificationDefinitionContract} is associated with.
-     */
-	String getContextId();
-
-    /**
      * @return the name for this {@link TermSpecificationDefinitionContract}
      */
 	String getName();
+
+    /**
+	 * This is the namespace of the {@link TermSpecificationDefinitionContract}
+	 *
+	 * <p>
+	 * The namespace of the TermSpecificationDefinitionContract
+	 * </p>
+	 * @return the namespace of the TermSpecificationDefinitionContract
+	 */
+	public String getNamespace();
 
     /**
      * @return the fully qualified class name for this {@link TermSpecificationDefinitionContract}

@@ -59,15 +59,15 @@ public interface AgendaBoService {
 	
     /**
      * Retrieves an Agenda from the repository based on the provided agenda name
-     * and namespace.
+     * and context id.
      *
      * @param name the name of the Agenda to retrieve.
-     * @param namespace the namespace that the agenda is under.
+     * @param contextId the id of the context that the agenda belongs to.
      * @return an {@link AgendaDefinition} identified by the given name and namespace.  
      * A null reference is returned if an invalid or non-existent name and
      * namespace combination is supplied.
      */
-	public AgendaDefinition getAgendaByNameAndNamespace(String name, String namespace);
+	public AgendaDefinition getAgendaByNameAndContextId(String name, String contextId);
 	
     /**
      * Retrieves a set of Agendas associated with a context.

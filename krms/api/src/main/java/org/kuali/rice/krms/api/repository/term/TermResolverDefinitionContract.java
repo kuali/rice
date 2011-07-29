@@ -29,9 +29,8 @@ import java.util.Set;
  */
 public interface TermResolverDefinitionContract extends Identifiable, Versioned {
 
-	String getNamespaceCode();
+	String getNamespace();
 	String getName();
-    String getContextId();
 	String getTypeId();
 	TermSpecificationDefinitionContract getOutput();
 	Set<? extends TermSpecificationDefinitionContract> getPrerequisites();

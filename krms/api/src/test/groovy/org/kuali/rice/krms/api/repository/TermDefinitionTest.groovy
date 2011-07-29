@@ -8,9 +8,6 @@ import org.junit.Test
 import org.kuali.rice.krms.api.repository.term.TermDefinition
 import org.kuali.rice.krms.api.repository.term.TermParameterDefinition
 import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition
-import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition.Builder
-import org.kuali.rice.krms.api.repository.term.TermParameterDefinition.Builder
-import org.kuali.rice.krms.api.repository.term.TermDefinition.Builder
 
 /**
  * This class tests out the buiding of a KrmsTypeAttribute object.
@@ -25,7 +22,7 @@ class TermDefinitionTest {
 	
 	private static final String ID="123"
     private static final String DESCRIPTION="this is a joyful parameterized term"
-	private static final String TERM_SPEC_CONTEXT_ID ="1234CONTEXT"
+	private static final String TERM_SPEC_NAMESPACE ="foo-namespace"
 	private static final String TERM_SPEC_NAME="termSpec-name"
     private static final String TERM_SPEC_TYPE="term.spec.Type"
     private static final String TERM_SPEC_DESCRIPTION ="this is a happy term spec"
@@ -37,8 +34,8 @@ class TermDefinitionTest {
 	    <id>123DEF</id>
 	    <specification>
 	        <id>123SPEC</id>
-	        <contextId>1234CONTEXT</contextId>
 	        <name>termSpec-name</name>
+	        <namespace>foo-namespace</namespace>
 	        <type>term.spec.Type</type>
 	        <description>this is a happy term spec</description>
 	        <categories>
@@ -78,7 +75,7 @@ class TermDefinitionTest {
     public static TermDefinition buildFullTermDefinition() {
         // create(String termSpecificationId, String contextId, String name, String type)
         TermSpecificationDefinition.Builder spec =
-            TermSpecificationDefinition.Builder.create(ID + "SPEC", TERM_SPEC_CONTEXT_ID, TERM_SPEC_NAME, TERM_SPEC_TYPE);
+            TermSpecificationDefinition.Builder.create(ID + "SPEC", TERM_SPEC_NAME, TERM_SPEC_NAMESPACE, TERM_SPEC_TYPE);
         spec.setDescription(TERM_SPEC_DESCRIPTION);
 
         // create(String id, String name, String value) {

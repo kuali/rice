@@ -25,12 +25,11 @@ import org.kuali.rice.krms.impl.repository.ContextBo;
 import java.util.List;
 
 /**
- * BO for the KRMS agenda editor
+ * synthetic (not directly persisted) BO for the KRMS agenda editor
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-// TODO: this is not a document, rename?
 public class AgendaEditor extends PersistableBusinessObjectBase {
 	
 	private static final long serialVersionUID = 1L;

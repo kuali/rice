@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.kuali</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>17</version>
+    <version>18</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
@@ -236,7 +236,7 @@
           This plugin also enforces that plugins specify a version number. Using meta version tags or not specifing a version
           on a plugin is a decrecated feature as it leads to build instability.
 
-          Finally, the DependencyConvergence rule helps ensure that all of our submodules are resolving the same versions 
+          Finally, the DependencyConvergence rule helps ensure that all of our submodules are resolving the same versions
           of
           artifacts by making sure that all deps converge. This managed at the dep management section which is critical.
         -->
@@ -637,14 +637,6 @@
                 <exclude>org/kuali/rice/**/test/**/*.class</exclude>
               </excludes>
             </instrumentation>
-          </configuration>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-checkstyle-plugin</artifactId>
-          <configuration>
-            <suppressionsLocation>${checkstyle.suppressions.location}</suppressionsLocation>
           </configuration>
         </plugin>
 

@@ -23,7 +23,7 @@ public abstract class RemotableAbstractControl extends AbstractDataTransferObjec
 
     }
 
-    abstract static class Builder implements Control, ModelBuilder {
+    public abstract static class Builder implements Control, ModelBuilder {
         Builder() {
             super();
         }

@@ -35,14 +35,24 @@ import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifier
 import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo
 import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation
+import org.kuali.rice.kim.api.identity.entity.EntityQueryResults
+import org.kuali.rice.core.api.criteria.QueryByCriteria
+import org.kuali.rice.core.api.criteria.CountFlag
+import org.kuali.rice.core.api.criteria.Predicate
+import org.kuali.rice.core.api.criteria.EqualPredicate
+import org.kuali.rice.core.api.criteria.CriteriaStringValue
+import org.kuali.rice.core.api.criteria.CriteriaLookupService
+import org.kuali.rice.core.api.criteria.GenericQueryResults
 
 class IdentityServiceImplTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
 
     private MockFor mockBoService;
     private MockFor mockPersistenceService;
+    private MockFor mockCriteriaLookupService;
     private BusinessObjectService boService;
     private PersistenceService persistenceService;
+    private CriteriaLookupService criteriaLookupService;
     IdentityService identityService;
     IdentityServiceImpl identityServiceImpl;
 
@@ -135,6 +145,7 @@ class IdentityServiceImplTest {
     void setupMockContext() {
         mockBoService = new MockFor(BusinessObjectService.class);
         mockPersistenceService = new MockFor(PersistenceService.class);
+        mockCriteriaLookupService = new MockFor(CriteriaLookupService.class);
     }
 
     @Before
@@ -151,6 +162,11 @@ class IdentityServiceImplTest {
     void injectPersistenceServiceIntoIdentityService() {
         persistenceService = mockPersistenceService.proxyDelegateInstance();
         identityServiceImpl.setPersistenceService(persistenceService);
+    }
+
+    void injectCriteriaLookupServiceIntoIdentityService() {
+        criteriaLookupService = mockCriteriaLookupService.proxyDelegateInstance();
+        identityServiceImpl.setCriteriaLookupService(criteriaLookupService);
     }
 
     @Test
@@ -1313,5 +1329,36 @@ class IdentityServiceImplTest {
         EntityAffiliation inactiveEntityAffiliation = identityService.inactivateAffiliation(existingEntityAffiliationBo.id);
 
         Assert.assertEquals(EntityAffiliationBo.to(inactiveEntityAffiliationBo), inactiveEntityAffiliation);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testFindEntitiesWithNullFails() {
+        EntityQueryResults entityQueryResults = identityService.findEntities(null);
+    }
+
+    @Test
+    public void testFindEntitiesSucceeds() {
+        GenericQueryResults.Builder<EntityBo> genericQueryResults = new GenericQueryResults.Builder<EntityBo>();
+        genericQueryResults.totalRowCount = 0;
+        genericQueryResults.moreResultsAvailable = false;
+        List<EntityBo> entities = new ArrayList<EntityBo>();
+        entities.add(new EntityBo(active: true, id: "AAA"));
+        genericQueryResults.results = entities;
+        GenericQueryResults<EntityBo> results = genericQueryResults.build();
+
+        mockCriteriaLookupService.demand.lookup(1..1) {
+            Class<EntityBo> queryClass, QueryByCriteria criteria -> return results;
+        }
+
+        injectCriteriaLookupServiceIntoIdentityService();
+
+        QueryByCriteria.Builder queryByCriteriaBuilder = new QueryByCriteria.Builder();
+        queryByCriteriaBuilder.setStartAtIndex(0);
+        queryByCriteriaBuilder.setCountFlag(CountFlag.NONE);
+        EqualPredicate equalExpression = new EqualPredicate("entity.entityId", new CriteriaStringValue("AAA"));
+        queryByCriteriaBuilder.setPredicates(equalExpression);
+        EntityQueryResults entityQueryResults = identityService.findEntities(queryByCriteriaBuilder.build());
+
+        Assert.assertEquals(entityQueryResults.results[0], EntityBo.to(entities[0]));
     }
 }

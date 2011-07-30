@@ -59,6 +59,11 @@ import org.kuali.rice.kim.impl.identity.residency.EntityResidencyBo
 import org.kuali.rice.kim.api.identity.visa.EntityVisa
 import org.kuali.rice.kim.impl.identity.visa.EntityVisaBo
 import org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo
+import org.kuali.rice.kim.api.identity.employment.EntityEmployment
+import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentBo
+import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo
+import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo
+import org.kuali.rice.kim.api.identity.personal.EntityBioDemographics
 
 class IdentityServiceImplTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
@@ -86,6 +91,8 @@ class IdentityServiceImplTest {
     static Map<String, EntityResidencyBo> sampleEntityResidencies = new HashMap<String, EntityResidencyBo>();
     static Map<String, EntityVisaBo> sampleEntityVisas = new HashMap<String, EntityVisaBo>();
     static Map<String, EntityNameBo> sampleEntityNames = new HashMap<String, EntityNameBo>();
+    static Map<String, EntityEmploymentBo> sampleEntityEmployments = new HashMap<String, EntityEmploymentBo>();
+    static Map<String, EntityBioDemographicsBo> sampleEntityBioDemographics = new HashMap<String, EntityBioDemographicsBo>();
 
     @BeforeClass
     static void createSampleBOs() {
@@ -117,6 +124,9 @@ class IdentityServiceImplTest {
         EntityVisaBo firstEntityVisaBo = new EntityVisaBo(entityId: "AAA", id: "visaidone");
         EntityNameTypeBo firstEntityNameType = new EntityNameTypeBo(code: "namecodeone");
         EntityNameBo firstEntityNameBo = new EntityNameBo(entityId: "AAA", id: "nameidone", active: true, firstName: "John", lastName: "Smith", nameType: firstEntityNameType, nameTypeCode: "namecodeone");
+        EntityEmploymentTypeBo firstEmploymentType = new EntityEmploymentTypeBo(code: "employmenttypecodeone");
+        EntityEmploymentStatusBo firstEmploymentStatus = new EntityEmploymentStatusBo(code: "employmentstatusone");
+        EntityEmploymentBo firstEntityEmploymentBo = new EntityEmploymentBo(entityId: "AAA", id: "employmentidone", entityAffiliation: firstEntityAffiliationBo, entityAffiliationId: "affiliationidone", employeeType: firstEmploymentType, employeeTypeCode: "employmenttypecodeone", employeeStatus: firstEmploymentStatus, employeeStatusCode: "employmentstatusone", active: true);
         EntityBo firstEntityBo = new EntityBo(active: true, id: "AAA", privacyPreferences: firstEntityPrivacyPreferencesBo, bioDemographics: firstEntityBioDemographicsBo, principals: firstPrincipals);
 
         EntityPrivacyPreferencesBo secondEntityPrivacyPreferencesBo = new EntityPrivacyPreferencesBo(entityId: "BBB", suppressName: true, suppressEmail: true, suppressAddress: true, suppressPhone: true, suppressPersonal: false);
@@ -142,6 +152,9 @@ class IdentityServiceImplTest {
         EntityVisaBo secondEntityVisaBo = new EntityVisaBo(entityId: "BBB", id: "visaidtwo");
         EntityNameTypeBo secondEntityNameType = new EntityNameTypeBo(code: "namecodetwo");
         EntityNameBo secondEntityNameBo = new EntityNameBo(entityId: "BBB", id: "nameidtwo", active: true, firstName: "Bill", lastName: "Wright", nameType: secondEntityNameType, nameTypeCode: "namecodetwo");
+        EntityEmploymentTypeBo secondEmploymentType = new EntityEmploymentTypeBo(code: "employmenttypecodetwo");
+        EntityEmploymentStatusBo secondEmploymentStatus = new EntityEmploymentStatusBo(code: "employmentstatustwo");
+        EntityEmploymentBo secondEntityEmploymentBo = new EntityEmploymentBo(entityId: "BBB", id: "employmentidtwo", entityAffiliation: secondEntityAffiliationBo, entityAffiliationId: "affiliationidtwo", employeeType: secondEmploymentType, employeeTypeCode: "employmenttypecodetwo", employeeStatus: secondEmploymentStatus, employeeStatusCode: "employmentstatustwo", active: true);
         EntityBo secondEntityBo = new EntityBo(active: true, id: "BBB", privacyPreferences: secondEntityPrivacyPreferencesBo, bioDemographics: secondEntityBioDemographicsBo, principals: secondPrincipals);
 
         for (bo in [firstEntityBo, secondEntityBo]) {
@@ -198,6 +211,14 @@ class IdentityServiceImplTest {
 
         for (bo in [firstEntityNameBo, secondEntityNameBo]) {
             sampleEntityNames.put(bo.entityId, bo);
+        }
+
+        for (bo in [firstEntityEmploymentBo, secondEntityEmploymentBo]) {
+            sampleEntityEmployments.put(bo.entityId, bo);
+        }
+
+        for (bo in [firstEntityBioDemographicsBo, secondEntityBioDemographicsBo]) {
+            sampleEntityBioDemographics.put(bo.entityId, bo);
         }
     }
 
@@ -2266,5 +2287,265 @@ class IdentityServiceImplTest {
         EntityName inactiveEntityName = identityService.inactivateName(existingEntityNameBo.id);
 
         Assert.assertEquals(EntityNameBo.to(existingEntityNameBo), inactiveEntityName);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddEmploymentToEntityWithNullFails() {
+        EntityEmployment entityEmployment = identityService.addEmploymentToEntity(null);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testAddEmploymentToEntityWithExistingObjectFails() {
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityEmployments.size()) {
+            Class clazz, Map map -> for (EntityEmploymentBo entityEmploymentBo in sampleEntityEmployments.values()) {
+                if (entityEmploymentBo.id.equals(map.get("id")))
+                {
+                    return entityEmploymentBo;
+                }
+            }
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityEmploymentBo newEntityEmploymentBo = new EntityEmploymentBo(entityId: "AAA", id: "employmentidone");
+        EntityEmployment entityEmployment = identityService.addEmploymentToEntity(EntityEmploymentBo.to(newEntityEmploymentBo));
+    }
+
+    @Test
+    public void testAddEmploymentToEntitySucceeds() {
+        EntityAffiliationTypeBo firstAffiliationType = new EntityAffiliationTypeBo(code: "affiliationcodeone");
+        EntityAffiliationBo firstEntityAffiliationBo = new EntityAffiliationBo(entityId: "CCC", affiliationType: firstAffiliationType, id: "affiliationidone", affiliationTypeCode: "affiliationcodeone", active: true);
+        EntityEmploymentTypeBo firstEmploymentType = new EntityEmploymentTypeBo(code: "employmenttypecodeone");
+        EntityEmploymentStatusBo firstEmploymentStatus = new EntityEmploymentStatusBo(code: "employmentstatusone");
+        EntityEmploymentBo newEntityEmploymentBo = new EntityEmploymentBo(entityId: "CCC", id: "employmentidthree", entityAffiliation: firstEntityAffiliationBo, employeeType: firstEmploymentType, employeeStatus: firstEmploymentStatus);
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityEmployments.size()) {
+            Class clazz, Map map -> for (EntityEmploymentBo entityEmploymentBo in sampleEntityEmployments.values()) {
+                if (entityEmploymentBo.id.equals(map.get("id")))
+                {
+                    return entityEmploymentBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityEmploymentBo bo -> return newEntityEmploymentBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityEmployment entityEmployment = identityService.addEmploymentToEntity(EntityEmploymentBo.to(newEntityEmploymentBo));
+
+        Assert.assertEquals(EntityEmploymentBo.to(newEntityEmploymentBo), entityEmployment);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testUpdateEmploymentWithNullFails() {
+        EntityEmployment entityEmployment = identityService.updateEmployment(null);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testUpdateEmploymentWithNonExistingObjectFails() {
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityEmployments.size()) {
+            Class clazz, Map map -> for (EntityEmploymentBo entityEmploymentBo in sampleEntityEmployments.values()) {
+                if (entityEmploymentBo.id.equals(map.get("id")))
+                {
+                    return entityEmploymentBo;
+                }
+            }
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityAffiliationTypeBo firstAffiliationType = new EntityAffiliationTypeBo(code: "affiliationcodeone");
+        EntityAffiliationBo firstEntityAffiliationBo = new EntityAffiliationBo(entityId: "CCC", affiliationType: firstAffiliationType, id: "affiliationidone", affiliationTypeCode: "affiliationcodeone", active: true);
+        EntityEmploymentTypeBo firstEmploymentType = new EntityEmploymentTypeBo(code: "employmenttypecodeone");
+        EntityEmploymentStatusBo firstEmploymentStatus = new EntityEmploymentStatusBo(code: "employmentstatusone");
+        EntityEmploymentBo newEntityEmploymentBo = new EntityEmploymentBo(entityId: "CCC", id: "employmentidthree", entityAffiliation: firstEntityAffiliationBo, employeeType: firstEmploymentType, employeeStatus: firstEmploymentStatus);
+        EntityEmployment entityEmployment = identityService.updateEmployment(EntityEmploymentBo.to(newEntityEmploymentBo));
+    }
+
+    @Test
+    public void testUpdateEmploymentSucceeds() {
+        EntityAffiliationTypeBo firstAffiliationType = new EntityAffiliationTypeBo(code: "affiliationcodeone");
+        EntityAffiliationBo firstEntityAffiliationBo = new EntityAffiliationBo(entityId: "AAA", affiliationType: firstAffiliationType, id: "affiliationidone", affiliationTypeCode: "affiliationcodeone", active: true);
+        EntityEmploymentTypeBo firstEmploymentType = new EntityEmploymentTypeBo(code: "employmenttypecodeone");
+        EntityEmploymentStatusBo firstEmploymentStatus = new EntityEmploymentStatusBo(code: "employmentstatusone");
+        EntityEmploymentBo existingEntityEmploymentBo = new EntityEmploymentBo(entityId: "AAA", id: "employmentidone", entityAffiliation: firstEntityAffiliationBo, entityAffiliationId: "affiliationidone", employeeType: firstEmploymentType, employeeTypeCode: "employmenttypecodeone", employeeStatus: firstEmploymentStatus, employeeStatusCode: "employmentstatusone");
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityEmployments.size()) {
+            Class clazz, Map map -> for (EntityEmploymentBo entityEmploymentBo in sampleEntityEmployments.values()) {
+                if (entityEmploymentBo.entityId.equals(map.get("entityId"))
+                && entityEmploymentBo.employeeTypeCode.equals(map.get("employeeTypeCode"))
+                && entityEmploymentBo.employeeStatusCode.equals(map.get("employeeStatusCode"))
+                && entityEmploymentBo.entityAffiliationId.equals(map.get("entityAffiliationId")))
+                {
+                    return entityEmploymentBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityEmploymentBo bo -> return existingEntityEmploymentBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityEmployment entityEmployment = identityService.updateEmployment(EntityEmploymentBo.to(existingEntityEmploymentBo));
+
+        Assert.assertEquals(EntityEmploymentBo.to(existingEntityEmploymentBo), entityEmployment);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testInactivateEmploymentWithNonExistentObjectFails() {
+        mockBoService.demand.findByPrimaryKey(1..1) {
+            Class clazz, Map map -> return null;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityEmployment entityEmployment = identityService.inactivateEmployment("new");
+    }
+
+    @Test
+    public void testInactivateEmploymentSucceeds()
+    {
+        EntityEmploymentBo existingEntityEmploymentBo = sampleEntityEmployments.get("AAA");
+        EntityAffiliationTypeBo firstAffiliationType = new EntityAffiliationTypeBo(code: "affiliationcodeone");
+        EntityAffiliationBo firstEntityAffiliationBo = new EntityAffiliationBo(entityId: "AAA", affiliationType: firstAffiliationType, id: "affiliationidone", affiliationTypeCode: "affiliationcodeone", active: true);
+        EntityEmploymentTypeBo firstEmploymentType = new EntityEmploymentTypeBo(code: "employmenttypecodeone");
+        EntityEmploymentStatusBo firstEmploymentStatus = new EntityEmploymentStatusBo(code: "employmentstatusone");
+        EntityEmploymentBo inactiveEntityEmploymentBo = new EntityEmploymentBo(entityId: "AAA", id: "employmentidone", entityAffiliation: firstEntityAffiliationBo, entityAffiliationId: "affiliationidone", employeeType: firstEmploymentType, employeeTypeCode: "employmenttypecodeone", employeeStatus: firstEmploymentStatus, employeeStatusCode: "employmentstatusone", active: false);
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityEmployments.size()) {
+            Class clazz, Map map -> for (EntityEmploymentBo entityEmploymentBo in sampleEntityEmployments.values()) {
+                if (entityEmploymentBo.id.equals(map.get("id")))
+                {
+                    return entityEmploymentBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityEmploymentBo bo -> return inactiveEntityEmploymentBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityEmployment inactiveEntityEmployment = identityService.inactivateEmployment(existingEntityEmploymentBo.id);
+
+        Assert.assertEquals(EntityEmploymentBo.to(existingEntityEmploymentBo).active, inactiveEntityEmployment.active);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddBioDemographicsToEntityWithNullFails() {
+        EntityBioDemographics entityBioDemographics = identityService.addBioDemographicsToEntity(null);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testAddBioDemographicsToEntityWithExistingObjectFails() {
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityBioDemographics.size()) {
+            Class clazz, Map map -> for (EntityBioDemographicsBo entityBioDemographicsBo in sampleEntityBioDemographics.values()) {
+                if (entityBioDemographicsBo.entityId.equals(map.get("entityId")))
+                {
+                    return entityBioDemographicsBo;
+                }
+            }
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        String birthDateString = "01/01/2007";
+        String deceasedDateString = "01/01/2087";
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date birthDate = formatter.parse(birthDateString);
+        Date deceasedDate = formatter.parse(deceasedDateString);
+        EntityBioDemographicsBo newEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "AAA", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", countryOfBirthCode: "US", birthStateCode: "IN", cityOfBirth: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
+        EntityBioDemographics entityBioDemographics = identityService.addBioDemographicsToEntity(EntityBioDemographicsBo.to(newEntityBioDemographicsBo));
+    }
+
+    @Test
+    public void testAddBioDemographicsToEntitySucceeds() {
+        String birthDateString = "01/01/2007";
+        String deceasedDateString = "01/01/2087";
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date birthDate = formatter.parse(birthDateString);
+        Date deceasedDate = formatter.parse(deceasedDateString);
+        EntityBioDemographicsBo newEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "CCC", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", countryOfBirthCode: "US", birthStateCode: "IN", cityOfBirth: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityBioDemographics.size()) {
+            Class clazz, Map map -> for (EntityBioDemographicsBo entityBioDemographicsBo in sampleEntityBioDemographics.values()) {
+                if (entityBioDemographicsBo.entityId.equals(map.get("entityId")))
+                {
+                    return entityBioDemographicsBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityBioDemographicsBo bo -> return newEntityBioDemographicsBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityBioDemographics entityBioDemographics = identityService.addBioDemographicsToEntity(EntityBioDemographicsBo.to(newEntityBioDemographicsBo));
+
+        Assert.assertEquals(EntityBioDemographicsBo.to(newEntityBioDemographicsBo), entityBioDemographics);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testUpdateBioDemographicsWithNullFails() {
+        EntityBioDemographics entityBioDemographics = identityService.updateBioDemographics(null);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testUpdateBioDemographicsWithNonExistingObjectFails() {
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityBioDemographics.size()) {
+            Class clazz, Map map -> for (EntityBioDemographicsBo entityBioDemographicsBo in sampleEntityBioDemographics.values()) {
+                if (entityBioDemographicsBo.entityId.equals(map.get("entityId")))
+                {
+                    return entityBioDemographicsBo;
+                }
+            }
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        String birthDateString = "01/01/2007";
+        String deceasedDateString = "01/01/2087";
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date birthDate = formatter.parse(birthDateString);
+        Date deceasedDate = formatter.parse(deceasedDateString);
+        EntityBioDemographicsBo newEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "CCC", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", countryOfBirthCode: "US", birthStateCode: "IN", cityOfBirth: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
+        EntityBioDemographics entityBioDemographics = identityService.updateBioDemographics(EntityBioDemographicsBo.to(newEntityBioDemographicsBo));
+    }
+
+    @Test
+    public void testUpdateBioDemographicsSucceeds() {
+        String birthDateString = "01/01/2007";
+        String deceasedDateString = "01/01/2087";
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date birthDate = formatter.parse(birthDateString);
+        Date deceasedDate = formatter.parse(deceasedDateString);
+        EntityBioDemographicsBo existingEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "AAA", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", countryOfBirthCode: "US", birthStateCode: "IN", cityOfBirth: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityBioDemographics.size()) {
+            Class clazz, Map map -> for (EntityBioDemographicsBo entityBioDemographicsBo in sampleEntityBioDemographics.values()) {
+                if (entityBioDemographicsBo.entityId.equals(map.get("entityId")))
+                {
+                    return entityBioDemographicsBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityBioDemographicsBo bo -> return existingEntityBioDemographicsBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityBioDemographics entityBioDemographics = identityService.updateBioDemographics(EntityBioDemographicsBo.to(existingEntityBioDemographicsBo));
+
+        Assert.assertEquals(EntityBioDemographicsBo.to(existingEntityBioDemographicsBo), entityBioDemographics);
     }
 }

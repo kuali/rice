@@ -56,6 +56,9 @@ import org.kuali.rice.kim.api.identity.personal.EntityEthnicity
 import org.kuali.rice.kim.impl.identity.personal.EntityEthnicityBo
 import org.kuali.rice.kim.api.identity.residency.EntityResidency
 import org.kuali.rice.kim.impl.identity.residency.EntityResidencyBo
+import org.kuali.rice.kim.api.identity.visa.EntityVisa
+import org.kuali.rice.kim.impl.identity.visa.EntityVisaBo
+import org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo
 
 class IdentityServiceImplTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
@@ -81,6 +84,8 @@ class IdentityServiceImplTest {
     static Map<String, EntityCitizenshipBo> sampleEntityCitizenships = new HashMap<String, EntityCitizenshipBo>();
     static Map<String, EntityEthnicityBo> sampleEntityEthnicities = new HashMap<String, EntityEthnicityBo>();
     static Map<String, EntityResidencyBo> sampleEntityResidencies = new HashMap<String, EntityResidencyBo>();
+    static Map<String, EntityVisaBo> sampleEntityVisas = new HashMap<String, EntityVisaBo>();
+    static Map<String, EntityNameBo> sampleEntityNames = new HashMap<String, EntityNameBo>();
 
     @BeforeClass
     static void createSampleBOs() {
@@ -109,6 +114,9 @@ class IdentityServiceImplTest {
         EntityCitizenshipBo firstEntityCitizenshipBo = new EntityCitizenshipBo(entityId: "AAA", id: "citizenshipidone", active: true, status: firstEntityCitizenshipStatus, statusCode: "statuscodeone");
         EntityEthnicityBo firstEntityEthnicityBo = new EntityEthnicityBo(entityId: "AAA", id: "ethnicityidone");
         EntityResidencyBo firstEntityResidencyBo = new EntityResidencyBo(entityId: "AAA", id: "residencyidone");
+        EntityVisaBo firstEntityVisaBo = new EntityVisaBo(entityId: "AAA", id: "visaidone");
+        EntityNameTypeBo firstEntityNameType = new EntityNameTypeBo(code: "namecodeone");
+        EntityNameBo firstEntityNameBo = new EntityNameBo(entityId: "AAA", id: "nameidone", active: true, firstName: "John", lastName: "Smith", nameType: firstEntityNameType, nameTypeCode: "namecodeone");
         EntityBo firstEntityBo = new EntityBo(active: true, id: "AAA", privacyPreferences: firstEntityPrivacyPreferencesBo, bioDemographics: firstEntityBioDemographicsBo, principals: firstPrincipals);
 
         EntityPrivacyPreferencesBo secondEntityPrivacyPreferencesBo = new EntityPrivacyPreferencesBo(entityId: "BBB", suppressName: true, suppressEmail: true, suppressAddress: true, suppressPhone: true, suppressPersonal: false);
@@ -131,6 +139,9 @@ class IdentityServiceImplTest {
         EntityCitizenshipBo secondEntityCitizenshipBo = new EntityCitizenshipBo(entityId: "BBB", id: "citizenshipidtwo", active: true, status: secondEntityCitizenshipStatus, statusCode: "statuscodetwo");
         EntityEthnicityBo secondEntityEthnicityBo = new EntityEthnicityBo(entityId: "BBB", id: "ethnicityidtwo");
         EntityResidencyBo secondEntityResidencyBo = new EntityResidencyBo(entityId: "BBB", id: "residencyidtwo");
+        EntityVisaBo secondEntityVisaBo = new EntityVisaBo(entityId: "BBB", id: "visaidtwo");
+        EntityNameTypeBo secondEntityNameType = new EntityNameTypeBo(code: "namecodetwo");
+        EntityNameBo secondEntityNameBo = new EntityNameBo(entityId: "BBB", id: "nameidtwo", active: true, firstName: "Bill", lastName: "Wright", nameType: secondEntityNameType, nameTypeCode: "namecodetwo");
         EntityBo secondEntityBo = new EntityBo(active: true, id: "BBB", privacyPreferences: secondEntityPrivacyPreferencesBo, bioDemographics: secondEntityBioDemographicsBo, principals: secondPrincipals);
 
         for (bo in [firstEntityBo, secondEntityBo]) {
@@ -179,6 +190,14 @@ class IdentityServiceImplTest {
 
         for (bo in [firstEntityResidencyBo, secondEntityResidencyBo]) {
             sampleEntityResidencies.put(bo.entityId, bo);
+        }
+
+        for (bo in [firstEntityVisaBo, secondEntityVisaBo]) {
+            sampleEntityVisas.put(bo.entityId, bo);
+        }
+
+        for (bo in [firstEntityNameBo, secondEntityNameBo]) {
+            sampleEntityNames.put(bo.entityId, bo);
         }
     }
 
@@ -2022,5 +2041,230 @@ class IdentityServiceImplTest {
         EntityResidency entityResidency = identityService.updateResidency(EntityResidencyBo.to(existingEntityResidencyBo));
 
         Assert.assertEquals(EntityResidencyBo.to(existingEntityResidencyBo), entityResidency);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddVisaToEntityWithNullFails() {
+        EntityVisa entityVisa = identityService.addVisaToEntity(null);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testAddVisaToEntityWithExistingObjectFails() {
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityVisas.size()) {
+            Class clazz, Map map -> for (EntityVisaBo entityVisaBo in sampleEntityVisas.values()) {
+                if (entityVisaBo.id.equals(map.get("id")))
+                {
+                    return entityVisaBo;
+                }
+            }
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityVisaBo newEntityVisaBo = new EntityVisaBo(entityId: "AAA", id: "visaidone");
+        EntityVisa entityVisa = identityService.addVisaToEntity(EntityVisaBo.to(newEntityVisaBo));
+    }
+
+    @Test
+    public void testAddVisaToEntitySucceeds() {
+        EntityVisaBo newEntityVisaBo = new EntityVisaBo(entityId: "CCC", id: "visaidthree");
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityVisas.size()) {
+            Class clazz, Map map -> for (EntityVisaBo entityVisaBo in sampleEntityVisas.values()) {
+                if (entityVisaBo.id.equals(map.get("id")))
+                {
+                    return entityVisaBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityVisaBo bo -> return newEntityVisaBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityVisa entityVisa = identityService.addVisaToEntity(EntityVisaBo.to(newEntityVisaBo));
+
+        Assert.assertEquals(EntityVisaBo.to(newEntityVisaBo), entityVisa);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testUpdateVisaWithNullFails() {
+        EntityVisa entityVisa = identityService.updateVisa(null);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testUpdateVisaWithNonExistingObjectFails() {
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityVisas.size()) {
+            Class clazz, Map map -> for (EntityVisaBo entityVisaBo in sampleEntityVisas.values()) {
+                if (entityVisaBo.id.equals(map.get("id")))
+                {
+                    return entityVisaBo;
+                }
+            }
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityVisaBo newEntityVisaBo = new EntityVisaBo(entityId: "CCC", id: "visaidthree");
+        EntityVisa entityVisa = identityService.updateVisa(EntityVisaBo.to(newEntityVisaBo));
+    }
+
+    @Test
+    public void testUpdateVisaSucceeds() {
+        EntityVisaBo existingEntityVisaBo = new EntityVisaBo(entityId: "AAA", id: "visaidone");
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityVisas.size()) {
+            Class clazz, Map map -> for (EntityVisaBo entityVisaBo in sampleEntityVisas.values()) {
+                if (entityVisaBo.id.equals(map.get("id")))
+                {
+                    return entityVisaBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityVisaBo bo -> return existingEntityVisaBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityVisa entityVisa = identityService.updateVisa(EntityVisaBo.to(existingEntityVisaBo));
+
+        Assert.assertEquals(EntityVisaBo.to(existingEntityVisaBo), entityVisa);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddNameToEntityWithNullFails() {
+        EntityName entityName = identityService.addNameToEntity(null);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testAddNameToEntityWithExistingObjectFails() {
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityNames.size()) {
+            Class clazz, Map map -> for (EntityNameBo entityNameBo in sampleEntityNames.values()) {
+                if (entityNameBo.id.equals(map.get("id")))
+                {
+                    return entityNameBo;
+                }
+            }
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityNameBo newEntityNameBo = new EntityNameBo(entityId: "AAA", id: "nameidone", active: true, firstName: "John", lastName: "Smith");
+        EntityName entityName = identityService.addNameToEntity(EntityNameBo.to(newEntityNameBo));
+    }
+
+    @Test
+    public void testAddNameToEntitySucceeds() {
+        EntityNameTypeBo firstEntityNameType = new EntityNameTypeBo(code: "namecodeone");
+        EntityNameBo newEntityNameBo = new EntityNameBo(entityId: "CCC", id: "nameidthree", active: true, firstName: "Willard", lastName: "Jackson", nameType: firstEntityNameType, nameTypeCode: "namecodeone");
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityNames.size()) {
+            Class clazz, Map map -> for (EntityNameBo entityNameBo in sampleEntityNames.values()) {
+                if (entityNameBo.id.equals(map.get("id")))
+                {
+                    return entityNameBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityNameBo bo -> return newEntityNameBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityName entityName = identityService.addNameToEntity(EntityNameBo.to(newEntityNameBo));
+
+        Assert.assertEquals(EntityNameBo.to(newEntityNameBo), entityName);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testUpdateNameWithNullFails() {
+        EntityName entityName = identityService.updateName(null);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testUpdateNameWithNonExistingObjectFails() {
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityNames.size()) {
+            Class clazz, Map map -> for (EntityNameBo entityNameBo in sampleEntityNames.values()) {
+                if (entityNameBo.id.equals(map.get("id")))
+                {
+                    return entityNameBo;
+                }
+            }
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityNameTypeBo firstEntityNameType = new EntityNameTypeBo(code: "namecodeone");
+        EntityNameBo newEntityNameBo = new EntityNameBo(entityId: "CCC", id: "nameidthree", active: true, firstName: "Willard", lastName: "Jackson", nameType: firstEntityNameType, nameTypeCode: "namecodeone");
+        EntityName entityName = identityService.updateName(EntityNameBo.to(newEntityNameBo));
+    }
+
+    @Test
+    public void testUpdateNameSucceeds() {
+        EntityNameTypeBo firstEntityNameType = new EntityNameTypeBo(code: "namecodeone");
+        EntityNameBo existingEntityNameBo = new EntityNameBo(entityId: "AAA", id: "nameidone", active: true, firstName: "John", lastName: "Smith", nameType: firstEntityNameType, nameTypeCode: "namecodeone");
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityNames.size()) {
+            Class clazz, Map map -> for (EntityNameBo entityNameBo in sampleEntityNames.values()) {
+                if (entityNameBo.id.equals(map.get("id")))
+                {
+                    return entityNameBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityNameBo bo -> return existingEntityNameBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityName entityName = identityService.updateName(EntityNameBo.to(existingEntityNameBo));
+
+        Assert.assertEquals(EntityNameBo.to(existingEntityNameBo), entityName);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testInactivateNameWithNonExistentNameFails() {
+        mockBoService.demand.findByPrimaryKey(1..1) {
+            Class clazz, Map map -> return null;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityName entityName = identityService.inactivateName("new");
+    }
+
+    @Test
+    public void testInactivateNameSucceeds()
+    {
+        EntityNameBo existingEntityNameBo = sampleEntityNames.get("AAA");
+        EntityNameTypeBo firstEntityNameType = new EntityNameTypeBo(code: "namecodeone");
+        EntityNameBo inactiveEntityNameBo = new EntityNameBo(entityId: "AAA", id: "nameidone", active: false, firstName: "John", lastName: "Smith", nameType: firstEntityNameType, nameTypeCode: "namecodeone");
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityNames.size()) {
+            Class clazz, Map map -> for (EntityNameBo entityNameBo in sampleEntityNames.values()) {
+                if (entityNameBo.id.equals(map.get("id")))
+                {
+                    return entityNameBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityNameBo bo -> return inactiveEntityNameBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityName inactiveEntityName = identityService.inactivateName(existingEntityNameBo.id);
+
+        Assert.assertEquals(EntityNameBo.to(existingEntityNameBo), inactiveEntityName);
     }
 }

@@ -45,6 +45,9 @@ import org.kuali.rice.core.api.criteria.CriteriaLookupService
 import org.kuali.rice.core.api.criteria.GenericQueryResults
 import org.kuali.rice.kim.api.identity.entity.EntityDefaultQueryResults
 import org.kuali.rice.kim.api.identity.entity.EntityDefault
+import org.kuali.rice.kim.api.identity.name.EntityNameQueryResults
+import org.kuali.rice.kim.impl.identity.name.EntityNameBo
+import org.kuali.rice.kim.api.identity.name.EntityName
 
 class IdentityServiceImplTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
@@ -77,6 +80,8 @@ class IdentityServiceImplTest {
         Date deceasedDate = formatter.parse(deceasedDateString);
         EntityBioDemographicsBo firstEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "AAA", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", countryOfBirthCode: "US", birthStateCode: "IN", cityOfBirth: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
         PrincipalBo firstEntityPrincipal = new PrincipalBo(entityId: "AAA", principalId: "P1", active: true, principalName: "first", versionNumber: 1, password: "first_password");
+        List<PrincipalBo> firstPrincipals = new ArrayList<PrincipalBo>();
+        firstPrincipals.add(firstEntityPrincipal);
         EntityTypeContactInfoBo firstEntityTypeContactInfoBo = new EntityTypeContactInfoBo(entityId: "AAA", entityTypeCode: "typecodeone", active: true);
         EntityAddressTypeBo firstAddressTypeBo = new EntityAddressTypeBo(code: "addresscodeone");
         EntityAddressBo firstEntityAddressBo = new EntityAddressBo(entityId: "AAA", entityTypeCode: "typecodeone", addressType: firstAddressTypeBo, id: "addressidone", addressTypeCode: "addresscodeone", active: true);
@@ -88,13 +93,13 @@ class IdentityServiceImplTest {
         EntityExternalIdentifierBo firstEntityExternalIdentifierBo = new EntityExternalIdentifierBo(entityId: "AAA", externalIdentifierType: firstExternalIdentifierType, id: "exidone", externalIdentifierTypeCode: "exidtypecodeone");
         EntityAffiliationTypeBo firstAffiliationType = new EntityAffiliationTypeBo(code: "affiliationcodeone");
         EntityAffiliationBo firstEntityAffiliationBo = new EntityAffiliationBo(entityId: "AAA", affiliationType: firstAffiliationType, id: "affiliationidone", affiliationTypeCode: "affiliationcodeone", active: true);
-        List<PrincipalBo> firstPrincipals = new ArrayList<PrincipalBo>();
-        firstPrincipals.add(firstEntityPrincipal);
         EntityBo firstEntityBo = new EntityBo(active: true, id: "AAA", privacyPreferences: firstEntityPrivacyPreferencesBo, bioDemographics: firstEntityBioDemographicsBo, principals: firstPrincipals);
 
         EntityPrivacyPreferencesBo secondEntityPrivacyPreferencesBo = new EntityPrivacyPreferencesBo(entityId: "BBB", suppressName: true, suppressEmail: true, suppressAddress: true, suppressPhone: true, suppressPersonal: false);
         EntityBioDemographicsBo secondEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "BBB", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", countryOfBirthCode: "US", birthStateCode: "IN", cityOfBirth: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
         PrincipalBo secondEntityPrincipal = new PrincipalBo(entityId: "BBB", principalId: "P2", active: true, principalName: "second", versionNumber: 1, password: "second_password");
+        List<PrincipalBo> secondPrincipals = new ArrayList<PrincipalBo>();
+        secondPrincipals.add(secondEntityPrincipal);
         EntityTypeContactInfoBo secondEntityTypeContactInfoBo = new EntityTypeContactInfoBo(entityId: "BBB", entityTypeCode: "typecodetwo", active: true);
         EntityAddressTypeBo secondAddressTypeBo = new EntityAddressTypeBo(code: "addresscodetwo");
         EntityAddressBo secondEntityAddressBo = new EntityAddressBo(entityId: "BBB", entityTypeCode: "typecodetwo", addressType: secondAddressTypeBo, id: "addressidtwo", addressTypeCode: "addresscodetwo", active: true);
@@ -106,8 +111,6 @@ class IdentityServiceImplTest {
         EntityExternalIdentifierBo secondEntityExternalIdentifierBo = new EntityExternalIdentifierBo(entityId: "BBB", externalIdentifierType: secondExternalIdentifierType, id: "exidtwo", externalIdentifierTypeCode: "exidtypecodetwo");
         EntityAffiliationTypeBo secondAffiliationType = new EntityAffiliationTypeBo(code: "affiliationcodetwo");
         EntityAffiliationBo secondEntityAffiliationBo = new EntityAffiliationBo(entityId: "BBB", affiliationType: secondAffiliationType, id: "affiliationidtwo", affiliationTypeCode: "affiliationcodetwo", active: true);
-        List<PrincipalBo> secondPrincipals = new ArrayList<PrincipalBo>();
-        secondPrincipals.add(secondEntityPrincipal);
         EntityBo secondEntityBo = new EntityBo(active: true, id: "BBB", privacyPreferences: secondEntityPrivacyPreferencesBo, bioDemographics: secondEntityBioDemographicsBo, principals: secondPrincipals);
 
         for (bo in [firstEntityBo, secondEntityBo]) {
@@ -1270,7 +1273,7 @@ class IdentityServiceImplTest {
     }
 
     @Test
-    public void testUpdateAffiliationSucceeds() {
+    public void testUpdateEntitySucceeds() {
         EntityAffiliationTypeBo firstAffiliationType = new EntityAffiliationTypeBo(code: "affiliationcodeone");
         EntityAffiliationBo existingEntityAffiliationBo = new EntityAffiliationBo(entityId: "AAA", affiliationType: firstAffiliationType, id: "affiliationidone", affiliationTypeCode: "affiliationcodeone", active: true);
 
@@ -1395,5 +1398,174 @@ class IdentityServiceImplTest {
 
         // because findEntityDefaults builds the EntityDefault list from the results, we cannot compare entityBuilder.build() in its entirety to the results in their entirety
         Assert.assertEquals(entityDefaultQueryResults.results[0].entityId, entityBuilder.build().entityId);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testFindNamesWithNullFails() {
+        EntityNameQueryResults entityNameQueryResults = identityService.findNames(null);
+    }
+
+    @Test
+    public void testFindNamesSucceeds() {
+        EntityName.Builder entityBuilder = EntityName.Builder.create();
+        entityBuilder.setFirstName("John");
+        entityBuilder.setLastName("Smith");
+        GenericQueryResults.Builder<EntityNameBo> genericQueryResults = new GenericQueryResults.Builder<EntityNameBo>();
+        genericQueryResults.totalRowCount = 0;
+        genericQueryResults.moreResultsAvailable = false;
+        List<EntityNameBo> entityNames = new ArrayList<EntityNameBo>();
+        entityNames.add(new EntityNameBo(firstName: "John", lastName: "Smith"));
+        genericQueryResults.results = entityNames;
+        GenericQueryResults<EntityNameBo> results = genericQueryResults.build();
+
+        mockCriteriaLookupService.demand.lookup(1..1) {
+            Class<EntityNameBo> queryClass, QueryByCriteria criteria -> return results;
+        }
+
+        injectCriteriaLookupServiceIntoIdentityService();
+
+        QueryByCriteria.Builder queryByCriteriaBuilder = new QueryByCriteria.Builder();
+        queryByCriteriaBuilder.setStartAtIndex(0);
+        queryByCriteriaBuilder.setCountFlag(CountFlag.NONE);
+        EqualPredicate equalExpression = new EqualPredicate("entityName.lastName", new CriteriaStringValue("Smith"));
+        queryByCriteriaBuilder.setPredicates(equalExpression);
+        EntityNameQueryResults entityNameQueryResults = identityService.findNames(queryByCriteriaBuilder.build());
+
+        Assert.assertEquals(entityNameQueryResults.results[0], entityBuilder.build());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateEntityWithNullFails() {
+        Entity entity = identityService.createEntity(null);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testCreateEntityWithExistingObjectFails() {
+        mockBoService.demand.findByPrimaryKey(1..sampleEntities.size()) {
+            Class clazz, Map map -> for (EntityBo entityBo in sampleEntities.values()) {
+                if (entityBo.id.equals(map.get("id")))
+                {
+                    return entityBo;
+                }
+            }
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityPrivacyPreferencesBo firstEntityPrivacyPreferencesBo = new EntityPrivacyPreferencesBo(entityId: "AAA", suppressName: true, suppressEmail: true, suppressAddress: true, suppressPhone: true, suppressPersonal: false);
+        String birthDateString = "01/01/2007";
+        String deceasedDateString = "01/01/2087";
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date birthDate = formatter.parse(birthDateString);
+        Date deceasedDate = formatter.parse(deceasedDateString);
+        EntityBioDemographicsBo firstEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "AAA", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", countryOfBirthCode: "US", birthStateCode: "IN", cityOfBirth: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
+        PrincipalBo firstEntityPrincipal = new PrincipalBo(entityId: "AAA", principalId: "P1", active: true, principalName: "first", versionNumber: 1, password: "first_password");
+        List<PrincipalBo> firstPrincipals = new ArrayList<PrincipalBo>();
+        firstPrincipals.add(firstEntityPrincipal);
+        EntityBo newEntityBo = new EntityBo(active: true, id: "AAA", privacyPreferences: firstEntityPrivacyPreferencesBo, bioDemographics: firstEntityBioDemographicsBo, principals: firstPrincipals);
+        Entity entity = identityService.createEntity(EntityBo.to(newEntityBo));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testUpdateEntityWithNullFails() {
+        Entity entity = identityService.updateEntity(null);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testUpdateEntityWithNonExistingObjectFails() {
+        mockBoService.demand.findByPrimaryKey(1..sampleEntities.size()) {
+            Class clazz, Map map -> for (EntityBo entityBo in sampleEntities.values()) {
+                if (entityBo.id.equals(map.get("id")))
+                {
+                    return entityBo;
+                }
+            }
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityBo newEntityBo = new EntityBo(active: true, id: "CCC");
+        Entity entity = identityService.updateEntity(EntityBo.to(newEntityBo));
+    }
+
+    @Test
+    public void testUpdateAffiliationSucceeds() {
+        EntityPrivacyPreferencesBo firstEntityPrivacyPreferencesBo = new EntityPrivacyPreferencesBo(entityId: "AAA", suppressName: true, suppressEmail: true, suppressAddress: true, suppressPhone: true, suppressPersonal: false);
+        String birthDateString = "01/01/2007";
+        String deceasedDateString = "01/01/2087";
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date birthDate = formatter.parse(birthDateString);
+        Date deceasedDate = formatter.parse(deceasedDateString);
+        EntityBioDemographicsBo firstEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "AAA", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", countryOfBirthCode: "US", birthStateCode: "IN", cityOfBirth: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
+        PrincipalBo firstEntityPrincipal = new PrincipalBo(entityId: "AAA", principalId: "P1", active: true, principalName: "first", versionNumber: 1, password: "first_password");
+        List<PrincipalBo> firstPrincipals = new ArrayList<PrincipalBo>();
+        firstPrincipals.add(firstEntityPrincipal);
+        EntityBo existingEntityBo = new EntityBo(active: true, id: "AAA", privacyPreferences: firstEntityPrivacyPreferencesBo, bioDemographics: firstEntityBioDemographicsBo, principals: firstPrincipals);
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntities.size()) {
+            Class clazz, Map map -> for (EntityBo entityBo in sampleEntities.values()) {
+                if (entityBo.id.equals(map.get("id")))
+                {
+                    return entityBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityBo bo -> return existingEntityBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        Entity entity = identityService.updateEntity(EntityBo.to(existingEntityBo));
+
+        Assert.assertEquals(EntityBo.to(existingEntityBo), entity);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testInactivateEntityWithNonExistentEntityFails() {
+        mockBoService.demand.findByPrimaryKey(1..1) {
+            Class clazz, Map map -> return null;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        Entity entity = identityService.inactivateEntity("new");
+    }
+
+    @Test
+    public void testInactivateEntitySucceeds()
+    {
+        EntityBo existingEntityBo = sampleEntities.get("AAA");
+        EntityPrivacyPreferencesBo firstEntityPrivacyPreferencesBo = new EntityPrivacyPreferencesBo(entityId: "AAA", suppressName: true, suppressEmail: true, suppressAddress: true, suppressPhone: true, suppressPersonal: false);
+        String birthDateString = "01/01/2007";
+        String deceasedDateString = "01/01/2087";
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date birthDate = formatter.parse(birthDateString);
+        Date deceasedDate = formatter.parse(deceasedDateString);
+        EntityBioDemographicsBo firstEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "AAA", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", countryOfBirthCode: "US", birthStateCode: "IN", cityOfBirth: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
+        PrincipalBo firstEntityPrincipal = new PrincipalBo(entityId: "AAA", principalId: "P1", active: true, principalName: "first", versionNumber: 1, password: "first_password");
+        List<PrincipalBo> firstPrincipals = new ArrayList<PrincipalBo>();
+        firstPrincipals.add(firstEntityPrincipal);
+        EntityBo inactiveEntityBo = new EntityBo(active: false, id: "AAA", privacyPreferences: firstEntityPrivacyPreferencesBo, bioDemographics: firstEntityBioDemographicsBo, principals: firstPrincipals);
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntities.size()) {
+            Class clazz, Map map -> for (EntityBo entityBo in sampleEntities.values()) {
+                if (entityBo.id.equals(map.get("id")))
+                {
+                    return entityBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityBo bo -> return inactiveEntityBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        Entity inactiveEntity = identityService.inactivateEntity(existingEntityBo.id);
+
+        Assert.assertEquals(EntityBo.to(inactiveEntityBo), inactiveEntity);
     }
 }

@@ -52,6 +52,10 @@ import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences
 import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenship
 import org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipBo
 import org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipStatusBo
+import org.kuali.rice.kim.api.identity.personal.EntityEthnicity
+import org.kuali.rice.kim.impl.identity.personal.EntityEthnicityBo
+import org.kuali.rice.kim.api.identity.residency.EntityResidency
+import org.kuali.rice.kim.impl.identity.residency.EntityResidencyBo
 
 class IdentityServiceImplTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
@@ -75,6 +79,8 @@ class IdentityServiceImplTest {
     static Map<String, EntityAffiliationBo> sampleEntityAffiliations = new HashMap<String, EntityAffiliationBo>();
     static Map<String, EntityPrivacyPreferencesBo> sampleEntityPrivacyPreferences = new HashMap<String, EntityPrivacyPreferencesBo>();
     static Map<String, EntityCitizenshipBo> sampleEntityCitizenships = new HashMap<String, EntityCitizenshipBo>();
+    static Map<String, EntityEthnicityBo> sampleEntityEthnicities = new HashMap<String, EntityEthnicityBo>();
+    static Map<String, EntityResidencyBo> sampleEntityResidencies = new HashMap<String, EntityResidencyBo>();
 
     @BeforeClass
     static void createSampleBOs() {
@@ -101,6 +107,8 @@ class IdentityServiceImplTest {
         EntityAffiliationBo firstEntityAffiliationBo = new EntityAffiliationBo(entityId: "AAA", affiliationType: firstAffiliationType, id: "affiliationidone", affiliationTypeCode: "affiliationcodeone", active: true);
         EntityCitizenshipStatusBo firstEntityCitizenshipStatus = new EntityCitizenshipStatusBo(code: "statuscodeone", name: "statusnameone");
         EntityCitizenshipBo firstEntityCitizenshipBo = new EntityCitizenshipBo(entityId: "AAA", id: "citizenshipidone", active: true, status: firstEntityCitizenshipStatus, statusCode: "statuscodeone");
+        EntityEthnicityBo firstEntityEthnicityBo = new EntityEthnicityBo(entityId: "AAA", id: "ethnicityidone");
+        EntityResidencyBo firstEntityResidencyBo = new EntityResidencyBo(entityId: "AAA", id: "residencyidone");
         EntityBo firstEntityBo = new EntityBo(active: true, id: "AAA", privacyPreferences: firstEntityPrivacyPreferencesBo, bioDemographics: firstEntityBioDemographicsBo, principals: firstPrincipals);
 
         EntityPrivacyPreferencesBo secondEntityPrivacyPreferencesBo = new EntityPrivacyPreferencesBo(entityId: "BBB", suppressName: true, suppressEmail: true, suppressAddress: true, suppressPhone: true, suppressPersonal: false);
@@ -121,6 +129,8 @@ class IdentityServiceImplTest {
         EntityAffiliationBo secondEntityAffiliationBo = new EntityAffiliationBo(entityId: "BBB", affiliationType: secondAffiliationType, id: "affiliationidtwo", affiliationTypeCode: "affiliationcodetwo", active: true);
         EntityCitizenshipStatusBo secondEntityCitizenshipStatus = new EntityCitizenshipStatusBo(code: "statuscodetwo", name: "statusnametwo");
         EntityCitizenshipBo secondEntityCitizenshipBo = new EntityCitizenshipBo(entityId: "BBB", id: "citizenshipidtwo", active: true, status: secondEntityCitizenshipStatus, statusCode: "statuscodetwo");
+        EntityEthnicityBo secondEntityEthnicityBo = new EntityEthnicityBo(entityId: "BBB", id: "ethnicityidtwo");
+        EntityResidencyBo secondEntityResidencyBo = new EntityResidencyBo(entityId: "BBB", id: "residencyidtwo");
         EntityBo secondEntityBo = new EntityBo(active: true, id: "BBB", privacyPreferences: secondEntityPrivacyPreferencesBo, bioDemographics: secondEntityBioDemographicsBo, principals: secondPrincipals);
 
         for (bo in [firstEntityBo, secondEntityBo]) {
@@ -161,6 +171,14 @@ class IdentityServiceImplTest {
 
         for (bo in [firstEntityCitizenshipBo, secondEntityCitizenshipBo]) {
             sampleEntityCitizenships.put(bo.entityId, bo);
+        }
+
+        for (bo in [firstEntityEthnicityBo, secondEntityEthnicityBo]) {
+            sampleEntityEthnicities.put(bo.entityId, bo);
+        }
+
+        for (bo in [firstEntityResidencyBo, secondEntityResidencyBo]) {
+            sampleEntityResidencies.put(bo.entityId, bo);
         }
     }
 
@@ -1680,7 +1698,7 @@ class IdentityServiceImplTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testAddCitizenshipToEntityToEntityWithNullFails() {
+    public void testAddCitizenshipToEntityWithNullFails() {
         EntityCitizenship entityCitizenship = identityService.addCitizenshipToEntity(null);
     }
 
@@ -1820,5 +1838,189 @@ class IdentityServiceImplTest {
         EntityCitizenship inactiveEntityCitizenship = identityService.inactivateCitizenship(existingEntityCitizenshipBo.id);
 
         Assert.assertEquals(EntityCitizenshipBo.to(inactiveEntityCitizenshipBo), inactiveEntityCitizenship);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddEthnicityToEntityWithNullFails() {
+        EntityEthnicity entityEthnicity = identityService.addEthnicityToEntity(null);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testAddEthnicityToEntityWithExistingObjectFails() {
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityEthnicities.size()) {
+            Class clazz, Map map -> for (EntityEthnicityBo entityEthnicityBo in sampleEntityEthnicities.values()) {
+                if (entityEthnicityBo.id.equals(map.get("id")))
+                {
+                    return entityEthnicityBo;
+                }
+            }
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityEthnicityBo newEntityEthnicityBo = new EntityEthnicityBo(entityId: "AAA", id: "ethnicityidone");
+        EntityEthnicity entityEthnicity = identityService.addEthnicityToEntity(EntityEthnicityBo.to(newEntityEthnicityBo));
+    }
+
+    @Test
+    public void testAddEthnicityToEntitySucceeds() {
+        EntityEthnicityBo newEntityEthnicityBo = new EntityEthnicityBo(entityId: "CCC", id: "ethnicityidthree");
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityEthnicities.size()) {
+            Class clazz, Map map -> for (EntityEthnicityBo entityEthnicityBo in sampleEntityEthnicities.values()) {
+                if (entityEthnicityBo.id.equals(map.get("id")))
+                {
+                    return entityEthnicityBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityEthnicityBo bo -> return newEntityEthnicityBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityEthnicity entityEthnicity = identityService.addEthnicityToEntity(EntityEthnicityBo.to(newEntityEthnicityBo));
+
+        Assert.assertEquals(EntityEthnicityBo.to(newEntityEthnicityBo), entityEthnicity);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testUpdateEthnicityWithNullFails() {
+        EntityEthnicity entityEthnicity = identityService.updateEthnicity(null);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testUpdateEthnicityWithNonExistingObjectFails() {
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityEthnicities.size()) {
+            Class clazz, Map map -> for (EntityEthnicityBo entityEthnicityBo in sampleEntityEthnicities.values()) {
+                if (entityEthnicityBo.id.equals(map.get("id")))
+                {
+                    return entityEthnicityBo;
+                }
+            }
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityEthnicityBo newEntityEthnicityBo = new EntityEthnicityBo(entityId: "CCC", id: "ethnicityidthree");
+        EntityEthnicity entityEthnicity = identityService.updateEthnicity(EntityEthnicityBo.to(newEntityEthnicityBo));
+    }
+
+    @Test
+    public void testUpdateEthnicitySucceeds() {
+        EntityEthnicityBo existingEntityEthnicityBo = new EntityEthnicityBo(entityId: "AAA", id: "ethnicityidone");
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityEthnicities.size()) {
+            Class clazz, Map map -> for (EntityEthnicityBo entityEthnicityBo in sampleEntityEthnicities.values()) {
+                if (entityEthnicityBo.id.equals(map.get("id")))
+                {
+                    return entityEthnicityBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityEthnicityBo bo -> return existingEntityEthnicityBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityEthnicity entityEthnicity = identityService.updateEthnicity(EntityEthnicityBo.to(existingEntityEthnicityBo));
+
+        Assert.assertEquals(EntityEthnicityBo.to(existingEntityEthnicityBo), entityEthnicity);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddResidencyToEntityWithNullFails() {
+        EntityResidency entityResidency = identityService.addResidencyToEntity(null);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testAddResidencyToEntityWithExistingObjectFails() {
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityResidencies.size()) {
+            Class clazz, Map map -> for (EntityResidencyBo entityResidencyBo in sampleEntityResidencies.values()) {
+                if (entityResidencyBo.id.equals(map.get("id")))
+                {
+                    return entityResidencyBo;
+                }
+            }
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityResidencyBo newEntityResidencyBo = new EntityResidencyBo(entityId: "AAA", id: "residencyidone");
+        EntityResidency entityResidency = identityService.addResidencyToEntity(EntityResidencyBo.to(newEntityResidencyBo));
+    }
+
+    @Test
+    public void testAddResidencyToEntitySucceeds() {
+        EntityResidencyBo newEntityResidencyBo = new EntityResidencyBo(entityId: "CCC", id: "residencyidthree");
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityResidencies.size()) {
+            Class clazz, Map map -> for (EntityResidencyBo entityResidencyBo in sampleEntityResidencies.values()) {
+                if (entityResidencyBo.id.equals(map.get("id")))
+                {
+                    return entityResidencyBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityResidencyBo bo -> return newEntityResidencyBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityResidency entityResidency = identityService.addResidencyToEntity(EntityResidencyBo.to(newEntityResidencyBo));
+
+        Assert.assertEquals(EntityResidencyBo.to(newEntityResidencyBo), entityResidency);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testUpdateResidencyWithNullFails() {
+        EntityResidency entityResidency = identityService.updateResidency(null);
+    }
+
+    @Test(expected = RiceIllegalStateException.class)
+    public void testUpdateResidencyWithNonExistingObjectFails() {
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityResidencies.size()) {
+            Class clazz, Map map -> for (EntityResidencyBo entityResidencyBo in sampleEntityResidencies.values()) {
+                if (entityResidencyBo.id.equals(map.get("id")))
+                {
+                    return entityResidencyBo;
+                }
+            }
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityResidencyBo newEntityResidencyBo = new EntityResidencyBo(entityId: "CCC", id: "residencyidthree");
+        EntityResidency entityResidency = identityService.updateResidency(EntityResidencyBo.to(newEntityResidencyBo));
+    }
+
+    @Test
+    public void testUpdateResidencySucceeds() {
+        EntityResidencyBo existingEntityResidencyBo = new EntityResidencyBo(entityId: "AAA", id: "residencyidone");
+
+        mockBoService.demand.findByPrimaryKey(1..sampleEntityResidencies.size()) {
+            Class clazz, Map map -> for (EntityResidencyBo entityResidencyBo in sampleEntityResidencies.values()) {
+                if (entityResidencyBo.id.equals(map.get("id")))
+                {
+                    return entityResidencyBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            EntityResidencyBo bo -> return existingEntityResidencyBo;
+        }
+
+        injectBusinessObjectServiceIntoIdentityService();
+
+        EntityResidency entityResidency = identityService.updateResidency(EntityResidencyBo.to(existingEntityResidencyBo));
+
+        Assert.assertEquals(EntityResidencyBo.to(existingEntityResidencyBo), entityResidency);
     }
 }

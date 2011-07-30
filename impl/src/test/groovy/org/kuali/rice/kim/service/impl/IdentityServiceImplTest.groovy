@@ -43,6 +43,8 @@ import org.kuali.rice.core.api.criteria.EqualPredicate
 import org.kuali.rice.core.api.criteria.CriteriaStringValue
 import org.kuali.rice.core.api.criteria.CriteriaLookupService
 import org.kuali.rice.core.api.criteria.GenericQueryResults
+import org.kuali.rice.kim.api.identity.entity.EntityDefaultQueryResults
+import org.kuali.rice.kim.api.identity.entity.EntityDefault
 
 class IdentityServiceImplTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
@@ -1360,5 +1362,38 @@ class IdentityServiceImplTest {
         EntityQueryResults entityQueryResults = identityService.findEntities(queryByCriteriaBuilder.build());
 
         Assert.assertEquals(entityQueryResults.results[0], EntityBo.to(entities[0]));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testFindEntityDefaultsWithNullFails() {
+        EntityDefaultQueryResults entityDefaultQueryResults = identityService.findEntityDefaults(null);
+    }
+
+    @Test
+    public void testFindEntityDefaultsSucceeds() {
+        EntityDefault.Builder entityBuilder = EntityDefault.Builder.create("AAA");
+        GenericQueryResults.Builder<EntityBo> genericQueryResults = new GenericQueryResults.Builder<EntityBo>();
+        genericQueryResults.totalRowCount = 0;
+        genericQueryResults.moreResultsAvailable = false;
+        List<EntityBo> entities = new ArrayList<EntityBo>();
+        entities.add(new EntityBo(active: true, id: "AAA"));
+        genericQueryResults.results = entities;
+        GenericQueryResults<EntityBo> results = genericQueryResults.build();
+
+        mockCriteriaLookupService.demand.lookup(1..1) {
+            Class<EntityBo> queryClass, QueryByCriteria criteria -> return results;
+        }
+
+        injectCriteriaLookupServiceIntoIdentityService();
+
+        QueryByCriteria.Builder queryByCriteriaBuilder = new QueryByCriteria.Builder();
+        queryByCriteriaBuilder.setStartAtIndex(0);
+        queryByCriteriaBuilder.setCountFlag(CountFlag.NONE);
+        EqualPredicate equalExpression = new EqualPredicate("entity.entityId", new CriteriaStringValue("AAA"));
+        queryByCriteriaBuilder.setPredicates(equalExpression);
+        EntityDefaultQueryResults entityDefaultQueryResults = identityService.findEntityDefaults(queryByCriteriaBuilder.build());
+
+        // because findEntityDefaults builds the EntityDefault list from the results, we cannot compare entityBuilder.build() in its entirety to the results in their entirety
+        Assert.assertEquals(entityDefaultQueryResults.results[0].entityId, entityBuilder.build().entityId);
     }
 }

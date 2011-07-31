@@ -15,7 +15,12 @@
  */
 package org.kuali.rice.krad.datadictionary.validation;
 
+import java.beans.PropertyDescriptor;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
+import org.kuali.rice.krad.datadictionary.ComplexAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntryBase;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
@@ -23,10 +28,6 @@ import org.kuali.rice.krad.datadictionary.validation.capability.Constrainable;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.NullValueInNestedPathException;
-
-import java.beans.PropertyDescriptor;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class allows a dictionary object to expose information about its fields / attributes, including the values of
@@ -143,5 +144,30 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 		//            }
 		
 		return attributeValue;
+	}
+	
+	/**
+	 * @return false if parent attribute exists and is not null, otherwise returns true.
+	 */
+	public boolean isParentAttributeNull(){
+	    boolean isParentNull = true;
+	    
+	    if (isNestedAttribute()){
+	        String[] pathTokens = attributeName.split("\\.");
+
+	        isParentNull = false;
+            String parentPath = "";
+	        for (int i=0; (i < pathTokens.length - 1) && !isParentNull;i++){
+                parentPath += pathTokens[i];
+	            isParentNull = beanWrapper.getPropertyValue(parentPath) == null;
+	            parentPath += ".";
+	        }
+	    }
+	    
+	    return isParentNull;
+	}
+	
+	public boolean isNestedAttribute(){
+	    return (attributePath != null || attributeName.contains("."));
 	}
 }

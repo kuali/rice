@@ -61,8 +61,6 @@ public class DictionaryValidationServiceImplTest extends KRADTestCase{
 	protected AttributeDefinition countryDefinition;
 	protected DataObjectEntry addressEntry;
 	
-	protected CaseConstraint countryIsUSACaseConstraint;
-	protected MustOccurConstraint topLevelConstraint;
 	
 	
 	private Address validLondonAddress = new Address("8129 Maiden Lane", "", "London", "", "SE1 0P3", "UK", null);
@@ -90,109 +88,7 @@ public class DictionaryValidationServiceImplTest extends KRADTestCase{
 
 		dataDictionary.parseDataDictionaryConfigurationFiles(false);
 		
-		addressEntry = new DataObjectEntry();
-				
-		List<MustOccurConstraint> mustOccurConstraints = new ArrayList<MustOccurConstraint>();
-		
-		PrerequisiteConstraint postalCodeConstraint = new PrerequisiteConstraint();
-		postalCodeConstraint.setAttributePath("postalCode");
-			
-		PrerequisiteConstraint cityConstraint = new PrerequisiteConstraint();
-		cityConstraint.setAttributePath("city");
-		
-		PrerequisiteConstraint stateConstraint = new PrerequisiteConstraint();
-		stateConstraint.setAttributePath("state");
-		
-		List<PrerequisiteConstraint> cityStateDependencyConstraints = new ArrayList<PrerequisiteConstraint>();
-		cityStateDependencyConstraints.add(cityConstraint);
-		cityStateDependencyConstraints.add(stateConstraint);
-		
-		MustOccurConstraint cityStateConstraint = new MustOccurConstraint();
-		cityStateConstraint.setMin(2);
-		cityStateConstraint.setMax(2);
-		cityStateConstraint.setPrerequisiteConstraints(cityStateDependencyConstraints);
-		
-		// This basically means that at least one of the two child constraints must be satisfied... either the postal code must be entered or _both_ the city and state
-		topLevelConstraint = new MustOccurConstraint();
-		topLevelConstraint.setMax(2);
-		topLevelConstraint.setMin(1);
-		topLevelConstraint.setPrerequisiteConstraints(Collections.singletonList(postalCodeConstraint));
-		topLevelConstraint.setMustOccurConstraints(Collections.singletonList(cityStateConstraint));
-		
-		mustOccurConstraints.add(topLevelConstraint);
-		
-		addressEntry.setMustOccurConstraints(mustOccurConstraints);
-		
-		List<WhenConstraint> countryWhenConstraints = new ArrayList<WhenConstraint>();
-		List<WhenConstraint> stateWhenConstraints = new ArrayList<WhenConstraint>();
-		
-		PrerequisiteConstraint prerequisiteConstraint = new PrerequisiteConstraint();
-		prerequisiteConstraint.setAttributePath("state");
-		
-		ValidCharactersConstraint street1ValidCharactersConstraint = new ValidCharactersConstraint();
-		street1ValidCharactersConstraint.setValue("\\d{3}\\s+\\w+\\s+Ave");
-		
-		// If the country is USA, then it must have a state
-		WhenConstraint stateMustBeThereConstraint = new WhenConstraint();
-		stateMustBeThereConstraint.setValue("USA");
-		stateMustBeThereConstraint.setConstraint(prerequisiteConstraint);
-		countryWhenConstraints.add(stateMustBeThereConstraint);
-		
-		// Set a valid characters constraint for state = DC that it must be a 3-digit street address followed by ____ Ave
-		WhenConstraint streetAddressMustBe3digitAve = new WhenConstraint();
-		streetAddressMustBe3digitAve.setValue("DC");
-		streetAddressMustBe3digitAve.setValuePath("street1");
-		streetAddressMustBe3digitAve.setConstraint(street1ValidCharactersConstraint);
-		
-		stateWhenConstraints.add(streetAddressMustBe3digitAve);
-		
-		countryIsUSACaseConstraint = new CaseConstraint();
-		countryIsUSACaseConstraint.setCaseSensitive(false);
-//		countryIsUSACaseConstraint.setFieldPath("country");
-		countryIsUSACaseConstraint.setWhenConstraint(countryWhenConstraints);
-		
-		CaseConstraint stateIsDCConstraint = new CaseConstraint();
-		stateIsDCConstraint.setCaseSensitive(false);
-		stateIsDCConstraint.setWhenConstraint(stateWhenConstraints);
-		
-		List<AttributeDefinition> attributes = new ArrayList<AttributeDefinition>();
-		
-		street1Definition = new AttributeDefinition();
-		street1Definition.setName("street1");
-		//street1Definition.setValidCharactersConstraint(street1ValidCharactersConstraint);
-		attributes.add(street1Definition);
-		
-		street2Definition = new AttributeDefinition();
-		street2Definition.setName("street2");
-		attributes.add(street2Definition);
-		
-		AttributeDefinition cityDefinition = new AttributeDefinition();
-		cityDefinition.setName("city");
-		attributes.add(cityDefinition);
-		
-		ValidCharactersConstraint stateValidCharactersConstraint = new ValidCharactersConstraint();
-		stateValidCharactersConstraint.setValue("ABCD");
-		
-		stateDefinition = new AttributeDefinition();
-		stateDefinition.setName("state");
-//		stateDefinition.setValidCharactersConstraint(stateValidCharactersConstraint);
-		stateDefinition.setCaseConstraint(stateIsDCConstraint);
-		attributes.add(stateDefinition);
-		
-		postalCodeDefinition = new AttributeDefinition();
-		postalCodeDefinition.setName("postalCode");
-//		postalCodeDefinition.setExclusiveMin("1000");
-//		postalCodeDefinition.setInclusiveMax("99999");
-//		postalCodeDefinition.setDataType(DataType.STRING);
-		attributes.add(postalCodeDefinition);
-		
-		countryDefinition = new AttributeDefinition();
-		countryDefinition.setName("country");
-//		countryDefinition.setMustOccurConstraints(mustOccurConstraints);
-		countryDefinition.setCaseConstraint(countryIsUSACaseConstraint);
-		attributes.add(countryDefinition);
-		
-		addressEntry.setAttributes(attributes);	
+		addressEntry = dataDictionary.getDataObjectEntry("org.kuali.rice.krad.datadictionary.validation.Address");
 	}
 	
 	
@@ -298,7 +194,8 @@ public class DictionaryValidationServiceImplTest extends KRADTestCase{
 		
 		//Main address is required this should result in error
 		Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
-		ConstraintValidationResult constraintValidationResult = dictionaryValidationResult.iterator().next();
+		Iterator<ConstraintValidationResult> iterator = dictionaryValidationResult.iterator();
+		ConstraintValidationResult constraintValidationResult = iterator.next();
 		Assert.assertEquals("mainAddress", constraintValidationResult.getAttributePath());
 		
 		//Adding an invalid mainAddress for company 
@@ -308,12 +205,16 @@ public class DictionaryValidationServiceImplTest extends KRADTestCase{
 		dictionaryValidationResult = service.validate(acmeCompany, "org.kuali.rice.krad.datadictionary.validation.Company",companyEntry, true);
 		
 		//This should result in missing country error
-		Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
-		constraintValidationResult = dictionaryValidationResult.iterator().next();		
+		Assert.assertEquals(2, dictionaryValidationResult.getNumberOfErrors());
+		Iterator<ConstraintValidationResult> dictionaryValidationResultIterator = dictionaryValidationResult.iterator();
+		constraintValidationResult = dictionaryValidationResultIterator.next();		
 		Assert.assertEquals("mainAddress.country", constraintValidationResult.getAttributePath());
+        constraintValidationResult = dictionaryValidationResultIterator.next();
+        Assert.assertEquals("error.occurs", constraintValidationResult.getErrorKey());        
 		
 		//Set items to valid address
 		acmeMainAddress.setCountry("US");
+		acmeMainAddress.setPostalCode("11111");
 		
 		dictionaryValidationResult = service.validate(acmeCompany, "org.kuali.rice.krad.datadictionary.validation.Company",companyEntry, true);
 		

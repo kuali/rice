@@ -908,11 +908,10 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         processElementConstraints(result, value, definition, attributeValueReader, checkIfRequired);
     }
 
-    private void validateObject(DictionaryValidationResult result, AttributeValueReader attributeValueReader,
+    private void validateObject(DictionaryValidationResult result, AttributeValueReader attributeValueReader, 
             boolean doOptionalProcessing) throws AttributeValidationException {
 
         // If the entry itself is constrainable then the attribute value reader will return it here and we'll need to check if it has any constraints
-        //FIXME: WJG - Do we want to make entry be constrainable?
         Constrainable objectEntry = attributeValueReader.getEntry();
         processElementConstraints(result, attributeValueReader.getObject(), objectEntry, attributeValueReader,
                 doOptionalProcessing);
@@ -923,13 +922,16 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         if (null == definitions)
             return;
 
-        //Process all attribute definitions
-        for (Constrainable definition : definitions) {
-            String attributeName = definition.getName();
-            attributeValueReader.setAttributeName(attributeName);
-            Object value = attributeValueReader.getValue(attributeName);
-
-            processElementConstraints(result, value, definition, attributeValueReader, doOptionalProcessing);
+        //Process all attribute definitions, but not if this is a nested object, in which case attribute definitions 
+        //will already have been processed on the parent object.
+        if (attributeValueReader.getPath() == null || attributeValueReader.getPath().isEmpty()){
+            for (Constrainable definition : definitions) {
+                String attributeName = definition.getName();
+                attributeValueReader.setAttributeName(attributeName);
+                Object value = attributeValueReader.getValue(attributeName);
+    
+                processElementConstraints(result, value, definition, attributeValueReader, doOptionalProcessing);
+            }
         }
 
         //Process any constraints that may be defined on complex attributes
@@ -939,19 +941,18 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
             if (complexAttrDefinitions != null) {
                 for (ComplexAttributeDefinition complexAttrDefinition : complexAttrDefinitions) {
-                    DataDictionaryEntry childEntry = complexAttrDefinition.getDataObjectEntry();
-
                     String attributeName = complexAttrDefinition.getName();
-
                     attributeValueReader.setAttributeName(attributeName);
                     Object value = attributeValueReader.getValue();
+                    
+                    DataDictionaryEntry childEntry = complexAttrDefinition.getDataObjectEntry();
                     if (value != null) {
                         AttributeValueReader nestedAttributeValueReader =
                                 new DictionaryObjectAttributeValueReader(value, childEntry.getFullClassName(),
                                         childEntry, attributeValueReader.getPath());
                         validateObject(result, nestedAttributeValueReader, doOptionalProcessing);
                     }
-
+                    
                     processElementConstraints(result, value, complexAttrDefinition, attributeValueReader,
                             doOptionalProcessing);
                 }

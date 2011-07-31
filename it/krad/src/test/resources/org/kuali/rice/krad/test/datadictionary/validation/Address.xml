@@ -20,132 +20,206 @@
  limitations under the License.
 -->
 
-	 <bean id="Address" parent="Address-parentBean"/>
-	 <bean id="Address-parentBean" abstract="true" parent="DataObjectEntry">
-		<property name="dataObjectClass" value="org.kuali.rice.krad.datadictionary.validation.Address"/>
-		<property name="titleAttribute" value="id"/>
-		<property name="objectLabel" value="Course"/>
-		<property name="primaryKeys">
-		  <list>
-		    <value>id</value>
-		  </list>
-		</property>
-		<property name="attributes">
-		  <list>
-		    <ref bean="Address-street1"/>
-		    <ref bean="Address-street2"/>
-		    <ref bean="Address-city"/>
-		    <ref bean="Address-state"/>
-		    <ref bean="Address-postalCode"/>		    		    
-		    <ref bean="Address-country"/>
-		    <!-- <ref bean="Address-effectiveDate"/> -->		    
-		  </list>
-		</property>		
-	</bean>
-  
-	<bean id="Address-street1" parent="Address-street1-parentBean"/>
-	<bean id="Address-street1-parentBean" abstract="true" parent="AttributeDefinition">
-		<property name="name" value="street1"/>
-		<property name="shortLabel" value="street1"/>
-		<property name="summary" value="Street Address Line 1"/>
-		<property name="label" value="Street 1"/>
-		<property name="description" value="Street Address Line 1"/>
-		<property name="minLength" value="1"/>
-		<property name="maxLength" value="36"/>
-		<property name="validationPattern">
-			<bean parent="AnyCharacterValidationPattern"/>
-		</property>
-		<property name="control">
-			<bean parent="TextControlDefinition" p:size="40"/>
-		</property>	  
-	</bean>
-  
-	<bean id="Address-street2" parent="Address-street2-parentBean"/>
-	<bean id="Address-street2-parentBean" abstract="true" parent="AttributeDefinition">
-		<property name="name" value="street2"/>
-		<property name="shortLabel" value="street2"/>
-		<property name="summary" value="Street Address Line 2"/>
-		<property name="label" value="Street 2"/>
-		<property name="description" value="Street Address Line 2"/>
-		<property name="minLength" value="1"/>
-		<property name="maxLength" value="36"/>
-		<property name="validationPattern">
-			<bean parent="AnyCharacterValidationPattern"/>
-		</property>
-		<property name="control">
-			<bean parent="TextControlDefinition" p:size="40"/>
-		</property>	  
-	</bean>
+  <bean id="Address" parent="Address-parentBean" />
+  <bean id="Address-parentBean" abstract="true" parent="DataObjectEntry">
+    <property name="dataObjectClass" value="org.kuali.rice.krad.datadictionary.validation.Address" />
+    <property name="titleAttribute" value="id" />
+    <property name="objectLabel" value="Course" />
+    <property name="primaryKeys">
+      <list>
+        <value>id</value>
+      </list>
+    </property>
+    <property name="attributes">
+      <list>
+        <ref bean="Address-street1" />
+        <ref bean="Address-street2" />
+        <ref bean="Address-city" />
+        <ref bean="Address-state" />
+        <ref bean="Address-postalCode" />
+        <ref bean="Address-country" />
+        <!-- <ref bean="Address-effectiveDate"/> -->
+      </list>
+    </property>
+    <property name="mustOccurConstraints">
+      <list>
+        <!--         
+        This constraint requires that at least one of the two child constraints must be satisfied.
+        Either the postal code must be entered or _both_ the city and state. 
+        -->
+        <bean parent="MustOccurConstraint">
+          <property name="min" value="1"/>
+          <property name="max" value="2"/>
+          <property name="prerequisiteConstraints">
+            <list>
+              <bean parent="PrerequisiteConstraint">
+                <property name="attributePath" value="postalCode"/>
+              </bean>
+            </list>              
+          </property>
+          <property name="mustOccurConstraints">
+            <list>            
+              <bean parent="MustOccurConstraint">
+                <property name="min" value="2"/>
+                <property name="max" value="2"/>
+                <property name="prerequisiteConstraints">
+                  <list>
+                    <bean parent="PrerequisiteConstraint">
+                      <property name="attributePath" value="city"/>                      
+                    </bean>
+                    <bean parent="PrerequisiteConstraint">
+                      <property name="attributePath" value="state"/>                      
+                    </bean>
+                  </list>
+                </property>              
+              </bean>
+            </list>                        
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
 
-	<bean id="Address-city" parent="Address-city-parentBean"/>
-	<bean id="Address-city-parentBean" abstract="true" parent="AttributeDefinition">
-		<property name="name" value="city"/>
-		<property name="shortLabel" value="city"/>
-		<property name="summary" value="City"/>
-		<property name="label" value="City"/>
-		<property name="description" value="City"/>
-		<property name="minLength" value="1"/>
-		<property name="maxLength" value="36"/>
-		<property name="validationPattern">
-			<bean parent="AnyCharacterValidationPattern"/>
-		</property>
-		<property name="control">
-			<bean parent="TextControlDefinition" p:size="40"/>
-		</property>	  
-	</bean>
+  <bean id="Address-street1" parent="Address-street1-parentBean" />
+  <bean id="Address-street1-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="street1" />
+    <property name="shortLabel" value="street1" />
+    <property name="summary" value="Street Address Line 1" />
+    <property name="label" value="Street 1" />
+    <property name="description" value="Street Address Line 1" />
+    <property name="minLength" value="1" />
+    <property name="maxLength" value="36" />
+    <property name="validationPattern">
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="40" />
+    </property>
+  </bean>
 
-	<bean id="Address-state" parent="Address-state-parentBean"/>
-	<bean id="Address-state-parentBean" abstract="true" parent="AttributeDefinition">
-		<property name="name" value="state"/>
-		<property name="shortLabel" value="state"/>
-		<property name="summary" value="state"/>
-		<property name="label" value="state"/>
-		<property name="description" value="state"/>
-		<property name="minLength" value="1"/>
-		<property name="maxLength" value="36"/>
-		<property name="validationPattern">
-			<bean parent="AnyCharacterValidationPattern"/>
-		</property>
-		<property name="control">
-			<bean parent="TextControlDefinition" p:size="40"/>
-		</property>	  
-	</bean>
+  <bean id="Address-street2" parent="Address-street2-parentBean" />
+  <bean id="Address-street2-parentBean" abstract="true"
+    parent="AttributeDefinition">
+    <property name="name" value="street2" />
+    <property name="shortLabel" value="street2" />
+    <property name="summary" value="Street Address Line 2" />
+    <property name="label" value="Street 2" />
+    <property name="description" value="Street Address Line 2" />
+    <property name="minLength" value="1" />
+    <property name="maxLength" value="36" />
+    <property name="validationPattern">
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="40" />
+    </property>
+  </bean>
+
+  <bean id="Address-city" parent="Address-city-parentBean" />
+  <bean id="Address-city-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="city" />
+    <property name="shortLabel" value="city" />
+    <property name="summary" value="city" />
+    <property name="label" value="city" />
+    <property name="description" value="city" />
+    <property name="minLength" value="1" />
+    <property name="maxLength" value="36" />
+    <property name="validationPattern">
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="40" />
+    </property>
+  </bean>
+
+  <bean id="Address-state" parent="Address-state-parentBean" />
+  <bean id="Address-state-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="state" />
+    <property name="shortLabel" value="state" />
+    <property name="summary" value="state" />
+    <property name="label" value="state" />
+    <property name="description" value="state" />
+    <property name="minLength" value="1" />
+    <property name="maxLength" value="36" />
+    <property name="validationPattern">
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="40" />
+    </property>
+    <property name="caseConstraint">
+      <bean parent="CaseConstraint">
+        <property name="caseSensitive" value="false"/>
+        <property name="whenConstraint">
+          <list>
+            <bean parent="WhenConstraint">
+              <property name="value" value="DC"/>
+              <property name="valuePath" value="street1"/>
+              <property name="constraint">
+                <bean parent="ValidCharactersConstraint">
+                  <property name="value" value="\d{3}\s+\w+\s+Ave"/>
+                </bean>
+              </property>
+            </bean>
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
 
 
-	<bean id="Address-postalCode" parent="Address-postalCode-parentBean"/>
-	<bean id="Address-postalCode-parentBean" abstract="true" parent="AttributeDefinition">
-		<property name="name" value="postalCode"/>
-		<property name="shortLabel" value="postalCode"/>
-		<property name="summary" value="postalCode"/>
-		<property name="label" value="postalCode"/>
-		<property name="description" value="postalCode"/>
-		<property name="minLength" value="1"/>
-		<property name="maxLength" value="36"/>
-		<property name="validationPattern">
-			<bean parent="AnyCharacterValidationPattern"/>
-		</property>
-		<property name="control">
-			<bean parent="TextControlDefinition" p:size="40"/>
-		</property>	  
-	</bean>
+  <bean id="Address-postalCode" parent="Address-postalCode-parentBean" />
+  <bean id="Address-postalCode-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="postalCode" />
+    <property name="shortLabel" value="postalCode" />
+    <property name="summary" value="postalCode" />
+    <property name="label" value="postalCode" />
+    <property name="description" value="postalCode" />
+    <property name="minLength" value="1" />
+    <property name="maxLength" value="36" />
+    <property name="validationPattern">
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="40" />
+    </property>
+  </bean>
 
 
-	<bean id="Address-country" parent="Address-country-parentBean"/>
-	<bean id="Address-country-parentBean" abstract="true" parent="AttributeDefinition">
-		<property name="name" value="country"/>
-		<property name="shortLabel" value="country"/>
-		<property name="summary" value="country"/>
-		<property name="label" value="country"/>
-		<property name="description" value="country"/>
-		<property name="minLength" value="1"/>
-		<property name="maxLength" value="36"/>
-		<property name="required" value="true"/>		
-		<property name="validationPattern">
-			<bean parent="AnyCharacterValidationPattern"/>
-		</property>
-		<property name="control">
-			<bean parent="TextControlDefinition" p:size="40"/>
-		</property>	  
-	</bean>
+  <bean id="Address-country" parent="Address-country-parentBean" />
+  <bean id="Address-country-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="country" />
+    <property name="shortLabel" value="country" />
+    <property name="summary" value="country" />
+    <property name="label" value="country" />
+    <property name="description" value="country" />
+    <property name="minLength" value="1" />
+    <property name="maxLength" value="36" />
+    <property name="required" value="true" />
+    <property name="validationPattern">
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="40" />
+    </property>
+    <!-- If the country is USA, then it must have a state -->
+    <property name="caseConstraint">
+      <bean parent="CaseConstraint">
+        <property name="caseSensitive" value="false"/>
+        <property name="whenConstraint">
+          <list>
+            <bean parent="WhenConstraint">
+              <property name="value" value="USA"/>
+              <property name="constraint">
+                <bean parent="PrerequisiteConstraint">
+                  <property name="attributePath" value="state"/>
+                </bean>
+              </property>
+            </bean>
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
     
 </beans>  

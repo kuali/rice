@@ -53,6 +53,12 @@ public class MustOccurConstraintProcessor extends BasePrerequisiteConstraintProc
 				
 		if (!processMustOccurConstraint(constraintValidationResult, constraint, attributeValueReader)) {
 			// If the processing of this constraint was not successful then it's an error
+		    if (attributeValueReader.getAttributeName() == null){
+		        constraintValidationResult.setAttributeName(attributeValueReader.getPath());
+		    } else{
+		        constraintValidationResult.setAttributeName(attributeValueReader.getAttributeName());
+		        constraintValidationResult.setAttributePath(attributeValueReader.getPath());
+		    }
 			constraintValidationResult.setError(RiceKeyConstants.ERROR_OCCURS);
 		} 
 

@@ -16,8 +16,10 @@
 package org.kuali.rice.krad.datadictionary.validation.processor;
 
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.krad.datadictionary.DataObjectEntry;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.validation.AttributeValueReader;
+import org.kuali.rice.krad.datadictionary.validation.DictionaryObjectAttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.ValidationUtils;
 import org.kuali.rice.krad.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ExistenceConstraint;
@@ -63,7 +65,7 @@ public class ExistenceConstraintProcessor extends OptionalElementConstraintProce
 		if (constraint.isRequired() == null)
 			return result.addNoConstraint(attributeValueReader, CONSTRAINT_NAME);
 		
-		if (constraint.isRequired().booleanValue()) {
+		if (constraint.isRequired().booleanValue() && !skipConstraint(attributeValueReader)) {
 			// If this attribute is required and the value is null then 
 			if (ValidationUtils.isNullOrEmpty(value)) 
 				return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_REQUIRED);
@@ -73,5 +75,22 @@ public class ExistenceConstraintProcessor extends OptionalElementConstraintProce
 
 		return result.addSkipped(attributeValueReader, CONSTRAINT_NAME);
 	}
+
+    /**
+     * Checks to see if existence constraint should be skipped.  Required constraint should be skipped if it is an attribute of a complex
+     * attribute and the complex attribute is not required.
+     * 
+     * @param attributeValueReader
+     * @return
+     */
+    private boolean skipConstraint(AttributeValueReader attributeValueReader) {
+        boolean skipConstraint = false;
+        if (attributeValueReader instanceof DictionaryObjectAttributeValueReader){
+            DictionaryObjectAttributeValueReader dictionaryValueReader = (DictionaryObjectAttributeValueReader)attributeValueReader;
+            skipConstraint = dictionaryValueReader.isNestedAttribute() && dictionaryValueReader.isParentAttributeNull();
+        }
+        return skipConstraint;
+    }
+	
 	
 }

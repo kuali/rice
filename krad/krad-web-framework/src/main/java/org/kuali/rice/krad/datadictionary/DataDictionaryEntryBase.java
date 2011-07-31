@@ -15,18 +15,18 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.datadictionary.exception.DuplicateEntryException;
-import org.kuali.rice.krad.exception.ValidationException;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.InitializingBean;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.exception.DuplicateEntryException;
+import org.kuali.rice.krad.exception.ValidationException;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.InitializingBean;
 
 /**
  * Contains common properties and methods for data dictionary entries.
@@ -45,9 +45,11 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry, Se
     
     public DataDictionaryEntryBase() {
         this.attributes = new ArrayList<AttributeDefinition>();
+        this.complexAttributes = new ArrayList<ComplexAttributeDefinition>();
         this.collections = new ArrayList<CollectionDefinition>();
         this.relationships = new ArrayList<RelationshipDefinition>();
         this.attributeMap = new LinkedHashMap<String, AttributeDefinition>();
+        this.complexAttributeMap = new LinkedHashMap<String, ComplexAttributeDefinition>();
         this.collectionMap = new LinkedHashMap<String, CollectionDefinition>();
         this.relationshipMap = new LinkedHashMap<String, RelationshipDefinition>();
     }
@@ -85,7 +87,29 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry, Se
 	 */
 	public void setComplexAttributes(
 			List<ComplexAttributeDefinition> complexAttributes) {
-		this.complexAttributes = complexAttributes;
+        complexAttributeMap.clear();
+        for ( ComplexAttributeDefinition complexAttribute : complexAttributes ) {
+            if (complexAttribute == null) {
+                throw new IllegalArgumentException("invalid (null) complexAttributeDefinition");
+            }
+            String complexAttributeName = complexAttribute.getName();
+            if (StringUtils.isBlank(complexAttributeName)) {
+                throw new ValidationException("invalid (blank) collectionName");
+            }
+
+            if (complexAttributeMap.containsKey(complexAttribute)){
+                throw new DuplicateEntryException("complex attribute '" + complexAttribute + "' already defined as an complex attribute for class '" + getEntryClass().getName() + "'");
+            } else if (collectionMap.containsKey(complexAttributeName)) {
+                throw new DuplicateEntryException("complex attribute '" + complexAttributeName + "' already defined as a Collection for class '" + getEntryClass().getName() + "'");
+            } else if (attributeMap.containsKey(complexAttributeName)) {
+                throw new DuplicateEntryException("complex attribute '" + complexAttributeName + "' already defined as an Attribute for class '" + getEntryClass().getName() + "'");
+            } 
+
+            complexAttributeMap.put(complexAttributeName, complexAttribute);
+            
+        }
+
+	    this.complexAttributes = complexAttributes;
 	}
 
     /**
@@ -204,11 +228,12 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry, Se
             }
 
             if (attributeMap.containsKey(attributeName)) {
-                throw new DuplicateEntryException("collection '" + attributeName + "' already defined as an Attribute for class '" + getEntryClass().getName() + "'");
+                throw new DuplicateEntryException("attribute '" + attributeName + "' already defined as an Attribute for class '" + getEntryClass().getName() + "'");
             } else if (collectionMap.containsKey(attributeName)) {
                 throw new DuplicateEntryException("attribute '" + attributeName + "' already defined as a Collection for class '" + getEntryClass().getName() + "'");
+            } else if (complexAttributeMap.containsKey(attributeName)){
+                throw new DuplicateEntryException("attribute '" + attributeName + "' already defined as an Complex Attribute for class '" + getEntryClass().getName() + "'");
             }
-
             attributeMap.put(attributeName, attribute);            
         }
         this.attributes = attributes;
@@ -257,6 +282,8 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry, Se
                 throw new DuplicateEntryException("collection '" + collectionName + "' already defined for class '" + getEntryClass().getName() + "'");
             } else if (attributeMap.containsKey(collectionName)) {
                 throw new DuplicateEntryException("collection '" + collectionName + "' already defined as an Attribute for class '" + getEntryClass().getName() + "'");
+            } else if (complexAttributeMap.containsKey(collectionName)){
+                throw new DuplicateEntryException("collection '" + collectionName + "' already defined as Complex Attribute for class '" + getEntryClass().getName() + "'");
             }
 
             collectionMap.put(collectionName, collection);

@@ -106,12 +106,31 @@
     <property name="label" value="Street 2" />
     <property name="description" value="Street Address Line 2" />
     <property name="minLength" value="1" />
-    <property name="maxLength" value="36" />
+    <property name="maxLength" value="40" />
     <property name="validationPattern">
       <bean parent="AnyCharacterValidationPattern" />
     </property>
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40" />
+    </property>
+    <property name="caseConstraint">
+      <bean parent="CaseConstraint">
+        <property name="caseSensitive" value="false"/>
+        <property name="fieldPath" value="country"/>
+        <property name="whenConstraint">
+          <list>
+            <bean parent="WhenConstraint">
+              <property name="value" value="CN"/>
+              <property name="valuePath" value="street1"/>
+              <property name="constraint">
+                <bean parent="SimpleConstraint">
+                  <property name="required" value="true"/>
+                </bean>
+              </property>
+            </bean>
+          </list>
+        </property>
+      </bean>
     </property>
   </bean>
 

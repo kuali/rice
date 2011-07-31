@@ -69,6 +69,7 @@ public class DictionaryValidationServiceImplTest extends KRADTestCase{
 	private Address noZipNoCityUSAddress = new Address("893 Presidential Ave", "Suite 800", null, "DC", null, "USA", null);
 	private Address validNonDCUSAddress = new Address("89 11th Street", "Suite 800", "Seattle", "WA", "", "USA", null);
 	private Address invalidDCUSAddress = new Address("89 Presidential Ave", "Suite 800", "Washington", "DC", "12031", "USA", null);
+	private Address invalidHKAddress = new Address("182 Lin Pai Road", "", "Hong Kong", "N.T.", "", "CN", null);
 	
 	
 	@Before
@@ -173,6 +174,14 @@ public class DictionaryValidationServiceImplTest extends KRADTestCase{
 	}
 	
 	
+    @Test
+    public void testSimpleCaseConstraints() throws IOException{
+        DictionaryValidationResult dictionaryValidationResult = service.validate(invalidHKAddress, "org.kuali.rice.krad.datadictionary.validation.Address", addressEntry, true);
+        
+        Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
+        Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
+    }
+
 	@Test
 	public void testRequiredNestedAttribute() throws IOException{	
 		DataDictionaryService dataDictionaryService = new DataDictionaryServiceImpl(dataDictionary);

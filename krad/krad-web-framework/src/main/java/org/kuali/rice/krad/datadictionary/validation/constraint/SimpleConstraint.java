@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlElement;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SimpleConstraint extends BaseConstraint {
+public class SimpleConstraint extends BaseConstraint implements ExistenceConstraint{
     
 	@XmlElement
 	private Boolean required;
@@ -154,7 +154,15 @@ public class SimpleConstraint extends BaseConstraint {
 	public void setMaxOccurs(Integer maxOccurs) {
 		this.maxOccurs = maxOccurs;
 	}
-	
+
+
+    /**
+     * @see org.kuali.rice.krad.datadictionary.validation.constraint.ExistenceConstraint#isRequired()
+     */
+    @Override
+    public Boolean isRequired() {
+        return getRequired();
+    }	
 	
 }
 

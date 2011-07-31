@@ -101,6 +101,7 @@
 		<property name="description" value="gender"/>
 		<property name="minLength" value="1"/>
 		<property name="maxLength" value="36"/>
+        <property name="required" value="true"/>
 		<property name="validationPattern">
 			<bean parent="AnyCharacterValidationPattern"/>
 		</property>
@@ -137,6 +138,7 @@
 		<property name="description" value="birthDate"/>
 		<property name="minLength" value="1"/>
 		<property name="maxLength" value="36"/>
+        <property name="required" value="true"/>
 		<property name="validationPattern">
 			<bean parent="AnyCharacterValidationPattern"/>
 		</property>

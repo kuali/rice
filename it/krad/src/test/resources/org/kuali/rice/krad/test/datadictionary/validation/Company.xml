@@ -34,12 +34,16 @@
 		  <list>
 		    <ref bean="Company-id"/>
 		    <ref bean="Company-name"/>
+        
+            <!-- Test employee details person birthdate override -->
+            <ref bean="Company-mainContact.employeeDetails.birthDate"/>          
+        
 		  </list>
 		</property>		
 		<property name="complexAttributes">
 			<list>
 			    <ref bean="Company-mainContact"/>  
-			    <ref bean="Company-mainAddress"/>
+			    <ref bean="Company-mainAddress"/>          
 			</list>
 		</property>			        
 		<property name="collections">
@@ -107,5 +111,11 @@
 		<property name="required" value="true"/>
 		<property name="dataObjectEntry" ref="Address"/>
 	</bean>
+    
+    <bean id="Company-mainContact.employeeDetails.birthDate" parent="Company-mainContact.employeeDetails.birthDate-parentBean"/>
+    <bean id="Company-mainContact.employeeDetails.birthDate-parentBean" abstract="true" parent="Person-birthDate">
+      <property name="name" value="mainContact.employeeDetails.birthDate"/>
+      <property name="required" value="false"/>
+    </bean>
     
 </beans>  

@@ -28,10 +28,13 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentTypeAndEditModePermissionTypeServiceImpl extends DocumentTypePermissionTypeServiceImpl {
-	
-	{
-		requiredAttributes.add(KimConstants.AttributeConstants.EDIT_MODE);
-	}
+
+    @Override
+    protected List<String> getRequiredAttributes() {
+        List<String> attrs = new ArrayList<String>(super.getRequiredAttributes());
+        attrs.add(KimConstants.AttributeConstants.EDIT_MODE);
+        return attrs;
+    }
 	
 	@Override
 	protected List<Permission> performPermissionMatches(

@@ -18,6 +18,10 @@ package org.kuali.rice.krad.service.impl;
 import org.kuali.rice.kim.service.support.impl.KimGroupTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
  * 
@@ -26,7 +30,10 @@ import org.kuali.rice.kim.util.KimConstants;
  */
 public class CampusGroupTypeServiceImpl extends KimGroupTypeServiceBase {
 
-	{
-		workflowRoutingAttributes.add( KimConstants.AttributeConstants.CAMPUS_CODE );
-	}
+    @Override
+    public List<String> getWorkflowRoutingAttributes(String routeLevel) {
+        final List<String> attrs = new ArrayList<String>(super.getWorkflowRoutingAttributes(routeLevel));
+        attrs.add(KimConstants.AttributeConstants.CAMPUS_CODE);
+        return Collections.unmodifiableList(attrs);
+    }
 }

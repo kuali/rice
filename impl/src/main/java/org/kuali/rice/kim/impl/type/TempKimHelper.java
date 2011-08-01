@@ -25,8 +25,6 @@ import org.kuali.rice.kns.datadictionary.control.SelectControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.TextControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.TextareaControlDefinition;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
-import org.kuali.rice.krad.datadictionary.KimAttributeDefinition;
-import org.kuali.rice.krad.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.krad.datadictionary.exporter.ExportMap;
 import org.kuali.rice.krad.datadictionary.validation.ValidationPattern;
@@ -113,7 +111,7 @@ public class TempKimHelper {
         return kb.build();
     }
 
-    private static String getKimBasePath(){
+    public static String getKimBasePath(){
 	    String kimBaseUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(KimConstants.KimUIConstants.KIM_URL_KEY);
 	    if (!kimBaseUrl.endsWith(KimConstants.KimUIConstants.URL_SEPARATOR)) {
 		    kimBaseUrl = kimBaseUrl + KimConstants.KimUIConstants.URL_SEPARATOR;
@@ -121,7 +119,7 @@ public class TempKimHelper {
 	    return kimBaseUrl;
 	}
 
-    private static RemotableAbstractControl.Builder toRemotableAbstractControlBuilder(ControlDefinition control) {
+    public static RemotableAbstractControl.Builder toRemotableAbstractControlBuilder(ControlDefinition control) {
             if (control.isCheckbox()) {
                 return RemotableCheckboxGroup.Builder.create(getValues(control));
             } else if (control.isHidden()) {
@@ -163,7 +161,7 @@ public class TempKimHelper {
         }
     }
 
-    private static RemotableAbstractWidget.Builder toRemotableAbstractWidgetBuilder(ControlDefinition control) {
+    public static RemotableAbstractWidget.Builder toRemotableAbstractWidgetBuilder(ControlDefinition control) {
             if (control.isDatePicker()) {
                 return RemotableDatepicker.Builder.create();
             } else if (control.isExpandedTextArea()) {
@@ -185,7 +183,7 @@ public class TempKimHelper {
         return Collections.unmodifiableList(defns);
     }
 
-    private static KimAttributeDefinition toKimAttributeDefinition(KimAttributeField field) {
+    public static KimAttributeDefinition toKimAttributeDefinition(KimAttributeField field) {
         if (field == null) {
             throw new IllegalArgumentException("field is null");
         }

@@ -21,6 +21,7 @@ import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -31,11 +32,10 @@ import java.util.Map;
  */
 public class DocumentTypeAndNodeAndFieldsPermissionTypeServiceImpl extends DocumentTypePermissionTypeServiceImpl {
 
-	{
-//		requiredAttributes.add(KimAttributes.ROUTE_NODE_NAME);
-//		requiredAttributes.add(KimAttributes.PROPERTY_NAME);
-		checkRequiredAttributes = true;
-	}
+    @Override
+    protected boolean isCheckRequiredAttributes() {
+        return true;
+    }
 
 	/**
 	 * 

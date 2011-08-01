@@ -23,6 +23,7 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.service.impl.DocumentTypePermissionTypeServiceImpl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -34,10 +35,13 @@ import java.util.Map;
  * 
  */
 public class AdhocReviewPermissionTypeServiceImpl extends DocumentTypePermissionTypeServiceImpl implements KimPermissionTypeService{
-	
-	{
-		requiredAttributes.add( KimConstants.AttributeConstants.ACTION_REQUEST_CD );
-	}
+
+    @Override
+    protected List<String> getRequiredAttributes() {
+        final List<String> attrs = new ArrayList<String>(super.getRequiredAttributes());
+        attrs.add(KimConstants.AttributeConstants.ACTION_REQUEST_CD);
+        return Collections.unmodifiableList(attrs);
+    }
 
 	@Override
 	public List<Permission> performPermissionMatches(

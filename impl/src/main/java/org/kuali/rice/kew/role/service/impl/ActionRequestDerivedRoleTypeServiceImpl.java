@@ -28,6 +28,7 @@ import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -43,10 +44,17 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 	private static final String ACKNOWLEDGE_REQUEST_RECIPIENT_ROLE_NAME = "Acknowledge Request Recipient";
 	private static final String FYI_REQUEST_RECIPIENT_ROLE_NAME = "FYI Request Recipient";
 
-	{
-		requiredAttributes.add( KimConstants.AttributeConstants.DOCUMENT_NUMBER );
-		checkRequiredAttributes = true;
-	}
+    @Override
+    protected List<String> getRequiredAttributes() {
+        final List<String> attrs = new ArrayList<String>(super.getRequiredAttributes());
+        attrs.add(KimConstants.AttributeConstants.DOCUMENT_NUMBER);
+        return Collections.unmodifiableList(attrs);
+    }
+
+    @Override
+    protected boolean isCheckRequiredAttributes() {
+        return true;
+    }
 	
 	@Override
     public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Map<String, String> qualification) {

@@ -25,6 +25,7 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -37,11 +38,18 @@ import java.util.Map;
 public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServiceBase {
 	
 	private IdentityService identityService;
-	
-	{
-		requiredAttributes.add( KimConstants.AttributeConstants.PRINCIPAL_ID );
-		checkRequiredAttributes = false;
-	}
+
+    @Override
+    protected List<String> getRequiredAttributes() {
+        final List<String> attrs = new ArrayList<String>(super.getRequiredAttributes());
+        attrs.add(KimConstants.AttributeConstants.PRINCIPAL_ID);
+        return Collections.unmodifiableList(attrs);
+    }
+
+    @Override
+    protected boolean isCheckRequiredAttributes() {
+        return false;
+    }
 
 	@Override
 	public boolean performMatch(Map<String, String> inputAttributes, Map<String, String> storedAttributes) {

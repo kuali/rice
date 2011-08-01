@@ -21,14 +21,24 @@ import org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CampusRoleTypeServiceImpl extends KimRoleTypeServiceBase {
 
-	{
-		workflowRoutingAttributes.add( KimConstants.AttributeConstants.CAMPUS_CODE );
-		requiredAttributes.add( KimConstants.AttributeConstants.CAMPUS_CODE );
-	}
+    @Override
+    protected List<String> getRequiredAttributes() {
+        final List<String> attrs = new ArrayList<String>(super.getRequiredAttributes());
+        attrs.add(KimConstants.AttributeConstants.CAMPUS_CODE);
+        return Collections.unmodifiableList(attrs);
+    }
+
+    @Override
+    public List<String> getWorkflowRoutingAttributes(String routeLevel) {
+        final List<String> attrs = new ArrayList<String>(super.getWorkflowRoutingAttributes(routeLevel));
+        attrs.add(KimConstants.AttributeConstants.CAMPUS_CODE);
+        return Collections.unmodifiableList(attrs);
+    }
 
 	@Override
 	public List<KimAttributeField> getAttributeDefinitions(String kimTypeId) {

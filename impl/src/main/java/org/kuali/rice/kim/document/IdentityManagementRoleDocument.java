@@ -38,8 +38,6 @@ import org.kuali.rice.kim.impl.type.IdentityManagementTypeAttributeTransactional
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
-import org.kuali.rice.krad.datadictionary.AttributeDefinition;
-import org.kuali.rice.krad.datadictionary.KimAttributeDefinition;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.springframework.util.AutoPopulatingList;
 

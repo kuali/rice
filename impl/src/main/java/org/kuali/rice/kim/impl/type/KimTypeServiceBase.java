@@ -17,7 +17,10 @@ package org.kuali.rice.kim.impl.type;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.uif.RemotableAbstractWidget;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
+import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.core.api.uif.RemotableQuickFinder;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.api.util.type.TypeUtils;
@@ -35,12 +38,9 @@ import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.comparator.StringValueComparator;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
-import org.kuali.rice.krad.datadictionary.KimAttributeDefinition;
-import org.kuali.rice.krad.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
 import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
-import org.kuali.rice.krad.keyvalues.KimAttributeValuesFinder;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DictionaryValidationService;
@@ -53,7 +53,6 @@ import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -72,10 +71,6 @@ public class KimTypeServiceBase implements KimTypeService {
 	private DictionaryValidationService dictionaryValidationService;
 	private DataDictionaryService dataDictionaryService;
 	private KimTypeInfoService typeInfoService;
-	
-	protected final List<String> workflowRoutingAttributes = new ArrayList<String>();
-	protected final List<String> requiredAttributes = new ArrayList<String>();
-	protected boolean checkRequiredAttributes;
 
 	@Override
 	public String getWorkflowDocumentTypeName() {
@@ -84,32 +79,29 @@ public class KimTypeServiceBase implements KimTypeService {
 
 	@Override
 	public List<String> getWorkflowRoutingAttributes(String routeLevel) {
-		return Collections.unmodifiableList(workflowRoutingAttributes);
+		return Collections.emptyList();
 	}
 
     //FIXME: sort by sortCode
     @Override
 	public List<KimAttributeField> getAttributeDefinitions(String kimTypeId) {
         final List<String> uniqueAttributes = getUniqueAttributes(kimTypeId);
-        final List<AttributeDefinition> definitions = new ArrayList<AttributeDefinition>();
+        final List<KimAttributeField> definitions = new ArrayList<KimAttributeField>();
         final KimType kimType = getTypeInfoService().getKimType(kimTypeId);
         final String nsCode = kimType.getNamespaceCode();
         for (KimTypeAttribute typeAttribute : kimType.getAttributeDefinitions()) {
-            final AttributeDefinition definition;
+            final KimAttributeField definition;
             if (typeAttribute.getKimAttribute().getComponentName() == null) {
-                definition = getNonDataDictionaryAttributeDefinition(typeAttribute);
+                definition = getNonDataDictionaryAttributeDefinition(nsCode,kimTypeId,typeAttribute, uniqueAttributes);
             } else {
-                definition = getDataDictionaryAttributeDefinition(nsCode,kimTypeId,typeAttribute);
+                definition = getDataDictionaryAttributeDefinition(nsCode,kimTypeId,typeAttribute, uniqueAttributes);
             }
 
             if (definition != null) {
-                if(uniqueAttributes!=null && uniqueAttributes.contains(definition.getName())){
-                    definition.setUnique(Boolean.TRUE);
-                }
                 definitions.add(definition);
             }
         }
-		return TempKimHelper.toKimAttributeFields(definitions);
+		return definitions;
 	}
 
     /**
@@ -173,8 +165,6 @@ public class KimTypeServiceBase implements KimTypeService {
 	protected Map<String, String> translateInputAttributes(Map<String, String> qualification){
 		return qualification;
 	}
-
-
 
 	private Object getAttributeValue(PropertyDescriptor propertyDescriptor, String attributeValue){
 		Object attributeValueObject = null;
@@ -502,135 +492,95 @@ public class KimTypeServiceBase implements KimTypeService {
 	 * @return an AttributeDefinition for the given KimTypeAttribute, or null no base AttributeDefinition 
 	 * matches the typeAttribute parameter's attributeName.
 	 */
-	@SuppressWarnings("unchecked")
-	protected AttributeDefinition getDataDictionaryAttributeDefinition( String namespaceCode, String kimTypeId, KimTypeAttribute typeAttribute) {
-		// TODO: this method looks like it could use some refactoring
-		KimDataDictionaryAttributeDefinition definition = null;
-		String componentClassName = typeAttribute.getKimAttribute().getComponentName();
-		String attributeName = typeAttribute.getKimAttribute().getAttributeName();
-		AttributeDefinition baseDefinition = null;
-		
+	protected KimAttributeField getDataDictionaryAttributeDefinition( String namespaceCode, String kimTypeId, KimTypeAttribute typeAttribute, List<String> uniqueAttributes) {
+
+		final String componentClassName = typeAttribute.getKimAttribute().getComponentName();
+		final String attributeName = typeAttribute.getKimAttribute().getAttributeName();
+		final AttributeDefinition baseDefinition;
+		final Class<? extends BusinessObject> componentClass;
 		// try to resolve the component name - if not possible - try to pull the definition from the app mediation service
 		try {
-			Class.forName(componentClassName);
-			try {
-				baseDefinition = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(componentClassName).getAttributeDefinition(attributeName);
-			} catch ( Exception ex ) {
-				LOG.error( "Unable to get base DD definition for " + componentClassName + "." + attributeName, ex );
-				return definition;
-			}
+			componentClass = (Class<? extends BusinessObject>) Class.forName(componentClassName);
+            baseDefinition = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(componentClassName).getAttributeDefinition(attributeName);
 		} catch (ClassNotFoundException ex) {
-			if ( LOG.isDebugEnabled() ) {
-				LOG.debug( "Unable to find class " + componentClassName + " in available classloaders. Deferring to the service bus." );
-			}
-			baseDefinition = KRADServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getBusinessObjectAttributeDefinition(componentClassName, attributeName);
+            throw new KimTypeAttributeException(ex);
 		}
-		
-		if (baseDefinition != null) {
 
-			definition = new KimDataDictionaryAttributeDefinition();
-			// copy all the base attributes
-			definition.setName( baseDefinition.getName() );
-			definition.setLabel( baseDefinition.getLabel() );
-			definition.setShortLabel( baseDefinition.getShortLabel() );
-			definition.setMaxLength( baseDefinition.getMaxLength() );
-			definition.setRequired( baseDefinition.isRequired() );
+        final RemotableAttributeField.Builder definition = RemotableAttributeField.Builder.create(baseDefinition.getName());
 
-			if (baseDefinition.getFormatterClass() != null) {
-				definition.setFormatterClass(baseDefinition.getFormatterClass());
-			}
-			ControlDefinition control = copy(baseDefinition.getControl());
-			if ( StringUtils.isNotBlank( control.getValuesFinderClass() ) ) {
-//				try {
-//					Class.forName(control.getValuesFinderClass());
-//				} catch ( ClassNotFoundException ex ) {
-					// not found locally, add the KimAttributeValuesFinder as a proxy
-					control.setValuesFinderClass(KimAttributeValuesFinder.class.getName());
-//				}
-			}
-			definition.setControl(control);
-			definition.setSortCode(typeAttribute.getSortCode());
-			definition.setKimAttrDefnId(typeAttribute.getKimAttribute().getId());
-			definition.setKimTypeId(kimTypeId);
+        definition.setLongLabel(baseDefinition.getLabel());
+        definition.setShortLabel(baseDefinition.getShortLabel());
+        definition.setMaxLength(baseDefinition.getMaxLength());
+        definition.setRequired(baseDefinition.isRequired());
+        definition.setForceUpperCase(baseDefinition.getForceUppercase());
+        definition.setControl(TempKimHelper.toRemotableAbstractControlBuilder(baseDefinition.getControl()));
+        final RemotableQuickFinder.Builder qf = createQuickFinder(componentClass, attributeName);
+        if (qf != null) {
+            definition.setWidgets(Collections.<RemotableAbstractWidget.Builder>singletonList(qf));
+        }
+        final KimAttributeField.Builder kimField = KimAttributeField.Builder.create(definition, typeAttribute.getKimAttribute().getId());
 
-			definition.setForceUppercase(baseDefinition.getForceUppercase());
-			
-			Map<String, String> lookupInputPropertyConversionsMap = new HashMap<String, String>();
-			Map<String, String> lookupReturnPropertyConversionsMap = new HashMap<String, String>();
+        if(uniqueAttributes!=null && uniqueAttributes.contains(definition.getName())){
+            kimField.setUnique(true);
+        }
 
-			try {
-				Class<? extends BusinessObject> componentClass = (Class<? extends BusinessObject>)Class.forName(componentClassName);
-				BusinessObject sampleComponent = componentClass.newInstance();
-				List<String> displayedFieldNames = new ArrayList<String>( 1 );
-				displayedFieldNames.add( attributeName );
-				Field field = FieldUtils.getPropertyField(componentClass, attributeName, false);
-				if ( field != null ) {
-					field = LookupUtils.setFieldQuickfinder( sampleComponent, attributeName, field, displayedFieldNames );
-					if ( StringUtils.isNotBlank( field.getQuickFinderClassNameImpl() ) ) {
-						Class<? extends BusinessObject> lookupClass = (Class<? extends BusinessObject>)Class.forName( field.getQuickFinderClassNameImpl() );
-						definition.setLookupBoClass( lookupClass.getName() );
-						if ( field.getLookupParameters() != null ) {
-							String [] lookupInputPropertyConversions = field.getLookupParameters().split(",");
-							for (String string : lookupInputPropertyConversions) {
-								String [] keyVal = string.split(":");
-								lookupInputPropertyConversionsMap.put(keyVal[0], keyVal[1]);
-							}
-							definition.setLookupInputPropertyConversions(lookupInputPropertyConversionsMap);
-						}
-						if ( field.getFieldConversions() != null ) {
-							String [] lookupReturnPropertyConversions = field.getFieldConversions().split(",");
-							for (String string : lookupReturnPropertyConversions) {
-								String [] keyVal = string.split(":");
-								lookupReturnPropertyConversionsMap.put(keyVal[0], keyVal[1]);
-							}
-							definition.setLookupReturnPropertyConversions(lookupReturnPropertyConversionsMap);
-						}
-					}
-				}
-			} catch (Exception e) {
-				LOG.warn("Unable to get DD data for: " + typeAttribute, e);
-			}
-		}
-		return definition;
+		return kimField.build();
 	}
 
-	@SuppressWarnings("unchecked")
-	private <T> T copy(final T original) {
-		if ( original == null ) {
-			return null;
-		}
-		T copy = null;
-		try {
-			copy = (T) original.getClass().newInstance();
-			Class copyClass = copy.getClass();
-	    	do {
-	    		for (java.lang.reflect.Field copyField : copyClass.getDeclaredFields()) {
-    				copyField.setAccessible(true);
-    				int mods = copyField.getModifiers();
-    				if (!Modifier.isFinal(mods) && !Modifier.isStatic(mods)) {
-    					copyField.set(copy, copyField.get(original));
-    				}
-	    		}
-	    		copyClass = copyClass.getSuperclass();
-	    	} while (copyClass != null && !(copyClass.equals(Object.class)));
-		} catch (Exception e) {
-			LOG.error("Unable to copy " + original, e);
-		}
-		return copy;
+    private RemotableQuickFinder.Builder createQuickFinder(Class<? extends BusinessObject> componentClass, String attributeName) {
+
+        Field field = FieldUtils.getPropertyField(componentClass, attributeName, false);
+        if ( field != null ) {
+            final BusinessObject sampleComponent;
+            try {
+                sampleComponent = componentClass.newInstance();
+            } catch(InstantiationException e) {
+                throw new KimTypeAttributeException(e);
+            } catch (IllegalAccessException e) {
+                throw new KimTypeAttributeException(e);
+            }
+
+            field = LookupUtils.setFieldQuickfinder( sampleComponent, attributeName, field, Collections.singletonList(attributeName) );
+            if ( StringUtils.isNotBlank( field.getQuickFinderClassNameImpl() ) ) {
+                final Class<? extends BusinessObject> lookupClass;
+                try {
+                    lookupClass = (Class<? extends BusinessObject>) Class.forName( field.getQuickFinderClassNameImpl() );
+                } catch (ClassNotFoundException e) {
+                    throw new KimTypeAttributeException(e);
+                }
+
+                final RemotableQuickFinder.Builder builder = RemotableQuickFinder.Builder.create(TempKimHelper.getKimBasePath(), lookupClass.getName());
+                builder.setLookupParameters(toMap(field.getLookupParameters()));
+                builder.setFieldConversions(toMap(field.getFieldConversions()));
+                return builder;
+            }
+        }
+        return null;
+    }
+
+    private static Map<String, String> toMap(String s) {
+        if (StringUtils.isBlank(s)) {
+            return Collections.emptyMap();
+        }
+        final Map<String, String> map = new HashMap<String, String>();
+        for (String string : s.split(",")) {
+            String [] keyVal = string.split(":");
+            map.put(keyVal[0], keyVal[1]);
+        }
+        return Collections.unmodifiableMap(map);
+    }
+
+	protected KimAttributeField getNonDataDictionaryAttributeDefinition(String namespaceCode, String kimTypeId, KimTypeAttribute typeAttribute, List<String> uniqueAttributes) {
+		RemotableAttributeField.Builder field = RemotableAttributeField.Builder.create(typeAttribute.getKimAttribute().getAttributeName());
+		field.setLongLabel(typeAttribute.getKimAttribute().getAttributeLabel());
+
+        KimAttributeField.Builder definition = KimAttributeField.Builder.create(field, typeAttribute.getKimAttribute().getId());
+
+        if(uniqueAttributes!=null && uniqueAttributes.contains(typeAttribute.getKimAttribute().getAttributeName())){
+            definition.setUnique(true);
+        }
+		return definition.build();
 	}
-
-
-
-	protected AttributeDefinition getNonDataDictionaryAttributeDefinition(KimTypeAttribute typeAttribute) {
-		KimAttributeDefinition definition = new KimAttributeDefinition();
-		definition.setName(typeAttribute.getKimAttribute().getAttributeName());
-		definition.setLabel(typeAttribute.getKimAttribute().getAttributeLabel());
-		definition.setSortCode(typeAttribute.getSortCode());
-		definition.setKimAttrDefnId(typeAttribute.getKimAttribute().getId());
-		return definition;
-	}
-
-
 
 	protected final String COMMA_SEPARATOR = ", ";
 
@@ -640,7 +590,7 @@ public class KimTypeServiceBase implements KimTypeService {
 			return;
 		}
 		// abort if the list is empty, no attributes need to be checked
-		if ( requiredAttributes == null || requiredAttributes.isEmpty() ) {
+		if ( getRequiredAttributes() == null || getRequiredAttributes().isEmpty() ) {
 			return;
 		}
 		List<String> missingAttributes = new ArrayList<String>();
@@ -648,7 +598,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		if ( receivedAttributes == null || receivedAttributes.isEmpty() ) {
 			return;		
 		} else {
-			for( String requiredAttribute : requiredAttributes ) {
+			for( String requiredAttribute : getRequiredAttributes() ) {
 				if( !receivedAttributes.containsKey(requiredAttribute) ) {
 					missingAttributes.add(requiredAttribute);
 				}
@@ -742,12 +692,12 @@ public class KimTypeServiceBase implements KimTypeService {
 		return validationErrors;
 	}
 
-	protected boolean isCheckRequiredAttributes() {
-		return this.checkRequiredAttributes;
-	}
+    protected List<String> getRequiredAttributes() {
+        return Collections.emptyList();
+    }
 
-	protected void setCheckRequiredAttributes(boolean checkRequiredAttributes) {
-		this.checkRequiredAttributes = checkRequiredAttributes;
+	protected boolean isCheckRequiredAttributes() {
+		return false;
 	}
 
 	protected String getClosestParentDocumentTypeName(
@@ -775,6 +725,20 @@ public class KimTypeServiceBase implements KimTypeService {
         }
 
         protected KimTypeAttributeValidationException(Throwable cause) {
+            super( cause );
+        }
+
+        private static final long serialVersionUID = 8220618846321607801L;
+
+    }
+
+    protected static class KimTypeAttributeException extends RuntimeException {
+
+        protected KimTypeAttributeException(String message) {
+            super( message );
+        }
+
+        protected KimTypeAttributeException(Throwable cause) {
             super( cause );
         }
 

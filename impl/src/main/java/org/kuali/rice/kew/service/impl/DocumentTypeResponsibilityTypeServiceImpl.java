@@ -24,6 +24,7 @@ import org.kuali.rice.kim.impl.responsibility.KimResponsibilityTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,10 +37,17 @@ public class DocumentTypeResponsibilityTypeServiceImpl extends
 	DocumentTypeService documentTypeService;
 	protected String exactMatchStringAttributeName;
 
-	{
-		requiredAttributes.add( KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME );
-		checkRequiredAttributes = true;
-	}
+    @Override
+    protected List<String> getRequiredAttributes() {
+        final List<String> attrs = new ArrayList<String>(super.getRequiredAttributes());
+        attrs.add(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME);
+        return Collections.unmodifiableList(attrs);
+    }
+
+    @Override
+    protected boolean isCheckRequiredAttributes() {
+        return true;
+    }
 	
 	@Override
 	protected List<Responsibility> performResponsibilityMatches(

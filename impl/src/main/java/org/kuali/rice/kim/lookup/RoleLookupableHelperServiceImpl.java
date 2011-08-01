@@ -36,9 +36,7 @@ import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
-import org.kuali.rice.krad.datadictionary.KimAttributeDefinition;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.util.BeanPropertyComparator;
@@ -149,10 +147,6 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
         });
 		return options;
 	}
-
-	private String getAttrDefnId(AttributeDefinition definition) {
-        return ((KimAttributeDefinition)definition).getKimAttrDefnId();
-    }
 	
 	public List<Row> getRoleRows() {
 		return this.roleRows;

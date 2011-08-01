@@ -41,8 +41,8 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
     public void setUp() throws Exception {
         permissionService = 
             new NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl() {
-                {
-                    setCheckRequiredAttributes(true);
+                @Override protected boolean isCheckRequiredAttributes() {
+                    return true;
                 }
             };
         

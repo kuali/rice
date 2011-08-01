@@ -39,6 +39,12 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
 	
 	protected String exactMatchStringAttributeName;
 	protected boolean namespaceRequiredOnStoredMap;
+    private List<String> requiredAttributes = new ArrayList<String>();
+
+    @Override
+    protected List<String> getRequiredAttributes() {
+        return Collections.unmodifiableList(requiredAttributes);
+    }
 
 	@Override
 	protected List<Permission> performPermissionMatches(Map<String, String> requestedDetails, List<Permission> permissionsList) {

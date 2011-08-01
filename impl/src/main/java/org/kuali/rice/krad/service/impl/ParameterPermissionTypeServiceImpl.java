@@ -21,6 +21,7 @@ import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -29,11 +30,18 @@ import java.util.Map;
  */
 public class ParameterPermissionTypeServiceImpl extends
 		NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl {
-    
-    {
-        requiredAttributes.add(KimConstants.AttributeConstants.PARAMETER_NAME);
-        requiredAttributes.add(KimConstants.AttributeConstants.COMPONENT_NAME);
-        checkRequiredAttributes = true;
+
+    @Override
+    protected List<String> getRequiredAttributes() {
+        final List<String> attrs = new ArrayList<String>(super.getRequiredAttributes());
+        attrs.add(KimConstants.AttributeConstants.PARAMETER_NAME);
+        attrs.add(KimConstants.AttributeConstants.COMPONENT_NAME);
+        return Collections.unmodifiableList(attrs);
+    }
+
+    @Override
+    protected boolean isCheckRequiredAttributes() {
+        return true;
     }
     
     @Override

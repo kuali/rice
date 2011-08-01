@@ -25,6 +25,7 @@ import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -39,11 +40,17 @@ import java.util.Set;
  */
 public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServiceBase {
 	protected transient DocumentTypeService documentTypeService;
-	
-	{
-		requiredAttributes.add( KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME );
-		checkRequiredAttributes = true;
-	}
+
+    @Override
+    protected List<String> getRequiredAttributes() {
+        return Collections.singletonList(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME);
+    }
+
+    @Override
+    protected boolean isCheckRequiredAttributes() {
+        return true;
+    }
+
 	/**
 	 * Loops over the given permissions and returns the most specific permission that matches.
 	 * 

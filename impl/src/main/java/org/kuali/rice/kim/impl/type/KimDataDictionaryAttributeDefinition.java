@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.datadictionary;
+package org.kuali.rice.kim.impl.type;
 
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -26,7 +26,7 @@ import java.util.Map;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class KimDataDictionaryAttributeDefinition extends KimAttributeDefinition {
+class KimDataDictionaryAttributeDefinition extends KimAttributeDefinition {
 	private static final long serialVersionUID = 7006569761728813805L;
 	
 	protected Map<String, String> lookupInputPropertyConversions;

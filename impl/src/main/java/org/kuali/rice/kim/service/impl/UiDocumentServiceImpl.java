@@ -118,11 +118,9 @@ import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
-import org.kuali.rice.kns.datadictionary.control.TextControlDefinition;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
-import org.kuali.rice.krad.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.BusinessObjectService;
@@ -280,54 +278,25 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		if(definitions!=null){
 	        for (AttributeDefinition definition : TempKimHelper.toKimAttributeDefinitions(definitions)) {
 				Map<String,Object> attribute = new HashMap<String,Object>();
-				if (definition instanceof KimDataDictionaryAttributeDefinition) {
-	//				AttributeDefinition definition = ((KimDataDictionaryAttributeDefinition) attrDefinition)
-	//						.getDataDictionaryAttributeDefinition();
-					ControlDefinition control = definition.getControl();
-					if (control.isSelect() 
-							|| control.isRadio()) {
-						Map<String,Object> controlMap = new HashMap<String,Object>();
-			            if (control.isSelect()) {
-			            	controlMap.put("select", "true");
-			            } else {
-			            	controlMap.put("radio", "true");
-			            }
-			            controlMap.put("valuesFinder", control.getValuesFinderClass());
-			            if (control.getBusinessObjectClass() != null) {
-			                controlMap.put("businessObject", control.getBusinessObjectClass());
-			            }
-			            if (StringUtils.isNotEmpty(control.getKeyAttribute())) {
-			                controlMap.put("keyAttribute", control.getKeyAttribute());
-			            }
-			            if (StringUtils.isNotEmpty(control.getLabelAttribute())) {
-			                controlMap.put("labelAttribute", control.getLabelAttribute());
-			            }
-			            if (control.getIncludeKeyInLabel() != null) {
-			                controlMap.put("includeKeyInLabel", control.getIncludeKeyInLabel().toString());
-			            }
-						attribute.put("control", controlMap);
-					} else {
-			        	// FIXME: Huh!?!?, control is a Map in the above code but a ControlDefinition here?!?!?
-			        	// Maybe this should use the AttributesMapBuilder code to create this
-			        	attribute.put("control", definition.getControl());
-			        }
-					attribute.put("name", definition.getName());
-					attribute.put("label", definition.getLabel());
-					attribute.put("shortLabel", definition.getShortLabel());
-					attribute.put("maxLength", definition.getMaxLength());
-					attribute.put("required", definition.isRequired());
-					attributeEntries.put(definition.getName(),attribute);
-				} else {
-					TextControlDefinition control = new TextControlDefinition();
-					control.setSize(10);
-					attribute.put("name", definition.getName());
-					attribute.put("control", control);
-					attribute.put("label", definition.getLabel());
-					attribute.put("maxLength", 20);
-					attribute.put("required", true);
-					attribute.put("shortLabel", definition.getLabel());
-					attributeEntries.put(definition.getName(),attribute);
-				}
+                ControlDefinition control = definition.getControl();
+                if (control.isSelect()
+                        || control.isRadio()) {
+                    Map<String,Object> controlMap = new HashMap<String,Object>();
+                    if (control.isSelect()) {
+                        controlMap.put("select", "true");
+                    } else {
+                        controlMap.put("radio", "true");
+                    }
+                    attribute.put("control", controlMap);
+                } else {
+                    attribute.put("control", definition.getControl());
+                }
+                attribute.put("name", definition.getName());
+                attribute.put("label", definition.getLabel());
+                attribute.put("shortLabel", definition.getShortLabel());
+                attribute.put("maxLength", definition.getMaxLength());
+                attribute.put("required", definition.isRequired());
+                attributeEntries.put(definition.getName(),attribute);
 			}
 		}
         return attributeEntries;

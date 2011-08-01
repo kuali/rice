@@ -13,16 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.datadictionary;
+package org.kuali.rice.kim.impl.type;
 
-import org.apache.commons.lang.StringUtils;
-
-import java.util.Collection;
+import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class
+class
         KimAttributeDefinition extends AttributeDefinition {
 	private static final long serialVersionUID = -1889598053944123008L;
 	

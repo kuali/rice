@@ -20,6 +20,8 @@ import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.impl.responsibility.KimResponsibilityTypeService;
 import org.kuali.rice.kim.util.KimConstants;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -30,8 +32,14 @@ import java.util.Map;
 public class ReviewResponsibilityTypeServiceImpl extends DocumentTypeResponsibilityTypeServiceImpl implements KimResponsibilityTypeService {
 	{
 		exactMatchStringAttributeName = KimConstants.AttributeConstants.ROUTE_NODE_NAME;
-		requiredAttributes.add( KimConstants.AttributeConstants.ROUTE_NODE_NAME );
 	}
+
+    @Override
+    protected List<String> getRequiredAttributes() {
+        final List<String> attrs = new ArrayList<String>(super.getRequiredAttributes());
+        attrs.add(KimConstants.AttributeConstants.ROUTE_NODE_NAME);
+        return Collections.unmodifiableList(attrs);
+    }
 
 	@Override
 	protected List<Responsibility> performResponsibilityMatches(

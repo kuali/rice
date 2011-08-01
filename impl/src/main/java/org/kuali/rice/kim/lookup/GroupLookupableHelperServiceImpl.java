@@ -52,7 +52,6 @@ import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
-import org.kuali.rice.krad.datadictionary.KimAttributeDefinition;
 import org.kuali.rice.krad.keyvalues.IndicatorValuesFinder;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.keyvalues.KimAttributeValuesFinder;
@@ -442,11 +441,12 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 					KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(kimType);
 			        List<KimAttributeField> definitions = kimTypeService.getAttributeDefinitions(kimType.getId());
 			        setAttrDefinitions(definitions);
-		            for (AttributeDefinition definition  : TempKimHelper.toKimAttributeDefinitions(definitions)) {
-				        List<Field> fields = new ArrayList<Field>();
+		            for (KimAttributeField d  : definitions) {
+				        final AttributeDefinition definition  = TempKimHelper.toKimAttributeDefinition(d);
+                        List<Field> fields = new ArrayList<Field>();
 						Field typeField = new Field();
 
-						String attrDefnId = getAttrDefnId(definition);
+						String attrDefnId = d.getId();
 						typeField.setFieldLabel(definition.getLabel());
 						typeField.setPropertyName(definition.getName()+"."+attrDefnId);
 						typeField.setPropertyValue(fieldValues.get(typeField.getPropertyName()));
@@ -513,10 +513,6 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 		}
 		return returnRows;
 	}
-
-    private String getAttrDefnId(AttributeDefinition definition) {
-        return ((KimAttributeDefinition)definition).getKimAttrDefnId();
-    }
 
 	public List<Row> getGrpRows() {
 		return this.grpRows;

@@ -26,6 +26,7 @@ import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -38,13 +39,11 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
     public static final String INITIATOR_ROLE_NAME = "Initiator";
     public static final String INITIATOR_OR_REVIEWER_ROLE_NAME = "Initiator or Reviewer";
     public static final String ROUTER_ROLE_NAME = "Router";
-    
-	{
-		//KFSMI-4938 - document number needs to be optional for this role type, 
-		//since this is also used for inquiries
-		//requiredAttributes.add(KimAttributes.DOCUMENT_NUMBER);
-		checkRequiredAttributes = true;
-	}
+
+    @Override
+    protected boolean isCheckRequiredAttributes() {
+        return true;
+    }
 	
 	/**
 	 *	- qualifier is document number

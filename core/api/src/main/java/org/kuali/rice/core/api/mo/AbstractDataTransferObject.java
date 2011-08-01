@@ -83,6 +83,6 @@ public abstract class AbstractDataTransferObject implements ModelObjectComplete 
      * Defines some internal constants used on this class.
      */
     protected static class Constants {
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS};
+        final static String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS, "_hashCode", "_toString"};
     }
 }

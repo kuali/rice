@@ -23,6 +23,7 @@ function ajaxCall(controllerMethod, collectionGroupId) {
                 {reqComponentId: collectionGroupId, skipViewInit: 'true', agenda_item_selected: selectedItemId},
                 elementToBlock);
     } else {
+        // TODO: refactor to disabled buttons, or externalize
         alert('Please select an agenda item first.');
     }
 }

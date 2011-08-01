@@ -23,13 +23,13 @@ import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.impl.PermissionImpl;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl;
-import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.dao.KimPermissionDao;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.impl.permission.PermissionTemplateBo;
@@ -40,7 +40,6 @@ import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.lookup.CollectionIncomplete;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -517,19 +516,8 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 		KimPermissionTypeService typeService = getPermissionTypeService(null, null, null, permissionId);
 		if ( typeService != null ) {
 			// ask the type service for the attribute definition for the given attribute name
-			AttributeDefinitionMap attributes = typeService.getAttributeDefinitions( kimTypeId );
-			String label = null;
-			for ( AttributeDefinition attributeDef : attributes.values() ) {
-				if ( attributeDef.getName().equals(attributeName) ) {
-					label = attributeDef.getLabel();
-				}
-			}
-			// return the attribute label
-			if ( label != null ) {
-				return label;
-			} else {
-				return "Missing Def: " + attributeName;
-			}
+			final KimAttributeField attributeDef = KimAttributeField.findAttribute(attributeName, typeService.getAttributeDefinitions( kimTypeId ));
+			return attributeDef != null ? attributeDef.getAttributeField().getLongLabel() : "Missing Def: " + attributeName;
 		} else {
 			return "No Label: " + attributeName;
 		}

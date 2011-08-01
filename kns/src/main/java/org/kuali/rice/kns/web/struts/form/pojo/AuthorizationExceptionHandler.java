@@ -51,7 +51,7 @@ public class AuthorizationExceptionHandler extends ExceptionHandler {
             String message = String.format("ENTRY %s", exception.getMessage());
             LOG.trace(message);
         }
-        
+        exception.printStackTrace();
         request.setAttribute(Globals.EXCEPTION_KEY, exception);
         
         ActionForward forward = mapping.findForward(AUTHORIZATION_EXCEPTION_HANDLER);

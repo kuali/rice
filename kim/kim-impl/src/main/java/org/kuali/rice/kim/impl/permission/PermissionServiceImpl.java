@@ -28,9 +28,9 @@ import org.kuali.rice.kim.api.permission.PermissionTypeService;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.role.RoleService;
+import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
-import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimConstants;
@@ -495,19 +495,8 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 		PermissionTypeService typeService = getPermissionTypeService(null, null, null, permissionId);
 		if ( typeService != null ) {
 			// ask the type service for the attribute definition for the given attribute name
-			AttributeDefinitionMap attributes = typeService.getAttributeDefinitions( kimTypeId );
-			String label = null;
-			for ( AttributeDefinition attributeDef : attributes.values() ) {
-				if ( attributeDef.getName().equals(attributeName) ) {
-					label = attributeDef.getLabel();
-				}
-			}
-			// return the attribute label
-			if ( label != null ) {
-				return label;
-			} else {
-				return "Missing Def: " + attributeName;
-			}
+			final KimAttributeField attributeDef = KimAttributeField.findAttribute(attributeName, typeService.getAttributeDefinitions( kimTypeId ));
+			return attributeDef != null ? attributeDef.getAttributeField().getLongLabel() : "Missing Def: " + attributeName;
 		} else {
 			return "No Label: " + attributeName;
 		}

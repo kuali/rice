@@ -30,12 +30,13 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupQueryResults;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.impl.type.KimTypeLookupableHelperServiceImpl;
+import org.kuali.rice.kim.impl.type.TempKimHelper;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
@@ -90,7 +91,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 	private List<Row> grpRows = new ArrayList<Row>();
 	private List<Row> attrRows = new ArrayList<Row>();
 	private String typeId = "";
-	private AttributeDefinitionMap attrDefinitions;
+	private List<KimAttributeField> attrDefinitions;
 	private Map<String, String> groupTypeValuesCache = new HashMap<String, String>();
 
     @Override
@@ -246,7 +247,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 			setGrpRows(returnRows);
 		}
 		if (getAttrRows().isEmpty()) {
-			setAttrDefinitions(new AttributeDefinitionMap());
+			setAttrDefinitions(Collections.<KimAttributeField>emptyList());
 			return getGrpRows();
 		} 
 		List<Row> fullRows = new ArrayList<Row>();
@@ -439,9 +440,9 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 					setAttrRows(new ArrayList<Row>());
 					KimType kimType = getTypeInfoService().getKimType( field.getPropertyValue() );
 					KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(kimType);
-			        AttributeDefinitionMap definitions = kimTypeService.getAttributeDefinitions(kimType.getId());
+			        List<KimAttributeField> definitions = kimTypeService.getAttributeDefinitions(kimType.getId());
 			        setAttrDefinitions(definitions);
-		            for (AttributeDefinition definition  : definitions.values()) {
+		            for (AttributeDefinition definition  : TempKimHelper.toKimAttributeDefinitions(definitions)) {
 				        List<Field> fields = new ArrayList<Field>();
 						Field typeField = new Field();
 
@@ -525,11 +526,11 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 		this.grpRows = grpRows;
 	}
 
-	public AttributeDefinitionMap getAttrDefinitions() {
+	public List<KimAttributeField> getAttrDefinitions() {
 		return this.attrDefinitions;
 	}
 
-	public void setAttrDefinitions(AttributeDefinitionMap attrDefinitions) {
+	public void setAttrDefinitions(List<KimAttributeField> attrDefinitions) {
 		this.attrDefinitions = attrDefinitions;
 	}
 

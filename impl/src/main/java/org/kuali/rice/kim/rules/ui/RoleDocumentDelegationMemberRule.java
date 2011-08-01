@@ -29,7 +29,6 @@ import org.kuali.rice.krad.rules.DocumentRuleBase;
 import org.kuali.rice.krad.util.GlobalVariables;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

@@ -12,7 +12,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface KimTypeServiceTemp {
+public interface KimTypeService {
 
     /**
      * Returns the name of a workflow document type that should be passed as a qualifier with
@@ -36,6 +36,8 @@ public interface KimTypeServiceTemp {
      * @return an unmodifiable list should not return null.
      */
     List<String> getWorkflowRoutingAttributes(String nodeName);
+
+    List<KimAttributeField> getAttributeDefinitions(String kimTypeId);
 
     /**
      * Perform validation on the attributes of an object.

@@ -22,8 +22,8 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.bo.ui.GroupDocumentQualifier;
 import org.kuali.rice.kim.impl.type.IdentityManagementTypeAttributeTransactionalDocument;
@@ -180,10 +180,10 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 		int index = 0;
 		// this needs to be checked - are all qualifiers present?
 		if(getDefinitions()!=null){
-			for(String key : getDefinitions().keySet()) {
+			for(KimAttributeField key : getDefinitions()) {
 				if ( getQualifiers().size() > index ) {
 					GroupDocumentQualifier qualifier = getQualifiers().get(index);
-					qualifier.setKimAttrDefnId(getKimAttributeDefnId(getDefinitions().get(key)));
+					qualifier.setKimAttrDefnId(getKimAttributeDefnId(key));
 					qualifier.setKimTypId(getKimType().getId());
 					qualifier.setGroupId(groupId);
 				}
@@ -331,15 +331,15 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 		return attributes;
 	}
 	
-	public void setDefinitions(AttributeDefinitionMap definitions) {
+	public void setDefinitions(List<KimAttributeField> definitions) {
 		super.setDefinitions(definitions);
 		if(getQualifiers()==null || getQualifiers().size()<1){
 			GroupDocumentQualifier qualifier;
 			setQualifiers(new ArrayList<GroupDocumentQualifier>());
 			if(getDefinitions()!=null){
-				for(String key : getDefinitions().keySet()) {
+				for(KimAttributeField key : getDefinitions()) {
 					qualifier = new GroupDocumentQualifier();
-		        	qualifier.setKimAttrDefnId(getKimAttributeDefnId(getDefinitions().get(key)));
+		        	qualifier.setKimAttrDefnId(getKimAttributeDefnId(key));
 		        	getQualifiers().add(qualifier);
 		        }
 			}

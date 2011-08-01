@@ -23,6 +23,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
@@ -347,9 +348,9 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 		KimDocumentRoleMember member = new KimDocumentRoleMember();
 		KimDocumentRoleQualifier qualifier;
 		if(getDefinitions()!=null){
-			for(String key : getDefinitions().keySet()) {
+			for(KimAttributeField key : getDefinitions()) {
 	        	qualifier = new KimDocumentRoleQualifier();
-	        	qualifier.setKimAttrDefnId(getKimAttributeDefnId(getDefinitions().get(key)));
+	        	qualifier.setKimAttrDefnId(getKimAttributeDefnId(key));
 	        	member.getQualifiers().add(qualifier);
 	        }
 		}
@@ -361,9 +362,9 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 		RoleDocumentDelegationMember member = new RoleDocumentDelegationMember();
 		RoleDocumentDelegationMemberQualifier qualifier;
 		if(getDefinitions()!=null){
-			for(String key : getDefinitions().keySet()) {
+			for(KimAttributeField key : getDefinitions()) {
 				qualifier = new RoleDocumentDelegationMemberQualifier();
-				setAttrDefnIdForDelMemberQualifier(qualifier, getDefinitions().get(key));
+				setAttrDefnIdForDelMemberQualifier(qualifier, key);
 	        	member.getQualifiers().add(qualifier);
 	        }
 		}
@@ -407,8 +408,8 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
     	}        	
     }
     
-    protected void setAttrDefnIdForDelMemberQualifier(RoleDocumentDelegationMemberQualifier qualifier,AttributeDefinition definition) {
-   		qualifier.setKimAttrDefnId(((KimAttributeDefinition)definition).getKimAttrDefnId());
+    protected void setAttrDefnIdForDelMemberQualifier(RoleDocumentDelegationMemberQualifier qualifier,KimAttributeField definition) {
+   		qualifier.setKimAttrDefnId(definition.getId());
     }
     
     /**

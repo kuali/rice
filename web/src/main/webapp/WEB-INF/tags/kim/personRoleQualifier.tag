@@ -40,11 +40,13 @@
 			      		   TODO: code (probably) does not pull the remote property name properly
 			      		   TODO: code does not handle multiple lookup/conversion parameters 
 			      		   --%>
-                           <c:if test="${attrDefinition.hasLookupBoDefinition}"> 
-    			       		   <c:if test="${!empty attr.lookupBoClass and not readOnlyRole}">
-    			       		       <kim:attributeLookup attributeDefinitions="${role.definitions}" pathPrefix="document.roles[${roleIdx}].newRolePrncpl" attr="${attr}" />
-    			          	   </c:if>
-			          	   </c:if>
+                   			<c:forEach var="widget" items="${role.definitions.attributeField.widgets}" >
+                          <c:if test="${widget.class.name == 'org.kuali.rice.core.api.uif.RemotableQuickFinder'}">
+                                <c:if test="${!empty widget.dataObjectClass and not readOnlyRole}">
+    				       		    <kim:attributeLookup attributeDefinitions="${role.definitions}" pathPrefix="document.roles[${roleIdx}].newRolePrncpl" attr="${widget}" />
+                          </c:if>
+                            </c:if>
+                        </c:forEach>
 			  			</div>
 						<%--
 						Field: ${fieldName}<br />
@@ -95,11 +97,14 @@
 				            <td align="left" valign="middle">
 				                <div align="center"> 
 				                	<kul:htmlControlAttribute kimTypeId="${role.kimTypeId}" property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].qualifiers[${status.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}" />
-						      		   <c:if test="${attrDefinition.hasLookupBoDefinition}"> 
-                                           <c:if test="${!empty attr.lookupBoClass and not attrReadOnly}">
-    						      		       <kim:attributeLookup attributeDefinitions="${role.definitions}" pathPrefix="document.roles[${roleIdx}].rolePrncpls[${status1.index}]" attr="${attr}" />
-    						         	   </c:if>
-                                       </c:if>
+
+                        <c:forEach var="widget" items="${role.definitions.attributeField.widgets}" >
+                          <c:if test="${widget.class.name == 'org.kuali.rice.core.api.uif.RemotableQuickFinder'}">
+                                <c:if test="${!empty widget.dataObjectClass and not attrReadOnly}">
+    				       		    <kim:attributeLookup attributeDefinitions="${role.definitions}" pathPrefix="document.roles[${roleIdx}].rolePrncpls[${status1.index}]" attr="${widget}" />
+                          </c:if>
+                            </c:if>
+                        </c:forEach>
 								</div>
 							</td>
 				        		</c:if>    

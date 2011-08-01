@@ -17,6 +17,7 @@ package org.kuali.rice.kim.document;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.api.action.DelegationType;
+import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.util.KimConstants;
@@ -150,8 +151,8 @@ public class IdentityManagementKimDocument extends TransactionalDocumentBase {
 		return this.sequenceAccessorService;
 	}
 
-    public String getKimAttributeDefnId(AttributeDefinition definition){
-   		return ((KimAttributeDefinition)definition).getKimAttrDefnId();
+    public String getKimAttributeDefnId(KimAttributeField definition){
+   		return definition.getId();
     }
 
 }

@@ -123,11 +123,14 @@
                   <c:set var="attrDefinition" value="${KualiForm.document.definitionsKeyedByAttributeName[fieldName]}"/>
                   <td align="left" valign="middle">
                       <div align="center"> <kul:htmlControlAttribute kimTypeId="${KualiForm.document.kimType.id}" property="member.qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${!canModifyAssignees}" />
- 	               	    <c:if test="${attrDefinition.hasLookupBoDefinition}"> 
-                            <c:if test="${!empty attrDefinition.lookupBoClass and not readOnlyAssignees}">
-                              <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="member" attr="${attrDefinition}" />
+
+                        <c:forEach var="widget" items="${KualiForm.document.definitions.attributeField.widgets}" >
+                          <c:if test="${widget.class.name == 'org.kuali.rice.core.api.uif.RemotableQuickFinder'}">
+                                <c:if test="${!empty widget.dataObjectClass and not readOnlyAssignees}">
+    				       		    <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="member" attr="${widget}" />
+                          </c:if>
                             </c:if>
-                        </c:if>
+                        </c:forEach>
                       </div>
                   </td>
               </c:forEach>

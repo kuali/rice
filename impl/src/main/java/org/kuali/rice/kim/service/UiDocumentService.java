@@ -15,13 +15,10 @@
  */
 package org.kuali.rice.kim.service;
 
-import java.util.List;
-import java.util.Map;
-
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
-import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
+import org.kuali.rice.kim.api.role.Role;
+import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
@@ -30,6 +27,9 @@ import org.kuali.rice.kim.impl.common.delegate.DelegateBo;
 import org.kuali.rice.kim.impl.role.RoleMemberBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo;
 import org.kuali.rice.krad.bo.BusinessObject;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -50,15 +50,15 @@ public interface UiDocumentService {
      * 
      * This method is to set up the DD attribute entry map for role qualifiers, so it can be rendered.
      * 
-     * @param personDocRole
+     * @param definitions
      */
-    Map<String,Object> getAttributeEntries( AttributeDefinitionMap definitions );
+    Map<String,Object> getAttributeEntries( List<KimAttributeField> definitions );
 	/**
 	 * 
 	 * This method is to load identity to person document pending Bos when user 'initiate' a document for 'editing' identity.
 	 * 
 	 * @param identityManagementPersonDocument
-	 * @param kimEntity
+	 * @param principalId
 	 */
 	void loadEntityToPersonDoc(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId);
 
@@ -83,7 +83,7 @@ public interface UiDocumentService {
 	 * 
 	 * This method loads a role document
 	 * 
-	 * @param identityManagementRoleDocument
+	 * @param identityManagementGroupDocument
 	 */
 	public void loadGroupDoc(IdentityManagementGroupDocument identityManagementGroupDocument, Group kimGroup);
 	
@@ -91,7 +91,7 @@ public interface UiDocumentService {
 	 * 
 	 * This method ...
 	 * 
-	 * @param identityManagementRoleDocument
+	 * @param identityManagementGroupDocument
 	 */
 	public void saveGroup(IdentityManagementGroupDocument identityManagementGroupDocument);
 

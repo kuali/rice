@@ -59,12 +59,6 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
 	protected ResponsibilityService responsibilityService;
 	protected UiDocumentService uiDocumentService;
 		
-    /**
-     * 
-     * This overridden method is to add 'kim/" to the return path
-     * 
-     * @see org.kuali.rice.krad.web.struts.action.KualiAction#performLookup(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-     */
 	@Override
 	public ActionForward performLookup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)

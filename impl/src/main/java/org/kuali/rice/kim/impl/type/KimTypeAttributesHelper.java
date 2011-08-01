@@ -16,15 +16,13 @@
 package org.kuali.rice.kim.impl.type;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.krad.datadictionary.AttributeDefinition;
-import org.kuali.rice.krad.datadictionary.KimAttributeDefinition;
 
 import java.io.Serializable;
 import java.util.List;
@@ -41,7 +39,7 @@ public class KimTypeAttributesHelper implements Serializable {
 	private KimType kimType;
 	private transient KimTypeService kimTypeService;
 	private List<? extends KimAttributes> attributes;
-	private transient AttributeDefinitionMap definitions;
+	private transient List<KimAttributeField> definitions;
 	private transient Map<String,Object> attributeEntry;
 
 	public KimTypeAttributesHelper(KimType kimType){
@@ -75,33 +73,17 @@ public class KimTypeAttributesHelper implements Serializable {
 		return attributeEntry;
 	}
 
-    public String getKimAttributeDefnId(AttributeDefinition definition){
-    	return ((KimAttributeDefinition)definition).getKimAttrDefnId();
+    public String getKimAttributeDefnId(KimAttributeField definition){
+    	return definition.getId();
     }
     
-	/**
-	 * Returns an {@link AttributeDefinitionMap}
-	 * 
-	 * @return
-	 */
-	public AttributeDefinitionMap getDefinitions() {
+	public List<KimAttributeField> getDefinitions() {
 		if (definitions == null || definitions.isEmpty()) {
 	        KimTypeService kimTypeService = getKimTypeService(getKimType());
 	        if(kimTypeService!=null)
 	        	this.definitions = kimTypeService.getAttributeDefinitions(getKimType().getId());
 		}
 		return this.definitions;
-	}
-
-	public AttributeDefinitionMap getDefinitionsKeyedByAttributeName() {
-		AttributeDefinitionMap definitionsKeyedBySortCode = getDefinitions();
-		AttributeDefinitionMap returnValue = new AttributeDefinitionMap();
-		if (definitionsKeyedBySortCode != null) {
-			for (AttributeDefinition definition : definitionsKeyedBySortCode.values()) {
-				returnValue.put(definition.getName(), definition);
-			}
-		}
-		return returnValue;
 	}
 	
 	public String getCommaDelimitedAttributesLabels(String commaDelimitedAttributesNamesList){
@@ -115,8 +97,8 @@ public class KimTypeAttributesHelper implements Serializable {
         return commaDelimitedAttributesLabels.toString();
 	}
 
-	public AttributeDefinition getAttributeDefinition(String attributeName){
-		return getDefinitionsKeyedByAttributeName().get(attributeName);
+	public KimAttributeField getAttributeDefinition(String attributeName){
+		return TempKimHelper.findAttributeField(attributeName, getDefinitions());
 	}
 	
 	public String getAttributeValue(Map<String, String> aSet, String attributeName){

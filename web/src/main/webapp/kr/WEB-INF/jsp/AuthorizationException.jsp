@@ -19,8 +19,12 @@
 <c:set var="parameters"
        value="<%=request.getAttribute(\"AuthorizationExceptionAction\")%>" />
 
-<c:if test="${not empty parameters}">
+<c:if test="${not empty parameters['message']}">
 	<c:set var="message" value="${parameters.message}" />
+  <c:if test="${not empty message}">
+    <c:set var="exception" value='<%=request.getAttribute("org.apache.struts.action.EXCEPTION")%>'/>
+    <c:set var="message" value="${exception.class.name}" />
+  </c:if>
 </c:if>
 
 <kul:page showDocumentInfo="false"

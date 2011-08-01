@@ -15,7 +15,9 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import org.apache.commons.lang.StringUtils;
 
+import java.util.Collection;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

@@ -16,17 +16,17 @@
 package org.kuali.rice.kim.impl.type;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.document.IdentityManagementKimDocument;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 
 import javax.persistence.Transient;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,7 +47,7 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 	@Transient
 	protected List<? extends KimAttributes> attributes;
 	@Transient
-	protected transient AttributeDefinitionMap definitions;
+	protected transient List<KimAttributeField> definitions;
 	@Transient
 	protected transient Map<String,Object> attributeEntry;
 	
@@ -92,13 +92,8 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
         	commaDelimitedAttributesLabels.delete(commaDelimitedAttributesLabels.length()-KimConstants.KimUIConstants.COMMA_SEPARATOR.length(), commaDelimitedAttributesLabels.length());
         return commaDelimitedAttributesLabels.toString();
 	}
-	
-	/**
-	 * Returns an {@link AttributeDefinitionMap}
-	 * 
-	 * @return
-	 */
-	public AttributeDefinitionMap getDefinitions() {
+
+	public List<KimAttributeField> getDefinitions() {
 		if (definitions == null || definitions.isEmpty()) {
 	        KimTypeService kimTypeService = getKimTypeService(getKimType());
 	        if(kimTypeService!=null)
@@ -107,18 +102,16 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 		return this.definitions;
 	}
 
-	public AttributeDefinitionMap getDefinitionsKeyedByAttributeName() {
-		AttributeDefinitionMap definitionsKeyedBySortCode = getDefinitions();
-		AttributeDefinitionMap returnValue = new AttributeDefinitionMap();
-		if (definitionsKeyedBySortCode != null) {
-			for (AttributeDefinition definition : definitionsKeyedBySortCode.values()) {
-				returnValue.put(definition.getName(), definition);
-			}
-		}
-		return returnValue;
+    public Map<String, KimAttributeField> getDefinitionsKeyedByAttributeName() {
+        final Map<String, KimAttributeField> map = new HashMap<String, KimAttributeField>();
+        for (KimAttributeField field : getDefinitions()) {
+            map.put(field.getAttributeField().getName(), field);
+        }
+        return map;
 	}
-	
-	public void setDefinitions(AttributeDefinitionMap definitions) {
+
+
+	public void setDefinitions(List<KimAttributeField> definitions) {
 		this.definitions = definitions;
 	}
 

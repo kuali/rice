@@ -19,15 +19,14 @@ import org.apache.log4j.Logger;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.impl.role.RoleBo;
-import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
-import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.springframework.util.AutoPopulatingList;
 
 import javax.persistence.CascadeType;
@@ -44,6 +43,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,7 +77,7 @@ public class PersonDocumentRole extends KimDocumentBoActivatableEditableBase {
 	@Transient
 	protected List<? extends KimAttributes> attributes;
 	@Transient
-	protected transient AttributeDefinitionMap definitions;
+	protected transient List<KimAttributeField> definitions;
 	@Transient
 	protected transient Map<String,Object> attributeEntry;
 	@OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.ALL})
@@ -149,18 +149,7 @@ public class PersonDocumentRole extends KimDocumentBoActivatableEditableBase {
 		return kimRoleType;
 	}
 
-	public AttributeDefinitionMap getDefinitionsKeyedByAttributeName() {
-		AttributeDefinitionMap definitionsKeyedBySortCode = getDefinitions();
-		AttributeDefinitionMap returnValue = new AttributeDefinitionMap();
-		if (definitionsKeyedBySortCode != null) {
-			for (AttributeDefinition definition : definitionsKeyedBySortCode.values()) {
-				returnValue.put(definition.getName(), definition);
-			}
-		}
-		return returnValue;
-	}
-
-	public AttributeDefinitionMap getDefinitions() {
+	public List<KimAttributeField> getDefinitions() {
 		if (definitions == null || definitions.isEmpty()) {
 	        KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(KimTypeBo.to(this.getKimRoleType()));
 	        //it is possible that the the roleTypeService is coming from a remote application 
@@ -169,7 +158,7 @@ public class PersonDocumentRole extends KimDocumentBoActivatableEditableBase {
     	        if ( kimTypeService != null ) {
     	        	definitions = kimTypeService.getAttributeDefinitions(getKimTypeId());
     	        } else {
-    	        	definitions = new AttributeDefinitionMap();
+    	        	definitions = Collections.emptyList();
     	        }
     		} catch (Exception ex) {
                 LOG.warn("Not able to retrieve KimTypeService from remote system for KIM Role Type: " + this.getKimRoleType(), ex);
@@ -179,7 +168,7 @@ public class PersonDocumentRole extends KimDocumentBoActivatableEditableBase {
 		return definitions;
 	}
 
-	public void setDefinitions(AttributeDefinitionMap definitions) {
+	public void setDefinitions(List<KimAttributeField> definitions) {
 		this.definitions = definitions;
 	}
 

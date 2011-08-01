@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.parameter.Parameter;
+import org.kuali.rice.core.api.uif.RemotableCheckboxGroup;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
@@ -46,12 +47,12 @@ import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.bo.ui.GroupDocumentQualifier;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
@@ -108,6 +109,7 @@ import org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.kim.impl.services.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
+import org.kuali.rice.kim.impl.type.TempKimHelper;
 import org.kuali.rice.kim.service.IdentityManagementNotificationService;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.PermissionService;
@@ -120,7 +122,6 @@ import org.kuali.rice.kns.datadictionary.control.TextControlDefinition;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
-import org.kuali.rice.krad.datadictionary.KimAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.krad.document.Document;
@@ -273,15 +274,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			return null;
 		}
 	}
-	/**
-	 *
-	 * @see org.kuali.rice.kim.service.UiDocumentService#getAttributeEntries(AttributeDefinitionMap)
-	 */
-	public Map<String,Object> getAttributeEntries( AttributeDefinitionMap definitions ) {
+
+	public Map<String,Object> getAttributeEntries( List<KimAttributeField> definitions ) {
 		Map<String,Object> attributeEntries = new HashMap<String,Object>();
 		if(definitions!=null){
-	        for (String key : definitions.keySet()) {
-				AttributeDefinition definition = definitions.get(key);
+	        for (AttributeDefinition definition : TempKimHelper.toKimAttributeDefinitions(definitions)) {
 				Map<String,Object> attribute = new HashMap<String,Object>();
 				if (definition instanceof KimDataDictionaryAttributeDefinition) {
 	//				AttributeDefinition definition = ((KimDataDictionaryAttributeDefinition) attrDefinition)
@@ -476,14 +473,14 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	}
 
     protected List<RoleDocumentDelegationMemberQualifier> loadDelegationMemberQualifiers(IdentityManagementPersonDocument identityManagementPersonDocument,
-    		AttributeDefinitionMap origAttributeDefinitions, List<DelegateMemberAttributeDataBo> attributeDataList){
+    		List<KimAttributeField> origAttributeDefinitions, List<DelegateMemberAttributeDataBo> attributeDataList){
 		List<RoleDocumentDelegationMemberQualifier> pndMemberRoleQualifiers = new ArrayList<RoleDocumentDelegationMemberQualifier>();
 		RoleDocumentDelegationMemberQualifier pndMemberRoleQualifier;
 		boolean attributePresent = false;
 		String origAttributeId;
 		if(origAttributeDefinitions!=null){
-			for(String key: origAttributeDefinitions.keySet()) {
-				origAttributeId = identityManagementPersonDocument.getKimAttributeDefnId(origAttributeDefinitions.get(key));
+			for(KimAttributeField key: origAttributeDefinitions) {
+				origAttributeId = identityManagementPersonDocument.getKimAttributeDefnId(key);
 				if(ObjectUtils.isNotNull(attributeDataList)){
 					for(DelegateMemberAttributeDataBo memberRoleQualifier: attributeDataList){
 						if(StringUtils.equals(origAttributeId, memberRoleQualifier.getKimAttribute().getId())){
@@ -591,10 +588,10 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         	// when post again, it will need this during populate
             role.setNewRolePrncpl(new KimDocumentRoleMember());
             if(role.getDefinitions()!=null){
-	            for (String key : role.getDefinitions().keySet()) {
+	            for (KimAttributeField key : role.getDefinitions()) {
 	            	KimDocumentRoleQualifier qualifier = new KimDocumentRoleQualifier();
 	            	//qualifier.setQualifierKey(key);
-	            	setAttrDefnIdForQualifier(qualifier,role.getDefinitions().get(key));
+	            	setAttrDefnIdForQualifier(qualifier,key);
 	            	role.getNewRolePrncpl().getQualifiers().add(qualifier);
 	            }
             }
@@ -606,7 +603,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         identityManagementPersonDocument.setRoles(docRoles);
 	}
 
-	protected AttributeDefinitionMap getAttributeDefinitionsForRole(PersonDocumentRole role) {
+	protected List<KimAttributeField> getAttributeDefinitionsForRole(PersonDocumentRole role) {
     	KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(KimTypeBo.to(role.getKimRoleType()));
     	//it is possible that the the kimTypeService is coming from a remote application
         // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
@@ -617,7 +614,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         } catch (Exception ex) {
             LOG.warn("Not able to retrieve KimTypeService from remote system for KIM Role Type: " + role.getKimRoleType(), ex);
         }
-    	return new AttributeDefinitionMap();
+    	return Collections.emptyList();
 	}
 
 	protected void loadRoleRstAction(PersonDocumentRole role) {
@@ -640,13 +637,13 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		}
 	}
 
-	protected void setAttrDefnIdForQualifier(KimDocumentRoleQualifier qualifier, AttributeDefinition definition) {
+	protected void setAttrDefnIdForQualifier(KimDocumentRoleQualifier qualifier, KimAttributeField definition) {
     	qualifier.setKimAttrDefnId(getAttributeDefnId(definition));
     	qualifier.refreshReferenceObject("kimAttribute");
     }
 
-	protected String getAttributeDefnId(AttributeDefinition definition) {
-    	return ((KimAttributeDefinition)definition).getKimAttrDefnId();
+	protected String getAttributeDefnId(KimAttributeField definition) {
+    	return definition.getId();
     }
 
 	private PrincipalBo getPrincipalImpl(String principalId) {
@@ -716,7 +713,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return (List<RoleResponsibilityActionBo>)getBusinessObjectService().findMatching(RoleResponsibilityActionBo.class, criteria);
 	}
 
-    protected List<KimDocumentRoleMember> populateDocRolePrncpl(String namespaceCode, List <RoleMemberBo> roleMembers, String principalId, AttributeDefinitionMap definitions) {
+    protected List<KimDocumentRoleMember> populateDocRolePrncpl(String namespaceCode, List <RoleMemberBo> roleMembers, String principalId, List<KimAttributeField> definitions) {
 		List <KimDocumentRoleMember> docRoleMembers = new ArrayList <KimDocumentRoleMember>();
 		if(ObjectUtils.isNotNull(roleMembers)){
 	    	for (RoleMemberBo rolePrincipal : roleMembers) {
@@ -741,13 +738,12 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     // UI layout for rolequalifier is a little different from kimroleattribute set up.
     // each principal may have member with same role multiple times with different qualifier, but the role
     // only displayed once, and the qualifier displayed multiple times.
-    protected List<KimDocumentRoleQualifier> populateDocRoleQualifier(String namespaceCode, List <RoleMemberAttributeDataBo> qualifiers, AttributeDefinitionMap definitions) {
+    protected List<KimDocumentRoleQualifier> populateDocRoleQualifier(String namespaceCode, List <RoleMemberAttributeDataBo> qualifiers, List<KimAttributeField> definitions) {
 
 		List <KimDocumentRoleQualifier> docRoleQualifiers = new ArrayList <KimDocumentRoleQualifier>();
 		if(definitions!=null){
-			for (String key : definitions.keySet()) {
-				AttributeDefinition definition = definitions.get(key);
-				String attrDefId=((KimAttributeDefinition)definition).getKimAttrDefnId();
+			for (KimAttributeField definition : definitions) {
+				String attrDefId=definition.getId();
 				boolean qualifierFound = false;
 				if(ObjectUtils.isNotNull(qualifiers)){
 					for (RoleMemberAttributeDataBo qualifier : qualifiers) {
@@ -1619,7 +1615,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		RoleBo roleBo = getBusinessObjectService().findByPrimaryKey(RoleBo.class, criteria);
 
         Map<String, String> subClassCriteria = new HashMap<String, String>();
-		subClassCriteria.put(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID, role.getId());
+		criteria.put(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID, role.getId());
 
 		identityManagementRoleDocument.setRoleId(roleBo.getId());
 		identityManagementRoleDocument.setKimType(KimTypeBo.to(roleBo.getKimRoleType()));
@@ -1927,11 +1923,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		int countOfOriginalAttributesNotPresent = 0;
 		List<KimDocumentRoleQualifier> fillerRoleQualifiers = new ArrayList<KimDocumentRoleQualifier>();
 
-		AttributeDefinitionMap origAttributes = identityManagementRoleDocument.getDefinitions();
+		List<KimAttributeField> origAttributes = identityManagementRoleDocument.getDefinitions();
 		if ( origAttributes != null ) {
-			for(String key: origAttributes.keySet()) {
+			for(KimAttributeField key: origAttributes) {
 				boolean attributePresent = false;
-				String origAttributeId = identityManagementRoleDocument.getKimAttributeDefnId(origAttributes.get(key));
+				String origAttributeId = identityManagementRoleDocument.getKimAttributeDefnId(key);
 				if(attributeDataList!=null){
 					for(RoleMemberAttributeDataBo memberRoleQualifier: attributeDataList){
 						if(origAttributeId!=null && StringUtils.equals(origAttributeId, memberRoleQualifier.getKimAttribute().getId())){
@@ -2026,12 +2022,12 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			List<DelegateMemberAttributeDataBo> attributeDataList){
 		List<RoleDocumentDelegationMemberQualifier> pndMemberRoleQualifiers = new ArrayList<RoleDocumentDelegationMemberQualifier>();
 		RoleDocumentDelegationMemberQualifier pndMemberRoleQualifier;
-		AttributeDefinitionMap origAttributes = identityManagementRoleDocument.getDefinitions();
+		List<KimAttributeField> origAttributes = identityManagementRoleDocument.getDefinitions();
 		boolean attributePresent = false;
 		String origAttributeId;
 		if(origAttributes!=null){
-			for(String key: origAttributes.keySet()) {
-				origAttributeId = identityManagementRoleDocument.getKimAttributeDefnId(origAttributes.get(key));
+			for(KimAttributeField key: origAttributes) {
+				origAttributeId = identityManagementRoleDocument.getKimAttributeDefnId(key);
 				if(attributeDataList!=null){
 					for(DelegateMemberAttributeDataBo memberRoleQualifier: attributeDataList){
 						if(origAttributeId!=null && StringUtils.equals(origAttributeId, memberRoleQualifier.getKimAttribute().getId())){
@@ -2287,7 +2283,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
                 newRoleMember = new RoleMemberBo();
                 KimCommonUtilsInternal.copyProperties(newRoleMember, documentRoleMember);
                 newRoleMember.setRoleId(identityManagementRoleDocument.getRoleId());
-                newRoleMember.setMemberTypeCode(documentRoleMember.getMemberTypeCode());
                 if(ObjectUtils.isNotNull(origRoleMembers)){
                     for(RoleMemberBo origRoleMemberImpl: origRoleMembers){
                         if((origRoleMemberImpl.getRoleId()!=null && StringUtils.equals(origRoleMemberImpl.getRoleId(), newRoleMember.getRoleId())) &&
@@ -2399,24 +2394,21 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	 * @param roleMemberAttributeData a role member qualifier attribute to update
 	 */
 	protected void updateAttrValIfNecessary(RoleMemberAttributeDataBo roleMemberAttributeData) {
-		final AttributeDefinition attributeDefinition = getAttributeDefinition(roleMemberAttributeData.getKimTypeId(),
-                roleMemberAttributeData.getKimAttributeId());
-		if (attributeDefinition != null) {
-			if (attributeDefinition.getControl() != null && attributeDefinition.getControl().isCheckbox()) {
-				convertCheckboxAttributeData(roleMemberAttributeData);
-			}
+		if (doCheckboxLogic(roleMemberAttributeData.getKimTypeId(), roleMemberAttributeData.getKimAttributeId())) {
+			convertCheckboxAttributeData(roleMemberAttributeData);
 		}
 	}
 
 	protected void formatAttrValIfNecessary(KimDocumentRoleQualifier roleQualifier) {
-		final AttributeDefinition attributeDefinition = getAttributeDefinition(roleQualifier.getKimTypId(),
-                roleQualifier.getKimAttrDefnId());
-		if (attributeDefinition != null) {
-			if (attributeDefinition.getControl() != null && attributeDefinition.getControl().isCheckbox()) {
-				formatCheckboxAttributeData(roleQualifier);
-			}
-		}
+        if (doCheckboxLogic(roleQualifier.getKimTypId(), roleQualifier.getKimAttrDefnId())) {
+            formatCheckboxAttributeData(roleQualifier);
+        }
 	}
+
+    private boolean doCheckboxLogic(String kimTypeId, String attrId) {
+        final KimAttributeField attributeDefinition = getAttributeDefinition(kimTypeId, attrId);
+        return attributeDefinition != null && attributeDefinition.getAttributeField().getControl() != null && attributeDefinition.getAttributeField().getControl() instanceof RemotableCheckboxGroup;
+    }
 
 	protected void formatCheckboxAttributeData(KimDocumentRoleQualifier roleQualifier) {
 		if (roleQualifier.getAttrVal().equals(KimConstants.KIM_ATTRIBUTE_BOOLEAN_TRUE_STR_VALUE)) {
@@ -2431,16 +2423,17 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	 *
      * @return the KNS attribute used to render that qualifier, or null if the AttributeDefinition cannot be determined
 	 */
-	protected AttributeDefinition getAttributeDefinition(String kimTypId, String attrDefnId) {
+	protected KimAttributeField getAttributeDefinition(String kimTypId, String attrDefnId) {
 		final KimType type = getKimTypeInfoService().getKimType(kimTypId);
 		if (type != null) {
 			final KimTypeService typeService = (KimTypeService) KIMServiceLocatorInternal.getBean(type.getServiceName());
 			if (typeService != null) {
 				final KimTypeAttribute attributeInfo = type.getAttributeDefinitionById(attrDefnId);
 				if (attributeInfo != null) {
-					final AttributeDefinitionMap attributeMap = typeService.getAttributeDefinitions(type.getId());
+					final List<KimAttributeField> attributeMap = typeService.getAttributeDefinitions(type.getId());
 					if (attributeMap != null) {
-						return attributeMap.getByAttributeName(attributeInfo.getKimAttribute().getAttributeName());
+						return TempKimHelper.findAttributeField(attributeInfo.getKimAttribute().getAttributeName(),
+                                attributeMap);
 					}
 				}
 			}
@@ -2638,13 +2631,13 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			Map<String, String> attributes){
 		List<GroupDocumentQualifier> pndGroupQualifiers = new ArrayList<GroupDocumentQualifier>();
 		GroupDocumentQualifier pndGroupQualifier = new GroupDocumentQualifier();
-		AttributeDefinitionMap origAttributes = IdentityManagementGroupDocument.getDefinitions();
+		List<KimAttributeField> origAttributes = IdentityManagementGroupDocument.getDefinitions();
 		boolean attributePresent = false;
 		String origAttributeId;
 		if(origAttributes!=null){
 
-			for(String key: origAttributes.keySet()) {
-				origAttributeId = IdentityManagementGroupDocument.getKimAttributeDefnId(origAttributes.get(key));
+			for(KimAttributeField key: origAttributes) {
+				origAttributeId = IdentityManagementGroupDocument.getKimAttributeDefnId(key);
 				if(!attributes.isEmpty()){
 
 					for(GroupAttributeBo groupQualifier: KimAttributeDataBo.createFrom(GroupAttributeBo.class, attributes, IdentityManagementGroupDocument.getGroupTypeId())){

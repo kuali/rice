@@ -17,7 +17,7 @@ package org.kuali.rice.kim.service.support.impl;
 
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.kim.api.role.RoleMembership;
-import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
+import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.framework.type.KimRoleTypeService;
 
 import java.util.ArrayList;
@@ -64,7 +64,7 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
     }
 
     @Override
-	public AttributeDefinitionMap getAttributeDefinitions(String kimTypeId) {
+	public List<KimAttributeField> getAttributeDefinitions(String kimTypeId) {
         return null;
     }
 

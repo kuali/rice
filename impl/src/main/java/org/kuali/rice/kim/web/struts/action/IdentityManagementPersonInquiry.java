@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
@@ -90,18 +91,18 @@ public class IdentityManagementPersonInquiry extends IdentityManagementBaseInqui
             }
         	// when post again, it will need this during populate
             role.setNewRolePrncpl(new KimDocumentRoleMember());
-            for (String key : role.getDefinitions().keySet()) {
+            for (KimAttributeField key : role.getDefinitions()) {
             	KimDocumentRoleQualifier qualifier = new KimDocumentRoleQualifier();
             	//qualifier.setQualifierKey(key);
-	        	setAttrDefnIdForQualifier(qualifier,role.getDefinitions().get(key));
+	        	setAttrDefnIdForQualifier(qualifier, key);
             	role.getNewRolePrncpl().getQualifiers().add(qualifier);
             }
 	        role.setAttributeEntry( getUiDocumentService().getAttributeEntries( role.getDefinitions() ) );
 		}
 	}
 	
-    private void setAttrDefnIdForQualifier(KimDocumentRoleQualifier qualifier,AttributeDefinition definition) {
-   		qualifier.setKimAttrDefnId(((KimAttributeDefinition)definition).getKimAttrDefnId());
+    private void setAttrDefnIdForQualifier(KimDocumentRoleQualifier qualifier,KimAttributeField definition) {
+   		qualifier.setKimAttrDefnId(definition.getId());
    		qualifier.refreshReferenceObject("kimAttribute");
     }
 	private String getKimTypeServiceName (KimType kimType) {

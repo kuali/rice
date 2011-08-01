@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
@@ -95,11 +96,11 @@ public class KimDocumentRoleMemberLookupableHelperServiceImpl extends KualiLooku
             if (kimType != null) {
                 KimTypeAttributesHelper attributesHelper = new KimTypeAttributesHelper(kimType);
                 StringBuffer attributesToDisplay = new StringBuffer();
-                AttributeDefinition attribDefn;
+                KimAttributeField attribDefn;
                 for (KimDocumentRoleQualifier attribute : roleMember.getQualifiers()) {
                     if (attribute.getKimAttribute() != null) {
                         attribDefn = attributesHelper.getAttributeDefinition(attribute.getKimAttribute().getAttributeName());
-                        attributesToDisplay.append(attribDefn != null ? attribDefn.getLabel() : "");
+                        attributesToDisplay.append(attribDefn != null ? attribDefn.getAttributeField().getLongLabel() : "");
                         attributesToDisplay.append(KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR);
                         attributesToDisplay.append(attribute.getAttrVal());
                         attributesToDisplay.append(KimConstants.KimUIConstants.COMMA_SEPARATOR);

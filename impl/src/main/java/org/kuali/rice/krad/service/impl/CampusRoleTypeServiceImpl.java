@@ -15,28 +15,35 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
+import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.krad.datadictionary.AttributeDefinition;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CampusRoleTypeServiceImpl extends KimRoleTypeServiceBase {
 
 	{
 		workflowRoutingAttributes.add( KimConstants.AttributeConstants.CAMPUS_CODE );
 		requiredAttributes.add( KimConstants.AttributeConstants.CAMPUS_CODE );
-//		checkRequiredAttributes = true;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.impl.type.KimTypeServiceBase#getAttributeDefinitions(java.lang.String)
-	 */
 	@Override
-	public AttributeDefinitionMap getAttributeDefinitions(String kimTypeId) {
-		AttributeDefinitionMap map = super.getAttributeDefinitions(kimTypeId);
-		for (AttributeDefinition definition : map.values()) {
-			if (KimConstants.AttributeConstants.CAMPUS_CODE.equals(definition.getName())) {
-				definition.setRequired(Boolean.TRUE);
+	public List<KimAttributeField> getAttributeDefinitions(String kimTypeId) {
+		List<KimAttributeField> map = new ArrayList<KimAttributeField>(super.getAttributeDefinitions(kimTypeId));
+
+		for (int i = 0; i < map.size(); i++) {
+            final KimAttributeField definition = map.get(i);
+			if (KimConstants.AttributeConstants.CAMPUS_CODE.equals(definition.getAttributeField().getName())) {
+				KimAttributeField.Builder b = KimAttributeField.Builder.create(definition);
+
+                RemotableAttributeField.Builder fb =  b.getAttributeField();
+                fb.setRequired(true);
+
+                b.setAttributeField(fb);
+                map.set(i, b.build());
 			}
 		}
 		return map;

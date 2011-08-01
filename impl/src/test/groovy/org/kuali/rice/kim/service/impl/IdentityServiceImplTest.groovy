@@ -1,69 +1,66 @@
 package org.kuali.rice.kim.service.impl
 
-import org.junit.Test;
-import groovy.mock.interceptor.MockFor;
-import org.kuali.rice.krad.service.BusinessObjectService;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.kuali.rice.kim.api.identity.entity.Entity
-import org.kuali.rice.kim.api.identity.IdentityService;
-import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
-import org.junit.Assert
-import org.kuali.rice.kim.impl.identity.entity.EntityBo
-import org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo
-import org.kuali.rice.kim.impl.identity.personal.EntityBioDemographicsBo
+import groovy.mock.interceptor.MockFor
 import java.text.SimpleDateFormat
-import org.kuali.rice.krad.service.PersistenceService
-import org.kuali.rice.kim.impl.identity.principal.PrincipalBo
-import org.kuali.rice.kim.api.identity.principal.Principal
+import org.junit.Assert
+import org.junit.Before
+import org.junit.BeforeClass
+import org.junit.Test
+import org.kuali.rice.core.api.criteria.CountFlag
+import org.kuali.rice.core.api.criteria.CriteriaLookupService
+import org.kuali.rice.core.api.criteria.CriteriaStringValue
+import org.kuali.rice.core.api.criteria.EqualPredicate
+import org.kuali.rice.core.api.criteria.GenericQueryResults
+import org.kuali.rice.core.api.criteria.QueryByCriteria
 import org.kuali.rice.core.api.exception.RiceIllegalStateException
-import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo
-import org.kuali.rice.kim.impl.identity.address.EntityAddressBo
-import org.apache.cxf.wsdl.http.AddressType
-import org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo
+import org.kuali.rice.kim.api.identity.IdentityService
 import org.kuali.rice.kim.api.identity.address.EntityAddress
+import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation
+import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenship
 import org.kuali.rice.kim.api.identity.email.EntityEmail
-import org.kuali.rice.kim.impl.identity.email.EntityEmailBo
-import org.kuali.rice.kim.impl.identity.email.EntityEmailTypeBo
-import org.kuali.rice.kim.api.identity.phone.EntityPhone
-import org.kuali.rice.kim.impl.identity.phone.EntityPhoneBo
-import org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo
-import org.junit.Ignore
-import org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierBo
-import org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierTypeBo
+import org.kuali.rice.kim.api.identity.employment.EntityEmployment
+import org.kuali.rice.kim.api.identity.entity.Entity
+import org.kuali.rice.kim.api.identity.entity.EntityDefault
+import org.kuali.rice.kim.api.identity.entity.EntityDefaultQueryResults
+import org.kuali.rice.kim.api.identity.entity.EntityQueryResults
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifier
+import org.kuali.rice.kim.api.identity.name.EntityName
+import org.kuali.rice.kim.api.identity.name.EntityNameQueryResults
+import org.kuali.rice.kim.api.identity.personal.EntityBioDemographics
+import org.kuali.rice.kim.api.identity.personal.EntityEthnicity
+import org.kuali.rice.kim.api.identity.phone.EntityPhone
+import org.kuali.rice.kim.api.identity.principal.Principal
+import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences
+import org.kuali.rice.kim.api.identity.residency.EntityResidency
+import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo
+import org.kuali.rice.kim.api.identity.visa.EntityVisa
+import org.kuali.rice.kim.impl.identity.address.EntityAddressBo
+import org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo
 import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo
 import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo
-import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation
-import org.kuali.rice.kim.api.identity.entity.EntityQueryResults
-import org.kuali.rice.core.api.criteria.QueryByCriteria
-import org.kuali.rice.core.api.criteria.CountFlag
-import org.kuali.rice.core.api.criteria.Predicate
-import org.kuali.rice.core.api.criteria.EqualPredicate
-import org.kuali.rice.core.api.criteria.CriteriaStringValue
-import org.kuali.rice.core.api.criteria.CriteriaLookupService
-import org.kuali.rice.core.api.criteria.GenericQueryResults
-import org.kuali.rice.kim.api.identity.entity.EntityDefaultQueryResults
-import org.kuali.rice.kim.api.identity.entity.EntityDefault
-import org.kuali.rice.kim.api.identity.name.EntityNameQueryResults
-import org.kuali.rice.kim.impl.identity.name.EntityNameBo
-import org.kuali.rice.kim.api.identity.name.EntityName
-import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences
-import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenship
 import org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipBo
 import org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipStatusBo
-import org.kuali.rice.kim.api.identity.personal.EntityEthnicity
-import org.kuali.rice.kim.impl.identity.personal.EntityEthnicityBo
-import org.kuali.rice.kim.api.identity.residency.EntityResidency
-import org.kuali.rice.kim.impl.identity.residency.EntityResidencyBo
-import org.kuali.rice.kim.api.identity.visa.EntityVisa
-import org.kuali.rice.kim.impl.identity.visa.EntityVisaBo
-import org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo
-import org.kuali.rice.kim.api.identity.employment.EntityEmployment
+import org.kuali.rice.kim.impl.identity.email.EntityEmailBo
+import org.kuali.rice.kim.impl.identity.email.EntityEmailTypeBo
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentBo
-import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo
-import org.kuali.rice.kim.api.identity.personal.EntityBioDemographics
+import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo
+import org.kuali.rice.kim.impl.identity.entity.EntityBo
+import org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierBo
+import org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierTypeBo
+import org.kuali.rice.kim.impl.identity.name.EntityNameBo
+import org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo
+import org.kuali.rice.kim.impl.identity.personal.EntityBioDemographicsBo
+import org.kuali.rice.kim.impl.identity.personal.EntityEthnicityBo
+import org.kuali.rice.kim.impl.identity.phone.EntityPhoneBo
+import org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo
+import org.kuali.rice.kim.impl.identity.principal.PrincipalBo
+import org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo
+import org.kuali.rice.kim.impl.identity.residency.EntityResidencyBo
+import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo
+import org.kuali.rice.kim.impl.identity.visa.EntityVisaBo
+import org.kuali.rice.krad.service.BusinessObjectService
+import org.kuali.rice.krad.service.PersistenceService
 
 class IdentityServiceImplTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
@@ -77,25 +74,25 @@ class IdentityServiceImplTest {
     IdentityService identityService;
     IdentityServiceImpl identityServiceImpl;
 
-    static Map<String, EntityBo> sampleEntities = new HashMap<String, EntityBo>();
-    static Map<String, PrincipalBo> samplePrincipals = new HashMap<String, PrincipalBo>();
-    static Map<String, EntityTypeContactInfoBo> sampleEntityTypeContactInfos = new HashMap<String, EntityTypeContactInfoBo>();
-    static Map<String, EntityAddressBo> sampleEntityAddresses = new HashMap<String, EntityAddressBo>();
-    static Map<String, EntityEmailBo> sampleEntityEmails = new HashMap<String, EntityEmailBo>();
-    static Map<String, EntityPhoneBo> sampleEntityPhones = new HashMap<String, EntityPhoneBo>();
-    static Map<String, EntityExternalIdentifierBo> sampleEntityExternalIdentifiers = new HashMap<String, EntityExternalIdentifierBo>();
-    static Map<String, EntityAffiliationBo> sampleEntityAffiliations = new HashMap<String, EntityAffiliationBo>();
-    static Map<String, EntityPrivacyPreferencesBo> sampleEntityPrivacyPreferences = new HashMap<String, EntityPrivacyPreferencesBo>();
-    static Map<String, EntityCitizenshipBo> sampleEntityCitizenships = new HashMap<String, EntityCitizenshipBo>();
-    static Map<String, EntityEthnicityBo> sampleEntityEthnicities = new HashMap<String, EntityEthnicityBo>();
-    static Map<String, EntityResidencyBo> sampleEntityResidencies = new HashMap<String, EntityResidencyBo>();
-    static Map<String, EntityVisaBo> sampleEntityVisas = new HashMap<String, EntityVisaBo>();
-    static Map<String, EntityNameBo> sampleEntityNames = new HashMap<String, EntityNameBo>();
-    static Map<String, EntityEmploymentBo> sampleEntityEmployments = new HashMap<String, EntityEmploymentBo>();
-    static Map<String, EntityBioDemographicsBo> sampleEntityBioDemographics = new HashMap<String, EntityBioDemographicsBo>();
+    Map<String, EntityBo> sampleEntities = new HashMap<String, EntityBo>();
+    Map<String, PrincipalBo> samplePrincipals = new HashMap<String, PrincipalBo>();
+    Map<String, EntityTypeContactInfoBo> sampleEntityTypeContactInfos = new HashMap<String, EntityTypeContactInfoBo>();
+    Map<String, EntityAddressBo> sampleEntityAddresses = new HashMap<String, EntityAddressBo>();
+    Map<String, EntityEmailBo> sampleEntityEmails = new HashMap<String, EntityEmailBo>();
+    Map<String, EntityPhoneBo> sampleEntityPhones = new HashMap<String, EntityPhoneBo>();
+    Map<String, EntityExternalIdentifierBo> sampleEntityExternalIdentifiers = new HashMap<String, EntityExternalIdentifierBo>();
+    Map<String, EntityAffiliationBo> sampleEntityAffiliations = new HashMap<String, EntityAffiliationBo>();
+    Map<String, EntityPrivacyPreferencesBo> sampleEntityPrivacyPreferences = new HashMap<String, EntityPrivacyPreferencesBo>();
+    Map<String, EntityCitizenshipBo> sampleEntityCitizenships = new HashMap<String, EntityCitizenshipBo>();
+    Map<String, EntityEthnicityBo> sampleEntityEthnicities = new HashMap<String, EntityEthnicityBo>();
+    Map<String, EntityResidencyBo> sampleEntityResidencies = new HashMap<String, EntityResidencyBo>();
+    Map<String, EntityVisaBo> sampleEntityVisas = new HashMap<String, EntityVisaBo>();
+    Map<String, EntityNameBo> sampleEntityNames = new HashMap<String, EntityNameBo>();
+    Map<String, EntityEmploymentBo> sampleEntityEmployments = new HashMap<String, EntityEmploymentBo>();
+    Map<String, EntityBioDemographicsBo> sampleEntityBioDemographics = new HashMap<String, EntityBioDemographicsBo>();
 
-    @BeforeClass
-    static void createSampleBOs() {
+    @Before
+    void createSampleBOs() {
         EntityPrivacyPreferencesBo firstEntityPrivacyPreferencesBo = new EntityPrivacyPreferencesBo(entityId: "AAA", suppressName: true, suppressEmail: true, suppressAddress: true, suppressPhone: true, suppressPersonal: false);
         String birthDateString = "01/01/2007";
         String deceasedDateString = "01/01/2087";

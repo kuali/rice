@@ -29,7 +29,7 @@ abstract public class DataDictionaryDefinitionBase implements DataDictionaryDefi
     private static final long serialVersionUID = -2003626577498716712L;
     
 	protected String id;
-    
+
     public DataDictionaryDefinitionBase() {
     }
 

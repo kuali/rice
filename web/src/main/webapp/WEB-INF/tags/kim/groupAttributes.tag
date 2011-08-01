@@ -35,15 +35,19 @@
                         <c:set var="fieldName" value="${qualifier.attributeName}" />
                         <c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
                         <c:set var="attrDefinition" value="${KualiForm.document.definitionsKeyedByAttributeName[fieldName]}"/>
-                        <c:set var="attrReadOnly" value="${(readOnly || (attrDefinition.unique && KualiForm.document.editing))}"/>
-	        			<c:set var="attrReadOnly" value="${(readOnly || (attrDefinition.unique && KualiForm.document.editing))}"/>
+                        <c:set var="attrReadOnly" value="${(readOnly || (attrDefinition.attributeField.unique && KualiForm.document.editing))}"/>
+	        			<c:set var="attrReadOnly" value="${(readOnly || (attrDefinition.attributeField.unique && KualiForm.document.editing))}"/>
 			            <td align="left" valign="middle">
 			               	<div align="center"> <kul:htmlControlAttribute kimTypeId="${KualiForm.document.kimType.kimTypeId}" property="document.qualifiers[${statusQualifier.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}" />
-			               	<c:if test="${attrDefinition.hasLookupBoDefinition}"> 
-                                <c:if test="${!empty attrDefinition.lookupBoClass and not attrReadOnly}">
-    				       		  <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="document" attr="${attrDefinition}" />
-    				          	</c:if>
+			               	   <c:forEach var="widget" items="${attrDefinition.attributeField.widgets}" >
+                          <c:if test="${widget.class.name == 'org.kuali.rice.core.api.uif.RemotableQuickFinder'}">
+                                <c:if test="${!empty widget.dataObjectClass and not attrReadOnly}">
+    				       		    <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="document" attr="${widget}" />
+                          </c:if>
                             </c:if>
+                        </c:forEach>
+
+
 							</div>
 						</td>
                     </c:forEach>

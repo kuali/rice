@@ -27,6 +27,7 @@ import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
@@ -116,12 +117,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         personDocumentForm.setCanOverrideEntityPrivacyPreferences(isCreatingNew || getUiDocumentService().canOverrideEntityPrivacyPreferences(GlobalVariables.getUserSession().getPrincipalId(), personDocumentForm.getPrincipalId()));
 		return forward;
     }
-    
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.krad.web.struts.action.KualiDocumentActionBase#loadDocument(org.kuali.rice.krad.web.struts.form.KualiDocumentFormBase)
-	 */
+
 	@Override
 	protected void loadDocument(KualiDocumentFormBase form)
 			throws WorkflowException {
@@ -140,21 +136,16 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 	        }
         	// when post again, it will need this during populate
             role.setNewRolePrncpl(new KimDocumentRoleMember());
-            for (String key : role.getDefinitions().keySet()) {
+            for (KimAttributeField key : role.getDefinitions()) {
             	KimDocumentRoleQualifier qualifier = new KimDocumentRoleQualifier();
             	//qualifier.setQualifierKey(key);
-	        	setAttrDefnIdForQualifier(qualifier,role.getDefinitions().get(key));
+	        	setAttrDefnIdForQualifier(qualifier,key);
             	role.getNewRolePrncpl().getQualifiers().add(qualifier);
             }
 	        role.setAttributeEntry( getUiDocumentService().getAttributeEntries( role.getDefinitions() ) );
 		}
 	}
-	
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.krad.web.struts.action.KualiDocumentActionBase#createDocument(org.kuali.rice.krad.web.struts.form.KualiDocumentFormBase)
-	 */
+
 	@Override
 	protected void createDocument(KualiDocumentFormBase form)
 			throws WorkflowException {
@@ -361,10 +352,10 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 	        KimDocumentRoleMember newRolePrncpl = newRole.getNewRolePrncpl();
 	        newRole.refreshReferenceObject("assignedResponsibilities");
 	        
-	        for (String key : newRole.getDefinitions().keySet()) {
+	        for (KimAttributeField key : newRole.getDefinitions()) {
 	        	KimDocumentRoleQualifier qualifier = new KimDocumentRoleQualifier();
 	        	//qualifier.setQualifierKey(key);
-	        	setAttrDefnIdForQualifier(qualifier,newRole.getDefinitions().get(key));
+	        	setAttrDefnIdForQualifier(qualifier,key);
 	        	newRolePrncpl.getQualifiers().add(qualifier);
 	        }
 	        if (newRole.getDefinitions().isEmpty()) {
@@ -419,8 +410,8 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 //    }
 	    
 
-    protected void setAttrDefnIdForQualifier(KimDocumentRoleQualifier qualifier,AttributeDefinition definition) {
-   		qualifier.setKimAttrDefnId(((KimAttributeDefinition)definition).getKimAttrDefnId());
+    protected void setAttrDefnIdForQualifier(KimDocumentRoleQualifier qualifier,KimAttributeField definition) {
+   		qualifier.setKimAttrDefnId(definition.getId());
    		qualifier.refreshReferenceObject("kimAttribute");
     }
     
@@ -442,10 +433,10 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         	setupRoleRspActions(role, newRolePrncpl);
     		role.getRolePrncpls().add(newRolePrncpl);
 	        role.setNewRolePrncpl(new KimDocumentRoleMember());
-	        for (String key : role.getDefinitions().keySet()) {
+	        for (KimAttributeField key : role.getDefinitions()) {
 	        	KimDocumentRoleQualifier qualifier = new KimDocumentRoleQualifier();
 	        	//qualifier.setQualifierKey(key);
-	        	setAttrDefnIdForQualifier(qualifier,role.getDefinitions().get(key));
+	        	setAttrDefnIdForQualifier(qualifier,key);
 	        	role.getNewRolePrncpl().getQualifiers().add(qualifier);
 	        }
     	}
@@ -479,15 +470,15 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 		        }
 		        newDelegationMember.setRoleBo(RoleBo.from(role));
 	        }
-	        AttributeDefinition attrDefinition;
+	        KimAttributeField attrDefinition;
 	        RoleMemberBo roleMember = KIMServiceLocatorInternal.getUiDocumentService().getRoleMember(newDelegationMember.getRoleMemberId());
 	        Map<String, String>
                     roleMemberAttributes = (new AttributeValidationHelper()).convertAttributesToMap(roleMember.getAttributeDetails());
-	        for (String key: attrHelper.getDefinitions().keySet()) {
+	        for (KimAttributeField key: attrHelper.getDefinitions()) {
 	        	RoleDocumentDelegationMemberQualifier qualifier = new RoleDocumentDelegationMemberQualifier();
-	        	attrDefinition = attrHelper.getDefinitions().get(key);
+	        	attrDefinition = key;
 	        	qualifier.setKimAttrDefnId(attrHelper.getKimAttributeDefnId(attrDefinition));
-	        	qualifier.setAttrVal(attrHelper.getAttributeValue(roleMemberAttributes, attrDefinition.getName()));
+	        	qualifier.setAttrVal(attrHelper.getAttributeValue(roleMemberAttributes, attrDefinition.getAttributeField().getName()));
 	        	newDelegationMember.setMemberId(personDocument.getPrincipalId());
 	        	newDelegationMember.setMemberTypeCode(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE);
 	        	newDelegationMember.getQualifiers().add(qualifier);

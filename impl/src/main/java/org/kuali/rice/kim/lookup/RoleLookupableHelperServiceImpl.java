@@ -20,8 +20,8 @@ import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.impl.role.RoleDao;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
@@ -72,7 +72,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 	private List<Row> attrRows = new ArrayList<Row>();
 	private RoleDao roleDao;
 	private String typeId;
-	private AttributeDefinitionMap attrDefinitions;
+	private List<KimAttributeField> attrDefinitions;
 	
     @Override
     public List<HtmlData> getCustomActionUrls(BusinessObject bo, List pkNames) {
@@ -170,11 +170,11 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 		this.roleDao = roleDao;
 	}
 
-	public AttributeDefinitionMap getAttrDefinitions() {
+	public List<KimAttributeField> getAttrDefinitions() {
 		return this.attrDefinitions;
 	}
 
-	public void setAttrDefinitions(AttributeDefinitionMap attrDefinitions) {
+	public void setAttrDefinitions(List<KimAttributeField> attrDefinitions) {
 		this.attrDefinitions = attrDefinitions;
 	}
 
@@ -271,9 +271,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 	}
 	
 	private static final String ROLE_ID_URL_KEY = "&"+KimConstants.PrimaryKeyConstants.SUB_ROLE_ID+"=";
-	/**
-	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#getInquiryUrl(org.kuali.rice.krad.bo.BusinessObject, java.lang.String)
-	 */
+
 	@Override
 	public HtmlData getInquiryUrl(BusinessObject bo, String propertyName) {
 		HtmlData.AnchorHtmlData inquiryHtmlData = (HtmlData.AnchorHtmlData)super.getInquiryUrl(bo, propertyName);

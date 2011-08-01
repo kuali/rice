@@ -24,9 +24,9 @@ import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeService;
-import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
@@ -41,6 +41,7 @@ import org.kuali.rice.kim.document.authorization.IdentityManagementKimDocumentAu
 import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
 import org.kuali.rice.kim.impl.role.RoleMemberBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
+import org.kuali.rice.kim.impl.type.TempKimHelper;
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
 import org.kuali.rice.kim.rule.event.ui.AddPersonDelegationMemberEvent;
 import org.kuali.rice.kim.rule.event.ui.AddRoleEvent;
@@ -55,7 +56,6 @@ import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
-import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.rules.TransactionalDocumentRuleBase;
 import org.kuali.rice.krad.service.BusinessObjectService;
@@ -417,7 +417,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         		}
         	}
 
-        	final AttributeDefinitionMap attributeDefinitions = role.getDefinitions();
+        	final List<KimAttributeField> attributeDefinitions = role.getDefinitions();
         	final Set<String> uniqueQualifierAttributes = findUniqueQualificationAttributes(role, attributeDefinitions);
 
 	        if ( kimTypeService != null ) {
@@ -450,10 +450,8 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     /**
      * Checks all the qualifiers for the given membership, so that all qualifiers which should be unique are guaranteed to be unique
      *
-     * @param membership the membership to check
-     * @param attributeDefinitions the Map of attribute definitions used by the role
      * @param roleIndex the index of the role on the document (for error reporting purposes)
-     * @param memberIndex the index of the person's membership in the role (for error reporting purposes)
+     * @param membershipToCheckIndex the index of the person's membership in the role (for error reporting purposes)
      * @return true if all unique values are indeed unique, false otherwise
      */
     protected boolean validateUniquePersonRoleQualifiersUniqueForMembership(PersonDocumentRole role, KimDocumentRoleMember membershipToCheck, int membershipToCheckIndex, Set<String> uniqueQualifierAttributes, int roleIndex, List<RemotableAttributeError> validationErrors) {
@@ -508,16 +506,17 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
      * @param attributeDefinitions the Map of attribute definitions where we can find out if a KimAttribute is supposed to be unique
      * @return a Set of attribute definition ids for qualifications which are supposed to be unique
      */
-    public Set<String> findUniqueQualificationAttributes(PersonDocumentRole role, AttributeDefinitionMap attributeDefinitions) {
+    public Set<String> findUniqueQualificationAttributes(PersonDocumentRole role, List<KimAttributeField> attributeDefinitions) {
     	Set<String> uniqueQualifications = new HashSet<String>();
 
     	if (role.getRolePrncpls() != null && role.getRolePrncpls().size() > 1) {
     		final KimDocumentRoleMember membership = role.getRolePrncpls().get(0);
     		for (KimDocumentRoleQualifier qualifier: membership.getQualifiers()) {
     			if (qualifier != null && qualifier.getKimAttribute() != null && !StringUtils.isBlank(qualifier.getKimAttribute().getAttributeName())) {
-    	    		final AttributeDefinition relatedDefinition = attributeDefinitions.getByAttributeName(qualifier.getKimAttribute().getAttributeName());
+    	    		final KimAttributeField relatedDefinition = TempKimHelper.findAttributeField(
+                            qualifier.getKimAttribute().getAttributeName(), attributeDefinitions);
 
-    	    		if (relatedDefinition != null && relatedDefinition.getUnique() != null && relatedDefinition.getUnique().booleanValue()) {
+    	    		if (relatedDefinition != null && relatedDefinition.isUnique()) {
     	    			uniqueQualifications.add(qualifier.getKimAttrDefnId());
     	    		}
     			}

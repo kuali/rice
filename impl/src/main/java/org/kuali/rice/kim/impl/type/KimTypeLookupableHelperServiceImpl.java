@@ -71,10 +71,6 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
 		return searchResults;
 	}
 	
-	/**
-     * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#getReturnUrl(org.kuali.rice.krad.bo.BusinessObject, java.util.Map,
-     *      java.lang.String)
-     */
     @SuppressWarnings("unchecked")
 	@Override
     protected String getReturnHref(Properties parameters, LookupForm lookupForm, List returnKeys) {

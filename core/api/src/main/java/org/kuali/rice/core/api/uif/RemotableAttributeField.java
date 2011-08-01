@@ -274,33 +274,6 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         return widgets;
     }
 
-    /**
-     * Utility method to search a collection of attribute fields and returns
-     * a field for a give attribute name.
-     *
-     * @param attributeName the name of the attribute to search for.  Cannot be blank or null.
-     * @param fields cannot be null.
-     *
-     * @return the attribute field or null if not found.
-     */
-    public static RemotableAttributeField findAttribute(String attributeName, Collection<RemotableAttributeField> fields) {
-        if (StringUtils.isBlank(attributeName)) {
-            throw new IllegalArgumentException("attributeName is blank");
-        }
-
-        if (fields == null) {
-            throw new IllegalArgumentException("errors is null");
-        }
-
-        for (RemotableAttributeField field : fields) {
-            if (attributeName.equals(field.getName())) {
-                return field;
-            }
-        }
-        return null;
-    }
-
-
     public static final class Builder implements AttributeField, ModelBuilder {
         private String name;
         private DataType dataType;

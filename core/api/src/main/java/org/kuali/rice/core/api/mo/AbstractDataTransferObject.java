@@ -62,7 +62,7 @@ public abstract class AbstractDataTransferObject implements ModelObjectComplete 
             synchronized (this) {
                 t = _toString;
                 if (t == null) {
-                    _toString = t = ToStringBuilder.reflectionToString(this, ToStringBuilder.getDefaultStyle(), true);
+                    _toString = t = ToStringBuilder.reflectionToString(this);
                 }
             }
         }

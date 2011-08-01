@@ -111,7 +111,7 @@ public class DictionaryValidationServiceImplTest extends KRADTestCase{
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(2, dictionaryValidationResult.getNumberOfErrors());
 		
-		Assert.assertTrue(hasError(dictionaryValidationResult, "state", RiceKeyConstants.ERROR_REQUIRED));
+		Assert.assertTrue(hasError(dictionaryValidationResult, "country", RiceKeyConstants.ERROR_REQUIRES_FIELD));
 		Assert.assertTrue(hasError(dictionaryValidationResult, "postalCode", RiceKeyConstants.ERROR_OUT_OF_RANGE));
 	}
 	
@@ -130,7 +130,7 @@ public class DictionaryValidationServiceImplTest extends KRADTestCase{
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
 		
-		Assert.assertTrue(hasError(dictionaryValidationResult, "state", RiceKeyConstants.ERROR_INVALID_FORMAT));
+		Assert.assertTrue(hasError(dictionaryValidationResult, "street1", RiceKeyConstants.ERROR_INVALID_FORMAT));
 	}
 	
 	@Test

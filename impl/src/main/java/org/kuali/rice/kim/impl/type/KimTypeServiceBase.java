@@ -17,11 +17,17 @@ package org.kuali.rice.kim.impl.type;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.uif.RemotableAbstractControl;
 import org.kuali.rice.core.api.uif.RemotableAbstractWidget;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.core.api.uif.RemotableCheckboxGroup;
+import org.kuali.rice.core.api.uif.RemotableHiddenInput;
 import org.kuali.rice.core.api.uif.RemotableQuickFinder;
-import org.kuali.rice.core.api.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.uif.RemotableRadioButtonGroup;
+import org.kuali.rice.core.api.uif.RemotableSelect;
+import org.kuali.rice.core.api.uif.RemotableTextInput;
+import org.kuali.rice.core.api.uif.RemotableTextarea;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.core.web.format.Formatter;
@@ -32,6 +38,7 @@ import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.api.type.KimTypeService;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.web.ui.Field;
@@ -52,8 +59,6 @@ import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -170,7 +175,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		Object attributeValueObject = null;
 		if(propertyDescriptor!=null && attributeValue!=null){
 			Class<?> propertyType = propertyDescriptor.getPropertyType();
-			if(String.class.equals(propertyType)){
+			if (String.class.equals(propertyType)){
 				attributeValueObject = KRADUtils
                         .createObject(propertyType, new Class[]{String.class}, new Object[]{attributeValue});
 			} else {
@@ -261,15 +266,11 @@ public class KimTypeServiceBase implements KimTypeService {
         List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
         // check if field is a required field for the business object
         if (attributeValue == null || (attributeValue instanceof String && StringUtils.isBlank((String) attributeValue))) {
-        	List<KimAttributeDefinition> map = TempKimHelper.toKimAttributeDefinitions(getAttributeDefinitions(
-                    kimTypeId));
-        	AttributeDefinition definition = TempKimHelper.findAttribute(attributeName, map);
+        	List<KimAttributeField> map = getAttributeDefinitions(kimTypeId);
+        	KimAttributeField definition = TempKimHelper.findAttributeField(attributeName, map);
         	
-            Boolean required = definition.isRequired();
-            ControlDefinition controlDef = definition.getControl();
-
-            if (required != null && required.booleanValue() && !(controlDef != null && controlDef.isHidden())) {
-
+            boolean required = definition.getAttributeField().isRequired();
+            if (required) {
                 // get label of attribute for message
                 String errorLabel = TempKimHelper.getAttributeErrorLabel(definition);
                 errors.add(RemotableAttributeError.Builder.create(errorKey, TempKimHelper.createErrorString(RiceKeyConstants.ERROR_REQUIRED, errorLabel)).build());
@@ -312,11 +313,11 @@ public class KimTypeServiceBase implements KimTypeService {
      */
     protected static final String VALIDATE_METHOD="validate";
     
-    protected Pattern getAttributeValidatingExpression(AttributeDefinition definition) {
+    protected Pattern getAttributeValidatingExpression(KimAttributeField definition) {
     	Pattern regex = null;
         if (definition != null) {
-            if (definition.hasValidationPattern()) {
-                regex = definition.getValidationPattern().getRegexPattern();
+            if (StringUtils.isNotBlank(definition.getAttributeField().getRegexConstraint())) {
+                regex = Pattern.compile(definition.getAttributeField().getRegexConstraint());
             } else {
                 // workaround for existing calls which don't bother checking for null return values
                 regex = Pattern.compile(".*");
@@ -326,37 +327,29 @@ public class KimTypeServiceBase implements KimTypeService {
         return regex;
     }
     
-	protected Class<? extends Formatter> getAttributeFormatter(AttributeDefinition definition) {
-        Class<? extends Formatter> formatterClass = null;
-        if (definition != null && definition.hasFormatterClass()) {
-        		try {
-        			formatterClass = ClassLoaderUtils.getClass(definition.getFormatterClass(), Formatter.class);
-        		} catch (ClassNotFoundException e) {
-        			// supressing the ClassNotFoundException here to keep in consistent in the logic which is
-        			// calling this code (it's doing a null check) though it really seems like we should
-        			// be rethrowing this as a RuntimeException!  Either way, will log a WARN here.
-        			LOG.warn("Failed to resolve formatter class: " + definition.getFormatterClass(), e);
-        		}
+	protected Formatter getAttributeFormatter(KimAttributeField definition) {
+        if (definition.getAttributeField().getDataType() == null) {
+            return null;
         }
-        return formatterClass;
+
+        return Formatter.getFormatter(definition.getAttributeField().getDataType().getType());
     }
     
 
     
-	protected String getAttributeExclusiveMin(AttributeDefinition definition) {
-        return definition == null ? null : definition.getExclusiveMin();
+	protected Double getAttributeMinValue(KimAttributeField definition) {
+        return definition == null ? null : definition.getAttributeField().getMinValue();
     }
 
-	protected String getAttributeInclusiveMax(AttributeDefinition definition) {
-        return definition == null ? null : definition.getInclusiveMax();
+	protected Double getAttributeMaxValue(KimAttributeField definition) {
+        return definition == null ? null : definition.getAttributeField().getMaxValue();
     }
 	
     protected List<RemotableAttributeError> validateAttributeFormat(String kimTypeId, String objectClassName, String attributeName, String attributeValue, String errorKey) {
     	List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
 
-        List<KimAttributeDefinition> attributeDefinitions = TempKimHelper.toKimAttributeDefinitions(
-                getAttributeDefinitions(kimTypeId));
-    	AttributeDefinition definition = TempKimHelper.findAttribute(attributeName, attributeDefinitions);
+        List<KimAttributeField> attributeDefinitions = getAttributeDefinitions(kimTypeId);
+    	KimAttributeField definition = TempKimHelper.findAttributeField(attributeName, attributeDefinitions);
     	
         String errorLabel = TempKimHelper.getAttributeErrorLabel(definition);
 
@@ -365,7 +358,7 @@ public class KimTypeServiceBase implements KimTypeService {
         }
 
         if (StringUtils.isNotBlank(attributeValue)) {
-            Integer maxLength = definition.getMaxLength();
+            Integer maxLength = definition.getAttributeField().getMaxLength();
             if ((maxLength != null) && (maxLength.intValue() < attributeValue.length())) {
                 errors.add(RemotableAttributeError.Builder.create(errorKey, TempKimHelper.createErrorString(RiceKeyConstants.ERROR_MAX_LENGTH, errorLabel, maxLength.toString())).build());
                 return errors;
@@ -378,20 +371,10 @@ public class KimTypeServiceBase implements KimTypeService {
 
                 if (!validationExpression.matcher(attributeValue).matches()) {
                     boolean isError=true;
-                    // Calling formatter class
-                    Class<?> formatterClass=getAttributeFormatter(definition);
-                    if (formatterClass != null) {
-                        try {
-                            Method validatorMethod=formatterClass.getDeclaredMethod(
-                                    VALIDATE_METHOD, String.class);
-                            Object o=validatorMethod.invoke(
-                                    formatterClass.newInstance(), attributeValue);
-                            if (o instanceof Boolean) {
-                                isError=!((Boolean)o).booleanValue();
-                            }
-                        } catch (Exception e) {
-                            LOG.warn(e.getMessage(), e);
-                        }
+                    final Formatter formatter = getAttributeFormatter(definition);
+                    if (formatter != null) {
+                        Object o = formatter.format(attributeValue);
+                        isError = !validationExpression.matcher(String.valueOf(o)).matches();
                     }
                     if (isError) {
                         errors.add(RemotableAttributeError.Builder.create(errorKey, TempKimHelper.createErrorString(definition)).build());
@@ -399,12 +382,11 @@ public class KimTypeServiceBase implements KimTypeService {
                     return errors;
                 }
             }
-            String exclusiveMin = getAttributeExclusiveMin(definition);
-            if (StringUtils.isNotBlank(exclusiveMin)) {
+            Double min = getAttributeMinValue(definition);
+            if (min != null) {
                 try {
-                	BigDecimal exclusiveMinBigDecimal = new BigDecimal(exclusiveMin);
-                    if (exclusiveMinBigDecimal.compareTo(new BigDecimal(attributeValue)) >= 0) {
-                        errors.add(RemotableAttributeError.Builder.create(errorKey, TempKimHelper.createErrorString(RiceKeyConstants.ERROR_EXCLUSIVE_MIN, errorLabel, exclusiveMin.toString())).build());
+                    if (Double.parseDouble(attributeValue) < min) {
+                        errors.add(RemotableAttributeError.Builder.create(errorKey, TempKimHelper.createErrorString(RiceKeyConstants.ERROR_EXCLUSIVE_MIN, errorLabel, min.toString())).build());
                         return errors;
                     }
                 }
@@ -412,12 +394,12 @@ public class KimTypeServiceBase implements KimTypeService {
                     // quash; this indicates that the DD contained a min for a non-numeric attribute
                 }
             }
-            String inclusiveMax = getAttributeInclusiveMax(definition);
-            if (StringUtils.isNotBlank(inclusiveMax)) {
+            Double max = getAttributeMaxValue(definition);
+            if (max != null) {
                 try {
-                	BigDecimal inclusiveMaxBigDecimal = new BigDecimal(inclusiveMax);
-                    if (inclusiveMaxBigDecimal.compareTo(new BigDecimal(attributeValue)) < 0) {
-                        errors.add(RemotableAttributeError.Builder.create(errorKey, TempKimHelper.createErrorString(RiceKeyConstants.ERROR_INCLUSIVE_MAX, errorLabel, inclusiveMax.toString())).build());
+
+                    if (Double.parseDouble(attributeValue) > max) {
+                        errors.add(RemotableAttributeError.Builder.create(errorKey, TempKimHelper.createErrorString(RiceKeyConstants.ERROR_INCLUSIVE_MAX, errorLabel, max.toString())).build());
                         return errors;
                     }
                 }

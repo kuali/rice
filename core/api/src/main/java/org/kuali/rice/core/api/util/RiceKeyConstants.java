@@ -49,6 +49,7 @@ public final class RiceKeyConstants {
     public static final String ERROR_REQUIRES_FIELD = "error.requiresField";
     public static final String ERROR_INVALID_FORMAT = "error.invalidFormat";
     public static final String ERROR_EXCLUSIVE_MIN = "error.exclusiveMin";
+    public static final String ERROR_INCLUSIVE_MIN = "error.inclusiveMin";
     public static final String ERROR_INCLUSIVE_MAX = "error.inclusiveMax";
     public static final String ERROR_OUT_OF_RANGE = "error.outOfRange";
 

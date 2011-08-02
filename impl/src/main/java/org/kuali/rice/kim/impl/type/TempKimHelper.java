@@ -1,8 +1,6 @@
 package org.kuali.rice.kim.impl.type;
 
-import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
 import org.kuali.rice.core.api.uif.RemotableAbstractControl;
 import org.kuali.rice.core.api.uif.RemotableAbstractWidget;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
@@ -24,7 +22,6 @@ import org.kuali.rice.kns.datadictionary.control.RadioControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.SelectControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.TextControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.TextareaControlDefinition;
-import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.krad.datadictionary.exporter.ExportMap;
 import org.kuali.rice.krad.datadictionary.validation.ValidationPattern;
@@ -32,7 +29,6 @@ import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -41,75 +37,6 @@ import java.util.regex.Pattern;
 
 /** a temp class to help with kim migration.  this should be deleted once kim migration is done. */
 public class TempKimHelper {
-
-    public static List<KimAttributeField> toKimAttributeFields(List<? extends AttributeDefinition> defns) {
-        if (defns == null) {
-            throw new IllegalArgumentException("defns was null");
-        }
-
-        final List<KimAttributeField> fields = new ArrayList<KimAttributeField>();
-        for (AttributeDefinition defn : defns) {
-            fields.add(toKimAttributeField(defn));
-        }
-
-        return Collections.unmodifiableList(fields);
-    }
-
-    private static KimAttributeField toKimAttributeField(AttributeDefinition defn) {
-        if (defn == null) {
-            throw new IllegalArgumentException("defn is null");
-        }
-
-        if (!(defn instanceof KimAttributeDefinition)) {
-            throw new IllegalArgumentException("defn must be an instanceof KimAttributeDefinition");
-        }
-
-        RemotableAttributeField.Builder rb = RemotableAttributeField.Builder.create(defn.getName());
-        rb.setName(defn.getName());
-        rb.setDataType(defn.getDataType());
-        rb.setShortLabel(defn.getShortLabel());
-        rb.setLongLabel(defn.getLabel());
-        rb.setHelpSummary(defn.getSummary());
-        rb.setHelpConstraint(defn.getConstraint());
-        rb.setHelpDescription(defn.getDescription());
-        rb.setForceUpperCase(BooleanUtils.toBooleanDefaultIfNull(defn.getForceUppercase(), false));
-        rb.setMinLength(defn.getMinLength());
-        rb.setMaxLength(defn.getMaxLength());
-        if (NumberUtils.isNumber(defn.getInclusiveMax())) {
-            rb.setMaxValue(Double.valueOf(defn.getInclusiveMax()));
-        }
-        if (NumberUtils.isNumber(defn.getExclusiveMin())) {
-            rb.setMinValue(Double.valueOf(defn.getExclusiveMin()));
-        }
-        if (defn.hasValidationPattern()) {
-            ValidationPattern p = defn.getValidationPattern();
-            rb.setRegexConstraint(p.getRegexPattern() != null ? p.getRegexPattern().pattern() : null);
-            //FIXME: set an actual error msg
-            rb.setRegexContraintMsg(p.getValidationErrorMessageKey() != null ? createErrorString(defn) : null);
-        }
-        rb.setRequired(BooleanUtils.toBooleanDefaultIfNull(defn.isRequired(), false));
-
-        if (defn.getControl() != null) {
-            rb.setControl(toRemotableAbstractControlBuilder(defn.getControl()));
-            RemotableAbstractWidget.Builder widget = toRemotableAbstractWidgetBuilder(defn.getControl());
-            if (widget == null && defn instanceof KimDataDictionaryAttributeDefinition) {
-                KimDataDictionaryAttributeDefinition ddDefn = (KimDataDictionaryAttributeDefinition) defn;
-                if (StringUtils.isNotBlank(ddDefn.getLookupBoClass())) {
-                    widget = RemotableQuickFinder.Builder.create(getKimBasePath(), ddDefn.getLookupBoClass());
-                    ((RemotableQuickFinder.Builder) widget).setFieldConversions(ddDefn.getLookupReturnPropertyConversions());
-                    ((RemotableQuickFinder.Builder) widget).setLookupParameters(
-                            ddDefn.getLookupInputPropertyConversions());
-                }
-            }
-            if (widget != null) {
-                rb.setWidgets(Collections.singletonList(widget));
-            }
-        }
-        KimAttributeField.Builder kb = KimAttributeField.Builder.create(rb, ((KimAttributeDefinition) defn).getKimAttrDefnId());
-        kb.setUnique(BooleanUtils.toBooleanDefaultIfNull(defn.getUnique(), false));
-
-        return kb.build();
-    }
 
     public static String getKimBasePath(){
 	    String kimBaseUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(KimConstants.KimUIConstants.KIM_URL_KEY);
@@ -146,7 +73,6 @@ public class TempKimHelper {
             }
         return null;
     }
-
     private static Map<String, String> getValues(ControlDefinition defn) {
         try {
         Class<KeyValuesFinder> clazz = (Class<KeyValuesFinder>) Class.forName(defn.getValuesFinderClass());
@@ -159,15 +85,6 @@ public class TempKimHelper {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static RemotableAbstractWidget.Builder toRemotableAbstractWidgetBuilder(ControlDefinition control) {
-            if (control.isDatePicker()) {
-                return RemotableDatepicker.Builder.create();
-            } else if (control.isExpandedTextArea()) {
-                return RemotableTextExpand.Builder.create();
-            }
-        return null;
     }
 
     public static List<KimAttributeDefinition> toKimAttributeDefinitions(List<KimAttributeField> fields) {
@@ -293,32 +210,6 @@ public class TempKimHelper {
         return null;
     }
 
-    /**
-     * Utility method to search a collection of attribute fields and returns
-     * a field for a give attribute name.
-     *
-     * @param attributeName the name of the attribute to search for.  Cannot be blank or null.
-     * @param fields cannot be null.
-     *
-     * @return the attribute field or null if not found.
-     */
-    public static <T extends KimAttributeDefinition> T findAttribute(String attributeName, Collection<? extends T> fields) {
-        if (StringUtils.isBlank(attributeName)) {
-            throw new IllegalArgumentException("attributeName is blank");
-        }
-
-        if (fields == null) {
-            throw new IllegalArgumentException("fields is null");
-        }
-
-        for (T field : fields) {
-            if (attributeName.equals(field.getName())) {
-                return field;
-            }
-        }
-        return null;
-    }
-
         /**
      * Utility method to search a collection of attribute fields and returns
      * a field for a give attribute name.
@@ -345,10 +236,8 @@ public class TempKimHelper {
         return null;
     }
 
-    public static String createErrorString(AttributeDefinition definition) {
-        final String errorKey = getAttributeValidatingErrorMessageKey(definition);
-        final List<String> params = getAttributeValidatingErrorMessageParameters(definition);
-        return createErrorString(errorKey, params.toArray(new String[]{}));
+    public static String createErrorString(KimAttributeField definition) {
+        return definition.getAttributeField().getRegexContraintMsg();
     }
 
      /** will create a string like the following:
@@ -371,30 +260,9 @@ public class TempKimHelper {
         return s.toString();
     }
 
-    private static String getAttributeValidatingErrorMessageKey(AttributeDefinition definition) {
-        if (definition != null) {
-        	if (definition.hasValidationPattern()) {
-        		ValidationPattern validationPattern = definition.getValidationPattern();
-        		return validationPattern.getValidationErrorMessageKey();
-        	}
-        }
-        return null;
-	}
-
-	private static List<String> getAttributeValidatingErrorMessageParameters(AttributeDefinition definition) {
-        if (definition != null) {
-        	if (definition.hasValidationPattern()) {
-        		ValidationPattern validationPattern = definition.getValidationPattern();
-        		String attributeLabel = getAttributeErrorLabel(definition);
-        		return Arrays.asList(validationPattern.getValidationErrorMessageParameters(attributeLabel));
-        	}
-        }
-        return Collections.emptyList();
-	}
-
-    public static String getAttributeErrorLabel(AttributeDefinition definition) {
-        String longAttributeLabel = definition.getLabel();
-        String shortAttributeLabel = definition.getShortLabel();
+    public static String getAttributeErrorLabel(KimAttributeField definition) {
+        String longAttributeLabel = definition.getAttributeField().getLongLabel();
+        String shortAttributeLabel = definition.getAttributeField().getShortLabel();
         return longAttributeLabel + " (" + shortAttributeLabel + ")";
     }
 }

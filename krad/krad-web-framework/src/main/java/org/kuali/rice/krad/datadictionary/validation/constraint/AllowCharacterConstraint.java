@@ -23,7 +23,11 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants;
 
 /**
- * TODO Administrator don't forget to fill this in.
+ * Parent abstract class that allows additional characters to be allowed in child constraint
+ * character sets, see AlphaNumericPatternConstraint, among others for example.
+ * 
+ * By setting an allow flag to true you are allowing that character as a valid character in the set.
+ * AllowAll set to true will allow all characters which have a flag to be allowed in the set.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -346,6 +350,13 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
         this.allowAll = allowAll;
     }
 
+    /**
+     * This method returns the allowed set of characters allowed by this constraint, based on the
+     * flags set. This string is intended to be placed within the or set of a regex, ie between the
+     * [ ] symbols
+     * 
+     * @return
+     */
     protected String getAllowedCharacterRegex() {
         StringBuilder regexString = new StringBuilder("");
         if (allowWhitespace || allowAll) {
@@ -414,7 +425,8 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
     }
 
     /**
-     * Parameters to be used in the string retrieved by this constraint's labelKey
+     * Generates a comma separated string of the allowed set of characters, for the {0} parameter to
+     * be used within its validation message
      * @return the validationMessageParams
      */
     public List<String> getValidationMessageParams() {

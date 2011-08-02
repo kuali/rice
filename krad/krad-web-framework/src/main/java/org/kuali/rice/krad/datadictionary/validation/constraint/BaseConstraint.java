@@ -67,7 +67,8 @@ public class BaseConstraint implements Constraint {
 	
 
     /**
-     * Parameters to be used in the string retrieved by this constraint's labelKey
+     * Parameters to be used in the string retrieved by this constraint's labelKey, ordered by number of
+     * the param
      * @return the validationMessageParams
      */
     public List<String> getValidationMessageParams() {

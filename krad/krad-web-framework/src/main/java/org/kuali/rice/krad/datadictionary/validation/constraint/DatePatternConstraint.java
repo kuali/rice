@@ -28,7 +28,11 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants;
 
 /**
- * TODO Administrator don't forget to fill this in.
+ * DatePatternConstraint constrains a field to only allow dates which are part of the formats
+ * defined in the system. Constraining a field all these formats is often not appropriate for
+ * fields, and you may want to constrain the input to a subset of the allowed formats in the system.
+ * This can be done by setting the allowed formats to this subset (see BasicDatePatternConstraint
+ * bean for example)
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -37,7 +41,8 @@ public class DatePatternConstraint extends ValidDataPatternConstraint {
     private List<String> allowedFormats;
 
     /**
-     * This overridden method ...
+     * Returns a regex representing all the allowed formats in the system. If allowedFormats is
+     * supplied, returns a regex representing only those formats.
      * 
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.ValidDataPatternConstraint#getRegexString()
      */
@@ -53,17 +58,16 @@ public class DatePatternConstraint extends ValidDataPatternConstraint {
                 //throw new Exception("Some of these formats do not exist in configured allowed date formats: " + allowedFormats.toString());
             }
         }
-        
-        if(dateFormatParams.isEmpty()){
+
+        if (dateFormatParams.isEmpty()) {
             //exception
         }
         String regex = "";
         int i = 0;
         for (String format : dateFormatParams) {
-            if(i == 0){
+            if (i == 0) {
                 regex = "(^" + convertDateFormatToRegex(format.trim()) + "$)";
-            }
-            else{
+            } else {
                 regex = regex + "|(^" + convertDateFormatToRegex(format.trim()) + "$)";
             }
             i++;
@@ -71,6 +75,12 @@ public class DatePatternConstraint extends ValidDataPatternConstraint {
         return regex;
     }
 
+    /**
+     * Converts a date format supplied to the appropriate date format regex equivalent
+     * 
+     * @param format
+     * @return
+     */
     private String convertDateFormatToRegex(String format) {
         format = format.replace("\\", "\\\\")
                 .replace(".", "\\.")
@@ -119,7 +129,7 @@ public class DatePatternConstraint extends ValidDataPatternConstraint {
                 .replaceAll("G{1,}", "([aA][dD]|[bB][cC])")
                 .replace(" ", "\\s")
                 .replace("@", "a-zA-Z");
-        
+
         return format;
 
     }
@@ -146,12 +156,15 @@ public class DatePatternConstraint extends ValidDataPatternConstraint {
     }
 
     /**
+     * Sets the alloweFormats for this constraint, this must be a subset of the system configured
+     * formats for a date - this list should be used for most fields where you are expecting a user
+     * to enter a date in a specific format
      * @param allowedFormats the allowedFormats to set
      */
     public void setAllowedFormats(List<String> allowedFormats) {
         this.allowedFormats = allowedFormats;
     }
-    
+
     /**
      * This overridden method ...
      * 
@@ -159,14 +172,14 @@ public class DatePatternConstraint extends ValidDataPatternConstraint {
      */
     @Override
     public List<String> getValidationMessageParams() {
-        if(validationMessageParams == null){
+        if (validationMessageParams == null) {
             validationMessageParams = new ArrayList<String>();
             if (allowedFormats != null && !allowedFormats.isEmpty()) {
                 validationMessageParams.add(StringUtils.join(allowedFormats, ", "));
             } else {
                 List<String> dateFormatParams =
-                    parseConfigValues(ConfigContext.getCurrentContextConfig().getProperty(
-                            CoreConstants.STRING_TO_DATE_FORMATS));
+                        parseConfigValues(ConfigContext.getCurrentContextConfig().getProperty(
+                                CoreConstants.STRING_TO_DATE_FORMATS));
                 validationMessageParams.add(StringUtils.join(dateFormatParams, ", "));
             }
         }

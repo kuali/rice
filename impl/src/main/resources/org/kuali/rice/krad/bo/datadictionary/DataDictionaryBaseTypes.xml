@@ -205,6 +205,7 @@
         		<value>MM/dd/yy</value>
         		<value>MM/dd/yyyy</value>
         		<value>MM-dd-yy</value>
+        		<value>MM-dd-yyyy</value>
         	</list>
         </property>
     </bean>

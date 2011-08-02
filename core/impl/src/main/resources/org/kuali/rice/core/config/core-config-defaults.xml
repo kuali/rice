@@ -18,7 +18,7 @@
     <param name="core.foo" override="false">core.bar</param>
     
     <!-- Valid Date Formats -->
-    <param name="STRING_TO_DATE_FORMATS" override="false">MM/dd/yyyy hh:mm a;MM/dd/yy;MM/dd/yyyy;MM-dd-yy;MMddyy;MMMM dd;yyyy;MM/dd/yy HH:mm:ss;MM/dd/yyyy HH:mm:ss;MM-dd-yy HH:mm:ss;MMddyy HH:mm:ss;MMMM dd HH:mm:ss;yyyy HH:mm:ss</param>
+    <param name="STRING_TO_DATE_FORMATS" override="false">MM/dd/yyyy hh:mm a;MM/dd/yy;MM/dd/yyyy;MM-dd-yy;MM-dd-yyyy;MMddyy;MMMM dd;yyyy;MM/dd/yy HH:mm:ss;MM/dd/yyyy HH:mm:ss;MM-dd-yy HH:mm:ss;MMddyy HH:mm:ss;MMMM dd HH:mm:ss;yyyy HH:mm:ss</param>
     <param name="STRING_TO_TIMESTAMP_FORMATS" override="false">MM/dd/yyyy hh:mm a;MM/dd/yy;MM/dd/yyyy;MM-dd-yy;MMddyy;MMMM dd;yyyy;MM/dd/yy HH:mm:ss;MM/dd/yyyy HH:mm:ss;MM-dd-yy HH:mm:ss;MMddyy HH:mm:ss;MMMM dd HH:mm:ss;yyyy HH:mm:ss</param>
     <param name="DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE" override="false">MM/dd/yyyy</param>
     <param name="TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE" override="false">MM/dd/yyyy hh:mm a</param>

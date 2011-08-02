@@ -106,8 +106,15 @@ public class ClientValidationUtils {
 		if(StringUtils.isEmpty(message)){
 		    message = labelKey;
 		}
-		else if(message.contains("\"")){
+		//replace characters that might cause issues with their equivalent html codes
+		if(message.contains("\"")){
 		    message = message.replaceAll("\"", "&quot;");
+		}
+		if(message.contains("'")){
+		    message = message.replaceAll("'", "&#39;");
+		}
+		if(message.contains("\\")){
+		    message = message.replaceAll("\\", "&#92;");
 		}
 		return message;
 	}
@@ -150,8 +157,12 @@ public class ClientValidationUtils {
 		String key = "validChar-" + field.getBindingInfo().getBindingPath() + methodKey;
 		
 		String regex = validCharactersConstraint.getValue();
+		//replace characters known to cause issues if not escaped
 		if(regex.contains("\\\\")){
-		    regex.replaceAll("\\\\", "\\\\\\\\");
+		    regex = regex.replaceAll("\\\\", "\\\\\\\\");
+		}
+		if(regex.contains("/")){
+		    regex = regex.replace("/", "\\/");
 		}
 		
         return "\njQuery.validator.addMethod(\"" + key

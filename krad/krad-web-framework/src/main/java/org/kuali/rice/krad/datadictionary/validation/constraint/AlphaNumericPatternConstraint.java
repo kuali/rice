@@ -28,13 +28,7 @@ import org.kuali.rice.krad.uif.UifConstants;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AlphaNumericPatternConstraint extends ValidCharactersPatternConstraint {
-    protected boolean allowWhitespace = false;
-    protected boolean allowUnderscore = false;
-    protected boolean allowPeriod = false;
-    protected boolean allowParenthesis = false;
-    protected boolean allowDollar = false;
-    protected boolean allowForwardSlash = false;
+public class AlphaNumericPatternConstraint extends AllowCharacterConstraint {
     protected boolean lowerCase = false;
 
     /**
@@ -71,7 +65,6 @@ public class AlphaNumericPatternConstraint extends ValidCharactersPatternConstra
      */
     @Override
     protected String getRegexString() {
-        //Exact same logic is used here as old KS AlphaNumericValidationPattern for server side value
         StringBuilder regexString = new StringBuilder("[A-Za-z0-9");
         /*
          * This check must be first because we are removing the base 'A-Z' if lowerCase == true
@@ -80,112 +73,11 @@ public class AlphaNumericPatternConstraint extends ValidCharactersPatternConstra
             regexString = new StringBuilder("[a-z0-9");
         }
 
-        if (allowWhitespace) {
-            regexString.append("\\s");
-        }
-        if (allowUnderscore) {
-            regexString.append("_");
-        }
-        if (allowPeriod) {
-            regexString.append(".");
-        }
-        if (allowParenthesis) {
-            regexString.append("(");
-            regexString.append(")");
-        }
-        if (allowDollar) {
-            regexString.append("$");
-        }
-        if (allowForwardSlash) {
-            regexString.append("/");
-        }
+        regexString.append(this.getAllowedCharacterRegex());
+
         regexString.append("]");
 
         return regexString.toString();
-    }
-
-    /**
-     * @return the allowWhitespace
-     */
-    public boolean isAllowWhitespace() {
-        return this.allowWhitespace;
-    }
-
-    /**
-     * @param allowWhitespace the allowWhitespace to set
-     */
-    public void setAllowWhitespace(boolean allowWhitespace) {
-        this.allowWhitespace = allowWhitespace;
-    }
-
-    /**
-     * @return the allowUnderscore
-     */
-    public boolean isAllowUnderscore() {
-        return this.allowUnderscore;
-    }
-
-    /**
-     * @param allowUnderscore the allowUnderscore to set
-     */
-    public void setAllowUnderscore(boolean allowUnderscore) {
-        this.allowUnderscore = allowUnderscore;
-    }
-
-    /**
-     * @return the allowPeriod
-     */
-    public boolean isAllowPeriod() {
-        return this.allowPeriod;
-    }
-
-    /**
-     * @param allowPeriod the allowPeriod to set
-     */
-    public void setAllowPeriod(boolean allowPeriod) {
-        this.allowPeriod = allowPeriod;
-    }
-
-    /**
-     * @return the allowParenthesis
-     */
-    public boolean isAllowParenthesis() {
-        return this.allowParenthesis;
-    }
-
-    /**
-     * @param allowParenthesis the allowParenthesis to set
-     */
-    public void setAllowParenthesis(boolean allowParenthesis) {
-        this.allowParenthesis = allowParenthesis;
-    }
-
-    /**
-     * @return the allowDollar
-     */
-    public boolean isAllowDollar() {
-        return this.allowDollar;
-    }
-
-    /**
-     * @param allowDollar the allowDollar to set
-     */
-    public void setAllowDollar(boolean allowDollar) {
-        this.allowDollar = allowDollar;
-    }
-
-    /**
-     * @return the allowForwardSlash
-     */
-    public boolean isAllowForwardSlash() {
-        return this.allowForwardSlash;
-    }
-
-    /**
-     * @param allowForwardSlash the allowForwardSlash to set
-     */
-    public void setAllowForwardSlash(boolean allowForwardSlash) {
-        this.allowForwardSlash = allowForwardSlash;
     }
 
     /**
@@ -200,46 +92,6 @@ public class AlphaNumericPatternConstraint extends ValidCharactersPatternConstra
      */
     public void setLowerCase(boolean lowerCase) {
         this.lowerCase = lowerCase;
-    }
-
-    /**
-     * Parameters to be used in the string retrieved by this constraint's labelKey
-     * @return the validationMessageParams
-     */
-    public List<String> getValidationMessageParams() {
-        if (validationMessageParams == null) {
-            validationMessageParams = new ArrayList<String>();
-            ConfigurationService configService = KRADServiceLocator.getKualiConfigurationService();
-            StringBuilder paramString = new StringBuilder("");
-
-            if (allowWhitespace) {
-                paramString.append(", " + configService
-                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "whitespace"));
-            }
-            if (allowUnderscore) {
-                paramString.append(", " + configService
-                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "underscore"));
-            }
-            if (allowPeriod) {
-                paramString.append(", " + configService
-                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "period"));
-            }
-            if (allowParenthesis) {
-                paramString.append(", " + configService
-                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "parenthesis"));
-            }
-            if (allowDollar) {
-                paramString.append(", " + configService
-                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "dollar"));
-            }
-            if (allowForwardSlash) {
-                paramString.append(", " + configService
-                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "forwardSlash"));
-            }
-
-            validationMessageParams.add(paramString.toString());
-        }
-        return this.validationMessageParams;
     }
 
 }

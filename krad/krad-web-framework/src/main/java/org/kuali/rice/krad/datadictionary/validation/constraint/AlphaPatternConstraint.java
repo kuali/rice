@@ -29,69 +29,57 @@ import org.kuali.rice.krad.uif.UifConstants;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AlphaPatternConstraint extends ValidCharactersPatternConstraint {
-    protected boolean allowWhitespace = false;
-
-
-    /**
-     * @return allowWhitespace
-     */
-    public boolean getAllowWhitespace() {
-        return allowWhitespace;
-    }
-
-    /**
-     * @param allowWhitespace
-     */
-    public void setAllowWhitespace(boolean allowWhitespace) {
-        this.allowWhitespace = allowWhitespace;
-    }
-
-
+public class AlphaPatternConstraint extends AllowCharacterConstraint {
+    protected boolean lowerCase = false;
+    
     /**
      * @see org.kuali.rice.krad.datadictionary.validation.ValidationPattern#getRegexString()
      */
     protected String getRegexString() {
-        StringBuffer regexString = new StringBuffer("[A-Za-z");
-
-        if (allowWhitespace) {
-            regexString.append("\\s");
+        StringBuilder regexString = new StringBuilder("[A-Za-z");
+        /*
+         * This check must be first because we are removing the base 'A-Z' if lowerCase == true
+         */
+        if (lowerCase) {
+            regexString = new StringBuilder("[a-z");
         }
+        regexString.append(this.getAllowedCharacterRegex());
         regexString.append("]");
 
         return regexString.toString();
     }
 
-	/**
-	 * 
-	 * @see org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint#getLabelKey()
-	 */
-	@Override
-	public String getLabelKey() {
-		String labelKey = super.getLabelKey();
-		if (StringUtils.isNotEmpty(labelKey)) {
-			return labelKey;
-		}
-		
-		return UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "alphaPattern";
-	}
+    /**
+     * A label key is auto generated for this bean if none is set. This generated message can be
+     * overridden through setLabelKey, but the generated message should cover most cases.
+     * 
+     * @see org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint#getLabelKey()
+     */
+    @Override
+    public String getLabelKey() {
+        if (StringUtils.isEmpty(labelKey)) {
+            StringBuilder key = new StringBuilder("");
+            if (lowerCase) {
+                return (UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "alphaPatternLowerCase");
+            } else {
+                return (UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "alphaPattern");
+            }
+        }
+        return labelKey;
+    }
+	
+    /**
+     * @return the lowerCase
+     */
+    public boolean isLowerCase() {
+        return this.lowerCase;
+    }
 
     /**
-     * Parameters to be used in the string retrieved by this constraint's labelKey
-     * @return the validationMessageParams
+     * @param lowerCase the lowerCase to set
      */
-    public List<String> getValidationMessageParams() {
-        if(validationMessageParams == null){
-            validationMessageParams = new ArrayList<String>();
-            ConfigurationService configService = KRADServiceLocator.getKualiConfigurationService();
-            StringBuilder paramString = new StringBuilder("");
-            if (getAllowWhitespace()) {
-                paramString.append(", " + configService
-                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "whitespace"));
-            }
-            validationMessageParams.add(paramString.toString());
-        }
-        return this.validationMessageParams;
+    public void setLowerCase(boolean lowerCase) {
+        this.lowerCase = lowerCase;
     }
 
 }

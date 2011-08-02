@@ -100,6 +100,17 @@ public class UILayoutTestForm extends UifFormBase {
     private String field68;
     private String field69;
     private String field70;
+    private String field71;
+    private String field72;
+    private String field73;
+    private String field74;
+    private String field75;
+    private String field76;
+    private String field77;
+    private String field78;
+    private String field79;
+    private String field80;
+    private String field81;
     
     private String gField1;
     private String gField2;
@@ -1268,6 +1279,160 @@ public class UILayoutTestForm extends UifFormBase {
      */
     public void setField70(String field70) {
         this.field70 = field70;
+    }
+
+    /**
+     * @return the field71
+     */
+    public String getField71() {
+        return this.field71;
+    }
+
+    /**
+     * @param field71 the field71 to set
+     */
+    public void setField71(String field71) {
+        this.field71 = field71;
+    }
+
+    /**
+     * @return the field72
+     */
+    public String getField72() {
+        return this.field72;
+    }
+
+    /**
+     * @param field72 the field72 to set
+     */
+    public void setField72(String field72) {
+        this.field72 = field72;
+    }
+
+    /**
+     * @return the field73
+     */
+    public String getField73() {
+        return this.field73;
+    }
+
+    /**
+     * @param field73 the field73 to set
+     */
+    public void setField73(String field73) {
+        this.field73 = field73;
+    }
+
+    /**
+     * @return the field74
+     */
+    public String getField74() {
+        return this.field74;
+    }
+
+    /**
+     * @param field74 the field74 to set
+     */
+    public void setField74(String field74) {
+        this.field74 = field74;
+    }
+
+    /**
+     * @return the field75
+     */
+    public String getField75() {
+        return this.field75;
+    }
+
+    /**
+     * @param field75 the field75 to set
+     */
+    public void setField75(String field75) {
+        this.field75 = field75;
+    }
+
+    /**
+     * @return the field76
+     */
+    public String getField76() {
+        return this.field76;
+    }
+
+    /**
+     * @param field76 the field76 to set
+     */
+    public void setField76(String field76) {
+        this.field76 = field76;
+    }
+
+    /**
+     * @return the field77
+     */
+    public String getField77() {
+        return this.field77;
+    }
+
+    /**
+     * @param field77 the field77 to set
+     */
+    public void setField77(String field77) {
+        this.field77 = field77;
+    }
+
+    /**
+     * @return the field78
+     */
+    public String getField78() {
+        return this.field78;
+    }
+
+    /**
+     * @param field78 the field78 to set
+     */
+    public void setField78(String field78) {
+        this.field78 = field78;
+    }
+
+    /**
+     * @return the field79
+     */
+    public String getField79() {
+        return this.field79;
+    }
+
+    /**
+     * @param field79 the field79 to set
+     */
+    public void setField79(String field79) {
+        this.field79 = field79;
+    }
+
+    /**
+     * @return the field80
+     */
+    public String getField80() {
+        return this.field80;
+    }
+
+    /**
+     * @param field80 the field80 to set
+     */
+    public void setField80(String field80) {
+        this.field80 = field80;
+    }
+
+    /**
+     * @return the field81
+     */
+    public String getField81() {
+        return this.field81;
+    }
+
+    /**
+     * @param field81 the field81 to set
+     */
+    public void setField81(String field81) {
+        this.field81 = field81;
     }
     
     

@@ -21,33 +21,39 @@ import org.kuali.rice.krad.uif.UifConstants;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
-
 /**
- * Pattern for matching numeric characters
+ * Pattern for matching numeric characters, difference between NumericPatternConstraint and IntegerPatternConstraint
+ * is that a numeric pattern constraint is for matching numeric characters and can be mixed with other characters
+ * by setting allow flags on, while integer is for only positive/negative numbers
  * 
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class NumericPatternConstraint extends ValidCharactersPatternConstraint {
+public class NumericPatternConstraint extends AllowCharacterConstraint {
+    
     /**
      * @see org.kuali.rice.krad.datadictionary.validation.ValidationPattern#getRegexString()
      */
     protected String getRegexString() {
-        return "[0-9]";
+        StringBuilder regexString = new StringBuilder("[0-9");
+        regexString.append(this.getAllowedCharacterRegex());
+        regexString.append("]");
+
+        return regexString.toString();
     }
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint#getLabelKey()
-	 */
-	@Override
-	public String getLabelKey() {
-		String labelKey = super.getLabelKey();
-		if (StringUtils.isNotEmpty(labelKey)) {
-			return labelKey;
-		}
-		return UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "numericPattern";
-	}
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint#getLabelKey()
+     */
+    @Override
+    public String getLabelKey() {
+        String labelKey = super.getLabelKey();
+        if (StringUtils.isNotEmpty(labelKey)) {
+            return labelKey;
+        }
+        return UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "numericPattern";
+    }
 
 }

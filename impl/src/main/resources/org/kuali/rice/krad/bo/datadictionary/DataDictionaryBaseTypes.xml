@@ -187,6 +187,27 @@
         abstract="true" 
         class="org.kuali.rice.krad.datadictionary.validation.constraint.FixedPointPatternConstraint"
         p:labelKey="validation.fixedPoint"/>
+        
+    <bean id="IntegerPatternConstraint" 
+        abstract="true" 
+        class="org.kuali.rice.krad.datadictionary.validation.constraint.IntegerPatternConstraint"
+        p:labelKey="validation.integer"/>
+        
+    <bean id="DatePatternConstraint" 
+        abstract="true" 
+        class="org.kuali.rice.krad.datadictionary.validation.constraint.DatePatternConstraint"
+        p:labelKey="validation.date"/>
+    
+    <bean id="BasicDatePatternConstraint" parent="DatePatternConstraint"
+        abstract="true">
+        <property name="allowedFormats">
+        	<list>
+        		<value>MM/dd/yy</value>
+        		<value>MM/dd/yyyy</value>
+        		<value>MM-dd-yy</value>
+        	</list>
+        </property>
+    </bean>
 
     <bean id="FloatingPointPatternConstraint" 
         abstract="true" 
@@ -197,6 +218,11 @@
         abstract="true" 
         class="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
         p:labelKey="validation.phoneNumber" p:patternTypeKey="validationPatternRegex.phoneNumber"/>
+        
+    <bean id="NoWhitespacePatternConstraint" 
+        abstract="true" 
+        class="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
+        p:labelKey="validation.noWhitespace" p:patternTypeKey="validationPatternRegex.noWhitespace"/>
 
     <bean id="JavaClassPatternConstraint" 
         abstract="true" 
@@ -207,11 +233,6 @@
         abstract="true" 
         class="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
         p:labelKey="validation.emailAddress" p:patternTypeKey="validationPatternRegex.emailAddress"/>
-
-    <bean id="DateConfigPatternConstraint" 
-        abstract="true" 
-        class="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
-        p:labelKey="validation.date" p:patternTypeKey="validationPatternRegex.date"  />
 
     <bean id="TimestampPatternConstraint" 
         abstract="true" 

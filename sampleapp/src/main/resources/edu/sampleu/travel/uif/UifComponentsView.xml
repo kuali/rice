@@ -1199,15 +1199,27 @@
 		<property name="items">
 			<list>
 				<bean parent="GenericTextField" p:label="FixedPointPatternConstraint"
-					p:summary="Fixed point pattern constraint with precision 5(max numbers total) and scale 2 (max numbers after decimal)" p:propertyName="field50">
+					p:summary="Fixed point pattern constraint with precision 5(max numbers total) and scale 2 (max numbers after decimal)"
+					p:propertyName="field50">
 					<property name="validCharactersConstraint">
-						<bean parent="FixedPointPatternConstraint" p:precision="5" p:scale="2" />
+						<bean parent="FixedPointPatternConstraint" p:precision="5"
+							p:scale="2" />
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="FloatingPointPatternConstraint"
-					p:summary="Floating point number, allow negative on" p:propertyName="field51">
+					p:summary="Floating point number, allow negative on"
+					p:propertyName="field51">
 					<property name="validCharactersConstraint">
-						<bean parent="FloatingPointPatternConstraint" p:allowNegative="true"/>
+						<bean parent="FloatingPointPatternConstraint"
+							p:allowNegative="true" />
+					</property>
+				</bean>
+				<bean parent="GenericTextField" p:label="IntegerPatternConstraint"
+					p:summary="Floating point number, allow negative on"
+					p:propertyName="field77">
+					<property name="validCharactersConstraint">
+						<bean parent="IntegerPatternConstraint"
+							p:allowNegative="true" />
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="PhoneNumberPatternConstraint"
@@ -1228,10 +1240,16 @@
 						<bean parent="EmailAddressPatternConstraint" />
 					</property>
 				</bean>
-				<bean parent="GenericTextField" p:label="DateConfigPatternConstraint"
-					p:summary="Date - does not work currently" p:propertyName="field55">
+				<bean parent="GenericTextField" p:label="DatePatternConstraint"
+					p:summary="Accepts EVERY DateFormat set up in the system configuration, use allowedFormats property to limit (this must be a subset of allowed formats), see next field" p:propertyName="field55">
 					<property name="validCharactersConstraint">
-						<bean parent="DateConfigPatternConstraint" />
+						<bean parent="DatePatternConstraint" />
+					</property>
+				</bean>
+				<bean parent="GenericTextField" p:label="BasicDatePatternConstraint"
+					p:summary="Accepts some basic date formats (by setting allowedFormats property on DatePatternConstraint): MM/dd/yy, MM/dd/yyyy, MM-dd-yy" p:propertyName="field75">
+					<property name="validCharactersConstraint">
+						<bean parent="BasicDatePatternConstraint" />
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="TimestampPatternConstraint"
@@ -1259,52 +1277,61 @@
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="AlphaNumericPatternConstraint"
-					p:summary="alpha numeric characters only - no options on" p:propertyName="field62">
+					p:summary="alpha numeric characters only - no options on"
+					p:propertyName="field62">
 					<property name="validCharactersConstraint">
 						<bean parent="AlphaNumericPatternConstraint" />
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="AlphaNumericPatternConstraint with Options"
-					p:summary="alpha numeric characters with whitespace, underscore, and forward slash allowed" 
+					p:summary="alpha numeric characters with flags for whitespace, underscore, and forward slash on"
 					p:propertyName="field63">
 					<property name="validCharactersConstraint">
-						<bean parent="AlphaNumericPatternConstraint" p:allowWhitespace="true" p:allowUnderscore="true" p:allowForwardSlash="true"/>
+						<bean parent="AlphaNumericPatternConstraint"
+							p:allowWhitespace="true" p:allowUnderscore="true"
+							p:allowForwardSlash="true" />
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="AlphaPatternConstraint"
-					p:summary="alpha characters with whitespace allowed" 
+					p:summary="alpha characters with flags for whitespace and commas on"
 					p:propertyName="field64">
 					<property name="validCharactersConstraint">
-						<bean parent="AlphaPatternConstraint" p:allowWhitespace="true"/>
+						<bean parent="AlphaPatternConstraint" p:allowWhitespace="true" p:allowComma="true"/>
 					</property>
 				</bean>
-				<bean parent="GenericTextField" p:label="AnyCharacterPatternConstraint"
-					p:summary="any characters with no whitespace allowed" 
+				<bean parent="GenericTextField" p:label="AlphaPatternConstraint"
+					p:summary="alpha characters with flag for all &quot;allowable&quot; symbols turned on - | and ~ are not in this set, for example"
+					p:propertyName="field76">
+					<property name="validCharactersConstraint">
+						<bean parent="AlphaPatternConstraint" p:allowAll="true"/>
+					</property>
+				</bean>
+				<bean parent="GenericTextField" p:label="NoWhitespacePatternConstraint"
+					p:summary="anything with no whitespace allowed"
 					p:propertyName="field65">
 					<property name="validCharactersConstraint">
-						<bean parent="AnyCharacterPatternConstraint" p:allowWhitespace="false"/>
+						<bean parent="NoWhitespacePatternConstraint"/>
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="CharsetPatternConstraint"
-					p:summary="only allow a set of characters - example allows a, b, c, A, B, or C" 
+					p:summary="only allow a set of characters - example allows a, b, c, A, B, or C"
 					p:propertyName="field66">
 					<property name="validCharactersConstraint">
-						<bean parent="CharsetPatternConstraint" p:validChars="abcABC"/>
+						<bean parent="CharsetPatternConstraint" p:validChars="abcABC" />
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="NumericPatternConstraint"
-					p:summary="allows positive whole numbers only" 
-					p:propertyName="field67">
+					p:summary="allows only numeric characters, allowParenthesis and allowDash on" p:propertyName="field67">
 					<property name="validCharactersConstraint">
-						<bean parent="NumericPatternConstraint"/>
+						<bean parent="NumericPatternConstraint" p:allowParenthesis="true" p:allowDash="true"/>
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="ValidCharactersConstraint - custom"
-					p:summary="custom valid characters constraint - this one accepts only 1 alpha character followed by a period  and then followed by a number (a.8, b.0, etc)" 
+					p:summary="custom valid characters constraint - this one accepts only 1 alpha character followed by a period  and then followed by a number (a.8, b.0, etc)"
 					p:propertyName="field68">
 					<property name="validCharactersConstraint">
 						<bean parent="ValidCharactersConstraint" p:value="^[a-zA-Z]\.[0-9]$"
-						p:labelKey="validation.aDotNumTest"/>
+							p:labelKey="validation.aDotNumTest" />
 					</property>
 				</bean>
 			</list>
@@ -1316,14 +1343,34 @@
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
-				<bean parent="GenericTextField" p:label="Inquiry"
-					p:summary="Click the button to perform an inquiry on this TravelAccount number"
-					p:propertyName="field59" p:defaultValue="2">
+				<bean parent="GenericTextField" p:label="Inquiry" p:readOnly="true"
+					p:summary="Click the link to perform an inquiry on this TravelAccount number"
+					p:propertyName="field59" p:defaultValue="a2">
 					<property name="fieldInquiry.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
 					<property name="fieldInquiry.inquiryParameters">
 						<map>
 							<entry key="field59" value="number" />
 						</map>
+					</property>
+				</bean>
+				<bean parent="GenericTextField" p:label="Direct Inquiry"
+					p:summary="Click the button to perform an inquiry on this TravelAccount number"
+					p:propertyName="field71" p:defaultValue="a1">
+					<property name="fieldDirectInquiry.dataObjectClassName"
+						value="edu.sampleu.travel.bo.TravelAccount" />
+					<property name="fieldDirectInquiry.inquiryParameters">
+						<map>
+							<entry key="field71" value="number" />
+						</map>
+					</property>
+				</bean>
+				<bean parent="GenericTextField" p:label="Ajax Field Query"
+					p:summary="Displays additional information retrieved from an ajax data retrieval"
+					p:propertyName="field72" p:defaultValue="a3">
+					<property name="informationalDisplayPropertyNames" value="field73,field74" />
+					<property name="fieldAttributeQuery">
+						<bean parent="FieldAttributeQuery" p:dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
+							p:queryFieldMapping="number:field72" p:returnFieldMapping="name:field73,subAccountName:field74" />
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="Lookup"
@@ -1337,7 +1384,8 @@
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="Suggest"
-					p:summary="for example, type C to see a suggestion" p:propertyName="field61">
+					p:summary="for example, type ea or ca to see a suggestion"
+					p:propertyName="field61">
 					<property name="fieldSuggest.render" value="true" />
 					<property name="fieldSuggest.sourcePropertyName" value="accountTypeCode" />
 					<property name="fieldSuggest.suggestQuery.dataObjectClassName"

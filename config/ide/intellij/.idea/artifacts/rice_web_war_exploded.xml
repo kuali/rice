@@ -38,7 +38,7 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-core:3.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.jdom:jdom:1.1" />
-          <element id="library" level="project" name="Maven: joda-time:joda-time:1.6.2" />
+          <element id="library" level="project" name="Maven: joda-time:joda-time:2.0" />
           <element id="library" level="project" name="Maven: org.codehaus.groovy:groovy-all:1.8.1" />
           <element id="library" level="project" name="Maven: com.google.guava:guava:r09" />
           <element id="archive" name="rice-kew-api-2.0.0-m7-SNAPSHOT.jar">
@@ -90,6 +90,9 @@
           <element id="archive" name="rice-kew-framework-2.0.0-m7-SNAPSHOT.jar">
             <element id="module-output" name="rice-kew-framework" />
           </element>
+          <element id="archive" name="rice-kim-framework-2.0.0-m7-SNAPSHOT.jar">
+            <element id="module-output" name="rice-kim-framework" />
+          </element>
           <element id="library" level="project" name="Maven: org.springframework:spring-web:3.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:3.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-context-support:3.0.5.RELEASE" />
@@ -99,8 +102,8 @@
           <element id="library" level="project" name="Maven: org.apache.tiles:tiles-servlet:2.2.2" />
           <element id="library" level="project" name="Maven: org.apache.tiles:tiles-jsp:2.2.2" />
           <element id="library" level="project" name="Maven: org.apache.tiles:tiles-template:2.2.2" />
-          <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-core-asl:1.8.3" />
-          <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.8.3" />
+          <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-core-asl:1.8.4" />
+          <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.8.4" />
           <element id="library" level="project" name="Maven: org.bouncycastle:bcprov-jdk16:1.46" />
           <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-frontend-jaxws:2.3.5" />
           <element id="library" level="project" name="Maven: xml-resolver:xml-resolver:1.2" />
@@ -165,9 +168,6 @@
           </element>
           <element id="archive" name="rice-kim-impl-2.0.0-m7-SNAPSHOT.jar">
             <element id="module-output" name="rice-kim-impl" />
-          </element>
-          <element id="archive" name="rice-kim-framework-2.0.0-m7-SNAPSHOT.jar">
-            <element id="module-output" name="rice-kim-framework" />
           </element>
           <element id="archive" name="rice-kns-2.0.0-m7-SNAPSHOT.jar">
             <element id="module-output" name="rice-kns" />

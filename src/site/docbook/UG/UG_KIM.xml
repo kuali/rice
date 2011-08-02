@@ -63,9 +63,6 @@
                             <listitem>
                                 <para>RoleService </para>
                             </listitem>
-                            <listitem>
-                                <para>RoleUpdateService </para>
-                            </listitem>
                         </itemizedlist></para>
                 </listitem>
                 <listitem>

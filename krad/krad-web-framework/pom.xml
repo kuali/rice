@@ -36,7 +36,11 @@
             <artifactId>rice-kim-api</artifactId>
             <version>${project.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>rice-kim-framework</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.kuali.commons</groupId>
             <artifactId>commons-beanutils</artifactId>

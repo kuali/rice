@@ -22,8 +22,8 @@ import org.kuali.rice.kew.api.action.ActionRequestStatus;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
-import org.kuali.rice.kim.framework.type.KimDelegationTypeService;
-import org.kuali.rice.kim.framework.type.KimRoleTypeService;
+import org.kuali.rice.kim.framework.common.delegate.DelegationTypeService;
+import org.kuali.rice.kim.framework.role.RoleTypeService;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
 
@@ -38,7 +38,7 @@ import java.util.Map;
  * 
  */
 public class ActionRequestDerivedRoleTypeServiceImpl extends
-		KimDerivedRoleTypeServiceBase implements KimRoleTypeService, KimDelegationTypeService {
+		KimDerivedRoleTypeServiceBase implements RoleTypeService, DelegationTypeService {
 	private static final String NON_AD_HOC_APPROVE_REQUEST_RECIPIENT_ROLE_NAME = "Non-Ad Hoc Approve Request Recipient";
 	private static final String APPROVE_REQUEST_RECIPIENT_ROLE_NAME = "Approve Request Recipient";
 	private static final String ACKNOWLEDGE_REQUEST_RECIPIENT_ROLE_NAME = "Acknowledge Request Recipient";

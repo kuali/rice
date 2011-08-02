@@ -24,6 +24,7 @@ import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
+import org.kuali.rice.kim.framework.responsibility.ResponsibilityTypeService;
 import org.kuali.rice.kim.impl.common.attribute.AttributeTransform;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo;
@@ -48,7 +49,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
     private BusinessObjectService businessObjectService;
     private CriteriaLookupService criteriaLookupService;
-    private KimResponsibilityTypeService defaultResponsibilityTypeService;
+    private ResponsibilityTypeService defaultResponsibilityTypeService;
     private KimTypeInfoService kimTypeInfoService;
     private RoleService roleService;
 
@@ -350,13 +351,13 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         final List<Responsibility> applicableResponsibilities = new ArrayList<Responsibility>();
         // otherwise, attempt to match the permission details
         // build a map of the template IDs to the type services
-        Map<String, KimResponsibilityTypeService> responsibilityTypeServices = getResponsibilityTypeServicesByTemplateId(responsibilities);
+        Map<String, ResponsibilityTypeService> responsibilityTypeServices = getResponsibilityTypeServicesByTemplateId(responsibilities);
         // build a map of permissions by template ID
         Map<String, List<Responsibility>> responsibilityMap = groupResponsibilitiesByTemplate(responsibilities);
         // loop over the different templates, matching all of the same template against the type
         // service at once
         for (Map.Entry<String, List<Responsibility>> respEntry : responsibilityMap.entrySet()) {
-            KimResponsibilityTypeService responsibilityTypeService = responsibilityTypeServices.get(respEntry.getKey());
+            ResponsibilityTypeService responsibilityTypeService = responsibilityTypeServices.get(respEntry.getKey());
             List<Responsibility> responsibilityInfos = respEntry.getValue();
             if (responsibilityTypeService == null) {
                 responsibilityTypeService = defaultResponsibilityTypeService;
@@ -366,15 +367,15 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         return applicableResponsibilities;
     }
 
-    private Map<String, KimResponsibilityTypeService> getResponsibilityTypeServicesByTemplateId(Collection<Responsibility> responsibilities) {
-        Map<String, KimResponsibilityTypeService> responsibilityTypeServices = new HashMap<String, KimResponsibilityTypeService>(responsibilities.size());
+    private Map<String, ResponsibilityTypeService> getResponsibilityTypeServicesByTemplateId(Collection<Responsibility> responsibilities) {
+        Map<String, ResponsibilityTypeService> responsibilityTypeServices = new HashMap<String, ResponsibilityTypeService>(responsibilities.size());
         for (Responsibility responsibility : responsibilities) {
             final Template t = responsibility.getTemplate();
             final KimType type = kimTypeInfoService.getKimType(t.getKimTypeId());
 
             final String serviceName = type.getServiceName();
             if (serviceName != null) {
-                KimResponsibilityTypeService responsibiltyTypeService = GlobalResourceLoader.getService(serviceName);
+                ResponsibilityTypeService responsibiltyTypeService = GlobalResourceLoader.getService(serviceName);
                 if (responsibiltyTypeService != null) {
                     responsibilityTypeServices.put(responsibility.getTemplate().getId(), responsibiltyTypeService);
                 } else {
@@ -452,7 +453,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         this.criteriaLookupService = criteriaLookupService;
     }
 
-    public void setDefaultResponsibilityTypeService(final KimResponsibilityTypeService defaultResponsibilityTypeService) {
+    public void setDefaultResponsibilityTypeService(final ResponsibilityTypeService defaultResponsibilityTypeService) {
         this.defaultResponsibilityTypeService = defaultResponsibilityTypeService;
     }
 

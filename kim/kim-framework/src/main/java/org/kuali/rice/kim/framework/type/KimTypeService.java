@@ -1,6 +1,7 @@
-package org.kuali.rice.kim.api.type;
+package org.kuali.rice.kim.framework.type;
 
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
+import org.kuali.rice.kim.api.type.KimAttributeField;
 
 import java.util.List;
 import java.util.Map;

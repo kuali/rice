@@ -27,8 +27,8 @@ import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.api.type.KimTypeService;
-import org.kuali.rice.kim.framework.type.KimRoleTypeService;
+import org.kuali.rice.kim.framework.role.RoleTypeService;
+import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.impl.type.KimTypeLookupableHelperServiceImpl;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.UiDocumentService;
@@ -168,14 +168,14 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
 		if ( StringUtils.isNotBlank(serviceName) ) {
 			try {
 				KimTypeService service = (KimTypeService) KIMServiceLocatorInternal.getService(serviceName);
-				if ( service != null && service instanceof KimRoleTypeService ) {
+				if ( service != null && service instanceof RoleTypeService) {
 					return service;
 				} else {
-					return (KimRoleTypeService) KIMServiceLocatorInternal.getService("kimNoMembersRoleTypeService");
+					return (RoleTypeService) KIMServiceLocatorInternal.getService("kimNoMembersRoleTypeService");
 				}
 			} catch ( Exception ex ) {
 				LOG.error( "Unable to find role type service with name: " + serviceName, ex );
-				return (KimRoleTypeService) KIMServiceLocatorInternal.getService("kimNoMembersRoleTypeService");
+				return (RoleTypeService) KIMServiceLocatorInternal.getService("kimNoMembersRoleTypeService");
 			}
 		}
 		return null;

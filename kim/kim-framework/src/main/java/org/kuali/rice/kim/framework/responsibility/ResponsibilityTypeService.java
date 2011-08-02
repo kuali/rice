@@ -13,22 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.impl.responsibility;
+package org.kuali.rice.kim.framework.responsibility;
 
 
 import org.kuali.rice.kim.api.responsibility.Responsibility;
-import org.kuali.rice.kim.api.type.KimTypeService;
+import org.kuali.rice.kim.framework.type.KimTypeService;
 
 import java.util.List;
 import java.util.Map;
 
-/**
- * This is a description of what this class does - jonathan don't forget to fill this in. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
- *
- */
-public interface KimResponsibilityTypeService extends KimTypeService {
-
-    List<Responsibility> getMatchingResponsibilities( Map<String, String> requestedDetails, List<Responsibility> responsibilitiesList );
+public interface ResponsibilityTypeService extends KimTypeService {
+    List<Responsibility> getMatchingResponsibilities(Map<String, String> requestedDetails, List<Responsibility> responsibilities);
 }

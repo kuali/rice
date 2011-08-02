@@ -20,13 +20,13 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimAttributeField;
-import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
+import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.springframework.util.AutoPopulatingList;
 
 import javax.persistence.CascadeType;
@@ -151,7 +151,8 @@ public class PersonDocumentRole extends KimDocumentBoActivatableEditableBase {
 
 	public List<KimAttributeField> getDefinitions() {
 		if (definitions == null || definitions.isEmpty()) {
-	        KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(KimTypeBo.to(this.getKimRoleType()));
+	        KimTypeService kimTypeService = KimFrameworkServiceLocator.getKimTypeService(KimTypeBo.to(
+                    this.getKimRoleType()));
 	        //it is possible that the the roleTypeService is coming from a remote application 
 	        // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
 	        try {

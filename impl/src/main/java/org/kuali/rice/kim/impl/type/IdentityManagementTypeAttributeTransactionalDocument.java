@@ -18,11 +18,11 @@ package org.kuali.rice.kim.impl.type;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.document.IdentityManagementKimDocument;
+import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
+import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.util.KimConstants;
 
 import javax.persistence.Transient;
@@ -117,7 +117,7 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 
 	protected KimTypeService getKimTypeService(KimType kimType){
 		if( kimTypeService==null){
-	    	kimTypeService = KIMServiceLocatorWeb.getKimTypeService(kimType);
+	    	kimTypeService = KimFrameworkServiceLocator.getKimTypeService(kimType);
 		}
 		return kimTypeService;
 	}

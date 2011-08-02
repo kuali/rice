@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.framework.type;
+package org.kuali.rice.kim.framework.common.delegate;
 
 
-import org.kuali.rice.kim.api.type.KimTypeService;
+import org.kuali.rice.kim.framework.type.KimTypeService;
 
 import java.util.Map;
 
@@ -26,7 +26,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface KimDelegationTypeService extends KimTypeService {
+public interface DelegationTypeService extends KimTypeService {
 
     /** Return whether a role assignment with the given qualifier is applicable for the given qualification. 
      * 

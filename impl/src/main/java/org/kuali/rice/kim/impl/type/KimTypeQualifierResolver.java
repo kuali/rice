@@ -25,14 +25,14 @@ import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
-import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
-import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
+import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
+import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.workflow.attribute.QualifierResolverBase;
@@ -90,7 +90,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
     	if ( typeService == null ) {       		
         	KimType typeInfo = getKimTypeInfoService().getKimType(typeId);
         	if ( typeInfo != null ) {
-        		typeService = KIMServiceLocatorWeb.getKimTypeService(typeInfo);
+        		typeService = KimFrameworkServiceLocator.getKimTypeService(typeInfo);
         		typeServices.put(typeId, typeService);
         	} else {
         		LOG.warn( "Unable to retrieve KIM Type Info object for id: " + typeId );

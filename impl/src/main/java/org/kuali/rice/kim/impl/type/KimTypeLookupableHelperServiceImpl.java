@@ -20,10 +20,10 @@ import org.kuali.rice.core.api.exception.RiceRemoteServiceConnectionException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.api.type.KimTypeService;
-import org.kuali.rice.kim.framework.type.KimRoleTypeService;
-import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
-import org.kuali.rice.kim.service.support.KimGroupTypeService;
+import org.kuali.rice.kim.framework.group.GroupTypeService;
+import org.kuali.rice.kim.framework.role.RoleTypeService;
+import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
+import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
@@ -89,8 +89,8 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
     		// OR it is not an application role
     		showReturnHref = kimType!=null && 
     			( StringUtils.isBlank( kimType.getServiceName() )
-    					|| (KIMServiceLocatorWeb.getKimTypeService(kimType) instanceof KimRoleTypeService
-    						&&!((KimRoleTypeService) KIMServiceLocatorWeb.getKimTypeService(kimType)).isApplicationRoleType() )
+    					|| (KimFrameworkServiceLocator.getKimTypeService(kimType) instanceof RoleTypeService
+    						&&!((RoleTypeService) KimFrameworkServiceLocator.getKimTypeService(kimType)).isApplicationRoleType() )
     					);
     	} else{
     		docTypeName = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME;
@@ -114,27 +114,27 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
 
 	public static boolean hasRoleTypeService(KimType kimType){
 		return (kimType!=null && kimType.getServiceName()==null) ||
-					(KIMServiceLocatorWeb.getKimTypeService(kimType) instanceof KimRoleTypeService);
+					(KimFrameworkServiceLocator.getKimTypeService(kimType) instanceof RoleTypeService);
 	}
 
 	public static boolean hasRoleTypeService(KimType kimType, KimTypeService kimTypeService){
 		return (kimType!=null && kimType.getServiceName()==null) ||
-					(kimTypeService instanceof KimRoleTypeService);
+					(kimTypeService instanceof RoleTypeService);
 	}
 	
     public static boolean hasGroupTypeService(KimType kimType){
 		return (kimType!=null && kimType.getServiceName()==null) ||
-					(KIMServiceLocatorWeb.getKimTypeService(kimType) instanceof KimGroupTypeService);
+					(KimFrameworkServiceLocator.getKimTypeService(kimType) instanceof GroupTypeService);
     }
 
 	public static boolean hasDerivedRoleTypeService(KimType kimType){
 		boolean hasDerivedRoleTypeService = false;
-		KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(kimType);
+		KimTypeService kimTypeService = KimFrameworkServiceLocator.getKimTypeService(kimType);
 		//it is possible that the the roleTypeService is coming from a remote application 
 	    // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
 		try {
 		    if(hasRoleTypeService(kimType, kimTypeService))
-		        hasDerivedRoleTypeService = (kimType.getServiceName()!=null && ((KimRoleTypeService)kimTypeService).isApplicationRoleType());
+		        hasDerivedRoleTypeService = (kimType.getServiceName()!=null && ((RoleTypeService)kimTypeService).isApplicationRoleType());
 		} catch (RiceRemoteServiceConnectionException ex) {
 			LOG.warn("Not able to retrieve KimTypeService from remote system for KIM Type: " + kimType.getName(), ex);
 		    return hasDerivedRoleTypeService;

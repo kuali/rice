@@ -12,8 +12,8 @@ import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.framework.type.KimDelegationTypeService;
-import org.kuali.rice.kim.framework.type.KimRoleTypeService;
+import org.kuali.rice.kim.framework.common.delegate.DelegationTypeService;
+import org.kuali.rice.kim.framework.role.RoleTypeService;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
@@ -68,8 +68,8 @@ public class RoleServiceBase {
     private GroupService groupService;
     private ResponsibilityInternalService responsibilityInternalService;
 
-    private Map<String, KimRoleTypeService> roleTypeServiceCache = Collections.synchronizedMap(new HashMap<String, KimRoleTypeService>());
-    private Map<String, KimDelegationTypeService> delegationTypeServiceCache = Collections.synchronizedMap(new HashMap<String, KimDelegationTypeService>());
+    private Map<String, RoleTypeService> roleTypeServiceCache = Collections.synchronizedMap(new HashMap<String, RoleTypeService>());
+    private Map<String, DelegationTypeService> delegationTypeServiceCache = Collections.synchronizedMap(new HashMap<String, DelegationTypeService>());
 
     private Map<String, Boolean> applicationRoleTypeCache = Collections.synchronizedMap(new HashMap<String, Boolean>());
     private RoleDao roleDao;
@@ -1270,14 +1270,14 @@ public class RoleServiceBase {
     /**
      * @return the roleTypeServiceCache
      */
-    protected Map<String, KimRoleTypeService> getRoleTypeServiceCache() {
+    protected Map<String, RoleTypeService> getRoleTypeServiceCache() {
         return this.roleTypeServiceCache;
     }
 
     /**
      * @return the delegationTypeServiceCache
      */
-    protected Map<String, KimDelegationTypeService> getDelegationTypeServiceCache() {
+    protected Map<String, DelegationTypeService> getDelegationTypeServiceCache() {
         return this.delegationTypeServiceCache;
     }
 

@@ -26,7 +26,6 @@ import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
@@ -38,6 +37,8 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.authorization.IdentityManagementKimDocumentAuthorizer;
+import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
+import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
 import org.kuali.rice.kim.impl.role.RoleMemberBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
@@ -53,7 +54,6 @@ import org.kuali.rice.kim.rules.ui.PersonDocumentDelegationMemberRule;
 import org.kuali.rice.kim.rules.ui.PersonDocumentGroupRule;
 import org.kuali.rice.kim.rules.ui.PersonDocumentRoleRule;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.krad.document.Document;
@@ -404,7 +404,8 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
         int i = 0;
     	for(PersonDocumentRole role : roles ) {
-    		KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(KimTypeBo.to(role.getKimRoleType()));
+    		KimTypeService kimTypeService = KimFrameworkServiceLocator.getKimTypeService(KimTypeBo.to(
+                    role.getKimRoleType()));
         	if(CollectionUtils.isEmpty(role.getRolePrncpls()) && !role.getDefinitions().isEmpty()){
         		KimType kimTypeInfo = KimApiServiceLocator.getKimTypeInfoService().getKimType(role.getKimRoleType().getId());
         		Map<String, String> blankQualifiers = attributeValidationHelper.getBlankValueQualifiersMap(kimTypeInfo.getAttributeDefinitions());
@@ -711,7 +712,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 		String errorPath = "roles[" + selectedRoleIdx + "].newRolePrncpl";
 		List<RemotableAttributeError> validationErrors = new ArrayList<RemotableAttributeError>();
         GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
-        KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(KimTypeBo.to(role.getKimRoleType()));
+        KimTypeService kimTypeService = KimFrameworkServiceLocator.getKimTypeService(KimTypeBo.to(role.getKimRoleType()));
 
 		List<RemotableAttributeError> errorsAttributesAgainstExisting;
 	    int i = 0;
@@ -762,7 +763,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         KimType kimType;
 		for(RoleDocumentDelegationMember delegationMember: delegationMembers) {
 			kimType = KimTypeBo.to(delegationMember.getRoleBo().getKimRoleType());
-			kimTypeService = KIMServiceLocatorWeb.getKimTypeService(kimType);
+			kimTypeService = KimFrameworkServiceLocator.getKimTypeService(kimType);
 			roleIds = new ArrayList<String>();
 			roleIds.add(delegationMember.getRoleBo().getId());
 			errorPath = "delegationMembers["+memberCounter+"]";

@@ -32,12 +32,12 @@ import org.kuali.rice.kim.api.group.GroupQueryResults;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
+import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.impl.type.KimTypeLookupableHelperServiceImpl;
 import org.kuali.rice.kim.impl.type.TempKimHelper;
-import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
@@ -438,7 +438,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 					setTypeId(field.getPropertyValue());
 					setAttrRows(new ArrayList<Row>());
 					KimType kimType = getTypeInfoService().getKimType( field.getPropertyValue() );
-					KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(kimType);
+					KimTypeService kimTypeService = KimFrameworkServiceLocator.getKimTypeService(kimType);
 			        List<KimAttributeField> definitions = kimTypeService.getAttributeDefinitions(kimType.getId());
 			        setAttrDefinitions(definitions);
 		            for (KimAttributeField d  : definitions) {

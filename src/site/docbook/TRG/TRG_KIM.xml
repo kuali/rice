@@ -476,9 +476,6 @@ GroupInfo info = idmSvc.getGroupInfoByName(groupName);</programlisting>
                     <listitem>
                         <para>RoleService </para>
                     </listitem>
-                    <listitem>
-                        <para>RoleUpdateService </para>
-                    </listitem>
                 </itemizedlist></para>
             <sect3>
                 <title>Checking Role Assignment</title>
@@ -685,7 +682,7 @@ KimRoleInfo info = rmSvc.getRoleByName(namespaceCode, roleName);             </p
         <sect2>
             <title>KIM Group Type Service</title>
             <para>Classes that customize the handling of group qualifiers must implement <emphasis
-                    role="bold">org.kuali.rice.kim.service.support.KimGroupTypeService</emphasis>.
+                    role="bold">org.kuali.rice.kim.framework.group.GroupTypeService</emphasis>.
                 This document contains a brief description of the methods specific to group types.
                 Please refer to the Implementing Custom KIM Types document for information on
                 methods common to all custom type services. Please also refer to the API javadocs
@@ -712,7 +709,7 @@ KimRoleInfo info = rmSvc.getRoleByName(namespaceCode, roleName);             </p
             <title>KIM Permission Type Service</title>
             <para>Classes that customize the handling of permission qualifiers and implement custom
                 permission checks must implement
-                org.kuali.rice.kim.service.support.KimPermissionTypeService. This document contains
+                org.kuali.rice.kim.api.permission.KimPermissionTypeService. This document contains
                 a brief description of the methods specific to permission types. Please refer to the
                 Implementing Custom KIM Types document for information on methods common to all
                 custom type services. Please also refer to the API javadocs for more details on the

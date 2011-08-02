@@ -22,7 +22,7 @@ import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.permission.PermissionContract;
 import org.kuali.rice.kim.api.role.RoleContract;
 import org.kuali.rice.kim.api.role.RoleMemberContract;
-import org.kuali.rice.kim.api.role.RoleUpdateService;
+import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants.KimUIConstants;
 
@@ -64,11 +64,11 @@ public final class RoleXmlUtil {
         
         // If necessary, assign a new role ID.
         if (StringUtils.isBlank(newRole.getRoleId())) {
-            newRole.setRoleId(KimApiServiceLocator.getRoleUpdateService().getNextAvailableRoleId());
+            newRole.setRoleId(KimApiServiceLocator.getRoleService().getNextAvailableRoleId());
         }
         
         // Save the role.
-        KimApiServiceLocator.getRoleUpdateService().saveRole(newRole.getRoleId(), newRole.getRoleName(), newRole.getRoleDescription(), newRole.getActive().booleanValue(),
+        KimApiServiceLocator.getRoleService().saveRole(newRole.getRoleId(), newRole.getRoleName(), newRole.getRoleDescription(), newRole.getActive().booleanValue(),
                 newRole.getKimTypeId(), newRole.getNamespaceCode());
         
         // Set a flag on the role to indicate that it has now been persisted so that the unmarshalling process will not save this role more than once.
@@ -109,7 +109,7 @@ public final class RoleXmlUtil {
         }
         
         // Save the role member.
-        RoleMemberContract newMember = KimApiServiceLocator.getRoleUpdateService().saveRoleMemberForRole(
+        RoleMemberContract newMember = KimApiServiceLocator.getRoleService().saveRoleMemberForRole(
                 null, newRoleMember.getMemberId(), newRoleMember.getMemberTypeCode(),
                         newRoleMember.getRoleId(), newRoleMember.getQualifications(),
                                 (newRoleMember.getActiveFromDate() != null) ? new Date(newRoleMember.getActiveFromDate().getMillis()) : null,
@@ -134,14 +134,14 @@ public final class RoleXmlUtil {
         validateAndPrepareRolePermission(newRolePermission);
         
         // Save the role permission.
-        KimApiServiceLocator.getRoleUpdateService().assignPermissionToRole(newRolePermission.getPermissionId(), newRolePermission.getRoleId());
+        KimApiServiceLocator.getRoleService().assignPermissionToRole(newRolePermission.getPermissionId(), newRolePermission.getRoleId());
     }
     
     /**
      * Removes any role members for a given role whose IDs are not listed in a given role member ID set.
      * 
      * @param roleId The ID of the role containing the role members.
-     * @param existingMemberIds The IDs of the role members that should not be removed.
+     * @param existingRoleMemberIds The IDs of the role members that should not be removed.
      * @throws IllegalArgumentException if roleId is blank or refers to a non-existent role, or if existingRoleMemberIds is null.
      */
     static void removeRoleMembers(String roleId, Set<String> existingRoleMemberIds) {
@@ -150,7 +150,7 @@ public final class RoleXmlUtil {
         } else if (existingRoleMemberIds == null) {
             throw new IllegalArgumentException("existingRoleMemberIds cannot be null");
         }
-        RoleUpdateService roleUpdateService = KimApiServiceLocator.getRoleUpdateService();
+        RoleService roleUpdateService = KimApiServiceLocator.getRoleService();
         RoleContract role = KimApiServiceLocator.getRoleService().getRole(roleId);
         if (role == null) {
             throw new IllegalArgumentException("Cannot remove role members for role with ID \"" + roleId + "\" because that role does not exist");

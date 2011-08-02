@@ -18,7 +18,6 @@ package org.rice.krms.test;
 
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
@@ -46,16 +45,12 @@ public abstract class KRMSTestCase extends BaselineTestCase {
 	@Override
 	protected List<Lifecycle> getSuiteLifecycles() {
 		List<Lifecycle> suiteLifecycles = super.getSuiteLifecycles();
-//		suiteLifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:org/kuali/rice/kim/test/DefaultSuiteTestData.xml"));
 		return suiteLifecycles;
 	}
 	
 	@Override
 	protected void loadSuiteTestData() throws Exception {
 		super.loadSuiteTestData();
-//		new SQLDataLoader("classpath:org/kuali/rice/kim/test/DefaultSuiteTestData.sql", "/").runSql();
-//		new SQLDataLoader("classpath:org/kuali/rice/kim/test/CircularRolesTestData.sql", "/").runSql();
-//		new SQLDataLoader("classpath:org/kuali/rice/kim/test/CircularGroupsTestData.sql", "/").runSql();
 	}
 	
 	
@@ -69,27 +64,7 @@ public abstract class KRMSTestCase extends BaselineTestCase {
 	    }
     	return krmsTestResourceLoader;
 	}
-	
-//	/**
-//	 * Override the standard per-test lifecycles to prepend ClearDatabaseLifecycle and ClearCacheLifecycle
-//	 * @see org.kuali.rice.test.RiceTestCase#getPerTestLifecycles()
-//	 */
-//	@Override
-//	protected List<Lifecycle> getPerTestLifecycles() {
-//		List<Lifecycle> lifecycles = super.getPerTestLifecycles();
-//		lifecycles.add(new ClearCacheLifecycle());
-//		return lifecycles;
-//	}
-//	
-//	public class ClearCacheLifecycle extends BaseLifecycle {
-//		@Override
-//		public void stop() throws Exception {
-//			KimApiServiceLocator.getIdentityManagementService().flushAllCaches();
-//			KimApiServiceLocator.getRoleService().flushRoleCaches();
-//			super.stop();
-//		}
-//
-//	}
+
 	
 	protected List<String> getPerTestTablesNotToClear() {
 		List<String> tablesNotToClear = new ArrayList<String>();
@@ -108,40 +83,4 @@ public abstract class KRMSTestCase extends BaselineTestCase {
 	protected String getModuleName() {
 		return KRMS_MODULE_NAME;
 	}
-	
-//	protected KimTypeInfo getDefaultKimType() {
-//		KimTypeInfo type = KIMServiceLocatorWeb.getTypeInfoService().getKimType("1");
-//		if (type == null) {
-//			fail("Failed to locate the default Kim Type.");
-//		}
-//		return type;
-//	}
-//	
-//	protected KimPermissionTemplateImpl getDefaultPermissionTemplate() {
-//		Map<String, Object> fieldValues = new HashMap<String, Object>();
-//		fieldValues.put("namespaceCode", "KUALI");
-//		fieldValues.put("name", "Default");
-//		KimPermissionTemplateImpl template = (KimPermissionTemplateImpl) KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(KimPermissionTemplateImpl.class, fieldValues);
-//		if (template == null) {
-//			fail("Failed to locate the default Permission Template.");
-//		}
-//		return template;
-//	}
-//	
-//	protected String getNewRoleId() {
-//		return getIdFromSequence("KRIM_ROLE_ID_S");
-//	}
-//	
-//	protected String getNewRoleMemberId() {
-//		return getIdFromSequence("KRIM_ROLE_MBR_ID_S");
-//	}
-//	
-//	protected String getNewRolePermissionId() {
-//		return getIdFromSequence("KRIM_ROLE_ID_S");
-//	}
-	
-	protected String getIdFromSequence(String sequenceName) {
-		Long sequenceId = KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(sequenceName);
-		return "" + sequenceId;
-    }
 }

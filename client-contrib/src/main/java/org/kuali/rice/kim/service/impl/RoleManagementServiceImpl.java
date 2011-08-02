@@ -26,7 +26,6 @@ import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.role.RoleResponsibility;
 import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
 import org.kuali.rice.kim.api.role.RoleService;
-import org.kuali.rice.kim.api.role.RoleUpdateService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 import java.sql.Date;
@@ -42,7 +41,6 @@ public class RoleManagementServiceImpl implements RoleManagementService {
     private static final Logger LOG = Logger.getLogger(RoleManagementServiceImpl.class);
 
     private RoleService roleService;
-    private RoleUpdateService roleUpdateService;
 
     @Override
     public void flushRoleCaches() {
@@ -156,7 +154,7 @@ public class RoleManagementServiceImpl implements RoleManagementService {
     @Override
     public void assignGroupToRole(String groupId, String namespaceCode, String roleName,
                                   Map<String, String> qualifications) {
-        getRoleUpdateService().assignGroupToRole(groupId, namespaceCode, roleName, qualifications);
+        getRoleService().assignGroupToRole(groupId, namespaceCode, roleName, qualifications);
         Role role = getRoleByName(namespaceCode, roleName);
         removeCacheEntries(role.getId(), null);
     }
@@ -165,14 +163,14 @@ public class RoleManagementServiceImpl implements RoleManagementService {
     public void assignPrincipalToRole(String principalId, String namespaceCode, String roleName,
                                       Map<String, String> qualifications) {
         Role role = getRoleByName(namespaceCode, roleName);
-        getRoleUpdateService().assignPrincipalToRole(principalId, namespaceCode, roleName, qualifications);
+        getRoleService().assignPrincipalToRole(principalId, namespaceCode, roleName, qualifications);
         removeCacheEntries(role.getId(), principalId);
     }
 
     @Override
     public void removeGroupFromRole(String groupId, String namespaceCode, String roleName,
                                     Map<String, String> qualifications) {
-        getRoleUpdateService().removeGroupFromRole(groupId, namespaceCode, roleName, qualifications);
+        getRoleService().removeGroupFromRole(groupId, namespaceCode, roleName, qualifications);
         Role role = getRoleByName(namespaceCode, roleName);
         removeCacheEntries(role.getId(), null);
     }
@@ -181,7 +179,7 @@ public class RoleManagementServiceImpl implements RoleManagementService {
     public void removePrincipalFromRole(String principalId, String namespaceCode, String roleName,
                                         Map<String, String> qualifications) {
         Role role = getRoleByName(namespaceCode, roleName);
-        getRoleUpdateService().removePrincipalFromRole(principalId, namespaceCode, roleName, qualifications);
+        getRoleService().removePrincipalFromRole(principalId, namespaceCode, roleName, qualifications);
         removeCacheEntries(role.getId(), principalId);
     }
 
@@ -255,7 +253,7 @@ public class RoleManagementServiceImpl implements RoleManagementService {
     @Override
     public void assignRoleToRole(String roleId, String namespaceCode, String roleName,
                                  Map<String, String> qualifications) {
-        getRoleUpdateService().assignRoleToRole(
+        getRoleService().assignRoleToRole(
                 roleId, namespaceCode, roleName, qualifications);
         Role role = getRoleByName(namespaceCode, roleName);
         removeCacheEntries(role.getId(), null);
@@ -265,7 +263,7 @@ public class RoleManagementServiceImpl implements RoleManagementService {
     public void saveDelegationMemberForRole(String delegationMemberId, String roleMemberId, String memberId, String memberTypeCode,
                                             String delegationTypeCode, String roleId, Map<String, String> qualifications,
                                             Date activeFromDate, Date activeToDate) throws UnsupportedOperationException {
-        getRoleUpdateService().saveDelegationMemberForRole(delegationMemberId, roleMemberId, memberId, memberTypeCode, delegationTypeCode, roleId, qualifications, activeFromDate, activeToDate);
+        getRoleService().saveDelegationMemberForRole(delegationMemberId, roleMemberId, memberId, memberTypeCode, delegationTypeCode, roleId, qualifications, activeFromDate, activeToDate);
         Role role = getRole(roleId);
         removeCacheEntries(role.getId(), null);
     }
@@ -274,7 +272,7 @@ public class RoleManagementServiceImpl implements RoleManagementService {
     public RoleMember saveRoleMemberForRole(String roleMemberId, String memberId, String memberTypeCode,
                                             String roleId, Map<String, String> qualifications, Date activeFromDate, Date activeToDate) throws UnsupportedOperationException {
         Role role = getRole(roleId);
-        RoleMember roleMember = getRoleUpdateService().saveRoleMemberForRole(roleMemberId, memberId, memberTypeCode, roleId, qualifications, activeFromDate, activeToDate);
+        RoleMember roleMember = getRoleService().saveRoleMemberForRole(roleMemberId, memberId, memberTypeCode, roleId, qualifications, activeFromDate, activeToDate);
         removeCacheEntries(role.getId(), memberId);
         return roleMember;
     }
@@ -282,7 +280,7 @@ public class RoleManagementServiceImpl implements RoleManagementService {
     @Override
     public void removeRoleFromRole(String roleId, String namespaceCode, String roleName,
                                    Map<String, String> qualifications) {
-        getRoleUpdateService().removeRoleFromRole(roleId, namespaceCode, roleName, qualifications);
+        getRoleService().removeRoleFromRole(roleId, namespaceCode, roleName, qualifications);
         Role role = getRoleByName(namespaceCode, roleName);
         removeCacheEntries(role.getId(), null);
     }
@@ -325,7 +323,7 @@ public class RoleManagementServiceImpl implements RoleManagementService {
     @Override
     public void saveRoleRspActions(String roleResponsibilityActionId, String roleId, String roleResponsibilityId, String roleMemberId,
                                    String actionTypeCode, String actionPolicyCode, Integer priorityNumber, Boolean forceAction) {
-        getRoleUpdateService().saveRoleRspActions(roleResponsibilityActionId, roleId, roleResponsibilityId, roleMemberId, actionTypeCode, actionPolicyCode, priorityNumber, forceAction);
+        getRoleService().saveRoleRspActions(roleResponsibilityActionId, roleId, roleResponsibilityId, roleMemberId, actionTypeCode, actionPolicyCode, priorityNumber, forceAction);
         removeCacheEntries(roleId, null);
     }
 
@@ -347,20 +345,6 @@ public class RoleManagementServiceImpl implements RoleManagementService {
             roleService = KimApiServiceLocator.getRoleService();
         }
         return roleService;
-    }
-
-    public RoleUpdateService getRoleUpdateService() {
-        try {
-            if (roleUpdateService == null) {
-                roleUpdateService = KimApiServiceLocator.getRoleUpdateService();
-                if (roleUpdateService == null) {
-                    throw new UnsupportedOperationException("null returned for RoleUpdateService, unable to update role data");
-                }
-            }
-        } catch (Exception ex) {
-            throw new UnsupportedOperationException("unable to obtain a RoleUpdateService, unable to update role data", ex);
-        }
-        return roleUpdateService;
     }
 
     /**
@@ -394,17 +378,17 @@ public class RoleManagementServiceImpl implements RoleManagementService {
 
     @Override
     public void assignPermissionToRole(String permissionId, String roleId) throws UnsupportedOperationException {
-        getRoleUpdateService().assignPermissionToRole(permissionId, roleId);
+        getRoleService().assignPermissionToRole(permissionId, roleId);
     }
 
     @Override
     public String getNextAvailableRoleId() throws UnsupportedOperationException {
-        return getRoleUpdateService().getNextAvailableRoleId();
+        return getRoleService().getNextAvailableRoleId();
     }
 
     @Override
     public void saveRole(String roleId, String roleName, String roleDescription, boolean active, String kimTypeId, String namespaceCode) throws UnsupportedOperationException {
-        getRoleUpdateService().saveRole(roleId, roleName, roleDescription, active, kimTypeId, namespaceCode);
+        getRoleService().saveRole(roleId, roleName, roleDescription, active, kimTypeId, namespaceCode);
     }
 
     @Override

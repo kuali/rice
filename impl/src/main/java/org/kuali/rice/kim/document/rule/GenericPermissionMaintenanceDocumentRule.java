@@ -22,8 +22,8 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.impl.GenericPermission;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
+import org.kuali.rice.kim.framework.permission.PermissionTypeService;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.service.support.KimPermissionTypeService;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -74,7 +74,7 @@ public class GenericPermissionMaintenanceDocumentRule extends MaintenanceDocumen
 				}
 				// if all attributes are known, pass to the service for validation
 				if ( !GlobalVariables.getMessageMap().hasErrors() ) {
-					KimPermissionTypeService service = getPermissionTypeService( kimType.getServiceName() );
+					PermissionTypeService service = getPermissionTypeService( kimType.getServiceName() );
 					if ( service != null ) {
 						List<RemotableAttributeError> validationErrors = service.validateAttributes( kimType.getId(), details);
 						if ( validationErrors != null && !validationErrors.isEmpty() ) {
@@ -120,7 +120,7 @@ public class GenericPermissionMaintenanceDocumentRule extends MaintenanceDocumen
 		return true;
 	}
 	
-	protected KimPermissionTypeService getPermissionTypeService( String serviceName ) {
+	protected PermissionTypeService getPermissionTypeService( String serviceName ) {
     	if ( StringUtils.isBlank( serviceName ) ) {
     		return null;
     	}
@@ -131,12 +131,12 @@ public class GenericPermissionMaintenanceDocumentRule extends MaintenanceDocumen
 				LOG.warn("null returned for permission type service for service name: " + serviceName);
 	    	} else {
 		    	// whatever we retrieved must be of the correct type
-		    	if ( !(service instanceof KimPermissionTypeService)  ) {
+		    	if ( !(service instanceof PermissionTypeService)  ) {
 		    		LOG.warn( "Service " + serviceName + " was not a KimPermissionTypeService.  Was: " + service.getClass().getName() );
 		    		service = null;
 		    	}
 	    	}
-	    	return (KimPermissionTypeService)service;
+	    	return (PermissionTypeService)service;
     	} catch( Exception ex ) {
     		LOG.error( "Error retrieving service: " + serviceName + " from the KIMServiceLocatorInternal.", ex );
     	}

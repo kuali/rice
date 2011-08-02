@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.kim.impl.responsibility;
 
-
 import org.kuali.rice.kim.api.responsibility.Responsibility;
+import org.kuali.rice.kim.framework.responsibility.ResponsibilityTypeService;
 import org.kuali.rice.kim.impl.type.KimTypeServiceBase;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ import java.util.Map;
  *
  */
 public class KimResponsibilityTypeServiceBase extends KimTypeServiceBase
-		implements KimResponsibilityTypeService {
+		implements ResponsibilityTypeService {
 
 	@Override
 	public final List<Responsibility> getMatchingResponsibilities( Map<String, String> requestedDetails, List<Responsibility> responsibilitiesList ) {

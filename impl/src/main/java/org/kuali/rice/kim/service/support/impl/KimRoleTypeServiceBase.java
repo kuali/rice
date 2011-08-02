@@ -19,8 +19,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
-import org.kuali.rice.kim.framework.type.KimDelegationTypeService;
-import org.kuali.rice.kim.framework.type.KimRoleTypeService;
+import org.kuali.rice.kim.framework.common.delegate.DelegationTypeService;
+import org.kuali.rice.kim.framework.role.RoleTypeService;
 import org.kuali.rice.kim.impl.type.KimTypeServiceBase;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRoleTypeService, KimDelegationTypeService {
+public class KimRoleTypeServiceBase extends KimTypeServiceBase implements RoleTypeService, DelegationTypeService {
 
 	private static final Logger LOG = Logger.getLogger(KimRoleTypeServiceBase.class);
 	
@@ -41,7 +41,7 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	 * Performs a simple check that the qualifier on the role matches the qualification.
 	 * Extra qualification attributes are ignored.
 	 * 
-	 * @see KimRoleTypeService#doesRoleQualifierMatchQualification(Map<String, String>, Map<String, String>)
+	 * @see org.kuali.rice.kim.framework.role.RoleTypeService#doesRoleQualifierMatchQualification(Map<String, String>, Map<String, String>)
 	 */
 
 	public boolean doesRoleQualifierMatchQualification(Map<String, String> qualification, Map<String, String> roleQualifier) {
@@ -51,7 +51,7 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.framework.type.KimRoleTypeService#doRoleQualifiersMatchQualification(Map<String, String>, List)
+	 * @see org.kuali.rice.kim.framework.role.RoleTypeService#doRoleQualifiersMatchQualification(Map<String, String>, List)
 	 */
 	public List<RoleMembership> doRoleQualifiersMatchQualification(Map<String, String> qualification, List<RoleMembership> roleMemberList) {
 		Map<String, String> translatedQualification = translateInputAttributes(qualification);
@@ -69,7 +69,7 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	 * Return an empty list since this method should not be called by the role service for this service type.
 	 * Subclasses which are application role types should override this method.
 	 * 
-	 * @see org.kuali.rice.kim.framework.type.KimRoleTypeService#getRoleMembersFromApplicationRole(String, String, Map<String, String>)
+	 * @see org.kuali.rice.kim.framework.role.RoleTypeService#getRoleMembersFromApplicationRole(String, String, Map<String, String>)
 	 */
 	public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Map<String, String> qualification) {
 		validateRequiredAttributesAgainstReceived(qualification);
@@ -114,7 +114,7 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	/**
 	 * Default to not being an application role type.  Always returns false.
 	 * 
-	 * @see org.kuali.rice.kim.framework.type.KimRoleTypeService#isApplicationRoleType()
+	 * @see org.kuali.rice.kim.framework.role.RoleTypeService#isApplicationRoleType()
 	 */
 	public boolean isApplicationRoleType() {
 		return false;
@@ -123,7 +123,7 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	/**
 	 * This base implementation simply returns the passed in Attributes.
 	 * 
-	 * @see org.kuali.rice.kim.framework.type.KimRoleTypeService#convertQualificationForMemberRoles(String, String, String, String, Map<String, String>)
+	 * @see org.kuali.rice.kim.framework.role.RoleTypeService#convertQualificationForMemberRoles(String, String, String, String, Map<String, String>)
 	 */
 	public Map<String, String> convertQualificationForMemberRoles(String namespaceCode, String roleName, String memberRoleNamespaceCode, String memberRoleName, Map<String, String> qualification) {
 		return qualification;
@@ -132,7 +132,7 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	/**
 	 * Base implementation: no sorting.  Just returns the input list.
 	 * 
-	 * @see org.kuali.rice.kim.framework.type.KimRoleTypeService#sortRoleMembers(java.util.List)
+	 * @see org.kuali.rice.kim.framework.role.RoleTypeService#sortRoleMembers(java.util.List)
 	 */
 	public List<RoleMembership> sortRoleMembers(List<RoleMembership> roleMembers) {
 		return roleMembers;
@@ -141,7 +141,7 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	/**
 	 * This base implementation does nothing but log that the method was called.
 	 * 
-	 * @see org.kuali.rice.kim.framework.type.KimRoleTypeService#principalInactivated(java.lang.String, java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kim.framework.role.RoleTypeService#principalInactivated(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public void principalInactivated(String principalId, String namespaceCode,
 			String roleName) {
@@ -165,7 +165,7 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 	/**
 	 * Returns true as a default
 	 * 
-	 * @see org.kuali.rice.kim.framework.type.KimRoleTypeService#shouldCacheRoleMembershipResults(java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kim.framework.role.RoleTypeService#shouldCacheRoleMembershipResults(java.lang.String, java.lang.String)
 	 */
 	public boolean shouldCacheRoleMembershipResults(String namespaceCode,
 			String roleName) {

@@ -17,8 +17,8 @@ package org.kuali.rice.kew.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.permission.Permission;
+import org.kuali.rice.kim.framework.permission.PermissionTypeService;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
-import org.kuali.rice.kim.service.support.KimPermissionTypeService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.service.impl.DocumentTypePermissionTypeServiceImpl;
 
@@ -34,7 +34,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
-public class AdhocReviewPermissionTypeServiceImpl extends DocumentTypePermissionTypeServiceImpl implements KimPermissionTypeService{
+public class AdhocReviewPermissionTypeServiceImpl extends DocumentTypePermissionTypeServiceImpl implements PermissionTypeService {
 
     @Override
     protected List<String> getRequiredAttributes() {

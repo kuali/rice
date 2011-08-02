@@ -51,7 +51,6 @@ import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
-import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.bo.ui.GroupDocumentQualifier;
@@ -75,6 +74,8 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
+import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
+import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberAttributeDataBo;
@@ -111,7 +112,6 @@ import org.kuali.rice.kim.impl.services.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.impl.type.TempKimHelper;
 import org.kuali.rice.kim.service.IdentityManagementNotificationService;
-import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
@@ -573,7 +573,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	}
 
 	protected List<KimAttributeField> getAttributeDefinitionsForRole(PersonDocumentRole role) {
-    	KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(KimTypeBo.to(role.getKimRoleType()));
+    	KimTypeService kimTypeService = KimFrameworkServiceLocator.getKimTypeService(KimTypeBo.to(
+                role.getKimRoleType()));
     	//it is possible that the the kimTypeService is coming from a remote application
         // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
         try {
@@ -2243,7 +2244,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         String newRoleMemberIdAssigned = "";
 
         identityManagementRoleDocument.setKimType(KimApiServiceLocator.getKimTypeInfoService().getKimType(identityManagementRoleDocument.getRoleTypeId()));
-        KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(identityManagementRoleDocument.getKimType());
+        KimTypeService kimTypeService = KimFrameworkServiceLocator.getKimTypeService(identityManagementRoleDocument.getKimType());
 
         if(CollectionUtils.isNotEmpty(identityManagementRoleDocument.getMembers())){
             for(KimDocumentRoleMember documentRoleMember: identityManagementRoleDocument.getMembers()){

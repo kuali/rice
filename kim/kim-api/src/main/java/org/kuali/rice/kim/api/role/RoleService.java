@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.api.role;
 
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.core.api.util.jaxb.SqlDateAdapter;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
@@ -28,6 +29,7 @@ import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.sql.Date;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -50,12 +52,6 @@ import java.util.Map;
  * Authorization checks that are then done in the permission service can pass
  * qualifiers as part of the operation if they want to restrict the subset of
  * the role against which the check is made.
- *
- * <p>This service provides read-only operations.  For write operations, see
- * {@link RoleUpdateService}.
- *
- * @see RoleUpdateService
- * @see org.kuali.rice.kim.service.PermissionService
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -379,4 +375,117 @@ public interface RoleService {
 	 */
     @WebMethod(operationName = "flushInternalDelegationMemberCache")
 	void flushInternalDelegationMemberCache();
+
+    	/**
+	 * Assigns the principal with the given id to the role with the specified
+	 * namespace code and name with the supplied set of qualifications.
+	 */
+    void assignPrincipalToRole(@WebParam(name="principalId") String principalId,
+    		@WebParam(name="namespaceCode") String namespaceCode,
+    		@WebParam(name="roleName") String roleName,
+    		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifications) throws UnsupportedOperationException;
+
+	/**
+	 * Assigns the group with the given id to the role with the specified
+	 * namespace code and name with the supplied set of qualifications.
+	 */
+    void assignGroupToRole(@WebParam(name="groupId") String groupId,
+    		@WebParam(name="namespaceCode") String namespaceCode,
+    		@WebParam(name="roleName") String roleName,
+    		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifications) throws UnsupportedOperationException;
+
+	/**
+	 * Assigns the role with the given id to the role with the specified
+	 * namespace code and name with the supplied set of qualifications.
+	 */
+    void assignRoleToRole(@WebParam(name="roleId") String roleId,
+    		@WebParam(name="namespaceCode") String namespaceCode,
+    		@WebParam(name="roleName") String roleName,
+    		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifications) throws UnsupportedOperationException;
+
+	/**
+	 * Assigns the role with the given id to the role with the specified
+	 * namespace code and name with the supplied set of qualifications.
+	 */
+    RoleMember saveRoleMemberForRole(@WebParam(name="roleMemberId") String roleMemberId,
+    		@WebParam(name="memberId") String memberId,
+    		@WebParam(name="memberTypeCode") String memberTypeCode,
+    		@WebParam(name="roleId") String roleId,
+    		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifications,
+    		@XmlJavaTypeAdapter(value = SqlDateAdapter.class) @WebParam(name="activeFromDate") Date activeFromDate,
+    		@XmlJavaTypeAdapter(value = SqlDateAdapter.class) @WebParam(name="activeToDate") Date activeToDate) throws UnsupportedOperationException;
+
+    /**
+     * @param roleResponsibilityId
+     * @param roleMemberId
+     * @param actionTypeCode
+     * @param actionPolicyCode
+     * @param priorityNumber
+     * @param forceAction
+     */
+    void saveRoleRspActions(@WebParam(name="roleResponsibilityActionId") String roleResponsibilityActionId,
+    		@WebParam(name="roleId") String roleId,
+    		@WebParam(name="roleResponsibilityId") String roleResponsibilityId,
+    		@WebParam(name="roleMemberId") String roleMemberId,
+    		@WebParam(name="actionTypeCode") String actionTypeCode,
+    		@WebParam(name="actionPolicyCode") String actionPolicyCode,
+    		@WebParam(name="priorityNumber") Integer priorityNumber,
+    		@WebParam(name="forceAction") Boolean forceAction);
+
+	/**
+	 * Assigns the member with the given id as a delegation member to the role
+	 * with the specified namespace code and name with the supplied set of qualifications.
+	 */
+    public void saveDelegationMemberForRole(@WebParam(name="delegationMemberId") String delegationMemberId,
+    		@WebParam(name="roleMemberId") String roleMemberId,
+    		@WebParam(name="memberId") String memberId,
+    		@WebParam(name="memberTypeCode") String memberTypeCode,
+    		@WebParam(name="delegationTypeCode") String delegationTypeCode,
+    		@WebParam(name="roleId") String roleId,
+    		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifications,
+    		@XmlJavaTypeAdapter(value = SqlDateAdapter.class) @WebParam(name="activeFromDate") Date activeFromDate,
+    		@XmlJavaTypeAdapter(value = SqlDateAdapter.class) @WebParam(name="activeToDate") Date activeToDate) throws UnsupportedOperationException;
+
+    /**
+     * Remove the principal with the given id and qualifications from the role
+     * with the specified namespace code and role name.
+     */
+    void removePrincipalFromRole(@WebParam(name="principalId") String principalId,
+    		@WebParam(name="namespaceCode") String namespaceCode,
+    		@WebParam(name="roleName") String roleName,
+    		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifications) throws UnsupportedOperationException;
+
+    /**
+     * Remove the group with the given id and qualifications from the role
+     * with the specified namespace code and role name.
+     */
+    void removeGroupFromRole(@WebParam(name="groupId") String groupId,
+    		@WebParam(name="namespaceCode") String namespaceCode,
+    		@WebParam(name="roleName") String roleName,
+    		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifications) throws UnsupportedOperationException;
+
+    /**
+     * Remove the group with the given id and qualifications from the role
+     * with the specified namespace code and role name.
+     */
+    void removeRoleFromRole(@WebParam(name="roleId") String roleId,
+    		@WebParam(name="namespaceCode") String namespaceCode,
+    		@WebParam(name="roleName") String roleName,
+    		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifications) throws UnsupportedOperationException;
+
+    /**
+     * Creates or updates role with given attributes
+     */
+    void saveRole(@WebParam(name = "roleId") String roleId, @WebParam(name = "roleName") String roleName, @WebParam(name = "roleDescription") String roleDescription, @WebParam(name = "active") boolean active, @WebParam(name = "kimTypeId") String kimTypeId,
+            @WebParam(name = "namespaceCode") String namespaceCode) throws UnsupportedOperationException;
+
+    /**
+     * Returns id available for a new role
+     */
+    String getNextAvailableRoleId() throws UnsupportedOperationException;
+
+    /**
+     * Assigns the given permission to the given role
+     */
+    void assignPermissionToRole(String permissionId, String roleId) throws UnsupportedOperationException;
 }

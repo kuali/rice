@@ -18,13 +18,13 @@ package org.kuali.rice.kim.rules.ui;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
-import org.kuali.rice.kim.api.type.KimTypeService;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.document.rule.AttributeValidationHelper;
+import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
+import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.rule.event.ui.AddDelegationMemberEvent;
 import org.kuali.rice.kim.rule.ui.AddDelegationMemberRule;
-import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.krad.rules.DocumentRuleBase;
 import org.kuali.rice.krad.util.GlobalVariables;
 
@@ -59,7 +59,7 @@ public class RoleDocumentDelegationMemberRule extends DocumentRuleBase implement
 		List<Map<String, String>> mapListToValidate = new ArrayList<Map<String, String>>();
 		Map<String, String> mapToValidate;
 		List<RemotableAttributeError> validationErrors = new ArrayList<RemotableAttributeError>();
-        KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(document.getKimType());
+        KimTypeService kimTypeService = KimFrameworkServiceLocator.getKimTypeService(document.getKimType());
 
 		for(RoleDocumentDelegationMember roleMember: document.getDelegationMembers()) {
 			mapToValidate = attributeValidationHelper.convertQualifiersToMap(roleMember.getQualifiers());

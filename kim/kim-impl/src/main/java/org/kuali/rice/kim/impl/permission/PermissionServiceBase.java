@@ -18,7 +18,7 @@ package org.kuali.rice.kim.impl.permission;
 import com.google.common.collect.MapMaker;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
 import org.kuali.rice.kim.api.permission.Permission;
-import org.kuali.rice.kim.api.permission.PermissionTypeService;
+import org.kuali.rice.kim.framework.permission.PermissionTypeService;
 import org.kuali.rice.kim.impl.role.RoleMemberAttributeDataBo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.service.BusinessObjectService;

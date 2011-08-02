@@ -17,7 +17,7 @@ package org.kuali.rice.kew.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
-import org.kuali.rice.kim.impl.responsibility.KimResponsibilityTypeService;
+import org.kuali.rice.kim.framework.responsibility.ResponsibilityTypeService;
 import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ import java.util.Map;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ReviewResponsibilityTypeServiceImpl extends DocumentTypeResponsibilityTypeServiceImpl implements KimResponsibilityTypeService {
+public class ReviewResponsibilityTypeServiceImpl extends DocumentTypeResponsibilityTypeServiceImpl implements ResponsibilityTypeService {
 	{
 		exactMatchStringAttributeName = KimConstants.AttributeConstants.ROUTE_NODE_NAME;
 	}

@@ -113,26 +113,6 @@
 	<property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
-        p:service-ref="kimRoleUpdateService"
-        p:localServiceName="kimRoleUpdateService" />
-    </property>
-  </bean>
-
-  <bean parent="kimLocalServiceExporter">
-	<property name="serviceBus" ref="rice.ksb.serviceBus"/>
-    <property name="serviceDefinition">
-      <bean parent="kimJaxWsSoapService"
-        p:service-ref="kimRoleUpdateService"
-        p:localServiceName="kimRoleUpdateServiceSOAP"
-        p:serviceInterface="org.kuali.rice.kim.api.role.RoleUpdateService" />
-    </property>
-    <property name="exportIf" value="kimRoleUpdateServiceSOAP.expose"/>
-  </bean>
-
-  <bean parent="kimLocalServiceExporter">
-	<property name="serviceBus" ref="rice.ksb.serviceBus"/>
-    <property name="serviceDefinition">
-      <bean parent="kimJaxWsSoapService"
         p:service-ref="kimGroupService"
         p:localServiceName="kimGroupService" />
     </property>

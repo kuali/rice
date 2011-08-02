@@ -23,8 +23,8 @@ import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
-import org.kuali.rice.kim.api.type.KimTypeService;
-import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
+import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
+import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.service.DataDictionaryService;
@@ -59,7 +59,7 @@ public class KimAttributeValuesFinder extends KeyValuesBase {
 	public List<KeyValue> getKeyValues() {
         KimType kimType = KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId);
         if ( kimType != null ) {
-	        KimTypeService service = KIMServiceLocatorWeb.getKimTypeService(kimType);
+	        KimTypeService service = KimFrameworkServiceLocator.getKimTypeService(kimType);
 	        if ( service != null ) {
 				return getAttributeValidValues(kimTypeId,kimAttributeName);
 	        } 

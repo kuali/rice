@@ -80,20 +80,6 @@
                     </execution>
 
                     <execution>
-                        <id>roleUpdateService-wsdl</id>
-                        <phase>${rice.java2ws.phase}</phase>
-                        <configuration>
-                            <className>org.kuali.rice.kim.api.role.RoleUpdateService</className>
-                            <outputFile>${project.build.outputDirectory}/wsdl/RoleUpdateService.wsdl
-                            </outputFile>
-                            <serviceName>RoleUpdateService</serviceName>
-                        </configuration>
-                        <goals>
-                            <goal>java2ws</goal>
-                        </goals>
-                    </execution>
-
-                    <execution>
                         <id>kimTypeInfoService-wsdl</id>
                         <phase>${rice.java2ws.phase}</phase>
                         <configuration>

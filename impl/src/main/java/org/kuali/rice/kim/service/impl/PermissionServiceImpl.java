@@ -31,11 +31,11 @@ import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl;
 import org.kuali.rice.kim.dao.KimPermissionDao;
+import org.kuali.rice.kim.framework.permission.PermissionTypeService;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.impl.permission.PermissionTemplateBo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.PermissionService;
-import org.kuali.rice.kim.service.support.KimPermissionTypeService;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.Lookupable;
@@ -66,7 +66,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 
    	private RoleService roleService;
 	private KimPermissionDao permissionDao;
-    private KimPermissionTypeService defaultPermissionTypeService;
+    private PermissionTypeService defaultPermissionTypeService;
 	
 	private List<KimPermissionTemplateInfo> allTemplates;
 	
@@ -74,7 +74,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     // Authorization Checks
     // --------------------
     
-	protected KimPermissionTypeService getPermissionTypeService( String namespaceCode, String permissionTemplateName, String permissionName, String permissionId ) {
+	protected PermissionTypeService getPermissionTypeService( String namespaceCode, String permissionTemplateName, String permissionName, String permissionId ) {
 		StringBuffer cacheKey = new StringBuffer();
 		if ( namespaceCode != null ) {
 			cacheKey.append( namespaceCode );
@@ -92,7 +92,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 			cacheKey.append( permissionId );
 		}
 		String key = cacheKey.toString();
-		KimPermissionTypeService service = getPermissionTypeServiceByNameCache().get(key);
+		PermissionTypeService service = getPermissionTypeServiceByNameCache().get(key);
 		if ( service == null ) {
 			PermissionTemplateBo permTemplate = null;
 			if ( permissionTemplateName != null ) {
@@ -115,7 +115,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 		return service;
 	}
 
-    protected KimPermissionTypeService getPermissionTypeService( PermissionTemplateBo permissionTemplate ) {
+    protected PermissionTypeService getPermissionTypeService( PermissionTemplateBo permissionTemplate ) {
     	if ( permissionTemplate == null ) {
     		throw new IllegalArgumentException( "permissionTemplate may not be null" );
     	}
@@ -132,19 +132,19 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 				throw new RuntimeException("null returned for permission type service for service name: " + serviceName);
 	    	}
 	    	// whatever we retrieved must be of the correct type
-	    	if ( !(service instanceof KimPermissionTypeService)  ) {
-	    		throw new RuntimeException( "Service " + serviceName + " was not a KimPermissionTypeService.  Was: " + service.getClass().getName() );
+	    	if ( !(service instanceof PermissionTypeService)  ) {
+	    		throw new RuntimeException( "Service " + serviceName + " was not a PermissionTypeService.  Was: " + service.getClass().getName() );
 	    	}
-	    	return (KimPermissionTypeService)service;
+	    	return (PermissionTypeService)service;
     	} catch( Exception ex ) {
     		// sometimes service locators throw exceptions rather than returning null, handle that
     		throw new RuntimeException( "Error retrieving service: " + serviceName + " from the KIMServiceLocatorInternal.", ex );
     	}
     }
     
-    protected KimPermissionTypeService getDefaultPermissionTypeService() {
+    protected PermissionTypeService getDefaultPermissionTypeService() {
     	if ( defaultPermissionTypeService == null ) {
-    		defaultPermissionTypeService = (KimPermissionTypeService) KIMServiceLocatorInternal.getBean(DEFAULT_PERMISSION_TYPE_SERVICE);
+    		defaultPermissionTypeService = (PermissionTypeService) KIMServiceLocatorInternal.getBean(DEFAULT_PERMISSION_TYPE_SERVICE);
     	}
 		return defaultPermissionTypeService;
 	}
@@ -242,8 +242,8 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	return results;    	
     }
 
-    protected Map<String,KimPermissionTypeService> getPermissionTypeServicesByTemplateId( Collection<PermissionBo> permissions ) {
-    	Map<String,KimPermissionTypeService> permissionTypeServices = new HashMap<String, KimPermissionTypeService>( permissions.size() );
+    protected Map<String,PermissionTypeService> getPermissionTypeServicesByTemplateId( Collection<PermissionBo> permissions ) {
+    	Map<String,PermissionTypeService> permissionTypeServices = new HashMap<String, PermissionTypeService>( permissions.size() );
     	for ( PermissionBo perm : permissions ) {
     		permissionTypeServices.put(perm.getTemplateId(), getPermissionTypeService( perm.getTemplate() ) );    				
     	}
@@ -279,13 +279,13 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	} else {
     		// otherwise, attempt to match the permission details
     		// build a map of the template IDs to the type services
-    		Map<String,KimPermissionTypeService> permissionTypeServices = getPermissionTypeServicesByTemplateId( permissions );
+    		Map<String,PermissionTypeService> permissionTypeServices = getPermissionTypeServicesByTemplateId( permissions );
     		// build a map of permissions by template ID
     		Map<String, List<PermissionBo>> permissionMap = groupPermissionsByTemplate(permissions);
     		// loop over the different templates, matching all of the same template against the type
     		// service at once
     		for ( String templateId : permissionMap.keySet() ) {
-    			KimPermissionTypeService permissionTypeService = permissionTypeServices.get( templateId );
+    			PermissionTypeService permissionTypeService = permissionTypeServices.get( templateId );
     			List<PermissionBo> permissionList = permissionMap.get(templateId);
                 List<Permission> immutablePermissionList = new ArrayList<Permission>();
                 for (PermissionBo bo : permissionList) {immutablePermissionList.add(PermissionBo.to(bo));}
@@ -513,7 +513,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 
 	public String getPermissionDetailLabel( String permissionId, String kimTypeId, String attributeName) {
     	// get the type service for this permission
-		KimPermissionTypeService typeService = getPermissionTypeService(null, null, null, permissionId);
+		PermissionTypeService typeService = getPermissionTypeService(null, null, null, permissionId);
 		if ( typeService != null ) {
 			// ask the type service for the attribute definition for the given attribute name
 			final KimAttributeField attributeDef = KimAttributeField.findAttribute(attributeName, typeService.getAttributeDefinitions( kimTypeId ));

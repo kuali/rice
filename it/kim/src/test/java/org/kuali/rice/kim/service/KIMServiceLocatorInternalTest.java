@@ -18,7 +18,8 @@ package org.kuali.rice.kim.service;
 import org.junit.Test;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.api.type.KimTypeService;
+import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
+import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.impl.type.KimTypeServiceBase;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kim.util.KimConstants;
@@ -40,14 +41,14 @@ public class KIMServiceLocatorInternalTest extends KIMTestCase {
 		
 		// test by passing null
 		
-		KimTypeService typeService1 = KIMServiceLocatorWeb.getKimTypeService((KimType) null);
+		KimTypeService typeService1 = KimFrameworkServiceLocator.getKimTypeService((KimType) null);
 		assertNull("type service should be null", typeService1);
 		
 		// test by passing a KimType with a null service name
 		
 		KimType.Builder nullKimType = KimType.Builder.create();
 		nullKimType.setServiceName(null);
-		KimTypeService typeService2 = KIMServiceLocatorWeb.getKimTypeService(nullKimType.build());
+		KimTypeService typeService2 = KimFrameworkServiceLocator.getKimTypeService(nullKimType.build());
 		assertNotNull("type service shoudl have been found", typeService2);
 		assertEquals("should be the default kim type", KimTypeServiceBase.class, typeService2.getClass());
 		
@@ -55,7 +56,7 @@ public class KIMServiceLocatorInternalTest extends KIMTestCase {
 		
 		KimType.Builder emptyKimType = KimType.Builder.create();
 		nullKimType.setServiceName("");
-		KimTypeService typeService3 = KIMServiceLocatorWeb.getKimTypeService(emptyKimType.build());
+		KimTypeService typeService3 = KimFrameworkServiceLocator.getKimTypeService(emptyKimType.build());
 		assertNotNull("type service should have been found", typeService3);
 		assertEquals("should be the default kim type", KimTypeServiceBase.class, typeService3.getClass());
 		
@@ -64,7 +65,7 @@ public class KIMServiceLocatorInternalTest extends KIMTestCase {
 		KimType permissionKimType = KimApiServiceLocator.getKimTypeInfoService().findKimTypeByNameAndNamespace(KimConstants.NAMESPACE_CODE, "Permission");
 		assertNotNull("The KR-IDM:Permission KimType should exist.", permissionKimType);
 		
-		KimTypeService typeService4 = KIMServiceLocatorWeb.getKimTypeService(permissionKimType);
+		KimTypeService typeService4 = KimFrameworkServiceLocator.getKimTypeService(permissionKimType);
 		assertNotNull("type service should have been found", typeService4);
 		
 	}
@@ -75,25 +76,25 @@ public class KIMServiceLocatorInternalTest extends KIMTestCase {
 		// test by passing null
 		
 		try {
-			KIMServiceLocatorWeb.getKimTypeService((QName) null);
+			KimFrameworkServiceLocator.getKimTypeService((QName) null);
 			fail("getKimTypeService with a null QName should have thrown an IllegalArgumentException");
 		} catch (IllegalArgumentException e) {}
 		
 		// test by passing an invalid QName
 		
-		KimTypeService typeService1 = KIMServiceLocatorWeb.getKimTypeService(new QName("badNamespace", "badServiceName"));
+		KimTypeService typeService1 = KimFrameworkServiceLocator.getKimTypeService(new QName("badNamespace", "badServiceName"));
 		assertNull("A null KimTypeService should have been returned.", typeService1);
 		
 		// test by passing a QName for a valid service, but not one which is a KimTypeService, null should be returned
 		
 		// fetch the group service instead
-		KimTypeService typeService2 = KIMServiceLocatorWeb.getKimTypeService(new QName(KimApiServiceLocator.KIM_GROUP_SERVICE));
+		KimTypeService typeService2 = KimFrameworkServiceLocator.getKimTypeService(new QName(KimApiServiceLocator.KIM_GROUP_SERVICE));
 		assertNull("A null KimTypeService should have been returned.", typeService2);
 
 		// test by passing the QName for the Permission TypeService
 		
 		QName permissionServiceName = new QName("permissionPermissionTypeService");
-		KimTypeService typeService3 = KIMServiceLocatorWeb.getKimTypeService(permissionServiceName);
+		KimTypeService typeService3 = KimFrameworkServiceLocator.getKimTypeService(permissionServiceName);
 		assertNotNull("permission type service should have been found", typeService3);
 		
 	}

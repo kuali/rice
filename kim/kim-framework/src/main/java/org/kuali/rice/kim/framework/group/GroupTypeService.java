@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.service.support;
+package org.kuali.rice.kim.framework.group;
 
-import org.kuali.rice.kim.api.type.KimTypeService;
+import org.kuali.rice.kim.framework.type.KimTypeService;
 
 /**
  * This is a service interface that must be used for a service related to a role type.
@@ -25,6 +25,6 @@ import org.kuali.rice.kim.api.type.KimTypeService;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface KimGroupTypeService extends KimTypeService {
+public interface GroupTypeService extends KimTypeService {
 
 }

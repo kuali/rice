@@ -81,6 +81,53 @@
     <property name="description" value="Fiscal Officer User Name"/>
   </bean>
 
+  <bean id="FiscalOfficerInfoMaintenanceDocument" parent="uifMaintenanceDocumentEntry">
+    <property name="dataObjectClass" value="edu.sampleu.travel.dto.FiscalOfficerInfo"/>
+    <property name="maintainableClass" value="edu.sampleu.travel.service.FiscalOfficerInfoMaintainableImpl"/>
+    <property name="documentTypeName" value="FiscalOfficerInfoMaintenanceDocument"/>
+    <property name="documentAuthorizerClass" value="org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizerBase"/>
+    <property name="lockingKeys">
+      <list>
+        <value>userName</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="tabMenu" parent="NavigationGroupTabMenu">
+        <property name="items">
+            <list>
+                <bean parent="NavigationActionLinkField" p:navigateToPageId="page1" p:actionLabel="Information"/>
+                <bean parent="NavigationActionLinkField" p:navigateToPageId="page2" p:actionLabel="Accounts"/>
+            </list>
+        </property>
+  </bean>
+
+  <bean id="information" parent="GroupSectionGridLayout">
+      <property name="layoutManager.numberOfColumns" value="2"/>
+      <property name="items">
+        <list>
+          <bean parent="AttributeField" p:propertyName="id"/>
+          <bean parent="AttributeField" p:propertyName="userName"/>
+        </list>
+      </property>
+      <property name="title" value="Fiscal Officer Information"/>
+  </bean>
+    
+  <bean id="accounts" parent="CollectionGroupSectionTableLayout" p:layoutManager.numberOfColumns="3">
+      <property name="title" value="Travel Accounts"/>
+      <property name="collectionObjectClass" value="edu.sampleu.travel.dto.TravelAccountInfo"/>
+      <property name="propertyName" value="accounts"/>
+      <property name="summary" value="Travel Accounts for Fiscal Officer"/>
+      <property name="layoutManager.sequencePropertyName" value="number"/>
+      <property name="items">
+        <list>
+          <bean parent="AttributeField" p:propertyName="number"/>
+          <bean parent="AttributeField" p:propertyName="name"/>
+          <bean parent="AttributeField" p:propertyName="createDate"/>
+        </list>
+      </property>           
+  </bean>   
+  
 <!-- views -->
 
   <bean id="FiscalOfficerInfo-InquiryView" parent="InquiryView">
@@ -95,15 +142,8 @@
     </property>
   </bean>
   
-  <bean id="FiscalOfficerInfo-InquiryView3" parent="FiscalOfficerInfo-InquiryView">
-   <property name="additionalCssFiles" ref="ka-css"/>
-   <property name="id" value="FiscalOfficerInfoInquiry3"/>
-   <property name="viewName" value="FiscalOfficerInfoInquiry3"/>
-    <property name="title" value="Fiscal Officer Inquiry 3"/>
-  </bean>
-  
+  <!-- below bean has 'viewName' defined and can be used to show example url when retrieving a view by viewName and dataObjectClassName -->
   <bean id="FiscalOfficerInfo-InquiryView2" parent="FiscalOfficerInfo-InquiryView">
-    <property name="id" value="FiscalOfficerInfoInquiry2"/>
   	<property name="viewName" value="FiscalOfficerInfoInquiry2"/>
     <property name="title" value="Fiscal Officer Inquiry 2"/>
     <property name="entryPageId" value="page1"/>
@@ -131,40 +171,13 @@
     </property>
   </bean>
 
-  <bean id="tabMenu" parent="NavigationGroupTabMenu">
-	    <property name="items">
-	        <list>
-	            <bean parent="NavigationActionLinkField" p:navigateToPageId="page1" p:actionLabel="Information"/>
-	            <bean parent="NavigationActionLinkField" p:navigateToPageId="page2" p:actionLabel="Accounts"/>
-	        </list>
-	    </property>
+  <!-- below bean has an 'id' defined and can be used to show example url when retrieving a view by viewId -->
+  <bean id="FiscalOfficerInfo-InquiryView3" parent="FiscalOfficerInfo-InquiryView">
+    <property name="id" value="FiscalOfficerInfoInquiry3"/>
+    <property name="viewName" value="FiscalOfficerInfoInquiry3"/>
+    <property name="additionalCssFiles" ref="ka-css"/>
+    <property name="title" value="Fiscal Officer Inquiry 3"/>
   </bean>
-
-  <bean id="information" parent="GroupSectionGridLayout">
-      <property name="layoutManager.numberOfColumns" value="2"/>
-      <property name="items">
-        <list>
-          <bean parent="AttributeField" p:propertyName="id"/>
-          <bean parent="AttributeField" p:propertyName="userName"/>
-        </list>
-      </property>
-      <property name="title" value="Fiscal Officer Information"/>
-  </bean>
-	
-  <bean id="accounts" parent="CollectionGroupSectionTableLayout" p:layoutManager.numberOfColumns="3">
-	  <property name="title" value="Travel Accounts"/>
-	  <property name="collectionObjectClass" value="edu.sampleu.travel.dto.TravelAccountInfo"/>
-	  <property name="propertyName" value="accounts"/>
-	  <property name="summary" value="Travel Accounts for Fiscal Officer"/>
-	  <property name="layoutManager.sequencePropertyName" value="number"/>
-	  <property name="items">
-	    <list>
-	      <bean parent="AttributeField" p:propertyName="number"/>
-	      <bean parent="AttributeField" p:propertyName="name"/>
-	      <bean parent="AttributeField" p:propertyName="createDate"/>
-	    </list>
-	  </property>           
-  </bean>   
   
   <bean id="FiscalOfficerInfo-LookupView" parent="LookupView">
     <property name="title" value="Fiscal Officer Lookup" />
@@ -184,15 +197,33 @@
     </property>
   </bean>
   
-  <bean id="FiscalOfficerInfo-LookupView_username" parent="LookupView">
-    <property name="id" value="FiscalOfficerInfo-LookupView2"/>
-    <property name="viewName" value="FiscalOfficerInfo-LookupView2"/>
+  <!-- below bean has no 'id' defined and can be used to show example url when retrieving a view by viewId -->
+  <bean id="FiscalOfficerInfoLookupViewUsername" parent="LookupView">
+    <property name="viewName" value="FiscalOfficerInfoLookup2"/>
     <property name="title" value="Fiscal Officer Lookup" />
     <property name="dataObjectClassName" value="edu.sampleu.travel.dto.FiscalOfficerInfo" />
     <property name="viewHelperServiceClassName" value="edu.sampleu.travel.service.FiscalOfficerInfoLookupViewHelperServiceImpl" />
     <property name="criteriaFields">
       <list>
         <bean parent="LookupCriteriaAttributeField" p:propertyName="userName" />
+      </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean parent="AttributeField" p:propertyName="id" />
+        <bean parent="AttributeField" p:propertyName="userName" />
+      </list>
+    </property>
+  </bean>
+  
+  <bean id="FiscalOfficerInfo-LookupView_id" parent="LookupView">
+    <property name="viewName" value="FiscalOfficerInfoLookup3"/>
+    <property name="title" value="Fiscal Officer Lookup" />
+    <property name="dataObjectClassName" value="edu.sampleu.travel.dto.FiscalOfficerInfo" />
+    <property name="viewHelperServiceClassName" value="edu.sampleu.travel.service.FiscalOfficerInfoLookupViewHelperServiceImpl" />
+    <property name="criteriaFields">
+      <list>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="id" />
       </list>
     </property>
     <property name="resultFields">
@@ -255,16 +286,4 @@
     </property>
   </bean>
   
-  <bean id="FiscalOfficerInfoMaintenanceDocument" parent="uifMaintenanceDocumentEntry">
-    <property name="dataObjectClass" value="edu.sampleu.travel.dto.FiscalOfficerInfo"/>
-    <property name="maintainableClass" value="edu.sampleu.travel.service.FiscalOfficerInfoMaintainableImpl"/>
-    <property name="documentTypeName" value="FiscalOfficerInfoMaintenanceDocument"/>
-    <property name="documentAuthorizerClass" value="org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizerBase"/>
-    <property name="lockingKeys">
-      <list>
-        <value>userName</value>
-      </list>
-    </property>
-  </bean>
-
 </beans>

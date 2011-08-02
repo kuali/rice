@@ -17,12 +17,14 @@
 package org.kuali.rice.kew.docsearch.service.impl;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.RiceConstants;
@@ -192,7 +194,16 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 
     public void validateDocumentSearchCriteria(DocumentSearchGenerator docSearchGenerator,DocSearchCriteriaDTO criteria) {
         List<WorkflowServiceError> errors = this.validateWorkflowDocumentSearchCriteria(criteria);
-        errors.addAll(docSearchGenerator.validateSearchableAttributes(criteria));
+        List<RemotableAttributeError> searchAttributeErrors = docSearchGenerator.validateSearchableAttributes(criteria);
+        if (!CollectionUtils.isEmpty(searchAttributeErrors)) {
+            // attribute errors are fully materialized error messages, so the only "key" that makes sense is to use "error.custom"
+            for (RemotableAttributeError searchAttributeError : searchAttributeErrors) {
+                for (String errorMessage : searchAttributeError.getErrors()) {
+                    WorkflowServiceError error = new WorkflowServiceErrorImpl(errorMessage, "error.custom", errorMessage);
+                    errors.add(error);
+                }
+            }
+        }
         if (!errors.isEmpty() || !GlobalVariables.getMessageMap().hasNoErrors()) {
             throw new WorkflowServiceErrorException("Document Search Validation Errors", errors);
         }

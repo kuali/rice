@@ -49,12 +49,12 @@ public interface LookupableHelperService extends Serializable{
      *
      * @param parameters
      */
-    public void setParameters(Map parameters);
+    public void setParameters(Map<String, String[]> parameters);
 
     /**
      * @return Returns the parameters passed to this lookup
      */
-    public Map getParameters();
+    public Map<String, String[]> getParameters();
 
     /**
      * @return String url for the location to return to after the lookup

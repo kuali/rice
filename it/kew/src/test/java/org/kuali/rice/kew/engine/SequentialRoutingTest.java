@@ -54,6 +54,10 @@ public class SequentialRoutingTest extends KEWTestCase {
     	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), DOCUMENT_TYPE_NAME);
     	document.saveDocumentData();
     	assertNotNull(document.getDocumentId());
+
+        DocumentRouteHeaderValue drhv = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId());
+        System.out.println(drhv.getInitialRouteNodeInstances().size());
+
     	assertTrue("Document should be initiatied", document.isInitiated());
     	Set<String> nodeNames = document.getNodeNames();
     	assertEquals("Wrong number of node names.", 1, nodeNames.size());

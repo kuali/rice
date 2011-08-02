@@ -24,7 +24,7 @@ import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface DocumentRouteHeaderEBO extends ExternalizableBusinessObject {
+public interface DocumentSearchEbo extends ExternalizableBusinessObject {
 
 	public String getAppDocId();
 

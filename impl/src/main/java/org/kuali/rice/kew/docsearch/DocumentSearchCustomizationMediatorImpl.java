@@ -1,6 +1,8 @@
 package org.kuali.rice.kew.docsearch;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.aspectj.lang.reflect.FieldSignature;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.document.attribute.AttributeFields;
@@ -62,6 +64,36 @@ public class DocumentSearchCustomizationMediatorImpl implements DocumentSearchCu
 
         return flattenOrderedFieldMap(orderedFieldMap);
         
+    }
+
+    @Override
+    public List<RemotableAttributeError> validateSearchFieldParameters(DocumentType documentType,
+            Map<String, List<String>> parameters) {
+
+        List<DocumentTypeAttribute> searchableAttributes = documentType.getSearchableAttributes();
+        LinkedHashMap<String, List<String>> applicationIdToAttributeNameMap = new LinkedHashMap<String, List<String>>();
+
+        for (DocumentTypeAttribute searchableAttribute : searchableAttributes) {
+            RuleAttribute ruleAttribute = searchableAttribute.getRuleAttribute();
+            String attributeName = ruleAttribute.getName();
+            String applicationId = ruleAttribute.getApplicationId();
+            if (!applicationIdToAttributeNameMap.containsKey(applicationId)) {
+                applicationIdToAttributeNameMap.put(applicationId, new ArrayList<String>());
+            }
+            applicationIdToAttributeNameMap.get(applicationId).add(attributeName);
+        }
+
+        List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
+        for (String applicationId : applicationIdToAttributeNameMap.keySet()) {
+            DocumentSearchCustomizationService documentSearchCustomizationService = loadCustomizationService(applicationId);
+            List<String> searchableAttributeNames = applicationIdToAttributeNameMap.get(applicationId);
+            List<RemotableAttributeError> searchErrors = documentSearchCustomizationService.validateSearchFieldParameters(documentType.getName(), searchableAttributeNames, parameters);
+            if (!CollectionUtils.isEmpty(searchErrors)) {
+                errors.addAll(searchErrors);
+            }
+        }
+
+        return errors;
     }
 
     protected DocumentSearchCustomizationService loadCustomizationService(String applicationId) {

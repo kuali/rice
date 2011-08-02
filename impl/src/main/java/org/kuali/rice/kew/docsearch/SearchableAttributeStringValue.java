@@ -19,6 +19,8 @@ package org.kuali.rice.kew.docsearch;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttributeString;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -211,5 +213,10 @@ public class SearchableAttributeStringValue implements SearchableAttributeValue,
 	public void beforeInsert(){
 		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
 	}
+
+    @Override
+    public DocumentAttributeString toDocumentAttribute() {
+        return DocumentAttributeString.create(getSearchableAttributeKey(), getSearchableAttributeValue());
+    }
 }
 

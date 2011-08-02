@@ -20,6 +20,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
+import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 
 
@@ -72,4 +73,6 @@ public interface SearchableAttributeValue {
     public void setSearchableAttributeValueId(String searchableAttributeValueId);
 
     public Object getSearchableAttributeValue();
+
+    public DocumentAttribute<?> toDocumentAttribute();
 }

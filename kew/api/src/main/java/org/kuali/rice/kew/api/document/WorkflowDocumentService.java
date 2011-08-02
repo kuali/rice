@@ -59,7 +59,7 @@ public interface WorkflowDocumentService {
      */
     @WebMethod(operationName = "getDocument")
     @WebResult(name = "document")
-	Document getDocument(String documentId) throws RiceIllegalArgumentException;
+	Document getDocument(@WebParam(name = "documentId") String documentId) throws RiceIllegalArgumentException;
 
     /**
      * Returns a boolean depending on if a {@link Document} exists with the specified documentId

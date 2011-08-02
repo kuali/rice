@@ -24,6 +24,7 @@ import static org.junit.Assert.fail;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -560,19 +561,19 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
     	final RuleAttributeService ruleAttributeService = KEWServiceLocator.getRuleAttributeService();
     	searchableAttribute.setRuleAttribute(ruleAttributeService.findByName("SearchableAttributeVisible"));
     	
-    	Map<Object, Object> simpleParamMap = new HashMap<Object, Object>();
-    	simpleParamMap.put("givenname", "test");
+    	Map<String, List<String>> simpleParamMap = new HashMap<String, List<String>>();
+    	simpleParamMap.put("givenname", Collections.singletonList("test"));
     	List errors = new ArrayList();
     	Exception caughtException = null;
     	try {
-    		errors = searchableAttribute.validateUserSearchInputs(simpleParamMap, null);
+    		errors = searchableAttribute.validateSearchFieldParameters(simpleParamMap, null);
     	} catch (RuntimeException re) {
     		caughtException = re;
     	}
     	assertNull("Found exception "+caughtException, caughtException);
     	assertTrue("Found errors "+errors, (errors.size() == 0));
     	
-    	Map<Object, Object> listParamMap = new HashMap<Object, Object>();
+    	Map<String, List<String>> listParamMap = new HashMap<String, List<String>>();
     	List<String> multipleValues = new ArrayList<String>();
     	multipleValues.add("testone");
     	multipleValues.add("testtwo");
@@ -580,24 +581,13 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
     	errors = new ArrayList();
     	caughtException = null;
     	try {
-    		errors = searchableAttribute.validateUserSearchInputs(listParamMap, null);
+    		errors = searchableAttribute.validateSearchFieldParameters(listParamMap, null);
     	} catch (RuntimeException re) {
     		caughtException = re;
     	}
     	assertNull("Found exception "+caughtException, caughtException);
     	assertTrue("Found errors "+errors, (errors.size() == 0));
     	
-    	Map<Object, Object> badParamMap = new HashMap<Object, Object>();
-    	badParamMap.put("givenname", new Integer(7));
-    	errors = new ArrayList();
-    	caughtException = null;
-    	try {
-    		errors = searchableAttribute.validateUserSearchInputs(badParamMap, null);
-    	} catch (RuntimeException re) {
-    		caughtException = re;
-    	}
-    	assertNotNull("Found exception "+caughtException, caughtException);
-    	assertTrue("Found errors "+errors, (errors.size() == 0));
     }
     
     @Test

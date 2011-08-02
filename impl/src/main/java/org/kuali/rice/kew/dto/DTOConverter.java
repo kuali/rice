@@ -16,14 +16,12 @@
  */
 package org.kuali.rice.kew.dto;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.reflect.DataDefinition;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.reflect.PropertyDefinition;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.xml.XmlHelper;
@@ -53,7 +51,6 @@ import org.kuali.rice.kew.docsearch.DocumentSearchResult;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.docsearch.SearchableAttributeOld;
 import org.kuali.rice.kew.docsearch.web.SearchAttributeFormContainer;
-import org.kuali.rice.kew.docsearch.xml.GenericXMLSearchableAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.documentlink.DocumentLink;
 import org.kuali.rice.kew.engine.node.Branch;
@@ -86,6 +83,7 @@ import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.rule.WorkflowAttributeXmlValidator;
+import org.kuali.rice.kew.rule.XmlConfiguredAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -119,7 +117,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-
 /**
  * Translates Workflow server side beans into client side VO beans.
  *
@@ -127,8 +124,9 @@ import java.util.Set;
  */
 public class DTOConverter {
     private static final Logger LOG = Logger.getLogger(DTOConverter.class);
-    
-    public static RouteHeaderDTO convertRouteHeader(DocumentRouteHeaderValue routeHeader, String principalId) throws WorkflowException {
+
+    public static RouteHeaderDTO convertRouteHeader(DocumentRouteHeaderValue routeHeader,
+            String principalId) throws WorkflowException {
         RouteHeaderDTO routeHeaderVO = new RouteHeaderDTO();
         if (routeHeader == null) {
             return null;
@@ -138,33 +136,33 @@ public class DTOConverter {
         if (principalId != null) {
             routeHeaderVO.setUserBlanketApprover(false); // default to false
             if (routeHeader.getDocumentType() != null) {
-            	boolean isBlanketApprover = KEWServiceLocator.getDocumentTypePermissionService().canBlanketApprove(principalId, routeHeader.getDocumentType(), routeHeader.getDocRouteStatus(), routeHeader.getInitiatorWorkflowId());
+                boolean isBlanketApprover = KEWServiceLocator.getDocumentTypePermissionService().canBlanketApprove(
+                        principalId, routeHeader.getDocumentType(), routeHeader.getDocRouteStatus(),
+                        routeHeader.getInitiatorWorkflowId());
                 routeHeaderVO.setUserBlanketApprover(isBlanketApprover);
             }
-            Map<String, String> actionsRequested = KEWServiceLocator.getActionRequestService().getActionsRequested(routeHeader, principalId, true);
+            Map<String, String> actionsRequested = KEWServiceLocator.getActionRequestService().getActionsRequested(
+                    routeHeader, principalId, true);
             for (String actionRequestCode : actionsRequested.keySet()) {
-				if (KEWConstants.ACTION_REQUEST_FYI_REQ.equals(actionRequestCode)) {
-                    routeHeaderVO.setFyiRequested(Boolean.parseBoolean(actionsRequested.get(actionRequestCode)));					
-				}
-				else if (KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(actionRequestCode)) {
+                if (KEWConstants.ACTION_REQUEST_FYI_REQ.equals(actionRequestCode)) {
+                    routeHeaderVO.setFyiRequested(Boolean.parseBoolean(actionsRequested.get(actionRequestCode)));
+                } else if (KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(actionRequestCode)) {
                     routeHeaderVO.setAckRequested(Boolean.parseBoolean(actionsRequested.get(actionRequestCode)));
-				}
-				else if (KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(actionRequestCode)) {
-                    routeHeaderVO.setApproveRequested(Boolean.parseBoolean(actionsRequested.get(actionRequestCode)));					
-				}
-				else {
+                } else if (KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(actionRequestCode)) {
+                    routeHeaderVO.setApproveRequested(Boolean.parseBoolean(actionsRequested.get(actionRequestCode)));
+                } else {
                     routeHeaderVO.setCompleteRequested(Boolean.parseBoolean(actionsRequested.get(actionRequestCode)));
-				}
-			}
+                }
+            }
             // Update notes and notesToDelete arrays in routeHeaderVO
             routeHeaderVO.setNotesToDelete(null);
             routeHeaderVO.setNotes(convertNotesArrayListToNoteVOArray(routeHeader.getNotes()));
         }
 
-
         if (principalId != null) {
-        	Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
-            routeHeaderVO.setValidActions(convertValidActions(KEWServiceLocator.getActionRegistry().getValidActions(principal, routeHeader)));
+            Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
+            routeHeaderVO.setValidActions(convertValidActions(KEWServiceLocator.getActionRegistry().getValidActions(
+                    principal, routeHeader)));
         }
         return routeHeaderVO;
     }
@@ -177,7 +175,8 @@ public class DTOConverter {
         return validActionsVO;
     }
 
-    private static void populateRouteHeaderVO(RouteHeaderDTO routeHeaderVO, DocumentRouteHeaderValue routeHeader) throws WorkflowException {
+    private static void populateRouteHeaderVO(RouteHeaderDTO routeHeaderVO,
+            DocumentRouteHeaderValue routeHeader) throws WorkflowException {
         routeHeaderVO.setDocumentId(routeHeader.getDocumentId());
         routeHeaderVO.setAppDocId(routeHeader.getAppDocId());
         routeHeaderVO.setDateApproved(SQLUtils.convertTimestamp(routeHeader.getApprovedDate()));
@@ -186,7 +185,7 @@ public class DTOConverter {
         routeHeaderVO.setDateLastModified(SQLUtils.convertTimestamp(routeHeader.getStatusModDate()));
         routeHeaderVO.setAppDocStatus(routeHeader.getAppDocStatus());
         routeHeaderVO.setAppDocStatusDate(SQLUtils.convertTimestamp(routeHeader.getAppDocStatusDate()));
-        
+
         /**
          * This is the original code which set everything up for lazy loading of document content
          */
@@ -233,7 +232,8 @@ public class DTOConverter {
                 BranchState bs = (BranchState) it.next();
                 if (bs.getKey() != null && bs.getKey().startsWith(BranchState.VARIABLE_PREFIX)) {
                     LOG.debug("Setting branch state variable on vo: " + bs.getKey() + "=" + bs.getValue());
-                    routeHeaderVO.setVariable(bs.getKey().substring(BranchState.VARIABLE_PREFIX.length()), bs.getValue());
+                    routeHeaderVO.setVariable(bs.getKey().substring(BranchState.VARIABLE_PREFIX.length()),
+                            bs.getValue());
                 }
             }
         }
@@ -251,9 +251,11 @@ public class DTOConverter {
         routeHeader.setDocRouteStatus(routeHeaderVO.getDocRouteStatus());
         routeHeader.setDocTitle(routeHeaderVO.getDocTitle());
         if (routeHeaderVO.getDocTypeName() != null) {
-            DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(routeHeaderVO.getDocTypeName());
+            DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(
+                    routeHeaderVO.getDocTypeName());
             if (documentType == null) {
-                throw new RiceRuntimeException("Could not locate the given document type name: " + routeHeaderVO.getDocTypeName());
+                throw new RiceRuntimeException(
+                        "Could not locate the given document type name: " + routeHeaderVO.getDocTypeName());
             }
             routeHeader.setDocumentTypeId(documentType.getDocumentTypeId());
         }
@@ -266,15 +268,14 @@ public class DTOConverter {
         routeHeader.setAppDocStatus(routeHeaderVO.getAppDocStatus());
         routeHeader.setAppDocStatusDate(SQLUtils.convertCalendar(routeHeaderVO.getAppDocStatusDate()));
 
-        
         // Convert the variables
         List<KeyValue> variables = routeHeaderVO.getVariables();
-        if( variables != null && !variables.isEmpty()){
-        	for(KeyValue kvp : variables){
-        		routeHeader.setVariable(kvp.getKey(), kvp.getValue());
-        	}
+        if (variables != null && !variables.isEmpty()) {
+            for (KeyValue kvp : variables) {
+                routeHeader.setVariable(kvp.getKey(), kvp.getValue());
+            }
         }
-        
+
         return routeHeader;
     }
 
@@ -302,53 +303,62 @@ public class DTOConverter {
         return actionItemVO;
     }
 
-    public static String buildUpdatedDocumentContent(String existingDocContent, DocumentContentUpdate documentContentUpdate, String documentTypeName) {
-    	if (existingDocContent == null) {
-    		existingDocContent = KEWConstants.DEFAULT_DOCUMENT_CONTENT;
-    	}
+    public static String buildUpdatedDocumentContent(String existingDocContent,
+            DocumentContentUpdate documentContentUpdate, String documentTypeName) {
+        if (existingDocContent == null) {
+            existingDocContent = KEWConstants.DEFAULT_DOCUMENT_CONTENT;
+        }
         String documentContent = KEWConstants.DEFAULT_DOCUMENT_CONTENT;
         StandardDocumentContent standardDocContent = new StandardDocumentContent(existingDocContent);
         try {
-        	DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        	Document document = builder.newDocument();
-        	Element root = document.createElement(KEWConstants.DOCUMENT_CONTENT_ELEMENT);
-        	document.appendChild(root);
-        	Element applicationContentElement = standardDocContent.getApplicationContent();
-        	if (documentContentUpdate.getApplicationContent() != null) {
-        		// application content has changed
-        		if (!StringUtils.isEmpty(documentContentUpdate.getApplicationContent())) {
-        			applicationContentElement = document.createElement(KEWConstants.APPLICATION_CONTENT_ELEMENT);
-        			XmlHelper.appendXml(applicationContentElement, documentContentUpdate.getApplicationContent());
-        		} else {
-        			// they've cleared the application content
-        			applicationContentElement = null;
-        		}
-        	}
-        	Element attributeContentElement = createDocumentContentSection(document, standardDocContent.getAttributeContent(), documentContentUpdate.getAttributeDefinitions(), documentContentUpdate.getAttributeContent(), KEWConstants.ATTRIBUTE_CONTENT_ELEMENT, documentTypeName);
-        	Element searchableContentElement = createDocumentContentSection(document, standardDocContent.getSearchableContent(), documentContentUpdate.getSearchableDefinitions(), documentContentUpdate.getSearchableContent(), KEWConstants.SEARCHABLE_CONTENT_ELEMENT, documentTypeName);
-        	if (applicationContentElement != null) {
-        		root.appendChild(applicationContentElement);
-        	}
-        	if (attributeContentElement != null) {
-        		root.appendChild(attributeContentElement);
-        	}
-        	if (searchableContentElement != null) {
-        		root.appendChild(searchableContentElement);
-        	}
-        	documentContent = XmlJotter.jotNode(document);
+            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document document = builder.newDocument();
+            Element root = document.createElement(KEWConstants.DOCUMENT_CONTENT_ELEMENT);
+            document.appendChild(root);
+            Element applicationContentElement = standardDocContent.getApplicationContent();
+            if (documentContentUpdate.getApplicationContent() != null) {
+                // application content has changed
+                if (!StringUtils.isEmpty(documentContentUpdate.getApplicationContent())) {
+                    applicationContentElement = document.createElement(KEWConstants.APPLICATION_CONTENT_ELEMENT);
+                    XmlHelper.appendXml(applicationContentElement, documentContentUpdate.getApplicationContent());
+                } else {
+                    // they've cleared the application content
+                    applicationContentElement = null;
+                }
+            }
+            Element attributeContentElement = createDocumentContentSection(document,
+                    standardDocContent.getAttributeContent(), documentContentUpdate.getAttributeDefinitions(),
+                    documentContentUpdate.getAttributeContent(), KEWConstants.ATTRIBUTE_CONTENT_ELEMENT,
+                    documentTypeName);
+            Element searchableContentElement = createDocumentContentSection(document,
+                    standardDocContent.getSearchableContent(), documentContentUpdate.getSearchableDefinitions(),
+                    documentContentUpdate.getSearchableContent(), KEWConstants.SEARCHABLE_CONTENT_ELEMENT,
+                    documentTypeName);
+            if (applicationContentElement != null) {
+                root.appendChild(applicationContentElement);
+            }
+            if (attributeContentElement != null) {
+                root.appendChild(attributeContentElement);
+            }
+            if (searchableContentElement != null) {
+                root.appendChild(searchableContentElement);
+            }
+            documentContent = XmlJotter.jotNode(document);
         } catch (ParserConfigurationException e) {
-        	throw new RiceRuntimeException("Failed to initialize XML parser.", e);
+            throw new RiceRuntimeException("Failed to initialize XML parser.", e);
         } catch (SAXException e) {
-        	throw new InvalidDocumentContentException("Failed to parse XML.", e);
-		} catch (IOException e) {
-			throw new InvalidDocumentContentException("Failed to parse XML.", e);
-		} catch (TransformerException e) {
-			throw new InvalidDocumentContentException("Failed to parse XML.", e);
-		}
+            throw new InvalidDocumentContentException("Failed to parse XML.", e);
+        } catch (IOException e) {
+            throw new InvalidDocumentContentException("Failed to parse XML.", e);
+        } catch (TransformerException e) {
+            throw new InvalidDocumentContentException("Failed to parse XML.", e);
+        }
         return documentContent;
     }
 
-    private static Element createDocumentContentSection(Document document, Element existingAttributeElement, List<WorkflowAttributeDefinition> definitions, String content, String elementName, String documentTypeName) throws TransformerException, SAXException, IOException, ParserConfigurationException {
+    private static Element createDocumentContentSection(Document document, Element existingAttributeElement,
+            List<WorkflowAttributeDefinition> definitions, String content, String elementName,
+            String documentTypeName) throws TransformerException, SAXException, IOException, ParserConfigurationException {
         Element contentSectionElement = existingAttributeElement;
         // if they've updated the content, we're going to re-build the content section element from scratch
         if (content != null) {
@@ -377,27 +387,27 @@ public class DTOConverter {
                 RuleAttribute ruleAttribute = definition.getRuleAttribute();
                 Object attribute = KEWServiceLocator.getRuleAttributeService().loadRuleAttributeService(ruleAttribute,
                         null);
+                if (attribute instanceof XmlConfiguredAttribute) {
+                    ((XmlConfiguredAttribute)attribute).setRuleAttribute(ruleAttribute);
+                }
                 boolean propertiesAsMap = false;
                 if (KEWConstants.RULE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
-                    ((GenericXMLRuleAttribute) attribute).setRuleAttribute(ruleAttribute);
-                    propertiesAsMap = true;
-                } else if (KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
-                    ((GenericXMLSearchableAttribute) attribute).setRuleAttribute(ruleAttribute);
                     propertiesAsMap = true;
                 }
                 if (propertiesAsMap) {
-                    for (org.kuali.rice.kew.api.document.PropertyDefinition propertyDefinitionVO : definitionVO.getPropertyDefinitions()) {
+                    for (org.kuali.rice.kew.api.document.PropertyDefinition propertyDefinitionVO : definitionVO
+                            .getPropertyDefinitions()) {
                         if (attribute instanceof GenericXMLRuleAttribute) {
-                            ((GenericXMLRuleAttribute) attribute).getParamMap().put(propertyDefinitionVO.getName(), propertyDefinitionVO.getValue());
-                        } else if (attribute instanceof GenericXMLSearchableAttribute) {
-                            ((GenericXMLSearchableAttribute) attribute).getParamMap().put(propertyDefinitionVO.getName(), propertyDefinitionVO.getValue());
+                            ((GenericXMLRuleAttribute) attribute).getParamMap().put(propertyDefinitionVO.getName(),
+                                    propertyDefinitionVO.getValue());
                         }
                     }
                 }
 
                 // validate inputs from client application if the attribute is capable
                 if (attribute instanceof WorkflowAttributeXmlValidator) {
-                    List<WorkflowAttributeValidationError> errors = ((WorkflowAttributeXmlValidator) attribute).validateClientRoutingData();
+                    List<WorkflowAttributeValidationError> errors =
+                            ((WorkflowAttributeXmlValidator) attribute).validateClientRoutingData();
                     if (!errors.isEmpty()) {
                         inError = true;
                         errorMessage += "Error validating attribute " + definitionVO.getAttributeName() + " ";
@@ -415,14 +425,15 @@ public class DTOConverter {
                         }
                     } else if (attribute instanceof SearchableAttributeOld) {
                         // TODO remove this section once we remove SearchableAttributeOld
-                        String searcheAttributeContent =
-                        	((SearchableAttributeOld) attribute).getSearchContent(DocSearchUtils.getDocumentSearchContext("", documentTypeName, ""));
+                        String searcheAttributeContent = ((SearchableAttributeOld) attribute).getSearchContent(
+                                DocSearchUtils.getDocumentSearchContext("", documentTypeName, ""));
                         if (!StringUtils.isEmpty(searcheAttributeContent)) {
                             XmlHelper.appendXml(contentSectionElement, searcheAttributeContent);
                         }
                     } else if (attribute instanceof SearchableAttribute) {
-                        SearchableAttribute searchableAttribute = (SearchableAttribute)attribute;
-                        String searchableAttributeContent = searchableAttribute.generateSearchContent(documentTypeName, definitionVO);
+                        SearchableAttribute searchableAttribute = (SearchableAttribute) attribute;
+                        String searchableAttributeContent = searchableAttribute.generateSearchContent(documentTypeName,
+                                definitionVO);
                         if (!StringUtils.isBlank(searchableAttributeContent)) {
                             XmlHelper.appendXml(contentSectionElement, searchableAttributeContent);
                         }
@@ -442,7 +453,6 @@ public class DTOConverter {
         }
         return contentSectionElement;
     }
-    
 
     /**
      * New for Rice 2.0
@@ -452,7 +462,8 @@ public class DTOConverter {
             return null;
         }
         // get the rule attribute so we can get's it's message antity and not blow up if it's remote
-        RuleAttribute ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByClassName(definition.getAttributeName());
+        RuleAttribute ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByClassName(
+                definition.getAttributeName());
         if (ruleAttribute == null) {
             ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByName(definition.getAttributeName());
         }
@@ -462,31 +473,35 @@ public class DTOConverter {
 
         ObjectDefinition objectDefinition = new ObjectDefinition(ruleAttribute.getClassName());
         if (definition.getParameters() != null) {
-        	for (String parameter : definition.getParameters()) {
-        		objectDefinition.addConstructorParameter(new DataDefinition(parameter, String.class));
-        	}
+            for (String parameter : definition.getParameters()) {
+                objectDefinition.addConstructorParameter(new DataDefinition(parameter, String.class));
+            }
         }
-        boolean propertiesAsMap = KEWConstants.RULE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType()) || KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType());
+        boolean propertiesAsMap = KEWConstants.RULE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType()) || KEWConstants
+                .SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType());
         if (!propertiesAsMap && definition.getPropertyDefinitions() != null) {
-        	for (org.kuali.rice.kew.api.document.PropertyDefinition propertyDefinition : definition.getPropertyDefinitions()) {
-                objectDefinition.addProperty(new PropertyDefinition(propertyDefinition.getName(), new DataDefinition(propertyDefinition.getValue(), String.class)));
+            for (org.kuali.rice.kew.api.document.PropertyDefinition propertyDefinition : definition
+                    .getPropertyDefinitions()) {
+                objectDefinition.addProperty(new PropertyDefinition(propertyDefinition.getName(), new DataDefinition(
+                        propertyDefinition.getValue(), String.class)));
             }
         }
 
-//        // this is likely from an EDL validate call and ME may needed to be added to the AttDefinitionVO.
-//        if (ruleAttribute.getApplicationId() != null) {
-//            definition.setApplicationId(ruleAttribute.getApplicationId());
-//        } else {
-//            // get the me from the document type if it's been passed in - the document is having action taken on it.
-//            if (documentType != null) {
-//                definition.setApplicationId(documentType.getApplicationId());
-//            }
-//        }
+        //        // this is likely from an EDL validate call and ME may needed to be added to the AttDefinitionVO.
+        //        if (ruleAttribute.getApplicationId() != null) {
+        //            definition.setApplicationId(ruleAttribute.getApplicationId());
+        //        } else {
+        //            // get the me from the document type if it's been passed in - the document is having action taken on it.
+        //            if (documentType != null) {
+        //                definition.setApplicationId(documentType.getApplicationId());
+        //            }
+        //        }
 
         return new AttributeDefinition(ruleAttribute, objectDefinition);
     }
-    
-    public static DocumentContentDTO convertDocumentContent(String documentContentValue, String documentId) throws WorkflowException {
+
+    public static DocumentContentDTO convertDocumentContent(String documentContentValue,
+            String documentId) throws WorkflowException {
         if (documentContentValue == null) {
             return null;
         }
@@ -514,10 +529,11 @@ public class DTOConverter {
     }
 
     public static ActionRequestDTO convertActionRequest(ActionRequestValue actionRequest) {
-    	return convertActionRequest(actionRequest, true);
+        return convertActionRequest(actionRequest, true);
     }
 
-    protected static ActionRequestDTO convertActionRequest(ActionRequestValue actionRequest, boolean includeActionTaken) {
+    protected static ActionRequestDTO convertActionRequest(ActionRequestValue actionRequest,
+            boolean includeActionTaken) {
         ActionRequestDTO actionRequestVO = new ActionRequestDTO();
         actionRequestVO.setActionRequested(actionRequest.getActionRequested());
         actionRequestVO.setActionRequestId(actionRequest.getActionRequestId());
@@ -539,7 +555,8 @@ public class DTOConverter {
         actionRequestVO.setDocumentId(actionRequest.getDocumentId());
         actionRequestVO.setRouteLevel(actionRequest.getRouteLevel());
         actionRequestVO.setNodeName(actionRequest.getPotentialNodeName());
-        actionRequestVO.setNodeInstanceId((actionRequest.getNodeInstance() == null ? null : actionRequest.getNodeInstance().getRouteNodeInstanceId()));
+        actionRequestVO.setNodeInstanceId((actionRequest.getNodeInstance() == null ? null :
+                actionRequest.getNodeInstance().getRouteNodeInstanceId()));
         // TODO delyea - should below be using actionRequest.getRoleName()?
         actionRequestVO.setRoleName(actionRequest.getQualifiedRoleName());
         actionRequestVO.setQualifiedRoleName(actionRequest.getQualifiedRoleName());
@@ -560,11 +577,11 @@ public class DTOConverter {
     }
 
     public static ActionTakenDTO convertActionTakenWithActionRequests(ActionTakenValue actionTaken) {
-    	return convertActionTaken(actionTaken, true);
+        return convertActionTaken(actionTaken, true);
     }
 
     public static ActionTakenDTO convertActionTaken(ActionTakenValue actionTaken) {
-    	return convertActionTaken(actionTaken, false);
+        return convertActionTaken(actionTaken, false);
     }
 
     protected static ActionTakenDTO convertActionTaken(ActionTakenValue actionTaken, boolean fetchActionRequests) {
@@ -582,13 +599,13 @@ public class DTOConverter {
         actionTakenVO.setDelegatorPrincpalId(actionTaken.getDelegatorPrincipalId());
         actionTakenVO.setDelegatorGroupId(actionTaken.getDelegatorGroupId());
         if (fetchActionRequests) {
-	        ActionRequestDTO[] actionRequests = new ActionRequestDTO[actionTaken.getActionRequests().size()];
-	        int index = 0;
-	        for (Object element : actionTaken.getActionRequests()) {
-	            ActionRequestValue actionRequest = (ActionRequestValue) element;
-	            actionRequests[index++] = convertActionRequest(actionRequest, false);
-	        }
-	        actionTakenVO.setActionRequests(actionRequests);
+            ActionRequestDTO[] actionRequests = new ActionRequestDTO[actionTaken.getActionRequests().size()];
+            int index = 0;
+            for (Object element : actionTaken.getActionRequests()) {
+                ActionRequestValue actionRequest = (ActionRequestValue) element;
+                actionRequests[index++] = convertActionRequest(actionRequest, false);
+            }
+            actionTakenVO.setActionRequests(actionRequests);
         }
         return actionTakenVO;
     }
@@ -630,10 +647,10 @@ public class DTOConverter {
         }
         String groupId = responsiblePartyVO.getGroupId();
         if (groupId != null) {
-        	Group group = KimApiServiceLocator.getGroupService().getGroup(groupId);
-        	if (group == null) {
-        		throw new RiceRuntimeException("Failed to locate group with ID: " + groupId);
-        	}
+            Group group = KimApiServiceLocator.getGroupService().getGroup(groupId);
+            if (group == null) {
+                throw new RiceRuntimeException("Failed to locate group with ID: " + groupId);
+            }
             return new KimGroupRecipient(group);
         }
         String principalId = responsiblePartyVO.getPrincipalId();
@@ -644,33 +661,37 @@ public class DTOConverter {
     }
 
     /**
-     * Interface for a simple service providing RouteNodeInstanceS based on their IDs 
+     * Interface for a simple service providing RouteNodeInstanceS based on their IDs
      */
     public static interface RouteNodeInstanceLoader {
-    	RouteNodeInstance load(String routeNodeInstanceID);
+        RouteNodeInstance load(String routeNodeInstanceID);
     }
-    
+
     /**
-     * Converts an ActionRequestVO to an ActionRequest. The ActionRequestDTO passed in must be the root action request in the
+     * Converts an ActionRequestVO to an ActionRequest. The ActionRequestDTO passed in must be the root action request
+     * in the
      * graph, otherwise an IllegalArgumentException is thrown. This is to avoid potentially sticky issues with circular
      * references in the conversion. NOTE: This method's primary purpose is to convert ActionRequestVOs returned from a
-     * RouteModule. Incidentally, the DTO's returned from the route module will be lacking some information (like the node
+     * RouteModule. Incidentally, the DTO's returned from the route module will be lacking some information (like the
+     * node
      * instance) so no attempts are made to convert this data since further initialization is handled by a higher level
      * component (namely ActionRequestService.initializeActionRequestGraph).
      */
     public static ActionRequestValue convertActionRequestDTO(ActionRequestDTO actionRequestDTO) {
-    	return convertActionRequestDTO(actionRequestDTO, null);
+        return convertActionRequestDTO(actionRequestDTO, null);
     }
-    
+
     /**
-     * Converts an ActionRequestVO to an ActionRequest. The ActionRequestDTO passed in must be the root action request in the
+     * Converts an ActionRequestVO to an ActionRequest. The ActionRequestDTO passed in must be the root action request
+     * in the
      * graph, otherwise an IllegalArgumentException is thrown. This is to avoid potentially sticky issues with circular
-     * references in the conversion. 
+     * references in the conversion.
+     *
      * @param routeNodeInstanceLoader a service that will provide routeNodeInstanceS based on their IDs.
      */
-    public static ActionRequestValue convertActionRequestDTO(ActionRequestDTO actionRequestDTO, 
-    		RouteNodeInstanceLoader routeNodeInstanceLoader) {
-    	
+    public static ActionRequestValue convertActionRequestDTO(ActionRequestDTO actionRequestDTO,
+            RouteNodeInstanceLoader routeNodeInstanceLoader) {
+
         if (actionRequestDTO == null) {
             return null;
         }
@@ -682,15 +703,16 @@ public class DTOConverter {
         if (actionRequestDTO.getChildrenRequests() != null) {
             for (int i = 0; i < actionRequestDTO.getChildrenRequests().length; i++) {
                 ActionRequestDTO childVO = actionRequestDTO.getChildrenRequests()[i];
-                actionRequest.getChildrenRequests().add(convertActionRequestVO(childVO, actionRequest, routeNodeInstanceLoader));
+                actionRequest.getChildrenRequests().add(convertActionRequestVO(childVO, actionRequest,
+                        routeNodeInstanceLoader));
             }
         }
         return actionRequest;
     }
 
     // TODO: should this be private?  If so, rename to convertActionRequestDTO for consistency.
-    protected static ActionRequestValue convertActionRequestVO(ActionRequestDTO actionRequestDTO, ActionRequestValue parentActionRequest,
-    		RouteNodeInstanceLoader routeNodeInstanceLoader) {
+    protected static ActionRequestValue convertActionRequestVO(ActionRequestDTO actionRequestDTO,
+            ActionRequestValue parentActionRequest, RouteNodeInstanceLoader routeNodeInstanceLoader) {
         if (actionRequestDTO == null) {
             return null;
         }
@@ -701,7 +723,8 @@ public class DTOConverter {
         if (actionRequestDTO.getChildrenRequests() != null) {
             for (int i = 0; i < actionRequestDTO.getChildrenRequests().length; i++) {
                 ActionRequestDTO childVO = actionRequestDTO.getChildrenRequests()[i];
-                actionRequest.getChildrenRequests().add(convertActionRequestVO(childVO, actionRequest, routeNodeInstanceLoader));
+                actionRequest.getChildrenRequests().add(convertActionRequestVO(childVO, actionRequest,
+                        routeNodeInstanceLoader));
             }
         }
         return actionRequest;
@@ -710,8 +733,8 @@ public class DTOConverter {
     /**
      * This method converts everything except for the parent and child requests
      */
-    private static void populateActionRequest(ActionRequestValue actionRequest, ActionRequestDTO actionRequestDTO, 
-    		RouteNodeInstanceLoader routeNodeInstanceLoader) {
+    private static void populateActionRequest(ActionRequestValue actionRequest, ActionRequestDTO actionRequestDTO,
+            RouteNodeInstanceLoader routeNodeInstanceLoader) {
 
         actionRequest.setActionRequested(actionRequestDTO.getActionRequested());
         actionRequest.setActionRequestId(actionRequestDTO.getActionRequestId());
@@ -740,9 +763,9 @@ public class DTOConverter {
         actionRequest.setStatus(actionRequestDTO.getStatus());
         actionRequest.setPrincipalId(actionRequestDTO.getPrincipalId());
         actionRequest.setGroupId(actionRequestDTO.getGroupId());
-        
+
         if (routeNodeInstanceLoader != null && actionRequestDTO.getNodeInstanceId() != null) {
-        	actionRequest.setNodeInstance(routeNodeInstanceLoader.load(actionRequestDTO.getNodeInstanceId()));
+            actionRequest.setNodeInstance(routeNodeInstanceLoader.load(actionRequestDTO.getNodeInstanceId()));
         }
     }
 
@@ -766,7 +789,8 @@ public class DTOConverter {
         return actionTaken;
     }
 
-    public static DocumentRouteStatusChangeDTO convertDocumentRouteStatusChange(DocumentRouteStatusChange statusChange) {
+    public static DocumentRouteStatusChangeDTO convertDocumentRouteStatusChange(
+            DocumentRouteStatusChange statusChange) {
         if (statusChange == null) {
             return null;
         }
@@ -778,7 +802,8 @@ public class DTOConverter {
         return statusChangeVO;
     }
 
-    public static DocumentRouteLevelChangeDTO convertDocumentRouteLevelChange(DocumentRouteLevelChange routeLevelChange) {
+    public static DocumentRouteLevelChangeDTO convertDocumentRouteLevelChange(
+            DocumentRouteLevelChange routeLevelChange) {
         if (routeLevelChange == null) {
             return null;
         }
@@ -848,13 +873,14 @@ public class DTOConverter {
         return documentLockingEvent;
     }
 
-    
-    public static AttributeDefinition convertWorkflowAttributeDefinitionVO(WorkflowAttributeDefinitionDTO definitionVO, org.kuali.rice.kew.doctype.bo.DocumentType documentType) {
+    public static AttributeDefinition convertWorkflowAttributeDefinitionVO(WorkflowAttributeDefinitionDTO definitionVO,
+            org.kuali.rice.kew.doctype.bo.DocumentType documentType) {
         if (definitionVO == null) {
             return null;
         }
         // get the rule attribute so we can get's it's message antity and not blow up if it's remote
-        RuleAttribute ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByClassName(definitionVO.getAttributeName());
+        RuleAttribute ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByClassName(
+                definitionVO.getAttributeName());
         if (ruleAttribute == null) {
             ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByName(definitionVO.getAttributeName());
         }
@@ -867,11 +893,13 @@ public class DTOConverter {
             String parameter = definitionVO.getConstructorParameters()[index];
             definition.addConstructorParameter(new DataDefinition(parameter, String.class));
         }
-        boolean propertiesAsMap = KEWConstants.RULE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType()) || KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType());
+        boolean propertiesAsMap = KEWConstants.RULE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType()) || KEWConstants
+                .SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType());
         if (!propertiesAsMap) {
             for (int index = 0; index < definitionVO.getProperties().length; index++) {
                 PropertyDefinitionDTO propertyDefVO = definitionVO.getProperties()[index];
-                definition.addProperty(new PropertyDefinition(propertyDefVO.getName(), new DataDefinition(propertyDefVO.getValue(), String.class)));
+                definition.addProperty(new PropertyDefinition(propertyDefVO.getName(), new DataDefinition(
+                        propertyDefVO.getValue(), String.class)));
             }
         }
 
@@ -888,7 +916,8 @@ public class DTOConverter {
         return new AttributeDefinition(ruleAttribute, definition);
     }
 
-    public static DocumentDetailDTO convertDocumentDetail(DocumentRouteHeaderValue routeHeader) throws WorkflowException {
+    public static DocumentDetailDTO convertDocumentDetail(
+            DocumentRouteHeaderValue routeHeader) throws WorkflowException {
         if (routeHeader == null) {
             return null;
         }
@@ -896,8 +925,9 @@ public class DTOConverter {
         populateRouteHeaderVO(detail, routeHeader);
         Map nodeInstances = new HashMap();
         List actionRequestVOs = new ArrayList();
-        List rootActionRequests = KEWServiceLocator.getActionRequestService().getRootRequests(routeHeader.getActionRequests());
-        for (Iterator iterator = rootActionRequests.iterator(); iterator.hasNext();) {
+        List rootActionRequests = KEWServiceLocator.getActionRequestService().getRootRequests(
+                routeHeader.getActionRequests());
+        for (Iterator iterator = rootActionRequests.iterator(); iterator.hasNext(); ) {
             ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
             actionRequestVOs.add(convertActionRequest(actionRequest));
             RouteNodeInstance nodeInstance = actionRequest.getNodeInstance();
@@ -905,13 +935,14 @@ public class DTOConverter {
                 continue;
             }
             if (nodeInstance.getRouteNodeInstanceId() == null) {
-                throw new WorkflowException("Error creating document detail structure because of NULL node instance id.");
+                throw new WorkflowException(
+                        "Error creating document detail structure because of NULL node instance id.");
             }
             nodeInstances.put(nodeInstance.getRouteNodeInstanceId(), nodeInstance);
         }
         detail.setActionRequests((ActionRequestDTO[]) actionRequestVOs.toArray(new ActionRequestDTO[0]));
         List nodeInstanceVOs = new ArrayList();
-        for (Iterator iterator = nodeInstances.values().iterator(); iterator.hasNext();) {
+        for (Iterator iterator = nodeInstances.values().iterator(); iterator.hasNext(); ) {
             RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
             nodeInstanceVOs.add(convertRouteNodeInstance(nodeInstance));
         }
@@ -933,8 +964,9 @@ public class DTOConverter {
         DocumentDetail.Builder detail = DocumentDetail.Builder.create(document);
         Map<String, RouteNodeInstance> nodeInstances = new HashMap<String, RouteNodeInstance>();
         List<ActionRequest> actionRequestVOs = new ArrayList<ActionRequest>();
-        List<ActionRequestValue> rootActionRequests = KEWServiceLocator.getActionRequestService().getRootRequests(routeHeader.getActionRequests());
-        for (Iterator<ActionRequestValue> iterator = rootActionRequests.iterator(); iterator.hasNext();) {
+        List<ActionRequestValue> rootActionRequests = KEWServiceLocator.getActionRequestService().getRootRequests(
+                routeHeader.getActionRequests());
+        for (Iterator<ActionRequestValue> iterator = rootActionRequests.iterator(); iterator.hasNext(); ) {
             ActionRequestValue actionRequest = iterator.next();
             actionRequestVOs.add(ActionRequestValue.to(actionRequest));
             RouteNodeInstance nodeInstance = actionRequest.getNodeInstance();
@@ -942,13 +974,15 @@ public class DTOConverter {
                 continue;
             }
             if (nodeInstance.getRouteNodeInstanceId() == null) {
-                throw new IllegalStateException("Error creating document detail structure because of NULL node instance id.");
+                throw new IllegalStateException(
+                        "Error creating document detail structure because of NULL node instance id.");
             }
             nodeInstances.put(nodeInstance.getRouteNodeInstanceId(), nodeInstance);
         }
         detail.setActionRequests(actionRequestVOs);
-        List<org.kuali.rice.kew.api.document.node.RouteNodeInstance> nodeInstanceVOs = new ArrayList<org.kuali.rice.kew.api.document.node.RouteNodeInstance>();
-        for (Iterator<RouteNodeInstance> iterator = nodeInstances.values().iterator(); iterator.hasNext();) {
+        List<org.kuali.rice.kew.api.document.node.RouteNodeInstance> nodeInstanceVOs =
+                new ArrayList<org.kuali.rice.kew.api.document.node.RouteNodeInstance>();
+        for (Iterator<RouteNodeInstance> iterator = nodeInstances.values().iterator(); iterator.hasNext(); ) {
             RouteNodeInstance nodeInstance = iterator.next();
             nodeInstanceVOs.add(RouteNodeInstance.to(nodeInstance));
         }
@@ -962,8 +996,8 @@ public class DTOConverter {
         return detail.build();
     }
 
-    
-    public static RouteNodeInstanceDTO convertRouteNodeInstance(RouteNodeInstance nodeInstance) throws WorkflowException {
+    public static RouteNodeInstanceDTO convertRouteNodeInstance(
+            RouteNodeInstance nodeInstance) throws WorkflowException {
         if (nodeInstance == null) {
             return null;
         }
@@ -974,7 +1008,8 @@ public class DTOConverter {
         nodeInstanceVO.setDocumentId(nodeInstance.getDocumentId());
         nodeInstanceVO.setInitial(nodeInstance.isInitial());
         nodeInstanceVO.setName(nodeInstance.getName());
-        nodeInstanceVO.setProcessId(nodeInstance.getProcess() != null ? nodeInstance.getProcess().getRouteNodeInstanceId() : null);
+        nodeInstanceVO.setProcessId(
+                nodeInstance.getProcess() != null ? nodeInstance.getProcess().getRouteNodeInstanceId() : null);
         nodeInstanceVO.setRouteNodeId(nodeInstance.getRouteNode().getRouteNodeId());
         nodeInstanceVO.setRouteNodeInstanceId(nodeInstance.getRouteNodeInstanceId());
         nodeInstanceVO.setState(convertStates(nodeInstance.getState()));
@@ -995,7 +1030,7 @@ public class DTOConverter {
         }
         StateDTO[] stateVOs = new StateDTO[states.size()];
         int index = 0;
-        for (Iterator iterator = states.iterator(); iterator.hasNext();) {
+        for (Iterator iterator = states.iterator(); iterator.hasNext(); ) {
             State state = (State) iterator.next();
             stateVOs[index++] = convertState(state);
         }
@@ -1021,22 +1056,23 @@ public class DTOConverter {
      * TODO: Temporary, just to keep compiler happy.  Remove once AdHocRevokeDTO can be removed.
      */
     public static AdHocRevoke convertAdHocRevokeVO(AdHocRevokeDTO revokeVO) throws WorkflowException {
-    	Set<String> nodeNames = new HashSet<String>();
-    	Set<String> principalIds = new HashSet<String>();
-    	Set<String> groupIds = new HashSet<String>();
-    	if (revokeVO.getNodeName() != null) {
-    		nodeNames.add(revokeVO.getNodeName());
-    	}
-    	if (revokeVO.getPrincipalId() != null) {
-    		principalIds.add(revokeVO.getPrincipalId());
-    	}
-    	if (revokeVO.getGroupId() != null) {
-    		principalIds.add(revokeVO.getGroupId());
-    	}
-    	return AdHocRevoke.create(nodeNames, principalIds, groupIds);
+        Set<String> nodeNames = new HashSet<String>();
+        Set<String> principalIds = new HashSet<String>();
+        Set<String> groupIds = new HashSet<String>();
+        if (revokeVO.getNodeName() != null) {
+            nodeNames.add(revokeVO.getNodeName());
+        }
+        if (revokeVO.getPrincipalId() != null) {
+            principalIds.add(revokeVO.getPrincipalId());
+        }
+        if (revokeVO.getGroupId() != null) {
+            principalIds.add(revokeVO.getGroupId());
+        }
+        return AdHocRevoke.create(nodeNames, principalIds, groupIds);
     }
 
-    public static WorkflowAttributeValidationErrorDTO convertWorkflowAttributeValidationError(WorkflowAttributeValidationError error) {
+    public static WorkflowAttributeValidationErrorDTO convertWorkflowAttributeValidationError(
+            WorkflowAttributeValidationError error) {
         return new WorkflowAttributeValidationErrorDTO(error.getKey(), error.getMessage());
     }
 
@@ -1087,7 +1123,7 @@ public class DTOConverter {
             int i = 0;
             Note tempNote;
             NoteDTO tempNoteVO;
-            for (Iterator it = notesArrayList.iterator(); it.hasNext();) {
+            for (Iterator it = notesArrayList.iterator(); it.hasNext(); ) {
                 tempNote = (Note) it.next();
                 tempNoteVO = new NoteDTO();
                 tempNoteVO.setNoteId(tempNote.getNoteId());
@@ -1117,10 +1153,12 @@ public class DTOConverter {
         criteria.setActivateRequests(criteriaVO.getActivateRequests());
         criteria.setFlattenNodes(criteriaVO.isFlattenNodes());
         if (criteriaVO.getRoutingPrincipalId() != null) {
-        	Principal kPrinc = KEWServiceLocator.getIdentityHelperService().getPrincipal(criteriaVO.getRoutingPrincipalId());
+            Principal kPrinc = KEWServiceLocator.getIdentityHelperService().getPrincipal(
+                    criteriaVO.getRoutingPrincipalId());
             Person user = KimApiServiceLocator.getPersonService().getPerson(kPrinc.getPrincipalId());
             if (user == null) {
-                throw new RiceRuntimeException("Could not locate user for the given id: " + criteriaVO.getRoutingPrincipalId());
+                throw new RiceRuntimeException(
+                        "Could not locate user for the given id: " + criteriaVO.getRoutingPrincipalId());
             }
             criteria.setRoutingUser(user);
         }
@@ -1167,7 +1205,8 @@ public class DTOConverter {
         Principal kPrinc = KEWServiceLocator.getIdentityHelperService().getPrincipal(actionToTakeVO.getPrincipalId());
         Person user = KimApiServiceLocator.getPersonService().getPerson(kPrinc.getPrincipalId());
         if (user == null) {
-            throw new RiceRuntimeException("Could not locate Person for the given id: " + actionToTakeVO.getPrincipalId());
+            throw new RiceRuntimeException(
+                    "Could not locate Person for the given id: " + actionToTakeVO.getPrincipalId());
         }
         actionToTake.setUser(user);
         return actionToTake;
@@ -1185,7 +1224,8 @@ public class DTOConverter {
 
     // public static RuleDelegation convertRuleExtensionVO(RuleExtensionVO ruleExtensionVO) throws WorkflowException {}
 
-    public static Collection<RuleExtensionDTO> convertRuleExtension(RuleExtension ruleExtension) throws WorkflowException {
+    public static Collection<RuleExtensionDTO> convertRuleExtension(
+            RuleExtension ruleExtension) throws WorkflowException {
         if (ruleExtension == null) {
             return null;
         }
@@ -1204,7 +1244,8 @@ public class DTOConverter {
         return new ConcreteKeyValue(ruleExtensionVO.getKey(), ruleExtensionVO.getValue());
     }
 
-    public static RuleResponsibilityDTO convertRuleResponsibility(RuleResponsibility ruleResponsibility) throws WorkflowException {
+    public static RuleResponsibilityDTO convertRuleResponsibility(
+            RuleResponsibility ruleResponsibility) throws WorkflowException {
         if (ruleResponsibility == null) {
             return null;
         }
@@ -1215,11 +1256,11 @@ public class DTOConverter {
         ruleResponsibilityVO.setResponsibilityId(ruleResponsibility.getResponsibilityId());
         ruleResponsibilityVO.setRoleName(ruleResponsibility.getRole());
         if (ruleResponsibility.getPrincipal() != null) {
-        	ruleResponsibilityVO.setPrincipalId(ruleResponsibility.getPrincipal().getPrincipalId());
+            ruleResponsibilityVO.setPrincipalId(ruleResponsibility.getPrincipal().getPrincipalId());
         } else if (ruleResponsibility.getGroup() != null) {
-        	ruleResponsibilityVO.setGroupId(ruleResponsibility.getGroup().getId());
+            ruleResponsibilityVO.setGroupId(ruleResponsibility.getGroup().getId());
         } else if (ruleResponsibility.getRole() != null) {
-        	ruleResponsibilityVO.setRoleName(ruleResponsibility.getRole());
+            ruleResponsibilityVO.setRoleName(ruleResponsibility.getRole());
         }
         for (Object element : ruleResponsibility.getDelegationRules()) {
             RuleDelegation ruleDelegation = (RuleDelegation) element;
@@ -1258,7 +1299,8 @@ public class DTOConverter {
         return rule;
     }
 
-    public static DocSearchCriteriaDTO convertDocumentSearchCriteriaDTO(DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException {
+    public static DocSearchCriteriaDTO convertDocumentSearchCriteriaDTO(
+            DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException {
         DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
         criteria.setAppDocId(criteriaVO.getAppDocId());
         criteria.setApprover(criteriaVO.getApprover());
@@ -1271,8 +1313,10 @@ public class DTOConverter {
         criteria.setFromDateFinalized(criteriaVO.getFromDateFinalized());
         criteria.setFromDateLastModified(criteriaVO.getFromDateLastModified());
         criteria.setInitiator(criteriaVO.getInitiator());
-        criteria.setIsAdvancedSearch((criteriaVO.isAdvancedSearch()) ? DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING : "NO");
-        criteria.setSuperUserSearch((criteriaVO.isSuperUserSearch()) ? DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING : "NO");
+        criteria.setIsAdvancedSearch(
+                (criteriaVO.isAdvancedSearch()) ? DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING : "NO");
+        criteria.setSuperUserSearch(
+                (criteriaVO.isSuperUserSearch()) ? DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING : "NO");
         criteria.setDocumentId(criteriaVO.getDocumentId());
         criteria.setViewer(criteriaVO.getViewer());
         criteria.setWorkgroupViewerName(criteriaVO.getGroupViewerName());
@@ -1284,13 +1328,18 @@ public class DTOConverter {
         criteria.setSaveSearchForUser(criteriaVO.isSaveSearchForUser());
 
         // generate the route node criteria
-        if ( (StringUtils.isNotBlank(criteriaVO.getDocRouteNodeName())) && (StringUtils.isBlank(criteriaVO.getDocTypeFullName())) ) {
-            throw new WorkflowException("No document type name specified when attempting to search by route node name '" + criteriaVO.getDocRouteNodeName() + "'");
-        } else if ( (StringUtils.isNotBlank(criteriaVO.getDocRouteNodeName())) && (StringUtils.isNotBlank(criteriaVO.getDocTypeFullName())) ) {
+        if ((StringUtils.isNotBlank(criteriaVO.getDocRouteNodeName())) && (StringUtils.isBlank(
+                criteriaVO.getDocTypeFullName()))) {
+            throw new WorkflowException("No document type name specified when attempting to search by route node name '"
+                    + criteriaVO.getDocRouteNodeName()
+                    + "'");
+        } else if ((StringUtils.isNotBlank(criteriaVO.getDocRouteNodeName())) && (StringUtils.isNotBlank(
+                criteriaVO.getDocTypeFullName()))) {
             criteria.setDocRouteNodeLogic(criteriaVO.getDocRouteNodeLogic());
-            List routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(getDocumentTypeByName(criteria.getDocTypeFullName()), true);
+            List routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(getDocumentTypeByName(
+                    criteria.getDocTypeFullName()), true);
             boolean foundRouteNode = false;
-            for (Iterator iterator = routeNodes.iterator(); iterator.hasNext();) {
+            for (Iterator iterator = routeNodes.iterator(); iterator.hasNext(); ) {
                 RouteNode routeNode = (RouteNode) iterator.next();
                 if (criteriaVO.getDocRouteNodeName().equals(routeNode.getRouteNodeName())) {
                     foundRouteNode = true;
@@ -1298,13 +1347,17 @@ public class DTOConverter {
                 }
             }
             if (!foundRouteNode) {
-                throw new WorkflowException("Could not find route node name '" + criteriaVO.getDocRouteNodeName() + "' for document type name '" + criteriaVO.getDocTypeFullName() + "'");
+                throw new WorkflowException("Could not find route node name '"
+                        + criteriaVO.getDocRouteNodeName()
+                        + "' for document type name '"
+                        + criteriaVO.getDocTypeFullName()
+                        + "'");
             }
             criteria.setDocRouteNodeId(criteriaVO.getDocRouteNodeName());
         }
 
         // build a map of the search attributes passed in from the client creating lists where keys are duplicated
-        HashMap<String, List<String>> searchAttributeValues = new HashMap<String,List<String>>();
+        HashMap<String, List<String>> searchAttributeValues = new HashMap<String, List<String>>();
         for (KeyValue keyValueVO : criteriaVO.getSearchAttributeValues()) {
             if (searchAttributeValues.containsKey(keyValueVO.getKey())) {
                 searchAttributeValues.get(keyValueVO.getKey()).add(keyValueVO.getValue());
@@ -1320,7 +1373,7 @@ public class DTOConverter {
             if (values.size() == 1) {
                 container = new SearchAttributeFormContainer(key, values.get(0));
             } else if (values.size() > 1) {
-                container = new SearchAttributeFormContainer(key, (String[])values.toArray());
+                container = new SearchAttributeFormContainer(key, (String[]) values.toArray());
             }
             if (container != null) {
                 propertyFields.add(container);
@@ -1334,13 +1387,15 @@ public class DTOConverter {
         return KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
     }
 
-    public static DocumentSearchResultDTO convertDocumentSearchResultComponents(DocumentSearchResultComponents searchResult) throws WorkflowException {
+    public static DocumentSearchResultDTO convertDocumentSearchResultComponents(
+            DocumentSearchResultComponents searchResult) throws WorkflowException {
         DocumentSearchResultDTO resultsVO = new DocumentSearchResultDTO();
         resultsVO.setSearchResults(convertDocumentSearchResults(searchResult.getSearchResults()));
         return resultsVO;
     }
 
-    private static List<DocumentSearchResultRowDTO> convertDocumentSearchResults(List<DocumentSearchResult> searchResults) throws WorkflowException {
+    private static List<DocumentSearchResultRowDTO> convertDocumentSearchResults(
+            List<DocumentSearchResult> searchResults) throws WorkflowException {
         List<DocumentSearchResultRowDTO> rowVOs = new ArrayList<DocumentSearchResultRowDTO>();
         for (DocumentSearchResult documentSearchResult : searchResults) {
             rowVOs.add(convertDocumentSearchResult(documentSearchResult));
@@ -1348,26 +1403,28 @@ public class DTOConverter {
         return rowVOs;
     }
 
-    public static DocumentSearchResultRowDTO convertDocumentSearchResult(DocumentSearchResult resultRow) throws WorkflowException {
+    public static DocumentSearchResultRowDTO convertDocumentSearchResult(
+            DocumentSearchResult resultRow) throws WorkflowException {
         DocumentSearchResultRowDTO rowVO = new DocumentSearchResultRowDTO();
         List<ConcreteKeyValue> fieldValues = new ArrayList<ConcreteKeyValue>();
         for (KeyValueSort keyValueSort : resultRow.getResultContainers()) {
-            fieldValues.add(new ConcreteKeyValue(keyValueSort.getKey(),keyValueSort.getUserDisplayValue()));
+            fieldValues.add(new ConcreteKeyValue(keyValueSort.getKey(), keyValueSort.getUserDisplayValue()));
         }
         rowVO.setFieldValues(fieldValues);
         return rowVO;
     }
 
-    public static DocumentStatusTransitionDTO convertDocumentStatusTransition(DocumentStatusTransition transition) throws WorkflowException {
-    	DocumentStatusTransitionDTO tranVO = new DocumentStatusTransitionDTO();
-    	tranVO.setStatusTransitionId(transition.getStatusTransitionId());
-    	tranVO.setDocumentId(transition.getDocumentId());
-    	tranVO.setOldAppDocStatus(transition.getOldAppDocStatus());
-    	tranVO.setNewAppDocStatus(transition.getNewAppDocStatus());
-    	tranVO.setStatusTransitionDate(transition.getStatusTransitionDate());    	
-    	return tranVO;
+    public static DocumentStatusTransitionDTO convertDocumentStatusTransition(
+            DocumentStatusTransition transition) throws WorkflowException {
+        DocumentStatusTransitionDTO tranVO = new DocumentStatusTransitionDTO();
+        tranVO.setStatusTransitionId(transition.getStatusTransitionId());
+        tranVO.setDocumentId(transition.getDocumentId());
+        tranVO.setOldAppDocStatus(transition.getOldAppDocStatus());
+        tranVO.setNewAppDocStatus(transition.getNewAppDocStatus());
+        tranVO.setStatusTransitionDate(transition.getStatusTransitionDate());
+        return tranVO;
     }
-    
+
     //    public static RuleBaseValues convertRuleVO(RuleVO ruleVO) throws WorkflowException {}
 
     private static void handleException(String message, Exception e) throws WorkflowException {
@@ -1385,28 +1442,28 @@ public class DTOConverter {
             return null;
         }
         DocumentLinkDTO[] docLinkVOs = new DocumentLinkDTO[links.size()];
-        
+
         int index = 0;
-        
-        for (DocumentLink link: links) {
+
+        for (DocumentLink link : links) {
             docLinkVOs[index++] = convertDocumentLink(link);
         }
         return docLinkVOs;
     }
-    
+
     //convert DocumentLink beans to list of DocumentLinkDTO
     public static List<DocumentLinkDTO> convertDocumentLinkToArrayList(Collection<DocumentLink> links) {
         if (links == null) {
             return null;
         }
         List<DocumentLinkDTO> docLinkVOs = new ArrayList<DocumentLinkDTO>(links.size());
-        
-        for (DocumentLink link: links) {
+
+        for (DocumentLink link : links) {
             docLinkVOs.add(convertDocumentLink(link));
         }
         return docLinkVOs;
     }
-    
+
     //covert DocumentLink bean to DocumentLinkDTO
     public static DocumentLinkDTO convertDocumentLink(DocumentLink link) {
         if (link == null) {
@@ -1416,7 +1473,7 @@ public class DTOConverter {
         linkVO.setLinbkId(link.getDocLinkId());
         linkVO.setOrgnDocId(link.getOrgnDocId());
         linkVO.setDestDocId(link.getDestDocId());
-        
+
         return linkVO;
     }
 

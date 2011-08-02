@@ -22,6 +22,7 @@ import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttributeDecimal;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -303,6 +304,12 @@ public class SearchableAttributeFloatValue implements SearchableAttributeValue, 
 	public void beforeInsert(){
 		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
 	}
+
+    @Override
+    public DocumentAttributeDecimal toDocumentAttribute() {
+        return DocumentAttributeDecimal.create(getSearchableAttributeKey(), getSearchableAttributeValue());
+    }
+
 
 }
 

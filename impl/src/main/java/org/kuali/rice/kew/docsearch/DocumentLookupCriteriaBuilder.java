@@ -17,8 +17,12 @@ package org.kuali.rice.kew.docsearch;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
@@ -34,6 +38,8 @@ import java.util.*;
  *
  */
 public class DocumentLookupCriteriaBuilder  {
+
+    private static final Logger LOG = Logger.getLogger(DocumentLookupCriteriaBuilder.class);
 
 	/**
 	 * This method populates the criteria given a map of fields from the lookup
@@ -63,107 +69,73 @@ public class DocumentLookupCriteriaBuilder  {
     			 valueToSet = valuesToSet[0];
     		 }
 
-			try {
-				PropertyUtils.setNestedProperty(criteria, fieldToSet, valueToSet);
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
-			} catch (NoSuchMethodException e) {
-				//ignore this
-				//				e.printStackTrace();
+            if (PropertyUtils.isWriteable(criteria, fieldToSet)) {
+                try {
+			    	PropertyUtils.setNestedProperty(criteria, fieldToSet, valueToSet);
+			    } catch (Exception e) {
+                    throw new IllegalStateException("Failed to set document search criteria field: " + fieldToSet, e);
+                }
+            } else {
+                LOG.warn("Document Search was passed a piece of criteria it did not understand, ignoring: " + fieldToSet);
 			}
 		}
+
+        DocumentType documentType = getValidDocumentTypeByNameCaseInsensitive(criteria.getDocTypeFullName());
 
     	// This will make sure that the docType is case insensitive after this point.
-    	criteria.setDocTypeFullName(getValidDocumentTypeName(criteria.getDocTypeFullName()));
+        if (documentType != null) {
+    	    criteria.setDocTypeFullName(documentType.getName());
+        }
 
-    	if(StringUtils.isNotEmpty(criteria.getDocTypeFullName())) {
-    		addSearchableAttributesToCriteria(criteria, fieldsForLookup);
-    	}
-		return criteria;
+    	addSearchableAttributesToCriteria(documentType, criteria, fieldsForLookup);
+
+    	return criteria;
 	}
 
-	/**
-	 * TODO: Chris, Should be reevaluated in whole after released for KFS
-	 * This method ...
-	 *
-	 * @param criteria
-	 * @param propertyFields
-	 */
-	public static void addSearchableAttributesToCriteria(DocSearchCriteriaDTO criteria, Map<String,String[]> propertyFields) {
-		if (criteria != null) {
-			DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(criteria.getDocTypeFullName());
-			if (docType == null) {
-				return;
-			}
+	public static void addSearchableAttributesToCriteria(DocumentType documentType, DocSearchCriteriaDTO criteria, Map<String,String[]> propertyFields) {
+		if (documentType != null && documentType.hasSearchableAttributes() && criteria != null) {
 			criteria.getSearchableAttributes().clear();
 			if (!propertyFields.isEmpty()) {
-				Map<String, SearchAttributeCriteriaComponent> criteriaComponentsByFormKey = new HashMap<String, SearchAttributeCriteriaComponent>();
-				for (SearchableAttributeOld searchableAttribute : docType.getSearchableAttributesOld()) {
-					for (Row row : searchableAttribute.getSearchingRows(
-							DocSearchUtils.getDocumentSearchContext("", docType.getName(), ""))) {
-						for (Field field : row.getFields()) {
-							if (field instanceof Field) {
-                                SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType());
-								SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(field.getPropertyName(), null, field.getPropertyName(), searchableAttributeValue);
-								sacc.setRangeSearch(field.isMemberOfRange());
-								sacc.setCaseSensitive(!field.isUpperCase());
+				List<RemotableAttributeField> searchFields = KEWServiceLocator.getDocumentSearchCustomizationMediator().getSearchFields(documentType);
+                for (RemotableAttributeField searchField : searchFields) {
+                    SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(searchField.getDataType());
+                    SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(searchField.getName(), null, searchField.getName(), searchableAttributeValue);
 
-								//FIXME: don't force this when dd changes are in, instead delete line 1 row below and uncomment one two lines below
-								sacc.setAllowInlineRange(true);
-//								sacc.setAllowInlineRange(dsField.isAllowInlineRange());
+                    /*
 
-								sacc.setSearchInclusive(field.isInclusive());
-								sacc.setLookupableFieldType(field.getFieldType());
-								sacc.setSearchable(field.isIndexedForSearch());
-								sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
-								criteriaComponentsByFormKey.put(field.getPropertyName(), sacc);
-							} else {
-								throw new RiceRuntimeException("Fields must be of type org.kuali.rice.kew.docsearch.Field");
-							}
-						}
-					}
-				}
-                for (String propertyField : propertyFields.keySet())
-                {
-                    SearchAttributeCriteriaComponent sacc = (SearchAttributeCriteriaComponent) criteriaComponentsByFormKey.get(propertyField);
-                    if (sacc != null)
-                    {
-                        if (sacc.getSearchableAttributeValue() == null)
-                        {
-                            String errorMsg = "Searchable attribute with form field key " + sacc.getFormKey() + " does not have a valid SearchableAttributeValue";
-                            //                            LOG.error("addSearchableAttributesToCriteria() " + errorMsg);
-                            throw new RuntimeException(errorMsg);
+                     TODO - Rice 2.0 - implement range and case sensitivity support, pus support for this other stuff on te SearchableAttributeComponent
+
+                    sacc.setRangeSearch(field.isMemberOfRange());
+                    sacc.setCaseSensitive(!field.isUpperCase());
+
+                    // FIXME: don't force this when dd changes are in, instead delete line 1 row below and uncomment one two lines below
+                    sacc.setAllowInlineRange(true);
+                    // sacc.setAllowInlineRange(dsField.isAllowInlineRange());
+
+                    sacc.setSearchInclusive(field.isInclusive());
+                    sacc.setLookupableFieldType(field.getFieldType());
+                    sacc.setSearchable(field.isIndexedForSearch());
+                    sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
+                    */
+
+                    // now set the value for the search attribute fields
+
+                    String[] propertyFieldValues = propertyFields.get(searchField.getName());
+                    if (propertyFieldValues != null) {
+                        // TODO - Rice 2.0 - add a test here to make sure the field can support multi-values
+                        if (propertyFieldValues.length > 1) {
+                            sacc.setValues(Arrays.asList(propertyFieldValues));
                         }
-                        String[] values = propertyFields.get(propertyField);
-                        if (Field.MULTI_VALUE_FIELD_TYPES.contains(sacc.getLookupableFieldType()))
-                        {
-                            // set the multivalue lookup indicator
-                            sacc.setCanHoldMultipleValues(true);
-                            if (propertyField == null)
-                            {
-                                sacc.setValues(new ArrayList<String>());
-                            } else
-                            {
-                                if (values != null)
-                                {
-                                    sacc.setValues(Arrays.asList(values));
-                                }
-                            }
-                        } else
-                        {
-                            sacc.setValue(values[0]);
-                        }
-                        criteria.addSearchableAttribute(sacc);
+                        sacc.setValue(propertyFieldValues[0]);
                     }
-                }
+                    criteria.addSearchableAttribute(sacc);
+				}
 			}
 		}
 	}
 
-	private static String getValidDocumentTypeName(String docTypeName) {
-		if (StringUtils.isNotEmpty(docTypeName)) {
+	private static DocumentType getValidDocumentTypeByNameCaseInsensitive(String docTypeName) {
+		if (StringUtils.isNotBlank(docTypeName)) {
 			DocumentType dTypeCriteria = new DocumentType();
 		    dTypeCriteria.setName(docTypeName.trim());
 		    dTypeCriteria.setActive(true);
@@ -173,11 +145,11 @@ public class DocumentLookupCriteriaBuilder  {
 		    if(docTypeList != null){
 			    for(DocumentType dType: docTypeList){
 			        if (StringUtils.equals(docTypeName.toUpperCase(), dType.getName().toUpperCase())) {
-			            return dType.getName();
+			            return dType;
 			        }
 			    }
 		    }
 		}
-		return docTypeName;
+		return null;
 	} 
 }

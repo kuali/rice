@@ -37,7 +37,7 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DocSearchCriteriaDTO extends BusinessObjectBase implements BusinessObject, DocumentRouteHeaderEBO {
+public class DocSearchCriteriaDTO extends BusinessObjectBase implements BusinessObject, DocumentSearchEbo {
 
     private static final long serialVersionUID = -5738747438282249790L;
 
@@ -110,7 +110,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#isStandardCriteriaConsideredEmpty(boolean)
+	 * @see DocumentSearchEbo#isStandardCriteriaConsideredEmpty(boolean)
 	 */
     public boolean isStandardCriteriaConsideredEmpty(boolean excludeDocumentTypeName) {
         boolean docTypeNameIsEmpty = org.apache.commons.lang.StringUtils.isEmpty(this.docTypeFullName);
@@ -129,7 +129,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getDocRouteNodeLogic()
+	 * @see DocumentSearchEbo#getDocRouteNodeLogic()
 	 */
     public String getDocRouteNodeLogic() {
         return docRouteNodeLogic;
@@ -142,7 +142,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getAppDocId()
+	 * @see DocumentSearchEbo#getAppDocId()
 	 */
     public String getAppDocId() {
         return appDocId;
@@ -155,7 +155,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getApprover()
+	 * @see DocumentSearchEbo#getApprover()
 	 */
     public String getApprover() {
         return approver;
@@ -168,7 +168,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getDocRouteNodeId()
+	 * @see DocumentSearchEbo#getDocRouteNodeId()
 	 */
     public String getDocRouteNodeId() {
         return docRouteNodeId;
@@ -181,7 +181,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getDocRouteStatus()
+	 * @see DocumentSearchEbo#getDocRouteStatus()
 	 */
     public String getDocRouteStatus() {
         return docRouteStatus;
@@ -194,7 +194,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getAppDocStatus()
+	 * @see DocumentSearchEbo#getAppDocStatus()
 	 */
     public String getAppDocStatus() {
         return appDocStatus;
@@ -207,7 +207,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getDocTitle()
+	 * @see DocumentSearchEbo#getDocTitle()
 	 */
     public String getDocTitle() {
         return docTitle;
@@ -220,7 +220,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getDocTypeFullName()
+	 * @see DocumentSearchEbo#getDocTypeFullName()
 	 */
     public String getDocTypeFullName() {
         return docTypeFullName;
@@ -233,7 +233,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getDocVersion()
+	 * @see DocumentSearchEbo#getDocVersion()
 	 */
     public String getDocVersion() {
         return docVersion;
@@ -246,7 +246,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getInitiator()
+	 * @see DocumentSearchEbo#getInitiator()
 	 */
     public String getInitiator() {
         return initiator;
@@ -259,7 +259,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getOverrideInd()
+	 * @see DocumentSearchEbo#getOverrideInd()
 	 */
     public String getOverrideInd() {
         return overrideInd;
@@ -272,7 +272,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getDocumentId()
+	 * @see DocumentSearchEbo#getDocumentId()
 	 */
     public String getDocumentId() {
         return documentId;
@@ -285,7 +285,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getViewer()
+	 * @see DocumentSearchEbo#getViewer()
 	 */
     public String getViewer() {
         return viewer;
@@ -298,7 +298,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getPageSize()
+	 * @see DocumentSearchEbo#getPageSize()
 	 */
     public Integer getPageSize() {
         return pageSize;
@@ -311,7 +311,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getFromDateApproved()
+	 * @see DocumentSearchEbo#getFromDateApproved()
 	 */
     public String getFromDateApproved() {
         return fromDateApproved;
@@ -320,7 +320,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getFromDateCreated()
+	 * @see DocumentSearchEbo#getFromDateCreated()
 	 */
     public String getFromDateCreated() {
         return fromDateCreated;
@@ -329,7 +329,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getFromDateFinalized()
+	 * @see DocumentSearchEbo#getFromDateFinalized()
 	 */
     public String getFromDateFinalized() {
         return fromDateFinalized;
@@ -338,7 +338,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getFromDateLastModified()
+	 * @see DocumentSearchEbo#getFromDateLastModified()
 	 */
     public String getFromDateLastModified() {
         return fromDateLastModified;
@@ -350,7 +350,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getToDateApproved()
+	 * @see DocumentSearchEbo#getToDateApproved()
 	 */
     public String getToDateApproved() {
         return toDateApproved;
@@ -359,7 +359,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getToDateCreated()
+	 * @see DocumentSearchEbo#getToDateCreated()
 	 */
     public String getToDateCreated() {
         return toDateCreated;
@@ -368,7 +368,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getToDateFinalized()
+	 * @see DocumentSearchEbo#getToDateFinalized()
 	 */
     public String getToDateFinalized() {
         return toDateFinalized;
@@ -377,7 +377,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getToDateLastModified()
+	 * @see DocumentSearchEbo#getToDateLastModified()
 	 */
     public String getToDateLastModified() {
         return toDateLastModified;
@@ -436,7 +436,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getNamedSearch()
+	 * @see DocumentSearchEbo#getNamedSearch()
 	 */
     public String getNamedSearch() {
         return namedSearch;
@@ -449,7 +449,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getDocumentSearchAbbreviatedString()
+	 * @see DocumentSearchEbo#getDocumentSearchAbbreviatedString()
 	 */
     public String getDocumentSearchAbbreviatedString() {
         StringBuffer abbreviatedString = new StringBuffer();
@@ -602,7 +602,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getWorkgroupViewerName()
+	 * @see DocumentSearchEbo#getWorkgroupViewerName()
 	 */
     public String getWorkgroupViewerName() {
         return workgroupViewerName;
@@ -615,7 +615,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getIsAdvancedSearch()
+	 * @see DocumentSearchEbo#getIsAdvancedSearch()
 	 */
     public String getIsAdvancedSearch() {
         return isAdvancedSearch;
@@ -628,7 +628,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getSuperUserSearch()
+	 * @see DocumentSearchEbo#getSuperUserSearch()
 	 */
     public String getSuperUserSearch() {
         return superUserSearch;
@@ -642,7 +642,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#isOverThreshold()
+	 * @see DocumentSearchEbo#isOverThreshold()
 	 */
     public boolean isOverThreshold() {
         return isOverThreshold;
@@ -655,7 +655,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getSecurityFilteredRows()
+	 * @see DocumentSearchEbo#getSecurityFilteredRows()
 	 */
     public int getSecurityFilteredRows() {
         return securityFilteredRows;
@@ -668,7 +668,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getThreshold()
+	 * @see DocumentSearchEbo#getThreshold()
 	 */
     public Integer getThreshold() {
         return this.threshold;
@@ -681,7 +681,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getFetchLimit()
+	 * @see DocumentSearchEbo#getFetchLimit()
 	 */
     public Integer getFetchLimit() {
         return this.fetchLimit;
@@ -705,7 +705,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getSearchableAttributes()
+	 * @see DocumentSearchEbo#getSearchableAttributes()
 	 */
     public List<SearchAttributeCriteriaComponent> getSearchableAttributes() {
         return searchableAttributes;
@@ -718,7 +718,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getSearchableAttributeRows()
+	 * @see DocumentSearchEbo#getSearchableAttributeRows()
 	 */
     public List<Row> getSearchableAttributeRows() {
         return searchableAttributeRows;
@@ -727,7 +727,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getProcessedSearchableAttributeRows()
+	 * @see DocumentSearchEbo#getProcessedSearchableAttributeRows()
 	 */
     public List<Row> getProcessedSearchableAttributeRows() {
         return searchableAttributeRows;
@@ -740,7 +740,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getSearchableAttributeRow(int)
+	 * @see DocumentSearchEbo#getSearchableAttributeRow(int)
 	 */
     public Row getSearchableAttributeRow(int index) {
         while (getSearchableAttributeRows().size() <= index) {
@@ -757,7 +757,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#isOverridingUserSession()
+	 * @see DocumentSearchEbo#isOverridingUserSession()
 	 */
     public boolean isOverridingUserSession() {
         return this.overridingUserSession;
@@ -770,7 +770,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#isSaveSearchForUser()
+	 * @see DocumentSearchEbo#isSaveSearchForUser()
 	 */
 	public boolean isSaveSearchForUser() {
 		return this.saveSearchForUser;
@@ -782,7 +782,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
 
     /**
 	 * @deprecated
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getWorkgroupViewerNamespace()
+	 * @see DocumentSearchEbo#getWorkgroupViewerNamespace()
 	 */
     public String getWorkgroupViewerNamespace() {
         return this.workgroupViewerNamespace;
@@ -809,7 +809,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#getDateCreated()
+	 * @see DocumentSearchEbo#getDateCreated()
 	 */
 	public java.sql.Timestamp getDateCreated() {
 		return this.dateCreated;

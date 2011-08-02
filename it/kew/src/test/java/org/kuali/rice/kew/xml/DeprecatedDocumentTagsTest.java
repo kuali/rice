@@ -86,6 +86,10 @@ public class DeprecatedDocumentTagsTest extends KEWTestCase{
      * 
      * @throws Exception
      */
+    /*
+
+    TODO - Rice 2.0 - need to resurrect and rewrite this test
+
     @Test
     public void testDocTypeSecurityAndResponsibilityAndVisibilityWorkgroupNames() throws Exception {
     	// Ensure that the document type called "DocumentType02" has the correct group defined for its responsibility on "TestRule1".
@@ -123,6 +127,7 @@ public class DeprecatedDocumentTagsTest extends KEWTestCase{
     	assertEquals("docTypeSecurity should have exactly one group in its security section", 1, testGroups.size());
     	assertGroupIsCorrect("<security><workgroup>", "NonSIT", "KR-WKFLW", testGroups.get(0));
     }
+    */
     
     /**
      * Tests if the deprecated "defaultExceptionWorkgroupName", "exceptionWorkgroupName", and "exceptionWorkgroup" elements are still being

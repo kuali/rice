@@ -1,6 +1,8 @@
 package org.kuali.rice.kew.framework.docsearch;
 
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.core.api.util.jaxb.MultiValuedStringMapAdapter;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.attribute.AttributeFields;
 import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
@@ -16,6 +18,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.namespace.QName;
 import java.util.List;
+import java.util.Map;
 
 /**
  * TODO...
@@ -30,7 +33,20 @@ public interface DocumentSearchCustomizationService {
 	@WebResult(name = "searchAttributeFields")
 	@XmlElementWrapper(name = "searchAttributeFields", required = false)
 	@XmlElement(name = "searchAttributeField", required = false)
-    List<AttributeFields> getSearchAttributeFields(String documentTypeName, List<String> searchableAttributeNames);
+    List<AttributeFields> getSearchAttributeFields(
+            @WebParam(name = "documentTypeName") String documentTypeName,
+            @WebParam(name = "searchableAttributeNames") List<String> searchableAttributeNames
+    );
 
+    @WebMethod(operationName = "validateSearchFieldParameters")
+    @WebResult(name = "validateSearchFieldParameters")
+    @XmlElementWrapper(name = "searchFieldErrors", required = false)
+    @XmlElement(name = "searchFieldError", required = false)
+    List<RemotableAttributeError> validateSearchFieldParameters(
+            @WebParam(name = "documentTypeName") String documentTypeName,
+            @WebParam(name = "searchableAttributeNames") List<String> searchableAttributeNames,
+            @WebParam(name = "parameters")
+            @XmlJavaTypeAdapter(MultiValuedStringMapAdapter.class) Map<String, List<String>> parameters
+    );
 
 }

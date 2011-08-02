@@ -19,7 +19,15 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
+import org.kuali.rice.core.api.uif.Control;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.core.api.uif.RemotableCheckboxGroup;
+import org.kuali.rice.core.api.uif.RemotableHiddenInput;
+import org.kuali.rice.core.api.uif.RemotablePasswordInput;
+import org.kuali.rice.core.api.uif.RemotableRadioButtonGroup;
+import org.kuali.rice.core.api.uif.RemotableSelect;
+import org.kuali.rice.core.api.uif.RemotableTextInput;
+import org.kuali.rice.core.api.uif.RemotableTextarea;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -319,8 +327,6 @@ public final class FieldUtils {
      *
      * See KULRICE-2480 for info on convertForLookup flag
      *
-     * @param propertyName
-     * @return Field
      */
     public static Field getPropertyField(Class businessObjectClass, String attributeName, boolean convertForLookup) {
         Field field = new Field();
@@ -1428,12 +1434,51 @@ public final class FieldUtils {
     public static List<Row> convertRemotableAttributeFields(List<RemotableAttributeField> remotableAttributeFields) {
         List<Row> rows = new ArrayList<Row>();
         for (RemotableAttributeField remotableAttributeField : remotableAttributeFields) {
-            Field field = new Field(remotableAttributeField.getName(), remotableAttributeField.getLongLabel());
-
-            // TODO figure out the rest of this nasty conversion...
-            
+            Field field = convertRemotableAttributeField(remotableAttributeField);
+            Row row = new Row(field);
+            rows.add(row);
         }
         return rows;
+    }
+
+    public static Field convertRemotableAttributeField(RemotableAttributeField remotableAttributeField) {
+        Field field = new Field(remotableAttributeField.getName(), remotableAttributeField.getLongLabel());
+        applyControlAttributes(remotableAttributeField, field);
+
+        // TODO - Rice 2.0 - Figure out the rest of this nasty conversion!
+
+        return field;
+    }
+
+    private static void applyControlAttributes(RemotableAttributeField remotableField, Field field) {
+        Control control = remotableField.getControl();
+        String fieldType = null;
+        if (control == null) {
+            throw new IllegalStateException("Given attribute field with the following name has a null control: " + remotableField.getName());
+        }
+        if (control == null || control instanceof RemotableTextInput) {
+            fieldType = Field.TEXT;
+        } else if (control instanceof RemotableCheckboxGroup) {
+            fieldType = Field.CHECKBOX;
+        } else if (control instanceof RemotableHiddenInput) {
+            fieldType = Field.HIDDEN;
+        } else if (control instanceof RemotablePasswordInput) {
+            throw new IllegalStateException("Password control not currently supported.");
+        } else if (control instanceof RemotableRadioButtonGroup) {
+            fieldType = Field.RADIO;
+        } else if (control instanceof RemotableSelect) {
+            RemotableSelect selectControl = (RemotableSelect)control;
+            if (selectControl.isMultiple()) {
+                fieldType = Field.MULTISELECT;
+            } else {
+                fieldType = Field.DROPDOWN;
+            }
+        } else if (control instanceof RemotableTextarea) {
+            fieldType = Field.TEXT_AREA;
+        } else {
+            throw new IllegalArgumentException("Given control type is not supported: " + control.getClass());
+        }
+        field.setFieldType(fieldType);
     }
 
     private static DataDictionaryService getDataDictionaryService() {

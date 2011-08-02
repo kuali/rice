@@ -19,7 +19,6 @@ package org.kuali.rice.kew.bo.lookup;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
@@ -33,8 +32,7 @@ import org.kuali.rice.core.web.format.TimestampAMPMFormatter;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaBuilder;
 import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessor;
-import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessorKEWAdapter;
-import org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO;
+import org.kuali.rice.kew.docsearch.DocumentSearchEbo;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.DocumentSearchResult;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
@@ -85,7 +83,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Lookupable helper class for new doc search
+ * Lookupable helper class for Document Search.
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -94,47 +93,53 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
     private static final long serialVersionUID = -5162419674659967408L;
     private static final Pattern HREF_PATTERN = Pattern.compile("<a href=\"([^\"]+)\"");
 
-    protected boolean savedSearch = false;
+    private static final String SAVED_SEARCH_NAME_PARAM = "savedSearchName";
+    private static final String RESET_SAVED_SEARCH_PARAM = "resetSavedSearch";
+
 
 	private DocumentLookupCriteriaProcessor documentLookupCriteriaProcessor;
 
-	/**
-	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#performLookup(org.kuali.rice.krad.web.struts.form.LookupForm, java.util.Collection, boolean)
-	 */
 	@Override
 	public Collection performLookup(LookupForm lookupForm, Collection resultTable, boolean bounded) {
 
-		//TODO: ideally implement KNS updates to make this not require code from the parent
+    	Map<String, String[]> parameters = this.getParameters();
 
-    	Map<String,String[]> parameters = this.getParameters();
+        String[] savedSearchNames = parameters.get(SAVED_SEARCH_NAME_PARAM);
+        boolean savedSearch = savedSearchNames != null && savedSearchNames.length > 0 && StringUtils.isNotBlank(savedSearchNames[0]);
 
     	DocSearchCriteriaDTO criteria = null;
-    	if(savedSearch) {
-    		//TODO: set the criteria on this from below method instead of this (so we're not calling out twice for the same object)
+    	if (savedSearch) {
     		DocumentSearchService docSearchService = KEWServiceLocator.getDocumentSearchService();
 
-    		String savedSearchName = ((String[])getParameters().get("savedSearchName"))[0];
-    		SavedSearchResult savedSearchResult = null;
-    		if(StringUtils.isNotEmpty(savedSearchName)) {
-    			savedSearchResult = docSearchService.getSavedSearchResults(GlobalVariables.getUserSession().getPrincipalId(), savedSearchName);
-    		}
-    		if(savedSearchResult!=null){
+    		String savedSearchName = savedSearchNames[0];
+
+    		SavedSearchResult savedSearchResult = docSearchService.getSavedSearchResults(GlobalVariables.getUserSession().getPrincipalId(), savedSearchName);
+    		if (savedSearchResult != null){
     			criteria = savedSearchResult.getDocSearchCriteriaDTO();
     		}
-    		savedSearch=false;
-    	} else {
-    		Map<String,String[]> fixedParameters = new HashMap<String,String[]>();
-    		Map<String,String> changedDateFields = preprocessDateFields(lookupForm.getFieldsForLookup());
-    		fixedParameters.putAll(this.getParameters());
-    		for (Map.Entry<String,String> prop : changedDateFields.entrySet()) {
-				fixedParameters.remove(prop.getKey());
-    			fixedParameters.put(prop.getKey(), new String[]{prop.getValue()});
-			}
-    		criteria = DocumentLookupCriteriaBuilder.populateCriteria(fixedParameters);
-
     	}
 
-    	Collection<DocumentSearchResult> displayList=null;
+        // either it wasn't a saved search or the saved search failed to resolve
+        if (criteria == null) {
+
+            /*
+
+             TODO - Rice 2.0 - I couldn't really tell how this preProcessRangeFields stuff is actually used, commenting out for now
+
+    		Map<String,String[]> fixedParameters = new HashMap<String,String[]>();
+    		Map<String,String> changedDateFields = preProcessRangeFields(lookupForm.getFieldsForLookup());
+    		fixedParameters.putAll(parameters);
+    		for (Map.Entry<String, String> prop : changedDateFields.entrySet()) {
+				fixedParameters.remove(prop.getKey());
+    			fixedParameters.put(prop.getKey(), new String[] { prop.getValue() });
+			}
+
+			*/
+
+    		criteria = DocumentLookupCriteriaBuilder.populateCriteria(parameters);
+    	}
+
+    	Collection<DocumentSearchResult> displayList = null;
 
     	DocumentSearchResultComponents components = null;
     	try {
@@ -189,7 +194,7 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 
         // iterate through result list and wrap rows with return url and action urls
 
-        DocumentRouteHeaderEBO element = new DocSearchCriteriaDTO();
+        DocumentSearchEbo element = new DocSearchCriteriaDTO();
         //TODO: additional BORestrictions through generator or component to lock down per document?
     	BusinessObjectRestrictions businessObjectRestrictions = getBusinessObjectAuthorizationService().getLookupResultRestrictions(element, user);
 
@@ -569,29 +574,23 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 	 */
 	@Override
 	public void performClear(LookupForm lookupForm) {
-		//Map<String,String[]> fieldsToClear = new HashMap<String,String[]>();
 
-		//for (Row row : this.getRows()) {
-		//	for (Field field : row.getFields()) {
-		//		String[] propertyValue = {};
-		//		if(!Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType())) {
-		//			propertyValue = new String[]{field.getPropertyValue()};
-		//		} else {
-		//			propertyValue = field.getPropertyValues();
-		//		}
-		//		fieldsToClear.put(field.getPropertyName(), propertyValue);
-		//	}
-		//}
+        /*
+
+         TODO - Rice 2.0 - Couldn't tell what this preProcessRangeFields method was doing or whether it was even being used, commenting out for now.
 
 	    Map<String,String[]> fixedParameters = new HashMap<String,String[]>();
-        Map<String,String> changedDateFields = preprocessDateFields(lookupForm.getFieldsForLookup());
+        Map<String,String> changedDateFields = preProcessRangeFields(lookupForm.getFieldsForLookup());
         fixedParameters.putAll(this.getParameters());
         for (Map.Entry<String,String> prop : changedDateFields.entrySet()) {
             fixedParameters.remove(prop.getKey());
             fixedParameters.put(prop.getKey(), new String[]{prop.getValue()});
         }
+
+        */
+
 		//TODO: also check if standard here (maybe from object if use criteria)
-		String docTypeName = fixedParameters.get("docTypeFullName")[0];
+		String docTypeName = getParameters().get("docTypeFullName")[0];
 
 		DocumentType docType = getValidDocumentType(docTypeName);
 
@@ -602,16 +601,18 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 	        boolean detailed=false;
 	        if(this.getParameters().containsKey("isAdvancedSearch")) {
 	            detailed = DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING.equalsIgnoreCase(((String[])this.getParameters().get("isAdvancedSearch"))[0]);
-	        } else if(fixedParameters.containsKey("isAdvancedSearch")) {
-	            detailed = DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING.equalsIgnoreCase((String) fixedParameters.get("isAdvancedSearch")[0]);
 	        }
+            // else if(fixedParameters.containsKey("isAdvancedSearch")) {
+	        //    detailed = DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING.equalsIgnoreCase((String) fixedParameters.get("isAdvancedSearch")[0]);
+	        // }
 
 	        boolean superSearch=false;
 	        if(this.getParameters().containsKey(("superUserSearch"))) {
 	            superSearch = DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING.equalsIgnoreCase(((String[])this.getParameters().get("superUserSearch"))[0]);
-	        } else if(fixedParameters.containsKey("superUserSearch")) {
-	            superSearch = DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING.equalsIgnoreCase((String) fixedParameters.get("superUserSearch")[0]);
 	        }
+            // else if(fixedParameters.containsKey("superUserSearch")) {
+	        //    superSearch = DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING.equalsIgnoreCase((String) fixedParameters.get("superUserSearch")[0]);
+	        // }
 
 	        // Repopulate the fields indicating detailed/superuser search status.
 	        int fieldsRepopulated = 0;
@@ -631,13 +632,13 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 	        	index--;
 	        }
 		} else {
-    		DocSearchCriteriaDTO docCriteria = DocumentLookupCriteriaBuilder.populateCriteria(fixedParameters);
+    		DocSearchCriteriaDTO docCriteria = DocumentLookupCriteriaBuilder.populateCriteria(getParameters());
     		docCriteria = docType.getDocumentSearchGenerator().clearSearch(docCriteria);
             if (docCriteria == null) {
                 docCriteria = new DocSearchCriteriaDTO();
             }
 
-            this.setRowsAfterClear(docCriteria, fixedParameters);
+            this.setRowsAfterClear(docCriteria, getParameters());
 		}
 
 	}
@@ -955,17 +956,17 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 			}
 		} // End of methodToCall parameter retrieval.
 
-		String[] resetSavedSearch = ((String[])getParameters().get("resetSavedSearch"));
+		String[] resetSavedSearch = ((String[])getParameters().get(RESET_SAVED_SEARCH_PARAM));
 		if(resetSavedSearch!=null) {
 			docSearchService.clearNamedSearches(GlobalVariables.getUserSession().getPrincipalId());
 			setRows(fieldValues,"");
 			return false;
 		}
 
-		String savedSearchName = ((String[])getParameters().get("savedSearchName"))[0];
-		if(StringUtils.isEmpty(savedSearchName)||"*ignore*".equals(savedSearchName)) {
+		String savedSearchName = ((String[])getParameters().get(SAVED_SEARCH_NAME_PARAM))[0];
+		if(StringUtils.isEmpty(savedSearchName) || "*ignore*".equals(savedSearchName)) {
 			if(!ignoreErrors) {
-				GlobalVariables.getMessageMap().putError("savedSearchName", RiceKeyConstants.ERROR_CUSTOM, "You must select a saved search");
+				GlobalVariables.getMessageMap().putError(SAVED_SEARCH_NAME_PARAM, RiceKeyConstants.ERROR_CUSTOM, "You must select a saved search");
 			} else {
 				//if we're ignoring errors and we got an error just return, no reason to continue.  Also set false to indicate not to perform lookup
 				return false;
@@ -975,7 +976,7 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 			for (Row row : rows) {
 				List<Field> fields = row.getFields();
 				for (Field field : fields) {
-					if(StringUtils.equals(field.getPropertyName(), "savedSearchName")) {
+					if(StringUtils.equals(field.getPropertyName(), SAVED_SEARCH_NAME_PARAM)) {
 						field.setPropertyValue("");
 						break;
 					}
@@ -1001,10 +1002,7 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 
 		setRows(fieldValues,docTypeName);
 
-		//set field values (besides search atts) here
-//		fieldValues.put("docTypeFullName", docTypeName);
-//		fieldValues.put("fromDateCreated", criteria.getFromDateCreated());
-		fieldValues.put("savedSearchName", "");
+		fieldValues.put(SAVED_SEARCH_NAME_PARAM, "");
 
 
 		for (SearchAttributeCriteriaComponent searchAtt : criteria.getSearchableAttributes()) {
@@ -1048,8 +1046,6 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
                 }
             }
         }
-        //indicate to subsequent actions (search in this case) that a saved search was just populated
-        savedSearch=true;
 
         return true;
 	}
@@ -1063,7 +1059,7 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 		List<KeyValue> savedSearchValues = savedSearchValuesFinder.getKeyValues();
 
 		Field savedSearch = new Field();
-		savedSearch.setPropertyName("savedSearchName");
+		savedSearch.setPropertyName(SAVED_SEARCH_NAME_PARAM);
 		savedSearch.setFieldType(Field.DROPDOWN_SCRIPT);
 		savedSearch.setScript("customLookupChanged()");
 		savedSearch.setFieldValidValues(savedSearchValues);

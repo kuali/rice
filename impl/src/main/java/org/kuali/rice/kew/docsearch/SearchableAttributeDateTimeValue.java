@@ -19,10 +19,12 @@ package org.kuali.rice.kew.docsearch;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SqlBuilder;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttributeDateTime;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -268,5 +270,14 @@ public class SearchableAttributeDateTimeValue implements SearchableAttributeValu
 	public void beforeInsert(){
 		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
 	}
+
+    @Override
+    public DocumentAttributeDateTime toDocumentAttribute() {
+        DateTime dateTime = null;
+        if (getSearchableAttributeValue() != null) {
+            dateTime = new DateTime(getSearchableAttributeValue().getTime());
+        }
+        return DocumentAttributeDateTime.create(getSearchableAttributeKey(), dateTime);
+    }
 }
 

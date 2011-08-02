@@ -21,6 +21,7 @@ import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.search.SearchOperator;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.api.util.type.TypeUtils;
@@ -60,6 +61,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -81,7 +83,6 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     private static final String DATABASE_WILDCARD_CHARACTER_STRING = "%";
     private static final char DATABASE_WILDCARD_CHARACTER = DATABASE_WILDCARD_CHARACTER_STRING.toCharArray()[0];
 
-    private static List<SearchableAttributeOld> searchableAttributes;
     private static DocSearchCriteriaDTO criteria;
     private static String searchingUser;
 
@@ -92,33 +93,12 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
     private SqlBuilder sqlBuilder = null;
 
-    public StandardDocumentSearchGenerator() {
-        super();
-        searchableAttributes = new ArrayList<SearchableAttributeOld>();
-    }
-
-    /**
-     * @param searchableAttributes in a list
-     */
-    public StandardDocumentSearchGenerator(List<SearchableAttributeOld> searchableAttributes) {
-        this();
-        StandardDocumentSearchGenerator.searchableAttributes = searchableAttributes;
-    }
-
     public DocSearchCriteriaDTO getCriteria() {
         return criteria;
     }
 
     public void setCriteria(DocSearchCriteriaDTO criteria) {
         StandardDocumentSearchGenerator.criteria = criteria;
-    }
-
-    public List<SearchableAttributeOld> getSearchableAttributes() {
-        return searchableAttributes;
-    }
-
-    public void setSearchableAttributes(List<SearchableAttributeOld> searchableAttributes) {
-        this.searchableAttributes = searchableAttributes;
     }
 
     public String getSearchingUser() {
@@ -176,49 +156,27 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see org.kuali.rice.kew.docsearch.DocumentSearchGenerator#validateSearchableAttributes()
-     */
-    public List<WorkflowServiceError> validateSearchableAttributes(DocSearchCriteriaDTO searchCriteria) {
+    @Override
+    public List<RemotableAttributeError> validateSearchableAttributes(DocSearchCriteriaDTO searchCriteria) {
         setCriteria(searchCriteria);
-        List<WorkflowServiceError> errors = new ArrayList<WorkflowServiceError>();
+        List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
         List<SearchAttributeCriteriaComponent> searchableAttributes = criteria.getSearchableAttributes();
         if (searchableAttributes != null && !searchableAttributes.isEmpty()) {
-            Map<String, Object> paramMap = new HashMap<String, Object>();
+            Map<String, List<String>> paramMap = new HashMap<String, List<String>>();
             for (SearchAttributeCriteriaComponent component : searchableAttributes) {
                 if (!CollectionUtils.isEmpty(component.getValues())) {
-                    paramMap.put(component.getFormKey(),component.getValues());
+                    paramMap.put(component.getFormKey(), component.getValues());
                 } else {
-                    paramMap.put(component.getFormKey(),component.getValue());
+                    paramMap.put(component.getFormKey(), Collections.singletonList(component.getValue()));
                 }
             }
+
             DocumentType documentType = getValidDocumentType(criteria.getDocTypeFullName());
-            try {
-                for (SearchableAttributeOld searchableAttribute : documentType.getSearchableAttributesOld()) {
-                    List<WorkflowAttributeValidationError> searchableErrors = validateSearchableAttribute(
-                            searchableAttribute, paramMap, DocSearchUtils.getDocumentSearchContext("", documentType.getName(), ""));
-                    if(!CollectionUtils.isEmpty(searchableErrors)){
-                        for (WorkflowAttributeValidationError error : searchableErrors) {
-	                    	if (error.getMessageMap() != null && error.getMessageMap().hasErrors()) {
-	                    		// In order to pass the map along we've added a member to the WorkflowServiceErrorImpl
-	                    		errors.add(new WorkflowServiceErrorImpl(error.getKey(), "routetemplate.xmlattribute.error", 
-	                    				error.getMessage(), null, error.getMessageMap()));
-	                    	} else {
-                            errors.add(new WorkflowServiceErrorImpl(error.getKey(), "routetemplate.xmlattribute.error", error.getMessage()));
-                        }
-                    }
-                }
-	            }
-            } catch (Exception e) {
-                LOG.error("error finding searchable attribute in when validating document search criteria.", e);
+            if (documentType != null) {
+               errors = KEWServiceLocator.getDocumentSearchCustomizationMediator().validateSearchFieldParameters(documentType, paramMap);
             }
         }
-        return errors;
-    }
-
-    public List<WorkflowAttributeValidationError> validateSearchableAttribute(
-            SearchableAttributeOld searchableAttribute, Map searchAttributesParameterMap, DocumentSearchContext documentSearchContext) {
-        return searchableAttribute.validateUserSearchInputs(searchAttributesParameterMap, documentSearchContext);
+        return errors == null ? Collections.<RemotableAttributeError>emptyList() : Collections.unmodifiableList(errors);
     }
 
     private Class getSearchableAttributeClass(SearchableAttributeValue sav){

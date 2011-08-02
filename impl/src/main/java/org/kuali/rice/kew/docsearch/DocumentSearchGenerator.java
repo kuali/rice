@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.docsearch;
 
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.krad.util.MessageMap;
 
@@ -34,7 +35,7 @@ public interface DocumentSearchGenerator {
 
 	public void setSearchingUser(String principalId);
     public List<WorkflowServiceError> performPreSearchConditions(String principalId, DocSearchCriteriaDTO searchCriteria);
-    public List<WorkflowServiceError> validateSearchableAttributes(DocSearchCriteriaDTO searchCriteria);
+    public List<RemotableAttributeError> validateSearchableAttributes(DocSearchCriteriaDTO searchCriteria);
     public String generateSearchSql(DocSearchCriteriaDTO searchCriteria);
     /**
      * @deprecated Removed as of version 0.9.3.  Use {@link DocumentSearchGenerator#processResultSet(java.sql.Statement, java.sql.ResultSet, DocSearchCriteriaDTO, String)}

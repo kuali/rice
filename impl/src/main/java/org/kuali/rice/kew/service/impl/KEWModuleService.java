@@ -15,7 +15,9 @@
  */
 package org.kuali.rice.kew.service.impl;
 
-import org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.document.Document;
+import org.kuali.rice.kew.docsearch.DocumentSearchEbo;
 import org.kuali.rice.kew.doctype.bo.DocumentTypeEBO;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -50,7 +52,7 @@ public class KEWModuleService extends ModuleServiceBase {
 			List<String> pkFields = new ArrayList<String>( 1 );
 			pkFields.add( "documentTypeId" );
 			return pkFields;
-		}else if(DocumentRouteHeaderEBO.class.isAssignableFrom( businessObjectInterfaceClass )){
+		}else if(DocumentSearchEbo.class.isAssignableFrom( businessObjectInterfaceClass )){
 			List<String> pkFields = new ArrayList<String>( 1 );
 			pkFields.add( "documentId" );
 			return pkFields;
@@ -77,9 +79,9 @@ public class KEWModuleService extends ModuleServiceBase {
 				return (T)getDocumentTypeService().findById(fieldValues.get( "id" ).toString());
 			}
 
-		}else if(DocumentRouteHeaderEBO.class.isAssignableFrom( businessObjectClass )){
+		}else if(DocumentSearchEbo.class.isAssignableFrom( businessObjectClass )){
 			if ( fieldValues.containsKey( "documentId" ) ) {
-				return (T)createDocSearchCriteriaEBO(KEWServiceLocator.getRouteHeaderService().getRouteHeader(fieldValues.get( "documentId" ).toString()));
+				return (T)createDocumentSearchEbo(KEWServiceLocator.getRouteHeaderService().getRouteHeader(fieldValues.get( "documentId" ).toString()));
 			}
 
 		}
@@ -106,8 +108,8 @@ public class KEWModuleService extends ModuleServiceBase {
 		this.docTypeService = docTypeService;
 	}
 
-	private DocumentRouteHeaderEBO createDocSearchCriteriaEBO(final DocumentRouteHeaderValue routeHeaderValue){
-		return new DocumentRouteHeaderEBO(){
+	private DocumentSearchEbo createDocumentSearchEbo(final DocumentRouteHeaderValue routeHeaderValue){
+		return new DocumentSearchEbo(){
 
 			public String getAppDocId() {
 				return routeHeaderValue.getAppDocId();

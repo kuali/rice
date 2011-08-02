@@ -22,6 +22,7 @@ import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttributeInteger;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -39,6 +40,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -286,5 +288,15 @@ public class SearchableAttributeLongValue implements SearchableAttributeValue, S
 	public void beforeInsert(){
 		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
 	}
+
+    @Override
+    public DocumentAttributeInteger toDocumentAttribute() {
+        BigInteger integer = null;
+        if (getSearchableAttributeValue() != null) {
+            integer = BigInteger.valueOf(getSearchableAttributeValue().longValue());
+        }
+        return DocumentAttributeInteger.create(getSearchableAttributeKey(), integer);
+    }
+
 }
 

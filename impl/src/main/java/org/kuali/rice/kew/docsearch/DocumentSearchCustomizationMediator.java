@@ -1,10 +1,11 @@
 package org.kuali.rice.kew.docsearch;
 
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 
-import javax.jws.WebParam;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Handles communication between {@link org.kuali.rice.kew.framework.docsearch.DocumentSearchCustomizationService}
@@ -15,5 +16,7 @@ import java.util.List;
 public interface DocumentSearchCustomizationMediator {
 
     List<RemotableAttributeField> getSearchFields(DocumentType documentType);
+
+    List<RemotableAttributeError> validateSearchFieldParameters(DocumentType documentType, Map<String, List<String>> parameters);
 
 }

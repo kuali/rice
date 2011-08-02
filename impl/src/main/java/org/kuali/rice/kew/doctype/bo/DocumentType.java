@@ -35,7 +35,6 @@ import org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor;
 import org.kuali.rice.kew.docsearch.SearchableAttributeOld;
 import org.kuali.rice.kew.docsearch.SearchableAttributeStringValue;
 import org.kuali.rice.kew.docsearch.xml.DocumentSearchXMLResultProcessor;
-import org.kuali.rice.kew.docsearch.xml.GenericXMLSearchableAttribute;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
@@ -51,6 +50,7 @@ import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
 import org.kuali.rice.kew.postprocessor.PostProcessor;
 import org.kuali.rice.kew.postprocessor.PostProcessorRemote;
 import org.kuali.rice.kew.postprocessor.PostProcessorRemoteAdapter;
+import org.kuali.rice.kew.rule.XmlConfiguredAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
@@ -461,11 +461,6 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
                     LOG.warn(e.getMessage());
                     searchableAttribute = null;
                 }
-            } else if (KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
-                ObjectDefinition objDef = getAttributeObjectDefinition(ruleAttribute);
-                searchableAttribute = (SearchableAttributeOld) GlobalResourceLoader.getObject(objDef);
-                //required to make it work because ruleAttribute XML is required to construct fields
-                ((GenericXMLSearchableAttribute) searchableAttribute).setRuleAttribute(ruleAttribute);
             }
             if (searchableAttribute != null) {
                 searchAtts.add(searchableAttribute);
@@ -518,7 +513,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
                     throw new WorkflowRuntimeException("Service for given attribute was found, but it does not implement SearchableAttribute: " + attributeService);
                 }
                 if (KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
-                    ((GenericXMLSearchableAttribute) attributeService).setRuleAttribute(ruleAttribute);
+                    ((XmlConfiguredAttribute) attributeService).setRuleAttribute(ruleAttribute);
                 }
                 loadedAttributes.add((SearchableAttribute)attributeService);
             } catch (RiceRemoteServiceConnectionException e) {

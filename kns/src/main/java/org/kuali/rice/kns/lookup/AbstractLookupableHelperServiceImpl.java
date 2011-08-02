@@ -91,7 +91,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     protected static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(AbstractLookupableHelperServiceImpl.class);
 
     protected Class businessObjectClass;
-    protected Map parameters;
+    protected Map<String, String[]> parameters;
     protected BusinessObjectDictionaryService businessObjectDictionaryService;
     protected BusinessObjectMetaDataService businessObjectMetaDataService;
     protected DataDictionaryService dataDictionaryService;
@@ -157,14 +157,14 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     /**
      * @see LookupableHelperService#getParameters()
      */
-    public Map getParameters() {
+    public Map<String, String[]> getParameters() {
         return parameters;
     }
 
     /**
      * @see LookupableHelperService#setParameters(java.util.Map)
      */
-    public void setParameters(Map parameters) {
+    public void setParameters(Map<String, String[]> parameters) {
         this.parameters = parameters;
     }
 
@@ -1093,7 +1093,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         setDocFormKey((String) lookupForm.getFieldsForLookup().get(KRADConstants.DOC_FORM_KEY));
         Collection displayList;
 
-        preprocessDateFields(lookupFormFields);
+        preProcessRangeFields(lookupFormFields);
 
         Map fieldsForLookup = new HashMap(lookupForm.getFieldsForLookup());
         // call search method to get results
@@ -1223,32 +1223,29 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     }
 
     /**
-     * changes from/to dates into the range operators the lookupable dao expects ("..",">" etc)
-     * this method modifies the passed in map and returns a list containing only the modified fields
-     *
-     * @param lookupFormFields
+     * Changes ranged search fields like from/to dates into the range operators the lookupable dao expects
+     * ("..",">" etc) this method modifies the passed in map and returns a list containing only the modified fields
      */
-    protected Map<String, String> preprocessDateFields(Map lookupFormFields) {
+    protected Map<String, String> preProcessRangeFields(Map<String, String> lookupFormFields) {
         Map<String, String> fieldsToUpdate = new HashMap<String, String>();
         Set<String> fieldsForLookup = lookupFormFields.keySet();
         for (String propName : fieldsForLookup) {
             if (propName.startsWith(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
-                String fromDateValue = (String) lookupFormFields.get(propName);
-                String dateFieldName = StringUtils.remove(propName, KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX);
-                String dateValue = (String) lookupFormFields.get(dateFieldName);
-                String newPropValue = dateValue;//maybe clean above with ObjectUtils.clean(propertyValue)
-                if (StringUtils.isNotEmpty(fromDateValue) && StringUtils.isNotEmpty(dateValue)) {
-                    newPropValue = fromDateValue + SearchOperator.BETWEEN + dateValue;
-                } else if (StringUtils.isNotEmpty(fromDateValue) && StringUtils.isEmpty(dateValue)) {
-                    newPropValue = ">=" + fromDateValue;
-                } else if (StringUtils.isNotEmpty(dateValue) && StringUtils.isEmpty(fromDateValue)) {
-                    newPropValue = "<=" + dateValue;
-                } //could optionally continue on else here
-
-                fieldsToUpdate.put(dateFieldName, newPropValue);
+                String rangedLowerBoundValue = lookupFormFields.get(propName);
+                String rangedFieldName = StringUtils.remove(propName, KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX);
+                String rangedValue = lookupFormFields.get(rangedFieldName);
+                String newPropValue = rangedValue;
+                if (StringUtils.isNotEmpty(rangedLowerBoundValue) && StringUtils.isNotEmpty(rangedValue)) {
+                    newPropValue = rangedLowerBoundValue + SearchOperator.BETWEEN + rangedValue;
+                } else if (StringUtils.isNotEmpty(rangedLowerBoundValue) && StringUtils.isEmpty(rangedValue)) {
+                    newPropValue = ">=" + rangedLowerBoundValue;
+                } else if (StringUtils.isNotEmpty(rangedValue) && StringUtils.isEmpty(rangedLowerBoundValue)) {
+                    newPropValue = "<=" + rangedValue;
+                }
+                fieldsToUpdate.put(rangedFieldName, newPropValue);
             }
         }
-        //update lookup values from found date values to update
+        //update lookup values from found ranged values to update
         Set<String> keysToUpdate = fieldsToUpdate.keySet();
         for (String updateKey : keysToUpdate) {
             lookupFormFields.put(updateKey, fieldsToUpdate.get(updateKey));

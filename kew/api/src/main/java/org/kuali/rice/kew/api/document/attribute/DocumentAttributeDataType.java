@@ -7,6 +7,9 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * TODO ...
  */
+@XmlRootElement(name = "documentAttributeDataType")
+@XmlType(name = "DocumentAttributeDataTypeType")
+@XmlEnum
 public enum DocumentAttributeDataType {
 
     STRING, DATE_TIME, INTEGER, DECIMAL

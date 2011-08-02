@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kew.attribute;
 
+import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.core.api.uif.RemotableQuickFinder;
 import org.kuali.rice.kns.web.ui.Field;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -34,7 +36,10 @@ public final class XMLAttributeUtils {
 	private XMLAttributeUtils() {
 		throw new UnsupportedOperationException("do not call");
 	}
-	
+
+    /**
+     * TODO - Rice 2.0 - Can remove this method once old xml attributes have been converted to RemotableAttributeField
+     */
 	public static void establishFieldLookup(Field field, Node lookupNode) {
 		NamedNodeMap quickfinderAttributes = lookupNode.getAttributes();
 		String businessObjectClass = quickfinderAttributes.getNamedItem("dataObjectClass").getNodeValue();
@@ -54,6 +59,30 @@ public final class XMLAttributeUtils {
 				}
 			}
 			field.setFieldConversions(fieldConversionsMap);
+		}
+	}
+
+    public static void establishFieldLookup(RemotableAttributeField.Builder fieldBuilder, Node lookupNode) {
+		NamedNodeMap quickfinderAttributes = lookupNode.getAttributes();
+		String businessObjectClass = quickfinderAttributes.getNamedItem("dataObjectClass").getNodeValue();
+        // TODO - Rice 2.0 - Not sure if null is appropriate for baseLookupUrl, maybe we need to look this up somewhere?
+        RemotableQuickFinder.Builder quickFinderBuilder = RemotableQuickFinder.Builder.create(null, businessObjectClass);
+		for (int lcIndex = 0; lcIndex < lookupNode.getChildNodes().getLength(); lcIndex++) {
+			Map<String, String> fieldConversionsMap = new HashMap<String, String>();
+			Node fieldConversionsChildNode = lookupNode.getChildNodes().item(lcIndex);
+			if ("fieldConversions".equals(fieldConversionsChildNode)) {
+				for (int fcIndex = 0; fcIndex < fieldConversionsChildNode.getChildNodes().getLength(); fcIndex++) {
+					Node fieldConversionChildNode = fieldConversionsChildNode.getChildNodes().item(fcIndex);
+					if ("fieldConversion".equals(fieldConversionChildNode)) {
+						NamedNodeMap fieldConversionAttributes = fieldConversionChildNode.getAttributes();
+						String lookupFieldName = fieldConversionAttributes.getNamedItem("lookupFieldName").getNodeValue();
+						String localFieldName = fieldConversionAttributes.getNamedItem("localFieldName").getNodeValue();
+						fieldConversionsMap.put(lookupFieldName, localFieldName);
+					}
+				}
+			}
+            quickFinderBuilder.setFieldConversions(fieldConversionsMap);
+			fieldBuilder.getWidgets().add(quickFinderBuilder);
 		}
 	}
 	

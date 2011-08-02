@@ -21,6 +21,7 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchDTO;
 import org.kuali.rice.kew.docsearch.DocumentSearchContext;
@@ -73,7 +74,7 @@ public class DataDictionaryDocumentSearchCustomizer implements SearchableAttribu
     	getDocumentSearchGenerator().setSearchingUser(principalId);
     }
 
-    public List<WorkflowServiceError> validateSearchableAttributes(DocSearchCriteriaDTO searchCriteria) {
+    public List<RemotableAttributeError> validateSearchableAttributes(DocSearchCriteriaDTO searchCriteria) {
         return getDocumentSearchGenerator().validateSearchableAttributes(searchCriteria);
     }
 
@@ -150,17 +151,6 @@ public class DataDictionaryDocumentSearchCustomizer implements SearchableAttribu
 			DocumentSearchResultProcessor searchResultProcessor) {
 		this.searchResultProcessor = searchResultProcessor;
 	}
-
-	/**
-	 * 
-	 * This method sets a list of searchable attributes on the DocumentSearchGenerator.
-	 * Do not confuse this with "setSearchableAttribute"
-	 * 
-	 * @param searchableAttributes
-	 */
-	public void setSearchableAttributes(List<SearchableAttributeOld> searchableAttributes) {
-		getDocumentSearchGenerator().setSearchableAttributes(searchableAttributes);
-    }
 	
 	/**
 	 * @param searchableAttribute the searchableAttribute to set

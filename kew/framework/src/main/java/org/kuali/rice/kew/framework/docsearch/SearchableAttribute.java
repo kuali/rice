@@ -13,8 +13,10 @@
  */
 package org.kuali.rice.kew.framework.docsearch;
 
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.core.api.util.jaxb.MultiValuedStringMapAdapter;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
@@ -62,9 +64,9 @@ public interface SearchableAttribute {
     @WebResult(name = "validationErrors")
     @XmlElementWrapper(name = "validationErrors", required = false)
     @XmlElement(name = "validationError", required = false)
-    public List<WorkflowAttributeValidationError> validateSearchParameters(
+    public List<RemotableAttributeError> validateSearchFieldParameters(
             @WebParam(name = "parameters")
-            @XmlJavaTypeAdapter(MapStringStringAdapter.class) Map<String, String> parameters,
-            @WebParam(name = "documentSearchContext") DocumentSearchContext searchContext);
+            @XmlJavaTypeAdapter(MultiValuedStringMapAdapter.class) Map<String, List<String>> parameters,
+            @WebParam(name = "documentTypeName") String documentTypeName);
 
 }

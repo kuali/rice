@@ -17,8 +17,9 @@
 package org.kuali.rice.kew.docsearch;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
+import org.kuali.rice.core.api.uif.DataType;
+import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.resourceloader.ObjectDefinitionResolver;
@@ -28,8 +29,8 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserUtils;
+import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
 
@@ -76,6 +77,9 @@ public final class DocSearchUtils {
         return searchableAttributeValueClasses;
     }
 
+    /**
+     * TODO - Rice 2.0 - Move once migrated over to new doc search framework
+     */
     public static SearchableAttributeValue getSearchableAttributeValueByDataTypeString(String dataType) {
         SearchableAttributeValue returnableValue = null;
         if (StringUtils.isBlank(dataType)) {
@@ -97,6 +101,31 @@ public final class DocSearchUtils {
             }
         }
         return returnableValue;
+    }
+
+    public static SearchableAttributeValue getSearchableAttributeValueByDataTypeString(DataType dataType) {
+        if (dataType == null || dataType == DataType.STRING || dataType == DataType.BOOLEAN) {
+            return new SearchableAttributeStringValue();
+        } else if (dataType == DataType.DATE || dataType == DataType.TRUNCATED_DATE) {
+            return new SearchableAttributeDateTimeValue();
+        } else if (dataType == DataType.FLOAT || dataType == DataType.DOUBLE) {
+            return new SearchableAttributeFloatValue();
+        } else if (dataType == DataType.INTEGER || dataType == DataType.LONG) {
+            return new SearchableAttributeLongValue();
+        }
+        throw new IllegalArgumentException("Could not determine appropriate searchable attribute data type to use for the given DataType: " + dataType);
+    }
+
+    public static SearchAttributeCriteriaComponent translateSearchFieldToCriteriaComponent(RemotableAttributeField searchField) {
+        SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(searchField.getDataType());
+        SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(searchField.getName(), null, searchField.getName(), searchableAttributeValue);
+        Field field = FieldUtils.convertRemotableAttributeField(searchField);
+        sacc.setRangeSearch(field.isMemberOfRange());
+        sacc.setSearchInclusive(field.isInclusive());
+        sacc.setSearchable(field.isIndexedForSearch());
+        sacc.setLookupableFieldType(field.getFieldType());
+        sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
+        return sacc;
     }
 
 
@@ -128,26 +157,13 @@ public final class DocSearchUtils {
 
         if (docType != null) {
 
-            for (SearchableAttributeOld searchableAttribute : docType.getSearchableAttributesOld()) {
-            	//KFSMI-1466 - DocumentSearchContext
-                for (Row row : searchableAttribute.getSearchingRows(
-                		DocSearchUtils.getDocumentSearchContext("", docType.getName(), ""))) {
-                    for (Field field : row.getFields()) {
-                        if (field instanceof Field) {
-                            SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType());
-                            SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(field.getPropertyName(), null, field.getPropertyName(), searchableAttributeValue);
-                            sacc.setRangeSearch(field.isMemberOfRange());
-                            sacc.setSearchInclusive(field.isInclusive());
-                            sacc.setSearchable(field.isIndexedForSearch());
-                            sacc.setLookupableFieldType(field.getFieldType());
-                            sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
-                            criteriaComponentsByKey.put(field.getPropertyName(), sacc);
-                        } else {
-                            throw new RiceRuntimeException("Fields must be of type org.kuali.rice.kew.docsearch.Field");
-                        }
-                    }
-                }
+            List<RemotableAttributeField> searchFields = KEWServiceLocator.getDocumentSearchCustomizationMediator().getSearchFields(docType);
+
+            for (RemotableAttributeField searchField : searchFields) {
+                SearchAttributeCriteriaComponent searchableAttributeComponent = DocSearchUtils.translateSearchFieldToCriteriaComponent(searchField);
+                criteriaComponentsByKey.put(searchField.getName(), searchableAttributeComponent);
             }
+
         }
 
         Map<String, List<String>> checkForMultiValueSearchableAttributes = new HashMap<String, List<String>>();
@@ -158,12 +174,6 @@ public final class DocSearchUtils {
                 int index = searchableAttribute.indexOf(":");
                 if (index != -1) {
                     String key = searchableAttribute.substring(0, index);
-                    // String savedKey = key;
-                    // if (key.indexOf(SearchableAttributeOld.RANGE_LOWER_BOUND_PROPERTY_PREFIX) == 0) {
-                    // savedKey = key.substring(SearchableAttributeOld.RANGE_LOWER_BOUND_PROPERTY_PREFIX.length());
-                    // } else if (key.indexOf(SearchableAttributeOld.RANGE_UPPER_BOUND_PROPERTY_PREFIX) == 0) {
-                    // savedKey = key.substring(SearchableAttributeOld.RANGE_UPPER_BOUND_PROPERTY_PREFIX.length());
-                    // }
                     String value = searchableAttribute.substring(index + 1);
                     if (value.startsWith(CURRENT_USER_PREFIX)) {
                         String idType = value.substring(CURRENT_USER_PREFIX.length());
@@ -293,36 +303,25 @@ public final class DocSearchUtils {
             }
             criteria.getSearchableAttributes().clear();
             Map<String, SearchAttributeCriteriaComponent> urlParameterSearchAttributesByFormKey = new HashMap<String, SearchAttributeCriteriaComponent>();
+
             if (!StringUtils.isBlank(searchAttributesString)) {
                 List<SearchAttributeCriteriaComponent> components = buildSearchableAttributesFromString(searchAttributesString, docType.getName());
                 for (SearchAttributeCriteriaComponent component : components) {
                     urlParameterSearchAttributesByFormKey.put(component.getFormKey(), component);
                     criteria.addSearchableAttribute(component);
                 }
-//                docSearchForm.setSearchableAttributes(null);
             }
+
             if (!propertyFields.isEmpty()) {
                 Map<String, SearchAttributeCriteriaComponent> criteriaComponentsByFormKey = new HashMap<String, SearchAttributeCriteriaComponent>();
-                for (SearchableAttributeOld searchableAttribute : docType.getSearchableAttributesOld()) {
-                	//KFSMI-1466 - DocumentSearchContext
-                    for (Row row : searchableAttribute.getSearchingRows(
-                    		DocSearchUtils.getDocumentSearchContext("", docType.getName(), ""))) {
-                        for (Field field : row.getFields()) {
-                            if (field instanceof Field) {
-                                SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType());
-                                SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(field.getPropertyName(), null, field.getPropertyName(), searchableAttributeValue);
-                                sacc.setRangeSearch(field.isMemberOfRange());
-                                sacc.setSearchInclusive(field.isInclusive());
-                                sacc.setLookupableFieldType(field.getFieldType());
-                                sacc.setSearchable(field.isIndexedForSearch());
-                                sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
-                                criteriaComponentsByFormKey.put(field.getPropertyName(), sacc);
-                            } else {
-                                throw new RiceRuntimeException("Fields must be of type org.kuali.rice.kew.docsearch.Field");
-                            }
-                        }
-                    }
+
+                List<RemotableAttributeField> searchFields = KEWServiceLocator.getDocumentSearchCustomizationMediator().getSearchFields(docType);
+
+                for (RemotableAttributeField searchField : searchFields) {
+                    SearchAttributeCriteriaComponent searchableAttributeComponent = DocSearchUtils.translateSearchFieldToCriteriaComponent(searchField);
+                    criteriaComponentsByFormKey.put(searchField.getName(), searchableAttributeComponent);
                 }
+
                 for (Iterator iterator = propertyFields.iterator(); iterator.hasNext();) {
                     SearchAttributeFormContainer propertyField = (SearchAttributeFormContainer) iterator.next();
                     SearchAttributeCriteriaComponent sacc = criteriaComponentsByFormKey.get(propertyField.getKey());
@@ -336,11 +335,6 @@ public final class DocSearchUtils {
                         if (urlParameterSearchAttributesByFormKey.containsKey(sacc.getFormKey())) {
                             setupPropertyField(urlParameterSearchAttributesByFormKey.get(sacc.getFormKey()), propertyFields);
                         } else {
-                            //if ((Field.CHECKBOX_YES_NO.equals(sacc.getLookupableFieldType())) && (!propertyField.isValueSet())) {
-                                // value was not set on the form so we must use the alternate value which for checkbox is the
-                                // 'unchecked' value
-                            //    sacc.setValue(propertyField.getAlternateValue());
-                            //} else
                             if (Field.MULTI_VALUE_FIELD_TYPES.contains(sacc.getLookupableFieldType())) {
                                 // set the multivalue lookup indicator
                                 sacc.setCanHoldMultipleValues(true);

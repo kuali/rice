@@ -64,20 +64,18 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements DocumentLookup
 		this.dataDictionaryService = dataDictionaryService;
 	}
 
-	/**
-	 * @see org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessor#getRows(org.kuali.rice.kew.doctype.bo.DocumentType, java.util.List, boolean, boolean)
-	 */
+    @Override
 	public List<Row> getRows(DocumentType documentType, List<Row> defaultRows, boolean detailed, boolean superSearch) {
 		List<Row> rows = new ArrayList<Row>();
 
-		List<Row> searchAttRows = new ArrayList<Row>();
-		List<List<StandardDocSearchCriteriaFieldContainer>> preSearchAttFields;
-			if(!detailed) {
-				 preSearchAttFields = getCriteriaProcessor().getBasicSearchManager().getColumnsPreSearchAttributes();
-			} else {
-				 preSearchAttFields = getCriteriaProcessor().getAdvancedSearchManager().getColumnsPreSearchAttributes();
-			}
-		List<Row> preSearchAttRows = standardNonSearchAttRows(documentType,preSearchAttFields);
+        List<Row> searchAttRows = new ArrayList<Row>();
+        List<List<StandardDocSearchCriteriaFieldContainer>> preSearchAttFields;
+        if(!detailed) {
+            preSearchAttFields = getCriteriaProcessor().getBasicSearchManager().getColumnsPreSearchAttributes();
+        } else {
+            preSearchAttFields = getCriteriaProcessor().getAdvancedSearchManager().getColumnsPreSearchAttributes();
+        }
+        List<Row> preSearchAttRows = standardNonSearchAttRows(documentType,preSearchAttFields);
 
 		rows.addAll(preSearchAttRows);
 
@@ -278,9 +276,7 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements DocumentLookup
      */
 	protected List<Row> searchAttRows(DocumentType documentType) {
 
-        // TODO use the customization mediator here!!
-
-		List<Row> customSearchAttRows = new ArrayList<Row>();
+        List<Row> customSearchAttRows = new ArrayList<Row>();
 
         // legacy search attributes
 		List<SearchableAttributeOld> searchAtts = documentType.getSearchableAttributesOld();

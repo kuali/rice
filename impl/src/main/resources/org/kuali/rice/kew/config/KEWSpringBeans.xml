@@ -633,7 +633,7 @@
         <property name="externalizableBusinessObjectImplementations">
             <map>
 	           <entry key="org.kuali.rice.kew.doctype.bo.DocumentTypeEBO" value="org.kuali.rice.kew.doctype.bo.DocumentType" />
-	           <entry key="org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO" value="org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO" />
+	           <entry key="org.kuali.rice.kew.docsearch.DocumentSearchEbo" value="org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO" />
             </map>
         </property>
 	</bean>

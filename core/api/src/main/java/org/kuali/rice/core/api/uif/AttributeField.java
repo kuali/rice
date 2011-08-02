@@ -135,4 +135,29 @@ public interface AttributeField {
      */
     Collection<? extends Widget> getWidgets();
 
+    /**
+     * Indicates if lookups which use this attribute should execute the lookup against this attribute
+     * in a case sensitive fashion.  If this method returns null, it means that the system-level
+     * default for case sensitivity of attributes on lookups should be used.
+     *
+     * @return true if the attribute should be case sensitive on lookups, false if it should not, and
+     * null if the system-level default should be used
+     */
+    Boolean isLookupCaseSensitive();
+
+    /**
+     * If this method returns a non-null value, it indicates that on a lookup, this attribute should be
+     * treated as a range.  This will typically translate to multiple UI controls that can be used to
+     * input both ends (lower and upper bounds) of the ranged lookup on the attribute.
+     *
+     * <p>Note that an attribute range only makes sense if the {@code DataType} of this attribute is
+     * a date or numerical data type.  The caller of this method is free to ignore the given
+     * {@code AttributeRange} if it does not believe it is possible to successfully present a range-based
+     * lookup option based on the data type (or other factors) of the {@code AttributeField}.</p>
+     *
+     * @return the attribute range configuration for this attribute, or null if this attribute should
+     * not be treated as a range in a lookup
+     */
+    AttributeRange getAttributeRange();
+
 }

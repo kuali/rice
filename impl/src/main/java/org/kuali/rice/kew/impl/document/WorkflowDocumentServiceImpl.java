@@ -17,6 +17,7 @@ package org.kuali.rice.kew.impl.document;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -34,17 +35,21 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
 import org.kuali.rice.kew.routeheader.DocumentStatusTransition;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import javax.jws.WebParam;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
- * TODO
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -123,12 +128,66 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     }
 
     @Override
-    public String getAppDocId(String documentId) {
+    public String getApplicationDocumentId(String documentId) {
         if (documentId == null) {
             throw new RiceIllegalArgumentException("documentId was blank or null");
         }
  	 	return KEWServiceLocator.getRouteHeaderService().getAppDocId(documentId);
  	}
+
+    @Override
+    public List<String> getSearchableAttributeStringValuesByKey(String documentId, String key) {
+        if (StringUtils.isEmpty(documentId)) {
+            throw new RiceIllegalArgumentException("documentId was blank or null");
+        }
+        if (StringUtils.isEmpty(key)) {
+            throw new RiceIllegalArgumentException("key was blank or null");
+        }
+		return KEWServiceLocator.getRouteHeaderService().getSearchableAttributeStringValuesByKey(documentId, key);
+	}
+
+    @Override
+	public List<DateTime> getSearchableAttributeDateTimeValuesByKey(String documentId, String key) {
+		if (StringUtils.isEmpty(documentId)) {
+            throw new RiceIllegalArgumentException("documentId was blank or null");
+        }
+        if (StringUtils.isEmpty(key)) {
+            throw new RiceIllegalArgumentException("key was blank or null");
+        }
+
+        List<Timestamp> results = KEWServiceLocator.getRouteHeaderService().getSearchableAttributeDateTimeValuesByKey(documentId, key);
+        if (results == null) {
+            return null;
+        }
+        List<DateTime> dateTimes = new ArrayList<DateTime>();
+
+		for(Timestamp time : results) {
+            dateTimes.add(new DateTime(time.getTime()));
+        }
+        return dateTimes;
+	}
+
+    @Override
+	public List<BigDecimal> getSearchableAttributeFloatValuesByKey(String documentId, String key) {
+        if (StringUtils.isEmpty(documentId)) {
+            throw new RiceIllegalArgumentException("documentId was blank or null");
+        }
+        if (StringUtils.isEmpty(key)) {
+            throw new RiceIllegalArgumentException("key was blank or null");
+        }
+		return KEWServiceLocator.getRouteHeaderService().getSearchableAttributeFloatValuesByKey(documentId, key);
+	}
+
+    @Override
+    public List<Long> getSearchableAttributeLongValuesByKey(String documentId, String key) {
+        if (StringUtils.isEmpty(documentId)) {
+            throw new RiceIllegalArgumentException("documentId was blank or null");
+        }
+        if (StringUtils.isEmpty(key)) {
+            throw new RiceIllegalArgumentException("key was blank or null");
+        }
+		return KEWServiceLocator.getRouteHeaderService().getSearchableAttributeLongValuesByKey(documentId, key);
+	}
 	
 	@Override
 	public DocumentContent getDocumentContent(String documentId) {
@@ -141,6 +200,9 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 
 	@Override
 	public List<ActionRequest> getRootActionRequests(String documentId) {
+        if (StringUtils.isBlank(documentId)) {
+			throw new RiceIllegalArgumentException("documentId was blank or null");
+		}
 		List<ActionRequest> actionRequests = new ArrayList<ActionRequest>();
 		List<ActionRequestValue> actionRequestBos = KEWServiceLocator.getActionRequestService().findAllRootActionRequestsByDocumentId(documentId);
 		for (ActionRequestValue actionRequestBo : actionRequestBos) {
@@ -171,6 +233,19 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         return actionRequests;
     }
 	
+    public Map<String, String> getActionsRequested(String principalId, String documentId) {
+        if (StringUtils.isEmpty(documentId)) {
+            throw new IllegalArgumentException("documentId is null or empty.");
+        }
+        if (StringUtils.isEmpty(principalId)) {
+            throw new IllegalArgumentException("principalId is null or empty.");
+        }
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("Fetching DocumentRouteHeaderValue [id="+documentId+", user="+principalId+"]");
+        }
+        DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
+        return KEWServiceLocator.getActionRequestService().getActionsRequested(document, principalId, true);
+    }
 
     protected boolean actionRequestMatches(ActionRequestValue actionRequest, String nodeName, String principalId) {
         boolean matchesUserId = true;  // assume a match in case user is empty
@@ -187,6 +262,9 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 
 	@Override
 	public List<ActionTaken> getActionsTaken(String documentId) {
+        if (StringUtils.isEmpty(documentId)) {
+            throw new IllegalArgumentException("documentId is null or empty.");
+        }
 		List<ActionTaken> actionTakens = new ArrayList<ActionTaken>();
 		Collection<ActionTakenValue> actionTakenBos = KEWServiceLocator.getActionTakenService().findByDocumentId(documentId);
 		for (ActionTakenValue actionTakenBo : actionTakenBos) {
@@ -301,26 +379,6 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 					}
 				}
 			}
-//			List<org.kuali.rice.kew.engine.node.RouteNodeInstance> activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document);
-//			long largetActivatedNodeId = 0;
-//			for (org.kuali.rice.kew.engine.node.RouteNodeInstance routeNodeInstance : activeNodeInstances) {
-//				if (routeNodeInstance.getRouteNode().getRouteNodeId().longValue() > largetActivatedNodeId) {
-//					largetActivatedNodeId = routeNodeInstance.getRouteNode().getRouteNodeId().longValue();
-//				}
-//			}
-//
-//			List<org.kuali.rice.kew.engine.node.RouteNodeInstance> routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodeInstances(document, false);
-//			List<String> nodeNames = new ArrayList<String>();
-//
-//			for (org.kuali.rice.kew.engine.node.RouteNodeInstance routeNode : routeNodes) {
-//				if (routeNode.isComplete() && !nodeNames.contains(routeNode.getName())) {
-//					//if the prototype of the nodeInstance we're analyzing is less than the largest id of all our active prototypes
-//					//then add it to the list.  This is an attempt to account for return to previous hitting a single node multiple times
-//					if (routeNode.getRouteNode().getRouteNodeId().longValue() < largetActivatedNodeId) {
-//						nodeNames.add(routeNode.getName());
-//					}
-//				}
-//			}
 			return Collections.unmodifiableList(new ArrayList<String>(routeNodeNames));
 		} else {
 			return Collections.emptyList();
@@ -353,7 +411,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     }
 
     @Override
-    public String getDocumentRoutedByPrincipalId(String documentId) {
+    public String getRoutedByPrincipalIdByDocumentId(String documentId) {
         if (StringUtils.isEmpty(documentId)) {
             throw new RiceIllegalArgumentException("documentId was blank or null");
         }
@@ -385,7 +443,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		}
 		org.kuali.rice.kew.documentlink.DocumentLink documentLinkBo = KEWServiceLocator.getDocumentLinkService().getDocumentLink(Long.valueOf(documentLinkId));
 		if (documentLinkBo == null) {
-			throw new RiceIllegalArgumentException("Failed to locate document link with the given documentLinkId: " + documentLinkId);
+			throw new RiceIllegalStateException("Failed to locate document link with the given documentLinkId: " + documentLinkId);
 		}
 		KEWServiceLocator.getDocumentLinkService().deleteDocumentLink(documentLinkBo);
 		return org.kuali.rice.kew.documentlink.DocumentLink.to(documentLinkBo);

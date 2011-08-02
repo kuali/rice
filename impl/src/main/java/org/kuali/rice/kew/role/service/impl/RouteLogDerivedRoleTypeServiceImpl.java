@@ -26,7 +26,6 @@ import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -79,7 +78,7 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 					    	}
 					    }
 					} else if(ROUTER_ROLE_NAME.equals(roleName)) {
-                        String principalId = workflowDocumentService.getDocumentRoutedByPrincipalId(documentId);
+                        String principalId = workflowDocumentService.getRoutedByPrincipalIdByDocumentId(documentId);
                         RoleMembership roleMembership = RoleMembership.Builder.create(null,null,principalId, Role.PRINCIPAL_MEMBER_TYPE,null).build();
 	                    members.add(roleMembership);
 					}
@@ -108,7 +107,8 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 					isUserInRouteLog = KewApiServiceLocator.getWorkflowDocumentActionsService().isUserInRouteLog(
                             documentId, principalId, true);
 				} else if(ROUTER_ROLE_NAME.equals(roleName)){
-					isUserInRouteLog = principalId.equals(workflowDocumentService.getDocumentRoutedByPrincipalId(documentId));
+					isUserInRouteLog = principalId.equals(workflowDocumentService.getRoutedByPrincipalIdByDocumentId(
+                            documentId));
 				}
 			} catch (Exception wex) {
 				throw new RuntimeException("Error in determining whether the principal Id: " + principalId + " is in route log " +

@@ -4,11 +4,10 @@
     <output url="file://$MODULE_DIR$/../../../it/shareddata/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../it/shareddata/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../it/shareddata">
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/shareddata/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/shareddata/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/shareddata/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/shareddata/src/test/groovy" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../it/shareddata/target/classes" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../it/shareddata/target/generated-sources/test-annotations" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/shareddata/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/shareddata/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/shareddata/target/test-classes" />
@@ -39,7 +38,7 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-core:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.jdom:jdom:1.1" level="project" />
-    <orderEntry type="library" name="Maven: joda-time:joda-time:1.6.2" level="project" />
+    <orderEntry type="library" name="Maven: joda-time:joda-time:2.0" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.8.1" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:r09" level="project" />
     <orderEntry type="module" module-name="rice-api" />
@@ -84,8 +83,8 @@
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-servlet:2.2.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-jsp:2.2.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-template:2.2.2" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.codehaus.jackson:jackson-core-asl:1.8.3" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.8.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.codehaus.jackson:jackson-core-asl:1.8.4" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.8.4" level="project" />
     <orderEntry type="module" module-name="rice-shareddata-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-it-internal-tools" />
     <orderEntry type="module" module-name="rice-core-impl" />

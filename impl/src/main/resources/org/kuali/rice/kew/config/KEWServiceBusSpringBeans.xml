@@ -68,6 +68,15 @@
 		<property name="runModePropertyName" value="kew.mode" />
 		<property name="validRunMode" value="EMBEDDED" />
 	</bean>
+
+  <bean id="kewJaxWsSoapService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition"
+		abstract="true">
+		<property name="serviceNameSpaceURI" value="#{ T(org.kuali.rice.kew.api.KewApiConstants$Namespaces).KEW_NAMESPACE_2_0 }" />
+		<property name="jaxWsService" value="true" />
+		<property name="priority" value="3" />
+		<property name="retryAttempts" value="0" />
+		<property name="serviceVersion" value="${rice.version}" />
+	</bean>
 	
 	<bean id="kewSoapService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition" abstract="true">
        <property name="serviceNameSpaceURI" value="http://rice.kuali.org/wsdl/kew"/>
@@ -180,6 +189,19 @@
         </bean>
 		</property>
 	</bean>
+
+  <bean id="rice.kew.documentAttributeIndexingQueueSoap.exporter" parent="kewEmbeddedServiceExporter">
+    <property name="serviceBus" ref="rice.ksb.serviceBus" />
+    <property name="serviceDefinition">
+      <bean parent="kewJaxWsSoapService">
+        <property name="service">
+          <ref bean="rice.kew.documentAttributeIndexingQueue" />
+        </property>
+        <property name="localServiceName" value="documentAttributeIndexingQueueSoap" />
+        <property name="busSecurity" value="${rice.kew.documentAttributeIndexingQueueSoap.secure}" />
+      </bean>
+    </property>
+  </bean>
 
 	<bean parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus"/>

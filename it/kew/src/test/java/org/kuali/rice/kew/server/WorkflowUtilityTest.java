@@ -28,6 +28,7 @@ import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequestType;
+import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
 import org.kuali.rice.kew.api.document.DocumentDetail;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.WorkflowDocumentService;
@@ -82,7 +83,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
     @Override
 	public void setUp() throws Exception {
 		super.setUp();
-		setWorkflowUtility(KEWServiceLocator.getWorkflowUtilityService());
+		//setWorkflowUtility(KEWServiceLocator.getWorkflowUtilityService());
 	}
 
 	protected void loadTestData() throws Exception {
@@ -150,43 +151,46 @@ public class WorkflowUtilityTest extends KEWTestCase {
     }
 
     protected void assertActionsRequested(String principalName, String documentId) throws Exception {
-    	Map<String, String> attrSet = getWorkflowUtility().getActionsRequested(getPrincipalIdForName(principalName), documentId);
+    	Map<String, String> attrSet = KewApiServiceLocator.getWorkflowDocumentService().getActionsRequested(
+                getPrincipalIdForName(principalName), documentId);
     	assertNotNull("Actions requested should be populated", attrSet);
     	assertFalse("Actions requested should be populated with at least one entry", attrSet.isEmpty());
     	assertEquals("Wrong number of actions requested", 4, attrSet.size());
     }
 
-    @Test public void testIsUserInRouteLog() throws Exception {
+    @Test
+    public void testIsUserInRouteLog() throws Exception {
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
         document.route("");
         assertTrue(document.isEnroute());
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("ewestfal"), false));
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), false));
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), false));
-        assertFalse("User should not be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("pmckown"), false));
-        assertFalse("User should not be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("temay"), false));
-        assertFalse("User should not be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("jhopf"), false));
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("pmckown"), true));
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("temay"), true));
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("jhopf"), true));
+        WorkflowDocumentActionsService wdas = KewApiServiceLocator.getWorkflowDocumentActionsService();
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("ewestfal"), false));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), false));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), false));
+        assertFalse("User should not be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("pmckown"), false));
+        assertFalse("User should not be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("temay"), false));
+        assertFalse("User should not be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("jhopf"), false));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("pmckown"), true));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("temay"), true));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("jhopf"), true));
 
         // test that we can run isUserInRouteLog on a SAVED document
         document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
         document.saveDocument("");
         assertTrue(document.isSaved());
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("ewestfal"), false));
-        assertFalse("User should not be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), false));
-        assertFalse("User should not be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), false));
-        assertFalse("User should not be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("pmckown"), false));
-        assertFalse("User should not be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("temay"), false));
-        assertFalse("User should not be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("jhopf"), false));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("ewestfal"), false));
+        assertFalse("User should not be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), false));
+        assertFalse("User should not be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), false));
+        assertFalse("User should not be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("pmckown"), false));
+        assertFalse("User should not be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("temay"), false));
+        assertFalse("User should not be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("jhopf"), false));
 
         // now look all up in the future of this saved document
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), true));
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), true));
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("pmckown"), true));
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("temay"), true));
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("jhopf"), true));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), true));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), true));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("pmckown"), true));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("temay"), true));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("jhopf"), true));
     }
 
     @Test public void testIsUserInRouteLogAfterReturnToPrevious() throws Exception {
@@ -200,13 +204,14 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue(document.isApprovalRequested());
 
         // bmcgough and rkirkend should be in route log
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), false));
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), false));
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), true));
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), true));
-        assertFalse("User should NOT be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("pmckown"), false));
+        WorkflowDocumentActionsService wdas = KewApiServiceLocator.getWorkflowDocumentActionsService();
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), false));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), false));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), true));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), true));
+        assertFalse("User should NOT be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("pmckown"), false));
         // Phil of the future
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("pmckown"), true));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("pmckown"), true));
         TestUtilities.assertAtNode(document, "WorkflowDocument");
 
         document.returnToPreviousNode("", "AdHoc");
@@ -224,12 +229,12 @@ public class WorkflowUtilityTest extends KEWTestCase {
         TestUtilities.assertAtNode(document, "WorkflowDocument");
 
         // now verify that is route log authenticated still works
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), false));
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), false));
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), true));
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), true));
-        assertFalse("User should NOT be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("pmckown"), false));
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("pmckown"), true));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), false));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), false));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), true));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), true));
+        assertFalse("User should NOT be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("pmckown"), false));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("pmckown"), true));
 
         // let's look at the revoked node instances
 
@@ -247,24 +252,24 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("pmckown"), document.getDocumentId());
         TestUtilities.assertAtNode(document, "WorkflowDocument2");
         assertTrue(document.isApprovalRequested());
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), false));
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), false));
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), true));
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), true));
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("pmckown"), false));
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("pmckown"), true));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), false));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), false));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), true));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), true));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("pmckown"), false));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("pmckown"), true));
 
         // now return back to WorkflowDocument
         document.returnToPreviousNode("", "WorkflowDocument");
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
         assertTrue(document.isApprovalRequested());
         // Phil should no longer be non-future route log authenticated
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), false));
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), false));
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), true));
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), true));
-        assertFalse("User should NOT be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("pmckown"), false));
-        assertTrue("User should be authenticated.", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("pmckown"), true));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), false));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), false));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), true));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), true));
+        assertFalse("User should NOT be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("pmckown"), false));
+        assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("pmckown"), true));
     }
     
     @Test
@@ -284,34 +289,35 @@ public class WorkflowUtilityTest extends KEWTestCase {
         TestUtilities.assertAtNode(document, "BeforeSplit");
         
         // now let's run some simulations
-        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("ewestfal"), true));
-        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), true));
-        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), true));
-        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("jhopf"), true));
-        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("natjohns"), true));
-        assertFalse("should NOT be in route log", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("user1"), true));
+        WorkflowDocumentActionsService wdas = KewApiServiceLocator.getWorkflowDocumentActionsService();
+        assertTrue("should be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("ewestfal"), true));
+        assertTrue("should be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), true));
+        assertTrue("should be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), true));
+        assertTrue("should be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("jhopf"), true));
+        assertTrue("should be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("natjohns"), true));
+        assertFalse("should NOT be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("user1"), true));
         
         // now let's activate only the left branch and make sure the split is properly executed
         TestSplitNode.setRightBranch(false);
-        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), true));
-        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), true));
-        assertFalse("should NOT be in route log because right branch is not active", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("jhopf"), true));
-        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("natjohns"), true));
+        assertTrue("should be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), true));
+        assertTrue("should be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), true));
+        assertFalse("should NOT be in route log because right branch is not active", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("jhopf"), true));
+        assertTrue("should be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("natjohns"), true));
         
         // now let's do a flattened evaluation, it should hit both branches
-        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLogWithOptionalFlattening(document.getDocumentId(), getPrincipalIdForName("rkirkend"), true, true));
-        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLogWithOptionalFlattening(document.getDocumentId(), getPrincipalIdForName("bmcgough"), true, true));
-        assertTrue("should be in route log because we've flattened nodes", getWorkflowUtility().isUserInRouteLogWithOptionalFlattening(document.getDocumentId(), getPrincipalIdForName("jhopf"), true, true));
-        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLogWithOptionalFlattening(document.getDocumentId(), getPrincipalIdForName("natjohns"), true, true));
+        assertTrue("should be in route log", wdas.isUserInRouteLogWithOptionalFlattening(document.getDocumentId(), getPrincipalIdForName("rkirkend"), true, true));
+        assertTrue("should be in route log", wdas.isUserInRouteLogWithOptionalFlattening(document.getDocumentId(), getPrincipalIdForName("bmcgough"), true, true));
+        assertTrue("should be in route log because we've flattened nodes", wdas.isUserInRouteLogWithOptionalFlattening(document.getDocumentId(), getPrincipalIdForName("jhopf"), true, true));
+        assertTrue("should be in route log", wdas.isUserInRouteLogWithOptionalFlattening(document.getDocumentId(), getPrincipalIdForName("natjohns"), true, true));
         
         // now let's switch to the right branch
         TestSplitNode.setRightBranch(true);
         TestSplitNode.setLeftBranch(false);
         
-        assertFalse("should NOT be in route log", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), true));
-        assertFalse("should NOT be in route log", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), true));
-        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("jhopf"), true));
-        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("natjohns"), true));
+        assertFalse("should NOT be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), true));
+        assertFalse("should NOT be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), true));
+        assertTrue("should be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("jhopf"), true));
+        assertTrue("should be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("natjohns"), true));
 
         // now let's switch back to the left branch and approve it
         TestSplitNode.setLeftBranch(true);
@@ -326,10 +332,10 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue("should have an approve request", document.isApprovalRequested());
         
         // now let's run the simulation so we can test running from inside a split branch
-        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), true));
-        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), true));
-        assertFalse("should NOT be in route log because right branch is not active", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("jhopf"), true));
-        assertTrue("should be in route log", getWorkflowUtility().isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("natjohns"), true));
+        assertTrue("should be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), true));
+        assertTrue("should be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), true));
+        assertFalse("should NOT be in route log because right branch is not active", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("jhopf"), true));
+        assertTrue("should be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("natjohns"), true));
     }
     
     public abstract interface ReportCriteriaGenerator { public abstract ReportCriteriaDTO buildCriteria(WorkflowDocument workflowDoc) throws Exception; public boolean isCriteriaRouteHeaderBased();}
@@ -1595,7 +1601,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertEquals("Search results should have two documents.", 2, searchResults.size());
 
         criteria = new DocumentSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName); 
+        criteria.setDocTypeFullName(documentTypeName);
         criteria.setSearchAttributeValues(Collections.singletonList(new ConcreteKeyValue(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY,"fred")));
         result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
@@ -1697,7 +1703,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue("Timestamps should not be empty", 0 != timestamps.length);
         verifyTimestampToSecond(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS, timestamps[0].getTime());
     }
-    
+
     protected void verifyTimestampToSecond(Long originalTimeInMillis, Long testTimeInMillis) throws Exception {
         Calendar testDate = Calendar.getInstance();
         testDate.setTimeInMillis(originalTimeInMillis);

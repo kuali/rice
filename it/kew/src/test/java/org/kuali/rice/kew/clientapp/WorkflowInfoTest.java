@@ -104,7 +104,7 @@ public class WorkflowInfoTest extends KEWTestCase {
 
     /**
      * test for issue KFSMI-2979 This method verifies that
-     * workflowInfo.getDocumentRoutedByPrincipalId returns the blanket approver for a document that
+     * workflowInfo.getRoutedByPrincipalIdByDocumentId returns the blanket approver for a document that
      * was put onroute by that person (the blanket approver)
      */
     @Test
@@ -115,7 +115,7 @@ public class WorkflowInfoTest extends KEWTestCase {
                 "BlanketApproveParallelTest");
         document.blanketApprove("");
 
-        String routedByPrincipalId = KewApiServiceLocator.getWorkflowDocumentService().getDocumentRoutedByPrincipalId(
+        String routedByPrincipalId = KewApiServiceLocator.getWorkflowDocumentService().getRoutedByPrincipalIdByDocumentId(
                 document.getDocumentId());
         assertEquals("the blanket approver should be the routed by", blanketApprover.getPrincipalId(),
                 routedByPrincipalId);
@@ -127,14 +127,14 @@ public class WorkflowInfoTest extends KEWTestCase {
                 "TestDocumentType");
         document.saveDocumentData();
 
-        String appDocId = KewApiServiceLocator.getWorkflowDocumentService().getAppDocId(document.getDocumentId());
+        String appDocId = KewApiServiceLocator.getWorkflowDocumentService().getApplicationDocumentId(document.getDocumentId());
         assertNull("appDocId should be null", appDocId);
 
         String appDocIdValue = "1234";
         document.setApplicationDocumentId(appDocIdValue);
         document.saveDocumentData();
 
-        appDocId = KewApiServiceLocator.getWorkflowDocumentService().getAppDocId(document.getDocumentId());
+        appDocId = KewApiServiceLocator.getWorkflowDocumentService().getApplicationDocumentId(document.getDocumentId());
         assertEquals("Incorrect appDocId", appDocIdValue, appDocId);
     }
 

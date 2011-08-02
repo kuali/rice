@@ -54,22 +54,15 @@ jq('#' + '${componentId}').bind('loaded.jstree', function (event, data) {
         jq(this.parentNode).addClass('ruleBlockSelected');
     });
 
-    // logic nodes should clear the selected item
-    jq('a.logicNode').click( function() {
-        var selectedItemTracker = jq('input[name=\"agenda_item_selected\"]');
-        selectedItemTracker.val('');
+    // set type to 'logic' on logic nodes -- this prevents them from being selected
+    jq('a.logicNode').each( function() {
+        jq('#' + '${componentId}').jstree('set_type', 'logic', this.parentNode);
     });
 
     jq('a.ruleNode').each( function() {
         var agendaItemId = jq(this.parentNode).find('input').attr('value');
         var selectedItemTracker = jq('input[name=\"agenda_item_selected\"]');
         var selectedItemId = selectedItemTracker.val();
-        /*
-        // make li show containment of children
-        if (selectedItemId == agendaItemId) {
-            jq(this.parentNode).addClass('ruleBlockSelected');
-        }
-        */
 
         if (selectedItemId == agendaItemId) {
             // simulate click
@@ -81,7 +74,7 @@ jq('#' + '${componentId}').bind('loaded.jstree', function (event, data) {
 
 /* create the tree */
 createTree('${componentId}', {
-    'plugins' : ['themes','html_data', 'ui', 'crrm', /*, 'dnd' */ ], // disabled drag and drop plugin
+    'plugins' : ['themes','html_data', 'ui', 'crrm', 'types' /*, 'dnd' */ ], // disabled drag and drop plugin
     'ui' : { 'select_limit' : 1 },
     'themes' : { 'theme':'krms','dots': true ,'icons': false },
     'crrm' : {
@@ -104,10 +97,14 @@ createTree('${componentId}', {
                 }
             }
         },
+  'types' : {
+       'types' : {
+           /* nodes set to type 'logic' will not be selectable */
+           'logic' : { 'select_node' : false }
+       }
+  },
   'dnd' : { 'drag_target' : false, 'drop_target' : false }
 } );
 
-jq('#' + '${componentId}').bind('loaded.jstree', function (event, data) {
-});
 
 "/>

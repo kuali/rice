@@ -20,6 +20,8 @@
   <bean id="PermissionBo-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.impl.permission.PermissionBo" p:titleAttribute="id" p:objectLabel="Permission" p:inquiryDefinition-ref="PermissionBo-inquiryDefinition" p:lookupDefinition-ref="PermissionBo-lookupDefinition">
     <property name="attributes">
       <list>
+        <ref bean="PermissionBo-id"/>
+        <ref bean="PermissionBo-active"/>
         <ref bean="PermissionBo-template.namespaceCode"/>
         <ref bean="PermissionBo-template.name"/>
         <ref bean="PermissionBo-namespaceCode"/>
@@ -49,6 +51,29 @@
       </list>
     </property>
   </bean>
+
+  <bean id="PermissionBo-id" parent="PermissionBo-id-parentBean"/>
+	<bean id="PermissionBo-id-parentBean" abstract="true" parent="AttributeDefinition">
+		<property name="name" value="id"/>
+		<property name="forceUppercase" value="false"/>
+		<property name="label" value="Permission Identifier"/>
+		<property name="shortLabel" value="Permission Identifier"/>
+		<property name="maxLength" value="40"/>
+		<property name="validationPattern">
+			<bean parent="NumericValidationPattern"/>
+		</property>
+		<property name="control">
+			<bean parent="TextControlDefinition" p:size="5"/>
+		</property>
+        <property name="controlField">
+            <bean parent="TextControl" p:size="5"/>
+        </property>
+	</bean>
+
+  <bean id="PermissionBo-active" parent="PermissionBo-active-parentBean"/>
+	<bean id="PermissionBo-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
+		<property name="name" value="active"/>
+	</bean>
 
   <bean id="PermissionBo-template.namespaceCode" parent="PermissionBo-template.namespaceCode-parentBean"/>
   <bean id="PermissionBo-template.namespaceCode-parentBean" parent="Parameter-namespaceCode" abstract="true" p:name="template.namespaceCode" p:label="Template Namespace" p:shortLabel="Template Namespace">
@@ -154,7 +179,7 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="FieldDefinition" p:attributeName="kimTypeInfo.name"/>
+        <!--<bean parent="FieldDefinition" p:attributeName="kimTypeInfo.name"/>-->
         <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
         <bean parent="FieldDefinition" p:attributeName="name"/>
         <bean parent="FieldDefinition" p:attributeName="description"/>

@@ -606,10 +606,10 @@
       <foreignkey field-ref="templateId" />
     </reference-descriptor>
     <collection-descriptor name="attributeDetails" element-class-ref="org.kuali.rice.kim.impl.permission.PermissionAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
-      <inverse-foreignkey field-ref="assignedToId" target-field-ref="permissionId" />
+      <inverse-foreignkey field-ref="assignedToId" target-field-ref="id" />
     </collection-descriptor>
 	<collection-descriptor name="rolePermissions" element-class-ref="org.kuali.rice.kim.impl.role.RolePermissionBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
-      <inverse-foreignkey field-ref="permissionId" />
+      <inverse-foreignkey field-ref="permissionId" target-field-ref="id" />
     </collection-descriptor>
   </class-descriptor>
 
@@ -1184,7 +1184,7 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.impl.permission.GenericPermissionBo" table="KRIM_PERM_T">
-    <field-descriptor name="permissionId" column="PERM_ID" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="id" column="PERM_ID" jdbc-type="VARCHAR" primarykey="true" />
   </class-descriptor>
 
 </descriptor-repository>

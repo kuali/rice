@@ -145,7 +145,7 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
 	@Override
 	public BusinessObject getBusinessObject(Map fieldValues) {
 		Map<String, String> criteria = new HashMap<String, String>();
-		criteria.put("permissionId", fieldValues.get("permissionId").toString());
+		criteria.put("id", fieldValues.get("id").toString());
 		PermissionBo permissionBo = KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(PermissionBo.class, criteria);
 		return getPermissionsSearchResultsCopy(permissionBo);
 	}

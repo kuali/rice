@@ -310,7 +310,7 @@
                            styleClass="${styleClass}" />
     </c:when>
     <c:otherwise>
-    	unknown control type: <control type>
+    	unknown control type: ${attributeEntry.control.class.name}
     </c:otherwise>
   </c:choose>
   <%-- error icon --%>

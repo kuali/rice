@@ -63,8 +63,8 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     
     /**
      * This overridden method does extra work on refresh to populate the context and agenda
-     * 
-     * @see org.kuali.rice.krad.web.spring.controller.UifControllerBase#refresh(org.kuali.rice.krad.web.spring.form.UifFormBase, org.springframework.validation.BindingResult, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     *
+     * @see org.kuali.rice.krad.web.controller.UifControllerBase#refresh(org.kuali.rice.krad.web.form.UifFormBase, org.springframework.validation.BindingResult, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
     @RequestMapping(params = "methodToCall=" + "refresh")
     @Override
@@ -181,7 +181,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * This method sets the id of the selected agendaItem.
      *
      * @param form
-     * @param selectedItemId
+     * @param selectedAgendaItemId
      */
     private void setSelectedAgendaItemId(UifFormBase form, String selectedAgendaItemId) {
         MaintenanceForm maintenanceForm = (MaintenanceForm) form;
@@ -199,6 +199,30 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         MaintenanceForm maintenanceForm = (MaintenanceForm) form;
         AgendaEditor editorDocument = ((AgendaEditor)maintenanceForm.getDocument().getDocumentDataObject());
         return editorDocument.getSelectedAgendaItemId();
+    }
+
+    /**
+     * This method sets the id of the cut agendaItem.
+     *
+     * @param form
+     * @param cutAgendaItemId
+     */
+    private void setCutAgendaItemId(UifFormBase form, String cutAgendaItemId) {
+        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
+        AgendaEditor editorDocument = ((AgendaEditor)maintenanceForm.getDocument().getDocumentDataObject());
+        editorDocument.setCutAgendaItemId(cutAgendaItemId);
+    }
+
+    /**
+     * This method returns the id of the cut agendaItem.
+     *
+     * @param form
+     * @return cutAgendaItemId
+     */
+    private String getCutAgendaItemId(UifFormBase form) {
+        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
+        AgendaEditor editorDocument = ((AgendaEditor)maintenanceForm.getDocument().getDocumentDataObject());
+        return editorDocument.getCutAgendaItemId();
     }
 
     /**
@@ -735,7 +759,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             }
         }
     }
-    
 
     /**
      * @return the closest older sibling of the agenda item with the given ID, and if there is no such sibling, the closest older cousin.
@@ -884,6 +907,134 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return false;
     }
 
+    @RequestMapping(params = "methodToCall=" + "ajaxCut")
+    public ModelAndView ajaxCut(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        AgendaBo agenda = getAgenda(form, request);
+        // this is the root of the tree:
+        AgendaItemBo firstItem = getFirstAgendaItem(agenda);
+        String selectedItemId = request.getParameter(AGENDA_ITEM_SELECTED);
+
+        setCutAgendaItemId(form, selectedItemId);
+
+        // call the super method to avoid the agenda tree being reloaded from the db
+        return super.updateComponent(form, result, request, response);
+    }
+
+    @RequestMapping(params = "methodToCall=" + "ajaxPaste")
+    public ModelAndView ajaxPaste(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        AgendaBo agenda = getAgenda(form, request);
+        // this is the root of the tree:
+        AgendaItemBo firstItem = getFirstAgendaItem(agenda);
+        String selectedItemId = request.getParameter(AGENDA_ITEM_SELECTED);
+
+        String agendaItemId = getCutAgendaItemId(form);
+
+        if (StringUtils.isNotBlank(selectedItemId) && StringUtils.isNotBlank(agendaItemId)) {
+            AgendaItemBo node = getAgendaItemById(firstItem, agendaItemId);
+            AgendaItemBo orgRefNode = getReferringNode(firstItem, agendaItemId);
+            AgendaItemBo newRefNode = getAgendaItemById(firstItem, selectedItemId);
+
+            if (isSameOrChildNode(node, newRefNode)) {
+                // do nothing; can't paste to itself
+            } else {
+                // remove node
+                if (orgRefNode == null) {
+                    agenda.setFirstItemId(node.getAlwaysId());
+                } else {
+                    // determine if true, false or always
+                    // do appropriate operation
+                    if (node.getId().equals(orgRefNode.getWhenTrueId())) {
+                        orgRefNode.setWhenTrueId(node.getAlwaysId());
+                        orgRefNode.setWhenTrue(node.getAlways());
+                    } else if(node.getId().equals(orgRefNode.getWhenFalseId())) {
+                        orgRefNode.setWhenFalseId(node.getAlwaysId());
+                        orgRefNode.setWhenFalse(node.getAlways());
+                    } else {
+                        orgRefNode.setAlwaysId(node.getAlwaysId());
+                        orgRefNode.setAlways(node.getAlways());
+                    }
+                }
+
+                // insert node
+                node.setAlwaysId(newRefNode.getAlwaysId());
+                node.setAlways(newRefNode.getAlways());
+                newRefNode.setAlwaysId(node.getId());
+                newRefNode.setAlways(node);
+            }
+        }
+
+        setCutAgendaItemId(form, null);
+
+        // call the super method to avoid the agenda tree being reloaded from the db
+        return super.updateComponent(form, result, request, response);
+    }
+
+    /**
+     * This method checks if the node is the same as the new parent node or a when-true/when-fase
+     * child of the new parent node.
+     *
+     * @param node - the node to be checked if it's the same or a child
+     * @param newParent - the parent node to check against
+     * @return true if same or child, false otherwise
+     */
+    private boolean isSameOrChildNode(AgendaItemBo node, AgendaItemBo newParent) {
+        return isSameOrChildNodeHelper(node, newParent, AgendaItemChildAccessor.children);
+    }
+    private boolean isSameOrChildNodeHelper(AgendaItemBo node, AgendaItemBo newParent, AgendaItemChildAccessor[] childAccessors) {
+        boolean result = false;
+        if (StringUtils.equals(node.getId(), newParent.getId())) {
+            result = true;
+        } else {
+            for (AgendaItemChildAccessor childAccessor : childAccessors) {
+                AgendaItemBo child = childAccessor.getChild(node);
+                if (child != null) {
+                    result = isSameOrChildNodeHelper(child, newParent, AgendaItemChildAccessor.linkedNodes);
+                    if (result == true) break;
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * This method returns the node that points to the specified agendaItemId.
+     * (returns the next older sibling or the parent if no older sibling exists)
+     *
+     * @param root - the first agenda item of the agenda
+     * @param agendaItemId - agenda item id of the agenda item whose referring node is to be returned
+     * @return AgendaItemBo that points to the specified agenda item
+     */
+    private AgendaItemBo getReferringNode(AgendaItemBo root, String agendaItemId) {
+        return getReferringNodeHelper(root, null, agendaItemId);
+    }
+
+    private AgendaItemBo getReferringNodeHelper(AgendaItemBo node, AgendaItemBo referringNode, String agendaItemId) {
+        AgendaItemBo result = null;
+        if (agendaItemId.equals(node.getId())) {
+            result = referringNode;
+        } else {
+            for (AgendaItemChildAccessor childAccessor : AgendaItemChildAccessor.linkedNodes) {
+                AgendaItemBo child = childAccessor.getChild(node);
+                if (child != null) {
+                    result = getReferringNodeHelper(child, node, agendaItemId);
+                    if (result != null) break;
+                }
+            }
+        }
+        return result;
+    }
+
+    protected SequenceAccessorService getSequenceAccessorService() {
+        if ( sequenceAccessorService == null ) {
+            sequenceAccessorService = KRADServiceLocator.getSequenceAccessorService();
+        }
+        return sequenceAccessorService;
+    }
+
     /**
      * binds a child accessor to an AgendaItemBo instance
      */
@@ -971,11 +1122,4 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         }
     }
 
-    protected SequenceAccessorService getSequenceAccessorService() {
-        if ( sequenceAccessorService == null ) {
-            sequenceAccessorService = KRADServiceLocator.getSequenceAccessorService();
-        }
-        return sequenceAccessorService;
-    }
-    
 }

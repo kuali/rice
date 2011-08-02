@@ -38,6 +38,7 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
 	private AgendaBo agenda;
 	private AgendaItemBo agendaItemLine;
     private String selectedAgendaItemId;
+    private String cutAgendaItemId;
 
     public AgendaEditor() {
         agendaItemLine = new AgendaItemBo();
@@ -106,48 +107,68 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
     public AgendaItemBo getAgendaItemLine() {
         return this.agendaItemLine;
     }
+
     /**
      * @param agendaItemLine the agendaItemLine to set
      */
     public void setAgendaItemLine(AgendaItemBo agendaItemLine) {
         this.agendaItemLine = agendaItemLine;
     }
+
     /**
      * @return the selectedAgendaItemId
      */
     public String getSelectedAgendaItemId() {
         return this.selectedAgendaItemId;
     }
+
     /**
      * @param selectedAgendaItemId the selectedAgendaItemId to set
      */
     public void setSelectedAgendaItemId(String selectedAgendaItemId) {
         this.selectedAgendaItemId = selectedAgendaItemId;
     }
+
+    /**
+     * @return the cutAgendaItemId
+     */
+    public String getCutAgendaItemId() {
+        return this.cutAgendaItemId;
+    }
+
+    /**
+     * @param cutAgendaItemId the cutAgendaItemId to set
+     */
+    public void setCutAgendaItemId(String cutAgendaItemId) {
+        this.cutAgendaItemId = cutAgendaItemId;
+    }
+
     /**
 	 * @return the context
 	 */
 	public ContextBo getContext() {
 		return this.context;
 	}
+
 	/**
 	 * @param context the context to set
 	 */
 	public void setContext(ContextBo context) {
 		this.context = context;
 	}
+
 	/**
 	 * @return the agenda
 	 */
 	public AgendaBo getAgenda() {
 		return this.agenda;
 	}
+
 	/**
 	 * @param agenda the agenda to set
 	 */
 	public void setAgenda(AgendaBo agenda) {
 		this.agenda = agenda;
 	}
-	
-	
+
 }

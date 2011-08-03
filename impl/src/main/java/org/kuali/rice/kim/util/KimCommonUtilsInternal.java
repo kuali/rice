@@ -21,14 +21,12 @@ import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
 
 import java.util.Collections;
-import java.util.List;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill
@@ -209,17 +207,5 @@ public final class KimCommonUtilsInternal {
 			permissionService = KimApiServiceLocator.getPermissionService();
 		}
 		return permissionService;
-	}
-
-    private static KimTypeAttribute getAttributeInfo(List<KimTypeAttribute> attributeInfoList, String attributeName) {
-        KimTypeAttribute kRet = null;
-        for (KimTypeAttribute attributeInfo : attributeInfoList) {
-            if (attributeInfo.getKimAttribute().getAttributeName().equals(attributeName)) {
-                kRet = attributeInfo;
-                break;
-            }
-        }
-        return kRet;
     }
-
 }

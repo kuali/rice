@@ -39,7 +39,6 @@ public final class KIMServiceLocatorInternal {
 	public static final String KIM_RUN_MODE_PROPERTY = "kim.mode";
 
 	public static final String KIM_IDENTITY_ARCHIVE_SERVICE = "kimIdentityArchiveService";
-    public static final String KIM_ROLE_UPDATE_SERVICE = "kimRoleUpdateService";
 	public static final String KIM_PERMISSION_UPDATE_SERVICE = "kimPermissionUpdateService";
 	public static final String KIM_AUTHENTICATION_SERVICE = "kimAuthenticationService";
     public static final String KIM_UI_DOCUMENT_SERVICE = "kimUiDocumentService";

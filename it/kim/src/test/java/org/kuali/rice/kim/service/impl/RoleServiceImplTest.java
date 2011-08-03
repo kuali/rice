@@ -106,7 +106,7 @@ public class RoleServiceImplTest extends KIMTestCase {
 	}
 	
 	/**
-	 * Tests to ensure that a circular role membership cannot be created via the RoleUpdateService.
+	 * Tests to ensure that a circular role membership cannot be created via the RoleService.
 	 * 
 	 * @throws Exception
 	 */

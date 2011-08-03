@@ -117,6 +117,15 @@ public class TypeUtils {
         return is(clazz, SIMPLE_CLASSES, IS_SIMPLE_CACHE);
     }
 
+    /**
+     * Checks is a class is assignable to a class in the give collection.  Also handles caching.
+     *
+     * @param clazz the class to check
+     * @param clazzes the collection of classes to check against
+     * @param cache the cache to check against
+     * @return a if the class is assignable
+     * @throws IllegalArgumentException if any arg is null
+     */
     private static boolean is(Class<?> clazz, Collection<Class<?>> clazzes, ConcurrentMap<Class<?>, Boolean> cache) {
         if (clazz == null) {
             throw new IllegalArgumentException("clazz is null");
@@ -143,7 +152,6 @@ public class TypeUtils {
      * @param type class token
      * @return true if the given Class is assignable from one of the classes in
      *         the given Class[]
-     * @throws IllegalArgumentException if the given Class is null
      */
     private static boolean isa(Collection<Class<?>> types, Class<?> type) {
         for (Class<?> cur : types) {
@@ -154,10 +162,22 @@ public class TypeUtils {
         return false;
     }
 
+    /**
+     * adds classes to a collection which is returned.
+     *
+     * @param classes the classes to add
+     * @return an unmodifiable collection
+     */
     private static Collection<Class<?>> add(Class<?>... classes) {
         return Collections.unmodifiableCollection(Arrays.asList(classes));
     }
 
+    /**
+     * adds classes to a collection which is returned.
+     *
+     * @param classes the classes to add
+     * @return an unmodifiable collection
+     */
     private static Collection<Class<?>> add(Collection<Class<?>>... classes) {
         final Collection<Class<?>> temp = new ArrayList<Class<?>>();
         for (Collection<Class<?>> clazz : classes) {

@@ -42,7 +42,7 @@ jq('#' + '${componentId}').bind('loaded.jstree', function (event, data) {
     jq('#' + '${componentId}').jstree('open_all');
 
 
-    // rule nodes should set the selected item
+    // rule node clicks should set the selected item
     jq('a.ruleNode').click( function() {
         var agendaItemId = jq(this.parentNode).find('input').attr('value');
         var selectedItemTracker = jq('input[name=\"agenda_item_selected\"]');
@@ -59,13 +59,14 @@ jq('#' + '${componentId}').bind('loaded.jstree', function (event, data) {
         jq('#' + '${componentId}').jstree('set_type', 'logic', this.parentNode);
     });
 
+    /* mark the selected node */
     jq('a.ruleNode').each( function() {
         var agendaItemId = jq(this.parentNode).find('input').attr('value');
         var selectedItemTracker = jq('input[name=\"agenda_item_selected\"]');
         var selectedItemId = selectedItemTracker.val();
 
         if (selectedItemId == agendaItemId) {
-            // simulate click
+            // simulate click, which will mark it
             jq(this).click();
         }
     });

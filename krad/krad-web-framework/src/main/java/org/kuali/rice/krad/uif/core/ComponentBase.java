@@ -776,23 +776,13 @@ public abstract class ComponentBase implements Component {
 
     /*
     * Adds the object to the context of the components in the
-    * PropertyReplacer object. Only checks for a list or component.
+    * PropertyReplacer object. Only checks for a list, map or component.
     */
     protected void pushToPropertyReplacerContext(String objectName, Object object) {
-        if (propertyReplacers != null && propertyReplacers.size() > 0) {
-            for (Object rep : propertyReplacers) {
-                Object replacement = ((PropertyReplacer) rep).getReplacement();
-                if (replacement instanceof Component) {
-                    ((Component) replacement).pushObjectToContext(objectName, object);
-                }
-
-                if (replacement instanceof List) {
-                    for (Object repInner : (List) replacement) {
-                        if (repInner instanceof Component) {
-                            ((Component) repInner).pushObjectToContext(objectName, object);
-                        }
-                    }
-                }
+        for (Object replacer : propertyReplacers) {
+            List<Component> replacerComponents = ((PropertyReplacer) replacer).getNestedComponents();
+            for (Component replacerComponent : replacerComponents) {
+                    replacerComponent.pushObjectToContext(objectName, object);
             }
         }
     }

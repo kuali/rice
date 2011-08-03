@@ -238,10 +238,10 @@ public class ViewHelperServiceImpl implements ViewHelperService {
             performComponentInitialization(view, nestedComponent);
         }
 
-        // initialize property replacements (if components)
+        // initialize nested components in property replacements
         for (PropertyReplacer replacer : component.getPropertyReplacers()) {
-            if (Component.class.isAssignableFrom(replacer.getReplacement().getClass())) {
-                performComponentInitialization(view, (Component) replacer.getReplacement());
+            for (Component replacerComponent : replacer.getNestedComponents()) {
+                performComponentInitialization(view, replacerComponent);
             }
         }
 

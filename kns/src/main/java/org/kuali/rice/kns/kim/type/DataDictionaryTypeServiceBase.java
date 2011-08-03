@@ -72,6 +72,8 @@ import java.util.regex.Pattern;
 public class DataDictionaryTypeServiceBase implements KimTypeService {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DataDictionaryTypeServiceBase.class);
+    private static final String ANY_CHAR_PATTERN_S = ".*";
+    private static final Pattern ANY_CHAR_PATTERN = Pattern.compile(ANY_CHAR_PATTERN_S);
 
 	private BusinessObjectService businessObjectService;
 	private DictionaryValidationService dictionaryValidationService;
@@ -327,25 +329,13 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
         return errors;
     }
     
-    /**
-     * Constant defines a validation method for an attribute value.
-     * <p>Value is "validate"
-     */
-    protected static final String VALIDATE_METHOD="validate";
-    
     protected Pattern getAttributeValidatingExpression(KimAttributeField definition) {
-    	Pattern regex = null;
-        if (definition != null) {
-            if (StringUtils.isNotBlank(definition.getAttributeField().getRegexConstraint())) {
-                regex = Pattern.compile(definition.getAttributeField().getRegexConstraint());
-            } else {
-                // workaround for existing calls which don't bother checking for null return values
-                regex = Pattern.compile(".*");
-            }
+        if (definition == null || StringUtils.isBlank(definition.getAttributeField().getRegexConstraint())) {
+            return ANY_CHAR_PATTERN;
         }
 
-        return regex;
-    }
+        return Pattern.compile(definition.getAttributeField().getRegexConstraint());
+     }
     
 	protected Formatter getAttributeFormatter(KimAttributeField definition) {
         if (definition.getAttributeField().getDataType() == null) {
@@ -386,7 +376,7 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
                 return errors;
             }
             Pattern validationExpression = getAttributeValidatingExpression(definition);
-            if (validationExpression != null && !".*".equals(validationExpression.pattern())) {
+            if (!ANY_CHAR_PATTERN_S.equals(validationExpression.pattern())) {
             	if ( LOG.isDebugEnabled() ) {
             		LOG.debug("(bo, attributeName, validationExpression) = (" + objectClassName + "," + attributeName + "," + validationExpression + ")");
             	}

@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.kim.type;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.uif.RemotableAbstractWidget;
@@ -52,8 +54,10 @@ import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.beans.PropertyDescriptor;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -85,13 +89,15 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
 		return Collections.emptyList();
 	}
 
-    //FIXME: sort by sortCode
     @Override
 	public List<KimAttributeField> getAttributeDefinitions(String kimTypeId) {
         final List<String> uniqueAttributes = getUniqueAttributes(kimTypeId);
-        final List<KimAttributeField> definitions = new ArrayList<KimAttributeField>();
+
+        //using map.entry as a 2-item tuple
+        final List<Map.Entry<String,KimAttributeField>> definitions = new ArrayList<Map.Entry<String,KimAttributeField>>();
         final KimType kimType = getTypeInfoService().getKimType(kimTypeId);
         final String nsCode = kimType.getNamespaceCode();
+
         for (KimTypeAttribute typeAttribute : kimType.getAttributeDefinitions()) {
             final KimAttributeField definition;
             if (typeAttribute.getKimAttribute().getComponentName() == null) {
@@ -101,10 +107,25 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
             }
 
             if (definition != null) {
-                definitions.add(definition);
+                definitions.add(new AbstractMap.SimpleEntry<String,KimAttributeField>(typeAttribute.getSortCode() != null ? typeAttribute.getSortCode() : "", definition));
             }
         }
-		return definitions;
+
+        //sort by sortCode
+        Collections.sort(definitions, new Comparator<Map.Entry<String, KimAttributeField>>() {
+            @Override
+            public int compare(Map.Entry<String, KimAttributeField> o1, Map.Entry<String, KimAttributeField> o2) {
+                return o1.getKey().compareTo(o2.getKey());
+            }
+        });
+
+        //transform removing sortCode
+		return Collections.unmodifiableList(Lists.transform(definitions, new Function<Map.Entry<String, KimAttributeField>, KimAttributeField>() {
+            @Override
+            public KimAttributeField apply(Map.Entry<String, KimAttributeField> v) {
+                return v.getValue();
+            }
+        }));
 	}
 
     /**

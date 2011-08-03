@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.service.support.impl;
+package org.kuali.rice.kim.api.role;
 
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
-import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.framework.role.RoleTypeService;
 

@@ -21,7 +21,7 @@ import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.service.PermissionService;
-import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
+import org.kuali.rice.kns.kim.role.DerivedRoleTypeServiceBase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +33,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServiceBase {
+public class PermissionDerivedRoleTypeServiceImpl extends DerivedRoleTypeServiceBase {
 
 	private static PermissionService permissionService;
 	private String permissionTemplateNamespace;

@@ -21,8 +21,8 @@ import org.kuali.rice.kew.api.doctype.DocumentType;
 import org.kuali.rice.kew.api.doctype.DocumentTypeService;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
-import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.kim.permission.PermissionTypeServiceBase;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,7 +38,7 @@ import java.util.Set;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
-public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServiceBase {
+public class DocumentTypePermissionTypeServiceImpl extends PermissionTypeServiceBase {
 	protected transient DocumentTypeService documentTypeService;
 
     @Override

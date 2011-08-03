@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import org.kuali.rice.kim.service.support.impl.KimGroupTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.kim.group.GroupTypeServiceBase;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,7 +28,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class CampusGroupTypeServiceImpl extends KimGroupTypeServiceBase {
+public class CampusGroupTypeServiceImpl extends GroupTypeServiceBase {
 
     @Override
     public List<String> getWorkflowRoutingAttributes(String routeLevel) {

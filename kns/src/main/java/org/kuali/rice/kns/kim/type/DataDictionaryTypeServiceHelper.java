@@ -42,7 +42,7 @@ import java.util.regex.Pattern;
  * This is only used for the legacy {@link DataDictionaryTypeServiceBase}.
  */
 @Deprecated
-public class DataDictionaryTypeServiceHelper {
+public final class DataDictionaryTypeServiceHelper {
 
     private DataDictionaryTypeServiceHelper() {
         throw new UnsupportedOperationException("do not call");

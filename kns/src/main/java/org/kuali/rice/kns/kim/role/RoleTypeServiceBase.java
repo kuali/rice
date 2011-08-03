@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.service.support.impl;
+package org.kuali.rice.kns.kim.role;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -28,14 +28,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This is a description of what this class does - jonathan don't forget to fill this in. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
- *
+ * @deprecated A krad integrated type service base class will be provided in the future.
  */
-public class KimRoleTypeServiceBase extends DataDictionaryTypeServiceBase implements RoleTypeService, DelegationTypeService {
+@Deprecated
+public class RoleTypeServiceBase extends DataDictionaryTypeServiceBase implements RoleTypeService, DelegationTypeService {
 
-	private static final Logger LOG = Logger.getLogger(KimRoleTypeServiceBase.class);
+	private static final Logger LOG = Logger.getLogger(RoleTypeServiceBase.class);
 	
 	/**
 	 * Performs a simple check that the qualifier on the role matches the qualification.

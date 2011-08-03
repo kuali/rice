@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.service.support.impl;
+package org.kuali.rice.kns.kim.permission;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.framework.permission.PermissionTypeService;
-import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceBase;
 
 import java.util.ArrayList;
@@ -26,12 +25,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This is a description of what this class does - bhargavp don't forget to fill this in. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
- *
+ * @deprecated A krad integrated type service base class will be provided in the future.
  */
-public class KimPermissionTypeServiceBase extends DataDictionaryTypeServiceBase implements PermissionTypeService {
+@Deprecated
+public class PermissionTypeServiceBase extends DataDictionaryTypeServiceBase implements PermissionTypeService {
 
 	@Override
 	public final List<Permission> getMatchingPermissions(Map<String, String> requestedDetails, List<Permission> permissionsList) {
@@ -49,8 +46,7 @@ public class KimPermissionTypeServiceBase extends DataDictionaryTypeServiceBase 
 	protected List<Permission> performPermissionMatches(Map<String, String> requestedDetails, List<Permission> permissionsList) {
 		List<Permission> matchingPermissions = new ArrayList<Permission>();
 		for (Permission permission : permissionsList) {
-            PermissionBo bo = PermissionBo.from(permission);
-			if ( performMatch(requestedDetails, bo.getDetails()) ) {
+			if ( performMatch(requestedDetails, permission.getAttributes()) ) {
 				matchingPermissions.add( permission );
 			}
 		}

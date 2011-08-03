@@ -208,7 +208,7 @@
   </bean>
 
   <bean id="documentTypeAndNodeOrStatePermissionTypeService" class="org.kuali.rice.krad.service.impl.DocumentTypeAndNodeOrStatePermissionTypeServiceImpl" />
-  <bean id="defaultPermissionTypeService" class="org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase" />
+  <bean id="defaultPermissionTypeService" class="org.kuali.rice.kns.kim.permission.PermissionTypeServiceBase" />
   <bean id="defaultResponsibilityTypeService" class="org.kuali.rice.kim.impl.responsibility.KimResponsibilityTypeServiceBase" />
 
   <bean id="permissionPermissionTypeService" class="org.kuali.rice.krad.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
@@ -233,11 +233,11 @@
 
   <!-- for person Doc UI  -->
   <bean id="kimTypeService" class="org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceBase" />
-  <bean id="kimPermissionTypeService" class="org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase"/>
-  <bean id="kimRoleTypeService" class="org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase"/>
-  <bean id="kimGroupTypeService" class="org.kuali.rice.kim.service.support.impl.KimGroupTypeServiceBase"/>
-  <bean id="kimDelegationTypeService" class="org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase"/>
+  <bean id="kimPermissionTypeService" class="org.kuali.rice.kns.kim.permission.PermissionTypeServiceBase"/>
+  <bean id="kimRoleTypeService" class="org.kuali.rice.kns.kim.role.RoleTypeServiceBase"/>
+  <bean id="kimGroupTypeService" class="org.kuali.rice.kns.kim.group.GroupTypeServiceBase"/>
+  <bean id="kimDelegationTypeService" class="org.kuali.rice.kns.kim.role.RoleTypeServiceBase"/>
 
-  <bean id="kimNoMembersRoleTypeService" class="org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase" />
+  <bean id="kimNoMembersRoleTypeService" class="org.kuali.rice.kns.kim.role.DerivedRoleTypeServiceBase" />
 
 </beans>

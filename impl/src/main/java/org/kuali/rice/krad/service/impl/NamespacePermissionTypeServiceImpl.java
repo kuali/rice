@@ -18,8 +18,8 @@ package org.kuali.rice.krad.service.impl;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
-import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.kim.permission.PermissionTypeServiceBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +28,7 @@ import java.util.Map;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class NamespacePermissionTypeServiceImpl extends
-		KimPermissionTypeServiceBase {
+public class NamespacePermissionTypeServiceImpl extends PermissionTypeServiceBase {
 
 	private Boolean exactMatchPriority = true;
 	{

@@ -24,8 +24,8 @@ import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.framework.common.delegate.DelegationTypeService;
 import org.kuali.rice.kim.framework.role.RoleTypeService;
-import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.kim.role.DerivedRoleTypeServiceBase;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,8 +37,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
-public class ActionRequestDerivedRoleTypeServiceImpl extends
-		KimDerivedRoleTypeServiceBase implements RoleTypeService, DelegationTypeService {
+public class ActionRequestDerivedRoleTypeServiceImpl extends DerivedRoleTypeServiceBase implements RoleTypeService, DelegationTypeService {
 	private static final String NON_AD_HOC_APPROVE_REQUEST_RECIPIENT_ROLE_NAME = "Non-Ad Hoc Approve Request Recipient";
 	private static final String APPROVE_REQUEST_RECIPIENT_ROLE_NAME = "Approve Request Recipient";
 	private static final String ACKNOWLEDGE_REQUEST_RECIPIENT_ROLE_NAME = "Acknowledge Request Recipient";
@@ -115,7 +114,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 	/**
 	 * Returns false, as action requests change quite often so membership in this role is highly volatile
 	 * 
-	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#shouldCacheRoleMembershipResults(java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kns.kim.role.RoleTypeServiceBase#shouldCacheRoleMembershipResults(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public boolean shouldCacheRoleMembershipResults(String namespaceCode,

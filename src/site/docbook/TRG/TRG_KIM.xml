@@ -690,7 +690,7 @@ KimRoleInfo info = rmSvc.getRoleByName(namespaceCode, roleName);             </p
             <sect3>
                 <title>Java Class Information</title>
                 <para>Your custom type service class should extend
-                    org.kuali.rice.kim.service.support.impl.KimGroupTypeServiceBase and only
+                    org.kuali.rice.kns.kim.group.GroupTypeServiceBase and only
                     override the methods necessary to implement your custom behavior. Use the
                     methods in this class as the basis for your custom code.</para>
                 <programlisting>public class MyGroupTypeService extends KimGroupTypeServiceBase
@@ -717,7 +717,7 @@ KimRoleInfo info = rmSvc.getRoleByName(namespaceCode, roleName);             </p
             <sect3>
                 <title>Java Class Information</title>
                 <para>Your custom permission type service class should extend <emphasis role="bold"
-                        >org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase</emphasis>
+                        >org.kuali.rice.kns.kim.permission.PermissionTypeServiceBase</emphasis>
                     and only override the methods necessary to implement your custom behavior. Use
                     the methods in this class as the basis for your custom code.</para>
                 <programlisting>public class MyPermissionionTypeService extends KimPermissionTypeServiceBase

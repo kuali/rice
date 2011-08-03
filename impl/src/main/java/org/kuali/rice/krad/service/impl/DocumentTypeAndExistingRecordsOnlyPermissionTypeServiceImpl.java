@@ -16,14 +16,13 @@
 package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.kim.permission.PermissionTypeServiceBase;
 import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.Map;
 
-public class DocumentTypeAndExistingRecordsOnlyPermissionTypeServiceImpl extends
-		KimPermissionTypeServiceBase {
+public class DocumentTypeAndExistingRecordsOnlyPermissionTypeServiceImpl extends PermissionTypeServiceBase {
 	protected boolean performMatch(Map<String, String> inputMap,
 			Map<String, String> storedMap) {
 		// this type doesn't work without attributes passed in 

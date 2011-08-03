@@ -13,17 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.service.support.impl;
+package org.kuali.rice.kns.kim.group;
 
 import org.kuali.rice.kim.framework.group.GroupTypeService;
 import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceBase;
 
 /**
- * This is a description of what this class does - jonathan don't forget to fill this in.
- *
- * @author Kuali Rice Team (rice.collab@kuali.org)
- *
+ * @deprecated A krad integrated type service base class will be provided in the future.
  */
-public class KimGroupTypeServiceBase extends DataDictionaryTypeServiceBase implements GroupTypeService {
+@Deprecated
+public class GroupTypeServiceBase extends DataDictionaryTypeServiceBase implements GroupTypeService {
 	
 }

@@ -29,7 +29,7 @@ import java.util.Map;
  * This is only used for the legacy {@link DataDictionaryTypeServiceBase}.
  */
 @Deprecated
-class KimAttributeDefinition extends AttributeDefinition {
+final class KimAttributeDefinition extends AttributeDefinition {
 	private static final long serialVersionUID = 7006569761728813805L;
 
 	protected Map<String, String> lookupInputPropertyConversions;

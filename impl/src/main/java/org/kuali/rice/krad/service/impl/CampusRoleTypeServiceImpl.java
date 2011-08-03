@@ -17,14 +17,14 @@ package org.kuali.rice.krad.service.impl;
 
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.kim.api.type.KimAttributeField;
-import org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.kim.role.RoleTypeServiceBase;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CampusRoleTypeServiceImpl extends KimRoleTypeServiceBase {
+public class CampusRoleTypeServiceImpl extends RoleTypeServiceBase {
 
     @Override
     protected List<String> getRequiredAttributes() {

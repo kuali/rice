@@ -23,6 +23,7 @@ import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.kim.role.DerivedRoleTypeServiceBase;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,7 +36,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServiceBase {
+public class PrincipalDerivedRoleTypeServiceImpl extends DerivedRoleTypeServiceBase {
 	
 	private IdentityService identityService;
 

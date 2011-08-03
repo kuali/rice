@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.service.support.impl;
+package org.kuali.rice.kns.kim.role;
 
 
 import org.kuali.rice.kim.api.role.RoleMembership;
@@ -27,8 +27,10 @@ import java.util.Map;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated A krad integrated type service base class will be provided in the future.
  */
-public class KimDerivedRoleTypeServiceBase extends KimRoleTypeServiceBase {
+@Deprecated
+public class DerivedRoleTypeServiceBase extends RoleTypeServiceBase {
 
 	@Override
 	public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Map<String, String> qualification) {
@@ -36,7 +38,7 @@ public class KimDerivedRoleTypeServiceBase extends KimRoleTypeServiceBase {
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.service.support.impl.KimRoleTypeServiceBase#isApplicationRoleType()
+	 * @see RoleTypeServiceBase#isApplicationRoleType()
 	 */
 	@Override
 	public boolean isApplicationRoleType() {

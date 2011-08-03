@@ -21,8 +21,8 @@ import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.kim.role.DerivedRoleTypeServiceBase;
 
 import java.util.Collections;
 import java.util.Map;
@@ -58,7 +58,7 @@ public class ActionRequestDerivedRoleTypeServiceImplTest extends KEWTestCase {
 		document.adHocToPrincipal(ActionRequestType.APPROVE, "", getPrincipalIdForName("rkirkend"), "", true);
 		document.route("");
 		
-		KimDerivedRoleTypeServiceBase roleTypeService = new ActionRequestDerivedRoleTypeServiceImpl();
+		DerivedRoleTypeServiceBase roleTypeService = new ActionRequestDerivedRoleTypeServiceImpl();
 		
 		Map<String, String> qualifications = Collections
                 .singletonMap(KimConstants.AttributeConstants.DOCUMENT_NUMBER, "" + document.getDocumentId());

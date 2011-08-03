@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
+import org.kuali.rice.kns.kim.permission.PermissionTypeServiceBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ButtonPermissionTypeServiceImpl extends KimPermissionTypeServiceBase {
+public class ButtonPermissionTypeServiceImpl extends PermissionTypeServiceBase {
 
 }

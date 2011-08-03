@@ -118,11 +118,12 @@ import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
+import org.kuali.rice.kns.datadictionary.exporter.AttributesMapBuilder;
 import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceHelper;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
-import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
+import org.kuali.rice.krad.datadictionary.exporter.ExportMap;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DocumentHelperService;
@@ -276,29 +277,12 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	}
 
 	public Map<String,Object> getAttributeEntries( List<KimAttributeField> definitions ) {
-		Map<String,Object> attributeEntries = new HashMap<String,Object>();
-		if(definitions!=null){
+		final Map<String,Object> attributeEntries = new HashMap<String,Object>();
+		if (definitions != null) {
 	        for (AttributeDefinition definition : DataDictionaryTypeServiceHelper.toKimAttributeDefinitions(definitions)) {
-				Map<String,Object> attribute = new HashMap<String,Object>();
-                ControlDefinition control = definition.getControl();
-                if (control.isSelect()
-                        || control.isRadio()) {
-                    Map<String,Object> controlMap = new HashMap<String,Object>();
-                    if (control.isSelect()) {
-                        controlMap.put("select", "true");
-                    } else {
-                        controlMap.put("radio", "true");
-                    }
-                    attribute.put("control", controlMap);
-                } else {
-                    attribute.put("control", definition.getControl());
-                }
-                attribute.put("name", definition.getName());
-                attribute.put("label", definition.getLabel());
-                attribute.put("shortLabel", definition.getShortLabel());
-                attribute.put("maxLength", definition.getMaxLength());
-                attribute.put("required", definition.isRequired());
-                attributeEntries.put(definition.getName(),attribute);
+				final AttributesMapBuilder builder = new AttributesMapBuilder();
+                final ExportMap map = builder.buildAttributeMap(definition, "");
+                attributeEntries.put(definition.getName(),map.getExportData());
 			}
 		}
         return attributeEntries;

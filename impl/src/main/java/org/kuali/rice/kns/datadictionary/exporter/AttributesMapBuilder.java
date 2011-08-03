@@ -17,12 +17,14 @@ package org.kuali.rice.kns.datadictionary.exporter;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.datadictionary.control.ButtonControlDefinition;
-import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.CurrencyControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.LinkControlDefinition;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntryBase;
+import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.krad.datadictionary.exporter.ExportMap;
+
+import java.util.Map;
 
 /**
  * AttributesMapBuilder
@@ -53,7 +55,7 @@ public class AttributesMapBuilder {
         return attributesMap;
     }
 
-    private ExportMap buildAttributeMap(AttributeDefinition attribute, String fullClassName) {
+    public ExportMap buildAttributeMap(AttributeDefinition attribute, String fullClassName) {
         ExportMap attributeMap = new ExportMap(attribute.getName());
 
         // simple properties
@@ -98,11 +100,25 @@ public class AttributesMapBuilder {
         }
 
         attributeMap.set(buildControlMap(attribute));
-        attributeMap.set("fullClassName", fullClassName);
+        if (attribute.getOptionsFinder() != null) {
+            attributeMap.set(buildKeyLabelMap(attribute));
+        }
+        if (StringUtils.isNotBlank(fullClassName)) {
+            attributeMap.set("fullClassName", fullClassName);
+        }
 
         return attributeMap;
     }
 
+    private ExportMap buildKeyLabelMap(AttributeDefinition attribute) {
+
+        ExportMap keyLabelMap = new ExportMap("keyLabelMap");
+
+        for (Map.Entry<String, String> entry : attribute.getOptionsFinder().getKeyLabelMap().entrySet()) {
+            keyLabelMap.set(entry.getKey(), entry.getValue());
+        }
+        return keyLabelMap;
+    }
 
     private ExportMap buildControlMap(AttributeDefinition attribute) {
         ControlDefinition control = attribute.getControl();

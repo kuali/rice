@@ -18,7 +18,6 @@ package org.kuali.rice.kns.util;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
-import org.kuali.rice.krad.keyvalues.KimAttributeValuesFinder;
 import org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -43,6 +42,7 @@ public class ActionFormUtilMap extends HashMap {
      *
      * @see java.util.Map#get(java.lang.Object)
      */
+    @Override
 	public Object get(Object key) {
     	if (cacheValueFinderResults) {
     	    if (super.containsKey(key)) {
@@ -130,14 +130,7 @@ public class ActionFormUtilMap extends HashMap {
     public Object getOptionsMap(Object key, Object boClass, Object keyAttribute, Object labelAttribute, Object includeKeyInLabel) {
     	return getOptionsMap(key, boClass, keyAttribute, labelAttribute, null, includeKeyInLabel );
     }
-    
-    public Object getOptionsMap(Object key, Object boClass, Object keyAttribute, Object labelAttribute, Object includeBlankRow, Object includeKeyInLabel) {
-    	return getOptionsMap(key, boClass, keyAttribute, labelAttribute, includeBlankRow, includeKeyInLabel, null);
-    }
-    
-    /*
-     *
-    */
+
     /**
      * This method will take in a key parameter (values finder class name - in this case the generic
      * PersistableObjectValuesFinder) along with the related parameters required by this ValuesFinder,
@@ -150,10 +143,9 @@ public class ActionFormUtilMap extends HashMap {
      * @param keyAttribute name of BO attribute for key
      * @param labelAttribute name of BO attribute for label
      * @param includeKeyInLabel whether to include the key in the label or not
-     * @param kimTypeId the KIM Type to use in case of KimAttributeValuesFinder 
      * @return list of KeyValue pairs
      */
-	public Object getOptionsMap(Object key, Object boClass, Object keyAttribute, Object labelAttribute, Object includeBlankRow, Object includeKeyInLabel, Object kimTypeId) {
+	public Object getOptionsMap(Object key, Object boClass, Object keyAttribute, Object labelAttribute, Object includeBlankRow, Object includeKeyInLabel) {
         List optionsList = new ArrayList();
 
         if (StringUtils.isBlank((String) key)) {
@@ -178,14 +170,8 @@ public class ActionFormUtilMap extends HashMap {
                 ((PersistableBusinessObjectValuesFinder) finder).setLabelAttributeName((String)labelAttribute);
                 ((PersistableBusinessObjectValuesFinder) finder).setIncludeBlankRow(Boolean.parseBoolean((String)includeBlankRow));
                 ((PersistableBusinessObjectValuesFinder) finder).setIncludeKeyInDescription(Boolean.parseBoolean((String)includeKeyInLabel));
-            } else if (finder instanceof KimAttributeValuesFinder) {
-            	if (kimTypeId == null) {
-            		throw new RuntimeException("kimTypeId must be specified for KimAttributeValuesFinder");
-            	}
-                ((KimAttributeValuesFinder) finder).setKimTypeId(kimTypeId.toString());
-                ((KimAttributeValuesFinder) finder).setKimAttributeName(keyAttribute.toString());
             }
-            
+
             optionsList = finder.getKeyValues();
         }
         catch (ClassNotFoundException e) {

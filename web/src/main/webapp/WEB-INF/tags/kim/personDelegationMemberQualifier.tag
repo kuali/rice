@@ -47,7 +47,7 @@
 						<c:set var="attrEntry" value="${delegationMember.attributesHelper.attributeEntry[fieldName]}" />
 				       	<td align="left" valign="middle">
 				       		<div align="center"> 
-				      		   <kul:htmlControlAttribute kimTypeId="${delegationMember.roleBo.kimTypeId}" property="document.delegationMembers[${delegationMemberIdx}].qualifiers[${status1.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${readOnly}" />
+				      		   <kul:htmlControlAttribute property="document.delegationMembers[${delegationMemberIdx}].qualifiers[${status1.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${readOnly}" />
 
                      			<c:forEach var="widget" items="${attrDefinition.attributeField.widgets}" >
                           <c:if test="${widget.class.name == 'org.kuali.rice.core.api.uif.RemotableQuickFinder'}">

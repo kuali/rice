@@ -45,16 +45,13 @@ public class ExportMap {
     /**
      * @return unmodifiable copy of the exportData associated with this Map
      */
-    public Map getExportData() {
+    public Map<String, Object> getExportData() {
         return Collections.unmodifiableMap(this.exportData);
     }
 
 
     /**
      * Adds the ExportMap's exportKey and exportData as a key,value pair to this Map
-     * 
-     * @param key
-     * @param value
      */
     public void set(ExportMap map) {
         if (map == null) {
@@ -65,10 +62,7 @@ public class ExportMap {
     }
 
     /**
-     * If the given map is not null, adds the ExportMap's exportKey and exportData as a key,value pair to this Map
-     * 
-     * @param key
-     * @param value
+     * If the given map is not null, adds the ExportMap's exportKey and exportData as a key,value pair to this Map.
      */
     public void setOptional(ExportMap map) {
         if (map != null) {

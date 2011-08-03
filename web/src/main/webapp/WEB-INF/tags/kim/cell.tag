@@ -111,7 +111,7 @@
 	  							  styleClass="${styleClass}"
 	  							  accessibilityHint="${accessibilityHint}"
 	  							  forceRequired="${forceRequired}"
-	  							  kimTypeId="${kimTypeId}"/> ${postText}
+	  							  /> ${postText}
 	  </div>
     </td>
   </c:otherwise>

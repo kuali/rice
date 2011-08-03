@@ -22,10 +22,12 @@ import org.kuali.rice.kns.datadictionary.control.RadioControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.SelectControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.TextControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.TextareaControlDefinition;
+import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.krad.datadictionary.exporter.ExportMap;
 import org.kuali.rice.krad.datadictionary.validation.ValidationPattern;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
+import org.kuali.rice.krad.keyvalues.KeyValuesFinderFactory;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 
 import java.util.ArrayList;
@@ -54,19 +56,21 @@ public class DataDictionaryTypeServiceHelper {
 	    return kimBaseUrl;
 	}
 
-    public static RemotableAbstractControl.Builder toRemotableAbstractControlBuilder(ControlDefinition control) {
+    public static RemotableAbstractControl.Builder toRemotableAbstractControlBuilder(AttributeDefinition attr) {
+            ControlDefinition control = attr.getControl();
+
             if (control.isCheckbox()) {
-                return RemotableCheckboxGroup.Builder.create(getValues(control));
+                 return RemotableCheckboxGroup.Builder.create(getValues(attr));
             } else if (control.isHidden()) {
                 return RemotableHiddenInput.Builder.create();
             } else if (control.isMultiselect()) {
-                RemotableSelect.Builder b = RemotableSelect.Builder.create(getValues(control));
+                RemotableSelect.Builder b = RemotableSelect.Builder.create(getValues(attr));
                 b.setMultiple(true);
                 b.setSize(control.getSize());
             } else if (control.isRadio()) {
-                return RemotableRadioButtonGroup.Builder.create(getValues(control));
+                return RemotableRadioButtonGroup.Builder.create(getValues(attr));
             } else if (control.isSelect()) {
-                RemotableSelect.Builder b = RemotableSelect.Builder.create(getValues(control));
+                RemotableSelect.Builder b = RemotableSelect.Builder.create(getValues(attr));
                 b.setMultiple(false);
                 b.setSize(control.getSize());
             } else if (control.isText()) {
@@ -81,11 +85,24 @@ public class DataDictionaryTypeServiceHelper {
             }
         return null;
     }
-    private static Map<String, String> getValues(ControlDefinition defn) {
+
+    /**
+     * will first try to execute the values finder.  If that doesn't return any values then will try to use the optionfinder
+     * on the AttributeDefinition.
+     *
+     * @param attr AttributeDefinition
+     * @return a Map of key value pairs
+     */
+    private static Map<String, String> getValues(AttributeDefinition attr) {
+        ControlDefinition control = attr.getControl();
+
         try {
-        Class<KeyValuesFinder> clazz = (Class<KeyValuesFinder>) Class.forName(defn.getValuesFinderClass());
-        KeyValuesFinder finder = clazz.newInstance();
-        return finder.getKeyLabelMap();
+            final Class<KeyValuesFinder> clazz = (Class<KeyValuesFinder>) Class.forName(control.getValuesFinderClass());
+            final KeyValuesFinder finder = clazz.newInstance();
+            final Map<String, String> values = finder.getKeyLabelMap();
+            if ((values == null || values.isEmpty()) && attr.getOptionsFinder() != null) {
+                return attr.getOptionsFinder().getKeyLabelMap();
+            }
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         } catch (InstantiationException e) {
@@ -93,6 +110,7 @@ public class DataDictionaryTypeServiceHelper {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+        return Collections.emptyMap();
     }
 
     public static List<KimAttributeDefinition> toKimAttributeDefinitions(List<KimAttributeField> fields) {
@@ -164,7 +182,7 @@ public class DataDictionaryTypeServiceHelper {
         final RemotableAbstractControl control = field.getAttributeField().getControl();
 
         if (control != null) {
-            ControlDefinition d = toControlDefinition(control);
+            ControlDefinition d = toControlDefinition(control, ad);
             for (RemotableAbstractWidget widget : field.getAttributeField().getWidgets()) {
                 if(widget instanceof RemotableQuickFinder) {
                     ad.setLookupBoClass(((RemotableQuickFinder) widget).getDataObjectClass());
@@ -182,19 +200,23 @@ public class DataDictionaryTypeServiceHelper {
         return ad;
     }
 
-    private static ControlDefinition toControlDefinition(RemotableAbstractControl control) {
+    /** WARNING HACK! this may set the OptionsFinder instance on the passed in KimAttributeDefinition! */
+    private static ControlDefinition toControlDefinition(RemotableAbstractControl control, KimAttributeDefinition containingAttribute) {
         if (control instanceof RemotableCheckboxGroup) {
+            containingAttribute.setOptionsFinder(KeyValuesFinderFactory.fromMap(((RemotableCheckboxGroup) control).getKeyLabels()));
             CheckboxControlDefinition checkbox = new CheckboxControlDefinition();
             return checkbox;
-            //FIXME: adding keyValues
+
         } else if (control instanceof RemotableHiddenInput) {
             HiddenControlDefinition hidden = new HiddenControlDefinition();
             return hidden;
         } else if (control instanceof RemotableRadioButtonGroup) {
+            containingAttribute.setOptionsFinder(KeyValuesFinderFactory.fromMap(((RemotableRadioButtonGroup) control).getKeyLabels()));
             RadioControlDefinition radio = new RadioControlDefinition();
             return radio;
-            //FIXME: adding keyValues
+
         } else if (control instanceof RemotableSelect) {
+            containingAttribute.setOptionsFinder(KeyValuesFinderFactory.fromMap(((RemotableSelect) control).getKeyLabels()));
             if (((RemotableSelect) control).isMultiple()) {
                 MultiselectControlDefinition multiSelect = new MultiselectControlDefinition();
                 multiSelect.setSize(((RemotableSelect) control).getSize());
@@ -204,7 +226,6 @@ public class DataDictionaryTypeServiceHelper {
                 select.setSize(((RemotableSelect) control).getSize());
                 return select;
             }
-            //FIXME: adding keyValues
         } else if (control instanceof RemotableTextarea) {
             TextareaControlDefinition textarea = new TextareaControlDefinition();
             textarea.setRows(((RemotableTextarea) control).getRows());

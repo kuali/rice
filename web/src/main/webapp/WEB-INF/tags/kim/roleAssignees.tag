@@ -76,7 +76,7 @@
               </td>
               <td class="infoline">   
                 <div align="center">                
-                  <kul:htmlControlAttribute kimTypeId="${KualiForm.document.kimType.id}" property="member.memberId" attributeEntry="${roleMemberAttributes.memberId}" readOnly="${!canModifyAssignees}"/>
+                  <kul:htmlControlAttribute property="member.memberId" attributeEntry="${roleMemberAttributes.memberId}" readOnly="${!canModifyAssignees}"/>
                   <c:if test="${canModifyAssignees}">
                       <kul:lookup boClassName="${bo}" fieldConversions="${fc}" anchor="${tabKey}" />
                   </c:if>
@@ -122,7 +122,7 @@
                   <c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
                   <c:set var="attrDefinition" value="${KualiForm.document.definitionsKeyedByAttributeName[fieldName]}"/>
                   <td align="left" valign="middle">
-                      <div align="center"> <kul:htmlControlAttribute kimTypeId="${KualiForm.document.kimType.id}" property="member.qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${!canModifyAssignees}" />
+                      <div align="center"> <kul:htmlControlAttribute property="member.qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${!canModifyAssignees}" />
 
                         <c:forEach var="widget" items="${KualiForm.document.definitions.attributeField.widgets}" >
                           <c:if test="${widget.class.name == 'org.kuali.rice.core.api.uif.RemotableQuickFinder'}">
@@ -243,7 +243,7 @@
                     <c:set var="attrDefinition" value="${KualiForm.document.definitionsKeyedByAttributeName[fieldName]}"/>
                     <c:set var="attrReadOnly" value="${(!canModifyAssignees || member.edit)}"/>
                     <td align="left" valign="middle">
-                        <div align="center"> <kul:htmlControlAttribute kimTypeId="${KualiForm.document.kimType.id}" property="document.members[${statusMember.index}].qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}" />
+                        <div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}" />
                         <c:if test="${attrDefinition.hasLookupBoDefinition}"> 
                             <c:if test="${!empty attrDefinition.lookupBoClass and not attrReadOnly}">
                               <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="document.members[${statusMember.index}]" attr="${attrDefinition}" />

@@ -38,7 +38,7 @@
                         <c:set var="attrReadOnly" value="${(readOnly || (attrDefinition.attributeField.unique && KualiForm.document.editing))}"/>
 	        			<c:set var="attrReadOnly" value="${(readOnly || (attrDefinition.attributeField.unique && KualiForm.document.editing))}"/>
 			            <td align="left" valign="middle">
-			               	<div align="center"> <kul:htmlControlAttribute kimTypeId="${KualiForm.document.kimType.kimTypeId}" property="document.qualifiers[${statusQualifier.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}" />
+			               	<div align="center"> <kul:htmlControlAttribute property="document.qualifiers[${statusQualifier.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}" />
 			               	   <c:forEach var="widget" items="${attrDefinition.attributeField.widgets}" >
                           <c:if test="${widget.class.name == 'org.kuali.rice.core.api.uif.RemotableQuickFinder'}">
                                 <c:if test="${!empty widget.dataObjectClass and not attrReadOnly}">

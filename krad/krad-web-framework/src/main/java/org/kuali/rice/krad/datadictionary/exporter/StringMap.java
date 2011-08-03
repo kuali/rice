@@ -28,7 +28,7 @@ import java.util.Map;
  * 
  */
 @Deprecated
-public class StringMap extends LinkedHashMap {
+public class StringMap extends LinkedHashMap<String, Object> {
     private static final long serialVersionUID = 7364206011639131063L;
 
     /**
@@ -37,7 +37,7 @@ public class StringMap extends LinkedHashMap {
      * @param key
      * @param value
      */
-    public void set(String key, Map value) {
+    public void set(String key, Map<String, Object> value) {
         setUnique(key, value);
     }
 
@@ -73,22 +73,13 @@ public class StringMap extends LinkedHashMap {
         super.put(key, value);
     }
 
-
-    /**
-     * Overridden to prevent direct calls
-     * 
-     * @see java.util.Map#put(java.lang.Object, java.lang.Object)
-     */
-    public Object put(Object key, Object value) {
+    @Override
+    public Object put(String key, Object value) {
         throw new UnsupportedOperationException("direct calls to put not supported");
     }
 
-    /**
-     * Overridden to prevent direct calls
-     * 
-     * @see java.util.Map#put(java.lang.Object, java.lang.Object)
-     */
-    public void putAll(Map m) {
-        throw new UnsupportedOperationException("direct calls to putAll not supported");
+    @Override
+    public void putAll(Map<? extends String, ? extends Object> m) {
+        throw new UnsupportedOperationException("direct calls to put not supported");
     }
 }

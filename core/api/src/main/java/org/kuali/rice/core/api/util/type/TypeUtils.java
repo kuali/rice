@@ -141,10 +141,10 @@ public class TypeUtils {
 
         Boolean result = cache.get(clazz);
         if (result == null) {
-            result = isa(clazzes, clazz);
+            result = Boolean.valueOf(isa(clazzes, clazz));
             cache.putIfAbsent(clazz, result);
         }
-        return result;
+        return result.booleanValue();
     }
 
     /**

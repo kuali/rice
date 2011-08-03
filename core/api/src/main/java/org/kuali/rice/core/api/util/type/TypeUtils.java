@@ -17,10 +17,13 @@
 package org.kuali.rice.core.api.util.type;
 
 import com.google.common.collect.MapMaker;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.ConcurrentMap;
@@ -29,64 +32,14 @@ import java.util.concurrent.ConcurrentMap;
  * Provides utilities for checking the types of objects.
  */
 public class TypeUtils {
-    private static final Collection<Class<?>> BOOLEAN_CLASSES;
-    private static final Collection<Class<?>> INTEGRAL_CLASSES;
-    private static final Collection<Class<?>> DECIMAL_CLASSES;
-    private static final Collection<Class<?>> TEMPORAL_CLASSES;
+    private static final Collection<Class<?>> BOOLEAN_CLASSES = add(Boolean.class, Boolean.TYPE);
+    private static final Collection<Class<?>> INTEGRAL_CLASSES = add(Byte.class, Byte.TYPE, Short.class, Short.TYPE, Integer.class, Integer.TYPE, Long.class, Long.TYPE, BigInteger.class, KualiInteger.class);
+    private static final Collection<Class<?>> DECIMAL_CLASSES = add(Float.class, Float.TYPE, Double.class, Double.TYPE, BigDecimal.class, AbstractKualiDecimal.class);;
+    private static final Collection<Class<?>> TEMPORAL_CLASSES = add(java.util.Date.class, java.sql.Date.class, java.sql.Timestamp.class, LocalDate.class, DateTime.class);
     private static final Collection<Class<?>> STRING_CLASSES = Collections.<Class<?>>singleton(CharSequence.class);
     private static final Collection<Class<?>> CLASS_CLASSES = Collections.<Class<?>>singleton(Class.class);
-    private static final Collection<Class<?>> SIMPLE_CLASSES;
-
-    static {
-        final Collection<Class<?>> temp = new ArrayList<Class<?>>();
-        temp.add(Boolean.class);
-        temp.add(Boolean.TYPE);
-        BOOLEAN_CLASSES = Collections.unmodifiableCollection(temp);
-    }
-
-    static {
-        final Collection<Class<?>> temp = new ArrayList<Class<?>>();
-        temp.add(Byte.class);
-        temp.add(Byte.TYPE);
-        temp.add(Short.class);
-        temp.add(Short.TYPE);
-        temp.add(Integer.class);
-        temp.add(Integer.TYPE);
-        temp.add(Long.class);
-        temp.add(Long.TYPE);
-        temp.add(BigInteger.class);
-        temp.add(KualiInteger.class);
-        INTEGRAL_CLASSES = Collections.unmodifiableCollection(temp);
-    }
-
-    static {
-        final Collection<Class<?>> temp = new ArrayList<Class<?>>();
-        temp.add(Float.class);
-        temp.add(Float.TYPE);
-        temp.add(Double.class);
-        temp.add(Double.TYPE);
-        temp.add(BigDecimal.class);
-        temp.add(AbstractKualiDecimal.class);
-        DECIMAL_CLASSES = Collections.unmodifiableCollection(temp);
-    }
-
-    static {
-        final Collection<Class<?>> temp = new ArrayList<Class<?>>();
-        temp.add(java.util.Date.class);
-        temp.add(java.sql.Date.class);
-        temp.add(java.sql.Timestamp.class);
-        TEMPORAL_CLASSES = Collections.unmodifiableCollection(temp);
-    }
-
-    static {
-        final Collection<Class<?>> temp = new ArrayList<Class<?>>();
-        temp.addAll(BOOLEAN_CLASSES);
-        temp.addAll(INTEGRAL_CLASSES);
-        temp.addAll(DECIMAL_CLASSES);
-        temp.addAll(TEMPORAL_CLASSES);
-        temp.addAll(STRING_CLASSES);
-        SIMPLE_CLASSES = Collections.unmodifiableCollection(temp);
-    }
+    @SuppressWarnings("unchecked")
+    private static final Collection<Class<?>> SIMPLE_CLASSES = add(BOOLEAN_CLASSES, INTEGRAL_CLASSES, DECIMAL_CLASSES, TEMPORAL_CLASSES, STRING_CLASSES);
 
     private static final ConcurrentMap<Class<?>, Boolean> IS_BOOLEAN_CACHE = new MapMaker().softKeys().makeMap();
     private static final ConcurrentMap<Class<?>, Boolean> IS_INTEGRAL_CACHE = new MapMaker().softKeys().makeMap();
@@ -199,5 +152,18 @@ public class TypeUtils {
             }
         }
         return false;
+    }
+
+    private static Collection<Class<?>> add(Class<?>... classes) {
+        return Collections.unmodifiableCollection(Arrays.asList(classes));
+    }
+
+    private static Collection<Class<?>> add(Collection<Class<?>>... classes) {
+        final Collection<Class<?>> temp = new ArrayList<Class<?>>();
+        for (Collection<Class<?>> clazz : classes) {
+            temp.addAll(clazz);
+        }
+
+        return Collections.unmodifiableCollection(temp);
     }
 }

@@ -400,7 +400,7 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
                 try {
                     if (Double.parseDouble(attributeValue) < min) {
                         errors.add(RemotableAttributeError.Builder.create(errorKey, DataDictionaryTypeServiceHelper
-                                .createErrorString(RiceKeyConstants.ERROR_EXCLUSIVE_MIN, errorLabel, min.toString())).build());
+                                .createErrorString(RiceKeyConstants.ERROR_INCLUSIVE_MIN, errorLabel, min.toString())).build());
                         return errors;
                     }
                 }

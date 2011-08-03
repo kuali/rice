@@ -83,7 +83,7 @@
   	  <tr>
   	    <td width="33%" align="right" class="thnormal">* Person ID:</td>
   	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionItem[${ctr}].principalId" />
-  	      <kul:lookup boClassName="org.kuali.rice.kim.bo.Person" fieldConversions="principalId:routeHeader.docActionItem[${ctr}].principalId" lookupParameters="routeHeader.docActionItem[${ctr}].principalId:principalId" />
+  	      <kul:lookup boClassName="org.kuali.rice.kim.api.identity.Person" fieldConversions="principalId:routeHeader.docActionItem[${ctr}].principalId" lookupParameters="routeHeader.docActionItem[${ctr}].principalId:principalId" />
   	    </td>
   	  </tr>
   	  <tr>
@@ -101,7 +101,7 @@
   	  <tr>
   	    <td width="33%" align="right" class="thnormal">Delegator Person ID: </td>
   	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionItem[${ctr}].delegatorWorkflowId" />
-  	      <kul:lookup boClassName="org.kuali.rice.kim.bo.Person" fieldConversions="principalId:routeHeader.docActionItem[${ctr}].delegatorWorkflowId" lookupParameters="routeHeader.docActionItem[${ctr}].delegatorWorkflowId:principalId" />
+  	      <kul:lookup boClassName="org.kuali.rice.kim.api.identity.Person" fieldConversions="principalId:routeHeader.docActionItem[${ctr}].delegatorWorkflowId" lookupParameters="routeHeader.docActionItem[${ctr}].delegatorWorkflowId:principalId" />
   	    </td>
   	  </tr>
   	  <tr>

@@ -19,10 +19,9 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.workgroup.GroupId;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.bo.Person;
-
 
 /**
  * A simple helper service in KEW for interacting with the KIM identity

@@ -27,8 +27,8 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.krad.util.KRADConstants;
 
 import static org.junit.Assert.assertEquals;

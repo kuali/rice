@@ -18,6 +18,7 @@ package org.kuali.rice.kim.service.impl;
 import com.google.common.collect.Maps;
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.impl.common.delegate.DelegateBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
@@ -50,7 +51,8 @@ public class RoleServiceImplTest extends KIMTestCase {
 
 	public void setUp() throws Exception {
 		super.setUp();
-		roleService = (RoleServiceImpl) GlobalResourceLoader.getService(new QName("KIM", "kimRoleService"));
+		roleService = (RoleServiceImpl) GlobalResourceLoader.getService(
+                new QName(KimApiConstants.Namespaces.KIM_NAMESPACE_2_0, KimApiConstants.ServiceNames.ROLE_SERVICE_SOAP));
 	}
 
 	@Test

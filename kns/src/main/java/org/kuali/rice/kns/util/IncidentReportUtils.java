@@ -21,7 +21,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts.Globals;
-import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.exception.KualiExceptionIncident;
 import org.kuali.rice.krad.util.KRADConstants;

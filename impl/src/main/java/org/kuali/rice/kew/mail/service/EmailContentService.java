@@ -23,8 +23,7 @@ import org.kuali.rice.core.mail.EmailContent;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.feedback.web.FeedbackForm;
-import org.kuali.rice.kim.bo.Person;
-
+import org.kuali.rice.kim.api.identity.Person;
 
 /**
  * Interface for generating email message content for various types of messages the system needs to send

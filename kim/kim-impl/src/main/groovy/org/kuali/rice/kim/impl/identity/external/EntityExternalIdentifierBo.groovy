@@ -130,7 +130,7 @@ class EntityExternalIdentifierBo extends PersistableBusinessObjectBase implement
     protected void evaluateExternalIdentifierType() {
 		if ( cachedExtIdType == null ) {
 			Map<String, String> criteria = new HashMap<String, String>();
-		    criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_CODE, externalIdentifierTypeCode);
+		    criteria.put(KimConstants.PrimaryKeyConstants.CODE, externalIdentifierTypeCode);
 		    cachedExtIdType = (EntityExternalIdentifierTypeBo) KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(EntityExternalIdentifierTypeBo.class, criteria);
 		    encryptionRequired = cachedExtIdType!= null && cachedExtIdType.isEncryptionRequired();
 		}

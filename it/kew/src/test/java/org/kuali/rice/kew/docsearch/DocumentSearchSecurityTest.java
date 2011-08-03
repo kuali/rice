@@ -24,8 +24,8 @@ import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.util.KimConstants;
 
 import static org.junit.Assert.*;

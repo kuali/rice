@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.test.document;
 
-import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.document.SessionDocument;
 import org.kuali.rice.krad.document.TransactionalDocumentBase;
 import org.kuali.rice.krad.exception.PessimisticLockingException;
@@ -131,7 +131,7 @@ public class AccountRequestDocument2 extends TransactionalDocumentBase implement
      * Generates a custom lock descriptor with a format of "[documentNumber]-[The user session's 'acctReqDoc2EditableFields' parameter value]".
      * Will throw a PessimisticLockingException if this parameter is not defined or if its value is neither "editAllButReasons" nor "editReasonsOnly".
      * 
-     * @see org.kuali.rice.krad.document.DocumentBase#getCustomLockDescriptor(org.kuali.rice.kim.bo.Person)
+     * @see org.kuali.rice.krad.document.DocumentBase#getCustomLockDescriptor(org.kuali.rice.kim.api.identity.Person)
      */
     @Override
     public String getCustomLockDescriptor(Person user) {

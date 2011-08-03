@@ -36,7 +36,7 @@
 		  <tr>
 	  	    <td width="33%" align="right" class="thnormal">* Initiator ID:</td>
 	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.initiatorWorkflowId"/>
-	  	      <kul:lookup boClassName="org.kuali.rice.kim.bo.Person" fieldConversions="principalId:routeHeader.initiatorWorkflowId" lookupParameters="routeHeader.initiatorWorkflowId:principalId" />
+	  	      <kul:lookup boClassName="org.kuali.rice.kim.api.identity.Person" fieldConversions="principalId:routeHeader.initiatorWorkflowId" lookupParameters="routeHeader.initiatorWorkflowId:principalId" />
 	  	      <%-- document.forms[0].elements['lookupableImplServiceName'].value = 'UserLookupableImplService';"/> --%>
 	  	    </td>
 	  	  </tr>

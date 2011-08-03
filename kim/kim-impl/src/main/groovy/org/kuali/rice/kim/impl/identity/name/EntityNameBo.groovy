@@ -12,7 +12,8 @@ import org.kuali.rice.kim.api.identity.name.EntityNameContract
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
-import org.kuali.rice.kim.api.KimConstants
+
+import org.kuali.rice.kim.api.KimApiConstants
 
 
 class EntityNameBo extends PersistableBusinessObjectBase implements EntityNameContract {
@@ -104,28 +105,28 @@ class EntityNameBo extends PersistableBusinessObjectBase implements EntityNameCo
 
     String getFirstName() {
         if (isSuppressName()) {
-            return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK
+            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK
         }
         return this.firstName
     }
 
     String getMiddleName() {
         if (isSuppressName()) {
-            return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK
+            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK
         }
         return this.middleName
     }
 
     String getLastName() {
         if (isSuppressName()) {
-            return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK
+            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK
         }
         return this.lastName
     }
 
     String getTitle() {
         if (isSuppressName()) {
-            return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK
+            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK
         }
         return this.title
     }
@@ -153,7 +154,7 @@ class EntityNameBo extends PersistableBusinessObjectBase implements EntityNameCo
 
     String getFormattedName() {
         if (isSuppressName()) {
-            return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK
+            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK
         }
         return getFormattedNameUnmasked()
     }

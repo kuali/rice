@@ -24,6 +24,7 @@ import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kim.api.identity.PersonService;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.document.MaintenanceDocument;
@@ -96,7 +97,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     protected ConfigurationService configService;
     protected MaintenanceDocumentDictionaryService maintDocDictionaryService;
     protected WorkflowDocumentService workflowDocumentService;
-    protected org.kuali.rice.kim.service.PersonService personService;
+    protected PersonService personService;
     protected RoleService roleService;
     protected DataObjectMetaDataService dataObjectMetaDataService;
     protected BusinessObjectAuthorizationService businessObjectAuthorizationService;
@@ -1523,11 +1524,11 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         return true;
     }
 
-    public org.kuali.rice.kim.service.PersonService getPersonService() {
+    public PersonService getPersonService() {
         return personService;
     }
 
-    public void setPersonService(org.kuali.rice.kim.service.PersonService personService) {
+    public void setPersonService(PersonService personService) {
         this.personService = personService;
     }
 

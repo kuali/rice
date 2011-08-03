@@ -200,7 +200,7 @@
         </property>
         <property name="externalizableBusinessObjectImplementations">
             <map>
-             <entry key="org.kuali.rice.kim.bo.Person" value="org.kuali.rice.kim.bo.impl.PersonImpl" />
+             <entry key="org.kuali.rice.kim.api.identity.Person" value="org.kuali.rice.kim.bo.impl.PersonImpl" />
              <entry key="org.kuali.rice.kim.api.role.RoleContract" value="org.kuali.rice.kim.framework.role.RoleEbo" />
              <entry key="org.kuali.rice.kim.api.group.GroupContract" value="org.kuali.rice.kim.framework.group.GroupEbo" />
              <entry key="org.kuali.rice.kim.framework.identity.email.EntityEmailTypeContractEbo" value="org.kuali.rice.kim.framework.identity.email.EntityEmailTypeEbo" />

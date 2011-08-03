@@ -29,10 +29,10 @@ import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupQueryResults;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
 import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.impl.group.GroupBo;
@@ -214,7 +214,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 			typeField.setFieldType(Field.TEXT);
 			typeField.setMaxLength(40);
 			typeField.setSize(20);
-			typeField.setQuickFinderClassNameImpl("org.kuali.rice.kim.bo.Person");
+			typeField.setQuickFinderClassNameImpl("org.kuali.rice.kim.api.identity.Person.Person");
 			typeField.setFieldConversions( "principalName:principalName" );
 			typeField.setLookupParameters( "principalName:principalName" );
 			// Identify the best spot to insert the "Principal Name" search field. Note that the code below assumes that the final row of the

@@ -26,8 +26,8 @@ import org.kuali.rice.edl.impl.EDLXmlUtils;
 import org.kuali.rice.edl.impl.RequestParser;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.action.ActionTaken;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.Person;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

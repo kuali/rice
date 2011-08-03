@@ -36,8 +36,8 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.document.MaintenanceDocument;
@@ -1185,7 +1185,7 @@ public class KualiDocumentActionBase extends KualiAction {
                     int lineNumber = Integer.parseInt(StringUtils.substringBetween(parameterName, "[", "]"));
                   //check for namespace
                     String namespaceParam = "newAdHocRouteWorkgroup[" + lineNumber + "].recipientNamespaceCode";
-                    String namespace = KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE;
+                    String namespace = KimApiConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE;
                     if (request.getParameter(namespaceParam) != null && !"".equals(request.getParameter(namespaceParam).trim())) {
                         namespace = request.getParameter(namespaceParam).trim();
                     }

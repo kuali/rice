@@ -19,7 +19,7 @@ package org.kuali.rice.kim.api;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.CoreConstants.Versions;
 
-public final class KimConstants {
+public final class KimApiConstants {
     public static final class Namespaces {
     	public static final String KIM_NAMESPACE_PREFIX = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/kim";
 
@@ -31,6 +31,15 @@ public final class KimConstants {
         private Namespaces() {
 		    throw new UnsupportedOperationException("do not call");
 	    }
+    }
+
+    public static final class ServiceNames {
+        public static final String IDENTITY_MANAGEMENT_NOTIFICATION_SERVICE_SOAP = "identityManagementNotificationServiceSoap";
+        public static final String ROLE_SERVICE_SOAP = "roleServiceSoap";
+        public static final String GROUP_SERVICE_SOAP = "groupServiceSoap";
+        public static final String RESPONSIBILITY_SERVICE_SOAP = "responsibilityServiceSoap";
+        public static final String PERMISSION_SERVICE_SOAP = "permissionServiceSoap";
+        public static final String IDENTITY_SERVICE_SOAP = "identityServiceSoap";
     }
 
     public static final class RestrictedMasks {

@@ -16,7 +16,7 @@
 
 package org.kuali.rice.kim.api.type;
 
-import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.api.KimApiConstants;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.Collection;
 
-@WebService(name = "kimTypeInfoServiceSoap", targetNamespace = KimConstants.Namespaces.KIM_NAMESPACE_2_0)
+@WebService(name = "kimTypeInfoServiceSoap", targetNamespace = KimApiConstants.Namespaces.KIM_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface KimTypeInfoService {
 

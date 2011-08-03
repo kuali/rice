@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@javax.xml.bind.annotation.XmlSchema(namespace = KimConstants.Namespaces.KIM_NAMESPACE_2_0, elementFormDefault = XmlNsForm.QUALIFIED)
+@javax.xml.bind.annotation.XmlSchema(namespace = KimApiConstants.Namespaces.KIM_NAMESPACE_2_0, elementFormDefault = XmlNsForm.QUALIFIED)
 package org.kuali.rice.kim.api.identity.visa;
 
 import javax.xml.bind.annotation.XmlNsForm;
 
-import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.api.KimApiConstants;
 

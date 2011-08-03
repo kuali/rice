@@ -58,7 +58,6 @@ import java.util.Map;
  *
  */
 @SuppressWarnings("unused")
-@WebService(endpointInterface = KIMWebServiceConstants.PermissionService.INTERFACE_CLASS, serviceName = KIMWebServiceConstants.PermissionService.WEB_SERVICE_NAME, portName = KIMWebServiceConstants.PermissionService.WEB_SERVICE_PORT, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
 public class PermissionServiceImpl extends PermissionServiceBase implements PermissionService {
 	private static final Logger LOG = Logger.getLogger( PermissionServiceImpl.class );
 

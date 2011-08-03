@@ -28,8 +28,7 @@ import org.kuali.rice.kew.mail.service.EmailContentService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.Person;
-
+import org.kuali.rice.kim.api.identity.Person;
 
 /**
  * ActionListEmailService implementation whose content is configurable/parameterizable

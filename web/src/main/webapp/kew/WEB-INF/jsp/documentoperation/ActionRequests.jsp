@@ -131,7 +131,7 @@
 	  	  <tr>
 	  	    <td width="33%" align="right" class="thnormal">Person ID:</td>
 	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].principalId" />
-	  	      <kul:lookup boClassName="org.kuali.rice.kim.bo.Person" fieldConversions="principalId:routeHeader.docActionRequest[${ctr}].principalId" lookupParameters="routeHeader.docActionRequest[${ctr}].principalId:principalId" />
+	  	      <kul:lookup boClassName="org.kuali.rice.kim.api.identity.Person" fieldConversions="principalId:routeHeader.docActionRequest[${ctr}].principalId" lookupParameters="routeHeader.docActionRequest[${ctr}].principalId:principalId" />
 	  	    </td>
 	  	  </tr>
 	  	  <tr>

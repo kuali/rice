@@ -30,7 +30,7 @@ import org.hibernate.annotations.Type
 import org.kuali.rice.kim.api.group.Group
 import org.kuali.rice.kim.api.group.GroupContract
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
-import org.kuali.rice.kim.bo.Person
+import org.kuali.rice.kim.api.identity.Person
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo
 import org.kuali.rice.kim.impl.type.KimTypeBo
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes

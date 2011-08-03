@@ -55,7 +55,7 @@
                 <kul:htmlAttributeHeaderCell scope="col" align="left"><bean-el:message
                     key="routeLog.RouteLog.header.label.initiator" /></kul:htmlAttributeHeaderCell>
                 <td  class="datacell" width="25%">
-                    <kul:inquiry boClassName="org.kuali.rice.kim.bo.Person" keyValues="principalId=${routeHeader.initiatorWorkflowId}" render="true"><c:out value="${routeHeader.initiatorDisplayName}" /></kul:inquiry>
+                    <kul:inquiry boClassName="org.kuali.rice.kim.api.identity.Person" keyValues="principalId=${routeHeader.initiatorWorkflowId}" render="true"><c:out value="${routeHeader.initiatorDisplayName}" /></kul:inquiry>
                     &nbsp;</td>
                 <kul:htmlAttributeHeaderCell scope="col" align="left"><bean-el:message
                     key="routeLog.RouteLog.header.label.lastModified" /></kul:htmlAttributeHeaderCell>
@@ -148,12 +148,12 @@
                                    <b><c:out value="${actionTaken.actionTakenLabel}" /></b>
                                 </td>
                                 <td align="left" class="datacell">
-                                    <kul:inquiry boClassName="org.kuali.rice.kim.bo.Person" keyValues="principalId=${actionTaken.principalId}" render="true"><c:out value="${actionTaken.principalDisplayName}" /></kul:inquiry>
+                                    <kul:inquiry boClassName="org.kuali.rice.kim.api.identity.Person" keyValues="principalId=${actionTaken.principalId}" render="true"><c:out value="${actionTaken.principalDisplayName}" /></kul:inquiry>
                                     &nbsp;
                                 </td>
                                 <td align="left" class="headercell4">
                                     <c:if test="${actionTaken.forDelegator}">
-                                        <kul:inquiry boClassName="org.kuali.rice.kim.bo.Person" keyValues="principalId=${actionTaken.delegatorPrincipalId}" render="true"><c:out value="${actionTaken.delegatorDisplayName}" /></kul:inquiry>
+                                        <kul:inquiry boClassName="org.kuali.rice.kim.api.identity.Person" keyValues="principalId=${actionTaken.delegatorPrincipalId}" render="true"><c:out value="${actionTaken.delegatorDisplayName}" /></kul:inquiry>
                                      </c:if>&nbsp;
                                  </td>
                                  <td align="center" class="headercell4">

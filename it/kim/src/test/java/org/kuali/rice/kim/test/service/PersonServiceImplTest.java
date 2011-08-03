@@ -19,9 +19,9 @@ import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.apache.ojb.broker.metadata.MetadataManager;
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierBo;
 import org.kuali.rice.kim.service.impl.PersonServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
@@ -31,9 +31,9 @@ import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.SequenceAccessorService;
+import org.kuali.rice.test.BaselineTestCase;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.util.AutoPopulatingList;
 
@@ -52,6 +52,7 @@ import static org.junit.Assert.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class PersonServiceImplTest extends KIMTestCase {
 
 	private PersonServiceImpl personService;
@@ -89,8 +90,8 @@ public class PersonServiceImplTest extends KIMTestCase {
 //	public void testHasRole_Inherited() {
 //		Person p = personService.getPersonByPrincipalName( "wwren" );
 //		assertNotNull( "person object must not be null", p );
-//		assertTrue( "person must be a member of PA_MAINTENANCE_USERS", personService.hasRole( p, org.kuali.rice.kim.util.KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE, "PA_AP_MAINTENANCE_USERS" ) );
-//		assertTrue( "person must be NOT a member of PA_MAINTENANCE_USERS", !personService.hasRole( p, org.kuali.rice.kim.util.KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE, "PA_MAINTENANCE_USERS" ) );
+//		assertTrue( "person must be a member of PA_MAINTENANCE_USERS", personService.hasRole( p, org.kuali.rice.kim.util.KimApiConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE, "PA_AP_MAINTENANCE_USERS" ) );
+//		assertTrue( "person must be NOT a member of PA_MAINTENANCE_USERS", !personService.hasRole( p, org.kuali.rice.kim.util.KimApiConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE, "PA_MAINTENANCE_USERS" ) );
 //	}
 //
 //	@Test
@@ -101,14 +102,14 @@ public class PersonServiceImplTest extends KIMTestCase {
 //		assertNotNull( "role list must not be null", roles );
 //		System.out.println( roles );
 //		assertTrue( "role list must have non-zero length", roles.size() > 0 );
-//		KimRole r = KIMServiceLocatorInternal.getAuthorizationService().getRoleByName( org.kuali.rice.kim.util.KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE, "SY_FUNCTIONAL_SUPER_USERS" );
+//		KimRole r = KIMServiceLocatorInternal.getAuthorizationService().getRoleByName( org.kuali.rice.kim.util.KimApiConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE, "SY_FUNCTIONAL_SUPER_USERS" );
 //		assertTrue( "one of the roles must be SY_FUNCTIONAL_SUPER_USERS", roles.contains( r ) );
 //	}
 //
 //	@Test
 //	public void testHasRole() {
 //		Person p = personService.getPerson( "KULUSER" );
-//		assertTrue( "person must have role SY_FUNCTIONAL_SUPER_USERS", personService.hasRole( p, org.kuali.rice.kim.util.KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE, "SY_FUNCTIONAL_SUPER_USERS" ) );
+//		assertTrue( "person must have role SY_FUNCTIONAL_SUPER_USERS", personService.hasRole( p, org.kuali.rice.kim.util.KimApiConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE, "SY_FUNCTIONAL_SUPER_USERS" ) );
 //	}
 
 	@Test

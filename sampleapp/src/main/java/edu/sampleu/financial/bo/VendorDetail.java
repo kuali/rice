@@ -590,7 +590,7 @@ public class VendorDetail extends PersistableBusinessObjectBase { //implements V
     }
 
 //    public Person getVendorRestrictedPerson() {
-//        vendorRestrictedPerson = SpringContext.getBean(org.kuali.rice.kim.service.PersonService.class).updatePersonIfNecessary(vendorRestrictedPersonIdentifier, vendorRestrictedPerson);
+//        vendorRestrictedPerson = SpringContext.getBean(org.kuali.rice.kim.api.identity.PersonService.class).updatePersonIfNecessary(vendorRestrictedPersonIdentifier, vendorRestrictedPerson);
 //        return vendorRestrictedPerson;
 //    }
 

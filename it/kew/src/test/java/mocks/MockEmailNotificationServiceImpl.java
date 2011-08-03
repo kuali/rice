@@ -19,9 +19,9 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.mail.Mailer;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.mail.service.EmailContentService;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.Person;
 
 import java.util.ArrayList;
 import java.util.Collection;

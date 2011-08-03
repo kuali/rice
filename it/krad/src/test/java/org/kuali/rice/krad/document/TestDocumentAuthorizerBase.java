@@ -30,7 +30,7 @@ public class TestDocumentAuthorizerBase extends DocumentAuthorizerBase {
     public static final String USER_SESSION_OBJECT_KEY = "TEST_AUTHORIZER_OBJECT_KEY";
 
     /**
-     * @see org.kuali.rice.krad.document.authorization.DocumentAuthorizerBase#getCustomLockDescriptor(org.kuali.rice.krad.document.Document, java.util.Map, org.kuali.rice.kim.bo.Person)
+     * @see org.kuali.rice.krad.document.authorization.DocumentAuthorizerBase#getCustomLockDescriptor(org.kuali.rice.krad.document.Document, java.util.Map, org.kuali.rice.kim.api.identity.Person)
      */
     //@Override
     //protected String getCustomLockDescriptor(Document document, Map editMode, Person user) {

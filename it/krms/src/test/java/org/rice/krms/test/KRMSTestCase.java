@@ -72,6 +72,7 @@ public abstract class KRMSTestCase extends BaselineTestCase {
 		tablesNotToClear.add("KRNS_.*");
 		tablesNotToClear.add("KREW_.*");
 		tablesNotToClear.add("KREN_.*");
+        tablesNotToClear.add("KRCR_.*");
 		return tablesNotToClear;
 	}
 

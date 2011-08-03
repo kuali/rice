@@ -133,7 +133,7 @@
 	      	<c:forEach var="member" items="${KualiForm.document.members}" varStatus="statusMember"
                  begin="${KualiForm.memberTableMetadata.firstRowIndex}" 
                  end="${KualiForm.memberTableMetadata.lastRowIndex}">
-                 <c:set var="inquiryClass" value="org.kuali.rice.kim.bo.Person" />
+                 <c:set var="inquiryClass" value="org.kuali.rice.kim.api.identity.Person" />
                  <c:set var="keyValue" value="principalId" />
                  <c:if test='${member.memberTypeCode == "G"}'>
                    <c:set var="inquiryClass" value="org.kuali.rice.kim.api.group.Group" />

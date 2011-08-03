@@ -54,10 +54,10 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="rice.ksb.serviceBus"
-		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
-		<property name="serviceName" value="rice.ksb.serviceBus" />
-	</bean>
+	  <bean id="rice.ksb.serviceBus"
+		  class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+		  <property name="serviceName" value="rice.ksb.serviceBus" />
+	  </bean>
 
     <bean id="kimSoapService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition" abstract="true">
        <property name="serviceNameSpaceURI" value="KIM"/>
@@ -69,7 +69,7 @@
     </bean>
 
     <bean id="kimJaxWsSoapService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition" abstract="true">
-       <property name="serviceNameSpaceURI" value="http://rice.kuali.org/wsdl/kim"/>
+       <property name="serviceNameSpaceURI" value="#{ T(org.kuali.rice.kim.api.KimApiConstants$Namespaces).KIM_NAMESPACE_2_0 }" />
        <property name="jaxWsService" value="true"/>
        <property name="priority" value="3" />
        <property name="retryAttempts" value="0" />
@@ -89,21 +89,12 @@
         Identity Service
   -->
 
-  <bean parent="kimLocalServiceExporter">
-    <property name="serviceBus" ref="rice.ksb.serviceBus" />
-    <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="kimIdentityService"
-        p:localServiceName="kimIdentityService" />
-    </property>
-  </bean>
-
-  <bean parent="kimLocalServiceExporter">
+   <bean parent="kimLocalServiceExporter">
 	<property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimIdentityService"
-        p:localServiceName="kimIdentityServiceSOAP" />
+        p:localServiceName="identityServiceSoap" />
     </property>
     <property name="exportIf" value="kimIdentityServiceSOAP.expose"/>
   </bean>
@@ -111,18 +102,9 @@
   <bean parent="kimLocalServiceExporter">
 	<property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="kimRoleService"
-        p:localServiceName="kimRoleService" />
-    </property>
-  </bean>
-
-  <bean parent="kimLocalServiceExporter">
-	<property name="serviceBus" ref="rice.ksb.serviceBus"/>
-    <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimRoleService"
-        p:localServiceName="kimRoleServiceSOAP"
+        p:localServiceName="roleServiceSoap"
         p:serviceInterface="org.kuali.rice.kim.api.role.RoleService" />
     </property>
     <property name="exportIf" value="kimRoleServiceSOAP.expose"/>
@@ -131,30 +113,12 @@
   <bean parent="kimLocalServiceExporter">
 	<property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="kimGroupService"
-        p:localServiceName="kimGroupService" />
-    </property>
-  </bean>
-
-  <bean parent="kimLocalServiceExporter">
-	<property name="serviceBus" ref="rice.ksb.serviceBus"/>
-    <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimGroupService"
-        p:localServiceName="kimGroupServiceSOAP"
+        p:localServiceName="groupServiceSoap"
         p:serviceInterface="org.kuali.rice.kim.api.group.GroupService" />
     </property>
-    <property name="exportIf" value="kimGroupServiceSOAP.expose"/>
-  </bean>
-
-  <bean parent="kimLocalServiceExporter">
-  <property name="serviceBus" ref="rice.ksb.serviceBus"/>
-    <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="kimPermissionService"
-        p:localServiceName="kimPermissionService" />
-    </property>
+    <property name="exportIf" value="groupServiceSoap.expose"/>
   </bean>
 
   <bean parent="kimLocalServiceExporter">
@@ -162,59 +126,32 @@
     <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimPermissionService"
-        p:localServiceName="kimPermissionServiceSOAP"
-        p:serviceInterface="org.kuali.rice.kim.api.permission.PermissionService" />
+        p:localServiceName="permissionServiceSoap"
+        p:serviceInterface="org.kuali.rice.kim.service.PermissionService" />
     </property>
-    <property name="exportIf" value="kimPermissionServiceSOAP.expose"/>
+    <property name="exportIf" value="permissionServiceSoap.expose"/>
   </bean>
 
   <bean parent="kimLocalServiceExporter">
   <property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="kimPermissionUpdateService"
-        p:localServiceName="kimPermissionUpdateService" />
-    </property>
-  </bean>
-
-    <bean parent="kimLocalServiceExporter">
-  <property name="serviceBus" ref="rice.ksb.serviceBus"/>
-    <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimPermissionUpdateService"
-        p:localServiceName="kimPermissionUpdateServiceSOAP"
+        p:localServiceName="permissionUpdateServiceSoap"
         p:serviceInterface="org.kuali.rice.kim.service.PermissionUpdateService" />
     </property>
-    <property name="exportIf" value="kimPermissionServiceSOAP.expose"/>
+    <property name="exportIf" value="permissionServiceSoap.expose"/>
   </bean>
 
   <bean parent="kimLocalServiceExporter">
-  <property name="serviceBus" ref="rice.ksb.serviceBus"/>
-    <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="kimResponsibilityService"
-        p:localServiceName="kimResponsibilityService" />
-    </property>
-  </bean>
-
-    <bean parent="kimLocalServiceExporter">
   <property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimResponsibilityService"
-        p:localServiceName="kimResponsibilityServiceSOAP"
+        p:localServiceName="responsibilityServiceSoap"
         p:serviceInterface="org.kuali.rice.kim.api.responsibility.ResponsibilityService" />
     </property>
-    <property name="exportIf" value="kimResponsibilityServiceSOAP.expose"/>
-  </bean>
-
-  <bean parent="kimLocalServiceExporter">
-    <property name="serviceBus" ref="rice.ksb.serviceBus" />
-    <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="kimIdentityManagementNotificationService"
-        p:localServiceName="kimIdentityManagementNotificationService" />
-    </property>
+    <property name="exportIf" value="responsibilityServiceSoap.expose"/>
   </bean>
 
   <bean parent="kimLocalServiceExporter">
@@ -222,11 +159,11 @@
     <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimIdentityManagementNotificationService"
-        p:localServiceName="kimIdentityManagementNotificationServiceSOAP"
-        p:serviceInterface="org.kuali.rice.kim.service.IdentityManagementNotificationService"
+        p:localServiceName="identityManagementNotificationServiceSoap"
+        p:serviceInterface="org.kuali.rice.kim.api.identity.IdentityManagementNotificationService"
         />
     </property>
-    <property name="exportIf" value="kimIdentityManagementNotificationServiceSOAP.expose"/>
+    <property name="exportIf" value="identityManagementNotificationServiceSoap.expose"/>
   </bean>
 
   <bean parent="kimLocalServiceExporter">

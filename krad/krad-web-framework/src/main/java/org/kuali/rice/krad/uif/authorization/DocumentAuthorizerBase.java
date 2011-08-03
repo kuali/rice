@@ -22,7 +22,7 @@ import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.doctype.Process;
 import org.kuali.rice.kew.api.doctype.RoutePath;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;

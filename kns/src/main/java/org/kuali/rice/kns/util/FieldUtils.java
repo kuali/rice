@@ -31,7 +31,7 @@ import org.kuali.rice.core.api.uif.RemotableTextarea;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.FieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;

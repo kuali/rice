@@ -17,7 +17,7 @@ package org.kuali.rice.kim.service.impl;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.kuali.rice.kim.service.AuthenticationService;
+import org.kuali.rice.kim.api.identity.AuthenticationService;
 
 public class AuthenticationServiceImpl implements AuthenticationService {
 	public String getPrincipalName(HttpServletRequest request) {

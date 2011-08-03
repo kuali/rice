@@ -17,8 +17,7 @@
 package org.kuali.rice.kew.mail.service;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kim.bo.Person;
-
+import org.kuali.rice.kim.api.identity.Person;
 
 /**
  * A service which allows for the sending of email reminders triggered by the state

@@ -27,15 +27,16 @@ import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.api.group.GroupMemberQueryResults;
 import org.kuali.rice.kim.api.group.GroupQueryResults;
 import org.kuali.rice.kim.api.group.GroupService;
+import org.kuali.rice.kim.api.identity.IdentityManagementNotificationService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.common.attribute.AttributeTransform;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
-import org.kuali.rice.kim.service.IdentityManagementNotificationService;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
@@ -196,7 +197,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 			throw new RiceIllegalArgumentException("groupId is blank");
 		}
 		Set<String> visitedGroupIds = new HashSet<String>();
-		return getMemberIdsInternalByType(groupId, visitedGroupIds, KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE);
+		return getMemberIdsInternalByType(groupId, visitedGroupIds, KimApiConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE);
 */
 
         if ( StringUtils.isEmpty(groupId) ) {
@@ -880,7 +881,9 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 
     protected IdentityManagementNotificationService getIdentityManagementNotificationService() {
         return (IdentityManagementNotificationService) KsbApiServiceLocator
-                .getMessageHelper().getServiceAsynchronously(new QName("KIM", "kimIdentityManagementNotificationService"));
+                .getMessageHelper().getServiceAsynchronously(
+                        new QName(KimApiConstants.Namespaces.KIM_NAMESPACE_2_0,
+                                KimApiConstants.ServiceNames.IDENTITY_MANAGEMENT_NOTIFICATION_SERVICE_SOAP));
     }
 
     /**

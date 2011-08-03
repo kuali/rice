@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.document.authorization;
 
-import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.authorization.InquiryOrMaintenanceDocumentAuthorizer;
 import org.kuali.rice.krad.document.MaintenanceDocument;
 

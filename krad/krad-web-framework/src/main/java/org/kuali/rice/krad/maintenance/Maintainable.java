@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.maintenance;
 
-import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.document.MaintenanceDocument;
@@ -162,7 +162,7 @@ public interface Maintainable extends ViewHelperService, java.io.Serializable {
      *
      * @return boolean true if the maintainable can generate custom lock descriptors,
      *         false otherwise
-     * @see #getCustomLockDescriptor(Map, org.kuali.rice.kim.bo.Person)
+     * @see #getCustomLockDescriptor(Map, org.kuali.rice.kim.api.identity.Person)
      */
     public boolean useCustomLockDescriptors();
 

@@ -67,13 +67,13 @@
    	  <tr>
   	    <td width="33%" align="right" class="thnormal">* Action Taken Person ID:</td>
   	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionTaken[${ctr}].principalId" />
-  	      <kul:lookup boClassName="org.kuali.rice.kim.bo.Person" fieldConversions="principalId:routeHeader.docActionTaken[${ctr}].principalId" lookupParameters="routeHeader.docActionTaken[${ctr}].principalId:principalId" />
+  	      <kul:lookup boClassName="org.kuali.rice.kim.api.identity.Person" fieldConversions="principalId:routeHeader.docActionTaken[${ctr}].principalId" lookupParameters="routeHeader.docActionTaken[${ctr}].principalId:principalId" />
   	    </td>
   	  </tr>
   	  <tr>
   	    <td width="33%" align="right" class="thnormal">Delegator Person ID:</td>
   	    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionTaken[${ctr}].delegatorPrincipalId" />
-  	      <kul:lookup boClassName="org.kuali.rice.kim.bo.Person" fieldConversions="principalId:routeHeader.docActionTaken[${ctr}].delegatorPrincipalId" lookupParameters="routeHeader.docActionTaken[${ctr}].delegatorPrincipalId:principalId" />
+  	      <kul:lookup boClassName="org.kuali.rice.kim.api.identity.Person" fieldConversions="principalId:routeHeader.docActionTaken[${ctr}].delegatorPrincipalId" lookupParameters="routeHeader.docActionTaken[${ctr}].delegatorPrincipalId:principalId" />
   	    </td>
   	  </tr>
 	  <tr>

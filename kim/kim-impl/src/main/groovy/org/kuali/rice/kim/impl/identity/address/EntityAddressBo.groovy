@@ -9,12 +9,13 @@ import javax.persistence.ManyToOne
 import javax.persistence.Table
 import javax.persistence.Transient
 import org.hibernate.annotations.Type
-import org.kuali.rice.kim.api.KimConstants
+
 import org.kuali.rice.kim.api.identity.address.EntityAddress
 import org.kuali.rice.kim.api.identity.address.EntityAddressContract
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
+import org.kuali.rice.kim.api.KimApiConstants
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -142,7 +143,7 @@ public class EntityAddressBo extends PersistableBusinessObjectBase implements En
     @Override
     String getLine1() {
         if (isSuppressAddress()) {
-            return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
+            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
         }
         return this.line1;
 
@@ -151,7 +152,7 @@ public class EntityAddressBo extends PersistableBusinessObjectBase implements En
     @Override
     String getLine2() {
         if (isSuppressAddress()) {
-            return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
+            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
         }
         return this.line2;
     }
@@ -159,7 +160,7 @@ public class EntityAddressBo extends PersistableBusinessObjectBase implements En
     @Override
     String getLine3() {
         if (isSuppressAddress()) {
-            return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
+            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
         }
         return this.line3;
     }
@@ -167,7 +168,7 @@ public class EntityAddressBo extends PersistableBusinessObjectBase implements En
     @Override
     String getCityName() {
         if (isSuppressAddress()) {
-            return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
+            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
         }
         return this.cityName;
     }
@@ -175,7 +176,7 @@ public class EntityAddressBo extends PersistableBusinessObjectBase implements En
     @Override
     String getStateCode() {
         if (isSuppressAddress()) {
-            return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE;
+            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE;
         }
         return this.stateCode;
     }
@@ -183,7 +184,7 @@ public class EntityAddressBo extends PersistableBusinessObjectBase implements En
     @Override
     String getPostalCode() {
         if (isSuppressAddress()) {
-            return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK_ZIP;
+            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK_ZIP;
         }
         return this.postalCode;
     }
@@ -191,7 +192,7 @@ public class EntityAddressBo extends PersistableBusinessObjectBase implements En
     @Override
     String getCountryCode() {
         if (isSuppressAddress()) {
-            return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE;
+            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE;
         }
         return this.countryCode;
     }

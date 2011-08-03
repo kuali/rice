@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne
 import javax.persistence.Table
 import javax.persistence.Transient
 import org.hibernate.annotations.Type
-import org.kuali.rice.kim.api.KimConstants
+import org.kuali.rice.kim.api.KimApiConstants
 import org.kuali.rice.kim.api.identity.email.EntityEmail
 import org.kuali.rice.kim.api.identity.email.EntityEmailContract
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences
@@ -122,7 +122,7 @@ class EntityEmailBo extends PersistableBusinessObjectBase implements EntityEmail
         @Override
         String getEmailAddress() {
             if (isSuppressEmail())  {
-                return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK
+                return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK
             }
             return this.emailAddress
         }

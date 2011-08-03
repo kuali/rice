@@ -34,7 +34,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.mail.service.EmailContentService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.web.KewKualiAction;
-import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
 
@@ -88,7 +88,7 @@ public class FeedbackAction extends KewKualiAction {
 
         UserSession uSession = getUserSession();
 
-        Person	workflowUser = uSession.getPerson();
+        Person workflowUser = uSession.getPerson();
         if (workflowUser != null) {
             feedbackForm.setNetworkId(workflowUser.getPrincipalName());
             feedbackForm.setUserEmail(workflowUser.getEmailAddress());

@@ -26,6 +26,7 @@ import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.impl.IdentityArchiveServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.test.BaselineTestCase;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -41,6 +43,7 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class IdentityArchiveServiceTest extends KIMTestCase {
 
 	private IdentityArchiveService identityArchiveService;
@@ -69,7 +72,7 @@ public class IdentityArchiveServiceTest extends KIMTestCase {
 		List<EntityDefault> added = new ArrayList<EntityDefault>();
 
 		// exceed the max write queue size to initiate a flush
-		for (int i=1; i<=maxWriteQueueSize; i++) {
+		for (int i=1; i<=(maxWriteQueueSize); i++) {
 			MinimalKEDIBuilder builder = new MinimalKEDIBuilder("bogusUser" + i);
 			builder.setEntityId("bogusUser" + i);
 			EntityDefault bogusUserInfo = builder.build();
@@ -86,7 +89,7 @@ public class IdentityArchiveServiceTest extends KIMTestCase {
 			added.add(bogusUserInfo);
 		}
 
-		// give it a second to flush
+		// give it a second or three to flush
 		log.info("Sleeping, hoping for a flush to occur!");
 		Thread.sleep(1000);
 		log.info("Done sleeping!");
@@ -97,6 +100,7 @@ public class IdentityArchiveServiceTest extends KIMTestCase {
 			// retrieve it every way we can
 			EntityDefault retrieved = identityArchiveService.getEntityDefaultFromArchiveByPrincipalId(
                     kedi.getPrincipals().get(0).getPrincipalId());
+            assertNotNull("no value retrieved for principalId: " + kedi.getPrincipals().get(0).getPrincipalId(), retrieved);
 			assertTrue(kedi.getPrincipals().get(0).getPrincipalId().equals(retrieved.getPrincipals().get(0).getPrincipalId()));
 			retrieved = identityArchiveService.getEntityDefaultFromArchiveByPrincipalName(
                     kedi.getPrincipals().get(0).getPrincipalName());

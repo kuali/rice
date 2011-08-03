@@ -104,7 +104,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 	@Override
 	public EntityDefault getEntityDefaultFromArchive( String entityId ) {
     	Map<String,String> criteria = new HashMap<String, String>(1);
-    	criteria.put(KimConstants.PrimaryKeyConstants.ENTITY_ID, entityId);
+    	criteria.put(KimConstants.PrimaryKeyConstants.SUB_ENTITY_ID, entityId);
     	KimEntityDefaultInfoCacheImpl cachedValue = businessObjectService.findByPrimaryKey(KimEntityDefaultInfoCacheImpl.class, criteria);
     	return (cachedValue == null) ? null : cachedValue.convertCacheToEntityDefaultInfo();
     }
@@ -267,10 +267,14 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 						}
 
 						Collections.sort(entitiesToInsert, kediComparator);
-
-						for (EntityDefault entityToInsert : entitiesToInsert) {
-							businessObjectService.save( new KimEntityDefaultInfoCacheImpl( entityToInsert ) );
-						}
+                        List<KimEntityDefaultInfoCacheImpl> entityCache = new ArrayList<KimEntityDefaultInfoCacheImpl>(entitiesToInsert.size());
+                        for (EntityDefault entityToInsert : entitiesToInsert) {
+                            entityCache.add(new KimEntityDefaultInfoCacheImpl( entityToInsert ));
+                        }
+                        businessObjectService.save(entityCache);
+						//for (EntityDefault entityToInsert : entitiesToInsert) {
+						//	businessObjectService.save( new KimEntityDefaultInfoCacheImpl( entityToInsert ) );
+						//}
 						return null;
 					}
 				});

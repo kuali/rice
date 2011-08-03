@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.service;
+package org.kuali.rice.kim.api.identity;
+
+import org.kuali.rice.kim.util.KimConstants;
 
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-
-import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
 /**
  * Service to purge local Kim caches when backend KIM data has changed. 
@@ -26,7 +26,7 @@ import org.kuali.rice.kim.util.KIMWebServiceConstants;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@WebService(name = KIMWebServiceConstants.IdentityManagementNotificationService.WEB_SERVICE_NAME, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
+@WebService(name = "IdentityManagementNotificationServiceSoap", targetNamespace = KimConstants.Namespaces.KIM_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface IdentityManagementNotificationService {
     public void principalUpdated();

@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.service;
 
 import org.junit.Test;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
@@ -40,9 +41,11 @@ public class KIMServiceLocatorInternalTest extends KIMTestCase {
 	public void testGetKimTypeService_KimType() {
 		
 		// test by passing null
-		
-		KimTypeService typeService1 = KimFrameworkServiceLocator.getKimTypeService((KimType) null);
-		assertNull("type service should be null", typeService1);
+		try {
+		    KimTypeService typeService1 = KimFrameworkServiceLocator.getKimTypeService((KimType) null);
+            assertTrue("should have thrown exception and never got here", false);
+        } catch (IllegalArgumentException e) {
+        }
 		
 		// test by passing a KimType with a null service name
 		

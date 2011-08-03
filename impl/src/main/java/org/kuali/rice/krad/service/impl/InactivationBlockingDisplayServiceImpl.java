@@ -23,7 +23,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.web.format.Formatter;
-import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.document.authorization.FieldRestriction;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;

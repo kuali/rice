@@ -20,16 +20,16 @@ import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
+import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.kim.api.identity.PersonService;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeContract;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.framework.group.GroupEbo;
 import org.kuali.rice.kim.framework.role.RoleEbo;
-import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
@@ -87,8 +87,8 @@ public class KimModuleService extends ModuleServiceBase {
 				return (T) GroupEbo.from(group);
 			}
 //		} else if(KimType.class.isAssignableFrom(dataObjectClass)){
-//			if(fieldValues.containsKey(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID)) {
-//				return (T) getTypeInfoService().getKimType((String)fieldValues.get(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID));
+//			if(fieldValues.containsKey(KimApiConstants.PrimaryKeyConstants.KIM_TYPE_ID)) {
+//				return (T) getTypeInfoService().getKimType((String)fieldValues.get(KimApiConstants.PrimaryKeyConstants.KIM_TYPE_ID));
 //			}
 		}
 		// otherwise, use the default implementation

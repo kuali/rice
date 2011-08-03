@@ -183,7 +183,7 @@
             <c:if test="${fn:length(member.roleRspActions) == 0}">  
                    <c:set var="rows" value="1"/>            
             </c:if> 
-            <c:set var="inquiryClass" value="org.kuali.rice.kim.bo.Person" />
+            <c:set var="inquiryClass" value="org.kuali.rice.kim.api.identity.Person" />
             <c:set var="keyValue" value="principalId" />
             <c:if test='${member.memberTypeCode == "G"}'>
             	<c:set var="inquiryClass" value="org.kuali.rice.kim.api.group.Group" />

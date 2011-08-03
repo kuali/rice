@@ -60,9 +60,9 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtensio
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.web.struts.action.KualiAction;
 import org.kuali.rice.kns.web.ui.ExtraButton;
 import org.kuali.rice.krad.UserSession;

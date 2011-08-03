@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.util;
 
 import org.kuali.rice.kew.actionrequest.Recipient;
-import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.api.identity.Person;
 
 /**
  * Class was declared multiple times in different classes.  Removed

@@ -17,7 +17,7 @@ package org.kuali.rice.kim.api.role;
 
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.core.api.util.jaxb.SqlDateAdapter;
-import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
 
@@ -56,7 +56,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@WebService(name = "RoleService", targetNamespace = KimConstants.Namespaces.KIM_NAMESPACE_2_0 )
+@WebService(name = "roleServiceSoap", targetNamespace = KimApiConstants.Namespaces.KIM_NAMESPACE_2_0 )
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface RoleService {
     // --------------------

@@ -215,6 +215,7 @@ public final class KimConstants {
 
 	public final static class PrimaryKeyConstants {
 		public static final String ENTITY_ID = "id";
+        public static final String SUB_ENTITY_ID = "entityId";
 		public static final String PRINCIPAL_ID = "principalId";
 		public static final String ROLE_ID = "id";
         public static final String SUB_ROLE_ID = "roleId";
@@ -232,6 +233,7 @@ public final class KimConstants {
 		public static final String KIM_ATTRIBUTE_ID = "id";
 		public static final String KIM_TYPE_CODE ="id";
         public static final String ID = "id";
+        public static final String CODE = "code";
 		
 		private PrimaryKeyConstants() {
 			throw new UnsupportedOperationException("do not call");

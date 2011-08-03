@@ -50,7 +50,7 @@
     <td align="left" class="<c:out value="${headerClass}"/>" nowrap="nowrap">
         <c:choose>
             <c:when test="${actionRequest.userRequest}">
-                <kul:inquiry boClassName="org.kuali.rice.kim.bo.Person" keyValues="principalId=${actionRequest.principalId}" render="true"><c:out value="${actionRequest.displayName}" /></kul:inquiry>
+                <kul:inquiry boClassName="org.kuali.rice.kim.api.identity.Person" keyValues="principalId=${actionRequest.principalId}" render="true"><c:out value="${actionRequest.displayName}" /></kul:inquiry>
                 &nbsp;
                 <c:choose>
                   <c:when test="${actionRequest.delegationType == KEWConstants.DELEGATION_SECONDARY}">
@@ -81,7 +81,7 @@
                           <c:forEach var="primDelegateRequest" items="${roleRequest.primaryDelegateRequests}" varStatus="pDelegateArStatus">
                           <c:set var="primDelegateDisplayName" value="${primDelegateRequest.displayName}"/>
                           <c:if test="${primDelegateRequest.userRequest}">
-                              <kul:inquiry boClassName="org.kuali.rice.kim.bo.Person"
+                              <kul:inquiry boClassName="org.kuali.rice.kim.api.identity.Person"
                                   keyValues="principalId=${primDelegateRequest.principalId}"
                                   render="true">
                                   <c:out value="${primDelegateDisplayName}" />
@@ -115,7 +115,7 @@
                            <c:if test="${!arStatus.last}"><br /></c:if>
                        </c:when>
                        <c:otherwise>
-                            <kul:inquiry boClassName="org.kuali.rice.kim.bo.Person" keyValues="principalId=${roleRequest.principalId}" render="true"><c:out value="${roleRequest.displayName}" /></kul:inquiry>
+                            <kul:inquiry boClassName="org.kuali.rice.kim.api.identity.Person" keyValues="principalId=${roleRequest.principalId}" render="true"><c:out value="${roleRequest.displayName}" /></kul:inquiry>
                             &nbsp;
                             <c:choose>
                               <c:when test="${roleRequest.delegationType == KEWConstants.DELEGATION_SECONDARY}">

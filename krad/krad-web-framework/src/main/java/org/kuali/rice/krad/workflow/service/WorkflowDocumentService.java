@@ -20,7 +20,7 @@ import java.util.List;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.AdHocRouteRecipient;
 
 /**

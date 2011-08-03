@@ -10,12 +10,13 @@ import javax.persistence.Table
 import javax.persistence.Transient
 import org.apache.commons.lang.StringUtils
 import org.hibernate.annotations.Type
-import org.kuali.rice.kim.api.KimConstants
+
 import org.kuali.rice.kim.api.identity.phone.EntityPhone
 import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
+import org.kuali.rice.kim.api.KimApiConstants
 
 @Entity
 @Table(name = "KRIM_ENTITY_PHONE_T")
@@ -127,7 +128,7 @@ public class EntityPhoneBo extends PersistableBusinessObjectBase implements Enti
     @Override
     String getFormattedPhoneNumber() {
         if (isSuppressPhone())  {
-            return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK
+            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK
         }
         return getFormattedPhoneNumberUnmasked()
     }
@@ -165,7 +166,7 @@ public class EntityPhoneBo extends PersistableBusinessObjectBase implements Enti
     @Override
     String getPhoneNumber() {
         if (isSuppressPhone()) {
-            return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK_PHONE
+            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK_PHONE
         }
         return this.phoneNumber
     }
@@ -173,7 +174,7 @@ public class EntityPhoneBo extends PersistableBusinessObjectBase implements Enti
     @Override
     String getCountryCode() {
         if (isSuppressPhone()){
-            return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE
+            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE
         }
         return this.countryCode
     }
@@ -181,7 +182,7 @@ public class EntityPhoneBo extends PersistableBusinessObjectBase implements Enti
     @Override
     String getExtensionNumber() {
         if (isSuppressPhone()) {
-            return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK
+            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK
         }
         return this.extensionNumber
     }

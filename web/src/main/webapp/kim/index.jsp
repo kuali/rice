@@ -27,7 +27,7 @@
     </tr>
     <tr>
         <td>
-            <a href="${ConfigProperties.kr.url}/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kim.bo.Person&docFormKey=88888888&returnLocation=${ConfigProperties.kim.url}/index.jsp&hideReturnLink=true&showMaintenanceLinks=true">Person</a>
+            <a href="${ConfigProperties.kr.url}/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kim.api.identity.Person&docFormKey=88888888&returnLocation=${ConfigProperties.kim.url}/index.jsp&hideReturnLink=true&showMaintenanceLinks=true">Person</a>
         </td>
         <td>
             <a href="${ConfigProperties.kim.url}/identityManagementPersonDocument.do?methodToCall=docHandler&command=initiate&docTypeName=IdentityManagementPersonDocument">Create New Person</a>

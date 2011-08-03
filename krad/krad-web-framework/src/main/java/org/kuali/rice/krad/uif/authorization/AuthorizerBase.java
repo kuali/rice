@@ -16,10 +16,10 @@
 package org.kuali.rice.krad.uif.authorization;
 
 
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.PermissionService;
-import org.kuali.rice.kim.service.PersonService;
+import org.kuali.rice.kim.api.identity.PersonService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -45,7 +45,7 @@ public class AuthorizerBase implements Authorizer {
 
     /**
      * @see org.kuali.rice.krad.uif.authorization.Authorizer#getActionFlags(org.kuali.rice.krad.web.form.UifFormBase,
-     *      org.kuali.rice.kim.bo.Person, java.util.Set)
+     *      org.kuali.rice.kim.api.identity.Person, java.util.Set)
      */
     public Set<String> getActionFlags(UifFormBase model, Person user, Set<String> documentActions) {
         return documentActions;
@@ -53,7 +53,7 @@ public class AuthorizerBase implements Authorizer {
 
     /**
      * @see org.kuali.rice.krad.uif.authorization.Authorizer#getEditModes(org.kuali.rice.krad.web.form.UifFormBase,
-     *      org.kuali.rice.kim.bo.Person, java.util.Set)
+     *      org.kuali.rice.kim.api.identity.Person, java.util.Set)
      */
     public Set<String> getEditModes(UifFormBase model, Person user, Set<String> editModes) {
         return editModes;

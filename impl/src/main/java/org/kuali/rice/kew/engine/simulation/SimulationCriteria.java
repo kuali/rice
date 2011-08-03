@@ -22,12 +22,10 @@ import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.api.action.RoutingReportActionToTake;
 import org.kuali.rice.kew.api.action.RoutingReportCriteria;
-import org.kuali.rice.kew.api.action.RoutingReportCriteriaContract;
-import org.kuali.rice.kew.dto.ReportActionToTakeDTO;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.Person;
 
 import java.util.ArrayList;
 import java.util.List;

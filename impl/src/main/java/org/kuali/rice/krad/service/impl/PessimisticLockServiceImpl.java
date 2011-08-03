@@ -17,10 +17,10 @@ package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.kim.api.identity.PersonService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.PermissionService;
-import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.util.KimConstants.PermissionNames;
 import org.kuali.rice.krad.authorization.AuthorizationConstants;
 import org.kuali.rice.krad.document.Document;
@@ -102,14 +102,14 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.PessimisticLockService#generateNewLock(java.lang.String, org.kuali.rice.kim.bo.Person)
+     * @see org.kuali.rice.krad.service.PessimisticLockService#generateNewLock(java.lang.String, org.kuali.rice.kim.api.identity.Person)
      */
     public PessimisticLock generateNewLock(String documentNumber, Person user) {
         return generateNewLock(documentNumber, PessimisticLock.DEFAULT_LOCK_DESCRIPTOR, user);
     }
 
     /**
-     * @see org.kuali.rice.krad.service.PessimisticLockService#generateNewLock(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.Person)
+     * @see org.kuali.rice.krad.service.PessimisticLockService#generateNewLock(java.lang.String, java.lang.String, org.kuali.rice.kim.api.identity.Person)
      */
     public PessimisticLock generateNewLock(String documentNumber, String lockDescriptor, Person user) {
         PessimisticLock lock = new PessimisticLock(documentNumber, lockDescriptor, user);
@@ -131,14 +131,14 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.PessimisticLockService#isPessimisticLockAdminUser(org.kuali.rice.kim.bo.Person)
+     * @see org.kuali.rice.krad.service.PessimisticLockService#isPessimisticLockAdminUser(org.kuali.rice.kim.api.identity.Person)
      */
     public boolean isPessimisticLockAdminUser(Person user) {
     	return getPermissionService().isAuthorized( user.getPrincipalId(), KRADConstants.KRAD_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null );
     }
 
     /**
-     * @see org.kuali.rice.krad.service.PessimisticLockService#releaseAllLocksForUser(java.util.List, org.kuali.rice.kim.bo.Person)
+     * @see org.kuali.rice.krad.service.PessimisticLockService#releaseAllLocksForUser(java.util.List, org.kuali.rice.kim.api.identity.Person)
      */
     public void releaseAllLocksForUser(List<PessimisticLock> locks, Person user) {
         for (Iterator<PessimisticLock> iterator = locks.iterator(); iterator.hasNext();) {
@@ -150,7 +150,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.PessimisticLockService#releaseAllLocksForUser(java.util.List, org.kuali.rice.kim.bo.Person, java.lang.String)
+     * @see org.kuali.rice.krad.service.PessimisticLockService#releaseAllLocksForUser(java.util.List, org.kuali.rice.kim.api.identity.Person, java.lang.String)
      */
     public void releaseAllLocksForUser(List<PessimisticLock> locks, Person user, String lockDescriptor) {
         for (Iterator<PessimisticLock> iterator = locks.iterator(); iterator.hasNext();) {
@@ -277,7 +277,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      * NOTE: This method is only called if the document uses pessimistic locking as described in the data dictionary file.
      *
      * @see org.kuali.rice.krad.document.authorization.DocumentAuthorizer#establishLocks(org.kuali.rice.krad.document.Document,
-     *      java.util.Map, org.kuali.rice.kim.bo.Person)
+     *      java.util.Map, org.kuali.rice.kim.api.identity.Person)
      */
     public Map establishLocks(Document document, Map editMode, Person user) {
         Map editModeMap = new HashMap();

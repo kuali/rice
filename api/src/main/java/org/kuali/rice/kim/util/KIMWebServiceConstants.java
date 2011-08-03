@@ -29,7 +29,7 @@ public class KIMWebServiceConstants {
 	public static final String MODULE_TARGET_NAMESPACE = RiceConstants.RICE_JAXWS_TARGET_NAMESPACE_BASE + "/kim";
 
 	public static final class PermissionService {
-		public static final String WEB_SERVICE_NAME = "kimPermissionServiceSOAP";
+		public static final String WEB_SERVICE_NAME = "permissionServiceSOAP";
 		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.service.PermissionService";
 		public static final String WEB_SERVICE_PORT = "KimPermissionServicePort";
 		
@@ -39,7 +39,7 @@ public class KIMWebServiceConstants {
 	}
 
 	public static final class PermissionUpdateService {
-		public static final String WEB_SERVICE_NAME = "kimPermissionUpdateServiceSOAP";
+		public static final String WEB_SERVICE_NAME = "permissionUpdateServiceSOAP";
 		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.service.PermissionUpdateService";
 		public static final String WEB_SERVICE_PORT = "KimPermissionUpdateServicePort";
 
@@ -49,19 +49,11 @@ public class KIMWebServiceConstants {
 	}
 
 	public static final class IdentityService {
-		public static final String WEB_SERVICE_NAME = "kimIdentityServiceSOAP";
+		public static final String WEB_SERVICE_NAME = "identityServiceSOAP";
 		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.api.identity.IdentityService";
 		public static final String WEB_SERVICE_PORT = "IdentityServicePort";
 		
 		private IdentityService() {
-			throw new UnsupportedOperationException("do not call");
-		}
-	}
-
-	public final static class IdentityManagementNotificationService {
-		public static final String WEB_SERVICE_NAME = "kimIdentityManagementNotificationServiceSOAP";
-		
-		private IdentityManagementNotificationService() {
 			throw new UnsupportedOperationException("do not call");
 		}
 	}

@@ -629,7 +629,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
                                //searchCrit.put(entry.getKey(), entry.getValue());
                    searchCrit.setPredicates(equal(entry.getKey(), entry.getValue()));
                        } else { // the namespace code for the group field is named something besides the default. Set it to the default.
-                               //searchCrit.put(KimConstants.AttributeConstants.NAMESPACE_CODE, entry.getValue());
+                               //searchCrit.put(KimApiConstants.AttributeConstants.NAMESPACE_CODE, entry.getValue());
                    searchCrit.setPredicates(equal(KimConstants.AttributeConstants.NAMESPACE_CODE, entry.getValue()));
 
                        }
@@ -773,8 +773,8 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
     private List<String> getRoleMembersGroupIds(String memberNamespaceCode, String memberName){
 
        /*Map<String,String> searchCrit = new HashMap<String, String>();
-        searchCrit.put(KimConstants.AttributeConstants.GROUP_NAME, memberName);
-        searchCrit.put(KimConstants.AttributeConstants.NAMESPACE_CODE, memberNamespaceCode);*/
+        searchCrit.put(KimApiConstants.AttributeConstants.GROUP_NAME, memberName);
+        searchCrit.put(KimApiConstants.AttributeConstants.NAMESPACE_CODE, memberNamespaceCode);*/
        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
        builder.setPredicates(and(
                    like(KimConstants.AttributeConstants.GROUP_NAME, memberName),

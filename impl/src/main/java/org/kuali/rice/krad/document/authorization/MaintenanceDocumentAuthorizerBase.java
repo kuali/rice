@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.document.authorization;
 
 
-import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.document.MaintenanceDocument;
 import org.kuali.rice.krad.service.DocumentDictionaryService;

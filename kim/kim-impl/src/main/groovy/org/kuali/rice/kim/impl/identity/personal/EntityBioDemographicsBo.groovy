@@ -6,12 +6,13 @@ import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
 import javax.persistence.Transient
-import org.kuali.rice.kim.api.KimConstants
+
 import org.kuali.rice.kim.api.identity.personal.EntityBioDemographics
 import org.kuali.rice.kim.api.identity.personal.EntityBioDemographicsContract
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
+import org.kuali.rice.kim.api.KimApiConstants
 
 @Entity
 @Table(name = "KRIM_ENTITY_BIO_T")
@@ -99,7 +100,7 @@ class EntityBioDemographicsBo extends PersistableBusinessObjectBase implements E
     String getBirthDate() {
         if (this.birthDateValue != null) {
             if (isSuppressPersonal()) {
-                return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK
+                return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK
             }
             return new SimpleDateFormat("yyyy-MM-dd").format(this.birthDateValue)
         }
@@ -138,50 +139,50 @@ class EntityBioDemographicsBo extends PersistableBusinessObjectBase implements E
 
     String getGenderCode() {
         if (isSuppressPersonal()) {
-            return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE
+            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE
         }
         return this.genderCode
     }
 
     String getMaritalStatusCode() {
         if (isSuppressPersonal()) {
-            return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE
+            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE
         }
         return this.maritalStatusCode
     }
     String getPrimaryLanguageCode() {
         if (isSuppressPersonal()) {
-            return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE
+            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE
         }
         return this.primaryLanguageCode
     }
     String getSecondaryLanguageCode() {
         if (isSuppressPersonal()) {
-            return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE
+            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE
         }
         return this.secondaryLanguageCode
     }
     String getCountryOfBirthCode() {
         if (isSuppressPersonal()) {
-            return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE
+            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE
         }
         return this.countryOfBirthCode
     }
     String getBirthStateCode() {
         if (isSuppressPersonal()) {
-            return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE
+            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE
         }
         return this.birthStateCode
     }
     String getCityOfBirth() {
         if (isSuppressPersonal()) {
-            return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE
+            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE
         }
         return this.cityOfBirth
     }
     String getGeographicOrigin() {
         if (isSuppressPersonal()) {
-            return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE
+            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE
         }
         return this.geographicOrigin
     }

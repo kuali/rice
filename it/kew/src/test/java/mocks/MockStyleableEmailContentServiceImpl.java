@@ -27,8 +27,7 @@ import org.kuali.rice.kew.feedback.web.FeedbackForm;
 import org.kuali.rice.kew.mail.service.impl.StyleableEmailContentServiceImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.Person;
-
+import org.kuali.rice.kim.api.identity.Person;
 
 /**
  * This is a class used to substitute for a StyleableEmailContentServiceImpl class

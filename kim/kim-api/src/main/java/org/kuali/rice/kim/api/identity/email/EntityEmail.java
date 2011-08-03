@@ -4,7 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.identity.Type;
 
 import javax.xml.bind.Element;
@@ -222,7 +222,7 @@ public class EntityEmail extends AbstractDataTransferObject implements EntityEma
         @Override
         public String getEmailAddress() {
             if (isSuppressEmail()) {
-                return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
+                return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
             }
             return this.emailAddressUnmasked;
         }

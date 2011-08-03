@@ -48,7 +48,7 @@ public class RoleLookupableImpl extends KualiLookupableImpl {
 	        	parameters.put(KRADConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());
 	        	}
             url = getCreateNewUrl(UrlFactory.parameterizeUrl(KRADConstants.LOOKUP_ACTION, parameters));
-            //String url = "lookup.do?businessObjectClassName=org.kuali.rice.kim.bo.types.impl.KimTypeImpl&returnLocation=portal.do&docFormKey="+KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY;
+            //String url = "lookup.do?businessObjectClassName=org.kuali.rice.kim.bo.types.impl.KimTypeImpl&returnLocation=portal.do&docFormKey="+KimApiConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY;
         }
         return url;
     }

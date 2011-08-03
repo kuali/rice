@@ -3,9 +3,11 @@ package org.kuali.rice.kim.impl.role;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.api.action.DelegationType;
+import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
+import org.kuali.rice.kim.api.identity.IdentityManagementNotificationService;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.role.Role;
@@ -19,7 +21,6 @@ import org.kuali.rice.kim.impl.common.delegate.DelegateBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
 import org.kuali.rice.kim.impl.services.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.service.IdentityManagementNotificationService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.service.BusinessObjectService;
@@ -1383,7 +1384,9 @@ public class RoleServiceBase {
     }
 
     protected IdentityManagementNotificationService getIdentityManagementNotificationService() {
-        return (IdentityManagementNotificationService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("KIM", "kimIdentityManagementNotificationService"));
+        return (IdentityManagementNotificationService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(new QName(
+                KimApiConstants.Namespaces.KIM_NAMESPACE_2_0,
+                                KimApiConstants.ServiceNames.IDENTITY_MANAGEMENT_NOTIFICATION_SERVICE_SOAP));
     }
 
     /**

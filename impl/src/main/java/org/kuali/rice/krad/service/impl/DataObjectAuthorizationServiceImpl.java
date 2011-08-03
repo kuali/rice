@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.datadictionary.AttributeSecurity;
 import org.kuali.rice.krad.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.krad.document.authorization.DocumentPresentationController;

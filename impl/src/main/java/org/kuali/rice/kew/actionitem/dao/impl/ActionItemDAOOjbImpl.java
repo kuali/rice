@@ -26,8 +26,8 @@ import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.Person;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 import java.sql.Timestamp;

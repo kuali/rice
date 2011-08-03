@@ -16,9 +16,9 @@
 package org.kuali.rice.kew.actionlist;
 
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.Person;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

@@ -23,7 +23,7 @@ import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.AdHocRouteRecipient;
 import org.kuali.rice.krad.bo.Attachment;
 import org.kuali.rice.krad.bo.Note;
@@ -419,7 +419,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
 	 * // TODO does this really belong in the loop if
 	 * (parameterName.equals("newAdHocRouteWorkgroup.recipientName") &&
 	 * !"".equals(request.getParameter(parameterName))) { //check for namespace
-	 * String namespace = KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE; if
+	 * String namespace = KimApiConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE; if
 	 * (request.getParameter("newAdHocRouteWorkgroup.recipientNamespaceCode") !=
 	 * null &&
 	 * !"".equals(request.getParameter("newAdHocRouteWorkgroup.recipientName"
@@ -444,7 +444,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
 	 * Integer.parseInt(StringUtils.substringBetween(parameterName, "[", "]"));
 	 * //check for namespace String namespaceParam = "adHocRouteWorkgroup[" +
 	 * lineNumber + "].recipientNamespaceCode"; String namespace =
-	 * KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE; if
+	 * KimApiConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE; if
 	 * (request.getParameter(namespaceParam) != null &&
 	 * !"".equals(request.getParameter(namespaceParam).trim())) { namespace =
 	 * request.getParameter(namespaceParam).trim(); } Group group =

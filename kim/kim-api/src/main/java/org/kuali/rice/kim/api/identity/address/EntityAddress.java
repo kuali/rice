@@ -13,7 +13,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.identity.Type;
 import org.w3c.dom.Element;
 
@@ -350,7 +350,7 @@ public final class EntityAddress extends AbstractDataTransferObject
         @Override
         public String getLine1() {
             if (isSuppressAddress()) {
-                return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
+                return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
             }
             return this.line1Unmasked;
 
@@ -359,7 +359,7 @@ public final class EntityAddress extends AbstractDataTransferObject
         @Override
         public String getLine2() {
             if (isSuppressAddress()) {
-                return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
+                return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
             }
             return this.line2Unmasked;
         }
@@ -367,7 +367,7 @@ public final class EntityAddress extends AbstractDataTransferObject
         @Override
         public String getLine3() {
             if (isSuppressAddress()) {
-                return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
+                return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
             }
             return this.line3Unmasked;
         }
@@ -375,7 +375,7 @@ public final class EntityAddress extends AbstractDataTransferObject
         @Override
         public String getCityName() {
             if (isSuppressAddress()) {
-                return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
+                return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
             }
             return this.cityNameUnmasked;
         }
@@ -383,7 +383,7 @@ public final class EntityAddress extends AbstractDataTransferObject
         @Override
         public String getStateCode() {
             if (isSuppressAddress()) {
-                return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE;
+                return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE;
             }
             return this.stateCodeUnmasked;
         }
@@ -391,7 +391,7 @@ public final class EntityAddress extends AbstractDataTransferObject
         @Override
         public String getPostalCode() {
             if (isSuppressAddress()) {
-                return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK_ZIP;
+                return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK_ZIP;
             }
             return this.postalCodeUnmasked;
         }
@@ -399,7 +399,7 @@ public final class EntityAddress extends AbstractDataTransferObject
         @Override
         public String getCountryCode() {
             if (isSuppressAddress()) {
-                return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE;
+                return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE;
             }
             return this.countryCodeUnmasked;
         }

@@ -17,8 +17,8 @@ package org.kuali.rice.kim.inquiry;
 
 import java.util.Map;
 
+import org.kuali.rice.kim.api.identity.PersonService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
 import org.kuali.rice.krad.bo.BusinessObject;
 
@@ -30,7 +30,7 @@ import org.kuali.rice.krad.bo.BusinessObject;
  */
 public class PersonInquirableImpl extends KualiInquirableImpl {
 
-	PersonService personService; 
+	PersonService personService;
 	
 	/**
 	 * This overridden method ...

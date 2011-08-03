@@ -29,8 +29,8 @@ import org.kuali.rice.kew.mail.service.impl.StyleableEmailContentServiceImpl;
 import org.kuali.rice.kew.rule.RuleTestUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.Person;
 
 /**
  * Unit test for the EmailContentService

@@ -15,9 +15,8 @@
  */
 package org.kuali.rice.krad.bo;
 
-import org.apache.commons.lang.ObjectUtils;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.Person;
 
 import javax.persistence.Entity;
 import javax.persistence.IdClass;
@@ -25,8 +24,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.Person;
 
 /**
  * Ad Hoc Route Person Business Object

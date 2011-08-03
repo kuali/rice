@@ -39,7 +39,7 @@ public class KimCommonUtilsTest extends KIMTestCase {
     public void testCopyInfoAttributesToGroupAttributes() {
         IdentityManagementService identityManagementService = KimApiServiceLocator.getIdentityManagementService();
 
-        GroupInfo groupInfo = identityManagementService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "GroupNine");
+        GroupInfo groupInfo = identityManagementService.getGroupByName(KimApiConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "GroupNine");
 
         Map<String, String> infoAttributes = groupInfo.getAttributes();
         assertTrue(infoAttributes != null);
@@ -71,7 +71,7 @@ public class KimCommonUtilsTest extends KIMTestCase {
     public void testCopyInfoToGroup() {
         IdentityManagementService identityManagementService = KimApiServiceLocator.getIdentityManagementService();
 
-        GroupInfo groupInfo = identityManagementService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "GroupNine");
+        GroupInfo groupInfo = identityManagementService.getGroupByName(KimApiConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "GroupNine");
 
         GroupImpl groupImpl = new GroupImpl();
         KimCommonUtilsInternal.copyInfoToGroup(groupInfo, groupImpl);
@@ -83,7 +83,7 @@ public class KimCommonUtilsTest extends KIMTestCase {
     public void testFailedCopyInfoAttributesToGroupAttributes() {
     	IdentityManagementService identityManagementService = KimApiServiceLocator.getIdentityManagementService();
 
-		Group groupInfo = identityManagementService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "GroupNine");
+		Group groupInfo = identityManagementService.getGroupByName(KimApiConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "GroupNine");
 		Map<String, String> testMap<String, String> = groupInfo.getAttributes();
         testMap<String, String>.put("someDummyKey", "someDummyValue");
         groupInfo.setAttributes(testMap<String, String>);

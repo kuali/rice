@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kns.service;
 
-import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
 import org.kuali.rice.kns.inquiry.InquiryRestrictions;

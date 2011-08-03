@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 
+import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.entity.Entity;
@@ -57,7 +58,6 @@ public class IdentityServiceTest extends KIMTestCase {
 		if (null == identityService) {
 			identityService = findIdSvc();
 		}
-		GlobalResourceLoader.getService(new QName("KIM", "kimIdentityService"));
 	}
 
 	@Test
@@ -216,7 +216,8 @@ public class IdentityServiceTest extends KIMTestCase {
 	}
 
 	protected IdentityService findIdSvc() throws Exception {
-		return (IdentityService) GlobalResourceLoader.getService(new QName("KIM", "kimIdentityService"));
+		return (IdentityService) GlobalResourceLoader.getService(
+                new QName(KimApiConstants.Namespaces.KIM_NAMESPACE_2_0, KimApiConstants.ServiceNames.IDENTITY_SERVICE_SOAP));
 	}
 
 	protected void setIdentityService(IdentityService idSvc) {

@@ -459,7 +459,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         RoleDocumentDelegationMember newDelegationMember = personDocumentForm.getNewDelegationMember();
         KimTypeAttributesHelper attrHelper = newDelegationMember.getAttributesHelper();
         if (getKualiRuleService().applyRules(new AddPersonDelegationMemberEvent("", personDocumentForm.getPersonDocument(), newDelegationMember))) {
-	        //RoleImpl roleBo = (RoleImpl)getUiDocumentService().getMember(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, newDelegationMember.getRoleDao().getRoleId());
+	        //RoleImpl roleBo = (RoleImpl)getUiDocumentService().getMember(KimApiConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, newDelegationMember.getRoleDao().getRoleId());
 	        Role role;
         	role = KimApiServiceLocator.getRoleService().getRole(newDelegationMember.getRoleBo().getId());
 	        if (role != null) {

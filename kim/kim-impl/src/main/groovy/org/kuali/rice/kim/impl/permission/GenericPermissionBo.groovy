@@ -152,7 +152,7 @@ public class GenericPermissionBo extends PersistableBusinessObjectBase {
 //            PermissionAttributeBo permissionAttributeData = permIter.next();
 //            detailObjectsToDisplay.append(permissionAttributeData.getAttributeValue());
 //            if (permIter.hasNext()) {
-//                detailObjectsToDisplay.append(KimConstants.KimUIConstants.COMMA_SEPARATOR);
+//                detailObjectsToDisplay.append(KimApiConstants.KimUIConstants.COMMA_SEPARATOR);
 //            }
 //        }
 //        return detailObjectsToDisplay.toString();

@@ -23,6 +23,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.bus.Endpoint;
 import org.kuali.rice.ksb.api.bus.ServiceBus;
@@ -66,7 +67,8 @@ public class RoleServiceRemoteTest extends RoleServiceTest {
 	 */
 	protected Object getKimService(String svcName) throws Exception {
 		ServiceBus serviceBus = KsbApiServiceLocator.getServiceBus();
-		List<Endpoint> endpoints = serviceBus.getRemoteEndpoints(new QName("KIM", svcName));
+		List<Endpoint> endpoints = serviceBus.getRemoteEndpoints(
+                new QName(KimApiConstants.Namespaces.KIM_NAMESPACE_2_0, svcName));
 		if (endpoints.size() > 1) {
 			fail("Found more than one RemotedServiceHolder for " + svcName);
 		}

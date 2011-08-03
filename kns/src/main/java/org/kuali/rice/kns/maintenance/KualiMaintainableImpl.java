@@ -19,6 +19,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.web.format.FormatException;
+import org.kuali.rice.kim.api.identity.PersonService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
@@ -89,7 +90,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 
 	protected transient PersistenceStructureService persistenceStructureService;
 	protected transient BusinessObjectDictionaryService businessObjectDictionaryService;
-	protected transient org.kuali.rice.kim.service.PersonService personService;
+	protected transient PersonService personService;
 	protected transient BusinessObjectMetaDataService businessObjectMetaDataService;
 	protected transient BusinessObjectAuthorizationService businessObjectAuthorizationService;
 	protected transient DocumentHelperService documentHelperService;
@@ -1422,7 +1423,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 		return businessObjectDictionaryService;
 	}
 
-	protected org.kuali.rice.kim.service.PersonService getPersonService() {
+	protected PersonService getPersonService() {
 		if (personService == null) {
 			personService = KimApiServiceLocator.getPersonService();
 		}
@@ -1458,7 +1459,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 		this.businessObjectDictionaryService = businessObjectDictionaryService;
 	}
 
-	public void setPersonService(org.kuali.rice.kim.service.PersonService personService) {
+	public void setPersonService(PersonService personService) {
 		this.personService = personService;
 	}
 

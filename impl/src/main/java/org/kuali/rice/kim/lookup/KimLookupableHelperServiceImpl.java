@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.kim.lookup;
 
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.krad.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.krad.document.authorization.DocumentPresentationController;

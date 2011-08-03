@@ -27,9 +27,9 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.web.RowStyleable;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.Person;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

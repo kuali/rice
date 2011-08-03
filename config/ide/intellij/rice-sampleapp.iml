@@ -41,12 +41,13 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/rice-sampleapp-2.0.0-m7-SNAPSHOT" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/test-classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/war" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="rice-impex-master" />
     <orderEntry type="module" module-name="rice-web" />
+    <orderEntry type="module" module-name="rice-impex-master" />
     <orderEntry type="module" module-name="rice-impl" />
     <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch7" level="project" />

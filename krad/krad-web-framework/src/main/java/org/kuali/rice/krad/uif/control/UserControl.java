@@ -16,16 +16,15 @@
 package org.kuali.rice.krad.uif.control;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.kim.api.identity.PersonService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.core.Component;
 import org.kuali.rice.krad.uif.core.MethodInvokerConfig;
 import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.field.AttributeQuery;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
-import org.springframework.scheduling.quartz.SimpleTriggerBean;
 
 /**
  * Represents a user control, which is a special control to handle

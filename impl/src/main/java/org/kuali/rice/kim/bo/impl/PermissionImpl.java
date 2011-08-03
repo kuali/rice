@@ -20,7 +20,7 @@ import java.util.List;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.impl.role.RoleBo;

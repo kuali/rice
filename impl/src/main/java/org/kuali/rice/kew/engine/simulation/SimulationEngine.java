@@ -53,7 +53,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.api.identity.Person;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

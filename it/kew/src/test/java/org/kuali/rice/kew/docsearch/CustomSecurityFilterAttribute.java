@@ -23,8 +23,7 @@ import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.doctype.SecurityAttribute;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.Person;
-
+import org.kuali.rice.kim.api.identity.Person;
 
 /**
  * This is a test class to verify the operation of the custom security attributes

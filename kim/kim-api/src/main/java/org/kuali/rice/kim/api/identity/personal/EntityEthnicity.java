@@ -13,7 +13,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.api.KimApiConstants;
 import org.w3c.dom.Element;
 
 @XmlRootElement(name = EntityEthnicity.Constants.ROOT_ELEMENT_NAME)
@@ -178,7 +178,7 @@ public final class EntityEthnicity extends AbstractDataTransferObject
         @Override
         public String getEthnicityCode() {
             if (isSuppressPersonal()) {
-                return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
+                return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
             }
             return this.ethnicityCode;
         }
@@ -191,7 +191,7 @@ public final class EntityEthnicity extends AbstractDataTransferObject
         @Override
         public String getSubEthnicityCode() {
             if (isSuppressPersonal()) {
-                return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
+                return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
             }
             return this.subEthnicityCode;
         }

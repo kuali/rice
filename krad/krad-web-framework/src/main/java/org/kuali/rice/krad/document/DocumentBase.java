@@ -23,8 +23,8 @@ import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.krad.bo.AdHocRoutePerson;
 import org.kuali.rice.krad.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.krad.bo.DocumentHeader;
@@ -687,7 +687,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * This default implementation just throws a PessimisticLockingException. Subclasses of DocumentBase that need support for custom lock descriptors
      * should override this method.
      * 
-     * @see org.kuali.rice.krad.document.Document#getCustomLockDescriptor(org.kuali.rice.kim.bo.Person)
+     * @see org.kuali.rice.krad.document.Document#getCustomLockDescriptor(org.kuali.rice.kim.api.identity.Person)
      */
     public String getCustomLockDescriptor(Person user) {
     	throw new PessimisticLockingException("Document " + getDocumentNumber() +

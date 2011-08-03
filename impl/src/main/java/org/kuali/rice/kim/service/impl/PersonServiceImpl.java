@@ -23,6 +23,7 @@ import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kim.api.identity.IdentityService;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.entity.EntityDefaultQueryResults;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType;
@@ -30,9 +31,8 @@ import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoDefault;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
-import org.kuali.rice.kim.service.PersonService;
+import org.kuali.rice.kim.api.identity.PersonService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -144,7 +144,7 @@ public class PersonServiceImpl implements PersonService, InitializingBean {
 
 	
 	/**
-	 * @see org.kuali.rice.kim.service.PersonService#getPerson(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.PersonService#getPerson(java.lang.String)
 	 */
 	public Person getPerson(String principalId) {
 		if ( StringUtils.isBlank(principalId) ) {
@@ -222,7 +222,7 @@ public class PersonServiceImpl implements PersonService, InitializingBean {
 	
 	
 	/**
-	 * @see org.kuali.rice.kim.service.PersonService#getPersonByPrincipalName(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.PersonService#getPersonByPrincipalName(java.lang.String)
 	 */
 	public Person getPersonByPrincipalName(String principalName) {
 		if ( StringUtils.isBlank(principalName) ) {
@@ -270,14 +270,14 @@ public class PersonServiceImpl implements PersonService, InitializingBean {
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.service.PersonService#findPeople(Map)
+	 * @see org.kuali.rice.kim.api.identity.PersonService#findPeople(Map)
 	 */
 	public List<Person> findPeople(Map<String, String> criteria) {
 		return findPeople(criteria, true);
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.service.PersonService#findPeople(java.util.Map, boolean)
+	 * @see org.kuali.rice.kim.api.identity.PersonService#findPeople(java.util.Map, boolean)
 	 */
 	public List<Person> findPeople(Map<String, String> criteria, boolean unbounded) {
 		List<Person> people = null;
@@ -385,7 +385,7 @@ public class PersonServiceImpl implements PersonService, InitializingBean {
             queryBuilder.setPredicates(and(predicates.toArray(new Predicate[] {})));
         }
 
-		List<Person> people = new ArrayList<Person>(); 
+		List<Person> people = new ArrayList<Person>();
 
 		EntityDefaultQueryResults qr = getIdentityService().findEntityDefaults( queryBuilder.build() );
 
@@ -587,7 +587,7 @@ public class PersonServiceImpl implements PersonService, InitializingBean {
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.service.PersonService#getPersonByExternalIdentifier(java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.PersonService#getPersonByExternalIdentifier(java.lang.String, java.lang.String)
 	 */
 	public List<Person> getPersonByExternalIdentifier(String externalIdentifierTypeCode, String externalId) {
 		if (StringUtils.isBlank( externalIdentifierTypeCode ) || StringUtils.isBlank( externalId ) ) {
@@ -600,7 +600,7 @@ public class PersonServiceImpl implements PersonService, InitializingBean {
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.service.PersonService#updatePersonIfNecessary(java.lang.String, org.kuali.rice.kim.bo.Person)
+	 * @see org.kuali.rice.kim.api.identity.PersonService#updatePersonIfNecessary(java.lang.String, org.kuali.rice.kim.api.identity.Person)
 	 */
     public Person updatePersonIfNecessary(String sourcePrincipalId, Person currentPerson ) {
         if (currentPerson  == null // no person set
@@ -664,7 +664,7 @@ public class PersonServiceImpl implements PersonService, InitializingBean {
     }
     
     /**
-     * @see org.kuali.rice.kim.service.PersonService#hasPersonProperty(java.lang.Class, java.util.Map)
+     * @see org.kuali.rice.kim.api.identity.PersonService#hasPersonProperty(java.lang.Class, java.util.Map)
      */
     public boolean hasPersonProperty(Class<? extends BusinessObject> businessObjectClass, Map<String,String> fieldValues) {
     	if ( businessObjectClass == null || fieldValues == null ) {
@@ -687,7 +687,7 @@ public class PersonServiceImpl implements PersonService, InitializingBean {
     }    
 
     /**
-     * @see org.kuali.rice.kim.service.PersonService#resolvePrincipalNamesToPrincipalIds(org.kuali.rice.krad.bo.BusinessObject, java.util.Map)
+     * @see org.kuali.rice.kim.api.identity.PersonService#resolvePrincipalNamesToPrincipalIds(org.kuali.rice.krad.bo.BusinessObject, java.util.Map)
      */
     @SuppressWarnings("unchecked")
 	public Map<String,String> resolvePrincipalNamesToPrincipalIds(BusinessObject businessObject, Map<String,String> fieldValues) {

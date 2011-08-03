@@ -53,7 +53,7 @@ public class PersonLookupableImpl extends KualiLookupableImpl {
 	        	}
 	        url = getCreateNewUrl(UrlFactory.parameterizeUrl(
 	        		KimCommonUtilsInternal.getKimBasePath()+KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_ACTION, parameters));
-	        //String url = "lookup.do?businessObjectClassName=org.kuali.rice.kim.bo.types.impl.KimTypeImpl&returnLocation=portal.do&docFormKey="+KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY;
+	        //String url = "lookup.do?businessObjectClassName=org.kuali.rice.kim.bo.types.impl.KimTypeImpl&returnLocation=portal.do&docFormKey="+KimApiConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY;
 	        //url = "../kim/identityManagementPersonDocument.do?methodToCall=docHandler&command=initiate&docTypeName=IdentityManagementPersonDocument";
 	        //url = "<a href=\"" + url + "\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
 		}

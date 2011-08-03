@@ -16,10 +16,10 @@
 package org.kuali.rice.kim.service;
 
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
-import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -58,7 +58,7 @@ import java.util.Map;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@WebService(name = KIMWebServiceConstants.PermissionService.WEB_SERVICE_NAME, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
+@WebService(name = "PermissionServiceSoap", targetNamespace = KimApiConstants.Namespaces.KIM_NAMESPACE_2_0 )
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface PermissionService {
             

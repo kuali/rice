@@ -24,7 +24,7 @@ import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.api.util.type.TypeUtils;
-import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;

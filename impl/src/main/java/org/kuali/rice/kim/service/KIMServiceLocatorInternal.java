@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kim.api.identity.AuthenticationService;
 import org.kuali.rice.kim.api.identity.IdentityArchiveService;
 import org.kuali.rice.kim.impl.group.GroupInternalService;
 import org.kuali.rice.kim.util.KimConstants;

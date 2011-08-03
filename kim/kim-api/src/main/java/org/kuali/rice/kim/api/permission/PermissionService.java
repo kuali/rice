@@ -63,7 +63,7 @@ import java.util.Map;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@WebService(name = "PermissionService", targetNamespace = KimConstants.Namespaces.KIM_NAMESPACE_2_0)
+@WebService(name = "permissionService", targetNamespace = KimConstants.Namespaces.KIM_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface PermissionService {
 

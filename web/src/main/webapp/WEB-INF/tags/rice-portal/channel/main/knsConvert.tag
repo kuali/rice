@@ -37,7 +37,7 @@
   <strong>KIM Lookups</strong>
   <ul class="chan">
     <li><portal:portalLink displayTitle="true" title="Person"
-                           url="${ConfigProperties.application.url}/spring/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.kim.bo.Person&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
+                           url="${ConfigProperties.application.url}/spring/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.kim.api.identity.Person&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
     <li><portal:portalLink displayTitle="true" title="Group"
                            url="${ConfigProperties.application.url}/spring/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.kim.impl.group.GroupBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
   </ul>

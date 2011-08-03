@@ -25,10 +25,13 @@ import org.kuali.rice.core.api.parameter.Parameter;
 import org.kuali.rice.core.api.uif.RemotableCheckboxGroup;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.api.group.GroupService;
+import org.kuali.rice.kim.api.identity.IdentityManagementNotificationService;
 import org.kuali.rice.kim.api.identity.IdentityService;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.address.EntityAddress;
 import org.kuali.rice.kim.api.identity.address.EntityAddressContract;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
@@ -51,7 +54,6 @@ import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.bo.ui.GroupDocumentQualifier;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
@@ -110,7 +112,6 @@ import org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.kim.impl.services.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
-import org.kuali.rice.kim.service.IdentityManagementNotificationService;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
@@ -253,7 +254,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		getBusinessObjectService().save(bos);
 
 		//KimApiServiceLocator.getIdentityService().flushEntityPrincipalCaches();
-		IdentityManagementNotificationService service = (IdentityManagementNotificationService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("KIM", "kimIdentityManagementNotificationService"));
+		IdentityManagementNotificationService service = (IdentityManagementNotificationService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(new QName(
+                KimApiConstants.Namespaces.KIM_NAMESPACE_2_0, "identityManagementNotificationServiceSoap"));
 		service.principalUpdated();
 
 		if (!blankRoleMemberAttrs.isEmpty()) {
@@ -2081,7 +2083,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		}
         bos.add(roleBo);
 		getBusinessObjectService().save(bos);
-		IdentityManagementNotificationService service = (IdentityManagementNotificationService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("KIM", "kimIdentityManagementNotificationService"));
+		IdentityManagementNotificationService service = (IdentityManagementNotificationService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(new QName(
+                KimApiConstants.Namespaces.KIM_NAMESPACE_2_0,
+                                KimApiConstants.ServiceNames.IDENTITY_MANAGEMENT_NOTIFICATION_SERVICE_SOAP));
         service.roleUpdated();
 		org.kuali.rice.kim.impl.services.KIMServiceLocatorInternal.getResponsibilityInternalService().updateActionRequestsForResponsibilityChange(getChangedRoleResponsibilityIds(identityManagementRoleDocument, origRoleResponsibilities));
 		if(!roleBo.isActive()){
@@ -2536,7 +2540,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	/* Group document methods */
 	public void loadGroupDoc(IdentityManagementGroupDocument identityManagementGroupDocument, Group groupInfo){
 		//Map<String, String> criteria = new HashMap<String, String>();
-		//criteria.put(KimConstants.PrimaryKeyConstants.GROUP_ID, groupInfo.getId());
+		//criteria.put(KimApiConstants.PrimaryKeyConstants.GROUP_ID, groupInfo.getId());
 		//GroupImpl kimGroupImpl = (GroupImpl)
 		//	getBusinessObjectService().findByPrimaryKey(GroupImpl.class, criteria);
 
@@ -2685,7 +2689,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 		// Do an async update of the action list for the updated groups
 		org.kuali.rice.kim.service.KIMServiceLocatorInternal.getGroupInternalService().updateForWorkgroupChange(kimGroup.getId(), oldIds, newIds);
-		IdentityManagementNotificationService service = (IdentityManagementNotificationService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("KIM", "kimIdentityManagementNotificationService"));
+		IdentityManagementNotificationService service = (IdentityManagementNotificationService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(new QName(KimApiConstants.Namespaces.KIM_NAMESPACE_2_0,
+                                KimApiConstants.ServiceNames.IDENTITY_MANAGEMENT_NOTIFICATION_SERVICE_SOAP));
         service.groupUpdated();
 		if(!kimGroup.isActive()){
 			// when a group is inactivated, inactivate the memberships of principals in that group

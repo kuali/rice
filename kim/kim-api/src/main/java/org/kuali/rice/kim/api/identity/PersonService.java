@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.service;
+package org.kuali.rice.kim.api.identity;
 
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.krad.bo.BusinessObject;
 
 /**

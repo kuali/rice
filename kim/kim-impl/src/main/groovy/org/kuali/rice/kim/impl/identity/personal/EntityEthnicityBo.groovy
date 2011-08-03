@@ -12,7 +12,8 @@ import org.kuali.rice.kim.api.identity.personal.EntityEthnicity
 import org.kuali.rice.kim.api.identity.personal.EntityEthnicityContract
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences
-import org.kuali.rice.kim.api.KimConstants
+
+import org.kuali.rice.kim.api.KimApiConstants
 
 @Entity
 @Table(name = "KRIM_ENTITY_ETHNIC_T")
@@ -86,7 +87,7 @@ class EntityEthnicityBo extends PersistableBusinessObjectBase implements EntityE
     @Override
     String getEthnicityCode() {
         if (isSuppressPersonal()) {
-            return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK
+            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK
         }
         return this.ethnicityCode
     }
@@ -94,7 +95,7 @@ class EntityEthnicityBo extends PersistableBusinessObjectBase implements EntityE
     @Override
     String getSubEthnicityCode() {
         if (isSuppressPersonal()) {
-            return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK
+            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK
         }
         return this.subEthnicityCode
     }

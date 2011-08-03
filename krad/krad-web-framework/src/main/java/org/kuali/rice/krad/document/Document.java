@@ -18,7 +18,7 @@ package org.kuali.rice.krad.document;
 import org.kuali.rice.kew.dto.ActionTakenEventDTO;
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
-import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.AdHocRoutePerson;
 import org.kuali.rice.krad.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.krad.bo.DocumentHeader;

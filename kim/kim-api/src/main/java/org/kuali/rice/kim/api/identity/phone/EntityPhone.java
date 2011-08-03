@@ -4,7 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.identity.Type;
 import org.w3c.dom.Element;
 
@@ -293,7 +293,7 @@ public final class EntityPhone extends AbstractDataTransferObject
         @Override
         public String getPhoneNumber() {
             if (isSuppressPhone()) {
-                return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK_PHONE;
+                return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK_PHONE;
             }
             return this.phoneNumberUnmasked;
         }
@@ -301,7 +301,7 @@ public final class EntityPhone extends AbstractDataTransferObject
         @Override
         public String getExtensionNumber() {
             if (isSuppressPhone()) {
-                return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
+                return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
             }
             return this.extensionNumberUnmasked;
         }
@@ -309,7 +309,7 @@ public final class EntityPhone extends AbstractDataTransferObject
         @Override
         public String getCountryCode() {
             if (isSuppressPhone()) {
-                return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE;
+                return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE;
             }
             return this.countryCodeUnmasked;
         }
@@ -332,7 +332,7 @@ public final class EntityPhone extends AbstractDataTransferObject
         @Override
         public String getFormattedPhoneNumber() {
             if (isSuppressPhone()) {
-                return KimConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
+                return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
             }
             return this.getFormattedPhoneNumberUnmasked();
         }

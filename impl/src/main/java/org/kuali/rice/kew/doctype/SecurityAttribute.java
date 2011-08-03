@@ -17,8 +17,7 @@ package org.kuali.rice.kew.doctype;
 
 import java.io.Serializable;
 
-import org.kuali.rice.kim.bo.Person;
-
+import org.kuali.rice.kim.api.identity.Person;
 
 /**
  * This is an attribute used to implement custom document security for document search and the route log.

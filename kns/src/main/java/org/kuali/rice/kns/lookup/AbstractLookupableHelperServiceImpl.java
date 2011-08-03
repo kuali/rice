@@ -28,7 +28,7 @@ import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.web.format.DateFormatter;
 import org.kuali.rice.core.web.format.Formatter;
-import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.document.authorization.FieldRestriction;
 import org.kuali.rice.kns.inquiry.Inquirable;

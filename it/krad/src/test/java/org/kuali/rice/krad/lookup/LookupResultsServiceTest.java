@@ -25,13 +25,12 @@ import java.util.Set;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.impl.parameter.ParameterBo;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kns.lookup.LookupResultsService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.test.KRADTestCase;
 
 /**

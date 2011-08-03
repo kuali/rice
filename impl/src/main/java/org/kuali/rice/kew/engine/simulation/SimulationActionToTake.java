@@ -19,13 +19,11 @@ package org.kuali.rice.kew.engine.simulation;
 import java.io.Serializable;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.api.action.RoutingReportActionToTake;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.Person;
-
 
 /**
  * An object represnting an action to take in the simulation engine

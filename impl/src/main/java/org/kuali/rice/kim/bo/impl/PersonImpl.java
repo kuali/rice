@@ -18,6 +18,8 @@ package org.kuali.rice.kim.bo.impl;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.kim.api.identity.IdentityService;
+import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.kim.api.identity.PersonService;
 import org.kuali.rice.kim.api.identity.address.EntityAddress;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationContract;
@@ -30,11 +32,9 @@ import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoDefault;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo;
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo;
-import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.bo.TransientBusinessObjectBase;
@@ -310,14 +310,14 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.bo.Person#getEntityId()
+	 * @see org.kuali.rice.kim.api.identity.Person#getEntityId()
 	 */
 	public String getEntityId() {
 		return entityId;
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.bo.Person#getPrincipalId()
+	 * @see org.kuali.rice.kim.api.identity.Person#getPrincipalId()
 	 */
 	public String getPrincipalId() {
 		return principalId;
@@ -326,14 +326,14 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kim.bo.Person#getPrincipalName()
+	 * @see org.kuali.rice.kim.api.identity.Person#getPrincipalName()
 	 */
 	public String getPrincipalName() {
 		return principalName;
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.bo.Person#getFirstName()
+	 * @see org.kuali.rice.kim.api.identity.Person#getFirstName()
 	 */
 	public String getFirstName() {
 	    if (KimCommonUtilsInternal.isSuppressName(getEntityId())){
@@ -343,14 +343,14 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	}
 	
 	/**
-     * @see org.kuali.rice.kim.bo.Person#getFirstNameUnmasked()
+     * @see org.kuali.rice.kim.api.identity.Person#getFirstNameUnmasked()
      */
     public String getFirstNameUnmasked() {
         return firstName;
     }
 
 	/**
-	 * @see org.kuali.rice.kim.bo.Person#getMiddleName()
+	 * @see org.kuali.rice.kim.api.identity.Person#getMiddleName()
 	 */
 	public String getMiddleName() {
 	    if (KimCommonUtilsInternal.isSuppressName(getEntityId())){
@@ -360,14 +360,14 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	}
 	
 	/**
-     * @see org.kuali.rice.kim.bo.Person#getMiddleNameUnmasked()
+     * @see org.kuali.rice.kim.api.identity.Person#getMiddleNameUnmasked()
      */
 	public String getMiddleNameUnmasked() {
 	    return middleName;
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.bo.Person#getLastName()
+	 * @see org.kuali.rice.kim.api.identity.Person#getLastName()
 	 */
 	public String getLastName() {
 	    if (KimCommonUtilsInternal.isSuppressName(getEntityId())){
@@ -377,14 +377,14 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	}
 	
 	/**
-     * @see org.kuali.rice.kim.bo.Person#getLastNameUnmasked()
+     * @see org.kuali.rice.kim.api.identity.Person#getLastNameUnmasked()
      */
     public String getLastNameUnmasked() {
         return lastName;
     }
 	
 	/**
-	 * @see org.kuali.rice.kim.bo.Person#getName()
+	 * @see org.kuali.rice.kim.api.identity.Person#getName()
 	 */
 	public String getName() {
         if (StringUtils.isNotBlank(getEntityId()) && KimCommonUtilsInternal.isSuppressName(getEntityId())) {
@@ -398,7 +398,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.bo.Person#getPhoneNumber()
+	 * @see org.kuali.rice.kim.api.identity.Person#getPhoneNumber()
 	 */
 	public String getPhoneNumber() {
 	    if (KimCommonUtilsInternal.isSuppressPhone(getEntityId())){
@@ -408,14 +408,14 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	}
 	
 	   /**
-     * @see org.kuali.rice.kim.bo.Person#getPhoneNumberUnmasked()
+     * @see org.kuali.rice.kim.api.identity.Person#getPhoneNumberUnmasked()
      */
     public String getPhoneNumberUnmasked() {
         return phoneNumber;
     }
 
 	/**
-	 * @see org.kuali.rice.kim.bo.Person#getEmailAddress()
+	 * @see org.kuali.rice.kim.api.identity.Person#getEmailAddress()
 	 */
 	public String getEmailAddress() {
 	    if (KimCommonUtilsInternal.isSuppressEmail(getEntityId())){
@@ -435,7 +435,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.kim.bo.Person#hasAffiliationOfType(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.Person#hasAffiliationOfType(java.lang.String)
 	 */
 	public boolean hasAffiliationOfType(String affiliationTypeCode) {
 		return getCampusCodesForAffiliationOfType(affiliationTypeCode).size() > 0;
@@ -456,7 +456,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.bo.Person#getExternalId(java.lang.String)
+	 * @see org.kuali.rice.kim.api.identity.Person#getExternalId(java.lang.String)
 	 */
 	public String getExternalId(String externalIdentifierTypeCode) {
 		return externalIdentifiers.get( externalIdentifierTypeCode );
@@ -465,7 +465,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	/**
 	 * Pulls the campus code from the default affiliation for the identity.
 	 * Returns null if no default affiliation is set.
-	 * @see org.kuali.rice.kim.bo.Person#getCampusCode()
+	 * @see org.kuali.rice.kim.api.identity.Person#getCampusCode()
 	 */
 	public String getCampusCode() {
 		return campusCode;
@@ -493,7 +493,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.Person#getExternalIdentifiers()
+	 * @see org.kuali.rice.kim.api.identity.Person#getExternalIdentifiers()
 	 */
 	public Map<String,String> getExternalIdentifiers() {
 		return externalIdentifiers;

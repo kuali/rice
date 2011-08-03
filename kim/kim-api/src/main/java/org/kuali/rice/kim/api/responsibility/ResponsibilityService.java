@@ -22,6 +22,7 @@ import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.common.template.TemplateQueryResults;
+import org.kuali.rice.kim.util.KimConstants;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -57,7 +58,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@WebService(name = "ResponsibilityServiceSoap", targetNamespace = CoreConstants.Namespaces.CORE_NAMESPACE_2_0)
+@WebService(name = "responsibilityServiceSoap", targetNamespace = KimConstants.Namespaces.KIM_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface ResponsibilityService {
 

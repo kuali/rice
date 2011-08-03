@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.service;
 
-import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.api.identity.Person;
 
 /**
  * Provides methods for checking authorization for actions

@@ -17,6 +17,7 @@ package org.kuali.rice.kim.test.service;
 
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.impl.group.GroupMemberBo;
@@ -50,7 +51,8 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
 
 	public void setUp() throws Exception {
 		super.setUp();
-		groupService = (GroupServiceImpl)GlobalResourceLoader.getService(new QName("KIM", "kimGroupService"));
+		groupService = (GroupServiceImpl)GlobalResourceLoader.getService(
+                new QName(KimApiConstants.Namespaces.KIM_NAMESPACE_2_0, KimApiConstants.ServiceNames.GROUP_SERVICE_SOAP));
 		businessObjectService = KRADServiceLocator.getBusinessObjectService();
 	}
 

@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.workflow;
 
-import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.api.identity.Person;
 
 public class DocumentInitiator {
 

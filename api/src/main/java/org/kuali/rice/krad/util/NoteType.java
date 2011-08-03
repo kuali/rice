@@ -28,12 +28,13 @@ public enum NoteType implements Coded {
     
 	BUSINESS_OBJECT("BO"), DOCUMENT_HEADER("DH");
     
-	private String noteTypeCode;
+	private final String noteTypeCode;
 
     private NoteType(String noteTypeCode) {
         this.noteTypeCode = noteTypeCode;
     }
 
+    @Override
     public String getCode() {
         return this.noteTypeCode;
     }

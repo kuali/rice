@@ -30,6 +30,8 @@ import org.kuali.rice.ken.service.NotificationService;
 import org.kuali.rice.ken.service.ProcessingResult;
 import org.kuali.rice.ken.service.UserPreferenceService;
 import org.kuali.rice.ken.util.NotificationConstants;
+import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -109,7 +111,8 @@ public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJo
                        completeRecipientList.add(groupMembers[j]);
                    }
                } else {  // just a user, so add to the list
-                   completeRecipientList.add(recipient.getRecipientId());
+                   Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(recipient.getRecipientId());
+            	   completeRecipientList.add(principal.getPrincipalId());
                }
            }
 
@@ -124,7 +127,8 @@ public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJo
                        completeRecipientList.add(groupMembers[j]);
                    }
                } else {  // just a user, so add to the list
-                   completeRecipientList.add(listRecipient.getRecipientId());
+                   Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(listRecipient.getRecipientId());
+    	 	 	   completeRecipientList.add(principal.getPrincipalId());
                }
            }
 

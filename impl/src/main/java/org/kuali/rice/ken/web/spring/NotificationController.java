@@ -35,6 +35,8 @@ import org.kuali.rice.ken.service.NotificationWorkflowDocumentService;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.ken.util.Util;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import org.springframework.web.servlet.view.RedirectView;
@@ -291,7 +293,7 @@ public class NotificationController extends MultiActionController {
     private ModelAndView dismissMessage(String action, String message, HttpServletRequest request, HttpServletResponse response) {
         String view = "NotificationDetail";
 
-        String user = request.getRemoteUser();
+        String principalNm = request.getRemoteUser();
         String messageDeliveryId = request.getParameter(NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.MSG_DELIVERY_ID);
         String command = request.getParameter(NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.COMMAND);
         String standaloneWindow = request.getParameter(NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.STANDALONE_WINDOW);
@@ -317,7 +319,9 @@ public class NotificationController extends MultiActionController {
         /*
          * dismiss the message delivery
          */
-        notificationService.dismissNotificationMessageDelivery(delivery.getId(), user, action);
+
+        Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalNm);
+        notificationService.dismissNotificationMessageDelivery(delivery.getId(), principal.getPrincipalId(), action);
 
         List<NotificationSender> senders = notification.getSenders();
         List<NotificationRecipient> recipients = notification.getRecipients();

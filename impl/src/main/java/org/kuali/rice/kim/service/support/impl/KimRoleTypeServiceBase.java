@@ -21,7 +21,7 @@ import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.framework.common.delegate.DelegationTypeService;
 import org.kuali.rice.kim.framework.role.RoleTypeService;
-import org.kuali.rice.kim.impl.type.KimTypeServiceBase;
+import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class KimRoleTypeServiceBase extends KimTypeServiceBase implements RoleTypeService, DelegationTypeService {
+public class KimRoleTypeServiceBase extends DataDictionaryTypeServiceBase implements RoleTypeService, DelegationTypeService {
 
 	private static final Logger LOG = Logger.getLogger(KimRoleTypeServiceBase.class);
 	

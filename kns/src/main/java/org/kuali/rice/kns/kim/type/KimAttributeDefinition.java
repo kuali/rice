@@ -13,31 +13,69 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.impl.type;
+package org.kuali.rice.kns.kim.type;
 
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.exception.ClassValidationException;
 
 import java.util.Map;
 
 /**
- * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @deprecated A krad integrated type service base class will be provided in the future.
+ * This is only used for the legacy {@link DataDictionaryTypeServiceBase}.
  */
-class KimDataDictionaryAttributeDefinition extends KimAttributeDefinition {
+@Deprecated
+class KimAttributeDefinition extends AttributeDefinition {
 	private static final long serialVersionUID = 7006569761728813805L;
-	
+
 	protected Map<String, String> lookupInputPropertyConversions;
 	protected Map<String, String> lookupReturnPropertyConversions;
 	protected String lookupBoClass;
+    protected String sortCode;
+	protected String kimAttrDefnId;
+	protected String kimTypeId;
 
 	/**
-	 * 
+	 * @return the sortCode
 	 */
-	public KimDataDictionaryAttributeDefinition() {
+	public String getSortCode() {
+		return this.sortCode;
 	}
+
+	/**
+	 * @param sortCode
+	 *            the sortCode to set
+	 */
+	public void setSortCode(String sortCode) {
+		this.sortCode = sortCode;
+	}
+
+	public String getKimAttrDefnId() {
+		return this.kimAttrDefnId;
+	}
+
+	public void setKimAttrDefnId(String kimAttrDefnId) {
+		this.kimAttrDefnId = kimAttrDefnId;
+	}
+
+	/**
+	 * @return the kimTypeId
+	 */
+	public String getKimTypeId() {
+		return this.kimTypeId;
+	}
+
+	/**
+	 * @param kimTypeId the kimTypeId to set
+	 */
+	public void setKimTypeId(String kimTypeId) {
+		this.kimTypeId = kimTypeId;
+	}
+
 
 	/**
 	 * @return the lookupInputPropertyConversions
@@ -91,7 +129,6 @@ class KimDataDictionaryAttributeDefinition extends KimAttributeDefinition {
 		this.lookupBoClass = lookupBoClass;
 	}
 
-    @Override
     public boolean isHasLookupBoDefinition() {
         return true;
     }

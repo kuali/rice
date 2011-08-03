@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.impl.type;
+package org.kuali.rice.kns.kim.type;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
@@ -24,7 +24,9 @@ import org.kuali.rice.core.api.uif.RemotableQuickFinder;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.core.web.format.Formatter;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.doctype.DocumentType;
+import org.kuali.rice.kew.api.doctype.DocumentTypeService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
@@ -59,14 +61,19 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-public class KimTypeServiceBase implements KimTypeService {
+/**
+ * @deprecated A krad integrated type service base class will be provided in the future.
+ */
+@Deprecated
+public class DataDictionaryTypeServiceBase implements KimTypeService {
 
-	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KimTypeServiceBase.class);
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DataDictionaryTypeServiceBase.class);
 
 	private BusinessObjectService businessObjectService;
 	private DictionaryValidationService dictionaryValidationService;
 	private DataDictionaryService dataDictionaryService;
 	private KimTypeInfoService typeInfoService;
+    private DocumentTypeService documentTypeService;
 
 	@Override
 	public String getWorkflowDocumentTypeName() {
@@ -258,13 +265,14 @@ public class KimTypeServiceBase implements KimTypeService {
         // check if field is a required field for the business object
         if (attributeValue == null || (attributeValue instanceof String && StringUtils.isBlank((String) attributeValue))) {
         	List<KimAttributeField> map = getAttributeDefinitions(kimTypeId);
-        	KimAttributeField definition = TempKimHelper.findAttributeField(attributeName, map);
+        	KimAttributeField definition = DataDictionaryTypeServiceHelper.findAttributeField(attributeName, map);
         	
             boolean required = definition.getAttributeField().isRequired();
             if (required) {
                 // get label of attribute for message
-                String errorLabel = TempKimHelper.getAttributeErrorLabel(definition);
-                errors.add(RemotableAttributeError.Builder.create(errorKey, TempKimHelper.createErrorString(RiceKeyConstants.ERROR_REQUIRED, errorLabel)).build());
+                String errorLabel = DataDictionaryTypeServiceHelper.getAttributeErrorLabel(definition);
+                errors.add(RemotableAttributeError.Builder.create(errorKey, DataDictionaryTypeServiceHelper
+                        .createErrorString(RiceKeyConstants.ERROR_REQUIRED, errorLabel)).build());
             }
         }
         return errors;
@@ -340,9 +348,10 @@ public class KimTypeServiceBase implements KimTypeService {
     	List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
 
         List<KimAttributeField> attributeDefinitions = getAttributeDefinitions(kimTypeId);
-    	KimAttributeField definition = TempKimHelper.findAttributeField(attributeName, attributeDefinitions);
+    	KimAttributeField definition = DataDictionaryTypeServiceHelper.findAttributeField(attributeName,
+                attributeDefinitions);
     	
-        String errorLabel = TempKimHelper.getAttributeErrorLabel(definition);
+        String errorLabel = DataDictionaryTypeServiceHelper.getAttributeErrorLabel(definition);
 
         if ( LOG.isDebugEnabled() ) {
         	LOG.debug("(bo, attributeName, attributeValue) = (" + objectClassName + "," + attributeName + "," + attributeValue + ")");
@@ -351,7 +360,8 @@ public class KimTypeServiceBase implements KimTypeService {
         if (StringUtils.isNotBlank(attributeValue)) {
             Integer maxLength = definition.getAttributeField().getMaxLength();
             if ((maxLength != null) && (maxLength.intValue() < attributeValue.length())) {
-                errors.add(RemotableAttributeError.Builder.create(errorKey, TempKimHelper.createErrorString(RiceKeyConstants.ERROR_MAX_LENGTH, errorLabel, maxLength.toString())).build());
+                errors.add(RemotableAttributeError.Builder.create(errorKey, DataDictionaryTypeServiceHelper
+                        .createErrorString(RiceKeyConstants.ERROR_MAX_LENGTH, errorLabel, maxLength.toString())).build());
                 return errors;
             }
             Pattern validationExpression = getAttributeValidatingExpression(definition);
@@ -368,7 +378,8 @@ public class KimTypeServiceBase implements KimTypeService {
                         isError = !validationExpression.matcher(String.valueOf(o)).matches();
                     }
                     if (isError) {
-                        errors.add(RemotableAttributeError.Builder.create(errorKey, TempKimHelper.createErrorString(definition)).build());
+                        errors.add(RemotableAttributeError.Builder.create(errorKey, DataDictionaryTypeServiceHelper
+                                .createErrorString(definition)).build());
                     }
                     return errors;
                 }
@@ -377,7 +388,8 @@ public class KimTypeServiceBase implements KimTypeService {
             if (min != null) {
                 try {
                     if (Double.parseDouble(attributeValue) < min) {
-                        errors.add(RemotableAttributeError.Builder.create(errorKey, TempKimHelper.createErrorString(RiceKeyConstants.ERROR_EXCLUSIVE_MIN, errorLabel, min.toString())).build());
+                        errors.add(RemotableAttributeError.Builder.create(errorKey, DataDictionaryTypeServiceHelper
+                                .createErrorString(RiceKeyConstants.ERROR_EXCLUSIVE_MIN, errorLabel, min.toString())).build());
                         return errors;
                     }
                 }
@@ -390,7 +402,8 @@ public class KimTypeServiceBase implements KimTypeService {
                 try {
 
                     if (Double.parseDouble(attributeValue) > max) {
-                        errors.add(RemotableAttributeError.Builder.create(errorKey, TempKimHelper.createErrorString(RiceKeyConstants.ERROR_INCLUSIVE_MAX, errorLabel, max.toString())).build());
+                        errors.add(RemotableAttributeError.Builder.create(errorKey, DataDictionaryTypeServiceHelper
+                                .createErrorString(RiceKeyConstants.ERROR_INCLUSIVE_MAX, errorLabel, max.toString())).build());
                         return errors;
                     }
                 }
@@ -420,7 +433,8 @@ public class KimTypeServiceBase implements KimTypeService {
 	        	List<?> errorList = (List<?>)results;
 	        	for (Object msg : errorList) {
 	        		ErrorMessage errorMessage = (ErrorMessage)msg;
-	        		errors.add(TempKimHelper.createErrorString(errorMessage.getErrorKey(), errorMessage.getMessageParameters()));
+	        		errors.add(DataDictionaryTypeServiceHelper.createErrorString(errorMessage.getErrorKey(),
+                            errorMessage.getMessageParameters()));
 				}
 	        } else {
 	        	String [] temp = (String []) results;
@@ -486,7 +500,8 @@ public class KimTypeServiceBase implements KimTypeService {
         definition.setMaxLength(baseDefinition.getMaxLength());
         definition.setRequired(baseDefinition.isRequired());
         definition.setForceUpperCase(baseDefinition.getForceUppercase());
-        definition.setControl(TempKimHelper.toRemotableAbstractControlBuilder(baseDefinition.getControl()));
+        definition.setControl(DataDictionaryTypeServiceHelper.toRemotableAbstractControlBuilder(
+                baseDefinition.getControl()));
         final RemotableQuickFinder.Builder qf = createQuickFinder(componentClass, attributeName);
         if (qf != null) {
             definition.setWidgets(Collections.<RemotableAbstractWidget.Builder>singletonList(qf));
@@ -522,7 +537,8 @@ public class KimTypeServiceBase implements KimTypeService {
                     throw new KimTypeAttributeException(e);
                 }
 
-                final RemotableQuickFinder.Builder builder = RemotableQuickFinder.Builder.create(TempKimHelper.getKimBasePath(), lookupClass.getName());
+                final RemotableQuickFinder.Builder builder = RemotableQuickFinder.Builder.create(
+                        DataDictionaryTypeServiceHelper.getKimBasePath(), lookupClass.getName());
                 builder.setLookupParameters(toMap(field.getLookupParameters()));
                 builder.setFieldConversions(toMap(field.getFieldConversions()));
                 return builder;
@@ -658,8 +674,10 @@ public class KimTypeServiceBase implements KimTypeService {
 			String delegationAttributeValue = getAttributeValue(newAttributes, attributeNameKey);
 
 			if(!StringUtils.equals(mainAttributeValue, delegationAttributeValue)){
-				validationErrors.add(RemotableAttributeError.Builder.create(attributeNameKey, TempKimHelper.createErrorString(RiceKeyConstants.ERROR_CANT_BE_MODIFIED,
-					dataDictionaryService.getAttributeLabel(attr.getKimAttribute().getComponentName(), attributeNameKey))).build());
+				validationErrors.add(RemotableAttributeError.Builder.create(attributeNameKey, DataDictionaryTypeServiceHelper
+                        .createErrorString(RiceKeyConstants.ERROR_CANT_BE_MODIFIED,
+                                dataDictionaryService.getAttributeLabel(attr.getKimAttribute().getComponentName(),
+                                        attributeNameKey))).build());
 			}
 		}
 		return validationErrors;
@@ -682,13 +700,13 @@ public class KimTypeServiceBase implements KimTypeService {
 		if (potentialParentDocumentTypeNames.contains(documentType.getName())) {
 			return documentType.getName();
 		} 
-		if ((documentType.getDocTypeParentId() == null)
-				|| documentType.getDocTypeParentId().equals(
-						documentType.getDocumentTypeId())) {
+		if ((documentType.getParentId() == null)
+				|| documentType.getParentId().equals(
+						documentType.getId())) {
 			return null;
 		} 
-		return getClosestParentDocumentTypeName(documentType
-				.getParentDocType(), potentialParentDocumentTypeNames);
+		return getClosestParentDocumentTypeName(getDocumentTypeService().getDocumentTypeById(documentType
+				.getParentId()), potentialParentDocumentTypeNames);
 	}
 
     protected static class KimTypeAttributeValidationException extends RuntimeException {
@@ -745,5 +763,13 @@ public class KimTypeServiceBase implements KimTypeService {
 			dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
 		}
 		return this.dataDictionaryService;
+	}
+
+
+	protected DocumentTypeService getDocumentTypeService() {
+		if ( documentTypeService == null ) {
+			documentTypeService = KewApiServiceLocator.getDocumentTypeService();
+		}
+		return this.documentTypeService;
 	}
 }

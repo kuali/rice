@@ -20,9 +20,9 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
 import org.kuali.rice.kim.framework.type.KimTypeService;
-import org.kuali.rice.kim.impl.type.KimTypeServiceBase;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceBase;
 
 import javax.xml.namespace.QName;
 
@@ -50,7 +50,7 @@ public class KIMServiceLocatorInternalTest extends KIMTestCase {
 		nullKimType.setServiceName(null);
 		KimTypeService typeService2 = KimFrameworkServiceLocator.getKimTypeService(nullKimType.build());
 		assertNotNull("type service shoudl have been found", typeService2);
-		assertEquals("should be the default kim type", KimTypeServiceBase.class, typeService2.getClass());
+		assertEquals("should be the default kim type", DataDictionaryTypeServiceBase.class, typeService2.getClass());
 		
 		// test by passing a KimType with an empty service name
 		
@@ -58,7 +58,7 @@ public class KIMServiceLocatorInternalTest extends KIMTestCase {
 		nullKimType.setServiceName("");
 		KimTypeService typeService3 = KimFrameworkServiceLocator.getKimTypeService(emptyKimType.build());
 		assertNotNull("type service should have been found", typeService3);
-		assertEquals("should be the default kim type", KimTypeServiceBase.class, typeService3.getClass());
+		assertEquals("should be the default kim type", DataDictionaryTypeServiceBase.class, typeService3.getClass());
 		
 		// test by passing a KimType that refers to the Permission TypeService
 		

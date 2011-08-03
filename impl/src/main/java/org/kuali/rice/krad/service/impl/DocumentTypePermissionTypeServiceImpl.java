@@ -16,9 +16,9 @@
 package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.doctype.service.DocumentTypeService;
-import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.doctype.DocumentType;
+import org.kuali.rice.kew.api.doctype.DocumentTypeService;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
@@ -71,7 +71,7 @@ public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServ
 			}
 		}
 		// find the parent documents which match
-		DocumentType docType = getDocumentTypeService().findByName(requestedDetails.get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME));
+		DocumentType docType = getDocumentTypeService().getDocumentTypeByName(requestedDetails.get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME));
 		String matchingDocTypeName = getClosestParentDocumentTypeName(docType, permissionDocTypeNames);
 		// re-loop over the permissions and build a new list of the ones which have the
 		// matching document type names in their details
@@ -91,7 +91,7 @@ public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServ
 	
 	protected DocumentTypeService getDocumentTypeService() {
 		if ( documentTypeService == null ) {
-			documentTypeService = KEWServiceLocator.getDocumentTypeService();
+			documentTypeService = KewApiServiceLocator.getDocumentTypeService();
 		}
 		return this.documentTypeService;
 	}

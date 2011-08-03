@@ -44,6 +44,7 @@ import java.util.Map;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
+@Deprecated
 public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAttributeValueReader {
 
 	protected Map<String, Class<?>> attributeTypeMap;

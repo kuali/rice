@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.service.support.impl;
 
 import org.kuali.rice.kim.framework.group.GroupTypeService;
-import org.kuali.rice.kim.impl.type.KimTypeServiceBase;
+import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceBase;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in.
@@ -24,6 +24,6 @@ import org.kuali.rice.kim.impl.type.KimTypeServiceBase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class KimGroupTypeServiceBase extends KimTypeServiceBase implements GroupTypeService {
+public class KimGroupTypeServiceBase extends DataDictionaryTypeServiceBase implements GroupTypeService {
 	
 }

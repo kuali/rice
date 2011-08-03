@@ -17,11 +17,11 @@ package org.kuali.rice.kew.role;
 
 
 import org.kuali.rice.kim.framework.common.delegate.DelegationTypeService;
-import org.kuali.rice.kim.impl.type.KimTypeServiceBase;
+import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceBase;
 
 import java.util.Map;
 
-public class KimDelegationTypeServiceBase extends KimTypeServiceBase implements DelegationTypeService {
+public class KimDelegationTypeServiceBase extends DataDictionaryTypeServiceBase implements DelegationTypeService {
 
 	public boolean doesDelegationQualifierMatchQualification(
 			Map<String, String> qualification, Map<String, String> delegationQualifier) {

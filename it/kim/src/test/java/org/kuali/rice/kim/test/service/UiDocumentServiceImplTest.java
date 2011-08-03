@@ -48,12 +48,12 @@ import org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo;
 import org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo;
 import org.kuali.rice.kim.impl.type.KimTypeAttributeBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
-import org.kuali.rice.kim.impl.type.KimTypeServiceBase;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.service.impl.IdentityServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceBase;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
@@ -159,7 +159,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 	@Ignore
 	public void testSetAttributeEntry() throws Exception {
 		PersonDocumentRole personDocRole = initPersonDocRole();
-        KimTypeService kimTypeService = (KimTypeServiceBase) KIMServiceLocatorInternal.getService(personDocRole.getKimRoleType().getServiceName());
+        KimTypeService kimTypeService = (DataDictionaryTypeServiceBase) KIMServiceLocatorInternal.getService(personDocRole.getKimRoleType().getServiceName());
 		personDocRole.setDefinitions(kimTypeService.getAttributeDefinitions(personDocRole.getKimTypeId()));
 
 		personDocRole.setAttributeEntry( uiDocumentService.getAttributeEntries( personDocRole.getDefinitions() ) );

@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.kew.service.impl;
 
-import org.kuali.rice.kew.doctype.service.DocumentTypeService;
-import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.doctype.DocumentTypeService;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.framework.responsibility.ResponsibilityTypeService;
 import org.kuali.rice.kim.impl.responsibility.KimResponsibilityTypeServiceBase;
@@ -82,7 +82,7 @@ public class DocumentTypeResponsibilityTypeServiceImpl extends
 							.get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME)));
 		} else {
 			String closestParentDocumentTypeName = getClosestParentDocumentTypeName(
-					getDocumentTypeService().findByName(
+					getDocumentTypeService().getDocumentTypeByName(
 							requestedDetails
 									.get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME)),
 					potentialDocumentTypeMatches.keySet());
@@ -96,7 +96,7 @@ public class DocumentTypeResponsibilityTypeServiceImpl extends
 
 	public DocumentTypeService getDocumentTypeService() {
 		if (documentTypeService == null) {
-			documentTypeService = KEWServiceLocator.getDocumentTypeService();
+			documentTypeService = KewApiServiceLocator.getDocumentTypeService();
 		}
 		return this.documentTypeService;
 	}

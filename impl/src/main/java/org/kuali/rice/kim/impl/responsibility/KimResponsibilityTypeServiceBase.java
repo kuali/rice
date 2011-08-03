@@ -17,7 +17,7 @@ package org.kuali.rice.kim.impl.responsibility;
 
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.framework.responsibility.ResponsibilityTypeService;
-import org.kuali.rice.kim.impl.type.KimTypeServiceBase;
+import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class KimResponsibilityTypeServiceBase extends KimTypeServiceBase
+public class KimResponsibilityTypeServiceBase extends DataDictionaryTypeServiceBase
 		implements ResponsibilityTypeService {
 
 	@Override

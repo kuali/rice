@@ -44,7 +44,6 @@ import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
 import org.kuali.rice.kim.impl.role.RoleServiceBase;
 import org.kuali.rice.kim.impl.type.KimTypeLookupableHelperServiceImpl;
-import org.kuali.rice.kim.impl.type.TempKimHelper;
 import org.kuali.rice.kim.rule.event.ui.AddDelegationEvent;
 import org.kuali.rice.kim.rule.event.ui.AddDelegationMemberEvent;
 import org.kuali.rice.kim.rule.event.ui.AddMemberEvent;
@@ -58,6 +57,7 @@ import org.kuali.rice.kim.rules.ui.KimDocumentPermissionRule;
 import org.kuali.rice.kim.rules.ui.RoleDocumentDelegationMemberRule;
 import org.kuali.rice.kim.rules.ui.RoleDocumentDelegationRule;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceHelper;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.rules.TransactionalDocumentRuleBase;
 import org.kuali.rice.krad.service.BusinessObjectService;
@@ -345,7 +345,8 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 
     		for (KimDocumentRoleQualifier qualifier : membership.getQualifiers()) {
         		if (qualifier != null && qualifier.getKimAttribute() != null && !StringUtils.isBlank(qualifier.getKimAttribute().getAttributeName())) {
-    	    		final KimAttributeField relatedDefinition = TempKimHelper.findAttributeField(qualifier.getKimAttribute().getAttributeName(), attributeDefinitions);
+    	    		final KimAttributeField relatedDefinition = DataDictionaryTypeServiceHelper.findAttributeField(
+                            qualifier.getKimAttribute().getAttributeName(), attributeDefinitions);
 
     	    		if (relatedDefinition != null && relatedDefinition.isUnique()) {
     	    			uniqueAttributeIds.add(qualifier.getKimAttrDefnId()); // it's unique - add it to the Set
@@ -502,7 +503,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 
     		for (RoleDocumentDelegationMemberQualifier qualifier : membership.getQualifiers()) {
         		if (qualifier != null && qualifier.getKimAttribute() != null && !StringUtils.isBlank(qualifier.getKimAttribute().getAttributeName())) {
-    	    		final KimAttributeField relatedDefinition = TempKimHelper.findAttributeField(
+    	    		final KimAttributeField relatedDefinition = DataDictionaryTypeServiceHelper.findAttributeField(
                             qualifier.getKimAttribute().getAttributeName(), attributeDefinitions);
 
     	    		if (relatedDefinition.isUnique()) {

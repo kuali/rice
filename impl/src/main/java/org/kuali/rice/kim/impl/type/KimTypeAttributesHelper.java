@@ -23,6 +23,7 @@ import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
 import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceHelper;
 
 import java.io.Serializable;
 import java.util.List;
@@ -98,7 +99,7 @@ public class KimTypeAttributesHelper implements Serializable {
 	}
 
 	public KimAttributeField getAttributeDefinition(String attributeName){
-		return TempKimHelper.findAttributeField(attributeName, getDefinitions());
+		return DataDictionaryTypeServiceHelper.findAttributeField(attributeName, getDefinitions());
 	}
 	
 	public String getAttributeValue(Map<String, String> aSet, String attributeName){

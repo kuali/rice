@@ -37,11 +37,11 @@ import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
 import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.impl.type.KimTypeLookupableHelperServiceImpl;
-import org.kuali.rice.kim.impl.type.TempKimHelper;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions;
+import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceHelper;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
@@ -442,7 +442,8 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 			        List<KimAttributeField> definitions = kimTypeService.getAttributeDefinitions(kimType.getId());
 			        setAttrDefinitions(definitions);
 		            for (KimAttributeField d  : definitions) {
-				        final AttributeDefinition definition  = TempKimHelper.toKimAttributeDefinition(d);
+				        final AttributeDefinition definition  = DataDictionaryTypeServiceHelper
+                                .toKimAttributeDefinition(d);
                         List<Field> fields = new ArrayList<Field>();
 						Field typeField = new Field();
 

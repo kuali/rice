@@ -16,8 +16,8 @@
 package org.kuali.rice.kns.service;
 
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kns.lookup.LookupResultsService;
 import org.kuali.rice.kns.inquiry.Inquirable;
+import org.kuali.rice.kns.lookup.LookupResultsService;
 import org.kuali.rice.kns.lookup.Lookupable;
 
 /**
@@ -25,6 +25,7 @@ import org.kuali.rice.kns.lookup.Lookupable;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Deprecated
 public class KNSServiceLocator {
 
     public static final String BUSINESS_OBJECT_AUTHORIZATION_SERVICE = "businessObjectAuthorizationService";

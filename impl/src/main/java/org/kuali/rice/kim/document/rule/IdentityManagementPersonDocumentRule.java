@@ -42,7 +42,6 @@ import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
 import org.kuali.rice.kim.impl.role.RoleMemberBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
-import org.kuali.rice.kim.impl.type.TempKimHelper;
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
 import org.kuali.rice.kim.rule.event.ui.AddPersonDelegationMemberEvent;
 import org.kuali.rice.kim.rule.event.ui.AddRoleEvent;
@@ -56,6 +55,7 @@ import org.kuali.rice.kim.rules.ui.PersonDocumentRoleRule;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
+import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceHelper;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.rules.TransactionalDocumentRuleBase;
 import org.kuali.rice.krad.service.BusinessObjectService;
@@ -514,7 +514,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     		final KimDocumentRoleMember membership = role.getRolePrncpls().get(0);
     		for (KimDocumentRoleQualifier qualifier: membership.getQualifiers()) {
     			if (qualifier != null && qualifier.getKimAttribute() != null && !StringUtils.isBlank(qualifier.getKimAttribute().getAttributeName())) {
-    	    		final KimAttributeField relatedDefinition = TempKimHelper.findAttributeField(
+    	    		final KimAttributeField relatedDefinition = DataDictionaryTypeServiceHelper.findAttributeField(
                             qualifier.getKimAttribute().getAttributeName(), attributeDefinitions);
 
     	    		if (relatedDefinition != null && relatedDefinition.isUnique()) {

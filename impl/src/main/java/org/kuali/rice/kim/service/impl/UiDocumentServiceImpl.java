@@ -110,7 +110,6 @@ import org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.kim.impl.services.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
-import org.kuali.rice.kim.impl.type.TempKimHelper;
 import org.kuali.rice.kim.service.IdentityManagementNotificationService;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.UiDocumentService;
@@ -118,6 +117,7 @@ import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
+import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceHelper;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
@@ -276,7 +276,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	public Map<String,Object> getAttributeEntries( List<KimAttributeField> definitions ) {
 		Map<String,Object> attributeEntries = new HashMap<String,Object>();
 		if(definitions!=null){
-	        for (AttributeDefinition definition : TempKimHelper.toKimAttributeDefinitions(definitions)) {
+	        for (AttributeDefinition definition : DataDictionaryTypeServiceHelper.toKimAttributeDefinitions(definitions)) {
 				Map<String,Object> attribute = new HashMap<String,Object>();
                 ControlDefinition control = definition.getControl();
                 if (control.isSelect()
@@ -2402,8 +2402,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				if (attributeInfo != null) {
 					final List<KimAttributeField> attributeMap = typeService.getAttributeDefinitions(type.getId());
 					if (attributeMap != null) {
-						return TempKimHelper.findAttributeField(attributeInfo.getKimAttribute().getAttributeName(),
-                                attributeMap);
+						return DataDictionaryTypeServiceHelper.findAttributeField(
+                                attributeInfo.getKimAttribute().getAttributeName(), attributeMap);
 					}
 				}
 			}

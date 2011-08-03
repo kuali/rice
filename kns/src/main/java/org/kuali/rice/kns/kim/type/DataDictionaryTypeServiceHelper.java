@@ -1,4 +1,4 @@
-package org.kuali.rice.kim.impl.type;
+package org.kuali.rice.kns.kim.type;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.uif.RemotableAbstractControl;
@@ -35,8 +35,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-/** a temp class to help with kim migration.  this should be deleted once kim migration is done. */
-public class TempKimHelper {
+/**
+ * @deprecated A krad integrated type service base class will be provided in the future.
+ * This is only used for the legacy {@link DataDictionaryTypeServiceBase}.
+ */
+@Deprecated
+public class DataDictionaryTypeServiceHelper {
+
+    private DataDictionaryTypeServiceHelper() {
+        throw new UnsupportedOperationException("do not call");
+    }
 
     public static String getKimBasePath(){
 	    String kimBaseUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(KimConstants.KimUIConstants.KIM_URL_KEY);
@@ -105,7 +113,7 @@ public class TempKimHelper {
             throw new IllegalArgumentException("field is null");
         }
 
-        KimDataDictionaryAttributeDefinition ad = new KimDataDictionaryAttributeDefinition();
+        KimAttributeDefinition ad = new KimAttributeDefinition();
         ad.setKimAttrDefnId(field.getId());
         ad.setUnique(field.isUnique());
 

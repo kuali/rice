@@ -15,12 +15,8 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import java.rmi.RemoteException;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.OptimisticLockException;
-import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.kew.dto.ActionTakenEventDTO;
 import org.kuali.rice.kew.dto.AfterProcessEventDTO;
 import org.kuali.rice.kew.dto.BeforeProcessEventDTO;
@@ -39,6 +35,9 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.rmi.RemoteException;
+import java.util.List;
+
 
 /**
  * This class is the postProcessor for the Kuali application, and it is responsible for plumbing events up to documents using the
@@ -51,7 +50,6 @@ public class PostProcessorServiceImpl implements PostProcessorService {
     private static Logger LOG = Logger.getLogger(PostProcessorServiceImpl.class);
 
     private DocumentService documentService;
-    private DateTimeService dateTimeService;
 
     /**
      * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
@@ -284,14 +282,6 @@ public class PostProcessorServiceImpl implements PostProcessorService {
      */
     public final void setDocumentService(DocumentService documentService) {
         this.documentService = documentService;
-    }
-
-    /**
-     * Sets the dateTimeService attribute value.
-     * @param dateTimeService The dateTimeService to set.
-     */
-    public final void setDateTimeService(DateTimeService dateTimeService) {
-        this.dateTimeService = dateTimeService;
     }
 
     /**

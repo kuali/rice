@@ -706,9 +706,6 @@
     <property name="documentService">
       <ref bean="documentService"/>
     </property>
-    <property name="dateTimeService">
-      <ref bean="dateTimeService"/>
-    </property>
   </bean>
 
   <bean id="pessimisticLockService" class="org.kuali.rice.krad.service.impl.PessimisticLockServiceImpl">

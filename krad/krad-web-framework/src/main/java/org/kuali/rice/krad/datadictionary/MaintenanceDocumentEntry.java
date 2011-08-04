@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
-import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.krad.document.Document;

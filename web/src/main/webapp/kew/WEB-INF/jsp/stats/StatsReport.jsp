@@ -103,12 +103,6 @@
           <th class="subhead" width="50%"><bean-el:message key="stats.StatsReport.routeStatusCount"/></th>
         </tr>
         <tr>
-          <th width="50%"><div align="right"><span class="thnormal"><c:out value="${StatsForm.approvedLabel}" />:</span></div></th>
-          <td class="datacell" width="50%">
-            <c:out value="${StatsForm.stats.approvedNumber}" />&nbsp;
-          </td>
-        </tr>
-        <tr>
           <th width="50%"><div align="right"><span class="thnormal"><c:out value="${StatsForm.canceledLabel}" />:</span></div></th>
           <td class="datacell" width="50%">
               <c:out value="${StatsForm.stats.canceledNumber}" />&nbsp;

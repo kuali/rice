@@ -46,7 +46,7 @@ import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidation
  * 8. value with valid negative number within specified precision and scale, with allowNegative set to true. (success) {@link testValueValidNegativeNumber1()}
  * 9. zero precision and scale test. (error) {@link testZeroPrecisionAndScale()}
  * 10. precision less than scale test. (error) {@link testPrecisionLessThanScale()}
- * 11. negative precision nad scale test. (error) {@link testNegativePrecisionAndScale()}
+ * 11. negative precision and scale test. (error) {@link testNegativePrecisionAndScale()}
  * 
  * 
  * 

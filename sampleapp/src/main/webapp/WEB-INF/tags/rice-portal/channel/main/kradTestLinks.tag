@@ -23,6 +23,7 @@
   	<li><portal:portalLink displayTitle="true" title="Uif Components (Kitchen Sink)" url="${ConfigProperties.application.url}/spring/uicomponents?viewId=UifComponentsView&methodToCall=start" /></li>
 	 <li><portal:portalLink displayTitle="true" title="Test View 1" url="${ConfigProperties.application.url}/spring/uitest?viewId=Travel-testView1&methodToCall=start" /></li>
      <li><portal:portalLink displayTitle="true" title="Test View 2" url="${ConfigProperties.application.url}/spring/uitest?viewId=Travel-testView2&methodToCall=start" /></li>
+     <li><portal:portalLink displayTitle="true" title="Incident Report" url="${ConfigProperties.application.url}/spring/uitest?viewId=Travel-testView2&methodToCall=foo" /></li>
    </ul>
    <br/>
    <strong>BO Class Tests</strong>

@@ -36,6 +36,17 @@ public class Node<T, K> implements Serializable {
         this();
         setData(data);
     }
+    
+    /**
+     * Convenience constructor to create a Node<T, K> with an instance of T and K.
+     *
+     * @param data an instance of T.
+     */
+    public Node(T data, K label) {
+        this();
+        setData(data);
+        setNodeLabel(label);
+    }
 
     /**
      * Return the children of Node<T, K>. The Tree<T> is represented by a single

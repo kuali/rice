@@ -242,7 +242,7 @@ function performJumpTo(){
 	}
 }
 
-//performs a focus on an the element with the id specified
+//performs a focus on an the element with the id preset
 function performFocus(){
 	var focusId = jq("[name='focusId']").val();
 	if(focusId){
@@ -250,6 +250,21 @@ function performFocus(){
 	}
 	else{
 		jq("input:not(input[type='button'], input[type='submit']):visible:first", "#kualiForm").focus();
+	}
+}
+
+//performs a focus on an the element with the name specified
+function focusOnElementByName(name){
+	var theElement =  jq("[name='" + name + "']");
+	if(theElement.length != 0){
+		theElement.focus();
+	}
+}
+
+//performs a focus on an the element with the id specified
+function focusOnElementById(focusId){
+	if(focusId){
+		jq("#" + focusId).focus();
 	}
 }
 

@@ -27,11 +27,11 @@
       	<div id="${field.id}_errorMessages" style="display: none;" class="errorMessages">
     </c:otherwise>
 </c:choose>
+			<c:if test="${field.displayErrorTitle}">
+		       <strong>${field.errorTitle}</strong>
+		     </c:if>
 		     <c:if test="${field.displayCounts && field.errorCount > 0}">
 		       <span>${field.errorCount} errors</span>
-		     </c:if>
-		     <c:if test="${field.displayErrorTitle}">
-		       <strong>${field.errorTitle}</strong>
 		     </c:if>
 		     <ul class="errorLines">
 			     <c:if test="${field.displayErrorMessages}">
@@ -45,12 +45,11 @@
 <!--  Warning messages  -->
 <c:if test="${field.warningCount > 0 && field.displayWarningMessages}">
 	<div id="${field.id}_warningMessages" class="warningMessages">
-
-	    <c:if test="${field.displayCounts && field.warningCount > 0}">
-	      	<span>${field.warningCount} warnings</span>
-	    </c:if>
 	    <c:if test="${field.displayWarningTitle}">
 	      	<strong>${field.warningTitle}</strong>
+	    </c:if>
+	    <c:if test="${field.displayCounts && field.warningCount > 0}">
+	      	<span>${field.warningCount} warnings</span>
 	    </c:if>
 	    <ul>
 		     <c:if test="${field.displayWarningMessages}">
@@ -65,11 +64,11 @@
 <!--  Info messages  -->
 <c:if test="${field.infoCount > 0 && field.displayInfoMessages}">
 	<div id="${field.id}_infoMessages" class="infoMessages">
+	    <c:if test="${field.displayInfoTitle}">
+      		<strong>${field.infoTitle}</strong>
+    	</c:if>
    		<c:if test="${field.displayCounts && field.infoCount > 0}">
       		<span>${field.infoCount} informational messages</span>
-    	</c:if>
-    	<c:if test="${field.displayInfoTitle}">
-      		<strong>${field.infoTitle}</strong>
     	</c:if>
     	<ul>
 	     	<c:if test="${field.displayInfoMessages}">

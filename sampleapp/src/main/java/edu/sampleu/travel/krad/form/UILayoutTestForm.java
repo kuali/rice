@@ -20,6 +20,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.kuali.rice.core.api.util.tree.Node;
+import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
@@ -116,10 +118,18 @@ public class UILayoutTestForm extends UifFormBase {
     private String gField2;
     private String gField3;
     
+    private String mField1 = "SecretInfo555";
+    private String mField2 = "SecretInfo111";
+    private String mField3 = "SecretInfo222";
+    
     private List<UITestListObject> list1 = new ArrayList<UITestListObject>();
     private List<UITestListObject> list2 = new ArrayList<UITestListObject>();
     private List<UITestListObject> list3 = new ArrayList<UITestListObject>();
     private List<UITestListObject> list4 = new ArrayList<UITestListObject>();
+    private List<UITestListObject> list5 = new ArrayList<UITestListObject>();
+    private List<UITestListObject> list6 = new ArrayList<UITestListObject>();
+    
+    private Tree<String, String> tree1 = new Tree<String,String>();
 
     private boolean bField1;
     private boolean bField2;
@@ -150,6 +160,47 @@ public class UILayoutTestForm extends UifFormBase {
         list4.add(new UITestListObject("1","2","3","4"));
         list4.get(1).getSubList().add(new UITestListObject("a","b","C","D"));
         list4.get(1).getSubList().add(new UITestListObject("a","s","D","F"));
+        
+        list5.add(new UITestListObject("a","a","a","a"));
+        list5.get(0).getSubList().add(new UITestListObject("A","B","C","D"));
+        list5.get(0).getSubList().add(new UITestListObject("1","2","3","4"));
+        list5.add(new UITestListObject("b","b","b","b"));
+        list5.get(1).getSubList().add(new UITestListObject("a","b","C","D"));
+        list5.get(1).getSubList().add(new UITestListObject("a","s","D","F"));
+        
+        list6.add(new UITestListObject("A","B","C","D"));
+        list6.add(new UITestListObject("1","2","3","4"));
+        list6.add(new UITestListObject("W","X","Y","Z"));
+        list6.add(new UITestListObject("a","b","c","d"));
+        list6.add(new UITestListObject("a","s","d","f"));
+        
+        
+        
+        Node<String,String> item1 = new Node<String,String>("Item 1", "Item 1");
+        item1.addChild(new Node<String,String>("SubItem A", "SubItem A"));
+        item1.addChild(new Node<String,String>("SubItem B", "SubItem B"));
+        
+        Node<String,String> item2 = new Node<String,String>("Item 2", "Item 2");
+        item2.addChild(new Node<String,String>("SubItem A", "SubItem A"));
+        Node<String,String> sub2B = new Node<String,String>("SubItem B", "SubItem B");
+        sub2B.addChild(new Node<String,String>("Item B-1", "Item B-1"));
+        sub2B.addChild(new Node<String,String>("Item B-2", "Item B-2"));
+        sub2B.addChild(new Node<String,String>("Item B-3", "Item B-3"));
+        item2.addChild(sub2B);
+        item2.addChild(new Node<String,String>("SubItem C", "SubItem C"));
+        
+        Node<String,String> item3 = new Node<String,String>("Item 3", "Item 3");
+        item3.addChild(new Node<String,String>("SubItem A", "SubItem A"));
+        item3.addChild(new Node<String,String>("SubItem B", "SubItem B"));
+        item3.addChild(new Node<String,String>("SubItem C", "SubItem C"));
+        item3.addChild(new Node<String,String>("SubItem D", "SubItem D"));
+        
+        Node<String,String> root = new Node<String,String>("Root", "Root");
+        root.addChild(item1);
+        root.addChild(item2);
+        root.addChild(item3);
+        
+        tree1.setRootElement(root);
     }
 
     @Override
@@ -1434,7 +1485,90 @@ public class UILayoutTestForm extends UifFormBase {
     public void setField81(String field81) {
         this.field81 = field81;
     }
-    
-    
 
+    /**
+     * @return the mField1
+     */
+    public String getmField1() {
+        return this.mField1;
+    }
+
+    /**
+     * @param mField1 the mField1 to set
+     */
+    public void setmField1(String mField1) {
+        this.mField1 = mField1;
+    }
+
+    /**
+     * @return the mField2
+     */
+    public String getmField2() {
+        return this.mField2;
+    }
+
+    /**
+     * @param mField2 the mField2 to set
+     */
+    public void setmField2(String mField2) {
+        this.mField2 = mField2;
+    }
+
+    /**
+     * @return the mField3
+     */
+    public String getmField3() {
+        return this.mField3;
+    }
+
+    /**
+     * @param mField3 the mField3 to set
+     */
+    public void setmField3(String mField3) {
+        this.mField3 = mField3;
+    }
+
+    /**
+     * @return the list5
+     */
+    public List<UITestListObject> getList5() {
+        return this.list5;
+    }
+
+    /**
+     * @param list5 the list5 to set
+     */
+    public void setList5(List<UITestListObject> list5) {
+        this.list5 = list5;
+    }
+
+    /**
+     * @return the list6
+     */
+    public List<UITestListObject> getList6() {
+        return this.list6;
+    }
+
+    /**
+     * @param list6 the list6 to set
+     */
+    public void setList6(List<UITestListObject> list6) {
+        this.list6 = list6;
+    }
+
+    /**
+     * @return the tree1
+     */
+    public Tree<String, String> getTree1() {
+        return this.tree1;
+    }
+
+    /**
+     * @param tree1 the tree1 to set
+     */
+    public void setTree1(Tree<String, String> tree1) {
+        this.tree1 = tree1;
+    }
+    
+    
 }

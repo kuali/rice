@@ -1282,6 +1282,12 @@
 						<bean parent="EmailAddressPatternConstraint" />
 					</property>
 				</bean>
+        <bean parent="GenericTextField" p:label="UrlPatternConstraint"
+					p:summary="Url in http format" p:propertyName="field84">
+					<property name="validCharactersConstraint">
+						<bean parent="UrlPatternConstraint" />
+					</property>
+				</bean>
 				<bean parent="GenericTextField" p:label="DatePatternConstraint"
 					p:summary="Accepts EVERY DateFormat set up in the system configuration, use allowedFormats property to limit (this must be a subset of allowed formats), see next field"
 					p:propertyName="field55">
@@ -1294,6 +1300,20 @@
 					p:propertyName="field75">
 					<property name="validCharactersConstraint">
 						<bean parent="BasicDatePatternConstraint" />
+					</property>
+				</bean>
+        <bean parent="GenericTextField" p:label="TimePatternConstraint"
+					p:summary="Accepts some basic 12 hour time format"
+					p:propertyName="field82">
+					<property name="validCharactersConstraint">
+						<bean parent="TimePatternConstraint" />
+					</property>
+				</bean>
+        <bean parent="GenericTextField" p:label="Time24HPatternConstraint"
+					p:summary="Accepts some basic 24(0-23) hour time format"
+					p:propertyName="field83">
+					<property name="validCharactersConstraint">
+						<bean parent="Time24HPatternConstraint" />
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="TimestampPatternConstraint"

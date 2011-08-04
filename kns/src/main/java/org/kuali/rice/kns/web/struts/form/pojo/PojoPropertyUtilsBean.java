@@ -30,9 +30,6 @@ import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -78,74 +75,6 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
         // end Kuali Foundation modification
     }
 
-	// begin Kuali Foundation modification
-    private Map<String,List<Method>> cache = new HashMap<String,List<Method>>();
-    private static Map<String,Method> readMethodCache = new HashMap<String, Method>();
-    private IntrospectionException introspectionException = new IntrospectionException( "" );
-    
-    public Object fastGetNestedProperty(Object obj, String propertyName) throws IntrospectionException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-        //logger.debug("entering fastGetNestedProperty");
-
-        List<Method> methods = (List<Method>) cache.get(propertyName + obj.getClass().getName());
-        if (methods == null) {
-            methods = new ArrayList<Method>();
-            Object currentObj = obj;
-            Class<?> currentObjClass = currentObj.getClass();
-
-            for (String currentPropertyName : propertyName.split("\\.") ) {
-                String cacheKey = currentObjClass.getName() + currentPropertyName;
-                Method readMethod = readMethodCache.get( cacheKey );
-                if ( readMethod == null ) {
-                	synchronized (readMethodCache) {
-	                    // if the read method was resolved to an error, repeat the exception
-	                    // rather than performing the reflection calls below
-	                    if ( readMethodCache.containsKey(cacheKey) ) {
-	                        throw introspectionException;
-	                    }
-	                    try {
-	                        try {
-	                            readMethod = currentObjClass.getMethod("get" + currentPropertyName.substring(0, 1).toUpperCase() + currentPropertyName.substring(1), (Class[])null);
-	                        } catch (NoSuchMethodException e) {
-	                            readMethod = currentObjClass.getMethod("is" + currentPropertyName.substring(0, 1).toUpperCase() + currentPropertyName.substring(1), (Class[])null);
-	                        }
-	                    } catch ( NoSuchMethodException ex ) {
-	                        // cache failures to prevent re-checking of the parameter
-	                        readMethodCache.put( cacheKey, null );
-	                        throw introspectionException;
-	//                        throw new IntrospectionException( currentPropertyName );
-	//                        try {
-	//                        System.out.println( "using PropertyDescriptor" ); 
-	//                        PropertyDescriptor pd = new PropertyDescriptor( currentPropertyName, currentObjClass, "get" + currentPropertyName.substring(0, 1).toUpperCase() + currentPropertyName.substring(1), null );
-	//                        readMethod = pd.getReadMethod();
-	//                        } catch ( Exception ex2 ) {
-	//                            LOG.error( ex2.getMessage() );
-	//                        }
-	//                        System.out.println( "used PropertyDescriptor to get readMethod for " + currentObjClass.getName() + "." + currentPropertyName + " : " + readMethod );
-	                        //LOG.error( "Unable to determine readMethod for " + currentObjClass.getName() + "." + currentPropertyName, ex);
-	                        //return null;
-	                    }
-	                    readMethodCache.put(cacheKey, readMethod );
-					}
-                }
-                methods.add(readMethod);
-                currentObj = readMethod.invoke(currentObj, (Object[])null);
-                currentObjClass = currentObj.getClass();
-            }
-            synchronized (cache) {
-                cache.put(propertyName + obj.getClass().getName(), methods);
-			}
-        }
-
-        for ( Method method : methods ) {
-            obj = method.invoke(obj, (Object[])null);
-        }
-
-        //logger.debug("exiting fastGetNestedProperty");
-
-        return obj;
-    }
-	// end Kuali Foundation modification
-
 
     /**
      * begin Kuali Foundation modification
@@ -156,12 +85,7 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
     public Object getNestedProperty(Object arg0, String arg1) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		// begin Kuali Foundation modification
         try {
-            try {
-                return fastGetNestedProperty(arg0, arg1);
-            }
-            catch (Exception e) {
-                return super.getNestedProperty(arg0, arg1);
-            }
+            return super.getNestedProperty(arg0, arg1);
         }
         catch (NestedNullException e) {
             return "";

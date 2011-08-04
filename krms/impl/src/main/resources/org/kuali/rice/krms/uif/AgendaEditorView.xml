@@ -167,9 +167,9 @@
               <bean parent="AttributeField" p:propertyName="namespace" p:readOnly="true"
                 p:label="Namespace" p:labelPlacement="LEFT" />
               <bean parent="AttributeField" p:propertyName="id"
-                p:showLabel="true" p:label="id" p:maxLength="40">
+                p:showLabel="false" p:label="id" p:maxLength="40">
                 <property name="control">
-                  <bean parent="TextControl" />
+                  <bean parent="HiddenControl" />
                 </property>
               </bean>
             </list>

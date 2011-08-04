@@ -38,7 +38,7 @@
             <a href="${ConfigProperties.kr.url}/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kim.impl.role.RoleBo&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&showMaintenanceLinks=true">Role</a>
         </td>
         <td>
-            <a href="${ConfigProperties.kr.url}/lookup.do?methodToCall=search&businessObjectClassName=org.kuali.rice.kim.bo.types.impl.KimTypeImpl&returnLocation=portal.do&docFormKey=IMRD">Role Document (started via type lookup)</a>
+            <a href="${ConfigProperties.kr.url}/lookup.do?methodToCall=search&businessObjectClassName=org.kuali.rice.kim.impl.type.KimTypeBo&returnLocation=portal.do&docFormKey=IMRD">Role Document (started via type lookup)</a>
         </td>
     </tr>
     <tr>
@@ -62,7 +62,7 @@
             <a href="${ConfigProperties.kr.url}/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kim.impl.group.GroupBo&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&showMaintenanceLinks=true">Group</a>
         </td>
         <td>
-            <a href="${ConfigProperties.kr.url}/lookup.do?methodToCall=search&businessObjectClassName=org.kuali.rice.kim.bo.types.impl.KimTypeImpl&returnLocation=portal.do&docFormKey=IMGD">Group Document (started via type lookup)</a>
+            <a href="${ConfigProperties.kr.url}/lookup.do?methodToCall=search&businessObjectClassName=org.kuali.rice.kim.impl.type.KimTypeBo&returnLocation=portal.do&docFormKey=IMGD">Group Document (started via type lookup)</a>
         </td>
     </tr>
 </table>            

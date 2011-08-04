@@ -24,7 +24,7 @@
     </tr>
     <c:if test="${! empty delegators}">
         <tr>
-	    <th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.secondaryDelegatorId"/>: <bean-el:message key="general.help.delegatorId"/></span></div></th>
+	    <th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.secondaryDelegatorId"/></span></div></th>
 	    <td>
 		     <html-el:select property="filter.delegatorId" onchange="if(document.forms[0]['filter.primaryDelegateId']){document.forms[0]['filter.primaryDelegateId'].value='${Constants.PRIMARY_DELEGATION_DEFAULT}';}">
 			   <html-el:option value="${Constants.DELEGATION_DEFAULT}"><c:out value="${Constants.DELEGATION_DEFAULT}" /></html-el:option>
@@ -38,7 +38,7 @@
     </c:if>
     <c:if test="${! empty primaryDelegates}">
       <tr>
-	    <th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.primaryDelegateId"/>: <bean-el:message key="general.help.primaryDelegateId"/></span></div></th>
+	    <th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.primaryDelegateId"/></span></div></th>
 	    <td class="datacell">
 		     <html-el:select property="filter.primaryDelegateId" onchange="if(document.forms[0]['filter.delegatorId']){document.forms[0]['filter.delegatorId'].value='${Constants.DELEGATION_DEFAULT}';}">
 			   <html-el:option value="${Constants.PRIMARY_DELEGATION_DEFAULT}"><c:out value="${Constants.PRIMARY_DELEGATION_DEFAULT}" /></html-el:option>
@@ -51,11 +51,11 @@
       </tr>
     </c:if>
 	<tr>
-		<th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.documentTitle"/>: <bean-el:message key="general.help.documentTitle"/></span></div></th>
+		<th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.documentTitle"/></span></div></th>
 		<td><html-el:text property="filter.documentTitle"/>&nbsp;<bean-el:message key="actionList.ActionListFilter.filter.label.exclude"/><html-el:checkbox property="filter.excludeDocumentTitle"/></td>
 	</tr>
 	<tr>
-		<th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.documentRouteStatus"/>: <bean-el:message key="general.help.routeStatus"/></span></div></th>
+		<th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.documentRouteStatus"/></span></div></th>
 		<td class="datacell"><html-el:select property="filter.docRouteStatus">
 			<html-el:option value="${Constants.ALL_CODE}"><c:out value="${Constants.ALL_CODE}" /></html-el:option>
 			<html-el:option value="${Constants.ROUTE_HEADER_APPROVED_CD}"><c:out value="${Constants.ROUTE_HEADER_APPROVED_LABEL}" /></html-el:option>
@@ -68,7 +68,7 @@
 			&nbsp;<bean-el:message key="actionList.ActionListFilter.filter.label.exclude"/><html-el:checkbox property="filter.excludeRouteStatus"/></td>
 	</tr>
 	<tr>
-		<th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.actionRequested"/>: <bean-el:message key="general.help.actionRequested"/></span></div></th>
+		<th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.actionRequested"/></span></div></th>
 		<td class="datacell"><html-el:select property="filter.actionRequestCd">
 			<html-el:option value="${Constants.ALL_CODE}"><c:out value="${Constants.ALL_CODE}" /></html-el:option>
 			<html-el:option value="${Constants.ACTION_REQUEST_ACKNOWLEDGE_REQ}"><c:out value="${Constants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL}" /></html-el:option>
@@ -79,21 +79,21 @@
 			&nbsp;<bean-el:message key="actionList.ActionListFilter.filter.label.exclude"/><html-el:checkbox property="filter.excludeActionRequestCd"/></td>
 	</tr>
 	<tr>
-		<th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.actionRequestGroup"/>: <bean-el:message key="general.help.actionRequestWorkgroup"/></span></div></th>
+		<th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.actionRequestGroup"/></span></div></th>
 		<td class="datacell">
 		    <html-el:select name="ActionListFilterForm" property="filter.groupIdString">
               <html-el:optionsCollection property="userWorkgroups" label="value" value="key" filter="false"/>
             </html-el:select>&nbsp;<bean-el:message key="actionList.ActionListFilter.filter.label.exclude"/><html-el:checkbox property="filter.excludeGroupId"/></td>
 	</tr>
 	<tr>
-		<th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.documentType"/>: <bean-el:message key="general.help.documentType"/></span></div></th>
+		<th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.documentType"/></span></div></th>
 		<td class="datacell"><span id="docTypeElementId"><c:out value="${ActionListFilterForm.docTypeFullName}" /></span>
 		    <kul:lookup boClassName="org.kuali.rice.kew.doctype.bo.DocumentType" fieldConversions="name:docTypeFullName"/>
 			&nbsp;<bean-el:message key="actionList.ActionListFilter.filter.label.exclude"/><html-el:checkbox property="filter.excludeDocumentType"/>
 	    </td>
 	</tr>
 	<tr>
-		<th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.dateCreated"/>: <bean-el:message key="general.help.dateCreated"/></span></div></th>
+		<th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.dateCreated"/></span></div></th>
 		<td class="datacell">
           <table class="neutral" border="0" cellspacing="0" cellpadding="1">
             <tr>
@@ -149,7 +149,7 @@
 		</td>
 	</tr>
 	<tr>
-		<th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.dateLastAssigned"/>: <bean-el:message key="general.help.dateLastAssigned"/></span></div></th>
+		<th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.dateLastAssigned"/></span></div></th>
 		<td class="datacell" >
           <table class="neutral" >
             <tr>

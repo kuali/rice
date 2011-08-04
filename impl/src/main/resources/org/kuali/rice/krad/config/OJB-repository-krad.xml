@@ -59,7 +59,7 @@
 		</reference-descriptor>
 -->
 		<reference-descriptor name="attachment" class-ref="org.kuali.rice.krad.bo.DocumentAttachment" auto-retrieve="true" auto-update="object"
-			auto-delete="object" proxy="true">
+			auto-delete="object" proxy="false"> <!--cannot proxy or ojb breaks on calling hashcode -->
 			<foreignkey field-ref="documentNumber" />
 		</reference-descriptor>
 	</class-descriptor>

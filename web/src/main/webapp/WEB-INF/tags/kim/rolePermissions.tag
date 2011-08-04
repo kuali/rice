@@ -15,7 +15,7 @@
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
-<c:set var="permissionAttributes" value="${DataDictionary.PermissionImpl.attributes}" />
+<c:set var="permissionAttributes" value="${DataDictionary.PermissionBo.attributes}" />
 
 <kul:tab tabTitle="Permissions" defaultOpen="true" tabErrorKey="document.perm*">
 	<div class="tab-container" align="center">    

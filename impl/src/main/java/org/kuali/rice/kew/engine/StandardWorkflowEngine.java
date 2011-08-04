@@ -16,12 +16,6 @@
 
 package org.kuali.rice.kew.engine;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.apache.log4j.MDC;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -53,6 +47,12 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.krad.util.KRADConstants;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 
 /**
@@ -162,7 +162,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 	            notifyPostProcessorAfterProcess(context.getDocument(), nodeInstanceId, success);
             } catch (Exception e) {
                 LOG.warn("Problems contacting PostProcessor after engine process", e);
-                throw new RouteManagerException("Problems contacting PostProcessor:  " + e.getMessage(), context);
+                throw new RouteManagerException("Problems contacting PostProcessor", e, context);
             }
 			RouteContext.clearCurrentRouteContext();
 			MDC.remove("docId");
@@ -455,10 +455,6 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 	 * then throw an execption so that the document will get thrown into
 	 * exception routing.
 	 *
-	 * @param rh
-	 *            route header to be checked
-	 * @param docType
-	 *            docType of the routeHeader to be checked.
 	 * @throws RouteManagerException
 	 */
 	private void checkDefaultApprovalPolicy(DocumentRouteHeaderValue document) throws RouteManagerException {
@@ -684,8 +680,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
             }
             report = postProcessor.afterProcess(event);
         } catch (Exception e) {
-            LOG.warn("Problems contacting PostProcessor", e);
-            throw new RouteManagerException("Problems contacting PostProcessor:  " + e.getMessage());
+            throw new RouteManagerException("Problems contacting PostProcessor.",e);
         }
         document = getRouteHeaderService().getRouteHeader(document.getDocumentId());
         if (!report.isSuccess()) {

@@ -17,7 +17,7 @@
 
 <c:set var="docGroupAttributes" value="${DataDictionary.PersonDocumentGroup.attributes}" />
 
-<kul:subtab lookedUpCollectionName="group" width="${tableWidth}" subTabTitle="Groups" noShowHideButton="false">      
+<kul:subtab lookedUpCollectionName="group" width="${tableWidth}" subTabTitle="Groups" noShowHideButton="false">
    <table cellpadding="0" cellspacing="0" summary="">
      	<tr>
     		<th><div align="left">&nbsp;</div></th> 
@@ -68,7 +68,7 @@
 				</td>
                 <td align="left" valign="middle" class="infoline" >
                 	<div align="center">
-	                	<kul:htmlControlAttribute property="newGroup.kimTypeInfo.name" attributeEntry="${docGroupAttributes.kimGroupType.name}" readOnly="${readOnly}"/>
+	                	<kul:htmlControlAttribute property="newGroup.kimTypeInfo.name" attributeEntry="${docGroupAttributes['kimGroupType.name']}" readOnly="${readOnly}"/>
 					</div>
 				</td>
 	            <td align="left" valign="middle">

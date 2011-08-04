@@ -47,6 +47,17 @@
         description="Use this to attach further information to the title attribute of a field
         if present"%>
 <%@ attribute name="forceRequired" required="false" description="Whether this control should be rendered as required, no matter the information from the data dictionary about the required state of the attribute." %>
+<%
+if (property == null) {
+  throw new javax.servlet.jsp.JspTagException("property was null");
+}
+
+if (attributeEntry == null) {
+  throw new javax.servlet.jsp.JspTagException("attributeEntry was null");
+}
+
+%>
+
 <c:set var="sessionDocument" value="${requestScope['sessionDoc']}" />
 <c:if test="${empty readOnly}">
     <c:set var="readOnly" value="false"/>
@@ -314,7 +325,7 @@
                            styleClass="${styleClass}" />
     </c:when>
     <c:otherwise>
-    	  unknown control type: ${attributeEntry}
+      unknown control type for: ${attributeEntry.name}
     </c:otherwise>
   </c:choose>
   <%-- error icon --%>

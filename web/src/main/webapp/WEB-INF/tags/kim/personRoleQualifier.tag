@@ -96,7 +96,7 @@
 									<c:set var="attrReadOnly" value="${readOnlyRole}"/>
 				            <td align="left" valign="middle">
 				                <div align="center"> 
-				                	<kul:htmlControlAttribute kimTypeId="${role.kimTypeId}" property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].qualifiers[${status.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}" />
+				                	<kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].qualifiers[${status.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}" />
 
                         <c:forEach var="widget" items="${role.definitions.attributeField.widgets}" >
                           <c:if test="${widget.class.name == 'org.kuali.rice.core.api.uif.RemotableQuickFinder'}">

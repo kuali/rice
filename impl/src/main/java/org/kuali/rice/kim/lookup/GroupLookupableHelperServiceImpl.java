@@ -214,7 +214,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 			typeField.setFieldType(Field.TEXT);
 			typeField.setMaxLength(40);
 			typeField.setSize(20);
-			typeField.setQuickFinderClassNameImpl("org.kuali.rice.kim.api.identity.Person.Person");
+			typeField.setQuickFinderClassNameImpl("org.kuali.rice.kim.api.identity.Person");
 			typeField.setFieldConversions( "principalName:principalName" );
 			typeField.setLookupParameters( "principalName:principalName" );
 			// Identify the best spot to insert the "Principal Name" search field. Note that the code below assumes that the final row of the

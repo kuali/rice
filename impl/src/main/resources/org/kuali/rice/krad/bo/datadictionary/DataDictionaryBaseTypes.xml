@@ -180,17 +180,17 @@
         abstract="true" 
         class="org.kuali.rice.krad.datadictionary.validation.constraint.NumericPatternConstraint" />
         
-    <bean id="AlphaNumericWithBasicPunc"
+    <bean id="AlphaNumericWithBasicPunc" parent="AlphaNumericPatternConstraint"
     	abstract="true" p:allowWhitespace="true" p:allowQuestionMark="true" p:allowExclaimation="true"
     	p:allowPeriod="true" p:allowParenthesis="true" p:allowDoubleQuote="true" p:allowApostrophe="true"
     	p:allowForwardSlash="true" p:allowDash="true" p:allowColon="true" p:allowSemiColon="true"/>
    	
-   	<bean id="AlphaWithBasicPunc"
+   	<bean id="AlphaWithBasicPunc" parent="AlphaPatternConstraint"
     	abstract="true" p:allowWhitespace="true" p:allowQuestionMark="true" p:allowExclaimation="true"
     	p:allowPeriod="true" p:allowParenthesis="true" p:allowDoubleQuote="true" p:allowApostrophe="true"
     	p:allowForwardSlash="true" p:allowDash="true" p:allowColon="true" p:allowSemiColon="true"/>
    	
-   	<bean id="NumericWithOperators"
+   	<bean id="NumericWithOperators" parent="NumericPatternConstraint"
     	abstract="true" p:allowWhitespace="true" p:allowAsterisk="true" p:allowPlus="true"
     	p:allowPeriod="true" p:allowParenthesis="true" p:allowForwardSlash="true" p:allowDash="true" 
     	p:allowEquals="true"/>

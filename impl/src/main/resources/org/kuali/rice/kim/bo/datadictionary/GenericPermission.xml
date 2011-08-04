@@ -13,81 +13,6 @@
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
-
-
-  <bean id="PermissionImpl-permissionId" parent="PermissionImpl-permissionId-parentBean"/>
-  <bean id="PermissionImpl-permissionId-parentBean" parent="AttributeDefinition" abstract="true" p:name="permissionId" p:label="Permission Identifier" p:shortLabel="Permission Identifier" p:maxLength="10" p:required="false">
-    <property name="control">
-      <bean parent="TextControlDefinition" p:size="10"/>
-    </property>
-  </bean>
-  <bean id="PermissionImpl-name" parent="PermissionImpl-name-parentBean"/>
-  <bean id="PermissionImpl-name-parentBean" abstract="true" parent="KimType-name" p:name="name" p:label="Permission Name" p:shortLabel="Permission Name">
-    <property name="control">
-      <bean parent="TextControlDefinition" p:size="40"/>
-    </property>
-    <property name="validationPattern">
-			<bean parent="AlphaNumericValidationPattern" p:allowWhitespace="true" p:allowUnderscore="true" p:allowPeriod="true" p:allowParenthesis="true" p:allowDollar="true" p:allowForwardSlash="true"/>
-	</property>
-  </bean>
-  <bean id="PermissionImpl-active" parent="PermissionImpl-active-parentBean"/>
-  <bean id="PermissionImpl-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
-    <property name="name" value="active"/>
-  </bean>
-  <bean id="GenericPermission" parent="GenericPermission-parentBean"/>
-
-  <bean id="GenericPermission-parentBean" abstract="true" parent="BusinessObjectEntry" 
-        p:businessObjectClass="org.kuali.rice.kim.impl.permission.GenericGenericPermissionBo"
-        p:titleAttribute="permissionId" 
-        p:objectLabel="Permission">
-    <property name="attributes">
-      <list>
-        <ref bean="GenericPermission-permissionId"/>
-        <ref bean="GenericPermission-namespaceCode"/>
-        <ref bean="GenericPermission-name"/>
-        <ref bean="GenericPermission-description"/>
-        <ref bean="GenericPermission-active"/>
-
-        <ref bean="GenericPermission-templateId"/>
-        <ref bean="GenericPermission-detailValues"/>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="GenericPermission-permissionId" parent="PermissionImpl-permissionId"/>
-  
-  <bean id="GenericPermission-namespaceCode" parent="GenericPermission-namespaceCode-parentBean"/>
-  <bean id="GenericPermission-namespaceCode-parentBean" parent="Namespace-code" abstract="true" 
-        p:name="namespaceCode" 
-        p:label="Permission Namespace" 
-        p:shortLabel="Permission Namespace" 
-        p:required="true">
-    <property name="control">
-      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.core.web.namespace.NamespaceValuesFinder" p:includeKeyInLabel="true"/>
-    </property>
-  </bean>
-
-  <bean id="GenericPermission-name" parent="PermissionImpl-name"/>
-  <bean id="GenericPermission-description" parent="AttributeReferenceDummy-genericBigText"
-    p:name="description"
-    p:label="Permission Description" 
-    p:shortLabel="Perm. Desc." />
-  <bean id="GenericPermission-active" parent="PermissionImpl-active"/>
-
-  <bean id="GenericPermission-templateId" parent="KimPermissionTemplateImpl-templateId-parentBean"
-        p:required="true"
-        p:name="templateId">
-    <property name="control">
-      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.kim.lookup.valuefinder.PermissionTemplateValuesFinder" p:includeKeyInLabel="true"/>
-    </property>
-  </bean>
-  <bean id="GenericPermission-detailValues" parent="AttributeReferenceDummy-genericBigText"
-        p:required="false" 
-        p:name="detailValues"
-        p:label="Permission Details"
-        p:shortLabel="Perm. Dtls." />
-
-</beans>
 -->
   <bean id="GenericPermissionBo" parent="GenericPermissionBo-parentBean"/>
 
@@ -230,7 +155,7 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="FieldDefinition" p:attributeName="kimTypeInfo.name"/>
+        <!-- bean parent="FieldDefinition" p:attributeName="kimTypeInfo.name"/ -->
         <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
         <bean parent="FieldDefinition" p:attributeName="name"/>
         <bean parent="FieldDefinition" p:attributeName="description"/>

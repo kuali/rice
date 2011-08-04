@@ -194,13 +194,13 @@
                 <value>classpath:org/kuali/rice/kim/impl/responsibility/ResponsibilityTemplate.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionTemplateImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/impl/responsibility/Responsibility.xml</value>
-		        <value>classpath:org/kuali/rice/kim/impl/permission/PermissionBo.xml</value>
 		        <value>classpath:org/kuali/rice/kim/impl/responsibility/UberResponsibility.xml</value>
                 <value>classpath:org/kuali/rice/kim/impl/responsibility/IdentityManagementReviewResponsibilityMaintenanceDocument.xml</value>
-                <value>classpath:org/kuali/rice/kim/bo/datadictionary/PermissionImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/impl/permission/UberPermission.xml</value>
+                <value>classpath:org/kuali/rice/kim/impl/permission/PermissionBo.xml</value>
 		        <value>classpath:org/kuali/rice/kim/impl/common/delegate/DelegateBo.xml</value>
                 <value>classpath:org/kuali/rice/kim/impl/common/attribute/KimAttribute.xml</value>
-                <value>classpath:org/kuali/rice/kim/bo/datadictionary/PermissionAttributeDataImpl.xml</value>
+                <value>classpath:org/kuali/rice/kim/impl/permission/PermissionAttribute.xml</value>
                 <value>classpath:org/kuali/rice/kim/impl/responsibility/ResponsibilityAttribute.xml</value>
                 <value>classpath:org/kuali/rice/kim/bo/datadictionary/KimPermissionAttributeDataImpl.xml</value>
                 <value>classpath:org/kuali/rice/kim/impl/responsibility/ReviewResponsibility.xml</value>

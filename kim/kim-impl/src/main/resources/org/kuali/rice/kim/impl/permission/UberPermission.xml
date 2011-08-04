@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+<!--
+ Copyright 2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+  <bean id="PermissionImpl" parent="PermissionImpl-parentBean"/>
+
+  <bean id="PermissionImpl-parentBean" abstract="true" parent="BusinessObjectEntry" 
+        p:businessObjectClass="org.kuali.rice.kim.impl.permission.UberPermissionBo"
+        p:titleAttribute="id"
+        p:objectLabel="Permission"
+        p:inquiryDefinition-ref="PermissionImpl-inquiryDefinition" 
+        p:lookupDefinition-ref="PermissionImpl-lookupDefinition">
+    <property name="attributes">
+      <list>
+        <ref bean="PermissionImpl-template.namespaceCode"/>
+        <ref bean="PermissionImpl-template.name"/>
+        <ref bean="PermissionImpl-namespaceCode"/>
+        <ref bean="PermissionImpl-id"/>
+        <ref bean="PermissionImpl-name"/>
+        <ref bean="PermissionImpl-assignedToRoleNamespaceForLookup"/>
+        <ref bean="PermissionImpl-assignedToRoleNameForLookup"/>
+        <ref bean="PermissionImpl-assignedToPrincipalNameForLookup"/>
+        <ref bean="PermissionImpl-assignedToGroupNamespaceForLookup"/>
+        <ref bean="PermissionImpl-assignedToGroupNameForLookup"/>
+        <ref bean="PermissionImpl-templateId"/>
+        <ref bean="PermissionImpl-roleId"/>
+        <ref bean="PermissionImpl-principalId"/>
+        <ref bean="PermissionImpl-groupId"/>
+        <ref bean="PermissionImpl-attributeValue"/>
+        <ref bean="PermissionImpl-detailObjectsValues"/>
+        <ref bean="PermissionImpl-detailObjectsToDisplay"/>
+        <ref bean="PermissionImpl-assignedToRolesToDisplay"/>
+        <ref bean="PermissionImpl-detailCriteria"/>
+        <ref bean="PermissionImpl-active"/>
+      </list>
+    </property>
+	<property name="collections">
+      <list>
+        <bean parent="CollectionDefinition" p:name="attributeDetails" p:label="Permission Detail Values" p:shortLabel="Detail Values" p:elementLabel="Detail Values"/>
+        <bean parent="CollectionDefinition" p:name="assignedToRoles" p:label="Assigned Roles" p:shortLabel="Assigned Roles" p:elementLabel="Assigned Roles"/>
+
+      </list>
+    </property>
+    <property name="relationships">
+      <list>
+        <!--<bean parent="RelationshipDefinition">
+          <property name="objectAttributeName" value="template"/>
+          <property name="primitiveAttributes">
+            <list>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="template.id" p:targetName="id"/>
+            </list>
+          </property>
+          <property name="supportAttributes">
+            <list>
+              <bean parent="SupportAttributeDefinition" p:sourceName="template.name" p:targetName="name"/>
+            </list>
+          </property>
+        </bean>-->
+        <bean parent="RelationshipDefinition">
+          <property name="objectAttributeName" value="assignedToRole"/>
+          <property name="primitiveAttributes">
+            <list>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="assignedToRole.id" p:targetName="id"/>
+            </list>
+          </property>
+          <property name="supportAttributes">
+            <list>
+              <bean parent="SupportAttributeDefinition" p:sourceName="assignedToRole.name" p:targetName="name"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="RelationshipDefinition">
+          <property name="objectAttributeName" value="assignedToPrincipal"/>
+          <property name="primitiveAttributes">
+            <list>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="assignedToPrincipal.principalId" p:targetName="principalId"/>
+            </list>
+          </property>
+          <property name="supportAttributes">
+            <list>
+              <bean parent="SupportAttributeDefinition" p:sourceName="assignedToPrincipal.principalName" p:targetName="principalName"/>
+            </list>
+          </property>
+		</bean>
+        <bean parent="RelationshipDefinition">
+          <property name="objectAttributeName" value="assignedToGroup"/>
+          <property name="primitiveAttributes">
+            <list>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="assignedToGroup.id" p:targetName="id"/>
+            </list>
+          </property>
+          <property name="supportAttributes">
+            <list>
+              <bean parent="SupportAttributeDefinition" p:sourceName="assignedToGroup.name" p:targetName="name"/>
+            </list>
+          </property>
+		</bean>
+	</list>
+	</property>
+  </bean>
+
+  <bean id="PermissionImpl-template.namespaceCode" parent="PermissionImpl-template.namespaceCode-parentBean"/>
+  <bean id="PermissionImpl-template.namespaceCode-parentBean" parent="RoleBo-namespaceCode" abstract="true" p:name="template.namespaceCode" p:label="Template Namespace" p:shortLabel="Template Namespace">
+  </bean>
+    
+  <bean id="PermissionImpl-templateId" parent="PermissionImpl-templateId-parentBean"/>
+  <bean id="PermissionImpl-templateId-parentBean" parent="AttributeDefinition" abstract="true" p:name="template.id" p:label="Template Identifier" p:shortLabel="Template Identifier" p:maxLength="40" p:required="false">
+    <property name="control">
+      <bean parent="HiddenControlDefinition"/>
+    </property>
+  </bean>
+    
+
+  <bean id="PermissionImpl-roleId" parent="PermissionImpl-roleId-parentBean"/>
+  <bean id="PermissionImpl-roleId-parentBean" parent="AttributeDefinition" abstract="true" p:name="assignedToRole.id" p:label="Role Identifier" p:shortLabel="Role Identifier" p:maxLength="40" p:required="false">
+    <property name="control">
+      <bean parent="HiddenControlDefinition"/>
+    </property>
+  </bean>
+
+  <bean id="PermissionImpl-principalId" parent="PermissionImpl-principalId-parentBean"/>
+  <bean id="PermissionImpl-principalId-parentBean" parent="AttributeDefinition" abstract="true" p:name="assignedToPrincipal.principalId" p:label="Principal Identifier" p:shortLabel="Principal Identifier" p:maxLength="40" p:required="false">
+    <property name="control">
+      <bean parent="HiddenControlDefinition"/>
+    </property>
+  </bean>
+
+  <bean id="PermissionImpl-groupId" parent="PermissionImpl-groupId-parentBean"/>
+  <bean id="PermissionImpl-groupId-parentBean" parent="AttributeDefinition" abstract="true" p:name="assignedToGroup.id" p:label="Group Identifier" p:shortLabel="Group Identifier" p:maxLength="40" p:required="false">
+    <property name="control">
+      <bean parent="HiddenControlDefinition"/>
+    </property>
+  </bean>
+  
+  <bean id="PermissionImpl-attributeValue" parent="PermissionImpl-attributeValue-parentBean"/>
+  <bean id="PermissionImpl-attributeValue-parentBean" parent="PermissionAttribute-attributeValue" abstract="true"/>
+  
+  <bean id="PermissionImpl-template.name" parent="PermissionImpl-template.name-parentBean"/>
+  <bean id="PermissionImpl-template.name-parentBean" parent="AttributeDefinition" abstract="true" p:name="template.name" p:label="Template Name" p:shortLabel="Template Name" p:maxLength="40" p:required="false">
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="40"/>
+    </property>
+  </bean>
+  
+  
+  <bean id="PermissionImpl-namespaceCode" parent="PermissionImpl-namespaceCode-parentBean"/>
+  <bean id="PermissionImpl-namespaceCode-parentBean" parent="RoleBo-namespaceCode" abstract="true" p:name="namespaceCode" p:label="Permission Namespace" p:shortLabel="Permission Namespace">
+  </bean>
+  
+  <bean id="PermissionImpl-id" parent="PermissionImpl-id-parentBean"/>
+  <bean id="PermissionImpl-id-parentBean" parent="AttributeDefinition" abstract="true" p:name="id" p:label="Permission Identifier" p:shortLabel="Permission Identifier" p:maxLength="10" p:required="false">
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="10"/>
+    </property>
+  </bean>
+  
+  <bean id="PermissionImpl-name" parent="PermissionImpl-name-parentBean"/>
+  <bean id="PermissionImpl-name-parentBean" abstract="true" parent="KimType-name">
+    <property name="name" value="name"/>
+    <property name="label" value="Permission Name"/>
+    <property name="shortLabel" value="Permission Name"/>
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="40"/>
+    </property>    
+    <property name="validationPattern">
+			<bean parent="AlphaNumericValidationPattern" p:allowWhitespace="true" p:allowUnderscore="true" p:allowPeriod="true" p:allowParenthesis="true" p:allowDollar="true" p:allowForwardSlash="true"/>
+	</property>
+  </bean>
+
+  <bean id="PermissionImpl-assignedToRoleNamespaceForLookup" parent="PermissionImpl-assignedToRoleNamespaceForLookup-parentBean"/>
+  <bean id="PermissionImpl-assignedToRoleNamespaceForLookup-parentBean" parent="RoleBo-namespaceCode" abstract="true" p:name="assignedToRoleNamespaceForLookup" p:label="Role Namespace" p:shortLabel="Role Namespace">
+  </bean>
+
+  <bean id="PermissionImpl-assignedToRoleNameForLookup" parent="PermissionImpl-assignedToRoleNameForLookup-parentBean"/>
+  <bean id="PermissionImpl-assignedToRoleNameForLookup-parentBean" parent="RoleBo-name" abstract="true" p:name="assignedToRole.name">
+  </bean>
+
+  <bean id="PermissionImpl-assignedToPrincipalNameForLookup" parent="PermissionImpl-assignedToPrincipalNameForLookup-parentBean"/>
+  <bean id="PermissionImpl-assignedToPrincipalNameForLookup-parentBean" parent="AttributeDefinition" abstract="true" p:name="assignedToPrincipal.principalName" p:label="Principal Name" p:shortLabel="Principal Name" p:maxLength="40" p:required="false">
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="40"/>
+    </property>
+  </bean>
+  
+    <bean id="PermissionImpl-assignedToGroupNamespaceForLookup" parent="PermissionImpl-assignedToGroupNamespaceForLookup-parentBean"/>
+  <bean id="PermissionImpl-assignedToGroupNamespaceForLookup-parentBean" parent="AttributeDefinition" abstract="true" p:name="assignedToGroupNamespaceForLookup" p:label="Group Namespace" p:shortLabel="Group Namespace" p:maxLength="40" p:required="false">
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="40"/>
+    </property>
+  </bean>
+
+  <bean id="PermissionImpl-assignedToGroupNameForLookup" parent="PermissionImpl-assignedToGroupNameForLookup-parentBean"/>
+  <bean id="PermissionImpl-assignedToGroupNameForLookup-parentBean" parent="AttributeDefinition" abstract="true" p:name="assignedToGroup.name" p:label="Group Name" p:shortLabel="Group Name" p:maxLength="40" p:required="false">
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="40"/>
+    </property>
+  </bean>    
+
+	<bean id="PermissionImpl-detailObjects" parent="PermissionImpl-detailObjects-parentBean"/>
+		<bean id="PermissionImpl-detailObjects-parentBean" parent="AttributeDefinition" abstract="true" p:name="detailObjectsValues" p:label="Permission Detail Values" p:shortLabel="Detail Values" p:maxLength="40" p:required="false">
+		<property name="control">
+	     <bean parent="TextControlDefinition" p:size="40"/>
+		</property>
+	</bean>
+          
+  <bean id="PermissionImpl-detailObjectsValues" parent="PermissionImpl-detailObjectsValues-parentBean"/>
+  <bean id="PermissionImpl-detailObjectsValues-parentBean" parent="AttributeDefinition" abstract="true" p:name="detailObjectsValues" p:label="Permission Detail Values" p:shortLabel="Detail Values" p:maxLength="40" p:required="false">
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="40"/>
+    </property>
+  </bean>
+
+  <bean id="PermissionImpl-detailCriteria" parent="PermissionImpl-detailCriteria-parentBean"/>
+  <bean id="PermissionImpl-detailCriteria-parentBean" parent="AttributeDefinition" abstract="true" p:name="detailCriteria" p:label="Permission Detail Criteria" p:shortLabel="Detail Criteria" p:maxLength="200" p:required="false">
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="40"/>
+    </property>
+  </bean>
+
+  <bean id="PermissionImpl-detailObjectsToDisplay" parent="PermissionImpl-detailObjectsValues" p:name="detailObjectsToDisplay">
+  </bean>
+  
+  <bean id="PermissionImpl-assignedToRolesToDisplay" parent="PermissionImpl-assignedToRolesToDisplay-parentBean"/>
+  <bean id="PermissionImpl-assignedToRolesToDisplay-parentBean" parent="AttributeDefinition" abstract="true" p:name="assignedToRolesToDisplay" p:label="Granted to Roles" p:shortLabel="Granted to Roles" p:maxLength="40" p:required="false">
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="40"/>
+    </property>
+  </bean>
+   
+  <bean id="PermissionImpl-active" parent="PermissionImpl-active-parentBean"/>
+  <bean id="PermissionImpl-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
+    <property name="name" value="active"/>
+  </bean>
+    
+  <bean id="PermissionImpl-inquiryDefinition" parent="PermissionImpl-inquiryDefinition-parentBean"/>
+  <bean id="PermissionImpl-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition" p:title="Permission Inquiry">
+    <property name="inquirySections">
+      <list>
+        <bean parent="InquirySectionDefinition" p:title="Permission Attributes" p:numberOfColumns="1">
+          <property name="inquiryFields">
+            <list>
+              <bean parent="FieldDefinition" p:attributeName="template.namespaceCode"/>
+              <bean parent="FieldDefinition" p:attributeName="template.name"/>
+        	  <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
+        	  <bean parent="FieldDefinition" p:attributeName="name"/>
+			</list>
+          </property>
+        </bean>
+        <bean parent="InquirySectionDefinition">
+          <property name="title" value="Permission Detail Values"/>
+          <property name="inquiryFields">
+            <list>
+				<bean parent="InquiryCollectionDefinition">
+	                <property name="attributeName" value="attributeDetails"/>
+	                <property name="businessObjectClass" value="org.kuali.rice.kim.impl.permission.PermissionAttributeBo"/>
+	                <property name="numberOfColumns" value="2"/>
+	                <property name="inquiryFields">
+						<list>
+		                    <bean parent="FieldDefinition" p:attributeName="kimAttribute.attributeName"/>
+		                    <bean parent="FieldDefinition" p:attributeName="attributeValue"/>
+		                </list>
+		            </property>
+		            <property name="summaryFields">
+		                  <list>
+		                    <bean parent="FieldDefinition" p:attributeName="kimAttribute.attributeName"/>
+		                    <bean parent="FieldDefinition" p:attributeName="attributeValue"/>
+		                  </list>
+	                </property>
+		        </bean>
+			</list>
+		  </property>
+		</bean>
+        <bean parent="InquirySectionDefinition">
+          <property name="title" value="Permission Assigned Roles"/>
+          <property name="inquiryFields">
+            <list>
+				<bean parent="InquiryCollectionDefinition">
+	                <property name="attributeName" value="assignedToRoles"/>
+	                <property name="businessObjectClass" value="org.kuali.rice.kim.impl.role.RoleBo"/>
+	                <property name="numberOfColumns" value="3"/>
+	                <property name="inquiryFields">
+						<list>
+		                    <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
+		                    <bean parent="FieldDefinition" p:attributeName="name"/>
+		                    <bean parent="FieldDefinition" p:attributeName="kimRoleType.name"/>
+		                </list>
+		            </property>
+		            <property name="summaryFields">
+		                  <list>
+		                    <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
+		                    <bean parent="FieldDefinition" p:attributeName="name"/>
+		                    <bean parent="FieldDefinition" p:attributeName="kimRoleType.name"/>
+		                  </list>
+	                </property>
+		        </bean>
+			</list>
+		  </property>
+		</bean>
+      </list>
+    </property>
+    <property name="inquirableClass" value="org.kuali.rice.kim.impl.permission.PermissionInquirableImpl"/>
+  </bean>
+
+  <bean id="PermissionImpl-lookupDefinition" parent="PermissionImpl-lookupDefinition-parentBean"/>
+  <bean id="PermissionImpl-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition" p:title="Permission Lookup">
+    <property name="lookupableID" value="permissionLookupable"/>
+    <property name="defaultSort">
+      <bean parent="SortDefinition">
+        <property name="attributeNames">
+          <list>
+            <value>id</value>
+          </list>
+        </property>
+        <property name="sortAscending" value="true"/>
+      </bean>
+    </property>
+    <property name="lookupFields">
+      <list>
+          <bean parent="FieldDefinition" p:attributeName="template.namespaceCode" p:noLookup="true"/>
+          <bean parent="FieldDefinition" p:attributeName="template.name" p:noLookup="true"/>
+       	  <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
+       	  <bean parent="FieldDefinition" p:attributeName="name" p:forceLookup="true"/>
+          <bean parent="FieldDefinition" p:attributeName="assignedToRoleNamespaceForLookup"/>
+          <bean parent="FieldDefinition" p:attributeName="assignedToRole.name" p:forceLookup="true"/>
+          <bean parent="FieldDefinition" p:attributeName="assignedToPrincipal.principalName" p:forceLookup="true"/>
+          <bean parent="FieldDefinition" p:attributeName="assignedToGroupNamespaceForLookup"/>
+          <bean parent="FieldDefinition" p:attributeName="assignedToGroup.name" p:forceLookup="true"/>
+          <bean parent="FieldDefinition" p:attributeName="attributeValue"/>
+          <bean parent="FieldDefinition" p:attributeName="detailCriteria"/>
+          <bean parent="FieldDefinition" p:attributeName="assignedToRole.id"/>
+          <bean parent="FieldDefinition" p:attributeName="assignedToPrincipal.principalId"/>
+          <bean parent="FieldDefinition" p:attributeName="template.id"/>
+          <bean parent="FieldDefinition" p:attributeName="assignedToGroup.id"/>
+          <bean parent="FieldDefinition" p:attributeName="active" p:defaultValue="Y"/>
+      </list>
+    </property>
+    <property name="resultFields">
+      <list>
+          <bean parent="FieldDefinition" p:attributeName="template.namespaceCode"/>
+          <bean parent="FieldDefinition" p:attributeName="template.name"/>
+       	  <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
+       	  <bean parent="FieldDefinition" p:attributeName="name"/>
+       	  <bean parent="FieldDefinition" p:attributeName="detailObjectsToDisplay"/>
+       	  <bean parent="FieldDefinition" p:attributeName="assignedToRolesToDisplay"/>
+      </list>
+    </property>
+  </bean>
+
+</beans>

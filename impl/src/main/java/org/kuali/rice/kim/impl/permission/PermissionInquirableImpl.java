@@ -162,8 +162,7 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
 		try{
 			PropertyUtils.copyProperties(permissionSearchResultCopy, permissionSearchResult);
 		} catch(Exception ex){
-			//TODO: remove this
-			ex.printStackTrace();
+			throw new RuntimeException(ex);
 		}
 		Map<String, String> criteria = new HashMap<String, String>();
 		criteria.put("permissionId", permissionSearchResultCopy.getId());

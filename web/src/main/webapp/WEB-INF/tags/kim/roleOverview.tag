@@ -16,15 +16,15 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <c:set var="roleAttributes" value="${DataDictionary.RoleBo.attributes}" />
-<c:set var="roleTypeAttributes" value="${DataDictionary.KimTypeImpl.attributes}" />
+<c:set var="roleTypeAttributes" value="${DataDictionary.KimTypeBo.attributes}" />
 
 <kul:tab tabTitle="Overview" defaultOpen="true" transparentBackground="${inquiry}" tabErrorKey="document.role*,document.active">
 
 <div class="tab-container" align="center">
 	<table cellpadding="0" cellspacing="0" summary=""> 
 	 	<tr>
-			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${roleAttributes.roleId}"  /></div></th>
-	 		<td><kul:htmlControlAttribute property="document.roleId" attributeEntry="${roleAttributes.roleId}" readOnly="true" /></td>
+			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${roleAttributes.id}"  /></div></th>
+	 		<td><kul:htmlControlAttribute property="document.roleId" attributeEntry="${roleAttributes.id}" readOnly="true" /></td>
     		<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${roleTypeAttributes.name}"  /></div></th>
 	 		<td><kul:htmlControlAttribute property="document.roleTypeName" attributeEntry="${roleTypeAttributes.name}" readOnly="true" /></td>
 	 		<html:hidden property="document.roleTypeId" />

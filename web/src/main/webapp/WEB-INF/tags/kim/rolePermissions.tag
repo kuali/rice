@@ -52,7 +52,7 @@
         	<tr>
         		<th>&nbsp;</th> 
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.namespaceCode}" noColon="true" /></div></th>
-        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.permissionId}" noColon="true" /></div></th>
+        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.id}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.name}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.detailObjectsToDisplay}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.active}" noColon="true" /></div></th>
@@ -70,7 +70,7 @@
 					</div>
 				</td>
 	            <td align="left" valign="middle">
-	               	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].permissionId"  attributeEntry="${permissionAttributes.permissionId}" readOnly="true"  />
+	               	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].permissionId"  attributeEntry="${permissionAttributes.id}" readOnly="true"  />
 					</div>
 				</td>
 	            <td align="left" valign="middle">
@@ -78,7 +78,7 @@
 					</div>
 				</td>
 	            <td align="left" valign="middle">
-	               	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].permission.attributes"  attributeEntry="${permissionAttributes.attributes}" readOnly="true"  />
+	               	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].permission.attributes"  attributeEntry="${permissionAttributes.attributeDetails}" readOnly="true"  />
 					</div>
 				</td>
 				<c:choose>

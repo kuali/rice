@@ -49,13 +49,12 @@
 <%@ attribute name="forceRequired" required="false" description="Whether this control should be rendered as required, no matter the information from the data dictionary about the required state of the attribute." %>
 <%
 if (property == null) {
-  throw new javax.servlet.jsp.JspTagException("property was null");
+  throw new javax.servlet.jsp.JspTagException("property was null, attributeEntry: " + attributeEntry);
 }
 
 if (attributeEntry == null) {
-  throw new javax.servlet.jsp.JspTagException("attributeEntry was null");
+  throw new javax.servlet.jsp.JspTagException("attributeEntry was null, property: " + property);
 }
-
 %>
 
 <c:set var="sessionDocument" value="${requestScope['sessionDoc']}" />

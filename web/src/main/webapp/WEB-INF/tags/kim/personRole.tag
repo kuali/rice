@@ -103,7 +103,7 @@
 				<kim:cell inquiry="${inquiry}" valign="middle" textAlign="center" property="document.roles[${status.index}].roleId"  attributeEntry="${docRoleAttributes.roleId}" readOnly="true" />
                 <kim:cell inquiry="${inquiry}" valign="middle" textAlign="center" property="document.roles[${status.index}].namespaceCode"  attributeEntry="${docRoleAttributes.namespaceCode}" readOnly="true" />
                 <kim:cell inquiry="${inquiry}" valign="middle" textAlign="center" property="document.roles[${status.index}].roleName"  attributeEntry="${docRoleAttributes.roleName}" readOnly="true" />
-                <kim:cell inquiry="${inquiry}" valign="middle" textAlign="center" property="document.roles[${status.index}].kimRoleType.name"  attributeEntry="${docRoleAttributes.kimGroupType.name}" readOnly="true" />
+                <kim:cell inquiry="${inquiry}" valign="middle" textAlign="center" property="document.roles[${status.index}].kimRoleType.name"  attributeEntry="${docRoleAttributes['kimGroupType.name']}" readOnly="true" />
 
 				<c:set var="roleMemberActiveDatesReadOnly" value="${(!empty role.definitions and fn:length(role.definitions) > 0) || readOnlyRole}" />
                 <td align="left" valign="middle">

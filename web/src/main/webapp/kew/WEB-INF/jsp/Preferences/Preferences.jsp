@@ -57,7 +57,6 @@
               <html-el:option value="${Constants.EMAIL_RMNDR_WEEK_VAL}">Weekly</html-el:option>
               <html-el:option value="${Constants.EMAIL_RMNDR_IMMEDIATE}">Immediate</html-el:option>
             </html-el:select>
-            <bean-el:message key="actionlist.help.emailNotification"/>
           </td>
         </tr>
         <tr>

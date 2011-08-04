@@ -15,14 +15,13 @@
  */
 package edu.sampleu.travel.krad.form;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.krad.web.form.UifFormBase;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Form for Test UI Page
@@ -113,6 +112,12 @@ public class UILayoutTestForm extends UifFormBase {
     private String field79;
     private String field80;
     private String field81;
+    private String field82;
+    private String field83;
+    private String field84;
+    private String field85;
+    private String field86;
+    private String field87;
     
     private String gField1;
     private String gField2;
@@ -1569,6 +1574,52 @@ public class UILayoutTestForm extends UifFormBase {
     public void setTree1(Tree<String, String> tree1) {
         this.tree1 = tree1;
     }
-    
-    
+
+    public String getField82() {
+        return field82;
+    }
+
+    public void setField82(String field82) {
+        this.field82 = field82;
+    }
+
+    public String getField83() {
+        return field83;
+    }
+
+    public void setField83(String field83) {
+        this.field83 = field83;
+    }
+
+    public String getField84() {
+        return field84;
+    }
+
+    public void setField84(String field84) {
+        this.field84 = field84;
+    }
+
+    public String getField85() {
+        return field85;
+    }
+
+    public void setField85(String field85) {
+        this.field85 = field85;
+    }
+
+    public String getField86() {
+        return field86;
+    }
+
+    public void setField86(String field86) {
+        this.field86 = field86;
+    }
+
+    public String getField87() {
+        return field87;
+    }
+
+    public void setField87(String field87) {
+        this.field87 = field87;
+    }
 }

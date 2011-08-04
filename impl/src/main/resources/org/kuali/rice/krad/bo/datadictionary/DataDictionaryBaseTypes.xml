@@ -234,6 +234,21 @@
         abstract="true" 
         class="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
         p:labelKey="validation.phoneNumber" p:patternTypeKey="validationPatternRegex.phoneNumber"/>
+
+    <bean id="TimePatternConstraint"
+        abstract="true"
+        class="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
+        p:labelKey="validation.time12" p:patternTypeKey="validationPatternRegex.time12"/>
+
+    <bean id="Time24HPatternConstraint"
+        abstract="true"
+        class="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
+        p:labelKey="validation.time24" p:patternTypeKey="validationPatternRegex.time24"/>
+
+    <bean id="UrlPatternConstraint"
+        abstract="true"
+        class="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"
+        p:labelKey="validation.url" p:patternTypeKey="validationPatternRegex.url"/>
         
     <bean id="NoWhitespacePatternConstraint" 
         abstract="true" 

@@ -33,8 +33,8 @@ import org.kuali.rice.krad.uif.service.ViewTypeService;
  * 
  * <p>
  * Provides methods for retrieving View instances and carrying out the View
- * lifecycle methods. Interacts with the configured
- * <code>ViewHelperService</code> during the view lifecycle
+ * lifecycle methods. Interacts with the configured <code>ViewHelperService</code>
+ * during the view lifecycle
  * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)

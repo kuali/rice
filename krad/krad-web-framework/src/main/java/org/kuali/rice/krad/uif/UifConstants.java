@@ -111,7 +111,6 @@ public class UifConstants {
 
     public static final String EL_PLACEHOLDER_PREFIX = "@{";
     public static final String EL_PLACEHOLDER_SUFFIX = "}";
-    public static final String EL_CONDITIONAL_PROPERTY_PREFIX = "conditional";
     public static final String NO_BIND_ADJUST_PREFIX = "form.";
     public static final String DATA_OBJECT_BIND_ADJUST_PREFIX = "do.";
 

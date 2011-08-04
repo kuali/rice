@@ -164,7 +164,7 @@
                   name="fieldSuggest.suggestQuery.dataObjectClassName"
                   value="org.kuali.rice.krms.impl.repository.ContextBo" />
               </bean>
-              <bean parent="AttributeField" p:propertyName="namespace" p:readOnly="true" p:conditionalReadOnly=""
+              <bean parent="AttributeField" p:propertyName="namespace" p:readOnly="true"
                 p:label="Namespace" p:labelPlacement="LEFT" />
               <bean parent="AttributeField" p:propertyName="id"
                 p:showLabel="true" p:label="id" p:maxLength="40">
@@ -216,7 +216,7 @@
   </bean>
 
   <bean id="AgendaEditorView-TreeExpandCollapse" parent="FieldGroup" p:showLabel="false"
-    p:conditionalRender="document.newMaintainableObject.dataObject.agenda != null and document.newMaintainableObject.dataObject.agenda.name != null and !document.newMaintainableObject.dataObject.agenda.name.isEmpty()"
+    p:render="@{document.newMaintainableObject.dataObject.agenda != null and document.newMaintainableObject.dataObject.agenda.name != null and !document.newMaintainableObject.dataObject.agenda.name.isEmpty()}"
     p:style="font-size: smaller;">
     <property name="group.layoutManager.orientation" value="HORIZONTAL"/>
     <property name="items">

@@ -16,6 +16,8 @@ import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Provides binding configuration for an DataBinding component (attribute or
@@ -40,12 +42,15 @@ public class BindingInfo implements Serializable {
     private String bindingObjectPath;
 
     private String collectionPath;
-
     private String bindingPath;
+
+    private Map<String, String> propertyExpressions;
 
     public BindingInfo() {
         bindToForm = false;
         bindToMap = false;
+
+        propertyExpressions = new HashMap<String, String>();
     }
 
     /**
@@ -332,4 +337,21 @@ public class BindingInfo implements Serializable {
         this.bindToMap = bindToMap;
     }
 
+    /**
+     * Map that holds expressions to evaluate for conditionally setting the binding properties
+     *
+     * @return Map<String, String> map of property expressions
+     */
+    public Map<String, String> getPropertyExpressions() {
+        return propertyExpressions;
+    }
+
+    /**
+     * Setter for the map of property expressions
+     *
+     * @param propertyExpressions
+     */
+    public void setPropertyExpressions(Map<String, String> propertyExpressions) {
+        this.propertyExpressions = propertyExpressions;
+    }
 }

@@ -29,5 +29,5 @@ public class UifPropertyPaths {
 	public static final String CONTEXT = "context";
 	public static final String CRITERIA_FIELDS = "criteriaFields";
 	public static final String NEW_COLLECTION_LINES = "newCollectionLines";
-	
+	public static final String PROPERTY_EXPRESSIONS = "propertyExpressions";
 }

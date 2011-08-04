@@ -1231,7 +1231,7 @@
 					p:conditionalRefresh="field44 eq 'show1'" p:propertyName="field45" />
 				<bean parent="GenericTextField" p:label="Field 2"
 					p:progressiveRenderViaAJAX="true" p:refreshWhenChanged="field44"
-					p:conditionalReadOnly="field44 eq 'show2'" p:propertyName="field46" />
+					p:readOnly="@{field44 eq 'show2'}" p:propertyName="field46" />
 			</list>
 		</property>
 	</bean>

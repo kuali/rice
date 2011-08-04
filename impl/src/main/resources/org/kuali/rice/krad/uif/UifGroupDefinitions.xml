@@ -39,7 +39,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="summaryMessageField">
         <bean parent="MessageField" p:messageType="SUMMARY" p:styleClasses="summary"/>
       </property> 
-      <property name="conditionalReadOnly" value="#parent.readOnly"/>           
+      <property name="readOnly" value="@{#parent.readOnly}"/>
   </bean>
   
   <bean id="PageGroup" abstract="true" parent="PageGroup-parentBean"/>
@@ -60,7 +60,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="summaryMessageField">
         <bean parent="MessageField" p:messageType="SUMMARY" p:styleClasses="summary"/>
       </property> 
-      <property name="conditionalReadOnly" value="#parent.readOnly"/>           
+      <property name="readOnly" value="@{#parent.readOnly}"/>
   </bean>
   
   <bean id="GroupGridLayout" abstract="true" parent="GroupGridLayout-parentBean"/>
@@ -270,17 +270,17 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>
 
   <bean id="Group_ShowHideInactive" parent="GroupBodyOnly"
-        p:conditionalRender="#isAssignableFrom(T(org.kuali.rice.core.api.mo.common.active.Inactivatable),
-    #collectionGroup.collectionObjectClass)">
+        p:render="@{#isAssignableFrom(T(org.kuali.rice.core.api.mo.common.active.Inactivatable),
+    #collectionGroup.collectionObjectClass)}">
     <property name="items">
       <list>
-        <bean parent="ActionField_ShowInactive" p:conditionalRender="!#collectionGroup.showInactive and #collectionGroup.showHideInactiveButton"/>
-        <bean parent="ActionField_HideInactive" p:conditionalRender="#collectionGroup.showInactive and #collectionGroup.showHideInactiveButton"/>
+        <bean parent="ActionField_ShowInactive" p:render="@{!#collectionGroup.showInactive and #collectionGroup.showHideInactiveButton}"/>
+        <bean parent="ActionField_HideInactive" p:render="@{#collectionGroup.showInactive and #collectionGroup.showHideInactiveButton}"/>
       </list>
     </property>
   </bean>
   
-  <bean id="Group_DocumentHeader" parent="GroupGridBodyOnly" p:conditionalReadOnly="true">
+  <bean id="Group_DocumentHeader" parent="GroupGridBodyOnly" p:readOnly="true">
       <property name="id" value="group_docheader"/>
       <property name="items">
          <list> 
@@ -321,11 +321,11 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 		<property name="layoutManager.tableTools.render" value="false" />
 		<property name="items">
 			<list>
-				<bean parent="AttributeField" p:propertyName="notePostedTimestamp" p:conditionalReadOnly="true"/>
-				<bean parent="AttributeField" p:propertyName="authorUniversal.principalName" p:conditionalReadOnly="true"/>
-				<bean parent="AttributeField" p:propertyName="noteTopicText" p:conditionalRender="#DocumentEntry.displayTopicFieldInNotes" />
+				<bean parent="AttributeField" p:propertyName="notePostedTimestamp" p:readOnly="true"/>
+				<bean parent="AttributeField" p:propertyName="authorUniversal.principalName" p:readOnly="true"/>
+				<bean parent="AttributeField" p:propertyName="noteTopicText" p:render="@{#DocumentEntry.displayTopicFieldInNotes}" />
 				<bean parent="AttributeField" p:propertyName="noteText" />
-				<bean parent="FieldGroup" p:label="Attached File" p:conditionalRender="#DocumentEntry.allowsNoteAttachments">
+				<bean parent="FieldGroup" p:label="Attached File" p:render="@{#DocumentEntry.allowsNoteAttachments}">
 					<property name="items">
 						<list>
 							<bean parent="AttributeField_Form" p:propertyName="attachmentFile" 
@@ -364,14 +364,14 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 					</property>
 				</bean>
 				<!-- TODO: field needs translation to options label when read-only -->
-				<bean parent="AttributeField" p:propertyName="attachment.attachmentTypeCode" p:conditionalRender="#DocumentEntry.allowsNoteAttachments" />
-				<bean parent="AttributeField" p:propertyName="adHocRouteRecipient.id"  p:conditionalReadOnly="!#isAddLine"
-				      p:conditionalRender="#DocumentEntry.allowsNoteFYI and #actionFlags[#Constants.KUALI_ACTION_CAN_SEND_NOTE_FYI]" />
+				<bean parent="AttributeField" p:propertyName="attachment.attachmentTypeCode" p:render="@{#DocumentEntry.allowsNoteAttachments}" />
+				<bean parent="AttributeField" p:propertyName="adHocRouteRecipient.id"  p:readOnly="@{!#isAddLine}"
+				      p:render="@{#DocumentEntry.allowsNoteFYI and #actionFlags[#Constants.KUALI_ACTION_CAN_SEND_NOTE_FYI]}" />
 			</list>
 		</property>
 		<property name="bindingInfo.bindingObjectPath" value="document" />
-		<property name="accordion.conditionalDefaultOpen"
-			value="!document.notes.empty or #component.defaultOpen" />
+		<property name="accordion.defaultOpen"
+			value="@{!document.notes.empty or #component.defaultOpen}" />
 		<property name="errorsField.additionalKeysToMatch" value="attachmentFile" />
 	    <property name="addLineActionFields">
 		   <list>
@@ -382,73 +382,73 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 	  	   <list>
 			  <bean parent="ActionField_Small" p:methodToCall="deleteNote" p:actionLabel="delete" p:title="Delete a Note"/>
 			  <bean parent="ActionField_Small" p:methodToCall="sendNoteWorkflowNotification" p:actionLabel="send" p:title="Send FYI"
-			        p:conditionalRender="#DocumentEntry.allowsNoteFYI and #actionFlags[#Constants.KUALI_ACTION_CAN_SEND_NOTE_FYI]"/>
+			        p:render="@{#DocumentEntry.allowsNoteFYI and #actionFlags[#Constants.KUALI_ACTION_CAN_SEND_NOTE_FYI]}"/>
 		   </list>
 	    </property>
-	</bean>    
+	</bean>
 
   <bean id="Group_DocumentAdHocRecipients" parent="GroupSection">
-      <property name="id" value="group_docadhocrecipients"/>
-      <property name="title" value="Ad Hoc Recipients"/>
-      <property name="items">
-        <list>
-            <bean id="CollectionGroup_AdHocPerson" parent="CollectionGroupTableLayout"
-                  p:layoutManager.numberOfColumns="2" p:accordion.render="false">
-                <property name="collectionObjectClass" value="org.kuali.rice.krad.bo.AdHocRoutePerson" />
-                <property name="propertyName" value="adHocRoutePersons" />
-                <property name="bindingInfo.bindingObjectPath" value="document" />
-                <property name="title" value="Person Requests:" />
-                <property name="layoutManager.renderSequenceField" value="false" />
-                <property name="layoutManager.tableTools.render" value="false" />
-                <property name="styleClasses" value="tableborders wrap" />
-                <property name="items">
-                    <list>
-                        <bean parent="AttributeField" p:propertyName="actionRequested">
-                            <property name="control">
-							    <bean parent="SelectControl" />
-							</property>
-                            <property name="optionsFinder">
-                                <bean class="org.kuali.rice.krad.keyvalues.AdHocActionRequestCodesValuesFinder"/>
-                            </property>
-                        </bean>
-                        <bean parent="AttributeField" p:propertyName="name" p:label="Person" p:required="true">
-                            <property name="control">
-                                <bean parent="UserControl" p:principalIdPropertyName="id" p:personNamePropertyName="person.name" />
-                            </property>
-                        </bean>
-                    </list>
+    <property name="id" value="group_docadhocrecipients"/>
+    <property name="title" value="Ad Hoc Recipients"/>
+    <property name="items">
+      <list>
+        <bean id="CollectionGroup_AdHocPerson" parent="CollectionGroupTableLayout"
+              p:layoutManager.numberOfColumns="2" p:accordion.render="false">
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.bo.AdHocRoutePerson"/>
+          <property name="propertyName" value="adHocRoutePersons"/>
+          <property name="bindingInfo.bindingObjectPath" value="document"/>
+          <property name="title" value="Person Requests:"/>
+          <property name="layoutManager.renderSequenceField" value="false"/>
+          <property name="layoutManager.tableTools.render" value="false"/>
+          <property name="styleClasses" value="tableborders wrap"/>
+          <property name="items">
+            <list>
+              <bean parent="AttributeField" p:propertyName="actionRequested">
+                <property name="control">
+                  <bean parent="SelectControl"/>
                 </property>
-            </bean>
-            <bean id="CollectionGroup_AdHocWorkgroup" parent="CollectionGroupTableLayout"
-                  p:layoutManager.numberOfColumns="3" p:accordion.render="false">
-                <property name="collectionObjectClass" value="org.kuali.rice.krad.bo.AdHocRouteWorkgroup" />
-                <property name="propertyName" value="adHocRouteWorkgroups" />
-                <property name="title" value="Ad Hoc Group Requests:" />
-                <property name="bindingInfo.bindingObjectPath" value="document" />
-                <property name="layoutManager.renderSequenceField" value="false" />
-                <property name="layoutManager.tableTools.render" value="false" />
-                <property name="styleClasses" value="tableborders wrap" />
-                <property name="items">
-                    <list>
-                        <bean parent="AttributeField" p:propertyName="actionRequested">
-                            <property name="control">
-							    <bean parent="SelectControl" />
-							</property>
-                            <property name="optionsFinder">
-                                <bean class="org.kuali.rice.krad.keyvalues.AdHocActionRequestCodesValuesFinder"/>
-                            </property>
-                        </bean>
-                        <bean parent="AttributeField" p:propertyName="recipientNamespaceCode" p:label="Namespace Code" />
-                        <bean parent="AttributeField" p:propertyName="recipientName" p:label="Name">
-                            <property name="control">
-                                <bean parent="GroupControl" />
-                            </property>
-                        </bean>
-                    </list>
+                <property name="optionsFinder">
+                  <bean class="org.kuali.rice.krad.keyvalues.AdHocActionRequestCodesValuesFinder"/>
                 </property>
-            </bean>
-        </list>
-      </property>
+              </bean>
+              <bean parent="AttributeField" p:propertyName="name" p:label="Person" p:required="true">
+                <property name="control">
+                  <bean parent="UserControl" p:principalIdPropertyName="id" p:personNamePropertyName="person.name"/>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+        <bean id="CollectionGroup_AdHocWorkgroup" parent="CollectionGroupTableLayout"
+              p:layoutManager.numberOfColumns="3" p:accordion.render="false">
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.bo.AdHocRouteWorkgroup"/>
+          <property name="propertyName" value="adHocRouteWorkgroups"/>
+          <property name="title" value="Ad Hoc Group Requests:"/>
+          <property name="bindingInfo.bindingObjectPath" value="document"/>
+          <property name="layoutManager.renderSequenceField" value="false"/>
+          <property name="layoutManager.tableTools.render" value="false"/>
+          <property name="styleClasses" value="tableborders wrap"/>
+          <property name="items">
+            <list>
+              <bean parent="AttributeField" p:propertyName="actionRequested">
+                <property name="control">
+                  <bean parent="SelectControl"/>
+                </property>
+                <property name="optionsFinder">
+                  <bean class="org.kuali.rice.krad.keyvalues.AdHocActionRequestCodesValuesFinder"/>
+                </property>
+              </bean>
+              <bean parent="AttributeField" p:propertyName="recipientNamespaceCode" p:label="Namespace Code"/>
+              <bean parent="AttributeField" p:propertyName="recipientName" p:label="Name">
+                <property name="control">
+                  <bean parent="GroupControl"/>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
   </bean>
 
   <bean id="Group_DocumentRouteLog" parent="GroupSection">
@@ -467,7 +467,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
   <bean id="MaintenanceGroupSectionGridLayout" abstract="true" parent="MaintenanceGroupSectionGridLayout-parentBean"/>
   <bean id="MaintenanceGroupSectionGridLayout-parentBean" parent="GroupSectionGridLayout">
-    <property name="layoutManager.conditionalNumberOfColumns" value="maintenanceAction eq 'Edit' ? 4 : 2"/>
+    <property name="layoutManager.numberOfColumns" value="@{maintenanceAction eq 'Edit' ? 4 : 2}"/>
     <property name="componentModifiers">
        <list merge="true">
          <bean parent="MaintenanceCompareModifier" p:runPhase="APPLY_MODEL" p:runCondition="maintenanceAction eq 'Edit'"/>
@@ -482,7 +482,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="MaintenanceCollectionGroupSection-parentBean" parent="CollectionGroupSection">
     <property name="layoutManager.lineGroupPrototype">
        <bean parent="StackedGroupPrototype">
-         <property name="layoutManager.conditionalNumberOfColumns" value="maintenanceAction eq 'Edit' ? 4 : 2"/>
+         <property name="layoutManager.numberOfColumns" value="@{maintenanceAction eq 'Edit' ? 4 : 2}"/>
          <property name="componentModifiers">
             <list merge="true">
               <bean parent="MaintenanceCompareModifier" p:runPhase="APPLY_MODEL" p:runCondition="maintenanceAction eq 'Edit'"/>
@@ -518,7 +518,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     <property name="propertyName" value="searchResults"/>
     <property name="layoutManager.renderSequenceField" value="false"/>
     <property name="renderAddLine" value="false"/>
-    <property name="conditionalReadOnly" value="true"/>
+    <property name="readOnly" value="true"/>
     <property name="accordion.render" value="false"/>
     <property name="header.group">
       <bean parent="GroupBodyOnly"/>

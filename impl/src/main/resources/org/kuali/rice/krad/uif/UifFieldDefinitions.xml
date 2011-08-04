@@ -25,7 +25,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="AttributeField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.AttributeField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/attributeField.jsp"/>
       <property name="styleClasses" value="field_attribute"/>
-	  <property name="errorsField">
+	    <property name="errorsField">
         <bean parent="ErrorsField"/>
       </property>
       <property name="labelField">
@@ -52,7 +52,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="constraintMessageField">
         <bean parent="MessageField" p:messageType="CONSTRAINT" p:styleClasses="constraint"/>
       </property>  
-      <property name="conditionalReadOnly" value="#parent.readOnly"/>         
+      <property name="readOnly" value="@{#parent.readOnly}"/>
   </bean>  
   
   <bean id="AttributeField_Form" parent="AttributeField_Form-parentBean"/>
@@ -320,7 +320,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="ActionLinkField_CreateNew" parent="LinkField"
         p:styleClasses="action" p:linkLabel="Create New"
         p:hrefText="maintenance?methodToCall=start&amp;dataObjectClassName=@{#getName(#view.dataObjectClassName)}&amp;viewTypeName=MAINTENANCE"
-        p:conditionalRender="!#view.suppressActions and #view.showMaintenanceLinks and #ViewHelper.allowsMaintenanceNewOrCopyAction()" />
+        p:render="@{!#view.suppressActions and #view.showMaintenanceLinks and #ViewHelper.allowsMaintenanceNewOrCopyAction()}" />
 
   <bean id="ActionField_ShowInactive" parent="ActionField_SmallSecondary" p:methodToCall="toggleInactiveRecordDisplay"
         p:actionLabel="show inactive" p:clientSideJs="toggleInactiveRecordDisplay('@{#component.context['collectionGroup'].id}', true);"/>

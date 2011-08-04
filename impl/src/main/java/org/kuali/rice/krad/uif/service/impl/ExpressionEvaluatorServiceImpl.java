@@ -10,13 +10,14 @@
  */
 package org.kuali.rice.krad.uif.service.impl;
 
-import java.beans.PropertyDescriptor;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.core.BindingInfo;
 import org.kuali.rice.krad.uif.core.Component;
 import org.kuali.rice.krad.uif.core.PropertyReplacer;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
@@ -33,22 +34,23 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 /**
  * Evaluates expression language statements using the Spring EL engine TODO:
  * Look into using Rice KRMS for evaluation
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorService {
-    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
-            .getLogger(ExpressionEvaluatorServiceImpl.class);
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(
+            ExpressionEvaluatorServiceImpl.class);
 
     /**
-     * @see org.kuali.rice.krad.uif.service.ExpressionEvaluatorService#evaluateObjectProperties(java.lang.Object,
+     * @see org.kuali.rice.krad.uif.service.ExpressionEvaluatorService#evaluateObjectExpressions(java.lang.Object,
      *      java.lang.Object, java.util.Map)
      */
-    public void evaluateObjectProperties(Object object, Object contextObject, Map<String, Object> evaluationParameters) {
-        if (object instanceof Component) {
+    public void evaluateObjectExpressions(Object object, Object contextObject,
+            Map<String, Object> evaluationParameters) {
+        if ((object instanceof Component) || (object instanceof LayoutManager)) {
             evaluatePropertyReplacers(object, contextObject, evaluationParameters);
         }
-        visitPropertiesAndEvaluateExpressions(object, contextObject, evaluationParameters);
+        evaluatePropertyExpressions(object, contextObject, evaluationParameters);
     }
 
     /**
@@ -62,7 +64,7 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
         addCustomFunctions(context);
 
         ExpressionParser parser = new SpelExpressionParser();
-        
+
         String result = null;
         try {
             Expression expression = null;
@@ -92,14 +94,20 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
         context.setVariables(evaluationParameters);
         addCustomFunctions(context);
 
-        ExpressionParser parser = new SpelExpressionParser();
-        Expression expression = parser.parseExpression(expressionStr);
+        // if expression contains placeholders remove before evaluating
+        if (StringUtils.startsWith(expressionStr, UifConstants.EL_PLACEHOLDER_PREFIX) && StringUtils.endsWith(
+                expressionStr, UifConstants.EL_PLACEHOLDER_SUFFIX)) {
+            expressionStr = StringUtils.removeStart(expressionStr, UifConstants.EL_PLACEHOLDER_PREFIX);
+            expressionStr = StringUtils.removeEnd(expressionStr, UifConstants.EL_PLACEHOLDER_SUFFIX);
+        }
 
+        ExpressionParser parser = new SpelExpressionParser();
         Object result = null;
         try {
+            Expression expression = parser.parseExpression(expressionStr);
+
             result = expression.getValue(context);
-        }
-        catch (EvaluationException e) {
+        } catch (Exception e) {
             LOG.error("Exception evaluating expression: " + expressionStr);
             throw new RuntimeException("Exception evaluating expression: " + expressionStr, e);
         }
@@ -115,12 +123,12 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
     protected void addCustomFunctions(StandardEvaluationContext context) {
         try {
             // TODO: possibly reflect ExpressionFunctions and add automatically
-            context.registerFunction("isAssignableFrom", ExpressionFunctions.class
-                    .getDeclaredMethod("isAssignableFrom", new Class[]{Class.class, Class.class}));
-            context.registerFunction("empty", ExpressionFunctions.class
-                    .getDeclaredMethod("empty", new Class[]{Object.class}));
-            context.registerFunction("getName", ExpressionFunctions.class
-                    .getDeclaredMethod("getName", new Class[]{Class.class}));
+            context.registerFunction("isAssignableFrom", ExpressionFunctions.class.getDeclaredMethod("isAssignableFrom",
+                    new Class[]{Class.class, Class.class}));
+            context.registerFunction("empty", ExpressionFunctions.class.getDeclaredMethod("empty",
+                    new Class[]{Object.class}));
+            context.registerFunction("getName", ExpressionFunctions.class.getDeclaredMethod("getName",
+                    new Class[]{Class.class}));
         } catch (NoSuchMethodException e) {
             LOG.error("Custom function for el expressions not found: " + e.getMessage());
             throw new RuntimeException("Custom function for el expressions not found: " + e.getMessage(), e);
@@ -137,7 +145,7 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
      * @param evaluationParameters - parameters for el evaluation
      */
     protected void evaluatePropertyReplacers(Object object, Object contextObject,
-                                             Map<String, Object> evaluationParameters) {
+            Map<String, Object> evaluationParameters) {
         List<PropertyReplacer> replacers = null;
         if (Component.class.isAssignableFrom(object.getClass())) {
             replacers = ((Component) object).getPropertyReplacers();
@@ -146,8 +154,8 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
         }
 
         for (PropertyReplacer propertyReplacer : replacers) {
-            String conditionEvaluation =
-                    evaluateExpressionTemplate(contextObject, evaluationParameters, propertyReplacer.getCondition());
+            String conditionEvaluation = evaluateExpressionTemplate(contextObject, evaluationParameters,
+                    propertyReplacer.getCondition());
             boolean conditionSuccess = Boolean.parseBoolean(conditionEvaluation);
             if (conditionSuccess) {
                 ObjectPropertyUtils.setPropertyValue(object, propertyReplacer.getPropertyName(),
@@ -157,72 +165,46 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
     }
 
     /**
-     * Iterates through the properties of the given object and checks for property values that contain
-     * an el expression. If an expression is found it will be evaluated and the result of that evaluation
-     * set back into the property value
+     * Retrieves the Map from the given object that containing the property expressions that should
+     * be evaluated. Each expression is then evaluated and the result is used to set the property value
      *
      * <p>
-     *  If the property contains an el template (part static text and part expression), only the expression
-     *  part will be replaced with the result. More than one expressions may be contained within the template
+     * If the expression is an el template (part static text and part expression), only the expression
+     * part will be replaced with the result. More than one expressions may be contained within the template
      * </p>
      *
-     * <p>
-     *  A special check is done for Map property types. When found the Map is iterated over and expressions
-     *  contained in the map value are evaluated
-     * </p>
-     *
-     * @param object - object to evaluate properties for
-     * @param contextObject - context for el evaluation
-     * @param evaluationParameters - parameters for el evaluation
+     * @param object - object instance to evaluate expressions for
+     * @param contextObject - object providing the default context for expressions
+     * @param evaluationParameters - map of additional parameters that may be used within the expressions
      */
-    protected void visitPropertiesAndEvaluateExpressions(Object object, Object contextObject,
+    protected void evaluatePropertyExpressions(Object object, Object contextObject,
             Map<String, Object> evaluationParameters) {
-        // iterate through object properties and check for expressions
-        PropertyDescriptor[] propertyDescriptors = ObjectPropertyUtils.getPropertyDescriptors(object);
-        for (int i = 0; i < propertyDescriptors.length; i++) {
-            PropertyDescriptor descriptor = propertyDescriptors[i];
+        Map<String, String> propertyExpressions = new HashMap<String, String>();
+        if (Component.class.isAssignableFrom(object.getClass())) {
+            propertyExpressions = ((Component) object).getPropertyExpressions();
+        } else if (LayoutManager.class.isAssignableFrom(object.getClass())) {
+            propertyExpressions = ((LayoutManager) object).getPropertyExpressions();
+        } else if (BindingInfo.class.isAssignableFrom(object.getClass())) {
+            propertyExpressions = ((BindingInfo) object).getPropertyExpressions();
+        }
 
-            if (descriptor.getWriteMethod() == null) {
-                continue;
+        for (Entry<String, String> propertyExpression : propertyExpressions.entrySet()) {
+            String propertyName = propertyExpression.getKey();
+            String expression = propertyExpression.getValue();
+
+            Object propertyValue = null;
+
+            // determine whether the expression is a string template, or evaluates to another object type
+            if (StringUtils.startsWith(expression, UifConstants.EL_PLACEHOLDER_PREFIX) && StringUtils.endsWith(
+                    expression, UifConstants.EL_PLACEHOLDER_SUFFIX) && (StringUtils.countMatches(expression,
+                    UifConstants.EL_PLACEHOLDER_PREFIX) == 1)) {
+                propertyValue = evaluateExpression(contextObject, evaluationParameters, expression);
+            } else {
+                // treat as string template
+                propertyValue = evaluateExpressionTemplate(contextObject, evaluationParameters, expression);
             }
 
-            String propertyName = descriptor.getName();
-            if (String.class.isAssignableFrom(descriptor.getPropertyType())) {
-                String propertyValue = ObjectPropertyUtils.getPropertyValue(object, propertyName);
-
-                if (StringUtils.isNotBlank(propertyValue)
-                        && (containsElPlaceholder(propertyValue) || StringUtils.startsWith(propertyName,
-                                UifConstants.EL_CONDITIONAL_PROPERTY_PREFIX))) {
-
-                    // evaluate any expressions and reset property value
-                    propertyValue = evaluateExpressionTemplate(contextObject, evaluationParameters, propertyValue);
-
-                    String propertyNameToSet = propertyName;
-                    if (StringUtils.startsWith(propertyName, UifConstants.EL_CONDITIONAL_PROPERTY_PREFIX)) {
-                        // get the target property by convention
-                        propertyNameToSet = StringUtils.removeStart(propertyName,
-                                UifConstants.EL_CONDITIONAL_PROPERTY_PREFIX);
-                        propertyNameToSet = StringUtils.substring(propertyNameToSet, 0, 1).toLowerCase()
-                                + StringUtils.substring(propertyNameToSet, 1, propertyNameToSet.length());
-                    }
-
-                    ObjectPropertyUtils.setPropertyValue(object, propertyNameToSet, propertyValue);
-                }
-            }
-            else if (Map.class.isAssignableFrom(descriptor.getPropertyType())) {
-                Map<Object, Object> propertyValue = ObjectPropertyUtils.getPropertyValue(object, propertyName);
-
-                if (propertyValue != null) {
-                    for (Entry<Object, Object> entry : propertyValue.entrySet()) {
-                        if ((entry.getValue() != null) && String.class.isAssignableFrom(entry.getValue().getClass())
-                                && containsElPlaceholder((String) entry.getValue())) {
-                            String entryValue = evaluateExpressionTemplate(contextObject, evaluationParameters,
-                                    (String) entry.getValue());
-                            propertyValue.put(entry.getKey(), entryValue);
-                        }
-                    }
-                }
-            }
+            ObjectPropertyUtils.setPropertyValue(object, propertyName, propertyValue);
         }
     }
 
@@ -234,7 +216,7 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
 
         String elPlaceholder = StringUtils.substringBetween(value, UifConstants.EL_PLACEHOLDER_PREFIX,
                 UifConstants.EL_PLACEHOLDER_SUFFIX);
-        if (elPlaceholder != null) {
+        if (StringUtils.isNotBlank(elPlaceholder)) {
             containsElPlaceholder = true;
         }
 

@@ -38,6 +38,7 @@ import org.kuali.rice.krad.uif.util.BooleanMap;
 import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.widget.Inquiry;
@@ -60,7 +61,7 @@ import java.util.Set;
 
 /**
  * Default Implementation of <code>ViewHelperService</code>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewHelperServiceImpl implements ViewHelperService {
@@ -79,7 +80,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
      * conditional properties of <code>PropertyReplacers</code> configured for
      * the field are cleared so that the request parameter value does not get
      * overridden by the dictionary conditional logic
-     * 
+     *
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#populateViewFromRequestParameters(org.kuali.rice.krad.uif.container.View,
      *      java.util.Map)
      */
@@ -103,7 +104,8 @@ public class ViewHelperServiceImpl implements ViewHelperService {
             }
         }
 
-        // build Map of property replacers by property name
+        // build Map of property replacers by property name so that we can remove them
+        // if the property was set by a request parameter
         Map<String, Set<PropertyReplacer>> viewPropertyReplacers = new HashMap<String, Set<PropertyReplacer>>();
         for (PropertyReplacer replacer : view.getPropertyReplacers()) {
             Set<PropertyReplacer> propertyReplacers = new HashSet<PropertyReplacer>();
@@ -115,7 +117,8 @@ public class ViewHelperServiceImpl implements ViewHelperService {
             viewPropertyReplacers.put(replacer.getPropertyName(), propertyReplacers);
         }
 
-        // build map of view parameter key/values and populate view fields
+        // for each request parameter allowed on the view, if the request contains a value use
+        // to set on View, and clear and conditional expressions or property replacers for that field
         Map<String, String> viewRequestParameters = new HashMap<String, String>();
         for (String fieldToPopulate : fieldNamesToPopulate) {
             if (parameters.containsKey(fieldToPopulate)) {
@@ -127,10 +130,9 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 
                     // remove any conditional configuration so value is not
                     // overridden later during the apply model phase
-                    String conditionalProperty = StringUtils.substring(fieldToPopulate, 0, 1).toLowerCase()
-                            + StringUtils.substring(fieldToPopulate, 1, fieldToPopulate.length());
-                    conditionalProperty = UifConstants.EL_CONDITIONAL_PROPERTY_PREFIX + conditionalProperty;
-                    ObjectPropertyUtils.setPropertyValue(view, conditionalProperty, fieldValue, true);
+                    if (view.getPropertyExpressions().containsKey(fieldToPopulate)) {
+                        view.getPropertyExpressions().remove(fieldToPopulate);
+                    }
 
                     if (viewPropertyReplacers.containsKey(fieldToPopulate)) {
                         Set<PropertyReplacer> propertyReplacers = viewPropertyReplacers.get(fieldToPopulate);
@@ -151,38 +153,35 @@ public class ViewHelperServiceImpl implements ViewHelperService {
      */
     @Override
     public void performInitialization(View view) {
-        // process component ids for duplicates
-        ComponentUtils.processIds(view, new HashMap<String, Integer>());
-
         performComponentInitialization(view, view);
     }
-    
+
     /**
      * Performs the complete component lifecycle on the component passed in, in this order:
      * performComponentInitialization, performComponentApplyModel, and performComponentFinalize.
-     * 
+     *
+     * @param form
+     * @param component
      * @see {@link #performComponentInitialization(View, Component)}
      * @see {@link #performComponentApplyModel(View, Component, Object)}
      * @see {@link #performComponentFinalize(View, Component, Object, Component)}
-     * @param form
-     * @param component
      */
-    public void performComponentLifecycle(UifFormBase form, Component component, String origId){
+    public void performComponentLifecycle(UifFormBase form, Component component, String origId) {
         Component origComponent = form.getView().getViewIndex().getComponentById(origId);
-        
+
         Component parent = (Component) origComponent.getContext().get(UifConstants.ContextVariableNames.PARENT);
         component.pushAllToContext(origComponent.getContext());
 
         performComponentInitialization(form.getView(), component);
         performComponentApplyModel(form.getView(), component, form);
         performComponentFinalize(form.getView(), component, form, parent);
-        
+
         component.setId(origId);
     }
 
     /**
      * Performs initialization of a component by these steps:
-     * 
+     *
      * <ul>
      * <li>If component id not set, assigns to next available int for view</li>
      * <li>For <code>AttributeField</code> instances, set defaults from the data
@@ -196,12 +195,12 @@ public class ViewHelperServiceImpl implements ViewHelperService {
      * within and recursively call this method to initialize those components.</li>
      * <li>Call custom initialize hook for service overrides</li>
      * </ul>
-     * 
+     *
      * <p>
      * Note the order various initialize points are called, this can sometimes
      * be an important factor to consider when initializing a component
      * </p>
-     * 
+     *
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#performComponentInitialization(org.kuali.rice.krad.uif.container.View,
      *      org.kuali.rice.krad.uif.core.Component)
      */
@@ -213,6 +212,14 @@ public class ViewHelperServiceImpl implements ViewHelperService {
         // assign ID if necessary
         if (StringUtils.isBlank(component.getId())) {
             component.setId(view.getNextId());
+        }
+
+        if (component instanceof Container) {
+            LayoutManager layoutManager = ((Container) component).getLayoutManager();
+
+            if ((layoutManager != null) && StringUtils.isBlank(layoutManager.getId())) {
+                layoutManager.setId(view.getNextId());
+            }
         }
 
         LOG.debug("Initializing component: " + component.getId() + " with type: " + component.getClass());
@@ -252,11 +259,9 @@ public class ViewHelperServiceImpl implements ViewHelperService {
     /**
      * Sets properties of the <code>AttributeField</code> (if blank) to the
      * corresponding attribute entry in the data dictionary
-     * 
-     * @param view
-     *            - view instance containing the field
-     * @param field
-     *            - field instance to initialize
+     *
+     * @param view - view instance containing the field
+     * @param field - field instance to initialize
      */
     protected void initializeAttributeFieldFromDataDictionary(View view, AttributeField field) {
         AttributeDefinition attributeDefinition = null;
@@ -286,7 +291,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
                 }
                 propertyPath += "." + field.getBindingInfo().getBindingName();
             }
-            
+
             attributeDefinition = findNestedDictionaryAttribute(view, field, null, propertyPath);
         }
 
@@ -299,12 +304,12 @@ public class ViewHelperServiceImpl implements ViewHelperService {
             field.setControl(ComponentFactory.getTextControl());
         }
     }
-    
+
     /**
      * Recursively drills down the property path (if nested) to find an
      * AttributeDefinition, the first attribute definition found will be
      * returned
-     * 
+     *
      * <p>
      * e.g. suppose parentPath is 'document' and propertyPath is
      * 'account.subAccount.name', first the property type for document will be
@@ -316,17 +321,13 @@ public class ViewHelperServiceImpl implements ViewHelperService {
      * perform the process with those parameters. The recursion continues until
      * an attribute field is found, or the propertyPath is no longer nested
      * </p>
-     * 
-     * @param view
-     *            - view instance containing the field
-     * @param field
-     *            - field we are attempting to find a supporting attribute
-     *            definition for
-     * @param parentPath
-     *            - parent path to use for getting the dictionary entry
-     * @param propertyPath
-     *            - path of the property relative to the parent, to use as
-     *            dictionary attribute and to drill down on
+     *
+     * @param view - view instance containing the field
+     * @param field - field we are attempting to find a supporting attribute
+     * definition for
+     * @param parentPath - parent path to use for getting the dictionary entry
+     * @param propertyPath - path of the property relative to the parent, to use as
+     * dictionary attribute and to drill down on
      * @return AttributeDefinition if found, or Null
      */
     protected AttributeDefinition findNestedDictionaryAttribute(View view, AttributeField field, String parentPath,
@@ -336,21 +337,21 @@ public class ViewHelperServiceImpl implements ViewHelperService {
         // attempt to find definition for parent and property
         String dictionaryAttributeName = propertyPath;
         String dictionaryObjectEntry = null;
-        
+
         if (field.getBindingInfo().isBindToMap()) {
             parentPath = "";
-            if (!field.getBindingInfo().isBindToForm() && StringUtils.isNotBlank(field.getBindingInfo().getBindingObjectPath())) {
+            if (!field.getBindingInfo().isBindToForm() && StringUtils.isNotBlank(
+                    field.getBindingInfo().getBindingObjectPath())) {
                 parentPath = field.getBindingInfo().getBindingObjectPath();
             }
             if (StringUtils.isNotBlank(field.getBindingInfo().getBindByNamePrefix())) {
                 if (StringUtils.isNotBlank(parentPath)) {
                     parentPath += "." + field.getBindingInfo().getBindByNamePrefix();
-                }
-                else {
+                } else {
                     parentPath = field.getBindingInfo().getBindByNamePrefix();
                 }
             }
-            
+
             dictionaryAttributeName = field.getBindingInfo().getBindingName();
         }
 
@@ -388,11 +389,9 @@ public class ViewHelperServiceImpl implements ViewHelperService {
     /**
      * Determines the dictionary class that is associated with the given
      * <code>AttributeField</code>
-     * 
-     * @param view
-     *            - view instance for field
-     * @param field
-     *            - field instance to determine dictionary class for
+     *
+     * @param view - view instance for field
+     * @param field - field instance to determine dictionary class for
      * @return Class<?> dictionary class or null if not found
      */
     protected Class<?> getDictionaryModelClass(View view, AttributeField field) {
@@ -419,12 +418,10 @@ public class ViewHelperServiceImpl implements ViewHelperService {
      * Invokes the configured <code>PresentationController</code> and
      * </code>Authorizer</code> for the view to get the exported action flags
      * and edit modes that can be used in conditional logic
-     * 
-     * @param view
-     *            - view instance that is being built and
-     *            presentation/authorizer pulled for
-     * @param model
-     *            - Object that contains the model data
+     *
+     * @param view - view instance that is being built and
+     * presentation/authorizer pulled for
+     * @param model - Object that contains the model data
      */
     protected void invokeAuthorizerPresentationController(View view, UifFormBase model) {
         PresentationController presentationController = ObjectUtils.newInstance(view.getPresentationControllerClass());
@@ -434,23 +431,21 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 
         Set<String> actionFlags = presentationController.getActionFlags(model);
         actionFlags = authorizer.getActionFlags(model, user, actionFlags);
-        
+
         view.setActionFlags(new BooleanMap(actionFlags));
 
         Set<String> editModes = presentationController.getEditModes(model);
         editModes = authorizer.getEditModes(model, user, editModes);
-        
+
         view.setEditModes(new BooleanMap(editModes));
     }
 
     /**
      * Sets up the view context which will be available to other components
      * through their context for conditional logic evaluation
-     * 
-     * @param view
-     *            - view instance to set context for
-     * @param model
-     *            - object containing the view data
+     *
+     * @param view - view instance to set context for
+     * @param model - object containing the view data
      */
     protected void setViewContext(View view, Object model) {
         view.pushAllToContext(getPreModelContext(view));
@@ -463,13 +458,12 @@ public class ViewHelperServiceImpl implements ViewHelperService {
             view.pushObjectToContext(variableName, value);
         }
     }
-    
+
     /**
      * Returns the general context that is available before the apply model
      * phase (during the initialize phase)
-     * 
-     * @param view
-     *            - view instance for context
+     *
+     * @param view - view instance for context
      * @return Map<String, Object> context map
      */
     protected Map<String, Object> getPreModelContext(View view) {
@@ -487,7 +481,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 
     /**
      * Applies the model data to a component of the View instance
-     * 
+     *
      * <p>
      * The component is invoked to to apply the model data. Here the component
      * can generate any additional fields needed or alter the configured fields.
@@ -495,13 +489,10 @@ public class ViewHelperServiceImpl implements ViewHelperService {
      * processing is invoked. Finally the method is recursively called for all
      * the component children
      * </p>
-     * 
-     * @param view
-     *            - view instance the component belongs to
-     * @param component
-     *            - the component instance the model should be applied to
-     * @param model
-     *            - top level object containing the data
+     *
+     * @param view - view instance the component belongs to
+     * @param component - the component instance the model should be applied to
+     * @param model - top level object containing the data
      */
     protected void performComponentApplyModel(View view, Component component, Object model) {
         if (component == null) {
@@ -510,7 +501,8 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 
         // evaluate expressions on properties
         component.pushAllToContext(getCommonContext(view, component));
-        getExpressionEvaluatorService().evaluateObjectProperties(component, model, component.getContext());
+        ExpressionUtils.adjustPropertyExpressions(view, component);
+        getExpressionEvaluatorService().evaluateObjectExpressions(component, model, component.getContext());
 
         if (component instanceof Container) {
             LayoutManager layoutManager = ((Container) component).getLayoutManager();
@@ -519,14 +511,17 @@ public class ViewHelperServiceImpl implements ViewHelperService {
                 layoutManager.getContext().putAll(getCommonContext(view, component));
                 layoutManager.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, component);
                 layoutManager.pushObjectToContext(UifConstants.ContextVariableNames.MANAGER, layoutManager);
-                getExpressionEvaluatorService().evaluateObjectProperties(layoutManager, model,
+
+                ExpressionUtils.adjustPropertyExpressions(view, layoutManager);
+                getExpressionEvaluatorService().evaluateObjectExpressions(layoutManager, model,
                         layoutManager.getContext());
             }
         }
 
         if (component instanceof DataBinding) {
             BindingInfo bindingInfo = ((DataBinding) component).getBindingInfo();
-            getExpressionEvaluatorService().evaluateObjectProperties(bindingInfo, model, component.getContext());
+            ExpressionUtils.adjustPropertyExpressions(view, bindingInfo);
+            getExpressionEvaluatorService().evaluateObjectExpressions(bindingInfo, model, component.getContext());
         }
 
         // invoke component to perform its conditional logic
@@ -553,15 +548,11 @@ public class ViewHelperServiceImpl implements ViewHelperService {
      * Runs any configured <code>ComponentModifiers</code> for the given
      * component that match the given run phase and who run condition evaluation
      * succeeds
-     * 
-     * @param view
-     *            - view instance for context
-     * @param component
-     *            - component instance whose modifiers should be run
-     * @param model
-     *            - model object for context
-     * @param runPhase
-     *            - current phase to match on
+     *
+     * @param view - view instance for context
+     * @param component - component instance whose modifiers should be run
+     * @param model - model object for context
+     * @param runPhase - current phase to match on
      */
     protected void runComponentModifiers(View view, Component component, Object model, String runPhase) {
         for (ComponentModifier modifier : component.getComponentModifiers()) {
@@ -580,8 +571,8 @@ public class ViewHelperServiceImpl implements ViewHelperService {
                 }
 
                 if (runModifier) {
-                    if (StringUtils.equals(runPhase, UifConstants.ViewPhases.APPLY_MODEL)
-                            || StringUtils.equals(runPhase, UifConstants.ViewPhases.FINALIZE)) {
+                    if (StringUtils.equals(runPhase, UifConstants.ViewPhases.APPLY_MODEL) || StringUtils.equals(
+                            runPhase, UifConstants.ViewPhases.FINALIZE)) {
                         modifier.performModification(view, model, component);
                     } else {
                         modifier.performModification(view, component);
@@ -594,11 +585,9 @@ public class ViewHelperServiceImpl implements ViewHelperService {
     /**
      * Gets global objects for the context map and pushes them to the context
      * for the component
-     * 
-     * @param view
-     *            - view instance for component
-     * @param component
-     *            - component instance to push context to
+     *
+     * @param view - view instance for component
+     * @param component - component instance to push context to
      */
     protected Map<String, Object> getCommonContext(View view, Component component) {
         Map<String, Object> context = new HashMap<String, Object>();
@@ -621,24 +610,20 @@ public class ViewHelperServiceImpl implements ViewHelperService {
     /**
      * Update state of the given component and does final preparation for
      * rendering
-     * 
-     * @param view
-     *            - view instance the component belongs to
-     * @param component
-     *            - the component instance that should be updated
-     * @param model
-     *            - top level object containing the data
-     * @param parent
-     *            - Parent component for the component being finalized
+     *
+     * @param view - view instance the component belongs to
+     * @param component - the component instance that should be updated
+     * @param model - top level object containing the data
+     * @param parent - Parent component for the component being finalized
      */
     protected void performComponentFinalize(View view, Component component, Object model, Component parent) {
         if (component == null) {
             return;
         }
-        
+
         // invoke configured method finalizers
         invokeMethodFinalizer(view, component, model);
-        
+
         // invoke component to update its state
         component.performFinalize(view, model, parent);
 
@@ -653,19 +638,15 @@ public class ViewHelperServiceImpl implements ViewHelperService {
             performComponentFinalize(view, nestedComponent, model, component);
         }
     }
-    
+
     /**
      * Invokes the finalize method for the component (if configured) and sets
      * the render output for the component to the returned method string (if
      * method is not a void type)
-     * 
-     * @param view
-     *            - view instance that contains the component
-     * @param component
-     *            - component to run finalize method for
-     * @param model
-     *            - top level object containing the data
      *
+     * @param view - view instance that contains the component
+     * @param component - component to run finalize method for
+     * @param model - top level object containing the data
      */
     protected void invokeMethodFinalizer(View view, Component component, Object model) {
         String finalizeMethodToCall = component.getFinalizeMethodToCall();
@@ -709,7 +690,9 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 
         // invoke method and get render output
         try {
-            LOG.debug("Invoking render method: " + finalizeMethodInvoker.getTargetMethod() + " for component: "
+            LOG.debug("Invoking render method: "
+                    + finalizeMethodInvoker.getTargetMethod()
+                    + " for component: "
                     + component.getId());
             finalizeMethodInvoker.prepare();
 
@@ -773,20 +756,17 @@ public class ViewHelperServiceImpl implements ViewHelperService {
     /**
      * Performs validation on the new collection line before it is added to the
      * corresponding collection
-     * 
-     * @param view
-     *            - view instance that the action was taken on
-     * @param collectionGroup
-     *            - collection group component for the collection
-     * @param addLine
-     *            - new line instance to validate
-     * @param model
-     *            - object instance that contain's the views data
+     *
+     * @param view - view instance that the action was taken on
+     * @param collectionGroup - collection group component for the collection
+     * @param addLine - new line instance to validate
+     * @param model - object instance that contain's the views data
      * @return boolean true if the line is valid and it should be added to the
      *         collection, false if it was not valid and should not be added to
      *         the collection
      */
-    protected boolean performAddLineValidation(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
+    protected boolean performAddLineValidation(View view, CollectionGroup collectionGroup, Object model,
+            Object addLine) {
         boolean isValid = true;
 
         // TODO: this should invoke rules, sublclasses like the document view
@@ -831,13 +811,10 @@ public class ViewHelperServiceImpl implements ViewHelperService {
     /**
      * Performs validation on the collection line before it is removed from the
      * corresponding collection
-     * 
-     * @param view
-     *            - view instance that the action was taken on
-     * @param collectionGroup
-     *            - collection group component for the collection
-     * @param deleteLine
-     *            - line that will be removed
+     *
+     * @param view - view instance that the action was taken on
+     * @param collectionGroup - collection group component for the collection
+     * @param deleteLine - line that will be removed
      * @return boolean true if the action is allowed and the line should be
      *         removed, false if the line should not be removed
      */
@@ -853,7 +830,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
     /**
      * Finds the <code>Inquirable</code> configured for the given data object
      * class and delegates to it for building the inquiry URL
-     * 
+     *
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#buildInquiryLink(java.lang.Object,
      *      java.lang.String, org.kuali.rice.krad.uif.widget.Inquiry)
      */
@@ -881,11 +858,11 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 
             populateDefaultValueForField(view, model, attributeField, bindingPath);
         }
-        
+
         // update form indicator
         model.setDefaultsApplied(true);
     }
-    
+
     /**
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#applyDefaultValuesForCollectionLine(org.kuali.rice.krad.uif.container.View,
      *      java.lang.Object, org.kuali.rice.krad.uif.container.CollectionGroup,
@@ -894,8 +871,8 @@ public class ViewHelperServiceImpl implements ViewHelperService {
     public void applyDefaultValuesForCollectionLine(View view, Object model, CollectionGroup collectionGroup,
             Object line) {
         // retrieve all attribute fields for the collection line
-        List<AttributeField> attributeFields = ComponentUtils.getComponentsOfTypeDeep(collectionGroup.getAddLineFields(),
-                AttributeField.class);
+        List<AttributeField> attributeFields = ComponentUtils.getComponentsOfTypeDeep(
+                collectionGroup.getAddLineFields(), AttributeField.class);
         for (AttributeField attributeField : attributeFields) {
             String bindingPath = "";
             if (StringUtils.isNotBlank(attributeField.getBindingInfo().getBindByNamePrefix())) {
@@ -910,22 +887,18 @@ public class ViewHelperServiceImpl implements ViewHelperService {
     /**
      * Applies the default value configured for the given field (if any) to the
      * line given object property that is determined by the given binding path
-     * 
+     *
      * <p>
      * Checks for a configured default value or default value class for the
      * field. If both are given, the configured static default value will win.
      * In addition, if the default value contains an el expression it is
      * evaluated against the initial context
      * </p>
-     * 
-     * @param view
-     *            - view instance the field belongs to
-     * @param model
-     *            - object that should be populated
-     * @param attributeField
-     *            - field to check for configured default value
-     * @param bindingPath
-     *            - path to the property on the object that should be populated
+     *
+     * @param view - view instance the field belongs to
+     * @param model - object that should be populated
+     * @param attributeField - field to check for configured default value
+     * @param bindingPath - path to the property on the object that should be populated
      */
     protected void populateDefaultValueForField(View view, Object object, AttributeField attributeField,
             String bindingPath) {
@@ -951,11 +924,9 @@ public class ViewHelperServiceImpl implements ViewHelperService {
     /**
      * Hook for service overrides to perform custom initialization on the
      * component
-     * 
-     * @param view
-     *            - view instance containing the component
-     * @param component
-     *            - component instance to initialize
+     *
+     * @param view - view instance containing the component
+     * @param component - component instance to initialize
      */
     protected void performCustomInitialization(View view, Component component) {
 
@@ -964,14 +935,11 @@ public class ViewHelperServiceImpl implements ViewHelperService {
     /**
      * Hook for service overrides to perform custom apply model logic on the
      * component
-     * 
-     * @param view
-     *            - view instance containing the component
-     * @param component
-     *            - component instance to apply model to
-     * @param model
-     *            - Top level object containing the data (could be the form or a
-     *            top level business object, dto)
+     *
+     * @param view - view instance containing the component
+     * @param component - component instance to apply model to
+     * @param model - Top level object containing the data (could be the form or a
+     * top level business object, dto)
      */
     protected void performCustomApplyModel(View view, Component component, Object model) {
 
@@ -979,15 +947,11 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 
     /**
      * Hook for service overrides to perform custom component finalization
-     * 
-     * @param view
-     *            - view instance containing the component
-     * @param component
-     *            - component instance to update
-     * @param model
-     *            - Top level object containing the data
-     * @param parent
-     *            - Parent component for the component being finalized
+     *
+     * @param view - view instance containing the component
+     * @param component - component instance to update
+     * @param model - Top level object containing the data
+     * @param parent - Parent component for the component being finalized
      */
     protected void performCustomFinalize(View view, Component component, Object model, Component parent) {
 
@@ -996,17 +960,13 @@ public class ViewHelperServiceImpl implements ViewHelperService {
     /**
      * Hook for service overrides to process the new collection line before it
      * is added to the collection
-     * 
-     * @param view
-     *            - view instance that is being presented (the action was taken
-     *            on)
-     * @param collectionGroup
-     *            - collection group component for the collection the line will
-     *            be added to
-     * @param model
-     *            - object instance that contain's the views data
-     * @param addLine
-     *            - the new line instance to be processed
+     *
+     * @param view - view instance that is being presented (the action was taken
+     * on)
+     * @param collectionGroup - collection group component for the collection the line will
+     * be added to
+     * @param model - object instance that contain's the views data
+     * @param addLine - the new line instance to be processed
      */
     protected void processBeforeAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
 
@@ -1015,40 +975,32 @@ public class ViewHelperServiceImpl implements ViewHelperService {
     /**
      * Hook for service overrides to process the new collection line after it
      * has been added to the collection
-     * 
-     * @param view
-     *            - view instance that is being presented (the action was taken
-     *            on)
-     * @param collectionGroup
-     *            - collection group component for the collection the line that
-     *            was added
-     * @param model
-     *            - object instance that contain's the views data
-     * @param addLine
-     *            - the new line that was added
+     *
+     * @param view - view instance that is being presented (the action was taken
+     * on)
+     * @param collectionGroup - collection group component for the collection the line that
+     * was added
+     * @param model - object instance that contain's the views data
+     * @param addLine - the new line that was added
      */
     protected void processAfterAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
 
     }
-    
+
     /**
      * Hook for service overrides to process the collection line after it
      * has been deleted
-     * 
-     * @param view
-     *            - view instance that is being presented (the action was taken
-     *            on)
-     * @param collectionGroup
-     *            - collection group component for the collection the line that
-     *            was added
-     * @param model
-     *            - object instance that contain's the views data
-     * @param addLine
-     *            - the new line that was added
+     *
+     * @param view - view instance that is being presented (the action was taken
+     * on)
+     * @param collectionGroup - collection group component for the collection the line that
+     * was added
+     * @param model - object instance that contain's the views data
+     * @param addLine - the new line that was added
      */
-    protected void processAfterDeleteLine(View view, CollectionGroup collectionGroup, Object model, int lineIndex) {        
-        
-    }    
+    protected void processAfterDeleteLine(View view, CollectionGroup collectionGroup, Object model, int lineIndex) {
+
+    }
 
     protected void logAndThrowRuntime(String message) {
         LOG.error(message);

@@ -14,6 +14,11 @@ import java.util.Map;
 
 /**
  * Provides evaluation of expression language statements against a given context
+ *
+ * <p>
+ * Used within the UI framework to allow conditional logic to be configured through
+ * the XML which can alter the values of component properties
+ * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -51,7 +56,7 @@ public interface ExpressionEvaluatorService {
      *            expression, and the map value is the object that expression
      *            should evaluate against when that name is found
      */
-    public void evaluateObjectProperties(Object object, Object contextObject, Map<String, Object> evaluationParameters);
+    public void evaluateObjectExpressions(Object object, Object contextObject, Map<String, Object> evaluationParameters);
 
     /**
      * Evaluates the given expression template string against the context object

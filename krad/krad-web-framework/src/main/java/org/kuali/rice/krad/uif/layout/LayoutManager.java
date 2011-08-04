@@ -269,4 +269,38 @@ public interface LayoutManager extends Serializable {
 	 */
 	public void setPropertyReplacers(List<PropertyReplacer> propertyReplacers);
 
+    /**
+     * Map of expressions that should be evaluated to conditionally set a property on the layout manager
+     *
+     * <p>
+     * When configuring a layout manager property through XML an expression can be given using the @{} placeholder.
+     * During the loading of the XML any such expressions are captured and placed into this Map, with the property
+     * they apply to set as the Map key. The expressions are then evaluated during the apply model phase and the
+     * result is set as the property value.
+     * </p>
+     *
+     * <p>
+     * Note after the expression is picked up, the property configuration is removed. Thus the property in the
+     * layout manager will only have its default object value until the expression is evaluated
+     * </p>
+     *
+     * @return Map<String, String> map of expressions where key is property name and value is expression to evaluate
+     */
+    public Map<String, String> getPropertyExpressions();
+
+    /**
+     * Setter for the Map of property expressions
+     *
+     * @param propertyExpressions
+     */
+    public void setPropertyExpressions(Map<String, String> propertyExpressions);
+
+    /**
+     * Returns the expression configured for the property with the given name
+     *
+     * @return String expression for property or null if expression is not configured
+     * @see Component#getPropertyExpressions()
+     */
+    public String getPropertyExpression(String propertyName);
+
 }

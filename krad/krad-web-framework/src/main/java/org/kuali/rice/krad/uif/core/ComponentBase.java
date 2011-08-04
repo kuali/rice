@@ -18,13 +18,11 @@ import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.control.ControlBase;
-import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
-import org.kuali.rice.krad.uif.util.ViewModelUtils;
+import org.kuali.rice.krad.uif.util.ExpressionUtils;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -55,7 +53,6 @@ public abstract class ComponentBase implements Component {
 
     private boolean render;
     private boolean refresh;
-    private String conditionalRender;
 
     private String progressiveRender;
     private boolean progressiveRenderViaAJAX;
@@ -71,22 +68,15 @@ public abstract class ComponentBase implements Component {
     private List<String> refreshWhenChangedControlNames;
 
     private boolean hidden;
-
     private boolean readOnly;
-    private String conditionalReadOnly;
-
     private Boolean required;
-    private String conditionalRequired;
 
     private String align;
     private String valign;
     private String width;
 
     private int colSpan;
-    private String conditionalColSpan;
-
     private int rowSpan;
-    private String conditionalRowSpan;
 
     private String style;
     private List<String> styleClasses;
@@ -160,21 +150,24 @@ public abstract class ComponentBase implements Component {
     public void performInitialization(View view) {
         if (StringUtils.isNotEmpty(progressiveRender)) {
             // progressive anded with conditional render, will not render at
-            // least one of the two are false.
+            // least one of the two are false
+            String conditionalRender = getPropertyExpression("render");
             if (StringUtils.isNotEmpty(conditionalRender)) {
                 conditionalRender = "(" + conditionalRender + ") and (" + progressiveRender + ")";
             } else {
                 conditionalRender = progressiveRender;
             }
+            getPropertyExpressions().put("render", conditionalRender);
+
             progressiveDisclosureControlNames = new ArrayList<String>();
             progressiveDisclosureConditionJs =
-                    ComponentUtils.parseExpression(progressiveRender, progressiveDisclosureControlNames);
+                    ExpressionUtils.parseExpression(progressiveRender, progressiveDisclosureControlNames);
         }
 
         if (StringUtils.isNotEmpty(conditionalRefresh)) {
             conditionalRefreshControlNames = new ArrayList<String>();
             conditionalRefreshConditionJs =
-                    ComponentUtils.parseExpression(conditionalRefresh, conditionalRefreshControlNames);
+                    ExpressionUtils.parseExpression(conditionalRefresh, conditionalRefreshControlNames);
         }
 
         if (StringUtils.isNotEmpty(refreshWhenChanged)) {
@@ -188,6 +181,7 @@ public abstract class ComponentBase implements Component {
 
     /**
      * The following updates are done here:
+     *
      * <ul>
      * <li></li>
      * </ul>
@@ -238,6 +232,7 @@ public abstract class ComponentBase implements Component {
                 }
             }
         }
+
         // replace the #line? collections place holder with the correct binding
         // path
         CollectionGroup collectionGroup =
@@ -245,6 +240,7 @@ public abstract class ComponentBase implements Component {
         String linePath = "";
         if (collectionGroup != null) {
             linePath = ComponentUtils.getLinePathValue(this);
+
             //ProgressiveRender conditions
             if (StringUtils.isNotEmpty(progressiveRender) && StringUtils.isNotEmpty(linePath)) {
                 progressiveDisclosureConditionJs =
@@ -376,20 +372,6 @@ public abstract class ComponentBase implements Component {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#getConditionalReadOnly()
-     */
-    public String getConditionalReadOnly() {
-        return this.conditionalReadOnly;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.core.Component#setConditionalReadOnly(java.lang.String)
-     */
-    public void setConditionalReadOnly(String conditionalReadOnly) {
-        this.conditionalReadOnly = conditionalReadOnly;
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.core.Component#getRequired()
      */
     public Boolean getRequired() {
@@ -404,25 +386,6 @@ public abstract class ComponentBase implements Component {
     }
 
     /**
-     * Expression language string for conditionally setting the required
-     * property
-     *
-     * @return String el that should evaluate to boolean
-     */
-    public String getConditionalRequired() {
-        return this.conditionalRequired;
-    }
-
-    /**
-     * Setter for the conditional required string
-     *
-     * @param conditionalRequired
-     */
-    public void setConditionalRequired(String conditionalRequired) {
-        this.conditionalRequired = conditionalRequired;
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.core.Component#isRender()
      */
     public boolean isRender() {
@@ -434,24 +397,6 @@ public abstract class ComponentBase implements Component {
      */
     public void setRender(boolean render) {
         this.render = render;
-    }
-
-    public void setRender(String render) {
-        this.propertyExpressions.put("render", render);
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.core.Component#getConditionalRender()
-     */
-    public String getConditionalRender() {
-        return this.conditionalRender;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.core.Component#setConditionalRender(java.lang.String)
-     */
-    public void setConditionalRender(String conditionalRender) {
-        this.conditionalRender = conditionalRender;
     }
 
     /**
@@ -469,24 +414,6 @@ public abstract class ComponentBase implements Component {
     }
 
     /**
-     * Expression language string for conditionally setting the colSpan property
-     *
-     * @return String el that should evaluate to int
-     */
-    public String getConditionalColSpan() {
-        return this.conditionalColSpan;
-    }
-
-    /**
-     * Setter for the conditional colSpan string
-     *
-     * @param conditionalColSpan
-     */
-    public void setConditionalColSpan(String conditionalColSpan) {
-        this.conditionalColSpan = conditionalColSpan;
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.core.Component#getRowSpan()
      */
     public int getRowSpan() {
@@ -498,24 +425,6 @@ public abstract class ComponentBase implements Component {
      */
     public void setRowSpan(int rowSpan) {
         this.rowSpan = rowSpan;
-    }
-
-    /**
-     * Expression language string for conditionally setting the rowSpan property
-     *
-     * @return String el that should evaluate to int
-     */
-    public String getConditionalRowSpan() {
-        return this.conditionalRowSpan;
-    }
-
-    /**
-     * Setter for the conditional rowSpan string
-     *
-     * @param conditionalRowSpan
-     */
-    public void setConditionalRowSpan(String conditionalRowSpan) {
-        this.conditionalRowSpan = conditionalRowSpan;
     }
 
     /**
@@ -798,12 +707,29 @@ public abstract class ComponentBase implements Component {
         }
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.core.ComponentBase#getPropertyExpressions
+     */
     public Map<String, String> getPropertyExpressions() {
         return propertyExpressions;
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.core.ComponentBase#setPropertyExpressions
+     */
     public void setPropertyExpressions(Map<String, String> propertyExpressions) {
         this.propertyExpressions = propertyExpressions;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.core.ComponentBase#getPropertyExpression
+     */
+    public String getPropertyExpression(String propertyName) {
+        if (this.propertyExpressions.containsKey(propertyName)) {
+            return this.propertyExpressions.get(propertyName);
+        }
+
+        return null;
     }
 
     /**

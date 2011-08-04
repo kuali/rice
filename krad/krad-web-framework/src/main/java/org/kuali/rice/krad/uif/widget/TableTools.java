@@ -50,15 +50,9 @@ import java.sql.Timestamp;
 public class TableTools extends WidgetBase {
     private static final long serialVersionUID = 4671589690877390070L;
 
-    /**
-     * A text to be displayed when the table is empty
-     */
     private String emptyTableMessage;
     private boolean disableTableSort;
 
-    /**
-     * By default, show the search and export options
-     */
     private boolean showSearchAndExportOptions = true;
 
     public TableTools() {
@@ -88,9 +82,11 @@ public class TableTools extends WidgetBase {
 
             if (!isShowSearchAndExportOptions()) {
                 String sDomOption = getComponentOptions().get(UifConstants.TableToolsKeys.SDOM);
-                sDomOption = StringUtils.remove(sDomOption, "T"); //Removes Export option
-                sDomOption = StringUtils.remove(sDomOption, "f"); //Removes search option
-                getComponentOptions().put(UifConstants.TableToolsKeys.SDOM, sDomOption);
+                if (StringUtils.isNotBlank(sDomOption)) {
+                    sDomOption = StringUtils.remove(sDomOption, "T"); //Removes Export option
+                    sDomOption = StringUtils.remove(sDomOption, "f"); //Removes search option
+                    getComponentOptions().put(UifConstants.TableToolsKeys.SDOM, sDomOption);
+                }
             }
 
             if (component instanceof CollectionGroup) {
@@ -105,69 +101,67 @@ public class TableTools extends WidgetBase {
      * @param collectionGroup
      */
     protected void buildTableSortOptions(CollectionGroup collectionGroup) {
-
         LayoutManager layoutManager = collectionGroup.getLayoutManager();
 
-        /**
-         * If subcollection exists, dont allow the table sortable
-         */
+        // if subcollection exists, dont allow the table sortable
         if (!collectionGroup.getSubCollections().isEmpty()) {
             setDisableTableSort(true);
         }
 
         if (!isDisableTableSort()) {
-            /**
-             * If rendering add line, skip that row from col sorting
-             */
+            // if rendering add line, skip that row from col sorting
             if (collectionGroup.isRenderAddLine() && !collectionGroup.isReadOnly()) {
                 getComponentOptions().put(UifConstants.TableToolsKeys.SORT_SKIP_ROWS,
                         "[" + UifConstants.TableToolsValues.ADD_ROW_DEFAULT_INDEX + "]");
             }
 
             if (!collectionGroup.isReadOnly()) {
-
                 StringBuffer tableToolsColumnOptions = new StringBuffer("[");
 
-                if (layoutManager instanceof TableLayoutManager &&
-                        ((TableLayoutManager) layoutManager).isRenderSequenceField()) {
+                if (layoutManager instanceof TableLayoutManager && ((TableLayoutManager) layoutManager)
+                        .isRenderSequenceField()) {
                     tableToolsColumnOptions.append(" null ,");
                 }
 
                 String sortType = null;
-                
+                // TODO: does this handle multiple rows correctly?
                 for (Component component : collectionGroup.getItems()) {
-                    /**
-                     * For GroupField, get the first field from that group
-                     */
+                    // For GroupField, get the first field from that group
                     if (component instanceof GroupField) {
                         component = ((GroupField) component).getItems().get(0);
                     }
-                    
-                    if (component instanceof AttributeField){
-                        AttributeField field = (AttributeField)component;
-                        
-                        if (field.getControl() instanceof TextControl){
+
+                    if (component instanceof AttributeField) {
+                        AttributeField field = (AttributeField) component;
+
+                        if (field.getControl() instanceof TextControl) {
                             sortType = UifConstants.TableToolsValues.DOM_TEXT;
-                        }else if (field.getControl() instanceof SelectControl){
+                        } else if (field.getControl() instanceof SelectControl) {
                             sortType = UifConstants.TableToolsValues.DOM_SELECT;
-                        }else if (field.getControl() instanceof CheckboxControl || field.getControl() instanceof CheckboxGroupControl){
+                        } else if (field.getControl() instanceof CheckboxControl || field
+                                .getControl() instanceof CheckboxGroupControl) {
                             sortType = UifConstants.TableToolsValues.DOM_CHECK;
-                        }else if (field.getControl() instanceof RadioGroupControl){
+                        } else if (field.getControl() instanceof RadioGroupControl) {
                             sortType = UifConstants.TableToolsValues.DOM_RADIO;
                         }
-                        
+
+                        Class dataTypeClass = ObjectPropertyUtils.getPropertyType(
+                                collectionGroup.getCollectionObjectClass(),
+                                ((AttributeField) component).getPropertyName());
+                        String colOptions = constructTableColumnOptions(true, dataTypeClass, sortType);
+                        tableToolsColumnOptions.append(colOptions + " , ");
+                    } else {
+                        String colOptions = constructTableColumnOptions(false, null, null);
+                        tableToolsColumnOptions.append(colOptions + " , ");
                     }
-                    
-                    Class dataTypeClass = ObjectPropertyUtils.getPropertyType(collectionGroup.getCollectionObjectClass(),((AttributeField) component).getPropertyName());
-                    String colOptions = constructTableColumnOptions(true, dataTypeClass,sortType);
-                    tableToolsColumnOptions.append(colOptions + " , ");
                 }
-                   
+
                 if (collectionGroup.isRenderLineActions()) {
-                    String colOptions = constructTableColumnOptions(false, null,null);
+                    String colOptions = constructTableColumnOptions(false, null, null);
                     tableToolsColumnOptions.append(colOptions);
                 } else {
-                    tableToolsColumnOptions = new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(), ", "));
+                    tableToolsColumnOptions = new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
+                            ", "));
                 }
 
                 tableToolsColumnOptions.append("]");
@@ -178,31 +172,67 @@ public class TableTools extends WidgetBase {
     }
 
     /**
-     * This method constructs the sort data type for each datatable columns.
+     * Constructs the sort data type for each datatable columns.
      */
     protected String constructTableColumnOptions(boolean isSortable, Class dataTypeClass, String sortType) {
-
         String colOptions = "null";
 
         if (!isSortable || dataTypeClass == null || sortType == null) {
             colOptions = "{ \"" + UifConstants.TableToolsKeys.SORTABLE + "\" : false } ";
         } else {
             if (ClassUtils.isAssignable(dataTypeClass, KualiPercent.class)) {
-                colOptions = "{ \"" + UifConstants.TableToolsKeys.SORT_DATA_TYPE + "\" : \"" +
-                             sortType + "\" , \"" + UifConstants.TableToolsKeys.SORT_TYPE + "\" : \"" + UifConstants.TableToolsValues.PERCENT + "\" } ";
-            }else if (ClassUtils.isAssignable(dataTypeClass, KualiInteger.class) || ClassUtils.isAssignable(dataTypeClass, KualiDecimal.class)) {
-                colOptions = "{ \"" + UifConstants.TableToolsKeys.SORT_DATA_TYPE + "\" : \"" +
-                              sortType + "\" , \"" + UifConstants.TableToolsKeys.SORT_TYPE + "\" : \"" + UifConstants.TableToolsValues.CURRENCY + "\" } ";
-            }else if (ClassUtils.isAssignable(dataTypeClass, Timestamp.class)) {
-                colOptions = "{ \"" + UifConstants.TableToolsKeys.SORT_DATA_TYPE + "\" : \"" +
-                             sortType + "\" , \"" + UifConstants.TableToolsKeys.SORT_TYPE + "\" : \"" + "date" + "\" } ";
-            }else if (ClassUtils.isAssignable(dataTypeClass, java.sql.Date.class) || ClassUtils.isAssignable(dataTypeClass, java.util.Date.class)) {
-                colOptions = "{ \"" + UifConstants.TableToolsKeys.SORT_DATA_TYPE + "\" : \"" +
-                             sortType + "\" , \"" + UifConstants.TableToolsKeys.SORT_TYPE + "\" : \"" + UifConstants.TableToolsValues.DATE + "\" } ";
-            }else if (ClassUtils.isAssignable(dataTypeClass, Number.class)) {
-                colOptions = "{ \"" + UifConstants.TableToolsKeys.SORT_DATA_TYPE + "\" : \"" +
-                             sortType + "\" , \"" + UifConstants.TableToolsKeys.SORT_TYPE + "\" : \"" + UifConstants.TableToolsValues.NUMERIC + "\" } ";
-            }else{
+                colOptions = "{ \""
+                        + UifConstants.TableToolsKeys.SORT_DATA_TYPE
+                        + "\" : \""
+                        + sortType
+                        + "\" , \""
+                        + UifConstants.TableToolsKeys.SORT_TYPE
+                        + "\" : \""
+                        + UifConstants.TableToolsValues.PERCENT
+                        + "\" } ";
+            } else if (ClassUtils.isAssignable(dataTypeClass, KualiInteger.class) || ClassUtils.isAssignable(
+                    dataTypeClass, KualiDecimal.class)) {
+                colOptions = "{ \""
+                        + UifConstants.TableToolsKeys.SORT_DATA_TYPE
+                        + "\" : \""
+                        + sortType
+                        + "\" , \""
+                        + UifConstants.TableToolsKeys.SORT_TYPE
+                        + "\" : \""
+                        + UifConstants.TableToolsValues.CURRENCY
+                        + "\" } ";
+            } else if (ClassUtils.isAssignable(dataTypeClass, Timestamp.class)) {
+                colOptions = "{ \""
+                        + UifConstants.TableToolsKeys.SORT_DATA_TYPE
+                        + "\" : \""
+                        + sortType
+                        + "\" , \""
+                        + UifConstants.TableToolsKeys.SORT_TYPE
+                        + "\" : \""
+                        + "date"
+                        + "\" } ";
+            } else if (ClassUtils.isAssignable(dataTypeClass, java.sql.Date.class) || ClassUtils.isAssignable(
+                    dataTypeClass, java.util.Date.class)) {
+                colOptions = "{ \""
+                        + UifConstants.TableToolsKeys.SORT_DATA_TYPE
+                        + "\" : \""
+                        + sortType
+                        + "\" , \""
+                        + UifConstants.TableToolsKeys.SORT_TYPE
+                        + "\" : \""
+                        + UifConstants.TableToolsValues.DATE
+                        + "\" } ";
+            } else if (ClassUtils.isAssignable(dataTypeClass, Number.class)) {
+                colOptions = "{ \""
+                        + UifConstants.TableToolsKeys.SORT_DATA_TYPE
+                        + "\" : \""
+                        + sortType
+                        + "\" , \""
+                        + UifConstants.TableToolsKeys.SORT_TYPE
+                        + "\" : \""
+                        + UifConstants.TableToolsValues.NUMERIC
+                        + "\" } ";
+            } else {
                 colOptions = "{ \"" + UifConstants.TableToolsKeys.SORT_DATA_TYPE + "\" : \"" + sortType + "\" } ";
             }
         }

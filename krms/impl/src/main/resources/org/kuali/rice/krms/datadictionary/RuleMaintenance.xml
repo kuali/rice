@@ -355,7 +355,7 @@
     <property name="propertyName" value="actions" />
 <!-- 
     
-    <property name="conditionalRender" value="document.newMaintainableObject.dataObject.actions != null and !document.newMaintainableObject.dataObject.actions.isEmpty()"/>
+    <property name="render" value="@{document.newMaintainableObject.dataObject.actions != null and !document.newMaintainableObject.dataObject.actions.isEmpty()}"/>
 -->
     <property name="layoutManager.renderSequenceField" value="false" />
 <!-- 

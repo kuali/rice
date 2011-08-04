@@ -49,7 +49,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <bean parent="LabelField" p:renderColon="false" p:styleClasses="infoline"/>
       </property>      
       <property name="sequenceFieldPrototype">
-        <bean parent="AttributeField" p:conditionalReadOnly="true" p:label=" " p:shortLabel=" "/>
+        <bean parent="AttributeField" p:readOnly="true" p:label=" " p:shortLabel=" "/>
       </property>
       <property name="actionFieldPrototype">
         <bean parent="FieldGroup" p:align="center" p:required="false" p:label="Actions" p:shortLabel="Actions"/>
@@ -73,7 +73,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property> 
       <property name="subCollectionGroupFieldPrototype">
         <bean parent="GroupField" p:labelField.render="false" p:group.header.render="false" 
-              p:conditionalColSpan="#parent.layoutManager.numberOfColumns" />
+              p:colSpan="@{#parent.layoutManager.numberOfColumns}" />
       </property>       
   </bean>  
   

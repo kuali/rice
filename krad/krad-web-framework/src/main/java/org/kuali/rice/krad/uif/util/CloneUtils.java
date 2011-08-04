@@ -128,7 +128,7 @@ public class CloneUtils {
             return copy;
         }
         catch (Throwable t) {
-            LOG.warn("Exception during clone (returning original): " + t.getMessage());
+            LOG.debug("Exception during clone (returning original): " + t.getMessage());
             return original;
         }
     }

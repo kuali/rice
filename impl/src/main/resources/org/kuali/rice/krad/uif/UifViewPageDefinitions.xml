@@ -17,7 +17,7 @@
 	<bean id="View" abstract="true" parent="View-parentBean" />
 	<bean id="View-parentBean" abstract="true"
 		class="org.kuali.rice.krad.uif.container.View" scope="prototype">
-        <property name="viewName" value="default" />
+    <property name="viewName" value="default" />
 		<property name="viewHelperServiceClassName"
 			value="org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl" />
 		<property name="styleClasses" value="workarea" />
@@ -45,7 +45,7 @@
 				<entry key="actionFlags" value="#view.actionFlags" />
 			</map>
 		</property>
-		<property name="conditionalReadOnly" value="!#actionFlags['canEdit']" />
+		<property name="readOnly" value="@{!#actionFlags['canEdit']}" />
 	</bean>
 
 	<bean id="FormView" abstract="true" parent="FormView-parentBean" />
@@ -76,7 +76,7 @@
 		<property name="formClass"
 			value="org.kuali.rice.krad.web.form.InquiryForm" />
 		<property name="defaultBindingObjectPath" value="dataObject" />
-		<property name="conditionalReadOnly" value="true" />
+		<property name="readOnly" value="true" />
 		<property name="singlePageView" value="true" />
 		<property name="page">
 			<bean parent="PageInquiry" />
@@ -86,110 +86,106 @@
 		</property>
 	</bean>
 
-	<bean id="LookupView" abstract="true" parent="LookupView-parentBean" />
-	<bean id="LookupView-parentBean" abstract="true"
-		class="org.kuali.rice.krad.uif.container.LookupView" parent="KNSFormView">
-		<property name="viewHelperServiceClassName"
-			value="org.kuali.rice.krad.lookup.LookupableImpl" />
-		<property name="formClass"
-			value="org.kuali.rice.krad.web.form.LookupForm" />
-		<property name="singlePageView" value="true" />
-		<property name="page">
-			<bean parent="PageLookup" />
-		</property>
-		<property name="footer">
-			<bean parent="Footer" />
-		</property>
-		<property name="criteriaGroup">
-           <bean parent="LookupCriteriaGroup" />
-		</property>
-		<property name="resultsGroup">
-			<bean parent="LookupResultsGroup" />
-		</property>
-		<property name="resultsActionsField">
-			<bean parent="FieldGroup">
-				<property name="label" value="Actions" />
-                <property name="group">
-                   <bean parent="LinkGroup"/>
-                </property>
-                <property name="items">
-                  <list>
-                    <bean parent="LinkField" p:order="10">
-                      <property name="linkLabel" value="edit" />
-				      <property name="finalizeMethodToCall" value="getMaintenanceActionLink" />
-                      <property name="finalizeMethodAdditionalArguments">
-                        <list>
-                          <value>maintenanceEdit</value>
-                        </list>
-                      </property>
-                      <property name="conditionalRender" value="#ViewHelper.allowsMaintenanceEditAction(#line)"/>
-			        </bean>
-                    <bean parent="LinkField" p:order="20">
-                      <property name="linkLabel" value="copy" />
-				      <property name="finalizeMethodToCall" value="getMaintenanceActionLink" />
-                      <property name="finalizeMethodAdditionalArguments">
-                        <list>
-                          <value>maintenanceCopy</value>
-                        </list>
-                      </property>
-                      <property name="conditionalRender" value="#ViewHelper.allowsMaintenanceNewOrCopyAction()"/>
-			        </bean>
-                    <bean parent="LinkField" p:order="30">
-                      <property name="linkLabel" value="delete" />
-				      <property name="finalizeMethodToCall" value="getMaintenanceActionLink" />
-                      <property name="finalizeMethodAdditionalArguments">
-                        <list>
-                          <value>maintenanceDelete</value>
-                        </list>
-                      </property>
-                      <property name="conditionalRender" value="#ViewHelper.allowsMaintenanceDeleteAction(#line)"/>
-			        </bean>
-                  </list>
-                </property>
-			</bean>
-		</property>
-		<property name="resultsReturnField">
-			<bean parent="LinkField">
-				<property name="label" value="Return Value" />
-				<property name="finalizeMethodToCall" value="getReturnUrlForResults" />
-			</bean>
-		</property>
-	</bean>
-	
-	<bean id="DocumentView" abstract="true" parent="DocumentView-parentBean" />
-	<bean id="DocumentView-parentBean" abstract="true"
-		class="org.kuali.rice.krad.uif.container.DocumentView" parent="KNSFormView">
-		<property name="formClass"
-			value="org.kuali.rice.krad.web.form.DocumentFormBase" />
-		<property name="defaultBindingObjectPath" value="document" />
-		<property name="presentationControllerClass"
-			value="org.kuali.rice.krad.uif.authorization.DocumentPresentationControllerBase" />
-		<property name="authorizerClass"
-			value="org.kuali.rice.krad.uif.authorization.DocumentAuthorizerBase" />
-        <property name="viewHelperServiceClassName"
-			value="org.kuali.rice.krad.uif.service.impl.DocumentViewHelperServiceImpl" />
-		<property name="singlePageView" value="true" />
-		<property name="header">
-			<bean parent="HeaderViewDocument" />
-		</property>
-		<property name="page">
-			<bean parent="Page_Accordion" />
-		</property>
-		<property name="footer">
-			<bean parent="FooterDocument" />
-		</property>
-		<property name="itemOrderingSequence" value="11" />
-		<property name="items">
-			<list>
-				<bean parent="Group_DocumentOverview" p:order="10" />
-				<bean parent="Group_DocumentNotes" p:accordion.defaultOpen="false"
-					p:order="30" />
-                <bean parent="Group_DocumentAdHocRecipients" p:accordion.defaultOpen="false" p:order="40" />
-				<bean parent="Group_DocumentRouteLog" p:accordion.defaultOpen="false"
-					p:order="50" />
-			</list>
-		</property>
-	</bean>
+  <bean id="LookupView" abstract="true" parent="LookupView-parentBean"/>
+  <bean id="LookupView-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.container.LookupView" parent="KNSFormView">
+    <property name="viewHelperServiceClassName" value="org.kuali.rice.krad.lookup.LookupableImpl"/>
+    <property name="formClass" value="org.kuali.rice.krad.web.form.LookupForm"/>
+    <property name="singlePageView" value="true"/>
+    <property name="page">
+      <bean parent="PageLookup"/>
+    </property>
+    <property name="footer">
+      <bean parent="Footer"/>
+    </property>
+    <property name="criteriaGroup">
+      <bean parent="LookupCriteriaGroup"/>
+    </property>
+    <property name="resultsGroup">
+      <bean parent="LookupResultsGroup"/>
+    </property>
+    <property name="resultsActionsField">
+      <bean parent="FieldGroup">
+        <property name="label" value="Actions"/>
+        <property name="group">
+          <bean parent="LinkGroup"/>
+        </property>
+        <property name="items">
+          <list>
+            <bean parent="LinkField" p:order="10">
+              <property name="linkLabel" value="edit"/>
+              <property name="finalizeMethodToCall" value="getMaintenanceActionLink"/>
+              <property name="finalizeMethodAdditionalArguments">
+                <list>
+                  <value>maintenanceEdit</value>
+                </list>
+              </property>
+              <property name="render" value="@{#ViewHelper.allowsMaintenanceEditAction(#line)}"/>
+            </bean>
+            <bean parent="LinkField" p:order="20">
+              <property name="linkLabel" value="copy"/>
+              <property name="finalizeMethodToCall" value="getMaintenanceActionLink"/>
+              <property name="finalizeMethodAdditionalArguments">
+                <list>
+                  <value>maintenanceCopy</value>
+                </list>
+              </property>
+              <property name="render" value="@{#ViewHelper.allowsMaintenanceNewOrCopyAction()}"/>
+            </bean>
+            <bean parent="LinkField" p:order="30">
+              <property name="linkLabel" value="delete"/>
+              <property name="finalizeMethodToCall" value="getMaintenanceActionLink"/>
+              <property name="finalizeMethodAdditionalArguments">
+                <list>
+                  <value>maintenanceDelete</value>
+                </list>
+              </property>
+              <property name="render" value="@{#ViewHelper.allowsMaintenanceDeleteAction(#line)}"/>
+            </bean>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="resultsReturnField">
+      <bean parent="LinkField">
+        <property name="label" value="Return Value"/>
+        <property name="finalizeMethodToCall" value="getReturnUrlForResults"/>
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="DocumentView" abstract="true" parent="DocumentView-parentBean"/>
+  <bean id="DocumentView-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.container.DocumentView" parent="KNSFormView">
+    <property name="formClass"
+              value="org.kuali.rice.krad.web.form.DocumentFormBase"/>
+    <property name="defaultBindingObjectPath" value="document"/>
+    <property name="presentationControllerClass"
+              value="org.kuali.rice.krad.uif.authorization.DocumentPresentationControllerBase"/>
+    <property name="authorizerClass"
+              value="org.kuali.rice.krad.uif.authorization.DocumentAuthorizerBase"/>
+    <property name="viewHelperServiceClassName"
+              value="org.kuali.rice.krad.uif.service.impl.DocumentViewHelperServiceImpl"/>
+    <property name="singlePageView" value="true"/>
+    <property name="header">
+      <bean parent="HeaderViewDocument"/>
+    </property>
+    <property name="page">
+      <bean parent="Page_Accordion"/>
+    </property>
+    <property name="footer">
+      <bean parent="FooterDocument"/>
+    </property>
+    <property name="itemOrderingSequence" value="11"/>
+    <property name="items">
+      <list>
+        <bean parent="Group_DocumentOverview" p:order="10"/>
+        <bean parent="Group_DocumentNotes" p:accordion.defaultOpen="false" p:order="30"/>
+        <bean parent="Group_DocumentAdHocRecipients" p:accordion.defaultOpen="false" p:order="40"/>
+        <bean parent="Group_DocumentRouteLog" p:accordion.defaultOpen="false" p:order="50"/>
+      </list>
+    </property>
+  </bean>
 
 	<bean id="MaintenanceView" abstract="true" parent="MaintenanceView-parentBean" />
 	<bean id="MaintenanceView-parentBean" abstract="true"
@@ -245,22 +241,20 @@
 		<property name="items">
 			<list>
 				<bean parent="AttributeField_Form" p:propertyName="incidentDocId"
-					p:label="Document Id" p:readOnly="true" p:width="auto"
-					p:conditionalReadOnly="">
+					p:label="Document Id" p:readOnly="true" p:width="auto">
 					<property name="control">
 						<bean parent="TextControl" p:size="50" />
 					</property>
 				</bean>
 				<bean parent="AttributeField_Form" p:propertyName="incidentViewId"
-					p:label="View Id" p:readOnly="true" p:width="auto"
-					p:conditionalReadOnly="">
+					p:label="View Id" p:readOnly="true" p:width="auto">
 					<property name="control">
 						<bean parent="TextControl" p:size="50" />
 					</property>
 				</bean>
 				<bean parent="AttributeField_Form" p:propertyName="errorMessage"
 					p:style="color : RED;" p:label="Error Message" p:readOnly="true"
-					p:width="auto" p:conditionalReadOnly="">
+					p:width="auto">
 					<property name="control">
 						<bean parent="TextControl" p:size="50" />
 					</property>
@@ -279,14 +273,13 @@
 	</bean>
 
 	<bean id="IncidentStackGroup" parent="GroupSection"
-		p:layoutManager.styleClasses="layout_center" p:conditionalRender="devMode" p:accordion.render="false">
+		p:layoutManager.styleClasses="layout_center" p:render="@{devMode}" p:accordion.render="false">
 		<property name="header.headerText" value="Stacktrace (only in dev mode)" />
 		<property name="items">
 			<list>
-				<bean parent="AttributeField" p:propertyName="exceptionStackTrace"
-					p:labelPlacement="TOP" p:labelField.styleClasses="labelTop"
-					p:labelField.renderColon="false" p:label="" p:readOnly="true"
-					p:width="auto" p:conditionalReadOnly="">
+				<bean parent="AttributeField" p:propertyName="exceptionStackTrace" p:labelPlacement="TOP"
+              p:labelField.styleClasses="labelTop" p:labelField.renderColon="false" p:label="" p:readOnly="true"
+				    	p:width="auto">
 					<property name="control">
 						<bean parent="TextControl" p:size="100" />
 					</property>

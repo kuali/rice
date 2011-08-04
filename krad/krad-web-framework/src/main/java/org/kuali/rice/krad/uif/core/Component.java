@@ -231,20 +231,6 @@ public interface Component extends Serializable, Ordered, ScriptEventSupport {
     public void setRender(boolean render);
 
     /**
-     * Expression language string for conditionally setting the render property
-     *
-     * @return String el that should evaluate to boolean
-     */
-    public String getConditionalRender();
-
-    /**
-     * Setter for the conditional render string
-     *
-     * @param conditionalRender
-     */
-    public void setConditionalRender(String conditionalRender);
-
-    /**
      * Indicates whether the component should be hidden in the UI
      *
      * <p>
@@ -299,21 +285,6 @@ public interface Component extends Serializable, Ordered, ScriptEventSupport {
      * @param readOnly
      */
     public void setReadOnly(boolean readOnly);
-
-    /**
-     * Expression language string for conditionally setting the readOnly
-     * property
-     *
-     * @return String el that should evaluate to boolean
-     */
-    public String getConditionalReadOnly();
-
-    /**
-     * Setter for the conditional readOnly string
-     *
-     * @param conditionalReadOnly
-     */
-    public void setConditionalReadOnly(String conditionalReadOnly);
 
     /**
      * Indicates whether the component is required
@@ -786,4 +757,38 @@ public interface Component extends Serializable, Ordered, ScriptEventSupport {
      * @param baseId the baseId to set
      */
     public void setBaseId(String baseId);
+
+    /**
+     * Map of expressions that should be evaluated to conditionally set a property on the component
+     *
+     * <p>
+     * When configuring a component property through XML an expression can be given using the @{} placeholder. During
+     * the loading of the XML any such expressions are captured and placed into this Map, with the property they apply
+     * to set as the Map key. The expressions are then evaluated during the apply model phase and the result is set as
+     * the property value.
+     * </p>
+     *
+     * <p>
+     * Note after the expression is picked up, the property configuration is removed. Thus the property in the
+     * component will only have its default object value until the expression is evaluated
+     * </p>
+     *
+     * @return Map<String, String> map of expressions where key is property name and value is expression to evaluate
+     */
+    public Map<String, String> getPropertyExpressions();
+
+    /**
+     * Setter for the Map of property expressions
+     *
+     * @param propertyExpressions
+     */
+    public void setPropertyExpressions(Map<String, String> propertyExpressions);
+
+    /**
+     * Returns the expression configured for the property with the given name
+     *
+     * @return String expression for property or null if expression is not configured
+     * @see Component#getPropertyExpressions()
+     */
+    public String getPropertyExpression(String propertyName);
 }

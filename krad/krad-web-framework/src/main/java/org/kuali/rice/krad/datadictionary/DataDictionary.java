@@ -30,6 +30,7 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.util.ComponentBeanPostProcessor;
+import org.kuali.rice.krad.uif.util.UifBeanFactoryPostProcessor;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -178,6 +179,9 @@ public class DataDictionary  {
             throw new DataDictionaryException("Error loading bean definitions: " + e.getLocalizedMessage());
         }
         LOG.info("Completed DD XML File Load");
+
+        UifBeanFactoryPostProcessor factoryPostProcessor = new UifBeanFactoryPostProcessor();
+        factoryPostProcessor.postProcessBeanFactory(ddBeans);
 
         // indexing
         if (allowConcurrentValidation) {

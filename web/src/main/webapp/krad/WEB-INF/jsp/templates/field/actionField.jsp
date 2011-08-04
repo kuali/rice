@@ -45,6 +45,5 @@
 </c:choose>
 
 <c:if test="${(field.lightBoxLookup != null)}">
-	<krad:template component="${field.lightBoxLookup}"
-		componentId="${field.id}" />
+	<krad:template component="${field.lightBoxLookup}"	componentId="${field.id}" />
 </c:if>

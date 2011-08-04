@@ -135,49 +135,47 @@
           </map>
       </property>
   </bean>
-  
-<bean id="LightBoxDirectInquiry" parent="LightBoxDirectInquiry-parentBean"/>
+
+  <bean id="LightBoxDirectInquiry" parent="LightBoxDirectInquiry-parentBean"/>
   <bean id="LightBoxDirectInquiry-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.LightBox" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/templates/widget/lightBox.jsp"/>
-      <property name="componentOptions">
-          <map>
-              <entry key="autoScale" value="false"/>              
-              <entry key="centerOnScroll" value="true"/>
-              <entry key="transitionIn" value="fade"/>   
-              <entry key="transitionOut" value="fade"/>
-              <entry key="speedIn" value="200"/>
-              <entry key="speedOut" value="200"/>                 
-              <entry key="width" value="70%"/>
-              <entry key="height" value="90%"/>              
-              <entry key="hideOnOverlayClick" value="false"/>
-              <entry key="type" value="iframe"/>
-          </map>
-      </property>
+    <property name="template" value="/krad/WEB-INF/jsp/templates/widget/lightBox.jsp"/>
+    <property name="componentOptions">
+      <map>
+        <entry key="autoScale" value="false"/>
+        <entry key="centerOnScroll" value="true"/>
+        <entry key="transitionIn" value="fade"/>
+        <entry key="transitionOut" value="fade"/>
+        <entry key="speedIn" value="200"/>
+        <entry key="speedOut" value="200"/>
+        <entry key="width" value="70%"/>
+        <entry key="height" value="90%"/>
+        <entry key="hideOnOverlayClick" value="false"/>
+        <entry key="type" value="iframe"/>
+      </map>
+    </property>
   </bean>
-  
+
   <bean id="TableTools-Paging" parent="TableTools-Paging-parentBean"/>
-  
   <bean id="TableTools-Paging-parentBean" parent="TableTools-parentBean" scope="prototype">
-		<property name="componentOptions">
-          <map merge="true">
-		  	 <entry key="sScrollX" value="100%"/>
-		  	 <entry key="bScrollCollapse" value="true"/>
-		  </map>
-		</property>  	 
+    <property name="componentOptions">
+      <map merge="true">
+        <entry key="sScrollX" value="100%"/>
+        <entry key="bScrollCollapse" value="true"/>
+      </map>
+    </property>
   </bean>
-  
+
   <bean id="TableTools-ScrollInfinite" parent="TableTools-ScrollInfinite-parentBean"/>
-  
   <bean id="TableTools-ScrollInfinite-parentBean" parent="TableTools-parentBean" scope="prototype">
-  	 <property name="componentOptions">
-          <map merge="true">
-          	 <entry key="bScrollInfinite" value="true"/>
-          	 <entry key="bScrollCollapse" value="true"/>
-		  	 <entry key="sScrollY" value="100%"/>
-		  </map>
-		</property>
+    <property name="componentOptions">
+      <map merge="true">
+        <entry key="bScrollInfinite" value="true"/>
+        <entry key="bScrollCollapse" value="true"/>
+        <entry key="sScrollY" value="100%"/>
+      </map>
+    </property>
   </bean>
-  
+
   <bean id="TableTools" parent="TableTools-parentBean"/>
   <bean id="TableTools-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.TableTools" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/widget/tableTools.jsp"/>
@@ -203,7 +201,7 @@
       		</property>
       	</bean>        
       </property>
-      <property name="conditionalRender" value="!#parent.readOnly"/>
+      <property name="render" value="@{!#parent.readOnly}"/>
   </bean>  
   
   <bean id="Inquiry" parent="Inquiry-parentBean" />
@@ -217,23 +215,23 @@
       		</property>
       	</bean>
       </property>    
-      <property name="conditionalReadOnly" value="#parent.readOnly"/>
-      <property name="conditionalRender" value="#parent.readOnly"/>
-  </bean>   
-  
+      <property name="readOnly" value="@{#parent.readOnly}"/>
+      <property name="render" value="@{#parent.readOnly}"/>
+  </bean>
+
   <bean id="DirectInquiry" parent="DirectInquiry-parentBean"/>
   <bean id="DirectInquiry-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.DirectInquiry" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/templates/widget/directInquiry.jsp"/>
-      <property name="baseInquiryUrl" value="@{#ConfigProperties['application.url']}/spring/inquiry"/>
-	  <property name="directInquiryActionField">
-        <bean parent="ActionField" p:actionImageField-ref="DirectInquiryImageField">
-        	<property name="lightBox">
-        		<ref bean="LightBoxDirectInquiry"/>
-      		</property>
-      	</bean>        
-      </property>      
-      <property name="conditionalRender" value="!#parent.readOnly"/>
-      <property name="conditionalReadOnly" value="#parent.readOnly"/>
+    <property name="template" value="/krad/WEB-INF/jsp/templates/widget/directInquiry.jsp"/>
+    <property name="baseInquiryUrl" value="@{#ConfigProperties['application.url']}/spring/inquiry"/>
+    <property name="directInquiryActionField">
+      <bean parent="ActionField" p:actionImageField-ref="DirectInquiryImageField">
+        <property name="lightBox">
+          <ref bean="LightBoxDirectInquiry"/>
+        </property>
+      </bean>
+    </property>
+    <property name="render" value="@{!#parent.readOnly}"/>
+    <property name="readOnly" value="@{#parent.readOnly}"/>
   </bean>
   
   <bean id="Accordion" parent="Accordion-parentBean"/>

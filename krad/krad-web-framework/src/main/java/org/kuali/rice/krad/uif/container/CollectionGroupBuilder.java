@@ -263,8 +263,10 @@ public class CollectionGroupBuilder implements Serializable {
         List<Field> fields = new ArrayList<Field>();
 
         for (Field lineField : lineFields) {
+            String conditionalRender = lineField.getPropertyExpression("render");
+
             // evaluate conditional render string if set
-            if (StringUtils.isNotBlank(lineField.getConditionalRender())) {
+            if (StringUtils.isNotBlank(conditionalRender)) {
                 Map<String, Object> context = new HashMap<String, Object>();
                 context.putAll(view.getContext());
                 context.put(UifConstants.ContextVariableNames.PARENT, collectionGroup);
@@ -274,14 +276,12 @@ public class CollectionGroupBuilder implements Serializable {
                 context.put(UifConstants.ContextVariableNames.IS_ADD_LINE, new Boolean(lineIndex == -1));
 
                 Boolean render = (Boolean) getExpressionEvaluatorService().evaluateExpression(model, context,
-                        lineField.getConditionalRender());
+                        conditionalRender);
                 lineField.setRender(render);
             }
 
-            // only add line field if set to render or if it is hidden by
-            // progressive render
-            if (lineField.isRender()
-                    || (!lineField.isRender() && !StringUtils.isEmpty(lineField.getProgressiveRender()))) {
+            // only add line field if set to render or if it is hidden by progressive render
+            if (lineField.isRender() || StringUtils.isNotBlank(lineField.getProgressiveRender())) {
                 fields.add(lineField);
             }
         }
@@ -306,15 +306,17 @@ public class CollectionGroupBuilder implements Serializable {
      */
     protected boolean checkSubCollectionRender(View view, Object model, CollectionGroup collectionGroup,
             CollectionGroup subCollectionGroup) {
+        String conditionalRender = subCollectionGroup.getPropertyExpression("render");
+
         // evaluate conditional render string if set
-        if (StringUtils.isNotBlank(subCollectionGroup.getConditionalRender())) {
+        if (StringUtils.isNotBlank(conditionalRender)) {
             Map<String, Object> context = new HashMap<String, Object>();
             context.putAll(view.getContext());
             context.put(UifConstants.ContextVariableNames.PARENT, collectionGroup);
             context.put(UifConstants.ContextVariableNames.COMPONENT, subCollectionGroup);
 
             Boolean render = (Boolean) getExpressionEvaluatorService().evaluateExpression(model, context,
-                    subCollectionGroup.getConditionalRender());
+                    conditionalRender);
             subCollectionGroup.setRender(render);
         }
 

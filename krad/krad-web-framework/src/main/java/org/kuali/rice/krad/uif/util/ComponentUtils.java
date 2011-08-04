@@ -18,7 +18,6 @@ import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.core.Component;
 import org.kuali.rice.krad.uif.core.DataBinding;
 import org.kuali.rice.krad.uif.core.Ordered;
-import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.GroupField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
@@ -32,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -333,45 +331,10 @@ public class ComponentUtils {
         pushObjectToContext(component, UifConstants.ContextVariableNames.IS_ADD_LINE, isAddLine);
     }
 
-    public static void processIds(Component component, Map<String, Integer> seenIds) {
-        String componentId = component.getId();
-        Integer seenCount = new Integer(0);
-        if (StringUtils.isNotBlank(componentId)) {
-            if (seenIds.containsKey(componentId)) {
-                seenCount = seenIds.get(componentId);
-                seenCount += 1;
-
-                component.setId(componentId + "_" + seenCount);
-            }
-
-            seenIds.put(componentId, seenCount);
-        }
-
-        if (Container.class.isAssignableFrom(component.getClass())) {
-            LayoutManager layoutManager = ((Container) component).getLayoutManager();
-            if ((layoutManager != null) && StringUtils.isNotBlank(layoutManager.getId())) {
-                seenCount = new Integer(0);
-                if (seenIds.containsKey(layoutManager.getId())) {
-                    seenCount = seenIds.get(layoutManager.getId());
-                    seenCount += 1;
-
-                    layoutManager.setId(layoutManager.getId() + "_" + seenCount);
-                }
-
-                seenIds.put(layoutManager.getId(), seenCount);
-            }
-        }
-
-        for (Component nested : component.getNestedComponents()) {
-            if (nested != null) {
-                processIds(nested, seenIds);
-            }
-        }
-    }
-
     /**
      * Performs sorting logic of the given list of <code>Ordered</code>
      * instances by its order property
+     *
      * <p>
      * Items list is sorted based on its order property. Lower order values are
      * placed higher in the list. If a item does not have a value assigned for
@@ -429,137 +392,6 @@ public class ComponentUtils {
         Collections.sort(orderedItems, new OrderComparator());
 
         return orderedItems;
-    }
-    
-    /**
-     * Takes in an expression and a list to be filled in with names(property names)
-     * of controls found in the expression. This method returns a js expression which can
-     * be executed on the client to determine if the original exp was satisfied before
-     * interacting with the server - ie, this js expression is equivalent to the one passed in.
-     * 
-     * There are limitations on the Spring expression language that can be used as this method.
-     * It is only used to parse expressions which are valid case statements for determining if
-     * some action/processing should be performed.  ONLY Properties, comparison operators, booleans,
-     * strings, matches expression, and boolean logic are supported.  Properties must
-     * be a valid property on the form, and should have a visible control within the view.
-     * 
-     * Example valid exp: account.name == 'Account Name'
-     * 
-     * @param exp
-     * @param controlNames
-     * @return
-     */
-    public static String parseExpression(String exp, List<String> controlNames){
-        //Clean up expression to ease parsing
-        exp = StringUtils.replace(exp, "!=", " != ");
-        exp = StringUtils.replace(exp, "==", " == ");
-        exp = StringUtils.replace(exp, ">", " > ");
-        exp = StringUtils.replace(exp, "<", " < ");
-        exp = StringUtils.replace(exp, "<=", " <= ");
-        exp = StringUtils.replace(exp, ">=", " >= ");
-        exp = exp.trim();
-
-        String conditionJs = exp;
-        String stack = "";
-        boolean expectingSingleQuote = false;
-        boolean ignoreNext = false;
-        for(int i = 0; i < exp.length(); i++) { 
-            char c = exp.charAt(i);
-            if(!expectingSingleQuote && !ignoreNext && (c == '(' || c == ' ' || c == ')')){
-                evaluateCurrentStack(stack.trim(), controlNames);
-                //reset stack
-                stack = "";
-                continue;
-            }
-            else if(!ignoreNext && c == '\''){
-                stack = stack + c;
-                expectingSingleQuote = !expectingSingleQuote;
-            }
-            else if(c == '\\'){
-                stack = stack + c;
-                ignoreNext = !ignoreNext;
-            }
-            else{
-                stack = stack + c;
-                ignoreNext = false;
-            }
-        }
-        
-        conditionJs = conditionJs
-        .replaceAll("\\s(?i:ne)\\s", " != ")
-        .replaceAll("\\s(?i:eq)\\s", " == ")
-        .replaceAll("\\s(?i:gt)\\s", " > ")
-        .replaceAll("\\s(?i:lt)\\s", " < ")
-        .replaceAll("\\s(?i:lte)\\s", " <= ")
-        .replaceAll("\\s(?i:gte)\\s", " >= ")
-        .replaceAll("\\s(?i:and)\\s", " && ")
-        .replaceAll("\\s(?i:or)\\s", " || ")
-        .replaceAll("\\s(?i:not)\\s", " != ")
-        .replaceAll("\\s(?i:null)\\s?", " '' ")
-        .replaceAll("\\s?(?i:#empty)\\((.*?)\\)", "isValueEmpty($1)");
-        if(conditionJs.contains("matches")){
-            conditionJs = conditionJs.replaceAll("\\s+(?i:matches)\\s+'.*'", ".match(/" 
-                    + "$0" + "/) != null ");
-            conditionJs = conditionJs.replaceAll("\\(/\\s+(?i:matches)\\s+'", "(/");
-            conditionJs = conditionJs.replaceAll("'\\s*/\\)", "/)");
-        }
-        for(String propertyName: controlNames){
-            conditionJs = conditionJs.replace(propertyName, 
-                    "coerceValue(\""+ propertyName +"\")");
-        }
-        return conditionJs;
-    }
-    
-    /**
-     * Used internally by parseExpression to evalute if the current stack is a property
-     * name (ie, will be a control on the form)
-     * 
-     * @param stack
-     * @param controlNames
-     */
-    private static void evaluateCurrentStack(String stack, List<String> controlNames){
-       if(StringUtils.isNotBlank(stack)){
-           if(!(stack.equals("==") 
-                   || stack.equals("!=")
-                   || stack.equals(">")
-                   || stack.equals("<")
-                   || stack.equals(">=")
-                   || stack.equals("<=")
-                   || stack.equalsIgnoreCase("ne")
-                   || stack.equalsIgnoreCase("eq")
-                   || stack.equalsIgnoreCase("gt")
-                   || stack.equalsIgnoreCase("lt")
-                   || stack.equalsIgnoreCase("lte")
-                   || stack.equalsIgnoreCase("gte")
-                   || stack.equalsIgnoreCase("matches")
-                   || stack.equalsIgnoreCase("null")
-                   || stack.equalsIgnoreCase("false")
-                   || stack.equalsIgnoreCase("true")
-                   || stack.equalsIgnoreCase("and")
-                   || stack.equalsIgnoreCase("or")
-                   || stack.contains("#empty")
-                   || stack.startsWith("'")
-                   || stack.endsWith("'"))){
-               
-               boolean isNumber = false;
-               if((StringUtils.isNumeric(stack.substring(0,1)) 
-                       || stack.substring(0,1).equals("-"))){
-                   try{
-                       Double.parseDouble(stack);
-                       isNumber = true;
-                   }
-                   catch(NumberFormatException e){
-                       isNumber = false;
-                   }
-               }
-               
-               if(!(isNumber)){
-                   if(!controlNames.contains(stack)){
-                       controlNames.add(stack);
-                   }
-               }
-           }
-       }
     }
 
     public static String getLinePathValue(Component component) {

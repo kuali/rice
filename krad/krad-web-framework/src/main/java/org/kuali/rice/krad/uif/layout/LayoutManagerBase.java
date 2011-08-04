@@ -53,11 +53,13 @@ public abstract class LayoutManagerBase implements LayoutManager {
 	@ReferenceCopy(newCollectionInstance=true)
 	private Map<String, Object> context;
 
+    private Map<String, String> propertyExpressions;
 	private List<PropertyReplacer> propertyReplacers;
 
 	public LayoutManagerBase() {
 		styleClasses = new ArrayList<String>();
 		context = new HashMap<String, Object>();
+        propertyExpressions = new HashMap<String, String>();
 		propertyReplacers = new ArrayList<PropertyReplacer>();
 	}
 
@@ -242,6 +244,31 @@ public abstract class LayoutManagerBase implements LayoutManager {
 
 		this.context.put(objectName, object);
 	}
+
+    /**
+     * @see org.kuali.rice.krad.uif.layout.LayoutManager#getPropertyExpressions
+     */
+    public Map<String, String> getPropertyExpressions() {
+        return propertyExpressions;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.layout.LayoutManager#setPropertyExpressions
+     */
+    public void setPropertyExpressions(Map<String, String> propertyExpressions) {
+        this.propertyExpressions = propertyExpressions;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.layout.LayoutManager#getPropertyExpression
+     */
+    public String getPropertyExpression(String propertyName) {
+        if (this.propertyExpressions.containsKey(propertyName)) {
+            return this.propertyExpressions.get(propertyName);
+        }
+
+        return null;
+    }
 
 	/**
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getPropertyReplacers()

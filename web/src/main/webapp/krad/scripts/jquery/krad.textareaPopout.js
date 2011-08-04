@@ -33,7 +33,7 @@
 				constraintHtml="<span class='constraint'>" + options.constraint + "</span>";
 			}
 			
-			$(this).after('<a id="expand_btn_' + id + '" title="Expand"><img src="/kr-dev/kr/static/images/pencil_add.png" alt="Expand"/></a>');
+			$(this).after('<a id="expand_btn_' + id + '" title="Expand"><img src="../images/pencil_add.png" alt="Expand"/></a>');
 			$(document).ready(function()
 			{
 				$("a#expand_btn_" + id).click(function(e){

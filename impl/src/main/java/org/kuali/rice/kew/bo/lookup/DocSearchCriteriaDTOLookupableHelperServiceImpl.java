@@ -122,10 +122,6 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
         // either it wasn't a saved search or the saved search failed to resolve
         if (criteria == null) {
 
-            /*
-
-             TODO - Rice 2.0 - I couldn't really tell how this preProcessRangeFields stuff is actually used, commenting out for now
-
     		Map<String,String[]> fixedParameters = new HashMap<String,String[]>();
     		Map<String,String> changedDateFields = preProcessRangeFields(lookupForm.getFieldsForLookup());
     		fixedParameters.putAll(parameters);
@@ -133,8 +129,6 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 				fixedParameters.remove(prop.getKey());
     			fixedParameters.put(prop.getKey(), new String[] { prop.getValue() });
 			}
-
-			*/
 
     		criteria = DocumentLookupCriteriaBuilder.populateCriteria(parameters);
     	}
@@ -393,13 +387,6 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 		//####END COPIED CODE#########
 	}
 
-
-
-
-
-	/**
-	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#getInquiryUrl(org.kuali.rice.krad.bo.BusinessObject, java.lang.String)
-	 */
 	@Override
 	public HtmlData getInquiryUrl(BusinessObject bo, String propertyName) {
 		//FIXME: ctk - make sure and check that it's ok to do this here.  I may move this out to the doc search processor
@@ -423,19 +410,11 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 		return super.getInquiryUrl(bo, propertyName);
 	}
 
-
-	/**
-	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#setRows()
-	 */
 	@Override
 	protected void setRows() {
 	    this.setRows(new HashMap<String,String[]>(), null);
 	}
 
-
-	/**
-	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#setRows()
-	 */
 	protected void setRows(Map fieldValues, String docTypeName) {
 		// TODO chris - this method should call the criteria processor adapter which will
 		//call the criteria processor (either standard or custom) and massage the data into the proper format
@@ -569,9 +548,6 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 	    }
 
 
-	/**
-	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#performClear()
-	 */
 	@Override
 	public void performClear(LookupForm lookupForm) {
 
@@ -674,10 +650,6 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
     	return null;
     }
 
-
-	/**
-	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#getSupplementalMenuBar()
-	 */
 	@Override
 	public String getSupplementalMenuBar() {
 		boolean detailed = false;
@@ -714,62 +686,18 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 		return suppMenuBar.toString();
 	}
 
-//    /**
-//     * This method is called by performLookup method to generate supplemental action urls.
-//     * It calls the method getCustomActionUrls to get html data, calls getMaintenanceUrl to get the actual html tag,
-//     * and returns a formatted/concatenated string of action urls.
-//     *
-//     * @see org.kuali.core.lookup.LookupableHelperService#getActionUrls(org.kuali.core.bo.BusinessObject)
-//     */
-//    public String getSupplementalActionUrls(List<HtmlData> htmlDataList) {
-//        StringBuffer actions = new StringBuffer();
-//
-//        for(HtmlData htmlData: htmlDataList){
-//        	actions.append(getMaintenanceUrl(businessObject, htmlData, pkNames, businessObjectRestrictions));
-//            if(htmlData.getChildUrlDataList()!=null){
-//            	if(htmlData.getChildUrlDataList().size()>0){
-//                    actions.append(ACTION_URLS_CHILDREN_STARTER);
-//            		for(HtmlData childURLData: htmlData.getChildUrlDataList()){
-//	                	actions.append(getMaintenanceUrl(businessObject, childURLData, pkNames, businessObjectRestrictions));
-//	                    actions.append(ACTION_URLS_CHILDREN_SEPARATOR);
-//	            	}
-//            		if(actions.toString().endsWith(ACTION_URLS_CHILDREN_SEPARATOR))
-//            			actions.delete(actions.length()-ACTION_URLS_CHILDREN_SEPARATOR.length(), actions.length());
-//                    actions.append(ACTION_URLS_CHILDREN_END);
-//            	}
-//            }
-//        	actions.append(ACTION_URLS_SEPARATOR);
-//        }
-//        if(actions.toString().endsWith(ACTION_URLS_SEPARATOR))
-//        	actions.delete(actions.length()-ACTION_URLS_SEPARATOR.length(), actions.length());
-//        return actions.toString();
-//    }
-
-	/**
-	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#shouldDisplayHeaderNonMaintActions()
-	 */
 	@Override
 	public boolean shouldDisplayHeaderNonMaintActions() {
 		return getDocumentLookupCriteriaProcessor().shouldDisplayHeaderNonMaintActions();
 	}
 
-
-	/**
-	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#shouldDisplayLookupCriteria()
-	 */
 	@Override
 	public boolean shouldDisplayLookupCriteria() {
 		return getDocumentLookupCriteriaProcessor().shouldDisplayLookupCriteria();
 	}
 
-
-	/**
-	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#checkForAdditionalFields(java.util.Map)
-	 */
 	@Override
 	public boolean checkForAdditionalFields(Map fieldValues) {
-		// TODO chris - THIS METHOD NEEDS JAVADOCS
-//		return super.checkForAdditionalFields(fieldValues);
 		String docTypeName = null;
 		if(this.getParameters().get("docTypeFullName")!=null) {
 			docTypeName = ((String[])this.getParameters().get("docTypeFullName"))[0];
@@ -797,9 +725,6 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 		return true;
 	}
 
-	/**
-	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#validateSearchParameters(java.util.Map)
-	 */
 	@Override
     public void validateSearchParameters(Map fieldValues) {
         super.validateSearchParameters(fieldValues);
@@ -834,10 +759,6 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 
     }
 
-
-	/**
-	 * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#performCustomAction(boolean)
-	 */
 	@Override
 	public boolean performCustomAction(boolean ignoreErrors) {
 		DocumentSearchService docSearchService = KEWServiceLocator.getDocumentSearchService();

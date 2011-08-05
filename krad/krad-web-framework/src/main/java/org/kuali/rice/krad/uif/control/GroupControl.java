@@ -68,7 +68,7 @@ public class GroupControl extends TextControl {
 
         if (field.getFieldLookup().getLookupParameters().isEmpty()) {
             if (StringUtils.isNotBlank(namespaceCodePropertyName)) {
-                field.getFieldLookup().getLookupParameters().put("namespaceCode", namespaceCodePropertyName);
+                field.getFieldLookup().getLookupParameters().put(namespaceCodePropertyName, "namespaceCode");
             }
         }
     }

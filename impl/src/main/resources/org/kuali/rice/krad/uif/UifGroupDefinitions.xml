@@ -441,7 +441,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
               <bean parent="AttributeField" p:propertyName="recipientNamespaceCode" p:label="Namespace Code"/>
               <bean parent="AttributeField" p:propertyName="recipientName" p:label="Name">
                 <property name="control">
-                  <bean parent="GroupControl"/>
+                  <bean parent="GroupControl" p:groupIdPropertyName="id"
+                        p:namespaceCodePropertyName="recipientNamespaceCode"/>
                 </property>
               </bean>
             </list>

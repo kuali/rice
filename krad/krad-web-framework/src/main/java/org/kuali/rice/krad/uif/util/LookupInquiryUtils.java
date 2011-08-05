@@ -50,9 +50,9 @@ public class LookupInquiryUtils {
 		String parameterValue = "";
 
 		// get literal parameter values first
-		// exclude from literals any potential map binding values that might be in propertyValueName
-		if (StringUtils.contains(propertyValueName, "'") && (!StringUtils.endsWith(propertyValueName, "]"))) {
-			parameterValue = StringUtils.replace(propertyValueName, "'", "");
+		if (StringUtils.startsWith(propertyValueName, "'") && StringUtils.endsWith(propertyValueName, "'")) {
+            parameterValue = StringUtils.removeStart(propertyValueName, "'");
+			parameterValue = StringUtils.removeEnd(propertyValueName, "'");
 		}
 		else if (parameterValue.startsWith(KRADConstants.LOOKUP_PARAMETER_LITERAL_PREFIX
 				+ KRADConstants.LOOKUP_PARAMETER_LITERAL_DELIMITER)) {

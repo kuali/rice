@@ -1036,6 +1036,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * @param node - the node to be checked if it's the same or a child
      * @param newParent - the parent node to check against
      * @return true if same or child, false otherwise
+     * @see AgendaItemChildAccessor for nomenclature explanation
      */
     private boolean isSameOrChildNode(AgendaItemBo node, AgendaItemBo newParent) {
         return isSameOrChildNodeHelper(node, newParent, AgendaItemChildAccessor.children);
@@ -1064,6 +1065,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * @param root - the first agenda item of the agenda
      * @param agendaItemId - agenda item id of the agenda item whose referring node is to be returned
      * @return AgendaItemBo that points to the specified agenda item
+     * @see AgendaItemChildAccessor for nomenclature explanation
      */
     private AgendaItemBo getReferringNode(AgendaItemBo root, String agendaItemId) {
         return getReferringNodeHelper(root, null, agendaItemId);

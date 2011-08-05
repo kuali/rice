@@ -15,11 +15,17 @@
  */
 package org.kuali.rice.krms.impl.ui;
 
+import java.util.Collections;
 import java.util.List;
 
+import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krms.api.repository.proposition.PropositionParameterType;
 import org.kuali.rice.krms.api.repository.proposition.PropositionType;
+import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.PropositionBo;
 import org.kuali.rice.krms.impl.repository.PropositionParameterBo;
+import org.kuali.rice.krms.impl.repository.TermBo;
 
 /**
  * abstract data class for the rule tree {@link Node}s
@@ -41,15 +47,26 @@ public class RuleTreeSimplePropositionParameterNode extends RuleTreeNode {
             // TODO: enhance to get term names for term type parameters.
             List<PropositionParameterBo> parameters = proposition.getParameters();
             if (parameters != null && parameters.size() == 3){
-                setParameterDisplayString(parameters.get(0).getValue() 
-                        + " " + parameters.get(2).getValue()
-                        + " " + parameters.get(1).getValue());
+                setParameterDisplayString(getParamValue(parameters.get(0)) 
+                        + " " + getParamValue(parameters.get(2))
+                        + " " + getParamValue(parameters.get(1)));
             } else {
                 // should not happen
             }
         }
     }
     
+    private String getParamValue(PropositionParameterBo prop){
+        if (PropositionParameterType.TERM.getCode().equalsIgnoreCase(prop.getParameterType())){
+            //TODO: use termBoService
+            String termId = prop.getValue();
+            TermBo term = getBoService().findBySinglePrimaryKey(TermBo.class,termId);
+            String termName = term.getSpecification().getName();
+            return termName;
+        } else {
+            return prop.getValue();
+        }
+    }
     /**
      * @return the parameterDisplayString
      */
@@ -64,5 +81,8 @@ public class RuleTreeSimplePropositionParameterNode extends RuleTreeNode {
         this.parameterDisplayString = parameterDisplayString;
     }
 
+    public BusinessObjectService getBoService() {
+        return KRADServiceLocator.getBusinessObjectService();
+    }
     
 }

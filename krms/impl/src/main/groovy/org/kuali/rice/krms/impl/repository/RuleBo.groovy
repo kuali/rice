@@ -31,6 +31,7 @@ import org.kuali.rice.krms.api.repository.action.ActionDefinitionContract;
 import org.kuali.rice.krms.api.repository.proposition.PropositionType;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinitionContract;
+import org.kuali.rice.krms.impl.ui.CompoundOpCodeNode
 import org.kuali.rice.krms.impl.ui.RuleTreeNode;
 import org.kuali.rice.krms.impl.ui.RuleTreeSimplePropositionParameterNode;
 
@@ -148,6 +149,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
     */
    private addOpCodeNode(Node currentNode, PropositionBo prop){
        String opCodeLabel = "";
+       
        if (LogicalOperator.AND.getCode().equalsIgnoreCase(prop.getCompoundOpCode())){
            opCodeLabel = "AND";
        } else if (LogicalOperator.OR.getCode().equalsIgnoreCase(prop.getCompoundOpCode())){
@@ -155,9 +157,9 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
        }
        propositionSummaryBuffer.append(" "+opCodeLabel+" ");
        Node<RuleTreeNode, String> aNode = new Node<RuleTreeNode, String>();
-       aNode.setNodeLabel(opCodeLabel);
+       aNode.setNodeLabel("");
        aNode.setNodeType("compoundOpCodeNode");
-       aNode.setData(new RuleTreeNode(prop));
+       aNode.setData(new CompoundOpCodeNode(prop));
        currentNode.getChildren().add(aNode);
    }
    

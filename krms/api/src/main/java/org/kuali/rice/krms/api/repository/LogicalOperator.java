@@ -26,6 +26,9 @@ public enum LogicalOperator implements Coded {
 	public static final Collection<String> OP_CODES =
 		Collections.unmodifiableCollection(Arrays.asList(AND.code, OR.code));
 		
+    public static final Collection<String> OP_CODE_NAMES =
+        Collections.unmodifiableCollection(Arrays.asList(AND.name(), OR.name()));
+        
 	public static LogicalOperator fromCode(String code) {
 		if (code == null) {
 			return null;

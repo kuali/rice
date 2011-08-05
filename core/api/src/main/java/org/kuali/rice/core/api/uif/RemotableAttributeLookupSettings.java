@@ -15,20 +15,32 @@ import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.w3c.dom.Element;
 
-@XmlRootElement(name = RemotableAttributeRange.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = RemotableAttributeLookupSettings.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = RemotableAttributeRange.Constants.TYPE_NAME, propOrder = {
-    RemotableAttributeRange.Elements.LOWER_BOUND_NAME,
-    RemotableAttributeRange.Elements.LOWER_BOUND_LABEL,
-    RemotableAttributeRange.Elements.LOWER_BOUND_INCLUSIVE,
-    RemotableAttributeRange.Elements.UPPER_BOUND_NAME,
-    RemotableAttributeRange.Elements.UPPER_BOUND_LABEL,
-    RemotableAttributeRange.Elements.UPPER_BOUND_INCLUSIVE,
-    CoreConstants.CommonElements.FUTURE_ELEMENTS
+@XmlType(name = RemotableAttributeLookupSettings.Constants.TYPE_NAME, propOrder = {
+        RemotableAttributeLookupSettings.Elements.IN_CRITERIA,
+        RemotableAttributeLookupSettings.Elements.IN_RESULTS,
+        RemotableAttributeLookupSettings.Elements.RANGED,
+        RemotableAttributeLookupSettings.Elements.LOWER_BOUND_NAME,
+        RemotableAttributeLookupSettings.Elements.LOWER_BOUND_LABEL,
+        RemotableAttributeLookupSettings.Elements.LOWER_BOUND_INCLUSIVE,
+        RemotableAttributeLookupSettings.Elements.UPPER_BOUND_NAME,
+        RemotableAttributeLookupSettings.Elements.UPPER_BOUND_LABEL,
+        RemotableAttributeLookupSettings.Elements.UPPER_BOUND_INCLUSIVE,
+        CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class RemotableAttributeRange extends AbstractDataTransferObject implements AttributeRange {
+public final class RemotableAttributeLookupSettings extends AbstractDataTransferObject implements AttributeLookupSettings {
 
-    @XmlElement(name = Elements.LOWER_BOUND_NAME, required = true)
+    @XmlElement(name = Elements.IN_CRITERIA, required = true)
+    private final boolean inCriteria;
+
+    @XmlElement(name = Elements.IN_RESULTS, required = true)
+    private final boolean inResults;
+
+    @XmlElement(name = Elements.RANGED, required = true)
+    private final boolean ranged;
+
+    @XmlElement(name = Elements.LOWER_BOUND_NAME, required = false)
     private final String lowerBoundName;
 
     @XmlElement(name = Elements.LOWER_BOUND_LABEL, required = false)
@@ -37,7 +49,7 @@ public final class RemotableAttributeRange extends AbstractDataTransferObject im
     @XmlElement(name = Elements.LOWER_BOUND_INCLUSIVE, required = false)
     private final boolean lowerBoundInclusive;
 
-    @XmlElement(name = Elements.UPPER_BOUND_NAME, required = true)
+    @XmlElement(name = Elements.UPPER_BOUND_NAME, required = false)
     private final String upperBoundName;
 
     @XmlElement(name = Elements.UPPER_BOUND_LABEL, required = false)
@@ -53,7 +65,10 @@ public final class RemotableAttributeRange extends AbstractDataTransferObject im
     /**
      * Private constructor used only by JAXB.
      */
-    private RemotableAttributeRange() {
+    private RemotableAttributeLookupSettings() {
+        this.inCriteria = false;
+        this.inResults = false;
+        this.ranged = false;
         this.lowerBoundName = null;
         this.lowerBoundLabel = null;
         this.lowerBoundInclusive = false;
@@ -62,13 +77,31 @@ public final class RemotableAttributeRange extends AbstractDataTransferObject im
         this.upperBoundInclusive = false;
     }
 
-    private RemotableAttributeRange(Builder builder) {
+    private RemotableAttributeLookupSettings(Builder builder) {
+        this.inCriteria = builder.isInCriteria();
+        this.inResults = builder.isInResults();
+        this.ranged = builder.isRanged();
         this.lowerBoundName = builder.getLowerBoundName();
         this.lowerBoundLabel = builder.getLowerBoundLabel();
         this.lowerBoundInclusive = builder.isLowerBoundInclusive();
         this.upperBoundName = builder.getUpperBoundName();
         this.upperBoundLabel = builder.getUpperBoundLabel();
         this.upperBoundInclusive = builder.isUpperBoundInclusive();
+    }
+
+    @Override
+    public boolean isInCriteria() {
+        return inCriteria;
+    }
+
+    @Override
+    public boolean isInResults() {
+        return inResults;
+    }
+
+    @Override
+    public boolean isRanged() {
+        return ranged;
     }
 
     @Override
@@ -102,10 +135,13 @@ public final class RemotableAttributeRange extends AbstractDataTransferObject im
     }
 
     /**
-     * A builder which can be used to construct {@link RemotableAttributeRange} instances.  Enforces the constraints of the {@link AttributeRange}.
+     * A builder which can be used to construct {@link RemotableAttributeLookupSettings} instances.  Enforces the constraints of the {@link AttributeLookupSettings}.
      */
-    public final static class Builder implements Serializable, ModelBuilder, AttributeRange {
+    public final static class Builder implements Serializable, ModelBuilder, AttributeLookupSettings {
 
+        private boolean inCriteria;
+        private boolean inResults;
+        private boolean ranged;
         private String lowerBoundName;
         private String lowerBoundLabel;
         private boolean lowerBoundInclusive;
@@ -113,29 +149,43 @@ public final class RemotableAttributeRange extends AbstractDataTransferObject im
         private String upperBoundLabel;
         private boolean upperBoundInclusive;
 
-        private Builder(String lowerBoundName, String upperBoundName) {
-            setLowerBoundName(lowerBoundName);
-            setUpperBoundName(upperBoundName);
-            setLowerBoundInclusive(true);
-            setUpperBoundInclusive(true);
+        private Builder() {
+            setInCriteria(true);
+            setInResults(true);
+            setRanged(false);
         }
 
-        public static Builder create(String lowerBoundName, String upperBoundName) {
-            return new Builder(lowerBoundName, upperBoundName);
+        public static Builder create() {
+            return new Builder();
         }
 
-        public static Builder create(AttributeRange contract) {
+        public static Builder create(AttributeLookupSettings contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
             }
-            Builder builder = create(contract.getLowerBoundName(), contract.getUpperBoundName());
+            Builder builder = create();
             builder.setLowerBoundInclusive(contract.isLowerBoundInclusive());
             builder.setUpperBoundInclusive(contract.isUpperBoundInclusive());
             return builder;
         }
 
-        public RemotableAttributeRange build() {
-            return new RemotableAttributeRange(this);
+        public RemotableAttributeLookupSettings build() {
+            return new RemotableAttributeLookupSettings(this);
+        }
+
+        @Override
+        public boolean isInCriteria() {
+            return inCriteria;
+        }
+
+        @Override
+        public boolean isInResults() {
+            return inResults;
+        }
+
+        @Override
+        public boolean isRanged() {
+            return ranged;
         }
 
         @Override
@@ -166,6 +216,18 @@ public final class RemotableAttributeRange extends AbstractDataTransferObject im
         @Override
         public boolean isUpperBoundInclusive() {
             return this.upperBoundInclusive;
+        }
+
+        public void setInCriteria(boolean inCriteria) {
+            this.inCriteria = inCriteria;
+        }
+
+        public void setInResults(boolean inResults) {
+            this.inResults = inResults;
+        }
+
+        public void setRanged(boolean ranged) {
+            this.ranged = ranged;
         }
 
         public void setLowerBoundName(String lowerBoundName) {
@@ -204,14 +266,17 @@ public final class RemotableAttributeRange extends AbstractDataTransferObject im
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        final static String ROOT_ELEMENT_NAME = "remotableAttributeRange";
-        final static String TYPE_NAME = "RemotableAttributeRangeType";
+        final static String ROOT_ELEMENT_NAME = "remotableAttributeLookupSettings";
+        final static String TYPE_NAME = "RemotableAttributeLookupSettingsType";
     }
 
     /**
      * A private class which exposes constants which define the XML element names to use when this object is marshalled to XML.
      */
     static class Elements {
+        final static String IN_CRITERIA = "inCriteria";
+        final static String IN_RESULTS = "inResults";
+        final static String RANGED = "ranged";
         final static String LOWER_BOUND_NAME = "lowerBoundName";
         final static String LOWER_BOUND_LABEL = "lowerBoundLabel";
         final static String LOWER_BOUND_INCLUSIVE = "lowerBoundInclusive";

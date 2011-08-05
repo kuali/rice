@@ -43,7 +43,7 @@ import java.util.List;
 		RemotableAttributeField.Elements.REQUIRED,
 		RemotableAttributeField.Elements.DEFAULT_VALUES,
         RemotableAttributeField.Elements.LOOKUP_CASE_SENSITIVE,
-        RemotableAttributeField.Elements.ATTRIBUTE_RANGE,
+        RemotableAttributeField.Elements.ATTRIBUTE_LOOKUP_SETTINGS,
 		RemotableAttributeField.Elements.CONTROL,
 		RemotableAttributeField.Elements.WIDGETS,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS })
@@ -102,8 +102,8 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
     @XmlElement(name = Elements.LOOKUP_CASE_SENSITIVE, required = false)
     private final Boolean lookupCaseSensitive;
 
-    @XmlElement(name = Elements.ATTRIBUTE_RANGE, required = false)
-    private final RemotableAttributeRange attributeRange;
+    @XmlElement(name = Elements.ATTRIBUTE_LOOKUP_SETTINGS, required = false)
+    private final RemotableAttributeLookupSettings attributeLookupSettings;
 
     @XmlElements(value = {
         @XmlElement(name = RemotableCheckboxGroup.Constants.ROOT_ELEMENT_NAME, type = RemotableCheckboxGroup.class, required = false),
@@ -150,7 +150,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         this.required = false;
         this.defaultValues = null;
         this.lookupCaseSensitive = null;
-        this.attributeRange = null;
+        this.attributeLookupSettings = null;
         this.control = null;
         this.widgets = null;
     }
@@ -177,10 +177,10 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         this.required = b.required;
         this.defaultValues = b.defaultValues;
         this.lookupCaseSensitive = b.lookupCaseSensitive;
-        if (b.attributeRange == null) {
-            this.attributeRange = null;
+        if (b.attributeLookupSettings == null) {
+            this.attributeLookupSettings = null;
         } else {
-            this.attributeRange = b.attributeRange.build();
+            this.attributeLookupSettings = b.attributeLookupSettings.build();
         }
         if (b.control == null) {
             this.control = null;
@@ -296,8 +296,8 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
     }
 
     @Override
-    public RemotableAttributeRange getAttributeRange() {
-        return attributeRange;
+    public RemotableAttributeLookupSettings getAttributeLookupSettings() {
+        return attributeLookupSettings;
     }
 
     /**
@@ -325,8 +325,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         }
         return null;
     }
-
-
+    
     public static final class Builder implements AttributeField, ModelBuilder {
         private String name;
         private DataType dataType;
@@ -351,7 +350,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
 
         private Collection<String> defaultValues = Collections.emptyList();
         private Boolean lookupCaseSensitive;
-        private RemotableAttributeRange.Builder attributeRange;
+        private RemotableAttributeLookupSettings.Builder attributeLookupSettings;
         private RemotableAbstractControl.Builder control;
 
         private Collection<RemotableAbstractWidget.Builder> widgets = Collections.emptyList();
@@ -386,8 +385,9 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
             b.setRequired(field.isRequired());
             b.setDefaultValues(field.getDefaultValues());
             b.setLookupCaseSensitive(field.isLookupCaseSensitive());
-            if (field.getAttributeRange() != null) {
-                b.setAttributeRange(RemotableAttributeRange.Builder.create(field.getAttributeRange()));
+            if (field.getAttributeLookupSettings() != null) {
+                b.setAttributeLookupSettings(RemotableAttributeLookupSettings.Builder.create(
+                        field.getAttributeLookupSettings()));
             }
             if (field.getControl() != null) {
                 b.setControl(ControlCopy.toBuilder(field.getControl()));
@@ -570,12 +570,12 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         }
 
         @Override
-        public RemotableAttributeRange.Builder getAttributeRange() {
-            return attributeRange;
+        public RemotableAttributeLookupSettings.Builder getAttributeLookupSettings() {
+            return attributeLookupSettings;
         }
 
-        public void setAttributeRange(RemotableAttributeRange.Builder attributeRange) {
-            this.attributeRange = attributeRange;
+        public void setAttributeLookupSettings(RemotableAttributeLookupSettings.Builder attributeLookupSettings) {
+            this.attributeLookupSettings = attributeLookupSettings;
         }
 
         @Override
@@ -629,7 +629,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         static final String DEFAULT_VALUES = "defaultValues";
         static final String DEFAULT_VALUE = "defaultValue";
         static final String LOOKUP_CASE_SENSITIVE = "lookupCaseSensitive";
-        static final String ATTRIBUTE_RANGE = "attributeRange";
+        static final String ATTRIBUTE_LOOKUP_SETTINGS = "attributeLookupSettings";
         static final String CONTROL = "control";
         static final String WIDGETS = "widgets";
     }

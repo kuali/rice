@@ -146,18 +146,12 @@ public interface AttributeField {
     Boolean isLookupCaseSensitive();
 
     /**
-     * If this method returns a non-null value, it indicates that on a lookup, this attribute should be
-     * treated as a range.  This will typically translate to multiple UI controls that can be used to
-     * input both ends (lower and upper bounds) of the ranged lookup on the attribute.
-     *
-     * <p>Note that an attribute range only makes sense if the {@code DataType} of this attribute is
-     * a date or numerical data type.  The caller of this method is free to ignore the given
-     * {@code AttributeRange} if it does not believe it is possible to successfully present a range-based
-     * lookup option based on the data type (or other factors) of the {@code AttributeField}.</p>
+     * If this method returns a non-null value, it defines various settings for this attribute whenever
+     * it is used on a lookup.
      *
      * @return the attribute range configuration for this attribute, or null if this attribute should
      * not be treated as a range in a lookup
      */
-    AttributeRange getAttributeRange();
+    AttributeLookupSettings getAttributeLookupSettings();
 
 }

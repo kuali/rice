@@ -23,7 +23,7 @@ import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.uif.RemotableAbstractControl;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
-import org.kuali.rice.core.api.uif.RemotableAttributeRange;
+import org.kuali.rice.core.api.uif.RemotableAttributeLookupSettings;
 import org.kuali.rice.core.api.uif.RemotableDatepicker;
 import org.kuali.rice.core.api.uif.RemotableHiddenInput;
 import org.kuali.rice.core.api.uif.RemotableRadioButtonGroup;
@@ -335,9 +335,9 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
                             fieldBuilder.setLookupCaseSensitive(caseSensitive);
                         }
                     } else {
-                        RemotableAttributeRange.Builder attributeRange = buildAttributeRange(fieldBuilder, childNode);
-                        if (attributeRange != null) {
-                            fieldBuilder.setAttributeRange(attributeRange);
+                        RemotableAttributeLookupSettings.Builder attributeLookupSettings = buildAttributeRange(fieldBuilder, childNode);
+                        if (attributeLookupSettings != null) {
+                            fieldBuilder.setAttributeLookupSettings(attributeLookupSettings);
                         }
                     }
 
@@ -445,12 +445,15 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
         return ( (allowRangedSearch) && ((rangeDefinition != null) || (rangeSearch)) );
     }
 
-    private RemotableAttributeRange.Builder buildAttributeRange(RemotableAttributeField.Builder fieldBuilder, Node searchDefinitionNode) {
+    private RemotableAttributeLookupSettings.Builder buildAttributeRange(RemotableAttributeField.Builder fieldBuilder, Node searchDefinitionNode) {
         NamedNodeMap searchDefAttributes = searchDefinitionNode.getAttributes();
         Node rangeDefinitionNode = getPotentialChildNode(searchDefinitionNode, "rangeDefinition");
         String lowerBoundDefaultName = KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + fieldBuilder.getName();
         String upperBoundDefaultName = KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + fieldBuilder.getName();
-        RemotableAttributeRange.Builder attributeRange = RemotableAttributeRange.Builder.create(lowerBoundDefaultName, upperBoundDefaultName);
+        RemotableAttributeLookupSettings.Builder attributeLookupSettings = RemotableAttributeLookupSettings.Builder.create();
+        attributeLookupSettings.setRanged(true);
+        attributeLookupSettings.setLowerBoundName(lowerBoundDefaultName);
+        attributeLookupSettings.setUpperBoundName(upperBoundDefaultName);
         if (rangeDefinitionNode != null) {
             NamedNodeMap rangeDefinitionAttributes = rangeDefinitionNode.getAttributes();
             NamedNodeMap lowerBoundNodeAttributes = getAttributesForPotentialChildNode(rangeDefinitionNode, "lower");
@@ -459,23 +462,23 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
             RangeBound lowerRangeBound = determineRangeBoundProperties(searchDefAttributes, rangeDefinitionAttributes, lowerBoundNodeAttributes);
             if (lowerRangeBound != null) {
                 if (lowerRangeBound.inclusive != null) {
-                    attributeRange.setLowerBoundInclusive(lowerRangeBound.inclusive);
+                    attributeLookupSettings.setLowerBoundInclusive(lowerRangeBound.inclusive);
                 }
                 if (StringUtils.isNotBlank(lowerRangeBound.label)) {
-                    attributeRange.setLowerBoundLabel(lowerRangeBound.label);
+                    attributeLookupSettings.setLowerBoundLabel(lowerRangeBound.label);
                 }
             }
             RangeBound upperRangeBound = determineRangeBoundProperties(searchDefAttributes, rangeDefinitionAttributes, upperBoundNodeAttributes);
             if (upperRangeBound != null) {
                 if (upperRangeBound.inclusive != null) {
-                    attributeRange.setUpperBoundInclusive(upperRangeBound.inclusive);
+                    attributeLookupSettings.setUpperBoundInclusive(upperRangeBound.inclusive);
                 }
                 if (StringUtils.isNotBlank(upperRangeBound.label)) {
-                    attributeRange.setUpperBoundLabel(upperRangeBound.label);
+                    attributeLookupSettings.setUpperBoundLabel(upperRangeBound.label);
                 }
             }
         }
-        return attributeRange;
+        return attributeLookupSettings;
 
     }
 

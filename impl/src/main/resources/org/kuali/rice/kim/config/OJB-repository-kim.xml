@@ -603,7 +603,7 @@
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
     <reference-descriptor name="template" class-ref="org.kuali.rice.kim.impl.permission.PermissionTemplateBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
-      <foreignkey field-ref="templateId" />
+      <foreignkey field-ref="templateId" target-field-ref="id"/>
     </reference-descriptor>
     <collection-descriptor name="attributeDetails" element-class-ref="org.kuali.rice.kim.impl.permission.PermissionAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="assignedToId" target-field-ref="id" />

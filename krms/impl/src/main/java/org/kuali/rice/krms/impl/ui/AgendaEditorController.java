@@ -52,8 +52,6 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = "/krmsAgendaEditor")
 public class AgendaEditorController extends MaintenanceDocumentController {
 
-    private static final String AGENDA_ITEM_SELECTED = "agenda_item_selected";
-
     private SequenceAccessorService sequenceAccessorService;
 
     @Override
@@ -130,10 +128,10 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     @RequestMapping(params = "methodToCall=" + "goToAddRule")
     public ModelAndView goToAddRule(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
-        AgendaBo agenda = getAgenda(form, request);
+        AgendaEditor agendaEditor = getAgendaEditor(form);
         // this is the root of the tree:
-        AgendaItemBo firstItem = getFirstAgendaItem(agenda);
-        String selectedItemId = request.getParameter(AGENDA_ITEM_SELECTED);
+        AgendaItemBo firstItem = getFirstAgendaItem(agendaEditor.getAgenda());
+        String selectedItemId = agendaEditor.getSelectedAgendaItemId();
 
         if (selectedItemId == null) {
             setSelectedAgendaItemId(form, null);
@@ -155,8 +153,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * @param agendaItem
      */
     private void setAgendaItemLine(UifFormBase form, AgendaItemBo agendaItem) {
-        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
-        AgendaEditor editorDocument = ((AgendaEditor)maintenanceForm.getDocument().getDocumentDataObject());
+        AgendaEditor editorDocument = getAgendaEditor(form);
         if (agendaItem == null) {
             editorDocument.setAgendaItemLine(new AgendaItemBo());
         } else {
@@ -172,8 +169,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * @return agendaItem
      */
     private AgendaItemBo getAgendaItemLine(UifFormBase form) {
-        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
-        AgendaEditor editorDocument = ((AgendaEditor)maintenanceForm.getDocument().getDocumentDataObject());
+        AgendaEditor editorDocument = getAgendaEditor(form);
         return editorDocument.getAgendaItemLine();
     }
 
@@ -184,8 +180,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * @param selectedAgendaItemId
      */
     private void setSelectedAgendaItemId(UifFormBase form, String selectedAgendaItemId) {
-        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
-        AgendaEditor editorDocument = ((AgendaEditor)maintenanceForm.getDocument().getDocumentDataObject());
+        AgendaEditor editorDocument = getAgendaEditor(form);
         editorDocument.setSelectedAgendaItemId(selectedAgendaItemId);
     }
 
@@ -196,8 +191,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * @return selectedAgendaItemId
      */
     private String getSelectedAgendaItemId(UifFormBase form) {
-        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
-        AgendaEditor editorDocument = ((AgendaEditor)maintenanceForm.getDocument().getDocumentDataObject());
+        AgendaEditor editorDocument = getAgendaEditor(form);
         return editorDocument.getSelectedAgendaItemId();
     }
 
@@ -208,8 +202,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * @param cutAgendaItemId
      */
     private void setCutAgendaItemId(UifFormBase form, String cutAgendaItemId) {
-        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
-        AgendaEditor editorDocument = ((AgendaEditor)maintenanceForm.getDocument().getDocumentDataObject());
+        AgendaEditor editorDocument = getAgendaEditor(form);
         editorDocument.setCutAgendaItemId(cutAgendaItemId);
     }
 
@@ -220,8 +213,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * @return cutAgendaItemId
      */
     private String getCutAgendaItemId(UifFormBase form) {
-        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
-        AgendaEditor editorDocument = ((AgendaEditor)maintenanceForm.getDocument().getDocumentDataObject());
+        AgendaEditor editorDocument = getAgendaEditor(form);
         return editorDocument.getCutAgendaItemId();
     }
 
@@ -232,10 +224,10 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     public ModelAndView goToEditRule(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        AgendaBo agenda = getAgenda(form, request);
+        AgendaEditor agendaEditor = getAgendaEditor(form);
         // this is the root of the tree:
-        AgendaItemBo firstItem = getFirstAgendaItem(agenda);
-        String selectedItemId = request.getParameter(AGENDA_ITEM_SELECTED);
+        AgendaItemBo firstItem = getFirstAgendaItem(agendaEditor.getAgenda());
+        String selectedItemId = agendaEditor.getSelectedAgendaItemId();
         AgendaItemBo node = getAgendaItemById(firstItem, selectedItemId);
 
         setSelectedAgendaItemId(form, selectedItemId);
@@ -296,7 +288,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     @RequestMapping(params = "methodToCall=" + "editRule")
     public ModelAndView editRule(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
-        AgendaBo agenda = getAgenda(form, request);
+        AgendaBo agenda = getAgenda(form);
         // this is the root of the tree:
         AgendaItemBo firstItem = getFirstAgendaItem(agenda);
         AgendaItemBo node = getAgendaItemById(firstItem, getSelectedAgendaItemId(form));
@@ -310,7 +302,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     /**
      * @return the ALWAYS {@link AgendaItemInstanceChildAccessor} for the last ALWAYS child of the instance accessed by the parameter.
      * It will by definition refer to null.  If the instanceAccessor parameter refers to null, then it will be returned.  This is useful
-     * for adding a youngest child to a sibling group. 
+     * for adding a youngest child to a sibling group.
      */
     private AgendaItemInstanceChildAccessor getLastChildsAlwaysAccessor(AgendaItemInstanceChildAccessor instanceAccessor) {
         AgendaItemBo next = instanceAccessor.getChild();
@@ -322,6 +314,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     /**
      * @return the accessor to the child with the given agendaItemId under the given parent.  This method will search both When TRUE and 
      * When FALSE sibling groups.  If the instance with the given id is not found, null is returned.
+     * @see AgendaItemChildAccessor for nomenclature explanation
      */
     private AgendaItemInstanceChildAccessor getInstanceAccessorToChild(AgendaItemBo parent, String agendaItemId) {
 
@@ -356,7 +349,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     public ModelAndView moveUp(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        moveSelectedSubtreeUp(form, request);
+        moveSelectedSubtreeUp(form);
 
         return super.refresh(form, result, request, response);
     }
@@ -365,13 +358,18 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     public ModelAndView ajaxMoveUp(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        moveSelectedSubtreeUp(form, request);
+        moveSelectedSubtreeUp(form);
 
         // call the super method to avoid the agenda tree being reloaded from the db
         return super.updateComponent(form, result, request, response);
     }
 
-    private void moveSelectedSubtreeUp(UifFormBase form, HttpServletRequest request) {
+    /**
+     *
+     * @param form
+     * @see AgendaItemChildAccessor for nomenclature explanation
+     */
+    private void moveSelectedSubtreeUp(UifFormBase form) {
 
         /* Rough algorithm for moving a node up.  This is a "level order" move.  Note that in this tree,
          * level order means something a bit funky.  We are defining a level as it would be displayed in the browser,
@@ -392,11 +390,11 @@ public class AgendaEditorController extends MaintenanceDocumentController {
          *     move node up within its sibling group
          */
 
-        AgendaBo agenda = getAgenda(form, request);
+        AgendaEditor agendaEditor = getAgendaEditor(form);
         // this is the root of the tree:
-        AgendaItemBo firstItem = getFirstAgendaItem(agenda);
+        AgendaItemBo firstItem = getFirstAgendaItem(agendaEditor.getAgenda());
 
-        String selectedItemId = request.getParameter(AGENDA_ITEM_SELECTED);
+        String selectedItemId = agendaEditor.getSelectedAgendaItemId();
         AgendaItemBo node = getAgendaItemById(firstItem, selectedItemId);
         AgendaItemBo parent = getParent(firstItem, selectedItemId);
         AgendaItemBo parentsOlderCousin = (parent == null) ? null : getNextOldestOfSameGeneration(firstItem, parent);
@@ -440,7 +438,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
             if (bogusRootNode != null) {
                 // clean up special case with bogus root node
-                agenda.setFirstItemId(bogusRootNode.getWhenTrueId());
+                agendaEditor.getAgenda().setFirstItemId(bogusRootNode.getWhenTrueId());
             }
         }
     }
@@ -449,7 +447,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     public ModelAndView moveDown(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        moveSelectedSubtreeDown(form, request);
+        moveSelectedSubtreeDown(form);
         
         return super.refresh(form, result, request, response);
     }
@@ -458,13 +456,18 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     public ModelAndView ajaxMoveDown(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        moveSelectedSubtreeDown(form, request);
+        moveSelectedSubtreeDown(form);
 
         // call the super method to avoid the agenda tree being reloaded from the db
         return super.updateComponent(form, result, request, response);
     }
 
-    private void moveSelectedSubtreeDown(UifFormBase form, HttpServletRequest request) {
+    /**
+     *
+     * @param form
+     * @see AgendaItemChildAccessor for nomenclature explanation
+     */
+    private void moveSelectedSubtreeDown(UifFormBase form) {
 
         /* Rough algorithm for moving a node down.  This is a "level order" move.  Note that in this tree,
          * level order means something a bit funky.  We are defining a level as it would be displayed in the browser,
@@ -485,11 +488,11 @@ public class AgendaEditorController extends MaintenanceDocumentController {
          *     move node down within its sibling group
          */
 
-        AgendaBo agenda = getAgenda(form, request);
+        AgendaEditor agendaEditor = getAgendaEditor(form);
         // this is the root of the tree:
-        AgendaItemBo firstItem = getFirstAgendaItem(agenda);
+        AgendaItemBo firstItem = getFirstAgendaItem(agendaEditor.getAgenda());
 
-        String selectedItemId = request.getParameter(AGENDA_ITEM_SELECTED);
+        String selectedItemId = agendaEditor.getSelectedAgendaItemId();
         AgendaItemBo node = getAgendaItemById(firstItem, selectedItemId);
         AgendaItemBo parent = getParent(firstItem, selectedItemId);
         AgendaItemBo parentsYoungerCousin = (parent == null) ? null : getNextYoungestOfSameGeneration(firstItem, parent);
@@ -534,7 +537,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
             if (bogusRootNode != null) {
                 // clean up special case with bogus root node
-                agenda.setFirstItemId(bogusRootNode.getWhenFalseId());
+                agendaEditor.getAgenda().setFirstItemId(bogusRootNode.getWhenFalseId());
             }
         }
     }
@@ -543,7 +546,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     public ModelAndView moveLeft(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        moveSelectedSubtreeLeft(form, request);
+        moveSelectedSubtreeLeft(form);
         
         return super.refresh(form, result, request, response);
     }
@@ -553,23 +556,28 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        moveSelectedSubtreeLeft(form, request);
+        moveSelectedSubtreeLeft(form);
 
         // call the super method to avoid the agenda tree being reloaded from the db
         return super.updateComponent(form, result, request, response);
     }
 
-    private void moveSelectedSubtreeLeft(UifFormBase form, HttpServletRequest request) {
+    /**
+     *
+     * @param form
+     * @see AgendaItemChildAccessor for nomenclature explanation
+     */
+    private void moveSelectedSubtreeLeft(UifFormBase form) {
 
         /*
          * Move left means make it a younger sibling of it's parent.
          */
 
-        AgendaBo agenda = getAgenda(form, request);
+        AgendaEditor agendaEditor = getAgendaEditor(form);
         // this is the root of the tree:
-        AgendaItemBo firstItem = getFirstAgendaItem(agenda);
+        AgendaItemBo firstItem = getFirstAgendaItem(agendaEditor.getAgenda());
 
-        String selectedItemId = request.getParameter(AGENDA_ITEM_SELECTED);
+        String selectedItemId = agendaEditor.getSelectedAgendaItemId();
         AgendaItemBo node = getAgendaItemById(firstItem, selectedItemId);
         AgendaItemBo parent = getParent(firstItem, selectedItemId);
 
@@ -588,7 +596,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        moveSelectedSubtreeRight(form, request);
+        moveSelectedSubtreeRight(form);
 
         return super.refresh(form, result, request, response);
     }
@@ -598,13 +606,18 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        moveSelectedSubtreeRight(form, request);
+        moveSelectedSubtreeRight(form);
 
         // call the super method to avoid the agenda tree being reloaded from the db
         return super.updateComponent(form, result, request, response);
     }
 
-    private void moveSelectedSubtreeRight(UifFormBase form, HttpServletRequest request) {
+    /**
+     *
+     * @param form
+     * @see AgendaItemChildAccessor for nomenclature explanation
+     */
+    private void moveSelectedSubtreeRight(UifFormBase form) {
 
         /*
          * Move right prefers moving to bottom of upper sibling's When FALSE branch
@@ -612,11 +625,11 @@ public class AgendaEditorController extends MaintenanceDocumentController {
          * moves to top of lower sibling's When TRUE branch
          */
 
-        AgendaBo agenda = getAgenda(form, request);
+        AgendaEditor agendaEditor = getAgendaEditor(form);
         // this is the root of the tree:
-        AgendaItemBo firstItem = getFirstAgendaItem(agenda);
+        AgendaItemBo firstItem = getFirstAgendaItem(agendaEditor.getAgenda());
 
-        String selectedItemId = request.getParameter(AGENDA_ITEM_SELECTED);
+        String selectedItemId = agendaEditor.getSelectedAgendaItemId();
         AgendaItemBo node = getAgendaItemById(firstItem, selectedItemId);
         AgendaItemBo parent = getParent(firstItem, selectedItemId);
 
@@ -646,10 +659,17 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
         if (bogusRootNode != null) {
             // clean up special case with bogus root node
-            agenda.setFirstItemId(bogusRootNode.getWhenFalseId());
+            agendaEditor.getAgenda().setFirstItemId(bogusRootNode.getWhenFalseId());
         }
     }
 
+    /**
+     *
+     * @param cousin1
+     * @param cousin2
+     * @return
+     * @see AgendaItemChildAccessor for nomenclature explanation
+     */
     private boolean isSiblings(AgendaItemBo cousin1, AgendaItemBo cousin2) {
         if (cousin1.equals(cousin2)) return true; // this is a bit abusive
         
@@ -670,6 +690,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * This method returns the level order accessor (getWhenTrue or getWhenFalse) that relates the parent directly 
      * to the child.  If the two nodes don't have such a relationship, null is returned. 
      * Note that this only finds accessors for oldest children, not younger siblings.
+     * @see AgendaItemChildAccessor for nomenclature explanation
      */
     private AgendaItemChildAccessor getOldestChildAccessor(
             AgendaItemBo child, AgendaItemBo parent) {
@@ -706,6 +727,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     /**
      * @return the closest younger sibling of the agenda item with the given ID, and if there is no such sibling, the closest younger cousin.
      * If there is no such cousin either, then null is returned.
+     * @see AgendaItemChildAccessor for nomenclature explanation
      */
     private AgendaItemBo getNextYoungestOfSameGeneration(AgendaItemBo root, AgendaItemBo agendaItem) {
 
@@ -719,6 +741,14 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return null;
     }
 
+    /**
+     *
+     * @param currentLevel
+     * @param node
+     * @param agendaItemId
+     * @return
+     * @see AgendaItemChildAccessor for nomenclature explanation
+     */
     private int getAgendaItemGenerationNumber(int currentLevel, AgendaItemBo node, String agendaItemId) {
         int result = -1;
         if (agendaItemId.equals(node.getId())) {
@@ -740,6 +770,14 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return result;
     }
 
+    /**
+     *
+     * @param genList
+     * @param node
+     * @param currentLevel
+     * @param generation
+     * @see AgendaItemChildAccessor for nomenclature explanation
+     */
     private void buildAgendaItemGenerationList(List<AgendaItemBo> genList, AgendaItemBo node, int currentLevel, int generation) {
         if (currentLevel == generation) {
             genList.add(node);
@@ -763,6 +801,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     /**
      * @return the closest older sibling of the agenda item with the given ID, and if there is no such sibling, the closest older cousin.
      * If there is no such cousin either, then null is returned.
+     * @see AgendaItemChildAccessor for nomenclature explanation
      */
     private AgendaItemBo getNextOldestOfSameGeneration(AgendaItemBo root, AgendaItemBo agendaItem) {
 
@@ -779,11 +818,20 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
     /**
      * returns the parent of the item with the passed in id.  Note that {@link AgendaItemBo}s related by ALWAYS relationships are considered siblings.
-     */ 
+     * @see AgendaItemChildAccessor for nomenclature explanation
+     */
     private AgendaItemBo getParent(AgendaItemBo root, String agendaItemId) {
         return getParentHelper(root, null, agendaItemId);
     }
-    
+
+    /**
+     *
+     * @param node
+     * @param levelOrderParent
+     * @param agendaItemId
+     * @return
+     * @see AgendaItemChildAccessor for nomenclature explanation
+     */
     private AgendaItemBo getParentHelper(AgendaItemBo node, AgendaItemBo levelOrderParent, String agendaItemId) {
         AgendaItemBo result = null;
         if (agendaItemId.equals(node.getId())) {
@@ -827,15 +875,23 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     /**
      * This method gets the agenda from the form
      * 
+     *
      * @param form
-     * @param request
      * @return
      */
-    private AgendaBo getAgenda(UifFormBase form, HttpServletRequest request) {
-        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
-        AgendaEditor editorDocument = ((AgendaEditor)maintenanceForm.getDocument().getDocumentDataObject());
+    private AgendaBo getAgenda(UifFormBase form) {
+        AgendaEditor editorDocument = getAgendaEditor((MaintenanceForm) form);
         AgendaBo agenda = editorDocument.getAgenda();
         return agenda;
+    }
+
+    /**
+     * @param form
+     * @return the {@link AgendaEditor} from the form
+     */
+    private AgendaEditor getAgendaEditor(UifFormBase form) {
+        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
+        return ((AgendaEditor)maintenanceForm.getDocument().getDocumentDataObject());
     }
 
     private void treeToInOrderList(AgendaItemBo agendaItem, List<AgendaItemBo> listToBuild) {
@@ -852,7 +908,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        deleteSelectedSubtree(form, request);
+        deleteSelectedSubtree(form);
 
         return super.refresh(form, result, request, response);
     }
@@ -862,22 +918,22 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        deleteSelectedSubtree(form, request);
+        deleteSelectedSubtree(form);
 
         // call the super method to avoid the agenda tree being reloaded from the db
         return super.updateComponent(form, result, request, response);
     }
 
     
-    private void deleteSelectedSubtree(UifFormBase form, HttpServletRequest request) {AgendaBo agenda = getAgenda(form, request);
-        AgendaItemBo firstItem = getFirstAgendaItem(agenda);
-
-        String agendaItemSelected = request.getParameter(AGENDA_ITEM_SELECTED);
+    private void deleteSelectedSubtree(UifFormBase form) {
+        AgendaEditor agendaEditor = getAgendaEditor(form);
+        AgendaItemBo firstItem = getFirstAgendaItem(agendaEditor.getAgenda());
+        String agendaItemSelected = agendaEditor.getSelectedAgendaItemId();
 
         if (firstItem != null) {
             // need to handle the first item here, our recursive method won't handle it.
             if (agendaItemSelected.equals(firstItem.getAgendaId())) {
-                agenda.setFirstItemId(firstItem.getAlwaysId());
+                agendaEditor.getAgenda().setFirstItemId(firstItem.getAlwaysId());
             } else {
                 deleteAgendaItem(firstItem, agendaItemSelected);
             }
@@ -911,10 +967,10 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     public ModelAndView ajaxCut(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        AgendaBo agenda = getAgenda(form, request);
+        AgendaEditor agendaEditor = getAgendaEditor(form);
         // this is the root of the tree:
-        AgendaItemBo firstItem = getFirstAgendaItem(agenda);
-        String selectedItemId = request.getParameter(AGENDA_ITEM_SELECTED);
+        AgendaItemBo firstItem = getFirstAgendaItem(agendaEditor.getAgenda());
+        String selectedItemId = agendaEditor.getSelectedAgendaItemId();
 
         setCutAgendaItemId(form, selectedItemId);
 
@@ -926,10 +982,10 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     public ModelAndView ajaxPaste(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        AgendaBo agenda = getAgenda(form, request);
+        AgendaEditor agendaEditor = getAgendaEditor(form);
         // this is the root of the tree:
-        AgendaItemBo firstItem = getFirstAgendaItem(agenda);
-        String selectedItemId = request.getParameter(AGENDA_ITEM_SELECTED);
+        AgendaItemBo firstItem = getFirstAgendaItem(agendaEditor.getAgenda());
+        String selectedItemId = agendaEditor.getSelectedAgendaItemId();
 
         String agendaItemId = getCutAgendaItemId(form);
 
@@ -943,7 +999,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             } else {
                 // remove node
                 if (orgRefNode == null) {
-                    agenda.setFirstItemId(node.getAlwaysId());
+                    agendaEditor.getAgenda().setFirstItemId(node.getAlwaysId());
                 } else {
                     // determine if true, false or always
                     // do appropriate operation
@@ -984,6 +1040,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     private boolean isSameOrChildNode(AgendaItemBo node, AgendaItemBo newParent) {
         return isSameOrChildNodeHelper(node, newParent, AgendaItemChildAccessor.children);
     }
+
     private boolean isSameOrChildNodeHelper(AgendaItemBo node, AgendaItemBo newParent, AgendaItemChildAccessor[] childAccessors) {
         boolean result = false;
         if (StringUtils.equals(node.getId(), newParent.getId())) {
@@ -1060,10 +1117,32 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     }
     
     /**
-     * This class abstracts getting and setting a child of an AgendaItemBo, making some recursive operations 
-     * require less boiler plate 
+     * <p>This class abstracts getting and setting a child of an AgendaItemBo, making some recursive operations
+     * require less boiler plate.</p>
+     *
+     * <p>Because the agenda tree is a somewhat complex data structure, The algorithms for manipulating the agenda tree
+     * use a funny nomenclature. It's probably worth explaining that somewhat here:</p>
+     *
+     * <p>General Principals:
+     * <ul>
+     * <li>Generation boundaries (parent to child) are across 'When TRUE' and 'When FALSE' references.</li>
+     * <li>"Age" among siblings & cousins goes from top (oldest) to bottom (youngest).</li>
+     * <li>siblings are related by 'Always' references.</li>
+     * </ul>
+     * </p>
+     * <p>This diagram of an agenda tree and the following examples seek to illustrate these principals:</p>
+     * <img src="doc-files/AgendaEditorController-1.png" alt="Example Agenda Items"/>
+     * <p>Examples:
+     * <ul>
+     * <li>A is the parent of B, C, & D</li>
+     * <li>E is the younger sibling of A</li>
+     * <li>B is the older cousin of C</li>
+     * <li>C is the older sibling of D</li>
+     * <li>F is the younger cousin of D</li>
+     * </ul>
+     * </p>
      */
-    private static class AgendaItemChildAccessor {
+    protected static class AgendaItemChildAccessor {
         
         private enum Child { WHEN_TRUE, WHEN_FALSE, ALWAYS };
         

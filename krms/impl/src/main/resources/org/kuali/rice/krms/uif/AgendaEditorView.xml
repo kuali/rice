@@ -216,8 +216,10 @@
   </bean>
 
   <bean id="AgendaEditorView-TreeExpandCollapse" parent="FieldGroup" p:showLabel="false"
-    p:render="@{document.newMaintainableObject.dataObject.agenda != null and document.newMaintainableObject.dataObject.agenda.name != null and !document.newMaintainableObject.dataObject.agenda.name.isEmpty()}"
     p:style="font-size: smaller;">
+    <!-- TODO: figure out why this is broken on DD reload
+    <property name="render" value="@{document.newMaintainableObject.dataObject.agenda != null and document.newMaintainableObject.dataObject.agenda.name != null and !document.newMaintainableObject.dataObject.agenda.name.isEmpty()}" />
+    -->
     <property name="group.layoutManager.orientation" value="HORIZONTAL"/>
     <property name="items">
       <list>                            
@@ -229,9 +231,9 @@
           p:actionLabel="[-] collapse all" p:style="font-size: smaller; margin-right: 15pt;">
           <property name="actionImageField"><null/></property>
         </bean>
-        <bean parent="GeneratedField" p:id="agenda_item_selected">
-          <property name="renderingMethodInvoker">
-            <bean class="org.springframework.util.MethodInvoker" p:targetClass="org.kuali.rice.krms.impl.ui.HiddenGenerator" p:targetMethod="generate" />
+        <bean id="agenda_item_selected" parent="AttributeField" p:propertyName="selectedAgendaItemId" p:showLabel="false">
+          <property name="control">
+            <bean parent="HiddenControl"/>
           </property>
         </bean>
       </list>

@@ -263,14 +263,15 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
         for (int i = 0; i < fieldNodeList.getLength(); i++) {
             Node field = fieldNodeList.item(i);
             NamedNodeMap fieldAttributes = field.getAttributes();
-
-            boolean isColumnVisible = true;
+            
             boolean hasXPathExpression = false;
 
             String attributeName = fieldAttributes.getNamedItem("name").getNodeValue();
             String attributeTitle = fieldAttributes.getNamedItem("title").getNodeValue();
             RemotableAttributeField.Builder fieldBuilder = RemotableAttributeField.Builder.create(attributeName);
             fieldBuilder.setLongLabel(attributeTitle);
+            RemotableAttributeLookupSettings.Builder attributeLookupSettings = RemotableAttributeLookupSettings.Builder.create();
+            fieldBuilder.setAttributeLookupSettings(attributeLookupSettings);
 
             for (int j = 0; j < field.getChildNodes().getLength(); j++) {
                 Node childNode = field.getChildNodes().item(j);
@@ -315,9 +316,8 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
                     if (selectedOptions != null && !selectedOptions.isEmpty()) {
                         fieldBuilder.setDefaultValues(selectedOptions);
                     }
-
                 } else if ("visibility".equals(childNode.getNodeName())) {
-                    parseVisibility(fieldBuilder, (Element)childNode);
+                    applyVisibility(fieldBuilder, attributeLookupSettings, (Element)childNode);
                 } else if ("searchDefinition".equals(childNode.getNodeName())) {
                     NamedNodeMap searchDefAttributes = childNode.getAttributes();
                     // data type operations
@@ -335,10 +335,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
                             fieldBuilder.setLookupCaseSensitive(caseSensitive);
                         }
                     } else {
-                        RemotableAttributeLookupSettings.Builder attributeLookupSettings = buildAttributeRange(fieldBuilder, childNode);
-                        if (attributeLookupSettings != null) {
-                            fieldBuilder.setAttributeLookupSettings(attributeLookupSettings);
-                        }
+                        applyAttributeRange(attributeLookupSettings, fieldBuilder, childNode);
                     }
 
 
@@ -365,23 +362,14 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
 
                      */
 
-
-                    /*
-
-                    TODO - Rice 2.0 - Figure out how to handle result columns
-
-					} else if ("resultColumn".equals(childNode.getNodeName())) {
-						NamedNodeMap columnAttributes = childNode.getAttributes();
-						Node showNode = columnAttributes.getNamedItem("show");
-						if (showNode != null && showNode.getNodeValue() != null) {
-							isColumnVisible = Boolean.valueOf(showNode.getNodeValue());
-						}
-						myField.setColumnVisible(isColumnVisible);
-
-
-                     */
-
-
+                } else if ("resultColumn".equals(childNode.getNodeName())) {
+                    NamedNodeMap columnAttributes = childNode.getAttributes();
+                    Node showNode = columnAttributes.getNamedItem("show");
+                    boolean isColumnVisible = true;
+                    if (showNode != null && showNode.getNodeValue() != null) {
+                        isColumnVisible = Boolean.valueOf(showNode.getNodeValue());
+                    }
+                    attributeLookupSettings.setInResults(isColumnVisible);
                 } else if ("fieldEvaluation".equals(childNode.getNodeName())) {
                     for (int k = 0; k < childNode.getChildNodes().getLength(); k++) {
                         Node displayChildNode = childNode.getChildNodes().item(k);
@@ -445,12 +433,11 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
         return ( (allowRangedSearch) && ((rangeDefinition != null) || (rangeSearch)) );
     }
 
-    private RemotableAttributeLookupSettings.Builder buildAttributeRange(RemotableAttributeField.Builder fieldBuilder, Node searchDefinitionNode) {
+    private void applyAttributeRange(RemotableAttributeLookupSettings.Builder attributeLookupSettings, RemotableAttributeField.Builder fieldBuilder, Node searchDefinitionNode) {
         NamedNodeMap searchDefAttributes = searchDefinitionNode.getAttributes();
         Node rangeDefinitionNode = getPotentialChildNode(searchDefinitionNode, "rangeDefinition");
         String lowerBoundDefaultName = KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + fieldBuilder.getName();
         String upperBoundDefaultName = KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + fieldBuilder.getName();
-        RemotableAttributeLookupSettings.Builder attributeLookupSettings = RemotableAttributeLookupSettings.Builder.create();
         attributeLookupSettings.setRanged(true);
         attributeLookupSettings.setLowerBoundName(lowerBoundDefaultName);
         attributeLookupSettings.setUpperBoundName(upperBoundDefaultName);
@@ -478,8 +465,6 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
                 }
             }
         }
-        return attributeLookupSettings;
-
     }
 
 	private NamedNodeMap getAttributesForPotentialChildNode(Node node, String potentialChildNodeName) {
@@ -546,7 +531,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
         return nodeMap.getNamedItem(attributeName).getNodeValue();
 	}
 
-	private void parseVisibility(RemotableAttributeField.Builder fieldBuilder, Element visibilityElement) {
+	private void applyVisibility(RemotableAttributeField.Builder fieldBuilder, RemotableAttributeLookupSettings.Builder attributeLookupSettings, Element visibilityElement) {
 		for (int vIndex = 0; vIndex < visibilityElement.getChildNodes().getLength(); vIndex++) {
 			Node visibilityChildNode = visibilityElement.getChildNodes().item(vIndex);
 			if (visibilityChildNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -597,15 +582,10 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
                         fieldBuilder.setControl(RemotableHiddenInput.Builder.create());
 					}
 				}
-
-                // TODO - Rice 2.0 - Need to figure out how to  deal with column visibility!
-
-//				if ("column".equals(type) || "fieldAndColumn".equals(type)) {
-//					field.setColumnVisible(visible);
-//				}
-
+				if ("column".equals(type) || "fieldAndColumn".equals(type)) {
+					attributeLookupSettings.setInResults(visible);
+				}
 			}
-
 		}
 	}
 

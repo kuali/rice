@@ -775,20 +775,10 @@ public class StandardDocumentSearchResultProcessor implements
 		}
 	}
 
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor#setProcessResultSet(boolean)
-     */
     public void setProcessFinalResults(boolean isProcessFinalResults) {
        this.processFinalResults = isProcessFinalResults;
     }
 
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor#isProcessResultSet()
-     */
     public boolean isProcessFinalResults() {
         return this.processFinalResults;
     }

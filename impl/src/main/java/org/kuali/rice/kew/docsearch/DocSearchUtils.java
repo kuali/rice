@@ -118,16 +118,21 @@ public final class DocSearchUtils {
         throw new IllegalArgumentException("Could not determine appropriate searchable attribute data type to use for the given DataType: " + dataType);
     }
 
-    public static SearchAttributeCriteriaComponent translateSearchFieldToCriteriaComponent(RemotableAttributeField searchField) {
+    public static  List<SearchAttributeCriteriaComponent> translateSearchFieldToCriteriaComponent(RemotableAttributeField searchField) {
+        List<SearchAttributeCriteriaComponent> components = new ArrayList<SearchAttributeCriteriaComponent>();
         SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(searchField.getDataType());
-        SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(searchField.getName(), null, searchField.getName(), searchableAttributeValue);
-        Field field = FieldUtils.convertRemotableAttributeField(searchField);
-        sacc.setRangeSearch(field.isMemberOfRange());
-        sacc.setSearchInclusive(field.isInclusive());
-        sacc.setSearchable(field.isIndexedForSearch());
-        sacc.setLookupableFieldType(field.getFieldType());
-        sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
-        return sacc;
+        List<Field> fields = FieldUtils.convertRemotableAttributeField(searchField);
+        for (Field field : fields) {
+            SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(field.getPropertyName(), null, field.getPropertyName(), searchableAttributeValue);
+
+            sacc.setRangeSearch(field.isMemberOfRange());
+            sacc.setSearchInclusive(field.isInclusive());
+            sacc.setSearchable(field.isIndexedForSearch());
+            sacc.setLookupableFieldType(field.getFieldType());
+            sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
+            components.add(sacc);
+        }
+        return components;
     }
 
 
@@ -163,8 +168,10 @@ public final class DocSearchUtils {
             List<RemotableAttributeField> searchFields = lookupConfiguration.getFlattenedSearchAttributeFields();
 
             for (RemotableAttributeField searchField : searchFields) {
-                SearchAttributeCriteriaComponent searchableAttributeComponent = DocSearchUtils.translateSearchFieldToCriteriaComponent(searchField);
-                criteriaComponentsByKey.put(searchField.getName(), searchableAttributeComponent);
+                List<SearchAttributeCriteriaComponent> components = DocSearchUtils.translateSearchFieldToCriteriaComponent(searchField);
+                for (SearchAttributeCriteriaComponent searchableAttributeComponent : components) {
+                    criteriaComponentsByKey.put(searchField.getName(), searchableAttributeComponent);
+                }
             }
 
         }
@@ -322,8 +329,10 @@ public final class DocSearchUtils {
                 List<RemotableAttributeField> searchFields = lookupConfiguration.getFlattenedSearchAttributeFields();
 
                 for (RemotableAttributeField searchField : searchFields) {
-                    SearchAttributeCriteriaComponent searchableAttributeComponent = DocSearchUtils.translateSearchFieldToCriteriaComponent(searchField);
-                    criteriaComponentsByFormKey.put(searchField.getName(), searchableAttributeComponent);
+                    List<SearchAttributeCriteriaComponent> components = DocSearchUtils.translateSearchFieldToCriteriaComponent(searchField);
+                    for (SearchAttributeCriteriaComponent searchableAttributeComponent : components) {
+                        criteriaComponentsByFormKey.put(searchField.getName(), searchableAttributeComponent);
+                    }
                 }
 
                 for (Iterator iterator = propertyFields.iterator(); iterator.hasNext();) {

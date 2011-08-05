@@ -382,14 +382,6 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
                     XMLAttributeUtils.establishFieldLookup(fieldBuilder, childNode);
                 }
             }
-
-            /*
-
-                TODO - Rice 2.0 - Figure out how to handle "indexedForSearch"
-
-                myField.setIndexedForSearch(hasXPathExpression);
-
-                */
                 
             searchFields.add(fieldBuilder.build());
 

@@ -19,14 +19,17 @@ package org.kuali.rice.kew.docsearch;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.web.format.Formatter;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupConfiguration;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kew.web.KeyValueSort;
+import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
@@ -355,44 +358,18 @@ public class StandardDocumentSearchResultProcessor implements
 
 	public List<Field> getFields(DocSearchCriteriaDTO criteria,
 			List<String> searchAttributeFieldNames) {
-		List<Field> returnFields = new ArrayList<Field>();
-		DocumentType documentType = getDocumentType(criteria
-				.getDocTypeFullName());
+		List<Field> fields = new ArrayList<Field>();
+		DocumentType documentType = getDocumentType(criteria.getDocTypeFullName());
 		if (documentType != null) {
-			List<Field> allFields = new ArrayList<Field>();
-			for (SearchableAttributeOld searchableAttribute : documentType
-					.getSearchableAttributesOld()) {
-				List<Row> searchRows = searchableAttribute
-						.getSearchingRows(DocSearchUtils
-								.getDocumentSearchContext("", documentType
-										.getName(), ""));
-				if (searchRows == null) {
-					continue;
-				}
-				for (Row row : searchRows) {
-					allFields.addAll(row.getFields());
-				}
-			}
-			if (searchAttributeFieldNames == null) {
-				returnFields = allFields;
-			} else {
-				for (String searchAttributeName : searchAttributeFieldNames) {
-					for (Field field : allFields) {
-						Field dsField = (Field) field;
-						if (field instanceof Field) {
-							if (searchAttributeName.equals(dsField
-									.getPropertyName())) {
-								returnFields.add(field);
-							}
-						} else {
-							throw new RiceRuntimeException(
-									"Fields must be of type org.kuali.rice.krad.Field");
-						}
-					}
-				}
-			}
+            DocumentLookupConfiguration lookupConfiguration = KEWServiceLocator.getDocumentSearchCustomizationMediator().getDocumentLookupConfiguration(documentType);
+            List<RemotableAttributeField> attributeFields = lookupConfiguration.getFlattenedSearchAttributeFields();
+            for (RemotableAttributeField attributeField : attributeFields) {
+                if (searchAttributeFieldNames == null || searchAttributeFieldNames.contains(attributeField.getName())) {
+                    fields.addAll(FieldUtils.convertRemotableAttributeField(attributeField));
+                }
+            }
 		}
-		return returnFields;
+		return fields;
 	}
 
 	public DocumentSearchResult generateSearchResult(

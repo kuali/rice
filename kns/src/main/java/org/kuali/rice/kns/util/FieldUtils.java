@@ -21,6 +21,7 @@ import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.uif.Control;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.core.api.uif.RemotableAttributeLookupSettings;
 import org.kuali.rice.core.api.uif.RemotableCheckboxGroup;
 import org.kuali.rice.core.api.uif.RemotableHiddenInput;
 import org.kuali.rice.core.api.uif.RemotablePasswordInput;
@@ -1434,20 +1435,66 @@ public final class FieldUtils {
     public static List<Row> convertRemotableAttributeFields(List<RemotableAttributeField> remotableAttributeFields) {
         List<Row> rows = new ArrayList<Row>();
         for (RemotableAttributeField remotableAttributeField : remotableAttributeFields) {
-            Field field = convertRemotableAttributeField(remotableAttributeField);
-            Row row = new Row(field);
-            rows.add(row);
+            List<Field> fields = convertRemotableAttributeField(remotableAttributeField);
+            // each field goes in it's own row...
+            for (Field field : fields) {
+                Row row = new Row(field);
+                rows.add(row);
+            }
         }
         return rows;
     }
 
-    public static Field convertRemotableAttributeField(RemotableAttributeField remotableAttributeField) {
-        Field field = new Field(remotableAttributeField.getName(), remotableAttributeField.getLongLabel());
-        applyControlAttributes(remotableAttributeField, field);
+    public static List<Field> convertRemotableAttributeField(RemotableAttributeField remotableAttributeField) {
+        // will produce two fields in the case of a range
+        List<Field> fields = constructFieldsForAttributeDefinition(remotableAttributeField);
+        for (Field field : fields) {
+            applyControlAttributes(remotableAttributeField, field);
+            applyLookupAttributes(remotableAttributeField, field);
 
-        // TODO - Rice 2.0 - Figure out the rest of this nasty conversion!
+            // TODO - Rice 2.0 - Figure out the rest of this nasty conversion!
 
-        return field;
+        }
+        return fields;
+    }
+
+    private static List<Field> constructFieldsForAttributeDefinition(RemotableAttributeField remotableAttributeField) {
+        List<Field> fields = new ArrayList<Field>();
+        if (remotableAttributeField.getAttributeLookupSettings() != null && remotableAttributeField.getAttributeLookupSettings().isRanged()) {
+            // create two fields, one for the "from" and one for the "to"
+            RemotableAttributeLookupSettings lookupSettings = remotableAttributeField.getAttributeLookupSettings();
+            String lowerBoundName = lookupSettings.getLowerBoundName();
+            String upperBoundName = lookupSettings.getUpperBoundName();
+            String lowerBoundLabel = lookupSettings.getLowerBoundLabel();
+            String upperBoundLabel = lookupSettings.getUpperBoundLabel();
+            if (StringUtils.isBlank(lowerBoundName)) {
+                lowerBoundName = "from_" + remotableAttributeField.getName();
+            }
+            if (StringUtils.isBlank(upperBoundName)) {
+                upperBoundName = "to_" + remotableAttributeField.getName();
+            }
+            if (StringUtils.isBlank(lowerBoundLabel)) {
+                lowerBoundLabel = "From " + remotableAttributeField.getLongLabel();
+            }
+            if (StringUtils.isBlank(upperBoundLabel)) {
+                upperBoundLabel = "To " + remotableAttributeField.getLongLabel();
+            }
+
+            Field lowerField = new Field(lowerBoundName, lowerBoundLabel);
+            lowerField.setMemberOfRange(true);
+            lowerField.setAllowInlineRange(false);
+            lowerField.setRangeFieldInclusive(lookupSettings.isLowerBoundInclusive());
+            fields.add(lowerField);
+
+            Field upperField = new Field(upperBoundName, upperBoundLabel);
+            upperField.setMemberOfRange(true);
+            upperField.setAllowInlineRange(false);
+            upperField.setRangeFieldInclusive(lookupSettings.isUpperBoundInclusive());
+            fields.add(upperField);
+        } else {
+            fields.add(new Field(remotableAttributeField.getName(), remotableAttributeField.getLongLabel()));
+        }
+        return fields;
     }
 
     private static void applyControlAttributes(RemotableAttributeField remotableField, Field field) {
@@ -1479,6 +1526,16 @@ public final class FieldUtils {
             throw new IllegalArgumentException("Given control type is not supported: " + control.getClass());
         }
         field.setFieldType(fieldType);
+    }
+
+    private static void applyLookupAttributes(RemotableAttributeField remotableField, Field field) {
+        RemotableAttributeLookupSettings lookupSettings = remotableField.getAttributeLookupSettings();
+        if (lookupSettings != null) {
+            field.setColumnVisible(lookupSettings.isInResults());
+            if (!lookupSettings.isInCriteria()) {
+                field.setFieldType(Field.HIDDEN);
+            }
+        }
     }
 
     private static DataDictionaryService getDataDictionaryService() {

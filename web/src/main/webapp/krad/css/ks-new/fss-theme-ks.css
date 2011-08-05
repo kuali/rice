@@ -12,6 +12,10 @@ a {
 	cursor: pointer;
     text-decoration:none;
 }
+input {                 /* this was set as 1.2em in reset.css. Not sure why this is needed but it breaks in IE */
+    padding-left:0;
+    padding-right:0;
+}
 textarea{
     font-size:0.923077em;
     font-family: Arial, Helvetica, sans-serif;
@@ -95,7 +99,7 @@ input[type="radio"], input[type="checkbox"] {
 	background: -o-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%);
 	background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#ffffff, endColorstr=#e5e5e5, GradientType=0 ); /* IE7 and older */
-    ms-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#ffffff, endColorstr=#e5e5e5, GradientType=0 ); /* IE8 */
+    -ms-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#ffffff, endColorstr=#e5e5e5, GradientType=0 ); /* IE8 */
 	background: linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%);
 	color: #3F7826;
 	cursor:pointer;
@@ -123,13 +127,12 @@ input[type="radio"], input[type="checkbox"] {
 	background-image: -moz-linear-gradient(top, #07662a, #044d1f);
     background-image:-o-linear-gradient(top, rgba(7,102,42,1) 0%, rgba(4,77,31,1) 100%); /* be nice to opera */
 	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #07662a), color-stop(1, #044d1f));
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorStr='#07662a', endColorStr='#044d1f', GradientType=0 ); /* IE7 or older */
-    ms-filter: progid:DXImageTransform.Microsoft.gradient( startColorStr=#07662a, endColorStr=#044d1f, GradientType=0); /* IE8 */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#07662a, endColorstr=#044d1f, GradientType=0 );  /* ie 7 and older */
+    -ms-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#07662a, endColorstr=#044d1f, GradientType=0 ); /* ie8 */
     background: linear-gradient(top, rgba(7,102,42,1) 0%, rgba(4,77,31,1) 100%);
     color: #ffffff;
 	background-color:#060;
 }
-
 
 
 
@@ -467,21 +470,27 @@ ul.animated-navigation li {
 }
 ul.animated-navigation li.animated-element h3, ul.animated-navigation li.animated-element h2 {
 	color: #333333;
-	display: block;
+	display: inline-block;
 	margin-bottom: 0;
 	padding: 0 20px 0 3px;
 	width: 170px;
 	font-weight: bold;
-	margin-top: 20px;
 	font-size: .92307692em;
 	font-family:arial, sans-serif;
 	text-transform:uppercase;
 	border-top: 2px solid #000;
 	border-bottom: 1px solid #bbb;
 }
+* html ul.animated-navigation li.animated-element h3, * html ul.animated-navigation li.animated-element h2 {
+    \width: 193px; /* for IE5 and IE6 in quirks mode */
+    w\idth: 170px; /* for IE6 in standards mode */
+  }
+
+
 ul.animated-navigation li.animated-element a {
 	background-color: #fff;
-	display: block;
+	display: inline-block;
+    height: 1%;
 	/*
 	Changing the padding here will require updating the script to correct return padding (pad_in)
 	*/
@@ -492,6 +501,10 @@ ul.animated-navigation li.animated-element a {
 	border-bottom: 1px solid #bbb;
 	font-size:.92307692em;
 }
+* html ul.animated-navigation li.animated-element a {
+    \width: 193px; /* for IE5 and IE6 in quirks mode */
+    w\idth: 170px; /* for IE6 in standards mode */
+  }
 ul.animated-navigation li.animated-element a:hover, ul.animated-navigation li.animated-element a:focus {
 	background-image: -moz-linear-gradient(top, #07662a, #044d1f);
     background-image: -o-linear-gradient(top, rgba(7,102,42,1) 0%, rgba(4,77,31,1) 100%); /* be nice to opera */
@@ -537,8 +550,22 @@ ul.animated-navigation li.animated-element a.current, ul.animated-navigation li.
 	color: #ffffff;
 	background-color:#060;
 }
+.button-primary .ui-state-hover, .button-secondary1 .ui-state-hover {
+    /*defines gradient background*/
+	background-image: -moz-linear-gradient(top, #07662a, #044d1f);
+    background-image: -o-linear-gradient(top, rgba(7,102,42,1) 0%, rgba(4,77,31,1) 100%); /* be nice to opera */
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #07662a), color-stop(1, #044d1f));
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#07662a, endColorstr=#044d1f, GradientType=0 );  /* ie 7 and older */
+    -ms-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#07662a, endColorstr=#044d1f, GradientType=0 ); /* ie8 */
+	background: linear-gradient(top, rgba(7,102,42,1) 0%, rgba(4,77,31,1) 100%);
+	color: #ffffff;
+	background-color:#060;
+}
 .ui-tabs-nav li.ui-state-hover a {
 	color: #ffffff;
+}
+.ui-tabs-nav li.ui-state-hover a:hover {                       /* this is hovering black in IE */
+    color: #ffffff;
 }
 .ui-tabs-nav li.ui-state-active a.clientError {
     color:#ffffff;

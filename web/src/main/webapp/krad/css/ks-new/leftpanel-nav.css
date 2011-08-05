@@ -17,7 +17,7 @@ a#controlbtn {
 	color: #333;
 	text-decoration: none;
 	display: inline-block;
-	padding-left: 5px;
+	margin-left: 5px;
 }
 a#controlbtn.open {
 	background: transparent url(images/toggle_minus.png) no-repeat left center;

@@ -1,4 +1,0 @@
-<Record name="krsb_msg_pyld_t" type="delimited">
-  <Field name="msg_que_id"                      type="numeric"    nullable="true"  trim="false" delimiter="|"  />
-  <Field name="msg_pyld"                        type="string"     nullable="true"  trim="false" delimiter="|\r\n" />
-</Record>

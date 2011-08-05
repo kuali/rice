@@ -1,7 +1,0 @@
-rule_tmpl_optn_id|rule_tmpl_id|key_cd|val|ver_nbr|
-2000.0|1016.0|D|K|1.0|
-2001.0|1016.0|A|true|1.0|
-2002.0|1016.0|K|true|1.0|
-2003.0|1016.0|F|true|1.0|
-2004.0|1016.0|C|true|1.0|
-2005.0|1016.0|I|some instructions|1.0|

@@ -1,4 +1,0 @@
-rule_ext_val_id|rule_ext_id|val|key_cd|ver_nbr|
-1048.0|1047.0|las vegas|destination|1.0|
-1105.0|1104.0|IUB|campus|1.0|
-1108.0|1107.0|IUPUI|campus|1.0|

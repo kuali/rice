@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.workflow.attribute;
 
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
 import org.w3c.dom.Element;
 
@@ -38,18 +39,13 @@ public class KualiXmlSearchableAttributeImpl extends StandardGenericXMLSearchabl
     /**
      * This method overrides the super class and modifies the XML that it operates on to put the name and the title in the place
      * where the super class expects to see them, even though they may no longer exist in the original XML.
-     * 
-     * @see org.kuali.rice.kew.rule.xmlrouting.StandardGenericXMLRuleAttribute#getConfigXML()
      */
-    public Element getConfigXML() {
-        Element root = getAttributeConfigXML();
+    @Override
+    public Element getConfigXML(ExtensionDefinition extensionDefinition) {
+        Element root = super.getConfigXML(extensionDefinition);
         KualiXmlAttributeHelper attributeHelper = new KualiXmlAttributeHelper();
         // this adds the name and title to the xml based on the data dictionary
         return attributeHelper.processConfigXML(root);
-    }
-
-    public Element getAttributeConfigXML() {
-        return super.getConfigXML();
     }
 
 }

@@ -31,10 +31,12 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.document.DocumentContentUpdate;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -559,14 +561,14 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
     public void testValidateUserSearchInputsNoCast() {
     	StandardGenericXMLSearchableAttribute searchableAttribute = new StandardGenericXMLSearchableAttribute();
     	final RuleAttributeService ruleAttributeService = KEWServiceLocator.getRuleAttributeService();
-    	searchableAttribute.setRuleAttribute(ruleAttributeService.findByName("SearchableAttributeVisible"));
+        ExtensionDefinition extensionDefinition = KewApiServiceLocator.getExtensionRepositoryService().getExtensionByName("SearchableAttributeVisible");
     	
     	Map<String, List<String>> simpleParamMap = new HashMap<String, List<String>>();
     	simpleParamMap.put("givenname", Collections.singletonList("test"));
     	List errors = new ArrayList();
     	Exception caughtException = null;
     	try {
-    		errors = searchableAttribute.validateSearchFieldParameters(simpleParamMap, null);
+    		errors = searchableAttribute.validateSearchFieldParameters(extensionDefinition, simpleParamMap, null);
     	} catch (RuntimeException re) {
     		caughtException = re;
     	}
@@ -581,7 +583,7 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
     	errors = new ArrayList();
     	caughtException = null;
     	try {
-    		errors = searchableAttribute.validateSearchFieldParameters(listParamMap, null);
+    		errors = searchableAttribute.validateSearchFieldParameters(extensionDefinition, listParamMap, null);
     	} catch (RuntimeException re) {
     		caughtException = re;
     	}

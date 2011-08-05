@@ -1,20 +1,19 @@
 package org.kuali.rice.kew.docsearch;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.aspectj.lang.reflect.FieldSignature;
+import org.apache.commons.collections.MapUtils;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.document.attribute.AttributeFields;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupConfiguration;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
 import org.kuali.rice.kew.framework.docsearch.DocumentSearchCustomizationService;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +26,7 @@ import java.util.Map;
 public class DocumentSearchCustomizationMediatorImpl implements DocumentSearchCustomizationMediator {
 
     @Override
-    public List<RemotableAttributeField> getSearchFields(DocumentType documentType) {
+    public DocumentLookupConfiguration getDocumentLookupConfiguration(DocumentType documentType) {
 
         List<DocumentTypeAttribute> searchableAttributes = documentType.getSearchableAttributes();
 
@@ -38,10 +37,11 @@ public class DocumentSearchCustomizationMediatorImpl implements DocumentSearchCu
 
         // This second map is used to map the searchable attribute name to the List of RemotableAttributeFields
         // that are returned by invocations of it's getSearchFields method.  This is a LinkedHashMap because it
-        // preserves the order of the keys as they entered.  This allows us to return attribute fields in the
+        // preserves the order of the keys as they are entered.  This allows us to return attribute fields in the
         // proper order as defined by the order of searchable attributes on the doc type, despite the partitioning
         // of our attributes by application id.
-        LinkedHashMap<String, List<RemotableAttributeField>> orderedFieldMap = new LinkedHashMap<String, List<RemotableAttributeField>>();
+        LinkedHashMap<String, AttributeFields> orderedSearchFieldMap = new LinkedHashMap<String, AttributeFields>();
+        LinkedHashMap<String, AttributeFields> orderedResultSetFieldMap = new LinkedHashMap<String, AttributeFields>();
 
         for (DocumentTypeAttribute searchableAttribute : searchableAttributes) {
             RuleAttribute ruleAttribute = searchableAttribute.getRuleAttribute();
@@ -52,18 +52,23 @@ public class DocumentSearchCustomizationMediatorImpl implements DocumentSearchCu
             }
             applicationIdToAttributeNameMap.get(applicationId).add(attributeName);
             // reserve a spot in the field map
-            orderedFieldMap.put(attributeName, null);
+            orderedSearchFieldMap.put(attributeName, null);
         }
 
         for (String applicationId : applicationIdToAttributeNameMap.keySet()) {
-            DocumentSearchCustomizationService documentSearchCustomizationService = loadCustomizationService(applicationId);
+            DocumentSearchCustomizationService documentSearchCustomizationService = loadCustomizationService(
+                    applicationId);
             List<String> searchableAttributeNames = applicationIdToAttributeNameMap.get(applicationId);
-            List<AttributeFields> attributeFieldsList = documentSearchCustomizationService.getSearchAttributeFields(documentType.getName(), searchableAttributeNames);
-            mergeAttributeFields(attributeFieldsList, orderedFieldMap);
+            DocumentLookupConfiguration documentLookupConfiguration = documentSearchCustomizationService.getDocumentLookupConfiguration(
+                    documentType.getName(), searchableAttributeNames);
+            mergeAttributeFields(documentLookupConfiguration.getSearchAttributeFields(), orderedSearchFieldMap);
+            mergeAttributeFields(documentLookupConfiguration.getResultSetAttributeFields(), orderedResultSetFieldMap);
         }
 
-        return flattenOrderedFieldMap(orderedFieldMap);
-        
+        DocumentLookupConfiguration.Builder configBuilder = DocumentLookupConfiguration.Builder.create(documentType.getName());
+        configBuilder.setSearchAttributeFields(flattenOrderedFieldMap(orderedSearchFieldMap));
+        configBuilder.setResultSetAttributeFields(flattenOrderedFieldMap(orderedResultSetFieldMap));
+        return configBuilder.build();
     }
 
     @Override
@@ -96,6 +101,12 @@ public class DocumentSearchCustomizationMediatorImpl implements DocumentSearchCu
         return errors;
     }
 
+    @Override
+    public boolean isResultProcessingNeeded(DocumentType documentType) {
+        // TODO - Rice 2.0 - implement this
+        throw new UnsupportedOperationException("implement me!");
+    }
+
     protected DocumentSearchCustomizationService loadCustomizationService(String applicationId) {
         DocumentSearchCustomizationService service = KewFrameworkServiceLocator.getDocumentSearchCustomizationService(applicationId);
         if (service == null) {
@@ -104,23 +115,17 @@ public class DocumentSearchCustomizationMediatorImpl implements DocumentSearchCu
         return service;
     }
 
-    protected void mergeAttributeFields(List<AttributeFields> attributeFieldsList, LinkedHashMap<String, List<RemotableAttributeField>> orderedFieldMap) {
+    protected void mergeAttributeFields(List<AttributeFields> attributeFieldsList, LinkedHashMap<String, AttributeFields> orderedFieldMap) {
         if (attributeFieldsList == null) {
             return;
         }
         for (AttributeFields attributeFields : attributeFieldsList) {
-            orderedFieldMap.put(attributeFields.getAttributeName(), attributeFields.getRemotableAttributeFields());
+            orderedFieldMap.put(attributeFields.getAttributeName(), attributeFields);
         }
     }
 
-    protected List<RemotableAttributeField> flattenOrderedFieldMap(LinkedHashMap<String, List<RemotableAttributeField>> orderedFieldMap) {
-        List<RemotableAttributeField> flattenedFields = new ArrayList<RemotableAttributeField>();
-        for (List<RemotableAttributeField> fields : orderedFieldMap.values()) {
-            if (fields != null) {
-                flattenedFields.addAll(fields);
-            }
-        }
-        return flattenedFields;
+    protected List<AttributeFields> flattenOrderedFieldMap(LinkedHashMap<String, AttributeFields> orderedFieldMap) {
+        return new ArrayList<AttributeFields>(orderedFieldMap.values());
     }
 
 }

@@ -15,14 +15,13 @@
  */
 package org.kuali.rice.krad.workflow.attribute;
 
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.w3c.dom.Element;
 
 
 public interface KualiXmlAttribute {
 
-    public Element getConfigXML();
-
-    public void setRuleAttribute(RuleAttribute ruleAttribute);
+    public Element getConfigXML(ExtensionDefinition extensionDefinition);
 
 }

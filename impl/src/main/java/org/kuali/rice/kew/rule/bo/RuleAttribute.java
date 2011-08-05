@@ -58,6 +58,9 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 public class RuleAttribute extends PersistableBusinessObjectBase  {
 
 	private static final long serialVersionUID = 1027673603158346349L;
+
+    public static final String XML_CONFIG_DATA = "xmlConfigData";
+
 	@Id
 	@GeneratedValue(generator="KREW_RTE_TMPL_S")
 	@GenericGenerator(name="KREW_RTE_TMPL_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={

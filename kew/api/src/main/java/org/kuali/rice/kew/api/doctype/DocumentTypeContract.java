@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.api.doctype;
 
+import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.core.api.mo.common.Identifiable;

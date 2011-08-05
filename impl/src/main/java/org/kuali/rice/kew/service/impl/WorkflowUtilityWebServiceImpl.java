@@ -29,6 +29,7 @@ import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.definition.AttributeDefinition;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
@@ -68,6 +69,7 @@ import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.rule.WorkflowAttributeXmlValidator;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowUtility;
@@ -272,6 +274,9 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         if (attribute instanceof GenericXMLRuleAttribute) {
             Map<String, String> attributePropMap = new HashMap<String, String>();
             GenericXMLRuleAttribute xmlAttribute = (GenericXMLRuleAttribute)attribute;
+
+            // TODO - Rice 2.0 - Remove this once we've gotten rid of the xml attribute interfaces
+            ExtensionDefinition extensionDefinition = attributeDefinition.getExtensionDefinition();
             xmlAttribute.setRuleAttribute(attributeDefinition.getRuleAttribute());
             for (int i = 0; i < definition.getProperties().length; i++) {
 		PropertyDefinitionDTO property = definition.getProperties()[i];
@@ -391,9 +396,6 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return authorized;
     }
 
-    /**
-     * @see org.kuali.rice.kew.service.WorkflowUtility#getPrincipalIdsInRouteLog(java.lang.Long, boolean)
-     */
     public String[] getPrincipalIdsInRouteLog(String documentId, boolean lookFuture) throws WorkflowException {
         if (documentId == null) {
             LOG.error("null documentId passed in.");
@@ -454,9 +456,6 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 		return results;
 	}
 
-    /***
-     * @see org.kuali.rice.kew.service.WorkflowUtility#getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(java.lang.String, java.lang.Long)
-     */
     public String[] getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(String actionRequestedCd, String documentId){
     	List<String> results = KEWServiceLocator.getActionRequestService().
     				getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(actionRequestedCd, documentId);
@@ -926,9 +925,6 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return resultVO;
     }
 
-    /**
-     * @see org.kuali.rice.kew.service.WorkflowUtility#getDocumentInitiatorPrincipalId(java.lang.Long)
-     */
     public String getDocumentInitiatorPrincipalId(String documentId)
     		throws WorkflowException {
         if (documentId == null) {
@@ -942,9 +938,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         }
     	return header.getInitiatorWorkflowId();
     }
-    /**
-     * @see org.kuali.rice.kew.service.WorkflowUtility#getDocumentRoutedByPrincipalId(java.lang.Long)
-     */
+
     public String getDocumentRoutedByPrincipalId(String documentId)
     		throws WorkflowException {
         if (documentId == null) {
@@ -959,10 +953,6 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     	return header.getRoutedByUserWorkflowId();
     }
 
-    /**
-	 *
-	 * @see org.kuali.rice.kew.service.WorkflowUtility#getSearchableAttributeDateTimeValuesByKey(java.lang.Long, java.lang.String)
-	 */
 	public Timestamp[] getSearchableAttributeDateTimeValuesByKey(
 			String documentId, String key) {
 		List<Timestamp> results = KEWServiceLocator.getRouteHeaderService().getSearchableAttributeDateTimeValuesByKey(documentId, key);
@@ -972,10 +962,6 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 		return results.toArray(new Timestamp[]{});
 	}
 
-	/**
-	 *
-	 * @see org.kuali.rice.kew.service.WorkflowUtility#getSearchableAttributeFloatValuesByKey(java.lang.Long, java.lang.String)
-	 */
 	public BigDecimal[] getSearchableAttributeFloatValuesByKey(String documentId, String key) {
 		List<BigDecimal> results = KEWServiceLocator.getRouteHeaderService().getSearchableAttributeFloatValuesByKey(documentId, key);
 		if (ObjectUtils.isNull(results)) {
@@ -984,10 +970,6 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 		return results.toArray(new BigDecimal[]{});
 	}
 
-	/**
-	 *
-	 * @see org.kuali.rice.kew.service.WorkflowUtility#getSearchableAttributeLongValuesByKey(java.lang.Long, java.lang.String)
-	 */
 	public Long[] getSearchableAttributeLongValuesByKey(String documentId, String key) {
 		List<Long> results = KEWServiceLocator.getRouteHeaderService().getSearchableAttributeLongValuesByKey(documentId, key);
 		if (ObjectUtils.isNull(results)) {
@@ -996,10 +978,6 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 		return results.toArray(new Long[]{});
 	}
 
-	/**
-	 *
-	 * @see org.kuali.rice.kew.service.WorkflowUtility#getSearchableAttributeStringValuesByKey(java.lang.Long, java.lang.String)
-	 */
 	public String[] getSearchableAttributeStringValuesByKey(String documentId, String key) {
 		List<String> results = KEWServiceLocator.getRouteHeaderService().getSearchableAttributeStringValuesByKey(documentId, key);
 		if (ObjectUtils.isNull(results)) {
@@ -1061,38 +1039,18 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 		KEWServiceLocator.getDocumentLinkService().deleteDocumentLink(initDocLink(docLink));
 	}
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kew.routeheader.service.WorkflowDocumentService#addDocumentLink(org.kuali.rice.kew.documentlink.DocumentLink)
-	 */
 	public void addDocumentLink(DocumentLinkDTO docLinkVO) throws WorkflowException {
 		KEWServiceLocator.getDocumentLinkService().saveDocumentLink(initDocLink(docLinkVO));
 	}
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kew.routeheader.service.WorkflowDocumentService#getgetLinkedDocumentsByDocId(java.lang.Long)
-	 */
 	public List<DocumentLinkDTO> getLinkedDocumentsByDocId(String documentId) throws WorkflowException {
 		return DTOConverter.convertDocumentLinkToArrayList(KEWServiceLocator.getDocumentLinkService().getLinkedDocumentsByDocId(documentId));
 	}
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kew.routeheader.service.WorkflowDocumentService#getDocumentLink(org.kuali.rice.kew.documentlink.DocumentLink)
-	 */
 	public DocumentLinkDTO getLinkedDocument(DocumentLinkDTO docLinkVO) throws WorkflowException{
 		return DTOConverter.convertDocumentLink(KEWServiceLocator.getDocumentLinkService().getLinkedDocument(initDocLink(docLinkVO)));
 	}
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kew.routeheader.service.WorkflowDocumentService#deleteDocumentLinkByDocId(java.lang.Long)
-	 */
 	public void deleteDocumentLinksByDocId(String documentId) throws WorkflowException{
 		KEWServiceLocator.getDocumentLinkService().deleteDocumentLinksByDocId(documentId);
 	}

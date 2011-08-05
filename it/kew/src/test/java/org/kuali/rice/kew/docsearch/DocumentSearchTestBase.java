@@ -48,9 +48,7 @@ public class DocumentSearchTestBase extends KEWTestCase {
         if (attName == null) {
             attName = "XMLSearchableAttribute";
         }
-        RuleAttribute ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByName(attName);
         StandardGenericXMLSearchableAttribute attribute = new StandardGenericXMLSearchableAttribute();
-        attribute.setRuleAttribute(ruleAttribute);
         return attribute;
     }
 

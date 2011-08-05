@@ -2,6 +2,7 @@ package org.kuali.rice.kew.docsearch;
 
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupConfiguration;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 
 import java.util.List;
@@ -15,7 +16,9 @@ import java.util.Map;
  */
 public interface DocumentSearchCustomizationMediator {
 
-    List<RemotableAttributeField> getSearchFields(DocumentType documentType);
+    DocumentLookupConfiguration getDocumentLookupConfiguration(DocumentType documentType);
+
+    boolean isResultProcessingNeeded(DocumentType documentType);
 
     List<RemotableAttributeError> validateSearchFieldParameters(DocumentType documentType, Map<String, List<String>> parameters);
 

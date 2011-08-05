@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupConfiguration;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.RouteNode;
@@ -286,8 +287,8 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements DocumentLookup
 		}
 
         // Rice 2.0 search attributes
-        List<RemotableAttributeField> remotableAttributeFields =
-                KEWServiceLocator.getDocumentSearchCustomizationMediator().getSearchFields(documentType);
+        DocumentLookupConfiguration configuration = KEWServiceLocator.getDocumentSearchCustomizationMediator().getDocumentLookupConfiguration(documentType);
+        List<RemotableAttributeField> remotableAttributeFields = configuration.getFlattenedSearchAttributeFields();
         if (remotableAttributeFields != null && !remotableAttributeFields.isEmpty()) {
             customSearchAttRows.addAll(FieldUtils.convertRemotableAttributeFields(remotableAttributeFields));
         }
@@ -364,18 +365,10 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements DocumentLookup
 		return appDocStatusRows;
 	}
 
-	/**
-	 *
-	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#shouldDisplayHeaderNonMaintActions()
-	 */
 	public boolean shouldDisplayHeaderNonMaintActions() {
 		return getCriteriaProcessor().isHeaderBarDisplayed();
 	}
 
-	/**
-	 *
-	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#shouldDisplayLookupCriteria()
-	 */
 	public boolean shouldDisplayLookupCriteria() {
 		//TODO: chris - How should this handle advanced?  I thought we were only hiding main
 		return getCriteriaProcessor().isBasicSearchCriteriaDisplayed();

@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupConfiguration;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -96,8 +97,9 @@ public class DocumentLookupCriteriaBuilder  {
 		if (documentType != null && documentType.hasSearchableAttributes() && criteria != null) {
 			criteria.getSearchableAttributes().clear();
 			if (!propertyFields.isEmpty()) {
-				List<RemotableAttributeField> searchFields = KEWServiceLocator.getDocumentSearchCustomizationMediator().getSearchFields(documentType);
-                for (RemotableAttributeField searchField : searchFields) {
+                DocumentLookupConfiguration lookupConfiguration = KEWServiceLocator.getDocumentSearchCustomizationMediator().getDocumentLookupConfiguration(documentType);
+                List<RemotableAttributeField> searchFields = lookupConfiguration.getFlattenedSearchAttributeFields();
+				for (RemotableAttributeField searchField : searchFields) {
                     SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(searchField.getDataType());
                     SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(searchField.getName(), null, searchField.getName(), searchableAttributeValue);
 

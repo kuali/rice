@@ -35,6 +35,7 @@ import org.kuali.rice.core.api.util.xml.XmlJotter;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.attribute.XMLAttributeUtils;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
@@ -77,23 +78,18 @@ import java.util.regex.Pattern;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class StandardGenericXMLSearchableAttribute implements XmlConfiguredAttribute, SearchableAttribute {
+public class StandardGenericXMLSearchableAttribute implements SearchableAttribute {
+
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(StandardGenericXMLSearchableAttribute.class);
-
     private static final String FIELD_DEF_E = "fieldDef";
-	private RuleAttribute ruleAttribute;
-	private List<RemotableAttributeField> searchFields = new ArrayList<RemotableAttributeField>();
 
-	public void setRuleAttribute(RuleAttribute ruleAttribute) {
-		this.ruleAttribute = ruleAttribute;
-	}
-
-    public String generateSearchContent(String documentTypeName, WorkflowAttributeDefinition attributeDefinition) {
+    @Override
+    public String generateSearchContent(ExtensionDefinition extensionDefinition, String documentTypeName, WorkflowAttributeDefinition attributeDefinition) {
 		XPath xpath = XPathHelper.newXPath();
 		String findDocContent = "//searchingConfig/xmlSearchContent";
         Map<String, String> propertyDefinitionMap = attributeDefinition.getPropertyDefinitionsAsMap();
 		try {
-			Node xmlDocumentContent = (Node) xpath.evaluate(findDocContent, getConfigXML(), XPathConstants.NODE);
+			Node xmlDocumentContent = (Node) xpath.evaluate(findDocContent, getConfigXML(extensionDefinition), XPathConstants.NODE);
 			if (xmlDocumentContent != null && xmlDocumentContent.hasChildNodes()) {
 				// Custom doc content in the searchingConfig xml.
 				String docContent = "";
@@ -103,7 +99,7 @@ public class StandardGenericXMLSearchableAttribute implements XmlConfiguredAttri
 					docContent += XmlJotter.jotNode(childNode);
 				}
 				String findField = "//searchingConfig/" + FIELD_DEF_E;
-				NodeList nodes = (NodeList) xpath.evaluate(findField, getConfigXML(), XPathConstants.NODESET);
+				NodeList nodes = (NodeList) xpath.evaluate(findField, getConfigXML(extensionDefinition), XPathConstants.NODESET);
 				if (nodes == null || nodes.getLength() == 0) {
 					return "";
 				}
@@ -119,7 +115,7 @@ public class StandardGenericXMLSearchableAttribute implements XmlConfiguredAttri
 				// Standard doc content if no doc content is found in the searchingConfig xml.
 				StringBuffer documentContent = new StringBuffer("<xmlRouting>");
 				String findField = "//searchingConfig/" + FIELD_DEF_E;
-				NodeList nodes = (NodeList) xpath.evaluate(findField, getConfigXML(), XPathConstants.NODESET);
+				NodeList nodes = (NodeList) xpath.evaluate(findField, getConfigXML(extensionDefinition), XPathConstants.NODESET);
 				if (nodes == null || nodes.getLength() == 0) {
 					return "";
 				}
@@ -146,7 +142,8 @@ public class StandardGenericXMLSearchableAttribute implements XmlConfiguredAttri
 		}
 	}
 
-    public List<DocumentAttribute<?>> getDocumentAttributes(DocumentSearchContext documentSearchContext) {
+    @Override
+    public List<DocumentAttribute<?>> getDocumentAttributes(ExtensionDefinition extensionDefinition, DocumentSearchContext documentSearchContext) {
 		List<DocumentAttribute<?>> searchStorageValues = new ArrayList<DocumentAttribute<?>>();
 		Document document;
         String fullDocumentContent = documentSearchContext.getDocumentContent().getFullContent();
@@ -164,7 +161,7 @@ public class StandardGenericXMLSearchableAttribute implements XmlConfiguredAttri
 		XPath xpath = XPathHelper.newXPath(document);
 		String findField = "//searchingConfig/" + FIELD_DEF_E;
 		try {
-			NodeList nodes = (NodeList) xpath.evaluate(findField, getConfigXML(), XPathConstants.NODESET);
+			NodeList nodes = (NodeList) xpath.evaluate(findField, getConfigXML(extensionDefinition), XPathConstants.NODESET);
             if (nodes == null) {
                 LOG.error("Could not find searching configuration (<searchingConfig>) for this XMLSearchAttribute");
             } else {
@@ -179,11 +176,11 @@ public class StandardGenericXMLSearchableAttribute implements XmlConfiguredAttri
     				String fieldDataType = null;
     				String xpathExpression = null;
     				try {
-                        fieldDataType = (String) xpath.evaluate(findDataTypeXpathExpression, getConfigXML(), XPathConstants.STRING);
+                        fieldDataType = (String) xpath.evaluate(findDataTypeXpathExpression, getConfigXML(extensionDefinition), XPathConstants.STRING);
     					if (org.apache.commons.lang.StringUtils.isEmpty(fieldDataType)) {
     						fieldDataType = KEWConstants.SearchableAttributeConstants.DEFAULT_SEARCHABLE_ATTRIBUTE_TYPE_NAME;
     					}
-    				    xpathExpression = (String) xpath.evaluate(findXpathExpression, getConfigXML(), XPathConstants.STRING);
+    				    xpathExpression = (String) xpath.evaluate(findXpathExpression, getConfigXML(extensionDefinition), XPathConstants.STRING);
     					if (!org.apache.commons.lang.StringUtils.isEmpty(xpathExpression)) {
 
                             try {
@@ -259,115 +256,115 @@ public class StandardGenericXMLSearchableAttribute implements XmlConfiguredAttri
 	}
 
     @Override
-    public List<RemotableAttributeField> getSearchFields(String documentTypeName) {
+    public List<RemotableAttributeField> getSearchFields(ExtensionDefinition extensionDefinition, String documentTypeName) {
 
-		if (searchFields.isEmpty()) {
-			List<SearchableAttributeValue> searchableAttributeValues = DocSearchUtils.getSearchableAttributeValueObjectTypes();
-			NodeList fieldNodeList = getConfigXML().getElementsByTagName(FIELD_DEF_E);
-			for (int i = 0; i < fieldNodeList.getLength(); i++) {
-				Node field = fieldNodeList.item(i);
-				NamedNodeMap fieldAttributes = field.getAttributes();
+        List<RemotableAttributeField> searchFields = new ArrayList<RemotableAttributeField>();
+        List<SearchableAttributeValue> searchableAttributeValues = DocSearchUtils.getSearchableAttributeValueObjectTypes();
+        NodeList fieldNodeList = getConfigXML(extensionDefinition).getElementsByTagName(FIELD_DEF_E);
+        for (int i = 0; i < fieldNodeList.getLength(); i++) {
+            Node field = fieldNodeList.item(i);
+            NamedNodeMap fieldAttributes = field.getAttributes();
 
-				boolean isColumnVisible = true;
-                boolean hasXPathExpression = false;
+            boolean isColumnVisible = true;
+            boolean hasXPathExpression = false;
 
-                String attributeName = fieldAttributes.getNamedItem("name").getNodeValue();
-                String attributeTitle = fieldAttributes.getNamedItem("title").getNodeValue();
-                RemotableAttributeField.Builder fieldBuilder = RemotableAttributeField.Builder.create(attributeName);
-                fieldBuilder.setLongLabel(attributeTitle);
+            String attributeName = fieldAttributes.getNamedItem("name").getNodeValue();
+            String attributeTitle = fieldAttributes.getNamedItem("title").getNodeValue();
+            RemotableAttributeField.Builder fieldBuilder = RemotableAttributeField.Builder.create(attributeName);
+            fieldBuilder.setLongLabel(attributeTitle);
 
-				for (int j = 0; j < field.getChildNodes().getLength(); j++) {
-					Node childNode = field.getChildNodes().item(j);
-					if ("value".equals(childNode.getNodeName())) {
-                        String defaultValue = childNode.getFirstChild().getNodeValue();
-                        fieldBuilder.setDefaultValues(Collections.singletonList(defaultValue));
-					} else if ("display".equals(childNode.getNodeName())) {
+            for (int j = 0; j < field.getChildNodes().getLength(); j++) {
+                Node childNode = field.getChildNodes().item(j);
+                if ("value".equals(childNode.getNodeName())) {
+                    String defaultValue = childNode.getFirstChild().getNodeValue();
+                    fieldBuilder.setDefaultValues(Collections.singletonList(defaultValue));
+                } else if ("display".equals(childNode.getNodeName())) {
 
-                        String typeValue = null;
-                        List<KeyValue> options = new ArrayList<KeyValue>();
-                        List<String> selectedOptions = new ArrayList<String>();
+                    String typeValue = null;
+                    List<KeyValue> options = new ArrayList<KeyValue>();
+                    List<String> selectedOptions = new ArrayList<String>();
 
 
-						for (int k = 0; k < childNode.getChildNodes().getLength(); k++) {
-							Node displayChildNode = childNode.getChildNodes().item(k);
-							if ("type".equals(displayChildNode.getNodeName())) {
-								typeValue = displayChildNode.getFirstChild().getNodeValue();
-							} else if ("meta".equals(displayChildNode.getNodeName())) {
+                    for (int k = 0; k < childNode.getChildNodes().getLength(); k++) {
+                        Node displayChildNode = childNode.getChildNodes().item(k);
+                        if ("type".equals(displayChildNode.getNodeName())) {
+                            typeValue = displayChildNode.getFirstChild().getNodeValue();
+                        } else if ("meta".equals(displayChildNode.getNodeName())) {
 
-							} else if ("values".equals(displayChildNode.getNodeName())) {
-								NamedNodeMap valuesAttributes = displayChildNode.getAttributes();
-                                // this is to allow an empty drop down choice and can probably implemented in a better way
-                                if (displayChildNode.getFirstChild() != null) {
-                                    options.add(new ConcreteKeyValue(displayChildNode.getFirstChild().getNodeValue(), valuesAttributes.getNamedItem("title").getNodeValue()));
-                                    if (valuesAttributes.getNamedItem("selected") != null) {
-                                        selectedOptions.add(displayChildNode.getFirstChild().getNodeValue());
-                                    }
-                                } else {
-                                    options.add(new ConcreteKeyValue("", valuesAttributes.getNamedItem("title").getNodeValue()));
+                        } else if ("values".equals(displayChildNode.getNodeName())) {
+                            NamedNodeMap valuesAttributes = displayChildNode.getAttributes();
+                            // this is to allow an empty drop down choice and can probably implemented in a better way
+                            if (displayChildNode.getFirstChild() != null) {
+                                options.add(new ConcreteKeyValue(displayChildNode.getFirstChild().getNodeValue(), valuesAttributes.getNamedItem("title").getNodeValue()));
+                                if (valuesAttributes.getNamedItem("selected") != null) {
+                                    selectedOptions.add(displayChildNode.getFirstChild().getNodeValue());
                                 }
-							}
-						}
-
-                        RemotableAbstractControl.Builder controlBuilder = constructControl(typeValue, options);
-                        fieldBuilder.setControl(controlBuilder);
-
-                        if ("date".equals(typeValue)) {
-                            fieldBuilder.getWidgets().add(RemotableDatepicker.Builder.create());
-                            fieldBuilder.setDataType(DataType.DATE);
-                        }
-
-                        if (selectedOptions != null && !selectedOptions.isEmpty()) {
-                            fieldBuilder.setDefaultValues(selectedOptions);
-                        }
-
-					} else if ("visibility".equals(childNode.getNodeName())) {
-						parseVisibility(fieldBuilder, (Element)childNode);
-					} else if ("searchDefinition".equals(childNode.getNodeName())) {
-						NamedNodeMap searchDefAttributes = childNode.getAttributes();
-						// data type operations
-						String dataTypeValue = (searchDefAttributes.getNamedItem("dataType") == null) ? null : searchDefAttributes.getNamedItem("dataType").getNodeValue();
-                        DataType dataType = convertValueToDataType(dataTypeValue);
-                        fieldBuilder.setDataType(dataType);
-						if (DataType.DATE == fieldBuilder.getDataType()) {
-							fieldBuilder.getWidgets().add(RemotableDatepicker.Builder.create());
-						}
-
-                        boolean isRangeSearchField = isRangeSearchField(searchableAttributeValues, fieldBuilder.getDataType(), searchDefAttributes, childNode);
-                        if (!isRangeSearchField) {
-                            Boolean caseSensitive = getBooleanValue(searchDefAttributes, "caseSensitive");
-							if (caseSensitive != null) {
-                                fieldBuilder.setLookupCaseSensitive(caseSensitive);
-							}
-                        } else {
-                            RemotableAttributeRange.Builder attributeRange = buildAttributeRange(fieldBuilder, childNode);
-                            if (attributeRange != null) {
-                                fieldBuilder.setAttributeRange(attributeRange);
+                            } else {
+                                options.add(new ConcreteKeyValue("", valuesAttributes.getNamedItem("title").getNodeValue()));
                             }
                         }
+                    }
+
+                    RemotableAbstractControl.Builder controlBuilder = constructControl(typeValue, options);
+                    fieldBuilder.setControl(controlBuilder);
+
+                    if ("date".equals(typeValue)) {
+                        fieldBuilder.getWidgets().add(RemotableDatepicker.Builder.create());
+                        fieldBuilder.setDataType(DataType.DATE);
+                    }
+
+                    if (selectedOptions != null && !selectedOptions.isEmpty()) {
+                        fieldBuilder.setDefaultValues(selectedOptions);
+                    }
+
+                } else if ("visibility".equals(childNode.getNodeName())) {
+                    parseVisibility(fieldBuilder, (Element)childNode);
+                } else if ("searchDefinition".equals(childNode.getNodeName())) {
+                    NamedNodeMap searchDefAttributes = childNode.getAttributes();
+                    // data type operations
+                    String dataTypeValue = (searchDefAttributes.getNamedItem("dataType") == null) ? null : searchDefAttributes.getNamedItem("dataType").getNodeValue();
+                    DataType dataType = convertValueToDataType(dataTypeValue);
+                    fieldBuilder.setDataType(dataType);
+                    if (DataType.DATE == fieldBuilder.getDataType()) {
+                        fieldBuilder.getWidgets().add(RemotableDatepicker.Builder.create());
+                    }
+
+                    boolean isRangeSearchField = isRangeSearchField(searchableAttributeValues, fieldBuilder.getDataType(), searchDefAttributes, childNode);
+                    if (!isRangeSearchField) {
+                        Boolean caseSensitive = getBooleanValue(searchDefAttributes, "caseSensitive");
+                        if (caseSensitive != null) {
+                            fieldBuilder.setLookupCaseSensitive(caseSensitive);
+                        }
+                    } else {
+                        RemotableAttributeRange.Builder attributeRange = buildAttributeRange(fieldBuilder, childNode);
+                        if (attributeRange != null) {
+                            fieldBuilder.setAttributeRange(attributeRange);
+                        }
+                    }
 
 
-                        /**
+                    /**
 
-                         TODO - Rice 2.0 - Figure out how to handle these formatters
+                     TODO - Rice 2.0 - Figure out how to handle these formatters
 
-						String formatterClass = (searchDefAttributes.getNamedItem("formatterClass") == null) ? null : searchDefAttributes.getNamedItem("formatterClass").getNodeValue();
-						if (!StringUtils.isEmpty(formatterClass)) {
-						    try {
-						        myField.setFormatter((Formatter)Class.forName(formatterClass).newInstance());
-						    } catch (InstantiationException e) {
-				                LOG.error("Unable to get new instance of formatter class: " + formatterClass);
-				                throw new RuntimeException("Unable to get new instance of formatter class: " + formatterClass);
-				            }
-				            catch (IllegalAccessException e) {
-				                LOG.error("Unable to get new instance of formatter class: " + formatterClass);
-				                throw new RuntimeException("Unable to get new instance of formatter class: " + formatterClass);
-				            } catch (ClassNotFoundException e) {
-				                LOG.error("Unable to find formatter class: " + formatterClass);
-                                throw new RuntimeException("Unable to find formatter class: " + formatterClass);
-                            }
-						}
+                     String formatterClass = (searchDefAttributes.getNamedItem("formatterClass") == null) ? null : searchDefAttributes.getNamedItem("formatterClass").getNodeValue();
+                     if (!StringUtils.isEmpty(formatterClass)) {
+                     try {
+                     myField.setFormatter((Formatter)Class.forName(formatterClass).newInstance());
+                     } catch (InstantiationException e) {
+                     LOG.error("Unable to get new instance of formatter class: " + formatterClass);
+                     throw new RuntimeException("Unable to get new instance of formatter class: " + formatterClass);
+                     }
+                     catch (IllegalAccessException e) {
+                     LOG.error("Unable to get new instance of formatter class: " + formatterClass);
+                     throw new RuntimeException("Unable to get new instance of formatter class: " + formatterClass);
+                     } catch (ClassNotFoundException e) {
+                     LOG.error("Unable to find formatter class: " + formatterClass);
+                     throw new RuntimeException("Unable to find formatter class: " + formatterClass);
+                     }
+                     }
 
-                         */
+                     */
 
 
                     /*
@@ -386,20 +383,20 @@ public class StandardGenericXMLSearchableAttribute implements XmlConfiguredAttri
                      */
 
 
-                    } else if ("fieldEvaluation".equals(childNode.getNodeName())) {
-                        for (int k = 0; k < childNode.getChildNodes().getLength(); k++) {
-                            Node displayChildNode = childNode.getChildNodes().item(k);
-                            if ("xpathexpression".equals(displayChildNode.getNodeName())) {
-                                hasXPathExpression = true;
-                                break;
-                            }
+                } else if ("fieldEvaluation".equals(childNode.getNodeName())) {
+                    for (int k = 0; k < childNode.getChildNodes().getLength(); k++) {
+                        Node displayChildNode = childNode.getChildNodes().item(k);
+                        if ("xpathexpression".equals(displayChildNode.getNodeName())) {
+                            hasXPathExpression = true;
+                            break;
                         }
-					} else if ("lookup".equals(childNode.getNodeName())) {
-                        XMLAttributeUtils.establishFieldLookup(fieldBuilder, childNode);
-					}
-				}
+                    }
+                } else if ("lookup".equals(childNode.getNodeName())) {
+                    XMLAttributeUtils.establishFieldLookup(fieldBuilder, childNode);
+                }
+            }
 
-                /*
+            /*
 
                 TODO - Rice 2.0 - Figure out how to handle "indexedForSearch"
 
@@ -407,10 +404,9 @@ public class StandardGenericXMLSearchableAttribute implements XmlConfiguredAttri
 
                 */
                 
-                searchFields.add(fieldBuilder.build());
+            searchFields.add(fieldBuilder.build());
 
-			}
-		}
+        }
 		return searchFields;
 	}
 
@@ -638,13 +634,13 @@ public class StandardGenericXMLSearchableAttribute implements XmlConfiguredAttri
     }
 
     @Override
-    public List<RemotableAttributeError> validateSearchFieldParameters(Map<String, List<String>> parameters, String documentTypeName) {
+    public List<RemotableAttributeError> validateSearchFieldParameters(ExtensionDefinition extensionDefinition, Map<String, List<String>> parameters, String documentTypeName) {
 		List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
 
 		XPath xpath = XPathHelper.newXPath();
 		String findField = "//searchingConfig/" + FIELD_DEF_E;
 		try {
-			NodeList nodes = (NodeList) xpath.evaluate(findField, getConfigXML(), XPathConstants.NODESET);
+			NodeList nodes = (NodeList) xpath.evaluate(findField, getConfigXML(extensionDefinition), XPathConstants.NODESET);
 			if (nodes == null) {
 				// no field definitions is de facto valid
 			    LOG.warn("Could not find any field definitions (<" + FIELD_DEF_E + ">) or possibly a searching configuration (<searchingConfig>) for this XMLSearchAttribute");
@@ -693,7 +689,7 @@ public class StandardGenericXMLSearchableAttribute implements XmlConfiguredAttri
                                 }
                             }
                             String findXpathExpressionPrefix = "//searchingConfig/" + FIELD_DEF_E + "[@name='" + fieldDefName + "']";
-        					Node searchDefNode = (Node) xpath.evaluate(findXpathExpressionPrefix + "/searchDefinition", getConfigXML(), XPathConstants.NODE);
+        					Node searchDefNode = (Node) xpath.evaluate(findXpathExpressionPrefix + "/searchDefinition", getConfigXML(extensionDefinition), XPathConstants.NODE);
         					NamedNodeMap searchDefAttributes = null;
             				String fieldDataType = null;
         					if (searchDefNode != null) {
@@ -739,12 +735,12 @@ public class StandardGenericXMLSearchableAttribute implements XmlConfiguredAttri
 
         						if (StringUtils.isNotBlank(lowerBoundValue)) {
                                     lowerBoundRangeAttributes = getAttributesForPotentialChildNode(rangeDefinitionNode, "lower");
-        							errors.addAll(performValidation(attributeValue,
+        							errors.addAll(performValidation(extensionDefinition, attributeValue,
         									lowerBoundFieldDefName, lowerBoundValue, constructRangeFieldErrorPrefix(fieldDefTitle,lowerBoundRangeAttributes), findXpathExpressionPrefix));
         						}
                                 if (StringUtils.isNotBlank(upperBoundValue)) {
                                     upperBoundRangeAttributes = getAttributesForPotentialChildNode(rangeDefinitionNode, "upper");
-        							errors.addAll(performValidation(attributeValue,
+        							errors.addAll(performValidation(extensionDefinition, attributeValue,
         									upperBoundFieldDefName, upperBoundValue, constructRangeFieldErrorPrefix(fieldDefTitle, upperBoundRangeAttributes), findXpathExpressionPrefix));
         						}
                                 if (errors.isEmpty()) {
@@ -762,10 +758,10 @@ public class StandardGenericXMLSearchableAttribute implements XmlConfiguredAttri
                                 List<String> enteredValue = parameters.get(fieldDefName);
                                 if (enteredValue.size() == 1) {
                                     String stringVariable = enteredValue.get(0);
-                                    errors.addAll(performValidation(attributeValue, fieldDefName, stringVariable, fieldDefTitle, findXpathExpressionPrefix));
+                                    errors.addAll(performValidation(extensionDefinition, attributeValue, fieldDefName, stringVariable, fieldDefTitle, findXpathExpressionPrefix));
                                 } else {
                                     for (String stringVariable : enteredValue) {
-                                        errors.addAll(performValidation(attributeValue, fieldDefName, stringVariable, "One value for " + fieldDefTitle, findXpathExpressionPrefix));
+                                        errors.addAll(performValidation(extensionDefinition, attributeValue, fieldDefName, stringVariable, "One value for " + fieldDefTitle, findXpathExpressionPrefix));
                                     }
 
                                 }
@@ -793,7 +789,7 @@ public class StandardGenericXMLSearchableAttribute implements XmlConfiguredAttri
         return null;
     }
 
-	private List<RemotableAttributeError> performValidation(SearchableAttributeValue attributeValue, String fieldDefName, String enteredValue, String errorMessagePrefix, String findXpathExpressionPrefix) throws XPathExpressionException {
+	private List<RemotableAttributeError> performValidation(ExtensionDefinition extensionDefinition, SearchableAttributeValue attributeValue, String fieldDefName, String enteredValue, String errorMessagePrefix, String findXpathExpressionPrefix) throws XPathExpressionException {
 		List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
 		XPath xpath = XPathHelper.newXPath();
 		if ( attributeValue.allowsWildcards()) {
@@ -806,13 +802,13 @@ public class StandardGenericXMLSearchableAttribute implements XmlConfiguredAttri
 			errors.add(RemotableAttributeError.Builder.create(fieldDefName, errorMsg).build());
 		} else {
 			String findValidation = findXpathExpressionPrefix + "/validation/regex";
-			String regex = (String) xpath.evaluate(findValidation, getConfigXML(), XPathConstants.STRING);
+			String regex = (String) xpath.evaluate(findValidation, getConfigXML(extensionDefinition), XPathConstants.STRING);
 			if (!org.apache.commons.lang.StringUtils.isEmpty(regex)) {
 				Pattern pattern = Pattern.compile(regex);
 				Matcher matcher = pattern.matcher(enteredValue);
 				if (!matcher.matches()) {
 					String findErrorMessage = findXpathExpressionPrefix + "/validation/message";
-					String message = (String) xpath.evaluate(findErrorMessage, getConfigXML(), XPathConstants.STRING);
+					String message = (String) xpath.evaluate(findErrorMessage, getConfigXML(extensionDefinition), XPathConstants.STRING);
 					errors.add(RemotableAttributeError.Builder.create(fieldDefName, message).build());
 				}
 			}
@@ -820,11 +816,12 @@ public class StandardGenericXMLSearchableAttribute implements XmlConfiguredAttri
 		return errors;
 	}
 
-	public Element getConfigXML() {
+	public Element getConfigXML(ExtensionDefinition extensionDefinition) {
 		try {
-			return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new BufferedReader(new StringReader(ruleAttribute.getXmlConfigData())))).getDocumentElement();
+            String xmlConfigData = extensionDefinition.getConfiguration().get(RuleAttribute.XML_CONFIG_DATA);
+			return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new BufferedReader(new StringReader(xmlConfigData)))).getDocumentElement();
 		} catch (Exception e) {
-			String ruleAttrStr = (ruleAttribute == null ? null : ruleAttribute.getName());
+			String ruleAttrStr = (extensionDefinition == null ? null : extensionDefinition.getName());
 			LOG.error("error parsing xml data from search attribute: " + ruleAttrStr, e);
 			throw new RuntimeException("error parsing xml data from searchable attribute: " + ruleAttrStr, e);
 		}
@@ -838,4 +835,5 @@ public class StandardGenericXMLSearchableAttribute implements XmlConfiguredAttri
         Boolean inclusive;
         String label;
     }
+
 }

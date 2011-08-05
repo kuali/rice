@@ -22,8 +22,10 @@ import org.junit.Test;
 import org.kuali.rice.core.api.impex.xml.XmlConstants;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
@@ -185,15 +187,14 @@ public class KualiXMLAttributeImplTest extends KRADTestCase {
      * @throws TransformerException
      */
     private Node configureRuleAttribute(Node xmlNode, KualiXmlAttribute myAttribute) throws TransformerException {
-        RuleAttribute ruleAttribute = new RuleAttribute();
+        ExtensionDefinition.Builder extensionDefinition = ExtensionDefinition.Builder.create("fakeName", "fakeType", "fakeResourceDescriptor");
 
         StringWriter xmlBuffer = new StringWriter();
         Source source = new DOMSource(xmlNode);
         Result result = new StreamResult(xmlBuffer);
         TransformerFactory.newInstance().newTransformer().transform(source, result);
 
-        ruleAttribute.setXmlConfigData(new String(xmlBuffer.getBuffer()));
-        myAttribute.setRuleAttribute(ruleAttribute);
+        extensionDefinition.getConfiguration().put(RuleAttribute.XML_CONFIG_DATA, new String(xmlBuffer.getBuffer()));
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("This is the XML that was added to the attribute");
@@ -205,7 +206,7 @@ public class KualiXMLAttributeImplTest extends KRADTestCase {
             LOG.debug("This is the XML that was returned from the ruleAttribute");
             LOG.debug(new String(xmlBuffer2.getBuffer()));
         }
-        return myAttribute.getConfigXML();
+        return myAttribute.getConfigXML(extensionDefinition.build());
     }
 
     /**

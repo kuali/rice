@@ -112,65 +112,66 @@
         <property name="serverDataSource" value="false"/>
     </bean>
 
-	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
-		<property name="interceptorNames">
-			<list>
-				<idref bean="matchAllTxInterceptor" />
-			</list>
-		</property>
-		<property name="beanNames">
-			<list>
-				<idref local="enRuleAttributeService" />
-				<idref local="enRuleTemplateService" />
-				<idref local="enRuleService" />
-				<idref local="enDocumentRouteHeaderService" />
-				<idref local="enActionListService" />
-				<idref local="enDocumentSearchService" />
-				<idref local="enDocumentTypeService" />
-				<idref local="enDocumentTypePermissionService" />
-				<idref local="enPreferencesService" />
-				<idref local="enActionTakenService" />
-				<idref local="enActionRequestService" />
-				<idref local="enResponsibilityIdService" />
-				<idref local="enRuleDelegationService" />
-				<idref local="enNotificationService" />
-				<idref local="enRouteModuleService" />
-				<idref local="enWorkflowDocumentService" />
-				<idref local="enRoleService" />
-				<idref local="enRoutingReportService" />
-                <idref local="workflowEngine" />
-				<idref local="enRouteNodeService" />
-				<idref local="enBranchService" />
-				<idref local="enExceptionRoutingService" />
-                <idref local="enStatsService" />
-                <idref local="enNoteService" />
-                <idref local="enDocumentRoutingService" />
-                <idref local="enBlanketApproveProcessor" />
-                <idref local="rice.kew.documentAttributeIndexingQueue" />
-                <idref local="enMoveDocumentService" />
-                <idref local="enActionInvocationService" />
-                <idref local="enImmediateEmailReminderService" />
-                <idref local="enActionListEmailService" />
-                <idref local="enWorkflowUtilityService" />
-                <idref local="enQuickLinksService" />
-                <idref local="enDocumentRequeuerService"/>
+  <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+    <property name="interceptorNames">
+      <list>
+        <idref bean="matchAllTxInterceptor" />
+      </list>
+    </property>
+    <property name="beanNames">
+      <list>
+        <idref local="enRuleAttributeService" />
+        <idref local="enRuleTemplateService" />
+        <idref local="enRuleService" />
+        <idref local="enDocumentRouteHeaderService" />
+        <idref local="enActionListService" />
+        <idref local="enDocumentSearchService" />
+        <idref local="enDocumentTypeService" />
+        <idref local="enDocumentTypePermissionService" />
+        <idref local="enPreferencesService" />
+        <idref local="enActionTakenService" />
+        <idref local="enActionRequestService" />
+        <idref local="enResponsibilityIdService" />
+        <idref local="enRuleDelegationService" />
+        <idref local="enNotificationService" />
+        <idref local="enRouteModuleService" />
+        <idref local="enWorkflowDocumentService" />
+        <idref local="enRoleService" />
+        <idref local="enRoutingReportService" />
+        <idref local="workflowEngine" />
+        <idref local="enRouteNodeService" />
+        <idref local="enBranchService" />
+        <idref local="enExceptionRoutingService" />
+        <idref local="enStatsService" />
+        <idref local="enNoteService" />
+        <idref local="enDocumentRoutingService" />
+        <idref local="enBlanketApproveProcessor" />
+        <idref local="rice.kew.documentAttributeIndexingQueue" />
+        <idref local="enMoveDocumentService" />
+        <idref local="enActionInvocationService" />
+        <idref local="enImmediateEmailReminderService" />
+        <idref local="enActionListEmailService" />
+        <idref local="enWorkflowUtilityService" />
+        <idref local="enQuickLinksService" />
+        <idref local="enDocumentRequeuerService"/>
                 
-                <idref local="rice.kew.workflowDocumentActionsService" />
-                <idref local="rice.kew.workflowDocumentService" />
-                <idref local="rice.kew.documentTypeService" />
-                <idref local="rice.kew.noteService" />
-                <idref local="rice.kew.documentSearchCustomizationService" />
+        <idref local="rice.kew.workflowDocumentActionsService" />
+        <idref local="rice.kew.workflowDocumentService" />
+        <idref local="rice.kew.documentTypeService" />
+        <idref local="rice.kew.noteService" />
+        <idref local="rice.kew.documentSearchCustomizationService" />
+        <idref local="rice.kew.extensionRepositoryService" />
                 
-                <!-- it's important that this service remains non-transactionally proxied for various reasons
+        <!-- it's important that this service remains non-transactionally proxied for various reasons
                 <idref local="enUserOptionsService"/>
                 -->
-                <idref local="styleService" />
-                <idref local="styleRepositoryService" />
-                <idref local="styleXmlLoader" />
-                <idref local="styleXmlExporter" />
-			</list>
-		</property>
-	</bean>
+        <idref local="styleService" />
+        <idref local="styleRepositoryService" />
+        <idref local="styleXmlLoader" />
+        <idref local="styleXmlExporter" />
+      </list>
+    </property>
+  </bean>
 
 	<!--  END PROPAGATION REQUIRED TX DECLARATIONS -->
 
@@ -786,9 +787,13 @@
 	</bean>
 
   <bean id="rice.kew.documentSearchCustomizationService" class="org.kuali.rice.kew.docsearch.DocumentSearchCustomizationServiceImpl">
-		<property name="ruleAttributeService" ref="enRuleAttributeService"/>
+		<property name="extensionRepositoryService" ref="rice.kew.extensionRepositoryService" />
 	</bean>
 
   <bean id="rice.kew.documentSearchCustomizationMediator" class="org.kuali.rice.kew.docsearch.DocumentSearchCustomizationMediatorImpl" />
+
+  <bean id="rice.kew.extensionRepositoryService" class="org.kuali.rice.kew.impl.extension.ExtensionRepositoryServiceImpl">
+		<property name="ruleAttributeService" ref="enRuleAttributeService"/>
+	</bean>
     
 </beans>

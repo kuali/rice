@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.workflow.attribute;
 
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.rule.xmlrouting.StandardGenericXMLRuleAttribute;
 import org.w3c.dom.Element;
 
@@ -41,15 +42,20 @@ public class KualiXmlRuleAttributeImpl extends StandardGenericXMLRuleAttribute i
      * 
      * @see org.kuali.rice.kew.rule.xmlrouting.StandardGenericXMLRuleAttribute#getConfigXML()
      */
+    @Override
     public Element getConfigXML() {
-        Element root = getAttributeConfigXML();
+
+        // TODO - Rice 2.0 - keep this method around temporarily until we replace with the version that takes ExtensionDefinition
+
+        Element root = super.getConfigXML();
         KualiXmlAttributeHelper attributeHelper = new KualiXmlAttributeHelper();
         // this adds the name and title to the xml based on the data dictionary
         return attributeHelper.processConfigXML(root);
     }
 
-    public Element getAttributeConfigXML() {
-        return super.getConfigXML();
+    @Override
+    public Element getConfigXML(ExtensionDefinition extensionDefinition) {
+        return getConfigXML();
     }
 
 }

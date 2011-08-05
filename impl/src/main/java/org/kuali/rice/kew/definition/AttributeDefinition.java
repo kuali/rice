@@ -18,6 +18,7 @@ package org.kuali.rice.kew.definition;
 
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 
 
@@ -27,15 +28,25 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
  */
 public class AttributeDefinition {
 
-	private RuleAttribute ruleAttribute;
+    // TODO - Rice 2.0 - remove once we no longer need
+    private RuleAttribute ruleAttribute;
+	private ExtensionDefinition extensionDefinition;
 	private ObjectDefinition objectDefinition;
 
-	public AttributeDefinition(RuleAttribute ruleAttribute, ObjectDefinition objectDefinition) {
-		this.ruleAttribute = ruleAttribute;
+	public AttributeDefinition(RuleAttribute ruleAttribute, ExtensionDefinition extensionDefinition, ObjectDefinition objectDefinition) {
+		this.extensionDefinition = extensionDefinition;
 		this.objectDefinition = objectDefinition;
 	}
 
-	public ObjectDefinition getObjectDefinition() {
+    public RuleAttribute getRuleAttribute() {
+        return ruleAttribute;
+    }
+
+    public void setRuleAttribute(RuleAttribute ruleAttribute) {
+        this.ruleAttribute = ruleAttribute;
+    }
+
+    public ObjectDefinition getObjectDefinition() {
 		return objectDefinition;
 	}
 
@@ -43,12 +54,12 @@ public class AttributeDefinition {
 		this.objectDefinition = objectDefinition;
 	}
 
-	public RuleAttribute getRuleAttribute() {
-		return ruleAttribute;
-	}
+    public ExtensionDefinition getExtensionDefinition() {
+        return extensionDefinition;
+    }
 
-	public void setRuleAttribute(RuleAttribute ruleAttribute) {
-		this.ruleAttribute = ruleAttribute;
-	}
-
+    public void setExtensionDefinition(ExtensionDefinition extensionDefinition) {
+        this.extensionDefinition = extensionDefinition;
+    }
+    
 }

@@ -86,6 +86,13 @@ public class DummyLoginFilter implements Filter {
                 request.getRequestDispatcher(loginPath).forward(request, response);
                 return;
             }
+        } else {
+            request = new HttpServletRequestWrapper(request) {
+                    @Override
+					public String getRemoteUser() {
+                        return session.getPrincipalName();
+                    }
+                };
         }
         chain.doFilter(request, response);
     }

@@ -168,7 +168,7 @@ public abstract class ActionTakenEvent {
 		// queue the document up so that it can be indexed for searching if it
 		// has searchable attributes
 		RouteContext routeContext = RouteContext.getCurrentRouteContext();
-		if (routeHeader.getDocumentType().hasSearchableAttributesOld() && !routeContext.isSearchIndexingRequestedForContext()) {
+		if (routeHeader.getDocumentType().hasSearchableAttributes() && !routeContext.isSearchIndexingRequestedForContext()) {
 			routeContext.requestSearchIndexingForContext();
             DocumentAttributeIndexingQueue queue = KewApiServiceLocator.getDocumentAttributeIndexingQueue(routeHeader.getDocumentType().getApplicationId());
             queue.indexDocument(getDocumentId());

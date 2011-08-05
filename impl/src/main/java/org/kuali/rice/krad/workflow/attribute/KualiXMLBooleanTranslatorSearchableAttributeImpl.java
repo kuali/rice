@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.workflow.attribute;
 
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.w3c.dom.Element;
 
 /**
@@ -30,6 +31,8 @@ public class KualiXMLBooleanTranslatorSearchableAttributeImpl extends KualiXmlSe
 	public static final String VALUE_FOR_TRUE = "Yes";
 	public static final String VALUE_FOR_FALSE = "No";
 
+
+
 	/**
 	 * This overriden method does the translation of the given xPath expression from the XML definition of the attribute and
 	 * translates it into the true and false values based on the {@link #getValueForXPathTrueEvaluation()} and
@@ -38,12 +41,12 @@ public class KualiXMLBooleanTranslatorSearchableAttributeImpl extends KualiXmlSe
 	 * @see org.kuali.rice.krad.workflow.attribute.KualiXmlSearchableAttributeImpl#getConfigXML()
 	 */
 	@Override
-	public Element getConfigXML() {
+	public Element getConfigXML(ExtensionDefinition extensionDefinition) {
 		String[] xpathElementsToInsert = new String[3];
 		xpathElementsToInsert[0] = "concat( substring('" + getValueForXPathTrueEvaluation() + "', number(not(";
 		xpathElementsToInsert[1] = "))*string-length('" + getValueForXPathTrueEvaluation() + "')+1), substring('" + getValueForXPathFalseEvaluation() + "', number(";
 		xpathElementsToInsert[2] = ")*string-length('" + getValueForXPathFalseEvaluation() + "')+1))";
-		Element root = super.getAttributeConfigXML();
+		Element root = super.getConfigXML(extensionDefinition);
 		return new KualiXmlAttributeHelper().processConfigXML(root, xpathElementsToInsert);
 	}
 

@@ -24,11 +24,13 @@ import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.resourceloader.ObjectDefinitionResolver;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupConfiguration;
 import org.kuali.rice.kew.docsearch.web.SearchAttributeFormContainer;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserUtils;
+import org.kuali.rice.kew.util.KEWWebServiceConstants;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.krad.UserSession;
@@ -157,7 +159,8 @@ public final class DocSearchUtils {
 
         if (docType != null) {
 
-            List<RemotableAttributeField> searchFields = KEWServiceLocator.getDocumentSearchCustomizationMediator().getSearchFields(docType);
+            DocumentLookupConfiguration lookupConfiguration = KEWServiceLocator.getDocumentSearchCustomizationMediator().getDocumentLookupConfiguration(docType);
+            List<RemotableAttributeField> searchFields = lookupConfiguration.getFlattenedSearchAttributeFields();
 
             for (RemotableAttributeField searchField : searchFields) {
                 SearchAttributeCriteriaComponent searchableAttributeComponent = DocSearchUtils.translateSearchFieldToCriteriaComponent(searchField);
@@ -315,7 +318,8 @@ public final class DocSearchUtils {
             if (!propertyFields.isEmpty()) {
                 Map<String, SearchAttributeCriteriaComponent> criteriaComponentsByFormKey = new HashMap<String, SearchAttributeCriteriaComponent>();
 
-                List<RemotableAttributeField> searchFields = KEWServiceLocator.getDocumentSearchCustomizationMediator().getSearchFields(docType);
+                DocumentLookupConfiguration lookupConfiguration = KEWServiceLocator.getDocumentSearchCustomizationMediator().getDocumentLookupConfiguration(docType);
+                List<RemotableAttributeField> searchFields = lookupConfiguration.getFlattenedSearchAttributeFields();
 
                 for (RemotableAttributeField searchField : searchFields) {
                     SearchAttributeCriteriaComponent searchableAttributeComponent = DocSearchUtils.translateSearchFieldToCriteriaComponent(searchField);

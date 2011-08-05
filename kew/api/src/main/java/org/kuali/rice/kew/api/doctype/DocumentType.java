@@ -1,9 +1,10 @@
 package org.kuali.rice.kew.api.doctype;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
+import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -12,12 +13,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
-import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.w3c.dom.Element;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @XmlRootElement(name = DocumentType.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -93,7 +93,7 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
 
-    @XmlElement(name = Elements.POLICIES, required = false)
+    @XmlElement(name = Elements.POLICIES, required = true)
     @XmlJavaTypeAdapter(DocumentTypePolicyMapAdapter.class)
     private final Map<DocumentTypePolicy, String> policies;
 
@@ -140,7 +140,11 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
         this.current = builder.isCurrent();
         this.blanketApproveGroupId = builder.getBlanketApproveGroupId();
         this.superUserGroupId = builder.getSuperUserGroupId();
-        this.policies = new HashMap<DocumentTypePolicy, String>(builder.getPolicies());
+        if (builder.getPolicies() == null) {
+            this.policies = Collections.emptyMap();
+        } else {
+            this.policies = Collections.unmodifiableMap(new HashMap<DocumentTypePolicy, String>(builder.getPolicies()));
+        }
         this.versionNumber = builder.getVersionNumber();
     }
 

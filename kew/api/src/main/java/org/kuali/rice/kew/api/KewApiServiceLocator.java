@@ -20,8 +20,10 @@ import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
 import org.kuali.rice.kew.api.doctype.DocumentTypeService;
 import org.kuali.rice.kew.api.document.WorkflowDocumentService;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeIndexingQueue;
+import org.kuali.rice.kew.api.extension.ExtensionRepositoryService;
 import org.kuali.rice.kew.api.note.NoteService;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
+import org.kuali.rice.ksb.api.cache.RiceCacheAdministrator;
 
 import javax.xml.namespace.QName;
 
@@ -31,10 +33,12 @@ import javax.xml.namespace.QName;
  */
 public class KewApiServiceLocator {
 
+    // Rice 2.0 - TODO - should these be using the QName versions instead?  How else will they be fetched in "remote" mode?
 	public static final String WORKFLOW_DOCUMENT_ACTIONS_SERVICE = "rice.kew.workflowDocumentActionsService";
 	public static final String WORKFLOW_DOCUMENT_SERVICE = "rice.kew.workflowDocumentService";
 	public static final String DOCUMENT_TYPE_SERVICE = "rice.kew.documentTypeService";
 	public static final String NOTE_SERVICE = "rice.kew.noteService";
+    public static final String EXTENSION_REPOSITORY_SERVICE = "rice.kew.extensionRepositoryService";
 
     public static final QName DOCUMENT_ATTRIBUTE_INDEXING_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "documentAttributeIndexingQueueSoap");
 
@@ -56,6 +60,10 @@ public class KewApiServiceLocator {
     
     public static NoteService getNoteService() {
     	return getService(NOTE_SERVICE);
+    }
+
+    public static ExtensionRepositoryService getExtensionRepositoryService() {
+        return getService(EXTENSION_REPOSITORY_SERVICE);
     }
 
     public static DocumentAttributeIndexingQueue getDocumentAttributeIndexingQueue() {

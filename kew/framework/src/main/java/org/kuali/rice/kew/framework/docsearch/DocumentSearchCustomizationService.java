@@ -5,6 +5,7 @@ import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.jaxb.MultiValuedStringMapAdapter;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.attribute.AttributeFields;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupConfiguration;
 import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -29,14 +30,14 @@ import java.util.Map;
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface DocumentSearchCustomizationService {
 
-    @WebMethod(operationName = "getSearchAttributeFields")
-	@WebResult(name = "searchAttributeFields")
-	@XmlElementWrapper(name = "searchAttributeFields", required = false)
-	@XmlElement(name = "searchAttributeField", required = false)
-    List<AttributeFields> getSearchAttributeFields(
+    @WebMethod(operationName = "getDocumentLookupConfiguration")
+	@WebResult(name = "documentLookupConfiguration")
+	@XmlElement(name = "documentLookupConfiguration", required = false)
+    DocumentLookupConfiguration getDocumentLookupConfiguration(
             @WebParam(name = "documentTypeName") String documentTypeName,
-            @WebParam(name = "searchableAttributeNames") List<String> searchableAttributeNames
-    );
+            @WebParam(name = "searchableAttributeNames") List<String> searchableAttributeNames);
+
+    boolean isResultProcessingNeeded(String documentTypeName, String resultProcessorAttributeName);
 
     @WebMethod(operationName = "validateSearchFieldParameters")
     @WebResult(name = "validateSearchFieldParameters")

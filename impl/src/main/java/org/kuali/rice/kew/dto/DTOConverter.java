@@ -35,6 +35,7 @@ import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actions.ValidActions;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionTaken;
@@ -44,6 +45,8 @@ import org.kuali.rice.kew.api.document.DocumentContentUpdate;
 import org.kuali.rice.kew.api.document.DocumentDetail;
 import org.kuali.rice.kew.api.document.InvalidDocumentContentException;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
+import org.kuali.rice.kew.api.extension.ExtensionUtils;
 import org.kuali.rice.kew.definition.AttributeDefinition;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
@@ -384,14 +387,15 @@ public class DTOConverter {
             }
             for (WorkflowAttributeDefinition definitionVO : definitions) {
                 AttributeDefinition definition = convertWorkflowAttributeDefinition(definitionVO);
-                RuleAttribute ruleAttribute = definition.getRuleAttribute();
-                Object attribute = KEWServiceLocator.getRuleAttributeService().loadRuleAttributeService(ruleAttribute,
-                        null);
+                ExtensionDefinition extensionDefinition = definition.getExtensionDefinition();
+                Object attribute = ExtensionUtils.loadExtension(extensionDefinition);
+
+                // TODO - Rice 2.0 - Remove this once we have eliminated XmlConfiguredAttribute
                 if (attribute instanceof XmlConfiguredAttribute) {
-                    ((XmlConfiguredAttribute)attribute).setRuleAttribute(ruleAttribute);
+                    ((XmlConfiguredAttribute)attribute).setRuleAttribute(definition.getRuleAttribute());
                 }
                 boolean propertiesAsMap = false;
-                if (KEWConstants.RULE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
+                if (KEWConstants.RULE_XML_ATTRIBUTE_TYPE.equals(extensionDefinition.getType())) {
                     propertiesAsMap = true;
                 }
                 if (propertiesAsMap) {
@@ -432,7 +436,7 @@ public class DTOConverter {
                         }
                     } else if (attribute instanceof SearchableAttribute) {
                         SearchableAttribute searchableAttribute = (SearchableAttribute) attribute;
-                        String searchableAttributeContent = searchableAttribute.generateSearchContent(documentTypeName,
+                        String searchableAttributeContent = searchableAttribute.generateSearchContent(extensionDefinition, documentTypeName,
                                 definitionVO);
                         if (!StringUtils.isBlank(searchableAttributeContent)) {
                             XmlHelper.appendXml(contentSectionElement, searchableAttributeContent);
@@ -461,24 +465,23 @@ public class DTOConverter {
         if (definition == null) {
             return null;
         }
-        // get the rule attribute so we can get's it's message antity and not blow up if it's remote
-        RuleAttribute ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByClassName(
-                definition.getAttributeName());
-        if (ruleAttribute == null) {
-            ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByName(definition.getAttributeName());
+        ExtensionDefinition extensionDefinition = KewApiServiceLocator.getExtensionRepositoryService().getExtensionByName(definition.getAttributeName());
+        if (extensionDefinition == null) {
+            throw new WorkflowRuntimeException("Extension " + definition.getAttributeName() + " not found");
         }
+        RuleAttribute ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByName(definition.getAttributeName());
         if (ruleAttribute == null) {
             throw new WorkflowRuntimeException("Attribute " + definition.getAttributeName() + " not found");
         }
 
-        ObjectDefinition objectDefinition = new ObjectDefinition(ruleAttribute.getClassName());
+        ObjectDefinition objectDefinition = new ObjectDefinition(extensionDefinition.getResourceDescriptor());
         if (definition.getParameters() != null) {
             for (String parameter : definition.getParameters()) {
                 objectDefinition.addConstructorParameter(new DataDefinition(parameter, String.class));
             }
         }
-        boolean propertiesAsMap = KEWConstants.RULE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType()) || KEWConstants
-                .SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType());
+        boolean propertiesAsMap = KEWConstants.RULE_XML_ATTRIBUTE_TYPE.equals(extensionDefinition.getType()) || KEWConstants
+                .SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(extensionDefinition.getType());
         if (!propertiesAsMap && definition.getPropertyDefinitions() != null) {
             for (org.kuali.rice.kew.api.document.PropertyDefinition propertyDefinition : definition
                     .getPropertyDefinitions()) {
@@ -487,17 +490,7 @@ public class DTOConverter {
             }
         }
 
-        //        // this is likely from an EDL validate call and ME may needed to be added to the AttDefinitionVO.
-        //        if (ruleAttribute.getApplicationId() != null) {
-        //            definition.setApplicationId(ruleAttribute.getApplicationId());
-        //        } else {
-        //            // get the me from the document type if it's been passed in - the document is having action taken on it.
-        //            if (documentType != null) {
-        //                definition.setApplicationId(documentType.getApplicationId());
-        //            }
-        //        }
-
-        return new AttributeDefinition(ruleAttribute, objectDefinition);
+        return new AttributeDefinition(ruleAttribute, extensionDefinition, objectDefinition);
     }
 
     public static DocumentContentDTO convertDocumentContent(String documentContentValue,
@@ -878,23 +871,23 @@ public class DTOConverter {
         if (definitionVO == null) {
             return null;
         }
-        // get the rule attribute so we can get's it's message antity and not blow up if it's remote
-        RuleAttribute ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByClassName(
+        ExtensionDefinition extensionDefinition = KewApiServiceLocator.getExtensionRepositoryService().getExtensionByName(
                 definitionVO.getAttributeName());
-        if (ruleAttribute == null) {
-            ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByName(definitionVO.getAttributeName());
+        if (extensionDefinition == null) {
+            throw new WorkflowRuntimeException("Extension " + definitionVO.getAttributeName() + " not found");
         }
+        RuleAttribute ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByName(definitionVO.getAttributeName());
         if (ruleAttribute == null) {
             throw new WorkflowRuntimeException("Attribute " + definitionVO.getAttributeName() + " not found");
         }
 
-        ObjectDefinition definition = new ObjectDefinition(ruleAttribute.getClassName());
+        ObjectDefinition definition = new ObjectDefinition(extensionDefinition.getResourceDescriptor());
         for (int index = 0; index < definitionVO.getConstructorParameters().length; index++) {
             String parameter = definitionVO.getConstructorParameters()[index];
             definition.addConstructorParameter(new DataDefinition(parameter, String.class));
         }
-        boolean propertiesAsMap = KEWConstants.RULE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType()) || KEWConstants
-                .SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType());
+        boolean propertiesAsMap = KEWConstants.RULE_XML_ATTRIBUTE_TYPE.equals(extensionDefinition.getType()) || KEWConstants
+                .SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(extensionDefinition.getType());
         if (!propertiesAsMap) {
             for (int index = 0; index < definitionVO.getProperties().length; index++) {
                 PropertyDefinitionDTO propertyDefVO = definitionVO.getProperties()[index];
@@ -904,8 +897,8 @@ public class DTOConverter {
         }
 
         // this is likely from an EDL validate call and ME may needed to be added to the AttDefinitionVO.
-        if (ruleAttribute.getApplicationId() != null) {
-            definition.setApplicationId(ruleAttribute.getApplicationId());
+        if (extensionDefinition.getApplicationId() != null) {
+            definition.setApplicationId(extensionDefinition.getApplicationId());
         } else {
             // get the me from the document type if it's been passed in - the document is having action taken on it.
             if (documentType != null) {
@@ -913,7 +906,7 @@ public class DTOConverter {
             }
         }
 
-        return new AttributeDefinition(ruleAttribute, definition);
+        return new AttributeDefinition(ruleAttribute, extensionDefinition, definition);
     }
 
     public static DocumentDetailDTO convertDocumentDetail(

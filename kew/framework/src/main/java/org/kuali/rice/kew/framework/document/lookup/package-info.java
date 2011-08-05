@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 @javax.xml.bind.annotation.XmlSchema(namespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, elementFormDefault = XmlNsForm.QUALIFIED)
-package org.kuali.rice.kew.framework.docsearch;
+package org.kuali.rice.kew.framework.document.lookup;
 import javax.xml.bind.annotation.XmlNsForm;
 
 import org.kuali.rice.kew.api.KewApiConstants;

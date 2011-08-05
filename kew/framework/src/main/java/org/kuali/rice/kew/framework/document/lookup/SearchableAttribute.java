@@ -11,16 +11,14 @@
  * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.kuali.rice.kew.framework.docsearch;
+package org.kuali.rice.kew.framework.document.lookup;
 
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
-import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.core.api.util.jaxb.MultiValuedStringMapAdapter;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
-import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 
 import javax.jws.WebMethod;
@@ -31,7 +29,6 @@ import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 

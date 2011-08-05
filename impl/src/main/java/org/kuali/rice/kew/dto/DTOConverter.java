@@ -64,7 +64,7 @@ import org.kuali.rice.kew.engine.node.State;
 import org.kuali.rice.kew.engine.simulation.SimulationActionToTake;
 import org.kuali.rice.kew.engine.simulation.SimulationCriteria;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.framework.docsearch.SearchableAttribute;
+import org.kuali.rice.kew.framework.document.lookup.SearchableAttribute;
 import org.kuali.rice.kew.notes.Note;
 import org.kuali.rice.kew.notes.service.NoteService;
 import org.kuali.rice.kew.postprocessor.ActionTakenEvent;

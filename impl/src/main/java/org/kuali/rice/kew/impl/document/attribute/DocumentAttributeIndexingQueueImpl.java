@@ -37,8 +37,8 @@ import org.kuali.rice.kew.docsearch.SearchableAttributeLongValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeStringValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.framework.docsearch.DocumentSearchContext;
-import org.kuali.rice.kew.framework.docsearch.SearchableAttribute;
+import org.kuali.rice.kew.framework.document.lookup.DocumentSearchContext;
+import org.kuali.rice.kew.framework.document.lookup.SearchableAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
 import java.sql.Timestamp;

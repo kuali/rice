@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.framework.docsearch;
+package org.kuali.rice.kew.framework.document.lookup;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
@@ -28,7 +28,6 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.io.Serializable;
 import java.util.Collection;
 
 /**

@@ -26,7 +26,7 @@
             <id>searchableAttribute-wsdl</id>
             <phase>${rice.java2ws.phase}</phase>
             <configuration>
-              <className>org.kuali.rice.kew.framework.docsearch.SearchableAttribute</className>
+              <className>org.kuali.rice.kew.framework.document.lookup.SearchableAttribute</className>
               <outputFile>${project.build.outputDirectory}/wsdl/SearchableAttribute.wsdl</outputFile>
               <serviceName>SearchableAttribute</serviceName>
             </configuration>
@@ -38,7 +38,7 @@
 						<id>documentSearchCustomizationService-wsdl</id>
 						<phase>${rice.java2ws.phase}</phase>
 						<configuration>
-							<className>org.kuali.rice.kew.framework.docsearch.DocumentSearchCustomizationService</className>
+							<className>org.kuali.rice.kew.framework.document.lookup.DocumentSearchCustomizationService</className>
 							<outputFile>${project.build.outputDirectory}/wsdl/DocumentSearchCustomizationService.wsdl</outputFile>
 							<serviceName>DocumentSearchCustomizationService</serviceName>
 						</configuration>

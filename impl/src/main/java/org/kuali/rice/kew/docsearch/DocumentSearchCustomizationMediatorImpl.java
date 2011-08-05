@@ -1,16 +1,14 @@
 package org.kuali.rice.kew.docsearch;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
-import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.document.attribute.AttributeFields;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupConfiguration;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
-import org.kuali.rice.kew.framework.docsearch.DocumentSearchCustomizationService;
+import org.kuali.rice.kew.framework.document.lookup.DocumentSearchCustomizationService;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 
 import java.util.ArrayList;

@@ -17,7 +17,7 @@ package org.kuali.rice.kew.framework;
 
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.api.KewApiConstants;
-import org.kuali.rice.kew.framework.docsearch.DocumentSearchCustomizationService;
+import org.kuali.rice.kew.framework.document.lookup.DocumentSearchCustomizationService;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 
 import javax.xml.namespace.QName;

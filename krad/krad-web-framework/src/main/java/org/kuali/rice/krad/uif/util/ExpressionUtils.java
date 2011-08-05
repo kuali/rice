@@ -206,13 +206,21 @@ public class ExpressionUtils {
      */
     public static String parseExpression(String exp, List<String> controlNames) {
         // clean up expression to ease parsing
+        exp = exp.trim();
+        if(exp.startsWith("@{")){
+            exp = StringUtils.removeStart(exp, "@{");
+            if(exp.endsWith("}")){
+                exp = StringUtils.removeEnd(exp,"}");
+            }
+        }
+
         exp = StringUtils.replace(exp, "!=", " != ");
         exp = StringUtils.replace(exp, "==", " == ");
         exp = StringUtils.replace(exp, ">", " > ");
         exp = StringUtils.replace(exp, "<", " < ");
         exp = StringUtils.replace(exp, "<=", " <= ");
         exp = StringUtils.replace(exp, ">=", " >= ");
-        exp = exp.trim();
+
 
         String conditionJs = exp;
         String stack = "";

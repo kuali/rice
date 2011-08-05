@@ -133,7 +133,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaItemBo firstItem = getFirstAgendaItem(agendaEditor.getAgenda());
         String selectedItemId = agendaEditor.getSelectedAgendaItemId();
 
-        if (selectedItemId == null) {
+        if (StringUtils.isEmpty(selectedItemId)) {
             setSelectedAgendaItemId(form, null);
         } else {
             setSelectedAgendaItemId(form, selectedItemId);
@@ -243,9 +243,8 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     @RequestMapping(params = "methodToCall=" + "addRule")
     public ModelAndView addRule(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
-        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
-        AgendaEditor editorDocument =
-                ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
+
+        AgendaEditor editorDocument = getAgendaEditor(form);
         AgendaBo agenda = editorDocument.getAgenda();
         AgendaItemBo newAgendaItem = editorDocument.getAgendaItemLine();
         newAgendaItem.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_AGENDA_ITM_S").toString());
@@ -277,6 +276,8 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 node.setAlways(newAgendaItem);
             }
         }
+        // add it to the collection on the agenda too
+        agenda.getItems().add(newAgendaItem);
 
         form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-Agenda-Page");
         return super.navigate(form, result, request, response);
@@ -715,7 +716,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      */
     private AgendaItemBo getFirstAgendaItem(AgendaBo agenda) {
         AgendaItemBo firstItem = null;
-        for (AgendaItemBo agendaItem : agenda.getItems()) {
+        if (agenda != null && agenda.getItems() != null) for (AgendaItemBo agendaItem : agenda.getItems()) {
             if (agenda.getFirstItemId().equals(agendaItem.getId())) {
                 firstItem = agendaItem;
                 break;
@@ -932,7 +933,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
         if (firstItem != null) {
             // need to handle the first item here, our recursive method won't handle it.
-            if (agendaItemSelected.equals(firstItem.getAgendaId())) {
+            if (agendaItemSelected.equals(firstItem.getId())) {
                 agendaEditor.getAgenda().setFirstItemId(firstItem.getAlwaysId());
             } else {
                 deleteAgendaItem(firstItem, agendaItemSelected);
@@ -1095,7 +1096,8 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     }
 
     /**
-     * binds a child accessor to an AgendaItemBo instance
+     * binds a child accessor to an AgendaItemBo instance.  An {@link AgendaItemInstanceChildAccessor} allows you to
+     * get and set the referent
      */
     private static class AgendaItemInstanceChildAccessor {
         
@@ -1122,10 +1124,12 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * <p>This class abstracts getting and setting a child of an AgendaItemBo, making some recursive operations
      * require less boiler plate.</p>
      *
-     * <p>Because the agenda tree is a somewhat complex data structure, The algorithms for manipulating the agenda tree
-     * use a funny nomenclature. It's probably worth explaining that somewhat here:</p>
+     * <p>The word 'child' in AgendaItemChildAccessor means child in the strict data structures sense, in that the
+     * instance passed in holds a reference to some other node (or null).  However, when discussing the agenda tree
+     * and algorithms for manipulating it, the meaning of 'child' is somewhat different, and there are notions of
+     * 'sibling' and 'cousin' that are tossed about too. It's probably worth explaining that somewhat here:</p>
      *
-     * <p>General Principals:
+     * <p>General principals of relationships when talking about the agenda tree:
      * <ul>
      * <li>Generation boundaries (parent to child) are across 'When TRUE' and 'When FALSE' references.</li>
      * <li>"Age" among siblings & cousins goes from top (oldest) to bottom (youngest).</li>

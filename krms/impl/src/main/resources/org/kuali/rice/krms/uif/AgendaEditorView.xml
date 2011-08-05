@@ -151,9 +151,9 @@
                   <!-- Spring shortcuts for maps and lists: [12:20:06 PDT] 
                     Jerry Neal: prop="one,two,three" [12:20:18 PDT] Jerry Neal: map="key:value,key:value" -->
                   <map>
-                    <entry key="name" value="context.name" />
-                    <entry key="namespace" value="context.namespace" />
-                    <entry key="id" value="context.id" />
+                    <entry key="name" value="name" />
+                    <entry key="namespace" value="namespace" />
+                    <entry key="id" value="id" />
                   </map>
                 </property>
                 <property name="label" value="Name" />
@@ -165,7 +165,11 @@
                   value="org.kuali.rice.krms.impl.repository.ContextBo" />
               </bean>
               <bean parent="AttributeField" p:propertyName="namespace" p:readOnly="true"
-                p:label="Namespace" p:labelPlacement="LEFT" />
+                p:label="Namespace" p:labelPlacement="LEFT">
+                <property name="control">
+                  <bean parent="TextControl" p:size="40" p:watermarkText="namespace" />
+                </property>
+              </bean>
               <bean parent="AttributeField" p:propertyName="id"
                 p:showLabel="false" p:label="id" p:maxLength="40">
                 <property name="control">
@@ -217,9 +221,7 @@
 
   <bean id="AgendaEditorView-TreeExpandCollapse" parent="FieldGroup" p:showLabel="false"
     p:style="font-size: smaller;">
-    <!-- TODO: figure out why this is broken on DD reload
     <property name="render" value="@{document.newMaintainableObject.dataObject.agenda != null and document.newMaintainableObject.dataObject.agenda.name != null and !document.newMaintainableObject.dataObject.agenda.name.isEmpty()}" />
-    -->
     <property name="group.layoutManager.orientation" value="HORIZONTAL"/>
     <property name="items">
       <list>                            

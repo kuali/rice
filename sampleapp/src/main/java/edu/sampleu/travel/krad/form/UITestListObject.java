@@ -15,6 +15,7 @@
  */
 package edu.sampleu.travel.krad.form;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,13 +24,13 @@ import java.util.List;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UITestListObject {
+public class UITestListObject implements Serializable {
     private String field1;
     private String field2;
     private String field3;
     private String field4;
     private List<UITestListObject> subList = new ArrayList<UITestListObject>();
-
+    private static final long serialVersionUID = -7525378097732916411L;
     
     
     /**

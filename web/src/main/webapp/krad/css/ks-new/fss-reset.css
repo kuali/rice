@@ -106,8 +106,9 @@ p,fieldset,table,pre {
 }
 /* setting a consistent width, 160px; 
    control of type=file still not possible */
+/* Davidb: removing so that we retain the ability to size text-fields and textareas
 input[type=text],input[type=password],textarea{width:12.25em;*width:11.9em;}
-input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit;}
+input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit;}    */
 
 /*************************************************************************************/
 /* Prevent unecessary scrollbars in IE */

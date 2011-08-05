@@ -10,7 +10,16 @@ a {
 	color:#3F7826;
 	font-weight:normal;
 	cursor: pointer;
+    text-decoration:none;
 }
+textarea{
+    font-size:0.923077em;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.watermark {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:0.923077em;
+    color:#999;}
 a:hover {
 	text-decoration:underline;
 }
@@ -28,6 +37,10 @@ table td, table th {
 }
 .summary {           /* fixing a pixel specification in kuali-stacked.css */
 	font-size:0.92307692em;     /* 12px divided by 13px */
+    max-width: 400px;
+}
+input[type="radio"], input[type="checkbox"] {
+    margin:5px 5px 5px 0;
 }
 
 /* -------------------- Containers --------------------*/
@@ -184,17 +197,15 @@ tr.even, tr.odd {
     .constraint {
 	font-size:0.84615385em;    /* 11px divided by 13px */
 }
-:focus {    /*reset focus state to remove black border*/
-	outline: none;
+:focus{
+	outline: 1px dotted #000;
 }
 input:focus, textarea:focus {
 	background: none repeat scroll 0 0 #ECFCE8;
+    outline: none;
 }
 .field_attribute {
     float:left;
-}
-.field_attribute label {
-	margin: 0px 5px 0px 5px;
 }
 .field_attribute .labelTop label {
 	margin: 5px 5px 0px 0px;  /* field top labels should not have left-margins  -David */
@@ -297,7 +308,7 @@ span.warning, div.warning, td.warning {
 	background-color: #F4E271;
 }
 label.clientError, a.clientError, label.serverError {
-	color: #DF0000 !important;
+	color: #DF0000;
 }
 li label.error {
 	display: inline !important;
@@ -314,7 +325,7 @@ li label.error {
 	height: 1%;
 }
 .boxLayoutHorizontalItem {
-	margin-right: 15px;
+	margin-right:25px;
 }
 .boxLayoutVerticalItem {
 	padding-bottom: 20px;
@@ -356,9 +367,7 @@ Tab menu
 .page-action h2 {
 	clear:left;
 }
-.boxLayoutHorizontalItem {
-	margin-right:25px;
-}
+
 .navigation-parent-div {
 	margin-left: 225px;
 }
@@ -461,7 +470,7 @@ ul.animated-navigation li.animated-element h3, ul.animated-navigation li.animate
 	display: block;
 	margin-bottom: 0;
 	padding: 0 20px 0 3px;
-	width: 200px;
+	width: 170px;
 	font-weight: bold;
 	margin-top: 20px;
 	font-size: .92307692em;
@@ -477,7 +486,7 @@ ul.animated-navigation li.animated-element a {
 	Changing the padding here will require updating the script to correct return padding (pad_in)
 	*/
     padding: 5px 20px 5px 3px;
-	width: 200px;
+	width: 170px;
 	color: #3F7826;
 	text-decoration: none;
 	border-bottom: 1px solid #bbb;
@@ -530,6 +539,9 @@ ul.animated-navigation li.animated-element a.current, ul.animated-navigation li.
 }
 .ui-tabs-nav li.ui-state-hover a {
 	color: #ffffff;
+}
+.ui-tabs-nav li.ui-state-active a.clientError {
+    color:#ffffff;
 }
 .ui-tabs .ui-tabs-panel {
     background: none repeat scroll 0 0 transparent;

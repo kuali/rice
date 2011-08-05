@@ -48,7 +48,13 @@
 						if(i == 0 && options.defaultSelectFirst && !options.currentPage){
 							$(this).parent().addClass("ui-state-active");
 						}
-						$(this).click(
+						$(this).focus(
+						function()
+						{
+							$(this).parent().addClass("ui-state-focus");
+						});
+
+                        $(this).click(
 						function()
 						{
 							$(link_elements).each(function(){$(this).parent().removeClass("ui-state-active")});
@@ -65,11 +71,7 @@
 							$(this).parent().removeClass("ui-state-hover");
 						});
 				
-						$(this).focus(
-						function()
-						{
-							$(this).parent().addClass("ui-state-focus");
-						});
+
 				
 						$(this).blur(
 						function()

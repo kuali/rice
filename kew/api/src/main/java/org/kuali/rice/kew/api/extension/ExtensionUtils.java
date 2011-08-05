@@ -14,7 +14,7 @@ import javax.xml.namespace.QName;
 public final class ExtensionUtils {
 
     public static <T> T loadExtension(ExtensionDefinitionContract extensionDefinition) {
-        return loadExtension(extensionDefinition, null);
+        return ExtensionUtils.<T>loadExtension(extensionDefinition, null);
     }
 
     public static <T> T loadExtension(ExtensionDefinitionContract extensionDefinition, String defaultApplicationId) {

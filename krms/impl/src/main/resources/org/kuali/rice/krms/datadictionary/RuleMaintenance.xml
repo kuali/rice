@@ -176,7 +176,7 @@
     </property>
   </bean>
         
-  <bean id="RuleEditorView-TreeExpandCollapse" parent="FieldGroup" p:label="Field Group 4" 
+  <bean id="RuleEditorView-TreeExpandCollapse" parent="FieldGroup"  p:showLabel="false"
     p:style="font-size: smaller;">
     <property name="group.layoutManager.orientation" value="HORIZONTAL"/>
     <property name="items">

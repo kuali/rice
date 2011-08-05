@@ -10,11 +10,11 @@ package org.kuali.rice.core.api.uif;
 public interface LookupAttributeField {
 
     /**
-     * Returns the {@code RemotableAttributeField} definition for this lookup attribute.  Cannot be null.
+     * Returns the {@code AttributeField} definition for this lookup attribute.  Cannot be null.
      *
      * @return the attribute field definition, cannot be null
      */
-    RemotableAttributeField getAttributeField();
+    AttributeField getAttributeField();
 
     /**
      * Returns true if this field should be included as part of the lookup criteria, false if not.

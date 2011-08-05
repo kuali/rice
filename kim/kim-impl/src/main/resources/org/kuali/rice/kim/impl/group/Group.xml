@@ -241,6 +241,7 @@
   </bean>
 
   <!-- KRAD Conversion -->
+
   <bean id="Group-InquiryView" parent="InquiryView">
     <property name="title" value="Group Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.group.GroupBo"/>

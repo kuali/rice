@@ -32,6 +32,9 @@
     <property name="control" >
       <bean parent="TextControlDefinition" p:size="15" />
     </property>
+    <property name="controlField" >
+      <bean parent="TextControl" p:size="15" />
+    </property>
   </bean>
 
   <bean id="KimBaseBeans-entityId" parent="KimBaseBeans-entityId-parentBean" />
@@ -59,6 +62,9 @@
     </property>
     <property name="control" >
       <bean parent="TextControlDefinition" p:size="10" />
+    </property>
+    <property name="controlField" >
+      <bean parent="TextControl" p:size="10" />
     </property>
   </bean>
   

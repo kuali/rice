@@ -18,8 +18,10 @@ package org.kuali.rice.krad.uif.widget;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.web.format.Formatter;
+import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.container.View;
@@ -197,6 +199,23 @@ public class Inquiry extends WidgetBase {
 
             // add inquiry parameter to URL
             urlParameters.put(inquiryParameter.getValue(), parameterValue);
+        }
+
+        // check for EBOs and adjust inquiry
+        ModuleService responsibleModuleService =
+                KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(inquiryObjectClass);
+        if (responsibleModuleService != null && responsibleModuleService.isExternalizable(inquiryObjectClass)) {
+            Class<? extends ExternalizableBusinessObject> implLookupObjectClass =
+                    responsibleModuleService.getExternalizableBusinessObjectImplementation(
+                            inquiryObjectClass.asSubclass(ExternalizableBusinessObject.class));
+
+            // TODO: this should set base inquiry URL from module service as well, but right now set for KNS
+            if (implLookupObjectClass != null) {
+                urlParameters.put(UifParameters.DATA_OBJECT_CLASS_NAME, implLookupObjectClass.getName());
+            } else {
+                throw new RuntimeException(
+                        "Unable to find implementation class for EBO: " + inquiryObjectClass.getName());
+            }
         }
 
         String inquiryUrl = UrlFactory.parameterizeUrl(getBaseInquiryUrl(), urlParameters);

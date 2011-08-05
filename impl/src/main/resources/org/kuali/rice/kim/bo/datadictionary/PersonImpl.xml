@@ -87,12 +87,18 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="20"/>
     </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="20"/>
+    </property>
   </bean>
 
   <bean id="PersonImpl-lastName" parent="PersonImpl-lastName-parentBean"/>
   <bean id="PersonImpl-lastName-parentBean" parent="AttributeDefinition" abstract="true" p:name="lastName" p:forceUppercase="false" p:label="Last Name" p:shortLabel="Last Name" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="20"/>
+    </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="20"/>
     </property>
   </bean>
 
@@ -101,12 +107,18 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="20"/>
     </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="20"/>
+    </property>
   </bean>
 
   <bean id="PersonImpl-name" parent="PersonImpl-name-parentBean"/>
   <bean id="PersonImpl-name-parentBean" parent="AttributeDefinition" abstract="true" p:name="name" p:forceUppercase="false" p:label="Name" p:shortLabel="Name" p:maxLength="123" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="20"/>
+    </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="20"/>
     </property>
   </bean>
 
@@ -118,12 +130,18 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="10"/>
     </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="10"/>
+    </property>
   </bean>
 
   <bean id="PersonImpl-primaryDepartmentCode" parent="PersonImpl-primaryDepartmentCode-parentBean"/>
   <bean id="PersonImpl-primaryDepartmentCode-parentBean" parent="AttributeDefinition" abstract="true" p:name="primaryDepartmentCode" p:forceUppercase="true" p:label="Primary Department Code" p:shortLabel="Primary Department Code" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="20"/>
+    </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="20"/>
     </property>
   </bean>
   
@@ -137,6 +155,9 @@
   <bean id="PersonImpl-employeeId-parentBean" parent="AttributeDefinition" abstract="true" p:name="employeeId" p:forceUppercase="true" p:label="Employee ID" p:shortLabel="Emp ID" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="12"/>
+    </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="12"/>
     </property>
   </bean>
   
@@ -156,10 +177,17 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="40"/>
+    </property>
   </bean>
+
   <bean id="PersonImpl-lookupRoleNamespaceCode" parent="AttributeDefinition" p:name="lookupRoleNamespaceCode" p:forceUppercase="false" p:label="Role Namespace Code" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40"/>
+    </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="40"/>
     </property>
   </bean>
 
@@ -235,6 +263,76 @@
         <bean parent="FieldDefinition" p:attributeName="campusCode"/>
         <bean parent="FieldDefinition" p:attributeName="primaryDepartmentCode"/>
         <bean parent="FieldDefinition" p:attributeName="employeeId"/>
+      </list>
+    </property>
+  </bean>
+
+  <!-- KRAD Conversion -->
+
+  <bean id="PersonImpl-InquiryView" parent="InquiryView">
+    <property name="title" value="Person Inquiry"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.kim.bo.impl.PersonImpl"/>
+    <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.inquiry.PersonInquirableImpl"/>
+    <property name="Items">
+      <list>
+        <bean parent="GroupSectionGridLayout">
+          <property name="items">
+            <list>
+              <bean parent="AttributeField" p:propertyName="principalName"/>
+              <bean parent="AttributeField" p:propertyName="name"/>
+              <bean parent="AttributeField" p:propertyName="firstName"/>
+              <bean parent="AttributeField" p:propertyName="middleName"/>
+              <bean parent="AttributeField" p:propertyName="lastName"/>
+              <bean parent="AttributeField" p:propertyName="principalId"/>
+              <bean parent="AttributeField" p:propertyName="entityId"/>
+              <bean parent="AttributeField" p:propertyName="campusCode"/>
+              <bean parent="AttributeField" p:propertyName="emailAddress"/>
+              <bean parent="AttributeField" p:propertyName="phoneNumber"/>
+              <bean parent="AttributeField" p:propertyName="primaryDepartmentCode"/>
+              <bean parent="AttributeField" p:propertyName="employeeStatusCode"/>
+              <bean parent="AttributeField" p:propertyName="employeeTypeCode"/>
+              <bean parent="AttributeField" p:propertyName="active"/>
+            </list>
+          </property>
+          <property name="title" value="Person Attributes"/>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="PersonImpl-LookupView" parent="LookupView">
+    <property name="title" value="Person Lookup"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.kim.bo.impl.PersonImpl"/>
+    <property name="defaultSortAttributeNames" value="principalName"/>
+    <property name="criteriaFields">
+      <list>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="principalName"/>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="principalId"/>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="entityId"/>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="firstName"/>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="middleName"/>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="lastName"/>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="emailAddress"/>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="phoneNumber"/>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="employeeId"/>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="campusCode"/>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="primaryDepartmentCode"/>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="employeeStatusCode"/>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="employeeTypeCode"/>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="active" p:defaultValue="Y"/>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="lookupRoleNamespaceCode"/>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="lookupRoleName"/>
+      </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean parent="AttributeField" p:propertyName="principalId"/>
+        <bean parent="AttributeField" p:propertyName="principalName"/>
+        <bean parent="AttributeField" p:propertyName="name"/>
+        <bean parent="AttributeField" p:propertyName="entityId"/>
+        <bean parent="AttributeField" p:propertyName="campusCode"/>
+        <bean parent="AttributeField" p:propertyName="primaryDepartmentCode"/>
+        <bean parent="AttributeField" p:propertyName="employeeId"/>
       </list>
     </property>
   </bean>

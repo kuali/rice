@@ -48,6 +48,9 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="3"/>
     </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="3"/>
+    </property>
   </bean>
 
   <bean id="EmploymentStatus-employmentStatusName" parent="EmploymentStatus-employmentStatusName-parentBean"/>
@@ -58,6 +61,9 @@
     <property name="maxLength" value="10"/>
     <property name="control">
       <bean parent="TextControlDefinition" p:size="10"/>
+    </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="10"/>
     </property>
   </bean>
 
@@ -74,6 +80,9 @@
     <property name="maxLength" value="10"/>
     <property name="control">
       <bean parent="TextControlDefinition" p:size="10"/>
+    </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="10"/>
     </property>
   </bean>
 

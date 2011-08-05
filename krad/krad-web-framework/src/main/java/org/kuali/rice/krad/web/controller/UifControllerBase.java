@@ -16,6 +16,7 @@ import org.kuali.rice.core.web.format.BooleanFormatter;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
@@ -99,8 +100,8 @@ public abstract class UifControllerBase {
 
             // retreive from db if form not in session
             if (form == null) {
-                UserSession userSession = (UserSession) request.getSession()
-                        .getAttribute(KRADConstants.USER_SESSION_KEY);
+                UserSession userSession = (UserSession) request.getSession().getAttribute(
+                        KRADConstants.USER_SESSION_KEY);
                 form = getSessionDocumentService().getDocumentForm(documentNumber, formKeyParam, userSession,
                         request.getRemoteAddr());
             }
@@ -121,6 +122,7 @@ public abstract class UifControllerBase {
     protected abstract UifFormBase createInitialForm(HttpServletRequest request);
 
     private Set<String> methodToCallsToNotCheckAuthorization = new HashSet<String>();
+
     {
         methodToCallsToNotCheckAuthorization.add("performLookup");
         methodToCallsToNotCheckAuthorization.add("performQuestion");
@@ -156,10 +158,9 @@ public abstract class UifControllerBase {
         Map<String, String> roleQualifier = new HashMap<String, String>(getRoleQualification(form, methodToCall));
         Map<String, String> permissionDetails = KRADUtils.getNamespaceAndActionClass(this.getClass());
 
-        if (!KimApiServiceLocator.getPermissionService()
-                .isAuthorizedByTemplateName(principalId, KRADConstants.KRAD_NAMESPACE,
-                        KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails,
-                        roleQualifier)) {
+        if (!KimApiServiceLocator.getPermissionService().isAuthorizedByTemplateName(principalId,
+                KRADConstants.KRAD_NAMESPACE, KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails,
+                roleQualifier)) {
             throw new AuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(),
                     methodToCall, this.getClass().getSimpleName());
         }
@@ -261,7 +262,8 @@ public abstract class UifControllerBase {
             throw new RuntimeException("Show inactive records flag not found in request");
         }
 
-        CollectionGroup collectionGroup = (CollectionGroup) ComponentFactory.getComponentById(uifForm, collectionGroupId);
+        CollectionGroup collectionGroup = (CollectionGroup) ComponentFactory.getComponentById(uifForm,
+                collectionGroupId);
 
         // update inactive flag on group
         collectionGroup.setShowInactive(showInactive);
@@ -306,33 +308,33 @@ public abstract class UifControllerBase {
 
     /**
      * Invoked to navigate back one page in history..
-     * 
+     *
      * @param form - form object that should contain the history object
      */
     @RequestMapping(params = "methodToCall=returnToPrevious")
     public ModelAndView returnToPrevious(@ModelAttribute("KualiForm") UifFormBase form) {
 
         return returnToHistory(form, false);
-    } 
-    
+    }
+
     /**
      * Invoked to navigate back to the first page in history.
-     * 
+     *
      * @param form - form object that should contain the history object
      */
     @RequestMapping(params = "methodToCall=returnToHub")
     public ModelAndView returnToHub(@ModelAttribute("KualiForm") UifFormBase form) {
-        
+
         return returnToHistory(form, true);
-    } 
-    
+    }
+
     /**
      * Invoked to navigate back to a history entry. The homeFlag will determine whether navigation
      * will be back to the first or last history entry.
-     * 
+     *
      * @param form - form object that should contain the history object
      * @param homeFlag - if true will navigate back to first entry else will navigate to last entry
-     *        in the history
+     * in the history
      */
     public ModelAndView returnToHistory(UifFormBase form, boolean homeFlag) {
 
@@ -344,13 +346,13 @@ public abstract class UifControllerBase {
         String histUrl = null;
         if (histEntries.isEmpty()) {
             histUrl = ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.APPLICATION_URL_KEY);
-        }else{
+        } else {
             // For home get the first entry, for previous get the last entry.
             // Remove history up to where page is opened
             if (homeFlag) {
                 histUrl = histEntries.get(0).getUrl();
                 histEntries.clear();
-            }else{
+            } else {
                 histUrl = histEntries.get(histEntries.size() - 1).getUrl();
                 histEntries.remove(histEntries.size() - 1);
                 hist.setCurrent(null);
@@ -358,12 +360,10 @@ public abstract class UifControllerBase {
         }
         // Add the refresh call
         Properties props = new Properties();
-        props.put(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.REFRESH);                
+        props.put(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.REFRESH);
 
         return performRedirect(form, histUrl, props);
-    }     
-    
-    
+    }
 
     /**
      * Handles menu navigation between view pages
@@ -459,19 +459,31 @@ public abstract class UifControllerBase {
 
         // special check for external object classes
         if (lookupObjectClass != null) {
-            ModuleService responsibleModuleService = KRADServiceLocatorWeb.getKualiModuleService()
-                    .getResponsibleModuleService(lookupObjectClass);
+            ModuleService responsibleModuleService =
+                    KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(lookupObjectClass);
             if (responsibleModuleService != null && responsibleModuleService.isExternalizable(lookupObjectClass)) {
-                Map<String, String> parameterMap = new HashMap<String, String>();
-                Enumeration<Object> e = lookupParameters.keys();
-                while (e.hasMoreElements()) {
-                    String paramName = (String) e.nextElement();
-                    parameterMap.put(paramName, lookupParameters.getProperty(paramName));
+                Class<? extends ExternalizableBusinessObject> implLookupObjectClass =
+                        responsibleModuleService.getExternalizableBusinessObjectImplementation(
+                                lookupObjectClass.asSubclass(ExternalizableBusinessObject.class));
+
+                if (implLookupObjectClass != null) {
+                    lookupParameters.put(UifParameters.DATA_OBJECT_CLASS_NAME, implLookupObjectClass.getName());
+                } else {
+                    throw new RuntimeException(
+                            "Unable to find implementation class for EBO: " + lookupObjectClass.getName());
                 }
 
-                String lookupUrl = responsibleModuleService.getExternalizableBusinessObjectLookupUrl(lookupObjectClass,
-                        parameterMap);
-                return performRedirect(form, lookupUrl, new Properties());
+                // TODO: should call module service to get full URL, but right now it is coded to direct to the KNS lookups
+                //                Map<String, String> parameterMap = new HashMap<String, String>();
+                //                Enumeration<Object> e = lookupParameters.keys();
+                //                while (e.hasMoreElements()) {
+                //                    String paramName = (String) e.nextElement();
+                //                    parameterMap.put(paramName, lookupParameters.getProperty(paramName));
+                //                }
+                //
+                //                String lookupUrl = responsibleModuleService.getExternalizableBusinessObjectLookupUrl(lookupObjectClass,
+                //                        parameterMap);
+                //                return performRedirect(form, lookupUrl, new Properties());
             }
         }
 
@@ -485,15 +497,17 @@ public abstract class UifControllerBase {
      * suggest query and prepare the result object that will be exposed with JSON
      */
     @RequestMapping(method = RequestMethod.GET, params = "methodToCall=performFieldSuggest")
-    public @ResponseBody AttributeQueryResult performFieldSuggest(@ModelAttribute("KualiForm") UifFormBase form,
-            BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+    public
+    @ResponseBody
+    AttributeQueryResult performFieldSuggest(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
 
         // retrieve query fields from request
         Map<String, String> queryParameters = new HashMap<String, String>();
         for (Object parameterName : request.getParameterMap().keySet()) {
             if (parameterName.toString().startsWith(UifParameters.QUERY_PARAMETER + ".")) {
-                String fieldName =
-                        StringUtils.substringAfter(parameterName.toString(), UifParameters.QUERY_PARAMETER + ".");
+                String fieldName = StringUtils.substringAfter(parameterName.toString(),
+                        UifParameters.QUERY_PARAMETER + ".");
                 String fieldValue = request.getParameter(parameterName.toString());
                 queryParameters.put(fieldName, fieldValue);
             }
@@ -502,22 +516,21 @@ public abstract class UifControllerBase {
         // retrieve id for field to perform query for
         String queryFieldId = request.getParameter(UifParameters.QUERY_FIELD_ID);
         if (StringUtils.isBlank(queryFieldId)) {
-            throw new RuntimeException(
-                    "Unable to find id for field to perform query on under request parameter name: " +
-                            UifParameters.QUERY_FIELD_ID);
+            throw new RuntimeException("Unable to find id for field to perform query on under request parameter name: "
+                    + UifParameters.QUERY_FIELD_ID);
         }
 
         // get the field term to match
         String queryTerm = request.getParameter(UifParameters.QUERY_TERM);
         if (StringUtils.isBlank(queryTerm)) {
             throw new RuntimeException(
-                    "Unable to find id for query term value for attribute query on under request parameter name: " +
-                            UifParameters.QUERY_TERM);
+                    "Unable to find id for query term value for attribute query on under request parameter name: "
+                            + UifParameters.QUERY_TERM);
         }
 
         // invoke attribute query service to perform the query
-        AttributeQueryResult queryResult = KRADServiceLocatorWeb.getAttributeQueryService()
-                .performFieldSuggestQuery(form.getView(), queryFieldId, queryTerm, queryParameters);
+        AttributeQueryResult queryResult = KRADServiceLocatorWeb.getAttributeQueryService().performFieldSuggestQuery(
+                form.getView(), queryFieldId, queryTerm, queryParameters);
 
         return queryResult;
     }
@@ -530,15 +543,17 @@ public abstract class UifControllerBase {
      * script.
      */
     @RequestMapping(method = RequestMethod.GET, params = "methodToCall=performFieldQuery")
-    public @ResponseBody AttributeQueryResult performFieldQuery(@ModelAttribute("KualiForm") UifFormBase form,
-            BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+    public
+    @ResponseBody
+    AttributeQueryResult performFieldQuery(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
 
         // retrieve query fields from request
         Map<String, String> queryParameters = new HashMap<String, String>();
         for (Object parameterName : request.getParameterMap().keySet()) {
             if (parameterName.toString().startsWith(UifParameters.QUERY_PARAMETER + ".")) {
-                String fieldName =
-                        StringUtils.substringAfter(parameterName.toString(), UifParameters.QUERY_PARAMETER + ".");
+                String fieldName = StringUtils.substringAfter(parameterName.toString(),
+                        UifParameters.QUERY_PARAMETER + ".");
                 String fieldValue = request.getParameter(parameterName.toString());
                 queryParameters.put(fieldName, fieldValue);
             }
@@ -547,14 +562,13 @@ public abstract class UifControllerBase {
         // retrieve id for field to perform query for
         String queryFieldId = request.getParameter(UifParameters.QUERY_FIELD_ID);
         if (StringUtils.isBlank(queryFieldId)) {
-            throw new RuntimeException(
-                    "Unable to find id for field to perform query on under request parameter name: " +
-                            UifParameters.QUERY_FIELD_ID);
+            throw new RuntimeException("Unable to find id for field to perform query on under request parameter name: "
+                    + UifParameters.QUERY_FIELD_ID);
         }
 
         // invoke attribute query service to perform the query
-        AttributeQueryResult queryResult = KRADServiceLocatorWeb.getAttributeQueryService()
-                .performFieldQuery(form.getView(), queryFieldId, queryParameters);
+        AttributeQueryResult queryResult = KRADServiceLocatorWeb.getAttributeQueryService().performFieldQuery(
+                form.getView(), queryFieldId, queryParameters);
 
         return queryResult;
     }
@@ -563,12 +577,9 @@ public abstract class UifControllerBase {
      * Builds a <code>ModelAndView</code> instance configured to redirect to the
      * URL formed by joining the base URL with the given URL parameters
      *
-     * @param form
-     *            - current form instance
-     * @param baseUrl
-     *            - base url to redirect to
-     * @param urlParameters
-     *            - properties containing key/value pairs for the url parameters
+     * @param form - current form instance
+     * @param baseUrl - base url to redirect to
+     * @param urlParameters - properties containing key/value pairs for the url parameters
      * @return ModelAndView configured to redirect to the given URL
      */
     protected ModelAndView performRedirect(UifFormBase form, String baseUrl, Properties urlParameters) {
@@ -605,13 +616,10 @@ public abstract class UifControllerBase {
      * Configures the <code>ModelAndView</code> instance containing the form
      * data and pointing to the UIF generic spring view
      *
-     * @param form
-     *            - Form instance containing the model data
-     * @param viewId
-     *            - Id of the View to return
-     * @param pageId
-     *            - Id of the page within the view that should be rendered, can
-     *            be left blank in which the current or default page is rendered
+     * @param form - Form instance containing the model data
+     * @param viewId - Id of the View to return
+     * @param pageId - Id of the page within the view that should be rendered, can
+     * be left blank in which the current or default page is rendered
      * @return ModelAndView object with the contained form
      */
     protected ModelAndView getUIFModelAndView(UifFormBase form, String viewId, String pageId) {

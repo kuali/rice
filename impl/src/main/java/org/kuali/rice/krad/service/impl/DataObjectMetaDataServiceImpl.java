@@ -58,14 +58,16 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
         }
 
         ModuleService responsibleModuleService = getKualiModuleService().getResponsibleModuleService(clazz);
-        if (responsibleModuleService != null && responsibleModuleService.isExternalizable(clazz))
+        if (responsibleModuleService != null && responsibleModuleService.isExternalizable(clazz)) {
             return responsibleModuleService.listPrimaryKeyFieldNames(clazz);
+        }
 
         // check the Data Dictionary for PK's of non PBO/EBO
         List<String> pks = dataDictionaryService.getDataDictionary().getDataObjectEntry(clazz.getName())
                 .getPrimaryKeys();
-        if (pks != null && !pks.isEmpty())
+        if (pks != null && !pks.isEmpty()) {
             return pks;
+        }
 
         return new ArrayList<String>();
     }
@@ -119,7 +121,7 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
         } else {
             Map<String, ?> do1Keys = getPrimaryKeyFieldValues(do1);
             Map<String, ?> do2Keys = getPrimaryKeyFieldValues(do2);
-            for (Iterator<String> iter = do1Keys.keySet().iterator(); iter.hasNext();) {
+            for (Iterator<String> iter = do1Keys.keySet().iterator(); iter.hasNext(); ) {
                 String keyName = iter.next();
                 if (do1Keys.get(keyName) != null && do2Keys.get(keyName) != null) {
                     if (!do1Keys.get(keyName).toString().equals(do2Keys.get(keyName).toString())) {
@@ -148,17 +150,16 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
                 keysOnly, supportsLookup, supportsInquiry);
     }
 
-    protected DataObjectRelationship getDataObjectRelationship(RelationshipDefinition ddReference,
-            Object dataObject, Class<?> dataObjectClass, String attributeName, String attributePrefix,
-            boolean keysOnly, boolean supportsLookup, boolean supportsInquiry) {
+    protected DataObjectRelationship getDataObjectRelationship(RelationshipDefinition ddReference, Object dataObject,
+            Class<?> dataObjectClass, String attributeName, String attributePrefix, boolean keysOnly,
+            boolean supportsLookup, boolean supportsInquiry) {
         DataObjectRelationship relationship = null;
 
         // if it is nested then replace the data object and attributeName with the
         // sub-refs
         if (ObjectUtils.isNestedAttribute(attributeName)) {
             if (ddReference != null) {
-                if ((supportsLookup && getViewDictionaryService().isLookupable(ddReference.getTargetClass()))
-                        || (supportsInquiry && getViewDictionaryService().isInquirable(ddReference.getTargetClass()))) {
+                if (classHasSupportedFeatures(ddReference.getTargetClass(), supportsLookup, supportsInquiry)) {
                     relationship = populateRelationshipFromDictionaryReference(dataObjectClass, ddReference,
                             attributePrefix, keysOnly);
 
@@ -177,18 +178,17 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
             Class<?> nestedClass = null;
             if (nestedObject == null) {
                 nestedClass = ObjectPropertyUtils.getPropertyType(dataObject, localPrefix);
-            }
-            else {
+            } else {
                 nestedClass = nestedObject.getClass();
             }
-            
+
             String fullPrefix = localPrefix;
             if (StringUtils.isNotBlank(attributePrefix)) {
                 fullPrefix = attributePrefix + "." + localPrefix;
             }
 
-            relationship = getDataObjectRelationship(nestedObject, nestedClass, localAttributeName, fullPrefix, keysOnly,
-                    supportsLookup, supportsInquiry);
+            relationship = getDataObjectRelationship(nestedObject, nestedClass, localAttributeName, fullPrefix,
+                    keysOnly, supportsLookup, supportsInquiry);
 
             return relationship;
         }
@@ -203,8 +203,7 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
             if (rels.size() > 0) {
                 for (DataObjectRelationship rel : rels.values()) {
                     if (rel.getParentToChildReferences().size() < maxSize) {
-                        if ((supportsLookup && getViewDictionaryService().isLookupable(rel.getRelatedClass()))
-                                || (supportsInquiry && getViewDictionaryService().isInquirable(rel.getRelatedClass()))) {
+                        if (classHasSupportedFeatures(rel.getRelatedClass(), supportsLookup, supportsInquiry)) {
                             maxSize = rel.getParentToChildReferences().size();
                             relationship = rel;
                         }
@@ -215,20 +214,36 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
             ModuleService moduleService = getKualiModuleService().getResponsibleModuleService(dataObjectClass);
             if (moduleService != null && moduleService.isExternalizable(dataObjectClass)) {
                 relationship = getRelationshipMetadata(dataObjectClass, attributeName, attributePrefix);
-                if (relationship != null) {
+                if ((relationship != null) && classHasSupportedFeatures(relationship.getRelatedClass(), supportsLookup,
+                        supportsInquiry)) {
                     return relationship;
+                } else {
+                    return null;
                 }
             }
         }
 
         if (ddReference != null && ddReference.getPrimitiveAttributes().size() < maxSize) {
-            if ((supportsLookup && getViewDictionaryService().isLookupable(ddReference.getTargetClass()))
-                    || (supportsInquiry && getViewDictionaryService().isInquirable(ddReference.getTargetClass()))) {
-                relationship = populateRelationshipFromDictionaryReference(dataObjectClass, ddReference, null, keysOnly);
+            if (classHasSupportedFeatures(ddReference.getTargetClass(), supportsLookup, supportsInquiry)) {
+                relationship = populateRelationshipFromDictionaryReference(dataObjectClass, ddReference, null,
+                        keysOnly);
             }
         }
 
         return relationship;
+    }
+
+    protected boolean classHasSupportedFeatures(Class relationshipClass, boolean supportsLookup,
+            boolean supportsInquiry) {
+        boolean hasSupportedFeatures = true;
+        if (supportsLookup && !getViewDictionaryService().isLookupable(relationshipClass)) {
+            hasSupportedFeatures = false;
+        }
+        if (supportsInquiry && !getViewDictionaryService().isInquirable(relationshipClass)) {
+            hasSupportedFeatures = false;
+        }
+
+        return hasSupportedFeatures;
     }
 
     public RelationshipDefinition getDictionaryRelationship(Class<?> c, String attributeName) {
@@ -247,8 +262,8 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
             // favor key sizes of 1 first
             if (def.getPrimitiveAttributes().size() == 1) {
                 for (PrimitiveAttributeDefinition primitive : def.getPrimitiveAttributes()) {
-                    if (primitive.getSourceName().equals(attributeName)
-                            || def.getObjectAttributeName().equals(attributeName)) {
+                    if (primitive.getSourceName().equals(attributeName) || def.getObjectAttributeName().equals(
+                            attributeName)) {
                         relationship = def;
                         minKeys = 1;
                         break;
@@ -256,8 +271,8 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
                 }
             } else if (def.getPrimitiveAttributes().size() < minKeys) {
                 for (PrimitiveAttributeDefinition primitive : def.getPrimitiveAttributes()) {
-                    if (primitive.getSourceName().equals(attributeName)
-                            || def.getObjectAttributeName().equals(attributeName)) {
+                    if (primitive.getSourceName().equals(attributeName) || def.getObjectAttributeName().equals(
+                            attributeName)) {
                         relationship = def;
                         minKeys = def.getPrimitiveAttributes().size();
                         break;
@@ -265,6 +280,7 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
                 }
             }
         }
+
         // check the support attributes
         if (relationship == null) {
             for (RelationshipDefinition def : ddRelationships) {
@@ -368,22 +384,21 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
 
         return hasNotesSupport;
     }
-    
+
     /**
      * @param dataObjectClass
      * @return DataObjectEntry for the given dataObjectClass, or null if
      *         there is none
-     * @throws IllegalArgumentException
-     *             if the given Class is null
+     * @throws IllegalArgumentException if the given Class is null
      */
     protected DataObjectEntry getDataObjectEntry(Class<?> dataObjectClass) {
         if (dataObjectClass == null) {
             throw new IllegalArgumentException("invalid (null) dataObjectClass");
         }
 
-        DataObjectEntry entry = getDataDictionaryService().getDataDictionary()
-                .getDataObjectEntry(dataObjectClass.getName());
-        
+        DataObjectEntry entry = getDataDictionaryService().getDataDictionary().getDataObjectEntry(
+                dataObjectClass.getName());
+
         return entry;
     }
 
@@ -395,8 +410,8 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
     protected BusinessObjectEntry getBusinessObjectEntry(Class businessObjectClass) {
         validateBusinessObjectClass(businessObjectClass);
 
-        BusinessObjectEntry entry =
-                getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(businessObjectClass.getName());
+        BusinessObjectEntry entry = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(
+                businessObjectClass.getName());
         return entry;
     }
 
@@ -416,7 +431,7 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
 
     /**
      * Protected method to allow subclasses to access the dataDictionaryService.
-     * 
+     *
      * @return Returns the dataDictionaryService.
      */
     protected DataDictionaryService getDataDictionaryService() {
@@ -429,7 +444,7 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
 
     /**
      * Protected method to allow subclasses to access the kualiModuleService.
-     * 
+     *
      * @return Returns the persistenceStructureService.
      */
     protected KualiModuleService getKualiModuleService() {
@@ -443,7 +458,7 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
     /**
      * Protected method to allow subclasses to access the
      * persistenceStructureService.
-     * 
+     *
      * @return Returns the persistenceStructureService.
      */
     protected PersistenceStructureService getPersistenceStructureService() {

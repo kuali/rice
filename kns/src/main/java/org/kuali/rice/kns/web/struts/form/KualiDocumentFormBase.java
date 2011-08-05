@@ -29,8 +29,8 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.datadictionary.HeaderNavigation;
+import org.kuali.rice.kns.datadictionary.KNSDocumentEntry;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.derivedvaluesetter.DerivedValuesSetter;
@@ -851,13 +851,8 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 			DataDictionary dataDictionary = KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary();
 
             Class<? extends DerivedValuesSetter> derivedValuesSetterClass = null;
-            org.kuali.rice.krad.datadictionary.DocumentEntry documentEntry = dataDictionary.getDocumentEntry(docTypeName);
-            if (documentEntry instanceof MaintenanceDocumentEntry) {
-               derivedValuesSetterClass = ((MaintenanceDocumentEntry) documentEntry).getDerivedValuesSetterClass();
-            }
-            if (documentEntry instanceof DocumentEntry) {
-               derivedValuesSetterClass = ((DocumentEntry) documentEntry).getDerivedValuesSetterClass();
-            }
+            KNSDocumentEntry documentEntry = (KNSDocumentEntry) dataDictionary.getDocumentEntry(docTypeName);
+            derivedValuesSetterClass = (documentEntry).getDerivedValuesSetterClass();
 
 			if (derivedValuesSetterClass != null) {
 				DerivedValuesSetter derivedValuesSetter = null;
@@ -900,7 +895,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 	/**initializes the header tabs from what is defined in the datadictionary if {@link KualiDocumentFormBase#getDefaultDocumentTypeName()} is overriden to return a valid value. */
     protected void initializeHeaderNavigationTabs() {
     	if (StringUtils.isNotBlank(getDefaultDocumentTypeName())) {
-    		final DocumentEntry docEntry = (DocumentEntry) KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(getDocumentClass().getName());
+    		final KNSDocumentEntry docEntry = (KNSDocumentEntry) KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(getDocumentClass().getName());
     		final List<HeaderNavigation> navList = docEntry.getHeaderNavigationList();
     		final HeaderNavigation[] list = new HeaderNavigation[navList.size()];
     		super.setHeaderNavigationTabs(navList.toArray(list));

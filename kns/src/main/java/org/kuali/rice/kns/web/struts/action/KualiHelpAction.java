@@ -31,6 +31,7 @@ import org.kuali.rice.kew.api.doctype.DocumentType;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.datadictionary.HeaderNavigation;
+import org.kuali.rice.kns.datadictionary.KNSDocumentEntry;
 import org.kuali.rice.kns.datadictionary.LookupDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -225,7 +226,7 @@ public class KualiHelpAction extends KualiAction {
         }
 
         DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();
-        DocumentEntry entry = (DocumentEntry) dataDictionary.getDocumentEntry(documentTypeName);
+        org.kuali.rice.krad.datadictionary.DocumentEntry entry = (org.kuali.rice.krad.datadictionary.DocumentEntry ) dataDictionary.getDocumentEntry(documentTypeName);
 
         String label = "";
         String summary = "";
@@ -310,7 +311,7 @@ public class KualiHelpAction extends KualiAction {
         }
 
         DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();
-        DocumentEntry entry = (DocumentEntry) dataDictionary.getDocumentEntry(documentTypeName);
+        KNSDocumentEntry entry = (KNSDocumentEntry) dataDictionary.getDocumentEntry(documentTypeName);
 
         String apcHelpUrl = null;
         String label = "";

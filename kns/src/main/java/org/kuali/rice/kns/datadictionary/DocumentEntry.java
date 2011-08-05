@@ -27,7 +27,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Deprecated
-public class DocumentEntry extends org.kuali.rice.krad.datadictionary.DocumentEntry {
+public class DocumentEntry extends org.kuali.rice.krad.datadictionary.DocumentEntry implements KNSDocumentEntry {
 
     protected Class<? extends PromptBeforeValidation> promptBeforeValidationClass;
     protected Class<? extends DerivedValuesSetter> derivedValuesSetterClass;
@@ -36,10 +36,12 @@ public class DocumentEntry extends org.kuali.rice.krad.datadictionary.DocumentEn
 
     protected boolean sessionDocument = false;
 
+    @Override
     public List<HeaderNavigation> getHeaderNavigationList() {
         return headerNavigationList;
     }
 
+    @Override
     public List<String> getWebScriptFiles() {
         return webScriptFiles;
     }
@@ -47,6 +49,7 @@ public class DocumentEntry extends org.kuali.rice.krad.datadictionary.DocumentEn
     /**
      * @return Returns the preRulesCheckClass.
      */
+    @Override
     public Class<? extends PromptBeforeValidation> getPromptBeforeValidationClass() {
         return promptBeforeValidationClass;
     }
@@ -59,6 +62,7 @@ public class DocumentEntry extends org.kuali.rice.krad.datadictionary.DocumentEn
      *      org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest,
      *      javax.servlet.http.HttpServletResponse, String)
      */
+    @Override
     public void setPromptBeforeValidationClass(Class<? extends PromptBeforeValidation> preRulesCheckClass) {
         this.promptBeforeValidationClass = preRulesCheckClass;
     }
@@ -68,6 +72,7 @@ public class DocumentEntry extends org.kuali.rice.krad.datadictionary.DocumentEn
      * that are necessary for processing the document.  The specified
      * javascript files will be included in the generated html.
      */
+    @Override
     public void setWebScriptFiles(List<String> webScriptFiles) {
         this.webScriptFiles = webScriptFiles;
     }
@@ -76,14 +81,17 @@ public class DocumentEntry extends org.kuali.rice.krad.datadictionary.DocumentEn
      * The headerNavigation element defines a set of additional
      * tabs which will appear on the document.
      */
+    @Override
     public void setHeaderNavigationList(List<HeaderNavigation> headerNavigationList) {
         this.headerNavigationList = headerNavigationList;
     }
 
+    @Override
     public boolean isSessionDocument() {
         return this.sessionDocument;
     }
 
+    @Override
     public void setSessionDocument(boolean sessionDocument) {
         this.sessionDocument = sessionDocument;
     }
@@ -91,6 +99,7 @@ public class DocumentEntry extends org.kuali.rice.krad.datadictionary.DocumentEn
     /**
      * @return the derivedValuesSetter
      */
+    @Override
     public Class<? extends DerivedValuesSetter> getDerivedValuesSetterClass() {
         return this.derivedValuesSetterClass;
     }
@@ -98,6 +107,7 @@ public class DocumentEntry extends org.kuali.rice.krad.datadictionary.DocumentEn
     /**
      * @param derivedValuesSetter the derivedValuesSetter to set
      */
+    @Override
     public void setDerivedValuesSetterClass(Class<? extends DerivedValuesSetter> derivedValuesSetter) {
         this.derivedValuesSetterClass = derivedValuesSetter;
     }

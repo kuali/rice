@@ -21,7 +21,7 @@ import org.kuali.rice.krad.datadictionary.ReferenceDefinition;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Deprecated
-public class TransactionalDocumentEntry extends DocumentEntry {
+public class TransactionalDocumentEntry extends DocumentEntry implements KNSDocumentEntry {
 
     /**
      * @see org.kuali.rice.krad.datadictionary.DocumentEntry#completeValidation()

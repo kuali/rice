@@ -299,7 +299,7 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
         for (String keyName : keys) {
             String keyConversion = keyName;
             if (relationship != null) {
-                keyConversion = relationship.getChildAttributeForParentAttribute(keyName);
+                keyConversion = relationship.getParentAttributeForChildAttribute(keyName);
             } else if (ObjectUtils.isNestedAttribute(propertyName)) {
                 String nestedAttributePrefix = ObjectUtils.getNestedAttributePrefix(propertyName);
                 keyConversion = nestedAttributePrefix + "." + keyName;

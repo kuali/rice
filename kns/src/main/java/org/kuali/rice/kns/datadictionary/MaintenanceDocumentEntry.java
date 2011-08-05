@@ -39,7 +39,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Deprecated
-public class MaintenanceDocumentEntry extends org.kuali.rice.krad.datadictionary.MaintenanceDocumentEntry {
+public class MaintenanceDocumentEntry extends org.kuali.rice.krad.datadictionary.MaintenanceDocumentEntry implements KNSDocumentEntry {
     protected List<MaintainableSectionDefinition> maintainableSections = new ArrayList<MaintainableSectionDefinition>();
     protected List<String> lockingKeys = new ArrayList<String>();
 

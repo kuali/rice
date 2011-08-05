@@ -40,6 +40,7 @@ import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
+import org.kuali.rice.kns.datadictionary.KNSDocumentEntry;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.kns.rule.event.PromptBeforeValidationEvent;
@@ -236,7 +237,7 @@ public class KualiDocumentActionBase extends KualiAction {
                     //DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();
                     DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();
 
-                    DocumentEntry entry = (DocumentEntry) dataDictionary.getDocumentEntry(document.getClass().getName());
+                    org.kuali.rice.krad.datadictionary.DocumentEntry entry = (org.kuali.rice.krad.datadictionary.DocumentEntry) dataDictionary.getDocumentEntry(document.getClass().getName());
                     entry.setAllowsNoteAttachments(Boolean.parseBoolean(attachmentEnabled));
                 }
                 //the request attribute will be used in KualiRequestProcess#processActionPerform
@@ -343,7 +344,7 @@ public class KualiDocumentActionBase extends KualiAction {
             LOG.debug("kualiDocumentFormBase.getAdditionalScriptFiles(): " + kualiDocumentFormBase.getAdditionalScriptFiles());
         }
         if (kualiDocumentFormBase.getAdditionalScriptFiles().isEmpty()) {
-            DocumentEntry docEntry = (DocumentEntry) getDataDictionaryService().getDataDictionary().getDocumentEntry(kualiDocumentFormBase.getDocument().getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
+            KNSDocumentEntry docEntry = (KNSDocumentEntry) getDataDictionaryService().getDataDictionary().getDocumentEntry(kualiDocumentFormBase.getDocument().getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
             kualiDocumentFormBase.getAdditionalScriptFiles().addAll(docEntry.getWebScriptFiles());
         }
         if (KEWConstants.SUPERUSER_COMMAND.equalsIgnoreCase(command)) {

@@ -64,6 +64,24 @@
 		</reference-descriptor>
 	</class-descriptor>
 
+  <class-descriptor class="org.kuali.rice.kns.document.MaintenanceDocumentBase" table="KRNS_MAINT_DOC_T">
+		<field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" primarykey="true" />
+		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
+		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+		<field-descriptor name="xmlDocumentContents" column="DOC_CNTNT" jdbc-type="CLOB"
+			conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiEncryptDecryptFieldConversion" />
+<!--
+		<reference-descriptor name="documentHeader" class-ref="org.kuali.rice.krad.bo.DocumentHeader" auto-retrieve="true" auto-update="object"
+			auto-delete="object">
+			<foreignkey field-ref="documentNumber" />
+		</reference-descriptor>
+-->
+		<reference-descriptor name="attachment" class-ref="org.kuali.rice.krad.bo.DocumentAttachment" auto-retrieve="true" auto-update="object"
+			auto-delete="object" proxy="false"> <!--cannot proxy or ojb breaks on calling hashcode -->
+			<foreignkey field-ref="documentNumber" />
+		</reference-descriptor>
+	</class-descriptor>
+
 	<class-descriptor class="org.kuali.rice.krad.bo.DocumentAttachment" table="KRNS_MAINT_DOC_ATT_T">
 		<field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="attachmentContent" column="ATT_CNTNT" jdbc-type="LONGVARBINARY"/>

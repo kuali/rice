@@ -159,7 +159,7 @@
         <idref local="rice.kew.workflowDocumentService" />
         <idref local="rice.kew.documentTypeService" />
         <idref local="rice.kew.noteService" />
-        <idref local="rice.kew.documentSearchCustomizationService" />
+        <idref local="rice.kew.documentLookupCustomizationHandlerService" />
         <idref local="rice.kew.extensionRepositoryService" />
                 
         <!-- it's important that this service remains non-transactionally proxied for various reasons
@@ -786,11 +786,11 @@
 		<property name="noteDao" ref="enNoteDAO" />
 	</bean>
 
-  <bean id="rice.kew.documentSearchCustomizationService" class="org.kuali.rice.kew.docsearch.DocumentSearchCustomizationServiceImpl">
+  <bean id="rice.kew.documentLookupCustomizationHandlerService" class="org.kuali.rice.kew.docsearch.DocumentLookupCustomizationHandlerServiceImpl">
 		<property name="extensionRepositoryService" ref="rice.kew.extensionRepositoryService" />
 	</bean>
 
-  <bean id="rice.kew.documentSearchCustomizationMediator" class="org.kuali.rice.kew.docsearch.DocumentSearchCustomizationMediatorImpl" />
+  <bean id="rice.kew.documentSearchCustomizationMediator" class="org.kuali.rice.kew.docsearch.DocumentLookupCustomizationMediatorImpl" />
 
   <bean id="rice.kew.extensionRepositoryService" class="org.kuali.rice.kew.impl.extension.ExtensionRepositoryServiceImpl">
 		<property name="ruleAttributeService" ref="enRuleAttributeService"/>

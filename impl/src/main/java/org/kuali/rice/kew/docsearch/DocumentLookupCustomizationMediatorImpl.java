@@ -8,7 +8,7 @@ import org.kuali.rice.kew.api.document.lookup.DocumentLookupConfiguration;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
-import org.kuali.rice.kew.framework.document.lookup.DocumentSearchCustomizationService;
+import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCustomizationHandlerService;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DocumentSearchCustomizationMediatorImpl implements DocumentSearchCustomizationMediator {
+public class DocumentLookupCustomizationMediatorImpl implements DocumentLookupCustomizationMediator {
 
     @Override
     public DocumentLookupConfiguration getDocumentLookupConfiguration(DocumentType documentType) {
@@ -54,7 +54,7 @@ public class DocumentSearchCustomizationMediatorImpl implements DocumentSearchCu
         }
 
         for (String applicationId : applicationIdToAttributeNameMap.keySet()) {
-            DocumentSearchCustomizationService documentSearchCustomizationService = loadCustomizationService(
+            DocumentLookupCustomizationHandlerService documentSearchCustomizationService = loadCustomizationService(
                     applicationId);
             List<String> searchableAttributeNames = applicationIdToAttributeNameMap.get(applicationId);
             DocumentLookupConfiguration documentLookupConfiguration = documentSearchCustomizationService.getDocumentLookupConfiguration(
@@ -88,7 +88,7 @@ public class DocumentSearchCustomizationMediatorImpl implements DocumentSearchCu
 
         List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
         for (String applicationId : applicationIdToAttributeNameMap.keySet()) {
-            DocumentSearchCustomizationService documentSearchCustomizationService = loadCustomizationService(applicationId);
+            DocumentLookupCustomizationHandlerService documentSearchCustomizationService = loadCustomizationService(applicationId);
             List<String> searchableAttributeNames = applicationIdToAttributeNameMap.get(applicationId);
             List<RemotableAttributeError> searchErrors = documentSearchCustomizationService.validateSearchFieldParameters(documentType.getName(), searchableAttributeNames, parameters);
             if (!CollectionUtils.isEmpty(searchErrors)) {
@@ -99,14 +99,9 @@ public class DocumentSearchCustomizationMediatorImpl implements DocumentSearchCu
         return errors;
     }
 
-    @Override
-    public boolean isResultProcessingNeeded(DocumentType documentType) {
-        // TODO - Rice 2.0 - implement this
-        throw new UnsupportedOperationException("implement me!");
-    }
-
-    protected DocumentSearchCustomizationService loadCustomizationService(String applicationId) {
-        DocumentSearchCustomizationService service = KewFrameworkServiceLocator.getDocumentSearchCustomizationService(applicationId);
+    protected DocumentLookupCustomizationHandlerService loadCustomizationService(String applicationId) {
+        DocumentLookupCustomizationHandlerService service = KewFrameworkServiceLocator.getDocumentLookupCustomizationHandlerService(
+                applicationId);
         if (service == null) {
             throw new WorkflowRuntimeException("Failed to locate DocumentSearchCustomizationService for applicationId: " + applicationId);
         }

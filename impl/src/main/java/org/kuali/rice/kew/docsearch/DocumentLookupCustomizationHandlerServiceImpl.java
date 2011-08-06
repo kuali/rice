@@ -9,25 +9,30 @@ import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.kew.api.document.attribute.AttributeFields;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupConfiguration;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.api.extension.ExtensionRepositoryService;
 import org.kuali.rice.kew.api.extension.ExtensionUtils;
-import org.kuali.rice.kew.framework.document.lookup.DocumentSearchCustomizationService;
+import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCustomization;
+import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCustomizationHandlerService;
+import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCustomizer;
 import org.kuali.rice.kew.framework.document.lookup.SearchableAttribute;
 
+import javax.jws.WebParam;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * TODO...
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DocumentSearchCustomizationServiceImpl implements DocumentSearchCustomizationService {
+public class DocumentLookupCustomizationHandlerServiceImpl implements DocumentLookupCustomizationHandlerService {
 
-    private static final Logger LOG = Logger.getLogger(DocumentSearchCustomizationServiceImpl.class);
+    private static final Logger LOG = Logger.getLogger(DocumentLookupCustomizationHandlerServiceImpl.class);
 
     private ExtensionRepositoryService extensionRepositoryService;
 
@@ -65,19 +70,6 @@ public class DocumentSearchCustomizationServiceImpl implements DocumentSearchCus
     }
 
     @Override
-    public boolean isResultProcessingNeeded(String documentTypeName, String resultProcessorAttributeName) {
-        ExtensionDefinition extensionDefinition = getExtensionRepositoryService().getExtensionByName(resultProcessorAttributeName);
-        if (extensionDefinition == null) {
-            throw new RiceIllegalArgumentException("Failed to locate a result processor attribute with the given name: " + resultProcessorAttributeName);
-        }
-        DocumentSearchResultProcessor resultProcessor = loadResultProcessor(extensionDefinition);
-        if (resultProcessor != null) {
-            return resultProcessor.isProcessFinalResults();
-        }
-        return false;
-    }
-
-    @Override
     public List<RemotableAttributeError> validateSearchFieldParameters(String documentTypeName, List<String> searchableAttributeNames, Map<String, List<String>> parameters) {
         if (StringUtils.isBlank(documentTypeName)) {
             throw new RiceIllegalArgumentException("documentTypeName was null or blank");
@@ -109,6 +101,27 @@ public class DocumentSearchCustomizationServiceImpl implements DocumentSearchCus
         }
     }
 
+    @Override
+    public DocumentLookupCriteria customizeCriteria(@WebParam(
+            name = "documentLookupCriteria") DocumentLookupCriteria documentLookupCriteria) throws RiceIllegalArgumentException {
+        // TODO - Rice 2.0 - implement this
+        throw new UnsupportedOperationException("implement me!");
+    }
+
+    @Override
+    public DocumentLookupCriteria customizeClearCriteria(@WebParam(
+            name = "documentLookupCriteria") DocumentLookupCriteria documentLookupCriteria) throws RiceIllegalArgumentException {
+        // TODO - Rice 2.0 - implement this
+        throw new UnsupportedOperationException("implement me!");
+    }
+
+    @Override
+    public Set<DocumentLookupCustomization> getEnabledCustomizations(
+            @WebParam(name = "documentTypeName") String documentTypeName) throws RiceIllegalArgumentException {
+        // TODO - Rice 2.0 - implement this
+        throw new UnsupportedOperationException("implement me!");
+    }
+
     protected SearchableAttribute loadSearchableAttribute(ExtensionDefinition extensionDefinition) {
         Object searchableAttribute = ExtensionUtils.loadExtension(extensionDefinition);
         if (searchableAttribute == null) {
@@ -121,12 +134,12 @@ public class DocumentSearchCustomizationServiceImpl implements DocumentSearchCus
         return (SearchableAttribute)searchableAttribute;
     }
 
-    protected DocumentSearchResultProcessor loadResultProcessor(ExtensionDefinition extensionDefinition) {
-        DocumentSearchResultProcessor resultProcessor = ExtensionUtils.loadExtension(extensionDefinition);
-        if (resultProcessor == null) {
-            throw new RiceIllegalArgumentException("Failed to load result processor for: " + extensionDefinition);
+    protected DocumentLookupCustomizer loadCustomizer(ExtensionDefinition extensionDefinition) {
+        DocumentLookupCustomizer customizer = ExtensionUtils.loadExtension(extensionDefinition);
+        if (customizer == null) {
+            throw new RiceIllegalArgumentException("Failed to load customizer for: " + extensionDefinition);
         }
-        return resultProcessor;
+        return customizer;
     }
 
     protected ExtensionRepositoryService getExtensionRepositoryService() {

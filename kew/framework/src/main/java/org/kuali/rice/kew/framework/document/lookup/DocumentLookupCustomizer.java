@@ -13,12 +13,10 @@
  */
 package org.kuali.rice.kew.framework.document.lookup;
 
-import org.apache.ojb.broker.query.Criteria;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult;
 
-import java.util.EnumSet;
 import java.util.List;
 
 /**

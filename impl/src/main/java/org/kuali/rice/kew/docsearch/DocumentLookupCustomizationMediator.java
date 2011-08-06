@@ -8,17 +8,19 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Handles communication between {@link org.kuali.rice.kew.framework.document.lookup.DocumentSearchCustomizationService}
+ * Handles communication between {@link org.kuali.rice.kew.framework.document.lookup.DocumentLookupCustomizationHandlerService}
  * endpoints in order to invoke document search customizations from various client applications.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface DocumentSearchCustomizationMediator {
+public interface DocumentLookupCustomizationMediator {
 
     DocumentLookupConfiguration getDocumentLookupConfiguration(DocumentType documentType);
 
-    boolean isResultProcessingNeeded(DocumentType documentType);
-
     List<RemotableAttributeError> validateSearchFieldParameters(DocumentType documentType, Map<String, List<String>> parameters);
 
+    // TODO - Rice 2.0 - add additional customization points here
+
 }
+
+

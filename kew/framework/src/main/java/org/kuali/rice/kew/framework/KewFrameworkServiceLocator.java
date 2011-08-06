@@ -17,7 +17,7 @@ package org.kuali.rice.kew.framework;
 
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.api.KewApiConstants;
-import org.kuali.rice.kew.framework.document.lookup.DocumentSearchCustomizationService;
+import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCustomizationHandlerService;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 
 import javax.xml.namespace.QName;
@@ -27,7 +27,7 @@ import javax.xml.namespace.QName;
  */
 public class KewFrameworkServiceLocator {
 
-    public static final String DOCUMENT_SEARCH_CUSTOMIZATION_SERVICE = "documentSearchCustomizationServiceSoap";
+    public static final String DOCUMENT_LOOKUP_CUSTOMIZATION_HANDLER_SERVICE = "documentLookupCustomizationHandlerServiceSoap";
 
     static <T> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
@@ -37,12 +37,13 @@ public class KewFrameworkServiceLocator {
         return (T)KsbApiServiceLocator.getServiceBus().getService(new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, serviceName), applicationId);
     }
 
-    public static DocumentSearchCustomizationService getDocumentSearchCustomizationService() {
-        return getDocumentSearchCustomizationService(null);
+    public static DocumentLookupCustomizationHandlerService getDocumentLookupCustomizationHandlerService() {
+        return getDocumentLookupCustomizationHandlerService(null);
     }
 
-    public static DocumentSearchCustomizationService getDocumentSearchCustomizationService(String applicationId) {
-        return getServiceOnBus(DOCUMENT_SEARCH_CUSTOMIZATION_SERVICE, applicationId);
+    public static DocumentLookupCustomizationHandlerService getDocumentLookupCustomizationHandlerService(
+            String applicationId) {
+        return getServiceOnBus(DOCUMENT_LOOKUP_CUSTOMIZATION_HANDLER_SERVICE, applicationId);
     }
     
 }

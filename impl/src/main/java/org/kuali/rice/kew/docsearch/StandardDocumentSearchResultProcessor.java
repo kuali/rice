@@ -193,26 +193,18 @@ public class StandardDocumentSearchResultProcessor implements
 			DocSearchCriteriaDTO criteria, List<DocSearchDTO> docSearchResultRows) {
 		List<Column> tempColumns = new ArrayList<Column>();
 		List<Column> customDisplayColumnNames = getAndSetUpCustomDisplayColumns(criteria);
-		if ((!getShowAllStandardFields())
-				&& (getOverrideSearchableAttributes())) {
+		if ((!getShowAllStandardFields()) && (getOverrideSearchableAttributes())) {
 			// use only what is contained in displayColumns
-			this.addAllCustomColumns(tempColumns, criteria,
-					customDisplayColumnNames);
-		} else if (getShowAllStandardFields()
-				&& (getOverrideSearchableAttributes())) {
+			this.addAllCustomColumns(tempColumns, criteria, customDisplayColumnNames);
+		} else if (getShowAllStandardFields() && (getOverrideSearchableAttributes())) {
 			// do standard fields and use displayColumns for searchable
 			// attributes
 			this.addStandardSearchColumns(tempColumns, docSearchResultRows);
-			this.addAllCustomColumns(tempColumns, criteria,
-					customDisplayColumnNames);
-		} else if ((!getShowAllStandardFields())
-				&& (!getOverrideSearchableAttributes())) {
+			this.addAllCustomColumns(tempColumns, criteria, customDisplayColumnNames);
+		} else if ((!getShowAllStandardFields()) && (!getOverrideSearchableAttributes())) {
 			// do displayColumns and then do standard searchable attributes
-			this.addCustomStandardCriteriaColumns(tempColumns, criteria,
-					customDisplayColumnNames);
-			this
-					.addSearchableAttributeColumnsNoOverrides(tempColumns,
-							criteria);
+			this.addCustomStandardCriteriaColumns(tempColumns, criteria, customDisplayColumnNames);
+			this.addSearchableAttributeColumnsNoOverrides(tempColumns, criteria);
 		}
 		if (tempColumns.isEmpty()) {
 			// do default

@@ -18,6 +18,8 @@ package org.kuali.rice.kew.api.document.lookup;
 
 import org.kuali.rice.kew.api.document.DocumentContract;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,8 +27,12 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface DocumentLookupResultContract extends DocumentContract {
+public interface DocumentLookupResultsContract {
 
-    Map<String, String> getDocumentAttributes();
+    List<? extends DocumentLookupResultContract> getLookupResults();
+
+    boolean isOverThreshold();
+
+    int getNumberOfSecurityFilteredResults();
 
 }

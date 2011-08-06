@@ -20,4 +20,6 @@ public interface DocumentLookupResultProcessor {
 
     List<DocumentLookupResult> processResults(DocumentLookupCriteria documentLookupCriteria, List<DocumentLookupResult> documentResult);
 
+    boolean isProcessingNeeded(DocumentLookupCriteria documentLookupCriteria);
+
 }

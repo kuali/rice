@@ -63,6 +63,10 @@ public class PermissionServiceBase {
 		}
 		return businessObjectService;
 	}
+
+    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
+		this.businessObjectService = businessObjectService;
+	}
    
 	public void flushPermissionImplCache() {
     	getCacheAdministrator().flushGroup(PERMISSION_IMPL_CACHE_GROUP);

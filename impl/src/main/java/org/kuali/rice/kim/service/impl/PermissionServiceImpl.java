@@ -18,6 +18,7 @@ package org.kuali.rice.kim.service.impl;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
@@ -41,6 +42,7 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.lookup.CollectionIncomplete;
+import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
@@ -160,7 +162,15 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
      * @see org.kuali.rice.kim.service.PermissionService#isAuthorized( java.lang.String, String, java.lang.String, Map<String, String>, Map<String, String>)
      */
     public boolean isAuthorized(String principalId, String namespaceCode, String permissionName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
-    	List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName, permissionDetails );
+        if (StringUtils.isEmpty(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode is null");
+        }
+
+        if (StringUtils.isEmpty(permissionName)) {
+            throw new RiceIllegalArgumentException("permissionName is null");
+        }
+
+        List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName, permissionDetails );
     	if ( roleIds.isEmpty() ) {
     		return false;
     	}

@@ -57,7 +57,7 @@ public class StandardDocumentSearchResultProcessor implements
 	private DocSearchCriteriaDTO searchCriteria;
 	private String searchingUser;
 	private boolean processFinalResults = true;
-//FIXME: Chris get rid of all sortable references!
+
 	/**
 	 * @return the searchCriteria
 	 */

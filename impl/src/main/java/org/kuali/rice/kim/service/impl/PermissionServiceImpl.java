@@ -188,7 +188,15 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
      * @see org.kuali.rice.kim.service.PermissionService#isAuthorized( java.lang.String, String, java.lang.String, Map<String, String>, Map<String, String>)
      */
     public boolean isAuthorizedByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
-    	List<String> roleIds = getRoleIdsForPermissionTemplate( namespaceCode, permissionTemplateName, permissionDetails );
+    	if (StringUtils.isEmpty(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode is null");
+        }
+
+        if (StringUtils.isEmpty(permissionTemplateName)) {
+            throw new RiceIllegalArgumentException("permissionTemplateName is null");
+        }
+
+        List<String> roleIds = getRoleIdsForPermissionTemplate( namespaceCode, permissionTemplateName, permissionDetails );
     	if ( roleIds.isEmpty() ) {
     		return false;
     	}
@@ -199,6 +207,14 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
      * @see org.kuali.rice.kim.service.PermissionService#getAuthorizedPermissions(String, String, String, Map<String, String>, Map<String, String>)
      */
     public List<Permission> getAuthorizedPermissions(String principalId, String namespaceCode, String permissionName, Map<String, String> permissionDetails, Map<String, String> qualification) {
+    	if (StringUtils.isEmpty(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode is null");
+        }
+
+        if (StringUtils.isEmpty(permissionName)) {
+            throw new RiceIllegalArgumentException("permissionName is null");
+        }
+
     	// get all the permission objects whose name match that requested
     	PermissionBo permissions = getPermissionImplsByName( namespaceCode, permissionName );
     	// now, filter the full list by the detail passed

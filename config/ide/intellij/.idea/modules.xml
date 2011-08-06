@@ -5,8 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/rice.iml" filepath="$PROJECT_DIR$/rice.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-api.iml" filepath="$PROJECT_DIR$/rice-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-client-contrib.iml" filepath="$PROJECT_DIR$/rice-client-contrib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/rice-clover.iml" filepath="$PROJECT_DIR$/rice-clover.iml" group="rice-db and modules/rice-clover and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-clover-master.iml" filepath="$PROJECT_DIR$/rice-clover-master.iml" group="rice-db and modules/rice-clover and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-core.iml" filepath="$PROJECT_DIR$/rice-core.iml" group="rice-core and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-core-api.iml" filepath="$PROJECT_DIR$/rice-core-api.iml" group="rice-core and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-core-framework.iml" filepath="$PROJECT_DIR$/rice-core-framework.iml" group="rice-core and modules" />

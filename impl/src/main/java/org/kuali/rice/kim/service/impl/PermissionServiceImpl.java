@@ -232,6 +232,14 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
      * @see org.kuali.rice.kim.service.PermissionService#getAuthorizedPermissionsByTemplateName(String, String, String, Map<String, String>, Map<String, String>)
      */
     public List<Permission> getAuthorizedPermissionsByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails, Map<String, String> qualification) {
+    	if (StringUtils.isEmpty(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode is null");
+        }
+
+        if (StringUtils.isEmpty(permissionTemplateName)) {
+            throw new RiceIllegalArgumentException("permissionName is null");
+        }
+
     	// get all the permission objects whose name match that requested
     	List<PermissionBo> permissions = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
     	// now, filter the full list by the detail passed

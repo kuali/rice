@@ -142,14 +142,14 @@ class PermissionServiceImplTest {
     @Test
     void testIsAuthorizedByTemplateNameSucceeds() {
         String authorizedPrincipalId = "principalid";
-        String authorizedNamespaceCode = "namespacecodeone";
+        String authorizedNamespaceCode = "templatenamespaceone";
         String permissionTemplateName = "permissiontemplate";
         Map<String, String> authorizedPermissionDetails = new HashMap<String, String>();
         Map<String, String> authorizedQualification = new HashMap<String, String>();
 
         mockBoService.demand.findMatching(1..samplePermissions.size()) {
             Class clazz, Map map -> for (PermissionBo permissionBo in samplePermissions.values()) {
-                if (permissionBo.namespaceCode.equals(map.get("namespaceCode")))
+                if (permissionBo.template.namespaceCode.equals(map.get("template.namespaceCode")))
                 {
                     Collection<PermissionBo> permissions = new ArrayList<PermissionBo>();
                     permissions.add(permissionBo);
@@ -172,7 +172,7 @@ class PermissionServiceImplTest {
         injectKimPermissionDaoIntoPermissionService();
         injectRoleServiceIntoPermissionService();
 
-        Assert.assertEquals(true, permissionService.isAuthorized(authorizedPrincipalId, authorizedNamespaceCode, permissionTemplateName, authorizedPermissionDetails, authorizedQualification));
+        Assert.assertEquals(true, permissionService.isAuthorizedByTemplateName(authorizedPrincipalId, authorizedNamespaceCode, permissionTemplateName, authorizedPermissionDetails, authorizedQualification));
 
         mockBoService.verify(boService)
     }
@@ -223,6 +223,59 @@ class PermissionServiceImplTest {
         injectRoleServiceIntoPermissionService();
 
         List<Permission> actualPermissions = permissionService.getAuthorizedPermissions(authorizedPrincipalId, authorizedNamespaceCode, authorizedPermissionName, authorizedPermissionDetails, authorizedQualification);
+
+        Assert.assertEquals(expectedPermissions.size(), actualPermissions.size());
+        Assert.assertEquals(expectedPermissions[0], actualPermissions[0]);
+
+        mockBoService.verify(boService)
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    void testGetAuthorizedPermissionsByTemplateNameWithNullFails() {
+        permissionService.getAuthorizedPermissionsByTemplateName(null, null, null, null, null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    void testGetAuthorizedPermissionsByTemplateNameWithBlanksFails() {
+        permissionService.getAuthorizedPermissionsByTemplateName("", "", "", null, null);
+    }
+
+    @Test
+    void testGetAuthorizedPermissionsByTemplateNameSucceeds() {
+        String authorizedPrincipalId = "principalid";
+        String authorizedNamespaceCode = "templatenamespaceone";
+        String permissionTemplateName = "permissiontemplate";
+        Map<String, String> authorizedPermissionDetails = new HashMap<String, String>();
+        Map<String, String> authorizedQualification = new HashMap<String, String>();
+        List<Permission> expectedPermissions = new ArrayList<Permission>();
+        expectedPermissions.add(PermissionBo.to(samplePermissions.get("permidone")));
+
+        mockBoService.demand.findMatching(1..samplePermissions.size()) {
+            Class clazz, Map map -> for (PermissionBo permissionBo in samplePermissions.values()) {
+                if (permissionBo.template.namespaceCode.equals(map.get("template.namespaceCode")))
+                {
+                    Collection<PermissionBo> permissions = new ArrayList<PermissionBo>();
+                    permissions.add(permissionBo);
+                    return permissions;
+                }
+            }
+        }
+
+        mockKimPermissionDao.demand.getRoleIdsForPermissions(1) {
+            Collection<PermissionBo> permissions -> List<String> roleIds = new ArrayList<String>(1);
+            roleIds.add("test");
+            return roleIds;
+        }
+
+        mockRoleService.demand.principalHasRole(1) {
+            String principalId, List<String> roleIds, Map<String, String> qualification -> return true;
+        }
+
+        injectBusinessObjectServiceIntoPermissionService();
+        injectKimPermissionDaoIntoPermissionService();
+        injectRoleServiceIntoPermissionService();
+
+        List<Permission> actualPermissions = permissionService.getAuthorizedPermissionsByTemplateName(authorizedPrincipalId, authorizedNamespaceCode, permissionTemplateName, authorizedPermissionDetails, authorizedQualification);
 
         Assert.assertEquals(expectedPermissions.size(), actualPermissions.size());
         Assert.assertEquals(expectedPermissions[0], actualPermissions[0]);

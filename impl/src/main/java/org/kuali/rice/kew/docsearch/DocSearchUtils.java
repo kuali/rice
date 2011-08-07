@@ -407,11 +407,4 @@ public final class DocSearchUtils {
         return null;
     }
 
-    public static DocumentSearchContext getDocumentSearchContext(String documentId, String documentTypeName, String documentContent){
-    	DocumentSearchContext documentSearchContext = new DocumentSearchContext();
-    	documentSearchContext.setDocumentId(documentId);
-    	documentSearchContext.setDocumentTypeName(documentTypeName);
-    	documentSearchContext.setDocumentContent(documentContent);
-    	return documentSearchContext;
-    }
 }

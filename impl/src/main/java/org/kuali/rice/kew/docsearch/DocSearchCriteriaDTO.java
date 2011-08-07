@@ -28,6 +28,8 @@ import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.framework.document.lookup.SearchableAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.bo.BusinessObject;
@@ -811,7 +813,66 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
      * over to the appropriate fields based on the mapping between these two classes.
      */
     public void apply(DocumentLookupCriteria criteria) {
-        // TODO - Rice 2.0 - implement this method!
-        throw new UnsupportedOperationException("Implement me!");
+        setDocumentId(criteria.getDocumentId());
+        setDocRouteStatus(convertStatusesToString(criteria.getDocumentStatuses()));
+        setDocTitle(criteria.getTitle());
+        setAppDocId(criteria.getApplicationDocumentId());
+        setInitiator(criteria.getInitiatorPrincipalName());
+        setViewer(criteria.getViewerPrincipalName());
+        if (!StringUtils.equals(getWorkgroupViewerId(), criteria.getViewerGroupId())) {
+            setWorkgroupViewerId(criteria.getViewerGroupId());
+            Group group = KimApiServiceLocator.getGroupService().getGroup(criteria.getViewerGroupId());
+            setWorkgroupViewerName(group.getName());
+            setWorkgroupViewerNamespace(group.getNamespaceCode());
+        }
+        setApprover(criteria.getApproverPrincipalName());
+        setDocRouteNodeId(criteria.getRouteNodeName());
+        if (criteria.getRouteNodeLookupLogic() != null) {
+            setDocRouteNodeLogic(criteria.getRouteNodeLookupLogic().name());
+        }
+        setDocTypeFullName(criteria.getDocumentTypeName());
+        setFromDateCreated(convertDateTimeToString(criteria.getDateCreatedFrom()));
+        setToDateCreated(convertDateTimeToString(criteria.getDateCreatedTo()));
+        setFromDateLastModified(convertDateTimeToString(criteria.getDateLastModifiedFrom()));
+        setToDateLastModified(convertDateTimeToString(criteria.getDateLastModifiedTo()));
+        setFromDateApproved(convertDateTimeToString(criteria.getDateApprovedFrom()));
+        setToDateApproved(convertDateTimeToString(criteria.getDateApprovedTo()));
+        setFromDateFinalized(convertDateTimeToString(criteria.getDateFinalizedFrom()));
+        setToDateFinalized(convertDateTimeToString(criteria.getDateFinalizedTo()));
+        applyDocumentAttributeChanges(criteria.getDocumentAttributeValues());
+        // there is no mapping for criteria.getStartAtIndex(), so do nothing with this for now
+        setThreshold(criteria.getMaxResults());
     }
+
+    /**
+     * Joins Document Status codes together into a comma-separated list.
+     */
+    private String convertStatusesToString(List<DocumentStatus> statuses) {
+        if (CollectionUtils.isEmpty(statuses)) {
+            return "";
+        }
+        List<String> statusValues = new ArrayList<String>();
+        for (DocumentStatus documentStatus : statuses) {
+            statusValues.add(documentStatus.getCode());
+        }
+        return StringUtils.join(statusValues, ",");
+    }
+
+    private String convertDateTimeToString(DateTime dateTime) {
+        if (dateTime == null) {
+            return "";
+        }
+        return CoreApiServiceLocator.getDateTimeService().toDateString(dateTime.toDate());
+    }
+
+    private void applyDocumentAttributeChanges(Map<String, String> documentAttributeValues) {
+        for (String attributeKey : documentAttributeValues.keySet()) {
+            for (SearchAttributeCriteriaComponent searchAttribute : getSearchableAttributes()) {
+                if (searchAttribute.getSavedKey().equals(attributeKey)) {
+                    searchAttribute.setValue(documentAttributeValues.get(attributeKey));
+                }
+            }
+        }
+    }
+    
 }

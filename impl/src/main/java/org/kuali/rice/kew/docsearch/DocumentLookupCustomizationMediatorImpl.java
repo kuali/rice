@@ -5,9 +5,12 @@ import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.document.attribute.AttributeFields;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupConfiguration;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
 import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
+import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCustomization;
 import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCustomizationHandlerService;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 
@@ -97,6 +100,32 @@ public class DocumentLookupCustomizationMediatorImpl implements DocumentLookupCu
         }
 
         return errors;
+    }
+
+    @Override
+    public DocSearchCriteriaDTO customizeCriteria(DocumentType documentType, DocSearchCriteriaDTO documentLookupCriteria) {
+        DocumentTypeAttribute customizerAttribute = documentType.getCustomizerAttribute();
+        if (customizerAttribute != null) {
+            DocumentLookupCustomizationHandlerService service = loadCustomizationService(customizerAttribute.getRuleAttribute().getApplicationId());
+            if (service.getEnabledCustomizations(documentType.getName()).contains(DocumentLookupCustomization.CRITERIA)) {
+                DocumentLookupCriteria apiCriteria = translateCriteriaInternalToApi(documentLookupCriteria);
+                apiCriteria = service.customizeCriteria(apiCriteria);
+                if (apiCriteria != null) {
+                    return applyCriteriaCustomizations(documentLookupCriteria, apiCriteria);
+                }
+            }
+        }
+        return documentLookupCriteria;
+    }
+
+    protected DocumentLookupCriteria translateCriteriaInternalToApi(DocSearchCriteriaDTO documentLookupCriteria) {
+        DocumentLookupCriteria.Builder builder = DocumentLookupCriteria.Builder.create(documentLookupCriteria);
+        return builder.build();
+    }
+
+    protected DocSearchCriteriaDTO applyCriteriaCustomizations(DocSearchCriteriaDTO documentLookupCriteria, DocumentLookupCriteria apiCriteria) {
+        documentLookupCriteria.apply(apiCriteria);
+        return documentLookupCriteria;
     }
 
     protected DocumentLookupCustomizationHandlerService loadCustomizationService(String applicationId) {

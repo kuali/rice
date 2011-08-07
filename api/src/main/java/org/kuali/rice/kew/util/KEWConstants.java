@@ -685,6 +685,7 @@ public final class KEWConstants {
     public static final String SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE = "DocumentSearchXMLResultProcessorAttribute";
     public static final String DOCUMENT_SEARCH_SECURITY_FILTER_ATTRIBUTE_TYPE = "DocumentSearchSecurityFilterAttribute";
     public static final String QUALIFIER_RESOLVER_ATTRIBUTE_TYPE = "QualifierResolver";
+    public static final String DOCUMENT_LOOKUP_CUSTOMIZER_ATTRIBUTE_TYPE = "DocumentLookupCustomizer";
 
     public static final String RULE_ATTRIBUTE_TYPE_LABEL = "Rule Attribute";
     public static final String SEARCHABLE_ATTRIBUTE_TYPE_LABEL = "Searchable Attribute";

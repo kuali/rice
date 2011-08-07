@@ -18,7 +18,14 @@ package org.kuali.rice.kew.docsearch;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.kew.api.document.DocumentStatus;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteriaContract;
+import org.kuali.rice.kew.api.document.lookup.RouteNodeLookupLogic;
 import org.kuali.rice.kew.engine.node.RouteNode;
+import org.kuali.rice.kew.framework.document.lookup.SearchableAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.web.ui.Field;
@@ -26,9 +33,14 @@ import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.BusinessObjectBase;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -37,7 +49,7 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DocSearchCriteriaDTO extends BusinessObjectBase implements BusinessObject, DocumentSearchEbo {
+public class DocSearchCriteriaDTO extends BusinessObjectBase implements BusinessObject, DocumentSearchEbo, DocumentLookupCriteriaContract {
 
     private static final long serialVersionUID = -5738747438282249790L;
 
@@ -107,30 +119,33 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         super();
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#isStandardCriteriaConsideredEmpty(boolean)
-	 */
     public boolean isStandardCriteriaConsideredEmpty(boolean excludeDocumentTypeName) {
-        boolean docTypeNameIsEmpty = org.apache.commons.lang.StringUtils.isEmpty(this.docTypeFullName);
-        boolean standardFieldsAreEmpty = ((org.apache.commons.lang.StringUtils.isEmpty(documentId)) &&
-        /* (org.apache.commons.lang.StringUtils.isEmpty(overrideInd)) && */
-        (org.apache.commons.lang.StringUtils.isEmpty(initiator)) && (org.apache.commons.lang.StringUtils.isEmpty(workgroupViewerName)) &&
-        /* (org.apache.commons.lang.StringUtils.isEmpty(docRouteNodeLogic)) && */
-        (org.apache.commons.lang.StringUtils.isEmpty(docVersion)) && (org.apache.commons.lang.StringUtils.isEmpty(fromDateCreated)) && (org.apache.commons.lang.StringUtils.isEmpty(toDateCreated)) && (org.apache.commons.lang.StringUtils.isEmpty(appDocId)) && (org.apache.commons.lang.StringUtils.isEmpty(approver)) && (org.apache.commons.lang.StringUtils.isEmpty(docRouteNodeId)) && (org.apache.commons.lang.StringUtils.isEmpty(docRouteStatus)) && (org.apache.commons.lang.StringUtils.isEmpty(docTitle)) && (org.apache.commons.lang.StringUtils.isEmpty(viewer)) && (org.apache.commons.lang.StringUtils.isEmpty(fromDateApproved)) && (org.apache.commons.lang.StringUtils.isEmpty(toDateApproved)) && (org.apache.commons.lang.StringUtils.isEmpty(fromDateFinalized)) && (org.apache.commons.lang.StringUtils.isEmpty(toDateFinalized)) && (org.apache.commons.lang.StringUtils.isEmpty(fromDateLastModified)) && (org.apache.commons.lang.StringUtils.isEmpty(toDateLastModified)));
+        boolean docTypeNameIsBlank = StringUtils.isBlank(this.docTypeFullName);
+        boolean standardFieldsAreBlank = StringUtils.isBlank(documentId) &&
+                StringUtils.isBlank(initiator) &&
+                StringUtils.isBlank(workgroupViewerName) &&
+                StringUtils.isBlank(docVersion) &&
+                StringUtils.isBlank(fromDateCreated) && 
+                StringUtils.isBlank(toDateCreated) &&
+                StringUtils.isBlank(appDocId) &&
+                StringUtils.isBlank(approver) &&
+                StringUtils.isBlank(docRouteNodeId) &&
+                StringUtils.isBlank(docRouteStatus) &&
+                StringUtils.isBlank(docTitle) &&
+                StringUtils.isBlank(viewer) &&
+                StringUtils.isBlank(fromDateApproved) &&
+                StringUtils.isBlank(toDateApproved) &&
+                StringUtils.isBlank(fromDateFinalized) &&
+                StringUtils.isBlank(toDateFinalized) &&
+                StringUtils.isBlank(fromDateLastModified) &&
+                StringUtils.isBlank(toDateLastModified);
         if (excludeDocumentTypeName) {
-            return standardFieldsAreEmpty;
+            return standardFieldsAreBlank;
         } else {
-            return docTypeNameIsEmpty && standardFieldsAreEmpty;
+            return docTypeNameIsBlank && standardFieldsAreBlank;
         }
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getDocRouteNodeLogic()
-	 */
     public String getDocRouteNodeLogic() {
         return docRouteNodeLogic;
     }
@@ -139,11 +154,6 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         this.docRouteNodeLogic = docRouteLevelLogic;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getAppDocId()
-	 */
     public String getAppDocId() {
         return appDocId;
     }
@@ -152,11 +162,6 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         this.appDocId = appDocId;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getApprover()
-	 */
     public String getApprover() {
         return approver;
     }
@@ -165,11 +170,6 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         this.approver = approver;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getDocRouteNodeId()
-	 */
     public String getDocRouteNodeId() {
         return docRouteNodeId;
     }
@@ -178,11 +178,6 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         this.docRouteNodeId = docRouteLevel;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getDocRouteStatus()
-	 */
     public String getDocRouteStatus() {
         return docRouteStatus;
     }
@@ -191,11 +186,6 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         this.docRouteStatus = docRouteStatus;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getAppDocStatus()
-	 */
     public String getAppDocStatus() {
         return appDocStatus;
     }
@@ -204,11 +194,6 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         this.appDocStatus = appDocStatus;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getDocTitle()
-	 */
     public String getDocTitle() {
         return docTitle;
     }
@@ -217,11 +202,6 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         this.docTitle = docTitle;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getDocTypeFullName()
-	 */
     public String getDocTypeFullName() {
         return docTypeFullName;
     }
@@ -230,11 +210,6 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         this.docTypeFullName = docTypeFullName;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getDocVersion()
-	 */
     public String getDocVersion() {
         return docVersion;
     }
@@ -243,11 +218,6 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         this.docVersion = docVersion;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getInitiator()
-	 */
     public String getInitiator() {
         return initiator;
     }
@@ -256,11 +226,6 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         this.initiator = initiator;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getOverrideInd()
-	 */
     public String getOverrideInd() {
         return overrideInd;
     }
@@ -269,11 +234,6 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         this.overrideInd = overrideInd;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getDocumentId()
-	 */
     public String getDocumentId() {
         return documentId;
     }
@@ -282,11 +242,6 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         this.documentId = documentId;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getViewer()
-	 */
     public String getViewer() {
         return viewer;
     }
@@ -295,11 +250,6 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         this.viewer = viewer;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getPageSize()
-	 */
     public Integer getPageSize() {
         return pageSize;
     }
@@ -308,38 +258,18 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         this.pageSize = pageSize;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getFromDateApproved()
-	 */
     public String getFromDateApproved() {
         return fromDateApproved;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getFromDateCreated()
-	 */
     public String getFromDateCreated() {
         return fromDateCreated;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getFromDateFinalized()
-	 */
     public String getFromDateFinalized() {
         return fromDateFinalized;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getFromDateLastModified()
-	 */
     public String getFromDateLastModified() {
         return fromDateLastModified;
     }
@@ -347,38 +277,19 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     public String getFromStatusTransitionDate() {
         return fromStatusTransitionDate;
     }
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getToDateApproved()
-	 */
+
     public String getToDateApproved() {
         return toDateApproved;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getToDateCreated()
-	 */
     public String getToDateCreated() {
         return toDateCreated;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getToDateFinalized()
-	 */
     public String getToDateFinalized() {
         return toDateFinalized;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getToDateLastModified()
-	 */
     public String getToDateLastModified() {
         return toDateLastModified;
     }
@@ -433,11 +344,6 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         return value;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getNamedSearch()
-	 */
     public String getNamedSearch() {
         return namedSearch;
     }
@@ -446,11 +352,6 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         this.namedSearch = namedSearch;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getDocumentSearchAbbreviatedString()
-	 */
     public String getDocumentSearchAbbreviatedString() {
         StringBuffer abbreviatedString = new StringBuffer();
         String dateApprovedString = getRangeString(this.toDateApproved, this.fromDateApproved);
@@ -599,11 +500,6 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         return ((appDocId != null && !"".equals(appDocId.trim())) || (approver != null && !"".equals(approver.trim())) || (docRouteNodeId != null && !"".equals(docRouteNodeId.trim())) || (docRouteStatus != null && !"".equals(docRouteStatus.trim())) || (docTitle != null && !"".equals(docTitle.trim())) || (viewer != null && !"".equals(viewer.trim())) || (fromDateApproved != null && !"".equals(fromDateApproved.trim())) || (toDateApproved != null && !"".equals(toDateApproved.trim())) || (toDateFinalized != null && !"".equals(toDateFinalized.trim())) || (fromDateFinalized != null && !"".equals(fromDateFinalized.trim())) || (toDateLastModified != null && !"".equals(toDateLastModified.trim())) || (fromDateLastModified != null && !"".equals(fromDateLastModified.trim())));
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getWorkgroupViewerName()
-	 */
     public String getWorkgroupViewerName() {
         return workgroupViewerName;
     }
@@ -612,11 +508,6 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         this.workgroupViewerName = workgroupViewerName;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getIsAdvancedSearch()
-	 */
     public String getIsAdvancedSearch() {
         return isAdvancedSearch;
     }
@@ -625,11 +516,6 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         this.isAdvancedSearch = isAdvancedSearch;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getSuperUserSearch()
-	 */
     public String getSuperUserSearch() {
         return superUserSearch;
     }
@@ -637,13 +523,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     public void setSuperUserSearch(String superUserSearch) {
         this.superUserSearch = superUserSearch;
     }
-    
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#isOverThreshold()
-	 */
     public boolean isOverThreshold() {
         return isOverThreshold;
     }
@@ -652,11 +532,6 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         this.isOverThreshold = isOverThreshold;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getSecurityFilteredRows()
-	 */
     public int getSecurityFilteredRows() {
         return securityFilteredRows;
     }
@@ -665,11 +540,6 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         this.securityFilteredRows = securityFilteredRows;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getThreshold()
-	 */
     public Integer getThreshold() {
         return this.threshold;
     }
@@ -678,11 +548,6 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         this.threshold = threshold;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getFetchLimit()
-	 */
     public Integer getFetchLimit() {
         return this.fetchLimit;
     }
@@ -695,18 +560,10 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         searchableAttributes.add(searchableAttribute);
     }
 
-    /**
-     * @param searchableAttributes The searchableAttributes to set.
-     */
     public void setSearchableAttributes(List<SearchAttributeCriteriaComponent> searchableAttributes) {
         this.searchableAttributes = searchableAttributes;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getSearchableAttributes()
-	 */
     public List<SearchAttributeCriteriaComponent> getSearchableAttributes() {
         return searchableAttributes;
     }
@@ -715,20 +572,10 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         this.searchableAttributeRows = searchableAttributeRows;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getSearchableAttributeRows()
-	 */
     public List<Row> getSearchableAttributeRows() {
         return searchableAttributeRows;
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getProcessedSearchableAttributeRows()
-	 */
     public List<Row> getProcessedSearchableAttributeRows() {
         return searchableAttributeRows;
     }
@@ -737,11 +584,6 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         searchableAttributeRows.add(row);
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getSearchableAttributeRow(int)
-	 */
     public Row getSearchableAttributeRow(int index) {
         while (getSearchableAttributeRows().size() <= index) {
             Row row = new Row(new ArrayList<Field>());
@@ -754,11 +596,6 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         searchableAttributeRows.set(index, row);
     }
 
-    /**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#isOverridingUserSession()
-	 */
     public boolean isOverridingUserSession() {
         return this.overridingUserSession;
     }
@@ -767,11 +604,6 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         this.overridingUserSession = overridingUserSession;
     }
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#isSaveSearchForUser()
-	 */
 	public boolean isSaveSearchForUser() {
 		return this.saveSearchForUser;
 	}
@@ -782,7 +614,6 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
 
     /**
 	 * @deprecated
-	 * @see DocumentSearchEbo#getWorkgroupViewerNamespace()
 	 */
     public String getWorkgroupViewerNamespace() {
         return this.workgroupViewerNamespace;
@@ -790,27 +621,15 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     /**
      * 
      * @deprecated
-     * @param workgroupViewerNamespace
      */
     public void setWorkgroupViewerNamespace(String workgroupViewerNamespace) {
         this.workgroupViewerNamespace = workgroupViewerNamespace;
     }
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.krad.bo.BusinessObject#refresh()
-	 */
 	public void refresh() {
 		// TODO chris - THIS METHOD NEEDS JAVADOCS
-		
 	}
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see DocumentSearchEbo#getDateCreated()
-	 */
 	public java.sql.Timestamp getDateCreated() {
 		return this.dateCreated;
 	}
@@ -850,5 +669,149 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
 		this.workgroupViewerId = workgroupViewerId;
 	}
 
+    @Override
+    public List<DocumentStatus> getDocumentStatuses() {
+        List<DocumentStatus> documentStatuses = new ArrayList<DocumentStatus>();
+        if (StringUtils.isNotBlank(getDocRouteStatus())) {
+            // in the case where they submit more than one status
+            String[] splitStatuses = getDocRouteStatus().split(",");
+            for (String statusValue : splitStatuses) {
+                DocumentStatus status = DocumentStatus.fromCode(statusValue.trim());
+                if (status == null) {
+                    throw new IllegalStateException("Encountered an invalid status code: " + statusValue);
+                }
+                documentStatuses.add(status);
+            }
+        }
+        return Collections.unmodifiableList(documentStatuses);
+    }
 
+    @Override
+    public String getTitle() {
+        return getDocTitle();
+    }
+
+    @Override
+    public String getApplicationDocumentId() {
+        return getAppDocId();
+    }
+
+    @Override
+    public String getInitiatorPrincipalName() {
+        return getInitiator();
+    }
+
+    @Override
+    public String getViewerPrincipalName() {
+        return getViewer();
+    }
+
+    @Override
+    public String getViewerGroupId() {
+        return getWorkgroupViewerId();
+    }
+
+    @Override
+    public String getApproverPrincipalName() {
+        return getApprover();
+    }
+
+    @Override
+    public String getRouteNodeName() {
+        return getDocRouteNodeId();
+    }
+
+    @Override
+    public RouteNodeLookupLogic getRouteNodeLookupLogic() {
+        if (StringUtils.isBlank(getDocRouteNodeLogic())) {
+            return null;
+        }
+        return RouteNodeLookupLogic.valueOf(getDocRouteNodeLogic());
+    }
+
+    @Override
+    public String getDocumentTypeName() {
+        return getDocTypeFullName();
+    }
+
+    @Override
+    public DateTime getDateCreatedFrom() {
+        return convertDateString(getFromDateCreated());
+    }
+
+    @Override
+    public DateTime getDateCreatedTo() {
+        return convertDateString(getToDateCreated());
+    }
+
+    @Override
+    public DateTime getDateLastModifiedFrom() {
+        return convertDateString(getFromDateLastModified());
+    }
+
+    @Override
+    public DateTime getDateLastModifiedTo() {
+        return convertDateString(getToDateLastModified());
+    }
+
+    @Override
+    public DateTime getDateApprovedFrom() {
+        return convertDateString(getFromDateApproved());
+    }
+
+    @Override
+    public DateTime getDateApprovedTo() {
+        return convertDateString(getToDateApproved());
+    }
+
+    @Override
+    public DateTime getDateFinalizedFrom() {
+        return convertDateString(getFromDateFinalized());
+    }
+
+    @Override
+    public DateTime getDateFinalizedTo() {
+        return convertDateString(getToDateFinalized());
+    }
+
+    @Override
+    public Map<String, String> getDocumentAttributeValues() {
+        Map<String, String> documentAttributeValues = new HashMap<String, String>();
+        for (SearchAttributeCriteriaComponent searchAttributeComponent : getSearchableAttributes()) {
+            documentAttributeValues.put(searchAttributeComponent.getSavedKey(), searchAttributeComponent.getValue());
+        }
+        return Collections.unmodifiableMap(documentAttributeValues);
+    }
+
+    @Override
+    public Integer getStartAtIndex() {
+        return new Integer(0);
+    }
+
+    @Override
+    public Integer getMaxResults() {
+        return getThreshold();
+    }
+
+    private DateTime convertDateString(String dateString) {
+        if (StringUtils.isBlank(dateString)) {
+            return null;
+        }
+        try {
+            Timestamp timestamp = CoreApiServiceLocator.getDateTimeService().convertToSqlTimestamp(dateString);
+            return new DateTime(timestamp.getTime());
+        } catch (ParseException e) {
+            // for now, ignore this issue, validation should catch this
+            return null;
+        }
+    }
+
+    /**
+     * Applies the values from the given DocumentLookupCriteria to this criteria object by copying them
+     * over to the appropriate fields based on the mapping between these two classes.
+     */
+    public void apply(DocumentLookupCriteria criteria) {
+        // TODO - Rice 2.0 - implement this method!
+        throw new UnsupportedOperationException("Implement me!");
+    }
 }

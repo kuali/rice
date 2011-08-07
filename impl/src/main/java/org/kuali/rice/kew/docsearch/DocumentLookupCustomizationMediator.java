@@ -1,9 +1,12 @@
 package org.kuali.rice.kew.docsearch;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupConfiguration;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 
+import javax.jws.WebParam;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +21,8 @@ public interface DocumentLookupCustomizationMediator {
     DocumentLookupConfiguration getDocumentLookupConfiguration(DocumentType documentType);
 
     List<RemotableAttributeError> validateSearchFieldParameters(DocumentType documentType, Map<String, List<String>> parameters);
+
+    DocSearchCriteriaDTO customizeCriteria(DocumentType documentType, DocSearchCriteriaDTO documentLookupCriteria);
 
     // TODO - Rice 2.0 - add additional customization points here
 

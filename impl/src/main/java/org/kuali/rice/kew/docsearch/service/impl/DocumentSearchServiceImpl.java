@@ -33,6 +33,7 @@ import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
+import org.kuali.rice.kew.docsearch.DocumentLookupCustomizationMediator;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor;
@@ -79,9 +80,10 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 	private static final String LAST_SEARCH_BASE_NAME = "DocSearch.LastSearch.Holding";
 	private static final String DOC_SEARCH_CRITERIA_DTO_CLASS = "org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO";
 
-	private static DictionaryValidationService dictionaryValidationService;
-	private static DataDictionaryService dataDictionaryService;
-	private static ConfigurationService kualiConfigurationService;
+	private volatile DictionaryValidationService dictionaryValidationService;
+	private volatile DataDictionaryService dataDictionaryService;
+	private volatile ConfigurationService kualiConfigurationService;
+    private DocumentLookupCustomizationMediator documentLookupCustomizationMediator;
 
 	private DocumentSearchDAO docSearchDao;
 	private UserOptionsService userOptionsService;
@@ -95,6 +97,14 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 	public void setUserOptionsService(UserOptionsService userOptionsService) {
 		this.userOptionsService = userOptionsService;
 	}
+
+    public void setDocumentLookupCustomizationMediator(DocumentLookupCustomizationMediator documentLookupCustomizationMediator) {
+        this.documentLookupCustomizationMediator = documentLookupCustomizationMediator;
+    }
+
+    protected DocumentLookupCustomizationMediator getDocumentLookupCustomizationMediator() {
+        return this.documentLookupCustomizationMediator;
+    }
 
 	public void clearNamedSearches(String principalId) {
 		String[] clearListNames = { NAMED_SEARCH_ORDER_BASE + "%", LAST_SEARCH_BASE_NAME + "%", LAST_SEARCH_ORDER_OPTION + "%" };
@@ -139,24 +149,27 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		docSearchGenerator.setSearchingUser(principalId);
 		performPreSearchConditions(docSearchGenerator,principalId,criteria);
         validateDocumentSearchCriteria(docSearchGenerator,criteria);
+        DocSearchCriteriaDTO customizedCriteria = applyCriteriaCustomizations(documentType, criteria);
         DocumentSearchResultComponents searchResult = null;
         try {
             List<DocSearchDTO> docListResults = null;
             if (useCriteriaRestrictions) {
-                docListResults = docSearchDao.getListBoundedByCritera(docSearchGenerator,criteria, principalId);
+                docListResults = docSearchDao.getListBoundedByCritera(docSearchGenerator, customizedCriteria, principalId);
             } else {
-                docListResults = docSearchDao.getList(docSearchGenerator,criteria, principalId);
+                docListResults = docSearchDao.getList(docSearchGenerator, customizedCriteria, principalId);
             }
             if (docSearchResultProcessor.isProcessFinalResults()) {
-                searchResult = docSearchResultProcessor.processIntoFinalResults(docListResults, criteria, principalId);
+                searchResult = docSearchResultProcessor.processIntoFinalResults(docListResults, customizedCriteria, principalId);
             } else {
-                searchResult = new StandardDocumentSearchResultProcessor().processIntoFinalResults(docListResults, criteria, principalId);
+                searchResult = new StandardDocumentSearchResultProcessor().processIntoFinalResults(docListResults, customizedCriteria, principalId);
             }
 
         } catch (Exception e) {
 			String errorMsg = "Error received trying to execute search: " + e.getLocalizedMessage();
             throw new WorkflowServiceErrorException(errorMsg, e, new WorkflowServiceErrorImpl(errorMsg,"docsearch.DocumentSearchService.generalError",errorMsg));
 		}
+
+        // be sure to save the original criteria that was submitted by the user, not the "customized" criteria
 		if (!useCriteriaRestrictions || !criteria.isSaveSearchForUser()) {
             try {
                 saveSearch(principalId, criteria);
@@ -168,6 +181,18 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 	    }
         return searchResult;
 	}
+
+    /**
+     * Applies any document type-specific customizations to the lookup criteria.  If no customizations are configured
+     * for the document type, this method will simply return the criteria that is passed to it.  If
+     * the given DocumentType is null, then this method will also simply return the criteria that is passed to it.
+     */
+    protected DocSearchCriteriaDTO applyCriteriaCustomizations(DocumentType documentType, DocSearchCriteriaDTO criteria) {
+        if (documentType == null) {
+            return criteria;
+        }
+        return getDocumentLookupCustomizationMediator().customizeCriteria(documentType, criteria);
+    }
 
     public DocumentSearchGenerator getStandardDocumentSearchGenerator() {
 	String searchGeneratorClass = ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.STANDARD_DOC_SEARCH_GENERATOR_CLASS_CONFIG_PARM);
@@ -820,21 +845,21 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		return null;
 	}
 
-	public static DictionaryValidationService getDictionaryValidationService() {
+	public DictionaryValidationService getDictionaryValidationService() {
 		if (dictionaryValidationService == null) {
 			dictionaryValidationService = KNSServiceLocator.getDictionaryValidationService();
 		}
 		return dictionaryValidationService;
 	}
 
-	public static DataDictionaryService getDataDictionaryService() {
+	public DataDictionaryService getDataDictionaryService() {
 		if (dataDictionaryService == null) {
 			dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
 		}
 		return dataDictionaryService;
 	}
 
-	public static ConfigurationService getKualiConfigurationService() {
+	public ConfigurationService getKualiConfigurationService() {
 		if (kualiConfigurationService == null) {
 			kualiConfigurationService = KRADServiceLocator.getKualiConfigurationService();
 		}

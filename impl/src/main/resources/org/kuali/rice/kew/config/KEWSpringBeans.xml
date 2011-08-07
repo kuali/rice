@@ -297,6 +297,7 @@
 	<bean id="enDocumentSearchService" class="org.kuali.rice.kew.docsearch.service.impl.DocumentSearchServiceImpl" lazy-init="true">
 		<property name="documentSearchDAO" ref="enDocumentSearchDAO" />
 		<property name="userOptionsService" ref="enUserOptionsService" />
+    <property name="documentLookupCustomizationMediator" ref="rice.kew.documentSearchCustomizationMediator" />
 	</bean>
     <bean id="enDocumentSearchDAO" class="org.kuali.rice.kew.docsearch.dao.impl.DocumentSearchDAOJdbcImpl" lazy-init="true">
         <property name="dataSource" ref="enWorkflowDataSource" />

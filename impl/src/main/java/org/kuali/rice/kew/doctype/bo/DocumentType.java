@@ -497,7 +497,18 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     public List<DocumentTypeAttribute> getSearchableAttributes() {
         return getDocumentTypeAttributes(KEWConstants.SEARCHABLE_ATTRIBUTE_TYPE, KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE);
     }
-    
+
+    public DocumentTypeAttribute getCustomizerAttribute() {
+        List<DocumentTypeAttribute> documentTypeAttributes = getDocumentTypeAttributes(KEWConstants.DOCUMENT_LOOKUP_CUSTOMIZER_ATTRIBUTE_TYPE);
+        if (documentTypeAttributes.size() > 1) {
+            throw new IllegalStateException("Encountered more than one DocumentLookupCustomizer attribute on this document type: " + getName());
+        }
+        if (documentTypeAttributes.isEmpty()) {
+            return null;
+        }
+        return documentTypeAttributes.get(0);
+    }
+
     public List<ExtensionHolder<SearchableAttribute>> loadSearchableAttributes() {
         List<DocumentTypeAttribute> searchableAttributes = getSearchableAttributes();
         List<ExtensionHolder<SearchableAttribute>> loadedAttributes = new ArrayList<ExtensionHolder<SearchableAttribute>>();

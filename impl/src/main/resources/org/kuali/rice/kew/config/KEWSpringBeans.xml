@@ -375,14 +375,6 @@
       </property>
     </bean>
 
-    <bean id="docRouteHeaderValueLookupHelperService" class="org.kuali.rice.kew.bo.lookup.DocumentRouteHeaderValueLookupableHelperServiceImpl" scope="prototype"/>
-
-    <bean id="docRouteHeaderValueLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
-      <property name="lookupableHelperService">
-        <ref local="docRouteHeaderValueLookupHelperService" />
-      </property>
-    </bean>
-
     <bean id="documentSearchCriteriaProcessor" class="org.kuali.rice.kew.docsearch.StandardDocumentSearchCriteriaProcessor" scope="prototype" />
 
     <bean id="documentLookupCriteriaProcessor" class="org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessorKEWAdapter" scope="prototype">

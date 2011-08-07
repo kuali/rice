@@ -4,16 +4,6 @@
 
   <bean id="DocumentRouteHeaderValue-parentBean" abstract="true" parent="BusinessObjectEntry">
     <property name="dataObjectClass" value="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue" />
-<!-- <property name="exporterClass" value="org.kuali.rice.kew.export.DataExporter" />
--->
-
-<!--     <property name="inquiryDefinition" >
-      <ref bean="DocumentType-inquiryDefinition" />
-    </property>
- -->
-    <property name="lookupDefinition" >
-      <ref bean="DocumentRouteHeaderValue-lookupDefinition" />
-    </property>
     <property name="titleAttribute" value="documentId" />
     <property name="objectLabel" value="Document" />
      <property name="relationships" >
@@ -31,34 +21,12 @@
             </list>
           </property>
         </bean>
-        <!-- CTK need to check into user stuff before I can do something like this -->
-<!-- <bean parent="RelationshipDefinition">
-          <property name="objectAttributeName" value="initiatorUser" />
-          <property name="primitiveAttributes" >
-            <list>
-              <bean parent="PrimitiveAttributeDefinition"
-                    p:sourceName="initiatorWorkflowIdentifier"
-                    p:targetName="principalId" />
-            </list>
-          </property>
-          <property name="supportAttributes" >
-            <list>
-              <bean parent="SupportAttributeDefinition"
-                    p:identifier="true"
-                    p:sourceName="initiatorUser.principalName.authenticationId"
-                    p:targetName="principalName" />
-            </list>
-          </property>
-        </bean>
- -->        
        </list>
     </property>
     <property name="attributes" >
       <list>
       	<ref bean="DocumentRouteHeaderValue-documentTypeName"/>
         <ref bean="DocumentRouteHeaderValue-documentId"/>
-<!--         <ref bean="DocumentRouteHeaderValue-documentTypeId" />  -->
-<!--    <ref bean="DocumentRouteHeaderValue-InitiatorWorkflowIdentifier"/>  -->
         <ref bean="DocumentRouteHeaderValue-createDate"/>
 		<ref bean="DocumentRouteHeaderValue-docTitle"/>
 		<ref bean="DocumentRouteHeaderValue-docRouteStatusLabel"/>
@@ -83,23 +51,7 @@
     <property name="name" value="documentId" />
     <property name="label" value="Document/Notification Id" />
   </bean>
-<!-- 
- <bean id="DocumentRouteHeaderValue-documentTypeId" parent="DocumentRouteHeaderValue-documentTypeId-parentBean" />
 
-  <bean id="DocumentRouteHeaderValue-documentTypeId-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="shortLabel" value="Parent Id" />
-    <property name="maxLength" value="30" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" />
-    </property>
-    <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="30" />
-    </property>
-    <property name="name" value="documentTypeId" />
-    <property name="label" value="Document Type Id" />
-  </bean>
--->
   <bean id="DocumentRouteHeaderValue-documentTypeName" parent="DocumentRouteHeaderValue-documentTypeName-parentBean" />
 
   <bean id="DocumentRouteHeaderValue-documentTypeName-parentBean" abstract="true" parent="AttributeDefinition">
@@ -111,22 +63,6 @@
     </property>
   </bean>
 
-	<!-- 
-  <bean id="DocumentRouteHeaderValue-documentTypeName-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="shortLabel" value="Parent Name" />
-    <property name="maxLength" value="30" />
-    <property name="validationPattern" >
-      <bean parent="AnyCharacterValidationPattern" />
-    </property>
-    <property name="control" >
-      <bean parent="TextControlDefinition"
-            p:size="30" />
-    </property>
-    <property name="name" value="documentType.name" />
-    <property name="label" value="Type" />
-  </bean>
-   -->
-  
   <bean id="DocumentRouteHeaderValue-createDate" parent="DocumentRouteHeaderValue-createDate-parentBean" /> 
   
   <bean id="DocumentRouteHeaderValue-createDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
@@ -134,22 +70,7 @@
     <property name="label" value="Date Created" />
     <property name="shortLabel" value="Date Created" />
   </bean>
-  
-  <!-- 
-  <bean id="DocumentRouteHeaderValue-initiatorWorkflowIdentifier" parent="DocumentRouteHeaderValue-initiatorWorkflowIdentifier-parentBean" />
 
-  <bean id="DocumentRouteHeaderValue-initiatorWorkflowIdentifier-parentBean" abstract="true" parent="PersonImpl-principalId">
-    <property name="name" value="initiatorWorkflowId" />
-    <property name="label" value="Initiator Network Id" />
-    <property name="shortLabel" value="InitNetId" />
-    <property name="control" >
-      <bean parent="HiddenControlDefinition" />
-    </property>
-    <property name="displayLabelAttribute" value="DocumentRouteHeaderValue-FiscalOfficerUser.principalName" />
-  </bean>
-   -->
-
-  
   <bean id="DocumentRouteHeaderValue-docTitle" parent="DocumentRouteHeaderValue-docTitle-parentBean" />
 
   <bean id="DocumentRouteHeaderValue-docTitle-parentBean" abstract="true" parent="AttributeDefinition">
@@ -192,79 +113,4 @@
     </property>
   </bean>
    
-  <!-- Business Object Inquiry Definition -->
-<!-- 
-  <bean id="DocumentType-inquiryDefinition" parent="DocumentType-inquiryDefinition-parentBean" />
-
-  <bean id="DocumentType-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
-    <property name="inquirySections">
-      <list>
-     	<bean parent="InquirySectionDefinition">
-          <property name="title" value="Document Type" />
-          <property name="numberOfColumns" value="1" />
-          <property name="inquiryFields" >
-            <list>
-              <bean parent="FieldDefinition"
-                    p:attributeName="docTypeParentId" />
-              <bean parent="FieldDefinition"
-                    p:attributeName="documentTypeId" />
-              <bean parent="FieldDefinition"
-                    p:attributeName="name" />
-              <bean parent="FieldDefinition"
-                    p:attributeName="label" />
-              <bean parent="FieldDefinition"
-              		p:attributeName="active" />
-              <bean parent="FieldDefinition"
-                    p:attributeName="description" />
-              <bean parent="FieldDefinition"
-                    p:attributeName="applicationId" />            
-            </list>
-          </property>
-        </bean>
-      </list>
-    </property>
-  </bean>
--->
-  <!-- Business Object Lookup Definition -->
-
-  <bean id="DocumentRouteHeaderValue-lookupDefinition" parent="DocumentRouteHeaderValue-lookupDefinition-parentBean" />
-
-  <bean id="DocumentRouteHeaderValue-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
-    <property name="lookupableID" value="docRouteHeaderValueLookupable" />
-    
-    <property name="defaultSort" >
-      <bean parent="SortDefinition">
-      </bean>
-    </property>
-    <property name="lookupFields" >
-      <list>
-        <bean parent="FieldDefinition" p:attributeName="documentType.name" p:noDirectInquiry="true"/>      
-        <!-- <bean parent="FieldDefinition"
-              p:attributeName="initiatorWorkflowId" />
-        
-        <bean parent="FieldDefinition"
-              p:attributeName="initiatorUser.principalName.id" />
-        -->
-        <bean parent="FieldDefinition" p:attributeName="documentId"/>
-        <bean parent="FieldDefinition" p:attributeName="createDate"/>
-     </list>
-    </property>
-    <property name="resultFields" >
-      <list>
-        <bean parent="FieldDefinition"
-              p:attributeName="documentId" />
-        <bean parent="FieldDefinition"
-              p:attributeName="documentType.name" />
-        <bean parent="FieldDefinition"
-              p:attributeName="docTitle" />
-        <bean parent="FieldDefinition"
-              p:attributeName="docRouteStatusLabel" />           
-        <bean parent="FieldDefinition"
-              p:attributeName="appDocStatus" />           
-        <bean parent="FieldDefinition"
-              p:attributeName="createDate" />
-      </list>
-    </property>
-    <property name="title" value="Document Lookup" />
-  </bean>
 </beans>

@@ -17,75 +17,55 @@
 
 package org.kuali.rice.kew.docsearch;
 
+import org.kuali.rice.core.api.uif.DataType;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
+import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttributeString;
+import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
+import org.kuali.rice.kew.framework.document.lookup.SearchableAttribute;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.core.api.uif.RemotableAttributeField;
-import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
-import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
-import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
-import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.Row;
-
-import javax.jws.WebParam;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-public class MockSearchableAttribute implements SearchableAttributeOld {
+public class MockSearchableAttribute implements SearchableAttribute {
 
     public static final String SEARCH_CONTENT = "<mockContent>MockSearchableAttribute Search Content</mockContent>";
 
-    // TODO - uncomment below and re-implement once this is switched over to implement SearchableAttribute instead of SearchableAttributeOld!
-//    @Override
-//    public String generateSearchContent(String documentTypeName, WorkflowAttributeDefinition attributeDefinition) {
-//        return SEARCH_CONTENT;
-//    }
-//
-//    @Override
-//    public List<DocumentAttribute<?>> getDocumentAttributes(DocumentSearchContext documentSearchContext) {
-//        return null;  //To change body of implemented methods use File | Settings | File Templates.
-//    }
-//
-//    @Override
-//    public List<RemotableAttributeField> getAttributeFields(DocumentSearchContext documentSearchContext) {
-//        return null;  //To change body of implemented methods use File | Settings | File Templates.
-//    }
-//
-//    @Override
-//    public List<org.kuali.rice.kew.api.document.attribute.WorkflowAttributeValidationError> validateSearchParameters(
-//            Map<String, String> parameters,
-//            DocumentSearchContext searchContext) {
-//        return null;  //To change body of implemented methods use File | Settings | File Templates.
-//    }
-
-    public String getSearchContent(DocumentSearchContext documentSearchContext) {
+    @Override
+    public String generateSearchContent(ExtensionDefinition extensionDefinition,
+            String documentTypeName,
+            WorkflowAttributeDefinition attributeDefinition) {
         return SEARCH_CONTENT;
     }
 
-    public List<SearchableAttributeValue> getSearchStorageValues(DocumentSearchContext documentSearchContext) {
-        List<SearchableAttributeValue> savs = new ArrayList<SearchableAttributeValue>();
-        SearchableAttributeValue sav = new SearchableAttributeStringValue();
-        sav.setRouteHeader(new DocumentRouteHeaderValue());
-        sav.setSearchableAttributeKey("MockSearchableAttributeKey");
-        sav.setupAttributeValue("MockSearchableAttributeValue");
-        savs.add(sav);
+    @Override
+    public List<DocumentAttribute<?>> getDocumentAttributes(ExtensionDefinition extensionDefinition,
+            org.kuali.rice.kew.framework.document.lookup.DocumentSearchContext documentSearchContext) {
+        List<DocumentAttribute<?>> savs = new ArrayList<DocumentAttribute<?>>();
+        savs.add(new DocumentAttributeString("MockSearchableAttributeKey", "MockSearchableAttributeValue"));
         return savs;
     }
 
-    public List<Row> getSearchingRows(DocumentSearchContext documentSearchContext) {
-        List<Field> fields = new ArrayList<Field>();
-        Field myField = new Field("MockSearchableAttributeKey","title");
-        myField.setFieldDataType((new SearchableAttributeStringValue()).getAttributeDataType());
-        fields.add(myField);
-        Row row = new Row(fields);
-        List<Row> rows = new ArrayList<Row>();
-        rows.add(row);
-        return rows;
+    @Override
+    public List<RemotableAttributeField> getSearchFields(ExtensionDefinition extensionDefinition,
+            String documentTypeName) {
+        List<RemotableAttributeField> fields = new ArrayList<RemotableAttributeField>();
+        RemotableAttributeField.Builder builder = RemotableAttributeField.Builder.create("MockSearchableAttributeKey");
+        builder.setLongLabel("title");
+        builder.setDataType(DataType.STRING);
+		fields.add(builder.build());
+        return fields;
     }
 
-    public List<WorkflowAttributeValidationError> validateUserSearchInputs(Map<Object, Object> paramMap, DocumentSearchContext documentSearchContext) {
-        return new ArrayList<WorkflowAttributeValidationError>(0);
+    @Override
+    public List<RemotableAttributeError> validateSearchFieldParameters(ExtensionDefinition extensionDefinition,
+            Map<String, List<String>> parameters,
+            String documentTypeName) {
+        return Collections.emptyList();
     }
+
 }

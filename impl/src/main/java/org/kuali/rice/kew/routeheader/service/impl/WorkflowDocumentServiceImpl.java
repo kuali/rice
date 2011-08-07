@@ -324,7 +324,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
  	 	}
 
  	 	RouteContext routeContext = RouteContext.getCurrentRouteContext();
- 	 	if (routeHeader.getDocumentType().hasSearchableAttributesOld() && !routeContext.isSearchIndexingRequestedForContext()) {
+ 	 	if (routeHeader.getDocumentType().hasSearchableAttributes() && !routeContext.isSearchIndexingRequestedForContext()) {
  	 		routeContext.requestSearchIndexingForContext();
             DocumentAttributeIndexingQueue queue = KewApiServiceLocator.getDocumentAttributeIndexingQueue(routeHeader.getDocumentType().getApplicationId());
             queue.indexDocument(routeHeader.getDocumentId());

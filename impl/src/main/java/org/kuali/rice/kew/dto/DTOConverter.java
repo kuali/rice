@@ -52,7 +52,6 @@ import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.DocumentSearchResult;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
-import org.kuali.rice.kew.docsearch.SearchableAttributeOld;
 import org.kuali.rice.kew.docsearch.web.SearchAttributeFormContainer;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.documentlink.DocumentLink;
@@ -426,13 +425,6 @@ public class DTOConverter {
                         String attributeDocContent = ((WorkflowAttribute) attribute).getDocContent();
                         if (!StringUtils.isEmpty(attributeDocContent)) {
                             XmlHelper.appendXml(contentSectionElement, attributeDocContent);
-                        }
-                    } else if (attribute instanceof SearchableAttributeOld) {
-                        // TODO remove this section once we remove SearchableAttributeOld
-                        String searcheAttributeContent = ((SearchableAttributeOld) attribute).getSearchContent(
-                                DocSearchUtils.getDocumentSearchContext("", documentTypeName, ""));
-                        if (!StringUtils.isEmpty(searcheAttributeContent)) {
-                            XmlHelper.appendXml(contentSectionElement, searcheAttributeContent);
                         }
                     } else if (attribute instanceof SearchableAttribute) {
                         SearchableAttribute searchableAttribute = (SearchableAttribute) attribute;

@@ -15,33 +15,41 @@
  */
 package org.kuali.rice.krad.workflow.attribute;
 
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
+import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.core.api.util.jaxb.MultiValuedStringMapAdapter;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
+import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
+import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
+import org.kuali.rice.kew.docsearch.DocSearchDTO;
+import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
+import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
+import org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor;
+import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
+import org.kuali.rice.kew.docsearch.StandardDocumentSearchGenerator;
+import org.kuali.rice.kew.docsearch.StandardDocumentSearchResultProcessor;
+import org.kuali.rice.kew.exception.WorkflowServiceError;
+import org.kuali.rice.kew.framework.document.lookup.DocumentSearchContext;
+import org.kuali.rice.kew.framework.document.lookup.SearchableAttribute;
+import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
+import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.krad.util.MessageMap;
+
+import javax.jws.WebParam;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.core.api.uif.RemotableAttributeError;
-import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
-import org.kuali.rice.kew.docsearch.DocSearchDTO;
-import org.kuali.rice.kew.docsearch.DocumentSearchContext;
-import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
-import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
-import org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor;
-import org.kuali.rice.kew.docsearch.SearchableAttributeOld;
-import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
-import org.kuali.rice.kew.docsearch.StandardDocumentSearchGenerator;
-import org.kuali.rice.kew.docsearch.StandardDocumentSearchResultProcessor;
-import org.kuali.rice.kew.exception.WorkflowServiceError;
-import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
-import org.kuali.rice.kns.web.ui.Row;
-import org.kuali.rice.krad.util.MessageMap;
+public class DataDictionaryDocumentSearchCustomizer implements SearchableAttribute, DocumentSearchGenerator, DocumentSearchResultProcessor {
 
-public class DataDictionaryDocumentSearchCustomizer implements SearchableAttributeOld, DocumentSearchGenerator, DocumentSearchResultProcessor {
     // SEARCH GENERATOR IMPLEMENTATION
     protected StandardDocumentSearchGenerator documentSearchGenerator = null;
     // SEARCHABLE ATTRIBUTE IMPLEMENTATION
-    protected SearchableAttributeOld searchableAttribute = null;
+    protected SearchableAttribute searchableAttribute = null;
     // SEARCH RESULT PROCESSOR IMPLEMENTATION
     protected DocumentSearchResultProcessor searchResultProcessor = null;
     
@@ -86,22 +94,32 @@ public class DataDictionaryDocumentSearchCustomizer implements SearchableAttribu
     }
     public MessageMap getMessageMap(DocSearchCriteriaDTO searchCriteria) {
         return getDocumentSearchGenerator().getMessageMap(searchCriteria);
-    }    
-
-    public String getSearchContent(DocumentSearchContext documentSearchContext) {
-        return getSearchableAttribute().getSearchContent(documentSearchContext);
     }
 
-    public List<Row> getSearchingRows(DocumentSearchContext documentSearchContext) {
-        return getSearchableAttribute().getSearchingRows(documentSearchContext);
+    @Override
+    public String generateSearchContent(ExtensionDefinition extensionDefinition,
+            String documentTypeName,
+            WorkflowAttributeDefinition attributeDefinition) {
+        return getSearchableAttribute().generateSearchContent(extensionDefinition, documentTypeName, attributeDefinition);
     }
 
-    public List<SearchableAttributeValue> getSearchStorageValues(DocumentSearchContext documentSearchContext) {
-        return getSearchableAttribute().getSearchStorageValues(documentSearchContext);
+    @Override
+    public List<DocumentAttribute<?>> getDocumentAttributes(ExtensionDefinition extensionDefinition,
+            DocumentSearchContext documentSearchContext) {
+        return getSearchableAttribute().getDocumentAttributes(extensionDefinition, documentSearchContext);
     }
 
-    public List<WorkflowAttributeValidationError> validateUserSearchInputs(Map<Object, Object> paramMap, DocumentSearchContext searchContext) {
-        return getSearchableAttribute().validateUserSearchInputs(paramMap, searchContext);
+    @Override
+    public List<RemotableAttributeField> getSearchFields(ExtensionDefinition extensionDefinition,
+            String documentTypeName) {
+        return getSearchableAttribute().getSearchFields(extensionDefinition, documentTypeName);
+    }
+
+    @Override
+    public List<RemotableAttributeError> validateSearchFieldParameters(ExtensionDefinition extensionDefinition,
+            Map<String, List<String>> parameters,
+            String documentTypeName) {
+        return getSearchableAttribute().validateSearchFieldParameters(extensionDefinition, parameters, documentTypeName);
     }
 
 	/**
@@ -155,14 +173,14 @@ public class DataDictionaryDocumentSearchCustomizer implements SearchableAttribu
 	/**
 	 * @param searchableAttribute the searchableAttribute to set
 	 */
-	public void setSearchableAttribute(SearchableAttributeOld searchableAttribute) {
+	public void setSearchableAttribute(SearchableAttribute searchableAttribute) {
 		this.searchableAttribute = searchableAttribute;
 	}
 	
 	/**
 	 * @return the searchableAttribute
 	 */
-	public SearchableAttributeOld getSearchableAttribute() {
+	public SearchableAttribute getSearchableAttribute() {
 		if(this.searchableAttribute == null){
 			this.searchableAttribute = new DataDictionarySearchableAttribute();
 		}

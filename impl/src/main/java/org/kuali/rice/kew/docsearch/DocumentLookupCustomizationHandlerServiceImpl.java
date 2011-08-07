@@ -52,9 +52,6 @@ public class DocumentLookupCustomizationHandlerServiceImpl implements DocumentLo
                     }
                     SearchableAttribute searchableAttribute = loadSearchableAttribute(extensionDefinition);
 
-                    // TODO temporary, remove once SearchableAttributeOld has been removed from the picture
-                    if (searchableAttribute == null) continue;
-
                     List<RemotableAttributeField> attributeSearchFields = searchableAttribute.getSearchFields(extensionDefinition, documentTypeName);
                     searchAttributeFields.add(AttributeFields.create(searchableAttributeName, attributeSearchFields));
                 }
@@ -85,9 +82,6 @@ public class DocumentLookupCustomizationHandlerServiceImpl implements DocumentLo
                     throw new RiceIllegalArgumentException("Failed to locate a searchable attribute with the given name: " + searchableAttributeName);
                 }
                 SearchableAttribute searchableAttribute = loadSearchableAttribute(extensionDefinition);
-
-                // TODO temporary, remove once SearchableAttributeOld has been removed from the picture
-                if (searchableAttribute == null) continue;
 
                 List<RemotableAttributeError> errors = searchableAttribute.validateSearchFieldParameters(extensionDefinition, parameters, documentTypeName);
                 if (!CollectionUtils.isEmpty(errors)) {
@@ -126,10 +120,6 @@ public class DocumentLookupCustomizationHandlerServiceImpl implements DocumentLo
         Object searchableAttribute = ExtensionUtils.loadExtension(extensionDefinition);
         if (searchableAttribute == null) {
             throw new RiceIllegalArgumentException("Failed to load search attribute for: " + extensionDefinition);
-        }
-        // TODO temporary, remove once SearchableAttributeOld has been removed from the picture
-        if (!(searchableAttribute instanceof SearchableAttribute)) {
-            return null;
         }
         return (SearchableAttribute)searchableAttribute;
     }

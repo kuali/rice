@@ -19,8 +19,11 @@ import java.util.Arrays;
 
 import org.junit.Ignore;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.core.api.uif.Select;
 import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.framework.document.lookup.SearchableAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
@@ -64,15 +67,7 @@ public class DocumentSearchTestBase extends KEWTestCase {
         String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + key : KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + key);
         String savedKey = key;
         SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(formKey,value,savedKey);
-        Field field = getFieldByFormKey(docType, formKey);
-        if (field != null) {
-            sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType()));
-            sacc.setRangeSearch(field.isMemberOfRange());
-            sacc.setCaseSensitive(!field.isUpperCase());
-            sacc.setSearchInclusive(field.isInclusive());
-            sacc.setSearchable(field.isIndexedForSearch());
-            sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
-        }
+        applyAttributeFieldToComponent(sacc, docType, formKey);
         return sacc;
     }
     
@@ -81,31 +76,45 @@ public class DocumentSearchTestBase extends KEWTestCase {
         String savedKey = key;
         SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(formKey,null,savedKey);
         sacc.setValues(Arrays.asList(values));
-        Field field = getFieldByFormKey(docType, formKey);
-        if (field != null) {
-            sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType()));
-            sacc.setRangeSearch(field.isMemberOfRange());
-            sacc.setCaseSensitive(!field.isUpperCase());
-            sacc.setSearchInclusive(field.isInclusive());
-            sacc.setSearchable(field.isIndexedForSearch());
-            sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
-        }
+        applyAttributeFieldToComponent(sacc, docType, formKey);
         return sacc;
     }
 
-    private Field getFieldByFormKey(DocumentType docType, String formKey) {
+    private void applyAttributeFieldToComponent(SearchAttributeCriteriaComponent sacc, DocumentType docType, String formKey) {
+        RemotableAttributeField field = getFieldByFormKey(docType, formKey);
+        if (field != null) {
+            sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getDataType()));
+            boolean isRange = field.getAttributeLookupSettings() != null && field.getAttributeLookupSettings().isRanged();
+            sacc.setRangeSearch(isRange);
+            sacc.setCaseSensitive(field.isLookupCaseSensitive());
+            if (isRange) {
+                if (field.getAttributeLookupSettings().getLowerBoundName().equals(formKey)) {
+                    sacc.setSearchInclusive(field.getAttributeLookupSettings().isLowerBoundInclusive());
+                } else if (field.getAttributeLookupSettings().getUpperBoundName().equals(formKey)) {
+                    sacc.setSearchInclusive(field.getAttributeLookupSettings().isUpperBoundInclusive());
+                } else {
+                    throw new IllegalStateException("Encountered an invalid ranged attribute field definition.");
+                }
+            }
+            boolean canHoldMultipleValues = field.getControl() instanceof Select &&
+                    ((Select) field.getControl()).isMultiple();
+            sacc.setCanHoldMultipleValues(canHoldMultipleValues);
+        }
+    }
+
+    private RemotableAttributeField getFieldByFormKey(DocumentType docType, String formKey) {
         if (docType == null) {
             return null;
         }
-        for (SearchableAttributeOld searchableAttribute : docType.getSearchableAttributesOld()) {
-            for (Row row : searchableAttribute.getSearchingRows(DocSearchUtils.getDocumentSearchContext("", docType.getName(), ""))) {
-                for (Field field : row.getFields()) {
-                    if (field instanceof Field) {
-                        if (field.getPropertyName().equals(formKey)) {
-                            return (Field)field;
-                        }
-                    } else {
-                        throw new RiceRuntimeException("Fields must be of type org.kuali.rice.krad.Field");
+        for (DocumentType.ExtensionHolder<SearchableAttribute> holder : docType.loadSearchableAttributes()) {
+            for (RemotableAttributeField field : holder.getExtension().getSearchFields(holder.getExtensionDefinition(),
+                    docType.getName())) {
+                if (field.getName().equals(formKey)) {
+                    return field;
+                } else if (field.getAttributeLookupSettings() != null) {
+                    if (field.getName().equals(field.getAttributeLookupSettings().getLowerBoundName()) ||
+                            field.getName().equals(field.getAttributeLookupSettings().getUpperBoundName())) {
+                        return field;
                     }
                 }
             }

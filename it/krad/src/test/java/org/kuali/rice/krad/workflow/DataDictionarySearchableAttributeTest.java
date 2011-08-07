@@ -16,23 +16,21 @@
 package org.kuali.rice.krad.workflow;
 
 import org.junit.Test;
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.core.api.uif.Select;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
-import org.kuali.rice.kew.docsearch.DocumentSearchContext;
 import org.kuali.rice.kew.docsearch.DocumentSearchResult;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.docsearch.SearchAttributeCriteriaComponent;
-import org.kuali.rice.kew.docsearch.SearchableAttributeOld;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.framework.document.lookup.SearchableAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.service.DocumentService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -46,6 +44,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -241,7 +240,7 @@ public class DataDictionarySearchableAttributeTest extends KRADTestCase {
 	 * A method similar to the one from DocumentSearchTestBase. The "value" parameter has to be either a String or a String[].
 	 */
 	private SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,Object value,Boolean isLowerBoundValue,DocumentType docType) {
-		String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + key : KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + key);
+        String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + key : KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + key);
 		String savedKey = key;
 		SearchAttributeCriteriaComponent sacc = null;
 		if (value instanceof String) {
@@ -250,40 +249,54 @@ public class DataDictionarySearchableAttributeTest extends KRADTestCase {
 			sacc = new SearchAttributeCriteriaComponent(formKey,null,savedKey);
 			sacc.setValues(Arrays.asList((String[])value));
 		}
-		Field field = getFieldByFormKey(docType, formKey);
-		if (field != null) {
-			sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType()));
-			sacc.setRangeSearch(field.isMemberOfRange());
-			sacc.setCaseSensitive(!field.isUpperCase());
-			sacc.setSearchInclusive(field.isInclusive());
-			sacc.setSearchable(field.isIndexedForSearch());
-			sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
-		}
+		applyAttributeFieldToComponent(sacc, docType, formKey);
 		return sacc;
 	}
+
+    private void applyAttributeFieldToComponent(SearchAttributeCriteriaComponent sacc, DocumentType docType, String formKey) {
+        RemotableAttributeField field = getFieldByFormKey(docType, formKey);
+        if (field != null) {
+            sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getDataType()));
+            boolean isRange = field.getAttributeLookupSettings() != null && field.getAttributeLookupSettings().isRanged();
+            sacc.setRangeSearch(isRange);
+            sacc.setCaseSensitive(field.isLookupCaseSensitive());
+            if (isRange) {
+                if (field.getAttributeLookupSettings().getLowerBoundName().equals(formKey)) {
+                    sacc.setSearchInclusive(field.getAttributeLookupSettings().isLowerBoundInclusive());
+                } else if (field.getAttributeLookupSettings().getUpperBoundName().equals(formKey)) {
+                    sacc.setSearchInclusive(field.getAttributeLookupSettings().isUpperBoundInclusive());
+                } else {
+                    throw new IllegalStateException("Encountered an invalid ranged attribute field definition.");
+                }
+            }
+            boolean canHoldMultipleValues = field.getControl() instanceof Select &&
+                    ((Select) field.getControl()).isMultiple();
+            sacc.setCanHoldMultipleValues(canHoldMultipleValues);
+        }
+    }
 	
 	/*
 	 * A method that was copied from DocumentSearchTestBase.
 	 */
-	private Field getFieldByFormKey(DocumentType docType, String formKey) {
-		if (docType == null) {
-			return null;
-		}
-		for (SearchableAttributeOld searchableAttribute : docType.getSearchableAttributesOld()) {
-			for (Row row : searchableAttribute.getSearchingRows(DocSearchUtils.getDocumentSearchContext("", docType.getName(), ""))) {
-				for (Field field : row.getFields()) {
-					if (field instanceof Field) {
-						if (field.getPropertyName().equals(formKey)) {
-							return (Field)field;
-						}
-					} else {
-						throw new RiceRuntimeException("Fields must be of type org.kuali.rice.krad.Field");
-					}
-				}
-			}
-		}
-		return null;
-	}
+	private RemotableAttributeField getFieldByFormKey(DocumentType docType, String formKey) {
+        if (docType == null) {
+            return null;
+        }
+        for (DocumentType.ExtensionHolder<SearchableAttribute> holder : docType.loadSearchableAttributes()) {
+            for (RemotableAttributeField field : holder.getExtension().getSearchFields(holder.getExtensionDefinition(),
+                    docType.getName())) {
+                if (field.getName().equals(formKey)) {
+                    return field;
+                } else if (field.getAttributeLookupSettings() != null) {
+                    if (field.getName().equals(field.getAttributeLookupSettings().getLowerBoundName()) ||
+                            field.getName().equals(field.getAttributeLookupSettings().getUpperBoundName())) {
+                        return field;
+                    }
+                }
+            }
+        }
+        return null;
+    }
 	
     /**
      * A convenience method for testing wildcards on data dictionary searchable attributes.
@@ -337,20 +350,16 @@ public class DataDictionarySearchableAttributeTest extends KRADTestCase {
     	AccountWithDDAttributesDocument document = DOCUMENT_FIXTURE.NORMAL_DOCUMENT.getDocument(documentService);
     	documentService.saveDocument(document);
     	final String documentNumber = document.getDocumentNumber();
-    	
-    	DocumentSearchContext searchContext = new DocumentSearchContext();
-    	searchContext.setDocumentId(documentNumber);
-    	searchContext.setDocumentTypeName(ACCOUNT_WITH_DD_ATTRIBUTES_DOCUMENT_NAME);
-    	
+    	    	
     	Exception caughtException;
     	List foundErrors;
     	
     	caughtException = null;
     	foundErrors = new ArrayList();
-    	Map<Object, Object> simpleParamMap = new HashMap<Object, Object>();
-    	simpleParamMap.put("accountState", "FirstState");
+    	Map<String, List<String>> simpleParamMap = new HashMap<String, List<String>>();
+    	simpleParamMap.put("accountState", Collections.singletonList("FirstState"));
     	try {
-    		foundErrors = searchableAttribute.validateUserSearchInputs(simpleParamMap, searchContext);
+    		foundErrors = searchableAttribute.validateSearchFieldParameters(null, simpleParamMap, ACCOUNT_WITH_DD_ATTRIBUTES_DOCUMENT_NAME);
     	} catch (RuntimeException re) {
     		caughtException = re;
     	}
@@ -359,13 +368,14 @@ public class DataDictionarySearchableAttributeTest extends KRADTestCase {
     	
     	caughtException = null;
     	foundErrors = new ArrayList();
-    	Map<Object, Object> listParamMap = new HashMap<Object, Object>();
+    	Map<String, List<String>>  listParamMap = new HashMap<String, List<String>>();
     	List<String> paramValues = new ArrayList<String>();
     	paramValues.add("FirstState");
     	paramValues.add("SecondState");
     	listParamMap.put("accountState", paramValues);
     	try {
-    		foundErrors = searchableAttribute.validateUserSearchInputs(listParamMap, searchContext);
+    		foundErrors = searchableAttribute.validateSearchFieldParameters(null, listParamMap,
+                    ACCOUNT_WITH_DD_ATTRIBUTES_DOCUMENT_NAME);
     	} catch (RuntimeException re) {
     		caughtException = re;
     	}

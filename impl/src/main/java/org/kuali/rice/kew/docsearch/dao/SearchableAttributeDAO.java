@@ -19,13 +19,6 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
-/**
- * Interface to get SearchableAttributeOld data
- *
- *
- * @author Kuali Rice Team (rice.collab@kuali.org)
- *
- */
 public interface SearchableAttributeDAO {
 
 	public List<String> getSearchableAttributeStringValuesByKey(

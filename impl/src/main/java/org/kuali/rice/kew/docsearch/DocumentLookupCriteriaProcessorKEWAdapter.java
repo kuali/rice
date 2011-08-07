@@ -26,7 +26,6 @@ import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.lookup.valuefinder.DocumentRouteStatusValuesFinder;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.KEWWebServiceConstants;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
@@ -279,14 +278,6 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements DocumentLookup
 
         List<Row> customSearchAttRows = new ArrayList<Row>();
 
-        // legacy search attributes
-		List<SearchableAttributeOld> searchAtts = documentType.getSearchableAttributesOld();
-		for (SearchableAttributeOld searchableAttribute : searchAtts) {
-			DocumentSearchContext documentSearchContext = DocSearchUtils.getDocumentSearchContext("", documentType.getName(), "");
-			customSearchAttRows.addAll(searchableAttribute.getSearchingRows(documentSearchContext));
-		}
-
-        // Rice 2.0 search attributes
         DocumentLookupConfiguration configuration = KEWServiceLocator.getDocumentSearchCustomizationMediator().getDocumentLookupConfiguration(documentType);
         List<RemotableAttributeField> remotableAttributeFields = configuration.getFlattenedSearchAttributeFields();
         if (remotableAttributeFields != null && !remotableAttributeFields.isEmpty()) {

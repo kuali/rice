@@ -22,6 +22,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -336,7 +337,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         // begin long attribute value testing
         // inclusive = true
         String searchAttributeLongKey = TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY;
-        Long searchAttributeLongValue = TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE;
+        Long searchAttributeLongValue = TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.longValue();
 
         Long longValueToUse = null;
         // test lower bound only
@@ -528,7 +529,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         // begin datetime attribute value testing
         // inclusive = ?
         String searchAttributeDateTimeKey = TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY;
-        Calendar searchAttributeDateTimeValue = SQLUtils.convertTimestamp(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE);
+        Calendar searchAttributeDateTimeValue = TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE.toGregorianCalendar();
 
         Calendar calendarValueToUse = null;
         // test lower bound only

@@ -1497,6 +1497,33 @@ public final class FieldUtils {
         return fields;
     }
 
+    public static List<RemotableAttributeField> convertRowsToAttributeFields(List<Row> rows) {
+        List<RemotableAttributeField> attributeFields = new ArrayList<RemotableAttributeField>();
+        for (Row row : rows) {
+            attributeFields.addAll(convertRowToAttributeFields(row));
+        }
+        return attributeFields;
+    }
+
+    public static List<RemotableAttributeField> convertRowToAttributeFields(Row row) {
+        List<RemotableAttributeField> attributeFields = new ArrayList<RemotableAttributeField>();
+        for (Field field : row.getFields()) {
+            RemotableAttributeField remotableAttributeField = convertFieldToAttributeField(field);
+            if (remotableAttributeField != null) {
+                attributeFields.add(remotableAttributeField);
+            }
+        }
+        return attributeFields;
+    }
+
+    public static RemotableAttributeField convertFieldToAttributeField(Field field) {
+        RemotableAttributeField.Builder builder = RemotableAttributeField.Builder.create(field.getPropertyName());
+
+        // TODO - Rice 2.0 - Finish this conversion!!!
+
+        return builder.build();
+    }
+
     private static void applyControlAttributes(RemotableAttributeField remotableField, Field field) {
         Control control = remotableField.getControl();
         String fieldType = null;

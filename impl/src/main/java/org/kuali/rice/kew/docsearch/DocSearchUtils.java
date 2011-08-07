@@ -17,6 +17,7 @@
 package org.kuali.rice.kew.docsearch;
 
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
@@ -135,6 +136,9 @@ public final class DocSearchUtils {
         return components;
     }
 
+    public static String getDisplayValueWithDateOnly(DateTime value) {
+        return getDisplayValueWithDateOnly(new Timestamp(value.getMillis()));
+    }
 
     public static String getDisplayValueWithDateOnly(Timestamp value) {
         return RiceConstants.getDefaultDateFormat().format(new Date(value.getTime()));

@@ -35,7 +35,6 @@ import org.kuali.rice.kew.api.doctype.DocumentTypeContract;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor;
-import org.kuali.rice.kew.docsearch.SearchableAttributeOld;
 import org.kuali.rice.kew.docsearch.xml.DocumentSearchXMLResultProcessor;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
@@ -415,58 +414,6 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
             }
         }
         return getParentDocType() != null && getParentDocType().isPolicyDefined(policyToCheck);
-    }
-
-    /**
-     * TODO - remove this method once the old SearchableAttributeOld class is removed in Rice 2.0
-     */
-    public void addSearchableAttributeOld(DocumentTypeAttribute searchableAttribute) {
-        documentTypeAttributes.add(searchableAttribute);
-    }
-
-    /**
-     * TODO - remove this method once the old SearchableAttributeOld class is removed in Rice 2.0
-     */
-    public boolean hasSearchableAttributesOld() {
-        return !getSearchableAttributesOld().isEmpty();
-    }
-
-    /**
-     * TODO - remove this method once the old SearchableAttributeOld class is removed in Rice 2.0
-     */
-    public List<SearchableAttributeOld> getSearchableAttributesOld() {
-        List<SearchableAttributeOld> searchAtts = new ArrayList<SearchableAttributeOld>();
-        if ((documentTypeAttributes == null || documentTypeAttributes.isEmpty())) {
-            if (getParentDocType() != null) {
-                return getParentDocType().getSearchableAttributesOld();
-            } else {
-                return searchAtts;
-            }
-        }
-
-        for (Iterator iterator = documentTypeAttributes.iterator(); iterator.hasNext();) {
-            DocumentTypeAttribute attribute = (DocumentTypeAttribute) iterator.next();
-//			String attributeType = attribute.getRuleAttribute().getType();
-            RuleAttribute ruleAttribute = attribute.getRuleAttribute();
-            SearchableAttributeOld searchableAttribute = null;
-            if (KEWConstants.SEARCHABLE_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
-                ObjectDefinition objDef = getAttributeObjectDefinition(ruleAttribute);
-                try {
-                    Object object = GlobalResourceLoader.getObject(objDef);
-                    if (object instanceof SearchableAttributeOld) {
-                        searchableAttribute = (SearchableAttributeOld)object;
-                    }
-                } catch (RiceRemoteServiceConnectionException e) {
-                    LOG.warn("Unable to connect to load searchable attributes for " + this.getName());
-                    LOG.warn(e.getMessage());
-                    searchableAttribute = null;
-                }
-            }
-            if (searchableAttribute != null) {
-                searchAtts.add(searchableAttribute);
-            }
-        }
-        return searchAtts;
     }
 
     public List<DocumentTypeAttribute> getDocumentTypeAttributes(String... attributeTypes) {

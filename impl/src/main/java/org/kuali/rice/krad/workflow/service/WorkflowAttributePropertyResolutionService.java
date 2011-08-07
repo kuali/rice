@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.workflow.service;
 
+import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.RoutingTypeDefinition;
@@ -32,7 +33,7 @@ public interface WorkflowAttributePropertyResolutionService {
     /** 
      * Generates a List of Map<String, String> data from the data on the document for the given WorkflowAttributeDefinitions
      * @param document the document to gather data from
-     * @param workflowAttributes the workflow attributes which have the routing type qualifiers to resolve
+     * @param routingTypeDefinition 
      * @return a List of populated Map<String, String> data
      */
     public abstract List<Map<String, String>> resolveRoutingTypeQualifiers(Document document, RoutingTypeDefinition routingTypeDefinition);
@@ -43,7 +44,7 @@ public interface WorkflowAttributePropertyResolutionService {
      * @param workflowAttributes the WorkflowAttributes data dictionary metadata which contains the searchable attributes to index 
      * @return a List of SearchableAttributeValue objects for index
      */
-    public abstract List<SearchableAttributeValue> resolveSearchableAttributeValues(Document document, WorkflowAttributes workflowAttributes);
+    public abstract List<DocumentAttribute<?>> resolveSearchableAttributeValues(Document document, WorkflowAttributes workflowAttributes);
     
     /**
      * Retrieves an object, the child of another given object passed in as a parameter, by the given path
@@ -67,6 +68,6 @@ public interface WorkflowAttributePropertyResolutionService {
      * @param value
      * @return
      */
-    public SearchableAttributeValue buildSearchableAttribute(Class<? extends BusinessObject> businessObjectClass, String attributeKey, Object value);
+    public DocumentAttribute<?> buildSearchableAttribute(Class<? extends BusinessObject> businessObjectClass, String attributeKey, Object value);
     
 }

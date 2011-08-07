@@ -16,52 +16,61 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import java.sql.Timestamp;
+import org.joda.time.DateTime;
+import org.kuali.rice.core.api.uif.DataType;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
+import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttributeDateTime;
+import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
+import org.kuali.rice.kew.framework.document.lookup.DocumentSearchContext;
+import org.kuali.rice.kew.framework.document.lookup.SearchableAttribute;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
-import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.Row;
-
-public class TestXMLSearchableAttributeDateTime implements SearchableAttributeOld {
+public class TestXMLSearchableAttributeDateTime implements SearchableAttribute {
 
     private static final long serialVersionUID = 1479059967548234181L;
 
     public static final String SEARCH_STORAGE_KEY = "testDateTimeKey";
     public static final Long SEARCH_STORAGE_VALUE_IN_MILLS = (new Long("1173995646535"));
-    public static final Timestamp SEARCH_STORAGE_VALUE = new Timestamp(SEARCH_STORAGE_VALUE_IN_MILLS.longValue());
+    public static final DateTime SEARCH_STORAGE_VALUE = new DateTime(SEARCH_STORAGE_VALUE_IN_MILLS.longValue());
 
-    public String getSearchContent(DocumentSearchContext documentSearchContext) {
-		return "TestXMLSearchableAttributeDateTime";
-	}
+    @Override
+    public String generateSearchContent(ExtensionDefinition extensionDefinition,
+            String documentTypeName,
+            WorkflowAttributeDefinition attributeDefinition) {
+        return "TestXMLSearchableAttributeDateTime";
+    }
 
-	public List<SearchableAttributeValue> getSearchStorageValues(DocumentSearchContext documentSearchContext) {
-		List<SearchableAttributeValue> savs = new ArrayList<SearchableAttributeValue>();
-        SearchableAttributeDateTimeValue sav = new SearchableAttributeDateTimeValue();
-        sav.setSearchableAttributeKey(SEARCH_STORAGE_KEY);
-        sav.setSearchableAttributeValue(SEARCH_STORAGE_VALUE);
-		savs.add(sav);
-		return savs;
-	}
+    @Override
+    public List<DocumentAttribute<?>> getDocumentAttributes(ExtensionDefinition extensionDefinition,
+            DocumentSearchContext documentSearchContext) {
+        List<DocumentAttribute<?>> savs = new ArrayList<DocumentAttribute<?>>();
+        savs.add(new DocumentAttributeDateTime(SEARCH_STORAGE_KEY, SEARCH_STORAGE_VALUE));
+        return savs;
+    }
 
-	public List<Row> getSearchingRows(DocumentSearchContext documentSearchContext) {
-		List fields = new ArrayList();
-		Field myField = new Field(SEARCH_STORAGE_KEY,"title");
-		myField.setColumnVisible(true);
-		myField.setFieldDataType((new SearchableAttributeDateTimeValue()).getAttributeDataType());
-		fields.add(myField);
-		Row row = new Row(fields);
-		List<Row> rows = new ArrayList<Row>();
-		rows.add(row);
-		return rows;
-	}
+    @Override
+    public List<RemotableAttributeField> getSearchFields(ExtensionDefinition extensionDefinition,
+            String documentTypeName) {
+        List<RemotableAttributeField> fields = new ArrayList<RemotableAttributeField>();
+        RemotableAttributeField.Builder builder = RemotableAttributeField.Builder.create(SEARCH_STORAGE_KEY);
+        builder.setLongLabel("title");
+        builder.setDataType(DataType.DATE);
+		fields.add(builder.build());
+        return fields;
+    }
 
-	public List<WorkflowAttributeValidationError> validateUserSearchInputs(Map<Object, Object> paramMap, DocumentSearchContext documentSearchContext) {
-		List<WorkflowAttributeValidationError> waves = new ArrayList<WorkflowAttributeValidationError>();
-//		WorkflowAttributeValidationError wave = new WorkflowAttributeValidationError("key1", "message1");
-//		waves.add(wave);
-		return waves;
-	}
+    @Override
+    public List<RemotableAttributeError> validateSearchFieldParameters(ExtensionDefinition extensionDefinition,
+            Map<String, List<String>> parameters,
+            String documentTypeName) {
+        return Collections.emptyList();
+    }
+
 }

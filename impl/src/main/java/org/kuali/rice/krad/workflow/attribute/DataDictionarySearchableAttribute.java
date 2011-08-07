@@ -15,22 +15,28 @@
  */
 package org.kuali.rice.krad.workflow.attribute;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.kew.docsearch.DocumentSearchContext;
-import org.kuali.rice.kew.docsearch.SearchableAttributeOld;
-import org.kuali.rice.kew.docsearch.SearchableAttributeStringValue;
-import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
+import org.apache.struts.util.MessageResources;
+import org.apache.struts.util.MessageResourcesFactory;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
+import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.core.api.util.jaxb.MultiValuedStringMapAdapter;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttributeString;
+import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.framework.document.lookup.DocumentSearchContext;
+import org.kuali.rice.kew.framework.document.lookup.SearchableAttribute;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
+import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.maintenance.KualiGlobalMaintainableImpl;
+import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.FieldUtils;
@@ -42,48 +48,48 @@ import org.kuali.rice.krad.bo.GlobalBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
-import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.krad.datadictionary.SearchingAttribute;
 import org.kuali.rice.krad.datadictionary.SearchingTypeDefinition;
 import org.kuali.rice.krad.datadictionary.WorkflowAttributes;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.kns.lookup.LookupUtils;
-import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.krad.service.DocumentService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.workflow.service.WorkflowAttributePropertyResolutionService;
 
-/**
- * This class...
- */
-public class DataDictionarySearchableAttribute implements SearchableAttributeOld {
+import javax.jws.WebParam;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+public class DataDictionarySearchableAttribute implements SearchableAttribute {
 
     private static final long serialVersionUID = 173059488280366451L;
 	private static final Logger LOG = Logger.getLogger(DataDictionarySearchableAttribute.class);
     public static final String DATA_TYPE_BOOLEAN = "boolean";
 
-    /**
-     * @see org.kuali.rice.kew.docsearch.SearchableAttributeOld#getSearchContent(org.kuali.rice.kew.docsearch.DocumentSearchContext)
-     */
-    public String getSearchContent(DocumentSearchContext documentSearchContext) {
-
+    @Override
+    public String generateSearchContent(ExtensionDefinition extensionDefinition,
+            String documentTypeName,
+            WorkflowAttributeDefinition attributeDefinition) {
         return "";
     }
 
-    /**
-     * @see org.kuali.rice.kew.docsearch.SearchableAttributeOld#getSearchStorageValues(org.kuali.rice.kew.docsearch.DocumentSearchContext)
-     */
-    public List<SearchableAttributeValue> getSearchStorageValues(DocumentSearchContext documentSearchContext) {
-        List<SearchableAttributeValue> saValues = new ArrayList<SearchableAttributeValue>();
+    @Override
+    public List<DocumentAttribute<?>> getDocumentAttributes(ExtensionDefinition extensionDefinition,
+            DocumentSearchContext documentSearchContext) {
+        List<DocumentAttribute<?>> attributes = new ArrayList<DocumentAttribute<?>>();
 
-        String docId = documentSearchContext.getDocumentId();
+        String docId = documentSearchContext.getDocument().getDocumentId();
 
         DocumentService docService = KRADServiceLocatorWeb.getDocumentService();
         Document doc = null;
@@ -93,44 +99,43 @@ public class DataDictionarySearchableAttribute implements SearchableAttributeOld
         	LOG.error( "Unable to retrieve document " + docId + " in getSearchStorageValues()", we);
         }
 
-        SearchableAttributeStringValue searchableAttributeValue = new SearchableAttributeStringValue();
-        searchableAttributeValue.setSearchableAttributeKey("documentDescription");
+        String attributeValue = "";
         if ( doc != null ) {
         	if ( doc.getDocumentHeader() != null ) {
-                searchableAttributeValue.setSearchableAttributeValue(doc.getDocumentHeader().getDocumentDescription());
+                attributeValue = doc.getDocumentHeader().getDocumentDescription();
         	} else {
-        		searchableAttributeValue.setupAttributeValue( "null document header" );
+        		attributeValue = "null document header";
         	}
         } else {
-    		searchableAttributeValue.setupAttributeValue( "null document" );
+    		attributeValue = "null document";
         }
-        saValues.add(searchableAttributeValue);
+        DocumentAttributeString attribute = new DocumentAttributeString("documentDescription", attributeValue);
+        attributes.add(attribute);
 
-        searchableAttributeValue = new SearchableAttributeStringValue();
-        searchableAttributeValue.setSearchableAttributeKey("organizationDocumentNumber");
+        attributeValue = "";
         if ( doc != null ) {
         	if ( doc.getDocumentHeader() != null ) {
-                searchableAttributeValue.setSearchableAttributeValue(doc.getDocumentHeader().getOrganizationDocumentNumber());
+                attributeValue = doc.getDocumentHeader().getOrganizationDocumentNumber();
         	} else {
-        		searchableAttributeValue.setupAttributeValue( "null document header" );
+        		attributeValue = "null document header";
         	}
         } else {
-    		searchableAttributeValue.setupAttributeValue( "null document" );
+    		attributeValue = "null document";
         }
-        saValues.add(searchableAttributeValue);
+        attribute = new DocumentAttributeString("organizationDocumentNumber", attributeValue);
+        attributes.add(attribute);
 
         if ( doc != null && doc instanceof MaintenanceDocument) {
             final Class<? extends BusinessObject> businessObjectClass = getBusinessObjectClass(documentSearchContext.getDocumentTypeName());
             if (businessObjectClass != null) {
                 if (GlobalBusinessObject.class.isAssignableFrom(businessObjectClass)) {
-                    final String documentNumber = documentSearchContext.getDocumentId();
-                    final GlobalBusinessObject globalBO = retrieveGlobalBusinessObject(documentNumber, businessObjectClass);
+                    final GlobalBusinessObject globalBO = retrieveGlobalBusinessObject(docId, businessObjectClass);
 
                     if (globalBO != null) {
-                        saValues.addAll(findAllSearchableAttributesForGlobalBusinessObject(globalBO));
+                        attributes.addAll(findAllDocumentAttributesForGlobalBusinessObject(globalBO));
                     }
                 } else {
-                    saValues.addAll(parsePrimaryKeyValuesFromDocument(businessObjectClass, (MaintenanceDocument)doc));
+                    attributes.addAll(parsePrimaryKeyValuesFromDocument(businessObjectClass, (MaintenanceDocument)doc));
                 }
 
             }
@@ -141,18 +146,25 @@ public class DataDictionarySearchableAttribute implements SearchableAttributeOld
 		        WorkflowAttributes workflowAttributes = docEntry.getWorkflowAttributes();
 		        WorkflowAttributePropertyResolutionService waprs = KRADServiceLocatorInternal
                         .getWorkflowAttributePropertyResolutionService();
-		        saValues.addAll(waprs.resolveSearchableAttributeValues(doc, workflowAttributes));
+		        attributes.addAll(waprs.resolveSearchableAttributeValues(doc, workflowAttributes));
             } else {
             	LOG.error( "Unable to find DD document entry for document type: " + documentSearchContext.getDocumentTypeName() );
             }
         }
-        return saValues;
+        return attributes;
+    }
+
+    @Override
+    public List<RemotableAttributeField> getSearchFields(ExtensionDefinition extensionDefinition, String documentTypeName) {
+        List<Row> searchRows = getSearchingRows(documentTypeName);
+        return FieldUtils.convertRowsToAttributeFields(searchRows);
     }
 
     /**
-     * @see org.kuali.rice.kew.docsearch.SearchableAttributeOld#getSearchingRows(org.kuali.rice.kew.docsearch.DocumentSearchContext)
+     * Produces legacy KNS rows to use for search attributes.  This method was left intact to help ease conversion
+     * until KNS is replaced with KRAD.
      */
-    public List<Row> getSearchingRows(DocumentSearchContext documentSearchContext) {
+    protected List<Row> getSearchingRows(String documentTypeName) {
 
         List<Row> docSearchRows = new ArrayList<Row>();
 
@@ -173,12 +185,12 @@ public class DataDictionarySearchableAttribute implements SearchableAttributeOld
         docSearchRows.add(new Row(fieldList));
 
 
-        DocumentEntry entry = (DocumentEntry) KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(documentSearchContext.getDocumentTypeName());
+        DocumentEntry entry = (DocumentEntry) KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(documentTypeName);
         if (entry  == null)
             return docSearchRows;
         if (entry instanceof MaintenanceDocumentEntry) {
-            Class<? extends BusinessObject> businessObjectClass = getBusinessObjectClass(documentSearchContext.getDocumentTypeName());
-            Class<? extends Maintainable> maintainableClass = getMaintainableClass(documentSearchContext.getDocumentTypeName());
+            Class<? extends BusinessObject> businessObjectClass = getBusinessObjectClass(documentTypeName);
+            Class<? extends Maintainable> maintainableClass = getMaintainableClass(documentTypeName);
 
             KualiGlobalMaintainableImpl globalMaintainable = null;
             try {
@@ -199,44 +211,51 @@ public class DataDictionarySearchableAttribute implements SearchableAttributeOld
         return docSearchRows;
     }
 
-    public List<WorkflowAttributeValidationError> validateUserSearchInputs(Map<Object, Object> paramMap, DocumentSearchContext searchContext) {
-        List<WorkflowAttributeValidationError> validationErrors = null;
+    @Override
+    public List<RemotableAttributeError> validateSearchFieldParameters(ExtensionDefinition extensionDefinition,
+            Map<String, List<String>> parameters,
+            String documentTypeName) {
+        List<RemotableAttributeError> validationErrors = new ArrayList<RemotableAttributeError>();
         DictionaryValidationService validationService = KNSServiceLocator.getDictionaryValidationService();
         
-        for (Object key : paramMap.keySet()) {
-            Object value = paramMap.get(key);
-            if (value != null) {
-            	if (value instanceof String && !StringUtils.isEmpty((String)value)) {
-            		validationService.validateAttributeFormat(searchContext.getDocumentTypeName(), (String)key, (String)value, (String)key);
-            	} else if (value instanceof Collection && !((Collection)value).isEmpty()) {
-            		// we're doing multi-select search; so we need to loop through all of the Strings
-            		// we've been handed and validate each of them
-            		for (Object v : ((Collection)value)) {
-            			if (v instanceof String) {
-            				validationService.validateAttributeFormat(searchContext.getDocumentTypeName(), (String)key, (String)v, (String)key);
-            			}
-            		}
-            	}
+        for (String key : parameters.keySet()) {
+            List<String> values = parameters.get(key);
+            if (CollectionUtils.isNotEmpty(values)) {
+                for (String value : values) {
+                    if (StringUtils.isNotBlank(value)) {
+                        validationService.validateAttributeFormat(documentTypeName, key, value, key);
+                    }
+                }
             }
         }
 
+        // TODO - Rice 2.0 - Not sure if this is exactly right, need to do some more research to find the best way
+        MessageResourcesFactory factory = MessageResourcesFactory.createFactory();
+        MessageResources messageResources = factory.createResources(null);
+
         if(GlobalVariables.getMessageMap().hasErrors()){
-        	validationErrors = new ArrayList<WorkflowAttributeValidationError>();
-        	MessageMap deepCopy = (MessageMap)ObjectUtils.deepCopy(GlobalVariables.getMessageMap()); 
-        	validationErrors.add(new WorkflowAttributeValidationError(null,null,deepCopy));
+        	validationErrors = new ArrayList<RemotableAttributeError>();
+        	MessageMap deepCopy = (MessageMap)ObjectUtils.deepCopy(GlobalVariables.getMessageMap());
+            for (String errorKey : deepCopy.getErrorMessages().keySet()) {
+                List<ErrorMessage> errorMessages = deepCopy.getErrorMessages().get(errorKey);
+                if (CollectionUtils.isNotEmpty(errorMessages)) {
+                    List<String> errors = new ArrayList<String>();
+                    for (ErrorMessage errorMessage : errorMessages) {
+                        // need to materialize the message from it's parameters so we can send it back to the framework
+                        String error = messageResources.getMessage(errorMessage.getErrorKey(), errorMessage.getMessageParameters());
+                        errors.add(error);
+                    }
+                    RemotableAttributeError remotableAttributeError = RemotableAttributeError.Builder.create(errorKey, errors).build();
+                    validationErrors.add(remotableAttributeError);
+                }
+            }
         	// we should now strip the error messages from the map because they have moved to validationErrors
         	GlobalVariables.getMessageMap().clearErrorMessages();
         }
 
-
         return validationErrors;
     }
 
-    /**
-     * Creates a list of search fields, one for each primary key of the maintained business object
-     * @param businessObjectClass the class of the maintained business object
-     * @return a List of KEW search fields
-     */
     protected List<Row> createFieldRowsForWorkflowAttributes(WorkflowAttributes attrs) {
         List<Row> searchFields = new ArrayList<Row>();
 
@@ -294,21 +313,14 @@ public class DataDictionarySearchableAttribute implements SearchableAttributeOld
         return searchFields;
     }
 
-
-    /**
-     *
-     * @param businessObjectClass
-     * @param documentContent
-     * @return
-     */
-    protected List<SearchableAttributeValue> parsePrimaryKeyValuesFromDocument(Class<? extends BusinessObject> businessObjectClass, MaintenanceDocument document) {
-        List<SearchableAttributeValue> values = new ArrayList<SearchableAttributeValue>();
+    protected List<DocumentAttribute<?>> parsePrimaryKeyValuesFromDocument(Class<? extends BusinessObject> businessObjectClass, MaintenanceDocument document) {
+        List<DocumentAttribute<?>> values = new ArrayList<DocumentAttribute<?>>();
 
         final List primaryKeyNames = KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(businessObjectClass);
 
         for (Object primaryKeyNameAsObj : primaryKeyNames) {
             final String primaryKeyName = (String)primaryKeyNameAsObj;
-            final SearchableAttributeValue searchableValue = parseSearchableAttributeValueForPrimaryKey(primaryKeyName, businessObjectClass, document);
+            final DocumentAttribute<?> searchableValue = parseSearchableAttributeValueForPrimaryKey(primaryKeyName, businessObjectClass, document);
             if (searchableValue != null) {
                 values.add(searchableValue);
             }
@@ -323,7 +335,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttributeOld
      * @param document the document XML
      * @return a generated SearchableAttributeValue, or null if a value could not be created
      */
-    protected SearchableAttributeValue parseSearchableAttributeValueForPrimaryKey(String propertyName, Class<? extends BusinessObject> businessObjectClass, MaintenanceDocument document) {
+    protected DocumentAttribute<?> parseSearchableAttributeValueForPrimaryKey(String propertyName, Class<? extends BusinessObject> businessObjectClass, MaintenanceDocument document) {
 
         Maintainable maintainable  = document.getNewMaintainableObject();
         PersistableBusinessObject bo = maintainable.getBusinessObject();
@@ -332,7 +344,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttributeOld
         if (propertyValue == null) return null;
 
         final WorkflowAttributePropertyResolutionService propertyResolutionService = KRADServiceLocatorInternal.getWorkflowAttributePropertyResolutionService();
-        SearchableAttributeValue value = propertyResolutionService.buildSearchableAttribute(businessObjectClass, propertyName, propertyValue);
+        DocumentAttribute<?> value = propertyResolutionService.buildSearchableAttribute(businessObjectClass, propertyName, propertyValue);
         return value;
     }
 
@@ -366,13 +378,6 @@ public class DataDictionarySearchableAttribute implements SearchableAttributeOld
         return (MaintenanceDocumentEntry) KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(documentTypeName);
     }
 
-    /**
-     *
-     * @param documentNumber
-     * @param businessObjectClass
-     * @param document
-     * @return
-     */
     protected GlobalBusinessObject retrieveGlobalBusinessObject(String documentNumber, Class<? extends BusinessObject> businessObjectClass) {
         GlobalBusinessObject globalBO = null;
 
@@ -387,16 +392,11 @@ public class DataDictionarySearchableAttribute implements SearchableAttributeOld
         return globalBO;
     }
 
-    /**
-     *
-     * @param globalBO
-     * @return
-     */
-    protected List<SearchableAttributeValue> findAllSearchableAttributesForGlobalBusinessObject(GlobalBusinessObject globalBO) {
-        List<SearchableAttributeValue> searchValues = new ArrayList<SearchableAttributeValue>();
+    protected List<DocumentAttribute<?>> findAllDocumentAttributesForGlobalBusinessObject(GlobalBusinessObject globalBO) {
+        List<DocumentAttribute<?>> searchValues = new ArrayList<DocumentAttribute<?>>();
 
         for (PersistableBusinessObject bo : globalBO.generateGlobalChangesToPersist()) {
-            SearchableAttributeValue value = generateSearchableAttributeFromChange(bo);
+            DocumentAttribute<?> value = generateSearchableAttributeFromChange(bo);
             if (value != null) {
                 searchValues.add(value);
             }
@@ -405,24 +405,17 @@ public class DataDictionarySearchableAttribute implements SearchableAttributeOld
         return searchValues;
     }
 
-    /**
-     *
-     * @param changeToPersist
-     * @return
-     */
-    protected SearchableAttributeValue generateSearchableAttributeFromChange(PersistableBusinessObject changeToPersist) {
-        List primaryKeyNames = KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(changeToPersist.getClass());
+    protected DocumentAttribute<?> generateSearchableAttributeFromChange(PersistableBusinessObject changeToPersist) {
+        List<String> primaryKeyNames = KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(changeToPersist.getClass());
 
         for (Object primaryKeyNameAsObject : primaryKeyNames) {
             String primaryKeyName = (String)primaryKeyNameAsObject;
             Object value = ObjectUtils.getPropertyValue(changeToPersist, primaryKeyName);
 
             if (value != null) {
-
                 final WorkflowAttributePropertyResolutionService propertyResolutionService = KRADServiceLocatorInternal.getWorkflowAttributePropertyResolutionService();
-                SearchableAttributeValue saValue = propertyResolutionService.buildSearchableAttribute(changeToPersist.getClass(), primaryKeyName, value);
+                DocumentAttribute<?> saValue = propertyResolutionService.buildSearchableAttribute(changeToPersist.getClass(), primaryKeyName, value);
                 return saValue;
-
             }
         }
         return null;

@@ -16,49 +16,60 @@
  */
 package org.kuali.rice.kew.docsearch;
 
+import org.kuali.rice.core.api.uif.DataType;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
+import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttributeInteger;
+import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
+import org.kuali.rice.kew.framework.document.lookup.DocumentSearchContext;
+import org.kuali.rice.kew.framework.document.lookup.SearchableAttribute;
+
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
-import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.Row;
-
-public class TestXMLSearchableAttributeLong implements SearchableAttributeOld {
+public class TestXMLSearchableAttributeLong implements SearchableAttribute {
 
     private static final long serialVersionUID = 1309952222293029643L;
 
     public static final String SEARCH_STORAGE_KEY = "testLongKey";
-    public static final Long SEARCH_STORAGE_VALUE = new Long(123456);
+    public static final BigInteger SEARCH_STORAGE_VALUE = BigInteger.valueOf(123456);
 
-    public String getSearchContent(DocumentSearchContext documentSearchContext) {
-		return "TestXMLSearchableAttributeLong";
-	}
+    @Override
+    public String generateSearchContent(ExtensionDefinition extensionDefinition,
+            String documentTypeName,
+            WorkflowAttributeDefinition attributeDefinition) {
+        return "TestXMLSearchableAttributeLong";
+    }
 
-	public List<SearchableAttributeValue> getSearchStorageValues(DocumentSearchContext documentSearchContext) {
-		List<SearchableAttributeValue> savs = new ArrayList<SearchableAttributeValue>();
-        SearchableAttributeLongValue sav = new SearchableAttributeLongValue();
-        sav.setSearchableAttributeKey(SEARCH_STORAGE_KEY);
-        sav.setSearchableAttributeValue(SEARCH_STORAGE_VALUE);
-		savs.add(sav);
-		return savs;
-	}
+    @Override
+    public List<DocumentAttribute<?>> getDocumentAttributes(ExtensionDefinition extensionDefinition,
+            DocumentSearchContext documentSearchContext) {
+        List<DocumentAttribute<?>> savs = new ArrayList<DocumentAttribute<?>>();
+        savs.add(new DocumentAttributeInteger(SEARCH_STORAGE_KEY, SEARCH_STORAGE_VALUE));
+        return savs;
+    }
 
-	public List<Row> getSearchingRows(DocumentSearchContext documentSearchContext) {
-		List<Field> fields = new ArrayList<Field>();
-		Field myField = new Field(SEARCH_STORAGE_KEY,"title");
-		myField.setFieldDataType((new SearchableAttributeLongValue()).getAttributeDataType());
-		fields.add(myField);
-		Row row = new Row(fields);
-		List<Row> rows = new ArrayList<Row>();
-		rows.add(row);
-		return rows;
-	}
+    @Override
+    public List<RemotableAttributeField> getSearchFields(ExtensionDefinition extensionDefinition,
+            String documentTypeName) {
+        List<RemotableAttributeField> fields = new ArrayList<RemotableAttributeField>();
+        RemotableAttributeField.Builder builder = RemotableAttributeField.Builder.create(SEARCH_STORAGE_KEY);
+        builder.setLongLabel("title");
+        builder.setDataType(DataType.INTEGER);
+		fields.add(builder.build());
+        return fields;
+    }
 
-	public List<WorkflowAttributeValidationError> validateUserSearchInputs(Map<Object, Object> paramMap, DocumentSearchContext documentSearchContext) {
-		List<WorkflowAttributeValidationError> waves = new ArrayList<WorkflowAttributeValidationError>();
-//		WorkflowAttributeValidationError wave = new WorkflowAttributeValidationError("key1", "message1");
-//		waves.add(wave);
-		return waves;
-	}
+    @Override
+    public List<RemotableAttributeError> validateSearchFieldParameters(ExtensionDefinition extensionDefinition,
+            Map<String, List<String>> parameters,
+            String documentTypeName) {
+        return Collections.emptyList();
+    }
+
 }

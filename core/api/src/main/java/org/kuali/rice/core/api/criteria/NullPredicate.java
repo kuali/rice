@@ -90,6 +90,6 @@ public final class NullPredicate extends AbstractPredicate implements PropertyPa
     @Override
     public String toString() {
         return new StringBuilder(CriteriaSupportUtils.findDynName(this.getClass().getSimpleName()))
-                .append(this.getPropertyPath()).append(")").toString();
+                .append("(").append(this.getPropertyPath()).append(")").toString();
     }
 }

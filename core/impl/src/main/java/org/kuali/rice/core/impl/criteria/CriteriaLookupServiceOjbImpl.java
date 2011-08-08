@@ -3,9 +3,11 @@ package org.kuali.rice.core.impl.criteria;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryFactory;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.criteria.AndPredicate;
 import org.kuali.rice.core.api.criteria.CompositePredicate;
 import org.kuali.rice.core.api.criteria.CountFlag;
+import org.kuali.rice.core.api.criteria.CriteriaDateTimeValue;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
 import org.kuali.rice.core.api.criteria.CriteriaValue;
 import org.kuali.rice.core.api.criteria.EqualIgnoreCasePredicate;
@@ -152,7 +154,7 @@ public class CriteriaLookupServiceOjbImpl extends PlatformAwareDaoBaseOjb implem
 
     /** adds a single valued predicate to a Criteria. */
     private void addSingleValuePredicate(SingleValuedPredicate p, Criteria parent) {
-        final Object value = p.getValue().getValue();
+        final Object value = getVal(p.getValue());
         final String pp = p.getPropertyPath();
         if (p instanceof EqualPredicate) {
             parent.addEqualTo(pp, value);
@@ -184,16 +186,16 @@ public class CriteriaLookupServiceOjbImpl extends PlatformAwareDaoBaseOjb implem
     private void addMultiValuePredicate(MultiValuedPredicate p, Criteria parent) {
         final String pp = p.getPropertyPath();
         if (p instanceof InPredicate) {
-            final Set<?> values = getValsUnsafe(p.getValues());
+            final Set<?> values = getVals(p.getValues());
             parent.addIn(pp, values);
         } else if (p instanceof InIgnoreCasePredicate) {
-            final Set<String> values = toUpper(getVals(((InIgnoreCasePredicate) p).getValues()));
+            final Set<String> values = toUpper(getValsUnsafe(((InIgnoreCasePredicate) p).getValues()));
             parent.addIn(genUpperFunc(pp), values);
         } else if (p instanceof NotInPredicate) {
-            final Set<?> values = getValsUnsafe(p.getValues());
+            final Set<?> values = getVals(p.getValues());
             parent.addNotIn(pp, values);
         } else if (p instanceof NotInIgnoreCasePredicate) {
-            final Set<String> values = toUpper(getVals(((NotInIgnoreCasePredicate) p).getValues()));
+            final Set<String> values = toUpper(getValsUnsafe(((NotInIgnoreCasePredicate) p).getValues()));
             parent.addNotIn(genUpperFunc(pp), values);
         } else {
             throw new UnsupportedPredicateException(p);
@@ -215,16 +217,24 @@ public class CriteriaLookupServiceOjbImpl extends PlatformAwareDaoBaseOjb implem
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private static <T, U extends CriteriaValue<T>> Set<T> getVals(Set<? extends U> toConv) {
-        return (Set<T>) getValsUnsafe(toConv);
+    private static <U extends CriteriaValue<?>> Object getVal(U toConv) {
+        Object o = toConv.getValue();
+        if (o instanceof DateTime) {
+            return ((DateTime) o).toDate();
+        }
+        return o;
     }
 
-    //FIXME: this method exists to make javac happy - to bad I didn't know how to fix this....
-    private static Set<?> getValsUnsafe(Set<? extends CriteriaValue<?>> toConv) {
+    //this is unsafe b/c values could be converted resulting in a classcast exception
+    @SuppressWarnings("unchecked")
+    private static <T, U extends CriteriaValue<T>> Set<T> getValsUnsafe(Set<? extends U> toConv) {
+        return (Set<T>) getVals(toConv);
+    }
+
+    private static Set<?> getVals(Set<? extends CriteriaValue<?>> toConv) {
         final Set<Object> values = new HashSet<Object>();
         for (CriteriaValue<?> value : toConv) {
-            values.add(value.getValue());
+            values.add(getVal(value));
         }
         return values;
     }

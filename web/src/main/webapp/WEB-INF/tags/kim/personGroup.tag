@@ -39,7 +39,7 @@
                 <td align="left" valign="middle" class="infoline" >
                 	<div align="center">
 	                	<kul:htmlControlAttribute property="newGroup.groupId" attributeEntry="${docGroupAttributes.groupId}" readOnly="${readOnly}"/>
-	                	<kul:lookup boClassName="org.kuali.rice.kim.impl.group.GroupBo" fieldConversions="idd:newGroup.groupId,kimTypeId:newGroup.kimTypeId,name:newGroup.groupName,namespaceCode:newGroup.namespaceCode,kimTypeInfo.name:newGroup.kimTypeInfo.name" anchor="${tabKey}" />
+	                	<kul:lookup boClassName="org.kuali.rice.kim.impl.group.GroupBo" fieldConversions="id:newGroup.groupId,kimTypeId:newGroup.kimTypeId,name:newGroup.groupName,namespaceCode:newGroup.namespaceCode,kimTypeInfo.name:newGroup.kimTypeInfo.name" anchor="${tabKey}" />
 						<%--<html:hidden property="newGroup.groupName" />--%>
 						<html:hidden property="newGroup.kimTypeId" />
 						<html:hidden property="newGroup.kimTypeInfo.name" />

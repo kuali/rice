@@ -30,7 +30,7 @@ public abstract class ActiveFromToBo extends PersistableBusinessObjectBase {
 	Timestamp activeToDateValue
 
     boolean isActive(Timestamp activeAsOfDate) {
-        return InactivatableFromToUtils.isActive(getActiveFromDate(), getActiveToDate(), new DateTime(activeAsOfDate))
+        return InactivatableFromToUtils.isActive(getActiveFromDate(), getActiveToDate(), new DateTime(activeAsOfDate.getTime()))
     }
 
     boolean isActive(DateTime activeAsOfDate) {
@@ -38,10 +38,10 @@ public abstract class ActiveFromToBo extends PersistableBusinessObjectBase {
     }
 
     DateTime getActiveFromDate() {
-        return this.activeFromDateValue == null ? null : new DateTime(this.activeFromDateValue)
+        return this.activeFromDateValue == null ? null : new DateTime(this.activeFromDateValue.getTime())
     }
 
     DateTime getActiveToDate() {
-        return this.activeToDateValue == null ? null : new DateTime(this.activeToDateValue)
+        return this.activeToDateValue == null ? null : new DateTime(this.activeToDateValue.getTime())
     }
 }

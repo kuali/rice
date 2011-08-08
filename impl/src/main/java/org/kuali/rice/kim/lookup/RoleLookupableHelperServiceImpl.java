@@ -31,6 +31,7 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
 import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.lookup.HtmlData;
+import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Field;
@@ -115,16 +116,19 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
     
     @Override
     public List<? extends BusinessObject> getSearchResults(java.util.Map<String,String> fieldValues) {
-    	for (Map.Entry<String,String> entry : fieldValues.entrySet()) {
+        //String kimTypeId = "";
+        fieldValues.remove(KRADConstants.BACK_LOCATION);
+        fieldValues.remove(KRADConstants.DOC_FORM_KEY);
+    	/*for (Map.Entry<String,String> entry : fieldValues.entrySet()) {
         	if (entry.getKey().equals(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID)) {
-        		entry.getValue();
+        		kimTypeId = entry.getValue();
         		break;
         	}
-        }
-  //  	List<RoleImpl> roles = roleDao.getRoles(fieldValues, kimTypeId);
-        List<RoleBo> baseLookup = (List<RoleBo>)super.getSearchResults(fieldValues);
+        }*/
+    	List<RoleBo> roles = roleDao.getRoles(fieldValues);
+        //List<RoleBo> baseLookup = (List<RoleBo>)super.getSearchResults(fieldValues);
 
-        return baseLookup;
+        return roles;
     }
 
 	private List<KeyValue> getRoleTypeOptions() {

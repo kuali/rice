@@ -43,6 +43,7 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceHelper;
 import org.kuali.rice.kns.lookup.HtmlData;
+import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Column;
@@ -130,28 +131,29 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
     @Override
     public List<GroupBo> getSearchResults(java.util.Map<String,String> fieldValues)  {
         QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        fieldValues.remove(KRADConstants.DOC_FORM_KEY);
+        fieldValues.remove(KRADConstants.BACK_LOCATION);
         Map<String, String> criteriaMap = new HashMap<String, String>(fieldValues);
-        criteriaMap.remove(KRADConstants.BACK_LOCATION);
-        criteriaMap.remove(KRADConstants.DOC_FORM_KEY);
+        criteriaMap.remove(KRADConstants.DOC_NUM);
         if (!criteriaMap.isEmpty()) {
             List<Predicate> predicates = new ArrayList<Predicate>();
-            for (String key : criteriaMap.keySet()) {
-                if (StringUtils.isNotEmpty(criteriaMap.get(key))) {
-                    if (key.equals("principalName")) {
+            for (Map.Entry<String, String> entry : criteriaMap.entrySet()) {
+                if (StringUtils.isNotBlank(entry.getValue())) {
+                    if (entry.getKey().equals("principalName")) {
                         //get principalId, which we can actually use
                         Timestamp currentTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-                        String principalId = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(criteriaMap.get(key)).getPrincipalId();
+                        String principalId = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(criteriaMap.get(entry.getKey())).getPrincipalId();
                         predicates.add(
                                 and(
                                     equal("members.memberId", principalId),
                                     equal("members.typeCode", KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE),
                                     and(
-                                        or(isNull(KIMPropertyConstants.KimMember.ACTIVE_FROM_DATE), greaterThanOrEqual(KIMPropertyConstants.KimMember.ACTIVE_FROM_DATE, currentTime)),
-                                        or(isNull(KIMPropertyConstants.KimMember.ACTIVE_TO_DATE), lessThan(KIMPropertyConstants.KimMember.ACTIVE_TO_DATE, currentTime))
+                                        or(isNull("members.activeFromDateValue"), greaterThanOrEqual("members.activeFromDateValue", currentTime)),
+                                        or(isNull("members.activeToDateValue"), lessThan("members.activeToDateValue", currentTime))
                                        )
                                 ));
                     } else {
-                        predicates.add(like(key, criteriaMap.get(key)));
+                        predicates.add(like(entry.getKey(), entry.getValue()));
                     }
                 }
             }
@@ -273,17 +275,17 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 	}
 
     @Override
-	public Collection performLookup(LookupForm lookupForm, Collection resultTable, boolean bounded) {
+	public Collection<GroupBo> performLookup(LookupForm lookupForm, Collection resultTable, boolean bounded) {
         setBackLocation((String) lookupForm.getFieldsForLookup().get(KRADConstants.BACK_LOCATION));
         setDocFormKey((String) lookupForm.getFieldsForLookup().get(KRADConstants.DOC_FORM_KEY));
-        Collection displayList;
+        List<GroupBo> displayList;
 
         // call search method to get results
         if (bounded) {
             displayList = getSearchResults(lookupForm.getFieldsForLookup());
         }
         else {
-            displayList = getSearchResultsUnbounded(lookupForm.getFieldsForLookup());
+            displayList = (List<GroupBo>)getSearchResultsUnbounded(lookupForm.getFieldsForLookup());
         }
 
         HashMap<String,Class> propertyTypes = new HashMap<String, Class>();
@@ -407,6 +409,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 
         return displayList;
     }
+
 
 	private List<KeyValue> getGroupTypeOptions() {
 		List<KeyValue> options = new ArrayList<KeyValue>();

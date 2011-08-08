@@ -985,4 +985,9 @@ public final class KEWConstants {
 	private KEWConstants() {
 		throw new UnsupportedOperationException("do not call");
 	}
+	
+	public static final class GroupMembershipChangeOperations {
+	    public static final String ADDED = "ADDED";
+	    public static final String REMOVED = "REMOVED";
+	}
 }

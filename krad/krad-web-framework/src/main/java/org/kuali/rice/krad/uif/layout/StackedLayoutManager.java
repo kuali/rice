@@ -86,6 +86,9 @@ public class StackedLayoutManager extends BoxLayoutManager implements Collection
 	public void performInitialization(View view, Container container) {
 		super.performInitialization(view, container);
 
+        if (addLineGroup != null) {
+            view.getViewHelperService().performComponentInitialization(view, addLineGroup);
+        }
 		view.getViewHelperService().performComponentInitialization(view, lineGroupPrototype);
 		view.getViewHelperService().performComponentInitialization(view, subCollectionGroupFieldPrototype);
 	}

@@ -71,6 +71,7 @@ public class CollectionGroup extends Group implements DataBinding {
     private CollectionFilter activeCollectionFilter;
 
     private List<CollectionGroup> subCollections;
+    private String subCollectionSuffix;
 
     private CollectionGroupBuilder collectionGroupBuilder;
 
@@ -200,8 +201,7 @@ public class CollectionGroup extends Group implements DataBinding {
         List<Component> components = this.getNestedComponents();
         
         ComponentUtils
-                .pushObjectToContext(components, UifConstants.ContextVariableNames.COLLECTION_GROUP,
-                        this);
+                .pushObjectToContext(components, UifConstants.ContextVariableNames.COLLECTION_GROUP, this);
 
         List<ActionField> actionFields =
                 ComponentUtils.getComponentsOfTypeDeep(components, ActionField.class);
@@ -583,6 +583,29 @@ public class CollectionGroup extends Group implements DataBinding {
      */
     public void setSubCollections(List<CollectionGroup> subCollections) {
         this.subCollections = subCollections;
+    }
+
+    /**
+     * Suffix for IDs that identifies the collection line the sub-collection belongs to
+     *
+     * <p>
+     * Built by the framework as the collection lines are being generated
+     * </p>
+     *
+     * @return String id suffix for sub-collection
+     */
+    public String getSubCollectionSuffix() {
+        return subCollectionSuffix;
+    }
+
+    /**
+     * Setter for the sub-collection suffix (used by framework, should not be
+     * set in configuration)
+     *
+     * @param subCollectionSuffix
+     */
+    public void setSubCollectionSuffix(String subCollectionSuffix) {
+        this.subCollectionSuffix = subCollectionSuffix;
     }
 
     /**

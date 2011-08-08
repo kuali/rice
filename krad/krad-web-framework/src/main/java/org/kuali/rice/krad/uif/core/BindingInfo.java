@@ -42,6 +42,7 @@ public class BindingInfo implements Serializable {
     private String bindingObjectPath;
 
     private String collectionPath;
+
     private String bindingPath;
 
     private Map<String, String> propertyExpressions;

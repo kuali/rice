@@ -168,13 +168,16 @@ public class CollectionGroupBuilder implements Serializable {
 		CollectionLayoutManager layoutManager = (CollectionLayoutManager) collectionGroup.getLayoutManager();
 
 		// copy group items for new line
-		List<Field> lineFields = null;
+        List<Field> lineFields = null;
+        String lineSuffix = "";
         if (lineIndex == -1) {
+            lineSuffix = "_add";
             lineFields = (List<Field>) ComponentUtils.copyFieldList(collectionGroup.getAddLineFields(), bindingPath,
-                    "_add");
+                    lineSuffix);
         } else {
-            lineFields = (List<Field>) ComponentUtils.copyFieldList(collectionGroup.getItems(), bindingPath, "_"
-                    + Integer.toString(lineIndex));
+            lineSuffix = "_" + Integer.toString(lineIndex);
+            lineFields = (List<Field>) ComponentUtils.copyFieldList(collectionGroup.getItems(), bindingPath,
+                    lineSuffix);
         }
         
 		if(lineIndex == -1 && !lineFields.isEmpty()){
@@ -207,32 +210,46 @@ public class CollectionGroupBuilder implements Serializable {
 
 		// if not add line build sub-collection field groups
 		List<GroupField> subCollectionFields = new ArrayList<GroupField>();
-		if ((lineIndex != -1) && (collectionGroup.getSubCollections() != null)) {
-			for (int subLineIndex = 0; subLineIndex < collectionGroup.getSubCollections().size(); subLineIndex++) {
-				CollectionGroup subCollectionPrototype = collectionGroup.getSubCollections().get(subLineIndex);
-				CollectionGroup subCollectionGroup = ComponentUtils.copy(subCollectionPrototype, collectionGroup.getId() + "s" + subLineIndex);
-				
+        if ((lineIndex != -1) && (collectionGroup.getSubCollections() != null)) {
+            for (int subLineIndex = 0; subLineIndex < collectionGroup.getSubCollections().size(); subLineIndex++) {
+                CollectionGroup subCollectionPrototype = collectionGroup.getSubCollections().get(subLineIndex);
+                CollectionGroup subCollectionGroup = ComponentUtils.copy(subCollectionPrototype, lineSuffix);
+
                 // verify the sub-collection should be rendered
-                boolean renderSubCollection = checkSubCollectionRender(view, model, collectionGroup, subCollectionGroup);
+                boolean renderSubCollection = checkSubCollectionRender(view, model, collectionGroup,
+                        subCollectionGroup);
                 if (!renderSubCollection) {
                     continue;
                 }
 
-				subCollectionGroup.getBindingInfo().setBindByNamePrefix(bindingPath);
-				subCollectionGroup.getAddLineBindingInfo().setBindByNamePrefix(bindingPath);
+                subCollectionGroup.getBindingInfo().setBindByNamePrefix(bindingPath);
+                subCollectionGroup.getAddLineBindingInfo().setBindByNamePrefix(bindingPath);
 
-				GroupField groupFieldPrototype = layoutManager.getSubCollectionGroupFieldPrototype();
-				GroupField subCollectionGroupField = ComponentUtils.copy(groupFieldPrototype, collectionGroup.getId() + "s" + subLineIndex);
-				subCollectionGroupField.setGroup(subCollectionGroup);
+                // set sub-collection suffix on group so it can be used for generated groups
+                String subCollectionSuffix = lineSuffix;
+                if (StringUtils.isNotBlank(subCollectionGroup.getSubCollectionSuffix())) {
+                    subCollectionSuffix = subCollectionGroup.getSubCollectionSuffix() + lineSuffix;
+                }
+                subCollectionGroup.setSubCollectionSuffix(subCollectionSuffix);
 
-				subCollectionFields.add(subCollectionGroupField);
-			}
-		}
-		
+                GroupField groupFieldPrototype = layoutManager.getSubCollectionGroupFieldPrototype();
+                GroupField subCollectionGroupField = ComponentUtils.copy(groupFieldPrototype,
+                        lineSuffix + "s" + subLineIndex);
+                subCollectionGroupField.setGroup(subCollectionGroup);
+
+                subCollectionFields.add(subCollectionGroupField);
+            }
+        }
+
+        // check for sub-collection suffix which needs added to IDs before the line index
+        String idSuffix = lineSuffix;
+        if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {
+            idSuffix = collectionGroup.getSubCollectionSuffix() + idSuffix;
+        }
 		
 		// invoke layout manager to build the complete line
 		layoutManager.buildLine(view, model, collectionGroup, lineFields, subCollectionFields, bindingPath, actions,
-				"_l" + lineIndex, currentLine, lineIndex);
+				idSuffix, currentLine, lineIndex);
 	}
 
 	

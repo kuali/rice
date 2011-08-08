@@ -126,11 +126,11 @@
 	  <param name="rice.portal.logout.redirectUrl">${application.url}/portal.do</param>
 
     <!-- App specific parameters -->
-    <param name="externalizable.help.url" override="false">/${app.context.name}/kr/static/help/</param>
-    <param name="externalizable.images.url" override="false">/${app.context.name}/kr/static/images/</param>
-    <param name="kr.externalizable.images.url" override="false">/${app.context.name}/kr/static/images/</param>
-    <param name="travel.externalizable.images.url" override="false">/${app.context.name}/kr/static/images/</param>
-    <param name="krad.externalizable.images.url" override="false">/${app.context.name}/krad/images/</param>
+    <param name="externalizable.help.url" override="false">${application.url}/kr/static/help/</param>
+    <param name="externalizable.images.url" override="false">${application.url}/kr/static/images/</param>
+    <param name="kr.externalizable.images.url" override="false">${application.url}/kr/static/images/</param>
+    <param name="travel.externalizable.images.url" override="false">${application.url}/kr/static/images/</param>
+    <param name="krad.externalizable.images.url" override="false">${application.url}/krad/images/</param>
 
     <!-- Code Options: (dev|snd|unt|reg|stg|trn|prd) -->
     <param name="production.environment.code" override="false">prd</param>

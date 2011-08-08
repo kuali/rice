@@ -62,6 +62,8 @@ public interface DocumentLookupCustomizationHandlerService {
             @WebParam(name = "documentLookupCriteria") DocumentLookupCriteria documentLookupCriteria
     ) throws RiceIllegalArgumentException;
 
+    // TODO - Rice 2.0 - add results and result set fields here
+
     @WebMethod(operationName = "getEnabledCustomizations")
     @WebResult(name = "enabledCustomizations")
     @XmlElementWrapper(name = "enabledCustomizations", required = false)

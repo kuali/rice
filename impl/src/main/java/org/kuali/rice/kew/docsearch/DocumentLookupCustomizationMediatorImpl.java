@@ -118,6 +118,22 @@ public class DocumentLookupCustomizationMediatorImpl implements DocumentLookupCu
         return documentLookupCriteria;
     }
 
+    @Override
+    public DocSearchCriteriaDTO customizeClearCriteria(DocumentType documentType, DocSearchCriteriaDTO documentLookupCriteria) {
+        DocumentTypeAttribute customizerAttribute = documentType.getCustomizerAttribute();
+        if (customizerAttribute != null) {
+            DocumentLookupCustomizationHandlerService service = loadCustomizationService(customizerAttribute.getRuleAttribute().getApplicationId());
+            if (service.getEnabledCustomizations(documentType.getName()).contains(DocumentLookupCustomization.CLEAR_CRITERIA)) {
+                DocumentLookupCriteria apiCriteria = translateCriteriaInternalToApi(documentLookupCriteria);
+                apiCriteria = service.customizeClearCriteria(apiCriteria);
+                if (apiCriteria != null) {
+                    return applyCriteriaCustomizations(documentLookupCriteria, apiCriteria);
+                }
+            }
+        }
+        return null;
+    }
+
     protected DocumentLookupCriteria translateCriteriaInternalToApi(DocSearchCriteriaDTO documentLookupCriteria) {
         DocumentLookupCriteria.Builder builder = DocumentLookupCriteria.Builder.create(documentLookupCriteria);
         return builder.build();

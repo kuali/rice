@@ -18,18 +18,12 @@ package org.kuali.rice.kew.docsearch;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
-import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupConfiguration;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.util.KRADConstants;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 /**
@@ -97,7 +91,7 @@ public class DocumentLookupCriteriaBuilder  {
 		if (documentType != null && documentType.hasSearchableAttributes() && criteria != null) {
 			criteria.getSearchableAttributes().clear();
 			if (!propertyFields.isEmpty()) {
-                DocumentLookupConfiguration lookupConfiguration = KEWServiceLocator.getDocumentSearchCustomizationMediator().getDocumentLookupConfiguration(documentType);
+                DocumentLookupConfiguration lookupConfiguration = KEWServiceLocator.getDocumentLookupCustomizationMediator().getDocumentLookupConfiguration(documentType);
                 List<RemotableAttributeField> searchFields = lookupConfiguration.getFlattenedSearchAttributeFields();
 				for (RemotableAttributeField searchField : searchFields) {
                     SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(searchField.getDataType());

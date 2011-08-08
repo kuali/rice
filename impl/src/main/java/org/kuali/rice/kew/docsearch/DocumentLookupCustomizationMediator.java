@@ -24,6 +24,17 @@ public interface DocumentLookupCustomizationMediator {
 
     DocSearchCriteriaDTO customizeCriteria(DocumentType documentType, DocSearchCriteriaDTO documentLookupCriteria);
 
+    /**
+     * TODO...
+     *
+     * return null if criteria was not cleared using a custom clear...this indicates a standard clear should be performed
+     *
+     * @param documentType
+     * @param documentLookupCriteria
+     * @return
+     */
+    DocSearchCriteriaDTO customizeClearCriteria(DocumentType documentType, DocSearchCriteriaDTO documentLookupCriteria);
+
     // TODO - Rice 2.0 - add additional customization points here
 
 }

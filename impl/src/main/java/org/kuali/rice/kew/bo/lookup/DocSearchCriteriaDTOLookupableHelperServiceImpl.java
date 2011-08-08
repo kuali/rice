@@ -551,21 +551,14 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 	@Override
 	public void performClear(LookupForm lookupForm) {
 
-        /*
-
-         TODO - Rice 2.0 - Couldn't tell what this preProcessRangeFields method was doing or whether it was even being used, commenting out for now.
-
-	    Map<String,String[]> fixedParameters = new HashMap<String,String[]>();
-        Map<String,String> changedDateFields = preProcessRangeFields(lookupForm.getFieldsForLookup());
-        fixedParameters.putAll(this.getParameters());
-        for (Map.Entry<String,String> prop : changedDateFields.entrySet()) {
-            fixedParameters.remove(prop.getKey());
-            fixedParameters.put(prop.getKey(), new String[]{prop.getValue()});
-        }
-
-        */
-
-		//TODO: also check if standard here (maybe from object if use criteria)
+        Map<String,String[]> fixedParameters = new HashMap<String,String[]>();
+    	Map<String,String> changedDateFields = preProcessRangeFields(lookupForm.getFieldsForLookup());
+    	fixedParameters.putAll(parameters);
+    	for (Map.Entry<String, String> prop : changedDateFields.entrySet()) {
+			fixedParameters.remove(prop.getKey());
+    		fixedParameters.put(prop.getKey(), new String[] { prop.getValue() });
+		}
+        
 		String docTypeName = getParameters().get("docTypeFullName")[0];
 
 		DocumentType docType = getValidDocumentType(docTypeName);
@@ -578,17 +571,11 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 	        if(this.getParameters().containsKey("isAdvancedSearch")) {
 	            detailed = DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING.equalsIgnoreCase(((String[])this.getParameters().get("isAdvancedSearch"))[0]);
 	        }
-            // else if(fixedParameters.containsKey("isAdvancedSearch")) {
-	        //    detailed = DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING.equalsIgnoreCase((String) fixedParameters.get("isAdvancedSearch")[0]);
-	        // }
 
 	        boolean superSearch=false;
 	        if(this.getParameters().containsKey(("superUserSearch"))) {
 	            superSearch = DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING.equalsIgnoreCase(((String[])this.getParameters().get("superUserSearch"))[0]);
 	        }
-            // else if(fixedParameters.containsKey("superUserSearch")) {
-	        //    superSearch = DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING.equalsIgnoreCase((String) fixedParameters.get("superUserSearch")[0]);
-	        // }
 
 	        // Repopulate the fields indicating detailed/superuser search status.
 	        int fieldsRepopulated = 0;
@@ -597,11 +584,11 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 	        while (index >= 0 && fieldsRepopulated < 2) {
 	        	for (Field tempField : rows.get(index).getFields()) {
 	        		if ("isAdvancedSearch".equals(tempField.getPropertyName())) {
-	        			tempField.setPropertyValue(detailed?"YES":"NO");
+	        			tempField.setPropertyValue(detailed ? "YES" : "NO");
 	        			fieldsRepopulated++;
 	        		}
 	        		else if ("superUserSearch".equals(tempField.getPropertyName())) {
-	        			tempField.setPropertyValue(superSearch?"YES":"NO");
+	        			tempField.setPropertyValue(superSearch ? "YES" : "NO");
 	        			fieldsRepopulated++;
 	        		}
 	        	}
@@ -609,12 +596,17 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 	        }
 		} else {
     		DocSearchCriteriaDTO docCriteria = DocumentLookupCriteriaBuilder.populateCriteria(getParameters());
-    		docCriteria = docType.getDocumentSearchGenerator().clearSearch(docCriteria);
-            if (docCriteria == null) {
-                docCriteria = new DocSearchCriteriaDTO();
+            DocSearchCriteriaDTO clearedCriteria = KEWServiceLocator.getDocumentLookupCustomizationMediator().customizeClearCriteria(docType, docCriteria);
+            // if null, means custom clear was not needed, perform standard clear
+            if (clearedCriteria == null) {
+                clearedCriteria = docType.getDocumentSearchGenerator().clearSearch(docCriteria);
+            }
+            // if still null, just create an empty criteria object
+            if (clearedCriteria == null) {
+                clearedCriteria = new DocSearchCriteriaDTO();
             }
 
-            this.setRowsAfterClear(docCriteria, getParameters());
+            this.setRowsAfterClear(clearedCriteria, getParameters());
 		}
 
 	}

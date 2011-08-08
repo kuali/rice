@@ -32,7 +32,6 @@ import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.ArrayList;
@@ -353,7 +352,7 @@ public class StandardDocumentSearchResultProcessor implements
 		List<Field> fields = new ArrayList<Field>();
 		DocumentType documentType = getDocumentType(criteria.getDocTypeFullName());
 		if (documentType != null) {
-            DocumentLookupConfiguration lookupConfiguration = KEWServiceLocator.getDocumentSearchCustomizationMediator().getDocumentLookupConfiguration(documentType);
+            DocumentLookupConfiguration lookupConfiguration = KEWServiceLocator.getDocumentLookupCustomizationMediator().getDocumentLookupConfiguration(documentType);
             List<RemotableAttributeField> attributeFields = lookupConfiguration.getFlattenedSearchAttributeFields();
             for (RemotableAttributeField attributeField : attributeFields) {
                 if (searchAttributeFieldNames == null || searchAttributeFieldNames.contains(attributeField.getName())) {

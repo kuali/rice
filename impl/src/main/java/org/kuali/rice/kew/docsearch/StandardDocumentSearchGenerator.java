@@ -36,7 +36,6 @@ import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
-import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
@@ -173,7 +172,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
             DocumentType documentType = getValidDocumentType(criteria.getDocTypeFullName());
             if (documentType != null) {
-               errors = KEWServiceLocator.getDocumentSearchCustomizationMediator().validateSearchFieldParameters(documentType, paramMap);
+               errors = KEWServiceLocator.getDocumentLookupCustomizationMediator().validateSearchFieldParameters(documentType, paramMap);
             }
         }
         return errors == null ? Collections.<RemotableAttributeError>emptyList() : Collections.unmodifiableList(errors);

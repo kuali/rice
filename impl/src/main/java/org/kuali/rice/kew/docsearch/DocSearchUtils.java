@@ -31,7 +31,6 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserUtils;
-import org.kuali.rice.kew.util.KEWWebServiceConstants;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.krad.UserSession;
@@ -168,7 +167,7 @@ public final class DocSearchUtils {
 
         if (docType != null) {
 
-            DocumentLookupConfiguration lookupConfiguration = KEWServiceLocator.getDocumentSearchCustomizationMediator().getDocumentLookupConfiguration(docType);
+            DocumentLookupConfiguration lookupConfiguration = KEWServiceLocator.getDocumentLookupCustomizationMediator().getDocumentLookupConfiguration(docType);
             List<RemotableAttributeField> searchFields = lookupConfiguration.getFlattenedSearchAttributeFields();
 
             for (RemotableAttributeField searchField : searchFields) {
@@ -329,7 +328,7 @@ public final class DocSearchUtils {
             if (!propertyFields.isEmpty()) {
                 Map<String, SearchAttributeCriteriaComponent> criteriaComponentsByFormKey = new HashMap<String, SearchAttributeCriteriaComponent>();
 
-                DocumentLookupConfiguration lookupConfiguration = KEWServiceLocator.getDocumentSearchCustomizationMediator().getDocumentLookupConfiguration(docType);
+                DocumentLookupConfiguration lookupConfiguration = KEWServiceLocator.getDocumentLookupCustomizationMediator().getDocumentLookupConfiguration(docType);
                 List<RemotableAttributeField> searchFields = lookupConfiguration.getFlattenedSearchAttributeFields();
 
                 for (RemotableAttributeField searchField : searchFields) {

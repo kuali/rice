@@ -160,20 +160,22 @@
 		</property>
 	</bean>
 
-	<bean parent="kewLocalServiceExporter">
+	<bean id="rice.kew.rice.kew.groupMembershipChangeQueueSoap.exporter"
+		parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-			<bean parent="kewSoapService">
+			<bean parent="kewJaxWsSoapService">
 				<property name="service">
-					<bean
-						class="org.kuali.rice.kew.workgroup.WorkgroupMembershipChangeProcessor" />
+					<ref bean="rice.kew.groupMembershipChangeQueue" />
 				</property>
-				<property name="localServiceName" value="WorkgroupMembershipChangeService" />
+				<property name="localServiceName" value="groupMembershipChangeQueueSoap" />
+				<property name="busSecurity"
+					value="${rice.kew.groupMembershipChangeQueueSoap.secure}" />
 				<property name="priority" value="10" />
 			</bean>
 		</property>
 	</bean>
-
+	
 	<bean parent="kewLocalServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">

@@ -147,6 +147,7 @@
         <idref local="enDocumentRoutingService" />
         <idref local="enBlanketApproveProcessor" />
         <idref local="rice.kew.documentAttributeIndexingQueue" />
+        <idref local="rice.kew.groupMembershipChangeQueue" />
         <idref local="enMoveDocumentService" />
         <idref local="enActionInvocationService" />
         <idref local="enImmediateEmailReminderService" />
@@ -492,7 +493,9 @@
     <bean id="enImmediateEmailReminderService" class="org.kuali.rice.kew.mail.service.impl.ActionListImmediateProcessorImpl" />
     <bean id="enDocumentRequeuerService" class="org.kuali.rice.kew.actionrequest.service.impl.DocumentRequeuerImpl" />
 
-  <bean id="rice.kew.documentAttributeIndexingQueue" class="org.kuali.rice.kew.impl.document.attribute.DocumentAttributeIndexingQueueImpl" />
+  	<bean id="rice.kew.documentAttributeIndexingQueue" class="org.kuali.rice.kew.impl.document.attribute.DocumentAttributeIndexingQueueImpl" />
+
+	<bean id="rice.kew.groupMembershipChangeQueue" class="org.kuali.rice.kew.impl.group.GroupMembershipChangeQueueImpl" />
 
 	<bean id="dataDictionaryService"
 		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">

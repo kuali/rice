@@ -21,22 +21,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.xml.namespace.QName;
-
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.api.WorkflowRuntimeException;
-import org.kuali.rice.kew.messaging.MessageServiceNames;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.workgroup.WorkgroupMembershipChangeProcessor;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.api.group.GroupService;
-import org.kuali.rice.kim.impl.group.GroupInternalService;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.ksb.api.KsbApiServiceLocator;
-import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 /**
  * Concrete Implementation of {@link GroupInternalService}
@@ -81,14 +73,8 @@ public class GroupInternalServiceImpl implements GroupInternalService {
         // first verify that the user is still a member of the workgroup
     	if(getGroupService().isMemberOfGroup(principalId, groupId))
     	{
-            KSBXMLService workgroupMembershipChangeProcessor = (KSBXMLService) KsbApiServiceLocator.getMessageHelper()
-            .getServiceAsynchronously(new QName(KEWConstants.KEW_MODULE_NAMESPACE, MessageServiceNames.WORKGROUP_MEMBERSHIP_CHANGE_SERVICE));
-            try {
-                workgroupMembershipChangeProcessor.invoke(WorkgroupMembershipChangeProcessor
-                        .getMemberAddedMessageContents(principalId, groupId));
-            } catch (Exception e) {
-                throw new WorkflowRuntimeException(e);
-            }
+    	    KewApiServiceLocator.getGroupMembershipChangeQueue()
+    	        .notifyMembershipChange(KEWConstants.GroupMembershipChangeOperations.ADDED, groupId, principalId);
     	}
     }
 
@@ -96,14 +82,8 @@ public class GroupInternalServiceImpl implements GroupInternalService {
         // first verify that the user is no longer a member of the workgroup
     	if(!getGroupService().isMemberOfGroup(principalId, groupId))
     	{
-            KSBXMLService workgroupMembershipChangeProcessor = (KSBXMLService) KsbApiServiceLocator.getMessageHelper()
-            .getServiceAsynchronously(new QName(KEWConstants.KEW_MODULE_NAMESPACE, MessageServiceNames.WORKGROUP_MEMBERSHIP_CHANGE_SERVICE));
-            try {
-                workgroupMembershipChangeProcessor.invoke(WorkgroupMembershipChangeProcessor
-                        .getMemberRemovedMessageContents(principalId, groupId));
-            } catch (Exception e) {
-                throw new WorkflowRuntimeException(e);
-            }
+            KewApiServiceLocator.getGroupMembershipChangeQueue()
+                .notifyMembershipChange(KEWConstants.GroupMembershipChangeOperations.REMOVED, groupId, principalId);
     	}
 
     }

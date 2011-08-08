@@ -52,6 +52,11 @@
       <link href="${cssFile}" rel="stylesheet" type="text/css" />
     </c:forEach>
 
+    <!-- preload script (server variables) -->
+    <script type="text/javascript">
+        ${view.preLoadScript}
+    </script>
+
     <c:forEach items="${fn:split(ConfigProperties.javascript.files, ',')}"	var="javascriptFile">
       <c:if test="${fn:length(fn:trim(javascriptFile)) > 0}">
         <script language="JavaScript" type="text/javascript" src="${pageContext.request.contextPath}/${javascriptFile}"></script>

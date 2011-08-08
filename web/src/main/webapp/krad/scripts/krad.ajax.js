@@ -48,12 +48,12 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
 		var elementBlockingOptions = {
 				beforeSend: function() {
 					if(elementToBlock.hasClass("unrendered")){
-						elementToBlock.append('<img src="../images/loader.gif" alt="working..." /> Loading...');
+						elementToBlock.append('<img src="' + ViewState.kradImageLocation + 'loader.gif" alt="working..." /> Loading...');
 						elementToBlock.show();
 					}
 					else{
 						elementToBlock.block({
-			                message: '<img src="../images/loader.gif" alt="working..." /> Updating...',
+			                message: '<img src="' + ViewState.kradImageLocation + 'loader.gif" alt="working..." /> Updating...',
 			                fadeIn:  400,
 			                fadeOut:  800,
 			                overlayCSS:  {

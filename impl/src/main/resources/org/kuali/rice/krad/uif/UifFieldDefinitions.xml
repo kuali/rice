@@ -64,37 +64,37 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="LookupCriteriaAttributeField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.LookupAttributeField" parent="AttributeField">
       <property name="bindingInfo.bindToMap" value="true"/>
   </bean>
-  
+
   <bean id="LabelField" parent="LabelField-parentBean"/>
   <bean id="LabelField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.LabelField" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/templates/field/labelField.jsp"/>
-      <property name="styleClasses" value="desc"/>
-      <property name="requiredMessageField">
-        <bean parent="MessageField" p:messageText="*" p:messageType="REQUIRED" p:styleClasses="required"/>
-      </property>   
-  </bean>  
-  
+    <property name="template" value="/krad/WEB-INF/jsp/templates/field/labelField.jsp"/>
+    <property name="styleClasses" value="desc"/>
+    <property name="requiredMessageField">
+      <bean parent="MessageField" p:messageText="*" p:messageType="REQUIRED" p:styleClasses="required"/>
+    </property>
+  </bean>
+
   <bean id="ErrorsField" parent="ErrorsField-parentBean"/>
   <bean id="ErrorsField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.ErrorsField" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/templates/field/errorsField.jsp"/>
-      <property name="styleClasses" value="errorsField"/>
-      <property name="displayErrorTitle" value="false"/>
-	  <property name="displayWarningTitle" value="false"/> 
-	  <property name="displayInfoTitle" value="false"/> 
-	  <property name="displayFieldLabelWithMessages" value="true"/>
-	  <property name="displayNestedMessages" value="false"/> 
-	  <property name="displayFieldErrorIcon" value="false"/>
-	  <property name="highlightOnError" value="true"/>
-	  <property name="combineMessages" value="true"/> 
-	  <property name="allowMessageRepeat" value="true"/>
-	  <property name="displayMessages" value="true"/>
-	  <property name="displayErrorMessages" value="true"/>
-	  <property name="displayWarningMessages" value="true"/>
-	  <!-- Note that we are not displaying Info messages because they are shown through growls by default
-	  if Growls are turned off, info messages needs to be turned back on 
-	  (optional for fields, but should be true at least on the page level) -->
-	  <property name="displayInfoMessages" value="false"/>
-	  <property name="displayCounts" value="false"/>
+    <property name="template" value="/krad/WEB-INF/jsp/templates/field/errorsField.jsp"/>
+    <property name="styleClasses" value="errorsField"/>
+    <property name="displayErrorTitle" value="false"/>
+    <property name="displayWarningTitle" value="false"/>
+    <property name="displayInfoTitle" value="false"/>
+    <property name="displayFieldLabelWithMessages" value="true"/>
+    <property name="displayNestedMessages" value="false"/>
+    <property name="displayFieldErrorIcon" value="false"/>
+    <property name="highlightOnError" value="true"/>
+    <property name="combineMessages" value="true"/>
+    <property name="allowMessageRepeat" value="true"/>
+    <property name="displayMessages" value="true"/>
+    <property name="displayErrorMessages" value="true"/>
+    <property name="displayWarningMessages" value="true"/>
+    <!-- Note that we are not displaying Info messages because they are shown through growls by default
+     if Growls are turned off, info messages needs to be turned back on
+     (optional for fields, but should be true at least on the page level) -->
+    <property name="displayInfoMessages" value="false"/>
+    <property name="displayCounts" value="false"/>
   </bean>
   
   <bean id="ErrorsField_Group" parent="ErrorsField">
@@ -112,56 +112,56 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 	  <property name="displayMessages" value="false"/>
 	  <property name="displayCounts" value="true"/>
   </bean>
-  
-    <bean id="ErrorsField_Page" parent="ErrorsField">
-      <property name="styleClasses" value="errorsField errorsFieldForContainer"/>
-	  <property name="additionalKeysToMatch">
-	  	<list>
-	  		<value>GLOBAL_ERRORS</value>
-			<value>GLOBAL_WARNINGS</value>
-			<value>GLOBAL_INFO</value>
-	  	</list>
-	  </property>
-      <property name="displayErrorTitle" value="true"/>
-	  <property name="displayWarningTitle" value="true"/> 
-	  <property name="displayInfoTitle" value="true"/> 
-	  <property name="displayFieldLabelWithMessages" value="true"/>
-	  <property name="displayNestedMessages" value="true"/> 
-	  <property name="highlightOnError" value="false"/>
-	  <property name="combineMessages" value="true"/> 
-	  <property name="allowMessageRepeat" value="true"/>
-	  <property name="displayMessages" value="true"/>
-	  <property name="displayErrorMessages" value="true"/>
-	  <property name="displayWarningMessages" value="true"/>
-	  <!-- Note that we are not displaying Info messages because they are shown through growls by default
-	  if growls are turned off, view info message display needs to be turned back on (required at least at page level) -->
-	  <property name="displayInfoMessages" value="false"/>
-	  <property name="displayCounts" value="true"/>
+
+  <bean id="ErrorsField_Page" parent="ErrorsField">
+    <property name="styleClasses" value="errorsField errorsFieldForContainer"/>
+    <property name="additionalKeysToMatch">
+      <list>
+        <value>GLOBAL_ERRORS</value>
+        <value>GLOBAL_WARNINGS</value>
+        <value>GLOBAL_INFO</value>
+      </list>
+    </property>
+    <property name="displayErrorTitle" value="true"/>
+    <property name="displayWarningTitle" value="true"/>
+    <property name="displayInfoTitle" value="true"/>
+    <property name="displayFieldLabelWithMessages" value="true"/>
+    <property name="displayNestedMessages" value="true"/>
+    <property name="highlightOnError" value="false"/>
+    <property name="combineMessages" value="true"/>
+    <property name="allowMessageRepeat" value="true"/>
+    <property name="displayMessages" value="true"/>
+    <property name="displayErrorMessages" value="true"/>
+    <property name="displayWarningMessages" value="true"/>
+    <!-- Note that we are not displaying Info messages because they are shown through growls by default
+     if growls are turned off, view info message display needs to be turned back on (required at least at page level) -->
+    <property name="displayInfoMessages" value="false"/>
+    <property name="displayCounts" value="true"/>
   </bean>
-  
+
   <!-- No longer used - views cannot update errors if page retrieval is through ajax -->
   <bean id="ErrorsField_View" parent="ErrorsField">
-      <property name="styleClasses" value="errorsField errorsFieldForContainer"/>
-	  <property name="additionalKeysToMatch">
-	  	<list>
-	  		<value>GLOBAL_ERRORS</value>
-			<value>GLOBAL_WARNINGS</value>
-			<value>GLOBAL_INFO</value>
-	  	</list>
-	  </property>
-      <property name="displayErrorTitle" value="true"/>
-	  <property name="displayWarningTitle" value="true"/> 
-	  <property name="displayInfoTitle" value="true"/> 
-	  <property name="displayFieldLabelWithMessages" value="true"/>
-	  <property name="displayNestedMessages" value="true"/> 
-	  <property name="highlightOnError" value="false"/>
-	  <property name="combineMessages" value="true"/> 
-	  <property name="allowMessageRepeat" value="true"/>
-	  <property name="displayMessages" value="true"/>
-	  <property name="displayErrorMessages" value="true"/>
-	  <property name="displayWarningMessages" value="true"/>
-	  <property name="displayInfoMessages" value="false"/>
-	  <property name="displayCounts" value="true"/>
+    <property name="styleClasses" value="errorsField errorsFieldForContainer"/>
+    <property name="additionalKeysToMatch">
+      <list>
+        <value>GLOBAL_ERRORS</value>
+        <value>GLOBAL_WARNINGS</value>
+        <value>GLOBAL_INFO</value>
+      </list>
+    </property>
+    <property name="displayErrorTitle" value="true"/>
+    <property name="displayWarningTitle" value="true"/>
+    <property name="displayInfoTitle" value="true"/>
+    <property name="displayFieldLabelWithMessages" value="true"/>
+    <property name="displayNestedMessages" value="true"/>
+    <property name="highlightOnError" value="false"/>
+    <property name="combineMessages" value="true"/>
+    <property name="allowMessageRepeat" value="true"/>
+    <property name="displayMessages" value="true"/>
+    <property name="displayErrorMessages" value="true"/>
+    <property name="displayWarningMessages" value="true"/>
+    <property name="displayInfoMessages" value="false"/>
+    <property name="displayCounts" value="true"/>
   </bean>
   
   <bean id="ActionField" parent="ActionField-parentBean"/>
@@ -311,10 +311,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="AttributeField_OrganizationDocumentNumber" parent="AttributeField" p:propertyName="organizationDocumentNumber" 
         p:dictionaryObjectEntry="org.kuali.rice.krad.bo.DocumentHeader"/>
         
-  <bean id="QuickFinderImageField" parent="ImageField" p:source="/kr-dev/krad/images/searchicon.gif"
+  <bean id="QuickFinderImageField" parent="ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
         p:altText="Search Field" p:title="Search Field"/>
         
-  <bean id="DirectInquiryImageField" parent="ImageField" p:source="/kr-dev/krad/images/book_open.png"
+  <bean id="DirectInquiryImageField" parent="ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}book_open.png"
         p:altText="Direct Inquiry" p:title="Direct Inquiry"/>                                                                                     
         
   <bean id="ActionLinkField_CreateNew" parent="LinkField"

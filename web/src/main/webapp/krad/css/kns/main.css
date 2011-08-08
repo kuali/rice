@@ -197,12 +197,12 @@ td.field_attribute
 
 .warningMessages{
 	padding-left: 20px;
-	background: url("/kr-dev/krad/images/exclamation-diamond-frame.png") no-repeat scroll left top transparent;
+	background: url("../../images/exclamation-diamond-frame.png") no-repeat scroll left top transparent;
 }
 
 .infoMessages{
 	padding-left: 20px;
-	background: url("/kr-dev/krad/images/information-frame.png") no-repeat scroll left top transparent;
+	background: url("../../images/information-frame.png") no-repeat scroll left top transparent;
 }
 
 .errorsFieldForContainer .errorMessages{
@@ -681,7 +681,7 @@ table.datatable table.datatable {
 	margin:0em;
 }
 .fieldLine.boxLayoutVerticalItem.clearfix  .fieldLine.boxLayoutVerticalItem.clearfix span {
-	display:block;
+	/*display:block;*/
 }
 
 span .fieldLine.boxLayoutVerticalItem.clearfix span .fieldLine.boxLayoutVerticalItem.clearfix tr .col1 {

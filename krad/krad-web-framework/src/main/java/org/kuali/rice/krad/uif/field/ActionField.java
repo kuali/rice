@@ -21,6 +21,7 @@ import org.kuali.rice.krad.uif.widget.LightBox;
 import org.kuali.rice.krad.uif.widget.LightBoxLookup;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -212,6 +213,20 @@ public class ActionField extends FieldBase {
             sb.append("}");
             lightBoxLookup.setActionParameterMapString(sb.toString());
         }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.core.ComponentBase#getNestedComponents()
+     */
+    @Override
+    public List<Component> getNestedComponents() {
+        List<Component> components = super.getNestedComponents();
+
+        components.add(actionImageField);
+        components.add(lightBoxLookup);
+        components.add(lightBox);
+
+        return components;
     }
 
     /**

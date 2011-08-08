@@ -152,7 +152,7 @@ public class UifConstants {
         public static final String PERCENT = "kuali_percent";
         public static final String CURRENCY = "kuali_currency";
         public static final String TIMESTAMP = "kuali_timestamp";
-        
+
         public static final int ADD_ROW_DEFAULT_INDEX = 0;
     }
 
@@ -170,12 +170,16 @@ public class UifConstants {
         public static final String PAGE_ID = "pageId";
         public static final String HISTORY = "history";
     }
-    
+
     public static class Messages {
         public static final String VALIDATION_MSG_KEY_PREFIX = "validation.";
     }
 
     public static class MessageKeys {
         public static final String QUERY_DATA_NOT_FOUND = "query.dataNotFound";
+    }
+
+    public static class ClientSideVariables {
+        public static final String KRAD_IMAGE_LOCATION = "kradImageLocation";
     }
 }

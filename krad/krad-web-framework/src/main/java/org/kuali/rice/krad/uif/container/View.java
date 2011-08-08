@@ -120,6 +120,7 @@ public class View extends ContainerBase {
 
     private boolean validateDirty;
     private boolean translateCodes;
+    private String preLoadScript;
 
     @RequestParameter
     private boolean dialogMode;
@@ -1077,5 +1078,27 @@ public class View extends ContainerBase {
      */
     public void setAppendOption(String appendOption) {
         this.appendOption = appendOption;
+    }
+
+    /**
+     * Scipt that is executed at the beginning of page load (before any other script)
+     *
+     * <p>
+     * Many used to set server variables client side
+     * </p>
+     *
+     * @return String pre load script
+     */
+    public String getPreLoadScript() {
+        return preLoadScript;
+    }
+
+    /**
+     * Setter for the pre load script
+     *
+     * @param preLoadScript
+     */
+    public void setPreLoadScript(String preLoadScript) {
+        this.preLoadScript = preLoadScript;
     }
 }

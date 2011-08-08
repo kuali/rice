@@ -18,9 +18,9 @@
 var $dialog = null;
 var jq = jQuery.noConflict();
 
-//BlockUi defaults
-var loadingMessage =  '<h1><img src="/kr-dev/krad/images/loading.gif" alt="working..." />Loading...</h1>';
-var savingMessage = '<h1><img src="/kr-dev/krad/images/loading.gif" alt="working..." />Saving...</h1>';
+// BlockUi defaults
+var loadingMessage =  '<h1><img src="' + ViewState.kradImageLocation + 'loading.gif" alt="working..." />Loading...</h1>';
+var savingMessage = '<h1><img src="' + ViewState.kradImageLocation + 'loading.gif" alt="working..." />Saving...</h1>';
 
 // validation init
 var pageValidatorReady = false;

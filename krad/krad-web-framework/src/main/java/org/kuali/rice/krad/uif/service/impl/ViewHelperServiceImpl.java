@@ -604,7 +604,35 @@ public class ViewHelperServiceImpl implements ViewHelperService {
      */
     @Override
     public void performFinalize(View view, Object model) {
+        Map<String, Object> clientState = new HashMap<String, Object>();
+        addGeneralClientSideState(view, model, clientState);
+
         performComponentFinalize(view, view, model, null);
+
+        // script for initializing client side script on load
+        String clientStateScript = "var ViewState = new Object(); ";
+        for (Entry<String, Object> stateEntry : clientState.entrySet()) {
+            clientStateScript += "ViewState['" + stateEntry.getKey() + "'] = '" + stateEntry.getValue() + "'; ";
+        }
+
+        String viewPreLoadScript = view.getPreLoadScript();
+        if (StringUtils.isNotBlank(viewPreLoadScript)) {
+            clientStateScript = viewPreLoadScript + clientStateScript;
+        }
+        view.setPreLoadScript(clientStateScript);
+    }
+
+    /**
+     * Adds general variables that will be exposed client side (for example, config properties)
+     *
+     * @param view - view instance being built
+     * @param model - object containing the view data
+     * @param clientState - map to add client state to
+     */
+    protected void addGeneralClientSideState(View view, Object model, Map<String, Object> clientState) {
+        String kradImageLocation = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                "krad.externalizable.images.url");
+        clientState.put(UifConstants.ClientSideVariables.KRAD_IMAGE_LOCATION, kradImageLocation);
     }
 
     /**

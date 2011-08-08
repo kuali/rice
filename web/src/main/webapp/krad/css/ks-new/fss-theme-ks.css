@@ -250,15 +250,15 @@ input:focus, textarea:focus {
 }
 .errorMessages {
 	padding-left: 20px;
-	background: url("/kr-dev/krad/images/exclamation-red.png") no-repeat scroll left top transparent;
+	background: url("../../images/exclamation-red.png") no-repeat scroll left top transparent;
 }
 .warningMessages {
 	padding-left: 20px;
-	background: url("/kr-dev/krad/images/exclamation-diamond-frame.png") no-repeat scroll left top transparent;
+	background: url("../../images/exclamation-diamond-frame.png") no-repeat scroll left top transparent;
 }
 .infoMessages {
 	padding-left: 20px;
-	background: url("/kr-dev/krad/images/information-frame.png") no-repeat scroll left top transparent;
+	background: url("../../images/information-frame.png") no-repeat scroll left top transparent;
 }
 .errorsFieldForContainer .errorMessages {
 	border: 1px solid red;

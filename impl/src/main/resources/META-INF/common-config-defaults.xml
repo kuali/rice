@@ -29,16 +29,16 @@
     <!-- This value is filtered by the Maven build based on project.version maven property -->
     <param name="rice.version" override="false">${project.version}</param>
 
-	<!-- Database Config -->
+	  <!-- Database Config -->
 
-	<!-- below used by atomikos data sources -->
+	  <!-- below used by atomikos data sources -->
     <!-- below are dbcp properties used for non-JTA datasources needed by KSB in some instances -->
     <param name="datasource.pool.maxActive" override="false">50</param>
     <param name="datasource.minIdle" override="false">7</param>
     <param name="datasource.accessToUnderlyingConnectionAllowed" override="false">true</param>
     <param name="datasource.initialSize" override="false">7</param>
 
-	<param name="datasource.pool.minSize" override="false">0</param>
+  	<param name="datasource.pool.minSize" override="false">0</param>
     <param name="datasource.pool.maxSize" override="false">5</param>
     <param name="datasource.pool.size" override="false">5</param>
     <param name="datasource.pool.maxWait" override="false">30000</param>
@@ -112,18 +112,18 @@
     <param name="cas.validate.password" override="false">false</param>
     <param name="cas.rice.server.name" override="false">${appserver.url}</param>
 
-	<!-- Tells the KualiInitializeListener to look in another location for the Rice configuration. Comma separated list -->
-	<param name="additional.config.locations" override="false"></param>
+	  <!-- Tells the KualiInitializeListener to look in another location for the Rice configuration. Comma separated list -->
+	  <param name="additional.config.locations" override="false"></param>
 
     <!-- A comma separated list of additional spring files for the RiceConfigurer -->
     <param name="rice.additionalSpringFiles" override="false"></param>
 
-	<!-- Portal display parameters -->
-	<!-- rice.portal.links.showRiceServerConfig determines if a second config viewer link will be shown.
+  	<!-- Portal display parameters -->
+	  <!-- rice.portal.links.showRiceServerConfig determines if a second config viewer link will be shown.
 	     This is helpful for client apps using the rice portal, because both client and rice config params
 	     can be linked to -->
-	<param name="rice.portal.links.showRiceServerConfig" override="false">false</param>
-	<param name="rice.portal.logout.redirectUrl">${application.url}/portal.do</param>
+	  <param name="rice.portal.links.showRiceServerConfig" override="false">false</param>
+	  <param name="rice.portal.logout.redirectUrl">${application.url}/portal.do</param>
 
     <!-- App specific parameters -->
     <param name="externalizable.help.url" override="false">/${app.context.name}/kr/static/help/</param>
@@ -155,11 +155,11 @@
     <param name="portal.javascript.files" override="false">krad/scripts/jquery/jquery-1.5.2.js,krad/scripts/jquery/jquery.scrollTo-1.4.2-min.js,krad/scripts/jquery/jquery.blockUI.js,kr/scripts/my_common.js,krad/scripts/fancybox/jquery.fancybox-1.3.4.pack.js,krad/scripts/fancybox/jquery.easing-1.3.pack.js,krad/scripts/jquery/jquery.jgrowl.js</param>
     <param name="portal.title" override="false">Kuali Rice</param>
 
-	<!-- JPA-related parameters -->
-	<param name="rice.jpa.DatabasePlatform" override="false">org.hibernate.dialect.OracleDialect</param>
-	<param name="rice.jpa.UseSerialization" override="false">false</param>
+  	<!-- JPA-related parameters -->
+	  <param name="rice.jpa.DatabasePlatform" override="false">org.hibernate.dialect.OracleDialect</param>
+	  <param name="rice.jpa.UseSerialization" override="false">false</param>
 
-	<!-- End JPA-related parameters -->
+	  <!-- End JPA-related parameters -->
 
     <param name="transaction.timeout" override="false">30000</param>
 
@@ -195,15 +195,15 @@
 
     <param name="classpath.resource.prefix" override="false">/WEB-INF/classes/</param>
 
-	<!-- KEW -->
-	<param name="rice.kew.enableKENNotification" override="false">true</param>
+	  <!-- KEW -->
+	  <param name="rice.kew.enableKENNotification" override="false">true</param>
 
-	<!-- KEW-specific JPA parameters -->
-	<param name="rice.kew.jpa.enabled" override="false">false</param>
-	<param name="rice.kew.jpa.PersistenceXmlLocation" override="false">/META-INF/kew-persistence.xml</param>
-	<param name="rice.kew.jpa.PersistenceUnitName" override="false">kew-unit</param>
-	<param name="rice.kew.jpa.GenerateDdl" override="false">true</param>
-	<!-- End KEW-specific JPA parameters -->
+	  <!-- KEW-specific JPA parameters -->
+	  <param name="rice.kew.jpa.enabled" override="false">false</param>
+	  <param name="rice.kew.jpa.PersistenceXmlLocation" override="false">/META-INF/kew-persistence.xml</param>
+	  <param name="rice.kew.jpa.PersistenceUnitName" override="false">kew-unit</param>
+	  <param name="rice.kew.jpa.GenerateDdl" override="false">true</param>
+	  <!-- End KEW-specific JPA parameters -->
 
     <!-- KNS -->
     <param name="kr.incident.mailing.list" override="false"></param>
@@ -216,7 +216,7 @@
     <param name="krad.cache.nonDatabaseComponent.max.size" override="false">50</param>
     <param name="krad.cache.nonDatabaseComponent.max.age.seconds" override="false">3600</param>
 
-	<param name="attachments.directory" override="false">${java.io.tmpdir}/${environment}/attachments</param>
+	  <param name="attachments.directory" override="false">${java.io.tmpdir}/${environment}/attachments</param>
     <param name="attachments.pending.directory" override="false">${attachments.directory}/pending</param>
 
     <param name="rice.krad.illegalBusinessObjectsForSave.applyCheck" override="false">true</param>
@@ -230,23 +230,23 @@
 
     <!-- KSB -->
 
-	<param name="rice.ksb.registry.serviceUrl" override="false">${rice.server.url}/remoting/serviceRegistrySoap</param>
-	<param name="rice.ksb.serviceRegistrySoap.security" override="false">true</param>
+	  <param name="rice.ksb.registry.serviceUrl" override="false">${rice.server.url}/remoting/serviceRegistrySoap</param>
+	  <param name="rice.ksb.serviceRegistrySoap.security" override="false">true</param>
     <param name="rice.ksb.config.allowSelfSignedSSL" override="false">false</param>
-	<param name="rice.ksb.loadModuleConfiguration" override="false">true</param>
+	  <param name="rice.ksb.loadModuleConfiguration" override="false">true</param>
 
-	<param name="dev.mode" override="false">false</param>
+	  <param name="dev.mode" override="false">false</param>
     <param name="bam.enabled" override="false">false</param>
 
-	<param name="message.persistence" override="false">true</param>
-	<param name="message.delivery" override="false">async</param>
-	<param name="message.off" override="false">false</param>
-	<param name="Routing.ImmediateExceptionRouting" override="false">false</param>
+  	<param name="message.persistence" override="false">true</param>
+	  <param name="message.delivery" override="false">async</param>
+	  <param name="message.off" override="false">false</param>
+	  <param name="Routing.ImmediateExceptionRouting" override="false">false</param>
     <param name="RouteQueue.maxRetryAttempts" override="false">5</param>
     <param name="RouteQueue.timeIncrement" override="false">5000</param>
 
     <param name="useQuartzDatabase" override="false">true</param>
-	<param name="ksb.org.quartz.scheduler.instanceId" override="false">AUTO</param>
+  	<param name="ksb.org.quartz.scheduler.instanceId" override="false">AUTO</param>
     <param name="ksb.org.quartz.scheduler.instanceName" override="false">KSBScheduler</param>
     <param name="ksb.org.quartz.jobStore.isClustered" override="false">true</param>
     <param name="ksb.org.quartz.jobStore.tablePrefix" override="false">KRSB_QRTZ_</param>
@@ -285,10 +285,10 @@
     	"[documentClass].hidden".  The value of this should be a comma delimited list of the DD names of the fields.
      -->
     <param name="org.kuali.rice.kim.bo.ui.PersonDocumentEmploymentInfo.hidden" override="false">baseSalaryAmount</param>
-	<param name="kim.hide.PersonDocumentAddress.type" override="false">HM</param>
-	<param name="kim.hide.PersonDocumentPhone.type" override="false">HM</param>
+	  <param name="kim.hide.PersonDocumentAddress.type" override="false">HM</param>
+	  <param name="kim.hide.PersonDocumentPhone.type" override="false">HM</param>
 	
-	<param name="kim.cache.entity.max.size" override="false">3000</param>
+  	<param name="kim.cache.entity.max.size" override="false">3000</param>
     <param name="kim.cache.entity.max.age.seconds" override="false">3600</param>
     <param name="kim.cache.group.max.size" override="false">3000</param>
     <param name="kim.cache.group.max.age.seconds" override="false">3600</param>
@@ -310,18 +310,18 @@
     <param name="kim.soapExposedService.jaxws.security" override="false">true</param>
     
     <!-- KIM-specific JPA parameters --> 
-	<param name="rice.kim.jpa.enabled" override="false">false</param>
-	<param name="rice.kim.jpa.PersistenceXmlLocation" override="false">META-INF/kim-persistence.xml</param>
-	<param name="rice.kim.jpa.PersistenceUnitName" override="false">kim-unit</param>
-	<param name="rice.kim.jpa.GenerateDdl" override="false">true</param>
+	  <param name="rice.kim.jpa.enabled" override="false">false</param>
+	  <param name="rice.kim.jpa.PersistenceXmlLocation" override="false">META-INF/kim-persistence.xml</param>
+	  <param name="rice.kim.jpa.PersistenceUnitName" override="false">kim-unit</param>
+	  <param name="rice.kim.jpa.GenerateDdl" override="false">true</param>
 	
-	<!-- End KIM-specific JPA parameters -->
+	  <!-- End KIM-specific JPA parameters -->
 
-	<param name="kim.show.blank.qualifiers" override="false">true</param>
-	<param name="enable.nonproduction.data.unmasking" override="false">false</param>
+	  <param name="kim.show.blank.qualifiers" override="false">true</param>
+	  <param name="enable.nonproduction.data.unmasking" override="false">false</param>
 
     <!-- KEN -->
-	<param name="ken.system.user" override="false">notsys</param>
+  	<param name="ken.system.user" override="false">notsys</param>
     <param name="notification.resolveMessageDeliveriesJob.startDelayMS" override="false">5000</param>
     <param name="notification.resolveMessageDeliveriesJob.intervalMS" override="false">10000</param>
     <param name="notification.processAutoRemovalJob.startDelayMS" override="false">60000</param>
@@ -329,7 +329,7 @@
     <param name="notification.quartz.autostartup" override="false">true</param>
     <param name="notification.concurrent.jobs" override="false">true</param>
 
-	<param name="kcb.messaging.synchronous" override="false">false</param>
+	  <param name="kcb.messaging.synchronous" override="false">false</param>
     <param name="kcb.messageprocessing.startDelayMS" override="false">75000</param>
     <param name="kcb.messageprocessing.repeatIntervalMS" override="false">30000</param>
     <param name="kcb.quartz.group" override="false">KCB-Delivery</param>
@@ -340,15 +340,15 @@
     
     <!-- KEN-specific JPA parameters --> 
    	<param name="rice.ken.jpa.enabled" override="false">false</param>
-	<param name="rice.ken.jpa.PersistenceXmlLocation" override="false">META-INF/ken-persistence.xml</param>
-	<param name="rice.ken.jpa.PersistenceUnitName" override="false">ken-unit</param>
-	<param name="rice.ken.jpa.GenerateDdl" override="false">true</param>
-	<!-- End KEN-specific JPA parameters -->
+	  <param name="rice.ken.jpa.PersistenceXmlLocation" override="false">META-INF/ken-persistence.xml</param>
+	  <param name="rice.ken.jpa.PersistenceUnitName" override="false">ken-unit</param>
+	  <param name="rice.ken.jpa.GenerateDdl" override="false">true</param>
+	  <!-- End KEN-specific JPA parameters -->
 
-	<param name="title.inquiry.url.value.prependtext" override="false"></param>
+	  <param name="title.inquiry.url.value.prependtext" override="false"></param>
 
-	<param name="bus.refresh.rate" override="false">60</param>
-	<param name="threadPool.size" override="false">5</param>
+	  <param name="bus.refresh.rate" override="false">60</param>
+	  <param name="threadPool.size" override="false">5</param>
 
 	<!-- Default Option for Action List User Preferences. -->
 	<param name="userOptions.default.color" override="false">white</param>
@@ -398,8 +398,8 @@
 	<param name="validate.data.dictionary" override="false">true</param>
 	<param name="validate.data.dictionary.ebo.references" override="false">true</param>
 	<param name="reload.data.dictionary.classes.dir" override="false">target/classes</param>
-    <param name="reload.data.dictionary.source.dir" override="false">src/main/resources</param>
-    <param name="reload.data.dictionary.interval" override="false">3000</param>
+  <param name="reload.data.dictionary.source.dir" override="false">src/main/resources</param>
+  <param name="reload.data.dictionary.interval" override="false">3000</param>
 	
 	<!-- KCB -->
 	<param name="rice.kcb.struts.config.files" override="false">/kcb/WEB-INF/struts-config.xml</param>

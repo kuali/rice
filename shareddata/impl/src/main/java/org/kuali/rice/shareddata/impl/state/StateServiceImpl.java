@@ -19,7 +19,11 @@ package org.kuali.rice.shareddata.impl.state;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.shareddata.api.country.Country;
+import org.kuali.rice.shareddata.api.country.CountryService;
+import org.kuali.rice.shareddata.api.services.SharedDataApiServiceLocator;
 import org.kuali.rice.shareddata.api.state.State;
 import org.kuali.rice.shareddata.api.state.StateService;
 
@@ -33,6 +37,7 @@ import java.util.Map;
 public class StateServiceImpl implements StateService {
 
     private BusinessObjectService businessObjectService;
+    private CountryService countryService;
 
     @Override
     public State getState(String countryCode, String code) {
@@ -75,7 +80,34 @@ public class StateServiceImpl implements StateService {
 
         return Collections.unmodifiableList(toReturn);
     }
+    
+    @Override
+    public List<State> findAllStatesInCountryByAltCode(String alternateCode) {
+        if (StringUtils.isBlank(alternateCode)) {
+            throw new RiceIllegalArgumentException(("alternateCode is null"));
+        }
+        
+        Country country = getCountryService().getCountryByAlternateCode(alternateCode);
+        
+        if(country == null) {
+            throw new RiceIllegalStateException("The alternateCode is not a valid Alternate Postal Country Code.  alternateCode: " + alternateCode);
+        }
+        
+        final List<State> toReturn = findAllStatesInCountry(country.getCode());
+        return Collections.unmodifiableList(toReturn);
+    }
 
+    public CountryService getCountryService() {
+        if (countryService == null) {
+            countryService = SharedDataApiServiceLocator.getCountryService();
+        }
+        return countryService;
+    }   
+
+    public void setCountryService(CountryService countryService) {
+        this.countryService = countryService;
+    }
+    
     public void setBusinessObjectService(BusinessObjectService businessObjectService) {
         this.businessObjectService = businessObjectService;
     }

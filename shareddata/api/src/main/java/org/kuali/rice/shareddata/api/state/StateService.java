@@ -16,8 +16,7 @@
 
 package org.kuali.rice.shareddata.api.state;
 
-import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.shareddata.api.SharedDataConstants;
+import java.util.List;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -26,7 +25,10 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
-import java.util.List;
+
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
+import org.kuali.rice.shareddata.api.SharedDataConstants;
 
 /**
  * Service for interacting with {@link State States}.
@@ -78,4 +80,28 @@ public interface StateService {
     @WebResult(name = "states")
     List<State> findAllStatesInCountry(@WebParam(name = "countryCode") String countryCode)
             throws RiceIllegalArgumentException;
+    
+    /**
+     * Finds all the {@link State States} for alternate postal country code.
+     * <p/>
+     * <p>
+     * This method will always return an <b>immutable</b> Collection
+     * even when no values exist.
+     * </p>
+     * <p/>
+     * <p>
+     * This method will only return active states.
+     * </p>
+     *
+     * @param alternateCode. cannot be blank.
+     * @return an immutable collection of states
+     * @throws RiceIllegalArgumentException alternate country code is null
+     * @throws RiceIllegalStateException when no countries are found for alternate country code
+     */
+    @WebMethod(operationName = "findAllStatesInCountryByAltCode")
+    @XmlElementWrapper(name = "states", required = true)
+    @XmlElement(name = "state", required = false)
+    @WebResult(name = "states")
+    List<State> findAllStatesInCountryByAltCode(@WebParam(name = "alternateCode") String alternateCode)
+            throws RiceIllegalArgumentException, RiceIllegalStateException;
 }

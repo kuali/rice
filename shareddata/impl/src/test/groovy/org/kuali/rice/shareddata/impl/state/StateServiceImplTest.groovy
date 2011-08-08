@@ -15,9 +15,6 @@
  */
 
 
-
-
-
 package org.kuali.rice.shareddata.impl.state
 
 import groovy.mock.interceptor.MockFor
@@ -25,8 +22,13 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException
+import org.kuali.rice.core.api.exception.RiceIllegalStateException
 import org.kuali.rice.krad.service.BusinessObjectService
+import org.kuali.rice.shareddata.api.country.Country
+import org.kuali.rice.shareddata.api.country.CountryService
 import org.kuali.rice.shareddata.api.state.StateService
+import org.kuali.rice.shareddata.impl.country.CountryBo
 
 class StateServiceImplTest {
 
@@ -34,11 +36,17 @@ class StateServiceImplTest {
 
     static sampleStates = new HashMap<List<String, String>, StateBo>()
     static sampleStatesPerCountry = new HashMap<String, List<StateBo>>()
-
+    
+    private MockFor mockCountryService;
     private MockFor mockBoService
     private BusinessObjectService boService
+    
+    private static Country uSCountry
+    
     StateServiceImpl stateServiceImpl;
     StateService stateService
+    CountryService countryService
+    
 
     @BeforeClass
     static void createSampleStateBOs() {
@@ -53,13 +61,20 @@ class StateServiceImplTest {
         }
         sampleStatesPerCountry["US"] = [michiganBo, illinoisBo]
         sampleStatesPerCountry["CA"] = [britishColumbiaBo]
+        
+        uSCountry = Country.Builder.create("US", "USA", "United States", false, true).build()
     }
-
+	
     @Before
     void setupBoServiceMockContext() {
-        mockBoService = new MockFor(BusinessObjectService)
+        mockBoService = new MockFor(BusinessObjectService)        
     }
-
+    
+    @Before
+    void setupMockContext() {
+        mockCountryService = new MockFor(CountryService.class);
+    }
+    
     @Before
     void setupServiceUnderTest() {
         stateServiceImpl = new StateServiceImpl()
@@ -69,6 +84,11 @@ class StateServiceImplTest {
     void injectBusinessObjectServiceIntoStateService() {
         boService = mockBoService.proxyDelegateInstance()
         stateServiceImpl.setBusinessObjectService(boService)
+    }
+    
+    void injectCountryServiceIntoStateService() {
+        countryService = mockCountryService.proxyDelegateInstance();
+        stateServiceImpl.setCountryService(countryService);
     }
 
     @Test
@@ -130,7 +150,7 @@ class StateServiceImplTest {
         }
         mockBoService.verify(boService)
     }
-
+    
     @Test
     void test_find_all_states_in_country_does_not_exist() {
         mockBoService.demand.findMatching(1..1) { clazz, map -> sampleStatesPerCountry[map["countryCode"]] }
@@ -145,4 +165,46 @@ class StateServiceImplTest {
 
         mockBoService.verify(boService)
     }
+    
+    @Test
+    void test_find_all_states_in_country_by_alt_code_exists() {
+
+        mockBoService.demand.findMatching(1..1) { clazz, map -> sampleStatesPerCountry[map["countryCode"]] }
+        injectBusinessObjectServiceIntoStateService()
+        
+        mockCountryService.demand.getCountryByAlternateCode(1) {uSCountry}
+        injectCountryServiceIntoStateService();
+
+        def values = stateService.findAllStatesInCountryByAltCode("USA")
+        Assert.assertEquals(sampleStatesPerCountry["US"].collect { StateBo.to(it) }, values)
+
+        mockBoService.verify(boService)
+        mockCountryService.verify(countryService)
+    }
+	
+	@Test
+	void test_find_all_states_in_country_by_alt_code_does_not_exist() {
+        injectBusinessObjectServiceIntoStateService()
+        
+        mockCountryService.demand.getCountryByAlternateCode(1) {null}     
+        injectCountryServiceIntoStateService();
+        
+        shouldFail(RiceIllegalStateException) {
+            def values = stateService.findAllStatesInCountryByAltCode("FOO")
+        }
+
+        mockBoService.verify(boService)
+        mockCountryService.verify(countryService)    }
+  
+	@Test
+	public void test_find_all_states_in_country_by_alt_code_pass_null() {
+        injectBusinessObjectServiceIntoStateService()     
+        injectCountryServiceIntoStateService();
+        
+        shouldFail(RiceIllegalArgumentException) {
+            def values = stateService.findAllStatesInCountryByAltCode(null)
+        }
+
+        mockBoService.verify(boService)
+        mockCountryService.verify(countryService)	}
 }

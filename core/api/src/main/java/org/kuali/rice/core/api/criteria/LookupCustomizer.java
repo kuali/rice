@@ -17,7 +17,7 @@ import java.io.Serializable;
  * a predicate.  If the predicate does not need to be transformed then the function can return the
  * incoming argument.  If the predicate should be removed the transform should return null.
  * This is a way to remove or change a predicate before the query is executed.
- * This is a good way to add new predicates to a query or to limit that result of the query before
+ * This is a good way to add new predicates to a query or to limit the result of the query before
  * it is executed. Transforms also allow a predicate referencing a property path that does not exist
  * on database mapped object to be changed to something that is valid.
  * </p>

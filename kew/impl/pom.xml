@@ -9,4 +9,23 @@
   <artifactId>rice-kew-impl</artifactId>
   <version>2.0.0-m7-SNAPSHOT</version>
   <name>Rice KEW Impl</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-core-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>rice-krad-app-framework</artifactId>
+        <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
 </project>

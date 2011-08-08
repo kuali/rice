@@ -35,7 +35,7 @@ public interface DocumentLookupCustomizationMediator {
      */
     DocSearchCriteriaDTO customizeClearCriteria(DocumentType documentType, DocSearchCriteriaDTO documentLookupCriteria);
 
-    // TODO - Rice 2.0 - add additional customization points here
+    // TODO - Rice 2.0 - add additional customization points here, results and result set fields
 
 }
 

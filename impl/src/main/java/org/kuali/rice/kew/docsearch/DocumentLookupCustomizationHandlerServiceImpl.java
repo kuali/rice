@@ -12,6 +12,7 @@ import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.document.attribute.AttributeFields;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupConfiguration;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.api.extension.ExtensionRepositoryService;
 import org.kuali.rice.kew.api.extension.ExtensionUtils;
@@ -139,6 +140,23 @@ public class DocumentLookupCustomizationHandlerServiceImpl implements DocumentLo
         }
         DocumentLookupCustomizer customizer = loadCustomizer(customizerName);
         return customizer.customizeResultSetFields(documentLookupCriteria, defaultResultSetFields);
+    }
+
+    @Override
+    public List<DocumentLookupResult> customizeResults(DocumentLookupCriteria documentLookupCriteria,
+            List<DocumentLookupResult> defaultResults,
+            String customizerName) throws RiceIllegalArgumentException {
+        if (documentLookupCriteria == null) {
+            throw new RiceIllegalArgumentException("documentLookupCriteria was null");
+        }
+        if (defaultResults == null) {
+            throw new RiceIllegalArgumentException("defaultResults was null");
+        }
+        if (StringUtils.isBlank(customizerName)) {
+            throw new RiceIllegalArgumentException("customizerName was null or blank");
+        }
+        DocumentLookupCustomizer customizer = loadCustomizer(customizerName);
+        return customizer.customizeResults(documentLookupCriteria, defaultResults);
     }
 
     @Override

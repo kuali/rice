@@ -107,9 +107,9 @@ public class DocumentLookupCustomizationMediatorImpl implements DocumentLookupCu
         DocumentTypeAttribute customizerAttribute = documentType.getCustomizerAttribute();
         if (customizerAttribute != null) {
             DocumentLookupCustomizationHandlerService service = loadCustomizationService(customizerAttribute.getRuleAttribute().getApplicationId());
-            if (service.getEnabledCustomizations(documentType.getName()).contains(DocumentLookupCustomization.CRITERIA)) {
+            if (service.getEnabledCustomizations(documentType.getName(), customizerAttribute.getRuleAttribute().getName()).contains(DocumentLookupCustomization.CRITERIA)) {
                 DocumentLookupCriteria apiCriteria = translateCriteriaInternalToApi(documentLookupCriteria);
-                apiCriteria = service.customizeCriteria(apiCriteria);
+                apiCriteria = service.customizeCriteria(apiCriteria, customizerAttribute.getRuleAttribute().getName());
                 if (apiCriteria != null) {
                     return applyCriteriaCustomizations(documentLookupCriteria, apiCriteria);
                 }
@@ -123,9 +123,9 @@ public class DocumentLookupCustomizationMediatorImpl implements DocumentLookupCu
         DocumentTypeAttribute customizerAttribute = documentType.getCustomizerAttribute();
         if (customizerAttribute != null) {
             DocumentLookupCustomizationHandlerService service = loadCustomizationService(customizerAttribute.getRuleAttribute().getApplicationId());
-            if (service.getEnabledCustomizations(documentType.getName()).contains(DocumentLookupCustomization.CLEAR_CRITERIA)) {
+            if (service.getEnabledCustomizations(documentType.getName(), customizerAttribute.getRuleAttribute().getName()).contains(DocumentLookupCustomization.CLEAR_CRITERIA)) {
                 DocumentLookupCriteria apiCriteria = translateCriteriaInternalToApi(documentLookupCriteria);
-                apiCriteria = service.customizeClearCriteria(apiCriteria);
+                apiCriteria = service.customizeClearCriteria(apiCriteria, customizerAttribute.getRuleAttribute().getName());
                 if (apiCriteria != null) {
                     return applyCriteriaCustomizations(documentLookupCriteria, apiCriteria);
                 }

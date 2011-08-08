@@ -49,9 +49,9 @@ public class UTF8AnyCharacterValidationPatternTest extends BaseRiceTestCase {
                 true, //"foo.bar_baz"
                 false, //".bar_foo baz"
                 true, //"!\"#abs$%&'()*+,./:;<=abs>?@\\^_abs`{|}~-"
-                true, //"æÄÖÜ"
+                true,
                 false, //"\t"
-                false, //"æ ä aÄiÜ='Ön'; ü"
+                false,
                 
         };
         
@@ -77,9 +77,9 @@ public class UTF8AnyCharacterValidationPatternTest extends BaseRiceTestCase {
                 true, //"foo.bar_baz"
                 true, //".bar_foo baz"
                 true, //"!\"#abs$%&'()*+,./:;<=abs>?@\\^_abs`{|}~-"
-                true, //"æÄÖÜ"
+                true,
                 true, //"\t"
-                true, //"æ ä aÄiÜ='Ön'; ü"
+                true, 
         };
         
         pattern.setAllowWhitespace(true);

@@ -219,7 +219,7 @@ public class DocumentAuthorizerBase extends AuthorizerBase {
 	protected final boolean canSendAnyTypeAdHocRequests(Document document, Person user) {
 		if (canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_FYI_REQ, user)) {
 		    RoutePath routePath = KewApiServiceLocator.getDocumentTypeService().getRoutePathForDocumentTypeName(document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
-		    Process process = routePath.getPrimaryProcess();
+		    org.kuali.rice.kew.api.doctype.Process process = routePath.getPrimaryProcess();
 		    if (process != null) {
 		        if (process.getInitialRouteNode() == null) {
 		            return false;

@@ -513,11 +513,6 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 
         return super.refresh(mapping, form, request, response);
 	}
-
-    @Override
-	public ActionForward performLookup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	return super.performLookup(mapping, form, request, response);
-    }
     
     protected ActionForward refreshAfterDelegationMemberRoleSelection(ActionMapping mapping, IdentityManagementPersonDocumentForm impdForm, HttpServletRequest request) {
         String refreshCaller = impdForm.getRefreshCaller();

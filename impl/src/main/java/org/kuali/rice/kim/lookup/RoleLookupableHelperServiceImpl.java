@@ -119,6 +119,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
         //String kimTypeId = "";
         fieldValues.remove(KRADConstants.BACK_LOCATION);
         fieldValues.remove(KRADConstants.DOC_FORM_KEY);
+        fieldValues.remove(KRADConstants.DOC_NUM);
     	/*for (Map.Entry<String,String> entry : fieldValues.entrySet()) {
         	if (entry.getKey().equals(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID)) {
         		kimTypeId = entry.getValue();

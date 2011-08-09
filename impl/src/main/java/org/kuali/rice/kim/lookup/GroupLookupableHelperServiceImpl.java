@@ -130,10 +130,10 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
      */
     @Override
     public List<GroupBo> getSearchResults(java.util.Map<String,String> fieldValues)  {
-        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
-        fieldValues.remove(KRADConstants.DOC_FORM_KEY);
-        fieldValues.remove(KRADConstants.BACK_LOCATION);
         Map<String, String> criteriaMap = new HashMap<String, String>(fieldValues);
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteriaMap.remove(KRADConstants.DOC_FORM_KEY);
+        criteriaMap.remove(KRADConstants.BACK_LOCATION);
         criteriaMap.remove(KRADConstants.DOC_NUM);
         if (!criteriaMap.isEmpty()) {
             List<Predicate> predicates = new ArrayList<Predicate>();

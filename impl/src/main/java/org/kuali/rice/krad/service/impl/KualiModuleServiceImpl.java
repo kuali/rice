@@ -186,6 +186,9 @@ public class KualiModuleServiceImpl implements KualiModuleService, InitializingB
         if (documentOrStepClass.getName().startsWith("org.kuali.rice.kim")) {
             return "KR-IDM";
         }
+        if (documentOrStepClass.getName().startsWith("org.kuali.rice.core")) {
+            return "KR-CORE";
+        }
         throw new IllegalArgumentException("Unable to determine the namespace code for documentOrStepClass " + documentOrStepClass.getName());
     }
 

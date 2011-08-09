@@ -375,4 +375,30 @@ class PermissionServiceImplTest {
 
         mockBoService.verify(boService)
     }
+
+    @Test
+    void testGetPermissionsByNameIncludingInactiveSucceeds()
+    {
+        PermissionTemplateBo firstPermissionTemplateBo = new PermissionTemplateBo(id: "permissiontemplateidone", name: "permissiontemplateone", namespaceCode: "templatenamespaceone", kimTypeId: "kimtypeidone", versionNumber: 1);
+        PermissionBo expectedPermissionBo = new PermissionBo(id: "permidone", name: "permissionone", namespaceCode: "namespacecodeone", active: "Y", template: firstPermissionTemplateBo, versionNumber: 1);
+
+        mockBoService.demand.findMatching(1..samplePermissions.size()) {
+            Class clazz, Map map -> for (PermissionBo permissionBo in samplePermissions.values()) {
+                if (permissionBo.namespaceCode.equals(map.get("namespaceCode")))
+                {
+                    Collection<PermissionBo> permissions = new ArrayList<PermissionBo>();
+                    permissions.add(permissionBo);
+                    return permissions;
+                }
+            }
+        }
+
+        injectBusinessObjectServiceIntoPermissionService();
+
+        Permission permission = permissionService.getPermissionsByNameIncludingInactive(expectedPermissionBo.namespaceCode, expectedPermissionBo.name);
+
+        Assert.assertEquals(PermissionBo.to(expectedPermissionBo), permission);
+
+        mockBoService.verify(boService);
+    }
 }

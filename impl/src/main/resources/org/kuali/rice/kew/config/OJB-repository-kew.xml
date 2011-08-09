@@ -391,7 +391,7 @@
 	  <orderby name="orderIndex" sort="ASC"/>
       <inverse-foreignkey field-ref="documentTypeId" />
     </collection-descriptor>
-    <collection-descriptor name="processes"	element-class-ref="org.kuali.rice.kew.engine.node.Process"
+    <collection-descriptor name="processes"	element-class-ref="org.kuali.rice.kew.engine.node.ProcessDefinitionBo"
      	auto-retrieve="true" auto-update="true"	proxy="false">
       <inverse-foreignkey field-ref="documentTypeId"/>
     </collection-descriptor>
@@ -757,7 +757,7 @@
     <reference-descriptor class-ref="org.kuali.rice.kew.engine.node.Branch" name="branch" auto-update="true" auto-delete="false" auto-retrieve="true">
       <foreignkey field-ref="branchId"/>
     </reference-descriptor>
-    <reference-descriptor class-ref="org.kuali.rice.kew.engine.node.RouteNodeInstance" name="process" auto-update="true" auto-delete="false" auto-retrieve="true">
+    <reference-descriptor class-ref="org.kuali.rice.kew.engine.node.RouteNodeInstance" name="processDefinition" auto-update="true" auto-delete="false" auto-retrieve="true">
       <foreignkey field-ref="processId"/>
     </reference-descriptor>
     <collection-descriptor name="state"
@@ -842,7 +842,7 @@
     </reference-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kew.engine.node.Process" table="KREW_DOC_TYP_PROC_T">
+  <class-descriptor class="org.kuali.rice.kew.engine.node.ProcessDefinitionBo" table="KREW_DOC_TYP_PROC_T">
     <field-descriptor column="DOC_TYP_PROC_ID" name="processId" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KREW_RTE_NODE_S"/>
   	<field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="VARCHAR" access="anonymous"/>
   	<field-descriptor column="INIT_RTE_NODE_ID" name="initialRouteNodeId" jdbc-type="VARCHAR" access="anonymous"/>

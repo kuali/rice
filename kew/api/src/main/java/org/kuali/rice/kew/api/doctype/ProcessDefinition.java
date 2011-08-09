@@ -1,7 +1,10 @@
 package org.kuali.rice.kew.api.doctype;
 
-import java.io.Serializable;
-import java.util.Collection;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
+import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -9,25 +12,21 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
+import java.util.Collection;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
-import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.w3c.dom.Element;
-
-@XmlRootElement(name = Process.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = ProcessDefinition.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = Process.Constants.TYPE_NAME, propOrder = {
-        Process.Elements.ID,
-        Process.Elements.NAME,
-        Process.Elements.DOCUMENT_TYPE_ID,
-        Process.Elements.INITIAL_ROUTE_NODE,
-        Process.Elements.INITIAL,
+@XmlType(name = ProcessDefinition.Constants.TYPE_NAME, propOrder = {
+        ProcessDefinition.Elements.ID,
+        ProcessDefinition.Elements.NAME,
+        ProcessDefinition.Elements.DOCUMENT_TYPE_ID,
+        ProcessDefinition.Elements.INITIAL_ROUTE_NODE,
+        ProcessDefinition.Elements.INITIAL,
         CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class Process extends AbstractDataTransferObject implements ProcessContract {
+public final class ProcessDefinition extends AbstractDataTransferObject implements ProcessDefinitionContract {
 
     private static final long serialVersionUID = 1076976038764944504L;
 
@@ -56,7 +55,7 @@ public final class Process extends AbstractDataTransferObject implements Process
     /**
      * Private constructor used only by JAXB.
      */
-    private Process() {
+    private ProcessDefinition() {
         this.id = null;
         this.name = null;
         this.documentTypeId = null;
@@ -65,7 +64,7 @@ public final class Process extends AbstractDataTransferObject implements Process
         this.versionNumber = null;
     }
 
-    private Process(Builder builder) {
+    private ProcessDefinition(Builder builder) {
         this.id = builder.getId();
         this.name = builder.getName();
         this.documentTypeId = builder.getDocumentTypeId();
@@ -109,10 +108,10 @@ public final class Process extends AbstractDataTransferObject implements Process
     }
 
     /**
-     * A builder which can be used to construct {@link Process} instances. Enforces the constraints
-     * of the {@link ProcessContract}.
+     * A builder which can be used to construct {@link ProcessDefinition} instances. Enforces the constraints
+     * of the {@link ProcessDefinitionContract}.
      */
-    public final static class Builder implements Serializable, ModelBuilder, ProcessContract {
+    public final static class Builder implements Serializable, ModelBuilder, ProcessDefinitionContract {
 
         private static final long serialVersionUID = 5897271312287857808L;
 
@@ -133,7 +132,7 @@ public final class Process extends AbstractDataTransferObject implements Process
             return new Builder(name, initialRouteNode, initial);
         }
 
-        public static Builder create(ProcessContract contract) {
+        public static Builder create(ProcessDefinitionContract contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
             }
@@ -144,8 +143,8 @@ public final class Process extends AbstractDataTransferObject implements Process
             return builder;
         }
 
-        public Process build() {
-            return new Process(this);
+        public ProcessDefinition build() {
+            return new ProcessDefinition(this);
         }
 
         @Override

@@ -31,7 +31,7 @@ import org.kuali.rice.kew.document.DocumentTypeMaintainable;
 import org.kuali.rice.kew.engine.node.ActivationTypeEnum;
 import org.kuali.rice.kew.engine.node.BranchPrototype;
 import org.kuali.rice.kew.engine.node.NodeType;
-import org.kuali.rice.kew.engine.node.Process;
+import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.engine.node.RoleNode;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeConfigParam;
@@ -412,7 +412,7 @@ public class DocumentTypeXmlParser {
             }
             RouteNode routeNode = createRouteNode(null, startName, processNode, routeNodesNode, documentType, context);
             if (routeNode != null) {
-                Process process = documentType.getNamedProcess(processName);
+                ProcessDefinitionBo process = documentType.getNamedProcess(processName);
                 process.setInitialRouteNode(routeNode);
             }
         }
@@ -960,7 +960,7 @@ public class DocumentTypeXmlParser {
             NamedNodeMap attributes = processNode.getAttributes();
             Node processNameNode = attributes.getNamedItem(PROCESS_NAME);
             String processName = (processNameNode == null ? null : processNameNode.getNodeValue());
-            Process process = new Process();
+            ProcessDefinitionBo process = new ProcessDefinitionBo();
             if (org.apache.commons.lang.StringUtils.isEmpty(processName)) {
                 process.setInitial(true);
                 process.setName(KEWConstants.PRIMARY_PROCESS_NAME);
@@ -974,7 +974,7 @@ public class DocumentTypeXmlParser {
     }
     
     private void createEmptyProcess(DocumentType documentType) {
-            Process process = new Process();
+            ProcessDefinitionBo process = new ProcessDefinitionBo();
             
             process.setInitial(true);
             process.setName(KEWConstants.PRIMARY_PROCESS_NAME);

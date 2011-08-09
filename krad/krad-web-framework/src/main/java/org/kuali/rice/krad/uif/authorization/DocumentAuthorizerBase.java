@@ -19,6 +19,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.doctype.ProcessDefinition;
 import org.kuali.rice.kew.api.doctype.RoutePath;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.Person;
@@ -219,9 +220,9 @@ public class DocumentAuthorizerBase extends AuthorizerBase {
 	protected final boolean canSendAnyTypeAdHocRequests(Document document, Person user) {
 		if (canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_FYI_REQ, user)) {
 		    RoutePath routePath = KewApiServiceLocator.getDocumentTypeService().getRoutePathForDocumentTypeName(document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
-		    org.kuali.rice.kew.api.doctype.Process process = routePath.getPrimaryProcess();
-		    if (process != null) {
-		        if (process.getInitialRouteNode() == null) {
+		    ProcessDefinition processDefinition = routePath.getPrimaryProcess();
+		    if (processDefinition != null) {
+		        if (processDefinition.getInitialRouteNode() == null) {
 		            return false;
 		        }
 		    } else {

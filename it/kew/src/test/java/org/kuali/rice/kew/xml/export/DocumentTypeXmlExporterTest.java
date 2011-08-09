@@ -15,12 +15,18 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.apache.log4j.Logger;
+import org.junit.Test;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.kew.doctype.DocumentTypePolicy;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.engine.node.BranchPrototype;
+import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
+import org.kuali.rice.kew.engine.node.RouteNode;
+import org.kuali.rice.kew.export.KewExportDataSet;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.test.BaselineTestCase;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -29,18 +35,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-import org.junit.Test;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.kew.doctype.DocumentTypePolicy;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.engine.node.BranchPrototype;
-import org.kuali.rice.kew.engine.node.Process;
-import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.export.KewExportDataSet;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.test.BaselineTestCase;
+import static org.junit.Assert.*;
 
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
@@ -118,8 +113,8 @@ public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
 
     private void assertRoutePath(DocumentType oldDocType, DocumentType newDocType) {
         for (Iterator iterator = oldDocType.getProcesses().iterator(); iterator.hasNext();) {
-            Process oldProcess = (Process) iterator.next();
-            Process newProcess = newDocType.getNamedProcess(oldProcess.getName());
+            ProcessDefinitionBo oldProcess = (ProcessDefinitionBo) iterator.next();
+            ProcessDefinitionBo newProcess = newDocType.getNamedProcess(oldProcess.getName());
             assertRouteNodes(oldProcess.getInitialRouteNode(), newProcess.getInitialRouteNode(), new HashSet());
         }
     }

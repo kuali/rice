@@ -23,7 +23,7 @@ import org.kuali.rice.core.api.mo.common.Versioned;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface ProcessContract extends Identifiable, Versioned {
+public interface ProcessDefinitionContract extends Identifiable, Versioned {
     
     String getName();
     

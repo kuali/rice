@@ -60,7 +60,7 @@
     <class>org.kuali.rice.kew.engine.node.Branch</class>
     <class>org.kuali.rice.kew.engine.node.BranchState</class>
     <class>org.kuali.rice.kew.engine.node.NodeState</class>
-    <class>org.kuali.rice.kew.engine.node.Process</class>
+    <class>org.kuali.rice.kew.engine.node.ProcessDefinitionBo</class>
     <class>org.kuali.rice.core.impl.style.StyleBo</class>
     <!--<class>org.kuali.rice.ksb.messaging.bam.BAMTargetEntry</class>-->
     <!-- 

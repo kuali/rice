@@ -30,7 +30,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.doctype.service.impl.DocumentTypeServiceImpl;
 import org.kuali.rice.kew.engine.node.NodeType;
-import org.kuali.rice.kew.engine.node.Process;
+import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
@@ -212,7 +212,7 @@ public class DocumentTypeTest extends KEWTestCase {
 
         //this is going against the intended structure and is very brittle
 
-        Process process = (Process)processes.get(0);
+        ProcessDefinitionBo process = (ProcessDefinitionBo)processes.get(0);
         List flattenedNodeList = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(process);
         assertEquals("Should be 6 total route nodes", 6, flattenedNodeList.size());
 

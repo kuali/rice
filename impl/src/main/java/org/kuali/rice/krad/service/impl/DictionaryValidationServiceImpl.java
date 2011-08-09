@@ -922,7 +922,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         if (null == definitions)
             return;
 
-        //Process all attribute definitions, but not if this is a nested object, in which case attribute definitions 
+        //ProcessDefinition all attribute definitions, but not if this is a nested object, in which case attribute definitions
         //will already have been processed on the parent object.
         if (attributeValueReader.getPath() == null || attributeValueReader.getPath().isEmpty()){
             for (Constrainable definition : definitions) {
@@ -934,7 +934,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             }
         }
 
-        //Process any constraints that may be defined on complex attributes
+        //ProcessDefinition any constraints that may be defined on complex attributes
         if (objectEntry instanceof DataDictionaryEntryBase) {
             List<ComplexAttributeDefinition> complexAttrDefinitions =
                     ((DataDictionaryEntryBase) objectEntry).getComplexAttributes();

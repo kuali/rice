@@ -16,17 +16,17 @@
  */
 package org.kuali.rice.kew.engine;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.engine.node.Process;
+import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -133,7 +133,7 @@ public final class CompatUtils {
         if (!isRouteLevelCompatible(documentType)) {
             throw new WorkflowRuntimeException("Attempting to invoke a 'route level' operation on a document which is not route level compatible.");
         }
-        Process primaryProcess = documentType.getPrimaryProcess();
+        ProcessDefinitionBo primaryProcess = documentType.getPrimaryProcess();
         RouteNode routeNode = primaryProcess.getInitialRouteNode();
         List<RouteNode> nodes = new ArrayList<RouteNode>();
         int count = 0;

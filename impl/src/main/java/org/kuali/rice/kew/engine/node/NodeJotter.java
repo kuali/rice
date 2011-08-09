@@ -16,10 +16,10 @@
  */
 package org.kuali.rice.kew.engine.node;
 
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+
 import java.util.Iterator;
 import java.util.List;
-
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 
 
 /**
@@ -94,7 +94,7 @@ public class NodeJotter {
             }
         }
         output += "\n" + dataIndent + "Status Flags: initial=" + nodeInstance.isInitial() + ", active=" + nodeInstance.isActive() + ", complete=" + nodeInstance.isComplete();
-        output += (nodeInstance.getProcess() == null ? "" : "\n" + dataIndent + "Process Name: " + nodeInstance.getProcess().getName());
+        output += (nodeInstance.getProcess() == null ? "" : "\n" + dataIndent + "ProcessDefinition Name: " + nodeInstance.getProcess().getName());
         output += "\n";
         return output;
     }

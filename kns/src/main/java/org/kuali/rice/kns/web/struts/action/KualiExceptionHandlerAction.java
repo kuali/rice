@@ -65,8 +65,8 @@ public class KualiExceptionHandlerAction extends Action {
 	 * This overridden method processes the exception and post exception (when
 	 * user either submit/cancel the exception JSP page).
 	 * <ul>
-	 * <li>Process application Exception - Exception is stored in Http Request</li>
-	 * <li>Process exception incident reporting - No exception, only form data</li>
+	 * <li>ProcessDefinition application Exception - Exception is stored in Http Request</li>
+	 * <li>ProcessDefinition exception incident reporting - No exception, only form data</li>
 	 * </ul>
 	 * 
 	 * @see org.apache.struts.action.Action#execute(org.apache.struts.action.ActionMapping,
@@ -131,7 +131,7 @@ public class KualiExceptionHandlerAction extends Action {
 				}
 			}
 		} else {
-			// Process the received exception from HTTP request
+			// ProcessDefinition the received exception from HTTP request
 			returnForward = processException(mapping, form, request, e);
 		}
 

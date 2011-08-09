@@ -16,18 +16,18 @@
  */
 package org.kuali.rice.kew.actions;
 
-import java.util.List;
-
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.engine.node.Process;
+import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
+
+import java.util.List;
 
 
 /**
@@ -120,7 +120,7 @@ public class RouteDocumentAction extends ActionTakenEvent {
                 String oldStatus = getRouteHeader().getDocRouteStatus();
                 getRouteHeader().markDocumentEnroute();
                 
-                if (((Process)getRouteHeader().getDocumentType().getProcesses().get(0)).getInitialRouteNode() == null) {
+                if (((ProcessDefinitionBo)getRouteHeader().getDocumentType().getProcesses().get(0)).getInitialRouteNode() == null) {
                     getRouteHeader().markDocumentProcessed();
                     getRouteHeader().markDocumentFinalized();
                 }

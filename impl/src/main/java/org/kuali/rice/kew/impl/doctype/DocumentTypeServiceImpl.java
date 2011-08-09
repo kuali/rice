@@ -15,18 +15,19 @@
  */
 package org.kuali.rice.kew.impl.doctype;
 
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.doctype.DocumentType;
 import org.kuali.rice.kew.api.doctype.DocumentTypeService;
-import org.kuali.rice.kew.api.doctype.Process;
+import org.kuali.rice.kew.api.doctype.ProcessDefinition;
 import org.kuali.rice.kew.api.doctype.RoutePath;
 import org.kuali.rice.kew.doctype.dao.DocumentTypeDAO;
+import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+
+import java.util.List;
 
 /**
  * Reference implementation of the {@link DocumentTypeService}.
@@ -200,9 +201,9 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
             return null;
         }
         RoutePath.Builder builder = RoutePath.Builder.create();
-        List<org.kuali.rice.kew.engine.node.Process> processes = docType.getProcesses();
-        for (org.kuali.rice.kew.engine.node.Process process : processes) {
-            builder.getProcesses().add(Process.Builder.create(process));
+        List<ProcessDefinitionBo> processes = docType.getProcesses();
+        for (ProcessDefinitionBo process : processes) {
+            builder.getProcessDefinitions().add(ProcessDefinition.Builder.create(process));
         }
         return builder.build();
     }
@@ -217,9 +218,9 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
             return null;
         }
         RoutePath.Builder builder = RoutePath.Builder.create();
-        List<org.kuali.rice.kew.engine.node.Process> processes = docType.getProcesses();
-        for (org.kuali.rice.kew.engine.node.Process process : processes) {
-            builder.getProcesses().add(Process.Builder.create(process));
+        List<ProcessDefinitionBo> processes = docType.getProcesses();
+        for (ProcessDefinitionBo process : processes) {
+            builder.getProcessDefinitions().add(ProcessDefinition.Builder.create(process));
         }
         return builder.build();
 

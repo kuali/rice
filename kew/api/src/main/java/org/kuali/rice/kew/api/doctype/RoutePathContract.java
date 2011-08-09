@@ -24,6 +24,6 @@ import java.util.List;
  */
 public interface RoutePathContract {
 
-    List<? extends ProcessContract> getProcesses();
+    List<? extends ProcessDefinitionContract> getProcessDefinitions();
     
 }

@@ -17,8 +17,12 @@
 package org.kuali.rice.kew.engine.transition;
 
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.engine.node.Process;
-import org.kuali.rice.kew.engine.node.*;
+import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
+import org.kuali.rice.kew.engine.node.ProcessResult;
+import org.kuali.rice.kew.engine.node.RouteNode;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.engine.node.SubProcessNode;
+import org.kuali.rice.kew.engine.node.SubProcessResult;
 import org.kuali.rice.kew.exception.WorkflowException;
 
 import java.util.ArrayList;
@@ -36,7 +40,7 @@ public class SubProcessTransitionEngine extends TransitionEngine {
     
     public RouteNodeInstance transitionTo(RouteNodeInstance nextNodeInstance, RouteContext context) throws Exception {
         String processName = nextNodeInstance.getRouteNode().getRouteNodeName();
-        Process process = context.getDocument().getDocumentType().getNamedProcess(processName);
+        ProcessDefinitionBo process = context.getDocument().getDocumentType().getNamedProcess(processName);
         if (process == null) {
             throw new WorkflowException("Could not locate named sub process: " + processName);
         }

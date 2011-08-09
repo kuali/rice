@@ -32,7 +32,7 @@ import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.BranchPrototype;
 import org.kuali.rice.kew.engine.node.NodeType;
-import org.kuali.rice.kew.engine.node.Process;
+import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.export.KewExportDataSet;
@@ -142,9 +142,9 @@ public class DocumentTypeXmlExporter implements XmlExporter {
       	if (!StringUtils.isBlank(documentType.getRoutingVersion())) {
       		renderer.renderTextElement(docTypeElement, ROUTING_VERSION, documentType.getRoutingVersion());
       	}
-      	Process process = null;
+      	ProcessDefinitionBo process = null;
       	if (documentType.getProcesses().size() > 0) {
-      	    process = (Process)documentType.getProcesses().get(0);
+      	    process = (ProcessDefinitionBo)documentType.getProcesses().get(0);
       	}
       	if (process != null && process.getInitialRouteNode() != null) {
       	    exportRouteData(docTypeElement, documentType, flattenedNodes, hasDefaultExceptionWorkgroup);
@@ -194,7 +194,7 @@ public class DocumentTypeXmlExporter implements XmlExporter {
         if (!flattenedNodes.isEmpty()) {
             Element routePathsElement = renderer.renderElement(parent, ROUTE_PATHS);
             for (Iterator iterator = documentType.getProcesses().iterator(); iterator.hasNext();) {
-                Process process = (Process) iterator.next();
+                ProcessDefinitionBo process = (ProcessDefinitionBo) iterator.next();
                 Element routePathElement = renderer.renderElement(routePathsElement, ROUTE_PATH);
                 if (!process.isInitial()) {
                     renderer.renderAttribute(routePathElement, INITIAL_NODE, process.getInitialRouteNode().getRouteNodeName());
@@ -232,7 +232,7 @@ public class DocumentTypeXmlExporter implements XmlExporter {
         return hasDefaultExceptionWorkgroup;
     }
 
-    private void exportProcess(Element parent, Process process) {
+    private void exportProcess(Element parent, ProcessDefinitionBo process) {
     	exportNodeGraph(parent, process.getInitialRouteNode(), null);
     }
 

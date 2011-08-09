@@ -16,7 +16,12 @@
  */
 package org.kuali.rice.kew.engine.node;
 
-import java.io.Serializable;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.kew.api.doctype.ProcessDefinitionContract;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -29,18 +34,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.kew.api.doctype.ProcessContract;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.service.KEWServiceLocator;
+import java.io.Serializable;
 
 
 /**
- * Represents a route path defined on a {@link DocumentType}.  A Process is a named entity which
- * simply points to an initial {@link RouteNode} which represents the beginning of the Process.
+ * Represents a route path defined on a {@link DocumentType}.  A ProcessDefinition is a named entity which
+ * simply points to an initial {@link RouteNode} which represents the beginning of the ProcessDefinition.
  * The path of the process can then be followed using the next nodes defined on the route nodes. 
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -48,7 +47,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 @Entity
 @Table(name="KREW_DOC_TYP_PROC_T")
 //@Sequence(name="KREW_RTE_NODE_S",property="processId")
-public class Process implements Serializable, ProcessContract {
+public class ProcessDefinitionBo implements Serializable, ProcessDefinitionContract {
 
 	private static final long serialVersionUID = -6338857095673479752L;
     

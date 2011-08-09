@@ -30,7 +30,7 @@ public final class RoutePath extends AbstractDataTransferObject implements Route
 
     @XmlElementWrapper(name = Elements.PROCESSES, required = false)
     @XmlElement(name = Elements.PROCESS, required = false)
-    private final List<Process> processes;
+    private final List<ProcessDefinition> processDefinitions;
 
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -40,30 +40,30 @@ public final class RoutePath extends AbstractDataTransferObject implements Route
      * Private constructor used only by JAXB.
      */
     private RoutePath() {
-        this.processes = null;
+        this.processDefinitions = null;
     }
 
     private RoutePath(Builder builder) {
-        this.processes = new ArrayList<Process>();
-        if (builder.getProcesses() != null) {
-            for (Process.Builder processBuilder : builder.getProcesses()) {
-                this.processes.add(processBuilder.build());
+        this.processDefinitions = new ArrayList<ProcessDefinition>();
+        if (builder.getProcessDefinitions() != null) {
+            for (ProcessDefinition.Builder processBuilder : builder.getProcessDefinitions()) {
+                this.processDefinitions.add(processBuilder.build());
             }
         }
     }
     
-    public Process getPrimaryProcess() {
-        for (Process process : processes) {
-            if (process.isInitial()) {
-                return process;
+    public ProcessDefinition getPrimaryProcess() {
+        for (ProcessDefinition processDefinition : processDefinitions) {
+            if (processDefinition.isInitial()) {
+                return processDefinition;
             }
         }        
         return null;
     }
 
     @Override
-    public List<Process> getProcesses() {
-        return CollectionUtils.unmodifiableListNullSafe(this.processes);
+    public List<ProcessDefinition> getProcessDefinitions() {
+        return CollectionUtils.unmodifiableListNullSafe(this.processDefinitions);
     }
 
     /**
@@ -74,13 +74,13 @@ public final class RoutePath extends AbstractDataTransferObject implements Route
 
         private static final long serialVersionUID = -6916424305298043710L;
 
-        private List<Process.Builder> processes;
+        private List<ProcessDefinition.Builder> processes;
 
         private Builder() {}
 
         public static Builder create() {
             Builder builder = new Builder();
-            builder.setProcesses(new ArrayList<Process.Builder>());
+            builder.setProcesses(new ArrayList<ProcessDefinition.Builder>());
             return builder;
         }
 
@@ -89,9 +89,9 @@ public final class RoutePath extends AbstractDataTransferObject implements Route
                 throw new IllegalArgumentException("contract was null");
             }
             Builder builder = create();
-            List<Process.Builder> processBuilders = new ArrayList<Process.Builder>();
-            for (ProcessContract process : contract.getProcesses()) {
-                processBuilders.add(Process.Builder.create(process));
+            List<ProcessDefinition.Builder> processBuilders = new ArrayList<ProcessDefinition.Builder>();
+            for (ProcessDefinitionContract process : contract.getProcessDefinitions()) {
+                processBuilders.add(ProcessDefinition.Builder.create(process));
             }
             builder.setProcesses(processBuilders);
             return builder;
@@ -102,11 +102,11 @@ public final class RoutePath extends AbstractDataTransferObject implements Route
         }
 
         @Override
-        public List<Process.Builder> getProcesses() {
+        public List<ProcessDefinition.Builder> getProcessDefinitions() {
             return this.processes;
         }
 
-        public void setProcesses(List<Process.Builder> processes) {
+        public void setProcesses(List<ProcessDefinition.Builder> processes) {
             this.processes = processes;
         }
 
@@ -125,8 +125,8 @@ public final class RoutePath extends AbstractDataTransferObject implements Route
      * object is marshalled to XML.
      */
     static class Elements {
-        final static String PROCESSES = "processes";
-        final static String PROCESS = "process";
+        final static String PROCESSES = "processDefinitions";
+        final static String PROCESS = "processDefinition";
     }
 
 }

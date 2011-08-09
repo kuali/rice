@@ -17,8 +17,13 @@
 package org.kuali.rice.kew.engine.node.service;
 
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.engine.node.*;
-import org.kuali.rice.kew.engine.node.Process;
+import org.kuali.rice.kew.engine.node.Branch;
+import org.kuali.rice.kew.engine.node.NodeGraphSearchCriteria;
+import org.kuali.rice.kew.engine.node.NodeGraphSearchResult;
+import org.kuali.rice.kew.engine.node.NodeState;
+import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
+import org.kuali.rice.kew.engine.node.RouteNode;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 
 import java.util.List;
@@ -110,7 +115,7 @@ public interface RouteNodeService {
      * @return List or empty List
      */
     public List<RouteNode> getFlattenedNodes(DocumentType documentType, boolean climbHierarchy);
-    public List<RouteNode> getFlattenedNodes(Process process);
+    public List<RouteNode> getFlattenedNodes(ProcessDefinitionBo process);
     
     /**
      * Returns a flattened list of RouteNodeInstances on the given document.  If the includeProcesses flag is

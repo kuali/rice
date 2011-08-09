@@ -18,7 +18,6 @@ package org.kuali.rice.krad.service.impl;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.namespace.Namespace;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.framework.parameter.ParameterConstants;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
@@ -165,65 +164,47 @@ public class KualiModuleServiceImpl implements KualiModuleService, InitializingB
 	}
 
     @Override
-    public String getNamespaceCode(Class<?> documentOrStepClass) {
-        if (documentOrStepClass == null) {
-            throw new IllegalArgumentException("documentOrStepClass must not be null");
+    public String getNamespaceCode(Class<?> documentClass) {
+        if (documentClass == null) {
+            throw new IllegalArgumentException("documentClass must not be null");
         }
 
-        if (documentOrStepClass.isAnnotationPresent(ParameterConstants.NAMESPACE.class)) {
-            return (documentOrStepClass.getAnnotation(ParameterConstants.NAMESPACE.class)).namespace();
+        if (documentClass.isAnnotationPresent(ParameterConstants.NAMESPACE.class)) {
+            return (documentClass.getAnnotation(ParameterConstants.NAMESPACE.class)).namespace();
         }
-        ModuleService moduleService = getResponsibleModuleService(documentOrStepClass);
+        ModuleService moduleService = getResponsibleModuleService(documentClass);
         if (moduleService != null) {
             return moduleService.getModuleConfiguration().getNamespaceCode();
         }
-        if (documentOrStepClass.getName().startsWith("org.kuali.rice.krad")) {
+        if (documentClass.getName().startsWith("org.kuali.rice.krad")) {
             return KRADConstants.KRAD_NAMESPACE;
         }
-        if (documentOrStepClass.getName().startsWith("org.kuali.rice.kew")) {
+        if (documentClass.getName().startsWith("org.kuali.rice.kew")) {
             return "KR-WKFLW";
         }
-        if (documentOrStepClass.getName().startsWith("org.kuali.rice.kim")) {
+        if (documentClass.getName().startsWith("org.kuali.rice.kim")) {
             return "KR-IDM";
         }
-        if (documentOrStepClass.getName().startsWith("org.kuali.rice.core")) {
+        if (documentClass.getName().startsWith("org.kuali.rice.core")) {
             return "KR-CORE";
         }
-        throw new IllegalArgumentException("Unable to determine the namespace code for documentOrStepClass " + documentOrStepClass.getName());
+        throw new IllegalArgumentException("Unable to determine the namespace code for documentClass " + documentClass.getName());
     }
 
     @Override
-    public String getComponentCode(Class<?> documentOrStepClass) {
-        if (documentOrStepClass == null) {
-            throw new IllegalArgumentException("documentOrStepClass must not be null");
+    public String getComponentCode(Class<?> documentClass) {
+        if (documentClass == null) {
+            throw new IllegalArgumentException("documentClass must not be null");
         }
 
-        if (documentOrStepClass.isAnnotationPresent(ParameterConstants.COMPONENT.class)) {
-            return documentOrStepClass.getAnnotation(ParameterConstants.COMPONENT.class).component();
-        } else if (TransactionalDocument.class.isAssignableFrom(documentOrStepClass)) {
-            return documentOrStepClass.getSimpleName().replace("Document", "");
-        } else if (BusinessObject.class.isAssignableFrom(documentOrStepClass)) {
-            return documentOrStepClass.getSimpleName();
-        } else {
-            if (STEP_CLASS != null && STEP_CLASS.isAssignableFrom(documentOrStepClass)) {
-                return documentOrStepClass.getSimpleName();
-            }
+        if (documentClass.isAnnotationPresent(ParameterConstants.COMPONENT.class)) {
+            return documentClass.getAnnotation(ParameterConstants.COMPONENT.class).component();
+        } else if (TransactionalDocument.class.isAssignableFrom(documentClass)) {
+            return documentClass.getSimpleName().replace("Document", "");
+        } else if (BusinessObject.class.isAssignableFrom(documentClass)) {
+            return documentClass.getSimpleName();
         }
-        throw new IllegalArgumentException("Unable to determine the component code for documentOrStepClass " + documentOrStepClass.getName());
-    }
-
-    private static final Class<?> STEP_CLASS;
-    static {
-        Class<?> clazz;
-        try {
-            ClassLoader cl = ClassLoaderUtils.getDefaultClassLoader();
-            // TODO: Warning!  Kludge!  Hack!  Will be replaced!  KULRICE-2921
-            clazz =  Class.forName("org.kuali.kfs.sys.batch.Step", true, cl);
-        } catch (Exception e) {
-            //swallowing: really what do we do here?  This is basically asking - are we on kfs?
-            clazz = null;
-        }
-        STEP_CLASS = clazz;
+        throw new IllegalArgumentException("Unable to determine the component code for documentClass " + documentClass.getName());
     }
 
 }

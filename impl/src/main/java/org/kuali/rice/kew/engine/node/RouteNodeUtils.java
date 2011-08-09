@@ -26,7 +26,14 @@ import org.xml.sax.InputSource;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * A simple class for performing operations on RouteNode.  In particular, this class provides some
@@ -105,7 +112,7 @@ public final class RouteNodeUtils {
         if (!documentType.isRouteInherited() || climbHierarchy) {
             for (Object o : documentType.getProcesses())
             {
-                Process process = (Process) o;
+                ProcessDefinitionBo process = (ProcessDefinitionBo) o;
                 nodes.addAll(getFlattenedNodes(process));
             }
         }
@@ -113,7 +120,7 @@ public final class RouteNodeUtils {
         return nodes;
     }
     
-    public static List<RouteNode> getFlattenedNodes(Process process) {
+    public static List<RouteNode> getFlattenedNodes(ProcessDefinitionBo process) {
         Map<String, RouteNode> nodesMap = new HashMap<String, RouteNode>();
         if (process.getInitialRouteNode() != null) {
             flattenNodeGraph(nodesMap, process.getInitialRouteNode());

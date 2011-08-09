@@ -145,7 +145,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 	}
 	
 	/**
-     * <p>Process an <code>HttpServletRequest</code> and create the
+     * <p>ProcessDefinition an <code>HttpServletRequest</code> and create the
      * corresponding <code>HttpServletResponse</code> or dispatch
      * to another resource.</p>
      *
@@ -207,7 +207,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 				@Override
 				public Object doInTransaction(TransactionStatus status) {
 					try {
-						// Process any ActionForm bean related to this request
+						// ProcessDefinition any ActionForm bean related to this request
 				        ActionForm form = processActionForm(request, response, mapping);
 				        processPopulate(request, response, form, mapping);
 				        
@@ -226,7 +226,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 				            throw e;
 				        }
 				            
-				        // Process a forward or include specified by this mapping
+				        // ProcessDefinition a forward or include specified by this mapping
 				        if (!processForward(request, response, mapping)) {
 				            return null;
 				        }
@@ -244,7 +244,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 				    	// Call the Action instance itself
 				        ActionForward forward = processActionPerform(request, response, action, form, mapping);
 				
-				        // Process the returned ActionForward instance
+				        // ProcessDefinition the returned ActionForward instance
 				        processForwardConfig(request, response, forward);
 					} catch (Exception e) {
 						// the doInTransaction method has no means for

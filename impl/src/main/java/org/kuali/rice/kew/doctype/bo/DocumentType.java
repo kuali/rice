@@ -42,7 +42,7 @@ import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.DocumentTypePolicyEnum;
 import org.kuali.rice.kew.doctype.DocumentTypeSecurity;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
-import org.kuali.rice.kew.engine.node.Process;
+import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.framework.document.lookup.SearchableAttribute;
 import org.kuali.rice.kew.mail.CustomEmailAttribute;
@@ -201,7 +201,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     /* New Workflow 2.1 Field */
     @Fetch(value = FetchMode.SELECT)
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "documentType")
-    private List<Process> processes = new ArrayList();
+    private List<ProcessDefinitionBo> processes = new ArrayList();
     @Column(name = "RTE_VER_NBR")
     private String routingVersion = KEWConstants.CURRENT_ROUTING_VERSION;
 
@@ -1338,7 +1338,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
 //		return new ArrayList<DocumentTypeAttribute>();
 //	}
 
-    public void addProcess(Process process) {
+    public void addProcess(ProcessDefinitionBo process) {
         processes.add(process);
     }
 
@@ -1371,9 +1371,9 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         return parentProcesses;
     }
 
-    public Process getPrimaryProcess() {
+    public ProcessDefinitionBo getPrimaryProcess() {
         for (Iterator iterator = getProcesses().iterator(); iterator.hasNext();) {
-            Process process = (Process) iterator.next();
+            ProcessDefinitionBo process = (ProcessDefinitionBo) iterator.next();
             if (process.isInitial()) {
                 return process;
             }
@@ -1381,9 +1381,9 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         return null;
     }
 
-    public Process getNamedProcess(String name) {
+    public ProcessDefinitionBo getNamedProcess(String name) {
         for (Iterator iterator = getProcesses().iterator(); iterator.hasNext();) {
-            Process process = (Process) iterator.next();
+            ProcessDefinitionBo process = (ProcessDefinitionBo) iterator.next();
             if (org.apache.commons.lang.ObjectUtils.equals(name, process.getName())) {
                 return process;
             }

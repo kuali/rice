@@ -19,14 +19,32 @@ package org.kuali.rice.kew.engine.node.service.impl;
 import org.apache.commons.collections.ComparatorUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.RouteHelper;
-import org.kuali.rice.kew.engine.node.*;
-import org.kuali.rice.kew.engine.node.Process;
+import org.kuali.rice.kew.engine.node.Branch;
+import org.kuali.rice.kew.engine.node.BranchState;
+import org.kuali.rice.kew.engine.node.NodeGraphContext;
+import org.kuali.rice.kew.engine.node.NodeGraphSearchCriteria;
+import org.kuali.rice.kew.engine.node.NodeGraphSearchResult;
+import org.kuali.rice.kew.engine.node.NodeMatcher;
+import org.kuali.rice.kew.engine.node.NodeState;
+import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
+import org.kuali.rice.kew.engine.node.RouteNode;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.engine.node.RouteNodeUtils;
 import org.kuali.rice.kew.engine.node.dao.RouteNodeDAO;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 
 
@@ -134,7 +152,7 @@ public class RouteNodeServiceImpl implements RouteNodeService {
             nextNodesInPath.add(node);
         } else {
             if (helper.isSubProcessNode(node)) {
-                Process subProcess = node.getDocumentType().getNamedProcess(node.getRouteNodeName());
+                ProcessDefinitionBo subProcess = node.getDocumentType().getNamedProcess(node.getRouteNodeName());
                 RouteNode subNode = subProcess.getInitialRouteNode();
                 nextNodesInPath.addAll(findNextRouteNodesInPath(nodeName, subNode, inspected));
             }
@@ -207,7 +225,7 @@ public class RouteNodeServiceImpl implements RouteNodeService {
         List<RouteNode> nodes = new ArrayList<RouteNode>();
         if (!documentType.isRouteInherited() || climbHierarchy) {
             for (Iterator iterator = documentType.getProcesses().iterator(); iterator.hasNext();) {
-                Process process = (Process) iterator.next();
+                ProcessDefinitionBo process = (ProcessDefinitionBo) iterator.next();
                 nodes.addAll(getFlattenedNodes(process));
             }
         }
@@ -215,7 +233,7 @@ public class RouteNodeServiceImpl implements RouteNodeService {
         return nodes;
     }
     
-    public List<RouteNode> getFlattenedNodes(Process process) {
+    public List<RouteNode> getFlattenedNodes(ProcessDefinitionBo process) {
         Map<String, RouteNode> nodesMap = new HashMap<String, RouteNode>();
         if (process.getInitialRouteNode() != null) {
             flattenNodeGraph(nodesMap, process.getInitialRouteNode());

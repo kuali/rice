@@ -22,7 +22,7 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.doctype.IllegalDocumentTypeException;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.BranchState;
-import org.kuali.rice.kew.engine.node.Process;
+import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.engine.node.ProcessResult;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.RouteNodeUtils;
@@ -706,7 +706,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		if (context.getEngineState() == null) {
 			context.setEngineState(new EngineState());
 		}
-		Process process = document.getDocumentType().getPrimaryProcess();
+		ProcessDefinitionBo process = document.getDocumentType().getPrimaryProcess();
 		if (process == null || process.getInitialRouteNode() == null) {
 		    if (process == null) {
 		        throw new IllegalDocumentTypeException("DocumentType '" + document.getDocumentType().getName() + "' has no primary process configured!");

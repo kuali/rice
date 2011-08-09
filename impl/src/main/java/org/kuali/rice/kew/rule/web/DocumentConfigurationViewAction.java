@@ -24,6 +24,7 @@ import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
+import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -282,7 +283,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		// merge the data and attach to route levels
 		// pull the route levels and store on form
 		//List<RouteNode> routeNodes = getRouteNodeService().getFlattenedNodes(form.getDocumentType(), true);
-		RouteNode rootNode = ((List<org.kuali.rice.kew.engine.node.Process>)form.getDocumentType().getProcesses()).get(0).getInitialRouteNode();
+		RouteNode rootNode = ((List<ProcessDefinitionBo>)form.getDocumentType().getProcesses()).get(0).getInitialRouteNode();
 		LinkedHashMap<String, RouteNode> routeNodeMap = new LinkedHashMap<String, RouteNode>();
 		flattenRouteNodes(rootNode, routeNodeMap);
 		

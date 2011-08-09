@@ -16,33 +16,19 @@
  */
 package org.kuali.rice.kew.engine.node.hierarchyrouting;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.XMLConstants;
-import javax.xml.namespace.QName;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.reflect.ObjectDefinition;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
-import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.DynamicNode;
 import org.kuali.rice.kew.engine.node.DynamicResult;
 import org.kuali.rice.kew.engine.node.NoOpNode;
 import org.kuali.rice.kew.engine.node.NodeState;
-import org.kuali.rice.kew.engine.node.Process;
+import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.engine.node.RequestsNode;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
@@ -52,6 +38,16 @@ import org.kuali.rice.kew.engine.node.hierarchyrouting.HierarchyProvider.Stop;
 import org.kuali.rice.kew.engine.transition.SplitTransitionEngine;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
+
+import javax.xml.XMLConstants;
+import javax.xml.namespace.QName;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -479,14 +475,14 @@ public class HierarchyRoutingNode implements DynamicNode {
     }
 
     /**
-     * Places a Process on the documentType wrapping the node and setting the node as the process's initalRouteNode
+     * Places a ProcessDefinition on the documentType wrapping the node and setting the node as the process's initalRouteNode
      * 
      * @param node
      * @param documentType
      * @return Process wrapping the node passed in
      */
-    protected Process getPrototypeProcess(RouteNode node, DocumentType documentType) {
-        Process process = new Process();
+    protected ProcessDefinitionBo getPrototypeProcess(RouteNode node, DocumentType documentType) {
+        ProcessDefinitionBo process = new ProcessDefinitionBo();
         process.setDocumentType(documentType);
         process.setInitial(false);
         process.setInitialRouteNode(node);

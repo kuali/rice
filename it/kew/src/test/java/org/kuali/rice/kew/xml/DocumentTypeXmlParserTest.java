@@ -26,6 +26,7 @@ import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
@@ -407,7 +408,7 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
         
         //verify next_doc_status in RouteNode
         List procs = documentType.getProcesses();
-        org.kuali.rice.kew.engine.node.Process myProc = (org.kuali.rice.kew.engine.node.Process) procs.get(0);
+        ProcessDefinitionBo myProc = (ProcessDefinitionBo) procs.get(0);
         RouteNode myNode = myProc.getInitialRouteNode();
         String nextDocStatus = myNode.getNextDocStatus();
         assertTrue("RouteNode nextDocStatus is Invalid", "Approval in Progress".equalsIgnoreCase(nextDocStatus));

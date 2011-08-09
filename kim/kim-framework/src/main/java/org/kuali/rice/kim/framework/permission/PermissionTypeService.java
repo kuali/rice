@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.framework.permission;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.framework.type.KimTypeService;
 
@@ -23,14 +24,12 @@ import java.util.Map;
 
 
 /**
- * This is a description of what this class does - jonathan don't forget to fill this in. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
- *
+ * A {@link KimTypeService} with specific methods for Permissions.
  */
 public interface PermissionTypeService extends KimTypeService {
 
-    /** Return whether a permission assignment with the given details is applicable for the given request details. 
+    /**
+     * Gets whether a permission assignment with the given details is applicable for the given request details.
      * 
      * For example, the details for a permission (say edit) could be as follows:
      *   component = Account
@@ -38,9 +37,11 @@ public interface PermissionTypeService extends KimTypeService {
      *   
      * The Account component is known to belong to the KFS-COA namespace.  If this service is requested...
      * component = Account, field = All  
-     *   
-     *   
-     * TODO: clarify this description
+     *
+     * @param requestedDetails the requested details.  cannot be null.
+     * @param permissions the list of permission to check for matches. cannot be null.
+     * @return an immutable list of matched permissions.  will not return null.
+     * @throws IllegalArgumentException if the requestedDetails or permissions is null.
      */
-    List<Permission> getMatchingPermissions( Map<String, String> requestedDetails, List<Permission> permissionsList );
+    List<Permission> getMatchingPermissions( Map<String, String> requestedDetails, List<Permission> permissions) throws RiceIllegalArgumentException;
 }

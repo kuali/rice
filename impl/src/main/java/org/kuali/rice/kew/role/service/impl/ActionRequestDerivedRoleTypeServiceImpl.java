@@ -114,11 +114,10 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends DerivedRoleTypeServ
 	/**
 	 * Returns false, as action requests change quite often so membership in this role is highly volatile
 	 * 
-	 * @see org.kuali.rice.kns.kim.role.RoleTypeServiceBase#shouldCacheRoleMembershipResults(java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kns.kim.role.RoleTypeServiceBase#dynamicRoleMembership(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public boolean shouldCacheRoleMembershipResults(String namespaceCode,
-			String roleName) {
+	public boolean dynamicRoleMembership(String namespaceCode, String roleName) {
 		return false;
 	}
 	

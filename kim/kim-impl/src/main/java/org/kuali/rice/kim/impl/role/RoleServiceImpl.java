@@ -27,7 +27,6 @@ import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.group.GroupMemberBo;
 import org.kuali.rice.kim.impl.services.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
-import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
@@ -154,7 +153,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             //it is possible that the the roleTypeService is coming from a remote application
             // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
             try {
-                List<RoleMembership> matchingMembers = roleTypeService.doRoleQualifiersMatchQualification(qualification, roleIdToMembershipMap.get(roleId));
+                List<RoleMembership> matchingMembers = roleTypeService.getMatchingRoleMemberships(qualification,
+                        roleIdToMembershipMap.get(roleId));
                 for (RoleMembership rmi : matchingMembers) {
                     results.add(rmi.getQualifier());
                 }
@@ -247,7 +247,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             //it is possible that the the roleTypeService is coming from a remote application
             // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
             try {
-                List<RoleMembership> matchingMembers = roleTypeService.doRoleQualifiersMatchQualification(qualification, roleIdToMembershipMap.get(roleId));
+                List<RoleMembership> matchingMembers = roleTypeService.getMatchingRoleMemberships(qualification,
+                        roleIdToMembershipMap.get(roleId));
                 for (RoleMembership roleMembership : matchingMembers) {
                     results.add(roleMembership.getQualifier());
                 }
@@ -477,6 +478,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
     @SuppressWarnings("unchecked")
     protected void inactivateApplicationRoleMemberships(String principalId, Timestamp yesterday) {
+        //FIXME: why isn't this method using the passed in Timestamp?
+        //FIXME: flush caching
+        /*
         // get all role type services
         Collection<KimType> types = KimApiServiceLocator.getKimTypeInfoService().findAllKimTypes();
         // create sub list of only application role types
@@ -494,6 +498,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
         Map<String, Object> roleLookupMap = new HashMap<String, Object>(2);
         roleLookupMap.put(KIMPropertyConstants.Role.ACTIVE, "Y");
+
         // loop over application types
         for (KimType typeInfo : applicationRoleTypes) {
             RoleTypeService service = getRoleTypeService(typeInfo);
@@ -506,6 +511,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                 service.principalInactivated(principalId, role.getNamespaceCode(), role.getName());
             }
         }
+        */
     }
 
 
@@ -518,6 +524,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             roleIds.add(roleMemberBo.getRoleId()); // add to the set of IDs
         }
         getBusinessObjectService().save(roleMembers);
+        //FIXME: flush cache
+        /*
         // find all distinct role IDs and type services
         for (String roleId : roleIds) {
             RoleBo role = getRoleBo(roleId);
@@ -531,6 +539,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             }
         }
         getIdentityManagementNotificationService().roleUpdated();
+        */
     }
 
     protected void inactivateGroupRoleMemberships(List<String> groupIds, Timestamp yesterday) {
@@ -667,7 +676,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                 // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
                 try {
                     RoleTypeService roleTypeService = getRoleTypeService(roleId);
-                    List<RoleMembership> matchingMembers = roleTypeService.doRoleQualifiersMatchQualification(qualification, roleIdToMembershipMap.get(roleId));
+                    List<RoleMembership> matchingMembers = roleTypeService.getMatchingRoleMemberships(qualification,
+                            roleIdToMembershipMap.get(roleId));
                     // loop over the matching entries, adding them to the results
                     for (RoleMembership roleMemberships : matchingMembers) {
                         if (roleMemberships.getMemberTypeCode().equals(Role.ROLE_MEMBER_TYPE)) {
@@ -757,7 +767,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         for (String roleId : roleIdToMembershipMap.keySet()) {
             try {
                 RoleTypeService roleTypeService = getRoleTypeService(roleId);
-                if (!roleTypeService.doRoleQualifiersMatchQualification(qualification, roleIdToMembershipMap.get(roleId)).isEmpty()) {
+                if (!roleTypeService.getMatchingRoleMemberships(qualification, roleIdToMembershipMap.get(roleId)).isEmpty()) {
                     return true;
                 }
             } catch (Exception ex) {
@@ -779,7 +789,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             for (String roleId : roleIdToMembershipMap.keySet()) {
                 try {
                     RoleTypeService roleTypeService = getRoleTypeService(roleId);
-                    if (!roleTypeService.doRoleQualifiersMatchQualification(qualification, roleIdToMembershipMap.get(roleId)).isEmpty()) {
+                    if (!roleTypeService.getMatchingRoleMemberships(qualification, roleIdToMembershipMap.get(roleId)).isEmpty()) {
                         return true;
                     }
                 } catch (Exception ex) {

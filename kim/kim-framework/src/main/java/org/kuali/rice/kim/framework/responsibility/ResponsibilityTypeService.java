@@ -22,6 +22,24 @@ import org.kuali.rice.kim.framework.type.KimTypeService;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A {@link KimTypeService} with specific methods for Responsibilities.
+ */
 public interface ResponsibilityTypeService extends KimTypeService {
+
+    /** Gets whether a responsibility assignment with the given details is applicable for the given request details.
+     *
+     * For example, the details for a responsibilities (say approve) could be as follows:
+     *   component = Account
+     *   field = incomeStreamAccountNumber
+     *
+     * The Account component is known to belong to the KFS-COA namespace.  If this service is requested...
+     * component = Account, field = All
+     *
+     * @param requestedDetails the requested details.  cannot be null.
+     * @param responsibilities the list of responsibilities to check for matches. cannot be null.
+     * @return an immutable list of matched responsibilities.  will not return null.
+     * @throws IllegalArgumentException if the requestedDetails or responsibilities is null.
+     */
     List<Responsibility> getMatchingResponsibilities(Map<String, String> requestedDetails, List<Responsibility> responsibilities);
 }

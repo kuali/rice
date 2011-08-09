@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.framework.role;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.framework.type.KimTypeService;
 
@@ -22,17 +23,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This is a service interface that must be used for a service related to a role type.
- * 
- * Is it used to interpret the qualifiers which may be attached.
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
- *
+ * A {@link KimTypeService} with specific methods for Roles.
  */
 public interface RoleTypeService extends KimTypeService {
 
-                
-    /** Return whether a role assignment with the given qualifier is applicable for the given qualification. 
+    /**
+     * Gets whether a role assignment with the given qualifier is applicable for the given qualification.
      * 
      * For example, the qualifier for a role could be as follows:
      *   chartOfAccountsCode = BL
@@ -49,34 +45,32 @@ public interface RoleTypeService extends KimTypeService {
      * 
      * The contents of the passed in attribute sets should not be modified as they may be used in future calls by
      * the role service.
+     *
+     * @param qualification the qualification.  cannot be null.
+     * @param roleQualifier the role qualifier. cannot be null.
+     * @return true if the qualifications match
+     * @throws IllegalArgumentException if the qualification or roleQualifier is null
      */
-    boolean doesRoleQualifierMatchQualification( Map<String, String> qualification, Map<String, String> roleQualifier );
+    boolean doesRoleQualifierMatchQualification( Map<String, String> qualification, Map<String, String> roleQualifier ) throws RiceIllegalArgumentException;
 
-    /** Same as {@link #doesRoleQualifierMatchQualification(Map<String, String>, Map<String, String>)} except that it takes a list of qualifiers to check.
+    /**
+     * Gets whether a role membership with the given details is applicable for the given qualification.
+     *
+     * @param qualification the qualification.  cannot be null.
+     * @param roleMemberships the list of roleMemberships to check for matches. cannot be null.
+     * @return an immutable list of matched roleMemberships.  will not return null.
+     * @throws IllegalArgumentException if the qualification or roleMemberships is null.
      */
-    List<RoleMembership> doRoleQualifiersMatchQualification( Map<String, String> qualification, List<RoleMembership> roleMemberList );
+    List<RoleMembership> getMatchingRoleMemberships(Map<String, String> qualification, List<RoleMembership> roleMemberships) throws RiceIllegalArgumentException;
 
     /**
      * Returns true if this role type represents an "application" role type.  That is, the members of the 
      * role are known to the host application, not to KIM.  This is needed for cases like the KFS
-     * Fiscal Officer, where the members of the role are in the Account table in the KFS database. 
+     * Fiscal Officer, where the members of the role are in the Account table in the KFS database.
+     *
+     * @return true if application type
      */
     boolean isApplicationRoleType();
-    
-    /**
-     * Returns a list of principal IDs corresponding to the given application role.  These principal IDs 
-     * would be returned from the implementing application.
-     * 
-     * Continuing the example from {@link #isApplicationRoleType()}, the qualification in that case would be
-     * a chart code and account number.  This service would use that information to retrieve the Fiscal Officer
-     * from the account table.
-     * 
-     * The contents of the passed in attribute sets should not be modified as they may be used in future calls by
-     * the role service.
-     * 
-     * @see #isApplicationRoleType()
-     */
-    List<RoleMembership> getRoleMembersFromApplicationRole( String namespaceCode, String roleName, Map<String, String> qualification );
 
     /**
      * This method can be used to check if the given principal has this application role.  It is designed to be used in case
@@ -85,50 +79,49 @@ public interface RoleTypeService extends KimTypeService {
      * 
      * The groupIds parameter is intended to be the complete list of groups to which the principal belongs.  If either the
      * principalId or the groupIds parameters are blank/empty, that parameter should be ignored.
-     * 
-     * @see #isApplicationRoleType()
-     * @see #getRoleMembersFromApplicationRole(String, String, Map<String, String>)
-     */
-    boolean hasApplicationRole( String principalId, List<String> groupIds, String namespaceCode, String roleName, Map<String, String> qualification );
-
-    /**
-     * For roles where the order of members returned may be meaningful,
-     * this method provides a hook to sort the results before they
-     * are returned from getRoleMembers on the RoleService.
      *
-     * This method may alter the passed in list directly and return it rather than
-     * allocating a new list.
-     * 
-     * This is also the place where the roleSortingCode property on the RoleMembershipInfo objects can be
-     * populated in preparation for routing if not all members of this role should be group as separate
-     * units for routing.
+     * @param principalId the principalId. cannot be null or blank.
+     * @param groupIds the groupIds the principal is a member of. cannot be null.
+     * @param namespaceCode the namespace code the role is in. cannot be blank or null.
+     * @param roleName the name of the role.  cannot be blank or null.
+     * @param qualification the qualification.  cannot be null.
+     * @return if the principal has an application role.
+     * @throws IllegalArgumentException if the principalId, namespaceCode, roleName is blank or null.
+     * @throws IllegalArgumentException if the groupIds, qualification is null.
      */
-    List<RoleMembership> sortRoleMembers( List<RoleMembership> roleMembers );
+    boolean hasApplicationRole( String principalId, List<String> groupIds, String namespaceCode, String roleName, Map<String, String> qualification ) throws RiceIllegalArgumentException;
     
     /**
      * Takes the passed in qualifications and converts them, if necessary, for any downstream roles which may be present.
+     *
+     * @param namespaceCode the namespace code the role is in. cannot be blank or null.
+     * @param roleName the name of the role.  cannot be blank or null.
+     * @param memberRoleNamespaceCode the namespace code the member role is in. cannot be blank or null.
+     * @param memberRoleName the name of the member role.  cannot be blank or null.
+     * @param qualification the qualification.  cannot be null.
+     * @return an immutable map of qualifiers. Will never return null.
+     * @throws IllegalArgumentException if the namespaceCode, roleName, memberRoleNamespaceCode, memberRoleName, is blank or null.
+     * @throws IllegalArgumentException if the qualification is null.
      */
-    Map<String, String> convertQualificationForMemberRoles( String namespaceCode, String roleName, String memberRoleNamespaceCode, String memberRoleName, Map<String, String> qualification );
+    Map<String, String> convertQualificationForMemberRoles( String namespaceCode, String roleName, String memberRoleNamespaceCode, String memberRoleName, Map<String, String> qualification ) throws RiceIllegalArgumentException;
     
     /**
-     * Called by the role service when it is notified that a principal has been inactivated.  Can be used 
-     * to perform local data cleanup by application roles.
+     * Determines if the role specified by the given namespace and role name has a dynamic role membership.
+     *
+     * A dynamic role membership means that a role membership may be changed over time and cannot be safely cached.
+     * 
+     * @param namespaceCode the namespace code of the role. cannot be null or blank
+     * @param roleName the name of the role. cannot be null or blank.
+     * @return true if the membership results of the Role are dynamic, false otherwise
+     * @throws IllegalArgumentException if the namespaceCode, roleName is blank or null.
      */
-    void principalInactivated( String principalId, String namespaceCode, String roleName );
+    boolean dynamicRoleMembership(String namespaceCode, String roleName) throws RiceIllegalArgumentException;
     
     /**
-     * Determines if the role specified by the given namespace and role name should have membership queries cached
+     * Roles whose memberships may be matched exactly by qualifiers,
+     * this method returns the list of such qualifier names.
      * 
-     * @param namespaceCode the namespace code of the role to determine caching on
-     * @param roleName the name of the role to determine caching on
-     * @return true if the membership results of the Role should be cached, false otherwise
-     */
-    boolean shouldCacheRoleMembershipResults(String namespaceCode, String roleName);
-    
-    /** For roles whose memberships may be matched exactly by qualifiers,
-     * this method returns the list of such qualifiers 
-     * 
-     * @return list of qualifier names that can be used for exact match
+     * @return immutable list of qualifier names that can be used for exact match.  Will never return null.
      */
     List<String> getQualifiersForExactMatch();
     

@@ -18,12 +18,7 @@ package org.kuali.rice.kim.framework.group;
 import org.kuali.rice.kim.framework.type.KimTypeService;
 
 /**
- * This is a service interface that must be used for a service related to a role type.
- *
- * Is it used to interpret the qualifiers which may be attached.
- *
- * @author Kuali Rice Team (rice.collab@kuali.org)
- *
+ * A {@link KimTypeService} with specific methods for Groups.
  */
 public interface GroupTypeService extends KimTypeService {
 

@@ -1,5 +1,6 @@
 package org.kuali.rice.kim.framework.type;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.kim.api.type.KimAttributeField;
 
@@ -16,10 +17,9 @@ import java.util.Map;
 public interface KimTypeService {
 
     /**
-     * Returns the name of a workflow document type that should be passed as a qualifier with
-     * the "documentTypeName" key when resolving responsibilities when routing a KIM document
-     * which uses this KIM type (such as a group, role, or person document).
+     * Gets the name of a workflow document type that should be passed to kew when resolving responsibilities for routing.
      *
+     * This name will be passed as a qualifier with the "documentTypeName" key.
      * return null to indicate that there is no custom workflow document needed for this type.
      *
      * @return the doc type name or null.
@@ -27,32 +27,54 @@ public interface KimTypeService {
     String getWorkflowDocumentTypeName();
 
     /**
-     * Returns an unmodifiable list of strings identifying the name of the attributes of the KIM object which uses this
-     * type that should be included in the Map of qualifiers that are provided to the KIM responsibility service when
-     * resolving responsibility-based routing at the node with the given name.
+     * Gets an unmodifiable list of attribute names identifying the attribute qualifiers that are provided to
+     * the KIM responsibility service when resolving responsibility-based routing at the node with the given name.
      *
      * Returns an empty list, indicating that no attributes from this
      * type should be passed to workflow.
      *
+     * @param nodeName the name of the node to retrieve attribute names for.  Cannot be null or blank.
      * @return an unmodifiable list should not return null.
+     * @throws IllegalArgumentException if the nodeName is null or blank.
      */
-    List<String> getWorkflowRoutingAttributes(String nodeName);
-
-    List<KimAttributeField> getAttributeDefinitions(String kimTypeId);
+    List<String> getWorkflowRoutingAttributes(String nodeName) throws RiceIllegalArgumentException;
 
     /**
-     * Perform validation on the attributes of an object.
-     * An empty list indicates that there were no errors.
+     * Gets a List of {@link KimAttributeField} for a kim type id.  The order of the attribute fields in the list
+     * can be used as a hint to a ui framework consuming these attributes as to how to organize these fields.
      *
-     * This method can be used to perform compound validations across multiple
-     * attributes attached to an object.
+     * @param kimTypeId the kimTypeId to retrieve fields for. Cannot be null or blank.
+     * @return an immutable list of KimAttributeField. Will not return null.
+     * @throws IllegalArgumentException if the kimTypeId is null or blank
      */
-    List<RemotableAttributeError> validateAttributes(String kimTypeId, Map<String, String> attributes);
+    List<KimAttributeField> getAttributeDefinitions(String kimTypeId) throws RiceIllegalArgumentException;
 
     /**
-     * Perform validation on the attributes of an object.
-     * An empty list indicates that there were no errors.
+     * This method validates the passed in attributes for a kimTypeId generating a List of {@link RemotableAttributeError}.
+     *
+     * The order of the attribute errors in the list
+     * can be used as a hint to a ui framework consuming these errors as to how to organize these errors.
+     *
+     * @param kimTypeId the kimTypeId that is associated with the attributes. Cannot be null or blank.
+     * @param attributes the kim type attributes to validate. Cannot be null.
+     * @return an immutable list of RemotableAttributeError. Will not return null.
+     * @throws IllegalArgumentException if the kimTypeId is null or blank or the attributes are null
      */
-    List<RemotableAttributeError> validateAttributesAgainstExisting(String kimTypeId, Map<String, String> newAttributes, Map<String, String> oldAttributes);
+    List<RemotableAttributeError> validateAttributes(String kimTypeId, Map<String, String> attributes) throws RiceIllegalArgumentException;
+
+    /**
+     * This method validates the passed in attributes for a kimTypeId generating a List of {@link RemotableAttributeError}.
+     * This method used the oldAttributes to aid in validation.  This is useful for validating "new" or "updated" attributes.
+     *
+     * The order of the attribute errors in the list
+     * can be used as a hint to a ui framework consuming these errors as to how to organize these errors.
+     *
+     * @param kimTypeId the kimTypeId that is associated with the attributes. Cannot be null or blank.
+     * @param newAttributes the kim type attributes to validate. Cannot be null.
+     * @param oldAttributes the old kim type attributes to use for validation. Cannot be null.
+     * @return an immutable list of RemotableAttributeError. Will not return null.
+     * @throws IllegalArgumentException if the kimTypeId is null or blank or the newAttributes or oldAttributes are null
+     */
+    List<RemotableAttributeError> validateAttributesAgainstExisting(String kimTypeId, Map<String, String> newAttributes, Map<String, String> oldAttributes) throws RiceIllegalArgumentException;
 }
 

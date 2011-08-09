@@ -41,7 +41,7 @@ public class RoleTypeServiceBase extends DataDictionaryTypeServiceBase implement
 	 * 
 	 * @see org.kuali.rice.kim.framework.role.RoleTypeService#doesRoleQualifierMatchQualification(Map<String, String>, Map<String, String>)
 	 */
-
+    @Override
 	public boolean doesRoleQualifierMatchQualification(Map<String, String> qualification, Map<String, String> roleQualifier) {
 		Map<String, String> translatedQualification = translateInputAttributes(qualification);
 		validateRequiredAttributesAgainstReceived(translatedQualification);
@@ -51,7 +51,9 @@ public class RoleTypeServiceBase extends DataDictionaryTypeServiceBase implement
 	/**
 	 * @see org.kuali.rice.kim.framework.role.RoleTypeService#doRoleQualifiersMatchQualification(Map<String, String>, List)
 	 */
-	public List<RoleMembership> doRoleQualifiersMatchQualification(Map<String, String> qualification, List<RoleMembership> roleMemberList) {
+    @Override
+	public List<RoleMembership> getMatchingRoleMemberships(Map<String, String> qualification,
+            List<RoleMembership> roleMemberList) {
 		Map<String, String> translatedQualification = translateInputAttributes(qualification);
 		validateRequiredAttributesAgainstReceived(translatedQualification);
 		List<RoleMembership> matchingMemberships = new ArrayList<RoleMembership>();
@@ -69,7 +71,8 @@ public class RoleTypeServiceBase extends DataDictionaryTypeServiceBase implement
 	 * 
 	 * @see org.kuali.rice.kim.framework.role.RoleTypeService#getRoleMembersFromApplicationRole(String, String, Map<String, String>)
 	 */
-	public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Map<String, String> qualification) {
+
+	protected List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Map<String, String> qualification) {
 		validateRequiredAttributesAgainstReceived(qualification);
 		if ( !isApplicationRoleType() ) {
 			throw new UnsupportedOperationException( this.getClass().getName() + " is not an application role." );
@@ -83,6 +86,7 @@ public class RoleTypeServiceBase extends DataDictionaryTypeServiceBase implement
 	 * {@link #getRoleMembersFromApplicationRole(String, String, Map<String, String>)} and checks the results.
 	 *
 	 */
+    @Override
 	public boolean hasApplicationRole(String principalId, List<String> groupIds, String namespaceCode, String roleName, Map<String, String> qualification) {
 		if ( !isApplicationRoleType() ) {
 			throw new UnsupportedOperationException( this.getClass().getName() + " is not an application role." );
@@ -114,6 +118,7 @@ public class RoleTypeServiceBase extends DataDictionaryTypeServiceBase implement
 	 * 
 	 * @see org.kuali.rice.kim.framework.role.RoleTypeService#isApplicationRoleType()
 	 */
+    @Override
 	public boolean isApplicationRoleType() {
 		return false;
 	}
@@ -123,6 +128,7 @@ public class RoleTypeServiceBase extends DataDictionaryTypeServiceBase implement
 	 * 
 	 * @see org.kuali.rice.kim.framework.role.RoleTypeService#convertQualificationForMemberRoles(String, String, String, String, Map<String, String>)
 	 */
+    @Override
 	public Map<String, String> convertQualificationForMemberRoles(String namespaceCode, String roleName, String memberRoleNamespaceCode, String memberRoleName, Map<String, String> qualification) {
 		return qualification;
 	}
@@ -132,21 +138,8 @@ public class RoleTypeServiceBase extends DataDictionaryTypeServiceBase implement
 	 * 
 	 * @see org.kuali.rice.kim.framework.role.RoleTypeService#sortRoleMembers(java.util.List)
 	 */
-	public List<RoleMembership> sortRoleMembers(List<RoleMembership> roleMembers) {
+	protected List<RoleMembership> sortRoleMembers(List<RoleMembership> roleMembers) {
 		return roleMembers;
-	}
-	
-	/**
-	 * This base implementation does nothing but log that the method was called.
-	 * 
-	 * @see org.kuali.rice.kim.framework.role.RoleTypeService#principalInactivated(java.lang.String, java.lang.String, java.lang.String)
-	 */
-	public void principalInactivated(String principalId, String namespaceCode,
-			String roleName) {
-		if ( LOG.isDebugEnabled() ) {
-			LOG.debug( "Principal Inactivated called: principalId="+principalId+" role=" + namespaceCode + "/" + roleName );
-		}
-		// base implementation - do nothing
 	}
 	
 	/**
@@ -154,6 +147,7 @@ public class RoleTypeServiceBase extends DataDictionaryTypeServiceBase implement
 	 * Extra qualification attributes are ignored.
 	 *
 	 */
+    @Override
 	public boolean doesDelegationQualifierMatchQualification(Map<String, String> qualification, Map<String, String> roleQualifier) {
 		Map<String, String> translatedQualification = translateInputAttributes(qualification);
 		validateRequiredAttributesAgainstReceived(translatedQualification);
@@ -163,13 +157,14 @@ public class RoleTypeServiceBase extends DataDictionaryTypeServiceBase implement
 	/**
 	 * Returns true as a default
 	 * 
-	 * @see org.kuali.rice.kim.framework.role.RoleTypeService#shouldCacheRoleMembershipResults(java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kim.framework.role.RoleTypeService#dynamicRoleMembership(java.lang.String, java.lang.String)
 	 */
-	public boolean shouldCacheRoleMembershipResults(String namespaceCode,
-			String roleName) {
+    @Override
+	public boolean dynamicRoleMembership(String namespaceCode, String roleName) {
 		return true;
 	}
 
+    @Override
 	public List<String> getQualifiersForExactMatch() {    
 		return new ArrayList<String>(); 
 	}

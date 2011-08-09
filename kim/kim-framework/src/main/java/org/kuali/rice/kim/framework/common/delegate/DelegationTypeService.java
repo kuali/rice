@@ -16,19 +16,18 @@
 package org.kuali.rice.kim.framework.common.delegate;
 
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kim.framework.type.KimTypeService;
 
 import java.util.Map;
 
 /**
- * This is a description of what this class does - kellerj don't forget to fill this in. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
- *
+ * A {@link KimTypeService} with specific methods for Delegations.
  */
 public interface DelegationTypeService extends KimTypeService {
 
-    /** Return whether a role assignment with the given qualifier is applicable for the given qualification. 
+    /**
+     * Gets whether a role assignment with the given qualifier is applicable for the given qualification.
      * 
      * For example, the qualifier for a role could be as follows:
      *   chartOfAccountsCode = BL
@@ -40,12 +39,17 @@ public interface DelegationTypeService extends KimTypeService {
      *   organizationCode = PSY    (reports to BL-ARSC)
      *   
      * This method would return true for this set of arguments.  This would require a query of 
-     * the KFS organization hierarchy, so an implementation of this sort must be done by
-     * a service which lives within KFS and will be called remotely by KIM.
+     * the client app's organization hierarchy, so an implementation of this sort must be done by
+     * a service which lives within the client app and will be called remotely by KIM.
      * 
      * The contents of the passed in attribute sets should not be modified as they may be used in future calls by
      * the role service.
+     *
+     * @param qualification the qualification.  cannot be null.
+     * @param delegationQualifier the delegation qualifier. cannot be null.
+     * @return true if the qualifications match
+     * @throws IllegalArgumentException if the qualification or delegationQualifier is null
      */
-    boolean doesDelegationQualifierMatchQualification( Map<String, String> qualification, Map<String, String> delegationQualifier );
+    boolean doesDelegationQualifierMatchQualification( Map<String, String> qualification, Map<String, String> delegationQualifier ) throws RiceIllegalArgumentException;
 
 }

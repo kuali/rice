@@ -19,7 +19,6 @@ import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.framework.role.RoleTypeService;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -34,18 +33,14 @@ public abstract class PassThruRoleTypeServiceBase implements RoleTypeService {
 	public abstract Map<String, String> convertQualificationForMemberRoles(String namespaceCode, String roleName, String memberRoleNamespaceCode, String memberRoleName, Map<String, String> qualification);
     
     @Override
-	public List<RoleMembership> doRoleQualifiersMatchQualification(Map<String, String> qualification, List<RoleMembership> roleMemberList) {
+	public List<RoleMembership> getMatchingRoleMemberships(Map<String, String> qualification,
+            List<RoleMembership> roleMemberList) {
         return roleMemberList;
     }
 
     @Override
 	public boolean doesRoleQualifierMatchQualification(Map<String, String> qualification, Map<String, String> roleQualifier) {
         return true;
-    }
-
-    @Override
-	public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Map<String, String> qualification) {
-        return new ArrayList<RoleMembership>(0);
     }
     
     @Override
@@ -93,27 +88,6 @@ public abstract class PassThruRoleTypeServiceBase implements RoleTypeService {
         return null;
     }
     
-    @Override
-	public List<RoleMembership> sortRoleMembers(List<RoleMembership> roleMembers) {
-        return roleMembers;
-    }
-    
-    
-
-	/**
-	 * This base implementation does nothing but log that the method was called.
-	 * 
-	 * @see org.kuali.rice.kim.framework.role.RoleTypeService#principalInactivated(java.lang.String, java.lang.String, java.lang.String)
-	 */
-	@Override
-	public void principalInactivated(String principalId, String namespaceCode,
-			String roleName) {
-		if ( LOG.isDebugEnabled() ) {
-			LOG.debug( "Principal Inactivated called: principalId="+principalId+" role=" + namespaceCode + "/" + roleName );
-		}
-		// base implementation - do nothing
-	}
-    
 	@Override
 	public List<RemotableAttributeError> validateAttributesAgainstExisting(String kimTypeId, Map<String, String> newAttributes, Map<String, String> oldAttributes){
 		return Collections.emptyList();
@@ -122,11 +96,10 @@ public abstract class PassThruRoleTypeServiceBase implements RoleTypeService {
 	/**
 	 * Returns false by default.
 	 * 
-	 * @see org.kuali.rice.kim.framework.role.RoleTypeService#shouldCacheRoleMembershipResults(java.lang.String, java.lang.String)
+	 * @see org.kuali.rice.kim.framework.role.RoleTypeService#dynamicRoleMembership(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public boolean shouldCacheRoleMembershipResults(String namespaceCode,
-			String roleName) {
+	public boolean dynamicRoleMembership(String namespaceCode, String roleName) {
 		return false;
 	}
 

@@ -78,13 +78,13 @@
             </tr>         
         </c:if>        
         <c:forEach var="phone" items="${KualiForm.document.phones}" varStatus="status">
-            <c:if test="${!(inquiry and readOnlyEntity and kfunc:isHiddenKimObjectType(phone.phoneTypeCode, 'kim.hide.PersonDocumentPhone.type'))}"> 
+            <c:if test="${!(inquiry and readOnlyEntity and kfunc:isHiddenKimObjectType(phone.phoneType.code, 'kim.hide.PersonDocumentPhone.type'))}">
               <tr>
                 <th class="infoline">
                     <c:out value="${status.index+1}" />
                 </th>
                 <td align="left" valign="middle">
-                    <div align="center"> <kul:htmlControlAttribute property="document.phones[${status.index}].phoneTypeCode"  attributeEntry="${docPhoneAttributes.phoneTypeCode}"  readOnlyAlternateDisplay="${fn:escapeXml(phone.phoneType.phoneTypeName)}" readOnly="${readOnlyEntity or !canModify}" />
+                    <div align="center"> <kul:htmlControlAttribute property="document.phones[${status.index}].phoneTypeCode"  attributeEntry="${docPhoneAttributes.phoneTypeCode}"  readOnlyAlternateDisplay="${fn:escapeXml(phone.phoneType.name)}" readOnly="${readOnlyEntity or !canModify}" />
                     </div>
                 </td>
                 <td>

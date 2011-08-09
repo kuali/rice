@@ -100,12 +100,12 @@
             </tr>         
         </c:if>         
         <c:forEach var="address" items="${KualiForm.document.addrs}" varStatus="status">
-            <c:if test="${!(inquiry and readOnlyEntity and kfunc:isHiddenKimObjectType(address.addressTypeCode, 'kim.hide.PersonDocumentAddress.type'))}"> 
+            <c:if test="${!(inquiry and readOnlyEntity and kfunc:isHiddenKimObjectType(address.addressType.code, 'kim.hide.PersonDocumentAddress.type'))}">
               <tr>
                 <th class="infoline">
                     <c:out value="${status.index+1}" />
                 </th>
-                <kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.addrs[${status.index}].addressTypeCode" attributeEntry="${docAddressAttributes.addressTypeCode}" readOnlyAlternateDisplay="${fn:escapeXml(address.addressType.addressTypeName)}" readOnly="${readOnlyEntity or !canModify}" />
+                <kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.addrs[${status.index}].addressTypeCode" attributeEntry="${docAddressAttributes.addressTypeCode}" readOnlyAlternateDisplay="${fn:escapeXml(address.addressType.name)}" readOnly="${readOnlyEntity or !canModify}" />
 				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.addrs[${status.index}].line1" attributeEntry="${docAddressAttributes.line1}" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
 				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.addrs[${status.index}].line2" attributeEntry="${docAddressAttributes.line2}" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
 				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.addrs[${status.index}].line3" attributeEntry="${docAddressAttributes.line3}" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="Xxxxxxx" />

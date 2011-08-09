@@ -64,7 +64,7 @@
             </tr>         
         </c:if>        
         <c:forEach var="email" items="${KualiForm.document.emails}" varStatus="status">
-            <c:if test="${!(inquiry and readOnlyEntity and kfunc:isHiddenKimObjectType(email.emailTypeCode, 'kim.hide.PersonDocumentEmail.type'))}"> 
+            <c:if test="${!(inquiry and readOnlyEntity and kfunc:isHiddenKimObjectType(email.emailType.code, 'kim.hide.PersonDocumentEmail.type'))}">
               <tr>
                 <th class="infoline">
                     <c:out value="${status.index+1}" />

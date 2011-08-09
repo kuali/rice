@@ -16,43 +16,11 @@
 
 package org.kuali.rice.kim.impl.group;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
-import org.kuali.rice.core.api.criteria.GenericQueryResults;
-import org.kuali.rice.core.api.criteria.LookupCustomizer;
-import org.kuali.rice.core.api.criteria.QueryByCriteria;
-import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.group.GroupMember;
-import org.kuali.rice.kim.api.group.GroupMemberQueryResults;
-import org.kuali.rice.kim.api.group.GroupQueryResults;
-import org.kuali.rice.kim.impl.common.attribute.AttributeTransform;
-import org.kuali.rice.kim.util.KIMPropertyConstants;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.service.BusinessObjectService;
-
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
 public abstract class GroupServiceBase {
     protected BusinessObjectService businessObjectService;
     private CriteriaLookupService criteriaLookupService;
-
-
-
-
-
-
-
 
 }

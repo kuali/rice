@@ -86,8 +86,8 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
     @Override
     public Responsibility getResponsibility(final String id) {
-        if (id == null) {
-            throw new RiceIllegalArgumentException("id is null");
+        if (StringUtils.isBlank(id)) {
+            throw new RiceIllegalArgumentException("id is null or blank");
         }
 
         return ResponsibilityBo.to(businessObjectService.findBySinglePrimaryKey(ResponsibilityBo.class, id));
@@ -95,12 +95,12 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
     @Override
     public Responsibility findRespByNamespaceCodeAndName(final String namespaceCode, final String name) {
-        if (namespaceCode == null) {
-            throw new RiceIllegalArgumentException("namespaceCode is null");
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
         }
 
-        if (name == null) {
-            throw new RiceIllegalArgumentException("name is null");
+        if (StringUtils.isBlank(name)) {
+            throw new RiceIllegalArgumentException("name is null or blank");
         }
 
         final Map<String, String> crit = new HashMap<String, String>();
@@ -123,8 +123,8 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
     @Override
     public Template getResponsibilityTemplate(final String id) {
-        if (id == null) {
-            throw new RiceIllegalArgumentException("id is null");
+        if (StringUtils.isBlank(id)) {
+            throw new RiceIllegalArgumentException("id is null or blank");
         }
 
         return ResponsibilityTemplateBo.to(businessObjectService.findBySinglePrimaryKey(ResponsibilityTemplateBo.class, id));
@@ -132,12 +132,12 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
     @Override
     public Template findRespTemplateByNamespaceCodeAndName(final String namespaceCode, final String name) {
-        if (namespaceCode == null) {
-            throw new RiceIllegalArgumentException("namespaceCode is null");
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
         }
 
-        if (name == null) {
-            throw new RiceIllegalArgumentException("name is null");
+        if (StringUtils.isBlank(name)) {
+            throw new RiceIllegalArgumentException("name is null or blank");
         }
 
         final Map<String, String> crit = new HashMap<String, String>();
@@ -159,6 +159,26 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
     @Override
     public boolean hasResponsibility(final String principalId, final String namespaceCode, final String respName, final Map<String, String> qualification, final Map<String, String> responsibilityDetails) {
+        if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId is null or blank");
+        }
+
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
+        }
+
+        if (StringUtils.isBlank(respName)) {
+            throw new RiceIllegalArgumentException("respName is null or blank");
+        }
+
+        if (qualification == null) {
+            throw new RiceIllegalArgumentException("qualification is null");
+        }
+
+        if (responsibilityDetails == null) {
+            throw new RiceIllegalArgumentException("respDetails is null");
+        }
+
         // get all the responsibility objects whose name match that requested
         final List<Responsibility> responsibilities = Collections.singletonList(findRespByNamespaceCodeAndName(namespaceCode, respName));
         return hasResp(principalId, namespaceCode, responsibilities, qualification, responsibilityDetails);
@@ -166,6 +186,27 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
     @Override
     public boolean hasResponsibilityByTemplateName(final String principalId, final String namespaceCode, final String respTemplateName, final Map<String, String> qualification, final Map<String, String> responsibilityDetails) {
+        if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId is null or blank");
+        }
+
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
+        }
+
+        if (StringUtils.isBlank(respTemplateName)) {
+            throw new RiceIllegalArgumentException("respTemplateName is null or blank");
+        }
+
+        if (qualification == null) {
+            throw new RiceIllegalArgumentException("qualification is null");
+        }
+
+        if (responsibilityDetails == null) {
+            throw new RiceIllegalArgumentException("respDetails is null");
+        }
+
+
         // get all the responsibility objects whose name match that requested
         final List<Responsibility> responsibilities = findRespsByNamespaceCodeAndTemplateName(namespaceCode, respTemplateName);
         return hasResp(principalId, namespaceCode, responsibilities, qualification, responsibilityDetails);
@@ -183,6 +224,22 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
     @Override
     public List<ResponsibilityAction> getResponsibilityActions(final String namespaceCode, final String responsibilityName, final Map<String, String> qualification, final Map<String, String> responsibilityDetails) {
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
+        }
+
+        if (StringUtils.isBlank(responsibilityName)) {
+            throw new RiceIllegalArgumentException("respName is null or blank");
+        }
+
+        if (qualification == null) {
+            throw new RiceIllegalArgumentException("qualification is null");
+        }
+
+        if (responsibilityDetails == null) {
+            throw new RiceIllegalArgumentException("respDetails is null");
+        }
+
         // get all the responsibility objects whose name match that requested
         List<Responsibility> responsibilities = Collections.singletonList(findRespByNamespaceCodeAndName(namespaceCode, responsibilityName));
         return getRespActions(namespaceCode, responsibilities, qualification, responsibilityDetails);
@@ -190,6 +247,22 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
     @Override
     public List<ResponsibilityAction> getResponsibilityActionsByTemplateName(final String namespaceCode, final String respTemplateName, final Map<String, String> qualification, final Map<String, String> responsibilityDetails) {
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
+        }
+
+        if (StringUtils.isBlank(respTemplateName)) {
+            throw new RiceIllegalArgumentException("respTemplateName is null or blank");
+        }
+
+        if (qualification == null) {
+            throw new RiceIllegalArgumentException("qualification is null");
+        }
+
+        if (responsibilityDetails == null) {
+            throw new RiceIllegalArgumentException("respDetails is null");
+        }
+
         // get all the responsibility objects whose name match that requested
         List<Responsibility> responsibilities = findRespsByNamespaceCodeAndTemplateName(namespaceCode, respTemplateName);
         return getRespActions(namespaceCode, responsibilities, qualification, responsibilityDetails);
@@ -280,7 +353,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     @Override
     public List<String> getRoleIdsForResponsibility(String id, Map<String, String> qualification) {
         if (StringUtils.isBlank(id)) {
-            throw new RiceIllegalArgumentException("id is blank");
+            throw new RiceIllegalArgumentException("id is blank or blank");
         }
 
         if (qualification == null) {

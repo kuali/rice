@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kim.api.responsibility;
 
-import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
@@ -44,9 +43,9 @@ import java.util.Map;
  * A responsibility represents an action that a principal is requested to
  * take.  This is used for defining workflow actions (such as approve,
  * acknowledge, fyi) that the principal has the responsibility to take.  The
- * workflow engine integrates with this service to provide
- * responsibility-driven routing.
+ * workflow engine integrates with this service to provide responsibility-driven routing.
  * <p/>
+ *
  * <p>
  * A responsibility is very similar to a permission in a couple of ways.
  * First of all, responsibilities are always granted to a role, never assigned
@@ -94,18 +93,26 @@ public interface ResponsibilityService {
      *   This method will return null if the responsibility does not exist.
      * </p>
      *
-     * @param id the unique id to retrieve the responsibility by. cannot be null.
+     * @param id the unique id to retrieve the responsibility by. cannot be null or blank.
      * @return a {@link Responsibility} or null
-     * @throws IllegalArgumentException if the id is blank
+     * @throws IllegalArgumentException if the id is null or blank
      */
     @WebMethod(operationName = "getResponsibility")
     @WebResult(name = "responsibility")
-    Responsibility getResponsibility(@WebParam(name = "id") String id);
+    Responsibility getResponsibility(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
+    /**
+     * Finds a {@link Responsibility} for namespaceCode and name.
+     *
+     * @param namespaceCode the namespace code.  cannot be null or blank.
+     * @param name the responsibility name. cannot be null or blank.
+     * @return a {@link Responsibility} or null
+     * @throws IllegalArgumentException if the id or namespaceCode is null or blank
+     */
     @WebMethod(operationName = "findRespByNamespaceCodeAndName")
     @WebResult(name = "responsibility")
     Responsibility findRespByNamespaceCodeAndName(@WebParam(name = "namespaceCode") String namespaceCode,
-                                                  @WebParam(name = "name") String name);
+                                                  @WebParam(name = "name") String name) throws RiceIllegalArgumentException;
     /**
      * Gets a {@link Template} from an id.
      *
@@ -113,19 +120,38 @@ public interface ResponsibilityService {
      *   This method will return null if the template does not exist.
      * </p>
      *
-     * @param id the unique id to retrieve the template by. cannot be null.
+     * @param id the unique id to retrieve the template by. cannot be null or blank.
      * @return a {@link Template} or null
-     * @throws IllegalArgumentException if the id is blank
+     * @throws IllegalArgumentException if the id is null or blank
      */
     @WebMethod(operationName = "getResponsibilityTemplate")
     @WebResult(name = "template")
-    Template getResponsibilityTemplate(@WebParam(name = "id") String id);
+    Template getResponsibilityTemplate(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
+    /**
+     * Finds a {@link Template} for namespaceCode and name.
+     *
+     * @param namespaceCode the namespace code.  cannot be null or blank.
+     * @param name the template name. cannot be null or blank.
+     * @return a {@link Template} or null
+     * @throws IllegalArgumentException if the id or namespaceCode is null or blank
+     */
     @WebMethod(operationName = "findRespTemplateByNamespaceCodeAndName")
     @WebResult(name = "template")
     Template findRespTemplateByNamespaceCodeAndName(@WebParam(name = "namespaceCode") String namespaceCode,
-                                                    @WebParam(name = "name") String name);
-
+                                                    @WebParam(name = "name") String name) throws RiceIllegalArgumentException;
+    /**
+     * Checks in a given principal id has a responsibility using the passed in responsibility information.
+     *
+     * @param principalId the principal id to check.  cannot be null or blank.
+     * @param namespaceCode the namespace code.  cannot be null or blank.
+     * @param respName the responsibility name. cannot be null or blank.
+     * @param qualification the qualification for the responsibility. cannot be null.
+     * @param respDetails the responsibility details. cannot be null.
+     * @return true is principal has responsibility
+     * @throws IllegalArgumentException if the principalId, namespaceCode, respName is null or blank
+     * @throws IllegalArgumentException if the qualification or responsibilityDetails is null
+     */
     @WebMethod(operationName = "hasResponsibility")
     @WebResult(name = "result")
     boolean hasResponsibility(@WebParam(name = "principalId") String principalId,
@@ -134,8 +160,20 @@ public interface ResponsibilityService {
                               @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
                               @WebParam(name = "qualification") Map<String, String> qualification,
                               @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-                              @WebParam(name = "responsibilityDetails") Map<String, String> responsibilityDetails);
+                              @WebParam(name = "responsibilityDetails") Map<String, String> respDetails) throws RiceIllegalArgumentException;
 
+    /**
+     * Checks in a given principal id has a responsibility using the passed in responsibility <b>template</b> information.
+     *
+     * @param principalId the principal id to check.  cannot be null or blank.
+     * @param namespaceCode the namespace code.  cannot be null or blank.
+     * @param respTemplateName the responsibility template name. cannot be null or blank.
+     * @param qualification the qualification for the responsibility. cannot be null.
+     * @param respDetails the responsibility details. cannot be null.
+     * @return true is principal has responsibility
+     * @throws IllegalArgumentException if the principalId, namespaceCode, respName is null or blank
+     * @throws IllegalArgumentException if the qualification or responsibilityDetails is null
+     */
     @WebMethod(operationName = "hasResponsibilityByTemplateName")
     @WebResult(name = "result")
     boolean hasResponsibilityByTemplateName(@WebParam(name = "principalId") String principalId,
@@ -144,19 +182,41 @@ public interface ResponsibilityService {
                                             @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
                                             @WebParam(name = "qualification") Map<String, String> qualification,
                                             @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-                                            @WebParam(name = "responsibilityDetails") Map<String, String> responsibilityDetails);
+                                            @WebParam(name = "respDetails") Map<String, String> respDetails) throws RiceIllegalArgumentException;
 
+    /**
+     * Gets a List of {@link ResponsibilityAction} based on passed in responsibility information.
+     *
+     * @param namespaceCode the namespace code.  cannot be null or blank.
+     * @param respName the responsibility name. cannot be null or blank.
+     * @param qualification the qualification for the responsibility. cannot be null.
+     * @param respDetails the responsibility details. cannot be null.
+     * @return an immutable list of ResponsibilityAction. Will not return null.
+     * @throws IllegalArgumentException if the namespaceCode, respName is null or blank
+     * @throws IllegalArgumentException if the qualification or respDetails is null
+     */
     @WebMethod(operationName = "getResponsibilityActions")
     @XmlElementWrapper(name = "responsibilityActions", required = true)
     @XmlElement(name = "responsibilityAction", required = false)
     @WebResult(name = "responsibilityActions")
     List<ResponsibilityAction> getResponsibilityActions(@WebParam(name = "namespaceCode") String namespaceCode,
-                                                        @WebParam(name = "responsibilityName") String responsibilityName,
+                                                        @WebParam(name = "respName") String respName,
                                                         @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
                                                         @WebParam(name = "qualification") Map<String, String> qualification,
                                                         @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-                                                        @WebParam(name = "responsibilityDetails") Map<String, String> responsibilityDetails);
+                                                        @WebParam(name = "respDetails") Map<String, String> respDetails) throws RiceIllegalArgumentException;
 
+    /**
+     * Gets a List of {@link ResponsibilityAction} based on passed in responsibility template information.
+     *
+     * @param namespaceCode the namespace code.  cannot be null or blank.
+     * @param respTemplateName the responsibility name. cannot be null or blank.
+     * @param qualification the qualification for the responsibility. cannot be null.
+     * @param respDetails the responsibility details. cannot be null.
+     * @return an immutable list of ResponsibilityAction. Will not return null.
+     * @throws IllegalArgumentException if the namespaceCode, respName is null or blank
+     * @throws IllegalArgumentException if the qualification or respDetails is null
+     */
     @WebMethod(operationName = "getResponsibilityActionsByTemplateName")
     @XmlElementWrapper(name = "responsibilityActions", required = true)
     @XmlElement(name = "responsibilityAction", required = false)
@@ -166,15 +226,23 @@ public interface ResponsibilityService {
                                                                       @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
                                                                       @WebParam(name = "qualification") Map<String, String> qualification,
                                                                       @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-                                                                      @WebParam(name = "responsibilityDetails") Map<String, String> responsibilityDetails);
+                                                                      @WebParam(name = "respDetails") Map<String, String> respDetails) throws RiceIllegalArgumentException;
 
+    /**
+     * Gets a List of roleIds that the responsibility is associated with.
+     *
+     * @param id the unique id to retrieve the roleIds for. cannot be null or blank.
+     * @param qualification the qualification for the responsibility. cannot be null.
+     * @return an immutable list of roleIds. Will not return null.
+     * @throws IllegalArgumentException if the id is null or blank or if the qualification is null
+     */
     @WebMethod(operationName = "getRoleIdsForResponsibility")
     @XmlElementWrapper(name = "roleIds", required = true)
     @XmlElement(name = "roleId", required = false)
     @WebResult(name = "roleIds")
     List<String> getRoleIdsForResponsibility(@WebParam(name = "id") String id,
                                              @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-                                             @WebParam(name = "qualification") Map<String, String> qualification);
+                                             @WebParam(name = "qualification") Map<String, String> qualification) throws RiceIllegalArgumentException;
 
     /**
      * This method find Responsibilities based on a query criteria.  The criteria cannot be null.
@@ -185,7 +253,7 @@ public interface ResponsibilityService {
      */
     @WebMethod(operationName = "findResponsibilities")
     @WebResult(name = "results")
-    ResponsibilityQueryResults findResponsibilities(@WebParam(name = "query") QueryByCriteria queryByCriteria);
+    ResponsibilityQueryResults findResponsibilities(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
 
 
     /**
@@ -197,5 +265,5 @@ public interface ResponsibilityService {
      */
     @WebMethod(operationName = "findResponsibilityTemplates")
     @WebResult(name = "results")
-    TemplateQueryResults findResponsibilityTemplates(@WebParam(name = "query") QueryByCriteria queryByCriteria);
+    TemplateQueryResults findResponsibilityTemplates(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
 }

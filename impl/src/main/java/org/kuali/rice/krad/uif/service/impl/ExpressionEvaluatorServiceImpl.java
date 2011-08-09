@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.core.BindingInfo;
 import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.core.Configurable;
 import org.kuali.rice.krad.uif.core.PropertyReplacer;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
@@ -180,12 +181,8 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
     protected void evaluatePropertyExpressions(Object object, Object contextObject,
             Map<String, Object> evaluationParameters) {
         Map<String, String> propertyExpressions = new HashMap<String, String>();
-        if (Component.class.isAssignableFrom(object.getClass())) {
-            propertyExpressions = ((Component) object).getPropertyExpressions();
-        } else if (LayoutManager.class.isAssignableFrom(object.getClass())) {
-            propertyExpressions = ((LayoutManager) object).getPropertyExpressions();
-        } else if (BindingInfo.class.isAssignableFrom(object.getClass())) {
-            propertyExpressions = ((BindingInfo) object).getPropertyExpressions();
+        if (Configurable.class.isAssignableFrom(object.getClass())) {
+            propertyExpressions = ((Configurable) object).getPropertyExpressions();
         }
 
         for (Entry<String, String> propertyExpression : propertyExpressions.entrySet()) {

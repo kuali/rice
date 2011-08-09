@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.layout;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.core.Configurable;
 import org.kuali.rice.krad.uif.core.PropertyReplacer;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 
@@ -32,7 +33,7 @@ import java.util.Set;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface LayoutManager extends Serializable {
+public interface LayoutManager extends Configurable, Serializable {
 
 	/**
 	 * The unique id (within a given tree) for the layout manager instance
@@ -81,6 +82,7 @@ public interface LayoutManager extends Serializable {
 
 	/**
 	 * Should be called to initialize the layout manager
+     *
 	 * <p>
 	 * This is where layout managers can set defaults and setup other necessary
 	 * state. The initialize method should only be called once per layout
@@ -268,39 +270,5 @@ public interface LayoutManager extends Serializable {
 	 * @param propertyReplacers
 	 */
 	public void setPropertyReplacers(List<PropertyReplacer> propertyReplacers);
-
-    /**
-     * Map of expressions that should be evaluated to conditionally set a property on the layout manager
-     *
-     * <p>
-     * When configuring a layout manager property through XML an expression can be given using the @{} placeholder.
-     * During the loading of the XML any such expressions are captured and placed into this Map, with the property
-     * they apply to set as the Map key. The expressions are then evaluated during the apply model phase and the
-     * result is set as the property value.
-     * </p>
-     *
-     * <p>
-     * Note after the expression is picked up, the property configuration is removed. Thus the property in the
-     * layout manager will only have its default object value until the expression is evaluated
-     * </p>
-     *
-     * @return Map<String, String> map of expressions where key is property name and value is expression to evaluate
-     */
-    public Map<String, String> getPropertyExpressions();
-
-    /**
-     * Setter for the Map of property expressions
-     *
-     * @param propertyExpressions
-     */
-    public void setPropertyExpressions(Map<String, String> propertyExpressions);
-
-    /**
-     * Returns the expression configured for the property with the given name
-     *
-     * @return String expression for property or null if expression is not configured
-     * @see Component#getPropertyExpressions()
-     */
-    public String getPropertyExpression(String propertyName);
 
 }

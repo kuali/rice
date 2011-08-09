@@ -10,14 +10,20 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.container.View;
+import org.kuali.rice.krad.uif.core.Component;
 import org.kuali.rice.krad.uif.history.HistoryEntry;
+import org.omg.CosTrading.LookupPackage.HowManyProps;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The breadcrumb widget contains various settings for setting up
  * Breadcrumb/History support on the view.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BreadCrumbs extends WidgetBase {
@@ -29,10 +35,35 @@ public class BreadCrumbs extends WidgetBase {
     private List<HistoryEntry> homewardPathList;
 
     /**
+     * The following updates are done here:
+     *
+     * <ul>
+     * <li>Evaluate expression on howeward path list</li>
+     * </ul>
+     *
+     * @see org.kuali.rice.krad.uif.core.Component#performApplyModel(org.kuali.rice.krad.uif.container.View,
+     *      java.lang.Object)
+     */
+    @Override
+    public void performApplyModel(View view, Object model, Component parent) {
+        super.performApplyModel(view, model, parent);
+
+        if (homewardPathList != null) {
+            Map<String, Object> context = new HashMap<String, Object>();
+            context.putAll(view.getContext());
+
+            for (HistoryEntry historyEntry : homewardPathList) {
+                KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateObjectExpressions(historyEntry, model,
+                        context);
+            }
+        }
+    }
+
+    /**
      * Determines if the homewardPath is to be displayed. Even when this is
      * setting is on the code may determine to turn off homewardPath display
-     * based on user interation and ui elements being displayed (ie lightbox)
-     * 
+     * based on user interaction and ui elements being displayed (ie lightbox)
+     *
      * @return the displayHomewardPath
      */
     public boolean isDisplayHomewardPath() {
@@ -40,8 +71,7 @@ public class BreadCrumbs extends WidgetBase {
     }
 
     /**
-     * @param displayHomewardPath
-     *            the displayHomewardPath to set
+     * @param displayHomewardPath the displayHomewardPath to set
      */
     public void setDisplayHomewardPath(boolean displayHomewardPath) {
         this.displayHomewardPath = displayHomewardPath;
@@ -51,7 +81,7 @@ public class BreadCrumbs extends WidgetBase {
      * Determines if the passedHistory is to be displayed. In most cases this
      * should not be set through the xml as this is toggled off and on through
      * code during different ui procedures.
-     * 
+     *
      * @return the displayPassedHistory
      */
     public boolean isDisplayPassedHistory() {
@@ -59,8 +89,7 @@ public class BreadCrumbs extends WidgetBase {
     }
 
     /**
-     * @param displayPassedHistory
-     *            the displayPassedHistory to set
+     * @param displayPassedHistory the displayPassedHistory to set
      */
     public void setDisplayPassedHistory(boolean displayPassedHistory) {
         this.displayPassedHistory = displayPassedHistory;
@@ -70,7 +99,7 @@ public class BreadCrumbs extends WidgetBase {
      * The homewardPath to be displayed on this representative of the logical
      * "location" of the view within the site hierarchy, can be set to anything
      * desired.
-     * 
+     *
      * @return the homewardPathList
      */
     public List<HistoryEntry> getHomewardPathList() {
@@ -78,8 +107,7 @@ public class BreadCrumbs extends WidgetBase {
     }
 
     /**
-     * @param homewardPathList
-     *            the homewardPathList to set
+     * @param homewardPathList the homewardPathList to set
      */
     public void setHomewardPathList(List<HistoryEntry> homewardPathList) {
         this.homewardPathList = homewardPathList;
@@ -88,7 +116,7 @@ public class BreadCrumbs extends WidgetBase {
     /**
      * If true, breadcrumbs will not be displayed if only one breadcrumb is
      * going to be shown, this improves visual clarity of the page
-     * 
+     *
      * @return the displayBreadcrumbsWhenOne
      */
     public boolean isDisplayBreadcrumbsWhenOne() {
@@ -96,8 +124,7 @@ public class BreadCrumbs extends WidgetBase {
     }
 
     /**
-     * @param displayBreadcrumbsWhenOne
-     *            the displayBreadcrumbsWhenOne to set
+     * @param displayBreadcrumbsWhenOne the displayBreadcrumbsWhenOne to set
      */
     public void setDisplayBreadcrumbsWhenOne(boolean displayBreadcrumbsWhenOne) {
         this.displayBreadcrumbsWhenOne = displayBreadcrumbsWhenOne;

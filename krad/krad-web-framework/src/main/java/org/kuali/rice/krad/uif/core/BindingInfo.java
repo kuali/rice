@@ -31,7 +31,7 @@ import java.util.Map;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class BindingInfo implements Serializable {
+public class BindingInfo extends ConfigurableBase implements Serializable {
     private static final long serialVersionUID = -7389398061672136091L;
 
     private boolean bindToForm;
@@ -45,13 +45,11 @@ public class BindingInfo implements Serializable {
 
     private String bindingPath;
 
-    private Map<String, String> propertyExpressions;
-
     public BindingInfo() {
+        super();
+
         bindToForm = false;
         bindToMap = false;
-
-        propertyExpressions = new HashMap<String, String>();
     }
 
     /**
@@ -338,21 +336,4 @@ public class BindingInfo implements Serializable {
         this.bindToMap = bindToMap;
     }
 
-    /**
-     * Map that holds expressions to evaluate for conditionally setting the binding properties
-     *
-     * @return Map<String, String> map of property expressions
-     */
-    public Map<String, String> getPropertyExpressions() {
-        return propertyExpressions;
-    }
-
-    /**
-     * Setter for the map of property expressions
-     *
-     * @param propertyExpressions
-     */
-    public void setPropertyExpressions(Map<String, String> propertyExpressions) {
-        this.propertyExpressions = propertyExpressions;
-    }
 }

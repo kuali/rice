@@ -20,6 +20,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.core.BindingInfo;
 import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.core.Configurable;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.MutablePropertyValues;
@@ -94,9 +95,7 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
     protected void processBeanDefinition(String beanName, BeanDefinition beanDefinition,
             ConfigurableListableBeanFactory beanFactory, Set<String> processedBeanNames) {
         Class<?> beanClass = getBeanClass(beanDefinition, beanFactory);
-        if ((beanClass == null) || (!Component.class.isAssignableFrom(beanClass)
-                && !LayoutManager.class.isAssignableFrom(beanClass)
-                && !BindingInfo.class.isAssignableFrom(beanClass))) {
+        if ((beanClass == null) || !Configurable.class.isAssignableFrom(beanClass)) {
             return;
         }
 

@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.modifier;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.core.ConfigurableBase;
 
 /**
  * Base class for <code>ComponentModifier</code> implementations
@@ -30,7 +31,7 @@ import org.kuali.rice.krad.uif.core.Component;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ComponentModifierBase implements ComponentModifier {
+public abstract class ComponentModifierBase extends ConfigurableBase implements ComponentModifier {
 	private static final long serialVersionUID = -8284332412469942130L;
 
 	private String runPhase;
@@ -38,10 +39,22 @@ public abstract class ComponentModifierBase implements ComponentModifier {
 	private int order;
 
 	public ComponentModifierBase() {
+        super();
+
 		runPhase = UifConstants.ViewPhases.INITIALIZE;
 		order = 0;
 	}
-	
+
+    /**
+     * Default performInitialization impl (does nothing)
+     *
+     * @see org.kuali.rice.krad.uif.modifier.ComponentModifierBase#performInitialization
+     */
+    @Override
+    public void performInitialization(View view, Component component) {
+
+    }
+
     /**
      * Default implementation of the overloaded performModification method that
      * calls the version that does not take the model (more commonly

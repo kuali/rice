@@ -23,28 +23,37 @@ import java.util.Map;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 
 /**
+ * Configuration for replacing a property value based on a condition
+ *
+ * <p>
+ * A <code>Component</code> may be configured with one or more <code>PropertyReplacer</code> instances. Each defines
+ * a condition to evaluate during the apply model phase, and if that condition succeeds the property on the component
+ * given by {@link #getPropertyName()}, will be replaced with the value given by {@link #getReplacement()}. Conditions
+ * are defined using an expression language and may reference any variables available in the component's context.
+ * </p>
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class PropertyReplacer implements Serializable {
-	private static final long serialVersionUID = -8405429643299461398L;
+public class PropertyReplacer extends ConfigurableBase implements Serializable {
+    private static final long serialVersionUID = -8405429643299461398L;
 
-	private String propertyName;
-	private String condition;
-	private Object replacement;
+    private String propertyName;
+    private String condition;
+    private Object replacement;
 
-	public PropertyReplacer() {
-
-	}
+    public PropertyReplacer() {
+        super();
+    }
 
     /**
-     * This method returns a list of nested components.
-     * 
+     * Returns a list of nested components
+     *
      * <p>
      * All nested components will be returned in the list. Current assumption is that
      * <code>PropertyReplacer</code> can only contain a <code>Component</code>, <code>List</code> or
-     * <code>Map</code>.
+     * <code>Map</code> for nested components
      * </p>
-     * 
+     *
      * @return List<Component> nested components
      */
     public List<Component> getNestedComponents() {
@@ -58,37 +67,38 @@ public class PropertyReplacer implements Serializable {
                 }
             }
         } else if (replacement instanceof Map) {
-            for (Object replacementItem : ((Map<?,?>) replacement).values()) {
+            for (Object replacementItem : ((Map<?, ?>) replacement).values()) {
                 if (replacementItem instanceof Component) {
                     nestedComponents.add((Component) replacementItem);
                 }
             }
         }
+
         return nestedComponents;
     }
 
-	public String getPropertyName() {
-		return this.propertyName;
-	}
+    public String getPropertyName() {
+        return this.propertyName;
+    }
 
-	public void setPropertyName(String propertyName) {
-		this.propertyName = propertyName;
-	}
+    public void setPropertyName(String propertyName) {
+        this.propertyName = propertyName;
+    }
 
-	public String getCondition() {
-		return this.condition;
-	}
+    public String getCondition() {
+        return this.condition;
+    }
 
-	public void setCondition(String condition) {
-		this.condition = condition;
-	}
+    public void setCondition(String condition) {
+        this.condition = condition;
+    }
 
-	public Object getReplacement() {
-		return this.replacement;
-	}
+    public Object getReplacement() {
+        return this.replacement;
+    }
 
-	public void setReplacement(Object replacement) {
-		this.replacement = replacement;
-	}
+    public void setReplacement(Object replacement) {
+        this.replacement = replacement;
+    }
 
 }

@@ -20,6 +20,7 @@ import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.core.ConfigurableBase;
 import org.kuali.rice.krad.uif.core.PropertyReplacer;
 import org.kuali.rice.krad.uif.core.ReferenceCopy;
 
@@ -41,7 +42,7 @@ import java.util.Set;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class LayoutManagerBase implements LayoutManager {
+public abstract class LayoutManagerBase extends ConfigurableBase implements LayoutManager {
 	private static final long serialVersionUID = -2657663560459456814L;
 
 	private String id;
@@ -53,13 +54,13 @@ public abstract class LayoutManagerBase implements LayoutManager {
 	@ReferenceCopy(newCollectionInstance=true)
 	private Map<String, Object> context;
 
-    private Map<String, String> propertyExpressions;
 	private List<PropertyReplacer> propertyReplacers;
 
 	public LayoutManagerBase() {
+        super();
+
 		styleClasses = new ArrayList<String>();
 		context = new HashMap<String, Object>();
-        propertyExpressions = new HashMap<String, String>();
 		propertyReplacers = new ArrayList<PropertyReplacer>();
 	}
 
@@ -244,31 +245,6 @@ public abstract class LayoutManagerBase implements LayoutManager {
 
 		this.context.put(objectName, object);
 	}
-
-    /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManager#getPropertyExpressions
-     */
-    public Map<String, String> getPropertyExpressions() {
-        return propertyExpressions;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManager#setPropertyExpressions
-     */
-    public void setPropertyExpressions(Map<String, String> propertyExpressions) {
-        this.propertyExpressions = propertyExpressions;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManager#getPropertyExpression
-     */
-    public String getPropertyExpression(String propertyName) {
-        if (this.propertyExpressions.containsKey(propertyName)) {
-            return this.propertyExpressions.get(propertyName);
-        }
-
-        return null;
-    }
 
 	/**
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getPropertyReplacers()

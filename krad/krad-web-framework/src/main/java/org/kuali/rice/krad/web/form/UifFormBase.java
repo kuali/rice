@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.web.form;
 
+import org.kuali.rice.kew.api.document.attribute.AttributeFields;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.history.History;
@@ -358,6 +359,7 @@ public class UifFormBase implements Serializable {
 
     /**
      * Key string that identifies the form instance in session storage
+     *
      * <p>
      * When the view is posted, the previous form instance is retrieved and then
      * populated from the request parameters. This key string is retrieve the
@@ -536,7 +538,21 @@ public class UifFormBase implements Serializable {
 
     /**
      * History parameter representing the History of views that have come before the
-     * viewing of the current view.  Used for breadcrumb widget generation on the view.
+     * viewing of the current view
+     *
+     * <p>
+     * Used for breadcrumb widget generation on the view and also for navigating back
+     * to previous or hub locations
+     * </p>
+     *
+     * @return History instance giving current history
+     */
+    public History getFormHistory() {
+        return formHistory;
+    }
+
+    /**
+     * Setter for the current History object
      *
      * @param history the history to set
      */
@@ -545,21 +561,28 @@ public class UifFormBase implements Serializable {
     }
 
     /**
-     * @return the history
+     * Indicates whether the form should be validated for dirtyness
+     *
+     * <p>
+     * For FormView, it's necessary to validate when the user tries to navigate out of the form. If set, all the
+     * AttributeFields will be validated on refresh, navigate, cancel or close Action or on form
+     * unload and if dirty, displays a message and user can decide whether to continue with
+     * the action or stay on the form
+     * </p>
+     *
+     * @return boolean true if dirty validation should be enabled
      */
-    public History getFormHistory() {
-        return formHistory;
-    }
-    
     public boolean isValidateDirty() {
-		return this.validateDirty;
-	}
+        return this.validateDirty;
+    }
 
-	/**
-	 * Setter for dirty validation. 
-	 */
-	public void setValidateDirty(boolean validateDirty) {
-		this.validateDirty = validateDirty;
-	}    
+    /**
+     * Setter for dirty validation indicator
+     *
+     * @param validateDirty
+     */
+    public void setValidateDirty(boolean validateDirty) {
+        this.validateDirty = validateDirty;
+    }
 
 }

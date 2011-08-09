@@ -47,7 +47,7 @@ import java.util.Set;
  * @see org.kuali.rice.krad.uif.field.Field
  * @see org.kuali.rice.krad.uif.widget.Widget
  */
-public interface Component extends Serializable, Ordered, ScriptEventSupport {
+public interface Component extends Configurable, Serializable, Ordered, ScriptEventSupport {
 
     /**
      * The unique id (within a given tree) for the component
@@ -495,7 +495,7 @@ public interface Component extends Serializable, Ordered, ScriptEventSupport {
 
     /**
      * List of <code>PropertyReplacer</code> instances that will be evaluated
-     * during the view lifecycle to conditional set properties on the
+     * during the view lifecycle to conditionally set properties on the
      * <code>Component</code> based on expression evaluations
      *
      * @return List<PropertyReplacer> replacers to evaluate
@@ -758,37 +758,4 @@ public interface Component extends Serializable, Ordered, ScriptEventSupport {
      */
     public void setBaseId(String baseId);
 
-    /**
-     * Map of expressions that should be evaluated to conditionally set a property on the component
-     *
-     * <p>
-     * When configuring a component property through XML an expression can be given using the @{} placeholder. During
-     * the loading of the XML any such expressions are captured and placed into this Map, with the property they apply
-     * to set as the Map key. The expressions are then evaluated during the apply model phase and the result is set as
-     * the property value.
-     * </p>
-     *
-     * <p>
-     * Note after the expression is picked up, the property configuration is removed. Thus the property in the
-     * component will only have its default object value until the expression is evaluated
-     * </p>
-     *
-     * @return Map<String, String> map of expressions where key is property name and value is expression to evaluate
-     */
-    public Map<String, String> getPropertyExpressions();
-
-    /**
-     * Setter for the Map of property expressions
-     *
-     * @param propertyExpressions
-     */
-    public void setPropertyExpressions(Map<String, String> propertyExpressions);
-
-    /**
-     * Returns the expression configured for the property with the given name
-     *
-     * @return String expression for property or null if expression is not configured
-     * @see Component#getPropertyExpressions()
-     */
-    public String getPropertyExpression(String propertyName);
 }

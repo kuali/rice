@@ -549,6 +549,11 @@ public class ViewHelperServiceImpl implements ViewHelperService {
      * component that match the given run phase and who run condition evaluation
      * succeeds
      *
+     * <p>
+     * If called during the initialize phase, the performInitialization method will be invoked on
+     * the <code>ComponentModifier</code> before running
+     * </p>
+     *
      * @param view - view instance for context
      * @param component - component instance whose modifiers should be run
      * @param model - model object for context
@@ -556,6 +561,11 @@ public class ViewHelperServiceImpl implements ViewHelperService {
      */
     protected void runComponentModifiers(View view, Component component, Object model, String runPhase) {
         for (ComponentModifier modifier : component.getComponentModifiers()) {
+            // if run phase is initialize, invoke initialize method on modifier first
+            if (StringUtils.equals(runPhase, UifConstants.ViewPhases.INITIALIZE)) {
+                modifier.performInitialization(view, component);
+            }
+
             // check run phase matches
             if (StringUtils.equals(modifier.getRunPhase(), runPhase)) {
                 // check condition (if set) evaluates to true

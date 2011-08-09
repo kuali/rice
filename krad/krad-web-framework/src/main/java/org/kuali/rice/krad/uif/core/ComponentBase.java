@@ -43,7 +43,7 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ComponentBase implements Component {
+public abstract class ComponentBase extends ConfigurableBase implements Component {
     private static final long serialVersionUID = -4449335748129894350L;
 
     private String id;
@@ -117,10 +117,11 @@ public abstract class ComponentBase implements Component {
     @ReferenceCopy(newCollectionInstance = true)
     private transient Map<String, Object> context;
 
-    private Map<String, String> propertyExpressions;
     private List<PropertyReplacer> propertyReplacers;
 
     public ComponentBase() {
+        super();
+
         order = 0;
         colSpan = 1;
         rowSpan = 1;
@@ -135,7 +136,6 @@ public abstract class ComponentBase implements Component {
         componentModifiers = new ArrayList<ComponentModifier>();
         componentOptions = new HashMap<String, String>();
         context = new HashMap<String, Object>();
-        propertyExpressions = new HashMap<String, String>();
         propertyReplacers = new ArrayList<PropertyReplacer>();
     }
 
@@ -705,31 +705,6 @@ public abstract class ComponentBase implements Component {
                 pushObjectToContext(objectEntry.getKey(), objectEntry.getValue());
             }
         }
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.core.ComponentBase#getPropertyExpressions
-     */
-    public Map<String, String> getPropertyExpressions() {
-        return propertyExpressions;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.core.ComponentBase#setPropertyExpressions
-     */
-    public void setPropertyExpressions(Map<String, String> propertyExpressions) {
-        this.propertyExpressions = propertyExpressions;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.core.ComponentBase#getPropertyExpression
-     */
-    public String getPropertyExpression(String propertyName) {
-        if (this.propertyExpressions.containsKey(propertyName)) {
-            return this.propertyExpressions.get(propertyName);
-        }
-
-        return null;
     }
 
     /**

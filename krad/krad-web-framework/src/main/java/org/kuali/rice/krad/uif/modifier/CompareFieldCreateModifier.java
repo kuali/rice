@@ -12,6 +12,8 @@ package org.kuali.rice.krad.uif.modifier;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.container.View;
@@ -22,8 +24,10 @@ import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -60,6 +64,21 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
     }
 
     /**
+     * Calls <code>ViewHelperService</code> to initialize the header field prototype
+     *
+     * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performInitialization(org.kuali.rice.krad.uif.container.View,
+     *      org.kuali.rice.krad.uif.core.Component)
+     */
+    @Override
+    public void performInitialization(View view, Component component) {
+        super.performInitialization(view, component);
+
+        if (headerFieldPrototype != null) {
+            view.getViewHelperService().performComponentInitialization(view, headerFieldPrototype);
+        }
+    }
+
+    /**
      * Generates the comparison fields
      *
      * <p>
@@ -80,8 +99,8 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
     @Override
     public void performModification(View view, Object model, Component component) {
         if ((component != null) && !(component instanceof Group)) {
-            throw new IllegalArgumentException("Compare field initializer only support Group components, found type: "
-                    + component.getClass());
+            throw new IllegalArgumentException(
+                    "Compare field initializer only support Group components, found type: " + component.getClass());
         }
 
         if (component == null) {
@@ -92,8 +111,18 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
         List<Component> comparisonItems = new ArrayList<Component>();
 
         // sort comparables by their order property
-        List<ComparableInfo> groupComparables =
-                (List<ComparableInfo>) ComponentUtils.sort(comparables, defaultOrderSequence);
+        List<ComparableInfo> groupComparables = (List<ComparableInfo>) ComponentUtils.sort(comparables,
+                defaultOrderSequence);
+
+        // evaluate expressions on comparables
+        Map<String, Object> context = new HashMap<String, Object>();
+        context.putAll(view.getContext());
+        context.put(UifConstants.ContextVariableNames.COMPONENT, component);
+
+        for (ComparableInfo comparable : groupComparables) {
+            KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateObjectExpressions(comparable, model,
+                    context);
+        }
 
         // generate compare header
         if (isGenerateCompareHeaders()) {
@@ -133,13 +162,13 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
                 if (comparable.isReadOnly()) {
                     compareItem.setReadOnly(true);
                     if (compareItem.getPropertyExpressions().containsKey("render")) {
-                       compareItem.getPropertyExpressions().remove("render");
+                        compareItem.getPropertyExpressions().remove("render");
                     }
                 }
 
                 // do value comparison
-                if (performValueChangeComparison && comparable.isHighlightValueChange() &&
-                        !comparable.isCompareToForValueChange()) {
+                if (performValueChangeComparison && comparable.isHighlightValueChange() && !comparable
+                        .isCompareToForValueChange()) {
                     performValueComparison(group, compareItem, model, compareValueObjectBindingPath);
                 }
 
@@ -163,16 +192,15 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      * @param compareValueObjectBindingPath - object path for the comparison item
      */
     protected void performValueComparison(Group group, Component compareItem, Object model,
-                                          String compareValueObjectBindingPath) {
+            String compareValueObjectBindingPath) {
         // get any attribute fields for the item so we can compare the values
         List<AttributeField> itemFields = ComponentUtils.getComponentsOfTypeDeep(compareItem, AttributeField.class);
         for (AttributeField field : itemFields) {
             String fieldBindingPath = field.getBindingInfo().getBindingPath();
             Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, fieldBindingPath);
 
-            String compareBindingPath = StringUtils
-                    .replaceOnce(fieldBindingPath, field.getBindingInfo().getBindingObjectPath(),
-                            compareValueObjectBindingPath);
+            String compareBindingPath = StringUtils.replaceOnce(fieldBindingPath,
+                    field.getBindingInfo().getBindingObjectPath(), compareValueObjectBindingPath);
             Object compareValue = ObjectPropertyUtils.getPropertyValue(model, compareBindingPath);
 
             boolean valueChanged = false;
@@ -201,7 +229,6 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
         }
     }
 
-
     /**
      * Generates an id suffix for the comparable item
      *
@@ -211,10 +238,8 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      * underscore
      * </p>
      *
-     * @param comparable
-     *            - comparable info to check for id suffix
-     * @param index
-     *            - sequence integer
+     * @param comparable - comparable info to check for id suffix
+     * @param index - sequence integer
      * @return String id suffix
      * @see org.kuali.rice.krad.uif.modifier.ComparableInfo.getIdSuffix()
      */

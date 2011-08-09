@@ -342,7 +342,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 						<list>
 							<bean parent="PropertyReplacer" p:propertyName="items" p:condition="!#isAddLine and #line.attachment?.complete" >
 								<property name="replacement">
-								  <list>
+								   <list>
 						            <bean parent="ActionField_Small" p:methodToCall="downloadAttachment"
 								          p:actionLabel="download attachment" p:title="download attachment" 
 								          p:onClickScript="writeHiddenToForm(&quot;unblockUIOnLoading&quot;, &quot;true&quot;);writeHiddenToForm(&quot;actionParameters[selectedLineIndex]&quot;, &quot;@{#index}&quot;);"/>
@@ -350,7 +350,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                                     <bean parent="MessageField" 
                                           p:messageText="(@{#line.attachment?.attachmentFileSizeWithUnits}, @{#line.attachment?.attachmentMimeTypeCode})" />
                                              
-						          </list>
+						         </list>
 								</property>
 							</bean>	
 							<bean parent="PropertyReplacer" p:propertyName="items" p:condition="!#isAddLine and !#line.attachment?.complete" >

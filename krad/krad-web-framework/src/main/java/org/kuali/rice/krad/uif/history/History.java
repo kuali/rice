@@ -16,6 +16,7 @@ import org.kuali.rice.krad.service.DataObjectMetaDataService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.container.View;
+import org.kuali.rice.krad.uif.core.ConfigurableBase;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;

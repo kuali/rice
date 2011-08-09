@@ -15,18 +15,19 @@
  */
 package org.kuali.rice.krad.uif.history;
 
+import org.kuali.rice.krad.uif.core.ConfigurableBase;
+
 import java.io.Serializable;
 
 /**
  * A simple object that keeps track of various HistoryInformation
- * 
+ *
  * TODO a variety of these settings are not used in the current implementation of breadcrumbs
  * and history, they may be removed later if they prove unuseful in future changes
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class HistoryEntry implements Serializable{
+public class HistoryEntry extends ConfigurableBase implements Serializable {
     private static final long serialVersionUID = -8310916657379268794L;
     private String viewId;
     private String pageId;
@@ -34,38 +35,35 @@ public class HistoryEntry implements Serializable{
     private String url;
     private String formKey;
 
-    public HistoryEntry(){
-        
+    public HistoryEntry() {
+       super();
     }
-    
-    /**
-     * This constructs a ...
-     * 
-     * @param viewId
-     * @param pageId
-     * @param title
-     * @param url
-     * @param formKey
-     */
+
     public HistoryEntry(String viewId, String pageId, String title, String url, String formKey) {
         super();
+
         this.viewId = viewId;
         this.pageId = pageId;
         this.title = title;
         this.url = url;
         this.formKey = formKey;
     }
-    
-    public String toParam(){
-        return viewId + History.VAR_TOKEN 
-            + pageId + History.VAR_TOKEN 
-            + title + History.VAR_TOKEN 
-            + url + History.VAR_TOKEN 
-            + formKey;
+
+    public String toParam() {
+        return viewId
+                + History.VAR_TOKEN
+                + pageId
+                + History.VAR_TOKEN
+                + title
+                + History.VAR_TOKEN
+                + url
+                + History.VAR_TOKEN
+                + formKey;
     }
 
     /**
      * The viewId of the view
+     *
      * @return the viewId
      */
     public String getViewId() {
@@ -81,6 +79,7 @@ public class HistoryEntry implements Serializable{
 
     /**
      * The pageId of the page on the view
+     *
      * @return the pageId
      */
     public String getPageId() {
@@ -96,6 +95,7 @@ public class HistoryEntry implements Serializable{
 
     /**
      * The title of the view
+     *
      * @return the title
      */
     public String getTitle() {
@@ -111,6 +111,7 @@ public class HistoryEntry implements Serializable{
 
     /**
      * The url of this HistoryEntry
+     *
      * @return the url
      */
     public String getUrl() {
@@ -134,12 +135,11 @@ public class HistoryEntry implements Serializable{
     /**
      * The formKey of the form in the view
      * TODO unsure of use
+     *
      * @param formKey the formKey to set
      */
     public void setFormKey(String formKey) {
         this.formKey = formKey;
     }
-    
-    
-    
+
 }

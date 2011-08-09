@@ -167,6 +167,7 @@ public class View extends ContainerBase {
         if (singlePageView) {
             if (page != null) {
                 page.setItems(new ArrayList<Group>(items));
+                view.getViewHelperService().performComponentInitialization(view, page);
 
                 // reset the items list to include the one page
                 items = new ArrayList<Group>();
@@ -218,6 +219,9 @@ public class View extends ContainerBase {
         List<Component> components = super.getNestedComponents();
 
         components.add(navigation);
+        components.add(breadcrumbs);
+        components.add(growlsWidget);
+        components.add(viewMenuLink);
 
         return components;
     }

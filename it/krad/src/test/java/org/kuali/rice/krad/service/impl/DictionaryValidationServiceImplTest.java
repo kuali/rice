@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.service.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -23,7 +24,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
-import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.datadictionary.DataObjectEntry;
 import org.kuali.rice.krad.datadictionary.validation.Address;
@@ -31,6 +31,7 @@ import org.kuali.rice.krad.datadictionary.validation.Company;
 import org.kuali.rice.krad.datadictionary.validation.Employee;
 import org.kuali.rice.krad.datadictionary.validation.ErrorLevel;
 import org.kuali.rice.krad.datadictionary.validation.Person;
+import org.kuali.rice.krad.datadictionary.validation.constraint.provider.CollectionDefinitionConstraintProvider;
 import org.kuali.rice.krad.datadictionary.validation.processor.MustOccurConstraintProcessor;
 import org.kuali.rice.krad.datadictionary.validation.result.ConstraintValidationResult;
 import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult;
@@ -49,14 +50,7 @@ public class DictionaryValidationServiceImplTest extends KRADTestCase{
 	private DictionaryValidationServiceImpl service;
 	DataDictionary dataDictionary = new DataDictionary();	
 	
-	protected AttributeDefinition street1Definition;
-	protected AttributeDefinition street2Definition;
-	protected AttributeDefinition stateDefinition;
-	protected AttributeDefinition postalCodeDefinition;
-	protected AttributeDefinition countryDefinition;
 	protected DataObjectEntry addressEntry;
-	
-	
 	
 	private Address validLondonAddress = new Address("8129 Maiden Lane", "", "London", "", "SE1 0P3", "UK", null);
 	private Address validUSAddress = new Address("893 Presidential Ave", "Suite 800", "Washington", "DC", "12031", "USA", null);
@@ -186,7 +180,7 @@ public class DictionaryValidationServiceImplTest extends KRADTestCase{
 	public void testRequiredNestedAttribute() throws IOException{	
 		DataDictionaryService dataDictionaryService = new DataDictionaryServiceImpl(dataDictionary);
 		service.setDataDictionaryService(dataDictionaryService);
-		
+						
 		//Get object entries from dictionary
 		DataObjectEntry addressEntry = dataDictionary.getDataObjectEntry("org.kuali.rice.krad.datadictionary.validation.Address");
         DataObjectEntry companyEntry = dataDictionary.getDataObjectEntry("org.kuali.rice.krad.datadictionary.validation.Company");
@@ -235,6 +229,60 @@ public class DictionaryValidationServiceImplTest extends KRADTestCase{
 
 		Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
 		Assert.assertTrue(hasError(dictionaryValidationResult, "mainContact.employeeDetails.gender", RiceKeyConstants.ERROR_REQUIRED));
+	}
+	
+	@Test
+    public void testCollectionConstraints() throws IOException{
+        DataDictionaryService dataDictionaryService = new DataDictionaryServiceImpl(dataDictionary);
+        service.setDataDictionaryService(dataDictionaryService);
+
+        DataObjectEntry companyEntry = dataDictionary.getDataObjectEntry("org.kuali.rice.krad.datadictionary.validation.Company");
+
+        //Add collection constraint provider so constraints on collections get processed
+        service.getConstraintProviders().add(new CollectionDefinitionConstraintProvider());
+	    
+        Company acmeCompany = new Company();
+        Address acmeMainAddress = new Address();
+        acmeMainAddress.setCountry("US");
+        acmeMainAddress.setPostalCode("11111");
+        acmeCompany.setMainAddress(acmeMainAddress);
+        
+        DictionaryValidationResult dictionaryValidationResult = service.validate(acmeCompany, "org.kuali.rice.krad.datadictionary.validation.Company",companyEntry, true);
+        
+        //Company requires at least two employees
+        Assert.assertEquals(2, dictionaryValidationResult.getNumberOfErrors());
+        Assert.assertTrue(hasError(dictionaryValidationResult, "employees", RiceKeyConstants.ERROR_QUANTITY_RANGE));
+        Assert.assertTrue(hasError(dictionaryValidationResult, "slogans", RiceKeyConstants.ERROR_MIN_OCCURS));        
+        
+        //Add required employes and revalidate
+        Employee employee1 = new Employee();
+        employee1.setEmployeeDetails(new Person());
+        
+        
+        List<Employee> employees = new ArrayList<Employee>();
+        employees.add(employee1);        
+        acmeCompany.setEmployees(employees);
+        
+        List<String> slogans = new ArrayList<String>();
+        slogans.add("Slogan One");
+        acmeCompany.setSlogans(slogans);
+        
+        dictionaryValidationResult = service.validate(acmeCompany, "org.kuali.rice.krad.datadictionary.validation.Company",companyEntry, true);
+        Assert.assertEquals(2, dictionaryValidationResult.getNumberOfErrors());
+        Assert.assertTrue(hasError(dictionaryValidationResult, "employees", RiceKeyConstants.ERROR_QUANTITY_RANGE));
+        Assert.assertTrue(hasError(dictionaryValidationResult, "slogans", RiceKeyConstants.ERROR_MIN_OCCURS));
+        
+        //Add an invalid, employee this should result in one error
+        Employee invalidEmployee = new Employee();
+        employees.add(invalidEmployee);
+        slogans.add("Slogan Two");
+        
+        dictionaryValidationResult = service.validate(acmeCompany, "org.kuali.rice.krad.datadictionary.validation.Company",companyEntry, true);
+        Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
+        
+        //FIXME: The path returned is in incorrect and doesn't take into account index
+        Assert.assertTrue(hasError(dictionaryValidationResult, "employeeDetails", RiceKeyConstants.ERROR_REQUIRED));
+        
 	}
 	
 	protected boolean hasError(DictionaryValidationResult dvr, String attributeName, String errorKey){

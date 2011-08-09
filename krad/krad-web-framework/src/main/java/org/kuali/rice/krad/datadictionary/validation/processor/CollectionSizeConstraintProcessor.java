@@ -70,8 +70,11 @@ public class CollectionSizeConstraintProcessor implements CollectionConstraintPr
 		return false;
 	}
 
-	protected ConstraintValidationResult processSingleCollectionSizeConstraint(DictionaryValidationResult result, Collection<?> collection, CollectionSizeConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
-		Integer sizeOfCollection = Integer.valueOf(collection.size());
+	protected ConstraintValidationResult processSingleCollectionSizeConstraint(DictionaryValidationResult result, Collection<?> collection, CollectionSizeConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {		
+	    Integer sizeOfCollection = new Integer(0);
+	    if (collection != null){
+	        sizeOfCollection = Integer.valueOf(collection.size());
+	    }
 		
 		Integer maxOccurances = constraint.getMaximumNumberOfElements();
 		Integer minOccurances = constraint.getMinimumNumberOfElements();

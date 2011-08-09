@@ -30,8 +30,10 @@ public class Company {
 	private Employee mainContact;
 	private Address mainAddress;
 	private List<Employee> employees;
+	private List<String> slogans;
 	
-	public Company(){
+
+    public Company(){
 	}
 	
 	
@@ -126,5 +128,19 @@ public class Company {
 	}
 	
 	
+    /**
+     * @return the slogans
+     */
+    public List<String> getSlogans() {
+        return this.slogans;
+    }
+
+
+    /**
+     * @param slogans the slogans to set
+     */
+    public void setSlogans(List<String> slogans) {
+        this.slogans = slogans;
+    }
 	
 }

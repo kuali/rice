@@ -73,6 +73,10 @@
 				<bean class="org.kuali.rice.krad.datadictionary.validation.constraint.provider.AttributeDefinitionConstraintProvider"/>
 				<bean class="org.kuali.rice.krad.datadictionary.validation.constraint.provider.ComplexAttributeDefinitionConstraintProvider"/>
 				<bean class="org.kuali.rice.krad.datadictionary.validation.constraint.provider.DataObjectEntryConstraintProvider"/>
+                
+                <!-- The unit test method will add this when testing 
+                <bean class="org.kuali.rice.krad.datadictionary.validation.constraint.provider.CollectionDefinitionConstraintProvider"/>
+                -->
 			</list>
 		</property>		
 	</bean>

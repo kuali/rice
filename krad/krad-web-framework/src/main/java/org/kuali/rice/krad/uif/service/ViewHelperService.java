@@ -16,8 +16,8 @@
 package org.kuali.rice.krad.uif.service;
 
 import org.kuali.rice.krad.uif.container.CollectionGroup;
-import org.kuali.rice.krad.uif.container.View;
-import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
@@ -49,7 +49,7 @@ public interface ViewHelperService {
 	 * parameter key/value pairs to the returned map if necessary.
 	 * </p>
 	 * 
-	 * @see org.kuali.rice.krad.uif.core.RequestParameter
+	 * @see org.kuali.rice.krad.uif.component.RequestParameter
 	 */
 	public void populateViewFromRequestParameters(View view, Map<String, String> parameters);
 

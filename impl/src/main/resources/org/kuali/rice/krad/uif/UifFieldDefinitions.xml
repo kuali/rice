@@ -233,43 +233,28 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="ImageField" parent="ImageField-parentBean"/>
   <bean id="ImageField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.ImageField" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/templates/field/image.jsp"/>
+      <property name="template" value="/krad/WEB-INF/jsp/templates/field/imageField.jsp"/>
   </bean> 
-  
-  <bean id="GeneratedField" parent="GeneratedField-parentBean"/>
-  <bean id="GeneratedField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.GeneratedField" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/templates/field/generated.jsp"/>
-      <property name="labelField">
-        <bean parent="LabelField"/>
-      </property>  
-  </bean> 
-  
+
   <bean id="BlankField" parent="BlankField-parentBean"/>
   <bean id="BlankField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.BlankField" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/templates/field/blank.jsp"/>
+      <property name="template" value="/krad/WEB-INF/jsp/templates/field/blankField.jsp"/>
   </bean>
   
   <bean id="GenericField" parent="GenericField-parentBean"/>
   <bean id="GenericField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.GenericField" scope="prototype"/>
   
-  <bean id="GroupField" parent="GroupField-parentBean"/>
-  <bean id="GroupField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.GroupField" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/templates/field/groupField.jsp"/>
+  <bean id="FieldGroup" parent="FieldGroup-parentBean"/>
+  <bean id="FieldGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.FieldGroup" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/field/fieldGroup.jsp"/>
       <property name="group">
-         <bean parent="Group"/>
+         <bean parent="GroupBodyOnly" p:fieldContainer="true"/>
       </property>
       <property name="labelField">
         <bean parent="LabelField"/>
       </property>        
   </bean>    
-  
-  <bean id="FieldGroup" parent="FieldGroup-parentBean"/>
-  <bean id="FieldGroup-parentBean" abstract="true" parent="GroupField">
-      <property name="group">
-         <bean parent="GroupBodyOnly" p:fieldContainer="true" p:layoutManager.padding="3px"/>
-      </property>  
-  </bean> 
-  
+
   <!-- Common Fields -->
   
   <bean id="MessageField_RequiredIndicator" parent="MessageField" p:messageText="* indicates required field" 

@@ -15,10 +15,10 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.control.RadioGroupControl;
 import org.kuali.rice.krad.uif.control.TextControl;
-import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.field.Field;
-import org.kuali.rice.krad.uif.field.GroupField;
+import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.LabelField;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -131,7 +131,7 @@ public class ComponentFactory {
             ((CollectionGroup) component).setBindingInfo(((CollectionGroup) origComponent).getBindingInfo());
         }
 
-        if (component instanceof Group || component instanceof GroupField) {
+        if (component instanceof Group || component instanceof FieldGroup) {
             List<AttributeField> fields = ComponentUtils.getComponentsOfTypeDeep(component, AttributeField.class);
             String suffix = StringUtils.replaceOnce(component.getId(), component.getBaseId(), "");
             for (AttributeField field : fields) {

@@ -16,8 +16,8 @@
 package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.uif.core.BindingInfo;
-import org.kuali.rice.krad.uif.core.MethodInvokerConfig;
+import org.kuali.rice.krad.uif.component.BindingInfo;
+import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
 
 import java.io.Serializable;
 import java.util.ArrayList;

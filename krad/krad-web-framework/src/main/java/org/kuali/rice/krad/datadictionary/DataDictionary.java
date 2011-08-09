@@ -28,7 +28,7 @@ import org.kuali.rice.krad.datadictionary.parse.StringListConverter;
 import org.kuali.rice.krad.datadictionary.parse.StringMapConverter;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.PersistenceStructureService;
-import org.kuali.rice.krad.uif.container.View;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.util.ComponentBeanPostProcessor;
 import org.kuali.rice.krad.uif.util.UifBeanFactoryPostProcessor;
 import org.kuali.rice.krad.util.ObjectUtils;

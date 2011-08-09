@@ -40,7 +40,7 @@ public class MessageField extends FieldBase {
 	/**
 	 * Override to render only if the message text has been given
 	 * 
-	 * @see org.kuali.rice.krad.uif.core.ComponentBase#isRender()
+	 * @see org.kuali.rice.krad.uif.component.ComponentBase#isRender()
 	 */
 	@Override
 	public boolean isRender() {

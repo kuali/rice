@@ -1,6 +1,6 @@
 package org.kuali.rice.krad.uif.service;
 
-import org.kuali.rice.krad.uif.container.View;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.field.AttributeQueryResult;
 
 import java.util.Map;

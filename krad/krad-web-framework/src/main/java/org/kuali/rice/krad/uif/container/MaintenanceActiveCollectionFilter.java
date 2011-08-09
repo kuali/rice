@@ -1,10 +1,10 @@
-package org.kuali.rice.krad.uif.core;
+package org.kuali.rice.krad.uif.container;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
-import org.kuali.rice.krad.uif.container.CollectionGroup;
-import org.kuali.rice.krad.uif.container.View;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +29,7 @@ public class MaintenanceActiveCollectionFilter implements CollectionFilter {
      * is not allowed to hide
      * </p>
      *
-     * @see org.kuali.rice.krad.uif.core.CollectionFilter#filter(org.kuali.rice.krad.uif.container.View, Object, org.kuali.rice.krad.uif.container.CollectionGroup)
+     * @see CollectionFilter#filter(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.container.CollectionGroup)
      */
     @Override
     public List<Integer> filter(View view, Object model, CollectionGroup collectionGroup) {

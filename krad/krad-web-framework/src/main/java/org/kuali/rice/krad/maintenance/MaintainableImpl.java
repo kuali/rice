@@ -36,7 +36,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.service.MaintenanceDocumentService;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
-import org.kuali.rice.krad.uif.container.View;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -413,7 +413,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
      * TODO: should this write some sort of missing message on the old side
      * instead?
      *
-     * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#processAfterAddLine(org.kuali.rice.krad.uif.container.View,
+     * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#processAfterAddLine(org.kuali.rice.krad.uif.view.View,
      *      org.kuali.rice.krad.uif.container.CollectionGroup, java.lang.Object,
      *      java.lang.Object)
      */
@@ -443,7 +443,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
      * In the case of edit maintenance deleted the item on the old side
      *
      *
-     * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#processAfterDeleteLine(org.kuali.rice.krad.uif.container.View,
+     * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#processAfterDeleteLine(org.kuali.rice.krad.uif.view.View,
      *      org.kuali.rice.krad.uif.container.CollectionGroup, java.lang.Object,
      *      java.lang.Object)
      */

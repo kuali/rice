@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.core;
+package org.kuali.rice.krad.uif.component;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.util.MethodInvoker;

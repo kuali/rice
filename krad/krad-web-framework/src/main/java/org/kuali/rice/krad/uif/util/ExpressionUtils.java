@@ -18,9 +18,9 @@ package org.kuali.rice.krad.uif.util;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
-import org.kuali.rice.krad.uif.container.View;
-import org.kuali.rice.krad.uif.core.BindingInfo;
-import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.component.BindingInfo;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 
 import java.util.HashMap;

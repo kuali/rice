@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.core;
+package org.kuali.rice.krad.uif.component;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import org.kuali.rice.krad.uif.util.ComponentUtils;
 
 /**
  * Configuration for replacing a property value based on a condition

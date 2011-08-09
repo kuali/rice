@@ -492,7 +492,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </bean>
     </property>
     <property name="activeCollectionFilter">
-      <bean class="org.kuali.rice.krad.uif.core.MaintenanceActiveCollectionFilter"
+      <bean class="org.kuali.rice.krad.uif.container.MaintenanceActiveCollectionFilter"
             p:oldBindingObjectPath="document.oldMaintainableObject.dataObject" />
     </property>
   </bean>

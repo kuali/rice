@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.core;
+package org.kuali.rice.krad.uif.component;
 
 
 /**
@@ -34,7 +34,7 @@ public interface DataBinding {
 	 * component
 	 * 
 	 * @return BindingInfo
-	 * @see org.kuali.rice.krad.uif.core.BindingInfo
+	 * @see org.kuali.rice.krad.uif.component.BindingInfo
 	 */
 	public BindingInfo getBindingInfo();
 

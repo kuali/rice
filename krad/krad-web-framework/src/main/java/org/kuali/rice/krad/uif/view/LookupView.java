@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.container;
+package org.kuali.rice.krad.uif.view;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
-import org.kuali.rice.krad.uif.core.Component;
-import org.kuali.rice.krad.uif.core.RequestParameter;
+import org.kuali.rice.krad.uif.container.CollectionGroup;
+import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.web.form.LookupForm;
 
@@ -87,7 +89,7 @@ public class LookupView extends FormView {
      * <li>Set the abstractTypeClasses map for the lookup object path</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(org.kuali.rice.krad.uif.container.View)
+     * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(org.kuali.rice.krad.uif.view.View)
      */
     @Override
     public void performInitialization(View view) {
@@ -118,7 +120,7 @@ public class LookupView extends FormView {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#performApplyModel(org.kuali.rice.krad.uif.container.View,
+     * @see org.kuali.rice.krad.uif.container.ContainerBase#performApplyModel(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object)
      */
     @Override

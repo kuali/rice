@@ -11,7 +11,7 @@
 package org.kuali.rice.krad.uif.util;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.uif.container.View;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.field.AttributeField;
 
 import java.util.Collection;
@@ -51,7 +51,7 @@ public class ViewModelUtils {
      * @param view - view instance providing the context (abstract map)
      * @param propertyPath - full path to property to retrieve type for (relative to the form class)
      * @return Class<?> type of property in model, or Null if type could not be determined
-     * @see org.kuali.rice.krad.uif.container.View#getAbstractTypeClasses()
+     * @see org.kuali.rice.krad.uif.view.View#getAbstractTypeClasses()
      */
     public static Class<?> getPropertyTypeByClassAndView(View view, String propertyPath) {
         Class<?> propertyType = null;

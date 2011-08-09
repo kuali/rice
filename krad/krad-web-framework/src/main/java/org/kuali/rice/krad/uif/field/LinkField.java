@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.uif.container.View;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.LightBox;
 
 /**
@@ -44,7 +44,7 @@ public class LinkField extends FieldBase {
 	 * </ul>
 	 * </p>
 	 * 
-	 * @see org.kuali.rice.krad.uif.core.ComponentBase#performInitialization(org.kuali.rice.krad.uif.container.View)
+	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View)
 	 */
 	@Override
 	public void performInitialization(View view) {
@@ -94,7 +94,7 @@ public class LinkField extends FieldBase {
 	}
 	
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getSupportsOnClick()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnClick()
      */
     public boolean getSupportsOnClick() {
         return true;

@@ -1,8 +1,7 @@
-package org.kuali.rice.krad.uif.core;
+package org.kuali.rice.krad.uif.container;
 
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
-import org.kuali.rice.krad.uif.container.CollectionGroup;
-import org.kuali.rice.krad.uif.container.View;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ public class ActiveCollectionFilter implements CollectionFilter {
      * Iterates through the collection and if the collection line type implements <code>Inactivatable</code>,
      * active indexes are added to the show indexes list
      *
-     * @see CollectionFilter#filter(org.kuali.rice.krad.uif.container.View, Object, org.kuali.rice.krad.uif.container.CollectionGroup)
+     * @see CollectionFilter#filter(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.container.CollectionGroup)
      */
     @Override
     public List<Integer> filter(View view, Object model, CollectionGroup collectionGroup) {

@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.container;
+package org.kuali.rice.krad.uif.view;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.container.CollectionGroup;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.AttributeField;
 
 import java.io.Serializable;

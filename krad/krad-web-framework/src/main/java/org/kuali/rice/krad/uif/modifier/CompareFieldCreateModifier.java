@@ -16,8 +16,8 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.container.View;
-import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.field.HeaderField;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -66,8 +66,8 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
     /**
      * Calls <code>ViewHelperService</code> to initialize the header field prototype
      *
-     * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performInitialization(org.kuali.rice.krad.uif.container.View,
-     *      org.kuali.rice.krad.uif.core.Component)
+     * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performInitialization(org.kuali.rice.krad.uif.view.View,
+     *      org.kuali.rice.krad.uif.component.Component)
      */
     @Override
     public void performInitialization(View view, Component component) {
@@ -92,8 +92,8 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      * to suffixing the id and setting the readOnly property
      * </p>
      *
-     * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performModification(org.kuali.rice.krad.uif.container.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.core.Component)
+     * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performModification(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @SuppressWarnings("unchecked")
     @Override

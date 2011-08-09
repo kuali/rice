@@ -23,7 +23,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
-import org.kuali.rice.krad.uif.container.View;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.service.ViewTypeService;
@@ -112,7 +112,7 @@ public class ViewServiceImpl implements ViewService {
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.service.ViewService#buildView(org.kuali.rice.krad.uif.container.View,
+	 * @see org.kuali.rice.krad.uif.service.ViewService#buildView(org.kuali.rice.krad.uif.view.View,
 	 *      java.lang.Object)
 	 */
 	public void buildView(View view, Object model) {

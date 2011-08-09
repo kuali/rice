@@ -19,8 +19,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.uif.container.View;
-import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.service.ViewTypeService;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 

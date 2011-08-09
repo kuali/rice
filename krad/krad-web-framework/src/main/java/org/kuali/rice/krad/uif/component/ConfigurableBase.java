@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.core;
+package org.kuali.rice.krad.uif.component;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,21 +37,21 @@ public abstract class ConfigurableBase implements Configurable {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ConfigurableBase#getPropertyExpressions
+     * @see org.kuali.rice.krad.uif.component.ConfigurableBase#getPropertyExpressions
      */
     public Map<String, String> getPropertyExpressions() {
         return propertyExpressions;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ConfigurableBase#setPropertyExpressions
+     * @see org.kuali.rice.krad.uif.component.ConfigurableBase#setPropertyExpressions
      */
     public void setPropertyExpressions(Map<String, String> propertyExpressions) {
         this.propertyExpressions = propertyExpressions;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ConfigurableBase#getPropertyExpression
+     * @see org.kuali.rice.krad.uif.component.ConfigurableBase#getPropertyExpression
      */
     public String getPropertyExpression(String propertyName) {
         if (this.propertyExpressions.containsKey(propertyName)) {

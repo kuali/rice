@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.kuali.rice.krad.uif.container;
+package org.kuali.rice.krad.uif.view;
 
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 
@@ -58,7 +58,7 @@ public class InquiryView extends FormView {
      * </ul>
      * </p>
      * 
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(org.kuali.rice.krad.uif.container.View)
+     * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(org.kuali.rice.krad.uif.view.View)
      */
     @Override
     public void performInitialization(View view) {

@@ -26,7 +26,7 @@ package org.kuali.rice.krad.uif.field;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class HeaderField extends GroupField {
+public class HeaderField extends FieldGroup {
     private static final long serialVersionUID = -6950408292923393244L;
 
     private String headerText;

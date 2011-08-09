@@ -17,8 +17,8 @@ package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.container.View;
-import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.component.Component;
 
 import java.util.List;
 
@@ -30,12 +30,12 @@ import java.util.List;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class GroupField extends FieldBase {
+public class FieldGroup extends FieldBase {
 	private static final long serialVersionUID = -505654043702442196L;
 
 	private Group group;
 
-	public GroupField() {
+	public FieldGroup() {
 		super();
 	}
 
@@ -48,7 +48,7 @@ public class GroupField extends FieldBase {
 	 * </ul>
 	 * </p>
 	 * 
-	 * @see org.kuali.rice.krad.uif.core.ComponentBase#performInitialization(org.kuali.rice.krad.uif.container.View)
+	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View)
 	 */
 	@Override
 	public void performInitialization(View view) {
@@ -60,7 +60,7 @@ public class GroupField extends FieldBase {
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.core.ComponentBase#getNestedComponents()
+	 * @see org.kuali.rice.krad.uif.component.ComponentBase#getNestedComponents()
 	 */
 	@Override
 	public List<Component> getNestedComponents() {

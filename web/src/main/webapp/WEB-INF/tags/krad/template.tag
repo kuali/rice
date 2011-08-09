@@ -19,7 +19,7 @@
 
 <%@ attribute name="component" required="true"
 	description="The UIF component for which the template will be generated"
-	type="org.kuali.rice.krad.uif.core.Component"%>
+	type="org.kuali.rice.krad.uif.component.Component"%>
 <%@ attribute name="body" required="false"
 	description="If the template takes a body (wraps content) that content should be passed with this parameter" %>
 

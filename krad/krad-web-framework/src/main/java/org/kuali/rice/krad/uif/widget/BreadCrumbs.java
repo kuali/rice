@@ -11,10 +11,9 @@
 package org.kuali.rice.krad.uif.widget;
 
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.uif.container.View;
-import org.kuali.rice.krad.uif.core.Component;
-import org.kuali.rice.krad.uif.history.HistoryEntry;
-import org.omg.CosTrading.LookupPackage.HowManyProps;
+import org.kuali.rice.krad.uif.view.HistoryEntry;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.component.Component;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +40,7 @@ public class BreadCrumbs extends WidgetBase {
      * <li>Evaluate expression on howeward path list</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.core.Component#performApplyModel(org.kuali.rice.krad.uif.container.View,
+     * @see org.kuali.rice.krad.uif.component.Component#performApplyModel(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object)
      */
     @Override

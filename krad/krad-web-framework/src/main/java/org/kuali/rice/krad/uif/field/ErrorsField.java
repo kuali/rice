@@ -20,8 +20,8 @@ import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.container.ContainerBase;
 import org.kuali.rice.krad.uif.container.PageGroup;
-import org.kuali.rice.krad.uif.container.View;
-import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.MessageMap;
@@ -105,8 +105,8 @@ public class ErrorsField extends FieldBase {
 	 * parentComponent correctly based on the flags that were chosen for this
 	 * ErrorsField.
 	 * 
-	 * @see org.kuali.rice.krad.uif.field.FieldBase#performFinalize(org.kuali.rice.krad.uif.container.View,
-	 *      java.lang.Object, org.kuali.rice.krad.uif.core.Component)
+	 * @see org.kuali.rice.krad.uif.field.FieldBase#performFinalize(org.kuali.rice.krad.uif.view.View,
+	 *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
 	 */
 	@Override
 	public void performFinalize(View view, Object model, Component parent) {

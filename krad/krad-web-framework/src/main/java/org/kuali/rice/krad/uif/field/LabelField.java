@@ -11,7 +11,7 @@
 package org.kuali.rice.krad.uif.field;
 
 import org.kuali.rice.krad.uif.UifConstants.Position;
-import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.component.Component;
 
 import java.util.List;
 
@@ -44,7 +44,7 @@ public class LabelField extends FieldBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ComponentBase#getNestedComponents()
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getNestedComponents()
      */
     @Override
     public List<Component> getNestedComponents() {

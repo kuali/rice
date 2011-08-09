@@ -30,13 +30,13 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersC
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.container.FormView;
-import org.kuali.rice.krad.uif.container.View;
+import org.kuali.rice.krad.uif.view.FormView;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.MultiValueControlBase;
-import org.kuali.rice.krad.uif.core.BindingInfo;
-import org.kuali.rice.krad.uif.core.Component;
-import org.kuali.rice.krad.uif.core.DataBinding;
+import org.kuali.rice.krad.uif.component.BindingInfo;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.util.ClientValidationUtils;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -146,7 +146,7 @@ public class AttributeField extends FieldBase implements DataBinding {
      * <li>Default the model path if not set</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.core.ComponentBase#performInitialization(org.kuali.rice.krad.uif.container.View)
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View)
      */
     @Override
     public void performInitialization(View view) {
@@ -166,8 +166,8 @@ public class AttributeField extends FieldBase implements DataBinding {
      * addition, it sets up the messages applied to this field</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.core.ComponentBase#performFinalize(org.kuali.rice.krad.uif.container.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.core.Component)
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
     public void performFinalize(View view, Object model, Component parent) {
@@ -524,7 +524,7 @@ public class AttributeField extends FieldBase implements DataBinding {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ComponentBase#getNestedComponents()
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getNestedComponents()
      */
     @Override
     public List<Component> getNestedComponents() {
@@ -541,7 +541,7 @@ public class AttributeField extends FieldBase implements DataBinding {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.DataBinding#getPropertyName()
+     * @see org.kuali.rice.krad.uif.component.DataBinding#getPropertyName()
      */
     public String getPropertyName() {
         return this.propertyName;
@@ -625,7 +625,7 @@ public class AttributeField extends FieldBase implements DataBinding {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.DataBinding#getBindingInfo()
+     * @see org.kuali.rice.krad.uif.component.DataBinding#getBindingInfo()
      */
     public BindingInfo getBindingInfo() {
         return this.bindingInfo;
@@ -850,7 +850,7 @@ public class AttributeField extends FieldBase implements DataBinding {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ComponentBase#getSupportsOnLoad()
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getSupportsOnLoad()
      */
     @Override
     public boolean getSupportsOnLoad() {
@@ -1110,7 +1110,7 @@ public class AttributeField extends FieldBase implements DataBinding {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ComponentBase#getRequired()
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getRequired()
      */
     @Override
     public Boolean getRequired() {
@@ -1118,7 +1118,7 @@ public class AttributeField extends FieldBase implements DataBinding {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ComponentBase#setRequired(java.lang.Boolean)
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#setRequired(java.lang.Boolean)
      */
     @Override
     public void setRequired(Boolean required) {

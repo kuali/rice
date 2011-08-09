@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.ActionField;
 
 import java.util.HashSet;

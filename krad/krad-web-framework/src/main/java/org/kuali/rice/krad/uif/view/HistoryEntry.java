@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.history;
+package org.kuali.rice.krad.uif.view;
 
-import org.kuali.rice.krad.uif.core.ConfigurableBase;
+import org.kuali.rice.krad.uif.component.ConfigurableBase;
 
 import java.io.Serializable;
 

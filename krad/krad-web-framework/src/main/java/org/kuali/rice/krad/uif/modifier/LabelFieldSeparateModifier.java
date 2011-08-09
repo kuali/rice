@@ -17,8 +17,8 @@ package org.kuali.rice.krad.uif.modifier;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.container.View;
-import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.Field;
 
 import java.util.ArrayList;
@@ -45,8 +45,8 @@ public class LabelFieldSeparateModifier extends ComponentModifierBase {
 	 * immediately before the <code>Field</code> item the label applies to.
 	 * Finally the new list of components is set on the group
 	 * 
-	 * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performModification(org.kuali.rice.krad.uif.container.View,
-	 *      org.kuali.rice.krad.uif.core.Component)
+	 * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performModification(org.kuali.rice.krad.uif.view.View,
+	 *      org.kuali.rice.krad.uif.component.Component)
 	 */
 	@Override
 	public void performModification(View view, Component component) {

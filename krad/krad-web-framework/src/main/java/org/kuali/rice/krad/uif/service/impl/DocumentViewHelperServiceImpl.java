@@ -17,7 +17,7 @@ import org.kuali.rice.krad.rule.event.AddAdHocRouteWorkgroupEvent;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiRuleService;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
-import org.kuali.rice.krad.uif.container.View;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
 
 /**

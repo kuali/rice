@@ -16,8 +16,8 @@
 package org.kuali.rice.krad.uif.control;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.uif.container.View;
-import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.AttributeField;
 
 /**
@@ -48,8 +48,8 @@ public class TextAreaControl extends ControlBase {
      * <li>Defaults maxLength, minLength (if not set) to maxLength of parent field</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.core.ComponentBase#performFinalize(org.kuali.rice.krad.uif.container.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.core.Component)
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
     public void performFinalize(View view, Object model, Component parent) {

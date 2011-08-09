@@ -21,15 +21,16 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.control.Control;
-import org.kuali.rice.krad.uif.core.DataBinding;
+import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.field.Field;
-import org.kuali.rice.krad.uif.field.GroupField;
+import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.layout.CollectionLayoutManager;
 import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -209,7 +210,7 @@ public class CollectionGroupBuilder implements Serializable {
         lineFields = removeNonRenderLineFields(view, model, collectionGroup, lineFields, currentLine, lineIndex);
 
 		// if not add line build sub-collection field groups
-		List<GroupField> subCollectionFields = new ArrayList<GroupField>();
+		List<FieldGroup> subCollectionFields = new ArrayList<FieldGroup>();
         if ((lineIndex != -1) && (collectionGroup.getSubCollections() != null)) {
             for (int subLineIndex = 0; subLineIndex < collectionGroup.getSubCollections().size(); subLineIndex++) {
                 CollectionGroup subCollectionPrototype = collectionGroup.getSubCollections().get(subLineIndex);
@@ -232,12 +233,12 @@ public class CollectionGroupBuilder implements Serializable {
                 }
                 subCollectionGroup.setSubCollectionSuffix(subCollectionSuffix);
 
-                GroupField groupFieldPrototype = layoutManager.getSubCollectionGroupFieldPrototype();
-                GroupField subCollectionGroupField = ComponentUtils.copy(groupFieldPrototype,
+                FieldGroup fieldGroupPrototype = layoutManager.getSubCollectionFieldGroupPrototype();
+                FieldGroup subCollectionFieldGroup = ComponentUtils.copy(fieldGroupPrototype,
                         lineSuffix + "s" + subLineIndex);
-                subCollectionGroupField.setGroup(subCollectionGroup);
+                subCollectionFieldGroup.setGroup(subCollectionGroup);
 
-                subCollectionFields.add(subCollectionGroupField);
+                subCollectionFields.add(subCollectionFieldGroup);
             }
         }
 

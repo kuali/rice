@@ -20,8 +20,8 @@ import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.CssConstants.Padding;
 import org.kuali.rice.krad.uif.UifConstants.Orientation;
 import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.container.View;
-import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.AttributeField;
 
 /**
@@ -61,7 +61,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
 	 * <li>Set the itemSpanStyle</li>
 	 * </ul>
 	 * 
-	 * @see org.kuali.rice.krad.uif.core.ComponentBase#performInitialization(org.kuali.rice.krad.uif.container.View,org.kuali.rice.krad.uif.container.Container)
+	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View,org.kuali.rice.krad.uif.container.Container)
 	 */
 	@Override
 	public void performInitialization(View view, Container container) {
@@ -115,7 +115,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
     }
 
 	/**
-	 * @see org.kuali.rice.krad.uif.layout.LayoutManagerBase#performFinalize(org.kuali.rice.krad.uif.container.View,
+	 * @see org.kuali.rice.krad.uif.layout.LayoutManagerBase#performFinalize(org.kuali.rice.krad.uif.view.View,
 	 *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
 	 */
 	@Override

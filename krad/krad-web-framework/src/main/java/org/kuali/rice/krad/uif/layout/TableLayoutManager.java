@@ -19,12 +19,12 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.container.View;
-import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.field.Field;
-import org.kuali.rice.krad.uif.field.GroupField;
 import org.kuali.rice.krad.uif.field.LabelField;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
@@ -61,9 +61,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	private boolean generateAutoSequence;
 	private Field sequenceFieldPrototype;
 
-	private GroupField actionFieldPrototype;
+	private FieldGroup actionFieldPrototype;
 
-	private GroupField subCollectionGroupFieldPrototype;
+	private FieldGroup subCollectionFieldGroupPrototype;
 
 	// internal counter for the data columns (not including sequence, action)
 	private int numberOfDataColumns;
@@ -92,7 +92,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	 * <li>Initializes the prototypes</li>
 	 * </ul>
 	 * 
-	 * @see org.kuali.rice.krad.uif.layout.BoxLayoutManager#performInitialization(org.kuali.rice.krad.uif.container.View,
+	 * @see org.kuali.rice.krad.uif.layout.BoxLayoutManager#performInitialization(org.kuali.rice.krad.uif.view.View,
 	 *      org.kuali.rice.krad.uif.container.Container)
 	 */
 	@Override
@@ -106,14 +106,14 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 		view.getViewHelperService().performComponentInitialization(view, headerFieldPrototype);
 		view.getViewHelperService().performComponentInitialization(view, sequenceFieldPrototype);
 		view.getViewHelperService().performComponentInitialization(view, actionFieldPrototype);
-		view.getViewHelperService().performComponentInitialization(view, subCollectionGroupFieldPrototype);
+		view.getViewHelperService().performComponentInitialization(view, subCollectionFieldGroupPrototype);
 	}
 
 	/**
 	 * Sets up the final column count for rendering based on whether the
 	 * sequence and action fields have been generated
 	 * 
-	 * @see org.kuali.rice.krad.uif.layout.LayoutManagerBase#performFinalize(org.kuali.rice.krad.uif.container.View,
+	 * @see org.kuali.rice.krad.uif.layout.LayoutManagerBase#performFinalize(org.kuali.rice.krad.uif.view.View,
 	 *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
 	 */
 	@Override
@@ -142,13 +142,13 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	 * items for the action field. Finally the generated items are assembled
 	 * together into the dataFields list with the given lineFields.
 	 * 
-	 * @see org.kuali.rice.krad.uif.layout.CollectionLayoutManager#buildLine(org.kuali.rice.krad.uif.container.View,
+	 * @see org.kuali.rice.krad.uif.layout.CollectionLayoutManager#buildLine(org.kuali.rice.krad.uif.view.View,
 	 *      java.lang.Object, org.kuali.rice.krad.uif.container.CollectionGroup,
 	 *      java.util.List, java.util.List, java.lang.String, java.util.List,
 	 *      java.lang.String, java.lang.Object, int)
 	 */
 	public void buildLine(View view, Object model, CollectionGroup collectionGroup, List<Field> lineFields,
-			List<GroupField> subCollectionFields, String bindingPath, List<ActionField> actions, String idSuffix,
+			List<FieldGroup> subCollectionFields, String bindingPath, List<ActionField> actions, String idSuffix,
 			Object currentLine, int lineIndex) {
 		boolean isAddLine = lineIndex == -1;
 		
@@ -220,7 +220,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 			// action field should be in last column
 			if ((cellPosition == getNumberOfDataColumns()) && collectionGroup.isRenderLineActions()
 					&& !collectionGroup.isReadOnly()) {
-				GroupField lineActionsField = ComponentUtils.copy(actionFieldPrototype, idSuffix);
+				FieldGroup lineActionsField = ComponentUtils.copy(actionFieldPrototype, idSuffix);
 
 				ComponentUtils.updateContextForLine(lineActionsField, currentLine, lineIndex);
 				lineActionsField.setRowSpan(rowSpan);
@@ -231,7 +231,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 		}
 
 		// update colspan on sub-collection fields
-		for (GroupField subCollectionField : subCollectionFields) {
+		for (FieldGroup subCollectionField : subCollectionFields) {
 			subCollectionField.setColSpan(numberOfDataColumns);
 		}
 
@@ -556,18 +556,18 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	}
 
 	/**
-	 * <code>GroupField</code> instance to serve as a prototype for the actions
+	 * <code>FieldGroup</code> instance to serve as a prototype for the actions
 	 * column. For each collection line this instance is copied and adjusted as
 	 * necessary. Note the actual actions for the group come from the collection
 	 * groups actions List
 	 * (org.kuali.rice.krad.uif.container.CollectionGroup.getActionFields()). The
-	 * GroupField prototype is useful for setting styling of the actions column
+	 * FieldGroup prototype is useful for setting styling of the actions column
 	 * and for the layout of the action fields. Note also the label associated
 	 * with the prototype is used for the action column header
 	 * 
 	 * @return GroupField instance
 	 */
-	public GroupField getActionFieldPrototype() {
+	public FieldGroup getActionFieldPrototype() {
 		return this.actionFieldPrototype;
 	}
 
@@ -576,24 +576,24 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	 * 
 	 * @param actionFieldPrototype
 	 */
-	public void setActionFieldPrototype(GroupField actionFieldPrototype) {
+	public void setActionFieldPrototype(FieldGroup actionFieldPrototype) {
 		this.actionFieldPrototype = actionFieldPrototype;
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.layout.CollectionLayoutManager#getSubCollectionGroupFieldPrototype()
+	 * @see org.kuali.rice.krad.uif.layout.CollectionLayoutManager#getSubCollectionFieldGroupPrototype()
 	 */
-	public GroupField getSubCollectionGroupFieldPrototype() {
-		return this.subCollectionGroupFieldPrototype;
+	public FieldGroup getSubCollectionFieldGroupPrototype() {
+		return this.subCollectionFieldGroupPrototype;
 	}
 
 	/**
 	 * Setter for the sub-collection field group prototype
 	 * 
-	 * @param subCollectionGroupFieldPrototype
+	 * @param subCollectionFieldGroupPrototype
 	 */
-	public void setSubCollectionGroupFieldPrototype(GroupField subCollectionGroupFieldPrototype) {
-		this.subCollectionGroupFieldPrototype = subCollectionGroupFieldPrototype;
+	public void setSubCollectionFieldGroupPrototype(FieldGroup subCollectionFieldGroupPrototype) {
+		this.subCollectionFieldGroupPrototype = subCollectionFieldGroupPrototype;
 	}
 
 	/**

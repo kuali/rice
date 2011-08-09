@@ -18,11 +18,11 @@ package org.kuali.rice.krad.uif.layout;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.container.View;
-import org.kuali.rice.krad.uif.core.Component;
-import org.kuali.rice.krad.uif.core.ConfigurableBase;
-import org.kuali.rice.krad.uif.core.PropertyReplacer;
-import org.kuali.rice.krad.uif.core.ReferenceCopy;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.ConfigurableBase;
+import org.kuali.rice.krad.uif.component.PropertyReplacer;
+import org.kuali.rice.krad.uif.component.ReferenceCopy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,7 +65,7 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#performInitialization(org.kuali.rice.krad.uif.container.View,
+	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#performInitialization(org.kuali.rice.krad.uif.view.View,
 	 *      org.kuali.rice.krad.uif.container.Container)
 	 */
 	public void performInitialization(View view, Container container) {
@@ -76,7 +76,7 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#performApplyModel(org.kuali.rice.krad.uif.container.View,
+	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#performApplyModel(org.kuali.rice.krad.uif.view.View,
 	 *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
 	 */
 	public void performApplyModel(View view, Object model, Container container) {
@@ -84,7 +84,7 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#performFinalize(org.kuali.rice.krad.uif.container.View,
+	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#performFinalize(org.kuali.rice.krad.uif.view.View,
 	 *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
 	 */
 	public void performFinalize(View view, Object model, Container container) {

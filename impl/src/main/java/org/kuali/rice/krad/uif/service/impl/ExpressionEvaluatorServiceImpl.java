@@ -17,15 +17,13 @@ import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.core.BindingInfo;
-import org.kuali.rice.krad.uif.core.Component;
-import org.kuali.rice.krad.uif.core.Configurable;
-import org.kuali.rice.krad.uif.core.PropertyReplacer;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.Configurable;
+import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
 import org.kuali.rice.krad.uif.util.ExpressionFunctions;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
-import org.springframework.expression.EvaluationException;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.common.TemplateParserContext;

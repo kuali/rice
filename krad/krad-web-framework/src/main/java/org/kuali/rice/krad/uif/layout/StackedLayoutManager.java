@@ -20,12 +20,12 @@ import org.kuali.rice.krad.uif.UifConstants.Orientation;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.container.View;
-import org.kuali.rice.krad.uif.core.Component;
-import org.kuali.rice.krad.uif.core.DataBinding;
+import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.Field;
-import org.kuali.rice.krad.uif.field.GroupField;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 
@@ -59,7 +59,7 @@ public class StackedLayoutManager extends BoxLayoutManager implements Collection
 
 	private Group addLineGroup;
 	private Group lineGroupPrototype;
-	private GroupField subCollectionGroupFieldPrototype;
+	private FieldGroup subCollectionFieldGroupPrototype;
 
 	private List<Group> stackedGroups;
 
@@ -79,7 +79,7 @@ public class StackedLayoutManager extends BoxLayoutManager implements Collection
 	 * <li>Initializes the prototypes</li>
 	 * </ul>
 	 * 
-	 * @see org.kuali.rice.krad.uif.layout.BoxLayoutManager#performInitialization(org.kuali.rice.krad.uif.container.View,
+	 * @see org.kuali.rice.krad.uif.layout.BoxLayoutManager#performInitialization(org.kuali.rice.krad.uif.view.View,
 	 *      org.kuali.rice.krad.uif.container.Container)
 	 */
 	@Override
@@ -90,7 +90,7 @@ public class StackedLayoutManager extends BoxLayoutManager implements Collection
             view.getViewHelperService().performComponentInitialization(view, addLineGroup);
         }
 		view.getViewHelperService().performComponentInitialization(view, lineGroupPrototype);
-		view.getViewHelperService().performComponentInitialization(view, subCollectionGroupFieldPrototype);
+		view.getViewHelperService().performComponentInitialization(view, subCollectionFieldGroupPrototype);
 	}
 
 	/**
@@ -101,13 +101,13 @@ public class StackedLayoutManager extends BoxLayoutManager implements Collection
 	 * the items for the group, and finally the actions are placed into the
 	 * group footer
 	 * 
-	 * @see org.kuali.rice.krad.uif.layout.CollectionLayoutManager#buildLine(org.kuali.rice.krad.uif.container.View,
+	 * @see org.kuali.rice.krad.uif.layout.CollectionLayoutManager#buildLine(org.kuali.rice.krad.uif.view.View,
 	 *      java.lang.Object, org.kuali.rice.krad.uif.container.CollectionGroup,
 	 *      java.util.List, java.util.List, java.lang.String, java.util.List,
 	 *      java.lang.String, java.lang.Object, int)
 	 */
 	public void buildLine(View view, Object model, CollectionGroup collectionGroup, List<Field> lineFields,
-			List<GroupField> subCollectionFields, String bindingPath, List<ActionField> actions, String idSuffix,
+			List<FieldGroup> subCollectionFields, String bindingPath, List<ActionField> actions, String idSuffix,
 			Object currentLine, int lineIndex) {
 		boolean isAddLine = lineIndex == -1;
 
@@ -305,19 +305,19 @@ public class StackedLayoutManager extends BoxLayoutManager implements Collection
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.layout.CollectionLayoutManager#getSubCollectionGroupFieldPrototype()
+	 * @see org.kuali.rice.krad.uif.layout.CollectionLayoutManager#getSubCollectionFieldGroupPrototype()
 	 */
-	public GroupField getSubCollectionGroupFieldPrototype() {
-		return this.subCollectionGroupFieldPrototype;
+	public FieldGroup getSubCollectionFieldGroupPrototype() {
+		return this.subCollectionFieldGroupPrototype;
 	}
 
 	/**
 	 * Setter for the sub-collection field group prototype
 	 * 
-	 * @param subCollectionGroupFieldPrototype
+	 * @param subCollectionFieldGroupPrototype
 	 */
-	public void setSubCollectionGroupFieldPrototype(GroupField subCollectionGroupFieldPrototype) {
-		this.subCollectionGroupFieldPrototype = subCollectionGroupFieldPrototype;
+	public void setSubCollectionFieldGroupPrototype(FieldGroup subCollectionFieldGroupPrototype) {
+		this.subCollectionFieldGroupPrototype = subCollectionFieldGroupPrototype;
 	}
 
 	/**

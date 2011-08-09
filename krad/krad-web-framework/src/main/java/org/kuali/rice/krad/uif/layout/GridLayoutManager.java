@@ -17,7 +17,7 @@ package org.kuali.rice.krad.uif.layout;
 
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.container.View;
+import org.kuali.rice.krad.uif.view.View;
 
 /**
  * Layout manager that organizes its components in a table based grid
@@ -57,7 +57,7 @@ public class GridLayoutManager extends LayoutManagerBase {
      * container's items list size</li>
      * </ul>
      * 
-     * @see org.kuali.rice.krad.uif.layout.LayoutManagerBase#performFinalize(org.kuali.rice.krad.uif.container.View,
+     * @see org.kuali.rice.krad.uif.layout.LayoutManagerBase#performFinalize(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
      */
     @Override

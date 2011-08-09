@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.ErrorsField;
 import org.kuali.rice.krad.uif.field.HeaderField;
 import org.kuali.rice.krad.uif.field.MessageField;
@@ -41,7 +41,7 @@ import java.util.Set;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
- * @see org.kuali.rice.krad.uif.core.Component
+ * @see org.kuali.rice.krad.uif.component.Component
  */
 public interface Container extends Component {
 

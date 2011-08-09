@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.uif.util;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.component.Component;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 

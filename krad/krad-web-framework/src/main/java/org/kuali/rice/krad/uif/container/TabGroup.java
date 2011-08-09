@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.widget.Tabs;
 
 import java.util.HashSet;
@@ -33,7 +33,7 @@ public class TabGroup extends Group{
 	private static final long serialVersionUID = 3L;
 	private Tabs tabsWidget;
 	/**
-	 * @see org.kuali.rice.krad.uif.core.Component#getComponentTypeName()
+	 * @see org.kuali.rice.krad.uif.component.Component#getComponentTypeName()
 	 */
 	@Override
 	public String getComponentTypeName() {

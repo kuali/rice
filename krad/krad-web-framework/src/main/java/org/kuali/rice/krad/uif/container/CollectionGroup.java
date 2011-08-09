@@ -17,16 +17,15 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
-import org.kuali.rice.krad.uif.core.ActiveCollectionFilter;
-import org.kuali.rice.krad.uif.core.BindingInfo;
-import org.kuali.rice.krad.uif.core.CollectionFilter;
-import org.kuali.rice.krad.uif.core.Component;
-import org.kuali.rice.krad.uif.core.DataBinding;
+import org.kuali.rice.krad.uif.component.BindingInfo;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.LabelField;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.view.View;
 
 /**
  * Group that holds a collection of objects and configuration for presenting the
@@ -100,7 +99,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * collection class</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.core.ComponentBase#performInitialization(org.kuali.rice.krad.uif.container.View)
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View)
      */
     @Override
     public void performInitialization(View view) {
@@ -178,7 +177,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * Calls the configured <code>CollectionGroupBuilder</code> to build the
      * necessary components based on the collection data
      * 
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#performApplyModel(org.kuali.rice.krad.uif.container.View,
+     * @see org.kuali.rice.krad.uif.container.ContainerBase#performApplyModel(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object)
      */
     @Override
@@ -293,7 +292,7 @@ public class CollectionGroup extends Group implements DataBinding {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.DataBinding#getPropertyName()
+     * @see org.kuali.rice.krad.uif.component.DataBinding#getPropertyName()
      */
     public String getPropertyName() {
         return this.propertyName;
@@ -313,7 +312,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * collection value from the model in addition to setting the binding path
      * for the collection attributes
      * 
-     * @see org.kuali.rice.krad.uif.core.DataBinding#getBindingInfo()
+     * @see org.kuali.rice.krad.uif.component.DataBinding#getBindingInfo()
      */
     public BindingInfo getBindingInfo() {
         return this.bindingInfo;

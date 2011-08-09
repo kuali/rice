@@ -259,7 +259,7 @@
   </bean>    
   
   <bean id="HistoryEntry" parent="HistoryEntry-parentBean"/>
-  <bean id="HistoryEntry-parentBean" abstract="true" class="org.kuali.rice.krad.uif.history.HistoryEntry" scope="prototype" />
+  <bean id="HistoryEntry-parentBean" abstract="true" class="org.kuali.rice.krad.uif.view.HistoryEntry" scope="prototype" />
   
   <!-- Growls default settings -->
   <bean id="GrowlsWidget" parent="GrowlsWidget-parentBean"/>
@@ -338,15 +338,15 @@
   
   <!-- Other -->
   
-  <bean id="BindingInfo" class="org.kuali.rice.krad.uif.core.BindingInfo" scope="prototype"/>
+  <bean id="BindingInfo" class="org.kuali.rice.krad.uif.component.BindingInfo" scope="prototype"/>
   
   <bean id="ComparableInfo" class="org.kuali.rice.krad.uif.modifier.ComparableInfo" scope="prototype"/>
   
   <bean id="KeyLabelPair" class="org.kuali.rice.core.api.util.ConcreteKeyValue" scope="prototype"/>
   
-  <bean id="MethodInvokerConfig" class="org.kuali.rice.krad.uif.core.MethodInvokerConfig" scope="prototype"/>
+  <bean id="MethodInvokerConfig" class="org.kuali.rice.krad.uif.component.MethodInvokerConfig" scope="prototype"/>
   
-  <bean id="PropertyReplacer" class="org.kuali.rice.krad.uif.core.PropertyReplacer" scope="prototype"/>
+  <bean id="PropertyReplacer" class="org.kuali.rice.krad.uif.component.PropertyReplacer" scope="prototype"/>
 
   <bean id="AttributeQuery" class="org.kuali.rice.krad.uif.field.AttributeQuery" scope="prototype"/>
 

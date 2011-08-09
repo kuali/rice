@@ -6,8 +6,8 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.container.View;
-import org.kuali.rice.krad.uif.core.MethodInvokerConfig;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
 import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.field.AttributeQuery;
 import org.kuali.rice.krad.uif.field.AttributeQueryResult;
@@ -37,7 +37,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
 
     /**
      * @see org.kuali.rice.krad.uif.service.AttributeQueryService#performFieldSuggestQuery(
-     *org.kuali.rice.krad.uif.container.View, java.lang.String, java.lang.String, java.util.Map<java.lang.String,
+     *org.kuali.rice.krad.uif.view.View, java.lang.String, java.lang.String, java.util.Map<java.lang.String,
      *      java.lang.String>)
      */
     @Override
@@ -88,7 +88,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.service.AttributeQueryService#performFieldQuery(org.kuali.rice.krad.uif.container.View,
+     * @see org.kuali.rice.krad.uif.service.AttributeQueryService#performFieldQuery(org.kuali.rice.krad.uif.view.View,
      *      java.lang.String, java.util.Map<java.lang.String,java.lang.String>)
      */
     @Override

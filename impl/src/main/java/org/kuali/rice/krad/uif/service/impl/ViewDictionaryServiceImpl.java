@@ -17,10 +17,10 @@ import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.inquiry.Inquirable;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.container.InquiryView;
-import org.kuali.rice.krad.uif.container.LookupView;
-import org.kuali.rice.krad.uif.container.MaintenanceView;
-import org.kuali.rice.krad.uif.container.View;
+import org.kuali.rice.krad.uif.view.InquiryView;
+import org.kuali.rice.krad.uif.view.LookupView;
+import org.kuali.rice.krad.uif.view.MaintenanceView;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
 
 /**

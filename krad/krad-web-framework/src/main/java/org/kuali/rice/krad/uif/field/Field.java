@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.uif.field;
 
-import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.component.Component;
 
 /**
  * Component that contains one or more user interface elements and can be placed

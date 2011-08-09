@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.uif.control;
 
-import org.kuali.rice.krad.uif.core.ComponentBase;
+import org.kuali.rice.krad.uif.component.ComponentBase;
 
 /**
  * Base class for all <code>Control</code> implementations
@@ -34,7 +34,7 @@ public abstract class ControlBase extends ComponentBase implements Control {
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.core.Component#getComponentTypeName()
+	 * @see org.kuali.rice.krad.uif.component.Component#getComponentTypeName()
 	 */
 	@Override
 	public final String getComponentTypeName() {

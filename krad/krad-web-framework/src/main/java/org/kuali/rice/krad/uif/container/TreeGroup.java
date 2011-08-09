@@ -3,12 +3,13 @@ package org.kuali.rice.krad.uif.container;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.core.BindingInfo;
-import org.kuali.rice.krad.uif.core.Component;
-import org.kuali.rice.krad.uif.core.DataBinding;
+import org.kuali.rice.krad.uif.component.BindingInfo;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.TreeWidget;
 
 import java.util.ArrayList;

@@ -17,7 +17,7 @@
 
 <%@ attribute name="component" required="true" 
               description="The UIF component for which the html attribute will be built" 
-              type="org.kuali.rice.krad.uif.core.Component"%>
+              type="org.kuali.rice.krad.uif.component.Component"%>
               
 <%@ variable name-given="styleClass" scope="AT_END" %>
 <%@ variable name-given="style" scope="AT_END" %>

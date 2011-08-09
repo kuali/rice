@@ -22,12 +22,12 @@ import org.kuali.rice.krad.uif.authorization.Authorizer;
 import org.kuali.rice.krad.uif.authorization.PresentationController;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.container.View;
-import org.kuali.rice.krad.uif.core.BindingInfo;
-import org.kuali.rice.krad.uif.core.Component;
-import org.kuali.rice.krad.uif.core.DataBinding;
-import org.kuali.rice.krad.uif.core.PropertyReplacer;
-import org.kuali.rice.krad.uif.core.RequestParameter;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.component.BindingInfo;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.DataBinding;
+import org.kuali.rice.krad.uif.component.PropertyReplacer;
+import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
@@ -81,7 +81,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
      * the field are cleared so that the request parameter value does not get
      * overridden by the dictionary conditional logic
      *
-     * @see org.kuali.rice.krad.uif.service.ViewHelperService#populateViewFromRequestParameters(org.kuali.rice.krad.uif.container.View,
+     * @see org.kuali.rice.krad.uif.service.ViewHelperService#populateViewFromRequestParameters(org.kuali.rice.krad.uif.view.View,
      *      java.util.Map)
      */
     @Override
@@ -148,7 +148,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.service.ViewHelperService#performInitialization(org.kuali.rice.krad.uif.container.View,
+     * @see org.kuali.rice.krad.uif.service.ViewHelperService#performInitialization(org.kuali.rice.krad.uif.view.View,
      *      java.util.Map)
      */
     @Override
@@ -201,8 +201,8 @@ public class ViewHelperServiceImpl implements ViewHelperService {
      * be an important factor to consider when initializing a component
      * </p>
      *
-     * @see org.kuali.rice.krad.uif.service.ViewHelperService#performComponentInitialization(org.kuali.rice.krad.uif.container.View,
-     *      org.kuali.rice.krad.uif.core.Component)
+     * @see org.kuali.rice.krad.uif.service.ViewHelperService#performComponentInitialization(org.kuali.rice.krad.uif.view.View,
+     *      org.kuali.rice.krad.uif.component.Component)
      */
     public void performComponentInitialization(View view, Component component) {
         if (component == null) {
@@ -399,7 +399,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.service.ViewHelperService#performApplyModel(org.kuali.rice.krad.uif.container.View,
+     * @see org.kuali.rice.krad.uif.service.ViewHelperService#performApplyModel(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object)
      */
     @Override
@@ -609,7 +609,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.service.ViewHelperService#performFinalize(org.kuali.rice.krad.uif.container.View,
+     * @see org.kuali.rice.krad.uif.service.ViewHelperService#performFinalize(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object)
      */
     @Override
@@ -750,7 +750,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.service.ViewHelperService#processCollectionAddLine(org.kuali.rice.krad.uif.container.View,
+     * @see org.kuali.rice.krad.uif.service.ViewHelperService#processCollectionAddLine(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object, java.lang.String)
      */
     @Override
@@ -814,7 +814,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.service.ViewHelperService#processCollectionDeleteLine(org.kuali.rice.krad.uif.container.View,
+     * @see org.kuali.rice.krad.uif.service.ViewHelperService#processCollectionDeleteLine(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object, java.lang.String, int)
      */
     public void processCollectionDeleteLine(View view, Object model, String collectionPath, int lineIndex) {
@@ -883,7 +883,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.service.ViewHelperService#applyDefaultValues(org.kuali.rice.krad.uif.container.View,
+     * @see org.kuali.rice.krad.uif.service.ViewHelperService#applyDefaultValues(org.kuali.rice.krad.uif.view.View,
      *      org.kuali.rice.krad.web.form.UifFormBase)
      */
     public void applyDefaultValues(View view, UifFormBase model) {
@@ -902,7 +902,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.service.ViewHelperService#applyDefaultValuesForCollectionLine(org.kuali.rice.krad.uif.container.View,
+     * @see org.kuali.rice.krad.uif.service.ViewHelperService#applyDefaultValuesForCollectionLine(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object, org.kuali.rice.krad.uif.container.CollectionGroup,
      *      java.lang.Object)
      */

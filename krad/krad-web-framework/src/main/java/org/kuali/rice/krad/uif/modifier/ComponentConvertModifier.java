@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.krad.uif.modifier;
 
-import org.kuali.rice.krad.uif.container.View;
-import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 
@@ -48,8 +48,8 @@ public class ComponentConvertModifier extends ComponentModifierBase {
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performModification(org.kuali.rice.krad.uif.container.View,
-	 *      org.kuali.rice.krad.uif.core.Component)
+	 * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performModification(org.kuali.rice.krad.uif.view.View,
+	 *      org.kuali.rice.krad.uif.component.Component)
 	 */
 	@Override
 	public void performModification(View view, Component component) {

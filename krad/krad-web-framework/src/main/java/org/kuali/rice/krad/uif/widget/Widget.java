@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
-import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.component.Component;
 
 /**
  * Components that provide a user interface function (besides the basic form

@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.uif.service;
 
-import org.kuali.rice.krad.uif.container.View;
+import org.kuali.rice.krad.uif.view.View;
 
 import java.util.Map;
 

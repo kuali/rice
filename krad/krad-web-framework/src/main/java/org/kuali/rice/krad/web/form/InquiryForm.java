@@ -22,7 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.inquiry.Inquirable;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
-import org.kuali.rice.krad.uif.container.InquiryView;
+import org.kuali.rice.krad.uif.view.InquiryView;
 
 /**
  * Form class for <code>InquiryView</code> screens

@@ -16,10 +16,10 @@
 package org.kuali.rice.krad.uif.layout;
 
 import org.kuali.rice.krad.uif.container.CollectionGroup;
-import org.kuali.rice.krad.uif.container.View;
+import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.Field;
-import org.kuali.rice.krad.uif.field.GroupField;
 
 import java.util.List;
 
@@ -81,7 +81,7 @@ public interface CollectionLayoutManager extends LayoutManager {
 	 *            the add line
 	 */
 	public void buildLine(View view, Object model, CollectionGroup collectionGroup, List<Field> lineFields,
-			List<GroupField> subCollectionFields, String bindingPath, List<ActionField> actions, String idSuffix,
+			List<FieldGroup> subCollectionFields, String bindingPath, List<ActionField> actions, String idSuffix,
 			Object currentLine, int lineIndex);
 
 	/**
@@ -92,5 +92,5 @@ public interface CollectionLayoutManager extends LayoutManager {
 	 * 
 	 * @return GroupField instance to use as prototype
 	 */
-	public GroupField getSubCollectionGroupFieldPrototype();
+	public FieldGroup getSubCollectionFieldGroupPrototype();
 }

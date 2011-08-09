@@ -27,7 +27,7 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersC
 import org.kuali.rice.krad.datadictionary.validation.constraint.WhenConstraint;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.container.View;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.field.AttributeField;
 

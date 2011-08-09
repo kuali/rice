@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.uif.control;
 
-import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.component.Component;
 
 /**
  * Represents an interactive element in the UI (typically an HTML control)

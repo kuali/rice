@@ -16,10 +16,10 @@
 package org.kuali.rice.krad.uif.layout;
 
 import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.container.View;
-import org.kuali.rice.krad.uif.core.Component;
-import org.kuali.rice.krad.uif.core.Configurable;
-import org.kuali.rice.krad.uif.core.PropertyReplacer;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.Configurable;
+import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 
 import java.io.Serializable;

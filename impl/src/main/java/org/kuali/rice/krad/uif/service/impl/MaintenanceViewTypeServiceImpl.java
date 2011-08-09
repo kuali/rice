@@ -26,8 +26,8 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.UifParameters;
-import org.kuali.rice.krad.uif.container.MaintenanceView;
-import org.kuali.rice.krad.uif.container.View;
+import org.kuali.rice.krad.uif.view.MaintenanceView;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.service.ViewTypeService;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 
@@ -53,7 +53,7 @@ public class MaintenanceViewTypeServiceImpl implements ViewTypeService {
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.service.ViewTypeService#getParametersFromView(org.kuali.rice.krad.uif.container.View)
+	 * @see org.kuali.rice.krad.uif.service.ViewTypeService#getParametersFromView(org.kuali.rice.krad.uif.view.View)
 	 */
 	public Map<String, String> getParametersFromView(View view) {
 		Map<String, String> parameters = new HashMap<String, String>();

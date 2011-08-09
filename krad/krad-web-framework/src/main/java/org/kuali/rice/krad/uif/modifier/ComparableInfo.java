@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.krad.uif.modifier;
 
-import org.kuali.rice.krad.uif.core.ConfigurableBase;
-import org.kuali.rice.krad.uif.core.Ordered;
+import org.kuali.rice.krad.uif.component.ConfigurableBase;
+import org.kuali.rice.krad.uif.component.Ordered;
 
 import java.io.Serializable;
 

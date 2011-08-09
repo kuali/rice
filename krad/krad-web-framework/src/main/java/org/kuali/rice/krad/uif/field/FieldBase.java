@@ -17,9 +17,9 @@ package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants.Position;
-import org.kuali.rice.krad.uif.container.View;
-import org.kuali.rice.krad.uif.core.Component;
-import org.kuali.rice.krad.uif.core.ComponentBase;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.ComponentBase;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 
 import java.util.List;
@@ -61,7 +61,7 @@ public class FieldBase extends ComponentBase implements Field {
 	 * <ul>
 	 * </ul>
 	 * 
-	 * @see org.kuali.rice.krad.uif.core.ComponentBase#performInitialization(org.kuali.rice.krad.uif.container.View)
+	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View)
 	 */
 	@Override
 	public void performInitialization(View view) {
@@ -80,8 +80,8 @@ public class FieldBase extends ComponentBase implements Field {
 	 * <li>If label placement is right, set render colon to false</li>
 	 * </ul>
 	 * 
-	 * @see org.kuali.rice.krad.uif.core.ComponentBase#performFinalize(org.kuali.rice.krad.uif.container.View,
-	 *      java.lang.Object, org.kuali.rice.krad.uif.core.Component)
+	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
+	 *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
 	 */
 	@Override
 	public void performFinalize(View view, Object model, Component parent) {
@@ -110,7 +110,7 @@ public class FieldBase extends ComponentBase implements Field {
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.core.Component#getComponentTypeName()
+	 * @see org.kuali.rice.krad.uif.component.Component#getComponentTypeName()
 	 */
 	@Override
 	public final String getComponentTypeName() {
@@ -118,7 +118,7 @@ public class FieldBase extends ComponentBase implements Field {
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.core.ComponentBase#getNestedComponents()
+	 * @see org.kuali.rice.krad.uif.component.ComponentBase#getNestedComponents()
 	 */
 	@Override
 	public List<Component> getNestedComponents() {

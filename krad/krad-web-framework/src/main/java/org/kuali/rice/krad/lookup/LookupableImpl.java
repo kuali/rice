@@ -37,8 +37,8 @@ import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
-import org.kuali.rice.krad.uif.container.LookupView;
-import org.kuali.rice.krad.uif.container.View;
+import org.kuali.rice.krad.uif.view.LookupView;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.control.HiddenControl;
 import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.field.LinkField;
@@ -90,7 +90,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     private transient EncryptionService encryptionService;
 
     /**
-     * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#populateViewFromRequestParameters(org.kuali.rice.krad.uif.container.View,
+     * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#populateViewFromRequestParameters(org.kuali.rice.krad.uif.view.View,
      *      java.util.Map)
      */
     @Override
@@ -106,7 +106,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      * Initialization of Lookupable requires that the business object class be set for the {@link
      * #initializeAttributeFieldFromDataDictionary(View, org.kuali.rice.krad.uif.field.AttributeField)} method
      *
-     * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#performInitialization(org.kuali.rice.krad.uif.container.View)
+     * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#performInitialization(org.kuali.rice.krad.uif.view.View)
      */
     @Override
     public void performInitialization(View view) {

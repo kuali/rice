@@ -22,15 +22,15 @@ import org.kuali.rice.core.api.util.type.KualiInteger;
 import org.kuali.rice.core.api.util.type.KualiPercent;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
-import org.kuali.rice.krad.uif.container.View;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.control.CheckboxControl;
 import org.kuali.rice.krad.uif.control.CheckboxGroupControl;
 import org.kuali.rice.krad.uif.control.RadioGroupControl;
 import org.kuali.rice.krad.uif.control.SelectControl;
 import org.kuali.rice.krad.uif.control.TextControl;
-import org.kuali.rice.krad.uif.core.Component;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.AttributeField;
-import org.kuali.rice.krad.uif.field.GroupField;
+import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -126,9 +126,9 @@ public class TableTools extends WidgetBase {
                 String sortType = null;
                 // TODO: does this handle multiple rows correctly?
                 for (Component component : collectionGroup.getItems()) {
-                    // For GroupField, get the first field from that group
-                    if (component instanceof GroupField) {
-                        component = ((GroupField) component).getItems().get(0);
+                    // For FieldGroup, get the first field from that group
+                    if (component instanceof FieldGroup) {
+                        component = ((FieldGroup) component).getItems().get(0);
                     }
 
                     if (component instanceof AttributeField) {

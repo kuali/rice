@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.krad.lookup;
 
-import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.container.LookupView;
-import org.kuali.rice.krad.uif.container.View;
 import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.web.form.LookupForm;

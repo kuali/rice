@@ -20,7 +20,7 @@ import java.util.Set;
 import org.kuali.rice.krad.bo.Exporter;
 import org.kuali.rice.krad.datadictionary.DataObjectEntry;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.uif.container.InquiryView;
+import org.kuali.rice.krad.uif.view.InquiryView;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.UifFormBase;
 

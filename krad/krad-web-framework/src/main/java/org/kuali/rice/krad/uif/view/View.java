@@ -8,25 +8,26 @@
  * KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.kuali.rice.krad.uif.container;
+package org.kuali.rice.krad.uif.view;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.service.DataObjectMetaDataService;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.authorization.Authorizer;
 import org.kuali.rice.krad.uif.authorization.PresentationController;
-import org.kuali.rice.krad.uif.core.BindingInfo;
-import org.kuali.rice.krad.uif.core.Component;
-import org.kuali.rice.krad.uif.core.ReferenceCopy;
-import org.kuali.rice.krad.uif.core.RequestParameter;
+import org.kuali.rice.krad.uif.container.ContainerBase;
+import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.container.NavigationGroup;
+import org.kuali.rice.krad.uif.container.PageGroup;
+import org.kuali.rice.krad.uif.component.BindingInfo;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.ReferenceCopy;
+import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.BooleanMap;
 import org.kuali.rice.krad.uif.util.ClientValidationUtils;
-import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.widget.BreadCrumbs;
 import org.kuali.rice.krad.uif.widget.GrowlsWidget;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -156,7 +157,7 @@ public class View extends ContainerBase {
      * the items list</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(org.kuali.rice.krad.uif.container.View)
+     * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(View)
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -188,8 +189,8 @@ public class View extends ContainerBase {
      * up the validator for this view</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#performFinalize(org.kuali.rice.krad.uif.container.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.core.Component)
+     * @see org.kuali.rice.krad.uif.container.ContainerBase#performFinalize(View,
+     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
     public void performFinalize(View view, Object model, Component parent) {
@@ -212,7 +213,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ComponentBase#getNestedComponents()
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getNestedComponents()
      */
     @Override
     public List<Component> getNestedComponents() {
@@ -238,7 +239,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#getComponentTypeName()
+     * @see org.kuali.rice.krad.uif.component.Component#getComponentTypeName()
      */
     @Override
     public String getComponentTypeName() {
@@ -636,8 +637,8 @@ public class View extends ContainerBase {
      * </p>
      *
      * @return Class<? extends PresentationController>
-     * @see org.kuali.rice.krad.uif.container.View.getActionFlags()
-     * @see org.kuali.rice.krad.uif.container.View.getEditModes()
+     * @see View.getActionFlags()
+     * @see View.getEditModes()
      */
     public Class<? extends PresentationController> getPresentationControllerClass() {
         return this.presentationControllerClass;
@@ -666,8 +667,8 @@ public class View extends ContainerBase {
      * </p>
      *
      * @return Class<? extends Authorizer>
-     * @see org.kuali.rice.krad.uif.container.View.getActionFlags()
-     * @see org.kuali.rice.krad.uif.container.View.getEditModes()
+     * @see View.getActionFlags()
+     * @see View.getEditModes()
      */
     public Class<? extends Authorizer> getAuthorizerClass() {
         return this.authorizerClass;
@@ -905,7 +906,7 @@ public class View extends ContainerBase {
      * onSubmit script configured on the <code>View</code> gets placed on the
      * form element
      *
-     * @see org.kuali.rice.krad.uif.core.ComponentBase#getSupportsOnSubmit()
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getSupportsOnSubmit()
      */
     @Override
     public boolean getSupportsOnSubmit() {
@@ -916,7 +917,7 @@ public class View extends ContainerBase {
      * onLoad script configured on the <code>View</code> gets placed in a load
      * call
      *
-     * @see org.kuali.rice.krad.uif.core.ComponentBase#getSupportsOnLoad()
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getSupportsOnLoad()
      */
     @Override
     public boolean getSupportsOnLoad() {
@@ -927,7 +928,7 @@ public class View extends ContainerBase {
      * onDocumentReady script configured on the <code>View</code> gets placed in
      * a document ready jQuery block
      *
-     * @see org.kuali.rice.krad.uif.core.ComponentBase#getSupportsOnLoad()
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getSupportsOnLoad()
      */
     @Override
     public boolean getSupportsOnDocumentReady() {

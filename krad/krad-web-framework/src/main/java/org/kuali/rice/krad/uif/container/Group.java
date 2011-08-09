@@ -16,11 +16,11 @@
 package org.kuali.rice.krad.uif.container;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.uif.core.Component;
-import org.kuali.rice.krad.uif.core.DataBinding;
-import org.kuali.rice.krad.uif.field.AttributeField;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.field.Field;
-import org.kuali.rice.krad.uif.field.GroupField;
+import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Accordion;
 
 import java.util.ArrayList;
@@ -70,10 +70,10 @@ public class Group extends ContainerBase {
 	 * 
 	 * <ul>
 	 * <li>Sets the bindByNamePrefix if blank on any AttributeField and
-	 * GroupField instances within the items List</li>
+	 * FieldGroup instances within the items List</li>
 	 * </ul>
 	 * 
-	 * @see org.kuali.rice.krad.uif.core.ComponentBase#performInitialization(org.kuali.rice.krad.uif.container.View)
+	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View)
 	 */
     @Override
     public void performInitialization(View view) {
@@ -99,16 +99,16 @@ public class Group extends ContainerBase {
                     field.getBindingInfo().setBindingObjectPath(fieldBindingObjectPath);
                 }
             }
-            // set on GroupField's group to recursively set AttributeFields
-            else if (component instanceof GroupField) {
-                GroupField groupField = (GroupField) component;
+            // set on FieldGroup's group to recursively set AttributeFields
+            else if (component instanceof FieldGroup) {
+                FieldGroup fieldGroup = (FieldGroup) component;
 
-                if (groupField.getGroup() != null) {
-                    if (StringUtils.isBlank(groupField.getGroup().getFieldBindByNamePrefix())) {
-                        groupField.getGroup().setFieldBindByNamePrefix(fieldBindByNamePrefix);
+                if (fieldGroup.getGroup() != null) {
+                    if (StringUtils.isBlank(fieldGroup.getGroup().getFieldBindByNamePrefix())) {
+                        fieldGroup.getGroup().setFieldBindByNamePrefix(fieldBindByNamePrefix);
                     }
-                    if (StringUtils.isBlank(groupField.getGroup().getFieldBindingObjectPath())) {
-                        groupField.getGroup().setFieldBindingObjectPath(fieldBindingObjectPath);
+                    if (StringUtils.isBlank(fieldGroup.getGroup().getFieldBindingObjectPath())) {
+                        fieldGroup.getGroup().setFieldBindingObjectPath(fieldBindingObjectPath);
                     }
                 }
             } else if (component instanceof Group) {
@@ -126,7 +126,7 @@ public class Group extends ContainerBase {
     }
 
 	/**
-	 * @see org.kuali.rice.krad.uif.core.ComponentBase#getNestedComponents()
+	 * @see org.kuali.rice.krad.uif.component.ComponentBase#getNestedComponents()
 	 */
 	@Override
 	public List<Component> getNestedComponents() {
@@ -150,7 +150,7 @@ public class Group extends ContainerBase {
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.core.Component#getComponentTypeName()
+	 * @see org.kuali.rice.krad.uif.component.Component#getComponentTypeName()
 	 */
 	@Override
 	public String getComponentTypeName() {

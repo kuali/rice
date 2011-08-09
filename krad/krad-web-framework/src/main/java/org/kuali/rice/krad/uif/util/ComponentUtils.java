@@ -15,11 +15,11 @@ import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.core.Component;
-import org.kuali.rice.krad.uif.core.DataBinding;
-import org.kuali.rice.krad.uif.core.Ordered;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.DataBinding;
+import org.kuali.rice.krad.uif.component.Ordered;
 import org.kuali.rice.krad.uif.field.Field;
-import org.kuali.rice.krad.uif.field.GroupField;
+import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.beans.BeanUtils;
@@ -199,8 +199,8 @@ public class ComponentUtils {
             if (field instanceof DataBinding) {
                 prefixBindingPath((DataBinding) field, addBindingPrefix);
             }
-            else if ((field instanceof GroupField) && (((GroupField) field).getItems() != null) ) {
-                List<Field> groupFields = getComponentsOfType(((GroupField) field).getItems(), Field.class);
+            else if ((field instanceof FieldGroup) && (((FieldGroup) field).getItems() != null) ) {
+                List<Field> groupFields = getComponentsOfType(((FieldGroup) field).getItems(), Field.class);
                 prefixBindingPath(groupFields, addBindingPrefix);
             }
         }

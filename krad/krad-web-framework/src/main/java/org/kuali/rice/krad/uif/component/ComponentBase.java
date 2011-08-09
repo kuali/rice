@@ -8,7 +8,7 @@
  * KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.kuali.rice.krad.uif.core;
+package org.kuali.rice.krad.uif.component;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.CssConstants;
@@ -16,7 +16,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
-import org.kuali.rice.krad.uif.container.View;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.control.ControlBase;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -145,7 +145,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * <ul>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.core.ComponentBase#performInitialization(org.kuali.rice.krad.uif.container.View)
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View)
      */
     public void performInitialization(View view) {
         if (StringUtils.isNotEmpty(progressiveRender)) {
@@ -186,7 +186,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * <li></li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.core.Component#performApplyModel(org.kuali.rice.krad.uif.container.View,
+     * @see org.kuali.rice.krad.uif.component.Component#performApplyModel(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object)
      */
     public void performApplyModel(View view, Object model, Component parent) {
@@ -203,8 +203,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * <li>Set the skipInTabOrder flag for nested components</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.core.Component#performFinalize(org.kuali.rice.krad.uif.container.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.core.Component)
+     * @see org.kuali.rice.krad.uif.component.Component#performFinalize(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     public void performFinalize(View view, Object model, Component parent) {
         if (!ViewStatus.FINAL.equals(view.getViewStatus())) {
@@ -276,7 +276,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#getNestedComponents()
+     * @see org.kuali.rice.krad.uif.component.Component#getNestedComponents()
      */
     @Override
     public List<Component> getNestedComponents() {
@@ -290,7 +290,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * value reference should be copied. Subclasses can override this but should
      * include a call to super
      *
-     * @see org.kuali.rice.krad.uif.core.Component#getPropertiesForReferenceCopy()
+     * @see org.kuali.rice.krad.uif.component.Component#getPropertiesForReferenceCopy()
      */
     public Set<String> getPropertiesForReferenceCopy() {
         Set<String> refCopyProperties = new HashSet<String>();
@@ -302,126 +302,126 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#getId()
+     * @see org.kuali.rice.krad.uif.component.Component#getId()
      */
     public String getId() {
         return this.id;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#setId(java.lang.String)
+     * @see org.kuali.rice.krad.uif.component.Component#setId(java.lang.String)
      */
     public void setId(String id) {
         this.id = id;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#getTemplate()
+     * @see org.kuali.rice.krad.uif.component.Component#getTemplate()
      */
     public String getTemplate() {
         return this.template;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#setTemplate(java.lang.String)
+     * @see org.kuali.rice.krad.uif.component.Component#setTemplate(java.lang.String)
      */
     public void setTemplate(String template) {
         this.template = template;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#getTitle()
+     * @see org.kuali.rice.krad.uif.component.Component#getTitle()
      */
     public String getTitle() {
         return this.title;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#setTitle(java.lang.String)
+     * @see org.kuali.rice.krad.uif.component.Component#setTitle(java.lang.String)
      */
     public void setTitle(String title) {
         this.title = title;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#isHidden()
+     * @see org.kuali.rice.krad.uif.component.Component#isHidden()
      */
     public boolean isHidden() {
         return this.hidden;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#setHidden(boolean)
+     * @see org.kuali.rice.krad.uif.component.Component#setHidden(boolean)
      */
     public void setHidden(boolean hidden) {
         this.hidden = hidden;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#isReadOnly()
+     * @see org.kuali.rice.krad.uif.component.Component#isReadOnly()
      */
     public boolean isReadOnly() {
         return this.readOnly;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#setReadOnly(boolean)
+     * @see org.kuali.rice.krad.uif.component.Component#setReadOnly(boolean)
      */
     public void setReadOnly(boolean readOnly) {
         this.readOnly = readOnly;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#getRequired()
+     * @see org.kuali.rice.krad.uif.component.Component#getRequired()
      */
     public Boolean getRequired() {
         return this.required;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#setRequired(java.lang.Boolean)
+     * @see org.kuali.rice.krad.uif.component.Component#setRequired(java.lang.Boolean)
      */
     public void setRequired(Boolean required) {
         this.required = required;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#isRender()
+     * @see org.kuali.rice.krad.uif.component.Component#isRender()
      */
     public boolean isRender() {
         return this.render;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#setRender(boolean)
+     * @see org.kuali.rice.krad.uif.component.Component#setRender(boolean)
      */
     public void setRender(boolean render) {
         this.render = render;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#getColSpan()
+     * @see org.kuali.rice.krad.uif.component.Component#getColSpan()
      */
     public int getColSpan() {
         return this.colSpan;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#setColSpan(int)
+     * @see org.kuali.rice.krad.uif.component.Component#setColSpan(int)
      */
     public void setColSpan(int colSpan) {
         this.colSpan = colSpan;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#getRowSpan()
+     * @see org.kuali.rice.krad.uif.component.Component#getRowSpan()
      */
     public int getRowSpan() {
         return this.rowSpan;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#setRowSpan(int)
+     * @see org.kuali.rice.krad.uif.component.Component#setRowSpan(int)
      */
     public void setRowSpan(int rowSpan) {
         this.rowSpan = rowSpan;
@@ -507,28 +507,28 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#getStyle()
+     * @see org.kuali.rice.krad.uif.component.Component#getStyle()
      */
     public String getStyle() {
         return this.style;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#setStyle(java.lang.String)
+     * @see org.kuali.rice.krad.uif.component.Component#setStyle(java.lang.String)
      */
     public void setStyle(String style) {
         this.style = style;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#getStyleClasses()
+     * @see org.kuali.rice.krad.uif.component.Component#getStyleClasses()
      */
     public List<String> getStyleClasses() {
         return this.styleClasses;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#setStyleClasses(java.util.List)
+     * @see org.kuali.rice.krad.uif.component.Component#setStyleClasses(java.util.List)
      */
     public void setStyleClasses(List<String> styleClasses) {
         this.styleClasses = styleClasses;
@@ -549,7 +549,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#addStyleClass(java.lang.String)
+     * @see org.kuali.rice.krad.uif.component.Component#addStyleClass(java.lang.String)
      */
     public void addStyleClass(String styleClass) {
         if (!styleClasses.contains(styleClass)) {
@@ -568,7 +568,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#getFinalizeMethodToCall()
+     * @see org.kuali.rice.krad.uif.component.Component#getFinalizeMethodToCall()
      */
     public String getFinalizeMethodToCall() {
         return this.finalizeMethodToCall;
@@ -584,7 +584,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#getFinalizeMethodAdditionalArguments()
+     * @see org.kuali.rice.krad.uif.component.Component#getFinalizeMethodAdditionalArguments()
      */
     public List<Object> getFinalizeMethodAdditionalArguments() {
         return finalizeMethodAdditionalArguments;
@@ -600,7 +600,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#getFinalizeMethodInvoker()
+     * @see org.kuali.rice.krad.uif.component.Component#getFinalizeMethodInvoker()
      */
     public MethodInvokerConfig getFinalizeMethodInvoker() {
         return this.finalizeMethodInvoker;
@@ -616,63 +616,63 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#isSelfRendered()
+     * @see org.kuali.rice.krad.uif.component.Component#isSelfRendered()
      */
     public boolean isSelfRendered() {
         return this.selfRendered;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#setSelfRendered(boolean)
+     * @see org.kuali.rice.krad.uif.component.Component#setSelfRendered(boolean)
      */
     public void setSelfRendered(boolean selfRendered) {
         this.selfRendered = selfRendered;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#getRenderOutput()
+     * @see org.kuali.rice.krad.uif.component.Component#getRenderOutput()
      */
     public String getRenderOutput() {
         return this.renderOutput;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#setRenderOutput(java.lang.String)
+     * @see org.kuali.rice.krad.uif.component.Component#setRenderOutput(java.lang.String)
      */
     public void setRenderOutput(String renderOutput) {
         this.renderOutput = renderOutput;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#getComponentModifiers()
+     * @see org.kuali.rice.krad.uif.component.Component#getComponentModifiers()
      */
     public List<ComponentModifier> getComponentModifiers() {
         return this.componentModifiers;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#setComponentModifiers(java.util.List)
+     * @see org.kuali.rice.krad.uif.component.Component#setComponentModifiers(java.util.List)
      */
     public void setComponentModifiers(List<ComponentModifier> componentModifiers) {
         this.componentModifiers = componentModifiers;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#getContext()
+     * @see org.kuali.rice.krad.uif.component.Component#getContext()
      */
     public Map<String, Object> getContext() {
         return this.context;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#setContext(java.util.Map)
+     * @see org.kuali.rice.krad.uif.component.Component#setContext(java.util.Map)
      */
     public void setContext(Map<String, Object> context) {
         this.context = context;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#pushObjectToContext(java.lang.String,
+     * @see org.kuali.rice.krad.uif.component.Component#pushObjectToContext(java.lang.String,
      *      java.lang.Object)
      */
     public void pushObjectToContext(String objectName, Object object) {
@@ -697,7 +697,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ComponentBase#pushAllToContext
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#pushAllToContext
      */
     public void pushAllToContext(Map<String, Object> objects) {
         if (objects != null) {
@@ -708,14 +708,14 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#getPropertyReplacers()
+     * @see org.kuali.rice.krad.uif.component.Component#getPropertyReplacers()
      */
     public List<PropertyReplacer> getPropertyReplacers() {
         return this.propertyReplacers;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.Component#setPropertyReplacers(java.util.List)
+     * @see org.kuali.rice.krad.uif.component.Component#setPropertyReplacers(java.util.List)
      */
     public void setPropertyReplacers(List<PropertyReplacer> propertyReplacers) {
         this.propertyReplacers = propertyReplacers;
@@ -738,14 +738,14 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getSupportsOnLoad()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnLoad()
      */
     public boolean getSupportsOnLoad() {
         return false;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getOnLoadScript()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnLoadScript()
      */
     public String getOnLoadScript() {
         return onLoadScript;
@@ -761,14 +761,14 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getSupportsOnDocumentReady()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnDocumentReady()
      */
     public boolean getSupportsOnDocumentReady() {
         return true;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getOnDocumentReadyScript()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnDocumentReadyScript()
      */
     public String getOnDocumentReadyScript() {
         return onDocumentReadyScript;
@@ -784,14 +784,14 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getSupportsOnUnload()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnUnload()
      */
     public boolean getSupportsOnUnload() {
         return false;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getOnUnloadScript()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnUnloadScript()
      */
     public String getOnUnloadScript() {
         return onUnloadScript;
@@ -807,14 +807,14 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getSupportsOnClose()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnClose()
      */
     public boolean getSupportsOnClose() {
         return false;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getOnCloseScript()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnCloseScript()
      */
     public String getOnCloseScript() {
         return onCloseScript;
@@ -830,14 +830,14 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getSupportsOnBlur()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnBlur()
      */
     public boolean getSupportsOnBlur() {
         return false;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getOnBlurScript()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnBlurScript()
      */
     public String getOnBlurScript() {
         return onBlurScript;
@@ -853,14 +853,14 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getSupportsOnChange()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnChange()
      */
     public boolean getSupportsOnChange() {
         return false;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getOnChangeScript()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnChangeScript()
      */
     public String getOnChangeScript() {
         return onChangeScript;
@@ -876,14 +876,14 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getSupportsOnClick()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnClick()
      */
     public boolean getSupportsOnClick() {
         return false;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getOnClickScript()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnClickScript()
      */
     public String getOnClickScript() {
         return onClickScript;
@@ -899,14 +899,14 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getSupportsOnDblClick()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnDblClick()
      */
     public boolean getSupportsOnDblClick() {
         return false;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getOnDblClickScript()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnDblClickScript()
      */
     public String getOnDblClickScript() {
         return onDblClickScript;
@@ -922,14 +922,14 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getSupportsOnFocus()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnFocus()
      */
     public boolean getSupportsOnFocus() {
         return false;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getOnFocusScript()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnFocusScript()
      */
     public String getOnFocusScript() {
         return onFocusScript;
@@ -945,14 +945,14 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getSupportsOnSubmit()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnSubmit()
      */
     public boolean getSupportsOnSubmit() {
         return false;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getOnSubmitScript()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnSubmitScript()
      */
     public String getOnSubmitScript() {
         return onSubmitScript;
@@ -968,14 +968,14 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getSupportsOnKeyPress()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnKeyPress()
      */
     public boolean getSupportsOnKeyPress() {
         return false;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getOnKeyPressScript()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnKeyPressScript()
      */
     public String getOnKeyPressScript() {
         return onKeyPressScript;
@@ -991,14 +991,14 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getSupportsOnKeyUp()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnKeyUp()
      */
     public boolean getSupportsOnKeyUp() {
         return false;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getOnKeyUpScript()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnKeyUpScript()
      */
     public String getOnKeyUpScript() {
         return onKeyUpScript;
@@ -1014,14 +1014,14 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getSupportsOnKeyDown()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnKeyDown()
      */
     public boolean getSupportsOnKeyDown() {
         return false;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getOnKeyDownScript()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnKeyDownScript()
      */
     public String getOnKeyDownScript() {
         return onKeyDownScript;
@@ -1037,14 +1037,14 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getSupportsOnMouseOver()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnMouseOver()
      */
     public boolean getSupportsOnMouseOver() {
         return false;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getOnMouseOverScript()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnMouseOverScript()
      */
     public String getOnMouseOverScript() {
         return onMouseOverScript;
@@ -1060,14 +1060,14 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getSupportsOnMouseOut()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnMouseOut()
      */
     public boolean getSupportsOnMouseOut() {
         return false;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getOnMouseOutScript()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnMouseOutScript()
      */
     public String getOnMouseOutScript() {
         return onMouseOutScript;
@@ -1083,14 +1083,14 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getSupportsOnMouseUp()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnMouseUp()
      */
     public boolean getSupportsOnMouseUp() {
         return false;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getOnMouseUpScript()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnMouseUpScript()
      */
     public String getOnMouseUpScript() {
         return onMouseUpScript;
@@ -1106,14 +1106,14 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getSupportsOnMouseDown()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnMouseDown()
      */
     public boolean getSupportsOnMouseDown() {
         return false;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getOnMouseDownScript()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnMouseDownScript()
      */
     public String getOnMouseDownScript() {
         return onMouseDownScript;
@@ -1129,14 +1129,14 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getSupportsOnMouseMove()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnMouseMove()
      */
     public boolean getSupportsOnMouseMove() {
         return false;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.core.ScriptEventSupport#getOnMouseMoveScript()
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnMouseMoveScript()
      */
     public String getOnMouseMoveScript() {
         return onMouseMoveScript;

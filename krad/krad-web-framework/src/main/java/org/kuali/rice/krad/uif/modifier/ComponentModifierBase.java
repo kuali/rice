@@ -16,9 +16,9 @@
 package org.kuali.rice.krad.uif.modifier;
 
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.container.View;
-import org.kuali.rice.krad.uif.core.Component;
-import org.kuali.rice.krad.uif.core.ConfigurableBase;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.ConfigurableBase;
 
 /**
  * Base class for <code>ComponentModifier</code> implementations
@@ -60,8 +60,8 @@ public abstract class ComponentModifierBase extends ConfigurableBase implements 
      * calls the version that does not take the model (more commonly
      * implemented)
      * 
-     * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performModification(org.kuali.rice.krad.uif.container.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.core.Component)
+     * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performModification(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
     public void performModification(View view, Object model, Component component) {
@@ -69,8 +69,8 @@ public abstract class ComponentModifierBase extends ConfigurableBase implements 
     }
     
     /**
-     * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performModification(org.kuali.rice.krad.uif.container.View,
-     *      org.kuali.rice.krad.uif.core.Component)
+     * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performModification(org.kuali.rice.krad.uif.view.View,
+     *      org.kuali.rice.krad.uif.component.Component)
      */
     @Override
     public void performModification(View view, Component component) {
@@ -117,7 +117,7 @@ public abstract class ComponentModifierBase extends ConfigurableBase implements 
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.core.Ordered#setOrder(int)
+	 * @see org.kuali.rice.krad.uif.component.Ordered#setOrder(int)
 	 */
 	public void setOrder(int order) {
 		this.order = order;

@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
-import org.kuali.rice.krad.uif.core.ComponentBase;
+import org.kuali.rice.krad.uif.component.ComponentBase;
 
 /**
  * Base class for Widgets
@@ -35,7 +35,7 @@ public abstract class WidgetBase extends ComponentBase implements Widget {
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.core.Component#getComponentTypeName()
+	 * @see org.kuali.rice.krad.uif.component.Component#getComponentTypeName()
 	 */
 	@Override
 	public String getComponentTypeName() {

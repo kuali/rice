@@ -15,10 +15,9 @@
  */
 package org.kuali.rice.krad.web.form;
 
-import org.kuali.rice.kew.api.document.attribute.AttributeFields;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.uif.container.View;
-import org.kuali.rice.krad.uif.history.History;
+import org.kuali.rice.krad.uif.view.History;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -261,7 +260,7 @@ public class UifFormBase implements Serializable {
      * Maintained on the form to rebuild the view on posts and session timeout
      * 
      * @return Map<String, String> view parameters
-     * @see org.kuali.rice.krad.uif.container.View.getViewRequestParameters()
+     * @see org.kuali.rice.krad.uif.view.View.getViewRequestParameters()
      */
     public Map<String, String> getViewRequestParameters() {
         return this.viewRequestParameters;

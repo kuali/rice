@@ -16,9 +16,19 @@
 package org.kuali.rice.kim.framework.permission;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.framework.type.KimTypeService;
+import org.kuali.rice.kim.util.KimConstants;
 
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +36,8 @@ import java.util.Map;
 /**
  * A {@link KimTypeService} with specific methods for Permissions.
  */
+@WebService(name = "permissionTypeServiceSoap", targetNamespace = KimConstants.Namespaces.KIM_NAMESPACE_2_0)
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface PermissionTypeService extends KimTypeService {
 
     /**
@@ -43,5 +55,14 @@ public interface PermissionTypeService extends KimTypeService {
      * @return an immutable list of matched permissions.  will not return null.
      * @throws IllegalArgumentException if the requestedDetails or permissions is null.
      */
-    List<Permission> getMatchingPermissions( Map<String, String> requestedDetails, List<Permission> permissions) throws RiceIllegalArgumentException;
+    @WebMethod(operationName="getMatchingPermissions")
+    @XmlElementWrapper(name = "permissions", required = true)
+    @XmlElement(name = "permission", required = false)
+    @WebResult(name = "permissions")
+    List<Permission> getMatchingPermissions(@WebParam(name = "requestedDetails")
+                                            @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                                            Map<String, String> requestedDetails,
+                                            @WebParam(name = "permissions")
+                                            List<Permission> permissions) throws RiceIllegalArgumentException;
+
 }

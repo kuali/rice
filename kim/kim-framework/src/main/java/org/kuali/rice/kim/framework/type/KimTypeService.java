@@ -2,8 +2,18 @@ package org.kuali.rice.kim.framework.type;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
+import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.type.KimAttributeField;
+import org.kuali.rice.kim.util.KimConstants;
 
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +24,8 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@WebService(name = "kimTypeServiceSoap", targetNamespace = KimConstants.Namespaces.KIM_NAMESPACE_2_0)
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface KimTypeService {
 
     /**
@@ -24,6 +36,8 @@ public interface KimTypeService {
      *
      * @return the doc type name or null.
      */
+    @WebMethod(operationName="getWorkflowDocumentTypeName")
+    @WebResult(name = "name")
     String getWorkflowDocumentTypeName();
 
     /**
@@ -37,7 +51,11 @@ public interface KimTypeService {
      * @return an unmodifiable list should not return null.
      * @throws IllegalArgumentException if the nodeName is null or blank.
      */
-    List<String> getWorkflowRoutingAttributes(String nodeName) throws RiceIllegalArgumentException;
+    @WebMethod(operationName="getWorkflowRoutingAttributes")
+    @XmlElementWrapper(name = "attributeNames", required = true)
+    @XmlElement(name = "attributeName", required = false)
+    @WebResult(name = "attributeNames")
+    List<String> getWorkflowRoutingAttributes(@WebParam(name = "nodeName") String nodeName) throws RiceIllegalArgumentException;
 
     /**
      * Gets a List of {@link KimAttributeField} for a kim type id.  The order of the attribute fields in the list
@@ -47,7 +65,11 @@ public interface KimTypeService {
      * @return an immutable list of KimAttributeField. Will not return null.
      * @throws IllegalArgumentException if the kimTypeId is null or blank
      */
-    List<KimAttributeField> getAttributeDefinitions(String kimTypeId) throws RiceIllegalArgumentException;
+    @WebMethod(operationName="getAttributeDefinitions")
+    @XmlElementWrapper(name = "kimAttributeFields", required = true)
+    @XmlElement(name = "kimAttributeField", required = false)
+    @WebResult(name = "kimAttributeFields")
+    List<KimAttributeField> getAttributeDefinitions(@WebParam(name = "kimTypeId") String kimTypeId) throws RiceIllegalArgumentException;
 
     /**
      * This method validates the passed in attributes for a kimTypeId generating a List of {@link RemotableAttributeError}.
@@ -60,7 +82,15 @@ public interface KimTypeService {
      * @return an immutable list of RemotableAttributeError. Will not return null.
      * @throws IllegalArgumentException if the kimTypeId is null or blank or the attributes are null
      */
-    List<RemotableAttributeError> validateAttributes(String kimTypeId, Map<String, String> attributes) throws RiceIllegalArgumentException;
+    @WebMethod(operationName="validateAttributes")
+    @XmlElementWrapper(name = "attributeErrors", required = true)
+    @XmlElement(name = "attributeError", required = false)
+    @WebResult(name = "attributeErrors")
+    List<RemotableAttributeError> validateAttributes(@WebParam(name = "kimTypeId")
+                                                     String kimTypeId,
+                                                     @WebParam(name = "attributes")
+                                                     @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                                                     Map<String, String> attributes) throws RiceIllegalArgumentException;
 
     /**
      * This method validates the passed in attributes for a kimTypeId generating a List of {@link RemotableAttributeError}.
@@ -75,6 +105,17 @@ public interface KimTypeService {
      * @return an immutable list of RemotableAttributeError. Will not return null.
      * @throws IllegalArgumentException if the kimTypeId is null or blank or the newAttributes or oldAttributes are null
      */
-    List<RemotableAttributeError> validateAttributesAgainstExisting(String kimTypeId, Map<String, String> newAttributes, Map<String, String> oldAttributes) throws RiceIllegalArgumentException;
+    @WebMethod(operationName="validateAttributesAgainstExisting")
+    @XmlElementWrapper(name = "attributeErrors", required = true)
+    @XmlElement(name = "attributeError", required = false)
+    @WebResult(name = "attributeErrors")
+    List<RemotableAttributeError> validateAttributesAgainstExisting(@WebParam(name = "kimTypeId")
+                                                                    String kimTypeId,
+                                                                    @WebParam(name = "newAttributes")
+                                                                    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                                                                    Map<String, String> newAttributes,
+                                                                    @WebParam(name = "oldAttributes")
+                                                                    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                                                                    Map<String, String> oldAttributes) throws RiceIllegalArgumentException;
 }
 

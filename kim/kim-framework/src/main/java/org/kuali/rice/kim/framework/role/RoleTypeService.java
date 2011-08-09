@@ -16,15 +16,27 @@
 package org.kuali.rice.kim.framework.role;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.framework.type.KimTypeService;
+import org.kuali.rice.kim.util.KimConstants;
 
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.List;
 import java.util.Map;
 
 /**
  * A {@link KimTypeService} with specific methods for Roles.
  */
+@WebService(name = "roleTypeServiceSoap", targetNamespace = KimConstants.Namespaces.KIM_NAMESPACE_2_0)
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface RoleTypeService extends KimTypeService {
 
     /**
@@ -51,7 +63,14 @@ public interface RoleTypeService extends KimTypeService {
      * @return true if the qualifications match
      * @throws IllegalArgumentException if the qualification or roleQualifier is null
      */
-    boolean doesRoleQualifierMatchQualification( Map<String, String> qualification, Map<String, String> roleQualifier ) throws RiceIllegalArgumentException;
+    @WebMethod(operationName="doesRoleQualifierMatchQualification")
+    @WebResult(name = "match")
+    boolean doesRoleQualifierMatchQualification(@WebParam(name = "qualification")
+                                                @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                                                Map<String, String> qualification,
+                                                @WebParam(name = "roleQualifier")
+                                                @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                                                Map<String, String> roleQualifier) throws RiceIllegalArgumentException;
 
     /**
      * Gets whether a role membership with the given details is applicable for the given qualification.
@@ -61,7 +80,15 @@ public interface RoleTypeService extends KimTypeService {
      * @return an immutable list of matched roleMemberships.  will not return null.
      * @throws IllegalArgumentException if the qualification or roleMemberships is null.
      */
-    List<RoleMembership> getMatchingRoleMemberships(Map<String, String> qualification, List<RoleMembership> roleMemberships) throws RiceIllegalArgumentException;
+    @WebMethod(operationName="getMatchingRoleMemberships")
+    @XmlElementWrapper(name = "roleMemberships", required = true)
+    @XmlElement(name = "roleMembership", required = false)
+    @WebResult(name = "roleMemberships")
+    List<RoleMembership> getMatchingRoleMemberships(@WebParam(name = "qualification")
+                                                    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                                                    Map<String, String> qualification,
+                                                    @WebParam(name = "roleMemberships")
+                                                    List<RoleMembership> roleMemberships) throws RiceIllegalArgumentException;
 
     /**
      * Returns true if this role type represents an "application" role type.  That is, the members of the 
@@ -70,6 +97,8 @@ public interface RoleTypeService extends KimTypeService {
      *
      * @return true if application type
      */
+    @WebMethod(operationName="isApplicationRoleType")
+    @WebResult(name = "applicationRoleType")
     boolean isApplicationRoleType();
 
     /**
@@ -89,7 +118,19 @@ public interface RoleTypeService extends KimTypeService {
      * @throws IllegalArgumentException if the principalId, namespaceCode, roleName is blank or null.
      * @throws IllegalArgumentException if the groupIds, qualification is null.
      */
-    boolean hasApplicationRole( String principalId, List<String> groupIds, String namespaceCode, String roleName, Map<String, String> qualification ) throws RiceIllegalArgumentException;
+    @WebMethod(operationName="hasApplicationRole")
+    @WebResult(name = "applicationRole")
+    boolean hasApplicationRole( @WebParam(name = "principalId")
+                                String principalId,
+                                @WebParam(name = "groupIds")
+                                List<String> groupIds,
+                                @WebParam(name = "namespaceCode")
+                                String namespaceCode,
+                                @WebParam(name = "roleName")
+                                String roleName,
+                                @WebParam(name = "qualification")
+                                @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                                Map<String, String> qualification ) throws RiceIllegalArgumentException;
     
     /**
      * Takes the passed in qualifications and converts them, if necessary, for any downstream roles which may be present.
@@ -103,7 +144,20 @@ public interface RoleTypeService extends KimTypeService {
      * @throws IllegalArgumentException if the namespaceCode, roleName, memberRoleNamespaceCode, memberRoleName, is blank or null.
      * @throws IllegalArgumentException if the qualification is null.
      */
-    Map<String, String> convertQualificationForMemberRoles( String namespaceCode, String roleName, String memberRoleNamespaceCode, String memberRoleName, Map<String, String> qualification ) throws RiceIllegalArgumentException;
+    @WebMethod(operationName="convertQualificationForMemberRoles")
+    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+    @WebResult(name = "qualification")
+    Map<String, String> convertQualificationForMemberRoles( @WebParam(name = "namespaceCode")
+                                                            String namespaceCode,
+                                                            @WebParam(name = "roleName")
+                                                            String roleName,
+                                                            @WebParam(name = "memberRoleNamespaceCode")
+                                                            String memberRoleNamespaceCode,
+                                                            @WebParam(name = "memberRoleName")
+                                                            String memberRoleName,
+                                                            @WebParam(name = "qualification")
+                                                            @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                                                            Map<String, String> qualification ) throws RiceIllegalArgumentException;
     
     /**
      * Determines if the role specified by the given namespace and role name has a dynamic role membership.
@@ -115,7 +169,9 @@ public interface RoleTypeService extends KimTypeService {
      * @return true if the membership results of the Role are dynamic, false otherwise
      * @throws IllegalArgumentException if the namespaceCode, roleName is blank or null.
      */
-    boolean dynamicRoleMembership(String namespaceCode, String roleName) throws RiceIllegalArgumentException;
+    @WebMethod(operationName="dynamicRoleMembership")
+    @WebResult(name = "dynamic")
+    boolean dynamicRoleMembership(@WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName) throws RiceIllegalArgumentException;
     
     /**
      * Roles whose memberships may be matched exactly by qualifiers,
@@ -123,6 +179,10 @@ public interface RoleTypeService extends KimTypeService {
      * 
      * @return immutable list of qualifier names that can be used for exact match.  Will never return null.
      */
+    @WebMethod(operationName="getQualifiersForExactMatch")
+    @XmlElementWrapper(name = "names", required = true)
+    @XmlElement(name = "name", required = false)
+    @WebResult(name = "names")
     List<String> getQualifiersForExactMatch();
     
 }

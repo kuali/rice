@@ -16,15 +16,27 @@
 package org.kuali.rice.kim.framework.responsibility;
 
 
+import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.framework.type.KimTypeService;
+import org.kuali.rice.kim.util.KimConstants;
 
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.List;
 import java.util.Map;
 
 /**
  * A {@link KimTypeService} with specific methods for Responsibilities.
  */
+@WebService(name = "responsibilityTypeServiceSoap", targetNamespace = KimConstants.Namespaces.KIM_NAMESPACE_2_0)
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface ResponsibilityTypeService extends KimTypeService {
 
     /** Gets whether a responsibility assignment with the given details is applicable for the given request details.
@@ -41,5 +53,13 @@ public interface ResponsibilityTypeService extends KimTypeService {
      * @return an immutable list of matched responsibilities.  will not return null.
      * @throws IllegalArgumentException if the requestedDetails or responsibilities is null.
      */
-    List<Responsibility> getMatchingResponsibilities(Map<String, String> requestedDetails, List<Responsibility> responsibilities);
+    @WebMethod(operationName="getMatchingResponsibilities")
+    @XmlElementWrapper(name = "responsibilities", required = true)
+    @XmlElement(name = "responsibility", required = false)
+    @WebResult(name = "responsibilities")
+    List<Responsibility> getMatchingResponsibilities(@WebParam(name = "requestedDetails")
+                                            @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                                            Map<String, String> requestedDetails,
+                                            @WebParam(name = "responsibilities")
+                                            List<Responsibility> responsibilities);
 }

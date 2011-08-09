@@ -17,13 +17,23 @@ package org.kuali.rice.kim.framework.common.delegate;
 
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.framework.type.KimTypeService;
+import org.kuali.rice.kim.util.KimConstants;
 
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Map;
 
 /**
  * A {@link KimTypeService} with specific methods for Delegations.
  */
+@WebService(name = "delegationTypeServiceSoap", targetNamespace = KimConstants.Namespaces.KIM_NAMESPACE_2_0)
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface DelegationTypeService extends KimTypeService {
 
     /**
@@ -50,6 +60,13 @@ public interface DelegationTypeService extends KimTypeService {
      * @return true if the qualifications match
      * @throws IllegalArgumentException if the qualification or delegationQualifier is null
      */
-    boolean doesDelegationQualifierMatchQualification( Map<String, String> qualification, Map<String, String> delegationQualifier ) throws RiceIllegalArgumentException;
+    @WebMethod(operationName="doesDelegationQualifierMatchQualification")
+    @WebResult(name = "match")
+    boolean doesDelegationQualifierMatchQualification(@WebParam(name = "qualification")
+                                                      @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                                                      Map<String, String> qualification,
+                                                      @WebParam(name = "delegationQualifier")
+                                                      @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                                                      Map<String, String> delegationQualifier ) throws RiceIllegalArgumentException;
 
 }

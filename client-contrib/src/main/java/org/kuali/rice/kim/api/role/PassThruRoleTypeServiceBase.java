@@ -15,10 +15,13 @@
  */
 package org.kuali.rice.kim.api.role;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.framework.role.RoleTypeService;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -35,16 +38,52 @@ public abstract class PassThruRoleTypeServiceBase implements RoleTypeService {
     @Override
 	public List<RoleMembership> getMatchingRoleMemberships(Map<String, String> qualification,
             List<RoleMembership> roleMemberList) {
-        return roleMemberList;
+
+        if (qualification == null) {
+            throw new RiceIllegalArgumentException("qualification was null");
+        }
+
+        if (roleMemberList == null) {
+            throw new RiceIllegalArgumentException("roleMemberList was null");
+        }
+        return Collections.unmodifiableList(new ArrayList<RoleMembership>(roleMemberList));
     }
 
     @Override
 	public boolean doesRoleQualifierMatchQualification(Map<String, String> qualification, Map<String, String> roleQualifier) {
+        if (qualification == null) {
+            throw new RiceIllegalArgumentException("qualification was null");
+        }
+
+        if (roleQualifier == null) {
+            throw new RiceIllegalArgumentException("roleQualifier was null");
+        }
+
         return true;
     }
     
     @Override
 	public boolean hasApplicationRole(String principalId, List<String> groupIds, String namespaceCode, String roleName, Map<String, String> qualification) {
+        if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId was null or blank");
+        }
+
+        if (groupIds == null) {
+            throw new RiceIllegalArgumentException("groupIds was null or blank");
+        }
+
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode was null or blank");
+        }
+
+        if (StringUtils.isBlank(roleName)) {
+            throw new RiceIllegalArgumentException("roleName was null or blank");
+        }
+
+        if (qualification == null) {
+            throw new RiceIllegalArgumentException("qualification was null");
+        }
+
         return false;
     }
 
@@ -59,20 +98,25 @@ public abstract class PassThruRoleTypeServiceBase implements RoleTypeService {
 
     @Override
 	public List<KimAttributeField> getAttributeDefinitions(String kimTypeId) {
-        return null;
+        if (StringUtils.isBlank(kimTypeId)) {
+            throw new RiceIllegalArgumentException("kimTypeId was null or blank");
+        }
+
+        return Collections.emptyList();
     }
 
     @Override
 	public String getWorkflowDocumentTypeName() {
         return null;
     }
-    
-    /**
-     * @see org.kuali.rice.kim.framework.type.KimTypeService#getWorkflowRoutingAttributes(java.lang.String)
-     */
+
     @Override
 	public List<String> getWorkflowRoutingAttributes(String routeLevel) {
-    	return Collections.emptyList();
+    	if (StringUtils.isBlank(routeLevel)) {
+            throw new RiceIllegalArgumentException("routeLevel was null or blank");
+        }
+
+        return Collections.emptyList();
     }
 
     public boolean supportsAttributes(List<String> attributeNames) {
@@ -85,22 +129,45 @@ public abstract class PassThruRoleTypeServiceBase implements RoleTypeService {
 
     @Override
 	public List<RemotableAttributeError> validateAttributes(String kimTypeId, Map<String, String> attributes) {
-        return null;
+        if (StringUtils.isBlank(kimTypeId)) {
+            throw new RiceIllegalArgumentException("kimTypeId was null or blank");
+        }
+
+        if (attributes == null) {
+            throw new RiceIllegalArgumentException("attributes was null or blank");
+        }
+
+        return Collections.emptyList();
     }
     
 	@Override
 	public List<RemotableAttributeError> validateAttributesAgainstExisting(String kimTypeId, Map<String, String> newAttributes, Map<String, String> oldAttributes){
-		return Collections.emptyList();
+		if (StringUtils.isBlank(kimTypeId)) {
+            throw new RiceIllegalArgumentException("kimTypeId was null or blank");
+        }
+
+        if (newAttributes == null) {
+            throw new RiceIllegalArgumentException("newAttributes was null or blank");
+        }
+
+        if (oldAttributes == null) {
+            throw new RiceIllegalArgumentException("oldAttributes was null or blank");
+        }
+
+        return Collections.emptyList();
 	}
 
-	/**
-	 * Returns false by default.
-	 * 
-	 * @see org.kuali.rice.kim.framework.role.RoleTypeService#dynamicRoleMembership(java.lang.String, java.lang.String)
-	 */
 	@Override
 	public boolean dynamicRoleMembership(String namespaceCode, String roleName) {
-		return false;
+	    if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode was null or blank");
+        }
+
+	    if (StringUtils.isBlank(roleName)) {
+            throw new RiceIllegalArgumentException("roleName was null or blank");
+        }
+
+        return false;
 	}
 
 }

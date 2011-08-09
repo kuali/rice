@@ -40,6 +40,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Properties;
 
 /**
@@ -94,7 +95,7 @@ public class LookupController extends UifControllerBase {
                         .isAuthorizedByTemplateName(user.getPrincipalId(), KRADConstants.KRAD_NAMESPACE,
                                 KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS,
                                 KRADUtils.getNamespaceAndComponentSimpleName(dataObjectClass),
-                                null)) {
+                                Collections.<String, String>emptyMap())) {
                     throw new AuthorizationException(user.getPrincipalName(),
                             KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS, dataObjectClass.getSimpleName());
                 }

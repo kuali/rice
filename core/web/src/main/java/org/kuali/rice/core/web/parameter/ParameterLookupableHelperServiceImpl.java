@@ -33,6 +33,7 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -68,7 +69,7 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
         		GlobalVariables.getUserSession().getPerson().getPrincipalId(),
 				KRADConstants.KRAD_NAMESPACE,
 				KimConstants.PermissionTemplateNames.MAINTAIN_SYSTEM_PARAMETER,
-				permissionDetails, null);
+				permissionDetails, Collections.<String, String>emptyMap());
         
         return allowsEdit;
     }

@@ -19,7 +19,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
-import org.kuali.rice.kew.api.doctype.Process;
 import org.kuali.rice.kew.api.doctype.RoutePath;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.Person;
@@ -29,6 +28,7 @@ import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADConstants;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -157,7 +157,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 		return getPermissionService().isAuthorizedByTemplateName(
 				user.getPrincipalId(), nameSpaceCode,
 				KimConstants.PermissionTemplateNames.INITIATE_DOCUMENT,
-				permissionDetails, null);
+				permissionDetails, Collections.<String, String>emptyMap());
 	}
 
 	public final boolean canReceiveAdHoc(Document document, Person user,
@@ -167,7 +167,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 		return isAuthorizedByTemplate(document,
 				KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE,
 				KimConstants.PermissionTemplateNames.AD_HOC_REVIEW_DOCUMENT,
-				user.getPrincipalId(), additionalPermissionDetails, null );
+				user.getPrincipalId(), additionalPermissionDetails, Collections.<String, String>emptyMap() );
 	}
 
 	public final boolean canOpen(Document document, Person user) {
@@ -185,7 +185,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 		}
 		return isAuthorizedByTemplate(document, KRADConstants.KRAD_NAMESPACE,
 				KimConstants.PermissionTemplateNames.ADD_NOTE_ATTACHMENT, user
-						.getPrincipalId(), additionalPermissionDetails, null);
+						.getPrincipalId(), additionalPermissionDetails, Collections.<String, String>emptyMap());
 	}
 
 	public final boolean canDeleteNoteAttachment(Document document,
@@ -199,7 +199,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 				createdBySelfOnly);
 		return isAuthorizedByTemplate(document, KRADConstants.KRAD_NAMESPACE,
 				KimConstants.PermissionTemplateNames.DELETE_NOTE_ATTACHMENT,
-				user.getPrincipalId(), additionalPermissionDetails, null);
+				user.getPrincipalId(), additionalPermissionDetails, Collections.<String, String>emptyMap());
 	}
 
 	public final boolean canViewNoteAttachment(Document document,
@@ -211,7 +211,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 		}
 		return isAuthorizedByTemplate(document, KRADConstants.KRAD_NAMESPACE,
 				KimConstants.PermissionTemplateNames.VIEW_NOTE_ATTACHMENT, user
-						.getPrincipalId(), additionalPermissionDetails, null);
+						.getPrincipalId(), additionalPermissionDetails, Collections.<String, String>emptyMap());
 	}
 	
 	public final boolean canSendAdHocRequests(Document document,
@@ -223,7 +223,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 		}
 		return isAuthorizedByTemplate(document, KRADConstants.KRAD_NAMESPACE,
 				KimConstants.PermissionTemplateNames.SEND_AD_HOC_REQUEST, user
-						.getPrincipalId(), additionalPermissionDetails, null);
+						.getPrincipalId(), additionalPermissionDetails, Collections.<String, String>emptyMap());
 	}
 	
 	public boolean canEditDocumentOverview(Document document, Person user){
@@ -258,7 +258,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 				actionRequestCode);
 		return isAuthorizedByTemplate(document, KRADConstants.KRAD_NAMESPACE,
 				KimConstants.PermissionTemplateNames.TAKE_REQUESTED_ACTION,
-				user.getPrincipalId(), additionalPermissionDetails, null);
+				user.getPrincipalId(), additionalPermissionDetails, Collections.<String, String>emptyMap());
 	}
 
 	@Override

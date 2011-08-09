@@ -19,7 +19,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
-import org.kuali.rice.kew.api.doctype.Process;
 import org.kuali.rice.kew.api.doctype.RoutePath;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.Person;
@@ -30,6 +29,7 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -140,7 +140,7 @@ public class DocumentAuthorizerBase extends AuthorizerBase {
 		return getPermissionService().isAuthorizedByTemplateName(
 				user.getPrincipalId(), nameSpaceCode,
 				KimConstants.PermissionTemplateNames.INITIATE_DOCUMENT,
-				permissionDetails, null);
+				permissionDetails, Collections.<String, String>emptyMap());
 	}
 
 	public final boolean canReceiveAdHoc(Document document, Person user,

@@ -29,6 +29,7 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,7 +72,7 @@ public class ParameterRule extends MaintenanceDocumentRuleBase {
 	        				GlobalVariables.getUserSession().getPerson().getPrincipalId(),
 	        				KRADConstants.KRAD_NAMESPACE,
 	        				KimConstants.PermissionTemplateNames.MAINTAIN_SYSTEM_PARAMETER,
-	        				permissionDetails, null);
+	        				permissionDetails, Collections.<String, String>emptyMap());
 	        if(!allowsEdit){
 	        	putGlobalError(RiceKeyConstants.AUTHORIZATION_ERROR_PARAMETER);
 	        }

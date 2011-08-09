@@ -16,6 +16,8 @@
 package org.kuali.rice.kim.service.support.impl;
 
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -77,6 +79,26 @@ public class PrincipalDerivedRoleTypeServiceImpl extends DerivedRoleTypeServiceB
 	
 	@Override
 	public boolean hasApplicationRole(String principalId, List<String> groupIds, String namespaceCode, String roleName, Map<String, String> qualification) {
+        if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId was null or blank");
+        }
+
+        if (groupIds == null) {
+            throw new RiceIllegalArgumentException("groupIds was null or blank");
+        }
+
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode was null or blank");
+        }
+
+        if (StringUtils.isBlank(roleName)) {
+            throw new RiceIllegalArgumentException("roleName was null or blank");
+        }
+
+        if (qualification == null) {
+            throw new RiceIllegalArgumentException("qualification was null");
+        }
+
         // check that the principal exists and is active
         Principal principal = getIdentityService().getPrincipal( principalId );
         if ( principal == null || !principal.isActive() ) {

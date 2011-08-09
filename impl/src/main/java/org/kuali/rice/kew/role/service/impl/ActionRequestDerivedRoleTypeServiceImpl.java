@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.role.service.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.action.ActionRequest;
@@ -73,7 +74,27 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends DerivedRoleTypeServ
 	public boolean hasApplicationRole(String principalId,
 			List<String> groupIds, String namespaceCode, String roleName,
 			Map<String, String> qualification) {
-		validateRequiredAttributesAgainstReceived(qualification);
+		if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId was null or blank");
+        }
+
+        if (groupIds == null) {
+            throw new RiceIllegalArgumentException("groupIds was null or blank");
+        }
+
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode was null or blank");
+        }
+
+        if (StringUtils.isBlank(roleName)) {
+            throw new RiceIllegalArgumentException("roleName was null or blank");
+        }
+
+        if (qualification == null) {
+            throw new RiceIllegalArgumentException("qualification was null");
+        }
+
+        validateRequiredAttributesAgainstReceived(qualification);
 		try {
 			if ( (qualification != null && !qualification.isEmpty()))  {
 				List<ActionRequest> actionRequests = KewApiServiceLocator.getWorkflowDocumentService().getActionRequests(qualification.get(KimConstants.AttributeConstants.DOCUMENT_NUMBER), null, principalId);
@@ -118,7 +139,15 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends DerivedRoleTypeServ
 	 */
 	@Override
 	public boolean dynamicRoleMembership(String namespaceCode, String roleName) {
-		return false;
+		if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode was null or blank");
+        }
+
+	    if (StringUtils.isBlank(roleName)) {
+            throw new RiceIllegalArgumentException("roleName was null or blank");
+        }
+
+        return false;
 	}
 	
 }

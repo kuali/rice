@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.util.KimConstants;
@@ -35,6 +37,10 @@ public class CampusRoleTypeServiceImpl extends RoleTypeServiceBase {
 
     @Override
     public List<String> getWorkflowRoutingAttributes(String routeLevel) {
+        if (StringUtils.isBlank(routeLevel)) {
+            throw new RiceIllegalArgumentException("routeLevel was blank or null");
+        }
+
         final List<String> attrs = new ArrayList<String>(super.getWorkflowRoutingAttributes(routeLevel));
         attrs.add(KimConstants.AttributeConstants.CAMPUS_CODE);
         return Collections.unmodifiableList(attrs);
@@ -42,7 +48,11 @@ public class CampusRoleTypeServiceImpl extends RoleTypeServiceBase {
 
 	@Override
 	public List<KimAttributeField> getAttributeDefinitions(String kimTypeId) {
-		List<KimAttributeField> map = new ArrayList<KimAttributeField>(super.getAttributeDefinitions(kimTypeId));
+		if (StringUtils.isBlank(kimTypeId)) {
+            throw new RiceIllegalArgumentException("kimTypeId was null or blank");
+        }
+
+        List<KimAttributeField> map = new ArrayList<KimAttributeField>(super.getAttributeDefinitions(kimTypeId));
 
 		for (int i = 0; i < map.size(); i++) {
             final KimAttributeField definition = map.get(i);
@@ -56,6 +66,6 @@ public class CampusRoleTypeServiceImpl extends RoleTypeServiceBase {
                 map.set(i, b.build());
 			}
 		}
-		return map;
+		return Collections.unmodifiableList(map);
 	}
 }

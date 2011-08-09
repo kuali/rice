@@ -21,6 +21,7 @@ import org.kuali.rice.kim.framework.permission.PermissionTypeService;
 import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceBase;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -34,13 +35,13 @@ public class PermissionTypeServiceBase extends DataDictionaryTypeServiceBase imp
 	public final List<Permission> getMatchingPermissions(Map<String, String> requestedDetails, List<Permission> permissionsList) {
 		requestedDetails = translateInputAttributes(requestedDetails);
 		validateRequiredAttributesAgainstReceived(requestedDetails);
-		return performPermissionMatches(requestedDetails, permissionsList);
+		return Collections.unmodifiableList(performPermissionMatches(requestedDetails, permissionsList));
 	}
 
 	/**
 	 * Internal method for matching permissions.  Override this method to customize the matching behavior.
 	 * 
-	 * This base implementation uses the {@link #performMatch(Map<String, String>, Map<String, String>)} method
+	 * This base implementation uses the {@link #performMatch(Map, Map)} method
 	 * to perform an exact match on the permission details and return all that are equal.
 	 */
 	protected List<Permission> performPermissionMatches(Map<String, String> requestedDetails, List<Permission> permissionsList) {

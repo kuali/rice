@@ -20,6 +20,7 @@ import org.kuali.rice.kim.framework.responsibility.ResponsibilityTypeService;
 import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceBase;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -36,13 +37,13 @@ public class KimResponsibilityTypeServiceBase extends DataDictionaryTypeServiceB
 	public final List<Responsibility> getMatchingResponsibilities( Map<String, String> requestedDetails, List<Responsibility> responsibilitiesList ) {
 		requestedDetails = translateInputAttributes(requestedDetails);
 		validateRequiredAttributesAgainstReceived(requestedDetails);
-		return performResponsibilityMatches(requestedDetails, responsibilitiesList);
+		return Collections.unmodifiableList(performResponsibilityMatches(requestedDetails, responsibilitiesList));
 	}
 
 	/**
 	 * Internal method for matching Responsibilities.  Override this method to customize the matching behavior.
 	 * 
-	 * This base implementation uses the {@link #performMatch(Map<String, String>, Map<String, String>)} method
+	 * This base implementation uses the {@link #performMatch(Map, Map)} method
 	 * to perform an exact match on the Responsibility details and return all that are equal.
 	 */
 	protected List<Responsibility> performResponsibilityMatches(Map<String, String> requestedDetails, List<Responsibility> responsibilitiesList) {

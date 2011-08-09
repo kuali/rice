@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.kim.group.GroupTypeServiceBase;
 
@@ -32,6 +34,10 @@ public class CampusGroupTypeServiceImpl extends GroupTypeServiceBase {
 
     @Override
     public List<String> getWorkflowRoutingAttributes(String routeLevel) {
+        if (StringUtils.isBlank(routeLevel)) {
+            throw new RiceIllegalArgumentException("routeLevel was blank or null");
+        }
+
         final List<String> attrs = new ArrayList<String>(super.getWorkflowRoutingAttributes(routeLevel));
         attrs.add(KimConstants.AttributeConstants.CAMPUS_CODE);
         return Collections.unmodifiableList(attrs);

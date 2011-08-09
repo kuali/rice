@@ -44,6 +44,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -65,7 +66,7 @@ public class KualiLookupAction extends KualiAction {
             try {
                 Class businessObjectClass = Class.forName(((LookupForm) form).getBusinessObjectClassName());
                 if (!KimApiServiceLocator.getPermissionService().isAuthorizedByTemplateName(GlobalVariables.getUserSession().getPrincipalId(), KRADConstants.KRAD_NAMESPACE, KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS,
-                        KRADUtils.getNamespaceAndComponentSimpleName(businessObjectClass), null)) {
+                        KRADUtils.getNamespaceAndComponentSimpleName(businessObjectClass), Collections.<String, String>emptyMap())) {
                     throw new AuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(),
                     		KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS,
                     		businessObjectClass.getSimpleName());

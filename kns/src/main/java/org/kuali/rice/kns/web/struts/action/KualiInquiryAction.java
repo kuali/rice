@@ -69,7 +69,7 @@ public class KualiInquiryAction extends KualiAction {
             	if(!KRADConstants.DOWNLOAD_BO_ATTACHMENT_METHOD.equals(methodToCall)){
             		Class businessObjectClass = Class.forName(((InquiryForm) form).getBusinessObjectClassName());
             		if (!KimApiServiceLocator.getPermissionService().isAuthorizedByTemplateName(GlobalVariables.getUserSession().getPrincipalId(), KRADConstants.KRAD_NAMESPACE, KimConstants.PermissionTemplateNames.INQUIRE_INTO_RECORDS,
-                            KRADUtils.getNamespaceAndComponentSimpleName(businessObjectClass), null)) {
+                            KRADUtils.getNamespaceAndComponentSimpleName(businessObjectClass), Collections.<String, String>emptyMap())) {
 
             			throw new AuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(), 
                     		"inquire",

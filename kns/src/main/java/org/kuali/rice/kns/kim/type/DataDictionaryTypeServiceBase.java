@@ -19,6 +19,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.uif.RemotableAbstractWidget;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
@@ -88,7 +89,11 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
 
 	@Override
 	public List<String> getWorkflowRoutingAttributes(String routeLevel) {
-		return Collections.emptyList();
+		if (StringUtils.isBlank(routeLevel)) {
+            throw new RiceIllegalArgumentException("routeLevel was blank or null");
+        }
+
+        return Collections.emptyList();
 	}
 
     @Override
@@ -137,10 +142,15 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
 	 */
 	@Override
 	public List<RemotableAttributeError> validateAttributes(String kimTypeId, Map<String, String> attributes) {
-		final List<RemotableAttributeError> validationErrors = new ArrayList<RemotableAttributeError>();
-		if ( attributes == null ) {
-			return Collections.emptyList();
-		}
+		if (StringUtils.isBlank(kimTypeId)) {
+            throw new RiceIllegalArgumentException("kimTypeId was null or blank");
+        }
+
+        if (attributes == null) {
+            throw new RiceIllegalArgumentException("attributes was null or blank");
+        }
+
+        final List<RemotableAttributeError> validationErrors = new ArrayList<RemotableAttributeError>();
 		KimType kimType = getTypeInfoService().getKimType(kimTypeId);
 
 		for ( Map.Entry<String, String> entry : attributes.entrySet() ) {
@@ -160,11 +170,23 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
 		final List<RemotableAttributeError> referenceCheckErrors = validateReferencesExistAndActive(kimType, attributes, validationErrors);
         validationErrors.addAll(referenceCheckErrors);
 
-		return validationErrors;
+		return Collections.unmodifiableList(validationErrors);
 	}
 
     @Override
 	public List<RemotableAttributeError> validateAttributesAgainstExisting(String kimTypeId, Map<String, String> newAttributes, Map<String, String> oldAttributes){
+        if (StringUtils.isBlank(kimTypeId)) {
+            throw new RiceIllegalArgumentException("kimTypeId was null or blank");
+        }
+
+        if (newAttributes == null) {
+            throw new RiceIllegalArgumentException("newAttributes was null or blank");
+        }
+
+        if (oldAttributes == null) {
+            throw new RiceIllegalArgumentException("oldAttributes was null or blank");
+        }
+
         final List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
         errors.addAll(validateUniqueAttributes(kimTypeId, newAttributes, oldAttributes));
         errors.addAll(validateUnmodifiableAttributes(kimTypeId, newAttributes, oldAttributes));

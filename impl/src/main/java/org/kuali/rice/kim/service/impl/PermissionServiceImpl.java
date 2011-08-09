@@ -42,7 +42,6 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.lookup.CollectionIncomplete;
-import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
@@ -181,7 +180,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
      * @see org.kuali.rice.kim.service.PermissionService#hasPermission(String, String, String, Map<String, String>)
      */
     public boolean hasPermissionByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails) {
-    	return isAuthorizedByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails, null );
+    	return isAuthorizedByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails, Collections.<String, String>emptyMap() );
     }
 
     /**

@@ -63,6 +63,7 @@ import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -541,7 +542,7 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 					KRADConstants.KRAD_NAMESPACE,
 					KimConstants.PermissionTemplateNames.FULL_UNMASK_FIELD,
 					new HashMap<String, String>(getFieldPermissionDetails(dataObjectClass, fieldName)),
-					null);
+					Collections.<String, String>emptyMap());
 		}
 		return result; // should be safe to return Boolean here since the only circumstances that
 		               // will leave it null will result in an exception being thrown above.
@@ -568,7 +569,7 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 					.isAuthorizedByTemplate( document, 
 											 KRADConstants.KRAD_NAMESPACE,
 											 KimConstants.PermissionTemplateNames.PARTIAL_UNMASK_FIELD, 
-											 user.getPrincipalId(), getFieldPermissionDetails(dataObjectClass, fieldName), null  );
+											 user.getPrincipalId(), getFieldPermissionDetails(dataObjectClass, fieldName), Collections.<String, String>emptyMap()  );
 		}
 	}
 

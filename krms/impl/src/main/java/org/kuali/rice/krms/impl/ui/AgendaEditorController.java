@@ -31,6 +31,7 @@ import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.controller.MaintenanceDocumentController;
+import org.kuali.rice.krad.web.form.DocumentFormBase;
 import org.kuali.rice.krad.web.form.MaintenanceForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
@@ -85,15 +86,18 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 conversionFields != null &&
                 // TODO: this is sloppy
                 conversionFields.contains("agenda.id")) {
-            AgendaEditor editorDocument =
-                    ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
-            agendaId = editorDocument.getAgenda().getId();
+            AgendaEditor oldAgendaEditor = ((AgendaEditor) maintenanceForm.getDocument().getOldMaintainableObject().getDataObject());
+            AgendaEditor newAgendaEditor = ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
+
+            agendaId = newAgendaEditor.getAgenda().getId();
             AgendaBo agenda = getBusinessObjectService().findBySinglePrimaryKey(AgendaBo.class, agendaId);
-            editorDocument.setAgenda(agenda);
+
+            oldAgendaEditor.setAgenda(getBusinessObjectService().findBySinglePrimaryKey(AgendaBo.class, agendaId));
+            newAgendaEditor.setAgenda(getBusinessObjectService().findBySinglePrimaryKey(AgendaBo.class, agendaId));
 
             if (agenda.getContextId() != null) {
                 ContextBo context = getBusinessObjectService().findBySinglePrimaryKey(ContextBo.class, agenda.getContextId());
-                editorDocument.setContext(context);
+                newAgendaEditor.setContext(context);
             }
         }
         

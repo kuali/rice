@@ -17,6 +17,7 @@ package org.kuali.rice.krms.impl.ui;
 
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.document.MaintenanceDocument;
@@ -76,19 +77,19 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
 		
 		
 	}
-	
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#saveBusinessObject()
-	 */
-	@Override
-	public void saveDataObject() {
-	    // TODO here's where we can handle persisting our agenda and context
-	    super.saveDataObject();
-	}
-	
-//	/**
+
+    @Override
+    public void saveDataObject() {
+        AgendaBo agendaBo = ((AgendaEditor) getDataObject()).getAgenda();
+        if (agendaBo instanceof PersistableBusinessObject) {
+            getBusinessObjectService().linkAndSave((PersistableBusinessObject) agendaBo);
+        } else {
+            throw new RuntimeException(
+                    "Cannot save object of type: " + agendaBo + " with business object service");
+        }
+    }
+
+    //	/**
 //	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#processAfterNew(org.kuali.rice.krad.document.MaintenanceDocument, java.util.Map)
 //	 */
 //	@Override
@@ -102,5 +103,28 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
 //		editor.getContext().setName("new");
 //	}
 
+    @Override
+    public boolean isOldDataObjectInDocument() {
+        boolean isOldDataObjectInExistence = true;
+
+        if (getDataObject() == null) {
+            isOldDataObjectInExistence = false;
+        } else {
+            Map<String, ?> keyFieldValues = getDataObjectMetaDataService().getPrimaryKeyFieldValues(((AgendaEditor) getDataObject()).getAgenda());
+            for (Object keyValue : keyFieldValues.values()) {
+                if (keyValue == null) {
+                    isOldDataObjectInExistence = false;
+                } else if ((keyValue instanceof String) && StringUtils.isBlank((String) keyValue)) {
+                    isOldDataObjectInExistence = false;
+                }
+
+                if (!isOldDataObjectInExistence) {
+                    break;
+                }
+            }
+        }
+
+        return isOldDataObjectInExistence;
+    }
 
 }

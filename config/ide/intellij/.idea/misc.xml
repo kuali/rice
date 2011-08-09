@@ -407,7 +407,9 @@
               <file url="file://$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/common/attribute/KimAttributeData.xml" />
               <file url="file://$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/common/delegate/DelegateBo.xml" />
               <file url="file://$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/group/Group.xml" />
+              <file url="file://$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/permission/PermissionAttribute.xml" />
               <file url="file://$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/permission/PermissionBo.xml" />
+              <file url="file://$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/permission/UberPermission.xml" />
               <file url="file://$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/responsibility/IdentityManagementReviewResponsibilityMaintenanceDocument.xml" />
               <file url="file://$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/responsibility/Responsibility.xml" />
               <file url="file://$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/responsibility/ResponsibilityAttribute.xml" />
@@ -1048,57 +1050,6 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../../../db">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchMap">
-                <map>
-                  <entry key="https://test.kuali.org/svn/rice/branches">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/inactive">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/rice-functional-tests">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/sandbox">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/tags">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/tools">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                </map>
-              </option>
-              <option name="branchUrls">
-                <list>
-                  <option value="https://test.kuali.org/svn/rice/branches" />
-                  <option value="https://test.kuali.org/svn/rice/inactive" />
-                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
-                  <option value="https://test.kuali.org/svn/rice/sandbox" />
-                  <option value="https://test.kuali.org/svn/rice/tags" />
-                  <option value="https://test.kuali.org/svn/rice/tools" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../db/clover">
           <value>
             <SvnBranchConfiguration>
               <option name="branchMap">

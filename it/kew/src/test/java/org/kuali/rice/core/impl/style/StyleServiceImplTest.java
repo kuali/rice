@@ -16,25 +16,6 @@
  */
 package org.kuali.rice.core.impl.style;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.io.Writer;
-
-import javax.xml.transform.Templates;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -47,7 +28,19 @@ import org.kuali.rice.core.framework.impex.xml.XmlLoader;
 import org.kuali.rice.core.impl.services.CoreImplServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.ksb.api.cache.RiceCacheAdministrator;
+
+import javax.xml.transform.Templates;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
+
+import static org.junit.Assert.*;
 
 
 /**
@@ -191,52 +184,5 @@ public class StyleServiceImplTest extends KEWTestCase {
         assertEquals("test", style.getName());
         assertNotNull(style);
         assertNotNull(style.getXmlContent());
-    }
-
-    /**
-     * Tests the caching of "styles" in StyleServiceImpl.
-     *
-     * The style cache is really a cache of java.xml.transform.Templates objects which represent
-     * the "compiled" stylesheets.
-     */
-    @Test public void testStyleCaching() throws Exception {
-        loadXmlFile("style.xml");
-
-        // try to grab the templates out of the cache, it shouldn't be cached yet
-        StyleServiceImpl styleServiceImpl = new StyleServiceImpl();
-        styleServiceImpl.setCache((RiceCacheAdministrator)GlobalResourceLoader.getService("coreCache"));
-        Templates cachedTemplates = styleServiceImpl.fetchTemplatesFromCache("an_arbitrary_style");
-        assertNull("The default style template should not be cached yet.", cachedTemplates);
-
-        // fetch the Templates object from the service
-        Templates templates = CoreApiServiceLocator.getStyleService().getStyleAsTranslet("an_arbitrary_style");
-        assertNotNull("Templates should not be null.", templates);
-        templates = CoreApiServiceLocator.getStyleService().getStyleAsTranslet("an_arbitrary_style");
-        assertNotNull("Templates should not be null.", templates);
-
-        // the Templates should now be cached
-        cachedTemplates = styleServiceImpl.fetchTemplatesFromCache("an_arbitrary_style");
-        assertNotNull("Templates should now be cached.", cachedTemplates);
-
-        // the cached Templates should be the same as the Templates we fetched from the service
-        assertEquals("Templates should be the same.", templates, cachedTemplates);
-
-        // now re-import the style and the templates should no longer be cached
-        loadXmlFile("style.xml");
-        cachedTemplates = styleServiceImpl.fetchTemplatesFromCache("an_arbitrary_style");
-        assertNull("After re-import, the Default style Templates should no longer be cached.", cachedTemplates);
-
-        // re-fetch the templates from the service and verify they are in the cache
-        Templates newTemplates = CoreApiServiceLocator.getStyleService().getStyleAsTranslet("an_arbitrary_style");
-        assertNotNull("Templates should not be null.", templates);
-        newTemplates = CoreApiServiceLocator.getStyleService().getStyleAsTranslet("an_arbitrary_style");
-        assertNotNull("Templates should not be null.", templates);
-
-        cachedTemplates = styleServiceImpl.fetchTemplatesFromCache("an_arbitrary_style");
-        assertNotNull("Templates should now be cached.", cachedTemplates);
-
-        // lastly, check that the newly cached templates are not the same as the original templates
-        assertFalse("Old Templates should be different from new Templates.", templates.equals(newTemplates));
-
     }
 }

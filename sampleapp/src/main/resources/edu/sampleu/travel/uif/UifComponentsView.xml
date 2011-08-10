@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-	<!-- Copyright 2007-2009 The Kuali Foundation Licensed under the Educational 
-		Community License, Version 2.0 (the "License"); you may not use this file 
-		except in compliance with the License. You may obtain a copy of the License 
-		at http://www.opensource.org/licenses/ecl2.php Unless required by applicable 
-		law or agreed to in writing, software distributed under the License is distributed 
-		on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either 
-		express or implied. See the License for the specific language governing permissions 
+	<!-- Copyright 2007-2009 The Kuali Foundation Licensed under the Educational
+		Community License, Version 2.0 (the "License"); you may not use this file
+		except in compliance with the License. You may obtain a copy of the License
+		at http://www.opensource.org/licenses/ecl2.php Unless required by applicable
+		law or agreed to in writing, software distributed under the License is distributed
+		on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+		express or implied. See the License for the specific language governing permissions
 		and limitations under the License. -->
 
 	<bean id="UifComponentsView" parent="FormView">
@@ -535,7 +535,7 @@
 		<property name="accordion.render" value="false" />
 		<property name="title" value="GroupFields" />
 		<property name="summary"
-			value="GroupFields(ie FieldGroups) can have multiple controls but appear to the user as one logical field grouping.  
+			value="GroupFields(ie FieldGroups) can have multiple controls but appear to the user as one logical field grouping.
 			 The first grouping has fields with no labels with its group label on top.  The second grouping has labels on the group as well as the fields" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
@@ -659,6 +659,23 @@
 					p:clientSideJs="alert('You clicked a button');" />
 				<bean parent="LinkField" p:linkLabel="Kuali Website"
 					p:hrefText="http://www.kuali.org" p:label="LinkField is used for href links:" />
+        <bean parent="LinkGroup" p:title="LinkGroup" p:summary="with | delimeter and [] begin and end delimeter"
+              p:groupBeginDelimiter="[" p:groupEndDelimiter="]" p:linkSeparator="|">
+          <property name="items">
+            <list>
+                 <bean parent="ActionLinkField"
+					p:label="ActionLinkField can process a js, jquery, or js method:"
+					p:clientSideJs="alert('You clicked the link');" p:actionLabel="Link 1" />
+              <bean parent="ActionLinkField"
+					p:label="ActionLinkField can process a js, jquery, or js method:"
+					p:clientSideJs="alert('You clicked the link');" p:actionLabel="Link 2" />
+              <bean parent="ActionLinkField"
+					p:label="ActionLinkField can process a js, jquery, or js method:"
+					p:clientSideJs="alert('You clicked the link');" p:actionLabel="Link 3" />
+            </list>
+          </property>
+        </bean>
+        <bean parent="IframeField" p:label="IframeField" p:source="http://www.kuali.org" />
 
 				<bean parent="ActionLinkField_JumpToTop" p:actionLabel="Jump To Top Demo" />
 			</list>
@@ -676,11 +693,12 @@
 			<list>
 				<bean parent="GenericTextField" p:required="true"
 					p:propertyName="field2" />
-				<bean parent="GenericTextArea" p:required="true"
+				<bean parent="GenericTextArea" p:required="true" p:labelField.requiredMessageField.messageText="Required"
+              p:summary="different text for required indicator"
 					p:propertyName="field3" />
 				<bean parent="GenericRadio" p:required="true" p:propertyName="field4"
 					p:summary="Interesting note is that radios and checkboxes will not check requiredness until a submit event, other constraints dealing with non-null values will still apply as normal" />
-				<bean parent="GenericSelection" p:required="true"
+				<bean parent="GenericSelection" p:required="true" p:summary="different required indicator location" p:labelField.requiredMessagePlacement="RIGHT"
 					p:propertyName="field5" />
 			</list>
 		</property>
@@ -691,7 +709,7 @@
 		<property name="accordion.render" value="false" />
 		<property name="title" value="PreRequisite constraint" />
 		<property name="summary"
-			value="When a field is filled out, it can require another field to be filled out as a result.  This is called a PrerequisiteConstraint.  
+			value="When a field is filled out, it can require another field to be filled out as a result.  This is called a PrerequisiteConstraint.
 		Whether that field comes after or before that field is irrelevant, as the ui will only notify the user when appropriate.  For example, if you havent yet 
 		visited a field that is now required, the user will only be notified of an error after they have first visited this now required field 
 		and have not filled it out.  Alternatively, if the field that is now required comes before the field that requires it, the user will be notified 
@@ -796,11 +814,11 @@
 										<bean parent="PrerequisiteConstraint" p:attributePath="field11" />
 									</list>
 								</property>
-								<!-- essentially an OR'ed list: each MustOccur constraint in this 
-									list essentially counts towards the min max totals set at the top level, 
-									they are equivalent to having a PrerequisiteConstraint satisfied at the top 
-									level (count as one towards the total) so this constraint is saying you can 
-									fill out just field11 or you can fill out both field12 and field13, in addition 
+								<!-- essentially an OR'ed list: each MustOccur constraint in this
+									list essentially counts towards the min max totals set at the top level,
+									they are equivalent to having a PrerequisiteConstraint satisfied at the top
+									level (count as one towards the total) so this constraint is saying you can
+									fill out just field11 or you can fill out both field12 and field13, in addition
 									filling out all 3 fields is fine in this context -->
 								<property name="mustOccurConstraints">
 									<list>
@@ -1448,6 +1466,17 @@
 							<entry key="number" value="field60" />
 						</map>
 					</property>
+				</bean>
+        <bean parent="GenericTextField" p:label="Lookup"
+					p:summary="overriden link to display different text - Search Now"
+					p:propertyName="field87">
+					<property name="fieldLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
+					<property name="fieldLookup.fieldConversions">
+						<map>
+							<entry key="number" value="field87" />
+						</map>
+					</property>
+          <property name="fieldLookup.quickfinderActionField.actionLabel" value="Search Now"/>
 				</bean>
 				<bean parent="GenericTextField" p:label="Suggest"
 					p:summary="for example, type ea or ca to see a suggestion"

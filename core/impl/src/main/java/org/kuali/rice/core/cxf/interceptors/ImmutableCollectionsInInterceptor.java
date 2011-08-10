@@ -4,14 +4,9 @@ import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.AbstractPhaseInterceptor;
 import org.apache.cxf.phase.Phase;
-import org.kuali.rice.core.api.util.CollectionUtils;
+import org.kuali.rice.core.api.util.collect.CollectionUtils;
 
-import java.lang.reflect.Field;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * A CXF Interceptor that binds itself to the USER_LOGICAL phase to be used on inbound

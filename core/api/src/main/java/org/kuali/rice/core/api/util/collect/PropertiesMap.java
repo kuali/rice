@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.util;
+package org.kuali.rice.core.api.util.collect;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -42,19 +42,10 @@ import java.util.Set;
  * Implicitly relies on the assumption that the JSP will be calling toString() on the result of the final <code>get</code>, since
  * <code>get</code> can only return one type, and that type must be the complex one so that further dereferencing will be
  * possible.
- * 
- * 
  */
-
-public class JstlPropertyHolder implements Map {
+//FIXME: use generics, make class threadsafe
+public final class PropertiesMap implements Map {
     private PropertyTree propertyTree;
-
-    /**
-     * Default constructor
-     */
-    public JstlPropertyHolder() {
-        propertyTree = null;
-    }
 
     /**
      * Creates a propertyTree to store the given properties
@@ -64,18 +55,6 @@ public class JstlPropertyHolder implements Map {
     public void setProperties(Properties properties) {
         propertyTree = new PropertyTree(properties);
     }
-
-
-    /**
-     * Copies in the given propertyTree rather than building its own. Reasonably dangerous, since that tree might presumably be
-     * modified, violating the readonlyness of this datastructure.
-     * 
-     * @param properties
-     */
-    protected void setPropertyTree(PropertyTree tree) {
-        propertyTree = tree;
-    }
-
 
     // delegated methods
     @Override

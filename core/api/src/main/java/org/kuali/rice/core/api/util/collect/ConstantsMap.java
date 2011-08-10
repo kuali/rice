@@ -14,10 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.api.util;
+package org.kuali.rice.core.api.util.collect;
 
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.springframework.beans.factory.InitializingBean;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -28,22 +27,21 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * This class is a map as a SpringBean for Constant properties. 
+ * This class is a map for Constant properties.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConstantsMap implements InitializingBean, Map<String, Object> {
+//FIXME: make class threadsafe
+public final class ConstantsMap implements Map<String, Object> {
     
 	private Map<String, Object> map;
-	private Class<?> constantClass;
 
-	@Override
-    public void afterPropertiesSet() throws Exception {
-    	final Map<String, Object> m = new HashMap<String, Object>();
-    	
+    public void setConstantClass(Class<?> constantClass) {
+        final Map<String, Object> m = new HashMap<String, Object>();
+
     	publishFields(m, constantClass);
     	map = Collections.unmodifiableMap(m);
-    }
+	}
 
     /**
      * Publishes all of the static, final, non-private fields of the given Class as entries in the given HashMap instance
@@ -51,7 +49,7 @@ public class ConstantsMap implements InitializingBean, Map<String, Object> {
      * @param constantMap
      * @param c
      */
-    protected void publishFields(Map<String, Object> constantMap, Class<?> c) {
+    private void publishFields(Map<String, Object> constantMap, Class<?> c) {
         final Field[] fields = c.getDeclaredFields();
         for (final Field field : fields) {
             final int modifier = field.getModifiers();
@@ -63,7 +61,7 @@ public class ConstantsMap implements InitializingBean, Map<String, Object> {
 
                     constantMap.put(fieldName, field.get(null));
                 } catch (IllegalAccessException e) {
-                	throw new JSTLConstantExporterException(e);
+                	throw new ConstantExporterException(e);
                 }
             }
         }
@@ -79,7 +77,7 @@ public class ConstantsMap implements InitializingBean, Map<String, Object> {
      * @param constantMap
      * @param c
      */
-    protected void publishMemberClassFields(Map<String, Object> constantMap, Class<?> c) {
+    private void publishMemberClassFields(Map<String, Object> constantMap, Class<?> c) {
         final Class<?>[] memberClasses = c.getClasses();
 
         for (final Class<?> memberClass : memberClasses) {
@@ -92,14 +90,6 @@ public class ConstantsMap implements InitializingBean, Map<String, Object> {
             }
         }
     }
-    
-    public Class<?> getConstantClass() {
-		return this.constantClass;
-	}
-
-	public void setConstantClass(Class<?> constantClass) {
-		this.constantClass = constantClass;
-	}
 	
     //delegate methods
     
@@ -173,9 +163,9 @@ public class ConstantsMap implements InitializingBean, Map<String, Object> {
 		return this.map.hashCode();
 	}
 
-	private static class JSTLConstantExporterException extends RiceRuntimeException {
+	private static class ConstantExporterException extends RiceRuntimeException {
 
-		public JSTLConstantExporterException(Throwable t) {
+		private ConstantExporterException(Throwable t) {
 			super(t);
 		}
 	}

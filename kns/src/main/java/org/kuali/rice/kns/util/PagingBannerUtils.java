@@ -17,7 +17,7 @@ package org.kuali.rice.kns.util;
 
 import org.apache.commons.lang.NumberUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.util.CollectionUtils;
+import org.kuali.rice.core.api.util.collect.CollectionUtils;
 
 import java.util.Enumeration;
 

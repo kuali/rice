@@ -4,7 +4,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.util.CollectionUtils;
+import org.kuali.rice.core.api.util.collect.CollectionUtils;
 
 import javax.xml.bind.Unmarshaller;
 

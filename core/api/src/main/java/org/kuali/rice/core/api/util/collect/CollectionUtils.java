@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.api.util;
+package org.kuali.rice.core.api.util.collect;
 
 import java.lang.reflect.Field;
 import java.util.Collection;

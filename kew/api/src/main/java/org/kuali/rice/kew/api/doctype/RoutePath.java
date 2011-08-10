@@ -3,7 +3,7 @@ package org.kuali.rice.kew.api.doctype;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.util.CollectionUtils;
+import org.kuali.rice.core.api.util.collect.CollectionUtils;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;

@@ -23,8 +23,6 @@ import java.math.BigDecimal;
 
 /**
  * Types of Payment Terms for Vendor Contracts. Per contract as distinct from <code>ShippingPaymentTerms</code>.
- *
- * @see org.kuali.kfs.vnd.businessobject.ShippingPaymentTerms
  */
 public class PaymentTermType extends PersistableBusinessObjectBase implements MutableInactivatable {
 

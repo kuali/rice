@@ -67,7 +67,6 @@
     <property name="label" value="Campus"/>
     <property name="shortLabel" value="Campus"/>
     <property name="controlField">
-      <!-- <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.kfs.vnd.businessobject.options.CampusWithBlankValuesFinder" p:includeKeyInLabel="false"/>-->
       <bean parent="TextControl" p:size="14"/>
     </property>
   </bean>

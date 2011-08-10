@@ -22,8 +22,6 @@ import org.kuali.rice.krad.document.DocumentBase;
 /**
  * Exclusive kinds of basic business organization that a vendor may have. Other broad exclusive categories for vendors can be
  * instances of <code>OwnershipCategory</code>.
- *
- * @see org.kuali.kfs.vnd.businessobject.OwnershipCategory
  */
 public class OwnershipType extends DocumentBase implements MutableInactivatable {
 

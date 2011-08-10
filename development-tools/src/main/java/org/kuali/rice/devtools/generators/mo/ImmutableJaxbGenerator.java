@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.devtools.generators;
+package org.kuali.rice.devtools.generators.mo;
 
 import com.sun.codemodel.ClassType;
 import com.sun.codemodel.JAnnotationArrayMember;

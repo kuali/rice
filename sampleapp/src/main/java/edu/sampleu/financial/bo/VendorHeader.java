@@ -16,17 +16,15 @@
 
 package edu.sampleu.financial.bo;
 
-import java.sql.Date;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
+import java.sql.Date;
+
 /**
  * Contains information specific to a parent Vendor, which may be shared by its division Vendors if it has any. Contained by a
  * <code>VendorDetail</code>.
- *
- * @see org.kuali.kfs.vnd.businessobject.VendorDetail
  */
 public class VendorHeader extends PersistableBusinessObjectBase {
     private static Logger LOG = Logger.getLogger(VendorHeader.class);

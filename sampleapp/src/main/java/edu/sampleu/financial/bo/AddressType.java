@@ -23,7 +23,6 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
  * Address Types for Vendor Addresses. Used to distinguish the intended use of this address among the various addresses that a
  * vendor might give out.
  *
- * @see org.kuali.kfs.vnd.businessobject.VendorAddress
  */
 public class AddressType extends PersistableBusinessObjectBase implements MutableInactivatable {
 

@@ -2,12 +2,12 @@
  * Copyright 2008 The Regents of the University of California
  * 
  */
-package org.kuali.rice.krad.util;
-
-import java.beans.PropertyDescriptor;
+package org.kuali.rice.devtools.generators.dd;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.kuali.rice.krad.bo.BusinessObject;
+
+import java.beans.PropertyDescriptor;
 
 public class MaintDocDDCreator {
 

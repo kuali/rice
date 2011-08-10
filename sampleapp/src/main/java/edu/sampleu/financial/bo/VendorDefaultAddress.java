@@ -26,7 +26,6 @@ import org.kuali.rice.krad.util.ObjectUtils;
  * for this Campus among the various Addresses available for this Vendor.
  *
  * @see org.kuali.rice.krad.bo.Campus
- * @see org.kuali.kfs.vnd.businessobject.VendorAddress
  */
 public class VendorDefaultAddress extends PersistableBusinessObjectBase implements MutableInactivatable {
 
@@ -95,9 +94,6 @@ public class VendorDefaultAddress extends PersistableBusinessObjectBase implemen
         this.vendorDefaultAddressGeneratedIdentifier = vendorDefaultAddressGeneratedIdentifier;
     }
 
-    /**
-     * @see org.kuali.kfs.vnd.document.routing.VendorRoutingComparable#isEqualForRouting(Object)
-     */
     public boolean isEqualForRouting(Object toCompare) {
         if ((ObjectUtils.isNull(toCompare)) || !(toCompare instanceof VendorDefaultAddress)) {
 

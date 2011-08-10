@@ -270,7 +270,6 @@
     <property name="label" value="Payment Terms"/>
     <property name="shortLabel" value="Payment Terms"/>
     <property name="controlField">
-      <!-- <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.kfs.vnd.businessobject.options.PaymentTermsValuesFinder" p:includeKeyInLabel="false"/> -->
       <bean parent="TextControl" p:size="5"/>
     </property>
   </bean>

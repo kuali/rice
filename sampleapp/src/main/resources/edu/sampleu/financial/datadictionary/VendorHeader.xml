@@ -98,7 +98,6 @@
       <bean parent="AnyCharacterValidationPattern" p:exactLength="2"/>
     </property>
     <property name="controlField" >
-      <!-- <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.kfs.vnd.businessobject.options.VendorOwnershipCategoryValuesFinder" p:includeKeyInLabel="false"/>-->
       <bean parent="TextControl" p:size="2"/>
     </property>
   </bean>
@@ -114,7 +113,6 @@
       <bean parent="AnyCharacterValidationPattern" p:exactLength="2"/>
     </property>
     <property name="controlField" >
-      <!-- <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.kfs.vnd.businessobject.options.VendorOwnershipCodeValuesFinder" p:includeKeyInLabel="false"/>-->
       <bean parent="TextControl" p:size="2"/>
     </property>
   </bean>

@@ -21,8 +21,6 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 /**
  * Payment Terms for Shipping from a particular Vendor. Per Vendor as distinct from <code>PaymentTermType</code>.
- *
- * @see org.kuali.kfs.vnd.businessobject.PaymentTermType
  */
 public class ShippingPaymentTerms extends PersistableBusinessObjectBase implements MutableInactivatable {
 

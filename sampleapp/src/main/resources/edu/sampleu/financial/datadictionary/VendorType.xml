@@ -146,9 +146,6 @@
     <property name="name" value="vendorAddressTypeRequiredCode"/>
     <property name="label" value="Address Type Required"/>
     <property name="shortLabel" value="Address Type Required"/>
-    <!--<property name="controlField">
-      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.kfs.vnd.businessobject.options.AddressTypeValuesFinder" p:includeKeyInLabel="false"/>
-    </property>-->
     <property name="controlField">
       <bean parent="TextAreaControl" p:rows="5" p:cols="60"/>
     </property>

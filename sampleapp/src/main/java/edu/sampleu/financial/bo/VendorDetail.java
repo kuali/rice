@@ -30,7 +30,6 @@ import java.util.List;
  * Contains all data for a specific parent or division Vendor, including a link to the <code>VendorHeader</code>, which only
  * contains information about the parent company, but can be shared between division Vendors.
  *
- * @see org.kuali.kfs.vnd.businessobject.VendorHeader
  */
 public class VendorDetail extends PersistableBusinessObjectBase { //implements VendorRoutingComparable {
     private static Logger LOG = Logger.getLogger(VendorDetail.class);

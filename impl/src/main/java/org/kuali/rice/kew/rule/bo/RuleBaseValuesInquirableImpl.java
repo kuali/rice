@@ -68,11 +68,7 @@ public class RuleBaseValuesInquirableImpl extends KualiInquirableImpl {
 
 	}
 	
-   	
-	/**
-     * @see org.kuali.kfs.sys.businessobject.inquiry.KfsInquirableImpl#getInquiryUrl(org.kuali.rice.krad.bo.BusinessObject,
-     *      java.lang.String, boolean)
-     */
+
     @Override
     public HtmlData getInquiryUrl(BusinessObject businessObject, String attributeName, boolean forceInquiry) {
     	

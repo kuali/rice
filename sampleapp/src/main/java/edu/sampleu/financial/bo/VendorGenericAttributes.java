@@ -38,9 +38,9 @@ public class VendorGenericAttributes extends PersistableBusinessObjectBase {
     private String phoneNumberNoValidation;
     private String phoneNumberWithValidation;
     private String genericUrlAddress;
-    private String vendorHeaderGeneratedIdentifier; // " sourceClassName="org.kuali.kfs.vnd.businessobject.VendorDetail"
+    private String vendorHeaderGeneratedIdentifier; // "
     // sourceAttributeName="vendorNumber"/>
-    private String vendorDetailAssignedIdentifier; // " sourceClassName="org.kuali.kfs.vnd.businessobject.VendorDetail"
+    private String vendorDetailAssignedIdentifier; // "
     // sourceAttributeName="vendorNumber"/>
 
     /**

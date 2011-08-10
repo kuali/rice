@@ -133,9 +133,6 @@
     <property name="controlField">
       <bean parent="TextControl" p:size="6"/>
     </property>
-    <!--<property name="controlField">
-      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.kfs.vnd.businessobject.options.AddressTypeValuesFinder" p:includeKeyInLabel="false"/>
-    </property>-->
   </bean>
   
   <!-- <bean id="VendorAddress-vendorAddressType.vendorAddressTypeDescription" parent="VendorAddress-vendorAddressType.vendorAddressTypeDescription-parentBean"/>

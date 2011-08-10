@@ -98,7 +98,6 @@
       <ref bean="AnyCharacterWithWhitespaceValidation" />
     </property>
     <property name="controlField">
-      <!--<bean parent="RadioControlDefinition" p:valuesFinderClass="org.kuali.kfs.vnd.businessobject.options.PaymentTypeValuesFinder" p:includeKeyInLabel="false"/>-->
       <bean parent="TextControl" p:size="22"/>
     </property>
   </bean>

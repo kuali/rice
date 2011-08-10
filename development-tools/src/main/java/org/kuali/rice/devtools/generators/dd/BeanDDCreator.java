@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.util;
-
-import java.beans.PropertyDescriptor;
+package org.kuali.rice.devtools.generators.dd;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.kuali.rice.krad.bo.BusinessObject;
+
+import java.beans.PropertyDescriptor;
 
 public class BeanDDCreator {
 

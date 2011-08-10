@@ -25,9 +25,7 @@ import org.kuali.rice.core.api.style.Style;
 import org.kuali.rice.core.api.style.StyleRepositoryService;
 import org.kuali.rice.core.api.util.RiceUtilities;
 import org.kuali.rice.core.impl.services.CoreImplServiceLocator;
-import org.kuali.rice.ksb.api.cache.RiceCacheAdministrator;
 
-import javax.xml.transform.Templates;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -42,26 +40,18 @@ import java.util.List;
 public class StyleRepositoryServiceImpl implements StyleRepositoryService {
     private static final Logger LOG = Logger.getLogger(StyleRepositoryServiceImpl.class);
 
-    static final String TEMPLATES_CACHE_GROUP_NAME = "Templates";
     private static final String STYLE_CONFIG_PREFIX = "edl.style";
 
     private StyleDao styleDao;
-    private RiceCacheAdministrator cache;
 
     public void setStyleDao(StyleDao styleDao) {
         this.styleDao = styleDao;
-    }
-
-    public void setCache(RiceCacheAdministrator cache) {
-        this.cache = cache;
     }
 
     /**
      * Loads the named style from the database, or (if configured) imports it from a file
      * specified via a configuration parameter with a name of the format edl.style.&lt;styleName&gt;
      * {@inheritDoc}
-     *
-     * @see org.kuali.rice.edl.impl.service.StyleService#getStyle(java.lang.String)
      */
     @Override
     public Style getStyle(String styleName) {
@@ -77,7 +67,7 @@ public class StyleRepositoryServiceImpl implements StyleRepositoryService {
             String location = ConfigContext.getCurrentContextConfig().getProperty(propertyName);
             if (location != null) {
 
-                InputStream xml = null;
+                final InputStream xml;
 
                 try {
                     xml = RiceUtilities.getResourceAsStream(location);
@@ -104,26 +94,9 @@ public class StyleRepositoryServiceImpl implements StyleRepositoryService {
         return StyleBo.to(style);
     }
 
-    /**
-     * This method ...
-     *
-     * @param propertyName
-     * @param location
-     * @return
-     */
     private String getUnableToLoadMessage(String propertyName, String location) {
         return "unable to load resource at '" + location +
                 "' specified by configuration parameter '" + propertyName + "'";
-    }
-
-    /**
-     * Does not currently take into account style sheet dependences robustly
-     */
-    private void removeStyleFromCache(String styleName) {
-        LOG.info("Removing Style " + styleName + " from the style cache");
-        // we don't know what styles may import other styles so we need to flush them all
-        cache.flushGroup(TEMPLATES_CACHE_GROUP_NAME);
-        //KEWServiceLocator.getCacheAdministrator().flushEntry(getTemplatesCacheKey(styleName));
     }
 
     @Override
@@ -142,29 +115,10 @@ public class StyleRepositoryServiceImpl implements StyleRepositoryService {
             styleDao.saveStyle(existingData);
         }
         styleDao.saveStyle(styleBo);
-        removeStyleFromCache(styleBo.getName());
     }
 
     @Override
     public List<String> getAllStyleNames() {
         return styleDao.getAllStyleNames();
     }
-
-    // cache helper methods
-
-    /**
-     * Returns the key to be used for caching the Templates for the given style name.
-     */
-    protected String getTemplatesCacheKey(String styleName) {
-        return TEMPLATES_CACHE_GROUP_NAME + ":" + styleName;
-    }
-
-    protected Templates fetchTemplatesFromCache(String styleName) {
-        return (Templates) cache.getFromCache(getTemplatesCacheKey(styleName));
-    }
-
-    protected void putTemplatesInCache(String styleName, Templates templates) {
-        cache.putInCache(getTemplatesCacheKey(styleName), templates, TEMPLATES_CACHE_GROUP_NAME);
-    }
-
 }

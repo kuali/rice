@@ -23,12 +23,12 @@ import org.junit.Test
 import org.kuali.rice.core.api.style.Style
 import org.kuali.rice.core.api.style.StyleContract
 import org.kuali.rice.core.api.style.StyleRepositoryService
-import org.kuali.rice.core.impl.mocks.RiceCacheAdministratorMock
+import static org.junit.Assert.assertEquals
+import static org.junit.Assert.assertTrue
 
 class StyleRepositoryServiceImplTest {
 
     private MockFor daoMock
-    private RiceCacheAdministratorMock cacheMock
     StyleRepositoryService styleRepositoryService;
     StyleRepositoryServiceImpl styleRepositoryServiceImpl;
 
@@ -60,9 +60,7 @@ class StyleRepositoryServiceImplTest {
     @Before
     void setupServiceUnderTest() {
         daoMock = new MockFor(StyleDao)
-        cacheMock = new RiceCacheAdministratorMock()
         styleRepositoryServiceImpl = new StyleRepositoryServiceImpl()
-        styleRepositoryServiceImpl.setCache(cacheMock)
         styleRepositoryServiceImpl.setStyleDao(daoMock.proxyDelegateInstance())
         styleRepositoryService = styleRepositoryServiceImpl
     }
@@ -106,10 +104,8 @@ class StyleRepositoryServiceImplTest {
         injectStyleDaoIntoStyleRepositoryService()
 
         def style = styleRepositoryService.getStyle(NAME)
-        assert style != null
-        assert style == createStyle()
-
-        assert cacheMock.empty
+        assertTrue style != null
+        assertEquals style, createStyle()
 
         verifyMocks()
     }
@@ -123,9 +119,7 @@ class StyleRepositoryServiceImplTest {
         injectStyleDaoIntoStyleRepositoryService()
 
         def style = styleRepositoryService.getStyle(NAME)
-        assert style == null
-
-        assert cacheMock.empty
+        assertTrue style == null
 
         verifyMocks()
     }
@@ -154,31 +148,9 @@ class StyleRepositoryServiceImplTest {
         injectStyleDaoIntoStyleRepositoryService()
 
         styleRepositoryService.saveStyle(styleModified)
-        assert styleModified == styleRepositoryService.getStyle(styleModified.name);
+        assertTrue styleModified == styleRepositoryService.getStyle(styleModified.name);
 
         verifyMocks()
 
     }
-
-    @Test
-    void testSaveStyle_removeFromCache() {
-        def style = createStyle()
-
-        assert cacheMock.empty
-        cacheMock.putInCache(style.getName(), style, "Templates")
-        assert cacheMock.size == 1
-
-        daoMock.demand.getStyle(1) { styleName -> styleBo }
-        daoMock.demand.saveStyle(2) { styleToSave -> }
-
-        injectStyleDaoIntoStyleRepositoryService()
-
-        styleRepositoryService.saveStyle(style)
-
-        assert cacheMock.empty
-
-        verifyMocks()
-
-    }
-
 }

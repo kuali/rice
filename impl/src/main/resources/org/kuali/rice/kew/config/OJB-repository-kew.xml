@@ -757,7 +757,7 @@
     <reference-descriptor class-ref="org.kuali.rice.kew.engine.node.Branch" name="branch" auto-update="true" auto-delete="false" auto-retrieve="true">
       <foreignkey field-ref="branchId"/>
     </reference-descriptor>
-    <reference-descriptor class-ref="org.kuali.rice.kew.engine.node.RouteNodeInstance" name="processDefinition" auto-update="true" auto-delete="false" auto-retrieve="true">
+    <reference-descriptor class-ref="org.kuali.rice.kew.engine.node.RouteNodeInstance" name="process" auto-update="true" auto-delete="false" auto-retrieve="true">
       <foreignkey field-ref="processId"/>
     </reference-descriptor>
     <collection-descriptor name="state"

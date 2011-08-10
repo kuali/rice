@@ -105,7 +105,6 @@
     </bean>
     
     <bean id="styleService" class="org.kuali.rice.core.impl.style.StyleServiceImpl">
-    	<property name="cache" ref="coreCache" />
     </bean>
     
     <bean id="styleXmlLoader" class="org.kuali.rice.core.impl.style.StyleXmlParser">

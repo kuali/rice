@@ -727,12 +727,10 @@
     </bean>
     
     <bean id="styleService" class="org.kuali.rice.core.impl.style.StyleServiceImpl">
-    	<property name="cache" ref="coreCache" />
     	<property name="styleRepositoryService" ref="styleRepositoryService" />
     </bean>
     
     <bean id="styleRepositoryService" class="org.kuali.rice.core.impl.style.StyleRepositoryServiceImpl">
-    	<property name="cache" ref="coreCache" />
     	<property name="styleDao" ref="styleDao" />
     </bean>
     

@@ -23,7 +23,6 @@ import org.kuali.rice.core.api.style.StyleService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.ksb.api.cache.RiceCacheAdministrator;
 
 import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerConfigurationException;
@@ -43,14 +42,9 @@ public class StyleServiceImpl implements StyleService {
     private static final Logger LOG = Logger.getLogger(StyleServiceImpl.class);
 
     private StyleRepositoryService styleRepositoryService;
-    private RiceCacheAdministrator cache;
 
     public void setStyleRepositoryService(StyleRepositoryService styleRepositoryService) {
     	this.styleRepositoryService = styleRepositoryService;
-    }
-    
-    public void setCache(RiceCacheAdministrator cache) {
-    	this.cache = cache;
     }
 
     /**
@@ -60,9 +54,6 @@ public class StyleServiceImpl implements StyleService {
      */
     @Override
     public Style getStyle(String styleName) {
-    	
-    	// TODO should really be caching here!
-    	
     	return styleRepositoryService.getStyle(styleName);
     }
 

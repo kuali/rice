@@ -18,8 +18,18 @@ class PeopleFlowBo extends PersistableBusinessObjectBase implements MutableInact
     def String namespace
     def String typeId
     def String description
-    def boolean active
+    def boolean active = true
 
     def List<PeopleFlowAttributeBo> attributes;
     def List<PeopleFlowMemberBo> members;
+
+    public List<PeopleFlowAttributeBo> getAttributes() {
+        if (attributes == null) attributes = new ArrayList<PeopleFlowAttributeBo>();
+        return attributes;
+    }
+
+    public List<PeopleFlowMemberBo> getMembers() {
+        if (members == null) members = new ArrayList<PeopleFlowMemberBo>();
+        return members;
+    }
 }

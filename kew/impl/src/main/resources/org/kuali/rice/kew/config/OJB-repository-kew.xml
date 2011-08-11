@@ -864,4 +864,84 @@
     <field-descriptor column="DEST_DOC_ID" name="destDocId" jdbc-type="VARCHAR"/>
   </class-descriptor>
 
+
+    <class-descriptor
+          class="org.kuali.rice.kew.impl.type.KewAttributeDefinitionBo"
+          table="KREW_ATTR_DEFN_T">
+    <field-descriptor name="id" column="ATTR_DEFN_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KREW_ATTR_DEFN_S"/>
+    <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
+    <field-descriptor name="label" column="LBL" jdbc-type="VARCHAR" />
+    <field-descriptor name="namespace" column="NMSPC_CD" jdbc-type="VARCHAR" />
+    <field-descriptor name="description" column="DESC_TXT" jdbc-type="VARCHAR" />
+    <field-descriptor name="active" column="ACTV" jdbc-type="VARCHAR"
+                      conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+    <field-descriptor name="componentName" column="CMPNT_NM" jdbc-type="VARCHAR" />
+  </class-descriptor>
+
+  <class-descriptor class="org.kuali.rice.kew.impl.type.KewTypeBo" table="KREW_TYP_T">
+    <field-descriptor name="id" column="TYP_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KREW_TYP_S"/>
+    <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
+    <field-descriptor name="namespace" column="NMSPC_CD" jdbc-type="VARCHAR" />
+    <field-descriptor name="serviceName" column="SRVC_NM" jdbc-type="VARCHAR" />
+    <field-descriptor name="active" column="ACTV" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+    <collection-descriptor name="attributes" element-class-ref="org.kuali.rice.kew.impl.type.KewTypeAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
+      <inverse-foreignkey field-ref="typeId" />
+    </collection-descriptor>
+  </class-descriptor>
+
+  <class-descriptor class="org.kuali.rice.kew.impl.type.KewTypeAttributeBo" table="KREW_TYP_ATTR_T">
+    <field-descriptor name="id" column="TYP_ATTR_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KREW_TYP_ATTR_S"/>
+    <field-descriptor name="typeId" column="TYP_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="attributeDefinitionId" column="ATTR_DEFN_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="sequenceNumber" column="SEQ_NO" jdbc-type="INTEGER" />
+    <field-descriptor name="active" column="ACTV" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+    <reference-descriptor name="attributeDefinition" class-ref="org.kuali.rice.kew.impl.type.KewAttributeDefinitionBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+      <foreignkey field-ref="id" />
+    </reference-descriptor>
+  </class-descriptor>
+
+  <class-descriptor class="org.kuali.rice.kew.impl.peopleflow.PeopleFlowBo" table="KREW_PPL_FLW_T">
+    <field-descriptor name="id" column="PPL_FLW_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KREW_PPL_FLW_S"/>
+    <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
+    <field-descriptor name="namespace" column="NMSPC_CD" jdbc-type="VARCHAR" />
+    <field-descriptor name="typeId" column="TYP_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="active" column="ACTV" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+    <collection-descriptor name="attributes" element-class-ref="org.kuali.rice.kew.impl.peopleflow.PeopleFlowAttributeBo"
+      auto-retrieve="true" auto-update="true" proxy="false">
+      <inverse-foreignkey field-ref="peopleFlowId" />
+    </collection-descriptor>
+    <collection-descriptor name="members" element-class-ref="org.kuali.rice.kew.impl.peopleflow.PeopleFlowMemberBo"
+      auto-retrieve="true" auto-update="true" proxy="false">
+      <inverse-foreignkey field-ref="peopleFlowId" />
+    </collection-descriptor>
+  </class-descriptor>
+
+  <class-descriptor class="org.kuali.rice.kew.impl.peopleflow.PeopleFlowAttributeBo" table="KREW_PPL_FLW_ATTR_T">
+    <field-descriptor name="id" column="PPL_FLW_ATTR_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true"
+                      sequence-name="KREW_PPL_FLW_ATTR_S"/>
+    <field-descriptor name="peopleFlowId" column="PPL_FLW_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="value" column="ATTR_VAL" jdbc-type="VARCHAR" />
+    <field-descriptor name="attributeDefinitionId" column="ATTR_DEFN_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+    <reference-descriptor name="attributeDefinition" class-ref="org.kuali.rice.kew.impl.type.KewAttributeDefinitionBo"
+                          auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+      <foreignkey field-ref="attributeDefinitionId" />
+    </reference-descriptor>
+  </class-descriptor>
+
+  <class-descriptor class="org.kuali.rice.kew.impl.peopleflow.PeopleFlowMemberBo" table="KREW_PPL_FLW_MBR_T">
+    <field-descriptor name="id" column="PPL_FLW_MBR_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KREW_PPL_FLW_MBR_S"/>
+    <field-descriptor name="peopleFlowId" column="PPL_FLW_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="memberTypeCode" column="MBR_TYP_CD" jdbc-type="VARCHAR" />
+    <field-descriptor name="memberId" column="MBR_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="priority" column="PRIO" jdbc-type="INTEGER" />
+    <field-descriptor name="delegatedFromId" column="DLGT_FRM_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+    <!-- references? -->
+  </class-descriptor>
+
 </descriptor-repository>

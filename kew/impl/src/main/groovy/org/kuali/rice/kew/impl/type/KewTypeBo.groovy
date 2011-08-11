@@ -7,8 +7,13 @@ public class KewTypeBo extends org.kuali.rice.krad.bo.PersistableBusinessObjectB
 	def String name
 	def String namespace
 	def String serviceName
-	def boolean active
+	def boolean active = true
 	def List<KewTypeAttributeBo> attributes
+
+    public List<KewTypeAttributeBo> getAttributes() {
+        if (attributes == null) attributes = new ArrayList<KewTypeAttributeBo>();
+        return attributes;
+    }
 
 //	/**
 //	* Converts a mutable bo to it's immutable counterpart

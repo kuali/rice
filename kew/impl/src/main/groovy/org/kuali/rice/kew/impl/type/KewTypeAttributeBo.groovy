@@ -9,8 +9,17 @@ public class KewTypeAttributeBo extends org.kuali.rice.krad.bo.PersistableBusine
 	def String typeId
 	def String attributeDefinitionId
 	def Integer sequenceNumber
-	def boolean active
+	def boolean active = true
 	def KewAttributeDefinitionBo attributeDefinition
+
+    public void setAttributeDefinition(KewAttributeDefinitionBo attrDef) {
+        if (attrDef != null) {
+            attributeDefinitionId = attrDef.getId()
+        } else {
+            attributeDefinitionId = null;
+        }
+        this.attributeDefinition = attrDef;
+    }
 
 //	/**
 //	 * Converts a mutable bo to it's immutable counterpart

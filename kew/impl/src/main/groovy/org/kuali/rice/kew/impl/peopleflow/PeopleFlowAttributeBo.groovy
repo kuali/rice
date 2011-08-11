@@ -19,4 +19,13 @@ class PeopleFlowAttributeBo extends PersistableBusinessObjectBase {
     def String peopleFlowId
 
 	def KewAttributeDefinitionBo attributeDefinition
+
+    public void setAttributeDefinition(KewAttributeDefinitionBo attrDef) {
+        if (attrDef != null) {
+            this.attributeDefinitionId = attrDef.getId();
+        } else {
+            this.attributeDefinitionId = null;
+        }
+        this.attributeDefinition = attrDef;
+    }
 }

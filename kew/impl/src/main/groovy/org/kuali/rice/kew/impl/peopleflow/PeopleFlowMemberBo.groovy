@@ -16,5 +16,5 @@ class PeopleFlowMemberBo extends PersistableBusinessObjectBase {
     def String memberTypeCode
     def String memberId
     def Integer priority
-    def String delegateFromId
+    def String delegatedFromId
 }

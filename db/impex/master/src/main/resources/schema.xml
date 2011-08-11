@@ -491,6 +491,20 @@
             <index-column name="APP_DOC_STAT_TO"/>
         </index>
     </table>
+    <table name="KREW_ATTR_DEFN_T">
+        <column name="ATTR_DEFN_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="NM" required="true" size="100" type="VARCHAR"/>
+        <column name="NMSPC_CD" required="true" size="40" type="VARCHAR"/>
+        <column name="LBL" size="40" type="VARCHAR"/>
+        <column default="Y" name="ACTV" required="true" size="1" type="VARCHAR"/>
+        <column name="CMPNT_NM" size="100" type="VARCHAR"/>
+        <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <column name="DESC_TXT" size="40" type="VARCHAR"/>
+        <unique name="KREW_ATTR_DEFN_TC1">
+            <unique-column name="NM"/>
+            <unique-column name="NMSPC_CD"/>
+        </unique>
+    </table>
     <table name="KREW_ATT_T">
         <column name="ATTACHMENT_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="NTE_ID" size="40" type="VARCHAR"/>
@@ -857,6 +871,75 @@
             <index-column name="ACTN_RQST_ID"/>
         </index>
     </table>
+    <table name="KREW_PPL_FLW_ATTR_T">
+        <column name="PPL_FLW_ATTR_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="PPL_FLW_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="ATTR_DEFN_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="ATTR_VAL" size="400" type="VARCHAR"/>
+        <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <foreign-key foreignTable="KREW_ATTR_DEFN_T" name="KREW_PPL_FLW_ATTR_FK2">
+            <reference foreign="ATTR_DEFN_ID" local="ATTR_DEFN_ID"/>
+        </foreign-key>
+        <foreign-key foreignTable="KREW_PPL_FLW_T" name="KREW_PPL_FLW_ATTR_FK1">
+            <reference foreign="PPL_FLW_ID" local="PPL_FLW_ID"/>
+        </foreign-key>
+        <index name="KREW_PPL_FLW_ATTR_TI1">
+            <index-column name="PPL_FLW_ID"/>
+        </index>
+        <index name="KREW_PPL_FLW_ATTR_TI2">
+            <index-column name="ATTR_DEFN_ID"/>
+        </index>
+    </table>
+    <table name="KREW_PPL_FLW_MBR_T">
+        <column name="PPL_FLW_MBR_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="PPL_FLW_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="MBR_TYP_CD" required="true" size="1" type="VARCHAR"/>
+        <column name="MBR_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="PRIO" size="8" type="DECIMAL"/>
+        <column name="DLGT_FRM_ID" size="40" type="VARCHAR"/>
+        <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <foreign-key foreignTable="KREW_PPL_FLW_MBR_T" name="KREW_PPL_FLW_MBR_FK2">
+            <reference foreign="PPL_FLW_MBR_ID" local="DLGT_FRM_ID"/>
+        </foreign-key>
+        <foreign-key foreignTable="KREW_PPL_FLW_T" name="KREW_PPL_FLW_MBR_FK1">
+            <reference foreign="PPL_FLW_ID" local="PPL_FLW_ID"/>
+        </foreign-key>
+        <unique name="KREW_PPL_FLW_MBR_TC1">
+            <unique-column name="PPL_FLW_ID"/>
+            <unique-column name="MBR_TYP_CD"/>
+            <unique-column name="MBR_ID"/>
+            <unique-column name="DLGT_FRM_ID"/>
+        </unique>
+        <index name="KREW_PPL_FLW_MBR_FK2">
+            <index-column name="DLGT_FRM_ID"/>
+        </index>
+        <index name="KREW_PPL_FLW_MBR_TI1">
+            <index-column name="PPL_FLW_ID"/>
+        </index>
+        <index name="KREW_PPL_FLW_MBR_TI2">
+            <index-column name="PPL_FLW_ID"/>
+            <index-column name="PRIO"/>
+        </index>
+    </table>
+    <table name="KREW_PPL_FLW_T">
+        <column name="PPL_FLW_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="NM" required="true" size="100" type="VARCHAR"/>
+        <column name="NMSPC_CD" required="true" size="40" type="VARCHAR"/>
+        <column name="TYP_ID" required="true" size="40" type="VARCHAR"/>
+        <column default="Y" name="ACTV" required="true" size="1" type="VARCHAR"/>
+        <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <column name="DESC_TXT" size="4000" type="VARCHAR"/>
+        <foreign-key foreignTable="KREW_TYP_T" name="KREW_PPL_FLW_FK1">
+            <reference foreign="TYP_ID" local="TYP_ID"/>
+        </foreign-key>
+        <unique name="KREW_PPL_FLW_TC1">
+            <unique-column name="NM"/>
+            <unique-column name="NMSPC_CD"/>
+        </unique>
+        <index name="KREW_PPL_FLW_FK1">
+            <index-column name="TYP_ID"/>
+        </index>
+    </table>
     <table name="KREW_RIA_DOCTYPE_MAP_T">
         <column name="ID" primaryKey="true" size="22" type="DECIMAL"/>
         <column name="RIA_DOC_TYPE_NAME" size="100" type="VARCHAR"/>
@@ -1192,6 +1275,42 @@
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <unique name="KREW_STYLE_TC0">
             <unique-column name="OBJ_ID"/>
+        </unique>
+    </table>
+    <table name="KREW_TYP_ATTR_T">
+        <column name="TYP_ATTR_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="SEQ_NO" required="true" size="5" type="DECIMAL"/>
+        <column name="TYP_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="ATTR_DEFN_ID" required="true" size="255" type="VARCHAR"/>
+        <column default="Y" name="ACTV" required="true" size="1" type="VARCHAR"/>
+        <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <foreign-key foreignTable="KREW_ATTR_DEFN_T" name="KREW_TYP_ATTR_FK1">
+            <reference foreign="ATTR_DEFN_ID" local="ATTR_DEFN_ID"/>
+        </foreign-key>
+        <foreign-key foreignTable="KREW_TYP_T" name="KREW_TYP_ATTR_FK2">
+            <reference foreign="TYP_ID" local="TYP_ID"/>
+        </foreign-key>
+        <unique name="KREW_TYP_ATTR_TC1">
+            <unique-column name="TYP_ID"/>
+            <unique-column name="ATTR_DEFN_ID"/>
+        </unique>
+        <index name="KREW_TYP_ATTR_TI1">
+            <index-column name="ATTR_DEFN_ID"/>
+        </index>
+        <index name="KREW_TYP_ATTR_TI2">
+            <index-column name="TYP_ID"/>
+        </index>
+    </table>
+    <table name="KREW_TYP_T">
+        <column name="TYP_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="NM" required="true" size="100" type="VARCHAR"/>
+        <column name="NMSPC_CD" required="true" size="40" type="VARCHAR"/>
+        <column name="SRVC_NM" size="200" type="VARCHAR"/>
+        <column default="Y" name="ACTV" required="true" size="1" type="VARCHAR"/>
+        <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <unique name="KREW_TYP_TC1">
+            <unique-column name="NM"/>
+            <unique-column name="NMSPC_CD"/>
         </unique>
     </table>
     <table name="KREW_USR_OPTN_T">
@@ -3562,6 +3681,7 @@
     <sequence name="KREW_ACTN_LIST_OPTN_S" nextval="1269"/>
     <sequence name="KREW_ACTN_RQST_S" nextval="2369"/>
     <sequence name="KREW_ACTN_TKN_S" nextval="2329"/>
+    <sequence name="KREW_ATTR_DEFN_S" nextval="10000"/>
     <sequence name="KREW_DOC_HDR_S" nextval="3000"/>
     <sequence name="KREW_DOC_LNK_S" nextval="2000"/>
     <sequence name="KREW_DOC_NTE_S" nextval="2020"/>
@@ -3570,6 +3690,9 @@
     <sequence name="KREW_EDL_S" nextval="2022"/>
     <sequence name="KREW_HLP_S" nextval="100"/>
     <sequence name="KREW_OUT_BOX_ITM_S" nextval="10043"/>
+    <sequence name="KREW_PPL_FLW_ATTR_S" nextval="10000"/>
+    <sequence name="KREW_PPL_FLW_MBR_S" nextval="10000"/>
+    <sequence name="KREW_PPL_FLW_S" nextval="10000"/>
     <sequence name="KREW_RIA_DOCTYPE_MAP_ID_S" nextval="1000"/>
     <sequence name="KREW_RSP_S" nextval="2065"/>
     <sequence name="KREW_RTE_NODE_CFG_PARM_S" nextval="2456"/>
@@ -3578,6 +3701,8 @@
     <sequence name="KREW_RULE_EXPR_S" nextval="2002"/>
     <sequence name="KREW_RULE_TMPL_OPTN_S" nextval="2020"/>
     <sequence name="KREW_SRCH_ATTR_S" nextval="2060"/>
+    <sequence name="KREW_TYP_ATTR_S" nextval="10000"/>
+    <sequence name="KREW_TYP_S" nextval="10000"/>
     <sequence name="KREW_USR_S" nextval="100000000000"/>
     <sequence name="KRIM_ATTR_DATA_ID_S" nextval="10000"/>
     <sequence name="KRIM_ATTR_DEFN_ID_S" nextval="10000"/>

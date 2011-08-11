@@ -15,19 +15,23 @@
  */
 package edu.samplu.travel.krad.test;
 
+import com.thoughtworks.selenium.DefaultSelenium;
+import com.thoughtworks.selenium.Selenium;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.SeleneseTestCase;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * TODO Administrator don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UIFComponentValidationRegexPatternIT extends SeleneseTestCase{
+public class UIFComponentValidationRegexPatternIT {
+    private Selenium selenium;
+
     @Before
     public void setUp() throws Exception {
         selenium = new DefaultSelenium("localhost", 4444, "*firefox", "http://localhost:8080/");

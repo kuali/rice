@@ -16,21 +16,23 @@
 package edu.samplu.travel.test;
 
 import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.SeleneseTestCase;
+import com.thoughtworks.selenium.Selenium;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 /**
  * TODO Administrator don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class FiscalOfficerInfoMaintenanceNewIT extends SeleneseTestCase{
-    
+public class FiscalOfficerInfoMaintenanceNewIT {
+    private Selenium selenium;
     @Before
     public void setUp() throws Exception { 
         //---- 3rd parameter(*firefox) can also be replaced by *chrome , *googlechrome.
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", "http://localhost:8080/"); 
+        selenium = new DefaultSelenium("localhost", 4444, "*firefox", "http://localhost:8080/");
         selenium.start();
     }
     

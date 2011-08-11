@@ -100,7 +100,6 @@
                 <configuration>
                   <background>true</background>
                   <logOutput>true</logOutput>
-                  <multiWindow>true</multiWindow>
                 </configuration>
               </execution>
               <execution>
@@ -208,8 +207,8 @@
     </dependency>
 
     <dependency>
-      <groupId>org.seleniumhq.selenium.client-drivers</groupId>
-      <artifactId>selenium-java-client-driver</artifactId>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-java</artifactId>
     </dependency>
 
   </dependencies>

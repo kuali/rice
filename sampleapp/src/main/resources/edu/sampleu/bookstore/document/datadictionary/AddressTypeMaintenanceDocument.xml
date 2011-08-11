@@ -14,8 +14,8 @@
       </list>
     </property>
   </bean>
-  <bean id="AddressTypeBS-MaintenanceView" parent="MaintenanceView">
-    <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.AddressType"/>
+  <bean id="BSAddressType-MaintenanceView" parent="MaintenanceView">
+    <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.BSAddressType"/>
     <property name="items">
       <list merge="true">
         <bean parent="MaintenanceGroupSectionGridLayout">
@@ -32,7 +32,7 @@
     </property>
   </bean>
   <bean id="AddressTypeMaintenanceDocument" parent="uifMaintenanceDocumentEntry">
-    <property name="dataObjectClass" value="edu.sampleu.bookstore.bo.AddressType"/>
+    <property name="dataObjectClass" value="edu.sampleu.bookstore.bo.BSAddressType"/>
     <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl"/>
     <property name="documentTypeName" value="AddressTypeMaintenanceDocument"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizerBase"/>

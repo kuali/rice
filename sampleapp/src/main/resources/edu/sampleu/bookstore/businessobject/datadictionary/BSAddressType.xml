@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
-  <bean id="AddressType" parent="AddressType-parentBean"/>
-  <bean id="AddressType-parentBean" abstract="true" parent="DataObjectEntry">
-    <property name="dataObjectClass" value="edu.sampleu.bookstore.bo.AddressType"/>
+  <bean id="BSAddresType" parent="BSAddresType-parentBean"/>
+  <bean id="BSAddresType-parentBean" abstract="true" parent="DataObjectEntry">
+    <property name="dataObjectClass" value="edu.sampleu.bookstore.bo.BSAddressType"/>
     <property name="objectLabel" value="Address Type"/>
     <property name="attributes">
       <list>
-        <ref bean="AddressType-type"/>
-        <ref bean="AddressType-description"/>
-        <ref bean="AddressType-activeBean"/>
+        <ref bean="BSAddresType-type"/>
+        <ref bean="BSAddresType-description"/>
+        <ref bean="BSAddresType-activeBean"/>
       </list>
     </property>
     <property name="titleAttribute" value="type"/>
@@ -18,8 +19,8 @@
       </list>
     </property>
   </bean>
-  <bean id="AddressType-type" parent="AddressType-type-parentBean"/>
-  <bean id="AddressType-type-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="BSAddresType-type" parent="BSAddresType-type-parentBean"/>
+  <bean id="BSAddresType-type-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="type"/>
     <property name="forceUppercase" value="true"/>
     <property name="label" value="Address Type"/>
@@ -35,8 +36,8 @@
     <property name="summary" value="Type identifying the Authr."/>
     <property name="description" value="Type identifying the Authr."/>
   </bean>
-  <bean id="AddressType-description" parent="AddressType-description-parentBean"/>
-  <bean id="AddressType-description-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="BSAddresType-description" parent="BSAddresType-description-parentBean"/>
+  <bean id="BSAddresType-description-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="description"/>
     <property name="forceUppercase" value="false"/>
     <property name="label" value="Address Description"/>
@@ -52,8 +53,8 @@
     <property name="summary" value="Description for the address type."/>
     <property name="description" value="Description for the address type."/>
   </bean>
-  <bean id="AddressType-activeBean" parent="AddressType-activeBean-parentBean"/>
-  <bean id="AddressType-activeBean-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="BSAddresType-activeBean" parent="BSAddresType-activeBean-parentBean"/>
+  <bean id="BSAddresType-activeBean-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="active"/>
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="active"/>
@@ -69,9 +70,9 @@
     <property name="label" value="Active Indicator"/>
     <property name="description" value="This attribute is used to describe whether the associated object is active or inactive."/>
   </bean>
-  <bean id="AddressType-InquiryView" parent="InquiryView">
+  <bean id="BSAddresType-InquiryView" parent="InquiryView">
     <property name="title" value="Address Type Inquiry"/>
-    <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.AddressType"/>
+    <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.BSAddressType"/>
     <property name="Items">
       <list>
         <bean parent="GroupSectionGridLayout">
@@ -88,22 +89,23 @@
       </list>
     </property>
   </bean>
-  <bean id="AddressType-LookupView" parent="LookupView">
-    <property name="title" value="Address Type Lookup"/>
-    <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.AddressType"/>
-    <property name="criteriaFields">
-      <list>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="type"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="description"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="active"/>
-      </list>
-    </property>
-    <property name="resultFields">
-      <list>
-        <bean parent="AttributeField" p:propertyName="type"/>
-        <bean parent="AttributeField" p:propertyName="description"/>
-        <bean parent="AttributeField" p:propertyName="active"/>
-      </list>
-    </property>
-  </bean>
+  <bean id="BSAddresType-LookupView" parent="LookupView">
+		<property name="title" value="Address Type Book Store Lookup" />
+		<property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.BSAddressType" />
+		<property name="criteriaFields">
+			<list>
+				<bean parent="LookupCriteriaAttributeField" p:propertyName="type" />
+				<bean parent="LookupCriteriaAttributeField" p:propertyName="description" />
+				<bean parent="LookupCriteriaAttributeField" p:propertyName="active" />
+			</list>
+		</property>
+		<property name="resultFields">
+			<list>
+				<bean parent="AttributeField" p:propertyName="type" />
+				<bean parent="AttributeField" p:propertyName="description" />
+				<bean parent="AttributeField" p:propertyName="active" />
+			</list>
+		</property>
+	</bean>
+  
 </beans>

@@ -192,7 +192,7 @@
 		</collection-descriptor>
     </class-descriptor>
     
-    <class-descriptor class="edu.sampleu.bookstore.bo.AddressType" table="BK_ADDRESS_TYP_T">
+    <class-descriptor class="edu.sampleu.bookstore.bo.BSAddressType" table="BK_ADDRESS_TYP_T">
         <field-descriptor name="type" column="ADDR_TYP" jdbc-type="VARCHAR" primarykey="true" />
         <field-descriptor name="description" column="DESC_TXT" jdbc-type="VARCHAR"/>
         <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>
@@ -213,7 +213,7 @@
         <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"/>
         <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"/>
         
-        <reference-descriptor name="addressType" class-ref="edu.sampleu.bookstore.bo.AddressType" auto-retrieve="true">
+        <reference-descriptor name="addressType" class-ref="edu.sampleu.bookstore.bo.BSAddressType" auto-retrieve="true">
         	<foreignkey field-ref="type" />
 		</reference-descriptor>
     </class-descriptor>

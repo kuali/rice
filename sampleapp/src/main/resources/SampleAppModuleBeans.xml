@@ -84,12 +84,12 @@
                 <value>classpath:edu/sampleu/travel/uif/FiscalOfficerLookup.xml</value>
                 <value>classpath:edu/sampleu/travel/uif/TravelAlternateViews.xml</value>
                 <value>classpath:edu/sampleu/bookstore/businessobject/datadictionary/BookType.xml</value>
-                <value>classpath:edu/sampleu/bookstore/businessobject/datadictionary/AddressType.xml</value>
                 <value>classpath:edu/sampleu/bookstore/businessobject/datadictionary/BookOrder.xml</value>
                 <value>classpath:edu/sampleu/bookstore/businessobject/datadictionary/Account.xml</value>
                 <value>classpath:edu/sampleu/bookstore/businessobject/datadictionary/Address.xml</value>
                 <value>classpath:edu/sampleu/bookstore/businessobject/datadictionary/Book.xml</value>
                 <value>classpath:edu/sampleu/bookstore/businessobject/datadictionary/Author.xml</value>
+                <value>classpath:edu/sampleu/bookstore/businessobject/datadictionary/BSAddressType.xml</value>
                 <value>classpath:edu/sampleu/bookstore/document/datadictionary/AddressTypeMaintenanceDocument.xml</value>
                 <value>classpath:edu/sampleu/bookstore/document/datadictionary/AuthorMaintenanceDocument.xml</value>
                 <value>classpath:edu/sampleu/bookstore/document/datadictionary/BookMaintenanceDocument.xml</value>

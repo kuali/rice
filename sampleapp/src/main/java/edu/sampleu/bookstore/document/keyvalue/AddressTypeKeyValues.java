@@ -15,7 +15,7 @@
  */
 package edu.sampleu.bookstore.document.keyvalue;
 
-import edu.sampleu.bookstore.bo.AddressType;
+import edu.sampleu.bookstore.bo.BSAddressType;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -36,10 +36,10 @@ public class AddressTypeKeyValues extends KeyValuesBase {
     public List getKeyValues() {
         List keyValues = new ArrayList();
 
-        Collection<AddressType> bos = KRADServiceLocator.getBusinessObjectService().findAll( AddressType.class );
+        Collection<BSAddressType> bos = KRADServiceLocator.getBusinessObjectService().findAll( BSAddressType.class );
         
         keyValues.add(new ConcreteKeyValue("", ""));
-        for ( AddressType typ : bos ) {
+        for ( BSAddressType typ : bos ) {
         	keyValues.add(new ConcreteKeyValue(typ.getType(), typ.getType()));
         }
 

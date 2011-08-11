@@ -21,7 +21,7 @@ public class Address extends PersistableBusinessObjectBase implements MutableIna
 	private Long authorId;
 	private boolean active = true;
 
-	private AddressType addressType;
+	private BSAddressType addressType;
 
 	
 	
@@ -64,11 +64,11 @@ public class Address extends PersistableBusinessObjectBase implements MutableIna
 		this.type = type;
 	}
 
-	public AddressType getAddressType() {
+	public BSAddressType getAddressType() {
 		return addressType;
 	}
 
-	public void setAddressType(AddressType addressType) {
+	public void setAddressType(BSAddressType addressType) {
 		this.addressType = addressType;
 	}
 

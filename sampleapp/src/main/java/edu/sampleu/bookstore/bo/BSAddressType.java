@@ -7,7 +7,7 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
  * AddressType Business Object class file relative to AddressType maintenance object.
  */
 
-public class AddressType extends PersistableBusinessObjectBase implements MutableInactivatable {
+public class BSAddressType extends PersistableBusinessObjectBase implements MutableInactivatable {
 	
 	private String type;
 	private String description;

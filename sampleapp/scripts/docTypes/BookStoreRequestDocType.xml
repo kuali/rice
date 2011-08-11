@@ -64,7 +64,7 @@
 			<parent>BookstoreParentMaintenanceDocument</parent>
 			<description>Create or Update a Address Type</description>
 			<label>Address Type Maintenance</label>
-			<docHandler>${application.url}/spring/maintenance?methodToCall=docHandler&amp;dataObjectClassName=edu.sampleu.bookstore.bo.AddressType</docHandler>
+			<docHandler>${application.url}/spring/maintenance?methodToCall=docHandler&amp;dataObjectClassName=edu.sampleu.bookstore.bo.BSAddressType</docHandler>
 		</documentType>
 <!--		<documentType>-->
 <!--			<name>BookOrderDocumentType</name>-->

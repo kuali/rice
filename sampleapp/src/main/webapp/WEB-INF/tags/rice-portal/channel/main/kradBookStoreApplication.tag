@@ -23,7 +23,7 @@
      <li><portal:portalLink displayTitle="true" title="Book Order Request " url="${ConfigProperties.application.url}/bookOrder.do?methodToCall=docHandler&command=initiate&docTypeName=BookOrderDocumentType" /></li>
   	 <li><portal:portalLink displayTitle="true" title="Book Type Lookup" url="${ConfigProperties.application.url}/spring/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.bookstore.bo.BookType&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
 	 <li><portal:portalLink displayTitle="true" title="Book Lookup" url="${ConfigProperties.application.url}/spring/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.bookstore.bo.Book&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
-	 <li><portal:portalLink displayTitle="true" title="Address Type Lookup" url="${ConfigProperties.application.url}/spring/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.bookstore.bo.AddressType&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
+	 <li><portal:portalLink displayTitle="true" title="Address Type Lookup" url="${ConfigProperties.application.url}/spring/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.bookstore.bo.BSAddressType&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
 	 <li><portal:portalLink displayTitle="true" title="Author Lookup" url="${ConfigProperties.application.url}/spring/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.bookstore.bo.Author&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
   </ul>
 

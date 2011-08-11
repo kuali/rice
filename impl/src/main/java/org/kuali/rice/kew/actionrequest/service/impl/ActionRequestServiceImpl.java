@@ -730,7 +730,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         return requests;
     }
 
-    public List findPendingByDocRequestCdNodeName(String documentId, String requestCode, String nodeName) {
+    public List<ActionRequestValue> findPendingByDocRequestCdNodeName(String documentId, String requestCode, String nodeName) {
         List<ActionRequestValue> requests = new ArrayList<ActionRequestValue>();
         for (Object object : getActionRequestDAO().findAllPendingByDocId(documentId))
         {

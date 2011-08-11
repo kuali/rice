@@ -1,0 +1,340 @@
+package org.kuali.rice.kew.api.rule;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.joda.time.DateTime;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
+import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
+import org.w3c.dom.Element;
+
+@XmlRootElement(name = Rule.Constants.ROOT_ELEMENT_NAME)
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlType(name = Rule.Constants.TYPE_NAME, propOrder = {
+    Rule.Elements.RULE_TEMPLATE_ID,
+    Rule.Elements.ACTIVE,
+    Rule.Elements.DESCRIPTION,
+    Rule.Elements.DOC_TYPE_NAME,
+    Rule.Elements.FROM_DATE,
+    Rule.Elements.TO_DATE,
+    Rule.Elements.FORCE_ACTION,
+    Rule.Elements.RULE_RESPONSIBILITIES,
+    Rule.Elements.RULE_EXTENSIONS,
+    Rule.Elements.RULE_TEMPLATE_NAME,
+    CoreConstants.CommonElements.FUTURE_ELEMENTS
+})
+public final class Rule
+    extends AbstractDataTransferObject
+    implements RuleContract
+{
+
+    @XmlElement(name = Elements.RULE_TEMPLATE_ID, required = false)
+    private final String ruleTemplateId;
+    @XmlElement(name = Elements.ACTIVE, required = false)
+    private final boolean active;
+    @XmlElement(name = Elements.DESCRIPTION, required = false)
+    private final String description;
+    @XmlElement(name = Elements.DOC_TYPE_NAME, required = false)
+    private final String docTypeName;
+    @XmlElement(name = Elements.FROM_DATE, required = false)
+    private final DateTime fromDate;
+    @XmlElement(name = Elements.TO_DATE, required = false)
+    private final DateTime toDate;
+    @XmlElement(name = Elements.FORCE_ACTION, required = false)
+    private final boolean forceAction;
+    @XmlElement(name = Elements.RULE_RESPONSIBILITIES, required = false)
+    private final List<RuleResponsibility> ruleResponsibilities;
+    @XmlElement(name = Elements.RULE_EXTENSIONS, required = false)
+    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+    private final Map<String, String> ruleExtensions;
+    @XmlElement(name = Elements.RULE_TEMPLATE_NAME, required = false)
+    private final String ruleTemplateName;
+    @SuppressWarnings("unused")
+    @XmlAnyElement
+    private final Collection<Element> _futureElements = null;
+
+    /**
+     * Private constructor used only by JAXB.
+     * 
+     */
+    private Rule() {
+        this.ruleTemplateId = null;
+        this.active = false;
+        this.description = null;
+        this.docTypeName = null;
+        this.fromDate = null;
+        this.toDate = null;
+        this.forceAction = false;
+        this.ruleResponsibilities = null;
+        this.ruleExtensions = null;
+        this.ruleTemplateName = null;
+    }
+
+    private Rule(Builder builder) {
+        this.ruleTemplateId = builder.getRuleTemplateId();
+        this.active = builder.isActive();
+        this.description = builder.getDescription();
+        this.docTypeName = builder.getDocTypeName();
+        this.fromDate = builder.getFromDate();
+        this.toDate = builder.getToDate();
+        this.forceAction = builder.isForceAction();
+        if (CollectionUtils.isNotEmpty(builder.getRuleResponsibilities())) {
+            List<RuleResponsibility> responsibilities = new ArrayList<RuleResponsibility>();
+            for (RuleResponsibility.Builder b : builder.getRuleResponsibilities()) {
+                responsibilities.add(b.build());
+            }
+            this.ruleResponsibilities = responsibilities;
+        } else {
+            this.ruleResponsibilities = Collections.emptyList();
+        }
+        this.ruleExtensions = builder.getRuleExtensions();
+        this.ruleTemplateName = builder.getRuleTemplateName();
+    }
+
+    @Override
+    public String getRuleTemplateId() {
+        return this.ruleTemplateId;
+    }
+
+    @Override
+    public boolean isActive() {
+        return this.active;
+    }
+
+    @Override
+    public String getDescription() {
+        return this.description;
+    }
+
+    @Override
+    public String getDocTypeName() {
+        return this.docTypeName;
+    }
+
+    @Override
+    public DateTime getFromDate() {
+        return this.fromDate;
+    }
+
+    @Override
+    public DateTime getToDate() {
+        return this.toDate;
+    }
+
+    @Override
+    public boolean isForceAction() {
+        return this.forceAction;
+    }
+
+    @Override
+    public List<RuleResponsibility> getRuleResponsibilities() {
+        return this.ruleResponsibilities;
+    }
+
+    @Override
+    public Map<String, String> getRuleExtensions() {
+        return this.ruleExtensions;
+    }
+
+    @Override
+    public String getRuleTemplateName() {
+        return this.ruleTemplateName;
+    }
+
+
+    /**
+     * A builder which can be used to construct {@link Rule} instances.  Enforces the constraints of the {@link RuleContract}.
+     * 
+     */
+    public final static class Builder
+        implements Serializable, ModelBuilder, RuleContract
+    {
+
+        private String ruleTemplateId;
+        private boolean active;
+        private String description;
+        private String docTypeName;
+        private DateTime fromDate;
+        private DateTime toDate;
+        private boolean forceAction;
+        private List<RuleResponsibility.Builder> ruleResponsibilities;
+        private Map<String, String> ruleExtensions;
+        private String ruleTemplateName;
+
+        private Builder() {
+            setActive(true);
+        }
+
+        public static Builder create() {
+            return new Builder();
+        }
+
+        public static Builder create(RuleContract contract) {
+            if (contract == null) {
+                throw new IllegalArgumentException("contract was null");
+            }
+            Builder builder = create();
+            builder.setRuleTemplateId(contract.getRuleTemplateId());
+            builder.setActive(contract.isActive());
+            builder.setDescription(contract.getDescription());
+            builder.setDocTypeName(contract.getDocTypeName());
+            builder.setFromDate(contract.getFromDate());
+            builder.setToDate(contract.getToDate());
+            builder.setForceAction(contract.isForceAction());
+            if (CollectionUtils.isNotEmpty(contract.getRuleResponsibilities())) {
+                List<RuleResponsibility.Builder> responsibilityBuilders = new ArrayList<RuleResponsibility.Builder>();
+                for (RuleResponsibilityContract c : contract.getRuleResponsibilities()) {
+                    responsibilityBuilders.add(RuleResponsibility.Builder.create(c));
+                }
+                builder.setRuleResponsibilities(responsibilityBuilders);
+            } else {
+                builder.setRuleResponsibilities(Collections.<RuleResponsibility.Builder>emptyList());
+            }
+            builder.setRuleExtensions(contract.getRuleExtensions());
+            builder.setRuleTemplateName(contract.getRuleTemplateName());
+            return builder;
+        }
+
+        public Rule build() {
+            return new Rule(this);
+        }
+
+        @Override
+        public String getRuleTemplateId() {
+            return this.ruleTemplateId;
+        }
+
+        @Override
+        public boolean isActive() {
+            return this.active;
+        }
+
+        @Override
+        public String getDescription() {
+            return this.description;
+        }
+
+        @Override
+        public String getDocTypeName() {
+            return this.docTypeName;
+        }
+
+        @Override
+        public DateTime getFromDate() {
+            return this.fromDate;
+        }
+
+        @Override
+        public DateTime getToDate() {
+            return this.toDate;
+        }
+
+        @Override
+        public boolean isForceAction() {
+            return this.forceAction;
+        }
+
+        @Override
+        public List<RuleResponsibility.Builder> getRuleResponsibilities() {
+            return this.ruleResponsibilities;
+        }
+
+        @Override
+        public Map<String, String> getRuleExtensions() {
+            return this.ruleExtensions;
+        }
+
+        @Override
+        public String getRuleTemplateName() {
+            return this.ruleTemplateName;
+        }
+
+        public void setRuleTemplateId(String ruleTemplateId) {
+            this.ruleTemplateId = ruleTemplateId;
+        }
+
+        public void setActive(boolean active) {
+            this.active = active;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public void setDocTypeName(String docTypeName) {
+            this.docTypeName = docTypeName;
+        }
+
+        public void setFromDate(DateTime fromDate) {
+            this.fromDate = fromDate;
+        }
+
+        public void setToDate(DateTime toDate) {
+            this.toDate = toDate;
+        }
+
+        public void setForceAction(boolean forceAction) {
+            this.forceAction = forceAction;
+        }
+
+        public void setRuleResponsibilities(List<RuleResponsibility.Builder> ruleResponsibilities) {
+            this.ruleResponsibilities = Collections.unmodifiableList(ruleResponsibilities);
+        }
+
+        public void setRuleExtensions(Map<String, String> ruleExtensions) {
+            this.ruleExtensions = Collections.unmodifiableMap(ruleExtensions);
+        }
+
+        public void setRuleTemplateName(String ruleTemplateName) {
+            this.ruleTemplateName = ruleTemplateName;
+        }
+
+    }
+
+
+    /**
+     * Defines some internal constants used on this class.
+     * 
+     */
+    static class Constants {
+
+        final static String ROOT_ELEMENT_NAME = "rule";
+        final static String TYPE_NAME = "RuleType";
+
+    }
+
+
+    /**
+     * A private class which exposes constants which define the XML element names to use when this object is marshalled to XML.
+     * 
+     */
+    static class Elements {
+
+        final static String RULE_TEMPLATE_ID = "ruleTemplateId";
+        final static String ACTIVE = "active";
+        final static String DESCRIPTION = "description";
+        final static String DOC_TYPE_NAME = "docTypeName";
+        final static String FROM_DATE = "fromDate";
+        final static String TO_DATE = "toDate";
+        final static String FORCE_ACTION = "forceAction";
+        final static String RULE_RESPONSIBILITIES = "ruleResponsibilities";
+        final static String RULE_EXTENSIONS = "ruleExtensions";
+        final static String RULE_TEMPLATE_NAME = "ruleTemplateName";
+
+    }
+
+}

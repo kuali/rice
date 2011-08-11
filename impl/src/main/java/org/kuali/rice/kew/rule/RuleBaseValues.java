@@ -16,11 +16,16 @@
  */
 package org.kuali.rice.kew.rule;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.bouncycastle.ocsp.OCSPReqGenerator;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.kew.api.rule.*;
+import org.kuali.rice.kew.api.rule.Rule;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.lookupable.MyColumns;
 import org.kuali.rice.kew.routeheader.DocumentContent;
@@ -52,6 +57,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -661,5 +667,46 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
 
     public void setPersonReviewerType(String personReviewerType) {
         this.personReviewerType = personReviewerType;
+    }
+
+        /**
+     * Converts a mutable bo to its immutable counterpart
+     * @param bo the mutable business object
+     * @return the immutable object
+     */
+    public static org.kuali.rice.kew.api.rule.Rule to(RuleBaseValues bo) {
+        if (bo == null) {
+            return null;
+        }
+        org.kuali.rice.kew.api.rule.Rule.Builder builder = org.kuali.rice.kew.api.rule.Rule.Builder.create();
+        builder.setRuleTemplateId(bo.ruleTemplateId);
+        builder.setActive(bo.getActiveInd().booleanValue());
+        builder.setDescription(bo.getDescription());
+        builder.setDocTypeName(bo.getDocTypeName());
+        builder.setFromDate(new DateTime(bo.getFromDate()));
+        builder.setToDate(new DateTime(bo.getToDate()));
+        builder.setForceAction(bo.getForceAction().booleanValue());
+        if (CollectionUtils.isNotEmpty(bo.getResponsibilities())) {
+            List<org.kuali.rice.kew.api.rule.RuleResponsibility.Builder> respBuilders =
+                    new ArrayList<org.kuali.rice.kew.api.rule.RuleResponsibility.Builder>();
+            for (RuleResponsibility resp : bo.getResponsibilities()) {
+                respBuilders.add(
+                        org.kuali.rice.kew.api.rule.RuleResponsibility.Builder.create(RuleResponsibility.to(resp)));
+            }
+            builder.setRuleResponsibilities(respBuilders);
+        } else {
+            builder.setRuleResponsibilities(
+                    Collections.<org.kuali.rice.kew.api.rule.RuleResponsibility.Builder>emptyList());
+        }
+
+        Map<String, String> extensions = new HashMap<String, String>();
+        for (RuleExtension ext : bo.getRuleExtensions()) {
+            for (RuleExtensionValue value : ext.getExtensionValues()) {
+                extensions.put(value.getKey(), value.getValue());
+            }
+        }
+        builder.setRuleExtensions(extensions);
+        builder.setRuleTemplateName(bo.getRuleTemplateName());
+        return builder.build();
     }
 }

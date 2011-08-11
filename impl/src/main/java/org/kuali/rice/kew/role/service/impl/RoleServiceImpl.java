@@ -50,7 +50,7 @@ public class RoleServiceImpl implements RoleService {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RoleServiceImpl.class);
 
-    public void reResolveRole(DocumentType documentType, String roleName) throws WorkflowException {
+    public void reResolveRole(DocumentType documentType, String roleName) {
     	String infoString = "documentType="+(documentType == null ? null : documentType.getName())+", role="+roleName;
         if (documentType == null ||
                 org.apache.commons.lang.StringUtils.isEmpty(roleName)) {
@@ -68,7 +68,7 @@ public class RoleServiceImpl implements RoleService {
 		}
     }
 
-    public void reResolveQualifiedRole(DocumentType documentType, String roleName, String qualifiedRoleNameLabel) throws WorkflowException {
+    public void reResolveQualifiedRole(DocumentType documentType, String roleName, String qualifiedRoleNameLabel) {
     	String infoString = "documentType="+(documentType == null ? null : documentType.getName())+", role="+roleName+", qualifiedRole="+qualifiedRoleNameLabel;
         if (documentType == null ||
                 org.apache.commons.lang.StringUtils.isEmpty(roleName) ||
@@ -91,7 +91,7 @@ public class RoleServiceImpl implements RoleService {
      *
      * route level and then filters in the approriate ones.
      */
-    public void reResolveQualifiedRole(DocumentRouteHeaderValue routeHeader, String roleName, String qualifiedRoleNameLabel) throws WorkflowException {
+    public void reResolveQualifiedRole(DocumentRouteHeaderValue routeHeader, String roleName, String qualifiedRoleNameLabel) {
         String infoString = "routeHeader="+(routeHeader == null ? null : routeHeader.getDocumentId())+", role="+roleName+", qualifiedRole="+qualifiedRoleNameLabel;
         if (routeHeader == null ||
                 org.apache.commons.lang.StringUtils.isEmpty(roleName) ||
@@ -130,7 +130,7 @@ public class RoleServiceImpl implements RoleService {
         requeueDocument(routeHeader);
     }
 
-    public void reResolveRole(DocumentRouteHeaderValue routeHeader, String roleName) throws WorkflowException {
+    public void reResolveRole(DocumentRouteHeaderValue routeHeader, String roleName) {
     	String infoString = "routeHeader="+(routeHeader == null ? null : routeHeader.getDocumentId())+", role="+roleName;
         if (routeHeader == null ||
                 org.apache.commons.lang.StringUtils.isEmpty(roleName)) {
@@ -200,11 +200,11 @@ public class RoleServiceImpl implements RoleService {
         }
     }
 
-    private List findNodeInstances(DocumentRouteHeaderValue routeHeader, String roleName) throws WorkflowException {
+    private List findNodeInstances(DocumentRouteHeaderValue routeHeader, String roleName) {
         List nodeInstances = new ArrayList();
         Collection activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(routeHeader.getDocumentId());
         if (CollectionUtils.isEmpty(activeNodeInstances)) {
-            throw new WorkflowException("Document does not currently have any active nodes so re-resolving is not legal.");
+            throw new IllegalStateException("Document does not currently have any active nodes so re-resolving is not legal.");
         }
         for (Iterator iterator = activeNodeInstances.iterator(); iterator.hasNext();) {
             RouteNodeInstance activeNodeInstance = (RouteNodeInstance) iterator.next();
@@ -214,12 +214,12 @@ public class RoleServiceImpl implements RoleService {
             }
         }
         if (nodeInstances.isEmpty()) {
-            throw new WorkflowException("Could not locate given role to re-resolve: " + roleName);
+            throw new IllegalStateException("Could not locate given role to re-resolve: " + roleName);
         }
         return nodeInstances;
     }
 
-    private boolean templateHasRole(RuleTemplate template, String roleName) throws WorkflowException {
+    private boolean templateHasRole(RuleTemplate template, String roleName) {
         List templateAttributes = template.getRuleTemplateAttributes();
         for (Iterator iterator = templateAttributes.iterator(); iterator.hasNext();) {
             RuleTemplateAttribute templateAttribute = (RuleTemplateAttribute) iterator.next();

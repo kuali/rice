@@ -17,6 +17,7 @@ package org.kuali.rice.kew.rule;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowException;
 
@@ -44,15 +45,15 @@ public class MetaRuleExpression extends AccumulatingBSFRuleExpression {
     private static final Logger LOG = Logger.getLogger(MetaRuleExpression.class);
 
     @Override
-    public RuleExpressionResult evaluate(Rule rule, RouteContext context) throws WorkflowException {
+    public RuleExpressionResult evaluate(Rule rule, RouteContext context) {
         RuleBaseValues ruleDefinition = rule.getDefinition();
         RuleExpressionDef exprDef = ruleDefinition.getRuleExpressionDef();
         if (exprDef == null) {
-            throw new WorkflowException("No expression defined in rule definition: " + ruleDefinition);
+            throw new RiceIllegalStateException("No expression defined in rule definition: " + ruleDefinition);
         }
         String expression = exprDef.getExpression();
         if (StringUtils.isEmpty(expression)) {
-            throw new WorkflowException("Empty expression in rule definition: " + ruleDefinition);
+            throw new RiceIllegalStateException("Empty expression in rule definition: " + ruleDefinition);
         }
 
         String lang = parseLang(ruleDefinition.getRuleExpressionDef().getType(), null);
@@ -72,7 +73,7 @@ public class MetaRuleExpression extends AccumulatingBSFRuleExpression {
      * @return RuleExpressionResult the result
      * @throws WorkflowException
      */
-    private RuleExpressionResult evaluateBuiltinExpression(String expression, Rule rule, RouteContext context) throws WorkflowException {
+    private RuleExpressionResult evaluateBuiltinExpression(String expression, Rule rule, RouteContext context) {
         try {
             KRAMetaRuleEngine engine = new KRAMetaRuleEngine(expression);
 
@@ -98,7 +99,7 @@ public class MetaRuleExpression extends AccumulatingBSFRuleExpression {
             LOG.debug("MetaRuleExpression returning result: " + result);
             return result;
         } catch (ParseException pe) {
-            throw new WorkflowException("Error parsing expression", pe);
+            throw new RiceIllegalStateException("Error parsing expression", pe);
         }
     }
 }

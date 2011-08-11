@@ -31,22 +31,22 @@ public interface RoleService {
 	 * Re-resolves the given qualified role for all documents for the given document type (including children).
 	 * This methods executes asynchronously.
 	 */
-	public void reResolveRole(DocumentType documentType, String roleName) throws WorkflowException;
+	public void reResolveRole(DocumentType documentType, String roleName);
 
 	/**
 	 * Re-resolves the given qualified role for all documents for the given document type (including children).
 	 * This methods executes asynchronously.
 	 */
-	public void reResolveQualifiedRole(DocumentType documentType, String roleName, String qualifiedRoleNameLabel) throws WorkflowException;
+	public void reResolveQualifiedRole(DocumentType documentType, String roleName, String qualifiedRoleNameLabel);
 
 	/**
 	 * Re-resolves the given qualified role on the given document.  This method executes synchronously.
 	 */
-	public void reResolveQualifiedRole(DocumentRouteHeaderValue routeHeader, String roleName, String qualifiedRoleNameLabel) throws WorkflowException;
+	public void reResolveQualifiedRole(DocumentRouteHeaderValue routeHeader, String roleName, String qualifiedRoleNameLabel);
 
 	/**
 	 * Re-resolves the given role on the given document.  This method executes synchronously.
 	 */
-	public void reResolveRole(DocumentRouteHeaderValue routeHeader, String roleName) throws WorkflowException;
+	public void reResolveRole(DocumentRouteHeaderValue routeHeader, String roleName);
 
 }

@@ -736,8 +736,8 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
 
     @Override
     public void returnToPreviousNode(String nodeName, String annotation) {
-        if (StringUtils.isBlank(nodeName)) {
-            throw new IllegalArgumentException("nodeName was null or blank");
+        if (nodeName == null) {
+            throw new IllegalArgumentException("nodeName was null");
         }
         returnToPreviousNode(ReturnPoint.create(nodeName), annotation);
     }

@@ -138,11 +138,11 @@ public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
 		return (RouteNode)query.getSingleResult();    	
     }
 
-    public List findFinalApprovalRouteNodes(String documentTypeId) {
+    public List<RouteNode> findFinalApprovalRouteNodes(String documentTypeId) {
     	Query query = entityManager.createNamedQuery("RouteNode.FindApprovalRouteNodes");
     	query.setParameter(KEWPropertyConstants.DOCUMENT_TYPE_ID, documentTypeId);
     	query.setParameter(KEWPropertyConstants.FINAL_APPROVAL, Boolean.TRUE);
-    	return (List) query.getResultList();
+    	return new ArrayList<RouteNode>(query.getResultList());
     }
 
     public List findProcessNodeInstances(RouteNodeInstance process) {

@@ -38,14 +38,10 @@ public class RolePokerProcessor implements RolePoker {
 			throw new IllegalArgumentException("Can't poke a role without a role name!");
 		}
 		DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
-		try {
 		if (qualifiedRoleNameLabel == null) {
 			KEWServiceLocator.getRoleService().reResolveRole(document, roleName);
 		} else {
 			KEWServiceLocator.getRoleService().reResolveQualifiedRole(document, roleName, qualifiedRoleNameLabel);
-		}
-		} catch (WorkflowException e) {
-			throw new WorkflowRuntimeException(e);
 		}
 	}
 

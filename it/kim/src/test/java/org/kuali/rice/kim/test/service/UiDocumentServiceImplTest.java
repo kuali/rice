@@ -18,6 +18,8 @@ package org.kuali.rice.kim.test.service;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.address.EntityAddressContract;
@@ -56,6 +58,7 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceBase;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.test.BaselineTestCase;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -71,6 +74,7 @@ import static org.junit.Assert.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class UiDocumentServiceImplTest extends KIMTestCase {
 
 	private UiDocumentService uiDocumentService;
@@ -85,11 +89,13 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 	    Person adminPerson = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("admin");
 		IdentityManagementPersonDocument personDoc = initPersonDoc();
 
-		try {
-            personDoc.getDocumentHeader().setWorkflowDocument(KRADServiceLocatorWeb.getWorkflowDocumentService().createWorkflowDocument("TestDocumentType", adminPerson));
-        } catch (WorkflowException e) {
+		/*try {*/
+            //personDoc.getDocumentHeader().setWorkflowDocument(KRADServiceLocatorWeb.getWorkflowDocumentService().createWorkflowDocument("TestDocumentType", adminPerson));
+            WorkflowDocument document = WorkflowDocumentFactory.createDocument(adminPerson.getPrincipalId(),"TestDocumentType");
+            personDoc.getDocumentHeader().setWorkflowDocument(document);
+        /*} catch (WorkflowException e) {
             e.printStackTrace();
-        }
+        }*/
 		uiDocumentService.saveEntityPerson(personDoc);
         Map<String, String> criteria = new HashMap<String, String>();
         criteria.put("id", "entity124eId");

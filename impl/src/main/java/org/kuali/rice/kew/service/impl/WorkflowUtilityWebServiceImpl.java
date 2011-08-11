@@ -20,7 +20,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -28,7 +27,6 @@ import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.KewApiConstants;
-import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.definition.AttributeDefinition;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
@@ -36,21 +34,13 @@ import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.documentlink.DocumentLink;
 import org.kuali.rice.kew.dto.ActionItemDTO;
-import org.kuali.rice.kew.dto.ActionRequestDTO;
-import org.kuali.rice.kew.dto.ActionTakenDTO;
 import org.kuali.rice.kew.dto.DTOConverter;
-import org.kuali.rice.kew.dto.DocumentContentDTO;
-import org.kuali.rice.kew.dto.DocumentDetailDTO;
 import org.kuali.rice.kew.dto.DocumentLinkDTO;
 import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
 import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
 import org.kuali.rice.kew.dto.DocumentStatusTransitionDTO;
 import org.kuali.rice.kew.dto.PropertyDefinitionDTO;
-import org.kuali.rice.kew.dto.ReportCriteriaDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
-import org.kuali.rice.kew.dto.RuleDTO;
-import org.kuali.rice.kew.dto.RuleExtensionDTO;
-import org.kuali.rice.kew.dto.RuleReportCriteriaDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.engine.ActivationContext;
@@ -65,11 +55,9 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentStatusTransition;
 import org.kuali.rice.kew.rule.FlexRM;
-import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.rule.WorkflowAttributeXmlValidator;
-import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowUtility;
@@ -135,24 +123,6 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 	return documentStatus;
     }
 
-    public DocumentDetailDTO getDocumentDetail(String documentId) throws WorkflowException {
-        if (documentId == null) {
-            LOG.error("null documentId passed in.");
-            throw new RuntimeException("null documentId passed in");
-        }
-        if ( LOG.isDebugEnabled() ) {
-        	LOG.debug("Fetching DocumentDetailVO [id="+documentId+"]");
-        }
-        DocumentRouteHeaderValue document = loadDocument(documentId);
-        DocumentDetailDTO documentDetailVO = DTOConverter.convertDocumentDetail(document);
-        if (documentDetailVO == null) {
-        	LOG.error("Returning null DocumentDetailVO [id=" + documentId + "]");
-        }
-        if ( LOG.isDebugEnabled() ) {
-        	LOG.debug("Returning DocumentDetailVO [id=" + documentId + "]");
-        }
-        return documentDetailVO;
-    }
 
     public RouteNodeInstanceDTO getNodeInstance(String nodeInstanceId) throws WorkflowException {
         if (nodeInstanceId == null) {
@@ -233,7 +203,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return matchesNodeName && matchesUserId;
     }
 
-    public ActionTakenDTO[] getActionsTaken(String documentId) throws WorkflowException {
+    /*public ActionTakenDTO[] getActionsTaken(String documentId) throws WorkflowException {
         if (documentId == null) {
             LOG.error("null documentId passed in.");
             throw new RuntimeException("null documentId passed in.");
@@ -249,7 +219,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             actionTakenVOs[i] = DTOConverter.convertActionTakenWithActionRequests(actionTaken);
         }
         return actionTakenVOs;
-    }
+    }*/
 
     /**
      * This work is also being done in the bowels of convertDocumentContentVO in DTOConverter so some code
@@ -484,10 +454,8 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return false;
     }
 
-    /**
-     * @see org.kuali.rice.kew.service.WorkflowUtility#documentWillHaveAtLeastOneActionRequest(org.kuali.rice.kew.dto.ReportCriteriaDTO, java.lang.String[], boolean)
-     */
-    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes, boolean ignoreCurrentActionRequests) {
+
+/*    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes, boolean ignoreCurrentActionRequests) {
         try {
 	        SimulationWorkflowEngine simulationEngine = KEWServiceLocator.getSimulationEngine();
 	        SimulationCriteria criteria = DTOConverter.convertReportCriteriaDTO(reportCriteriaDTO);
@@ -532,7 +500,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             }
             throw new RuntimeException(error, ex);
         }
-    }
+    }*/
 
     public boolean isLastApproverInRouteLevel(String documentId, String principalId, Integer routeLevel) throws WorkflowException {
         if (routeLevel == null) {
@@ -731,14 +699,14 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     	}
     }
 
-    public DocumentDetailDTO routingReport(ReportCriteriaDTO reportCriteria) throws WorkflowException {
+    /*public DocumentDetailDTO routingReport(ReportCriteriaDTO reportCriteria) throws WorkflowException {
         incomingParamCheck(reportCriteria, "reportCriteria");
         if ( LOG.isDebugEnabled() ) {
         	LOG.debug("Executing routing report [docId=" + reportCriteria.getDocumentId() + ", docTypeName=" + reportCriteria.getDocumentTypeName() + "]");
         }
         SimulationCriteria criteria = DTOConverter.convertReportCriteriaDTO(reportCriteria);
         return DTOConverter.convertDocumentDetail(KEWServiceLocator.getRoutingReportService().report(criteria));
-    }
+    }*/
 
     public boolean isFinalApprover(String documentId, String principalId) throws WorkflowException {
         incomingParamCheck(documentId, "documentId");
@@ -812,13 +780,13 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         return KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
     }
 
-    public DocumentContentDTO getDocumentContent(String documentId) throws WorkflowException {
+    /*public DocumentContentDTO getDocumentContent(String documentId) throws WorkflowException {
     	if ( LOG.isDebugEnabled() ) {
     		LOG.debug("Fetching document content [docId=" + documentId + "]");
     	}
     	DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
     	return DTOConverter.convertDocumentContent(document.getDocContent(), documentId);
-    }
+    }*/
 
 	public String[] getPreviousRouteNodeNames(String documentId) throws WorkflowException {
 		if ( LOG.isDebugEnabled() ) {
@@ -867,43 +835,6 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 			return new String[0];
 		}
 	}
-
-    public RuleDTO[] ruleReport(RuleReportCriteriaDTO ruleReportCriteria) throws WorkflowException {
-        incomingParamCheck(ruleReportCriteria, "ruleReportCriteria");
-        if (ruleReportCriteria == null) {
-            throw new IllegalArgumentException("At least one criterion must be sent in a RuleReportCriteriaDTO object");
-        }
-        if ( LOG.isDebugEnabled() ) {
-        	LOG.debug("Executing rule report [responsibleUser=" + ruleReportCriteria.getResponsiblePrincipalId() + ", responsibleWorkgroup=" +
-                    ruleReportCriteria.getResponsibleGroupId() + "]");
-        }
-        Map extensionValues = new HashMap();
-        if (ruleReportCriteria.getRuleExtensionVOs() != null) {
-            for (int i = 0; i < ruleReportCriteria.getRuleExtensionVOs().length; i++) {
-                RuleExtensionDTO ruleExtensionVO = ruleReportCriteria.getRuleExtensionVOs()[i];
-                KeyValue ruleExtension = DTOConverter.convertRuleExtensionVO(ruleExtensionVO);
-                extensionValues.put(ruleExtension.getKey(), ruleExtension.getValue());
-            }
-        }
-        Collection<String> actionRequestCodes = new ArrayList<String>();
-        if ( (ruleReportCriteria.getActionRequestCodes() != null) && (ruleReportCriteria.getActionRequestCodes().length != 0) ) {
-            actionRequestCodes = Arrays.asList(ruleReportCriteria.getActionRequestCodes());
-        }
-        Collection rulesFound = KEWServiceLocator.getRuleService().searchByTemplate(
-                ruleReportCriteria.getDocumentTypeName(), ruleReportCriteria.getRuleTemplateName(),
-                ruleReportCriteria.getRuleDescription(), ruleReportCriteria.getResponsibleGroupId(),
-                ruleReportCriteria.getResponsiblePrincipalId(), ruleReportCriteria.isConsiderWorkgroupMembership(),
-                ruleReportCriteria.isIncludeDelegations(), ruleReportCriteria.isActiveIndicator(), extensionValues,
-                actionRequestCodes);
-        RuleDTO[] returnableRules = new RuleDTO[rulesFound.size()];
-        int i = 0;
-        for (Iterator iter = rulesFound.iterator(); iter.hasNext();) {
-            RuleBaseValues rule = (RuleBaseValues) iter.next();
-            returnableRules[i] = DTOConverter.convertRule(rule);
-            i++;
-        }
-        return returnableRules;
-    }
 
     public DocumentSearchResultDTO performDocumentSearch(DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException {
         return performDocumentSearchWithPrincipal(null, criteriaVO);

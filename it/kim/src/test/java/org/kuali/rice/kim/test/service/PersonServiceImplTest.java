@@ -52,7 +52,7 @@ import static org.junit.Assert.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class PersonServiceImplTest extends KIMTestCase {
 
 	private PersonServiceImpl personService;

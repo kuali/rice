@@ -34,6 +34,7 @@ import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.impl.PersonServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
+import org.kuali.rice.test.BaselineTestCase;
 
 import javax.xml.namespace.QName;
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.like;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class IdentityServiceTest extends KIMTestCase {
 
 	private IdentityService identityService;

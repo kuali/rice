@@ -127,7 +127,7 @@ public class RouteNodeServiceImpl implements RouteNodeService {
         return routeNodeDAO.findRouteNodeByName(documentTypeId, name);
     }
     
-    public List findFinalApprovalRouteNodes(String documentTypeId) {
+    public List<RouteNode> findFinalApprovalRouteNodes(String documentTypeId) {
         DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findById(documentTypeId);
         documentType = documentType.getRouteDefiningDocumentType();
         return routeNodeDAO.findFinalApprovalRouteNodes(documentType.getDocumentTypeId());

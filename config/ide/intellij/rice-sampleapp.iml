@@ -9,12 +9,6 @@
         <webroots>
           <root url="file://$MODULE_DIR$/../../../sampleapp/src/main/webapp" relative="/" />
         </webroots>
-        <sourceRoots>
-          <root url="file://$MODULE_DIR$/../../../sampleapp/src/main/java" />
-          <root url="file://$MODULE_DIR$/../../../sampleapp/src/main/groovy" />
-          <root url="file://$MODULE_DIR$/../../../sampleapp/src/main/resources" />
-          <root url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/annotations" />
-        </sourceRoots>
       </configuration>
       <facet type="struts" name="Struts">
         <configuration>
@@ -52,8 +46,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="rice-web" />
     <orderEntry type="module" module-name="rice-impex-master" />
+    <orderEntry type="module" module-name="rice-web" />
     <orderEntry type="module" module-name="rice-impl" />
     <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch7" level="project" />

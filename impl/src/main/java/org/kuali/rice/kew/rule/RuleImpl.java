@@ -16,6 +16,7 @@
 package org.kuali.rice.kew.rule;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -54,7 +55,7 @@ class RuleImpl implements Rule {
     }
 
     // loads a RuleExpression implementation
-    protected RuleExpression loadRuleExpression(String type) throws WorkflowException {
+    protected RuleExpression loadRuleExpression(String type) {
         if (type == null) {
             type = DEFAULT_RULE_EXPRESSION;
         }
@@ -71,10 +72,10 @@ class RuleImpl implements Rule {
         try {
             ruleExpressionClass = ClassLoaderUtils.getDefaultClassLoader().loadClass(className);
         } catch (ClassNotFoundException cnfe) {
-            throw new WorkflowException("Rule expression implementation '" + className + "' not found", cnfe);
+            throw new RiceIllegalStateException("Rule expression implementation '" + className + "' not found", cnfe);
         }
         if (!RuleExpression.class.isAssignableFrom(ruleExpressionClass)) {
-            throw new WorkflowException("Specified class '" + ruleExpressionClass + "' does not implement RuleExpression interface");
+            throw new RiceIllegalStateException("Specified class '" + ruleExpressionClass + "' does not implement RuleExpression interface");
         }
         RuleExpression ruleExpression;
         try {
@@ -83,13 +84,13 @@ class RuleImpl implements Rule {
         	if (e instanceof RuntimeException) {
         		throw (RuntimeException)e;
         	}
-            throw new WorkflowException("Error instantiating rule expression implementation '" + ruleExpressionClass + "'", e);
+            throw new RiceIllegalStateException("Error instantiating rule expression implementation '" + ruleExpressionClass + "'", e);
         }
 
         return ruleExpression;
     }
 
-    public RuleExpressionResult evaluate(Rule rule, RouteContext context) throws WorkflowException {
+    public RuleExpressionResult evaluate(Rule rule, RouteContext context) {
         RuleBaseValues ruleDefinition = rule.getDefinition();
         RuleExpressionDef ruleExprDef = ruleDefinition.getRuleExpressionDef();
         String type = DEFAULT_RULE_EXPRESSION;

@@ -19,6 +19,7 @@ import java.text.ParseException;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -97,7 +98,7 @@ public class KRAMetaRuleEngine {
      * @return the expression result that resulted from the evaluation of a single statement
      * @throws ParseException if the statement could not be parsed
      */
-    public RuleExpressionResult processSingleStatement(RouteContext context) throws ParseException, WorkflowException {
+    public RuleExpressionResult processSingleStatement(RouteContext context) throws ParseException {
         if (isDone()) {
             return null;
         }
@@ -146,7 +147,7 @@ public class KRAMetaRuleEngine {
                 }
                 break;
             default:
-                throw new WorkflowException("Unhandled statement flag: " + flagCode);
+                throw new RiceIllegalStateException("Unhandled statement flag: " + flagCode);
         }
 
         curStatement++;

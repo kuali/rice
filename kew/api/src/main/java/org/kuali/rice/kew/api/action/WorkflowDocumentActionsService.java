@@ -39,6 +39,8 @@ import org.kuali.rice.kew.api.document.InvalidDocumentContentException;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.api.document.WorkflowDocumentService;
+import org.kuali.rice.kew.api.rule.Rule;
+import org.kuali.rice.kew.api.rule.RuleReportCriteria;
 
 /**
  * This service defines various operations which are used to perform actions against a workflow
@@ -1005,58 +1007,55 @@ public interface WorkflowDocumentActionsService {
             @WebParam(name = "definition") WorkflowAttributeDefinition definition)
             throws RiceIllegalArgumentException;
 
-    // TODO add the following methods to this service
+    // TODO add, annotate, and javadoc the following methods to this service
 
-    	boolean isUserInRouteLog(
-    			@WebParam(name = "documentId") String documentId,
-    			@WebParam(name = "principalId") String principalId,
-    			@WebParam(name = "lookFuture") boolean lookFuture);
+    boolean isUserInRouteLog(
+            @WebParam(name = "documentId") String documentId,
+            @WebParam(name = "principalId") String principalId,
+            @WebParam(name = "lookFuture") boolean lookFuture);
 
-    	boolean isUserInRouteLogWithOptionalFlattening(
-    			@WebParam(name = "documentId") String documentId,
-    			@WebParam(name = "principalId") String principalId,
-    			@WebParam(name = "lookFuture") boolean lookFuture,
-    			@WebParam(name = "flattenNodes") boolean flattenNodes);
-    //
-    //	void reResolveRoleByDocTypeName(
-    //			@WebParam(name = "documentTypeName") String documentTypeName,
-    //			@WebParam(name = "roleName") String roleName,
-    //			@WebParam(name = "qualifiedRoleNameLabel") String qualifiedRoleNameLabel)
-    //			throws WorkflowException;
-    //
-    //	void reResolveRoleByDocumentId(
-    //			@WebParam(name = "documentId") String documentId,
-    //			@WebParam(name = "roleName") String roleName,
-    //			@WebParam(name = "qualifiedRoleNameLabel") String qualifiedRoleNameLabel)
-    //			throws WorkflowException;
-    //
-    	DocumentDetail executeSimulation(@WebParam(name = "reportCriteria") RoutingReportCriteria reportCriteria);
-    //
-    //	boolean isFinalApprover(
-    //			@WebParam(name = "documentId") String documentId,
-    //			@WebParam(name = "principalId") String principalId)
-    //			throws WorkflowException;
-    //
-    //	boolean isLastApproverAtNode(
-    //			@WebParam(name = "documentId") String documentId,
-    //			@WebParam(name = "principalId") String principalId,
-    //			@WebParam(name = "nodeName") String nodeName)
-    //			throws WorkflowException;
-    //
-    //	boolean routeNodeHasApproverActionRequest(
-    //			@WebParam(name = "docType") String docType,
-    //			@WebParam(name = "docContent") String docContent,
-    //			@WebParam(name = "nodeName") String nodeName)
-    //			throws WorkflowException;
-    //	
-    	boolean documentWillHaveAtLeastOneActionRequest(
-    			@WebParam(name = "reportCriteria") RoutingReportCriteria reportCriteria,
-    			@WebParam(name = "actionRequestedCodes") List<String> actionRequestedCodes,
-    			@WebParam(name = "ignoreCurrentActionRequests") boolean ignoreCurrentActionRequests);
+    boolean isUserInRouteLogWithOptionalFlattening(
+            @WebParam(name = "documentId") String documentId,
+            @WebParam(name = "principalId") String principalId,
+            @WebParam(name = "lookFuture") boolean lookFuture,
+            @WebParam(name = "flattenNodes") boolean flattenNodes);
+
+    void reResolveRoleByDocTypeName(
+    		@WebParam(name = "documentTypeName") String documentTypeName,
+    		@WebParam(name = "roleName") String roleName,
+    		@WebParam(name = "qualifiedRoleNameLabel") String qualifiedRoleNameLabel);
+
+    void reResolveRoleByDocumentId(
+    		@WebParam(name = "documentId") String documentId,
+    		@WebParam(name = "roleName") String roleName,
+    		@WebParam(name = "qualifiedRoleNameLabel") String qualifiedRoleNameLabel);
+
+    DocumentDetail executeSimulation(@WebParam(name = "reportCriteria") RoutingReportCriteria reportCriteria);
+
+    List<Rule> ruleReport(@WebParam(name = "ruleCriteria") RuleReportCriteria reportCriteria);
+
+    boolean isFinalApprover(
+        	@WebParam(name = "documentId") String documentId,
+    		@WebParam(name = "principalId") String principalId);
+
+    boolean isLastApproverAtNode(
+    		@WebParam(name = "documentId") String documentId,
+    		@WebParam(name = "principalId") String principalId,
+    		@WebParam(name = "nodeName") String nodeName);
+
+    boolean routeNodeHasApproverActionRequest(
+    		@WebParam(name = "docType") String docType,
+    		@WebParam(name = "docContent") String docContent,
+    		@WebParam(name = "nodeName") String nodeName);
+
+    boolean documentWillHaveAtLeastOneActionRequest(
+    		@WebParam(name = "reportCriteria") RoutingReportCriteria reportCriteria,
+    		@WebParam(name = "actionRequestedCodes") List<String> actionRequestedCodes,
+    		@WebParam(name = "ignoreCurrentActionRequests") boolean ignoreCurrentActionRequests);
 
 
-    	List<String> getPrincipalIdsInRouteLog(
-    			@WebParam(name = "documentId") String documentId,
-    			@WebParam(name = "lookFuture") boolean lookFuture);
+    List<String> getPrincipalIdsInRouteLog(
+    		@WebParam(name = "documentId") String documentId,
+    		@WebParam(name = "lookFuture") boolean lookFuture);
 
 }

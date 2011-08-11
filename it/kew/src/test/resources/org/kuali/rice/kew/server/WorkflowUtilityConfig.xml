@@ -364,7 +364,7 @@
 			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
-					<user>rkirkend</user>
+					<principalName>rkirkend</principalName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -390,7 +390,7 @@
 			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
-					<user>rkirkend</user>
+					<principalName>rkirkend</principalName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -403,7 +403,7 @@
 			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
-					<user>jitrue</user>
+					<principalName>jitrue</principalName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -416,7 +416,7 @@
 			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
-					<user>rkirkend</user>
+					<principalName>rkirkend</principalName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -429,7 +429,7 @@
 			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
-					<user>bmcgough</user>
+					<principalName>bmcgough</principalName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -442,7 +442,7 @@
 			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
-					<user>rkirkend</user>
+					<principalName>rkirkend</principalName>
 					<actionRequested>A</actionRequested>
 					<priority>2</priority>
 				</responsibility>
@@ -455,7 +455,7 @@
 			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
-					<user>pmckown</user>
+					<principalName>pmckown</principalName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -468,7 +468,7 @@
 			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
-					<user>bmcgough</user>
+					<principalName>bmcgough</principalName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -481,7 +481,7 @@
 			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
-					<user>rkirkend</user>
+					<principalName>rkirkend</principalName>
 					<actionRequested>A</actionRequested>
 					<priority>2</priority>
 				</responsibility>
@@ -494,7 +494,7 @@
 			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
-					<user>pmckown</user>
+					<principalName>pmckown</principalName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -507,7 +507,7 @@
 			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
-					<user>temay</user>
+					<principalName>temay</principalName>
 					<actionRequested>K</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -520,7 +520,7 @@
 			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
-					<user>jhopf</user>
+					<principalName>jhopf</principalName>
 					<actionRequested>K</actionRequested>
 					<priority>1</priority>
 				</responsibility>
@@ -533,7 +533,7 @@
 			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
-					<user>ewestfal</user>
+					<principalName>ewestfal</principalName>
 					<actionRequested>A</actionRequested>
 					<priority>3</priority>
 				</responsibility>
@@ -547,7 +547,7 @@
 			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
-					<user>ewestfal</user>
+					<principalName>ewestfal</principalName>
 					<actionRequested>A</actionRequested>
 					<priority>2</priority>
 				</responsibility>
@@ -560,7 +560,7 @@
 			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
-					<user>temay</user>
+					<principalName>temay</principalName>
 					<actionRequested>A</actionRequested>
 					<priority>3</priority>
 				</responsibility>
@@ -573,12 +573,12 @@
 			<forceAction>false</forceAction>
 			<responsibilities>
 				<responsibility>
-					<user>temay</user>
+					<principalName>temay</principalName>
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>
 				<responsibility>
-					<user>ewestfal</user>
+					<principalName>ewestfal</principalName>
 					<actionRequested>K</actionRequested>
 					<priority>2</priority>
 				</responsibility>
@@ -604,7 +604,7 @@
           <forceAction>true</forceAction>
           <responsibilities>
             <responsibility>
-              <user>ewestfal</user>
+              <principalName>ewestfal</principalName>
               <actionRequested>A</actionRequested>
               <priority>1</priority>
             </responsibility>
@@ -622,7 +622,7 @@
           <forceAction>true</forceAction>
           <responsibilities>
             <responsibility>
-              <user>jitrue</user>
+              <principalName>jitrue</principalName>
               <actionRequested>A</actionRequested>
               <priority>1</priority>
             </responsibility>

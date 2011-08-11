@@ -28,6 +28,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.dialect.Oracle10gDialect;
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -154,5 +155,16 @@ public class RuleDelegation extends PersistableBusinessObjectBase {
 			}
 		}
 	}
+
+    public static org.kuali.rice.kew.api.rule.RuleDelegation to(RuleDelegation bo) {
+        if (bo == null) {
+            return null;
+        }
+        org.kuali.rice.kew.api.rule.RuleDelegation.Builder builder = org.kuali.rice.kew.api.rule.RuleDelegation.Builder.create();
+        builder.setDelegationType(bo.getDelegationType());
+        builder.setDelegationRule(org.kuali.rice.kew.api.rule.Rule.Builder.create(RuleBaseValues.to(
+                bo.getDelegationRuleBaseValues())));
+        return builder.build();
+    }
 }
 

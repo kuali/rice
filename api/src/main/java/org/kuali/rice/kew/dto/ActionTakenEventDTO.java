@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.kew.dto;
 
+import org.kuali.rice.kew.api.action.ActionTaken;
+
 /**
  * A document event representing an ActionTaken.
  * 
@@ -24,17 +26,17 @@ package org.kuali.rice.kew.dto;
 public class ActionTakenEventDTO extends DocumentEventDTO {
 
 	private static final long serialVersionUID = -5944287852858879399L;
-	private ActionTakenDTO actionTaken;
+	private ActionTaken actionTaken;
 
     public ActionTakenEventDTO() {
         super(ACTION_TAKEN);
     }
 
-    public ActionTakenDTO getActionTaken() {
+    public ActionTaken getActionTaken() {
         return actionTaken;
     }
     
-    public void setActionTaken(ActionTakenDTO actionTaken) {
+    public void setActionTaken(ActionTaken actionTaken) {
         this.actionTaken = actionTaken;
     }
     

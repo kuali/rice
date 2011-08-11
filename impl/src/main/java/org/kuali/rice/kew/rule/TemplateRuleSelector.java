@@ -25,7 +25,6 @@ import java.util.Set;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
@@ -51,7 +50,7 @@ class TemplateRuleSelector implements RuleSelector {
 	return numberOfSelectedRules;
     }
 
-    public List<Rule> selectRules(RouteContext context, DocumentRouteHeaderValue routeHeader, RouteNodeInstance nodeInstance, String selectionCriterion, Timestamp effectiveDate) throws WorkflowException {
+    public List<Rule> selectRules(RouteContext context, DocumentRouteHeaderValue routeHeader, RouteNodeInstance nodeInstance, String selectionCriterion, Timestamp effectiveDate) {
 	// for TemplateRuleSelector, the criterion is taken as a ruletemplate name
 	final String ruleTemplateName = selectionCriterion;
 

@@ -23,6 +23,7 @@ import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoContract;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.impl.IdentityServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
+import org.kuali.rice.test.BaselineTestCase;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -31,6 +32,7 @@ import static org.junit.Assert.assertNotNull;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class IdentityServiceImplTest extends KIMTestCase {
 
 	private IdentityServiceImpl identityService;

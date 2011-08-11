@@ -20,11 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -45,7 +45,7 @@ public class NamedRuleSelector implements RuleSelector {
      * @return the name of the rule that should be selected
      */
     protected String getName(RouteContext context, DocumentRouteHeaderValue routeHeader,
-            RouteNodeInstance nodeInstance, String selectionCriterion, Timestamp effectiveDate) throws WorkflowException {
+            RouteNodeInstance nodeInstance, String selectionCriterion, Timestamp effectiveDate) {
         String ruleName = null;
         RouteNode routeNodeDef = nodeInstance.getRouteNode();
         // first check to see if there is a rule name configured on the node instance
@@ -61,17 +61,17 @@ public class NamedRuleSelector implements RuleSelector {
     }
 
     public List<Rule> selectRules(RouteContext context, DocumentRouteHeaderValue routeHeader,
-            RouteNodeInstance nodeInstance, String selectionCriterion, Timestamp effectiveDate) throws WorkflowException {
+            RouteNodeInstance nodeInstance, String selectionCriterion, Timestamp effectiveDate) {
 
         String ruleName = getName(context, routeHeader, nodeInstance, selectionCriterion, effectiveDate);
 
         if (ruleName == null) {
-            throw new WorkflowException("No 'ruleName' configuration parameter present on route node definition: " + nodeInstance.getRouteNode());
+            throw new RiceIllegalStateException("No 'ruleName' configuration parameter present on route node definition: " + nodeInstance.getRouteNode());
         }
 
         RuleBaseValues ruleDef = KEWServiceLocator.getRuleService().getRuleByName(ruleName);
         if (ruleDef == null) {
-            throw new WorkflowException("No rule found with name '" + ruleName + "'");
+            throw new RiceIllegalStateException("No rule found with name '" + ruleName + "'");
         }
 
         List<Rule> rules = new ArrayList<Rule>(1);

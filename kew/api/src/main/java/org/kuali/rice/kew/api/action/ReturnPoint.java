@@ -49,8 +49,8 @@ public final class ReturnPoint extends AbstractDataTransferObject {
     }
     
     private ReturnPoint(String nodeName) {
-    	if (StringUtils.isBlank(nodeName)) {
-    		throw new IllegalArgumentException("nodeName was null or blank");
+    	if (nodeName == null) {
+    		throw new IllegalArgumentException("nodeName was null");
     	}
         this.nodeName = nodeName;
     }

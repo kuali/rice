@@ -103,7 +103,7 @@ public class FlexRM {
     }*/
 
 	// loads a RuleSelector implementation
-	protected RuleSelector loadRuleSelector(RouteNode routeNodeDef, RouteNodeInstance nodeInstance) throws WorkflowException {
+	protected RuleSelector loadRuleSelector(RouteNode routeNodeDef, RouteNodeInstance nodeInstance) {
 		// first see if there ruleselector is configured on a nodeinstance basis
 		NodeState ns = null;
 		if (nodeInstance != null) {
@@ -131,10 +131,10 @@ public class FlexRM {
 		try {
 			ruleSelectorClass = ClassLoaderUtils.getDefaultClassLoader().loadClass(className);
 		} catch (ClassNotFoundException cnfe) {
-			throw new WorkflowException("Rule selector implementation '" + className + "' not found", cnfe);
+			throw new IllegalStateException("Rule selector implementation '" + className + "' not found", cnfe);
 		}
 		if (!RuleSelector.class.isAssignableFrom(ruleSelectorClass)) {
-			throw new WorkflowException("Specified class '" + ruleSelectorClass + "' does not implement RuleSelector interface");
+			throw new IllegalStateException("Specified class '" + ruleSelectorClass + "' does not implement RuleSelector interface");
 		}
 		RuleSelector ruleSelector;
 		try {
@@ -143,7 +143,7 @@ public class FlexRM {
 			if (e instanceof RuntimeException) {
 				throw (RuntimeException)e;
 			}
-			throw new WorkflowException("Error instantiating rule selector implementation '" + ruleSelectorClass + "'", e);
+			throw new IllegalStateException("Error instantiating rule selector implementation '" + ruleSelectorClass + "'", e);
 		}
 
 		return ruleSelector;
@@ -157,8 +157,7 @@ public class FlexRM {
 	 * @return list of action requests
 	 * @throws WorkflowException
 	 */
-	public List<ActionRequestValue> getActionRequests(DocumentRouteHeaderValue routeHeader, RouteNodeInstance nodeInstance, String ruleTemplateName) 
-			throws WorkflowException {
+	public List<ActionRequestValue> getActionRequests(DocumentRouteHeaderValue routeHeader, RouteNodeInstance nodeInstance, String ruleTemplateName) {
 		return getActionRequests(routeHeader, nodeInstance.getRouteNode(), nodeInstance, ruleTemplateName);
 	}
 
@@ -171,8 +170,7 @@ public class FlexRM {
 	 * @return list of action requests
 	 * @throws WorkflowException
 	 */
-	public List<ActionRequestValue> getActionRequests(DocumentRouteHeaderValue routeHeader, RouteNode routeNodeDef, RouteNodeInstance nodeInstance, String ruleTemplateName) 
-			throws WorkflowException {
+	public List<ActionRequestValue> getActionRequests(DocumentRouteHeaderValue routeHeader, RouteNode routeNodeDef, RouteNodeInstance nodeInstance, String ruleTemplateName) {
 		RouteContext context = RouteContext.getCurrentRouteContext();
 		// TODO really the route context just needs to be able to support nested create and clears
 		// (i.e. a Stack model similar to transaction intercepting in Spring) and we wouldn't have to do this
@@ -247,8 +245,7 @@ public class FlexRM {
 		makeActionRequests(arFactory, responsibilities, context, rule, routeHeader, parentRequest, ruleDelegation);
 	}
 
-	public void makeActionRequests(ActionRequestFactory arFactory, List<RuleResponsibility> responsibilities, RouteContext context, RuleBaseValues rule, DocumentRouteHeaderValue routeHeader, ActionRequestValue parentRequest, RuleDelegation ruleDelegation)
-			throws WorkflowException {
+	public void makeActionRequests(ActionRequestFactory arFactory, List<RuleResponsibility> responsibilities, RouteContext context, RuleBaseValues rule, DocumentRouteHeaderValue routeHeader, ActionRequestValue parentRequest, RuleDelegation ruleDelegation) {
 
 		//	Set actionRequests = new HashSet();
         for (RuleResponsibility responsibility : responsibilities)
@@ -269,7 +266,7 @@ public class FlexRM {
 	}
 
 	private void buildDelegationGraph(ActionRequestFactory arFactory, RouteContext context, 
-			RuleBaseValues delegationRule, DocumentRouteHeaderValue routeHeaderValue, ActionRequestValue parentRequest, RuleDelegation ruleDelegation) throws WorkflowException {
+			RuleBaseValues delegationRule, DocumentRouteHeaderValue routeHeaderValue, ActionRequestValue parentRequest, RuleDelegation ruleDelegation) {
 		context.setActionRequest(parentRequest);
 		if (delegationRule.isActive(new Date())) {
             for (RuleResponsibility delegationResp : delegationRule.getResponsibilities())
@@ -290,7 +287,7 @@ public class FlexRM {
 	 */
 	private void makeRoleActionRequests(ActionRequestFactory arFactory, RouteContext context, 
 			RuleBaseValues rule, RuleResponsibility resp, DocumentRouteHeaderValue routeHeader, ActionRequestValue parentRequest, 
-			RuleDelegation ruleDelegation) throws WorkflowException 
+			RuleDelegation ruleDelegation)
 	{
 		String roleName = resp.getResolvedRoleName();
 		RoleAttribute roleAttribute = resp.resolveRoleAttribute();
@@ -388,7 +385,7 @@ public class FlexRM {
      * @throws org.kuali.rice.kew.exception.WorkflowException
      */
 	private void makeActionRequest(ActionRequestFactory arFactory, RouteContext context, RuleBaseValues rule, DocumentRouteHeaderValue routeHeader, RuleResponsibility resp, ActionRequestValue parentRequest,
-			RuleDelegation ruleDelegation) throws WorkflowException {
+			RuleDelegation ruleDelegation) {
 		if (parentRequest == null && isDuplicateActionRequestDetected(routeHeader, context.getNodeInstance(), resp, null)) {
 			return;
 		}

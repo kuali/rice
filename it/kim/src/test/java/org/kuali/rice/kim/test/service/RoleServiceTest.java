@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.test.KIMTestCase;
+import org.kuali.rice.test.BaselineTestCase;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,6 +36,7 @@ import static org.junit.Assert.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class RoleServiceTest extends KIMTestCase {
 
 	private RoleService roleService;

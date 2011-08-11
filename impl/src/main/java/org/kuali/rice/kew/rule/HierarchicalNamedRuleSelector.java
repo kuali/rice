@@ -45,7 +45,7 @@ public class HierarchicalNamedRuleSelector extends NamedRuleSelector {
     private static final Logger LOG = Logger.getLogger(HierarchicalNamedRuleSelector.class);
     @Override
     protected String getName(RouteContext context, DocumentRouteHeaderValue routeHeader, RouteNodeInstance nodeInstance,
-            String selectionCriterion, Timestamp effectiveDate) throws WorkflowException {
+            String selectionCriterion, Timestamp effectiveDate) {
         Map<String, String> cfgMap = Utilities.getKeyValueCollectionAsMap(nodeInstance.getState());
         String stop_id = cfgMap.get(HierarchyRoutingNode.STOP_ID);
         if (stop_id == null) {

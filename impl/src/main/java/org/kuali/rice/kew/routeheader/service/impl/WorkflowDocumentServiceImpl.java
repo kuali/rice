@@ -313,6 +313,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
  	 	ActionTakenValue val = new ActionTakenValue();
  	 	val.setActionTaken(KEWConstants.ACTION_TAKEN_SAVED_CD);
  	 	val.setDocumentId(routeHeader.getDocumentId());
+        val.setPrincipalId(principalId);
  	 	PostProcessor postProcessor = routeHeader.getDocumentType().getPostProcessor();
  	 	try {
  	 		postProcessor.doActionTaken(new org.kuali.rice.kew.postprocessor.ActionTakenEvent(routeHeader.getDocumentId(), routeHeader.getAppDocId(), val));

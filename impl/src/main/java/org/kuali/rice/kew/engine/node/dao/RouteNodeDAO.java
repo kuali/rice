@@ -38,7 +38,7 @@ public interface RouteNodeDAO {
     public List getInitialNodeInstances(String documentId);
     public NodeState findNodeState(Long nodeInstanceId, String key);
     public RouteNode findRouteNodeByName(String documentTypeId, String name);
-    public List findFinalApprovalRouteNodes(String documentTypeId);
+    public List<RouteNode> findFinalApprovalRouteNodes(String documentTypeId);
     public List findProcessNodeInstances(RouteNodeInstance process);
     public List findRouteNodeInstances(String documentId);
     public void deleteLinksToPreNodeInstances(RouteNodeInstance routeNodeInstance);

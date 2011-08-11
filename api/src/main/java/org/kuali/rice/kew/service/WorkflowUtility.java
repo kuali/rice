@@ -19,18 +19,11 @@ package org.kuali.rice.kew.service;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.core.api.util.jaxb.SqlTimestampAdapter;
 import org.kuali.rice.kew.dto.ActionItemDTO;
-import org.kuali.rice.kew.dto.ActionRequestDTO;
-import org.kuali.rice.kew.dto.ActionTakenDTO;
-import org.kuali.rice.kew.dto.DocumentContentDTO;
-import org.kuali.rice.kew.dto.DocumentDetailDTO;
 import org.kuali.rice.kew.dto.DocumentLinkDTO;
 import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
 import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
 import org.kuali.rice.kew.dto.DocumentStatusTransitionDTO;
-import org.kuali.rice.kew.dto.ReportCriteriaDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
-import org.kuali.rice.kew.dto.RuleDTO;
-import org.kuali.rice.kew.dto.RuleReportCriteriaDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -55,10 +48,6 @@ import java.util.Map;
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface WorkflowUtility {
 
-	public DocumentDetailDTO getDocumentDetail(
-			@WebParam(name = "documentId") String documentId)
-			throws WorkflowException;
-
 	public RouteNodeInstanceDTO getNodeInstance(
 			@WebParam(name = "nodeInstanceId") String nodeInstanceId)
 			throws WorkflowException;
@@ -82,9 +71,9 @@ public interface WorkflowUtility {
 			@WebParam(name = "documentId") String documentId)
 			throws WorkflowException;*/
 
-	public ActionTakenDTO[] getActionsTaken(
+	/*public ActionTakenDTO[] getActionsTaken(
 			@WebParam(name = "documentId") String documentId)
-			throws WorkflowException;
+			throws WorkflowException;*/
 
 	public WorkflowAttributeValidationErrorDTO[] validateWorkflowAttributeDefinitionVO(
 			@WebParam(name = "definition") WorkflowAttributeDefinitionDTO definition)
@@ -115,9 +104,9 @@ public interface WorkflowUtility {
 			@WebParam(name = "qualifiedRoleNameLabel") String qualifiedRoleNameLabel)
 			throws WorkflowException;
 
-	public DocumentDetailDTO routingReport(
+	/*public DocumentDetailDTO routingReport(
 			@WebParam(name = "reportCriteria") ReportCriteriaDTO reportCriteria)
-			throws WorkflowException;
+			throws WorkflowException;*/
 
 	public boolean isFinalApprover(
 			@WebParam(name = "documentId") String documentId,
@@ -143,9 +132,9 @@ public interface WorkflowUtility {
 
 	// new in 2.3
 
-	public RuleDTO[] ruleReport(
+	/*public RuleDTO[] ruleReport(
 			@WebParam(name = "ruleReportCriteria") RuleReportCriteriaDTO ruleReportCriteria)
-			throws WorkflowException;
+			throws WorkflowException;*/
 
 	// deprecated as of 2.1
 
@@ -168,7 +157,6 @@ public interface WorkflowUtility {
 			throws WorkflowException;
 
 	// new in 2.1
-
 	public boolean isLastApproverAtNode(
 			@WebParam(name = "documentId") String documentId,
 			@WebParam(name = "principalId") String principalId,
@@ -193,9 +181,9 @@ public interface WorkflowUtility {
 			@WebParam(name = "documentId") String documentId)
 			throws WorkflowException;
 
-	public DocumentContentDTO getDocumentContent(
+	/*public DocumentContentDTO getDocumentContent(
 			@WebParam(name = "documentId") String documentId)
-			throws WorkflowException;
+			throws WorkflowException;*/
 
 	// 2.2
 	public String[] getPreviousRouteNodeNames(
@@ -203,10 +191,10 @@ public interface WorkflowUtility {
 			throws WorkflowException;
 
 	// 2.4
-	public boolean documentWillHaveAtLeastOneActionRequest(
+	/*public boolean documentWillHaveAtLeastOneActionRequest(
 			@WebParam(name = "reportCriteriaDTO") ReportCriteriaDTO reportCriteriaDTO,
 			@WebParam(name = "actionRequestedCodes") String[] actionRequestedCodes,
-			@WebParam(name = "ignoreCurrentActionRequests") boolean ignoreCurrentActionRequests);
+			@WebParam(name = "ignoreCurrentActionRequests") boolean ignoreCurrentActionRequests);*/
 
 	/**
 	 * @since 0.9.1

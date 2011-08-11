@@ -16,17 +16,16 @@
  */
 package org.kuali.rice.kew.actionlist;
 
-import java.io.Serializable;
-
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actions.ActionSet;
 import org.kuali.rice.kew.api.action.ActionRequest;
-import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.mail.CustomEmailAttribute;
 import org.kuali.rice.kew.notes.CustomNoteAttribute;
 import org.kuali.rice.kew.notes.Note;
 import org.kuali.rice.krad.UserSession;
+
+import java.io.Serializable;
 
 
 public class TestCustomActionList implements CustomActionListAttribute, Serializable, CustomEmailAttribute, CustomNoteAttribute {

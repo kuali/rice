@@ -16,21 +16,21 @@
  */
 package org.kuali.rice.kew.routemodule;
 
-import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.action.ActionRequest;
-import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.api.document.Document;
+import org.kuali.rice.kew.api.document.DocumentContent;
 import org.kuali.rice.kew.dto.DTOConverter;
-import org.kuali.rice.kew.dto.DocumentContentDTO;
-import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
 import org.kuali.rice.kew.util.ResponsibleParty;
+
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -57,11 +57,14 @@ public class RouteModuleRemoteAdapter implements RouteModule {
     	return findActionRequests(context.getDocument());
     }
 
-    public List findActionRequests(DocumentRouteHeaderValue routeHeader) throws WorkflowException {
+    public List<ActionRequestValue> findActionRequests(DocumentRouteHeaderValue routeHeader) throws WorkflowException {
         try {
-            List actionRequests = new ArrayList();
-            RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(routeHeader, null);
-            DocumentContentDTO documentContentVO = DTOConverter.convertDocumentContent(routeHeader.getDocContent(), routeHeaderVO.getDocumentId());
+            List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
+            //RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(routeHeader, null);
+            Document routeHeaderVO = DocumentRouteHeaderValue.to(routeHeader);
+            DocumentContent documentContentVO = DocumentRouteHeaderValueContent.to(routeHeader.getDocumentContent());
+            /*DocumentContentDTO documentContentVO = DTOConverter.convertDocumentContent(routeHeader.getDocContent(),
+                    routeHeaderVO.getDocumentId());*/
             List<ActionRequest> actionRequestVOs = routeModule.findActionRequests(routeHeaderVO, documentContentVO);
             if (actionRequestVOs != null && actionRequestVOs.size() > 0) {
             	assertRootRequests(actionRequestVOs);

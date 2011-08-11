@@ -163,18 +163,6 @@ public interface WorkflowDocumentService {
                                             @WebParam(name = "appId") String appId)
             throws RiceIllegalArgumentException;
 
-/*
-    public RouteHeaderDTO getRouteHeaderWithPrincipal(
-			@WebParam(name = "principalId") String principalId,
-			@WebParam(name = "documentId") String documentId)
-			throws WorkflowException;
-*/
-/*
-	public RouteHeaderDTO getRouteHeader(
-			@WebParam(name = "documentId") String documentId)
-			throws WorkflowException;
-*/
-
     /**
      * Gets a {@link DocumentDetail} of a {@link Document} with the given documentId
      *

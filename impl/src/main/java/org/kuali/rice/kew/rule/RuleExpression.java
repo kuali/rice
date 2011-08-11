@@ -34,5 +34,5 @@ public interface RuleExpression {
      * @return the result of the rule evaluation
      * @throws WorkflowException
      */
-    public RuleExpressionResult evaluate(Rule rule, RouteContext context) throws WorkflowException;
+    public RuleExpressionResult evaluate(Rule rule, RouteContext context);
 }

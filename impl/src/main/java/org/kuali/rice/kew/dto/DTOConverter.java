@@ -28,7 +28,6 @@ import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
@@ -61,7 +60,6 @@ import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.State;
 import org.kuali.rice.kew.engine.simulation.SimulationActionToTake;
-import org.kuali.rice.kew.engine.simulation.SimulationCriteria;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.framework.document.lookup.SearchableAttribute;
 import org.kuali.rice.kew.notes.Note;
@@ -73,15 +71,9 @@ import org.kuali.rice.kew.postprocessor.DeleteEvent;
 import org.kuali.rice.kew.postprocessor.DocumentLockingEvent;
 import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
 import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
-import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentStatusTransition;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;
-import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleDelegation;
-import org.kuali.rice.kew.rule.RuleExtension;
-import org.kuali.rice.kew.rule.RuleExtensionValue;
-import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.rule.WorkflowAttributeXmlValidator;
@@ -107,11 +99,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -485,116 +475,6 @@ public class DTOConverter {
         return new AttributeDefinition(ruleAttribute, extensionDefinition, objectDefinition);
     }
 
-    public static DocumentContentDTO convertDocumentContent(String documentContentValue,
-            String documentId) throws WorkflowException {
-        if (documentContentValue == null) {
-            return null;
-        }
-        DocumentContentDTO documentContentVO = new DocumentContentDTO();
-        // initialize the content fields
-        documentContentVO.setApplicationContent("");
-        documentContentVO.setAttributeContent("");
-        documentContentVO.setSearchableContent("");
-        documentContentVO.setDocumentId(documentId);
-        try {
-            DocumentContent documentContent = new StandardDocumentContent(documentContentValue);
-            if (documentContent.getApplicationContent() != null) {
-                documentContentVO.setApplicationContent(XmlJotter.jotNode(documentContent.getApplicationContent()));
-            }
-            if (documentContent.getAttributeContent() != null) {
-                documentContentVO.setAttributeContent(XmlJotter.jotNode(documentContent.getAttributeContent()));
-            }
-            if (documentContent.getSearchableContent() != null) {
-                documentContentVO.setSearchableContent(XmlJotter.jotNode(documentContent.getSearchableContent()));
-            }
-        } catch (Exception e) {
-            handleException("Error parsing document content.", e);
-        }
-        return documentContentVO;
-    }
-
-    public static ActionRequestDTO convertActionRequest(ActionRequestValue actionRequest) {
-        return convertActionRequest(actionRequest, true);
-    }
-
-    protected static ActionRequestDTO convertActionRequest(ActionRequestValue actionRequest,
-            boolean includeActionTaken) {
-        ActionRequestDTO actionRequestVO = new ActionRequestDTO();
-        actionRequestVO.setActionRequested(actionRequest.getActionRequested());
-        actionRequestVO.setActionRequestId(actionRequest.getActionRequestId());
-
-        if (includeActionTaken && (actionRequest.getActionTaken() != null)) {
-            actionRequestVO.setActionTakenId(actionRequest.getActionTakenId());
-            actionRequestVO.setActionTaken(convertActionTaken(actionRequest.getActionTaken()));
-        }
-
-        actionRequestVO.setAnnotation(actionRequest.getAnnotation());
-        actionRequestVO.setDateCreated(SQLUtils.convertTimestamp(actionRequest.getCreateDate()));
-        actionRequestVO.setDocVersion(actionRequest.getDocVersion());
-        actionRequestVO.setPrincipalId(actionRequest.getPrincipalId());
-        actionRequestVO.setForceAction(actionRequest.getForceAction());
-        actionRequestVO.setPriority(actionRequest.getPriority());
-        actionRequestVO.setRecipientTypeCd(actionRequest.getRecipientTypeCd());
-        actionRequestVO.setResponsibilityDesc(actionRequest.getResponsibilityDesc());
-        actionRequestVO.setResponsibilityId(actionRequest.getResponsibilityId());
-        actionRequestVO.setDocumentId(actionRequest.getDocumentId());
-        actionRequestVO.setRouteLevel(actionRequest.getRouteLevel());
-        actionRequestVO.setNodeName(actionRequest.getPotentialNodeName());
-        actionRequestVO.setNodeInstanceId((actionRequest.getNodeInstance() == null ? null :
-                actionRequest.getNodeInstance().getRouteNodeInstanceId()));
-        // TODO delyea - should below be using actionRequest.getRoleName()?
-        actionRequestVO.setRoleName(actionRequest.getQualifiedRoleName());
-        actionRequestVO.setQualifiedRoleName(actionRequest.getQualifiedRoleName());
-        actionRequestVO.setQualifiedRoleNameLabel(actionRequest.getQualifiedRoleNameLabel());
-        actionRequestVO.setStatus(actionRequest.getStatus());
-        actionRequestVO.setGroupId(actionRequest.getGroupId());
-        actionRequestVO.setDelegationType(actionRequest.getDelegationType());
-        actionRequestVO.setParentActionRequestId(actionRequest.getParentActionRequestId());
-        actionRequestVO.setRequestLabel(actionRequest.getRequestLabel());
-        ActionRequestDTO[] childRequestVOs = new ActionRequestDTO[actionRequest.getChildrenRequests().size()];
-        int index = 0;
-        for (ActionRequestValue childRequest : actionRequest.getChildrenRequests()) {
-            ActionRequestDTO childRequestVO = convertActionRequest(childRequest);
-            childRequestVOs[index++] = childRequestVO;
-        }
-        actionRequestVO.setChildrenRequests(childRequestVOs);
-        return actionRequestVO;
-    }
-
-    public static ActionTakenDTO convertActionTakenWithActionRequests(ActionTakenValue actionTaken) {
-        return convertActionTaken(actionTaken, true);
-    }
-
-    public static ActionTakenDTO convertActionTaken(ActionTakenValue actionTaken) {
-        return convertActionTaken(actionTaken, false);
-    }
-
-    protected static ActionTakenDTO convertActionTaken(ActionTakenValue actionTaken, boolean fetchActionRequests) {
-        if (actionTaken == null) {
-            return null;
-        }
-        ActionTakenDTO actionTakenVO = new ActionTakenDTO();
-        actionTakenVO.setActionDate(SQLUtils.convertTimestamp(actionTaken.getActionDate()));
-        actionTakenVO.setActionTaken(actionTaken.getActionTaken());
-        actionTakenVO.setActionTakenId(actionTaken.getActionTakenId());
-        actionTakenVO.setAnnotation(actionTaken.getAnnotation());
-        actionTakenVO.setDocVersion(actionTaken.getDocVersion());
-        actionTakenVO.setDocumentId(actionTaken.getDocumentId());
-        actionTakenVO.setPrincipalId(actionTaken.getPrincipalId());
-        actionTakenVO.setDelegatorPrincpalId(actionTaken.getDelegatorPrincipalId());
-        actionTakenVO.setDelegatorGroupId(actionTaken.getDelegatorGroupId());
-        if (fetchActionRequests) {
-            ActionRequestDTO[] actionRequests = new ActionRequestDTO[actionTaken.getActionRequests().size()];
-            int index = 0;
-            for (Object element : actionTaken.getActionRequests()) {
-                ActionRequestValue actionRequest = (ActionRequestValue) element;
-                actionRequests[index++] = convertActionRequest(actionRequest, false);
-            }
-            actionTakenVO.setActionRequests(actionRequests);
-        }
-        return actionTakenVO;
-    }
-
     public static ResponsiblePartyDTO convertResponsibleParty(ResponsibleParty responsibleParty) {
         if (responsibleParty == null) {
             return null;
@@ -652,128 +532,6 @@ public class DTOConverter {
         RouteNodeInstance load(String routeNodeInstanceID);
     }
 
-    /**
-     * Converts an ActionRequestVO to an ActionRequest. The ActionRequestDTO passed in must be the root action request
-     * in the
-     * graph, otherwise an IllegalArgumentException is thrown. This is to avoid potentially sticky issues with circular
-     * references in the conversion. NOTE: This method's primary purpose is to convert ActionRequestVOs returned from a
-     * RouteModule. Incidentally, the DTO's returned from the route module will be lacking some information (like the
-     * node
-     * instance) so no attempts are made to convert this data since further initialization is handled by a higher level
-     * component (namely ActionRequestService.initializeActionRequestGraph).
-     */
-    public static ActionRequestValue convertActionRequestDTO(ActionRequestDTO actionRequestDTO) {
-        return convertActionRequestDTO(actionRequestDTO, null);
-    }
-
-    /**
-     * Converts an ActionRequestVO to an ActionRequest. The ActionRequestDTO passed in must be the root action request
-     * in the
-     * graph, otherwise an IllegalArgumentException is thrown. This is to avoid potentially sticky issues with circular
-     * references in the conversion.
-     *
-     * @param routeNodeInstanceLoader a service that will provide routeNodeInstanceS based on their IDs.
-     */
-    public static ActionRequestValue convertActionRequestDTO(ActionRequestDTO actionRequestDTO,
-            RouteNodeInstanceLoader routeNodeInstanceLoader) {
-
-        if (actionRequestDTO == null) {
-            return null;
-        }
-        if (actionRequestDTO.getParentActionRequestId() != null) {
-            throw new IllegalArgumentException("Cannot convert a non-root ActionRequestVO");
-        }
-        ActionRequestValue actionRequest = new ActionRequestFactory().createBlankActionRequest();
-        populateActionRequest(actionRequest, actionRequestDTO, routeNodeInstanceLoader);
-        if (actionRequestDTO.getChildrenRequests() != null) {
-            for (int i = 0; i < actionRequestDTO.getChildrenRequests().length; i++) {
-                ActionRequestDTO childVO = actionRequestDTO.getChildrenRequests()[i];
-                actionRequest.getChildrenRequests().add(convertActionRequestVO(childVO, actionRequest,
-                        routeNodeInstanceLoader));
-            }
-        }
-        return actionRequest;
-    }
-
-    // TODO: should this be private?  If so, rename to convertActionRequestDTO for consistency.
-    protected static ActionRequestValue convertActionRequestVO(ActionRequestDTO actionRequestDTO,
-            ActionRequestValue parentActionRequest, RouteNodeInstanceLoader routeNodeInstanceLoader) {
-        if (actionRequestDTO == null) {
-            return null;
-        }
-        ActionRequestValue actionRequest = new ActionRequestFactory().createBlankActionRequest();
-        populateActionRequest(actionRequest, actionRequestDTO, routeNodeInstanceLoader);
-        actionRequest.setParentActionRequest(parentActionRequest);
-        actionRequest.setParentActionRequestId(parentActionRequest.getActionRequestId());
-        if (actionRequestDTO.getChildrenRequests() != null) {
-            for (int i = 0; i < actionRequestDTO.getChildrenRequests().length; i++) {
-                ActionRequestDTO childVO = actionRequestDTO.getChildrenRequests()[i];
-                actionRequest.getChildrenRequests().add(convertActionRequestVO(childVO, actionRequest,
-                        routeNodeInstanceLoader));
-            }
-        }
-        return actionRequest;
-    }
-
-    /**
-     * This method converts everything except for the parent and child requests
-     */
-    private static void populateActionRequest(ActionRequestValue actionRequest, ActionRequestDTO actionRequestDTO,
-            RouteNodeInstanceLoader routeNodeInstanceLoader) {
-
-        actionRequest.setActionRequested(actionRequestDTO.getActionRequested());
-        actionRequest.setActionRequestId(actionRequestDTO.getActionRequestId());
-        actionRequest.setActionTakenId(actionRequestDTO.getActionTakenId());
-        actionRequest.setAnnotation(actionRequestDTO.getAnnotation());
-        actionRequest.setApprovePolicy(actionRequestDTO.getApprovePolicy());
-        actionRequest.setCreateDate(new Timestamp(new Date().getTime()));
-        actionRequest.setCurrentIndicator(actionRequestDTO.getCurrentIndicator());
-        actionRequest.setDelegationType(actionRequestDTO.getDelegationType());
-        actionRequest.setDocVersion(actionRequestDTO.getDocVersion());
-        actionRequest.setForceAction(actionRequestDTO.getForceAction());
-        actionRequest.setPriority(actionRequestDTO.getPriority());
-        actionRequest.setQualifiedRoleName(actionRequestDTO.getQualifiedRoleName());
-        actionRequest.setQualifiedRoleNameLabel(actionRequestDTO.getQualifiedRoleNameLabel());
-        actionRequest.setRecipientTypeCd(actionRequestDTO.getRecipientTypeCd());
-        actionRequest.setResponsibilityDesc(actionRequestDTO.getResponsibilityDesc());
-        actionRequest.setResponsibilityId(actionRequestDTO.getResponsibilityId());
-        actionRequest.setRoleName(actionRequestDTO.getRoleName());
-        String documentId = actionRequestDTO.getDocumentId();
-        if (documentId != null) {
-            actionRequest.setDocumentId(documentId);
-            //actionRequest.setRouteHeader(KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId));
-        }
-        actionRequest.setRouteLevel(actionRequestDTO.getRouteLevel());
-
-        actionRequest.setStatus(actionRequestDTO.getStatus());
-        actionRequest.setPrincipalId(actionRequestDTO.getPrincipalId());
-        actionRequest.setGroupId(actionRequestDTO.getGroupId());
-
-        if (routeNodeInstanceLoader != null && actionRequestDTO.getNodeInstanceId() != null) {
-            actionRequest.setNodeInstance(routeNodeInstanceLoader.load(actionRequestDTO.getNodeInstanceId()));
-        }
-    }
-
-    public static ActionTakenValue convertActionTakenVO(ActionTakenDTO actionTakenVO) {
-        if (actionTakenVO == null) {
-            return null;
-        }
-        ActionTakenValue actionTaken = new ActionTakenValue();
-        actionTaken.setActionDate(new Timestamp(actionTakenVO.getActionDate().getTimeInMillis()));
-        actionTaken.setActionTaken(actionTakenVO.getActionTaken());
-        actionTaken.setActionTakenId(actionTakenVO.getActionTakenId());
-        actionTaken.setAnnotation(actionTakenVO.getAnnotation());
-        actionTaken.setCurrentIndicator(Boolean.TRUE);
-        actionTaken.setPrincipalId(actionTakenVO.getPrincipalId());
-        actionTaken.setDelegatorPrincipalId(actionTakenVO.getDelegatorPrincpalId());
-        actionTaken.setDelegatorGroupId(actionTakenVO.getDelegatorGroupId());
-        actionTaken.setDocVersion(actionTakenVO.getDocVersion());
-        KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionTakenVO.getDocumentId());
-        //actionTaken.setRouteHeader(routeHeader);
-        actionTaken.setDocumentId(actionTaken.getDocumentId());
-        return actionTaken;
-    }
-
     public static DocumentRouteStatusChangeDTO convertDocumentRouteStatusChange(
             DocumentRouteStatusChange statusChange) {
         if (statusChange == null) {
@@ -821,7 +579,7 @@ public class DTOConverter {
         ActionTakenEventDTO actionTakenEventVO = new ActionTakenEventDTO();
         actionTakenEventVO.setDocumentId(actionTakenEvent.getDocumentId());
         actionTakenEventVO.setAppDocId(actionTakenEvent.getAppDocId());
-        actionTakenEventVO.setActionTaken(convertActionTaken(actionTakenEvent.getActionTaken()));
+        actionTakenEventVO.setActionTaken(ActionTakenValue.to(actionTakenEvent.getActionTaken()));
         return actionTakenEventVO;
     }
 
@@ -899,46 +657,6 @@ public class DTOConverter {
         }
 
         return new AttributeDefinition(ruleAttribute, extensionDefinition, definition);
-    }
-
-    public static DocumentDetailDTO convertDocumentDetail(
-            DocumentRouteHeaderValue routeHeader) throws WorkflowException {
-        if (routeHeader == null) {
-            return null;
-        }
-        DocumentDetailDTO detail = new DocumentDetailDTO();
-        populateRouteHeaderVO(detail, routeHeader);
-        Map nodeInstances = new HashMap();
-        List actionRequestVOs = new ArrayList();
-        List rootActionRequests = KEWServiceLocator.getActionRequestService().getRootRequests(
-                routeHeader.getActionRequests());
-        for (Iterator iterator = rootActionRequests.iterator(); iterator.hasNext(); ) {
-            ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
-            actionRequestVOs.add(convertActionRequest(actionRequest));
-            RouteNodeInstance nodeInstance = actionRequest.getNodeInstance();
-            if (nodeInstance == null) {
-                continue;
-            }
-            if (nodeInstance.getRouteNodeInstanceId() == null) {
-                throw new WorkflowException(
-                        "Error creating document detail structure because of NULL node instance id.");
-            }
-            nodeInstances.put(nodeInstance.getRouteNodeInstanceId(), nodeInstance);
-        }
-        detail.setActionRequests((ActionRequestDTO[]) actionRequestVOs.toArray(new ActionRequestDTO[0]));
-        List nodeInstanceVOs = new ArrayList();
-        for (Iterator iterator = nodeInstances.values().iterator(); iterator.hasNext(); ) {
-            RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
-            nodeInstanceVOs.add(convertRouteNodeInstance(nodeInstance));
-        }
-        detail.setNodeInstances((RouteNodeInstanceDTO[]) nodeInstanceVOs.toArray(new RouteNodeInstanceDTO[0]));
-        List actionTakenVOs = new ArrayList();
-        for (Object element : routeHeader.getActionsTaken()) {
-            ActionTakenValue actionTaken = (ActionTakenValue) element;
-            actionTakenVOs.add(convertActionTaken(actionTaken));
-        }
-        detail.setActionsTaken((ActionTakenDTO[]) actionTakenVOs.toArray(new ActionTakenDTO[0]));
-        return detail;
     }
 
     public static DocumentDetail convertDocumentDetailNew(DocumentRouteHeaderValue routeHeader) {
@@ -1126,54 +844,6 @@ public class DTOConverter {
         }
     }
 
-    public static SimulationCriteria convertReportCriteriaDTO(ReportCriteriaDTO criteriaVO) {
-        if (criteriaVO == null) {
-            return null;
-        }
-        SimulationCriteria criteria = new SimulationCriteria();
-        criteria.setDestinationNodeName(criteriaVO.getTargetNodeName());
-        criteria.setDocumentId(criteriaVO.getDocumentId());
-        criteria.setDocumentTypeName(criteriaVO.getDocumentTypeName());
-        criteria.setXmlContent(criteriaVO.getXmlContent());
-        criteria.setActivateRequests(criteriaVO.getActivateRequests());
-        criteria.setFlattenNodes(criteriaVO.isFlattenNodes());
-        if (criteriaVO.getRoutingPrincipalId() != null) {
-            Principal kPrinc = KEWServiceLocator.getIdentityHelperService().getPrincipal(
-                    criteriaVO.getRoutingPrincipalId());
-            Person user = KimApiServiceLocator.getPersonService().getPerson(kPrinc.getPrincipalId());
-            if (user == null) {
-                throw new RiceRuntimeException(
-                        "Could not locate user for the given id: " + criteriaVO.getRoutingPrincipalId());
-            }
-            criteria.setRoutingUser(user);
-        }
-        if (criteriaVO.getRuleTemplateNames() != null) {
-            for (int index = 0; index < criteriaVO.getRuleTemplateNames().length; index++) {
-                String ruleTemplateName = criteriaVO.getRuleTemplateNames()[index];
-                criteria.getRuleTemplateNames().add(ruleTemplateName);
-            }
-        }
-        if (criteriaVO.getNodeNames() != null) {
-            for (int i = 0; i < criteriaVO.getNodeNames().length; i++) {
-                String nodeName = criteriaVO.getNodeNames()[i];
-                criteria.getNodeNames().add(nodeName);
-            }
-        }
-        if (criteriaVO.getTargetPrincipalIds() != null) {
-            for (String targetPrincipalId : criteriaVO.getTargetPrincipalIds()) {
-                Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(targetPrincipalId);
-                criteria.getDestinationRecipients().add(new KimPrincipalRecipient(principal));
-            }
-        }
-        if (criteriaVO.getActionsToTake() != null) {
-            for (int index = 0; index < criteriaVO.getActionsToTake().length; index++) {
-                ReportActionToTakeDTO actionToTakeVO = criteriaVO.getActionsToTake()[index];
-                criteria.getActionsToTake().add(convertReportActionToTakeVO(actionToTakeVO));
-            }
-        }
-        return criteria;
-    }
-
     public static SimulationActionToTake convertReportActionToTakeVO(ReportActionToTakeDTO actionToTakeVO) {
         if (actionToTakeVO == null) {
             return null;
@@ -1195,93 +865,6 @@ public class DTOConverter {
         }
         actionToTake.setUser(user);
         return actionToTake;
-    }
-
-    public static RuleDelegationDTO convertRuleDelegation(RuleDelegation ruleDelegation) throws WorkflowException {
-        if (ruleDelegation == null) {
-            return null;
-        }
-        RuleDelegationDTO ruleDelegationVO = new RuleDelegationDTO();
-        ruleDelegationVO.setDelegationType(ruleDelegation.getDelegationType());
-        ruleDelegationVO.setDelegationRule(convertRule(ruleDelegation.getDelegationRuleBaseValues()));
-        return ruleDelegationVO;
-    }
-
-    // public static RuleDelegation convertRuleExtensionVO(RuleExtensionVO ruleExtensionVO) throws WorkflowException {}
-
-    public static Collection<RuleExtensionDTO> convertRuleExtension(
-            RuleExtension ruleExtension) throws WorkflowException {
-        if (ruleExtension == null) {
-            return null;
-        }
-        List<RuleExtensionDTO> extensionVOs = new ArrayList<RuleExtensionDTO>();
-        for (Object element : ruleExtension.getExtensionValues()) {
-            RuleExtensionValue extensionValue = (RuleExtensionValue) element;
-            extensionVOs.add(new RuleExtensionDTO(extensionValue.getKey(), extensionValue.getValue()));
-        }
-        return extensionVOs;
-    }
-
-    public static KeyValue convertRuleExtensionVO(RuleExtensionDTO ruleExtensionVO) throws WorkflowException {
-        if (ruleExtensionVO == null) {
-            return null;
-        }
-        return new ConcreteKeyValue(ruleExtensionVO.getKey(), ruleExtensionVO.getValue());
-    }
-
-    public static RuleResponsibilityDTO convertRuleResponsibility(
-            RuleResponsibility ruleResponsibility) throws WorkflowException {
-        if (ruleResponsibility == null) {
-            return null;
-        }
-        RuleResponsibilityDTO ruleResponsibilityVO = new RuleResponsibilityDTO();
-        ruleResponsibilityVO.setActionRequestedCd(ruleResponsibility.getActionRequestedCd());
-        ruleResponsibilityVO.setApprovePolicy(ruleResponsibility.getApprovePolicy());
-        ruleResponsibilityVO.setPriority(ruleResponsibility.getPriority());
-        ruleResponsibilityVO.setResponsibilityId(ruleResponsibility.getResponsibilityId());
-        ruleResponsibilityVO.setRoleName(ruleResponsibility.getRole());
-        if (ruleResponsibility.getPrincipal() != null) {
-            ruleResponsibilityVO.setPrincipalId(ruleResponsibility.getPrincipal().getPrincipalId());
-        } else if (ruleResponsibility.getGroup() != null) {
-            ruleResponsibilityVO.setGroupId(ruleResponsibility.getGroup().getId());
-        } else if (ruleResponsibility.getRole() != null) {
-            ruleResponsibilityVO.setRoleName(ruleResponsibility.getRole());
-        }
-        for (Object element : ruleResponsibility.getDelegationRules()) {
-            RuleDelegation ruleDelegation = (RuleDelegation) element;
-            ruleResponsibilityVO.addDelegationRule(convertRuleDelegation(ruleDelegation));
-        }
-        return ruleResponsibilityVO;
-    }
-
-    // public static KeyValuePair convertRuleResponsibilityVO(RuleResponsibilityVO ruleResponsibilityVO) throws
-    // WorkflowException {}
-
-    public static RuleDTO convertRule(RuleBaseValues ruleValues) throws WorkflowException {
-        if (ruleValues == null) {
-            return null;
-        }
-        RuleDTO rule = new RuleDTO();
-        rule.setActiveInd(ruleValues.getActiveInd());
-        rule.setDescription(ruleValues.getDescription());
-        rule.setDocTypeName(ruleValues.getDocTypeName());
-        rule.setFromDate(ruleValues.getFromDateString());
-        rule.setToDate(ruleValues.getToDateString());
-        rule.setForceAction(ruleValues.getForceAction());
-        rule.setRuleTemplateId(ruleValues.getRuleTemplateId());
-        rule.setRuleTemplateName(ruleValues.getRuleTemplateName());
-
-        // get keyPair values to setup RuleExtensionVOs
-        for (Object element : ruleValues.getRuleExtensions()) {
-            RuleExtension ruleExtension = (RuleExtension) element;
-            rule.addRuleExtensions(convertRuleExtension(ruleExtension));
-        }
-        // get keyPair values to setup RuleExtensionVOs
-        for (Object element : ruleValues.getResponsibilities()) {
-            RuleResponsibility ruleResponsibility = (RuleResponsibility) element;
-            rule.addRuleResponsibility(convertRuleResponsibility(ruleResponsibility));
-        }
-        return rule;
     }
 
     public static DocSearchCriteriaDTO convertDocumentSearchCriteriaDTO(

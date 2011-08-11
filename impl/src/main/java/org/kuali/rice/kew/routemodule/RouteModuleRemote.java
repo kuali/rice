@@ -17,9 +17,9 @@
 package org.kuali.rice.kew.routemodule;
 
 import org.kuali.rice.kew.api.action.ActionRequest;
-import org.kuali.rice.kew.dto.DocumentContentDTO;
+import org.kuali.rice.kew.api.document.Document;
+import org.kuali.rice.kew.api.document.DocumentContent;
 import org.kuali.rice.kew.dto.ResponsiblePartyDTO;
-import org.kuali.rice.kew.dto.RouteHeaderDTO;
 
 import java.rmi.RemoteException;
 import java.util.List;
@@ -38,12 +38,12 @@ public interface RouteModuleRemote {
    *
    * @return ActionRequestVO[] the generated action requests
    */
-  public List<ActionRequest> findActionRequests(RouteHeaderDTO routeHeader, DocumentContentDTO documentContent) throws RemoteException;
+  public List<ActionRequest> findActionRequests(Document routeHeader, DocumentContent documentContent) throws RemoteException;
 
   /**
    * The route module will resolve the given responsibilityId and return an object that contains the key to
    * either a user or a workgroup.
-   * @param rId ResponsibiliyId that we need resolved.
+   * @param responsibilityId ResponsibiliyId that we need resolved.
    * @return The ResponsibleParty containing a key to a user or workgroup.
    */
   public ResponsiblePartyDTO resolveResponsibilityId(String responsibilityId) throws RemoteException;

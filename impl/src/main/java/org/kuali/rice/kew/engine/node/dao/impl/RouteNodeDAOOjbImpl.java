@@ -134,11 +134,11 @@ public class RouteNodeDAOOjbImpl extends PersistenceBrokerDaoSupport implements 
 	return (RouteNode) getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(RouteNode.class, criteria));
     }
 
-    public List findFinalApprovalRouteNodes(String documentTypeId) {
+    public List<RouteNode> findFinalApprovalRouteNodes(String documentTypeId) {
 	Criteria criteria = new Criteria();
 	criteria.addEqualTo(DOCUMENT_TYPE_ID, documentTypeId);
 	criteria.addEqualTo(FINAL_APPROVAL, Boolean.TRUE);
-	return (List) getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RouteNode.class, criteria));
+	return new ArrayList<RouteNode>(getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RouteNode.class, criteria)));
     }
 
     public List findProcessNodeInstances(RouteNodeInstance process) {

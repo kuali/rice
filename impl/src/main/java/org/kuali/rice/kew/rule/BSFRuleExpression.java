@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.rule;
 
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -33,7 +34,7 @@ import javax.script.ScriptException;
  */
 //TODO: this should really be renamed since it is no longer using apache BSF
 public class BSFRuleExpression implements RuleExpression {
-    public RuleExpressionResult evaluate(Rule rule, RouteContext context) throws WorkflowException {
+    public RuleExpressionResult evaluate(Rule rule, RouteContext context) {
         RuleBaseValues ruleDefinition = rule.getDefinition();
         String type = ruleDefinition.getRuleExpressionDef().getType();
         String lang = parseLang(type, "groovy");
@@ -45,7 +46,7 @@ public class BSFRuleExpression implements RuleExpression {
             declareBeans(engine, rule, context);
             result = (RuleExpressionResult) engine.eval(expression);
         } catch (ScriptException e) {
-            throw new WorkflowException("Error evaluating " + type + " expression: '" + expression + "'", e);
+            throw new RiceIllegalStateException("Error evaluating " + type + " expression: '" + expression + "'", e);
         }
         if (result == null) {
             return new RuleExpressionResult(rule, false);

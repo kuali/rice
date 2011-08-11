@@ -77,7 +77,7 @@ public class NotificationPostProcessor implements PostProcessorRemote {
 
         LOG.debug("ACTION TAKEN=" + event.getActionTaken().getActionTaken());
 
-        String actionTakenCode = event.getActionTaken().getActionTaken();
+        String actionTakenCode = event.getActionTaken().getActionTaken().getCode();
 
         Properties p = new Properties();
         WorkflowDocument doc = WorkflowDocumentFactory.loadDocument(event.getActionTaken().getPrincipalId(), event.getDocumentId());

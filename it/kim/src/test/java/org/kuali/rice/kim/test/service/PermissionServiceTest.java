@@ -22,6 +22,7 @@ import org.kuali.rice.kim.impl.common.template.TemplateBo;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.test.KIMTestCase;
+import org.kuali.rice.test.BaselineTestCase;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +35,7 @@ import static org.junit.Assert.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class PermissionServiceTest extends KIMTestCase {
 
 	private PermissionService permissionService;

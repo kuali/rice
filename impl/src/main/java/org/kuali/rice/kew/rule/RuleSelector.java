@@ -41,5 +41,5 @@ public interface RuleSelector {
      * @throws WorkflowException if anything goes awry...
      */
     /* inputs taken from FlexRM getActionRequests/makeActionRequests */
-    public List<Rule> selectRules(RouteContext context, DocumentRouteHeaderValue routeHeader, RouteNodeInstance nodeInstance, String selectionCriterion, Timestamp effectiveDate) throws WorkflowException;
+    public List<Rule> selectRules(RouteContext context, DocumentRouteHeaderValue routeHeader, RouteNodeInstance nodeInstance, String selectionCriterion, Timestamp effectiveDate);
 }

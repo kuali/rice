@@ -6,11 +6,14 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.action.AdHocRevoke;
@@ -34,22 +37,31 @@ import org.kuali.rice.kew.api.document.DocumentUpdate;
 import org.kuali.rice.kew.api.document.PropertyDefinition;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeValidationError;
+import org.kuali.rice.kew.api.rule.RuleReportCriteria;
 import org.kuali.rice.kew.definition.AttributeDefinition;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.DTOConverter;
+import org.kuali.rice.kew.engine.ActivationContext;
+import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.simulation.SimulationCriteria;
 import org.kuali.rice.kew.engine.simulation.SimulationResults;
 import org.kuali.rice.kew.engine.simulation.SimulationWorkflowEngine;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.rule.WorkflowAttributeXmlValidator;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -348,6 +360,25 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
         }
         SimulationCriteria criteria = SimulationCriteria.from(reportCriteria);
         return DTOConverter.convertDocumentDetailNew(KEWServiceLocator.getRoutingReportService().report(criteria));
+    }
+
+    public List<org.kuali.rice.kew.api.rule.Rule> ruleReport(RuleReportCriteria ruleReportCriteria) {
+        incomingParamCheck(ruleReportCriteria, "ruleReportCriteria");
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("Executing rule report [responsibleUser=" + ruleReportCriteria.getResponsiblePrincipalId() + ", responsibleWorkgroup=" +
+                    ruleReportCriteria.getResponsibleGroupId() + "]");
+        }
+        Collection<RuleBaseValues> rulesFound = KEWServiceLocator.getRuleService().searchByTemplate(
+                ruleReportCriteria.getDocumentTypeName(), ruleReportCriteria.getRuleTemplateName(),
+                ruleReportCriteria.getRuleDescription(), ruleReportCriteria.getResponsibleGroupId(),
+                ruleReportCriteria.getResponsiblePrincipalId(), ruleReportCriteria.isConsiderGroupMembership(),
+                ruleReportCriteria.isIncludeDelegations(), ruleReportCriteria.isActive(), ruleReportCriteria.getRuleExtensions(),
+                ruleReportCriteria.getActionRequestCodes());
+        List<org.kuali.rice.kew.api.rule.Rule> returnableRules = new ArrayList<org.kuali.rice.kew.api.rule.Rule>(rulesFound.size());
+        for (RuleBaseValues rule : rulesFound) {
+            returnableRules.add(RuleBaseValues.to(rule));
+        }
+        return returnableRules;
     }
 
     protected DocumentActionResult constructDocumentActionResult(DocumentRouteHeaderValue documentBo, String principalId) {
@@ -844,6 +875,37 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     }
 
     @Override
+    public void reResolveRoleByDocTypeName(String documentTypeName, String roleName, String qualifiedRoleNameLabel) {
+        incomingParamCheck(documentTypeName, "documentTypeName");
+        incomingParamCheck(roleName, "roleName");
+        incomingParamCheck(qualifiedRoleNameLabel, "qualifiedRoleNameLabel");
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("Re-resolving Role [docTypeName=" + documentTypeName + ", roleName=" + roleName + ", qualifiedRoleNameLabel=" + qualifiedRoleNameLabel + "]");
+        }
+    	DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
+    	if (org.apache.commons.lang.StringUtils.isEmpty(qualifiedRoleNameLabel)) {
+    		KEWServiceLocator.getRoleService().reResolveRole(documentType, roleName);
+    	} else {
+    		KEWServiceLocator.getRoleService().reResolveQualifiedRole(documentType, roleName, qualifiedRoleNameLabel);
+    	}
+    }
+
+    public void reResolveRoleByDocumentId(String documentId, String roleName, String qualifiedRoleNameLabel) {
+        incomingParamCheck(documentId, "documentId");
+        incomingParamCheck(roleName, "roleName");
+        incomingParamCheck(qualifiedRoleNameLabel, "qualifiedRoleNameLabel");
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("Re-resolving Role [documentId=" + documentId + ", roleName=" + roleName + ", qualifiedRoleNameLabel=" + qualifiedRoleNameLabel + "]");
+        }
+        DocumentRouteHeaderValue routeHeader = loadDocument(documentId);
+    	if (org.apache.commons.lang.StringUtils.isEmpty(qualifiedRoleNameLabel)) {
+    		KEWServiceLocator.getRoleService().reResolveRole(routeHeader, roleName);
+    	} else {
+    		KEWServiceLocator.getRoleService().reResolveQualifiedRole(routeHeader, roleName, qualifiedRoleNameLabel);
+    	}
+    }
+
+    @Override
     public List<WorkflowAttributeValidationError> validateWorkflowAttributeDefinition(
             WorkflowAttributeDefinition definition) {
         if (definition == null) {
@@ -877,6 +939,175 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
             }
         }
         return errors;
+    }
+
+    @Override
+    public boolean isFinalApprover(String documentId, String principalId) {
+        incomingParamCheck(documentId, "documentId");
+        incomingParamCheck(principalId, "principalId");
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("Evaluating isFinalApprover [docId=" + documentId + ", principalId=" + principalId + "]");
+        }
+        DocumentRouteHeaderValue routeHeader = loadDocument(documentId);
+        List<ActionRequestValue> requests = KEWServiceLocator.getActionRequestService().findPendingByDoc(documentId);
+        List<RouteNode> finalApproverNodes = KEWServiceLocator.getRouteNodeService().findFinalApprovalRouteNodes(routeHeader.getDocumentType().getDocumentTypeId());
+        if (finalApproverNodes.isEmpty()) {
+        	if ( LOG.isDebugEnabled() ) {
+        		LOG.debug("Could not locate final approval nodes for document " + documentId);
+        	}
+            return false;
+        }
+        Set<String> finalApproverNodeNames = new HashSet<String>();
+        for (RouteNode node : finalApproverNodes) {
+            finalApproverNodeNames.add(node.getRouteNodeName());
+        }
+
+        int approveRequest = 0;
+        for (ActionRequestValue request : requests) {
+            RouteNodeInstance nodeInstance = request.getNodeInstance();
+            if (nodeInstance == null) {
+            	if ( LOG.isDebugEnabled() ) {
+            		LOG.debug("Found an action request on the document with a null node instance, indicating EXCEPTION routing.");
+            	}
+                return false;
+            }
+            if (finalApproverNodeNames.contains(nodeInstance.getRouteNode().getRouteNodeName())) {
+                if (request.isApproveOrCompleteRequest()) {
+                    approveRequest++;
+                    if ( LOG.isDebugEnabled() ) {
+                    	LOG.debug("Found request is approver " + request.getActionRequestId());
+                    }
+                    if (! request.isRecipientRoutedRequest(principalId)) {
+                    	if ( LOG.isDebugEnabled() ) {
+                    		LOG.debug("Action Request not for user " + principalId);
+                    	}
+                        return false;
+                    }
+                }
+            }
+        }
+
+        if (approveRequest == 0) {
+            return false;
+        }
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("Principal "+principalId+" is final approver for document " + documentId);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean routeNodeHasApproverActionRequest(String documentTypeName, String docContent, String nodeName) {
+        incomingParamCheck(documentTypeName, "documentTypeName");
+        incomingParamCheck(nodeName, "nodeName");
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("Evaluating routeNodeHasApproverActionRequest [docTypeName=" + documentTypeName + ", nodeName=" + nodeName + "]");
+        }
+        DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
+        RouteNode routeNode = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(documentType.getDocumentTypeId(), nodeName);
+        return routeNodeHasApproverActionRequest(documentType, docContent, routeNode, new Integer(KEWConstants.INVALID_ROUTE_LEVEL));
+    }
+
+    /**
+     * Really this method needs to be implemented using the executeSimulation functionality (the SimulationEngine).
+     * This would get rid of the needs for us to call to FlexRM directly.
+     */
+    private boolean routeNodeHasApproverActionRequest(DocumentType documentType, String docContent, RouteNode node, Integer routeLevel) {
+        incomingParamCheck(documentType, "documentType");
+        incomingParamCheck(docContent, "docContent");
+        incomingParamCheck(node, "node");
+
+/*        DocumentRouteHeaderValue routeHeader = new DocumentRouteHeaderValue();
+        routeHeader.setDocumentId("");
+        routeHeader.setDocumentTypeId(documentType.getDocumentTypeId());
+        routeHeader.setDocRouteLevel(routeLevel);
+        routeHeader.setDocVersion(new Integer(KewApiConstants.DocumentContentVersions.CURRENT));*/
+
+        //TODO THIS NEEDS TESTING!!!!! IT WAS A GUESS ON HOW THIS WORKS
+        RoutingReportCriteria.Builder builder = RoutingReportCriteria.Builder.createByDocumentTypeName(documentType.getName());
+        builder.setTargetNodeName(node.getName());
+        builder.setXmlContent(docContent);
+        DocumentDetail docDetail = executeSimulation(builder.build());
+        if (docDetail != null) {
+            for (ActionRequest actionRequest : docDetail.getActionRequests()) {
+                if (actionRequest.isApprovalRequest()) {
+                    return true;
+                }
+            }
+        }
+        /*if (node.getRuleTemplate() != null && node.isFlexRM()) {
+            String ruleTemplateName = node.getRuleTemplate().getName();
+            builder.setXmlContent(docContent);
+            routeHeader.setDocRouteStatus(KEWConstants.ROUTE_HEADER_INITIATED_CD);
+            FlexRM flexRM = new FlexRM();
+    		RouteContext context = RouteContext.getCurrentRouteContext();
+    		context.setDocument(routeHeader);
+    		try {
+    			List actionRequests = flexRM.getActionRequests(routeHeader, node, null, ruleTemplateName);
+    			for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
+    				ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
+    				if (actionRequest.isApproveOrCompleteRequest()) {
+    					return true;
+    				}
+    			}
+    		} finally {
+    			RouteContext.clearCurrentRouteContext();
+    		}
+        }*/
+        return false;
+    }
+
+    @Override
+    public boolean isLastApproverAtNode(String documentId, String principalId, String nodeName)  {
+        incomingParamCheck(documentId, "documentId");
+        incomingParamCheck(principalId, "principalId");
+        incomingParamCheck(nodeName, "nodeName");
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("Evaluating isLastApproverAtNode [docId=" + documentId + ", principalId=" + principalId + ", nodeName=" + nodeName + "]");
+        }
+        loadDocument(documentId);
+        // If this app constant is set to true, then we will attempt to simulate activation of non-active requests before
+        // attempting to deactivate them, this is in order to address the force action issue reported by EPIC in issue
+        // http://fms.dfa.cornell.edu:8080/browse/KULWF-366
+        Boolean activateFirst = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
+                KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
+        if (activateFirst == null) {
+            activateFirst = Boolean.FALSE;
+        }
+
+        List<ActionRequestValue> requests = KEWServiceLocator.getActionRequestService().findPendingByDocRequestCdNodeName(documentId, KEWConstants.ACTION_REQUEST_APPROVE_REQ, nodeName);
+        if (requests == null || requests.isEmpty()) {
+            return false;
+        }
+
+        // Deep-copy the action requests for the simulation.
+        List<ActionRequestValue> copiedRequests = new ArrayList<ActionRequestValue>();
+        for (ActionRequestValue request : requests) {
+        	ActionRequestValue actionRequest = (ActionRequestValue) ObjectUtils.deepCopy(
+                    (ActionRequestValue) request);
+        	// Deep-copy the action items as well, since they are indirectly retrieved from the action request via service calls.
+        	for (ActionItem actionItem : actionRequest.getActionItems()) {
+        		actionRequest.getSimulatedActionItems().add((ActionItem) ObjectUtils.deepCopy(actionItem));
+        	}
+        	copiedRequests.add(actionRequest);
+        }
+
+        ActivationContext activationContext = new ActivationContext(ActivationContext.CONTEXT_IS_SIMULATION);
+        for (ActionRequestValue request : copiedRequests) {
+            if (activateFirst.booleanValue() && !request.isActive()) {
+                KEWServiceLocator.getActionRequestService().activateRequest(request, activationContext);
+            }
+            if (request.isUserRequest() && request.getPrincipalId().equals(principalId)) {
+                KEWServiceLocator.getActionRequestService().deactivateRequest(null, request, activationContext);
+            } else if (request.isGroupRequest() && KimApiServiceLocator.getGroupService().isMemberOfGroup(principalId, request.getGroup().getId())) {
+                KEWServiceLocator.getActionRequestService().deactivateRequest(null, request, activationContext);
+            }
+        }
+        boolean allDeactivated = true;
+        for (ActionRequestValue actionRequest: copiedRequests) {
+            allDeactivated = allDeactivated && actionRequest.isDeactivated();
+        }
+        return allDeactivated;
     }
 
     @Override

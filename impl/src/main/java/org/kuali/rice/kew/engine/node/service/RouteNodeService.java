@@ -92,7 +92,7 @@ public interface RouteNodeService {
 
     public NodeState findNodeState(Long nodeInstanceId, String key);
     public RouteNode findRouteNodeByName(String documentTypeId, String name);
-    public List findFinalApprovalRouteNodes(String documentTypeId);
+    public List<RouteNode> findFinalApprovalRouteNodes(String documentTypeId);
     public List findNextRouteNodesInPath(RouteNodeInstance nodeInstance, String nodeName);
     public boolean isNodeInPath(DocumentRouteHeaderValue document, String nodeName);
     public List findRouteNodeInstances(String documentId);

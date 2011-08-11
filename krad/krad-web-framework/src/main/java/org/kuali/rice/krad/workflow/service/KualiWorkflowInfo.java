@@ -15,15 +15,12 @@
  */
 package org.kuali.rice.krad.workflow.service;
 
-import java.rmi.RemoteException;
-import java.util.List;
-
-import org.kuali.rice.kew.dto.ActionRequestDTO;
-import org.kuali.rice.kew.dto.ActionTakenDTO;
 import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
 import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
-import org.kuali.rice.kew.dto.ReportCriteriaDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
+
+import java.rmi.RemoteException;
+import java.util.List;
 
 
 /**
@@ -38,7 +35,7 @@ public interface KualiWorkflowInfo {
 
     /*public abstract ActionRequestDTO[] getActionRequests(String documentId) throws WorkflowException;*/
     
-    public abstract ActionTakenDTO[] getActionsTaken(String documentId) throws WorkflowException;
+    /*public abstract ActionTakenDTO[] getActionsTaken(String documentId) throws WorkflowException;*/
 
     public abstract void reResolveRoleByDocTypeName(String documentTypeName, String roleName, String qualifiedRoleNameLabel) throws WorkflowException;
 
@@ -55,14 +52,14 @@ public interface KualiWorkflowInfo {
      * @return true if the document has or will have at least one request that matches the criteria and has a requested code that matches one of the given codes
      * @throws WorkflowException
      */
-    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes, boolean ignoreCurrentlyActiveRequests) throws WorkflowException;
+    /*public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes, boolean ignoreCurrentlyActiveRequests) throws WorkflowException;*/
     
     /**
      * @deprecated use {@link #documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO, String[], boolean)} instead
      * 
      * Use of this method passes the value 'false' in for the <code>ignoreCurrentlyActiveRequests</code> parameter of {@link #documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO, String[], boolean)}
      */
-    public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes) throws WorkflowException;
+    /*public boolean documentWillHaveAtLeastOneActionRequest(ReportCriteriaDTO reportCriteriaDTO, String[] actionRequestedCodes) throws WorkflowException;*/
     
     /**
      * This method returns a list of Universal User Ids that have approval or completion requested of them for the document represented by the documentId parameter

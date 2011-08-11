@@ -3,6 +3,7 @@ package org.kuali.rice.kew.api.rule;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -12,6 +13,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
@@ -55,6 +57,7 @@ public final class RuleReportCriteria
     @XmlElement(name = Elements.RESPONSIBLE_ROLE_NAME, required = false)
     private final String responsibleRoleName;
     @XmlElement(name = Elements.RULE_EXTENSIONS, required = false)
+    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
     private final Map<String, String> ruleExtensions;
     @XmlElement(name = Elements.ACTIVE, required = false)
     private final boolean active;
@@ -175,11 +178,11 @@ public final class RuleReportCriteria
         private boolean includeDelegations;
 
         private Builder() {
-            // TODO modify this constructor as needed to pass any required values and invoke the appropriate 'setter' methods
+            setActive(true);
+            setConsiderGroupMembership(true);
         }
 
         public static Builder create() {
-            // TODO modify as needed to pass any required values and add them to the signature of the 'create' method
             return new Builder();
         }
 
@@ -187,7 +190,6 @@ public final class RuleReportCriteria
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
             }
-            // TODO if create() is modified to accept required parameters, this will need to be modified
             Builder builder = create();
             builder.setRuleDescription(contract.getRuleDescription());
             builder.setDocumentTypeName(contract.getDocumentTypeName());
@@ -263,57 +265,57 @@ public final class RuleReportCriteria
         }
 
         public void setRuleDescription(String ruleDescription) {
-            // TODO add validation of input value if required and throw IllegalArgumentException if needed
+
             this.ruleDescription = ruleDescription;
         }
 
         public void setDocumentTypeName(String documentTypeName) {
-            // TODO add validation of input value if required and throw IllegalArgumentException if needed
+
             this.documentTypeName = documentTypeName;
         }
 
         public void setRuleTemplateName(String ruleTemplateName) {
-            // TODO add validation of input value if required and throw IllegalArgumentException if needed
+
             this.ruleTemplateName = ruleTemplateName;
         }
 
         public void setActionRequestCodes(List<String> actionRequestCodes) {
-            // TODO add validation of input value if required and throw IllegalArgumentException if needed
+
             this.actionRequestCodes = actionRequestCodes;
         }
 
         public void setResponsiblePrincipalId(String responsiblePrincipalId) {
-            // TODO add validation of input value if required and throw IllegalArgumentException if needed
+
             this.responsiblePrincipalId = responsiblePrincipalId;
         }
 
         public void setResponsibleGroupId(String responsibleGroupId) {
-            // TODO add validation of input value if required and throw IllegalArgumentException if needed
+
             this.responsibleGroupId = responsibleGroupId;
         }
 
         public void setResponsibleRoleName(String responsibleRoleName) {
-            // TODO add validation of input value if required and throw IllegalArgumentException if needed
+
             this.responsibleRoleName = responsibleRoleName;
         }
 
         public void setRuleExtensions(Map<String, String> ruleExtensions) {
-            // TODO add validation of input value if required and throw IllegalArgumentException if needed
+
             this.ruleExtensions = Collections.unmodifiableMap(ruleExtensions);
         }
 
         public void setActive(boolean active) {
-            // TODO add validation of input value if required and throw IllegalArgumentException if needed
+
             this.active = active;
         }
 
         public void setConsiderGroupMembership(boolean considerGroupMembership) {
-            // TODO add validation of input value if required and throw IllegalArgumentException if needed
+
             this.considerGroupMembership = considerGroupMembership;
         }
 
         public void setIncludeDelegations(boolean includeDelegations) {
-            // TODO add validation of input value if required and throw IllegalArgumentException if needed
+
             this.includeDelegations = includeDelegations;
         }
 

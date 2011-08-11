@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.rule;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.GenericGenerator;
@@ -23,7 +24,6 @@ import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.Group;
@@ -39,6 +39,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -119,7 +121,7 @@ public class RuleResponsibility extends PersistableBusinessObjectBase {
 	return getRole().substring(0, getRole().indexOf("!"));
     }
     
-    public RoleAttribute resolveRoleAttribute() throws WorkflowException {
+    public RoleAttribute resolveRoleAttribute() {
         if (isUsingRole()) {
             String attributeName = getRoleAttributeName();
             return (RoleAttribute) GlobalResourceLoader.getResourceLoader().getObject(new ObjectDefinition(attributeName));
@@ -304,4 +306,31 @@ public class RuleResponsibility extends PersistableBusinessObjectBase {
 		.append(this.priority)
 		.append(this.ruleResponsibilityName).toHashCode();
 	}
+
+    public static org.kuali.rice.kew.api.rule.RuleResponsibility to(RuleResponsibility bo) {
+        if (bo == null) {
+            return null;
+        }
+
+        org.kuali.rice.kew.api.rule.RuleResponsibility.Builder builder = org.kuali.rice.kew.api.rule.RuleResponsibility.Builder.create();
+        builder.setPriority(bo.getPriority());
+        builder.setResponsibilityId(bo.getResponsibilityId());
+        builder.setActionRequestedCd(bo.getActionRequestedCd());
+        builder.setApprovePolicy(bo.getApprovePolicy());
+        builder.setPrincipalId(bo.getPrincipal() == null ? null : bo.getPrincipal().getPrincipalId());
+        builder.setGroupId(bo.getGroup() == null ? null : bo.getGroup().getId());
+        builder.setRoleName(bo.getResolvedRoleName());
+        if (CollectionUtils.isNotEmpty(bo.getDelegationRules())) {
+            List<org.kuali.rice.kew.api.rule.RuleDelegation.Builder> delegationRuleBuilders =
+                    new ArrayList<org.kuali.rice.kew.api.rule.RuleDelegation.Builder>();
+            for (RuleDelegation delegationRule : bo.getDelegationRules()) {
+                delegationRuleBuilders.add(
+                        org.kuali.rice.kew.api.rule.RuleDelegation.Builder.create(RuleDelegation.to(delegationRule)));
+            }
+            builder.setDelegationRules(delegationRuleBuilders);
+        } else {
+            builder.setDelegationRules(Collections.<org.kuali.rice.kew.api.rule.RuleDelegation.Builder>emptyList());
+        }
+        return builder.build();
+    }
 }

@@ -123,7 +123,7 @@ public interface ActionRequestService {
 
     public List<ActionRequestValue> findPendingByDocRequestCdRouteLevel(String documentId, String requestCode, Integer routeLevel);
 
-    public List findPendingByDocRequestCdNodeName(String documentId, String requestCode, String nodeName);
+    public List<ActionRequestValue> findPendingByDocRequestCdNodeName(String documentId, String requestCode, String nodeName);
     
     /**
      * Returns all pending requests for a given routing entity

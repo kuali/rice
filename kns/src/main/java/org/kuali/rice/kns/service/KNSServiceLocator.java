@@ -24,6 +24,7 @@ import org.kuali.rice.kns.lookup.Lookupable;
  * Service locator for the KRAD Web module
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @deprecated
  */
 @Deprecated
 public class KNSServiceLocator {

@@ -604,7 +604,7 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
 		return definition.build();
 	}
 
-	protected final String COMMA_SEPARATOR = ", ";
+	protected static final String COMMA_SEPARATOR = ", ";
 
 	protected void validateRequiredAttributesAgainstReceived(Map<String, String> receivedAttributes){
 		// abort if type does not want the qualifiers to be checked

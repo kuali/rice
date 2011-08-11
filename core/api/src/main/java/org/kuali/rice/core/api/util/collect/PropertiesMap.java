@@ -166,7 +166,7 @@ public final class PropertiesMap implements Map {
      *
      */
     static class PropertyTree implements Map {
-        private static Logger LOG = Logger.getLogger(PropertyTree.class);
+        private static final Logger LOG = Logger.getLogger(PropertyTree.class);
 
         final boolean flat;
         final PropertyTree parent;

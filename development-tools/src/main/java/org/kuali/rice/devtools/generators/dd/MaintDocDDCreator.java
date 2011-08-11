@@ -9,6 +9,10 @@ import org.kuali.rice.krad.bo.BusinessObject;
 
 import java.beans.PropertyDescriptor;
 
+/**
+ * @deprecated this is for the legacy kns.
+ */
+@Deprecated
 public class MaintDocDDCreator {
 
     public static void main( String[] args ) throws Exception {

@@ -500,9 +500,9 @@ public class Tokenizer {
     }
 
     private final byte flags[] = new byte[256];
-    private final byte IS_DIGIT = 0x01;
-    private final byte IS_HEXDIGIT = 0x02;
-    private final byte IS_ALPHA = 0x04;
+    private static final byte IS_DIGIT = 0x01;
+    private static final byte IS_HEXDIGIT = 0x02;
+    private static final byte IS_ALPHA = 0x04;
 
     public class Token {
         TokenKind kind;

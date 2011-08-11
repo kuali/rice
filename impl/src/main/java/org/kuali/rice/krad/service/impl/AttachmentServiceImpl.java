@@ -125,7 +125,7 @@ public class AttachmentServiceImpl implements AttachmentService {
     	Attachment attachment = note.getAttachment();
     	if(attachment!=null){
     		try {
-    			moveAttachmentFromPending(attachment, note.getObjectId());
+    			moveAttachmentFromPending(attachment, note.getRemoteObjectIdentifier());
     		}
     		catch (IOException e) {
     			throw new RuntimeException("Problem moving pending attachment to final directory");    
@@ -193,10 +193,8 @@ public class AttachmentServiceImpl implements AttachmentService {
         }
         
         String parentDirectory = "";
-        if(attachment.getNote()!=null) {
-            // TODO : Samuel check why had to change from getRemoteObjectIdentifier for KRAD
-            // and what is impact on KNS
-            parentDirectory = attachment.getNote().getObjectId();
+        if(attachment.getNote()!=null && attachment.getNote().getRemoteObjectIdentifier() != null) {
+            parentDirectory = attachment.getNote().getRemoteObjectIdentifier();
         }
          
         return new BufferedInputStream(new FileInputStream(getDocumentDirectory(parentDirectory) + File.separator + attachment.getAttachmentIdentifier()));

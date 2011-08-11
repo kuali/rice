@@ -248,6 +248,12 @@ public class ComponentUtils {
                 updateIdsWithSuffixNested(nested, idSuffix);
             }
         }
+        
+        for (Component nested : component.getPropertyReplacerComponents()) {
+            if (nested != null) {
+                updateIdsWithSuffixNested(nested, idSuffix);
+            }
+        }        
     }
 
     public static void updateIdsWithSuffix(Component component, String idSuffix) {

@@ -338,14 +338,15 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 								p:actionLabel="cancel" p:title="Cancel Attachment" />
 						</list>
 					</property>
-					<property name="propertyReplacers">
+					 <property name="propertyReplacers">
 						<list>
-							<bean parent="PropertyReplacer" p:propertyName="items" p:condition="!#isAddLine and #line.attachment?.complete" >
+							<bean parent="PropertyReplacer" p:propertyName="items" p:condition="!#isAddLine and #line.attachment != null and #line.attachment.complete" >
 								<property name="replacement">
 								   <list>
 						            <bean parent="ActionField_Small" p:methodToCall="downloadAttachment"
 								          p:actionLabel="download attachment" p:title="download attachment" 
-								          p:onClickScript="writeHiddenToForm(&quot;unblockUIOnLoading&quot;, &quot;true&quot;);writeHiddenToForm(&quot;actionParameters[selectedLineIndex]&quot;, &quot;@{#index}&quot;);"/>
+								           p:onClickScript="writeHiddenToForm(&quot;unblockUIOnLoading&quot;, &quot;true&quot;);writeHiddenToForm(&quot;actionParameters[selectedLineIndex]&quot;, &quot;@{#index}&quot;);"/> 
+								           
 								    <bean parent="MessageField" p:messageText="@{#line.attachment?.attachmentFileName}" /> 
                                     <bean parent="MessageField" 
                                           p:messageText="(@{#line.attachment?.attachmentFileSizeWithUnits}, @{#line.attachment?.attachmentMimeTypeCode})" />
@@ -353,13 +354,14 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 						         </list>
 								</property>
 							</bean>	
-							<bean parent="PropertyReplacer" p:propertyName="items" p:condition="!#isAddLine and !#line.attachment?.complete" >
+							<bean parent="PropertyReplacer" p:propertyName="items" p:condition="!#isAddLine and (#line.attachment == null or !#line.attachment.complete)" >
 								<property name="replacement">
 								  <list>
 								    <bean parent="BlankField" />
 								  </list>
 								</property>
-							</bean>	  							
+							</bean>	  
+							 							
 						</list>
 					</property>
 				</bean>

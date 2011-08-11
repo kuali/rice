@@ -283,7 +283,21 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         List<Component> components = new ArrayList<Component>();
 
         return components;
-    }
+    }        
+    
+    /**
+     * @see org.kuali.rice.krad.uif.core.Component#getPropertyReplacerComponents()
+     */
+    @Override
+    public List<Component> getPropertyReplacerComponents() {
+        List<Component> components = new ArrayList<Component>();
+        for (Object replacer : propertyReplacers) {
+            components.addAll(((PropertyReplacer) replacer).getNestedComponents());
+        }
+        return components;
+        
+    }    
+    
 
     /**
      * Set of property names for the component base for which on the property
@@ -688,11 +702,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     * PropertyReplacer object. Only checks for a list, map or component.
     */
     protected void pushToPropertyReplacerContext(String objectName, Object object) {
-        for (Object replacer : propertyReplacers) {
-            List<Component> replacerComponents = ((PropertyReplacer) replacer).getNestedComponents();
-            for (Component replacerComponent : replacerComponents) {
-                    replacerComponent.pushObjectToContext(objectName, object);
-            }
+        for (Component replacerComponent : getPropertyReplacerComponents()) {
+            replacerComponent.pushObjectToContext(objectName, object);
         }
     }
 

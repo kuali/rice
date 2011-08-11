@@ -26,24 +26,34 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.AdHocRouteRecipient;
 import org.kuali.rice.krad.bo.Attachment;
+import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.document.MaintenanceDocument;
+import org.kuali.rice.krad.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.krad.exception.DocumentAuthorizationException;
 import org.kuali.rice.krad.exception.UnknownDocumentIdException;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.question.ConfirmationQuestion;
+import org.kuali.rice.krad.rule.event.AddNoteEvent;
+import org.kuali.rice.krad.service.AttachmentService;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DocumentHelperService;
 import org.kuali.rice.krad.service.DocumentService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.NoteService;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.view.ViewIndex;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
+import org.kuali.rice.krad.util.KRADUtils;
+import org.kuali.rice.krad.util.NoteType;
 import org.kuali.rice.krad.util.SessionTicket;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -90,6 +100,8 @@ public abstract class DocumentControllerBase extends UifControllerBase {
 	private DataDictionaryService dataDictionaryService;
 	private DocumentService documentService;
 	private DocumentHelperService documentHelperService;
+	private AttachmentService attachmentService;
+    private NoteService noteService;
 
 	@Override
 	public abstract DocumentFormBase createInitialForm(HttpServletRequest request);
@@ -273,40 +285,23 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=insertNote")
     public ModelAndView insertNote(@ModelAttribute("KualiForm") UifFormBase uifForm,
             BindingResult result, HttpServletRequest request, HttpServletResponse response) {
-        
-        // TODO : finish method , make sure it aligns with current KNS functionality
-        
+
         // Get the note add line
         String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
-        CollectionGroup collectionGroup = uifForm.getPreviousView().getViewIndex().getCollectionGroupByPath(selectedCollectionPath);
+        CollectionGroup collectionGroup = uifForm.getPreviousView().getViewIndex()
+                .getCollectionGroupByPath(selectedCollectionPath);
         String addLinePath = collectionGroup.getAddLineBindingInfo().getBindingPath();
         Object addLine = ObjectPropertyUtils.getPropertyValue(uifForm, addLinePath);
-        Note newNote = (Note)addLine;
+        Note newNote = (Note) addLine;
         newNote.setNotePostedTimestampToCurrent();
-        
+
+        Document document = ((DocumentFormBase) uifForm).getDocument();
+
+        newNote.setRemoteObjectIdentifier(document.getNoteTarget().getObjectId());
+
         // Get the attachment file
         String attachmentTypeCode = null;
         MultipartFile attachmentFile = uifForm.getAttachmentFile();
-        if (attachmentFile == null) {
-            GlobalVariables.getMessageMap().putError(
-                    String.format("%s.%s",
-                            KRADConstants.NEW_DOCUMENT_NOTE_PROPERTY_NAME,
-                            KRADConstants.NOTE_ATTACHMENT_FILE_PROPERTY_NAME),
-                    RiceKeyConstants.ERROR_UPLOADFILE_NULL);
-            // This line was removed in order to continue to validates other
-            // return mapping.findForward(RiceConstants.MAPPING_BASIC);
-        }
-        
-        if (newNote.getAttachment() != null) {
-            attachmentTypeCode = newNote.getAttachment().getAttachmentTypeCode();
-        }
-
-        // TODO check authorization for adding notes
-//        DocumentAuthorizer documentAuthorizer = getDocumentHelperService().getDocumentAuthorizer(document);
-//        if (!documentAuthorizer.canAddNoteAttachment(document, attachmentTypeCode, GlobalVariables.getUserSession().getPerson())) {
-//            throw buildAuthorizationException("annotate", document);
-//        }
-        
         Attachment attachment = null;
         if (attachmentFile != null && !StringUtils.isBlank(attachmentFile.getOriginalFilename())) {
             if (attachmentFile.getSize() == 0) {
@@ -316,27 +311,65 @@ public abstract class DocumentControllerBase extends UifControllerBase {
                                 KRADConstants.NOTE_ATTACHMENT_FILE_PROPERTY_NAME),
                         RiceKeyConstants.ERROR_UPLOADFILE_EMPTY,
                         attachmentFile.getOriginalFilename());
-                // This line was removed in order to continue to validates other
-//                return mapping.findForward(RiceConstants.MAPPING_BASIC);
             } else {
-                String attachmentType = null;
+                if (newNote.getAttachment() != null) {
+                    attachmentTypeCode = newNote.getAttachment().getAttachmentTypeCode();
+                }
+
+                DocumentAuthorizer documentAuthorizer = KRADServiceLocatorWeb.getDocumentHelperService().getDocumentAuthorizer(
+                        document);
+                if (!documentAuthorizer.canAddNoteAttachment(document, attachmentTypeCode, GlobalVariables.getUserSession()
+                        .getPerson())) {
+                    throw buildAuthorizationException("annotate", document);
+                }                
                 try {
-                    attachment = KRADServiceLocator.getAttachmentService().createAttachment(((DocumentFormBase)uifForm).getDocument().getNoteTarget(), attachmentFile.getOriginalFilename(), attachmentFile.getContentType(), (int)attachmentFile.getSize(), attachmentFile.getInputStream(), "");
-                    newNote.addAttachment(attachment);
+                    String attachmentType = null;
+                    Attachment newAttachment = newNote.getAttachment();
+                    if (newAttachment != null) {
+                        attachmentType = newAttachment.getAttachmentTypeCode();
+                    }
+                    attachment = getAttachmentService().createAttachment(document.getNoteTarget(),
+                            attachmentFile.getOriginalFilename(), attachmentFile.getContentType(),
+                            (int) attachmentFile.getSize(), attachmentFile.getInputStream(), attachmentType);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-        }      
-        
-        // Add the author
+        }
+
         Person kualiUser = GlobalVariables.getUserSession().getPerson();
         if (kualiUser == null) {
             throw new IllegalStateException("Current UserSession has a null Person.");
         }
+
         newNote.setAuthorUniversalIdentifier(kualiUser.getPrincipalId());
-        
-        Note tmpNote = KRADServiceLocator.getNoteService().createNote(newNote, ((DocumentFormBase)uifForm).getDocument().getNoteTarget(), kualiUser.getPrincipalId());
+
+        // validate the note
+        boolean rulePassed = KRADServiceLocatorWeb.getKualiRuleService()
+                .applyRules(new AddNoteEvent(document, newNote));
+
+        // if the rule evaluation passed, let's add the note
+        if (rulePassed) {
+            newNote.refresh();
+
+            DocumentHeader documentHeader = document.getDocumentHeader();
+
+            // adding the attachment after refresh gets called, since the attachment record doesn't get persisted
+            // until the note does (and therefore refresh doesn't have any attachment to autoload based on the id, nor does it
+            // autopopulate the id since the note hasn't been persisted yet)
+            if (attachment != null) {
+                newNote.addAttachment(attachment);
+            }
+            // Save the note if the document is already saved
+            if (!documentHeader.getWorkflowDocument().isInitiated()
+                        && StringUtils.isNotEmpty(document.getNoteTarget().getObjectId())
+                        && !(document instanceof MaintenanceDocument && NoteType.BUSINESS_OBJECT.getCode().equals(
+                                newNote.getNoteTypeCode()))) {
+
+                getNoteService().save(newNote);
+            }
+
+        }    
         
         return addLine(uifForm, result, request, response);
     }    
@@ -350,7 +383,36 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=deleteNote")
     public ModelAndView deleteNote(@ModelAttribute("KualiForm") UifFormBase uifForm,
             BindingResult result, HttpServletRequest request, HttpServletResponse response) {
-        // TODO : add note specific logic
+        
+        String selectedLineIndex = uifForm.getActionParamaterValue("selectedLineIndex");
+        Document document = ((DocumentFormBase)uifForm).getDocument();
+        Note note = document.getNote(Integer.parseInt(selectedLineIndex));
+        
+        Attachment attachment = note.getAttachment();
+        String attachmentTypeCode = null;
+        if (attachment != null) {
+            attachmentTypeCode = attachment.getAttachmentTypeCode();
+        }
+        
+        String authorUniversalIdentifier = note.getAuthorUniversalIdentifier();
+        if (!KRADUtils.canDeleteNoteAttachment(document, attachmentTypeCode, authorUniversalIdentifier)) {
+            throw buildAuthorizationException("annotate", document);
+        }
+
+        if (attachment != null && attachment.isComplete()) { // only do this if the note has been persisted
+            //KFSMI-798 - refresh() changed to refreshNonUpdateableReferences()
+            //All references for the business object Attachment are auto-update="none",
+            //so refreshNonUpdateableReferences() should work the same as refresh()
+            if (note.getNoteIdentifier() != null) { // KULRICE-2343 don't blow away note reference if the note wasn't persisted
+                attachment.refreshNonUpdateableReferences();
+            }
+            getAttachmentService().deleteAttachmentContents(attachment);
+        }
+        // delete the note if the document is already saved
+        if (!document.getDocumentHeader().getWorkflowDocument().isInitiated()) {
+            getNoteService().deleteNote(note);
+        }
+
         return deleteLine(uifForm, result, request, response);
     }     
     
@@ -367,7 +429,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
         String selectedLineIndex = uifForm.getActionParamaterValue("selectedLineIndex");
         Note note = ((DocumentFormBase)uifForm).getDocument().getNote(Integer.parseInt(selectedLineIndex));
         Attachment attachment = note.getAttachment();
-        InputStream is = KRADServiceLocator.getAttachmentService().retrieveAttachmentContents(attachment);
+        InputStream is = getAttachmentService().retrieveAttachmentContents(attachment);
         
         // Set the response headers
         response.setContentType(attachment.getAttachmentMimeTypeCode());
@@ -378,7 +440,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
         response.setHeader("Content-Disposition","attachment; filename=\"" + attachment.getAttachmentFileName() + "\"");
         
         // Copy the input stream to the response
-        FileCopyUtils.copy(is, response.getOutputStream());
+        FileCopyUtils.copy(is, response.getOutputStream()); 
         return null;
     }     
 
@@ -600,4 +662,18 @@ public abstract class DocumentControllerBase extends UifControllerBase {
 	public void setDocumentHelperService(DocumentHelperService documentHelperService) {
 		this.documentHelperService = documentHelperService;
 	}
+	
+	public AttachmentService getAttachmentService() {
+        if (attachmentService == null) {
+            attachmentService = KRADServiceLocator.getAttachmentService();
+        }
+        return this.attachmentService;
+    }
+
+	public NoteService getNoteService() {
+        if (noteService == null) {
+            noteService = KRADServiceLocator.getNoteService();
+        }
+        return this.noteService;
+    }	
 }

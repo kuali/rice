@@ -51,8 +51,13 @@ public class NoteDaoOjb extends PlatformAwareDaoBaseOjb implements NoteDao {
      * @param line
      */
     public void save(Note note) throws DataAccessException {
+        // Add this check for KRAD to avoid saving the empty Attachments
+        // TODO : look into avoiding the default empty attachments being added to the note
+        if (note.getAttachment() != null && note.getAttachment().getAttachmentFileName() == null) {
+            note.setAttachment(null);
+        }
         //workaround in case sequence is empty  I shouldn't need this but ojb seems to work weird with this case
-        if(note!=null&&note.getNoteIdentifier()==null&&note.getAttachment()!=null) {
+        if (note != null && note.getNoteIdentifier() == null && note.getAttachment() != null) {
             Attachment attachment = note.getAttachment();
             note.setAttachment(null);
             //store without attachment

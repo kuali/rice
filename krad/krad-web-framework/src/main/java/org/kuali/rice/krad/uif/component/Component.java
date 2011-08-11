@@ -177,6 +177,17 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     public List<Component> getNestedComponents();
 
     /**
+     * List of components that are contained within the List of <code>PropertyReplacer</code> in component
+     *
+     * <p>
+     * Used to get all the nested components in the property replacer's
+     * </p>
+     *
+     * @return List<Component> <code>PropertyReplacer</code> child components
+     */
+    public List<Component> getPropertyReplacerComponents();      
+    
+    /**
      * <code>ComponentModifier</code> instances that should be invoked to
      * initialize the component
      *

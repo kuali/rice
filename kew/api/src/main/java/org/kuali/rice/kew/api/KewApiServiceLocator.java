@@ -39,7 +39,7 @@ public class KewApiServiceLocator {
     // Rice 2.0 - TODO - should these be using the QName versions instead?  How else will they be fetched in "remote" mode?
 	public static final String WORKFLOW_DOCUMENT_ACTIONS_SERVICE = "rice.kew.workflowDocumentActionsService";
 	public static final String WORKFLOW_DOCUMENT_SERVICE = "rice.kew.workflowDocumentService";
-    public static final String ACTION_LIST_SERVICE = "rice.kew.actionlistService";
+    public static final String ACTION_LIST_SERVICE = "rice.kew.actionListService";
 	public static final String DOCUMENT_TYPE_SERVICE = "rice.kew.documentTypeService";
 	public static final String NOTE_SERVICE = "rice.kew.noteService";
     public static final String EXTENSION_REPOSITORY_SERVICE = "rice.kew.extensionRepositoryService";

@@ -289,6 +289,7 @@ public final class ActionItem
                     contract.getResponsibilityId(), contract.getPrincipalId());
             builder.setId(contract.getId());
             builder.setRoleName(contract.getRoleName());
+            builder.setDocTitle(contract.getDocTitle());
             builder.setDateAssignedString(contract.getDateAssignedString());
             builder.setActionToTake(contract.getActionToTake());
             builder.setDelegationType(contract.getDelegationType());

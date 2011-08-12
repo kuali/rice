@@ -1735,12 +1735,12 @@ public class WorkflowUtilityTest extends KEWTestCase {
         WorkflowDocumentService wds = KewApiServiceLocator.getWorkflowDocumentService();
         List<DateTime> dateTimes = wds.getSearchableAttributeDateTimeValuesByKey(workflowDocument.getDocumentId(), TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY);
         assertNotNull("dateTimes should not be null", dateTimes);
-        assertTrue("dateTimes should not be empty", dateTimes.isEmpty());
+        assertTrue("dateTimes should not be empty", !dateTimes.isEmpty());
         verifyTimestampToSecond(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS, dateTimes.get(0).getMillis());
 
         dateTimes = wds.getSearchableAttributeDateTimeValuesByKey(workflowDocument2.getDocumentId(), TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY);
         assertNotNull("dateTimes should not be null", dateTimes);
-        assertTrue("dateTimes should not be empty", dateTimes.isEmpty());
+        assertTrue("dateTimes should not be empty", !dateTimes.isEmpty());
         verifyTimestampToSecond(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS, dateTimes.get(0).getMillis());
     }
 

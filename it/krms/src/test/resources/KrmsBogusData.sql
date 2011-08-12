@@ -451,7 +451,7 @@ values ('421D1', 'P421D', 'TERM_001', 'T', 1, 1)
 
 insert into krms_prop_parm_t
 (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
-values ('421D2', 'P421D', 'Revelle', 'C', 2, 1)
+values ('421D2', 'P421D', 'Warren', 'C', 2, 1)
 ;
 
 insert into krms_prop_parm_t

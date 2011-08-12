@@ -16,6 +16,21 @@
 
 package org.kuali.rice.kew.rule.service.impl;
 
+import java.io.InputStream;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
@@ -26,6 +41,7 @@ import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.collect.CollectionUtils;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
@@ -34,7 +50,6 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
-import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.responsibility.service.ResponsibilityIdService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
@@ -49,8 +64,6 @@ import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.rule.dao.RuleDAO;
 import org.kuali.rice.kew.rule.dao.RuleResponsibilityDAO;
-import org.kuali.rice.kew.rule.service.RuleCacheProcessor;
-import org.kuali.rice.kew.rule.service.RuleDelegationCacheProcessor;
 import org.kuali.rice.kew.rule.service.RuleDelegationService;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
@@ -69,22 +82,6 @@ import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
-
-import javax.xml.namespace.QName;
-import java.io.InputStream;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
 
 
 public class RuleServiceImpl implements RuleService {
@@ -410,19 +407,7 @@ public class RuleServiceImpl implements RuleService {
 
 
     private void queueRuleCache(String ruleId){
-//      PersistedMessageBO ruleCache = new PersistedMessageBO();
-//      ruleCache.setQueuePriority(KEWConstants.ROUTE_QUEUE_RULE_CACHE_PRIORITY);
-//      ruleCache.setQueueDate(new Timestamp(new Date().getTime()));
-//      ruleCache.setQueueStatus(KEWConstants.ROUTE_QUEUE_QUEUED);
-//      ruleCache.setRetryCount(new Integer(0));
-//      ruleCache.setPayload("" + ruleId);
-//      ruleCache.setProcessorClassName("org.kuali.rice.ksb.cache.RuleCacheProcessor");
-//      getRouteQueueService().requeueDocument(ruleCache);
-
-
-        RuleCacheProcessor ruleCacheProcessor = MessageServiceNames.getRuleCacheProcessor();
-        ruleCacheProcessor.clearRuleFromCache(ruleId);
-
+        KewApiServiceLocator.getRuleCacheProcessor().clearRuleFromCache(ruleId);
     }
 
 //  private RouteQueueService getRouteQueueService() {
@@ -443,8 +428,7 @@ public class RuleServiceImpl implements RuleService {
     }
 
     private void queueDelegationRuleCache(String responsibilityId) {
-        RuleDelegationCacheProcessor ruleDelegationCacheProcessor = (RuleDelegationCacheProcessor) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("RuleDelegationCacheProcessorService"), null, null, null, null);
-        ruleDelegationCacheProcessor.clearRuleDelegationFromCache(responsibilityId);    	
+        KewApiServiceLocator.getRuleDelegationCacheProcessor().clearRuleDelegationFromCache(responsibilityId);    	
     }
     
     private void installDelegationNotification(String responsibilityId, Map<String, String> notifyMap) {

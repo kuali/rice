@@ -13,10 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.rule.service;
+package org.kuali.rice.kew.api.rule;
 
+import javax.jws.WebMethod;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+
+import org.kuali.rice.kew.api.KewApiConstants;
+
+@WebService(name = "ruleDelegationCacheProcessorSoap", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface RuleDelegationCacheProcessor {
 
+    @WebMethod(operationName = "clearRuleDelegationFromCache")
 	public void clearRuleDelegationFromCache(String responsibilityId);
 	
 }

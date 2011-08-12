@@ -31,7 +31,7 @@ import org.kuali.rice.kew.api.KewApiConstants;
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface GroupMembershipChangeQueue {
 
-    @WebMethod(operationName = "membershipChange")
+    @WebMethod(operationName = "notifyMembershipChange")
     void notifyMembershipChange(@WebParam(name="operation") String operation, @WebParam(name="groupId") String groupId, @WebParam(name="principalId") String principalId);
     
 }

@@ -24,9 +24,9 @@ import org.kuali.rice.kew.actions.asyncservices.ActionInvocationService;
 import org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessorService;
 import org.kuali.rice.kew.actions.asyncservices.MoveDocumentService;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeIndexingQueue;
+import org.kuali.rice.kew.api.rule.RuleCacheProcessor;
 import org.kuali.rice.kew.mail.service.ActionListImmediateEmailReminderService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.rule.service.RuleCacheProcessor;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
@@ -49,8 +49,6 @@ public class MessageServiceNames {
 	public static final String WORKGROUP_MEMBERSHIP_CHANGE_SERVICE = "WorkgroupMembershipChangeService";
 
 	public static final String SERVICE_REMOVER_SERVICE = "RemoteClassRemoverService";
-
-	public static final String RULE_CACHE_PROCESSOR_SERVICE = "RuleCacheProcessorService";
 
 	public static final String ROLE_POKER = "RolePokerProcessorService";
 
@@ -93,11 +91,7 @@ public class MessageServiceNames {
 	public static ActionListImmediateEmailReminderService getImmediateEmailService() {
 		return (ActionListImmediateEmailReminderService) getServiceAsynchronously(getQName(ACTION_LIST_IMMEDIATE_REMINDER_SERVICE, (DocumentRouteHeaderValue) null), (String)null);
 	}
-
-	public static RuleCacheProcessor getRuleCacheProcessor() {
-		return (RuleCacheProcessor) getServiceAsynchronously(new QName(MessageServiceNames.RULE_CACHE_PROCESSOR_SERVICE), (String)null);
-	}
-
+	
 	public static DocumentRequeuerService getDocumentRequeuerService(String applicationId, String documentId, long waitTime) {
 		QName serviceName = getQName(DOCUMENT_REQUEUE_PROCESSING_SERVICE, applicationId);
 		if (waitTime > 0) {

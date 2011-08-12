@@ -14,15 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.rule.service;
+package org.kuali.rice.kew.api.rule;
+
+import javax.jws.WebMethod;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+
+import org.kuali.rice.kew.api.KewApiConstants;
 
 /**
  * Clears a rule from the rule cache by the given rule ID.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@WebService(name = "ruleCacheProcessorSoap", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface RuleCacheProcessor {
 	
-	public void clearRuleFromCache(String ruleId);
+    @WebMethod(operationName = "clearRuleFromCache")
+	void clearRuleFromCache(String ruleId);
 
 }

@@ -237,36 +237,38 @@
         </bean>
 
 
-	<bean parent="kewLocalServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
-		<property name="serviceDefinition">
-        <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
-          <property name="service">
-            <bean class="org.kuali.rice.kew.rule.service.impl.RuleCacheProcessorImpl" />
-          </property>
-          <property name="serviceNameSpaceURI" value=""/>
-          <property name="localServiceName" value="RuleCacheProcessorService" />
-          <property name="priority" value="3"/>
-          <property name="queue" value="false"/>
-          <property name="retryAttempts" value="1" />
-          <property name="messageExceptionHandler" value="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler" />
-        </bean>
-		</property>
-	</bean>
-	
-	<bean parent="kewLocalServiceExporter">
+	<bean id="rice.kew.ruleCacheProcessorSoap.exporter" parent="kewLocalServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-			<bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
+			<bean parent="kewJaxWsSoapService">
 				<property name="service">
-					<bean class="org.kuali.rice.kew.rule.service.impl.RuleDelegationCacheProcessorImpl" />
+					<ref bean="rice.kew.ruleCacheProcessor" />
 				</property>
 				<property name="serviceNameSpaceURI" value="" />
-				<property name="localServiceName" value="RuleDelegationCacheProcessorService" />
+				<property name="localServiceName" value="ruleCacheProcessorSoap" />
 				<property name="priority" value="3" />
 				<property name="queue" value="false" />
 				<property name="retryAttempts" value="1" />
-				<property name="messageExceptionHandler" value="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler" />
+				<property name="messageExceptionHandler"
+					value="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="rice.kew.ruleDelegationCacheProcessorSoap.exporter" parent="kewLocalServiceExporter">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
+		<property name="serviceDefinition">
+			<bean parent="kewJaxWsSoapService">
+				<property name="service">
+					<ref bean="rice.kew.ruleDelegationCacheProcessor" />
+				</property>
+				<property name="serviceNameSpaceURI" value="" />
+				<property name="localServiceName" value="ruleDelegationCacheProcessorSoap" />
+				<property name="priority" value="3" />
+				<property name="queue" value="false" />
+				<property name="retryAttempts" value="1" />
+				<property name="messageExceptionHandler"
+					value="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler" />
 			</bean>
 		</property>
 	</bean>

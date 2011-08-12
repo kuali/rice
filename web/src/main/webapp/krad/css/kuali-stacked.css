@@ -153,3 +153,36 @@
 	padding-bottom: 20px;
 	display: block;
 }
+
+button, a{
+    overflow: visible;
+    white-space:nowrap;
+    width:auto;
+    cursor: pointer;
+}
+
+button img{
+    vertical-align: middle;
+}
+
+button span.topBottomSpan{
+    display: block;
+    text-align: center;
+    width: 100%;
+}
+
+button img.topActionImage{
+    margin-bottom: 1px;
+}
+
+button img.bottomActionImage{
+    margin-top: 1px;
+}
+
+button img.leftActionImage, a img.leftActionImage{
+    margin-right: 5px;
+}
+
+button img.rightActionImage, a img.rightActionImage{
+    margin-left: 5px;
+}

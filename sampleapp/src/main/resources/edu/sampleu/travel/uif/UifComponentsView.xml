@@ -652,14 +652,61 @@
 					p:altText="pdf image"
 					p:source="@{#ConfigProperties['krad.externalizable.images.url']}pdf.png" />
 				<bean parent="ActionLinkField"
-					p:label="ActionLinkField can process a js, jquery, or js method:"
-					p:clientSideJs="alert('You clicked the link');" p:actionLabel="Click Me" />
-				<bean parent="ActionField" p:actionLabel="Click Me too"
-					p:label="ActionField has the same options as ActionLinkField, but as a button element"
+					p:clientSideJs="alert('You clicked the link');" p:actionLabel="ActionLinkField" />
+        <bean parent="ActionLinkField" p:actionLabel="ActionLinkField image right" p:actionImageLocation="RIGHT"
+              p:clientSideJs="alert('You clicked a button');">
+          <property name="actionImageField">
+            <bean parent="ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif" p:altText="Search"/>
+          </property>
+        </bean>
+        <bean parent="ActionLinkField" p:actionLabel="ActionLinkField image left(default)"
+              p:clientSideJs="alert('You clicked a button');">
+          <property name="actionImageField">
+            <bean parent="ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif" p:altText="Search"/>
+          </property>
+        </bean>
+        <bean parent="ActionImageField"
+              p:clientSideJs="alert('You clicked a button');">
+          <property name="actionImageField">
+            <bean parent="ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}down.png" p:altText="ActionImageField demonstration"/>
+          </property>
+        </bean>
+				<bean parent="ActionField" p:actionLabel="ActionField"
 					p:clientSideJs="alert('You clicked a button');" />
+        <bean parent="ActionField" p:actionLabel="Image BOTTOM" p:actionImageLocation="BOTTOM"
+              p:clientSideJs="alert('You clicked a button');">
+          <property name="actionImageField">
+            <bean parent="ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+          </property>
+        </bean>
+        <bean parent="ActionField" p:actionLabel="Image TOP" p:actionImageLocation="TOP"
+					p:clientSideJs="alert('You clicked a button');" >
+          <property name="actionImageField">
+            <bean parent="ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+          </property>
+        </bean>
+        <bean parent="ActionField" p:actionLabel="Image LEFT" p:actionImageLocation="LEFT"
+					p:clientSideJs="alert('You clicked a button');" >
+          <property name="actionImageField">
+            <bean parent="ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+          </property>
+        </bean>
+        <bean parent="ActionField" p:actionLabel="Image RIGHT" p:actionImageLocation="RIGHT"
+					p:clientSideJs="alert('You clicked a button');" >
+          <property name="actionImageField">
+            <bean parent="ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+          </property>
+        </bean>
+        <bean parent="ActionField"
+					p:clientSideJs="alert('You clicked a button');" >
+          <property name="actionImageField">
+            <bean parent="ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
+                    p:altText="Image Only button"/>
+          </property>
+        </bean>
 				<bean parent="LinkField" p:linkLabel="Kuali Website"
 					p:hrefText="http://www.kuali.org" p:label="LinkField is used for href links:" />
-        <bean parent="LinkGroup" p:title="LinkGroup" p:summary="with | delimeter and [] begin and end delimeter"
+        <bean parent="LinkGroup" p:title="LinkGroup" p:summary="LinkGroup with | delimeter and [] begin and end delimeter"
               p:groupBeginDelimiter="[" p:groupEndDelimiter="]" p:linkSeparator="|">
           <property name="items">
             <list>

@@ -168,7 +168,13 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="ActionField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.ActionField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/actionField.jsp"/>
       <property name="styleClasses" value="button-primary"/>
-  </bean>  
+  </bean>
+
+  <bean id="ActionImageField" parent="ActionImageField-parentBean"/>
+  <bean id="ActionImageField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.ActionField" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/field/actionField.jsp"/>
+      <property name="actionImageLocation" value=""/>
+  </bean>
   
   <bean id="ActionField_Secondary" parent="ActionField_Secondary-parentBean"/>
   <bean id="ActionField_Secondary-parentBean" abstract="true" parent="ActionField">

@@ -44,6 +44,7 @@ public class ActionField extends FieldBase {
 
     private String actionLabel;
     private ImageField actionImageField;
+    private String actionImageLocation = "LEFT";
 
     private Map<String, String> actionParameters;
 
@@ -88,6 +89,10 @@ public class ActionField extends FieldBase {
     @Override
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
+        //clear alt text to avoid screen reader confusion when using image in button with text
+        if(actionImageField != null && StringUtils.isNotBlank(actionImageLocation) && StringUtils.isNotBlank(actionLabel)){
+            actionImageField.setAltText("");
+        }
 
         actionParameters.put(UifConstants.UrlParams.SHOW_HOME, "false");
         actionParameters.put(UifConstants.UrlParams.SHOW_HISTORY, "false");
@@ -539,4 +544,18 @@ public class ActionField extends FieldBase {
         return blockValidateDirty;
     }
 
+    public String getActionImageLocation() {
+        return actionImageLocation;
+    }
+
+    /**
+     * Set to TOP, BOTTOM, LEFT, RIGHT to position image at that location within the button.
+     * For the subclass ActionLinkField only LEFT and RIGHT are allowed.  When set to blank/null, the image
+     * itself will be the ActionField, if no value is set the default is ALWAYS LEFT, you must explicitly set
+     * blank/null to use ONLY the image as the ActionField.
+     * @return
+     */
+    public void setActionImageLocation(String actionImageLocation) {
+        this.actionImageLocation = actionImageLocation;
+    }
 }

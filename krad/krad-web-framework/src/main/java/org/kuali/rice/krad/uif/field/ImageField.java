@@ -26,6 +26,7 @@ public class ImageField extends FieldBase {
 	private String source;
 	private String altText;
 	private String height;
+    private String width;
 
 	public ImageField() {
 		super();
@@ -55,4 +56,11 @@ public class ImageField extends FieldBase {
 		this.height = height;
 	}
 
+    public void setWidth(String width) {
+        this.width = width;
+    }
+
+    public String getWidth() {
+        return width;
+    }
 }

@@ -6,6 +6,7 @@
   <suppress files="RuleBaseValues.java" checks="AvoidStarImport" />
   <suppress files="RuleEditorController.java" checks="ConstantName" />
   <suppress files="BeanDDCreator.java" checks="MethodLength" />
+  <suppress files="ActionItem.java" checks="ParameterNumber" />
 </suppressions>
 
 

@@ -23,17 +23,17 @@ insert into krms_attr_defn_t
 (attr_defn_id, nm, nmspc_cd, lbl, actv, ver_nbr)
 values('Q33001', 'Event', 'KRMS_TEST', 'Event Name', 'Y', 1)
 ;
-insert into krms_typ_t 
+insert into krms_typ_t
 (typ_id, nm, nmspc_cd, srvc_nm, actv, ver_nbr)
 values ('T2', 'CAMPUS', 'KRMS_TEST', 'myCampusService', 'Y', 1)
 ;
 
-insert into krms_typ_t 
+insert into krms_typ_t
 (typ_id, nm, nmspc_cd, srvc_nm, actv, ver_nbr)
 values ('T3', 'KrmsActionResolverType', 'KRMS_TEST', 'testActionTypeService', 'Y', 1)
 ;
 
-insert into krms_typ_t 
+insert into krms_typ_t
 (typ_id, nm, nmspc_cd, actv, ver_nbr)
 values ('T4', 'CONTEXT', 'KRMS_TEST',  'Y', 1)
 ;
@@ -43,7 +43,7 @@ insert into krms_typ_attr_t
 values ('T4A', 1, 'T4', 'Q44001', 'Y', 1)
 ;
 
-insert into krms_typ_t 
+insert into krms_typ_t
 (typ_id, nm, nmspc_cd, actv, ver_nbr)
 values ('T5', 'AGENDA', 'KRMS_TEST',  'Y', 1)
 ;
@@ -78,24 +78,24 @@ set prop_id = 'P101' where rule_id = 'R201'
 ;
 
 insert into krms_term_spec_t
-(term_spec_id, cntxt_id, nm, typ, actv, ver_nbr)
-values ('TERMSPEC_001', 'CONTEXT1', 'campusCodeTermSpec', 'java.lang.String', 'Y', 1);
+(term_spec_id, nm, nmspc_cd,  typ, actv, ver_nbr)
+values ('TERMSPEC_001', 'campusCodeTermSpec', 'KRMS_TEST', 'java.lang.String', 'Y', 1);
 
 insert into krms_term_t
 (term_id, term_spec_id, ver_nbr)
 values ('TERM_001', 'TERMSPEC_001', 1);
 
-insert into krms_prop_parm_t 
+insert into krms_prop_parm_t
 (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
 values ('101A', 'P101', 'TERM_001', 'T', 1, 1)
 ;
 
-insert into krms_prop_parm_t 
+insert into krms_prop_parm_t
 (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
 values ('101C', 'P101', 'BL', 'C', 2, 1)
 ;
 
-insert into krms_prop_parm_t 
+insert into krms_prop_parm_t
 (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
 values ('101B', 'P101', '=', 'O', 3, 1)
 ;
@@ -106,8 +106,8 @@ values ( 'action2001', 'testAction', 'KRMS_TEST', 'Action Stub for Testing', 'T3
 ;
 
 insert into krms_agenda_t
-(agenda_id, nmspc_cd, nm, cntxt_id, init_agenda_itm_id, typ_id, actv, ver_nbr)
-values ( 'AGENDA301', 'KRMS_TEST', 'My Fabulous Agenda', 'CONTEXT1', null, 'T2', 'Y', 1)
+(agenda_id, nm, cntxt_id, init_agenda_itm_id, typ_id, actv, ver_nbr)
+values ( 'AGENDA301', 'My Fabulous Agenda', 'CONTEXT1', null, 'T2', 'Y', 1)
 ;
 
 insert into krms_agenda_itm_t
@@ -124,8 +124,8 @@ values('AGENDA_ATTR1', 'AGENDA301', 'EARTHQUAKE', 'Q33001', 1)
 ;
 
 insert into krms_term_spec_t
-(term_spec_id, cntxt_id, nm, typ, actv, ver_nbr)
-values ('TERM001', 'CONTEXT1', 'campusCode', 'T2', 'Y', 1)
+(term_spec_id, nmspc_cd, nm, typ, actv, ver_nbr)
+values ('TERM001', 'KRMS_TEST', 'campusCode', 'T2', 'Y', 1)
 ;
 
 -- next item
@@ -143,17 +143,17 @@ update krms_rule_t
 set prop_id = 'P2' where rule_id = 'R2'
 ;
 
-insert into krms_prop_parm_t 
+insert into krms_prop_parm_t
 (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
 values ('2A', 'P2', 'TERM_001', 'T', 1, 1)
 ;
 
-insert into krms_prop_parm_t 
+insert into krms_prop_parm_t
 (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
 values ('2C', 'P2', 'BL', 'C', 2, 1)
 ;
 
-insert into krms_prop_parm_t 
+insert into krms_prop_parm_t
 (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
 values ('2B', 'P2', '=', 'O', 3, 1)
 ;
@@ -163,7 +163,7 @@ insert into krms_agenda_itm_t
 VALUES('AGENDA301ITEM2', 'R2', 'AGENDA301', 1)
 ;
 
-update krms_agenda_itm_t 
+update krms_agenda_itm_t
 SET when_true = 'AGENDA301ITEM2' WHERE agenda_itm_id = 'AGENDA301ITEM1'
 ;
 
@@ -182,17 +182,17 @@ update krms_rule_t
 set prop_id = 'P3' where rule_id = 'R3'
 ;
 
-insert into krms_prop_parm_t 
+insert into krms_prop_parm_t
 (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
 values ('3A', 'P3', 'TERM_001', 'T', 1, 1)
 ;
 
-insert into krms_prop_parm_t 
+insert into krms_prop_parm_t
 (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
 values ('3C', 'P3', 'BL', 'C', 2, 1)
 ;
 
-insert into krms_prop_parm_t 
+insert into krms_prop_parm_t
 (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
 values ('3B', 'P3', '=', 'O', 3, 1)
 ;
@@ -202,7 +202,7 @@ insert into krms_agenda_itm_t
 VALUES('AGENDA301ITEM3', 'R3', 'AGENDA301', 1)
 ;
 --
-update krms_agenda_itm_t 
+update krms_agenda_itm_t
 SET always = 'AGENDA301ITEM3' WHERE agenda_itm_id = 'AGENDA301ITEM2'
 ;
 
@@ -221,17 +221,17 @@ update krms_rule_t
 set prop_id = 'P4' where rule_id = 'R4'
 ;
 
-insert into krms_prop_parm_t 
+insert into krms_prop_parm_t
 (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
 values ('4A', 'P4', 'TERM_001', 'T', 1, 1)
 ;
 
-insert into krms_prop_parm_t 
+insert into krms_prop_parm_t
 (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
 values ('4C', 'P4', 'BL', 'C', 2, 1)
 ;
 
-insert into krms_prop_parm_t 
+insert into krms_prop_parm_t
 (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
 values ('4B', 'P4', '=', 'O', 3, 1)
 ;
@@ -241,7 +241,7 @@ insert into krms_agenda_itm_t
 VALUES('AGENDA301ITEM4', 'R4', 'AGENDA301', 1)
 ;
 --
-update krms_agenda_itm_t 
+update krms_agenda_itm_t
 SET always = 'AGENDA301ITEM4' WHERE agenda_itm_id = 'AGENDA301ITEM3'
 ;
 
@@ -260,17 +260,17 @@ update krms_rule_t
 set prop_id = 'P5' where rule_id = 'R5'
 ;
 
-insert into krms_prop_parm_t 
+insert into krms_prop_parm_t
 (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
 values ('5A', 'P5', 'TERM_001', 'T', 1, 1)
 ;
 
-insert into krms_prop_parm_t 
+insert into krms_prop_parm_t
 (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
 values ('5C', 'P5', 'BL', 'C', 2, 1)
 ;
 
-insert into krms_prop_parm_t 
+insert into krms_prop_parm_t
 (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
 values ('5B', 'P5', '=', 'O', 3, 1)
 ;
@@ -280,7 +280,7 @@ insert into krms_agenda_itm_t
 VALUES('AGENDA301ITEM5', 'R5', 'AGENDA301', 1)
 ;
 
-update krms_agenda_itm_t 
+update krms_agenda_itm_t
 SET when_false = 'AGENDA301ITEM5' WHERE agenda_itm_id = 'AGENDA301ITEM1'
 ;
 
@@ -299,17 +299,17 @@ update krms_rule_t
 set prop_id = 'P6' where rule_id = 'R6'
 ;
 
-insert into krms_prop_parm_t 
+insert into krms_prop_parm_t
 (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
 values ('6A', 'P6', 'TERM_001', 'T', 1, 1)
 ;
 
-insert into krms_prop_parm_t 
+insert into krms_prop_parm_t
 (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
 values ('6C', 'P6', 'BL', 'C', 2, 1)
 ;
 
-insert into krms_prop_parm_t 
+insert into krms_prop_parm_t
 (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
 values ('6B', 'P6', '=', 'O', 3, 1)
 ;
@@ -319,7 +319,7 @@ insert into krms_agenda_itm_t
 VALUES('AGENDA301ITEM6', 'R6', 'AGENDA301', 1)
 ;
 --
-update krms_agenda_itm_t 
+update krms_agenda_itm_t
 SET always = 'AGENDA301ITEM6' WHERE agenda_itm_id = 'AGENDA301ITEM1'
 ;
 
@@ -342,17 +342,17 @@ update krms_rule_t
 set prop_id = 'P7' where rule_id = 'R7'
 ;
 
-insert into krms_prop_parm_t 
+insert into krms_prop_parm_t
 (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
 values ('7A', 'P7', 'TERM_001', 'T', 1, 1)
 ;
 
-insert into krms_prop_parm_t 
+insert into krms_prop_parm_t
 (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
 values ('7C', 'P7', 'BL', 'C', 2, 1)
 ;
 
-insert into krms_prop_parm_t 
+insert into krms_prop_parm_t
 (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
 values ('7B', 'P7', '=', 'O', 3, 1)
 ;
@@ -362,7 +362,7 @@ insert into krms_agenda_itm_t
 VALUES('AGENDA301ITEM7', 'R7', 'AGENDA301', 1)
 ;
 --
-update krms_agenda_itm_t 
+update krms_agenda_itm_t
 SET when_false = 'AGENDA301ITEM7' WHERE agenda_itm_id = 'AGENDA301ITEM3'
 ;
 
@@ -374,8 +374,9 @@ insert into krms_rule_t
 values ('R421', 'KRMS_TEST', 'CmpdTestRule', 'T2', null, 'Y', 1, 'For testing compound props')
 ;
 
-insert into krms_prop_t(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, cmpnd_op_cd, ver_nbr)
-values ('P421A', 'a compound prop', null, 'C','R421', '|', 1)
+insert into krms_prop_t
+(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, cmpnd_op_cd, ver_nbr)
+values ('P421A', 'a compound prop', null, 'C','R421', 'a', 1)
 ;
 
 update krms_rule_t
@@ -383,60 +384,84 @@ set prop_id = 'P421A' where rule_id = 'R421'
 ;
 
 insert into krms_term_spec_t
-(term_spec_id, cntxt_id, nm, typ, actv, ver_nbr)
-values ('TERMSPEC_002', 'CONTEXT1', 'bogusFundTermSpec', 'java.lang.String', 'Y', 1);
+(term_spec_id, nmspc_cd, nm, typ, actv, ver_nbr)
+values ('TERMSPEC_002', 'KRMS_TEST', 'bogusFundTermSpec', 'java.lang.String', 'Y', 1);
 
 insert into krms_term_t
 (term_id, term_spec_id, ver_nbr)
 values ('TERM_002', 'TERMSPEC_002', 1);
 
 
-/* 2nd level prop s */ 
+/* 2nd level prop s */
 insert into krms_prop_t(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, ver_nbr)
 values ('P421B', 'a simple child to a compound prop', null, 'S','R421', 1)
 ;
 
-insert into krms_prop_parm_t 
+insert into krms_prop_parm_t
 (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
 values ('421B1', 'P421B', 'TERM_001', 'T', 1, 1)
 ;
 
-insert into krms_prop_parm_t 
+insert into krms_prop_parm_t
 (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
 values ('421B2', 'P421B', 'Muir', 'C', 2, 1)
 ;
 
-insert into krms_prop_parm_t 
+insert into krms_prop_parm_t
 (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
 values ('421B3', 'P421B', '=', 'O', 3, 1)
-;
-
-insert into krms_prop_t(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, ver_nbr)
-values ('P421C', '2nd simple child to a compound prop ', null, 'S','R421', 1)
-;
-
-insert into krms_prop_parm_t 
-(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
-values ('421C1', 'P421C', 'TERM_001', 'T', 1, 1)
-;
-
-insert into krms_prop_parm_t 
-(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
-values ('421C2', 'P421C', 'Revelle', 'C', 2, 1)
-;
-
-insert into krms_prop_parm_t 
-(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
-values ('421C3', 'P421C', '=', 'O', 3, 1)
 ;
 
 insert into krms_cmpnd_prop_props_t
 (cmpnd_prop_id, prop_id, seq_no)
 values ('P421A', 'P421B', 1);
 
+insert into krms_prop_t(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, ver_nbr)
+values ('P421C', '2nd simple child to a compound prop ', null, 'S','R421', 1)
+;
+
+insert into krms_prop_parm_t
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('421C1', 'P421C', 'TERM_001', 'T', 1, 1)
+;
+
+insert into krms_prop_parm_t
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('421C2', 'P421C', 'Revelle', 'C', 2, 1)
+;
+
+insert into krms_prop_parm_t
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('421C3', 'P421C', '=', 'O', 3, 1)
+;
+
 insert into krms_cmpnd_prop_props_t
 (cmpnd_prop_id, prop_id, seq_no)
 values ('P421A', 'P421C', 1);
+
+
+insert into krms_prop_t(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, ver_nbr)
+values ('P421D', '3nd simple child to a compound prop ', null, 'S','R421', 1)
+;
+
+insert into krms_prop_parm_t
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('421D1', 'P421D', 'TERM_001', 'T', 1, 1)
+;
+
+insert into krms_prop_parm_t
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('421D2', 'P421D', 'Revelle', 'C', 2, 1)
+;
+
+insert into krms_prop_parm_t
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('421D3', 'P421D', '=', 'O', 3, 1)
+;
+
+insert into krms_cmpnd_prop_props_t
+(cmpnd_prop_id, prop_id, seq_no)
+values ('P421A', 'P421D', 1);
 
 
 --

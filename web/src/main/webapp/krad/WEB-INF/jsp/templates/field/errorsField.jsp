@@ -33,7 +33,7 @@
 		     <c:if test="${field.displayCounts && field.errorCount > 0}">
 		       <span>${field.errorCount} errors</span>
 		     </c:if>
-		     <ul class="errorLines">
+		     <ul class="errorLines" aria-live="assertive" aria-relevant="additions removals" role="status">
 			     <c:if test="${field.displayErrorMessages}">
 				     <c:forEach var="message" items="${field.errors}">
 					    	<li>${message}</li>
@@ -51,7 +51,7 @@
 	    <c:if test="${field.displayCounts && field.warningCount > 0}">
 	      	<span>${field.warningCount} warnings</span>
 	    </c:if>
-	    <ul>
+	    <ul aria-live="assertive" aria-relevant="additions removals">
 		     <c:if test="${field.displayWarningMessages}">
 		     	<c:forEach var="message" items="${field.warnings}">
 			    	<li>${message}</li>
@@ -70,7 +70,7 @@
    		<c:if test="${field.displayCounts && field.infoCount > 0}">
       		<span>${field.infoCount} informational messages</span>
     	</c:if>
-    	<ul>
+    	<ul aria-live="assertive" aria-relevant="additions removals">
 	     	<c:if test="${field.displayInfoMessages}">
 	     		<c:forEach var="message" items="${field.infos}">
 				    <li>${message}</li>

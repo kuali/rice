@@ -74,6 +74,7 @@ function setupValidator(){
 		},
 		errorPlacement: function(error, element) {
 			var id = getAttributeId(element.attr('id'), element.attr('type'));
+            error.attr("role", "alert");
 			//check to see if the option to use labels is on
 			if (!jq("#" + id + "_errors_div").hasClass("noLabels")) {
 				var label = getLabel(id);

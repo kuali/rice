@@ -127,7 +127,7 @@
        </th>
      </c:when>
      <c:otherwise>
-       <td ${cellWidth} colspan="${item.colSpan}" rowspan="${item.rowSpan}"
+       <td role="presentation" ${cellWidth} colspan="${item.colSpan}" rowspan="${item.rowSpan}"
          ${style} class="${item.styleClassesAsString} col${actualColCount}" ${evenOddClass}>
         <krad:template component="${item}"/>
        </td>

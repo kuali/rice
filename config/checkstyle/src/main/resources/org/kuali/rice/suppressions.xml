@@ -2,4 +2,51 @@
 <!DOCTYPE suppressions PUBLIC "-//Puppy Crawl//DTD Suppressions 1.0//EN" "http://www.puppycrawl.com/dtds/suppressions_1_0.dtd">
 <suppressions>
   <suppress files="RoleService.java" checks="ParameterNumber" />
+  <suppress files="RoleServiceImpl.java" checks="ParameterNumber" />
+  <suppress files="RuleBaseValues.java" checks="AvoidStarImport" />
+  <suppress files="RuleEditorController.java" checks="ConstantName" />
+  <suppress files="BeanDDCreator.java" checks="MethodLength" />
 </suppressions>
+
+
+<!-- Names of rules that can be suppressed:
+ 
+AnnotationUseStyle
+AvoidNestedBlocks
+AvoidStarImport
+ConstantName
+CovariantEquals
+EqualsHashCode
+FileLength
+FileTabCharacter
+IllegalImport
+InterfaceIsType
+LeftCurly
+LineLength
+LocalFinalVariableName
+LocalVariableName
+MemberName
+MethodLength
+MethodName
+MissingDeprecated
+MissingOverride
+MissingSwitchDefault
+NoFinalizer
+NoWhitespaceAfter
+OuterTypeFilename
+PackageAnnotation
+PackageName
+ParameterName
+ParameterNumber
+RightCurly
+StaticVariableName
+StringLiteralEquality
+SuperClone
+Translation
+TreeWalker
+TypeName
+UpperEll
+VisibilityModifier
+WhitespaceAfter
+WhitespaceAround
+-->

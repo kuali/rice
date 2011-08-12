@@ -180,7 +180,7 @@
         <field-descriptor name="whenFalseId" column="WHEN_FALSE" jdbc-type="VARCHAR" />
         <field-descriptor name="alwaysId" column="ALWAYS" jdbc-type="VARCHAR" />
         <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-        <reference-descriptor name="rule" class-ref="org.kuali.rice.krms.impl.repository.RuleBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
+        <reference-descriptor name="rule" class-ref="org.kuali.rice.krms.impl.repository.RuleBo" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
             <foreignkey field-ref="ruleId" target-field-ref="id" />
         </reference-descriptor>
         <reference-descriptor name="whenTrue" class-ref="org.kuali.rice.krms.impl.repository.AgendaItemBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">

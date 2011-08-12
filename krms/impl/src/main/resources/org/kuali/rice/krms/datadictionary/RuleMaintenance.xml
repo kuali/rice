@@ -143,10 +143,6 @@
           <property name="layoutManager.numberOfColumns" value="8" />
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="proposition.description"
-                p:colSpan="6" />
-              <bean parent="ActionField" p:actionLabel="Save"
-                p:methodToCall="foo" p:styleClasses="ui-button  ui-widget" />
               <bean parent="AttributeField" p:propertyName="propositionSummary"
                 p:colSpan="8">
                 <property name="label" value="Summary" />

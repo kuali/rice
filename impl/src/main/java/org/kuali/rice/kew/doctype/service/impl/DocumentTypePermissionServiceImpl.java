@@ -34,8 +34,6 @@ import org.kuali.rice.krad.document.authorization.DocumentAuthorizerBase;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
-import org.kuali.rice.ksb.api.KsbApiServiceLocator;
-import org.kuali.rice.ksb.api.cache.RiceCacheAdministrator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,31 +49,12 @@ import java.util.Map;
 public class DocumentTypePermissionServiceImpl implements DocumentTypePermissionService {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentTypePermissionServiceImpl.class);
 	
-	public static final String DOC_TYPE_PERM_CACHE_PREFIX = DOC_TYPE_PERM_CACHE_GROUP + ":";
-	public static final String BLANKET_APPROVE_CACHE_PREFIX = DOC_TYPE_PERM_CACHE_PREFIX + "BlanketApprove:";
-	public static final String PRINCIPAL_ADHOC_CACHE_PREFIX = DOC_TYPE_PERM_CACHE_PREFIX + "PrincipalAdhoc:";
-	public static final String GROUP_ADHOC_CACHE_PREFIX = DOC_TYPE_PERM_CACHE_PREFIX + "GroupAdhoc:";
-	public static final String ADMIN_ROUTING_CACHE_PREFIX = DOC_TYPE_PERM_CACHE_PREFIX + "AdminRouting:";
-	public static final String CANCEL_CACHE_PREFIX = DOC_TYPE_PERM_CACHE_PREFIX + "Cancel:";
-	
-	private RiceCacheAdministrator cacheAdministrator;
-	
-	protected RiceCacheAdministrator getCacheAdministrator() {
-		if ( cacheAdministrator == null ) {
-			cacheAdministrator = KsbApiServiceLocator.getCacheAdministrator();
-		}
-		return cacheAdministrator;
-	}
-	
 	public boolean canBlanketApprove(String principalId, DocumentType documentType, String documentStatus, String initiatorPrincipalId) {
 		validatePrincipalId(principalId);
 		validateDocumentType(documentType);
 		validateDocumentStatus(documentStatus);
 		validatePrincipalId(initiatorPrincipalId);
-		
-		String cacheKey = buildBlanketApproveCacheKey(principalId, documentType, documentStatus, initiatorPrincipalId);
-		Boolean result = (Boolean)getCacheAdministrator().getFromCache(cacheKey);
-		if ( result == null ) {
+		final Boolean result;
 			if (documentType.isBlanketApproveGroupDefined()) {
 				boolean initiatorAuthorized = true;
 				if (documentType.getInitiatorMustBlanketApprovePolicy().getPolicyValue()) {
@@ -86,49 +65,30 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 				Map<String, String> permissionDetails = buildDocumentTypePermissionDetails(documentType);
 				result = getPermissionService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.BLANKET_APPROVE_PERMISSION, permissionDetails, new HashMap<String, String>());
 			}
-			getCacheAdministrator().putInCache(cacheKey, result, DOC_TYPE_PERM_CACHE_GROUP);
-		}
 		return result;
-	}
-	
-	protected String buildBlanketApproveCacheKey( String principalId, DocumentType documentType, String documentStatus, String initiatorPrincipalId ) {
-		return BLANKET_APPROVE_CACHE_PREFIX + documentType.getName() + "/" + documentStatus + "/" + principalId + "/" + initiatorPrincipalId;
 	}
 	
 	public boolean canReceiveAdHocRequest(String principalId, DocumentType documentType, String actionRequestType) {
 		validatePrincipalId(principalId);
 		validateDocumentType(documentType);
 		validateActionRequestType(actionRequestType);
-		
-		String cacheKey = buildPrincipalAdhocCacheKey(principalId, documentType, actionRequestType );
-		Boolean result = (Boolean)getCacheAdministrator().getFromCache(cacheKey);
-		
-		if ( result == null ) {
+		final Boolean result;
+
 			Map<String, String> permissionDetails = buildDocumentTypeActionRequestPermissionDetails(documentType, actionRequestType);
 			if (useKimPermission(KEWConstants.KEW_NAMESPACE, KEWConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails)) {
 				result = getPermissionService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails, new HashMap<String, String>());
 			} else {
 				result = Boolean.TRUE;
 			}
-			getCacheAdministrator().putInCache(cacheKey, result, DOC_TYPE_PERM_CACHE_GROUP);
-		}
 		return result;
 	}
 
-	protected String buildPrincipalAdhocCacheKey( String principalId, DocumentType documentType, String actionRequestType ) {
-		return PRINCIPAL_ADHOC_CACHE_PREFIX + documentType.getName() + "/" + actionRequestType + "/" + principalId;
-	}
-	
 	public boolean canGroupReceiveAdHocRequest(String groupId, DocumentType documentType, String actionRequestType) {
 		validateGroupId(groupId);
 		validateDocumentType(documentType);
 		validateActionRequestType(actionRequestType);
 		
-		String cacheKey = buildGroupAdhocCacheKey(groupId, documentType, actionRequestType );
-		Boolean result = (Boolean)getCacheAdministrator().getFromCache(cacheKey);
-		
-		if ( result == null ) {
-			result = Boolean.TRUE;
+		Boolean result = Boolean.TRUE;
 			Map<String, String> permissionDetails = buildDocumentTypeActionRequestPermissionDetails(documentType, actionRequestType);
 			if (useKimPermission(KEWConstants.KEW_NAMESPACE, KEWConstants.AD_HOC_REVIEW_PERMISSION, permissionDetails)) {
 				List<String> principalIds = getGroupService().getMemberPrincipalIds(groupId);
@@ -140,37 +100,21 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 					}
 				}
 			}
-			getCacheAdministrator().putInCache(cacheKey, result, DOC_TYPE_PERM_CACHE_GROUP);
-		}
 		return result;
-	}
-
-	protected String buildGroupAdhocCacheKey( String groupId, DocumentType documentType, String actionRequestType ) {
-		return GROUP_ADHOC_CACHE_PREFIX + documentType.getName() + "/" + actionRequestType + "/" + groupId;
 	}
 	
 	public boolean canAdministerRouting(String principalId, DocumentType documentType) {
 		validatePrincipalId(principalId);
 		validateDocumentType(documentType);
 
-		String cacheKey = buildAdminRoutingCacheKey(principalId, documentType );
-		Boolean result = (Boolean)getCacheAdministrator().getFromCache(cacheKey);
-		
-		if ( result == null ) {
-			if (documentType.isSuperUserGroupDefined()) {
-				result = documentType.isSuperUser(principalId);
-			} else {			
-				Map<String, String> permissionDetails = buildDocumentTypePermissionDetails(documentType);
-				result = getPermissionService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.ADMINISTER_ROUTING_PERMISSION, permissionDetails, new HashMap<String, String>());
-			}
-			getCacheAdministrator().putInCache(cacheKey, result, DOC_TYPE_PERM_CACHE_GROUP);
-		}
-		
+		final Boolean result;
+        if (documentType.isSuperUserGroupDefined()) {
+            result = documentType.isSuperUser(principalId);
+        } else {
+            Map<String, String> permissionDetails = buildDocumentTypePermissionDetails(documentType);
+            result = getPermissionService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.ADMINISTER_ROUTING_PERMISSION, permissionDetails, new HashMap<String, String>());
+        }
 		return result;
-	}
-
-	protected String buildAdminRoutingCacheKey( String principalId, DocumentType documentType ) {
-		return ADMIN_ROUTING_CACHE_PREFIX + documentType.getName() + "/" + principalId;
 	}
 	
 	public boolean canCancel(String principalId, String documentId, DocumentType documentType, List<String> routeNodeNames, String documentStatus, String initiatorPrincipalId) {

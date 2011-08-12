@@ -90,8 +90,6 @@ public class PermissionUpdateServiceImpl extends PermissionServiceBase implement
 	    		}
 	    	}
 	    	getBusinessObjectService().save(perm);
-	    	//KimApiServiceLocator.getIdentityManagementService().flushPermissionCaches();
-	    	flushPermissionImplCache();
     	} catch ( RuntimeException ex ) {
     		LOG.error( "Exception in savePermission: ", ex );
     		throw ex;

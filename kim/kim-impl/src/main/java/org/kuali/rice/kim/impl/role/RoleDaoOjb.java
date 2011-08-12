@@ -303,7 +303,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
     }
 
     @SuppressWarnings("unchecked")
-    public List<RoleMemberBo> getRoleMembersForRoleIdsWithFilters(Collection<String> roleIds, String principalId, List<String> groupIds, Map<String, String> qualification) {
+    public List<RoleMemberBo> getRoleMembersForRoleIdsWithFilters(Collection<String> roleIds, String principalId, Collection<String> groupIds, Map<String, String> qualification) {
         Criteria c = new Criteria();
 
         if (roleIds != null && !roleIds.isEmpty()) {

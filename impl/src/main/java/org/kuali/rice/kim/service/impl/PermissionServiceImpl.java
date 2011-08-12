@@ -76,44 +76,22 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     // --------------------
     
 	protected PermissionTypeService getPermissionTypeService( String namespaceCode, String permissionTemplateName, String permissionName, String permissionId ) {
-		StringBuffer cacheKey = new StringBuffer();
-		if ( namespaceCode != null ) {
-			cacheKey.append( namespaceCode );
-		}
-		cacheKey.append( '|' );
-		if ( permissionTemplateName != null ) {
-			cacheKey.append( permissionTemplateName );
-		}
-		cacheKey.append( '|' );
-		if ( permissionName != null ) {
-			cacheKey.append( permissionName );
-		}
-		cacheKey.append( '|' );
-		if ( permissionId != null ) {
-			cacheKey.append( permissionId );
-		}
-		String key = cacheKey.toString();
-		PermissionTypeService service = getPermissionTypeServiceByNameCache().get(key);
-		if ( service == null ) {
-			PermissionTemplateBo permTemplate = null;
-			if ( permissionTemplateName != null ) {
-				List<PermissionBo> perms = getPermissionImplsByTemplateName(namespaceCode, permissionTemplateName);
-                if ( !perms.isEmpty() ) {
-					permTemplate = perms.get(0).getTemplate();
-				}
-			} else if ( permissionName != null ) {
-				PermissionBo perms = getPermissionImplsByName(namespaceCode, permissionName);
-				permTemplate = perms.getTemplate();
-			} else if ( permissionId != null ) {
-				PermissionBo perm = getPermissionImpl(permissionId);
-				if ( perm != null ) {
-					permTemplate = perm.getTemplate();
-				}
-			}
-			service = getPermissionTypeService( permTemplate );
-			getPermissionTypeServiceByNameCache().put(key, service);
-		}
-		return service;
+        PermissionTemplateBo permTemplate = null;
+        if ( permissionTemplateName != null ) {
+            List<PermissionBo> perms = getPermissionImplsByTemplateName(namespaceCode, permissionTemplateName);
+            if ( !perms.isEmpty() ) {
+                permTemplate = perms.get(0).getTemplate();
+            }
+        } else if ( permissionName != null ) {
+            PermissionBo perms = getPermissionImplsByName(namespaceCode, permissionName);
+            permTemplate = perms.getTemplate();
+        } else if ( permissionId != null ) {
+            PermissionBo perm = getPermissionImpl(permissionId);
+            if ( perm != null ) {
+                permTemplate = perm.getTemplate();
+            }
+        }
+        return getPermissionTypeService( permTemplate );
 	}
 
     protected PermissionTypeService getPermissionTypeService( PermissionTemplateBo permissionTemplate ) {
@@ -157,9 +135,6 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	return isAuthorized( principalId, namespaceCode, permissionName, permissionDetails, null );
     }
 
-    /**
-     * @see org.kuali.rice.kim.service.PermissionService#isAuthorized( java.lang.String, String, java.lang.String, Map<String, String>, Map<String, String>)
-     */
     public boolean isAuthorized(String principalId, String namespaceCode, String permissionName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
         if (StringUtils.isEmpty(namespaceCode)) {
             throw new RiceIllegalArgumentException("namespaceCode is null");
@@ -183,9 +158,6 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	return isAuthorizedByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails, Collections.<String, String>emptyMap() );
     }
 
-    /**
-     * @see org.kuali.rice.kim.service.PermissionService#isAuthorized( java.lang.String, String, java.lang.String, Map<String, String>, Map<String, String>)
-     */
     public boolean isAuthorizedByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
     	if (StringUtils.isEmpty(namespaceCode)) {
             throw new RiceIllegalArgumentException("namespaceCode is null");
@@ -202,9 +174,6 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	return getRoleService().principalHasRole( principalId, roleIds, qualification );
     }
 
-    /**
-     * @see org.kuali.rice.kim.service.PermissionService#getAuthorizedPermissions(String, String, String, Map<String, String>, Map<String, String>)
-     */
     public List<Permission> getAuthorizedPermissions(String principalId, String namespaceCode, String permissionName, Map<String, String> permissionDetails, Map<String, String> qualification) {
     	if (StringUtils.isEmpty(namespaceCode)) {
             throw new RiceIllegalArgumentException("namespaceCode is null");
@@ -227,9 +196,6 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 
     }
 
-    /**
-     * @see org.kuali.rice.kim.service.PermissionService#getAuthorizedPermissionsByTemplateName(String, String, String, Map<String, String>, Map<String, String>)
-     */
     public List<Permission> getAuthorizedPermissionsByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails, Map<String, String> qualification) {
     	if (StringUtils.isEmpty(namespaceCode)) {
             throw new RiceIllegalArgumentException("namespaceCode is null");
@@ -333,9 +299,6 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	return applicablePermissions;
     }
 
-    /**
-     * @see org.kuali.rice.kim.service.PermissionService#getPermissionAssignees(String, String, Map<String, String>, Map<String, String>)
-     */
     public List<PermissionAssigneeInfo> getPermissionAssignees( String namespaceCode, String permissionName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
     	List<PermissionAssigneeInfo> results = new ArrayList<PermissionAssigneeInfo>();
     	List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName, permissionDetails);
@@ -398,12 +361,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	PermissionBo permissions = getPermissionImplsByName( namespaceCode, permissionName );
     	// now, filter the full list by the detail passed
     	List<PermissionBo> applicablePermissions = getMatchingPermissions( Collections.singletonList( permissions ), permissionDetails );
-    	List<String> roleIds = getRolesForPermissionsFromCache( applicablePermissions );
-    	if ( roleIds == null ) {
-    		roleIds = permissionDao.getRoleIdsForPermissions( applicablePermissions );
-    		addRolesForPermissionsToCache( applicablePermissions, roleIds );
-    	}
-    	return roleIds;    	
+   		return permissionDao.getRoleIdsForPermissions( applicablePermissions );
     }
 
     protected List<String> getRoleIdsForPermissionTemplate( String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails ) {
@@ -411,24 +369,17 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	List<PermissionBo> permissions = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
     	// now, filter the full list by the detail passed
     	List<PermissionBo> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );
-    	List<String> roleIds = getRolesForPermissionsFromCache( applicablePermissions );
-    	if ( roleIds == null ) {
-    		roleIds = permissionDao.getRoleIdsForPermissions( applicablePermissions );
-    		addRolesForPermissionsToCache( applicablePermissions, roleIds );
-    	}
-    	return roleIds;
+   		return permissionDao.getRoleIdsForPermissions( applicablePermissions );
+
     }
 
     @Override
     public List<String> getRoleIdsForPermissions( List<Permission> permissions ) {
         List<PermissionBo> permBos = new ArrayList<PermissionBo>();
-        for (Permission perm : permissions) { permBos.add(PermissionBo.from(perm));}
-    	List<String> roleIds = getRolesForPermissionsFromCache( permBos );
-    	if ( roleIds == null ) {
-    		roleIds = permissionDao.getRoleIdsForPermissions( permBos );
-    		addRolesForPermissionsToCache( permBos, roleIds );
-    	}
-    	return roleIds;
+        for (Permission perm : permissions) {
+            permBos.add(PermissionBo.from(perm));
+        }
+   		return permissionDao.getRoleIdsForPermissions( permBos );
     }
 
     // --------------------
@@ -628,13 +579,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
         List<PermissionBo> applicablePermissions = new ArrayList<PermissionBo>();
         applicablePermissions.add(PermissionBo.from(permissionInfo));
 
-        List<String> roleIds = getRolesForPermissionsFromCache(applicablePermissions);
-        if (roleIds == null) {
-            roleIds = permissionDao.getRoleIdsForPermissions(applicablePermissions);
-            addRolesForPermissionsToCache(applicablePermissions, roleIds);
-        }
-
-        return roleIds;
+        return permissionDao.getRoleIdsForPermissions(applicablePermissions);
     }
 
     public Permission getPermissionsByNameIncludingInactive(String namespaceCode, String permissionName) {

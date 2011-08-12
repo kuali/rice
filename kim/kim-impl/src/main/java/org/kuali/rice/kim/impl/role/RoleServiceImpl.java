@@ -455,27 +455,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         return roleList;
     }
 
-    @Override
-    public void flushInternalRoleCache() {
-        super.flushInternalRoleCache();
-    }
-
-    @Override
-    public void flushInternalRoleMemberCache() {
-        super.flushInternalRoleMemberCache();
-    }
-
-    @Override
-    public void flushInternalDelegationCache() {
-        super.flushInternalDelegationCache();
-    }
-
-    @Override
-    public void flushInternalDelegationMemberCache() {
-        super.flushInternalDelegationMemberCache();
-    }
-
-
     @SuppressWarnings("unchecked")
     protected void inactivateApplicationRoleMemberships(String principalId, Timestamp yesterday) {
         //FIXME: why isn't this method using the passed in Timestamp?
@@ -876,14 +855,12 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
 
     protected boolean isApplicationRoleType(String roleTypeId, RoleTypeService service) {
-        Boolean result = getApplicationRoleTypeCache().get(roleTypeId);
-        if (result == null) {
+       final  Boolean result;
             if (service != null) {
                 result = service.isApplicationRoleType();
             } else {
                 result = Boolean.FALSE;
             }
-        }
         return result;
     }
 
@@ -1032,16 +1009,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             return null;
         }
 
-        // If the KimDelegationImpl exists in the cache, return the cached one.
-        DelegateBo tempDelegate = getDelegationFromCache(delegationId);
-        if (tempDelegate != null) {
-            return tempDelegate;
-        }
-        // Otherwise, retrieve it normally.
-        tempDelegate = (DelegateBo) getBusinessObjectService().findByPrimaryKey(DelegateBo.class,
+        return getBusinessObjectService().findByPrimaryKey(DelegateBo.class,
                 Collections.singletonMap(KimConstants.PrimaryKeyConstants.DELEGATION_ID, delegationId));
-        this.addDelegationBoToCache(tempDelegate);
-        return tempDelegate;
     }
 
     /**
@@ -1051,16 +1020,12 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
      * @return the Role Type Service
      */
     protected RoleTypeService getRoleTypeService(String roleId) {
-        RoleTypeService service = getRoleTypeServiceCache().get(roleId);
-        if (service == null && !getRoleTypeServiceCache().containsKey(roleId)) {
-            RoleBo roleBo = getRoleBo(roleId);
-            KimType roleType = KimTypeBo.to(roleBo.getKimRoleType());
-            if (roleType != null) {
-                service = getRoleTypeService(roleType);
-            }
-            getRoleTypeServiceCache().put(roleId, service);
+        RoleBo roleBo = getRoleBo(roleId);
+        KimType roleType = KimTypeBo.to(roleBo.getKimRoleType());
+        if (roleType != null) {
+            return getRoleTypeService(roleType);
         }
-        return service;
+        return null;
     }
 
     protected RoleTypeService getRoleTypeService(KimType typeInfo) {
@@ -1081,24 +1046,21 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     protected DelegationTypeService getDelegationTypeService(String delegationId) {
-        DelegationTypeService service = getDelegationTypeServiceCache().get(delegationId);
-        if (service == null && !getDelegationTypeServiceCache().containsKey(delegationId)) {
-            DelegateBo delegateBo = getKimDelegationImpl(delegationId);
-            KimType delegationType = KimApiServiceLocator.getKimTypeInfoService().getKimType(delegateBo.getKimTypeId());
-            if (delegationType != null) {
-                KimTypeService tempService = KimFrameworkServiceLocator.getKimTypeService(delegationType);
-                if (tempService != null && tempService instanceof DelegationTypeService) {
-                    service = (DelegationTypeService) tempService;
-                } else {
-                    LOG.error("Service returned for type " + delegationType + "(" + delegationType.getName() + ") was not a DelegationTypeService.  Was a " + tempService.getClass());
-                }
-            } else { // delegateBo has no type - default to role type if possible
-                RoleTypeService roleTypeService = getRoleTypeService(delegateBo.getRoleId());
-                if (roleTypeService != null && roleTypeService instanceof DelegationTypeService) {
-                    service = (DelegationTypeService) roleTypeService;
-                }
+        DelegationTypeService service = null;
+        DelegateBo delegateBo = getKimDelegationImpl(delegationId);
+        KimType delegationType = KimApiServiceLocator.getKimTypeInfoService().getKimType(delegateBo.getKimTypeId());
+        if (delegationType != null) {
+            KimTypeService tempService = KimFrameworkServiceLocator.getKimTypeService(delegationType);
+            if (tempService != null && tempService instanceof DelegationTypeService) {
+                service = (DelegationTypeService) tempService;
+            } else {
+                LOG.error("Service returned for type " + delegationType + "(" + delegationType.getName() + ") was not a DelegationTypeService.  Was a " + tempService.getClass());
             }
-            getDelegationTypeServiceCache().put(delegationId, service);
+        } else { // delegateBo has no type - default to role type if possible
+            RoleTypeService roleTypeService = getRoleTypeService(delegateBo.getRoleId());
+            if (roleTypeService != null && roleTypeService instanceof DelegationTypeService) {
+                service = (DelegationTypeService) roleTypeService;
+            }
         }
         return service;
     }
@@ -1140,22 +1102,15 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             return null;
         }
 
-        // If the KimDelegationMemberImpl exists in the cache, return the cached one.
-        DelegateMemberBo tempDelegationMember = getDelegationMemberByDelegationAndIdFromCache(delegationId, delegationMemberId);
-        if (tempDelegationMember != null) {
-            return tempDelegationMember;
-        }
-        // Otherwise, retrieve it normally.
         Map<String, String> searchCriteria = new HashMap<String, String>();
         searchCriteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_ID, delegationId);
         searchCriteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_MEMBER_ID, delegationMemberId);
         List<DelegateMemberBo> memberList =
                 (List<DelegateMemberBo>) getBusinessObjectService().findMatching(DelegateMemberBo.class, searchCriteria);
         if (memberList != null && !memberList.isEmpty()) {
-            tempDelegationMember = memberList.get(0);
-            addDelegateMemberBoToCache(tempDelegationMember);
+            return memberList.get(0);
         }
-        return tempDelegationMember;
+        return null;
     }
 
     private List<RoleMemberBo> getStoredRoleMembersUsingExactMatchOnQualification(String principalId, List<String> groupIds, List<String> roleIds, Map<String, String> qualification) {

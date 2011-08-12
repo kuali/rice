@@ -352,30 +352,6 @@ public interface RoleService {
     @WebResult(name = "roles")
 	List<Role> lookupRoles(@WebParam(name="searchCriteria") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> searchCriteria);
 
-	/**
-	 * Flushes an internal role cache used by the base implementation to prevent repeated database I/O.
-	 */
-    @WebMethod(operationName = "flushInternalRoleCache")
-	void flushInternalRoleCache();
-
-	/**
-	 * Flushes an internal role member cache used by the base implementation to prevent repeated database I/O.
-	 */
-    @WebMethod(operationName = "flushInternalRoleMemberCache")
-	void flushInternalRoleMemberCache();
-
-	/**
-	 * Flushes an internal delegation cache used by the base implementation to prevent repeated database I/O.
-	 */
-    @WebMethod(operationName = "flushInternalDelegationCache")
-	void flushInternalDelegationCache();
-
-	/**
-	 * Flushes an internal delegation member cache used by the base implementation to prevent repeated database I/O.
-	 */
-    @WebMethod(operationName = "flushInternalDelegationMemberCache")
-	void flushInternalDelegationMemberCache();
-
     	/**
 	 * Assigns the principal with the given id to the role with the specified
 	 * namespace code and name with the supplied set of qualifications.

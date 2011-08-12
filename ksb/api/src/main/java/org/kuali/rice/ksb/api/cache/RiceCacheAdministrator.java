@@ -22,7 +22,9 @@ import org.kuali.rice.core.api.lifecycle.Lifecycle;
  * Service for accessing and managing KEW primary cache
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @deprecated this is being replaced in rice 2.0 DO NOT USE
  */
+@Deprecated
 public interface RiceCacheAdministrator extends Lifecycle {
 
 	public Object getFromCache(String key);

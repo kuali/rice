@@ -32,7 +32,7 @@ public interface RoleDao {
 
     List<RoleMemberBo> getRoleMembershipsForMemberId(String memberType, String memberId, Map<String, String> qualification);
 
-    List<RoleMemberBo> getRoleMembersForRoleIdsWithFilters(Collection<String> roleIds, String principalId, List<String> groupIds, Map<String, String> qualification);
+    List<RoleMemberBo> getRoleMembersForRoleIdsWithFilters(Collection<String> roleIds, String principalId, Collection<String> groupIds, Map<String, String> qualification);
 
     Map<String, List<DelegateMemberBo>> getDelegationMembersForDelegationIds(List<String> delegationIds);
 

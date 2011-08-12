@@ -31,6 +31,10 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+/**
+ * @deprecated this is being replaced in rice 2.0 DO NOT USE
+ */
+@Deprecated
 public class RiceCacheAdministratorTest extends KSBTestCase {
 	
 	String key = "_key";

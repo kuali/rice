@@ -16,18 +16,11 @@
  */
 package org.kuali.rice.kew.doctype.service.impl;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.jdom.Element;
 import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.dao.DocumentTypeDAO;
-import org.kuali.rice.kew.doctype.service.DocumentTypePermissionService;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
@@ -37,6 +30,12 @@ import org.kuali.rice.kew.xml.DocumentTypeXmlParser;
 import org.kuali.rice.kew.xml.export.DocumentTypeXmlExporter;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -55,6 +54,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     public static final String DOCUMENT_TYPE_ID_CACHE_PREFIX = DOCUMENT_TYPE_ID_CACHE_GROUP + ":";
     public static final String DOCUMENT_TYPE_NAME_CACHE_PREFIX = DOCUMENT_TYPE_NAME_CACHE_GROUP + ":";
     public static final String CURRENT_ROOTS_IN_CACHE_KEY = "DocumentType:CurrentRootsInCache";
+    public static final String DOC_TYPE_PERM_CACHE_GROUP = "DocumentTypePerm";
 
 
     private DocumentTypeDAO documentTypeDAO;
@@ -205,7 +205,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     	LOG.info("clearing DocumentType cache because of local update");
     	KsbApiServiceLocator.getCacheAdministrator().flushGroup(DOCUMENT_TYPE_ID_CACHE_GROUP);
     	KsbApiServiceLocator.getCacheAdministrator().flushGroup(DOCUMENT_TYPE_NAME_CACHE_GROUP);
-    	KsbApiServiceLocator.getCacheAdministrator().flushGroup(DocumentTypePermissionService.DOC_TYPE_PERM_CACHE_GROUP);
+    	KsbApiServiceLocator.getCacheAdministrator().flushGroup(DOC_TYPE_PERM_CACHE_GROUP);
     	KsbApiServiceLocator.getCacheAdministrator().flushEntry(CURRENT_ROOTS_IN_CACHE_KEY);
     }
 

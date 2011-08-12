@@ -98,11 +98,6 @@
 	<bean id="serviceRegistry" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="rice.ksb.serviceBus" />
 	</bean>
-	
-	<bean id="coreCache" class="org.kuali.rice.ksb.messaging.RiceCacheExporterFactoryBean">
-		<property name="serviceBus" ref="serviceRegistry"/>
-		<property name="serviceName" value="RICE_CORE_CACHE" />
-    </bean>
     
     <bean id="styleService" class="org.kuali.rice.core.impl.style.StyleServiceImpl">
     </bean>

@@ -32,7 +32,6 @@ import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.framework.permission.PermissionTypeService;
-import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -42,7 +41,6 @@ import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 
-import javax.jws.WebService;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -75,42 +73,20 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     // --------------------
     
 	protected PermissionTypeService getPermissionTypeService( String namespaceCode, String permissionTemplateName, String permissionName, String permissionId ) {
-		StringBuffer cacheKey = new StringBuffer();
-		if ( namespaceCode != null ) {
-			cacheKey.append( namespaceCode );
-		}
-		cacheKey.append( '|' );
-		if ( permissionTemplateName != null ) {
-			cacheKey.append( permissionTemplateName );
-		}
-		cacheKey.append( '|' );
-		if ( permissionName != null ) {
-			cacheKey.append( permissionName );
-		}
-		cacheKey.append( '|' );
-		if ( permissionId != null ) {
-			cacheKey.append( permissionId );
-		}
-		String key = cacheKey.toString();
-		PermissionTypeService service = getPermissionTypeServiceByNameCache().get(key);
-		if ( service == null ) {
-			PermissionTemplateBo permTemplate = null;
-			if ( permissionTemplateName != null ) {
-				PermissionBo perms = getPermissionImplsByTemplateName(namespaceCode, permissionTemplateName);
-					permTemplate = perms.getTemplate();
-			} else if ( permissionName != null ) {
-				PermissionBo perms = getPermissionImplsByName(namespaceCode, permissionName);
-					permTemplate = perms.getTemplate();
-			} else if ( permissionId != null ) {
-				PermissionBo perm = getPermissionImpl(permissionId);
-				if ( perm != null ) {
-					permTemplate = perm.getTemplate();
-				}
-			}
-			service = getPermissionTypeService( permTemplate );
-			getPermissionTypeServiceByNameCache().put(key, service);
-		}
-		return service;
+        PermissionTemplateBo permTemplate = null;
+        if ( permissionTemplateName != null ) {
+            PermissionBo perms = getPermissionImplsByTemplateName(namespaceCode, permissionTemplateName);
+                permTemplate = perms.getTemplate();
+        } else if ( permissionName != null ) {
+            PermissionBo perms = getPermissionImplsByName(namespaceCode, permissionName);
+                permTemplate = perms.getTemplate();
+        } else if ( permissionId != null ) {
+            PermissionBo perm = getPermissionImpl(permissionId);
+            if ( perm != null ) {
+                permTemplate = perm.getTemplate();
+            }
+        }
+        return getPermissionTypeService( permTemplate );
 	}
 
     protected PermissionTypeService getPermissionTypeService( PermissionTemplateBo permissionTemplate ) {
@@ -147,9 +123,6 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	return isAuthorized( principalId, namespaceCode, permissionName, permissionDetails, null );
     }
 
-    /**
-     * @see org.kuali.rice.kim.service.PermissionService#isAuthorized( java.lang.String, String, java.lang.String, Map<String, String>, Map<String, String>)
-     */
     public boolean isAuthorized(String principalId, String namespaceCode, String permissionName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
     	List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName, permissionDetails );
     	if ( roleIds.isEmpty() ) {
@@ -162,16 +135,10 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 
     }
 
-    /**
-     * @see org.kuali.rice.kim.service.PermissionService#hasPermission(String, String, String, Map<String, String>)
-     */
     public boolean hasPermissionByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails) {
     	return isAuthorizedByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails, null );
     }
 
-    /**
-     * @see org.kuali.rice.kim.service.PermissionService#isAuthorized( java.lang.String, String, java.lang.String, Map<String, String>, Map<String, String>)
-     */
     public boolean isAuthorizedByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
     	List<String> roleIds = getRoleIdsForPermissionTemplate( namespaceCode, permissionTemplateName, permissionDetails );
     	if ( roleIds.isEmpty() ) {
@@ -180,9 +147,6 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	return roleService.principalHasRole( principalId, roleIds, qualification);
     }
 
-    /**
-     * @see org.kuali.rice.kim.service.PermissionService#getAuthorizedPermissions(String, String, String, Map<String, String>, Map<String, String>)
-     */
     public List<Permission> getAuthorizedPermissions( String principalId, String namespaceCode, String permissionName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
     	// get all the permission objects whose name match that requested
     	PermissionBo permissions = getPermissionImplsByName( namespaceCode, permissionName );
@@ -191,9 +155,6 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	return getPermissionsForUser(principalId, applicablePermissions, qualification);
     }
 
-    /**
-     * @see org.kuali.rice.kim.service.PermissionService#getAuthorizedPermissionsByTemplateName(String, String, String, Map<String, String>, Map<String, String>)
-     */
     public List<Permission> getAuthorizedPermissionsByTemplateName( String principalId, String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
     	// get all the permission objects whose name match that requested
     	PermissionBo permissions = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
@@ -275,9 +236,6 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	return applicablePermissions;
     }
 
-    /**
-     * @see org.kuali.rice.kim.service.PermissionService#getPermissionAssignees(String, String, Map<String, String>, Map<String, String>)
-     */
     public List<Assignee> getPermissionAssignees( String namespaceCode, String permissionName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
     	List<Assignee> results = new ArrayList<Assignee>();
     	List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName, permissionDetails);
@@ -347,12 +305,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	PermissionBo permissions = getPermissionImplsByName( namespaceCode, permissionName );
     	// now, filter the full list by the detail passed
     	List<Permission> applicablePermissions = getMatchingPermissions( Collections.singletonList(permissions), permissionDetails );
-    	List<String> roleIds = getRolesForPermissionsFromCache( applicablePermissions );
-    	if ( roleIds == null ) {
-    		roleIds = permissionDao.getRoleIdsForPermissions( applicablePermissions );
-    		addRolesForPermissionsToCache( applicablePermissions, roleIds );
-    	}
-    	return roleIds;    	
+        return permissionDao.getRoleIdsForPermissions( applicablePermissions );
     }
 
     protected List<String> getRoleIdsForPermissionTemplate( String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails ) {
@@ -360,21 +313,11 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	PermissionBo permissions = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
     	// now, filter the full list by the detail passed
     	List<Permission> applicablePermissions = getMatchingPermissions( Collections.singletonList(permissions), permissionDetails );
-    	List<String> roleIds = getRolesForPermissionsFromCache( applicablePermissions );
-    	if ( roleIds == null ) {
-    		roleIds = permissionDao.getRoleIdsForPermissions( applicablePermissions );
-    		addRolesForPermissionsToCache( applicablePermissions, roleIds );
-    	}
-    	return roleIds;
+    	return permissionDao.getRoleIdsForPermissions( applicablePermissions );
     }
     
     public List<String> getRoleIdsForPermissions( List<Permission> permissions ) {
-    	List<String> roleIds = getRolesForPermissionsFromCache( permissions );
-    	if ( roleIds == null ) {
-    		roleIds = permissionDao.getRoleIdsForPermissions( permissions );
-    		addRolesForPermissionsToCache( permissions, roleIds );
-    	}
-    	return roleIds;
+   		return permissionDao.getRoleIdsForPermissions( permissions );
     }
 
     // --------------------
@@ -413,43 +356,25 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	if ( StringUtils.isBlank( permissionId ) ) {
     		return null;
     	}
-    	String cacheKey = getPermissionImplByIdCacheKey(permissionId);
-    	List<PermissionBo> permissions = (List<PermissionBo>) cacheAdministrator.getFromCache(cacheKey);
-    	if ( permissions == null ) {
-	    	HashMap<String,Object> pk = new HashMap<String,Object>( 1 );
-	    	pk.put( KimConstants.PrimaryKeyConstants.PERMISSION_ID, permissionId );
-	    	permissions = Collections.singletonList( (PermissionBo) businessObjectService.findByPrimaryKey( PermissionBo.class, pk ) );
-	    	cacheAdministrator.putInCache(cacheKey, permissions, PERMISSION_IMPL_CACHE_GROUP);
-    	}
-    	return permissions.get( 0 );
+        HashMap<String,Object> pk = new HashMap<String,Object>( 1 );
+        pk.put( KimConstants.PrimaryKeyConstants.PERMISSION_ID, permissionId );
+        return businessObjectService.findByPrimaryKey( PermissionBo.class, pk );
     }
     
     protected PermissionBo getPermissionImplsByTemplateName( String namespaceCode, String permissionTemplateName ) {
-    	String cacheKey = getPermissionImplByTemplateNameCacheKey(namespaceCode, permissionTemplateName);
-    	PermissionBo permissions = (PermissionBo) cacheAdministrator.getFromCache(cacheKey);
-    	if ( permissions == null ) {    	
-	    	HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
-	    	pk.put( "template.namespaceCode", namespaceCode );
-	    	pk.put( "template.name", permissionTemplateName );
-			pk.put( KRADPropertyConstants.ACTIVE, "Y" );
-	    	permissions = ((List<PermissionBo>) businessObjectService.findMatching( PermissionBo.class, pk )).get(0);
-	    	cacheAdministrator.putInCache(cacheKey, permissions, PERMISSION_IMPL_CACHE_GROUP);
-    	}
-    	return permissions;
+        HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
+        pk.put( "template.namespaceCode", namespaceCode );
+        pk.put( "template.name", permissionTemplateName );
+        pk.put( KRADPropertyConstants.ACTIVE, "Y" );
+        return ((List<PermissionBo>) businessObjectService.findMatching( PermissionBo.class, pk )).get(0);
     }
 
     protected PermissionBo getPermissionImplsByName( String namespaceCode, String permissionName ) {
-    	String cacheKey = getPermissionImplByNameCacheKey(namespaceCode, permissionName);
-    	PermissionBo permissions = (PermissionBo) cacheAdministrator.getFromCache(cacheKey);
-    	if ( permissions == null ) {
-	    	HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
-	    	pk.put( KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode );
-	    	pk.put( KimConstants.UniqueKeyConstants.PERMISSION_NAME, permissionName );
-			pk.put( KRADPropertyConstants.ACTIVE, "Y" );
-	    	permissions = ((List<PermissionBo>) businessObjectService.findMatching( PermissionBo.class, pk )).get(0);
-	    	cacheAdministrator.putInCache(cacheKey, permissions, PERMISSION_IMPL_CACHE_GROUP);
-    	}
-    	return permissions;
+        HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
+        pk.put( KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode );
+        pk.put( KimConstants.UniqueKeyConstants.PERMISSION_NAME, permissionName );
+        pk.put( KRADPropertyConstants.ACTIVE, "Y" );
+        return ((List<PermissionBo>) businessObjectService.findMatching( PermissionBo.class, pk )).get(0);
     }
 
     
@@ -560,13 +485,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
         List<Permission> applicablePermissions = new ArrayList<Permission>();
         applicablePermissions.add(permissionInfo);
 
-        List<String> roleIds = getRolesForPermissionsFromCache(applicablePermissions);
-        if (roleIds == null) {
-            roleIds = permissionDao.getRoleIdsForPermissions(applicablePermissions);
-            addRolesForPermissionsToCache(applicablePermissions, roleIds);
-        }
-
-        return roleIds;
+        return permissionDao.getRoleIdsForPermissions(applicablePermissions);
     }
 
     public Permission getPermissionsByNameIncludingInactive(String namespaceCode, String permissionName) {
@@ -575,16 +494,10 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     }
 	
     protected PermissionBo getPermissionImplsByNameIncludingInactive(String namespaceCode, String permissionName) {
-        String cacheKey = getPermissionImplByNameCacheKey(namespaceCode, permissionName + "inactive");
-        PermissionBo permissions = (PermissionBo) cacheAdministrator.getFromCache(cacheKey);
-        if (permissions == null) {
-            HashMap<String, Object> pk = new HashMap<String, Object>(2);
-            pk.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode);
-            pk.put(KimConstants.UniqueKeyConstants.PERMISSION_NAME, permissionName);
-            permissions = ((List<PermissionBo>) businessObjectService.findMatching(PermissionBo.class, pk)).get(0);
-            cacheAdministrator.putInCache(cacheKey, permissions, PERMISSION_IMPL_CACHE_GROUP);
-        }
-        return permissions;
+        HashMap<String, Object> pk = new HashMap<String, Object>(2);
+        pk.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode);
+        pk.put(KimConstants.UniqueKeyConstants.PERMISSION_NAME, permissionName);
+        return ((List<PermissionBo>) businessObjectService.findMatching(PermissionBo.class, pk)).get(0);
     }
 
 	/**

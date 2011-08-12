@@ -270,9 +270,9 @@ public class OutboxTest extends KEWTestCase {
 
         for (ActionItem actinItem : actionList)
         {
-            actionToTake.setActionItemId(actinItem.getActionItemId());
+            actionToTake.setActionItemId(actinItem.getId());
             actionToTake.setActionTakenCd(actinItem.getActionRequestCd());
-            invocations.add(new ActionInvocation(actinItem.getActionItemId(), actionToTake.getActionTakenCd()));
+            invocations.add(new ActionInvocation(actinItem.getId(), actionToTake.getActionTakenCd()));
         }
         KEWServiceLocator.getWorkflowDocumentService().takeMassActions(rkirkendPrincipalId, invocations);
         assertEquals("Wrong number of outbox items found for rkirkendPrincipalId", 2, KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter()).size());

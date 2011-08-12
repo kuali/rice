@@ -16,6 +16,7 @@
 package org.kuali.rice.kew.server;
 
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
@@ -27,11 +28,13 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.ActionItem;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.RoutingReportActionToTake;
 import org.kuali.rice.kew.api.action.RoutingReportCriteria;
 import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
+import org.kuali.rice.kew.api.actionlist.ActionListService;
 import org.kuali.rice.kew.api.document.DocumentDetail;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.WorkflowDocumentService;
@@ -1242,15 +1245,18 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document.route("");
         assertTrue(document.isEnroute());
 
-        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(0), getWorkflowUtility().getUserActionItemCount(principalId));
+        ActionListService als = KewApiServiceLocator.getActionListService();
+        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(0), als.getUserActionItemCount(principalId));
         principalId = getPrincipalIdForName("bmcgough");
         document = WorkflowDocumentFactory.loadDocument(principalId, document.getDocumentId());
         assertTrue(document.isApprovalRequested());
-        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), getWorkflowUtility().getUserActionItemCount(principalId));
+        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), als.getUserActionItemCount(
+                principalId));
         principalId = getPrincipalIdForName("rkirkend");
         document = WorkflowDocumentFactory.loadDocument(principalId, document.getDocumentId());
         assertTrue(document.isApprovalRequested());
-        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), getWorkflowUtility().getUserActionItemCount(principalId));
+        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), als.getUserActionItemCount(
+                principalId));
 
         TestUtilities.assertAtNode(document, "WorkflowDocument");
         document.returnToPreviousNode("", "AdHoc");
@@ -1260,18 +1266,21 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document = WorkflowDocumentFactory.loadDocument(principalId, document.getDocumentId());
         assertTrue(document.isApprovalRequested());
         // expect one action item for approval request
-        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), getWorkflowUtility().getUserActionItemCount(principalId));
+        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), als.getUserActionItemCount(
+                principalId));
         principalId = getPrincipalIdForName("bmcgough");
         document = WorkflowDocumentFactory.loadDocument(principalId, document.getDocumentId());
         assertFalse(document.isApprovalRequested());
         assertTrue(document.isFYIRequested());
         // expect one action item for fyi action request
-        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), getWorkflowUtility().getUserActionItemCount(principalId));
+        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), als.getUserActionItemCount(
+                principalId));
         principalId = getPrincipalIdForName("rkirkend");
         document = WorkflowDocumentFactory.loadDocument(principalId, document.getDocumentId());
         assertFalse(document.isApprovalRequested());
         // expect no action items
-        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(0), getWorkflowUtility().getUserActionItemCount(principalId));
+        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(0), als.getUserActionItemCount(
+                principalId));
 
         principalId = getPrincipalIdForName("ewestfal");
         document = WorkflowDocumentFactory.loadDocument(principalId, document.getDocumentId());
@@ -1282,15 +1291,18 @@ public class WorkflowUtilityTest extends KEWTestCase {
         principalId = getPrincipalIdForName("ewestfal");
         document = WorkflowDocumentFactory.loadDocument(principalId, document.getDocumentId());
         assertFalse(document.isApprovalRequested());
-        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(0), getWorkflowUtility().getUserActionItemCount(principalId));
+        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(0), als.getUserActionItemCount(
+                principalId));
         principalId = getPrincipalIdForName("bmcgough");
         document = WorkflowDocumentFactory.loadDocument(principalId, document.getDocumentId());
         assertTrue(document.isApprovalRequested());
-        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), getWorkflowUtility().getUserActionItemCount(principalId));
+        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), als.getUserActionItemCount(
+                principalId));
         principalId = getPrincipalIdForName("rkirkend");
         document = WorkflowDocumentFactory.loadDocument(principalId, document.getDocumentId());
         assertTrue(document.isApprovalRequested());
-        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), getWorkflowUtility().getUserActionItemCount(principalId));
+        assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(1), als.getUserActionItemCount(
+                principalId));
     }
 
     @Test public void testGetActionItems() throws Exception {
@@ -1307,9 +1319,10 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document.route("");
         assertTrue(document.isEnroute());
 
-        ActionItemDTO[] actionItems = getWorkflowUtility().getAllActionItems(document.getDocumentId());
-        assertEquals("Incorrect number of action items returned",2,actionItems.length);
-        for (ActionItemDTO actionItem : actionItems) {
+        ActionListService als = KewApiServiceLocator.getActionListService();
+        List<ActionItem> actionItems = als.getAllActionItems(document.getDocumentId());
+        assertEquals("Incorrect number of action items returned",2,actionItems.size());
+        for (ActionItem actionItem : actionItems) {
             assertEquals("Action Item should be Approve request", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
             assertEquals("Action Item has incorrect doc title", docTitle, actionItem.getDocTitle());
             assertTrue("User should be one of '" + user1NetworkId + "' or '" + user2NetworkId + "'", user1PrincipalId.equals(actionItem.getPrincipalId()) || user2PrincipalId.equals(actionItem.getPrincipalId()));
@@ -1322,9 +1335,9 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document.returnToPreviousNode("", "AdHoc");
         TestUtilities.assertAtNode(document, "AdHoc");
         // verify count after return to previous
-        actionItems = getWorkflowUtility().getAllActionItems(document.getDocumentId());
-        assertEquals("Incorrect number of action items returned",2,actionItems.length);
-        for (ActionItemDTO actionItem : actionItems) {
+        actionItems = als.getAllActionItems(document.getDocumentId());
+        assertEquals("Incorrect number of action items returned",2,actionItems.size());
+        for (ActionItem actionItem : actionItems) {
             assertEquals("Action Item has incorrect doc title", docTitle, actionItem.getDocTitle());
             assertTrue("Action Items should be Approve or FYI requests only", KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(actionItem.getActionRequestCd()) || KEWConstants.ACTION_REQUEST_FYI_REQ.equals(actionItem.getActionRequestCd()));
             if (KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(actionItem.getActionRequestCd())) {
@@ -1341,9 +1354,9 @@ public class WorkflowUtilityTest extends KEWTestCase {
         TestUtilities.assertAtNode(document, "WorkflowDocument");
 
         // we should be back where we were
-        actionItems = getWorkflowUtility().getAllActionItems(document.getDocumentId());
-        assertEquals("Incorrect number of action items returned",2,actionItems.length);
-        for (ActionItemDTO actionItem : actionItems) {
+        actionItems = als.getAllActionItems(document.getDocumentId());
+        assertEquals("Incorrect number of action items returned",2,actionItems.size());
+        for (ActionItem actionItem : actionItems) {
             assertEquals("Action Item should be Approve request", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
             assertEquals("Action Item has incorrect doc title", docTitle, actionItem.getDocTitle());
             assertTrue("User should be one of '" + user1NetworkId + "' or '" + user2NetworkId + "'", user1PrincipalId.equals(actionItem.getPrincipalId()) || user2PrincipalId.equals(actionItem.getPrincipalId()));
@@ -1364,11 +1377,12 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document.route("");
         assertTrue(document.isEnroute());
 
-        ActionItemDTO[] actionItems = getWorkflowUtility().getActionItems(document.getDocumentId(), new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ});
-        verifyEmptyArray("Action Item", actionItems);
-        actionItems = getWorkflowUtility().getActionItems(document.getDocumentId(), new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ});
-        assertEquals("Incorrect number of action items returned",2,actionItems.length);
-        for (ActionItemDTO actionItem : actionItems) {
+        ActionListService als = KewApiServiceLocator.getActionListService();
+        List<ActionItem> actionItems = als.getActionItems(document.getDocumentId(), Arrays.asList(new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ}));
+        verifyEmptyCollection("Action Item", actionItems);
+        actionItems = als.getActionItems(document.getDocumentId(), Arrays.asList(new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ}));
+        assertEquals("Incorrect number of action items returned",2,actionItems.size());
+        for (ActionItem actionItem : actionItems) {
             assertEquals("Action Item should be Approve request", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
             assertEquals("Action Item has incorrect doc title", docTitle, actionItem.getDocTitle());
             assertTrue("User should be one of '" + user1NetworkId + "' or '" + user2NetworkId + "'", user1PrincipalId.equals(actionItem.getPrincipalId()) || user2PrincipalId.equals(actionItem.getPrincipalId()));
@@ -1381,15 +1395,18 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document.returnToPreviousNode("", "AdHoc");
         TestUtilities.assertAtNode(document, "AdHoc");
         // verify count after return to previous
-        actionItems = getWorkflowUtility().getActionItems(document.getDocumentId(), new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ});
-        verifyEmptyArray("Action Item", actionItems);
-        actionItems = getWorkflowUtility().getActionItems(document.getDocumentId(), new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ});
-        assertEquals("Incorrect number of action items returned",1,actionItems.length);
-        actionItems = getWorkflowUtility().getActionItems(document.getDocumentId(), new String[]{KEWConstants.ACTION_REQUEST_FYI_REQ});
-        assertEquals("Incorrect number of action items returned",1,actionItems.length);
-        actionItems = getWorkflowUtility().getActionItems(document.getDocumentId(), new String[]{KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ});
-        assertEquals("Incorrect number of action items returned",2,actionItems.length);
-        for (ActionItemDTO actionItem : actionItems) {
+        actionItems = als.getActionItems(document.getDocumentId(), Arrays.asList(new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ}));
+        verifyEmptyCollection("Action Item", actionItems);
+        actionItems = als.getActionItems(document.getDocumentId(), Arrays.asList(
+                new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ}));
+        assertEquals("Incorrect number of action items returned",1,actionItems.size());
+        actionItems = als.getActionItems(document.getDocumentId(), Arrays.asList(
+                new String[]{KEWConstants.ACTION_REQUEST_FYI_REQ}));
+        assertEquals("Incorrect number of action items returned",1,actionItems.size());
+        actionItems = als.getActionItems(document.getDocumentId(), Arrays.asList(
+                new String[]{KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ}));
+        assertEquals("Incorrect number of action items returned",2,actionItems.size());
+        for (ActionItem actionItem : actionItems) {
             assertEquals("Action Item has incorrect doc title", docTitle, actionItem.getDocTitle());
             assertTrue("Action Items should be Approve or FYI requests only", KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(actionItem.getActionRequestCd()) || KEWConstants.ACTION_REQUEST_FYI_REQ.equals(actionItem.getActionRequestCd()));
             if (KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(actionItem.getActionRequestCd())) {
@@ -1408,11 +1425,13 @@ public class WorkflowUtilityTest extends KEWTestCase {
         TestUtilities.assertAtNode(document, "WorkflowDocument");
 
         // we should be back where we were
-        actionItems = getWorkflowUtility().getActionItems(document.getDocumentId(), new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ});
-        verifyEmptyArray("Action Item", actionItems);
-        actionItems = getWorkflowUtility().getActionItems(document.getDocumentId(), new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ});
-        assertEquals("Incorrect number of action items returned",2,actionItems.length);
-        for (ActionItemDTO actionItem : actionItems) {
+        actionItems = als.getActionItems(document.getDocumentId(), Arrays.asList(
+                new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ}));
+        verifyEmptyCollection("Action Item", actionItems);
+        actionItems = als.getActionItems(document.getDocumentId(), Arrays.asList(
+                new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ}));
+        assertEquals("Incorrect number of action items returned",2,actionItems.size());
+        for (ActionItem actionItem : actionItems) {
             assertEquals("Action Item should be Approve request", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
             assertEquals("Action Item has incorrect doc title", docTitle, actionItem.getDocTitle());
             assertTrue("User should be one of '" + user1NetworkId + "' or '" + user2NetworkId + "'", user1PrincipalId.equals(actionItem.getPrincipalId()) || user2PrincipalId.equals(actionItem.getPrincipalId()));
@@ -1713,15 +1732,16 @@ public class WorkflowUtilityTest extends KEWTestCase {
         workflowDocument2.setTitle("Routing Style");
         workflowDocument2.route("routing this document.");
 
-        Timestamp[] timestamps = getWorkflowUtility().getSearchableAttributeDateTimeValuesByKey(workflowDocument.getDocumentId(), TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY);
-        assertNotNull("Timestamps should not be null", timestamps);
-        assertTrue("Timestamps should not be empty", 0 != timestamps.length);
-        verifyTimestampToSecond(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS, timestamps[0].getTime());
+        WorkflowDocumentService wds = KewApiServiceLocator.getWorkflowDocumentService();
+        List<DateTime> dateTimes = wds.getSearchableAttributeDateTimeValuesByKey(workflowDocument.getDocumentId(), TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY);
+        assertNotNull("dateTimes should not be null", dateTimes);
+        assertTrue("dateTimes should not be empty", dateTimes.isEmpty());
+        verifyTimestampToSecond(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS, dateTimes.get(0).getMillis());
 
-        timestamps = getWorkflowUtility().getSearchableAttributeDateTimeValuesByKey(workflowDocument2.getDocumentId(), TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY);
-        assertNotNull("Timestamps should not be null", timestamps);
-        assertTrue("Timestamps should not be empty", 0 != timestamps.length);
-        verifyTimestampToSecond(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS, timestamps[0].getTime());
+        dateTimes = wds.getSearchableAttributeDateTimeValuesByKey(workflowDocument2.getDocumentId(), TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY);
+        assertNotNull("dateTimes should not be null", dateTimes);
+        assertTrue("dateTimes should not be empty", dateTimes.isEmpty());
+        verifyTimestampToSecond(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS, dateTimes.get(0).getMillis());
     }
 
     protected void verifyTimestampToSecond(Long originalTimeInMillis, Long testTimeInMillis) throws Exception {

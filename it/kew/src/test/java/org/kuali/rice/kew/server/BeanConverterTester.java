@@ -233,7 +233,7 @@ public class BeanConverterTester extends KEWTestCase {
         actionItem.setGroupId(testWorkgroupId);
         actionItem.setResponsibilityId(responsibilityId);
         actionItem.setDelegationType(delegationType);
-        actionItem.setDelegatorWorkflowId(workflowId);
+        actionItem.setDelegatorPrincipalId(workflowId);
         actionItem.setDelegatorGroupId(testWorkgroupId);
 
         // convert to action item vo object and verify

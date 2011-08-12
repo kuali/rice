@@ -139,7 +139,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
 
     protected static void addDelegatorElement(Document doc, Element baseElement, ActionItem actionItem) {
         Element delegatorElement = doc.createElement("delegator");
-        if ( (actionItem.getDelegatorWorkflowId() != null) && (actionItem.getDelegatorWorkflowId() != null) ) {
+        if ( (actionItem.getDelegatorPrincipalId() != null) && (actionItem.getDelegatorPrincipalId() != null) ) {
             // add empty delegator element
             baseElement.appendChild(delegatorElement);
             return;
@@ -147,9 +147,9 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         String delegatorType = "";
         String delegatorId = "";
         String delegatorDisplayValue = "";
-        if (actionItem.getDelegatorWorkflowId() != null) {
+        if (actionItem.getDelegatorPrincipalId() != null) {
             delegatorType = "user";
-            delegatorId = actionItem.getDelegatorWorkflowId();
+            delegatorId = actionItem.getDelegatorPrincipalId();
             Principal delegator = KimApiServiceLocator.getIdentityService().getPrincipal(delegatorId);
             
             if (delegator == null) {
@@ -158,7 +158,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
             } else {
             	delegatorDisplayValue = UserUtils.getTransposedName(GlobalVariables.getUserSession(), delegator);
             }
-        } else if (actionItem.getDelegatorWorkflowId() != null) {
+        } else if (actionItem.getDelegatorPrincipalId() != null) {
             delegatorType = "workgroup";
             delegatorId = actionItem.getDelegatorGroupId().toString();
             delegatorDisplayValue = KimApiServiceLocator.getGroupService().getGroup(actionItem.getDelegatorGroupId()).getName();
@@ -349,7 +349,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
 	public EmailContent generateImmediateReminder(Person user, ActionItem actionItem, DocumentType documentType) {
     	
     	LOG.info("Starting generation of immediate email reminder...");
-    	LOG.info("Action Id: " + actionItem.getActionItemId() + 
+    	LOG.info("Action Id: " + actionItem.getId() +
     			 ";  ActionRequestId: " + actionItem.getActionRequestId() + 
     			 ";  Action Item Principal Name: " + actionItem.getPerson().getPrincipalName());
     	LOG.info("User Principal Name: " + user.getPrincipalName());

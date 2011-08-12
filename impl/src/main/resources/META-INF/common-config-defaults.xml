@@ -466,6 +466,7 @@
   <param name="weeklyEmail.active">true</param>
 
   <param name="rice.kew.workflowDocumentActionsServiceSoap.secure">true</param>
+  <param name="rice.kew.actionListServiceSoap.secure">true</param>
   <param name="rice.kew.documentTypeServiceSoap.secure">true</param>
   <param name="rice.kew.noteServiceSoap.secure">true</param>
   <param name="rice.kew.documentAttributeIndexingQueueSoap.secure">true</param>

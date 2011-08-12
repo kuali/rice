@@ -66,7 +66,7 @@ public class KCBNotificationService extends DefaultNotificationService {
         if (StringUtils.isNotBlank(actionItem.getDocHandlerURL())) {
         	mvo.setUrl(actionItem.getDocHandlerURL() + "?docId=" + actionItem.getDocumentId());
         }
-        mvo.setOriginId(String.valueOf(actionItem.getActionItemId()));
+        mvo.setOriginId(String.valueOf(actionItem.getId()));
         try {
             // just assume it's a user at this point...
             mvo.setRecipient(actionItem.getPrincipalId());
@@ -87,10 +87,10 @@ public class KCBNotificationService extends DefaultNotificationService {
         MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(KCBConstants.SERVICE_NAMESPACE, KCBServiceNames.KCB_MESSAGING));
 
         for (ActionItem actionItem: actionItems) {
-        	LOG.debug("Removing KCB messages for action item: " + actionItem.getActionItemId() + " " + actionItem.getActionRequestCd() + " " + actionItem.getPerson());
+        	LOG.debug("Removing KCB messages for action item: " + actionItem.getId() + " " + actionItem.getActionRequestCd() + " " + actionItem.getPerson());
             try {
                 // we don't have the action takens at this point...? :(
-                ms.removeByOriginId(String.valueOf(actionItem.getActionItemId()), null, null);
+                ms.removeByOriginId(String.valueOf(actionItem.getId()), null, null);
             } catch (Exception e) {
                 throw new RuntimeException("could not remove message from KCB", e);
             }

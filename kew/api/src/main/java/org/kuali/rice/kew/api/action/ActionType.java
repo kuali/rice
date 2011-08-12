@@ -111,12 +111,12 @@ public enum ActionType implements Coded {
     @XmlEnumValue("R") LOG_MESSAGE("R", "LOG MESSAGE"),
     
     /**
-     * The document is routed to a workgroup and a user in the workgroup wants to take authority from the workgroup
+     * The document is routed to a group and a user in the group wants to take authority from the group
      */
     @XmlEnumValue("w") TAKE_GROUP_AUTHORITY("w", "TAKE GROUP AUTHORITY"),
     		
     /**
-     * The person who took workgroup authority is releasing it
+     * The person who took group authority is releasing it
      */
     @XmlEnumValue("y") RELEASE_GROUP_AUTHORITY("y", "RELEASE GROUP AUTHORITY"),
     

@@ -71,8 +71,8 @@ public class ActionItemActionListExtension extends ActionItem {
         if (getGroupId() != null) {
             group = super.getGroup();
         }
-        if (getDelegatorWorkflowId() != null) {
-        	delegatorPerson = KimApiServiceLocator.getPersonService().getPerson(getDelegatorWorkflowId());
+        if (getDelegatorPrincipalId() != null) {
+        	delegatorPerson = KimApiServiceLocator.getPersonService().getPerson(getDelegatorPrincipalId());
             if (delegatorPerson != null) {
                 delegatorName = delegatorPerson.getName();
             }

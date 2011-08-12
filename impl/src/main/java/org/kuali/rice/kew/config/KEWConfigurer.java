@@ -81,11 +81,7 @@ public class KEWConfigurer extends ModuleConfigurer {
     	springFileLocations.add("classpath:org/kuali/rice/kew/config/KEWSpringBeans.xml");
 
         if ( isExposeServicesOnBus() ) {
-        	if (isSetSOAPServicesAsDefault()) {
-        		springFileLocations.add("classpath:org/kuali/rice/kew/config/KEWServiceBusSOAPDefaultSpringBeans.xml");
-        	} else {
-        		springFileLocations.add("classpath:org/kuali/rice/kew/config/KEWServiceBusSpringBeans.xml");
-        	}
+            springFileLocations.add("classpath:org/kuali/rice/kew/config/KEWServiceBusSpringBeans.xml");
         }
         
         if (OrmUtils.isJpaEnabled("rice.kew")) {

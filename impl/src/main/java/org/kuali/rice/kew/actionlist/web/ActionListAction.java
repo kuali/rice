@@ -431,7 +431,7 @@ public class ActionListAction extends KualiAction {
     	for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {
     		ActionItemActionListExtension actionItem = (ActionItemActionListExtension)iterator.next();
     		if (actionItem.getDocumentId() == null) {
-    			LOG.error("Somehow there exists an ActionItem with a null document id!  actionItemId=" + actionItem.getActionItemId());
+    			LOG.error("Somehow there exists an ActionItem with a null document id!  actionItemId=" + actionItem.getId());
     			iterator.remove();
     			continue;
     		}
@@ -465,7 +465,7 @@ public class ActionListAction extends KualiAction {
     		} catch (Exception e) {
     			// if there's a problem loading the action item, we don't want to blow out the whole screen but we will remove it from the list
     			// and display an approriate error message to the user
-    			LOG.error("Error loading action list for action item " + actionItem.getActionItemId(), e);
+    			LOG.error("Error loading action list for action item " + actionItem.getId(), e);
     			iterator.remove();
     			actionItemProblemIds.add(actionItem.getDocumentId());
     		}
@@ -630,11 +630,11 @@ public class ActionListAction extends KualiAction {
     		
     		// removing this check for the time being, it hinders action list performance. (KULRICE-2931)
 //    		if (KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getDocumentId()) == null) {
-//    			GlobalVariables.getErrorMap().putError(ROUTEHEADERID_PROP, ACTIONITEM_ROUTEHEADERID_INVALID_ERRKEY,actionItem.getActionItemId()+"");
+//    			GlobalVariables.getErrorMap().putError(ROUTEHEADERID_PROP, ACTIONITEM_ROUTEHEADERID_INVALID_ERRKEY,actionItem.getId()+"");
 //    		}
     		
     		if(!KEWConstants.ACTION_REQUEST_CODES.containsKey(actionItem.getActionRequestCd())) {
-    			GlobalVariables.getMessageMap().putError(ACTIONREQUESTCD_PROP,ACTIONITEM_ACTIONREQUESTCD_INVALID_ERRKEY,actionItem.getActionItemId()+"");
+    			GlobalVariables.getMessageMap().putError(ACTIONREQUESTCD_PROP,ACTIONITEM_ACTIONREQUESTCD_INVALID_ERRKEY,actionItem.getId()+"");
     		}
      	}
     }
@@ -660,7 +660,7 @@ public class ActionListAction extends KualiAction {
         			LOG.warn("Could not locate the ActionItem to take mass action against in the action list: " + actionToTake.getActionItemId());
         			continue;
         		}
-            	invocations.add(new ActionInvocation(actionItem.getActionItemId(), actionToTake.getActionTakenCd()));
+            	invocations.add(new ActionInvocation(actionItem.getId(), actionToTake.getActionTakenCd()));
             }
         	index++;
 		}
@@ -675,7 +675,7 @@ public class ActionListAction extends KualiAction {
 
     protected ActionItem getActionItemFromActionList(List<ActionItem> actionList, String actionItemId) {
     	for (ActionItem actionItem : actionList) {
-			if (actionItem.getActionItemId().equals(actionItemId)) {
+			if (actionItem.getId().equals(actionItemId)) {
 				return actionItem;
 			}
 		}

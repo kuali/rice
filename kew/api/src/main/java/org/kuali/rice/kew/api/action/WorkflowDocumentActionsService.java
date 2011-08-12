@@ -883,6 +883,38 @@ public interface WorkflowDocumentActionsService {
             @WebParam(name = "returnPoint") ReturnPoint returnPoint)
             throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
+
+    /**
+     * Triggers the execution of a {@link ActionType#MOVE} action for the given
+     * principal and document specified in the supplied parameters. Move a document to a
+     * node will allow for the document to be pushed to a different node in the process based on
+     * the criteria present in the {@link MovePoint} that is passed to this method.
+     *
+     * <p />
+     * The document is synchronously moved to the suggested move point (assuming the desired
+     * move point can be identified for the given document), and then the document will be
+     * submitted to the engine for further processing (effectively, re-establishing the flow of the
+     * document from the target return point).
+     *
+     *
+     * @param parameters the parameters which indicate which principal is executing the action
+     *        against which document, as well as additional operations to take against the document,
+     *        such as updating document data
+     * @param movePoint the point to move the document
+     *
+     * @return the result of executing the action, including a view on the updated state of the
+     *         document and related actions
+     *
+     * @throws RiceIllegalArgumentException if {@code parameters} is null
+     * @throws RiceIllegalArgumentException if no document with the {@code documentId} specified in
+     *         {@code parameters} exists
+     * @throws RiceIllegalArgumentException if no principal with the {@code principalId} specified
+     *         in {@code parameters} exists
+     * @throws InvalidDocumentContentException if the document content on the
+     *         {@link DocumentContentUpdate} supplied with the {@code parameters} is invalid.
+     * @throws InvalidActionTakenException if the supplied principal is not allowed to execute this
+     *         action
+     */
     @WebMethod(operationName = "move")
     @WebResult(name = "documentActionResult")
     @XmlElement(name = "documentActionResult", required = true)
@@ -891,6 +923,29 @@ public interface WorkflowDocumentActionsService {
             @WebParam(name = "movePoint") MovePoint movePoint)
             throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
+    /**
+     * Triggers the execution of a {@link ActionType#TAKE_GROUP_AUTHORITY} action for the given
+     * principal and document specified in the supplied parameters. Takes authority of a group by a
+     * member of that group. .
+     *
+     * @param parameters the parameters which indicate which principal is executing the action
+     *        against which document, as well as additional operations to take against the document,
+     *        such as updating document data
+     * @param groupId the group id to take authority of
+     *
+     * @return the result of executing the action, including a view on the updated state of the
+     *         document and related actions
+     *
+     * @throws RiceIllegalArgumentException if {@code parameters} is null
+     * @throws RiceIllegalArgumentException if no document with the {@code documentId} specified in
+     *         {@code parameters} exists
+     * @throws RiceIllegalArgumentException if no principal with the {@code principalId} specified
+     *         in {@code parameters} exists
+     * @throws InvalidDocumentContentException if the document content on the
+     *         {@link DocumentContentUpdate} supplied with the {@code parameters} is invalid.
+     * @throws InvalidActionTakenException if the supplied principal is not allowed to execute this
+     *         action
+     */
     @WebMethod(operationName = "takeGroupAuthority")
     @WebResult(name = "documentActionResult")
     @XmlElement(name = "documentActionResult", required = true)
@@ -899,6 +954,29 @@ public interface WorkflowDocumentActionsService {
             @WebParam(name = "groupId") String groupId)
             throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
+    /**
+     * Triggers the execution of a {@link ActionType#RELEASE_GROUP_AUTHORITY} action for the given
+     * principal and document specified in the supplied parameters. Takes authority of a group by a
+     * member of that group. .
+     *
+     * @param parameters the parameters which indicate which principal is executing the action
+     *        against which document, as well as additional operations to take against the document,
+     *        such as updating document data
+     * @param groupId the group id to take authority of
+     *
+     * @return the result of executing the action, including a view on the updated state of the
+     *         document and related actions
+     *
+     * @throws RiceIllegalArgumentException if {@code parameters} is null
+     * @throws RiceIllegalArgumentException if no document with the {@code documentId} specified in
+     *         {@code parameters} exists
+     * @throws RiceIllegalArgumentException if no principal with the {@code principalId} specified
+     *         in {@code parameters} exists
+     * @throws InvalidDocumentContentException if the document content on the
+     *         {@link DocumentContentUpdate} supplied with the {@code parameters} is invalid.
+     * @throws InvalidActionTakenException if the supplied principal is not allowed to execute this
+     *         action
+     */
     @WebMethod(operationName = "releaseGroupAuthority")
     @WebResult(name = "documentActionResult")
     @XmlElement(name = "documentActionResult", required = true)

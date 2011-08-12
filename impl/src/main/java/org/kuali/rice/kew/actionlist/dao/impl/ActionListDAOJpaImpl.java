@@ -91,7 +91,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
 		
 		ActionItemActionListExtension actionItemExt = new ActionItemActionListExtension();
 		
-		actionItemExt.setActionItemId(actionItem.getActionItemId());
+		actionItemExt.setId(actionItem.getId());
 		actionItemExt.setPrincipalId(actionItem.getPrincipalId());
 		actionItemExt.setDateAssigned(actionItem.getDateAssigned());
 		actionItemExt.setActionRequestCd(actionItem.getActionRequestCd());
@@ -104,7 +104,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
 		actionItemExt.setDocLabel(actionItem.getDocLabel());
 		actionItemExt.setDocHandlerURL(actionItem.getDocHandlerURL());
 		actionItemExt.setDocName(actionItem.getDocName());
-		actionItemExt.setDelegatorWorkflowId(actionItem.getDelegatorWorkflowId());
+		actionItemExt.setDelegatorPrincipalId(actionItem.getDelegatorPrincipalId());
 		actionItemExt.setDelegatorGroupId(actionItem.getDelegatorGroupId());
 		actionItemExt.setDelegationType(actionItem.getDelegationType());
 		actionItemExt.setLockVerNbr(actionItem.getLockVerNbr());
@@ -532,7 +532,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
      * @see org.kuali.rice.kew.actionlist.dao.ActionListDAO#saveOutboxItem(org.kuali.rice.kew.actionitem.OutboxItemActionListExtension)
      */
     public void saveOutboxItem(OutboxItemActionListExtension outboxItem) {
-    	if(outboxItem.getActionItemId()==null){
+    	if(outboxItem.getId()==null){
     		entityManager.persist(outboxItem);
     	}else{
     	  //TODO, merge will not update the outboxitem pointer to the merged entity

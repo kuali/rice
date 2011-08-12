@@ -15,27 +15,26 @@
  */
 package org.kuali.rice.kew.api.actionlist;
 
+import org.kuali.rice.kew.api.action.ActionItem;
+
+import javax.jws.WebParam;
+import java.util.List;
 
 public interface ActionListService {
 
 	// TODO add the following methods to this service
 	
-//	public Integer getUserActionItemCount(
-//			@WebParam(name = "principalId") String principalId)
-//			throws WorkflowException;
-//
-//	public ActionItemDTO[] getAllActionItems(
-//			@WebParam(name = "documentId") String documentId)
-//			throws WorkflowException;
-//
-//	public ActionItemDTO[] getActionItems(
-//			@WebParam(name = "documentId") String documentId,
-//			@WebParam(name = "actionRequestedCodes") String[] actionRequestedCodes)
-//			throws WorkflowException;
-//
-//	// added for KS per Scott
-//	ActionItemDTO[] getActionItemsForPrincipal(
-//			@WebParam(name = "principalId") String principalId)
-//			throws WorkflowException;
+	public Integer getUserActionItemCount(
+			@WebParam(name = "principalId") String principalId);
+
+	public List<ActionItem> getAllActionItems(
+			@WebParam(name = "documentId") String documentId);
+
+	public List<ActionItem> getActionItems(
+			@WebParam(name = "documentId") String documentId,
+			@WebParam(name = "actionRequestedCodes") List<String> actionRequestedCodes);
+
+	List<ActionItem> getActionItemsForPrincipal(
+			@WebParam(name = "principalId") String principalId);
 	
 }

@@ -142,7 +142,7 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kew.actionitem.ActionItem" table="KREW_ACTN_ITM_T">
-    <field-descriptor column="ACTN_ITM_ID" name="actionItemId" jdbc-type="VARCHAR" primarykey="true"
+    <field-descriptor column="ACTN_ITM_ID" name="id" jdbc-type="VARCHAR" primarykey="true"
       autoincrement="true" sequence-name="KREW_ACTN_ITM_S" />
     <field-descriptor name="principalId" column="PRNCPL_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="dateAssigned" column="ASND_DT" jdbc-type="TIMESTAMP" />
@@ -156,7 +156,7 @@
     <field-descriptor name="docLabel" column="DOC_TYP_LBL" jdbc-type="VARCHAR" />
     <field-descriptor name="docHandlerURL" column="DOC_HDLR_URL" jdbc-type="VARCHAR" />
     <field-descriptor name="docName" column="DOC_TYP_NM" jdbc-type="VARCHAR" />
-    <field-descriptor name="delegatorWorkflowId" column="DLGN_PRNCPL_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="delegatorPrincipalId" column="DLGN_PRNCPL_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="delegatorGroupId" column="DLGN_GRP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="delegationType" column="DLGN_TYP" jdbc-type="VARCHAR" />
     <field-descriptor name="lockVerNbr" column="VER_NBR" jdbc-type="INTEGER" locking="true"/>
@@ -167,7 +167,7 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kew.actionitem.ActionItemActionListExtension" table="KREW_ACTN_ITM_T">
-    <field-descriptor column="ACTN_ITM_ID" name="actionItemId" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KREW_ACTN_ITM_S" />
+    <field-descriptor column="ACTN_ITM_ID" name="id" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KREW_ACTN_ITM_S" />
     <field-descriptor name="principalId" column="PRNCPL_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="dateAssigned" column="ASND_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="actionRequestCd" column="RQST_CD" jdbc-type="CHAR" />
@@ -180,7 +180,7 @@
     <field-descriptor name="docLabel" column="DOC_TYP_LBL" jdbc-type="VARCHAR" />
     <field-descriptor name="docHandlerURL" column="DOC_HDLR_URL" jdbc-type="VARCHAR" />
     <field-descriptor name="docName" column="DOC_TYP_NM" jdbc-type="VARCHAR" />
-    <field-descriptor name="delegatorWorkflowId" column="DLGN_PRNCPL_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="delegatorPrincipalId" column="DLGN_PRNCPL_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="delegatorGroupId" column="DLGN_GRP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="delegationType" column="DLGN_TYP" jdbc-type="VARCHAR" />
     <field-descriptor name="lockVerNbr" column="VER_NBR" jdbc-type="INTEGER" locking="true"/>
@@ -191,7 +191,7 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kew.actionitem.OutboxItemActionListExtension" table="KREW_OUT_BOX_ITM_T">
-    <field-descriptor column="ACTN_ITM_ID" name="actionItemId" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KREW_OUT_BOX_ITM_S" />
+    <field-descriptor column="ACTN_ITM_ID" name="id" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KREW_OUT_BOX_ITM_S" />
     <field-descriptor name="principalId" column="PRNCPL_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="dateAssigned" column="ASND_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="actionRequestCd" column="RQST_CD" jdbc-type="CHAR" />
@@ -204,7 +204,7 @@
     <field-descriptor name="docLabel" column="DOC_TYP_LBL" jdbc-type="VARCHAR" />
     <field-descriptor name="docHandlerURL" column="DOC_HDLR_URL" jdbc-type="VARCHAR" />
     <field-descriptor name="docName" column="DOC_TYP_NM" jdbc-type="VARCHAR" />
-    <field-descriptor name="delegatorWorkflowId" column="DLGN_PRNCPL_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="delegatorPrincipalId" column="DLGN_PRNCPL_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="delegatorGroupId" column="DLGN_GRP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="delegationType" column="DLGN_TYP" jdbc-type="VARCHAR" />
     <field-descriptor name="lockVerNbr" column="VER_NBR" jdbc-type="INTEGER" locking="true"/>

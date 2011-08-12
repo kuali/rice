@@ -273,7 +273,7 @@ public class DTOConverter {
 
     public static ActionItemDTO convertActionItem(ActionItem actionItem) {
         ActionItemDTO actionItemVO = new ActionItemDTO();
-        actionItemVO.setActionItemId(actionItem.getActionItemId());
+        actionItemVO.setActionItemId(actionItem.getId());
         actionItemVO.setActionItemIndex(actionItem.getActionItemIndex());
         actionItemVO.setActionRequestCd(actionItem.getActionRequestCd());
         actionItemVO.setActionRequestId(actionItem.getActionRequestId());
@@ -281,7 +281,7 @@ public class DTOConverter {
         actionItemVO.setDateAssigned(actionItem.getDateAssigned());
         actionItemVO.setDateAssignedString(actionItem.getDateAssignedString());
         actionItemVO.setDelegationType(actionItem.getDelegationType());
-        actionItemVO.setDelegatorPrincipalId(actionItem.getDelegatorWorkflowId());
+        actionItemVO.setDelegatorPrincipalId(actionItem.getDelegatorPrincipalId());
         actionItemVO.setDelegatorGroupId(actionItem.getDelegatorGroupId());
         actionItemVO.setDocHandlerURL(actionItem.getDocHandlerURL());
         actionItemVO.setDocLabel(actionItem.getDocLabel());

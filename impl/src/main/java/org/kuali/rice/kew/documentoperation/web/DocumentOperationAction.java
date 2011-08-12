@@ -299,7 +299,7 @@ public class DocumentOperationAction extends KewKualiAction {
 					getActionListService().saveActionItem(actionItem);
 					change = true;
 				} catch (ParseException pe) {
-					throw new WorkflowServiceErrorException("Action item date assigned parsing error", new WorkflowServiceErrorImpl("Action item date assigned parse error", "docoperation.actionitem.dateassignedparsing.error", actionItem.getActionItemId().toString()));
+					throw new WorkflowServiceErrorException("Action item date assigned parsing error", new WorkflowServiceErrorImpl("Action item date assigned parse error", "docoperation.actionitem.dateassignedparsing.error", actionItem.getId().toString()));
 				}
 			}
 			if (KEWConstants.DELETE.equals(opValue)) {
@@ -701,10 +701,10 @@ public class DocumentOperationAction extends KewKualiAction {
 				if ("delegatorWorkflowId".equals(lookupField)) {
 					Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(networkId);
 					if (principal != null) {
-						actionItem.setDelegatorWorkflowId(principal.getPrincipalId());
+						actionItem.setDelegatorPrincipalId(principal.getPrincipalId());
 					} else {
 						LOG.info("action item delegator user not found");
-						actionItem.setDelegatorWorkflowId(null);
+						actionItem.setDelegatorPrincipalId(null);
 					}
 				}
 				if ("delegatorGroupId".equals(lookupField)) {

@@ -158,7 +158,7 @@ public class ActionListServiceImpl implements ActionListService {
 
         ActionRequestValue delegatorActionRequest = getActionRequestService().findDelegatorRequest(actionRequest);
         if (delegatorActionRequest != null) {
-            actionItem.setDelegatorWorkflowId(delegatorActionRequest.getPrincipalId());
+            actionItem.setDelegatorPrincipalId(delegatorActionRequest.getPrincipalId());
             actionItem.setDelegatorGroupId(delegatorActionRequest.getGroupId());
         }
 
@@ -202,77 +202,77 @@ public class ActionListServiceImpl implements ActionListService {
         String principalId = actionItem.getPrincipalId();
         if (principalId == null || principalId.trim().equals("")) {
             errors.add(new WorkflowServiceErrorImpl("ActionItem person null.", "actionitem.personid.empty", actionItem
-                    .getActionItemId().toString()));
+                    .getId().toString()));
         } else {
         	Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
         	if (principal == null) {
                 errors.add(new WorkflowServiceErrorImpl("ActionItem person invalid.", "actionitem.personid.invalid",
-                        actionItem.getActionItemId().toString()));
+                        actionItem.getId().toString()));
             }
         }
 
         if (actionItem.getDateAssigned() == null) {
             errors.add(new WorkflowServiceErrorImpl("ActionItem date assigned empty.", "actionitem.dateassigned.empty",
-                    actionItem.getActionItemId().toString()));
+                    actionItem.getId().toString()));
         }
 
         String actionRequestCd = actionItem.getActionRequestCd();
         if (actionRequestCd == null || actionRequestCd.trim().equals("")) {
             errors.add(new WorkflowServiceErrorImpl("ActionItem action request cd empty.",
-                    "actionitem.actionrequestcd.empty", actionItem.getActionItemId().toString()));
+                    "actionitem.actionrequestcd.empty", actionItem.getId().toString()));
         } else if (!KEWConstants.ACTION_REQUEST_CD.containsKey(actionRequestCd)) {
             errors.add(new WorkflowServiceErrorImpl("ActionItem action request cd invalid.",
-                    "actionitem.actionrequestcd.invalid", actionItem.getActionItemId().toString()));
+                    "actionitem.actionrequestcd.invalid", actionItem.getId().toString()));
         }
 
         if (actionItem.getActionRequestId() == null) {
             errors.add(new WorkflowServiceErrorImpl("ActionItem action request id empty.",
-                    "actionitem.actionrequestid.empty", actionItem.getActionItemId().toString()));
+                    "actionitem.actionrequestid.empty", actionItem.getId().toString()));
         }
 
         if (actionItem.getDocumentId() == null) {
             errors.add(new WorkflowServiceErrorImpl("ActionItem Document id empty.", "actionitem.documentid.empty",
-                    actionItem.getActionItemId().toString()));
+                    actionItem.getId().toString()));
         } else if (KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getDocumentId()) == null) {
             errors.add(new WorkflowServiceErrorImpl("ActionItem Document id invalid.", "actionitem.documentid.invalid",
-                    actionItem.getActionItemId().toString()));
+                    actionItem.getId().toString()));
         }
 
         String docTypeName = actionItem.getDocName();
         DocumentType docType = null;
         if (docTypeName == null || docTypeName.trim().equals("")) {
             errors.add(new WorkflowServiceErrorImpl("ActionItem doctypename empty.", "actionitem.doctypename.empty",
-                    actionItem.getActionItemId().toString()));
+                    actionItem.getId().toString()));
         } else {
             docType = KEWServiceLocator.getDocumentTypeService().findByName(actionItem.getDocName());
             if (docType == null) {
                 errors.add(new WorkflowServiceErrorImpl("ActionItem doctypename invalid.", "actionitem.doctypename.invalid",
-                        actionItem.getActionItemId().toString()));
+                        actionItem.getId().toString()));
             }
         }
 
         if (actionItem.getDocLabel() == null || actionItem.getDocLabel().trim().equals("")) {
             errors.add(new WorkflowServiceErrorImpl("ActionItem doctypelabel empty.", "actionitem.doctypelabel.empty",
-                    actionItem.getActionItemId().toString()));
+                    actionItem.getId().toString()));
         } else if (docType != null && !docType.getLabel().equals(actionItem.getDocLabel())) {
             errors.add(new WorkflowServiceErrorImpl("ActionItem doctypelabel no match.", "actionitem.doctypelabel.nomatch",
-                    actionItem.getActionItemId().toString()));
+                    actionItem.getId().toString()));
         }
 
         // first check to see if the document type has an empty document handler url
         if (StringUtils.isNotBlank(docType.getDocHandlerUrl())) {
             if (actionItem.getDocHandlerURL() == null || actionItem.getDocHandlerURL().trim().equals("")) {
                 errors.add(new WorkflowServiceErrorImpl("ActionItem doc handler url empty.", "actionitem.dochdrurl.empty",
-                        actionItem.getActionItemId().toString()));
+                        actionItem.getId().toString()));
             } else if (docType != null && !docType.getDocHandlerUrl().equals(actionItem.getDocHandlerURL())) {
                 errors.add(new WorkflowServiceErrorImpl("ActionItem doc handler url no match.", "actionitem.dochdrurl.nomatch",
-                        actionItem.getActionItemId().toString()));
+                        actionItem.getId().toString()));
             }
         } else {
             // if the doc type doc handler url is blank, verify that the action item doc handler url is also blank
             if (StringUtils.isNotBlank(actionItem.getDocHandlerURL())) {
                 errors.add(new WorkflowServiceErrorImpl("ActionItem doc handler url not empty.", "actionitem.dochdrurl.not.empty", 
-                        actionItem.getActionItemId().toString()));
+                        actionItem.getId().toString()));
             }
         }
 

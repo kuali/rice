@@ -20,8 +20,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.kew.api.action.ActionItemContract;
 import org.kuali.rice.kew.api.action.RecipientType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
@@ -47,7 +49,6 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
-
 /**
  * This is the model for action items. These are displayed as the action list as well.  Mapped to ActionItemService.
  * NOTE: This object contains denormalized fields that have been copied from related ActionRequestValue and DocumentRouteHeaderValue
@@ -62,12 +63,12 @@ import java.util.Map;
 @Entity
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 @Table(name="KREW_ACTN_ITM_T")
-//@Sequence(name="KREW_ACTN_ITM_S",property="actionItemId")
+//@Sequence(name="KREW_ACTN_ITM_S",property="id")
 @NamedQueries({
     @NamedQuery(name="ActionItem.QuickLinks.FindActionListStatsByPrincipalId", query="SELECT docName, COUNT(*) FROM ActionItem WHERE principalId = :principalId " +
         "AND (delegationType IS null OR delegationType != :delegationType) GROUP BY docName")
 })
-public class ActionItem implements RowStyleable, Serializable {
+public class ActionItem implements ActionItemContract, RowStyleable, Serializable {
 
     private static final long serialVersionUID = -1079562205125660151L;
 
@@ -78,7 +79,7 @@ public class ActionItem implements RowStyleable, Serializable {
 			@Parameter(name="value_column",value="id")
 	})
     @Column(name="ACTN_ITM_ID")
-	private String actionItemId;
+	private String id;
     @Column(name="PRNCPL_ID")
 	private String principalId;
 	@Column(name="ASND_DT")
@@ -107,7 +108,7 @@ public class ActionItem implements RowStyleable, Serializable {
     @Column(name="ROLE_NM")
 	private String roleName;
     @Column(name="DLGN_PRNCPL_ID")
-	private String delegatorWorkflowId;
+	private String delegatorPrincipalId;
     @Column(name="DLGN_GRP_ID")
 	private String delegatorGroupId;
     @Column(name="DLGN_TYP")
@@ -138,8 +139,8 @@ public class ActionItem implements RowStyleable, Serializable {
         OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
     }
     
-    public String getActionItemId() {
-        return actionItemId;
+    public String getId() {
+        return id;
     }
     
     public String getPrincipalId() {
@@ -148,6 +149,10 @@ public class ActionItem implements RowStyleable, Serializable {
     
     public Timestamp getDateAssigned() {
         return dateAssigned;
+    }
+
+    public DateTime getDateTimeAssigned() {
+        return new DateTime(dateAssigned);
     }
     
     public String getActionRequestCd() {
@@ -194,8 +199,8 @@ public class ActionItem implements RowStyleable, Serializable {
         return roleName;
     }
 
-    public String getDelegatorWorkflowId() {
-        return delegatorWorkflowId;
+    public String getDelegatorPrincipalId() {
+        return delegatorPrincipalId;
     }
 
     public String getDelegatorGroupId() {
@@ -223,7 +228,7 @@ public class ActionItem implements RowStyleable, Serializable {
     }
 
     public String getDateAssignedString() {
-        if(dateAssignedString == null || dateAssignedString.trim().equals("")){
+        if (dateAssignedString == null || dateAssignedString.trim().equals("")){
             return RiceConstants.getDefaultDateFormat().format(getDateAssigned());
         } else {
             return dateAssignedString;
@@ -261,7 +266,7 @@ public class ActionItem implements RowStyleable, Serializable {
     }
 
     public Person getDelegatorPerson() {
-        return getPerson(delegatorWorkflowId);
+        return getPerson(delegatorPrincipalId);
     }
 
     public String getRecipientTypeCode() {
@@ -322,8 +327,8 @@ public class ActionItem implements RowStyleable, Serializable {
         this.documentId = documentId;
     }
 
-    public void setActionItemId(String actionItemId) {
-        this.actionItemId = actionItemId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setActionRequestId(String actionRequestId) {
@@ -350,8 +355,8 @@ public class ActionItem implements RowStyleable, Serializable {
         this.roleName = roleName;
     }
     
-    public void setDelegatorWorkflowId(String delegatorWorkflowId) {
-        this.delegatorWorkflowId = delegatorWorkflowId;
+    public void setDelegatorPrincipalId(String delegatorPrincipalId) {
+        this.delegatorPrincipalId = delegatorPrincipalId;
     }
     
     public void setDelegatorGroupId(String delegatorGroupId) {
@@ -388,9 +393,9 @@ public class ActionItem implements RowStyleable, Serializable {
     }
     
     public String toString() {
-        return new ToStringBuilder(this).append("actionItemId", actionItemId)
+        return new ToStringBuilder(this).append("id", id)
                                         .append("workflowId", principalId)
-                                        .append("actionItemId", actionItemId)
+                                        .append("id", id)
                                         .append("workflowId", principalId)
                                         .append("dateAssigned", dateAssigned)
                                         .append("actionRequestCd", actionRequestCd)
@@ -405,7 +410,7 @@ public class ActionItem implements RowStyleable, Serializable {
                                         .append("responsibilityId", responsibilityId)
                                         .append("rowStyleClass", rowStyleClass)
                                         .append("roleName", roleName)
-                                        .append("delegatorWorkflowId", delegatorWorkflowId)
+                                        .append("delegatorPrincipalId", delegatorPrincipalId)
                                         .append("delegatorGroupId", delegatorGroupId)
                                         .append("dateAssignedString", dateAssignedString)
                                         .append("actionToTake", actionToTake)
@@ -416,4 +421,10 @@ public class ActionItem implements RowStyleable, Serializable {
                                         .toString();
     }
 
+    public static org.kuali.rice.kew.api.action.ActionItem to(ActionItem bo) {
+        if (bo == null) {
+            return null;
+        }
+        return org.kuali.rice.kew.api.action.ActionItem.Builder.create(bo).build();
+    }
 }

@@ -33,7 +33,6 @@ public class TravelDocumentForm2 extends KualiTransactionalDocumentFormBase {
 		getDocInfo().addAll(getStandardHeaderFields(workflowDocument));
 		getDocInfo().add(new HeaderField("DataDictionary.AttributeReferenceDummy.attributes.initiatorNetworkId", "Yahoo!"));
 		getDocInfo().add(new HeaderField("DataDictionary.AttributeReferenceDummy.attributes.initiatorNetworkId", "Yahoo!"));
-		getDocInfo().add(new HeaderField("DataDictionary.AttributeReferenceDummy.attributes.initiatorNetworkId", "Yahoo!"));
 	}
 
 	private TravelAccount travelAccount = new TravelAccount();

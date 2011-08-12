@@ -15,61 +15,36 @@
  limitations under the License.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-       xmlns:p="http://www.springframework.org/schema/p" 
-       xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:beans="http://www.springframework.org/schema/beans"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
-       xmlns:jee="http://www.springframework.org/schema/jee"
-       xmlns:jms="http://www.springframework.org/schema/jms"
-       xmlns:lang="http://www.springframework.org/schema/lang"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:oxm="http://www.springframework.org/schema/oxm"
-       xmlns:task="http://www.springframework.org/schema/task"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:util="http://www.springframework.org/schema/util"
-       xsi:schemaLocation="http://www.springframework.org/schema/aop
-                           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:lang="http://www.springframework.org/schema/lang" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
                            http://www.springframework.org/schema/beans
-                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
                            http://www.springframework.org/schema/context
-                           http://www.springframework.org/schema/context/spring-context-3.0.xsd
-                           http://www.springframework.org/schema/jdbc
-                           http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
-                           http://www.springframework.org/schema/jee
-                           http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
-                           http://www.springframework.org/schema/jms
-                           http://www.springframework.org/schema/jms/spring-jms-3.0.xsd
+                           http://www.springframework.org/schema/context/spring-context-2.5.xsd	
                            http://www.springframework.org/schema/lang
-                           http://www.springframework.org/schema/lang/spring-lang-3.0.xsd
-                           http://www.springframework.org/schema/mvc
-                           http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
-                           http://www.springframework.org/schema/oxm
-                           http://www.springframework.org/schema/oxm/spring-oxm-3.0.xsd
-                           http://www.springframework.org/schema/task
-                           http://www.springframework.org/schema/task/spring-task-3.0.xsd
+                           http://www.springframework.org/schema/lang/spring-lang-2.5.xsd
                            http://www.springframework.org/schema/tx
-                           http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+                           http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
                            http://www.springframework.org/schema/util
-                           http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+                           http://www.springframework.org/schema/util/spring-util-2.5.xsd">
 
-	<bean id="rice.ksb.serviceBus"
-		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
-		<property name="serviceName" value="rice.ksb.serviceBus" />
-	</bean>
-
-	<bean id="kewLocalServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter" abstract="true">
+	<bean id="kewLocalServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter"
+		abstract="true">
 		<property name="runModePropertyName" value="kew.mode" />
 		<property name="validRunMode" value="LOCAL" />
 	</bean>
 
-	<bean id="kewEmbeddedServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter" abstract="true">
+	<bean id="kewEmbeddedServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter"
+		abstract="true">
 		<property name="runModePropertyName" value="kew.mode" />
 		<property name="validRunMode" value="EMBEDDED" />
 	</bean>
 
-  <bean id="kewJaxWsSoapService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition"
+	<bean id="kewJaxWsSoapService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition"
 		abstract="true">
 		<property name="serviceNameSpaceURI" value="#{ T(org.kuali.rice.kew.api.KewApiConstants$Namespaces).KEW_NAMESPACE_2_0 }" />
 		<property name="jaxWsService" value="true" />
@@ -77,75 +52,127 @@
 		<property name="retryAttempts" value="0" />
 		<property name="serviceVersion" value="${rice.version}" />
 	</bean>
-	
-	<bean id="kewSoapService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition" abstract="true">
-       <property name="serviceNameSpaceURI" value="http://rice.kuali.org/wsdl/kew"/>
-       <property name="jaxWsService" value="true"/>
-       <property name="priority" value="3" />
-       <property name="retryAttempts" value="0" />
-       <property name="serviceVersion" value="${rice.version}" />
-    </bean>
-	
-	<bean parent="kewEmbeddedServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
-		<property name="serviceDefinition">
-        <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
-          <property name="service">
-            <ref bean="enWorkflowUtilityService" />
-          </property>
-          <property name="localServiceName" value="WorkflowUtilityService" />
-          <property name="priority" value="3" />
-          <property name="retryAttempts" value="0" />
-          <property name="busSecurity" value="${secure.workflowutility.javaservice.endpoint}"/>
-        </bean>
-          </property>
-    </bean>
-    
-    <bean parent="kewLocalServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
-		<property name="serviceDefinition">
-			<bean parent="kewSoapService">
-          <property name="service" ref="enWorkflowUtilityService" />
-          <property name="localServiceName" value="WorkflowUtilityServiceSOAP" />
-          <property name="serviceInterface" value="org.kuali.rice.kew.service.WorkflowUtility" />
-          <property name="busSecurity" value="${secure.workflowutility.soapservice.endpoint}"/>
-        </bean>
-          </property>
-		<property name="exportIf" value="WorkflowUtilityServiceSOAP.expose" />
-    </bean>
 
-	<bean parent="kewLocalServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
+	<bean id="kewSoapService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition"
+		abstract="true">
+		<property name="serviceNameSpaceURI" value="KEW" />
+		<property name="jaxWsService" value="false" />
+		<property name="priority" value="3" />
+		<property name="retryAttempts" value="0" />
+		<property name="serviceVersion" value="${rice.version}" />
+	</bean>
+	
+	<bean id="kewServiceNamespaceSoapService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition"
+		abstract="true">
+		<property name="jaxWsService" value="false" />
+		<property name="priority" value="3" />
+		<property name="retryAttempts" value="0" />
+		<property name="serviceVersion" value="${rice.version}" />
+	</bean>
+
+	<bean id="rice.kew.workflowDocumentActionService.exporter" parent="kewEmbeddedServiceExporter">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-			<bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
+			<bean parent="kewJaxWsSoapService">
 				<property name="service">
-					<ref bean="enWorkflowUtilityService" />
+					<ref bean="rice.kew.workflowDocumentActionsService" />
 				</property>
-				<property name="localServiceName" value="enWorkflowUtilityService" />
-				<property name="serviceNameSpaceURI" value="" />
-				<property name="priority" value="3" />
-				<property name="retryAttempts" value="0" />
-				<property name="busSecurity" value="${secure.workflowutility.javaservice.endpoint}"/>
+				<property name="localServiceName" value="workflowDocumentActionsServiceSoap" />
+				<property name="busSecurity" value="${rice.kew.workflowDocumentActionsServiceSoap.secure}" />
 			</bean>
 		</property>
 	</bean>
 
-<!-- 	<bean parent="kewLocalServiceExporter"> -->
-<!-- 		<property name="serviceBus" ref="rice.ksb.serviceBus"/> -->
-<!-- 		<property name="serviceDefinition"> -->
-<!--         <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition"> -->
-<!--           <property name="service"> -->
-<!--             <bean class="org.kuali.rice.kew.workgroup.WorkgroupMembershipChangeProcessor" /> -->
-<!--           </property> -->
-<!--           <property name="localServiceName" value="WorkgroupMembershipChangeService" /> -->
-<!--           <property name="serviceNameSpaceURI" value="KEW" /> -->
-<!--           <property name="priority" value="10" /> -->
-<!--           <property name="retryAttempts" value="1" /> -->
-<!--           <property name="messageExceptionHandler" value="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler" /> -->
-<!--         </bean> -->
-<!-- 		</property> -->
-<!-- 	</bean> -->
+  <bean id="rice.kew.actionListService.exporter" parent="kewEmbeddedServiceExporter">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
+		<property name="serviceDefinition">
+			<bean parent="kewJaxWsSoapService">
+				<property name="service">
+					<ref bean="rice.kew.actionListService" />
+				</property>
+				<property name="localServiceName" value="actionListServiceSoap" />
+				<property name="busSecurity" value="${rice.kew.actionListServiceSoap.secure}" />
+			</bean>
+		</property>
+	</bean>
 	
+	<bean id="rice.kew.documentTypeService.exporter" parent="kewEmbeddedServiceExporter">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
+		<property name="serviceDefinition">
+			<bean parent="kewJaxWsSoapService">
+				<property name="service">
+					<ref bean="rice.kew.documentTypeService" />
+				</property>
+				<property name="localServiceName" value="documentTypeServiceSoap" />
+				<property name="busSecurity" value="${rice.kew.documentTypeServiceSoap.secure}" />
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="rice.kew.noteService.exporter" parent="kewEmbeddedServiceExporter">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
+		<property name="serviceDefinition">
+			<bean parent="kewJaxWsSoapService">
+				<property name="service">
+					<ref bean="rice.kew.noteService" />
+				</property>
+				<property name="localServiceName" value="noteServiceSoap" />
+				<property name="busSecurity" value="${rice.kew.noteServiceSoap.secure}" />
+			</bean>
+		</property>
+	</bean>
+
+  <bean id="rice.kew.documentLookupCustomizationHandlerService.exporter" parent="kewEmbeddedServiceExporter">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
+		<property name="serviceDefinition">
+			<bean parent="kewJaxWsSoapService">
+				<property name="service">
+					<ref bean="rice.kew.documentLookupCustomizationHandlerService" />
+				</property>
+				<property name="localServiceName" value="documentLookupCustomizationHandlerServiceSoap" />
+				<property name="busSecurity" value="${rice.kew.documentLookupCustomizationHandlerServiceSoap.secure}" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean parent="kewEmbeddedServiceExporter">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
+		<property name="serviceDefinition">
+			<bean parent="kewSoapService">
+				<property name="service">
+					<ref bean="enWorkflowUtilityService" />
+				</property>
+				<property name="localServiceName" value="WorkflowUtilityService" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean parent="kewLocalServiceExporter">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
+		<property name="serviceDefinition">
+			<bean parent="kewJaxWsSoapService">
+				<property name="service" ref="enWorkflowUtilityService" />
+				<property name="localServiceName" value="WorkflowUtilityServiceSOAP" />
+				<property name="serviceInterface" value="org.kuali.rice.kew.service.WorkflowUtility" />
+				<property name="busSecurity"
+					value="${secure.workflowutility.soapservice.endpoint}" />
+			</bean>
+		</property>
+		<property name="exportIf" value="WorkflowUtilityServiceSOAP.expose" />
+	</bean>
+
+	<bean parent="kewLocalServiceExporter">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
+		<property name="serviceDefinition">
+			<bean parent="kewSoapService">
+				<property name="service">
+					<ref bean="enWorkflowUtilityService" />
+				</property>
+				<property name="localServiceName" value="enWorkflowUtilityService" />
+			</bean>
+		</property>
+	</bean>
+
 	<bean id="rice.kew.rice.kew.groupMembershipChangeQueueSoap.exporter"
 		parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
@@ -158,53 +185,70 @@
 				<property name="busSecurity"
 					value="${rice.kew.groupMembershipChangeQueueSoap.secure}" />
 				<property name="priority" value="10" />
-				<property name="retryAttempts" value="1" />
-          		<property name="messageExceptionHandler" value="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler" />
+			</bean>
+		</property>
+	</bean>
+	
+	<bean parent="kewLocalServiceExporter">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
+		<property name="serviceDefinition">
+			<bean parent="kewSoapService">
+				<property name="service">
+					<bean
+						class="org.kuali.rice.kew.responsibility.ResponsibilityChangeProcessor" />
+				</property>
+				<property name="localServiceName" value="ResponsibilityChangeService" />
+				<property name="priority" value="10" />
 			</bean>
 		</property>
 	</bean>
 
+	<bean id="rice.ksb.serviceBus"
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="rice.ksb.serviceBus" />
+	</bean>
+
 	<bean parent="kewLocalServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-        <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
-          <property name="service">
-            <bean class="org.kuali.rice.kew.responsibility.ResponsibilityChangeProcessor" />
-          </property>
-          <property name="localServiceName" value="ResponsibilityChangeService" />
-          <property name="serviceNameSpaceURI" value="KEW" />
-          <property name="priority" value="10" />
-          <property name="retryAttempts" value="1" />
-          <property name="messageExceptionHandler" value="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler" />
-        </bean>
+			<bean parent="kewSoapService">
+				<property name="service">
+					<bean
+						class="org.kuali.rice.kew.responsibility.ResponsibilityChangeProcessor" />
+				</property>
+				<property name="localServiceName" value="ResponsibilityChangeService" />
+				<property name="priority" value="10" />
+			</bean>
 		</property>
 	</bean>
 
 	<bean parent="kewEmbeddedServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-        <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
-          <property name="service">
-            <ref bean="enDocumentRoutingService" />
-          </property>
-          <property name="localServiceName" value="DocumentRoutingService" />
-          <property name="priority" value="5"/>
-          <property name="messageExceptionHandler" value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
-        </bean>
+			<bean parent="kewServiceNamespaceSoapService">
+				<property name="service">
+					<ref bean="enDocumentRoutingService" />
+				</property>
+				<property name="localServiceName" value="DocumentRoutingService" />
+				<property name="priority" value="5" />
+				<property name="messageExceptionHandler"
+					value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
+			</bean>
 		</property>
 	</bean>
 
 	<bean parent="kewEmbeddedServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-        <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
-          <property name="service">
-            <ref bean="enBlanketApproveProcessor" />
-          </property>
-          <property name="localServiceName" value="BlanketApproveProcessorService" />
-          <property name="priority" value="4"/>
-          <property name="messageExceptionHandler" value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
-        </bean>
+			<bean parent="kewServiceNamespaceSoapService">
+				<property name="service">
+					<ref bean="enBlanketApproveProcessor" />
+				</property>
+				<property name="localServiceName" value="BlanketApproveProcessorService" />
+				<property name="priority" value="4" />
+				<property name="messageExceptionHandler"
+					value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
+			</bean>
 		</property>
 	</bean>
 
@@ -222,19 +266,17 @@
   </bean>
 
 	<bean parent="kewEmbeddedServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-        <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
-          <property name="service">
-            <ref bean="enDocumentRequeuerService" />
-          </property>
-          <property name="localServiceName" value="DocumentRequeueProcessorService" />
-          <property name="priority" value="10"/>
-          <property name="retryAttempts" value="1" />
-          <property name="messageExceptionHandler" value="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler" />
-        </bean>
-          </property>
-        </bean>
+			<bean parent="kewServiceNamespaceSoapService">
+				<property name="service">
+					<ref bean="enDocumentRequeuerService" />
+				</property>
+				<property name="localServiceName" value="DocumentRequeueProcessorService" />
+				<property name="priority" value="10" />
+			</bean>
+		</property>
+	</bean>
 
 
 	<bean id="rice.kew.ruleCacheProcessorSoap.exporter" parent="kewLocalServiceExporter">
@@ -244,7 +286,6 @@
 				<property name="service">
 					<ref bean="rice.kew.ruleCacheProcessor" />
 				</property>
-				<property name="serviceNameSpaceURI" value="" />
 				<property name="localServiceName" value="ruleCacheProcessorSoap" />
 				<property name="priority" value="3" />
 				<property name="queue" value="false" />
@@ -274,21 +315,123 @@
 	</bean>
 
 	<bean parent="kewEmbeddedServiceExporter">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
+		<property name="serviceDefinition">
+			<bean parent="kewServiceNamespaceSoapService">
+				<property name="service">
+					<bean class="org.kuali.rice.kew.rule.RolePokerProcessor" />
+				</property>
+				<property name="localServiceName" value="RolePokerProcessorService" />
+				<property name="priority" value="10" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean parent="kewEmbeddedServiceExporter">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
+		<property name="serviceDefinition">
+			<bean parent="kewServiceNamespaceSoapService">
+				<property name="service">
+					<ref bean="enActionInvocationService" />
+				</property>
+				<property name="localServiceName" value="ActionInvocationProcessor" />
+				<property name="priority" value="10" />
+				<property name="messageExceptionHandler"
+					value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
+			</bean>
+		</property>
+	</bean>  
+  
+	<bean id="enCacheAdministrator"
+		class="org.kuali.rice.ksb.messaging.RiceCacheExporterFactoryBean">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
+	</bean>
+	
+	<bean parent="kewLocalServiceExporter" name="routeLogDerivedRoleTypeServiceBean">
 		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
 		<property name="serviceDefinition">
-        <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
-          <property name="service">
-            <bean class="org.kuali.rice.kew.rule.RolePokerProcessor" />
-          </property>
-          <property name="localServiceName" value="RolePokerProcessorService" />
-          <property name="priority" value="10"/>
-          <property name="retryAttempts" value="1" />
-          <property name="messageExceptionHandler" value="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler" />
-        </bean>
+	       <bean parent="kewSoapService">
+	         <property name="service">
+	           <ref bean="routeLogDerivedRoleTypeService" />
+	         </property>
+	         <property name="localServiceName" value="routeLogDerivedRoleTypeService" />			
+	       </bean>
+		</property>
+    </bean>
+
+	<bean parent="kewLocalServiceExporter" name="actionRequestDerivedRoleTypeServiceBean">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
+		<property name="serviceDefinition">
+			<bean parent="kewSoapService">
+				<property name="service">
+					<ref bean="actionRequestDerivedRoleTypeService" />
+				</property>
+				<property name="localServiceName" value="actionRequestDerivedRoleTypeService" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean parent="kewLocalServiceExporter" name="adhocReviewPermissionTypeServiceBean">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
+		<property name="serviceDefinition">
+			<bean parent="kewSoapService">
+				<property name="service">
+					<ref bean="adhocReviewPermissionTypeService" />
+				</property>
+				<property name="localServiceName" value="adhocReviewPermissionTypeService" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="reviewResponsibilityTypeService"
+		class="org.kuali.rice.kew.service.impl.ReviewResponsibilityTypeServiceImpl" />
+		
+	<bean parent="kewLocalServiceExporter">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
+		<property name="serviceDefinition">
+			<bean parent="kewSoapService">
+				<property name="service">
+					<ref bean="reviewResponsibilityTypeService" />
+				</property>
+				<property name="localServiceName" value="reviewResponsibilityTypeService" />
+			</bean>
 		</property>
 	</bean>
 
 	<bean parent="kewLocalServiceExporter">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
+		<property name="serviceDefinition">
+			<bean parent="kewSoapService">
+				<property name="service">
+					<ref bean="documentTypeResponsibilityTypeService" />
+				</property>
+				<property name="localServiceName" value="documentTypeResponsibilityTypeService" />
+			</bean>
+		</property>
+	</bean>
+
+
+<!-- ************************************************************************** -->
+<!-- **** These are not SOAP methods... They need to be refactored for 1.1***** -->
+<!-- ************************************************************************** -->
+<!--  can't be exported as soap until 1.1 because the move document service has methods that can't be soaped -->
+	<bean parent="kewEmbeddedServiceExporter" name="MoveDocumentProcessorBean">
+		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
+		<property name="serviceDefinition">
+        <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
+          <property name="service">
+          <!-- this should be replaced with enMoveDocumentSerice in the 1.1 release of rice -->
+            <ref bean="enMoveDocumentService" />
+          </property>
+          <property name="localServiceName" value="MoveDocumentProcessor" />
+          <property name="priority" value="10"/>
+          <property name="retryAttempts" value="1" />
+          <property name="messageExceptionHandler" value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
+        </bean>
+    </property>
+  </bean>
+  
+  <bean parent="kewLocalServiceExporter" name="ImmediateEmailServiceBean">
 		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
 		<property name="serviceDefinition">
         <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
@@ -303,116 +446,12 @@
         </bean>
 		</property>
 		<property name="exportIf" value="Email.useRemoteServices" />
-	</bean>
+	</bean>	
 
-	<bean parent="kewEmbeddedServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
-		<property name="serviceDefinition">
-        <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
-          <property name="service">
-            <ref bean="enActionInvocationService" />
-          </property>
-          <property name="localServiceName" value="ActionInvocationProcessor" />
-          <property name="priority" value="10"/>
-          <property name="retryAttempts" value="1" />
-          <property name="messageExceptionHandler" value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
-        </bean>
-		</property>
-	</bean>
+  
+<!-- ************************************************************************** -->
+<!-- **** END OF NON SOAP METHODS ********************************************* -->
+<!-- ************************************************************************** -->
 
-	<bean parent="kewEmbeddedServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
-		<property name="serviceDefinition">
-        <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
-          <property name="service">
-            <ref bean="enMoveDocumentService" />
-          </property>
-          <property name="localServiceName" value="MoveDocumentProcessor" />
-          <property name="priority" value="10"/>
-          <property name="retryAttempts" value="1" />
-          <property name="messageExceptionHandler" value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
-        </bean>
-    </property>
-  </bean>
-
-  <bean id="enCacheAdministrator" class="org.kuali.rice.ksb.messaging.RiceCacheExporterFactoryBean" >
-	<property name="serviceBus" ref="rice.ksb.serviceBus"/>
-  </bean>
-
-	<bean parent="kewLocalServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
-		<property name="serviceDefinition">
-	       <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
-	         <property name="service">
-	           <ref bean="routeLogDerivedRoleTypeService" />
-	         </property>
-	         <property name="localServiceName" value="routeLogDerivedRoleTypeService" />
-				<property name="serviceNameSpaceURI" value="KEW" />
-	         <property name="priority" value="3" />
-	         <property name="retryAttempts" value="0" />
-	       </bean>
-		</property>
-  </bean>
-
-	<bean parent="kewLocalServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
-		<property name="serviceDefinition">
-	       <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
-	         <property name="service">
-	           <ref bean="actionRequestDerivedRoleTypeService" />
-	         </property>
-	         <property name="localServiceName" value="actionRequestDerivedRoleTypeService" />
-				<property name="serviceNameSpaceURI" value="KEW" />
-	         <property name="priority" value="3" />
-	         <property name="retryAttempts" value="0" />
-	       </bean>
-		</property>
-  </bean>
-
-	<bean parent="kewLocalServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
-		<property name="serviceDefinition">
-	       <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
-	         <property name="service">
-	           <ref bean="adhocReviewPermissionTypeService" />
-	         </property>
-	         <property name="localServiceName" value="adhocReviewPermissionTypeService" />
-				<property name="serviceNameSpaceURI" value="KEW" />
-	         <property name="priority" value="3" />
-	         <property name="retryAttempts" value="0" />
-	       </bean>
-		</property>
-  </bean>
-
-  <bean id="reviewResponsibilityTypeService" class="org.kuali.rice.kew.service.impl.ReviewResponsibilityTypeServiceImpl" />
-	<bean parent="kewLocalServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
-		<property name="serviceDefinition">
-	       <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
-	         <property name="service">
-	           <ref bean="reviewResponsibilityTypeService" />
-	         </property>
-	         <property name="localServiceName" value="reviewResponsibilityTypeService" />
-				<property name="serviceNameSpaceURI" value="KEW" />
-	         <property name="priority" value="3" />
-	         <property name="retryAttempts" value="0" />
-	       </bean>
-		</property>
-  </bean>
-
-	<bean parent="kewLocalServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
-		<property name="serviceDefinition">
-	       <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
-	         <property name="service">
-	           <ref bean="documentTypeResponsibilityTypeService" />
-	         </property>
-	         <property name="localServiceName" value="documentTypeResponsibilityTypeService" />
-				<property name="serviceNameSpaceURI" value="KEW" />
-	         <property name="priority" value="3" />
-	         <property name="retryAttempts" value="0" />
-	       </bean>
-		</property>
-  </bean>
 
 </beans>

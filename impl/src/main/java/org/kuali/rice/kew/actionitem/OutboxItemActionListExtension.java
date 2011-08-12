@@ -62,7 +62,7 @@ public class OutboxItemActionListExtension extends ActionItemActionListExtension
 		this.setActionToTake(actionItem.getActionToTake());
 		this.setDateAssigned(actionItem.getDateAssigned());
 		this.setDelegationType(actionItem.getDelegationType());
-		this.setDelegatorWorkflowId(actionItem.getDelegatorWorkflowId());
+		this.setDelegatorPrincipalId(actionItem.getDelegatorPrincipalId());
 		this.setDelegatorGroupId(actionItem.getDelegatorGroupId());
 		this.setDocHandlerURL(actionItem.getDocHandlerURL());
 		this.setDocLabel(actionItem.getDocLabel());

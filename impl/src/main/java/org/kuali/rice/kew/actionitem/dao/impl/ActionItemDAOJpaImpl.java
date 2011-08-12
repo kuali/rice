@@ -62,7 +62,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
     }
 
     public void deleteActionItem(ActionItem actionItem) {
-    	entityManager.remove(findByActionItemId(actionItem.getActionItemId()));
+    	entityManager.remove(findByActionItemId(actionItem.getId()));
     }
 
     public void deleteByDocumentIdWorkflowUserId(String documentId, String workflowUserId) {
@@ -151,7 +151,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
             actionItem.setDateAssigned(new Timestamp(new Date().getTime()));
         }
     	
-    	if(actionItem.getActionItemId()==null){
+    	if(actionItem.getId()==null){
         	entityManager.persist(actionItem);
     	}else{
     		OrmUtils.merge(entityManager, actionItem);
@@ -174,7 +174,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
         Map<Object, Recipient> delegators = new HashMap<Object, Recipient>();
 
         for(Object actionItem:new QueryByCriteria(entityManager, criteria).toQuery().getResultList()){
-        	final String delegatorWorkflowId = ((ActionItem)actionItem).getDelegatorWorkflowId();
+        	final String delegatorWorkflowId = ((ActionItem)actionItem).getDelegatorPrincipalId();
         	String delegatorGroupId = ((ActionItem)actionItem).getDelegatorGroupId();
 
         	if (delegatorWorkflowId != null && !delegators.containsKey(delegatorWorkflowId)) {

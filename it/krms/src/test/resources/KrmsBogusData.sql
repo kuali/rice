@@ -1,0 +1,485 @@
+-- 
+-- Copyright 2008-2009 The Kuali Foundation
+-- 
+-- Licensed under the Educational Community License, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
+-- 
+-- http://www.opensource.org/licenses/ecl2.php
+-- 
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
+-- 
+
+insert into krms_attr_defn_t
+(attr_defn_id, nm, nmspc_cd, lbl, actv, ver_nbr)
+values('Q44001', 'Context1Qualifier', 'KRMS_TEST', 'Context 1 Qualifier', 'Y', 1)
+;
+
+insert into krms_attr_defn_t
+(attr_defn_id, nm, nmspc_cd, lbl, actv, ver_nbr)
+values('Q33001', 'Event', 'KRMS_TEST', 'Event Name', 'Y', 1)
+;
+insert into krms_typ_t 
+(typ_id, nm, nmspc_cd, srvc_nm, actv, ver_nbr)
+values ('T2', 'CAMPUS', 'KRMS_TEST', 'myCampusService', 'Y', 1)
+;
+
+insert into krms_typ_t 
+(typ_id, nm, nmspc_cd, srvc_nm, actv, ver_nbr)
+values ('T3', 'KrmsActionResolverType', 'KRMS_TEST', 'testActionTypeService', 'Y', 1)
+;
+
+insert into krms_typ_t 
+(typ_id, nm, nmspc_cd, actv, ver_nbr)
+values ('T4', 'CONTEXT', 'KRMS_TEST',  'Y', 1)
+;
+
+insert into krms_typ_attr_t
+(typ_attr_id, seq_no, typ_id, attr_defn_id, actv, ver_nbr)
+values ('T4A', 1, 'T4', 'Q44001', 'Y', 1)
+;
+
+insert into krms_typ_t 
+(typ_id, nm, nmspc_cd, actv, ver_nbr)
+values ('T5', 'AGENDA', 'KRMS_TEST',  'Y', 1)
+;
+
+insert into krms_typ_attr_t
+(typ_attr_id, seq_no, typ_id, attr_defn_id, actv, ver_nbr)
+values ('T5A', 1, 'T5', 'Q33001', 'Y', 1)
+;
+
+insert into krms_cntxt_t
+(cntxt_id, nmspc_cd, nm, typ_id, actv, ver_nbr)
+values ('CONTEXT1','KRMS_TEST', 'Context1', 'T4', 'Y', 1)
+;
+
+insert into krms_cntxt_attr_t
+(cntxt_attr_id, cntxt_id, attr_val, attr_defn_id, ver_nbr)
+values('C1ATTR1', 'CONTEXT1', 'BLAH', 'Q44001', 1)
+;
+
+
+insert into krms_rule_t
+(rule_id, nmspc_cd, nm, typ_id, prop_id, actv, ver_nbr, desc_txt)
+values ('R201', 'KRMS_TEST', 'Rule1', 'T2', null, 'Y', 1, 'stub rule lorem ipsum')
+;
+
+insert into krms_prop_t(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, ver_nbr)
+values ('P101', 'is campus bloomington', null, 'S','R201',1)
+;
+
+update krms_rule_t
+set prop_id = 'P101' where rule_id = 'R201'
+;
+
+insert into krms_term_spec_t
+(term_spec_id, cntxt_id, nm, typ, actv, ver_nbr)
+values ('TERMSPEC_001', 'CONTEXT1', 'campusCodeTermSpec', 'java.lang.String', 'Y', 1);
+
+insert into krms_term_t
+(term_id, term_spec_id, ver_nbr)
+values ('TERM_001', 'TERMSPEC_001', 1);
+
+insert into krms_prop_parm_t 
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('101A', 'P101', 'TERM_001', 'T', 1, 1)
+;
+
+insert into krms_prop_parm_t 
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('101C', 'P101', 'BL', 'C', 2, 1)
+;
+
+insert into krms_prop_parm_t 
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('101B', 'P101', '=', 'O', 3, 1)
+;
+
+insert into krms_actn_t
+(actn_id, nm, nmspc_cd, desc_txt, typ_id, rule_id, seq_no, ver_nbr)
+values ( 'action2001', 'testAction', 'KRMS_TEST', 'Action Stub for Testing', 'T3', 'R201', 1, 1)
+;
+
+insert into krms_agenda_t
+(agenda_id, nmspc_cd, nm, cntxt_id, init_agenda_itm_id, typ_id, actv, ver_nbr)
+values ( 'AGENDA301', 'KRMS_TEST', 'My Fabulous Agenda', 'CONTEXT1', null, 'T2', 'Y', 1)
+;
+
+insert into krms_agenda_itm_t
+(agenda_itm_id, rule_id, agenda_id, ver_nbr)
+VALUES('AGENDA301ITEM1', 'R201', 'AGENDA301', 1)
+;
+
+update krms_agenda_t set INIT_AGENDA_ITM_ID = 'AGENDA301ITEM1' where agenda_id = 'AGENDA301'
+;
+
+insert into krms_agenda_attr_t
+(agenda_attr_id, agenda_id, attr_val, attr_defn_id, ver_nbr)
+values('AGENDA_ATTR1', 'AGENDA301', 'EARTHQUAKE', 'Q33001', 1)
+;
+
+insert into krms_term_spec_t
+(term_spec_id, cntxt_id, nm, typ, actv, ver_nbr)
+values ('TERM001', 'CONTEXT1', 'campusCode', 'T2', 'Y', 1)
+;
+
+-- next item
+
+insert into krms_rule_t
+(rule_id, nmspc_cd, nm, typ_id, prop_id, actv, ver_nbr, desc_txt)
+values ('R2', 'KRMS_TEST', 'Rule2', 'T2', null, 'Y', 1, 'Frog specimens bogus rule foo')
+;
+
+insert into krms_prop_t(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, ver_nbr)
+values ('P2', 'is campus bloomington', null, 'S','R2',1)
+;
+
+update krms_rule_t
+set prop_id = 'P2' where rule_id = 'R2'
+;
+
+insert into krms_prop_parm_t 
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('2A', 'P2', 'TERM_001', 'T', 1, 1)
+;
+
+insert into krms_prop_parm_t 
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('2C', 'P2', 'BL', 'C', 2, 1)
+;
+
+insert into krms_prop_parm_t 
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('2B', 'P2', '=', 'O', 3, 1)
+;
+
+insert into krms_agenda_itm_t
+(agenda_itm_id, rule_id, agenda_id, ver_nbr)
+VALUES('AGENDA301ITEM2', 'R2', 'AGENDA301', 1)
+;
+
+update krms_agenda_itm_t 
+SET when_true = 'AGENDA301ITEM2' WHERE agenda_itm_id = 'AGENDA301ITEM1'
+;
+
+-- next item
+
+insert into krms_rule_t
+(rule_id, nmspc_cd, nm, typ_id, prop_id, actv, ver_nbr, desc_txt)
+values ('R3', 'KRMS_TEST', 'Rule3', 'T2', null, 'Y', 1, 'Bloomington campus code rule')
+;
+
+insert into krms_prop_t(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, ver_nbr)
+values ('P3', 'is campus bloomington', null, 'S','R3',1)
+;
+
+update krms_rule_t
+set prop_id = 'P3' where rule_id = 'R3'
+;
+
+insert into krms_prop_parm_t 
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('3A', 'P3', 'TERM_001', 'T', 1, 1)
+;
+
+insert into krms_prop_parm_t 
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('3C', 'P3', 'BL', 'C', 2, 1)
+;
+
+insert into krms_prop_parm_t 
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('3B', 'P3', '=', 'O', 3, 1)
+;
+
+insert into krms_agenda_itm_t
+(agenda_itm_id, rule_id, agenda_id, ver_nbr)
+VALUES('AGENDA301ITEM3', 'R3', 'AGENDA301', 1)
+;
+--
+update krms_agenda_itm_t 
+SET always = 'AGENDA301ITEM3' WHERE agenda_itm_id = 'AGENDA301ITEM2'
+;
+
+-- next item
+
+insert into krms_rule_t
+(rule_id, nmspc_cd, nm, typ_id, prop_id, actv, ver_nbr, desc_txt)
+values ('R4', 'KRMS_TEST', 'Rule4', 'T2', null, 'Y', 1, 'check for possible BBQ ingiter hazard')
+;
+
+insert into krms_prop_t(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, ver_nbr)
+values ('P4', 'is campus bloomington', null, 'S','R4',1)
+;
+
+update krms_rule_t
+set prop_id = 'P4' where rule_id = 'R4'
+;
+
+insert into krms_prop_parm_t 
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('4A', 'P4', 'TERM_001', 'T', 1, 1)
+;
+
+insert into krms_prop_parm_t 
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('4C', 'P4', 'BL', 'C', 2, 1)
+;
+
+insert into krms_prop_parm_t 
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('4B', 'P4', '=', 'O', 3, 1)
+;
+
+insert into krms_agenda_itm_t
+(agenda_itm_id, rule_id, agenda_id, ver_nbr)
+VALUES('AGENDA301ITEM4', 'R4', 'AGENDA301', 1)
+;
+--
+update krms_agenda_itm_t 
+SET always = 'AGENDA301ITEM4' WHERE agenda_itm_id = 'AGENDA301ITEM3'
+;
+
+-- next item
+
+insert into krms_rule_t
+(rule_id, nmspc_cd, nm, typ_id, prop_id, actv, ver_nbr, desc_txt)
+values ('R5', 'KRMS_TEST', 'Rule5', 'T2', null, 'Y', 1, 'remembered to wear socks')
+;
+
+insert into krms_prop_t(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, ver_nbr)
+values ('P5', 'is campus bloomington', null, 'S','R5',1)
+;
+
+update krms_rule_t
+set prop_id = 'P5' where rule_id = 'R5'
+;
+
+insert into krms_prop_parm_t 
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('5A', 'P5', 'TERM_001', 'T', 1, 1)
+;
+
+insert into krms_prop_parm_t 
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('5C', 'P5', 'BL', 'C', 2, 1)
+;
+
+insert into krms_prop_parm_t 
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('5B', 'P5', '=', 'O', 3, 1)
+;
+
+insert into krms_agenda_itm_t
+(agenda_itm_id, rule_id, agenda_id, ver_nbr)
+VALUES('AGENDA301ITEM5', 'R5', 'AGENDA301', 1)
+;
+
+update krms_agenda_itm_t 
+SET when_false = 'AGENDA301ITEM5' WHERE agenda_itm_id = 'AGENDA301ITEM1'
+;
+
+-- next item
+
+insert into krms_rule_t
+(rule_id, nmspc_cd, nm, typ_id, prop_id, actv, ver_nbr, desc_txt)
+values ('R6', 'KRMS_TEST', 'Rule6', 'T2', null, 'Y', 1, 'good behavior at carnival')
+;
+
+insert into krms_prop_t(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, ver_nbr)
+values ('P6', 'is campus bloomington', null, 'S','R6',1)
+;
+
+update krms_rule_t
+set prop_id = 'P6' where rule_id = 'R6'
+;
+
+insert into krms_prop_parm_t 
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('6A', 'P6', 'TERM_001', 'T', 1, 1)
+;
+
+insert into krms_prop_parm_t 
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('6C', 'P6', 'BL', 'C', 2, 1)
+;
+
+insert into krms_prop_parm_t 
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('6B', 'P6', '=', 'O', 3, 1)
+;
+
+insert into krms_agenda_itm_t
+(agenda_itm_id, rule_id, agenda_id, ver_nbr)
+VALUES('AGENDA301ITEM6', 'R6', 'AGENDA301', 1)
+;
+--
+update krms_agenda_itm_t 
+SET always = 'AGENDA301ITEM6' WHERE agenda_itm_id = 'AGENDA301ITEM1'
+;
+
+
+
+--
+-- next item
+--
+
+insert into krms_rule_t
+(rule_id, nmspc_cd, nm, typ_id, prop_id, actv, ver_nbr, desc_txt)
+values ('R7', 'KRMS_TEST', 'Rule7', 'T2', null, 'Y', 1, 'is KRMS in da haus')
+;
+
+insert into krms_prop_t(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, ver_nbr)
+values ('P7', 'is campus bloomington', null, 'S','R7',1)
+;
+
+update krms_rule_t
+set prop_id = 'P7' where rule_id = 'R7'
+;
+
+insert into krms_prop_parm_t 
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('7A', 'P7', 'TERM_001', 'T', 1, 1)
+;
+
+insert into krms_prop_parm_t 
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('7C', 'P7', 'BL', 'C', 2, 1)
+;
+
+insert into krms_prop_parm_t 
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('7B', 'P7', '=', 'O', 3, 1)
+;
+
+insert into krms_agenda_itm_t
+(agenda_itm_id, rule_id, agenda_id, ver_nbr)
+VALUES('AGENDA301ITEM7', 'R7', 'AGENDA301', 1)
+;
+--
+update krms_agenda_itm_t 
+SET when_false = 'AGENDA301ITEM7' WHERE agenda_itm_id = 'AGENDA301ITEM3'
+;
+
+--
+-- rule with a compound proposition
+--
+insert into krms_rule_t
+(rule_id, nmspc_cd, nm, typ_id, prop_id, actv, ver_nbr, desc_txt)
+values ('R421', 'KRMS_TEST', 'CmpdTestRule', 'T2', null, 'Y', 1, 'For testing compound props')
+;
+
+insert into krms_prop_t(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, cmpnd_op_cd, ver_nbr)
+values ('P421A', 'a compound prop', null, 'C','R421', '|', 1)
+;
+
+update krms_rule_t
+set prop_id = 'P421A' where rule_id = 'R421'
+;
+
+insert into krms_term_spec_t
+(term_spec_id, cntxt_id, nm, typ, actv, ver_nbr)
+values ('TERMSPEC_002', 'CONTEXT1', 'bogusFundTermSpec', 'java.lang.String', 'Y', 1);
+
+insert into krms_term_t
+(term_id, term_spec_id, ver_nbr)
+values ('TERM_002', 'TERMSPEC_002', 1);
+
+
+/* 2nd level prop s */ 
+insert into krms_prop_t(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, ver_nbr)
+values ('P421B', 'a simple child to a compound prop', null, 'S','R421', 1)
+;
+
+insert into krms_prop_parm_t 
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('421B1', 'P421B', 'TERM_001', 'T', 1, 1)
+;
+
+insert into krms_prop_parm_t 
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('421B2', 'P421B', 'Muir', 'C', 2, 1)
+;
+
+insert into krms_prop_parm_t 
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('421B3', 'P421B', '=', 'O', 3, 1)
+;
+
+insert into krms_prop_t(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, ver_nbr)
+values ('P421C', '2nd simple child to a compound prop ', null, 'S','R421', 1)
+;
+
+insert into krms_prop_parm_t 
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('421C1', 'P421C', 'TERM_001', 'T', 1, 1)
+;
+
+insert into krms_prop_parm_t 
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('421C2', 'P421C', 'Revelle', 'C', 2, 1)
+;
+
+insert into krms_prop_parm_t 
+(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('421C3', 'P421C', '=', 'O', 3, 1)
+;
+
+insert into krms_cmpnd_prop_props_t
+(cmpnd_prop_id, prop_id, seq_no)
+values ('P421A', 'P421B', 1);
+
+insert into krms_cmpnd_prop_props_t
+(cmpnd_prop_id, prop_id, seq_no)
+values ('P421A', 'P421C', 1);
+
+
+--
+-- additional agenda item template:
+--
+
+-- insert into krms_rule_t
+-- (rule_id, nmspc_cd, nm, typ_id, prop_id, actv, ver_nbr, desc_txt)
+-- values ('R${ID}', 'KRMS_TEST', 'Rule${ID}', 'T2', null, 'Y', 1, 'Bloomington Campus Code Rule')
+-- ;
+-- 
+-- insert into krms_prop_t(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, ver_nbr)
+-- values ('P${ID}', 'is campus bloomington', null, 'S','R${ID}',1)
+-- ;
+-- 
+-- update krms_rule_t
+-- set prop_id = 'P${ID}' where rule_id = 'R${ID}'
+-- ;
+-- 
+-- insert into krms_prop_parm_t 
+-- (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+-- values ('${ID}A', 'P${ID}', 'TERM_001', 'T', 1, 1)
+-- ;
+-- 
+-- insert into krms_prop_parm_t 
+-- (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+-- values ('${ID}C', 'P${ID}', 'BL', 'C', 2, 1)
+-- ;
+-- 
+-- insert into krms_prop_parm_t 
+-- (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+-- values ('${ID}B', 'P${ID}', '=', 'O', 3, 1)
+-- ;
+-- 
+-- insert into krms_agenda_itm_t
+-- (agenda_itm_id, rule_id, agenda_id, ver_nbr)
+-- VALUES('AGENDA301ITEM${ID}', 'R${ID}', 'AGENDA301', 1)
+-- ;
+--
+-- update krms_agenda_itm_t 
+-- SET when_true = 'AGENDA301ITEM${ID}' WHERE agenda_itm_id = 'AGENDA301ITEM${PARENT_ID}'
+-- ;
+
+
+
+

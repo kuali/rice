@@ -62,6 +62,108 @@ public class RuleEditorController extends MaintenanceDocumentController {
     }
     
     /**
+     *  This method adds a proposition to the existing proposition
+     */
+    @RequestMapping(params = "methodToCall=" + "addProposition")
+    public ModelAndView addProposition(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
+        AgendaEditor editorDocument =
+                ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
+//        AgendaBo agenda = editorDocument.getAgenda();
+//        AgendaItemBo newAgendaItem = editorDocument.getAgendaItemLine();
+//        newAgendaItem.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_AGENDA_ITM_S").toString());
+//        newAgendaItem.setAgendaId(agenda.getId());
+//        if (agenda.getItems() == null) {
+//            agenda.setItems(new ArrayList<AgendaItemBo>());
+//        }
+//        if (agenda.getFirstItemId() == null) {
+//            agenda.setFirstItemId(newAgendaItem.getId());
+//            agenda.getItems().add(newAgendaItem);
+//        } else {
+//            // insert agenda in tree
+//            String selectedAgendaItemId = getSelectedAgendaItemId(form);
+//            if (StringUtils.isBlank(selectedAgendaItemId)) {
+//                // add after the last root node
+//                AgendaItemBo node = getFirstAgendaItem(agenda);
+//                while (node.getAlways() != null) {
+//                    node = node.getAlways();
+//                }
+//                node.setAlwaysId(newAgendaItem.getId());
+//                node.setAlways(newAgendaItem);
+//            } else {
+//                // add after selected node
+//                AgendaItemBo firstItem = getFirstAgendaItem(agenda);
+//                AgendaItemBo node = getAgendaItemById(firstItem, getSelectedAgendaItemId(form));
+//                newAgendaItem.setAlwaysId(node.getAlwaysId());
+//                newAgendaItem.setAlways(node.getAlways());
+//                node.setAlwaysId(newAgendaItem.getId());
+//                node.setAlways(newAgendaItem);
+//            }
+//        }
+        return super.refresh(form, result, request, response);
+
+//        form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-Agenda-Page");
+//        return super.navigate(form, result, request, response);
+    }
+    
+    public void editRuleProposition(){
+        
+    }
+    /**
+     *  This method adds a proposition to the existing proposition
+     */
+    @RequestMapping(params = "methodToCall=" + "editProposition")
+    public ModelAndView editProposition(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
+        AgendaEditor editorDocument =
+                ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
+        AgendaBo agenda = editorDocument.getAgenda();
+        AgendaItemBo newAgendaItem = editorDocument.getAgendaItemLine();
+        newAgendaItem.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_AGENDA_ITM_S").toString());
+        newAgendaItem.setAgendaId(agenda.getId());
+        if (agenda.getItems() == null) {
+            agenda.setItems(new ArrayList<AgendaItemBo>());
+        }
+        if (agenda.getFirstItemId() == null) {
+            agenda.setFirstItemId(newAgendaItem.getId());
+            agenda.getItems().add(newAgendaItem);
+        } else {
+            // insert agenda in tree
+            String selectedAgendaItemId = getSelectedAgendaItemId(form);
+            if (StringUtils.isBlank(selectedAgendaItemId)) {
+                // add after the last root node
+                AgendaItemBo node = getFirstAgendaItem(agenda);
+                while (node.getAlways() != null) {
+                    node = node.getAlways();
+                }
+                node.setAlwaysId(newAgendaItem.getId());
+                node.setAlways(newAgendaItem);
+            } else {
+                // add after selected node
+                AgendaItemBo firstItem = getFirstAgendaItem(agenda);
+                AgendaItemBo node = getAgendaItemById(firstItem, getSelectedAgendaItemId(form));
+                newAgendaItem.setAlwaysId(node.getAlwaysId());
+                newAgendaItem.setAlways(node.getAlways());
+                node.setAlwaysId(newAgendaItem.getId());
+                node.setAlways(newAgendaItem);
+            }
+        }
+        return super.refresh(form, result, request, response);
+
+//        form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-Agenda-Page");
+//        return super.navigate(form, result, request, response);
+    }
+
+    
+//
+// below here are stubs from copying from agenda editor controller.
+// not used yet, still here for reference.
+//
+
+    
+    /**
      * This overridden method does extra work on refresh to populate the context and agenda
      * 
      * @see org.kuali.rice.krad.web.spring.controller.UifControllerBase#refresh(org.kuali.rice.krad.web.spring.form.UifFormBase, org.springframework.validation.BindingResult, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)

@@ -20,6 +20,7 @@
   <strong>Maintenance Docs</strong>
   <ul class="chan">
     <li><portal:portalLink displayTitle="true" title="Agenda Editor" url="${ConfigProperties.application.url}/spring/krmsAgendaEditor?methodToCall=start&dataObjectClassName=org.kuali.rice.krms.impl.ui.AgendaEditor&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li> 
+    <li><portal:portalLink displayTitle="true" title="Rule Editor" url="${ConfigProperties.application.url}/spring/krmsRuleEditor?methodToCall=start&dataObjectClassName=org.kuali.rice.krms.impl.repository.RuleBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
     <li><portal:portalLink displayTitle="true" title="Agenda BO Maintenance" url="${ConfigProperties.application.url}/spring/maintenance?methodToCall=start&dataObjectClassName=org.kuali.rice.krms.impl.repository.AgendaBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li> 
     <li><portal:portalLink displayTitle="true" title="Rule BO Maintenance" url="${ConfigProperties.application.url}/spring/maintenance?methodToCall=start&dataObjectClassName=org.kuali.rice.krms.impl.repository.RuleBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li> 
   </ul>

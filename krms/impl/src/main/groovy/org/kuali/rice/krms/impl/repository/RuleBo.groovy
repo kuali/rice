@@ -103,14 +103,14 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
                // add a node for the description display with a child proposition node
                Node<RuleTreeNode, String> child = new Node<RuleTreeNode, String>();
                child.setNodeLabel(prop.getDescription());
-               child.setNodeType("ruleNode");
+               child.setNodeType("ruleTreeNode");
                child.setData(new RuleTreeNode(prop));
                sprout.getChildren().add(child);
                
                Node<RuleTreeNode, String> grandChild = new Node<RuleTreeNode, String>();
                RuleTreeSimplePropositionParameterNode pNode = new RuleTreeSimplePropositionParameterNode(prop);
                grandChild.setNodeLabel(pNode.getParameterDisplayString());
-               grandChild.setNodeType("simplePropositionParameterNode");
+               grandChild.setNodeType("ruleTreeNode simplePropositionParameterNode");
                grandChild.setData(pNode);
                child.getChildren().add(grandChild);
                
@@ -121,7 +121,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
                propositionSummaryBuffer.append(" ( ");
                Node<RuleTreeNode, String> aNode = new Node<RuleTreeNode, String>();
                aNode.setNodeLabel(prop.getDescription());
-               aNode.setNodeType("compoundNode");
+               aNode.setNodeType("ruleTreeNode compoundNode");
                aNode.setData(new RuleTreeNode(prop));
                sprout.getChildren().add(aNode);
 
@@ -158,7 +158,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
        propositionSummaryBuffer.append(" "+opCodeLabel+" ");
        Node<RuleTreeNode, String> aNode = new Node<RuleTreeNode, String>();
        aNode.setNodeLabel("");
-       aNode.setNodeType("compoundOpCodeNode");
+       aNode.setNodeType("ruleTreeNode compoundOpCodeNode");
        aNode.setData(new CompoundOpCodeNode(prop));
        currentNode.getChildren().add(aNode);
    }

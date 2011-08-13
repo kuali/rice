@@ -56,12 +56,12 @@ class ResponsibilityServiceImplTest {
     @BeforeClass
     static void createSampleBOs() {
         ResponsibilityTemplateBo firstResponsibilityTemplate = new ResponsibilityTemplateBo(id: "resptemplateidone", name: "resptemplateone", namespaceCode: "respnamespacecodeone", versionNumber: 1, kimTypeId: "a");
-        ResponsibilityBo firstResponsibilityBo = new ResponsibilityBo(id: "respidone", namespaceCode: "namespacecodeone", name: "respnameone", template: firstResponsibilityTemplate, versionNumber: 1);
+        ResponsibilityBo firstResponsibilityBo = new ResponsibilityBo(id: "respidone", namespaceCode: "namespacecodeone", name: "respnameone", template: firstResponsibilityTemplate, versionNumber: 1, active: "Y");
         KimTypeBo firstKimTypeBo = new KimTypeBo(id: "kimtypeidone");
         RoleResponsibilityBo firstRoleResponsibilityBo = new RoleResponsibilityBo(roleId: "rolerespidone");
 
         ResponsibilityTemplateBo secondResponsibilityTemplate = new ResponsibilityTemplateBo(id: "resptemplateidtwo", name: "resptemplatetwo", namespaceCode: "respnamespacecodetwo", versionNumber: 1, kimTypeId: "a");
-        ResponsibilityBo secondResponsibilityBo = new ResponsibilityBo(id: "respidtwo", namespaceCode: "namespacecodetwo", name: "respnametwo", template: secondResponsibilityTemplate, versionNumber: 1);
+        ResponsibilityBo secondResponsibilityBo = new ResponsibilityBo(id: "respidtwo", namespaceCode: "namespacecodetwo", name: "respnametwo", template: secondResponsibilityTemplate, versionNumber: 1, active: "Y");
         KimTypeBo secondKimTypeBo = new KimTypeBo(id: "kimtypeidtwo");
         RoleResponsibilityBo secondRoleResponsibilityBo = new RoleResponsibilityBo(roleId: "rolerespidtwo");
 
@@ -424,6 +424,100 @@ class ResponsibilityServiceImplTest {
         Map<String, String> responsibilityDetails = new HashMap<String, String>();
         responsibilityDetails.put("test", "test");
         boolean hasResponsibility = responsibilityService.hasResponsibility("principalid", "namespacecodeone", "respnameone", new HashMap<String, String>(), responsibilityDetails);
+
+        Assert.assertEquals(true, hasResponsibility);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testHasResponsibilityByTemplateNameWithNullPrincipalIdFails() {
+        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplateName(null, "test", "test", new HashMap<String, String>(), new HashMap<String, String>());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testHasResponsibilityByTemplateNameWithBlankPrincipalIdFails() {
+        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplateName("", "test", "test", new HashMap<String, String>(), new HashMap<String, String>());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testHasResponsibilityByTemplateNameWithNullNamespaceCodeFails() {
+        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplateName("test", null, "test", new HashMap<String, String>(), new HashMap<String, String>());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testHasResponsibilityByTemplateNameWithBlankNamespaceCodeFails() {
+        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplateName("test", "", "test", new HashMap<String, String>(), new HashMap<String, String>());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testHasResponsibilityByTemplateNameWithNullRespTemplateNameFails() {
+        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplateName("test", "test", null, new HashMap<String, String>(), new HashMap<String, String>());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testHasResponsibilityByTemplateNameWithBlankRespTemplateNameFails() {
+        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplateName("test", "test", "", new HashMap<String, String>(), new HashMap<String, String>());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testHasResponsibilityByTemplateNameWithNullQualificationFails() {
+        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplateName("test", "test", "test", null, new HashMap<String, String>());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testHasResponsibilityByTemplateNameWithNullResponsibilityDetailsFails() {
+        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplateName("test", "test", "test", new HashMap<String, String>(), null);
+    }
+
+    @Test
+    public void testHasResponsibilityByTemplateNameSucceeds() {
+        mockBoService.demand.findMatching(1..1) {
+            Class clazz, Map map -> for (ResponsibilityBo responsibilityBo in sampleResponsibilities.values()) {
+                if (responsibilityBo.namespaceCode.equals(map.get("namespaceCode"))
+                    && responsibilityBo.template.name.equals(map.get("template.name")))
+                {
+                    Collection<ResponsibilityBo> responsibilities = new ArrayList<ResponsibilityBo>();
+                    responsibilities.add(responsibilityBo);
+                    return responsibilities;
+                }
+            }
+        }
+
+        mockKimTypeInfoService.demand.getKimType(1..1) {
+            String id -> return KimTypeBo.to(sampleKimTypes.get("kimtypeidone"));
+        }
+
+        mockResponsibilityTypeService.demand.getMatchingResponsibilities(1..1) {
+            Map<String, String> requestedDetails, List<Responsibility> responsibilitiesList ->
+                List<Responsibility> responsibilities = new ArrayList<Responsibility>();
+                responsibilities.add(ResponsibilityBo.to(sampleResponsibilities.get("respidone")));
+                return responsibilities;
+        }
+
+        GenericQueryResults.Builder<RoleResponsibilityBo> genericQueryResults = new GenericQueryResults.Builder<RoleResponsibilityBo>();
+        genericQueryResults.totalRowCount = 1;
+        genericQueryResults.moreResultsAvailable = false;
+        List<RoleResponsibilityBo> roleResponsibilities = new ArrayList<RoleResponsibilityBo>();
+        roleResponsibilities.add(sampleRoleResponsibilities.get("rolerespidone"));
+        genericQueryResults.results = roleResponsibilities;
+        GenericQueryResults<RoleResponsibilityBo> results = genericQueryResults.build();
+
+        mockCriteriaLookupService.demand.lookup(1..1) {
+            Class<RoleResponsibilityBo> queryClass, QueryByCriteria criteria -> return results;
+        }
+
+        mockRoleService.demand.principalHasRole(1..1) {
+            String principalId, List<String> roleIds, Map<String, String> qualification -> return true;
+        }
+
+        injectBusinessObjectServiceIntoResponsibilityService();
+        injectKimTypeInfoServiceIntoResponsibilityService();
+        injectResponsibilityTypeServiceIntoResponsibilityService();
+        injectCriteriaLookupServiceIntoResponsibilityService();
+        injectRoleServiceIntoResponsibilityService();
+
+        Map<String, String> responsibilityDetails = new HashMap<String, String>();
+        responsibilityDetails.put("test", "test");
+        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplateName("principalid", "namespacecodeone", "resptemplateone", new HashMap<String, String>(), responsibilityDetails);
 
         Assert.assertEquals(true, hasResponsibility);
     }

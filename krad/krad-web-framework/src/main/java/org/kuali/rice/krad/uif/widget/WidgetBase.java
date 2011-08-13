@@ -19,27 +19,27 @@ import org.kuali.rice.krad.uif.component.ComponentBase;
 
 /**
  * Base class for Widgets
- * 
+ *
  * <p>
  * Sets the component type name for all widget components and provides default
  * implementation of performFinalize
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class WidgetBase extends ComponentBase implements Widget {
-	private static final long serialVersionUID = -917582902829056830L;
+    private static final long serialVersionUID = -917582902829056830L;
 
-	public WidgetBase() {
-		super();
-	}
+    public WidgetBase() {
+        super();
+    }
 
-	/**
-	 * @see org.kuali.rice.krad.uif.component.Component#getComponentTypeName()
-	 */
-	@Override
-	public String getComponentTypeName() {
-		return "widget";
-	}
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#getComponentTypeName()
+     */
+    @Override
+    public String getComponentTypeName() {
+        return "widget";
+    }
 
 }

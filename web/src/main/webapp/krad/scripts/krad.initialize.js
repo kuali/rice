@@ -50,11 +50,11 @@ function setupValidator(){
 		onsubmit: false,
 		ignore: ".ignoreValid",
 		onclick: function(element) {
-			jq(element).valid();
+			var valid = jq(element).valid();
 			dependsOnCheck(element, new Array());
 		},
 		onfocusout: function(element) {
-			jq(element).valid();
+			var valid = jq(element).valid();
 			dependsOnCheck(element, new Array());
 			if((element.type == "select-one" || element.type == "select-multiple") && jq(element).hasClass("valid")){
 				applyErrorColors(getAttributeId(element.id, element.type) + "_errors_div", 0, 0, 0, true);
@@ -64,17 +64,18 @@ function setupValidator(){
 		wrapper: "li",
 		highlight: function(element, errorClass, validClass) {
 			jq(element).addClass(errorClass).removeClass(validClass);
+            jq(element).attr("aria-invalid", "true");
 			applyErrorColors(getAttributeId(element.id, element.type) + "_errors_div", 1, 0, 0, true);
 			showFieldIcon(getAttributeId(element.id, element.type) + "_errors_div", 1);
 		},
 		unhighlight: function(element, errorClass, validClass) {
 			jq(element).removeClass(errorClass).addClass(validClass);
+            jq(element).attr("aria-invalid", "false");
 			applyErrorColors(getAttributeId(element.id, element.type) + "_errors_div", 0, 0, 0, true);
 			showFieldIcon(getAttributeId(element.id, element.type) + "_errors_div", 0);
 		},
 		errorPlacement: function(error, element) {
 			var id = getAttributeId(element.attr('id'), element.attr('type'));
-            error.attr("role", "alert");
 			//check to see if the option to use labels is on
 			if (!jq("#" + id + "_errors_div").hasClass("noLabels")) {
 				var label = getLabel(id);
@@ -92,7 +93,9 @@ function setupValidator(){
 			error.appendTo(errorList);
 		}
 	});
-
+    jq(".required").each(function(){
+        jq(this).attr("aria-required", "true");
+    });
 	jq(document).trigger('validationSetup');
 	pageValidatorReady = true;
 	jq.watermark.showAll();

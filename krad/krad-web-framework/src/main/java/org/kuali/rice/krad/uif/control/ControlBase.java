@@ -28,6 +28,7 @@ public abstract class ControlBase extends ComponentBase implements Control {
 	private static final long serialVersionUID = -7898244978136312663L;
 	
 	private int tabIndex;
+    private String ariaHTML;
 
 	public ControlBase() {
       super();

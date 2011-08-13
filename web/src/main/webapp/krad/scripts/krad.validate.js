@@ -61,7 +61,8 @@ function dependsOnCheck(element, nameArray){
 		
 		if (jq(this).hasClass("valid") || jq(this).hasClass("error")) {
 			jq.watermark.hide(this);
-			jq(this).valid();
+			var valid = jq(this).valid();
+            jq(this).attr("aria-invalid", !valid );
 			jq.watermark.show(this);
 			var namePresent = jq.inArray(elementName, nameArray);
 			if(namePresent == undefined || namePresent == -1){
@@ -113,9 +114,11 @@ function checkForRequiredness(controlName, requiredName, booleanFunction, indica
 	if(indicator != null && indicator.length){
 		if(booleanFunction()){
 			indicator.show();
+            jq("[name='"+ requiredName + "']").attr("aria-required", "true");
 		}
 		else{
 			indicator.hide();
+            jq("[name='"+ requiredName + "']").attr("aria-required", "false");
 		}
 	}
 }

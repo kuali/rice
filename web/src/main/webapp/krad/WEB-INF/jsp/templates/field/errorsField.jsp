@@ -21,10 +21,10 @@
 <!-- Error messages - div generated but hidden if no server errors, for client side error placement-->
 <c:choose>
 	<c:when test="${field.errorCount > 0 && field.displayErrorMessages}">
-		<div id="${field.id}_errorMessages" class="errorMessages">
+		<div id="${field.id}_errorMessages" class="errorMessages" aria-live="assertive" aria-relevant="additions removals" aria-atomic="true">
     </c:when>
     <c:otherwise>
-      	<div id="${field.id}_errorMessages" style="display: none;" class="errorMessages">
+      	<div id="${field.id}_errorMessages" style="display: none;" class="errorMessages" class="errorMessages" aria-live="assertive" aria-relevant="additions removals">
     </c:otherwise>
 </c:choose>
 			<c:if test="${field.displayErrorTitle}">
@@ -33,7 +33,7 @@
 		     <c:if test="${field.displayCounts && field.errorCount > 0}">
 		       <span>${field.errorCount} errors</span>
 		     </c:if>
-		     <ul class="errorLines" aria-live="assertive" aria-relevant="additions removals" role="status">
+		     <ul class="errorLines">
 			     <c:if test="${field.displayErrorMessages}">
 				     <c:forEach var="message" items="${field.errors}">
 					    	<li>${message}</li>

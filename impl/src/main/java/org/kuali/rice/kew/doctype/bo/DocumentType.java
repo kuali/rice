@@ -178,7 +178,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
 
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "documentType")
     @Fetch(value = FetchMode.SELECT)
-    private Collection<DocumentTypePolicy> policies;
+    private Collection<DocumentTypePolicy> documentTypePolicies;
 
     /* This property contains the list of valid ApplicationDocumentStatus values, 
     * if defined, for the document type.  If these status values are defined, only these
@@ -222,7 +222,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     public DocumentType() {
         routeLevels = new ArrayList();
         documentTypeAttributes = new ArrayList<DocumentTypeAttribute>();
-        policies = new ArrayList<DocumentTypePolicy>();
+        documentTypePolicies = new ArrayList<DocumentTypePolicy>();
         version = new Integer(0);
         label = null;
     }
@@ -543,18 +543,18 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     }
 
     public Collection<DocumentTypePolicy> getDocumentTypePolicies() {
-        return policies;
+        return documentTypePolicies;
     }
 
     public void setDocumentTypePolicies(Collection<DocumentTypePolicy> policies) {
-        this.policies = policies;
+        this.documentTypePolicies = policies;
     }
     
     @Override
     public Map<org.kuali.rice.kew.api.doctype.DocumentTypePolicy, String> getPolicies() {
         Map<org.kuali.rice.kew.api.doctype.DocumentTypePolicy, String> policies = new HashMap<org.kuali.rice.kew.api.doctype.DocumentTypePolicy, String>();
-        if (this.policies != null) {
-            for (DocumentTypePolicy policy : this.policies) {
+        if (this.documentTypePolicies != null) {
+            for (DocumentTypePolicy policy : this.documentTypePolicies) {
                 policies.put(org.kuali.rice.kew.api.doctype.DocumentTypePolicy.fromCode(policy.getPolicyName()), policy.getPolicyValue().toString());
             }
         }

@@ -382,7 +382,7 @@
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"/>
     <collection-descriptor auto-retrieve="true" auto-update="true" auto-delete="true"
       element-class-ref="org.kuali.rice.kew.doctype.DocumentTypePolicy"
-      name="policies"
+      name="documentTypePolicies"
       proxy="false">
       <inverse-foreignkey field-ref="documentTypeId"  />
     </collection-descriptor>

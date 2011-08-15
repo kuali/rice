@@ -112,7 +112,6 @@
       <bean parent="CheckboxControl"/>
     </property>
     <property name="summary" value="Active Indicator"/>
-    <property name="formatterClass" value="org.kuali.rice.core.web.format.BooleanFormatter"/>
     <property name="label" value="Active Indicator"/>
     <property name="description" value="This attribute is used to describe whether the associated object is active or inactive."/>
   </bean>

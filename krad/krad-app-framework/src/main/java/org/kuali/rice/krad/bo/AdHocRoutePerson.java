@@ -73,8 +73,8 @@ public class AdHocRoutePerson extends AdHocRouteRecipient {
         super.setName(name);
 
         if (StringUtils.isNotBlank(name) &&
-                !((person != null) && StringUtils.equals(person.getPrincipalName(), name))) {
-            person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(name);
+                ((person != null) && !StringUtils.equals(person.getName(), name))) {
+            person = KimApiServiceLocator.getPersonService().getPerson(getId());
             setPerson(person);
         }
     }

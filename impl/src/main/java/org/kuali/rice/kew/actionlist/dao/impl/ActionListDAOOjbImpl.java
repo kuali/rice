@@ -221,7 +221,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 Criteria userCrit = new Criteria();
                 Criteria groupCrit = new Criteria();
                 Criteria orCrit = new Criteria();
-                userCrit.addEqualTo("delegatorWorkflowId", principalId);
+                userCrit.addEqualTo("delegatorPrincipalId", principalId);
                 List<String> delegatorGroupIds = KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
                 if (delegatorGroupIds != null && !delegatorGroupIds.isEmpty()) {
                 	groupCrit.addIn("delegatorGroupId", delegatorGroupIds);
@@ -241,7 +241,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 Criteria userCrit = new Criteria();
                 Criteria groupCrit = new Criteria();
                 Criteria orCrit = new Criteria();
-                userCrit.addEqualTo("delegatorWorkflowId", principalId);
+                userCrit.addEqualTo("delegatorPrincipalId", principalId);
                 List<String> delegatorGroupIds = KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
                 if (delegatorGroupIds != null && !delegatorGroupIds.isEmpty()) {
                 	groupCrit.addIn("delegatorGroupId", delegatorGroupIds);
@@ -287,8 +287,8 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 Criteria groupCrit = new Criteria();
                 if (filter.isExcludeDelegatorId()) {
                     Criteria userNull = new Criteria();
-                    userCrit.addNotEqualTo("delegatorWorkflowId", filter.getDelegatorId());
-                    userNull.addIsNull("delegatorWorkflowId");
+                    userCrit.addNotEqualTo("delegatorPrincipalId", filter.getDelegatorId());
+                    userNull.addIsNull("delegatorPrincipalId");
                     userCrit.addOrCriteria(userNull);
                     Criteria groupNull = new Criteria();
                     groupCrit.addNotEqualTo("delegatorGroupId", filter.getDelegatorId());
@@ -298,7 +298,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                     crit.addAndCriteria(groupCrit);
                 } else {
                     Criteria orCrit = new Criteria();
-                    userCrit.addEqualTo("delegatorWorkflowId", filter.getDelegatorId());
+                    userCrit.addEqualTo("delegatorPrincipalId", filter.getDelegatorId());
                     groupCrit.addEqualTo("delegatorGroupId", filter.getDelegatorId());
                     orCrit.addOrCriteria(userCrit);
                     orCrit.addOrCriteria(groupCrit);
@@ -320,19 +320,19 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 //                Criteria groupCrit = new Criteria();
 //                if (filter.isExcludeDelegatorId()) {
 //                    Criteria userNull = new Criteria();
-//                    userCrit.addNotEqualTo("delegatorWorkflowId", filter.getDelegatorId());
-//                    userNull.addIsNull("delegatorWorkflowId");
+//                    userCrit.addNotEqualTo("delegatorPrincipalId", filter.getDelegatorId());
+//                    userNull.addIsNull("delegatorPrincipalId");
 //                    userCrit.addOrCriteria(userNull);
 //                    Criteria groupNull = new Criteria();
-//                    groupCrit.addNotEqualTo("delegatorWorkgroupId", filter.getDelegatorId());
-//                    groupNull.addIsNull("delegatorWorkgroupId");
+//                    groupCrit.addNotEqualTo("delegatorGroupId", filter.getDelegatorId());
+//                    groupNull.addIsNull("delegatorGroupId");
 //                    groupCrit.addOrCriteria(groupNull);
 //                    crit.addAndCriteria(userCrit);
 //                    crit.addAndCriteria(groupCrit);
 //                } else {
 //                    Criteria orCrit = new Criteria();
-//                    userCrit.addEqualTo("delegatorWorkflowId", filter.getDelegatorId());
-//                    groupCrit.addEqualTo("delegatorWorkgroupId", filter.getDelegatorId());
+//                    userCrit.addEqualTo("delegatorPrincipalId", filter.getDelegatorId());
+//                    groupCrit.addEqualTo("delegatorGroupId", filter.getDelegatorId());
 //                    orCrit.addOrCriteria(userCrit);
 //                    orCrit.addOrCriteria(groupCrit);
 //                    crit.addAndCriteria(orCrit);
@@ -377,8 +377,8 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 //            Criteria userCrit = new Criteria();
 //            Criteria groupCrit = new Criteria();
 //            Criteria orCrit = new Criteria();
-//            userCrit.addEqualTo("delegatorWorkflowId", user.getWorkflowUserId().getWorkflowId());
-//            groupCrit.addEqualTo("delegatorWorkgroupId", filter.getPrimaryDelegateId()); // TODO delyea: add all workgroups here?
+//            userCrit.addEqualTo("delegatorPrincipalId", user.getWorkflowUserId().getWorkflowId());
+//            groupCrit.addEqualTo("delegatorGroupId", filter.getPrimaryDelegateId()); // TODO delyea: add all workgroups here?
 //            orCrit.addOrCriteria(userCrit);
 //            orCrit.addOrCriteria(groupCrit);
 //            crit.addAndCriteria(orCrit);
@@ -402,8 +402,8 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 //            Criteria userCrit = new Criteria();
 //            Criteria groupCrit = new Criteria();
 //            Criteria orCrit = new Criteria();
-//            userCrit.addEqualTo("delegatorWorkflowId", user.getWorkflowUserId().getWorkflowId());
-//            groupCrit.addEqualTo("delegatorWorkgroupId", filter.getDelegatorId()); // TODO delyea: add all workgroups here?
+//            userCrit.addEqualTo("delegatorPrincipalId", user.getWorkflowUserId().getWorkflowId());
+//            groupCrit.addEqualTo("delegatorGroupId", filter.getDelegatorId()); // TODO delyea: add all workgroups here?
 //            orCrit.addOrCriteria(userCrit);
 //            orCrit.addOrCriteria(groupCrit);
 //            crit.addAndCriteria(orCrit);
@@ -423,19 +423,19 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 //            Criteria groupCrit = new Criteria();
 //            if (filter.isExcludeDelegatorId()) {
 //                Criteria userNull = new Criteria();
-//                userCrit.addNotEqualTo("delegatorWorkflowId", filter.getDelegatorId());
-//                userNull.addIsNull("delegatorWorkflowId");
+//                userCrit.addNotEqualTo("delegatorPrincipalId", filter.getDelegatorId());
+//                userNull.addIsNull("delegatorPrincipalId");
 //                userCrit.addOrCriteria(userNull);
 //                Criteria groupNull = new Criteria();
-//                groupCrit.addNotEqualTo("delegatorWorkgroupId", filter.getDelegatorId());
-//                groupNull.addIsNull("delegatorWorkgroupId");
+//                groupCrit.addNotEqualTo("delegatorGroupId", filter.getDelegatorId());
+//                groupNull.addIsNull("delegatorGroupId");
 //                groupCrit.addOrCriteria(groupNull);
 //                crit.addAndCriteria(userCrit);
 //                crit.addAndCriteria(groupCrit);
 //            } else {
 //                Criteria orCrit = new Criteria();
-//                userCrit.addEqualTo("delegatorWorkflowId", filter.getDelegatorId());
-//                groupCrit.addEqualTo("delegatorWorkgroupId", filter.getDelegatorId());
+//                userCrit.addEqualTo("delegatorPrincipalId", filter.getDelegatorId());
+//                groupCrit.addEqualTo("delegatorGroupId", filter.getDelegatorId());
 //                orCrit.addOrCriteria(userCrit);
 //                orCrit.addOrCriteria(groupCrit);
 //                crit.addAndCriteria(orCrit);
@@ -462,7 +462,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 
 //        if (primary delegation) {
 //            filter.setDelegationType(DelegationType.PRIMARY.getCode());
-//            crit.addEqualTo("delegatorWorkflowId", user.getWorkflowUserId().getWorkflowId());
+//            crit.addEqualTo("delegatorPrincipalId", user.getWorkflowUserId().getWorkflowId());
 //
 //        } else {
 //            crit.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
@@ -474,19 +474,19 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 //                Criteria groupCrit = new Criteria();
 //                if (filter.isExcludeDelegatorId()) {
 //                    Criteria userNull = new Criteria();
-//                    userCrit.addNotEqualTo("delegatorWorkflowId", filter.getDelegatorId());
-//                    userNull.addIsNull("delegatorWorkflowId");
+//                    userCrit.addNotEqualTo("delegatorPrincipalId", filter.getDelegatorId());
+//                    userNull.addIsNull("delegatorPrincipalId");
 //                    userCrit.addOrCriteria(userNull);
 //                    Criteria groupNull = new Criteria();
-//                    groupCrit.addNotEqualTo("delegatorWorkgroupId", filter.getDelegatorId());
-//                    groupNull.addIsNull("delegatorWorkgroupId");
+//                    groupCrit.addNotEqualTo("delegatorGroupId", filter.getDelegatorId());
+//                    groupNull.addIsNull("delegatorGroupId");
 //                    groupCrit.addOrCriteria(groupNull);
 //                    crit.addAndCriteria(userCrit);
 //                    crit.addAndCriteria(groupCrit);
 //                } else {
 //                    Criteria orCrit = new Criteria();
-//                    userCrit.addEqualTo("delegatorWorkflowId", filter.getDelegatorId());
-//                    groupCrit.addEqualTo("delegatorWorkgroupId", filter.getDelegatorId());
+//                    userCrit.addEqualTo("delegatorPrincipalId", filter.getDelegatorId());
+//                    groupCrit.addEqualTo("delegatorGroupId", filter.getDelegatorId());
 //                    orCrit.addOrCriteria(userCrit);
 //                    orCrit.addOrCriteria(groupCrit);
 //                    crit.addAndCriteria(orCrit);

@@ -309,7 +309,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
                 Criteria userCrit = new Criteria(objectsToRetrieve.getName());
                 Criteria groupCrit = new Criteria(objectsToRetrieve.getName());
                 Criteria orCrit = new Criteria(objectsToRetrieve.getName());
-                userCrit.eq("delegatorWorkflowId", principalId);
+                userCrit.eq("delegatorPrincipalId", principalId);
                 
                 List<String> userGroupIds = new ArrayList<String>();
                 for(String id: KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId)){
@@ -333,7 +333,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
                 Criteria userCrit = new Criteria(objectsToRetrieve.getName());
                 Criteria groupCrit = new Criteria(objectsToRetrieve.getName());
                 Criteria orCrit = new Criteria(objectsToRetrieve.getName());
-                userCrit.eq("delegatorWorkflowId", principalId);
+                userCrit.eq("delegatorPrincipalId", principalId);
                 List<String> userGroupIds = new ArrayList<String>();
                 for(String id: KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId)){
                 	userGroupIds.add(id);
@@ -382,8 +382,8 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
                 Criteria groupCrit = new Criteria(objectsToRetrieve.getName());
                 if (filter.isExcludeDelegatorId()) {
                     Criteria userNull = new Criteria(objectsToRetrieve.getName());
-                    userCrit.ne("delegatorWorkflowId", filter.getDelegatorId());
-                    userNull.isNull("delegatorWorkflowId");
+                    userCrit.ne("delegatorPrincipalId", filter.getDelegatorId());
+                    userNull.isNull("delegatorPrincipalId");
                     userCrit.or(userNull);
                     Criteria groupNull = new Criteria(objectsToRetrieve.getName());
                     groupCrit.ne("delegatorGroupId", filter.getDelegatorId());
@@ -392,7 +392,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
                     crit.and(userCrit);
                     crit.and(groupCrit);
                 } else {
-                    userCrit.eq("delegatorWorkflowId", filter.getDelegatorId());
+                    userCrit.eq("delegatorPrincipalId", filter.getDelegatorId());
                     groupCrit.eq("delegatorGroupId", filter.getDelegatorId());
                     userCrit.or(groupCrit);
                     crit.and(userCrit);

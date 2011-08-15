@@ -16,12 +16,12 @@
 package org.kuali.rice.kew.server;
 
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.api.document.DocumentContentUpdate;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
-import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.rule.TestRuleAttribute;
 import org.kuali.rice.kew.test.KEWTestCase;
@@ -215,14 +215,14 @@ public class DTOConverterTest extends KEWTestCase {
         actionItem.setDelegatorGroupId(testWorkgroupId);
 
         // convert to action item vo object and verify
-        ActionItemDTO actionItemVO = DTOConverter.convertActionItem(actionItem);
+        org.kuali.rice.kew.api.action.ActionItem actionItemVO = ActionItem.to(actionItem);
         assertEquals("Action Item VO object has incorrect value", actionRequestCd, actionItemVO.getActionRequestCd());
         assertEquals("Action Item VO object has incorrect value", actionRequestId, actionItemVO.getActionRequestId());
         assertEquals("Action Item VO object has incorrect value", docName, actionItemVO.getDocName());
         assertEquals("Action Item VO object has incorrect value", roleName, actionItemVO.getRoleName());
         assertEquals("Action Item VO object has incorrect value", workflowId, actionItemVO.getPrincipalId());
         assertEquals("Action Item VO object has incorrect value", documentId, actionItemVO.getDocumentId());
-        assertEquals("Action Item VO object has incorrect value", dateAssigned, actionItemVO.getDateAssigned());
+        assertEquals("Action Item VO object has incorrect value", new DateTime(dateAssigned.getTime()), actionItemVO.getDateTimeAssigned());
         assertEquals("Action Item VO object has incorrect value", docHandlerUrl, actionItemVO.getDocHandlerURL());
         assertEquals("Action Item VO object has incorrect value", docTypeLabel, actionItemVO.getDocLabel());
         assertEquals("Action Item VO object has incorrect value", docTitle, actionItemVO.getDocTitle());

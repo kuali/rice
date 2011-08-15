@@ -43,7 +43,7 @@ import javax.persistence.Table;
 	@AttributeOverride(name="docLabel", column=@Column(name="DOC_TYP_LBL")),
 	@AttributeOverride(name="docHandlerURL", column=@Column(name="DOC_HDLR_URL")),
 	@AttributeOverride(name="docName", column=@Column(name="DOC_TYP_NM")),
-	@AttributeOverride(name="delegatorWorkflowId", column=@Column(name="DLGN_PRNCPL_ID")),
+	@AttributeOverride(name="delegatorPrincipalId", column=@Column(name="DLGN_PRNCPL_ID")),
 	@AttributeOverride(name="delegatorGroupId", column=@Column(name="DLGN_GRP_ID")),
 	@AttributeOverride(name="delegationType", column=@Column(name="DLGN_TYP")),
 	@AttributeOverride(name="lockVerNbr", column=@Column(name="VER_NBR")),

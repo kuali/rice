@@ -303,13 +303,9 @@
 				<property name="service">
 					<ref bean="rice.kew.ruleDelegationCacheProcessor" />
 				</property>
-				<property name="serviceNameSpaceURI" value="" />
 				<property name="localServiceName" value="ruleDelegationCacheProcessorSoap" />
-				<property name="priority" value="3" />
+				<property name="busSecurity" value="${rice.kew.ruleDelegationCacheProcessorSoap.secure}" />
 				<property name="queue" value="false" />
-				<property name="retryAttempts" value="1" />
-				<property name="messageExceptionHandler"
-					value="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler" />
 			</bean>
 		</property>
 	</bean>

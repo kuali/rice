@@ -33,7 +33,6 @@ import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.documentlink.DocumentLink;
-import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.DocumentLinkDTO;
 import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
@@ -148,48 +147,6 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     public Integer getUserActionItemCount(String principalId) throws WorkflowException {
         return Integer.valueOf(KEWServiceLocator.getActionListService().getCount(principalId));
     }
-
-	public ActionItemDTO[] getActionItemsForPrincipal(String principalId) throws WorkflowException {
-        //added by Derek
-        Collection<ActionItem> actionItems = KEWServiceLocator.getActionListService().getActionList(principalId, null);
-        ActionItemDTO[] actionItemVOs = new ActionItemDTO[actionItems.size()];
-        int i = 0;
-        for (Iterator<ActionItem> iterator = actionItems.iterator(); iterator.hasNext(); i++) {
-            ActionItem actionItem = iterator.next();
-            actionItemVOs[i] = DTOConverter.convertActionItem(actionItem);
-        }
-        return actionItemVOs;
-    }
-
-    public ActionItemDTO[] getAllActionItems(String documentId) throws WorkflowException {
-        Collection actionItems = KEWServiceLocator.getActionListService().getActionListForSingleDocument(documentId);
-        ActionItemDTO[] actionItemVOs = new ActionItemDTO[actionItems.size()];
-        int i = 0;
-        for (Iterator iterator = actionItems.iterator(); iterator.hasNext(); i++) {
-            ActionItem actionItem = (ActionItem) iterator.next();
-            actionItemVOs[i] = DTOConverter.convertActionItem(actionItem);
-        }
-        return actionItemVOs;
-    }
-
-    public ActionItemDTO[] getActionItems(String documentId, String[] actionRequestedCodes) throws WorkflowException {
-        List<String> actionRequestedCds = Arrays.asList(actionRequestedCodes);
-        ActionItemDTO[] actionItems = getAllActionItems(documentId);
-        List<ActionItemDTO> matchingActionitems = new ArrayList<ActionItemDTO>();
-        for (ActionItemDTO actionItemVO : actionItems) {
-            if (actionRequestedCds.contains(actionItemVO.getActionRequestCd())) {
-                matchingActionitems.add(actionItemVO);
-            }
-        }
-        ActionItemDTO[] returnActionItems = new ActionItemDTO[matchingActionitems.size()];
-        int j = 0;
-        for (ActionItemDTO actionItemVO : matchingActionitems) {
-            returnActionItems[j] = actionItemVO;
-            j++;
-        }
-        return returnActionItems;
-    }
-
 
     private boolean actionRequestMatches(ActionRequestValue actionRequest, String nodeName, String principalId) throws WorkflowException {
         boolean matchesUserId = true;  // assume a match in case user is empty

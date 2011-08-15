@@ -18,7 +18,6 @@ package org.kuali.rice.kew.service;
 
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.core.api.util.jaxb.SqlTimestampAdapter;
-import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.DocumentLinkDTO;
 import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
 import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
@@ -57,23 +56,6 @@ public interface WorkflowUtility {
 	public Integer getUserActionItemCount(
 			@WebParam(name = "principalId") String principalId)
 			throws WorkflowException;
-
-	public ActionItemDTO[] getAllActionItems(
-			@WebParam(name = "documentId") String documentId)
-			throws WorkflowException;
-
-	public ActionItemDTO[] getActionItems(
-			@WebParam(name = "documentId") String documentId,
-			@WebParam(name = "actionRequestedCodes") String[] actionRequestedCodes)
-			throws WorkflowException;
-
-	/*public ActionRequestDTO[] getAllActionRequests(
-			@WebParam(name = "documentId") String documentId)
-			throws WorkflowException;*/
-
-	/*public ActionTakenDTO[] getActionsTaken(
-			@WebParam(name = "documentId") String documentId)
-			throws WorkflowException;*/
 
 	public WorkflowAttributeValidationErrorDTO[] validateWorkflowAttributeDefinitionVO(
 			@WebParam(name = "definition") WorkflowAttributeDefinitionDTO definition)
@@ -205,11 +187,6 @@ public interface WorkflowUtility {
 
 	public RouteNodeInstanceDTO[] getCurrentNodeInstances(
 			@WebParam(name = "documentId") String documentId)
-			throws WorkflowException;
-
-	// added for KS per Scott
-	ActionItemDTO[] getActionItemsForPrincipal(
-			@WebParam(name = "principalId") String principalId)
 			throws WorkflowException;
 
 	/**

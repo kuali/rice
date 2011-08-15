@@ -119,7 +119,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 
     public Collection<Recipient> findSecondaryDelegators(String principalId) {
         Criteria notNullWorkflowCriteria = new Criteria();
-        notNullWorkflowCriteria.addNotNull("delegatorWorkflowId");
+        notNullWorkflowCriteria.addNotNull("delegatorPrincipalId");
         Criteria notNullWorkgroupCriteria = new Criteria();
         notNullWorkgroupCriteria.addNotNull("delegatorGroupId");
         Criteria orCriteria = new Criteria();
@@ -131,7 +131,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         criteria.addAndCriteria(orCriteria);
         ReportQueryByCriteria query = QueryFactory.newReportQuery(ActionItem.class, criteria);
 
-        query.setAttributes(new String[]{"delegatorWorkflowId", "delegatorGroupId"});
+        query.setAttributes(new String[]{"delegatorPrincipalId", "delegatorGroupId"});
         Map<Object, Recipient> delegators = new HashMap<Object, Recipient>();
         Iterator iterator = this.getPersistenceBrokerTemplate().getReportQueryIteratorByQuery(query);
         while (iterator.hasNext()) {
@@ -152,16 +152,16 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
     public Collection<Recipient> findPrimaryDelegationRecipients(String principalId) {
     	List<String> workgroupIds = KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
         Criteria orCriteria = new Criteria();
-        Criteria delegatorWorkflowIdCriteria = new Criteria();
-        delegatorWorkflowIdCriteria.addEqualTo("delegatorWorkflowId", principalId);
+        Criteria delegatorPrincipalIdCriteria = new Criteria();
+        delegatorPrincipalIdCriteria.addEqualTo("delegatorPrincipalId", principalId);
         if (CollectionUtils.isNotEmpty(workgroupIds)) {
             Criteria delegatorWorkgroupCriteria = new Criteria();
             delegatorWorkgroupCriteria.addIn("delegatorGroupId", workgroupIds);
             orCriteria.addOrCriteria(delegatorWorkgroupCriteria);
-            orCriteria.addOrCriteria(delegatorWorkflowIdCriteria);
+            orCriteria.addOrCriteria(delegatorPrincipalIdCriteria);
         }
         else {
-            orCriteria.addAndCriteria(delegatorWorkflowIdCriteria);
+            orCriteria.addAndCriteria(delegatorPrincipalIdCriteria);
         }
         Criteria criteria = new Criteria();
         criteria.addEqualTo("delegationType", DelegationType.PRIMARY.getCode());

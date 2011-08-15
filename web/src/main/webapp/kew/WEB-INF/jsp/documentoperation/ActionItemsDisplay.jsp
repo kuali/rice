@@ -78,7 +78,7 @@
   	  </tr>
   	  <tr>
   	    <td width="33%" align=right class="thnormal">Delegator Person ID: </td>
-  	    <td width="66%" class="datacell"><c:out value="${actionItem.delegatorWorkflowId}" />&nbsp;</td>
+  	    <td width="66%" class="datacell"><c:out value="${actionItem.delegatorPrincipalId}" />&nbsp;</td>
   	  </tr>
   	  <tr>
   	    <td width="33%" align=right class="thnormal">Delegator Workgroup ID:</td>

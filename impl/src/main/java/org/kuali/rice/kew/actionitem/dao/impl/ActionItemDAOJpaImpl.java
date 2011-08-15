@@ -160,7 +160,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
 
     public Collection<Recipient> findSecondaryDelegators(String principalId) {
         Criteria notNullWorkflowCriteria = new Criteria(ActionItem.class.getName());
-        notNullWorkflowCriteria.notNull("delegatorWorkflowId");
+        notNullWorkflowCriteria.notNull("delegatorPrincipalId");
         Criteria notNullWorkgroupCriteria = new Criteria(ActionItem.class.getName());
         notNullWorkgroupCriteria.notNull("delegatorGroupId");
         Criteria orCriteria = new Criteria(ActionItem.class.getName());
@@ -174,11 +174,11 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
         Map<Object, Recipient> delegators = new HashMap<Object, Recipient>();
 
         for(Object actionItem:new QueryByCriteria(entityManager, criteria).toQuery().getResultList()){
-        	final String delegatorWorkflowId = ((ActionItem)actionItem).getDelegatorPrincipalId();
+        	final String delegatorPrincipalId = ((ActionItem)actionItem).getDelegatorPrincipalId();
         	String delegatorGroupId = ((ActionItem)actionItem).getDelegatorGroupId();
 
-        	if (delegatorWorkflowId != null && !delegators.containsKey(delegatorWorkflowId)) {
-                delegators.put(delegatorWorkflowId,new WebFriendlyRecipient(KimApiServiceLocator.getPersonService().getPerson(delegatorWorkflowId)));
+        	if (delegatorPrincipalId != null && !delegators.containsKey(delegatorPrincipalId)) {
+                delegators.put(delegatorPrincipalId,new WebFriendlyRecipient(KimApiServiceLocator.getPersonService().getPerson(delegatorPrincipalId)));
             }else if (delegatorGroupId != null) {
                 if (!delegators.containsKey(delegatorGroupId)) {
                     delegators.put(delegatorGroupId, new KimGroupRecipient(KimApiServiceLocator.getGroupService().getGroup(
@@ -192,16 +192,16 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
     public Collection<Recipient> findPrimaryDelegationRecipients(String principalId) {
     	List<String> workgroupIds = KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
         Criteria orCriteria = new Criteria(ActionItem.class.getName());
-        Criteria delegatorWorkflowIdCriteria = new Criteria(ActionItem.class.getName());
-        delegatorWorkflowIdCriteria.eq("delegatorWorkflowId", principalId);
+        Criteria delegatorPrincipalIdCriteria = new Criteria(ActionItem.class.getName());
+        delegatorPrincipalIdCriteria.eq("delegatorPrincipalId", principalId);
         if (CollectionUtils.isNotEmpty(workgroupIds)) {
             Criteria delegatorWorkgroupCriteria = new Criteria(ActionItem.class.getName());
             delegatorWorkgroupCriteria.in("delegatorGroupId", new ArrayList<String>(workgroupIds));
             orCriteria.or(delegatorWorkgroupCriteria);
-            orCriteria.or(delegatorWorkflowIdCriteria);
+            orCriteria.or(delegatorPrincipalIdCriteria);
         }
         else {
-            orCriteria.and(delegatorWorkflowIdCriteria);
+            orCriteria.and(delegatorPrincipalIdCriteria);
         }
         Criteria criteria = new Criteria(ActionItem.class.getName());
         criteria.eq("delegationType", DelegationType.PRIMARY.getCode());

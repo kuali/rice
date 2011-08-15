@@ -271,30 +271,6 @@ public class DTOConverter {
         return routeHeader;
     }
 
-    public static ActionItemDTO convertActionItem(ActionItem actionItem) {
-        ActionItemDTO actionItemVO = new ActionItemDTO();
-        actionItemVO.setActionItemId(actionItem.getId());
-        actionItemVO.setActionItemIndex(actionItem.getActionItemIndex());
-        actionItemVO.setActionRequestCd(actionItem.getActionRequestCd());
-        actionItemVO.setActionRequestId(actionItem.getActionRequestId());
-        actionItemVO.setActionToTake(actionItem.getActionToTake());
-        actionItemVO.setDateAssigned(actionItem.getDateAssigned());
-        actionItemVO.setDateAssignedString(actionItem.getDateAssignedString());
-        actionItemVO.setDelegationType(actionItem.getDelegationType());
-        actionItemVO.setDelegatorPrincipalId(actionItem.getDelegatorPrincipalId());
-        actionItemVO.setDelegatorGroupId(actionItem.getDelegatorGroupId());
-        actionItemVO.setDocHandlerURL(actionItem.getDocHandlerURL());
-        actionItemVO.setDocLabel(actionItem.getDocLabel());
-        actionItemVO.setDocName(actionItem.getDocName());
-        actionItemVO.setDocTitle(actionItem.getDocTitle());
-        actionItemVO.setResponsibilityId(actionItem.getResponsibilityId());
-        actionItemVO.setRoleName(actionItem.getRoleName());
-        actionItemVO.setDocumentId(actionItem.getDocumentId());
-        actionItemVO.setPrincipalId(actionItem.getPrincipalId());
-        actionItemVO.setGroupId(actionItem.getGroupId());
-        return actionItemVO;
-    }
-
     public static String buildUpdatedDocumentContent(String existingDocContent,
             DocumentContentUpdate documentContentUpdate, String documentTypeName) {
         if (existingDocContent == null) {

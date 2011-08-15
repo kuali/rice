@@ -39,7 +39,6 @@ import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
-import org.springframework.web.servlet.view.RedirectView;
 
 
 /**
@@ -217,7 +216,7 @@ public class NotificationController extends MultiActionController {
     public ModelAndView displayNotificationDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String view = "NotificationDetail"; // default to full view
 
-        String user = request.getRemoteUser();
+        String principalNm = request.getRemoteUser();
         String command = request.getParameter(NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.COMMAND);
         String standaloneWindow = request.getParameter(NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.STANDALONE_WINDOW);
 
@@ -237,9 +236,14 @@ public class NotificationController extends MultiActionController {
             // we want all messages from the action list in line
             command = NotificationConstants.NOTIFICATION_DETAIL_VIEWS.INLINE;
         }
-
-        actionable = user.equals(messageDelivery.getUserRecipientId()) && NotificationConstants.MESSAGE_DELIVERY_STATUS.DELIVERED.equals(messageDelivery.getMessageDeliveryStatus());
-
+        
+        Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalNm);
+        if (principal != null) {
+        	actionable = (principal.getPrincipalId()).equals(messageDelivery.getUserRecipientId()) && NotificationConstants.MESSAGE_DELIVERY_STATUS.DELIVERED.equals(messageDelivery.getMessageDeliveryStatus());
+        } else {
+            throw new RuntimeException("There is no principal for principalNm " + principalNm);
+        }
+        
         List<NotificationSender> senders = notification.getSenders();
         List<NotificationRecipient> recipients = notification.getRecipients();
 

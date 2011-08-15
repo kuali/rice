@@ -125,7 +125,7 @@
 
 			<c:if
 				test="${! empty headerMenuBar and !_isInquiry and KualiForm.showMaintenanceLinks}">
-				<div class="lookupcreatenew" title="Create a new record">
+				<div class="lookupcreatenew">
 					${headerMenuBar}
 				</div>
 		</c:if>

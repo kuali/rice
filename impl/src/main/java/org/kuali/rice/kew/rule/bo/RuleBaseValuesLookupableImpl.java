@@ -33,7 +33,7 @@ public class RuleBaseValuesLookupableImpl extends KualiLookupableImpl {
         String url = "";
         if (getLookupableHelperService().allowsMaintenanceNewOrCopyAction()) {
         	String kewBaseUrl = ConfigContext.getCurrentContextConfig().getKEWBaseURL();
-            url = "<a href=\""+kewBaseUrl+"/Rule.do\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
+            url = "<a title=\"Create a new record\" href=\""+kewBaseUrl+"/Rule.do\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
         }
         return url;
     }

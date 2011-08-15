@@ -37,7 +37,7 @@ public class ResponsibilityLookupableImpl extends KualiLookupableImpl {
                 parameters.put(KRADConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());
             }
             url = UrlFactory.parameterizeUrl(KRADConstants.MAINTENANCE_ACTION, parameters);
-            url = "<a href=\"" + url + "\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
+            url = "<a title=\"Create a new record\" href=\"" + url + "\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
         }
 
         return url;

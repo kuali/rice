@@ -138,7 +138,7 @@ public class KualiLookupableImpl implements Lookupable {
             parameters.put(KRADConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, this.businessObjectClass.getName());
 
             url = UrlFactory.parameterizeUrl(KRADConstants.MAINTENANCE_ACTION, parameters);
-            url = "<a href=\"" + url + "\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
+            url = "<a title=\"Create a new record\" href=\"" + url + "\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
         }
 
         return url;
@@ -343,7 +343,7 @@ public class KualiLookupableImpl implements Lookupable {
 	}
 
 	protected String getCreateNewUrl(String url){
-		return "<a href=\"" + url + "\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
+		return "<a title=\"Create a new record\" href=\"" + url + "\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
 	}
 
 	/**

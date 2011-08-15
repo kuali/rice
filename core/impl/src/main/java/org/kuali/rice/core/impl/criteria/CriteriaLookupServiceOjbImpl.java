@@ -36,6 +36,7 @@ import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.SingleValuedPredicate;
 import org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -220,7 +221,7 @@ public class CriteriaLookupServiceOjbImpl extends PlatformAwareDaoBaseOjb implem
     private static <U extends CriteriaValue<?>> Object getVal(U toConv) {
         Object o = toConv.getValue();
         if (o instanceof DateTime) {
-            return ((DateTime) o).toDate();
+            return new Timestamp(((DateTime) o).getMillis());
         }
         return o;
     }

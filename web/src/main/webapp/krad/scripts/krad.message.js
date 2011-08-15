@@ -229,7 +229,7 @@ function showFieldIcon(errorsDivId, errorCount) {
  * @param fieldId - id for the field the icon should be added to
  */
 function showChangeIcon(fieldId) {
-    var fieldMarkerSpan = jq("#" + fieldId + "_markers");
+    var fieldMarkerSpan = jq("#" + fieldId + "_attribute_markers");
     var fieldIcon = jq("#" + fieldId + "_changeIcon");
 
     if (fieldMarkerSpan.length > 0 && fieldIcon.length == 0) {

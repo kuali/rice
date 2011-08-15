@@ -161,8 +161,8 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
                         comparable.getBindingObjectPath());
                 if (comparable.isReadOnly()) {
                     compareItem.setReadOnly(true);
-                    if (compareItem.getPropertyExpressions().containsKey("render")) {
-                        compareItem.getPropertyExpressions().remove("render");
+                    if (compareItem.getPropertyExpressions().containsKey("readOnly")) {
+                        compareItem.getPropertyExpressions().remove("readOnly");
                     }
                 }
 

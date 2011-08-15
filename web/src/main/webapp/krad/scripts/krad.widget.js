@@ -29,16 +29,25 @@ function setPageBreadcrumb(){
 		jq("#breadcrumbs").find("#page_breadcrumb").remove();
 		var bcSet = false;
 		if(pageTitle){
-			jq("#breadcrumbs").append("<span id='page_breadcrumb'> &raquo; <span class='current'>" + pageTitle + "</span></span>");
+			jq("#breadcrumbs").append("<li id='page_breadcrumb'><span role='presentation'>&raquo;</span> <span class='current'>" + pageTitle + "</span></li>");
 			jq("#current_breadcrumb_span").hide();
+            if(jq("#current_breadcrumb_span").parent("li").length){
+                jq("#current_breadcrumb_span").unwrap();
+            }
+            var anchor = jq("#current_breadcrumb_anchor");
+            jq("#current_breadcrumb_anchor").wrap("<li/>");
 			jq("#current_breadcrumb_anchor").show();
 			bcSet = true;
 		}
 		else if(pageId){
 			pageTitle = jq("a[name='"+ pageId + "']").text();
 			if(pageTitle){
-				jq("#breadcrumbs").append("<span id='page_breadcrumb'> &raquo; <span class='current'>" + pageTitle + "</span></span>");
+				jq("#breadcrumbs").append("<li id='page_breadcrumb'><span role='presentation'>&raquo;</span> <span class='current'>" + pageTitle + "</span></li>");
 				jq("#current_breadcrumb_span").hide();
+                if(jq("#current_breadcrumb_span").parent("li").length){
+                    jq("#current_breadcrumb_span").unwrap();
+                }
+                jq("#current_breadcrumb_anchor").wrap();
 				jq("#current_breadcrumb_anchor").show();
 				bcSet=true;
 			}
@@ -46,6 +55,10 @@ function setPageBreadcrumb(){
 
 		if(!bcSet){
 			jq("#current_breadcrumb_anchor").hide();
+            if(jq("#current_breadcrumb_anchor").parent("li").length){
+                jq("#current_breadcrumb_anchor").unwrap();
+            }
+            jq("#current_breadcrumb_span").wrap("<li/>");
 			jq("#current_breadcrumb_span").show();
 		}
 	}

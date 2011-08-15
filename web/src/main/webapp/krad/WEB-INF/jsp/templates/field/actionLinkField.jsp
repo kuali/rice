@@ -26,8 +26,8 @@
 <krad:attributeBuilder component="${field}"/>
 <c:set var="pound" value="#"/>
 <c:if test="${!empty field.navigateToPageId}">
-  <c:set var="name" value="name=\" ${field.navigateToPageId}\""/>
-  <c:set var="href" value="href=\" ${pound}${field.navigateToPageId}\""/>
+  <c:set var="name" value="name=\"${field.navigateToPageId}\""/>
+  <c:set var="href" value="href=\"${pound}${field.navigateToPageId}\""/>
 </c:if>
 
 <c:set var="tabindex" value="tabindex=0"/>

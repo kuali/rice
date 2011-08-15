@@ -23,7 +23,7 @@
 <!----------------------------------- #NAVIGATION --------------------------------------->
 <krad:div component="${group}">
   <%-- render items in list --%>
-  <ul id="${group.id}">
+  <ul id="${group.id}" role="navigation">
     <c:forEach items="${group.items}" var="item" varStatus="itemVarStatus">
       <li>
          <krad:template component="${item}"/>

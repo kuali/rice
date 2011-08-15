@@ -3,7 +3,8 @@
 .breadcrumbs{
     border-bottom: 1px dotted #C9C9C9;
     border-top: 1px dotted #C9C9C9;
-    clear: both;
+    display: block;
+    width: 100%;
     color: #3F7826;
     letter-spacing: 0.02em;
     padding: 3px 0 3px 15px;
@@ -31,3 +32,10 @@
 	color: #000000;
 	font-weight: bold;
  }
+
+ .breadcrumbs ol, li{
+    display: inline;
+    margin: 0;
+    list-style: none;
+    width: auto;
+}

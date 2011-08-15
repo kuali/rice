@@ -13,23 +13,26 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
+<%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp" %>
 
 <tiles:useAttribute name="widget"
-	classname="org.kuali.rice.krad.uif.widget.BreadCrumbs" />
-	
+                    classname="org.kuali.rice.krad.uif.widget.BreadCrumbs"/>
+
 <c:set var="current" value="${KualiForm.formHistory.generatedCurrentBreadcrumb}"/>
-<c:set var="crumbs" value="${KualiForm.formHistory.generatedBreadcrumbs}"/> 
+<c:set var="crumbs" value="${KualiForm.formHistory.generatedBreadcrumbs}"/>
 
 <%--Create the breadcrumbs using the generatedBreadcrumbs from history, note that current
 is omitted by default, but the link to it is still present, it can be shown as a clickable
 link again through jquery as in setPageBreadcrumb when needed --%>
 <c:if test="${(fn:length(crumbs) >= 1) || (widget.displayBreadcrumbsWhenOne && fn:length(crumbs) == 0)}">
-	<div id="breadcrumbs" class="${widget.styleClassesAsString}">
-		<c:forEach var="entry" items="${crumbs}" >
-	        <a href="${entry.url}">${entry.title}</a><span> &raquo; </span>
-	    </c:forEach>
-	   	<span id="current_breadcrumb_span" class="current">${current.title}</span>
-   		<a id="current_breadcrumb_anchor" style="display:none;" href="${current.url}"/>${current.title}</a>
-	</div>
+  <label id="breadcrumb_label" class="offScreen">Breadcrumbs</label>
+  <span class="${widget.styleClassesAsString}">
+    <ol id="breadcrumbs" role="navigation" aria-labelledby="breadcrumb_label">
+      <c:forEach var="entry" items="${crumbs}">
+        <li><a href="${entry.url}">${entry.title}</a><span role="presentation"> &raquo; </span></li>
+      </c:forEach>
+      <span class="current" id="current_breadcrumb_span">${current.title}</span>
+      <a style="display:none;" id="current_breadcrumb_anchor" href="${current.url}"/>${current.title}</a>
+    </ol>
+  </span>
 </c:if>

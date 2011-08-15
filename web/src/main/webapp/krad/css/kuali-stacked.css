@@ -186,3 +186,10 @@ button img.leftActionImage, a img.leftActionImage{
 button img.rightActionImage, a img.rightActionImage{
     margin-left: 5px;
 }
+
+.offScreen{
+    position: absolute;
+    left: -200em;
+    width: 10em;
+    overflow: hidden;
+}

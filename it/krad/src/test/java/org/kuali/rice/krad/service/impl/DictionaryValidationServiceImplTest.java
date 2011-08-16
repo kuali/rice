@@ -17,6 +17,7 @@ package org.kuali.rice.krad.service.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -224,6 +225,7 @@ public class DictionaryValidationServiceImplTest extends KRADTestCase{
 		acmeCompany.setMainContact(companyContact);
 		Person mainContactPerson = new Person();
 		companyContact.setEmployeeDetails(mainContactPerson);
+		companyContact.setEmployeeId("companyContact");
 
 		dictionaryValidationResult = service.validate(acmeCompany, "org.kuali.rice.krad.datadictionary.validation.Company",companyEntry, true);		
 
@@ -256,7 +258,11 @@ public class DictionaryValidationServiceImplTest extends KRADTestCase{
         
         //Add required employes and revalidate
         Employee employee1 = new Employee();
-        employee1.setEmployeeDetails(new Person());
+        Person person = new Person();
+        person.setBirthDate(new Date());
+        person.setGender("M");        
+        employee1.setEmployeeDetails(person);
+        employee1.setEmployeeId("123456789");       
         
         
         List<Employee> employees = new ArrayList<Employee>();
@@ -278,7 +284,7 @@ public class DictionaryValidationServiceImplTest extends KRADTestCase{
         slogans.add("Slogan Two");
         
         dictionaryValidationResult = service.validate(acmeCompany, "org.kuali.rice.krad.datadictionary.validation.Company",companyEntry, true);
-        Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
+        Assert.assertEquals(2, dictionaryValidationResult.getNumberOfErrors());
         
         //FIXME: The path returned is in incorrect and doesn't take into account index
         Assert.assertTrue(hasError(dictionaryValidationResult, "employeeDetails", RiceKeyConstants.ERROR_REQUIRED));

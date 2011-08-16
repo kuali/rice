@@ -50,8 +50,9 @@
 		<property name="name" value="employeeId"/>
 		<property name="shortLabel" value="employeeId"/>
 		<property name="summary" value="Employee Id"/>
-		<property name="label" value="Employee Id"/>
-		<property name="description" value="Employee Id"/>
+		<property name="label" value="Employee Id"/>		
+        <property name="description" value="Employee Id"/>
+        <property name="required" value="true"/>
 		<property name="minLength" value="1"/>
 		<property name="maxLength" value="36"/>
 		<property name="validationPattern">

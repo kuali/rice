@@ -34,6 +34,7 @@ import org.kuali.rice.krad.datadictionary.validation.AttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.DictionaryObjectAttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.ErrorLevel;
 import org.kuali.rice.krad.datadictionary.validation.SingleAttributeValueReader;
+import org.kuali.rice.krad.datadictionary.validation.ValidationUtils;
 import org.kuali.rice.krad.datadictionary.validation.capability.Constrainable;
 import org.kuali.rice.krad.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.provider.ConstraintProvider;
@@ -765,7 +766,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         DictionaryValidationResult result = new DictionaryValidationResult();
 
         if (valueReader.getAttributeName() == null) {
-            validateObject(result, valueReader, doOptionalProcessing);
+            validateObject(result, valueReader, doOptionalProcessing, true);
         } else {
             validateAttribute(result, valueReader, doOptionalProcessing);
         }
@@ -773,10 +774,15 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         if (result.getNumberOfErrors() > 0) {
             for (Iterator<ConstraintValidationResult> iterator = result.iterator(); iterator.hasNext(); ) {
                 ConstraintValidationResult constraintValidationResult = iterator.next();
-                if (constraintValidationResult.getStatus().getLevel() >= ErrorLevel.WARN.getLevel())
+                if (constraintValidationResult.getStatus().getLevel() >= ErrorLevel.WARN.getLevel()){                    
+                    String attributePath = constraintValidationResult.getAttributePath();
+                    if (attributePath == null || attributePath.isEmpty()){
+                        attributePath = constraintValidationResult.getAttributeName();
+                    }
                     setFieldError(constraintValidationResult.getEntryName(),
-                            constraintValidationResult.getAttributeName(), constraintValidationResult.getErrorKey(),
+                            attributePath, constraintValidationResult.getErrorKey(),
                             constraintValidationResult.getErrorParameters());
+                }
             }
         }
 
@@ -909,7 +915,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     private void validateObject(DictionaryValidationResult result, AttributeValueReader attributeValueReader, 
-            boolean doOptionalProcessing) throws AttributeValidationException {
+            boolean doOptionalProcessing, boolean processAttributes) throws AttributeValidationException {
 
         // If the entry itself is constrainable then the attribute value reader will return it here and we'll need to check if it has any constraints
         Constrainable objectEntry = attributeValueReader.getEntry();
@@ -922,9 +928,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         if (null == definitions)
             return;
 
-        //ProcessDefinition all attribute definitions, but not if this is a nested object, in which case attribute definitions
-        //will already have been processed on the parent object.
-        if (attributeValueReader.getPath() == null || attributeValueReader.getPath().isEmpty()){
+        //Process all attribute definitions (unless being skipped)
+        if (processAttributes){
             for (Constrainable definition : definitions) {
                 String attributeName = definition.getName();
                 attributeValueReader.setAttributeName(attributeName);
@@ -934,7 +939,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             }
         }
 
-        //ProcessDefinition any constraints that may be defined on complex attributes
+        //Process any constraints that may be defined on complex attributes
         if (objectEntry instanceof DataDictionaryEntryBase) {
             List<ComplexAttributeDefinition> complexAttrDefinitions =
                     ((DataDictionaryEntryBase) objectEntry).getComplexAttributes();
@@ -950,7 +955,9 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                         AttributeValueReader nestedAttributeValueReader =
                                 new DictionaryObjectAttributeValueReader(value, childEntry.getFullClassName(),
                                         childEntry, attributeValueReader.getPath());
-                        validateObject(result, nestedAttributeValueReader, doOptionalProcessing);
+                        //Validate nested object, however skip attribute definition porcessing on 
+                        //nested object entry, since they have already been processed above.
+                        validateObject(result, nestedAttributeValueReader, doOptionalProcessing, false);
                     }
                     
                     processElementConstraints(result, value, complexAttrDefinition, attributeValueReader,
@@ -973,12 +980,17 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                 DataDictionaryEntry childEntry = childEntryName != null ?
                         getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(childEntryName) : null;
                 if (collectionObject != null) {
-                    for (Object value : collectionObject) {
+                    int index = 0;
+                    for (Object value : collectionObject) {                                               
+                        //NOTE: This path is only correct for collections that guarantee order
+                        String objectAttributePath =  attributeValueReader.getPath() + "["+ index + "]";
+
                         //FIXME: It's inefficient to be creating new attribute reader for each item in collection
                         AttributeValueReader nestedAttributeValueReader =
                                 new DictionaryObjectAttributeValueReader(value, childEntryName, childEntry,
-                                        attributeValueReader.getPath());
-                        validateObject(result, nestedAttributeValueReader, doOptionalProcessing);
+                                        objectAttributePath);
+                        validateObject(result, nestedAttributeValueReader, doOptionalProcessing, true);
+                        index++;
                     }
                 }
 

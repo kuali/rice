@@ -18,6 +18,7 @@ package org.kuali.rice.krms.impl.ui;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.ojb.broker.metadata.ClassNotPersistenceCapableException;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.document.MaintenanceDocument;
@@ -46,7 +47,35 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
 		return KRADServiceLocator.getBusinessObjectService();
 	}
 
-	/**
+    @Override
+    public Object retrieveObjectForEditOrCopy(MaintenanceDocument document, Map<String, String> dataObjectKeys) {
+        Object dataObject = null;
+
+        try {
+            // Since the dataObject is a wrapper class we need to build it and populate with the agenda bo.
+            AgendaEditor agendaEditor = new AgendaEditor();
+            AgendaBo agenda = getLookupService().findObjectBySearch(((AgendaEditor) getDataObject()).getAgenda().getClass(), dataObjectKeys);
+            if (KRADConstants.MAINTENANCE_COPY_ACTION.equals(getMaintenanceAction())) {
+              // If we don't clear the primary key and set the fieldsClearedOnCopy flag then the
+              // MaintenanceDocumentServiceImpl.processMaintenanceObjectForCopy() will try to locate the primary keys in
+              // an attempt to clear them which again would cause an exception due to the wrapper class.
+              agenda.setId(null);
+              document.setFieldsClearedOnCopy(true);
+            }
+            agendaEditor.setAgenda(agenda);
+            dataObject = agendaEditor;
+        } catch (ClassNotPersistenceCapableException ex) {
+            if (!document.getOldMaintainableObject().isExternalBusinessObject()) {
+                throw new RuntimeException("Data Object Class: " + getDataObjectClass() +
+                        " is not persistable and is not externalizable - configuration error");
+            }
+            // otherwise, let fall through
+        }
+
+        return dataObject;
+    }
+
+    /**
 	 * {@inheritDoc}
 	 */
 	@Override
@@ -110,6 +139,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         if (getDataObject() == null) {
             isOldDataObjectInExistence = false;
         } else {
+            // dataObject contains a non persistable wrapper - use agenda from the wrapper object instead
             Map<String, ?> keyFieldValues = getDataObjectMetaDataService().getPrimaryKeyFieldValues(((AgendaEditor) getDataObject()).getAgenda());
             for (Object keyValue : keyFieldValues.values()) {
                 if (keyValue == null) {

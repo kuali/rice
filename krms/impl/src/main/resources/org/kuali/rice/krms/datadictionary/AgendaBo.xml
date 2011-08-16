@@ -85,6 +85,7 @@
   <bean id="AgendaBo-LookupView" parent="LookupView">
     <property name="title" value="Agenda Lookup" />
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.AgendaBo" />
+    <property name="viewHelperServiceClassName" value="org.kuali.rice.krms.impl.repository.AgendaLookupableHelperServiceImpl" />
     <property name="criteriaFields">
       <list>
         <bean parent="LookupCriteriaAttributeField" p:propertyName="id" />

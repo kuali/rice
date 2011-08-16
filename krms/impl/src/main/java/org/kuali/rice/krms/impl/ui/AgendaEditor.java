@@ -41,6 +41,9 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
     private String cutAgendaItemId;
 
     public AgendaEditor() {
+        agenda = new AgendaBo();
+        // ToDo: Determine proper default values of agenda's typeId
+        agenda.setTypeId("");
         agendaItemLine = new AgendaItemBo();
     }
 

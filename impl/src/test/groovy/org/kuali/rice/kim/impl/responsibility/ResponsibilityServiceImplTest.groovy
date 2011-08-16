@@ -626,4 +626,99 @@ class ResponsibilityServiceImplTest {
         Assert.assertEquals("respidone", responsibilityActions[0].responsibilityId);
         Assert.assertEquals("roleidone", responsibilityActions[0].roleId);
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetResponsibilityActionsByTemplateNameWithNullNamespaceCodeFails() {
+        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActionsByTemplateName(null, "test", new HashMap<String, String>(), new HashMap<String, String>());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetResponsibilityActionsByTemplateNameWithBlankNamespaceCodeFails() {
+        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActionsByTemplateName("", "test", new HashMap<String, String>(), new HashMap<String, String>());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetResponsibilityActionsByTemplateNameWithNullTemplateNameFails() {
+        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActionsByTemplateName("test", null, new HashMap<String, String>(), new HashMap<String, String>());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetResponsibilityActionsByTemplateNameWithBlankTemplateNameFails() {
+        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActionsByTemplateName("test", "", new HashMap<String, String>(), new HashMap<String, String>());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetResponsibilityActionsByTemplateNameWithNullQualificationFails() {
+        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActionsByTemplateName("test", "test", null, new HashMap<String, String>());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetResponsibilityActionsByTemplateNameWithNullResponsibilityDetailsFails() {
+        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActionsByTemplateName("test", "test", new HashMap<String, String>(), null);
+    }
+
+    @Test
+    public void testGetResponsibilityActionsByTemplateNameSucceeds() {
+        mockBoService.demand.findMatching(1..1) {
+            Class clazz, Map map -> for (ResponsibilityBo responsibilityBo in sampleResponsibilities.values()) {
+                if (responsibilityBo.namespaceCode.equals(map.get("namespaceCode"))
+                    && responsibilityBo.template.name.equals(map.get("template.name")))
+                {
+                    Collection<ResponsibilityBo> responsibilities = new ArrayList<ResponsibilityBo>();
+                    responsibilities.add(responsibilityBo);
+                    return responsibilities;
+                }
+            }
+        }
+
+        GenericQueryResults.Builder<RoleResponsibilityBo> genericQueryResults = new GenericQueryResults.Builder<RoleResponsibilityBo>();
+        genericQueryResults.totalRowCount = 1;
+        genericQueryResults.moreResultsAvailable = false;
+        List<RoleResponsibilityBo> roleResponsibilities = new ArrayList<RoleResponsibilityBo>();
+        roleResponsibilities.add(sampleRoleResponsibilities.get("rolerespidone"));
+        genericQueryResults.results = roleResponsibilities;
+        GenericQueryResults<RoleResponsibilityBo> results = genericQueryResults.build();
+
+        mockCriteriaLookupService.demand.lookup(1..1) {
+            Class<RoleResponsibilityBo> queryClass, QueryByCriteria criteria -> return results;
+        }
+
+        mockRoleService.demand.getRoleMembers(1..1) {
+            List<String> roleIds, Map<String, String> qualification ->
+                List<RoleMembership> roleMemberships = new ArrayList<RoleMembership>();
+                RoleMembership.Builder builder = new RoleMembership.Builder();
+                builder.memberId = "memberidone";
+                builder.embeddedRoleId = "embeddedroleidone";
+                builder.roleId = "roleidone";
+                builder.qualifier = new HashMap<>();
+                builder.memberTypeCode = "P";
+                builder.roleMemberId = "rolememberidone";
+                roleMemberships.add(builder.build());
+                return roleMemberships;
+        }
+
+        GenericQueryResults.Builder<RoleResponsibilityActionBo> actionGenericQueryResults = new GenericQueryResults.Builder<RoleResponsibilityBo>();
+        actionGenericQueryResults.totalRowCount = 1;
+        actionGenericQueryResults.moreResultsAvailable = false;
+        List<RoleResponsibilityActionBo> roleResponsibilityActions = new ArrayList<RoleResponsibilityActionBo>();
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionidone"));
+        actionGenericQueryResults.results = roleResponsibilityActions;
+        GenericQueryResults<RoleResponsibilityActionBo> actionResults = actionGenericQueryResults.build();
+
+        mockCriteriaLookupService.demand.lookup(1..1) {
+            Class<RoleResponsibilityActionBo> queryClass, QueryByCriteria criteria -> return actionResults;
+        }
+
+        injectBusinessObjectServiceIntoResponsibilityService();
+        injectCriteriaLookupServiceIntoResponsibilityService();
+        injectRoleServiceIntoResponsibilityService();
+
+        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActionsByTemplateName("namespacecodeone", "resptemplateone", new HashMap<String, String>(), new HashMap<String, String>());
+
+        Assert.assertEquals("memberidone", responsibilityActions[0].principalId);
+        Assert.assertEquals("rolerespactionidone", responsibilityActions[0].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidone", responsibilityActions[0].memberRoleId);
+        Assert.assertEquals("respidone", responsibilityActions[0].responsibilityId);
+        Assert.assertEquals("roleidone", responsibilityActions[0].roleId);
+    }
 }

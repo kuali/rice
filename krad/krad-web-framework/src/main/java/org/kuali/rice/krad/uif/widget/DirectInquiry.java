@@ -103,9 +103,9 @@ public class DirectInquiry extends Inquiry {
 
 		// Check if lightbox is set. Get lightbox options.
 		String lightBoxOptions = "";
-		boolean lightBoxShow = directInquiryActionField.getLightBox() != null;
+		boolean lightBoxShow = directInquiryActionField.getLightBoxDirectInquiry() != null;
 		if (lightBoxShow) {
-			lightBoxOptions = directInquiryActionField.getLightBox()
+			lightBoxOptions = directInquiryActionField.getLightBoxDirectInquiry()
 					.getComponentOptionsJSString();
 		}
 

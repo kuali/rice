@@ -18,7 +18,6 @@ import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.widget.LightBox;
-import org.kuali.rice.krad.uif.widget.LightBoxLookup;
 
 import java.util.HashMap;
 import java.util.List;
@@ -48,9 +47,9 @@ public class ActionField extends FieldBase {
 
     private Map<String, String> actionParameters;
 
-    private LightBoxLookup lightBoxLookup;
+    private LightBox lightBoxLookup;
 
-    private LightBox lightBox;
+    private LightBox lightBoxDirectInquiry;
 
     private boolean blockValidateDirty;
 
@@ -229,7 +228,7 @@ public class ActionField extends FieldBase {
 
         components.add(actionImageField);
         components.add(lightBoxLookup);
-        components.add(lightBox);
+        components.add(lightBoxDirectInquiry);
 
         return components;
     }
@@ -395,10 +394,10 @@ public class ActionField extends FieldBase {
     /**
      * Setter for the light box lookup widget
      * 
-     * @param the
+     * @param lightBoxLookup
      *            <code>LightBoxLookup</code> widget to set
      */
-    public void setLightBoxLookup(LightBoxLookup lightBoxLookup) {
+    public void setLightBoxLookup(LightBox lightBoxLookup) {
         this.lightBoxLookup = lightBoxLookup;
     }
 
@@ -411,7 +410,7 @@ public class ActionField extends FieldBase {
      * 
      * @return the <code>DirectInquiry</code> field DirectInquiry
      */
-    public LightBoxLookup getLightBoxLookup() {
+    public LightBox getLightBoxLookup() {
         return lightBoxLookup;
     }
 
@@ -507,13 +506,13 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * Setter for the light box widget
+     * Setter for the light box direct inquiry widget
      * 
-     * @param the
+     * @param lightBoxDirectInquiry
      *            <code>LightBox</code> widget to set
      */
-    public void setLightBox(LightBox lightBox) {
-        this.lightBox = lightBox;
+    public void setLightBoxDirectInquiry(LightBox lightBoxDirectInquiry) {
+        this.lightBoxDirectInquiry = lightBoxDirectInquiry;
     }
 
     /**
@@ -525,8 +524,8 @@ public class ActionField extends FieldBase {
      * 
      * @return the <code>LightBox</code> field LightBox
      */
-    public LightBox getLightBox() {
-        return lightBox;
+    public LightBox getLightBoxDirectInquiry() {
+        return lightBoxDirectInquiry;
     }
 
     /**

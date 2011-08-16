@@ -572,7 +572,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.Component#appendToStyle(java.lang.String)
+     * @see org.kuali.rice.krad.uif.component.Component#appendToStyle(java.lang.String)
      */
     public void appendToStyle(String styleRules) {
         if (style == null) {

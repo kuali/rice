@@ -126,11 +126,13 @@ function setupTextPopout(id, label, summary, constraint) {
  * @param options -
  *          map of option settings (option name/value pairs) for the plugin
  */
-function createLightBox(controlId, options) {
+function createLightBoxLink(controlId, options) {
     jq(function () {
         var showHistory = false;
-        // Check if this is called within a lightbox
+
+        // Check if this is called within a light box
         if (!jq("#fancybox-frame", parent.document).length) {
+
             // If this is not the top frame, then create the lightbox
             // on the top frame to put overlay over whole window
             if (top == self) {
@@ -146,6 +148,7 @@ function createLightBox(controlId, options) {
             jq("#" + controlId).attr('target', '_self');
             showHistory = true;
         }
+
         // Set the dialogMode = true param
         if (jq("#" + controlId).attr('href').indexOf('&dialogMode=true') == -1) {
             jq("#" + controlId).attr('href', jq("#" + controlId).attr('href') + '&dialogMode=true'
@@ -167,19 +170,23 @@ function createLightBox(controlId, options) {
  * @param options -
  *          map of option settings (option name/value pairs) for the plugin
  */
-function createLightBoxLookup(controlId, options, actionParameterMapString) {
+function createLightBoxPost(controlId, options, actionParameterMapString) {
     jq(function () {
+
         // Check if this is not called within a lightbox
         if (!jq("#fancybox-frame", parent.document).length) {
             jq("#" + controlId).click(function (e) {
+
                 // Prevent the default submit
                 e.preventDefault();
                 jq("[name='jumpToId']").val(controlId);
-                // Add the ajaxCall parameter so that the controller can avoid the redirect
+
+                // Add the lightBoxCall parameter so that the controller can avoid the redirect
                 actionParameterMapString['actionParameters[dialogMode]'] = 'true';
-                actionParameterMapString['actionParameters[ajaxCall]'] = 'true';
+                actionParameterMapString['actionParameters[lightBoxCall]'] = 'true';
                 actionParameterMapString['actionParameters[showHistory]'] = 'false';
                 actionParameterMapString['actionParameters[showHome]'] = 'false';
+
                 // If this is the top frame, the page is not displayed in the iframeprotlet
                 // set the return target
                 if (top == self) {
@@ -187,26 +194,30 @@ function createLightBoxLookup(controlId, options, actionParameterMapString) {
                 } else {
                     actionParameterMapString['actionParameters[returnTarget]'] = 'iframeportlet';
                 }
+
+                // Add the action parameters hidden to form
                 for (var key in actionParameterMapString) {
                     writeHiddenToForm(key, actionParameterMapString[key]);
                 }
                 // Do the Ajax submit on the kualiForm form
                 jq("#kualiForm").ajaxSubmit({
-                            // The additional data ie. baseLookupURL, bussObject
-//            	data: actionParameterMapString,
                             success: function(data) {
+
                                 // Add the returned URL to the FancyBox href setting
                                 options['href'] = data;
+
+                                // Open the light box
                                 if (top == self) {
                                     jq.fancybox(options);
                                 } else {
                                     parent.$.fancybox(options);
                                 }
-                                jq.watermark.showAll();
                             }
                         });
             });
         } else {
+
+            // Add the action parameters hidden to form and allow the submit action
             jq("#" + controlId).click(function (e) {
                 actionParameterMapString['actionParameters[dialogMode]'] = 'true';
                 actionParameterMapString['actionParameters[returnTarget]'] = '_self';
@@ -237,10 +248,13 @@ function createLightBoxLookup(controlId, options, actionParameterMapString) {
  *          map of option settings (option name/value pairs) for the lightbox plugin
  */
 function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
+
     parameterPairs = paramMap.split(",");
     queryString = "&showHome=false";
+
     for (i in parameterPairs) {
         parameters = parameterPairs[i].split(":");
+
         if (jq('[name="' + parameters[0] + '"]').val() == "") {
             alert("Please enter a value in the appropriate field.");
             return false;
@@ -248,8 +262,11 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
             queryString = queryString + "&" + parameters[1] + "=" + jq('[name="' + parameters[0] + '"]').val();
         }
     }
+
     if (showLightBox) {
+
         if (!jq("#fancybox-frame", parent.document).length) {
+
             // If this is not the top frame, then create the lightbox
             // on the top frame to put overlay over whole window
             queryString = queryString + "&showHistory=false";
@@ -261,6 +278,7 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
                 top.$.fancybox(lightBoxOptions);
             }
         } else {
+
             // If this is already in a lightbox just open in current lightbox
             queryString = queryString + "&showHistory=true";
             window.open(url + queryString, "_self");

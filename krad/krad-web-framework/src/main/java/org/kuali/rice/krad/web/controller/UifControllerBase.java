@@ -586,10 +586,10 @@ public abstract class UifControllerBase {
         // forward:
         urlParameters.setProperty(UifConstants.UrlParams.HISTORY, form.getFormHistory().getHistoryParameterString());
 
-        // If this is an Ajax call only return the redirectURL view with the URL
+        // If this is an Light Box call only return the redirectURL view with the URL
         // set this is to avoid automatic redirect when using light boxes
-        if (urlParameters.get("ajaxCall") != null && urlParameters.get("ajaxCall").equals("true")) {
-            urlParameters.remove("ajaxCall");
+        if (urlParameters.get("lightBoxCall") != null && urlParameters.get("lightBoxCall").equals("true")) {
+            urlParameters.remove("lightBoxCall");
             String redirectUrl = UrlFactory.parameterizeUrl(baseUrl, urlParameters);
 
             ModelAndView modelAndView = new ModelAndView("redirectURL");

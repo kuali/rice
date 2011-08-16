@@ -100,59 +100,26 @@
   
   <bean id="LightBox" parent="LightBox-parentBean"/>
   <bean id="LightBox-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.LightBox" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/templates/widget/lightBox.jsp"/>
+      <property name="template" value="/krad/WEB-INF/jsp/templates/widget/lightBoxLink.jsp"/>
+      <property name="height" value="95%" />
+      <property name="width" value="75%" />
       <property name="componentOptions">
           <map>
-              <entry key="autoScale" value="false"/>
+              <entry key="autoScale" value="true"/>
               <entry key="centerOnScroll" value="true"/>     
               <entry key="transitionIn" value="fade"/>   
               <entry key="transitionOut" value="fade"/>
               <entry key="speedIn" value="200"/>
-              <entry key="speedOut" value="200"/> 
-              <entry key="width" value="75%"/>
-              <entry key="height" value="95%"/>              
+              <entry key="speedOut" value="200"/>
               <entry key="hideOnOverlayClick" value="false"/>
               <entry key="type" value="iframe"/>                               	
           </map>
       </property>
   </bean> 
   
-  <bean id="LightBoxLookup" parent="LightBoxLookup-parentBean"/>
-  <bean id="LightBoxLookup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.LightBoxLookup" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/templates/widget/lightBoxLookup.jsp"/>
-      <property name="componentOptions">
-          <map>
-              <entry key="autoScale" value="false"/>              
-              <entry key="centerOnScroll" value="true"/>
-              <entry key="transitionIn" value="fade"/>   
-              <entry key="transitionOut" value="fade"/>
-              <entry key="speedIn" value="200"/>
-              <entry key="speedOut" value="200"/>                 
-              <entry key="width" value="75%"/>
-              <entry key="height" value="95%"/>              
-              <entry key="hideOnOverlayClick" value="false"/>
-              <entry key="type" value="iframe"/>
-          </map>
-      </property>
-  </bean>
-
-  <bean id="LightBoxDirectInquiry" parent="LightBoxDirectInquiry-parentBean"/>
-  <bean id="LightBoxDirectInquiry-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.LightBox" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/widget/lightBox.jsp"/>
-    <property name="componentOptions">
-      <map>
-        <entry key="autoScale" value="false"/>
-        <entry key="centerOnScroll" value="true"/>
-        <entry key="transitionIn" value="fade"/>
-        <entry key="transitionOut" value="fade"/>
-        <entry key="speedIn" value="200"/>
-        <entry key="speedOut" value="200"/>
-        <entry key="width" value="70%"/>
-        <entry key="height" value="90%"/>
-        <entry key="hideOnOverlayClick" value="false"/>
-        <entry key="type" value="iframe"/>
-      </map>
-    </property>
+  <bean id="LightBoxPost" parent="LightBoxPost-parentBean"/>
+  <bean id="LightBoxPost-parentBean" parent="LightBox" abstract="true">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/widget/lightBoxPost.jsp"/>
   </bean>
 
   <bean id="TableTools-Paging" parent="TableTools-Paging-parentBean"/>
@@ -197,7 +164,7 @@
       <property name="quickfinderActionField">
         <bean parent="ActionImageField" p:methodToCall="performLookup" p:actionImageField-ref="QuickFinderImageField">
         	<property name="lightBoxLookup">
-        		<ref bean="LightBoxLookup"/>
+        		<ref bean="LightBoxPost"/>
       		</property>
       	</bean>        
       </property>
@@ -225,8 +192,8 @@
     <property name="baseInquiryUrl" value="@{#ConfigProperties['application.url']}/spring/inquiry"/>
     <property name="directInquiryActionField">
       <bean parent="ActionImageField" p:actionImageField-ref="DirectInquiryImageField">
-        <property name="lightBox">
-          <ref bean="LightBoxDirectInquiry"/>
+        <property name="lightBoxDirectInquiry">
+          <ref bean="LightBox"/>
         </property>
       </bean>
     </property>

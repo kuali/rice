@@ -69,6 +69,9 @@ public class LookupView extends FormView {
     @RequestParameter
     private boolean showMaintenanceLinks = false;
 
+    @RequestParameter
+    private String returnTarget;
+
     private boolean multipleValues = false;
     private boolean lookupCriteriaEnabled = true;
     private boolean supplementalActionsEnabled = false;
@@ -339,4 +342,19 @@ public class LookupView extends FormView {
     public boolean hasResultSetLimit() {
         return (resultSetLimit != null);
     }
+
+    /**
+     * @param returnTarget the returnTarget to set
+     */
+    public void setReturnTarget(String returnTarget) {
+        this.returnTarget = returnTarget;
+    }
+
+    /**
+     * @return the returnTarget
+     */
+    public String getReturnTarget() {
+        return returnTarget;
+    }
+
 }

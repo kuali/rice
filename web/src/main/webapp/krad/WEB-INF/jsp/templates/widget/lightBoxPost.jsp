@@ -19,9 +19,9 @@
 <tiles:useAttribute name="componentId"/>
 
 <%--
-    Invokes JS method to implement a script linking the lightbox (fancybox)
+    Invokes JS method to implement a script linking the lightbox (fancybox) for lookups
  --%>
  
 <krad:script value="
-   createLightBox('${componentId}', ${widget.componentOptionsJSString});
+   createLightBoxPost('${componentId}', ${widget.componentOptionsJSString}, ${widget.actionParameterMapString});
 "/>

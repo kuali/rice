@@ -17,8 +17,6 @@ package org.kuali.rice.krad.uif.widget;
 
 import java.util.HashMap;
 
-import org.apache.commons.lang.StringUtils;
-
 /**
  * Used for rendering a lightbox in the UI to display action links in dialog
  * popups
@@ -26,10 +24,73 @@ import org.apache.commons.lang.StringUtils;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LightBox extends WidgetBase {
+
     private static final long serialVersionUID = -4004284762546700975L;
+
+    private String actionParameterMapString;
+
+    private String height;
+    private String width;
 
     public LightBox() {
         super();
     }
 
+    /**
+     * Setter for the action parameter map javascript string
+     *
+     * @param actionParameterMapString the action parameter map javascript string
+     */
+    public void setActionParameterMapString(String actionParameterMapString) {
+        this.actionParameterMapString = actionParameterMapString;
+    }
+
+    /**
+     * Action parameter map javascript string
+     * <p>
+     * The action parameter map string will be used to write these parameters to
+     * the form.
+     * </p>
+     *
+     * @return the action parameter map javascript string
+     */
+    public String getActionParameterMapString() {
+        return actionParameterMapString;
+    }
+
+    public String getHeight() {
+        return height;
+    }
+
+    public void setHeight(String height) {
+        this.height = height;
+    }
+
+    public String getWidth() {
+        return width;
+    }
+
+    public void setWidth(String width) {
+        this.width = width;
+    }
+
+     /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentOptionsJSString()
+     */
+    @Override
+    public String getComponentOptionsJSString() {
+        if (getComponentOptions() == null) {
+            setComponentOptions(new HashMap<String, String>());
+        }
+
+        // Add the width and height properties to the ComponentOptions
+        // before the JS String gets generated.
+        if (width != null) {
+            getComponentOptions().put("width", width);
+        }
+        if (height != null) {
+            getComponentOptions().put("height", height);
+        }
+        return super.getComponentOptionsJSString();
+    }
 }

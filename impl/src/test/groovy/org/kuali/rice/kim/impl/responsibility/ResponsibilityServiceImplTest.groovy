@@ -19,6 +19,9 @@ import org.kuali.rice.core.api.criteria.QueryByCriteria
 import org.kuali.rice.core.api.criteria.GenericQueryResults
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo
 import org.kuali.rice.kim.api.role.RoleService
+import org.kuali.rice.kim.api.responsibility.ResponsibilityAction
+import org.kuali.rice.kim.api.role.RoleMembership
+import org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo
 
 /*
  * Copyright 2007-2009 The Kuali Foundation
@@ -52,6 +55,7 @@ class ResponsibilityServiceImplTest {
     static Map<String, ResponsibilityTemplateBo> sampleTemplates = new HashMap<String, ResponsibilityTemplateBo>();
     static Map<String, KimTypeBo> sampleKimTypes = new HashMap<String, KimTypeBo>();
     static Map<String, RoleResponsibilityBo> sampleRoleResponsibilities = new HashMap<String, RoleResponsibilityBo>();
+    static Map<String, RoleResponsibilityActionBo> sampleRoleResponsibilityActions = new HashMap<String, RoleResponsibilityActionBo>();
 
     @BeforeClass
     static void createSampleBOs() {
@@ -59,11 +63,13 @@ class ResponsibilityServiceImplTest {
         ResponsibilityBo firstResponsibilityBo = new ResponsibilityBo(id: "respidone", namespaceCode: "namespacecodeone", name: "respnameone", template: firstResponsibilityTemplate, versionNumber: 1, active: "Y");
         KimTypeBo firstKimTypeBo = new KimTypeBo(id: "kimtypeidone");
         RoleResponsibilityBo firstRoleResponsibilityBo = new RoleResponsibilityBo(roleId: "rolerespidone");
+        RoleResponsibilityActionBo firstRoleResponsibilityActionBo = new RoleResponsibilityActionBo(id: "rolerespactionidone", versionNumber: 1);
 
         ResponsibilityTemplateBo secondResponsibilityTemplate = new ResponsibilityTemplateBo(id: "resptemplateidtwo", name: "resptemplatetwo", namespaceCode: "respnamespacecodetwo", versionNumber: 1, kimTypeId: "a");
         ResponsibilityBo secondResponsibilityBo = new ResponsibilityBo(id: "respidtwo", namespaceCode: "namespacecodetwo", name: "respnametwo", template: secondResponsibilityTemplate, versionNumber: 1, active: "Y");
         KimTypeBo secondKimTypeBo = new KimTypeBo(id: "kimtypeidtwo");
         RoleResponsibilityBo secondRoleResponsibilityBo = new RoleResponsibilityBo(roleId: "rolerespidtwo");
+        RoleResponsibilityActionBo secondRoleResponsibilityActionBo = new RoleResponsibilityActionBo(id: "rolerespactionidtwo", versionNumber: 1);
 
         for (bo in [firstResponsibilityBo, secondResponsibilityBo]) {
             sampleResponsibilities.put(bo.id, bo)
@@ -79,6 +85,10 @@ class ResponsibilityServiceImplTest {
 
         for (bo in [firstRoleResponsibilityBo, secondRoleResponsibilityBo]) {
             sampleRoleResponsibilities.put(bo.roleId, bo)
+        }
+
+        for (bo in [firstRoleResponsibilityActionBo, secondRoleResponsibilityActionBo]) {
+            sampleRoleResponsibilityActions.put(bo.id, bo)
         }
     }
 
@@ -520,5 +530,100 @@ class ResponsibilityServiceImplTest {
         boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplateName("principalid", "namespacecodeone", "resptemplateone", new HashMap<String, String>(), responsibilityDetails);
 
         Assert.assertEquals(true, hasResponsibility);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetResponsibilityActionsWithNullNamespaceCodeFails() {
+        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActions(null, "test", new HashMap<String, String>(), new HashMap<String, String>());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetResponsibilityActionsWithBlankNamespaceCodeFails() {
+        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActions("", "test", new HashMap<String, String>(), new HashMap<String, String>());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetResponsibilityActionsWithNullResponsibilityNameFails() {
+        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActions("test", null, new HashMap<String, String>(), new HashMap<String, String>());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetResponsibilityActionsWithBlankResponsibilityNameFails() {
+        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActions("test", "", new HashMap<String, String>(), new HashMap<String, String>());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetResponsibilityActionsWithNullQualificationFails() {
+        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActions("test", "test", null, new HashMap<String, String>());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetResponsibilityActionsWithNullResponsibilityDetailsFails() {
+        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActions("test", "test", new HashMap<String, String>(), null);
+    }
+
+    @Test
+    public void testGetResponsibilityActionsSucceeds() {
+        mockBoService.demand.findMatching(1..1) {
+            Class clazz, Map map -> for (ResponsibilityBo responsibilityBo in sampleResponsibilities.values()) {
+                if (responsibilityBo.namespaceCode.equals(map.get("namespaceCode"))
+                    && responsibilityBo.name.equals(map.get("name")))
+                {
+                    Collection<ResponsibilityBo> responsibilities = new ArrayList<ResponsibilityBo>();
+                    responsibilities.add(responsibilityBo);
+                    return responsibilities;
+                }
+            }
+        }
+
+        GenericQueryResults.Builder<RoleResponsibilityBo> genericQueryResults = new GenericQueryResults.Builder<RoleResponsibilityBo>();
+        genericQueryResults.totalRowCount = 1;
+        genericQueryResults.moreResultsAvailable = false;
+        List<RoleResponsibilityBo> roleResponsibilities = new ArrayList<RoleResponsibilityBo>();
+        roleResponsibilities.add(sampleRoleResponsibilities.get("rolerespidone"));
+        genericQueryResults.results = roleResponsibilities;
+        GenericQueryResults<RoleResponsibilityBo> results = genericQueryResults.build();
+
+        mockCriteriaLookupService.demand.lookup(1..1) {
+            Class<RoleResponsibilityBo> queryClass, QueryByCriteria criteria -> return results;
+        }
+
+        mockRoleService.demand.getRoleMembers(1..1) {
+            List<String> roleIds, Map<String, String> qualification ->
+                List<RoleMembership> roleMemberships = new ArrayList<RoleMembership>();
+                RoleMembership.Builder builder = new RoleMembership.Builder();
+                builder.memberId = "memberidone";
+                builder.embeddedRoleId = "embeddedroleidone";
+                builder.roleId = "roleidone";
+                builder.qualifier = new HashMap<>();
+                builder.memberTypeCode = "P";
+                builder.roleMemberId = "rolememberidone";
+                roleMemberships.add(builder.build());
+                return roleMemberships;
+        }
+
+        GenericQueryResults.Builder<RoleResponsibilityActionBo> actionGenericQueryResults = new GenericQueryResults.Builder<RoleResponsibilityBo>();
+        actionGenericQueryResults.totalRowCount = 1;
+        actionGenericQueryResults.moreResultsAvailable = false;
+        List<RoleResponsibilityActionBo> roleResponsibilityActions = new ArrayList<RoleResponsibilityActionBo>();
+        roleResponsibilityActions.add(sampleRoleResponsibilityActions.get("rolerespactionidone"));
+        actionGenericQueryResults.results = roleResponsibilityActions;
+        GenericQueryResults<RoleResponsibilityActionBo> actionResults = actionGenericQueryResults.build();
+
+        mockCriteriaLookupService.demand.lookup(1..1) {
+            Class<RoleResponsibilityActionBo> queryClass, QueryByCriteria criteria -> return actionResults;
+        }
+
+        injectBusinessObjectServiceIntoResponsibilityService();
+        injectCriteriaLookupServiceIntoResponsibilityService();
+        injectRoleServiceIntoResponsibilityService();
+
+        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActions("namespacecodeone", "respnameone", new HashMap<String, String>(), new HashMap<String, String>());
+
+        Assert.assertEquals("memberidone", responsibilityActions[0].principalId);
+        Assert.assertEquals("rolerespactionidone", responsibilityActions[0].roleResponsibilityActionId);
+        Assert.assertEquals("embeddedroleidone", responsibilityActions[0].memberRoleId);
+        Assert.assertEquals("respidone", responsibilityActions[0].responsibilityId);
+        Assert.assertEquals("roleidone", responsibilityActions[0].roleId);
     }
 }

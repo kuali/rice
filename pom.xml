@@ -844,8 +844,8 @@
   </dependencyManagement>
 
   <scm>
-    <connection>scm:svn:https://test.kuali.org/svn/rice/tags/rice-1.0.3.2</connection>
-    <developerConnection>scm:svn:https://test.kuali.org/svn/rice/tags/rice-1.0.3.2</developerConnection>
-    <url>https://test.kuali.org/svn/rice/tags/rice-1.0.3.2</url>
+    <connection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-1.0</connection>
+    <developerConnection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-1.0</developerConnection>
+    <url>https://test.kuali.org/svn/rice/branches/rice-1.0</url>
   </scm>
 </project>

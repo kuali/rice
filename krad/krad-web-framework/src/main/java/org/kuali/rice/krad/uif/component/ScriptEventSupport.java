@@ -44,6 +44,13 @@ public interface ScriptEventSupport {
 	 */
 	public String getOnLoadScript();
 
+    /**
+     * Setter for the onLoad script
+     *
+     * @param script - script for on load
+     */
+    public void setOnLoadScript(String script);
+
 	/**
 	 * Indicates whether the component supports the document ready event
 	 * 

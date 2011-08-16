@@ -51,6 +51,9 @@ function setGrowlDefaults(options) {
  *          (true) or hidden (false)
  */
 function createLoading(showLoading) {
+    var loadingMessage =  '<h1><img src="' + getConfigParam("kradImageLocation") + 'loading.gif" alt="working..." />Loading...</h1>';
+    var savingMessage = '<h1><img src="' + getConfigParam("kradImageLocation") + 'loading.gif" alt="working..." />Saving...</h1>';
+
     var methodToCall = jq("input[name='methodToCall']").val();
     var unblockUIOnLoading = jq("input[name='unblockUIOnLoading']").val();
 
@@ -174,7 +177,7 @@ function applyErrorColors(errorDivId, errorNum, warningNum, infoNum, clientSide)
                 if (hasErrors) {
                     tabAnchor.addClass("clientError");
                     if (errorIcon.length == 0) {
-                        tabAnchor.append("<img id='" + tabId + "_errorIcon' alt='error' src='" + ViewState.kradImageLocation + "'errormark.gif'>");
+                        tabAnchor.append("<img id='" + tabId + "_errorIcon' alt='error' src='" + getConfigParam("kradImageLocation") + "'errormark.gif'>");
                     }
                 }
                 else if (!hasErrors) {
@@ -201,15 +204,13 @@ function showFieldIcon(errorsDivId, errorCount) {
 
             if (div.length > 0 && div.hasClass("addFieldIcon") && errorCount && errorIcon.length == 0) {
                 if (input.length > 0) {
-                    input.after("<img id='" + inputId + "_errorIcon' alt='error' src='"
-                            + ViewState.kradImageLocation + "errormark.gif'>");
+                    input.after("<img id='" + inputId + "_errorIcon' alt='error' src='" + getConfigParam("kradImageLocation") + "errormark.gif'>");
                 }
                 else {
                     // try for radios and checkboxes
                     input = jq("#" + errorDivId.replace("errors_div", "attribute1"));
                     if (input.length > 0) {
-                        input.after("<img id='" + inputId + "_errorIcon' alt='error' src='"
-                                + ViewState.kradImageLocation + "errormark.gif'>");
+                        input.after("<img id='" + inputId + "_errorIcon' alt='error' src='" + getConfigParam("kradImageLocation") + "errormark.gif'>");
                     }
                 }
             }
@@ -233,7 +234,7 @@ function showChangeIcon(fieldId) {
     var fieldIcon = jq("#" + fieldId + "_changeIcon");
 
     if (fieldMarkerSpan.length > 0 && fieldIcon.length == 0) {
-        fieldMarkerSpan.append("<img id='" + fieldId + "_changeIcon' alt='change' src='" + ViewState.kradImageLocation + "asterisk_orange.png'>");
+        fieldMarkerSpan.append("<img id='" + fieldId + "_changeIcon' alt='change' src='" + getConfigParam("kradImageLocation") + "asterisk_orange.png'>");
     }
 }
 
@@ -247,7 +248,7 @@ function showChangeIconOnHeader(headerFieldId) {
     var headerIcon = jq("#" + headerFieldId + "_changeIcon");
 
     if (headerSpan.length > 0 && headerIcon.length == 0) {
-        headerSpan.append("<img id='" + headerFieldId + "_changeIcon' alt='change' src='" + ViewState.kradImageLocation + "asterisk_orange.png'>");
+        headerSpan.append("<img id='" + headerFieldId + "_changeIcon' alt='change' src='" + getConfigParam("kradImageLocation") + "asterisk_orange.png'>");
     }
 }
 

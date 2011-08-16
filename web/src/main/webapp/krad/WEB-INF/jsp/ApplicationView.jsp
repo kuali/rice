@@ -29,6 +29,9 @@
   
      <%-- render page only --%>
      <html>
+       <%-- rerun view pre-load script to get new state variables for page --%>
+       <krad:script value="${view.preLoadScript}"/>
+
        <s:nestedPath path="KualiForm">
        	 <krad:template component="${KualiForm.view.breadcrumbs}"/>
 
@@ -38,8 +41,8 @@
             <c:if test="${KualiForm.view.renderForm}">
               <form:hidden path="pageId"/>
               <c:if test="${!empty view.currentPage}">
-				<form:hidden id="currentPageTitle" path="view.currentPage.title"/>
-			  </c:if>
+				        <form:hidden id="currentPageTitle" path="view.currentPage.title"/>
+			        </c:if>
 
               <form:hidden path="jumpToId"/>
           	  <form:hidden path="jumpToName"/>

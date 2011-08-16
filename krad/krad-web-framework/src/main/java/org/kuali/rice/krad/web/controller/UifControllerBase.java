@@ -336,7 +336,6 @@ public abstract class UifControllerBase {
      * in the history
      */
     public ModelAndView returnToHistory(UifFormBase form, boolean homeFlag) {
-
         // Get the history from the form
         History hist = form.getFormHistory();
         List<HistoryEntry> histEntries = hist.getHistoryEntries();

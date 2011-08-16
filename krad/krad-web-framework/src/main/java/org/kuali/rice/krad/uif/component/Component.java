@@ -211,17 +211,6 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     public void setComponentModifiers(List<ComponentModifier> componentModifiers);
 
     /**
-     * Used by the copy process to determine for which properties only the value
-     * reference should be copied (not a new copy instance). Subclasses can
-     * define the properties for which only the reference should be copied
-     *
-     * @return Set<String> property names for which only the value reference
-     *         should be copied
-     * @see org.kuali.rice.krad.uif.util.ComponentUtils.copy(T)
-     */
-    public Set<String> getPropertiesForReferenceCopy();
-
-    /**
      * Indicates whether the component should be rendered in the UI
      *
      * <p>

@@ -15,14 +15,21 @@
  */
 package org.kuali.rice.krad.web.form;
 
+import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.service.ViewService;
+import org.kuali.rice.krad.util.UrlFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.io.Serializable;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -30,18 +37,16 @@ import java.util.UUID;
 
 /**
  * Base form class for views within the KRAD User Interface Framework
- * 
+ *
  * <p>
  * Holds properties necessary to determine the <code>View</code> instance that
  * will be used to render the UI
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifFormBase implements Serializable {
     private static final long serialVersionUID = 8432543267099454434L;
-    
-    private History formHistory;
 
     // current view
     protected String viewId;
@@ -54,7 +59,7 @@ public class UifFormBase implements Serializable {
     protected String jumpToName;
     protected String focusId;
     protected String formPostUrl;
-    
+
     protected boolean defaultsApplied;
 
     protected View view;
@@ -63,15 +68,15 @@ public class UifFormBase implements Serializable {
 
     protected Map<String, Object> newCollectionLines;
     protected Map<String, String> actionParameters;
+    protected Map<String, Object> clientStateForSyncing;
 
     protected MultipartFile attachmentFile;
 
     // navigation
     protected String returnLocation;
     protected String returnFormKey;
-    protected String hubLocation;
-    protected String hubFormKey;
-    protected String homeLocation;
+
+    protected History formHistory;
 
     protected boolean renderFullView;
     protected boolean validateDirty;
@@ -84,12 +89,13 @@ public class UifFormBase implements Serializable {
         viewRequestParameters = new HashMap<String, String>();
         newCollectionLines = new HashMap<String, Object>();
         actionParameters = new HashMap<String, String>();
+        clientStateForSyncing = new HashMap<String, Object>();
     }
 
     /**
      * Creates the unique id used to store this "conversation" in the session.
      * The default method generates a java UUID.
-     * 
+     *
      * @return
      */
     protected String generateFormKey() {
@@ -99,19 +105,34 @@ public class UifFormBase implements Serializable {
     /**
      * Called after Spring binds the request to the form and before the
      * controller method is invoked.
-     * 
-     * @param request
-     *            - request object containing the query parameters
+     *
+     * @param request - request object containing the query parameters
      */
     public void postBind(HttpServletRequest request) {
         // default form post URL to request URL
         formPostUrl = request.getRequestURL().toString();
+
+        // get any sent client view state and parse into map
+        if (request.getParameterMap().containsKey(UifParameters.CLIENT_VIEW_STATE)) {
+            String clientStateJSON = request.getParameter(UifParameters.CLIENT_VIEW_STATE);
+            if (StringUtils.isNotBlank(clientStateJSON)) {
+                // change single quotes to double quotes (necessary because the reverse was done for sending)
+                clientStateJSON = StringUtils.replace(clientStateJSON, "'", "\"");
+
+                ObjectMapper mapper = new ObjectMapper();
+                try {
+                    clientStateForSyncing = mapper.readValue(clientStateJSON, Map.class);
+                } catch (IOException e) {
+                    throw new RuntimeException("Unable to decode client side state JSON", e);
+                }
+            }
+        }
     }
 
     /**
      * Unique Id for the <code>View</code> instance. This is specified for a
      * view in its definition by setting the 'id' property.
-     * 
+     *
      * @return String view id
      */
     public String getViewId() {
@@ -120,7 +141,7 @@ public class UifFormBase implements Serializable {
 
     /**
      * Setter for the unique view id
-     * 
+     *
      * @param viewId
      */
     public void setViewId(String viewId) {
@@ -133,7 +154,7 @@ public class UifFormBase implements Serializable {
      * unique and cannot be used by itself to retrieve a view. Typically it is
      * used with other parameters to identify a view with a certain type (view
      * type)
-     * 
+     *
      * @return String view name
      */
     public String getViewName() {
@@ -142,7 +163,7 @@ public class UifFormBase implements Serializable {
 
     /**
      * Setter for the view name
-     * 
+     *
      * @param viewName
      */
     public void setViewName(String viewName) {
@@ -153,7 +174,7 @@ public class UifFormBase implements Serializable {
      * Name for the type of view being requested. This can be used to find
      * <code>View</code> instances by request parameters (not necessary the
      * unique id)
-     * 
+     *
      * @return String view type name
      */
     public String getViewTypeName() {
@@ -162,7 +183,7 @@ public class UifFormBase implements Serializable {
 
     /**
      * Setter for the view type name
-     * 
+     *
      * @param viewTypeName
      */
     public void setViewTypeName(String viewTypeName) {
@@ -171,7 +192,7 @@ public class UifFormBase implements Serializable {
 
     /**
      * Id for the current page being displayed within the view
-     * 
+     *
      * @return String page id
      */
     public String getPageId() {
@@ -180,7 +201,7 @@ public class UifFormBase implements Serializable {
 
     /**
      * Setter for the current page id
-     * 
+     *
      * @param pageId
      */
     public void setPageId(String pageId) {
@@ -211,35 +232,11 @@ public class UifFormBase implements Serializable {
         this.returnFormKey = returnFormKey;
     }
 
-    public String getHubLocation() {
-        return this.hubLocation;
-    }
-
-    public void setHubLocation(String hubLocation) {
-        this.hubLocation = hubLocation;
-    }
-
-    public String getHubFormKey() {
-        return this.hubFormKey;
-    }
-
-    public void setHubFormKey(String hubFormKey) {
-        this.hubFormKey = hubFormKey;
-    }
-
-    public String getHomeLocation() {
-        return this.homeLocation;
-    }
-
-    public void setHomeLocation(String homeLocation) {
-        this.homeLocation = homeLocation;
-    }
-
     /**
      * Identifies the controller method that should be invoked to fulfill a
      * request. The value will be matched up against the 'params' setting on the
      * <code>RequestMapping</code> annotation for the controller method
-     * 
+     *
      * @return String method to call
      */
     public String getMethodToCall() {
@@ -248,7 +245,7 @@ public class UifFormBase implements Serializable {
 
     /**
      * Setter for the method to call
-     * 
+     *
      * @param methodToCall
      */
     public void setMethodToCall(String methodToCall) {
@@ -258,7 +255,7 @@ public class UifFormBase implements Serializable {
     /**
      * Map of parameters that was used to configured the <code>View</code>.
      * Maintained on the form to rebuild the view on posts and session timeout
-     * 
+     *
      * @return Map<String, String> view parameters
      * @see org.kuali.rice.krad.uif.view.View.getViewRequestParameters()
      */
@@ -268,7 +265,7 @@ public class UifFormBase implements Serializable {
 
     /**
      * Setter for the view's request parameter map
-     * 
+     *
      * @param viewRequestParameters
      */
     public void setViewRequestParameters(Map<String, String> viewRequestParameters) {
@@ -279,7 +276,7 @@ public class UifFormBase implements Serializable {
      * Holds instances for collection add lines. The key of the Map gives the
      * collection name the line instance applies to, the Map value is an
      * instance of the collection object class that holds the new line data
-     * 
+     *
      * @return Map<String, Object> new collection lines
      */
     public Map<String, Object> getNewCollectionLines() {
@@ -288,7 +285,7 @@ public class UifFormBase implements Serializable {
 
     /**
      * Setter for the new collection lines Map
-     * 
+     *
      * @param newCollectionLines
      */
     public void setNewCollectionLines(Map<String, Object> newCollectionLines) {
@@ -297,6 +294,7 @@ public class UifFormBase implements Serializable {
 
     /**
      * Map of parameters sent for the invoked action
+     *
      * <p>
      * Many times besides just setting the method to call actions need to send
      * additional parameters. For instance the method being called might do a
@@ -307,7 +305,7 @@ public class UifFormBase implements Serializable {
      * form properties would grow massive (in addition to adds an additional
      * step from the XML config). So this general map solves those issues.
      * </p>
-     * 
+     *
      * @return Map<String, String> action parameters
      */
     public Map<String, String> getActionParameters() {
@@ -316,7 +314,7 @@ public class UifFormBase implements Serializable {
 
     /**
      * Returns the action parameters map as a <code>Properties</code> instance
-     * 
+     *
      * @return Properties action parameters
      */
     public Properties getActionParametersAsProperties() {
@@ -333,7 +331,7 @@ public class UifFormBase implements Serializable {
 
     /**
      * Setter for the action parameters map
-     * 
+     *
      * @param actionParameters
      */
     public void setActionParameters(Map<String, String> actionParameters) {
@@ -343,9 +341,8 @@ public class UifFormBase implements Serializable {
     /**
      * Retrieves the value for the given action parameter, or empty string if
      * not found
-     * 
-     * @param actionParameterName
-     *            - name of the action parameter to retrieve value for
+     *
+     * @param actionParameterName - name of the action parameter to retrieve value for
      * @return String parameter value or empty string
      */
     public String getActionParamaterValue(String actionParameterName) {
@@ -357,6 +354,22 @@ public class UifFormBase implements Serializable {
     }
 
     /**
+     * Map that is populated from the component state maintained on the client
+     *
+     * <p>
+     * Used when a request is made that refreshes part of the view. The current state for components (which
+     * have state that can be changed on the client), is populated into this map which is then used by the
+     * <code>ViewHelperService</code> to update the components so that the state is maintained when they render.
+     * </p>
+     *
+     * @return Map<String, Object> map where key is name of property or component id, and value is the property
+     * value or another map of component key/value pairs
+     */
+    public Map<String, Object> getClientStateForSyncing() {
+        return clientStateForSyncing;
+    }
+
+    /**
      * Key string that identifies the form instance in session storage
      *
      * <p>
@@ -364,7 +377,7 @@ public class UifFormBase implements Serializable {
      * populated from the request parameters. This key string is retrieve the
      * session form from the session service
      * </p>
-     * 
+     *
      * @return String form session key
      */
     public String getFormKey() {
@@ -373,17 +386,17 @@ public class UifFormBase implements Serializable {
 
     /**
      * Setter for the form's session key
-     * 
+     *
      * @param formKey
      */
     public void setFormKey(String formKey) {
         this.formKey = formKey;
     }
-    
+
     /**
      * Indicates whether the form has had default values from the configured
      * <code>View</code> applied. This happens only once for each form instance
-     * 
+     *
      * @return boolean true if default values have been applied, false if not
      */
     public boolean isDefaultsApplied() {
@@ -392,7 +405,7 @@ public class UifFormBase implements Serializable {
 
     /**
      * Setter for the defaults applied indicator
-     * 
+     *
      * @param defaultsApplied
      */
     public void setDefaultsApplied(boolean defaultsApplied) {
@@ -401,7 +414,7 @@ public class UifFormBase implements Serializable {
 
     /**
      * Holder for files that are attached through the view
-     * 
+     *
      * @return MultipartFile representing the attachment
      */
     public MultipartFile getAttachmentFile() {
@@ -410,7 +423,7 @@ public class UifFormBase implements Serializable {
 
     /**
      * Setter for the form's attachment file
-     * 
+     *
      * @param attachmentFile
      */
     public void setAttachmentFile(MultipartFile attachmentFile) {
@@ -433,7 +446,7 @@ public class UifFormBase implements Serializable {
 
     /**
      * View instance associated with the form. Used to render the user interface
-     * 
+     *
      * @return View
      */
     public View getView() {
@@ -442,7 +455,7 @@ public class UifFormBase implements Serializable {
 
     /**
      * Setter for the view instance
-     * 
+     *
      * @param view
      */
     public void setView(View view) {
@@ -455,7 +468,7 @@ public class UifFormBase implements Serializable {
      * any state about the previous view is lost. This could be needed to read
      * metadata from the view for such things as collection processing. When
      * this is necessary the previous view instance can be retrieved
-     * 
+     *
      * @return View instance
      */
     public View getPreviousView() {
@@ -464,7 +477,7 @@ public class UifFormBase implements Serializable {
 
     /**
      * Setter for the previous view instance
-     * 
+     *
      * @param previousView
      */
     public void setPreviousView(View previousView) {
@@ -474,66 +487,66 @@ public class UifFormBase implements Serializable {
     /**
      * Instance of the <code>ViewService</code> that can be used to retrieve
      * <code>View</code> instances
-     * 
+     *
      * @return ViewService implementation
      */
     protected ViewService getViewService() {
         return KRADServiceLocatorWeb.getViewService();
     }
 
-	/**
-	 * The jumpToId for this form, the element with this id will be jumped to automatically
-	 * when the form is loaded in the view.
-	 * Using "TOP" or "BOTTOM" will jump to the top or the bottom of the resulting page.
-	 * jumpToId always takes precedence over jumpToName, if set.
+    /**
+     * The jumpToId for this form, the element with this id will be jumped to automatically
+     * when the form is loaded in the view.
+     * Using "TOP" or "BOTTOM" will jump to the top or the bottom of the resulting page.
+     * jumpToId always takes precedence over jumpToName, if set.
      *
-	 * @return the jumpToId
-	 */
-	public String getJumpToId() {
-		return this.jumpToId;
-	}
+     * @return the jumpToId
+     */
+    public String getJumpToId() {
+        return this.jumpToId;
+    }
 
-	/**
-	 * @param jumpToId the jumpToId to set
-	 */
-	public void setJumpToId(String jumpToId) {
-		this.jumpToId = jumpToId;
-	}
+    /**
+     * @param jumpToId the jumpToId to set
+     */
+    public void setJumpToId(String jumpToId) {
+        this.jumpToId = jumpToId;
+    }
 
-	/**
-	 * The jumpToName for this form, the element with this name will be jumped to automatically
-	 * when the form is loaded in the view.
-	 * WARNING: jumpToId always takes precedence over jumpToName, if set.
+    /**
+     * The jumpToName for this form, the element with this name will be jumped to automatically
+     * when the form is loaded in the view.
+     * WARNING: jumpToId always takes precedence over jumpToName, if set.
      *
-	 * @return the jumpToName
-	 */
-	public String getJumpToName() {
-		return this.jumpToName;
-	}
+     * @return the jumpToName
+     */
+    public String getJumpToName() {
+        return this.jumpToName;
+    }
 
-	/**
-	 * @param jumpToName the jumpToName to set
-	 */
-	public void setJumpToName(String jumpToName) {
-		this.jumpToName = jumpToName;
-	}
+    /**
+     * @param jumpToName the jumpToName to set
+     */
+    public void setJumpToName(String jumpToName) {
+        this.jumpToName = jumpToName;
+    }
 
-	/**
-	 * Field to place focus on when the page loads
-	 * An empty focusId will result in focusing on the first visible input element by default.
+    /**
+     * Field to place focus on when the page loads
+     * An empty focusId will result in focusing on the first visible input element by default.
      *
-	 * @return the focusId
-	 */
-	public String getFocusId() {
-		return this.focusId;
-	}
+     * @return the focusId
+     */
+    public String getFocusId() {
+        return this.focusId;
+    }
 
-	/**
-	 * @param focusId the focusId to set
-	 */
-	public void setFocusId(String focusId) {
-		this.focusId = focusId;
-	}
+    /**
+     * @param focusId the focusId to set
+     */
+    public void setFocusId(String focusId) {
+        this.focusId = focusId;
+    }
 
     /**
      * History parameter representing the History of views that have come before the

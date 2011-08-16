@@ -10,6 +10,8 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import org.kuali.rice.krad.uif.component.ClientSideState;
+
 /**
  * Decorates a group with collapse/expand functionality
  * 
@@ -22,8 +24,9 @@ public class Accordion extends WidgetBase {
     private String expandImageSrc;
 
     private int animationSpeed;
+
+    @ClientSideState
     private boolean defaultOpen;
-    private String conditionalDefaultOpen;
 
     public Accordion() {
         super();
@@ -103,24 +106,6 @@ public class Accordion extends WidgetBase {
      */
     public void setDefaultOpen(boolean defaultOpen) {
         this.defaultOpen = defaultOpen;
-    }
-
-    /**
-     * Conditional expression for the default open indicator
-     * 
-     * @return String should evaluate to boolean
-     */
-    public String getConditionalDefaultOpen() {
-        return this.conditionalDefaultOpen;
-    }
-
-    /**
-     * Setter for the conditional default open expression
-     * 
-     * @param conditionalDefaultOpen
-     */
-    public void setConditionalDefaultOpen(String conditionalDefaultOpen) {
-        this.conditionalDefaultOpen = conditionalDefaultOpen;
     }
 
 }

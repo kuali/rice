@@ -25,6 +25,6 @@
 <c:set var="isOpen" value="${widget.defaultOpen}"/>
  
 <krad:script value="
-  createAccordion('${parent.id}', '${parent.header.id}', ${isOpen}, 
+  createAccordion('${parent.id}', '${parent.header.id}', '${widget.id}', ${isOpen},
   		          '${widget.collapseImageSrc}', '${widget.expandImageSrc}', ${widget.animationSpeed});
 "/>

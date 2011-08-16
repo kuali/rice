@@ -28,7 +28,131 @@ function getContext(){
 	else{
 		context = parent.$;
 	}
+
 	return context;
+}
+
+/**
+ * Sets a configuration parameter that will be accessible with script
+ *
+ * <p>
+ * Configuration parameters are sent from the server and represent non-component
+ * state, such as location of images
+ * </p>
+ *
+ * @param paramName - name of the configuration parameter
+ * @param paramValue - value for the configuration parameter
+ */
+function setConfigParam(paramName, paramValue) {
+    var configParams = jq(document).data("ConfigParameters");
+    if (!configParams) {
+        configParams = new Object();
+        jq(document).data("ConfigParameters", configParams);
+    }
+    configParams[paramName] = paramValue;
+}
+
+/**
+ * Retrieves the value for a configuration parameter
+ *
+ * @param paramName - name of the parameter to retrieve
+ */
+function getConfigParam(paramName) {
+    var configParams = jq(document).data("ConfigParameters");
+    if (configParams) {
+        return configParams[paramName];
+    }
+    return "";
+}
+
+/**
+ * Called when a view is rendered to initialize the state of components
+ * that need to be accessed client side
+ *
+ * @param viewState - map (object) containing the view state
+ */
+function initializeViewState(viewState) {
+    jq(document).data("ViewState", viewState);
+}
+
+/**
+ * Updates the current view state with the given map of view state
+ *
+ * <p>
+ * The given state will be merged with the current. Matching keys for simple properties will be overridden
+ * if contained in the second map, in all cases except when the value is another map, in which case the map
+ * value will be merged
+ * </p>
+ *
+ * @param viewState - view state to merge in
+ */
+function updateViewState(viewState) {
+    var currentViewState = jq(document).data("ViewState");
+    if (currentViewState) {
+        jq.extend(currentViewState, viewState);
+    }
+    else {
+        jq(document).data("ViewState", viewState);
+    }
+}
+
+/**
+ * Sets a key/value pair in the view state
+ *
+ * @param key - name to reference state by
+ * @param value - value for the state
+ */
+function setViewState(key, value) {
+    var viewState = jq(document).data("ViewState");
+    if (!viewState) {
+        viewState = new Object();
+        jq(document).data("ViewState", viewState);
+    }
+    viewState[key] = value;
+}
+
+/**
+ * Retrieves the current value for a given key in the view state, if
+ * not found empty string is returned
+ *
+ * @param key - name of the variable in view state to return
+ */
+function getViewState(key) {
+    var viewState = jq(document).data("ViewState");
+    if (viewState && viewState.hasOwnProperty(key)) {
+        return viewState[key];
+    }
+    return "";
+}
+
+/**
+ * Adds the given key/value pair to the state maintained for the give component
+ *
+ * @param componentId - id for the component the state should be associated with
+ * @param key - name to reference the state by
+ * @param value - value for the state
+ */
+function setComponentState(componentId, key, value) {
+    var componentState = getViewState(componentId);
+    if (!componentState) {
+        componentState = new Object();
+        setViewState(componentId, componentState);
+    }
+    componentState[key] = value;
+}
+
+/**
+ * Retrieves the state value for the given key and given component
+ *
+ * @param componentId - id for the component the key is associated with
+ * @param key - name of the state to retrieve
+ */
+function getComponentState(componentId, key) {
+    var componentState = getViewState(componentId);
+    if (componentState && componentState.hasOwnProperty(key)) {
+        return componentState[key];
+    }
+    return "";
 }
 
 //gets the the label for field with the corresponding id

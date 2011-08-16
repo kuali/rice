@@ -195,6 +195,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
 
     /**
      * The following finalization is done here:
+     *
      * <ul>
      * <li>If any of the style properties were given, sets the style string on
      * the style property</li>
@@ -298,22 +299,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         
     }    
     
-
-    /**
-     * Set of property names for the component base for which on the property
-     * value reference should be copied. Subclasses can override this but should
-     * include a call to super
-     *
-     * @see org.kuali.rice.krad.uif.component.Component#getPropertiesForReferenceCopy()
-     */
-    public Set<String> getPropertiesForReferenceCopy() {
-        Set<String> refCopyProperties = new HashSet<String>();
-
-        refCopyProperties.add(UifPropertyPaths.COMPONENT_MODIFIERS);
-        refCopyProperties.add(UifPropertyPaths.CONTEXT);
-
-        return refCopyProperties;
-    }
 
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getId()

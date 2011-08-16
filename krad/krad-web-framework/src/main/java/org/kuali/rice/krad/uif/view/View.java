@@ -122,6 +122,7 @@ public class View extends ContainerBase {
     private boolean validateDirty;
     private boolean translateCodes;
     private String preLoadScript;
+    private Map<String, Object> clientSideState;
 
     @RequestParameter
     private boolean dialogMode;
@@ -144,6 +145,7 @@ public class View extends ContainerBase {
         abstractTypeClasses = new HashMap<String, Class<?>>();
         viewRequestParameters = new HashMap<String, String>();
         expressionVariables = new HashMap<String, String>();
+        clientSideState = new HashMap<String, Object>();
     }
 
     /**
@@ -1069,7 +1071,59 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Scipt that is executed at the beginning of page load (before any other script)
+     * Map of key name/value pairs that will be exposed on the client with JavaScript
+     *
+     * <p>
+     * Any state contained in the Map will be in addition to general state added by the
+     * <code>ViewHelperService</code> and also state generated from the component properties
+     * annotated with <code>ClientSideState</code>. If this map does contain a key that is
+     * the same as the generated state, it will override the generated, with the exception
+     * of keys that refer to component ids and have a nested map as value, which will be merged
+     * </p>
+     *
+     * @return Map<String, Object> contains key name/value pairs to expose on client
+     */
+    public Map<String, Object> getClientSideState() {
+        return clientSideState;
+    }
+
+    /**
+     * Setter for the client side state map
+     *
+     * @param clientSideState
+     */
+    public void setClientSideState(Map<String, Object> clientSideState) {
+        this.clientSideState = clientSideState;
+    }
+
+    /**
+     * Adds a variable name/value pair to the client side state map associated with the given
+     * component id
+     *
+     * @param componentId - id of the component the state is associated with
+     * @param variableName - name to expose the state as
+     * @param value - initial value for the variable on the client
+     */
+    public void addToClientSideState(String componentId, String variableName, Object value) {
+        Map<String, Object> componentClientState = new HashMap<String, Object>();
+
+        // find any existing client state for component
+        if (clientSideState.containsKey(componentId)) {
+            Object clientState = clientSideState.get(componentId);
+            if ((clientState != null) && (clientState instanceof Map)) {
+                componentClientState = (Map<String, Object>) clientState;
+            } else {
+                throw new IllegalArgumentException("Client side state for component: " + componentId + " is not a Map");
+            }
+        }
+
+        // add variables to component state and reinsert into view's client state
+        componentClientState.put(variableName, value);
+        clientSideState.put(componentId, componentClientState);
+    }
+
+    /**
+     * Script that is executed at the beginning of page load (before any other script)
      *
      * <p>
      * Many used to set server variables client side

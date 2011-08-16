@@ -23,6 +23,7 @@ import java.util.Set;
 
 /**
  * Special <code>Group</code> that renders a navigation section
+ *
  * <p>
  * Only supports <code>ActionField</code> instances within the container. These
  * are used to provide the items (or individual links) within the navigation.

@@ -12,6 +12,7 @@ package org.kuali.rice.krad.uif.util;
 
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -168,6 +169,29 @@ public class CloneUtils {
         }
 
         return clone;
+    }
+
+    /**
+     * Retrieves all field names for the given class that have the given annotation
+     *
+     * @param clazz - class to find field annotations for
+     * @param annotationClass - class for annotation to find
+     * @return Map<String, Annotation> map containing the field name that has the annotation as a key and the
+     *         annotation instance as a value
+     */
+    public static Map<String, Annotation> getFieldsWithAnnotation(Class<?> clazz,
+            Class<? extends Annotation> annotationClass) {
+        Map<String, Annotation> annotationFields = new HashMap<String, Annotation>();
+
+        Field[] fields = getFields(clazz, false);
+        for (Field f : fields) {
+            Annotation fieldAnnotation = f.getAnnotation(annotationClass);
+            if (fieldAnnotation != null) {
+                annotationFields.put(f.getName(), fieldAnnotation);
+            }
+        }
+
+        return annotationFields;
     }
 
     protected static final Object instantiate(Object original) throws InstantiationException, IllegalAccessException {

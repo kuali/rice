@@ -136,7 +136,7 @@ public class UITestController extends UifControllerBase {
 			return getUIFModelAndView(uiTestForm, uiTestForm.getViewId(), uiTestForm.getPageId());
 		}
 		
-		return getUIFModelAndView(uiTestForm, uiTestForm.getViewId(), "page2");
+		return getUIFModelAndView(uiTestForm, uiTestForm.getViewId(), "page1");
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=close")

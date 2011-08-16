@@ -315,6 +315,7 @@ function createDatePicker(controlId, options) {
  * @param headerId -
  *          id for the group's header in which the toggle link and image will be
  *          inserted
+ * @param widgetId - id for the accordion widget, used for updating state
  * @param defaultOpen -
  *          indicates whether the group should be initially open or close
  * @param collapseImgSrc -
@@ -327,7 +328,7 @@ function createDatePicker(controlId, options) {
  *          boolean that indicates whether the accordion should be set to open
  *          initially (true) or closed (false)
  */
-function createAccordion(groupId, headerId, defaultOpen, collapseImgSrc, expandImgSrc, animationSpeed) {
+function createAccordion(groupId, headerId, widgetId, defaultOpen, collapseImgSrc, expandImgSrc, animationSpeed) {
     jq(document).ready(function() {
         var groupToggleLinkId = groupId + "_toggle";
         var groupToggleLink = "<a href='#' id='" + groupToggleLinkId + "'></a>";
@@ -353,9 +354,11 @@ function createAccordion(groupId, headerId, defaultOpen, collapseImgSrc, expandI
                     function() {
                         jq("#" + groupAccordionSpanId).slideUp(animationSpeed);
                         jq("#" + groupId + "_exp").replaceWith(collapseImage);
+                        setComponentState(widgetId, 'defaultOpen', false);
                     }, function() {
                         jq("#" + groupAccordionSpanId).slideDown(animationSpeed);
                         jq("#" + groupId + "_col").replaceWith(expandImage);
+                        setComponentState(widgetId, 'defaultOpen', true);
                     }
             );
         }
@@ -364,9 +367,11 @@ function createAccordion(groupId, headerId, defaultOpen, collapseImgSrc, expandI
                     function() {
                         jq("#" + groupAccordionSpanId).slideDown(animationSpeed);
                         jq("#" + groupId + "_col").replaceWith(expandImage);
+                        setComponentState(widgetId, 'defaultOpen', true);
                     }, function() {
                         jq("#" + groupAccordionSpanId).slideUp(animationSpeed);
                         jq("#" + groupId + "_exp").replaceWith(collapseImage);
+                        setComponentState(widgetId, 'defaultOpen', false);
                     }
             );
         }

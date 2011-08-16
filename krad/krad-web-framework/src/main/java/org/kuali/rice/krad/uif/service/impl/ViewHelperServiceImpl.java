@@ -20,8 +20,10 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.authorization.Authorizer;
 import org.kuali.rice.krad.uif.authorization.PresentationController;
+import org.kuali.rice.krad.uif.component.ClientSideState;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
+import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
@@ -49,6 +51,7 @@ import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.util.MethodInvoker;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -72,38 +75,21 @@ public class ViewHelperServiceImpl implements ViewHelperService {
     private transient ViewDictionaryService viewDictionaryService;
 
     /**
-     * Uses reflection to find all fields defined on the <code>View</code>
-     * instance that have the <code>RequestParameter</code> annotation (which
-     * indicates the field may be populated by the request). For each field
-     * found, if there is a corresponding key/value pair in the request
-     * parameters, the value is used to populate the field. In addition, any
-     * conditional properties of <code>PropertyReplacers</code> configured for
-     * the field are cleared so that the request parameter value does not get
-     * overridden by the dictionary conditional logic
+     * Uses reflection to find all fields defined on the <code>View</code> instance that have
+     * the <code>RequestParameter</code> annotation (which indicates the field may be populated by the request).
+     *
+     * <p>
+     * For each field found, if there is a corresponding key/value pair in the request parameters,
+     * the value is used to populate the field. In addition, any conditional properties of
+     * <code>PropertyReplacers</code> configured for the field are cleared so that the request parameter
+     * value does not get overridden by the dictionary conditional logic
+     * </p>
      *
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#populateViewFromRequestParameters(org.kuali.rice.krad.uif.view.View,
      *      java.util.Map)
      */
     @Override
     public void populateViewFromRequestParameters(View view, Map<String, String> parameters) {
-        // build set of view properties that can be populated
-        Set<String> fieldNamesToPopulate = new HashSet<String>();
-
-        Field[] fields = CloneUtils.getFields(view.getClass(), true);
-        for (int i = 0; i < fields.length; i++) {
-            Field field = fields[i];
-
-            RequestParameter requestParameter = field.getAnnotation(RequestParameter.class);
-            if (requestParameter != null) {
-                // use specified parameter name if given, else use field name
-                if (StringUtils.isNotBlank(requestParameter.parameterName())) {
-                    fieldNamesToPopulate.add(requestParameter.parameterName());
-                } else {
-                    fieldNamesToPopulate.add(field.getName());
-                }
-            }
-        }
-
         // build Map of property replacers by property name so that we can remove them
         // if the property was set by a request parameter
         Map<String, Set<PropertyReplacer>> viewPropertyReplacers = new HashMap<String, Set<PropertyReplacer>>();
@@ -117,28 +103,40 @@ public class ViewHelperServiceImpl implements ViewHelperService {
             viewPropertyReplacers.put(replacer.getPropertyName(), propertyReplacers);
         }
 
+        Map<String, Annotation> annotatedFields = CloneUtils.getFieldsWithAnnotation(view.getClass(),
+                RequestParameter.class);
+
         // for each request parameter allowed on the view, if the request contains a value use
         // to set on View, and clear and conditional expressions or property replacers for that field
         Map<String, String> viewRequestParameters = new HashMap<String, String>();
-        for (String fieldToPopulate : fieldNamesToPopulate) {
-            if (parameters.containsKey(fieldToPopulate)) {
-                String fieldValue = parameters.get(fieldToPopulate);
+        for (String fieldToPopulate : annotatedFields.keySet()) {
+            RequestParameter requestParameter = (RequestParameter) annotatedFields.get(fieldToPopulate);
 
-                if (StringUtils.isNotBlank(fieldValue)) {
-                    viewRequestParameters.put(fieldToPopulate, fieldValue);
-                    ObjectPropertyUtils.setPropertyValue(view, fieldToPopulate, fieldValue);
+            // use specified parameter name if given, else use field name to retrieve parameter value
+            String requestParameterName = requestParameter.parameterName();
+            if (StringUtils.isBlank(requestParameterName)) {
+                requestParameterName = fieldToPopulate;
+            }
 
-                    // remove any conditional configuration so value is not
-                    // overridden later during the apply model phase
-                    if (view.getPropertyExpressions().containsKey(fieldToPopulate)) {
-                        view.getPropertyExpressions().remove(fieldToPopulate);
-                    }
+            if (!parameters.containsKey(requestParameterName)) {
+                continue;
+            }
 
-                    if (viewPropertyReplacers.containsKey(fieldToPopulate)) {
-                        Set<PropertyReplacer> propertyReplacers = viewPropertyReplacers.get(fieldToPopulate);
-                        for (PropertyReplacer replacer : propertyReplacers) {
-                            view.getPropertyReplacers().remove(replacer);
-                        }
+            String fieldValue = parameters.get(requestParameterName);
+            if (StringUtils.isNotBlank(fieldValue)) {
+                viewRequestParameters.put(requestParameterName, fieldValue);
+                ObjectPropertyUtils.setPropertyValue(view, fieldToPopulate, fieldValue);
+
+                // remove any conditional configuration so value is not
+                // overridden later during the apply model phase
+                if (view.getPropertyExpressions().containsKey(fieldToPopulate)) {
+                    view.getPropertyExpressions().remove(fieldToPopulate);
+                }
+
+                if (viewPropertyReplacers.containsKey(fieldToPopulate)) {
+                    Set<PropertyReplacer> propertyReplacers = viewPropertyReplacers.get(fieldToPopulate);
+                    for (PropertyReplacer replacer : propertyReplacers) {
+                        view.getPropertyReplacers().remove(replacer);
                     }
                 }
             }
@@ -160,8 +158,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
      * Performs the complete component lifecycle on the component passed in, in this order:
      * performComponentInitialization, performComponentApplyModel, and performComponentFinalize.
      *
-     * @param form
-     * @param component
+     * @see {@link ViewHelperService#performComponentLifecycle(org.kuali.rice.krad.web.form.UifFormBase, org.kuali.rice.krad.uif.component.Component, String)}
      * @see {@link #performComponentInitialization(View, Component)}
      * @see {@link #performComponentApplyModel(View, Component, Object)}
      * @see {@link #performComponentFinalize(View, Component, Object, Component)}
@@ -174,7 +171,18 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 
         performComponentInitialization(form.getView(), component);
         performComponentApplyModel(form.getView(), component, form);
-        performComponentFinalize(form.getView(), component, form, parent);
+
+        // TODO: need to handle updating client state for component refresh
+        Map<String, Object> clientState = new HashMap<String, Object>();
+        performComponentFinalize(form.getView(), component, form, parent, clientState);
+
+        // get client state for component and build update script for on load
+        String clientStateScript = buildClientSideStateScript(form.getView(), clientState, true);
+        String onLoadScript = component.getOnLoadScript();
+        if (StringUtils.isNotBlank(onLoadScript)) {
+            clientStateScript = onLoadScript + clientStateScript;
+        }
+        component.setOnLoadScript(clientStateScript);
 
         component.setId(origId);
     }
@@ -524,6 +532,9 @@ public class ViewHelperServiceImpl implements ViewHelperService {
             getExpressionEvaluatorService().evaluateObjectExpressions(bindingInfo, model, component.getContext());
         }
 
+        // sync the component with previous client side state
+        syncClientSideStateForComponent(component, ((UifFormBase) model).getClientStateForSyncing());
+
         // invoke component to perform its conditional logic
         Component parent = (Component) component.getContext().get(UifConstants.ContextVariableNames.PARENT);
         component.performApplyModel(view, model, parent);
@@ -615,16 +626,9 @@ public class ViewHelperServiceImpl implements ViewHelperService {
     @Override
     public void performFinalize(View view, Object model) {
         Map<String, Object> clientState = new HashMap<String, Object>();
-        addGeneralClientSideState(view, model, clientState);
+        performComponentFinalize(view, view, model, null, clientState);
 
-        performComponentFinalize(view, view, model, null);
-
-        // script for initializing client side script on load
-        String clientStateScript = "var ViewState = new Object(); ";
-        for (Entry<String, Object> stateEntry : clientState.entrySet()) {
-            clientStateScript += "ViewState['" + stateEntry.getKey() + "'] = '" + stateEntry.getValue() + "'; ";
-        }
-
+        String clientStateScript = buildClientSideStateScript(view, clientState, false);
         String viewPreLoadScript = view.getPreLoadScript();
         if (StringUtils.isNotBlank(viewPreLoadScript)) {
             clientStateScript = viewPreLoadScript + clientStateScript;
@@ -633,16 +637,61 @@ public class ViewHelperServiceImpl implements ViewHelperService {
     }
 
     /**
-     * Adds general variables that will be exposed client side (for example, config properties)
+     * Builds script that will initialize configuration parameters and component state on the client
      *
-     * @param view - view instance being built
-     * @param model - object containing the view data
-     * @param clientState - map to add client state to
+     * <p>
+     * Here client side state is initialized along with configuration variables that need exposed to script
+     * </p>
+     *
+     * @param view - view instance that is being built
+     * @param clientSideState - map of key/value pairs that should be exposed as client side state
+     * @param updateOnly - boolean that indicates whether we are just updating a component (true), or the full view
      */
-    protected void addGeneralClientSideState(View view, Object model, Map<String, Object> clientState) {
-        String kradImageLocation = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
-                "krad.externalizable.images.url");
-        clientState.put(UifConstants.ClientSideVariables.KRAD_IMAGE_LOCATION, kradImageLocation);
+    protected String buildClientSideStateScript(View view, Map<String, Object> clientSideState, boolean updateOnly) {
+        // merge any additional client side state added to the view during processing
+        // state from view will override in all cases except when both values are maps, in which the maps
+        // be combined for the new value
+        for (Entry<String, Object> additionalState : view.getClientSideState().entrySet()) {
+            if (!clientSideState.containsKey(additionalState.getKey())) {
+                clientSideState.put(additionalState.getKey(), additionalState.getValue());
+            } else {
+                Object state = clientSideState.get(additionalState.getKey());
+                Object mergeState = additionalState.getValue();
+                if ((state instanceof Map) && (mergeState instanceof Map)) {
+                    ((Map) state).putAll((Map) mergeState);
+                } else {
+                    clientSideState.put(additionalState.getKey(), additionalState.getValue());
+                }
+            }
+        }
+
+        // script for initializing client side state on load
+        String clientStateScript = "";
+        if (!clientSideState.isEmpty()) {
+            if (updateOnly) {
+                clientStateScript = "updateViewState({";
+            } else {
+                clientStateScript = "initializeViewState({";
+            }
+
+            for (Entry<String, Object> stateEntry : clientSideState.entrySet()) {
+                clientStateScript += "'" + stateEntry.getKey() + "':";
+                clientStateScript += ScriptUtils.translateValue(stateEntry.getValue());
+                clientStateScript += ",";
+            }
+            clientStateScript = StringUtils.removeEnd(clientStateScript, ",");
+            clientStateScript += "});";
+        }
+
+        // add necessary configuration parameters
+        if (!updateOnly) {
+            String kradImageLocation = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                    "krad.externalizable.images.url");
+            clientStateScript += "setConfigParam('" + UifConstants.ClientSideVariables.KRAD_IMAGE_LOCATION
+                    + "','" + kradImageLocation + "');";
+        }
+
+        return clientStateScript;
     }
 
     /**
@@ -653,8 +702,10 @@ public class ViewHelperServiceImpl implements ViewHelperService {
      * @param component - the component instance that should be updated
      * @param model - top level object containing the data
      * @param parent - Parent component for the component being finalized
+     * @param clientSideState - map to add client state to
      */
-    protected void performComponentFinalize(View view, Component component, Object model, Component parent) {
+    protected void performComponentFinalize(View view, Component component, Object model, Component parent,
+            Map<String, Object> clientSideState) {
         if (component == null) {
             return;
         }
@@ -665,15 +716,102 @@ public class ViewHelperServiceImpl implements ViewHelperService {
         // invoke component to update its state
         component.performFinalize(view, model, parent);
 
+        // add client side state for annotated component properties
+        addClientSideStateForComponent(component, clientSideState);
+
         // invoke service override hook
         performCustomFinalize(view, component, model, parent);
 
-        // invoke component initializers setup to run in the finalize phase
+        // invoke component modifiers setup to run in the finalize phase
         runComponentModifiers(view, component, model, UifConstants.ViewPhases.FINALIZE);
 
         // get components children and recursively update state
         for (Component nestedComponent : component.getNestedComponents()) {
-            performComponentFinalize(view, nestedComponent, model, component);
+            performComponentFinalize(view, nestedComponent, model, component, clientSideState);
+        }
+    }
+
+    /**
+     * Reflects the class for the given component to find any fields that are annotated with
+     * <code>ClientSideState</code> and adds the corresponding property name/value pair to the client side state
+     * map
+     *
+     * <p>
+     * Note if the component is the <code>View</code, state is added directly to the client side state map, while
+     * for other components a nested Map is created to hold the state, which is then placed into the client side
+     * state map with the component id as the key
+     * </p>
+     *
+     * @param component - component instance to get client state for
+     * @param clientSideState - map to add client side variable name/values to
+     */
+    protected void addClientSideStateForComponent(Component component, Map<String, Object> clientSideState) {
+        Map<String, Annotation> annotatedFields = CloneUtils.getFieldsWithAnnotation(component.getClass(),
+                ClientSideState.class);
+
+        if (!annotatedFields.isEmpty()) {
+            Map<String, Object> componentClientState = null;
+            if (component instanceof View) {
+                componentClientState = clientSideState;
+            } else {
+                if (clientSideState.containsKey(component.getId())) {
+                    componentClientState = (Map<String, Object>) clientSideState.get(component.getId());
+                } else {
+                    componentClientState = new HashMap<String, Object>();
+                    clientSideState.put(component.getId(), componentClientState);
+                }
+            }
+
+            for (Entry<String, Annotation> annotatedField : annotatedFields.entrySet()) {
+                ClientSideState clientSideStateAnnot = (ClientSideState) annotatedField.getValue();
+
+                String variableName = clientSideStateAnnot.variableName();
+                if (StringUtils.isBlank(variableName)) {
+                    variableName = annotatedField.getKey();
+                }
+
+                Object value = ObjectPropertyUtils.getPropertyValue(component, annotatedField.getKey());
+                componentClientState.put(variableName, value);
+            }
+        }
+    }
+
+    /**
+     * Updates the properties of the given component instance with the value found from the corresponding map of
+     * client state (if found)
+     *
+     * @param component - component instance to update
+     * @param clientSideState - map of state to sync with
+     */
+    protected void syncClientSideStateForComponent(Component component, Map<String, Object> clientSideState) {
+        // find the map of state that was sent for component (if any)
+        Map<String, Object> componentState = null;
+        if (component instanceof View) {
+            componentState = clientSideState;
+        } else {
+            if (clientSideState.containsKey(component.getId())) {
+                componentState = (Map<String, Object>) clientSideState.get(component.getId());
+            }
+        }
+
+        // if state was sent, match with fields on the component that are annotated to have client state
+        if ((componentState != null) && (!componentState.isEmpty())) {
+            Map<String, Annotation> annotatedFields = CloneUtils.getFieldsWithAnnotation(component.getClass(),
+                    ClientSideState.class);
+
+            for (Entry<String, Annotation> annotatedField : annotatedFields.entrySet()) {
+                ClientSideState clientSideStateAnnot = (ClientSideState) annotatedField.getValue();
+
+                String variableName = clientSideStateAnnot.variableName();
+                if (StringUtils.isBlank(variableName)) {
+                    variableName = annotatedField.getKey();
+                }
+
+                if (componentState.containsKey(variableName)) {
+                    Object value = componentState.get(variableName);
+                    ObjectPropertyUtils.setPropertyValue(component, annotatedField.getKey(), value);
+                }
+            }
         }
     }
 

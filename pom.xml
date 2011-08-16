@@ -1410,14 +1410,14 @@
         <groupId>org.codehaus.jackson</groupId>
         <artifactId>jackson-core-asl</artifactId>
         <version>${jackson.version}</version>
-        <scope>runtime</scope>
+        <scope>compile</scope>
       </dependency>
 
       <dependency>
         <groupId>org.codehaus.jackson</groupId>
         <artifactId>jackson-mapper-asl</artifactId>
         <version>${jackson.version}</version>
-        <scope>runtime</scope>
+        <scope>compile</scope>
       </dependency>
 
       <dependency>

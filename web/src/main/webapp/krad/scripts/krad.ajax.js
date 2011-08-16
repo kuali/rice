@@ -30,6 +30,15 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
 	if(additionalData != null){
 		jq.extend(data, additionalData);
 	}
+
+    var viewState = jq(document).data("ViewState");
+    if (!jq.isEmptyObject(viewState)) {
+        var jsonViewState = jq.toJSON(viewState);
+
+        // change double quotes to single because escaping causes problems on URL
+        jsonViewState = jsonViewState.replace(/"/g, "'");
+        jq.extend(data, {clientViewState: jsonViewState});
+    }
 	
 	var submitOptions = {
 			data: data, 
@@ -48,12 +57,12 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
 		var elementBlockingOptions = {
 				beforeSend: function() {
 					if(elementToBlock.hasClass("unrendered")){
-						elementToBlock.append('<img src="' + ViewState.kradImageLocation + 'loader.gif" alt="working..." /> Loading...');
+						elementToBlock.append('<img src="' + getConfigParam("kradImageLocation") + 'loader.gif" alt="working..." /> Loading...');
 						elementToBlock.show();
 					}
 					else{
 						elementToBlock.block({
-			                message: '<img src="' + ViewState.kradImageLocation + 'loader.gif" alt="working..." /> Updating...',
+			                message: '<img src="' + getConfigParam("kradImageLocation") + 'loader.gif" alt="working..." /> Updating...',
 			                fadeIn:  400,
 			                fadeOut:  800,
 			                overlayCSS:  {
@@ -297,6 +306,7 @@ function setupRefreshCheck(controlName, refreshId, baseId, condition){
  * call is made to retrieve the content to be shown.  If alwaysRetrieve is true, the component
  * is always retrieved from the server when disclosed.
  * Do not add check if the component is part of the "old" values on a maintanance document (endswith _c0).
+ *
  * @param controlName
  * @param disclosureId
  * @param condition - function which returns true to disclose, false otherwise

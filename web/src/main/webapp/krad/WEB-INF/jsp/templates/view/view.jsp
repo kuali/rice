@@ -60,6 +60,7 @@
 			<form:hidden path="focusId" />
 			<form:hidden path="formHistory.historyParameterString"/>
 		</c:if>
+
 		<krad:script value="performJumpTo();" />
 		<c:if test="${view.currentPage.autoFocus}">
 			<krad:script value="performFocus();" />

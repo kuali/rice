@@ -34,6 +34,7 @@ import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.security.GeneralSecurityException;
 import java.text.NumberFormat;
@@ -47,7 +48,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
- * Miscellaneous Utility Methods.
+ * Miscellaneous Utility Methods
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

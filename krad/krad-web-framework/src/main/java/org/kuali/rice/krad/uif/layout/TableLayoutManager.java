@@ -57,7 +57,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	private LabelField headerFieldPrototype;
 
 	private boolean renderSequenceField;
-	private String conditionalRenderSequenceField;
 	private boolean generateAutoSequence;
 	private Field sequenceFieldPrototype;
 
@@ -462,25 +461,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	 */
 	public void setRenderSequenceField(boolean renderSequenceField) {
 		this.renderSequenceField = renderSequenceField;
-	}
-
-	/**
-	 * Expression language string for conditionally setting the render sequence
-	 * field property
-	 * 
-	 * @return String el that should evaluate to boolean
-	 */
-	public String getConditionalRenderSequenceField() {
-		return this.conditionalRenderSequenceField;
-	}
-
-	/**
-	 * Setter for the conditional render sequence field string
-	 * 
-	 * @param conditionalRenderSequenceField
-	 */
-	public void setConditionalRenderSequenceField(String conditionalRenderSequenceField) {
-		this.conditionalRenderSequenceField = conditionalRenderSequenceField;
 	}
 
 	/**

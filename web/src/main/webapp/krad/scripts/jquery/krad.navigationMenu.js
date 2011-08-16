@@ -50,9 +50,7 @@
 				$("li", this).addClass("basic-element");
 				$(this).addClass("basic-navigation");
 			}
-			
-			
-			
+
 			if(options.slideout){
 				$(this).before("<a id='collapseLink' class='collapseLink' alt='Close Navigation'>Collapse Navigation</a>");
 				$(".navigation-block").after("<a id='controlbtn' class='slideLink' alt='Close Navigation'><<</a>");

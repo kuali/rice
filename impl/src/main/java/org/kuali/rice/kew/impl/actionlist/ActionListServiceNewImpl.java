@@ -57,7 +57,7 @@ public class ActionListServiceNewImpl implements ActionListService {
 
     @Override
     public List<ActionItem> getAllActionItems(String documentId) {
-        incomingParamCheck(documentId, "principalId");
+        incomingParamCheck(documentId, "documentId");
         Collection<org.kuali.rice.kew.actionitem.ActionItem> actionItems
                 = KEWServiceLocator.getActionListService().getActionListForSingleDocument(documentId);
         List<ActionItem> actionItemVOs = new ArrayList<ActionItem>(actionItems.size());

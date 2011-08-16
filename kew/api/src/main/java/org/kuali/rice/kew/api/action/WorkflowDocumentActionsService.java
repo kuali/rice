@@ -926,7 +926,7 @@ public interface WorkflowDocumentActionsService {
     /**
      * Triggers the execution of a {@link ActionType#TAKE_GROUP_AUTHORITY} action for the given
      * principal and document specified in the supplied parameters. Takes authority of a group by a
-     * member of that group. .
+     * member of that group.
      *
      * @param parameters the parameters which indicate which principal is executing the action
      *        against which document, as well as additional operations to take against the document,
@@ -956,8 +956,8 @@ public interface WorkflowDocumentActionsService {
 
     /**
      * Triggers the execution of a {@link ActionType#RELEASE_GROUP_AUTHORITY} action for the given
-     * principal and document specified in the supplied parameters. Takes authority of a group by a
-     * member of that group. .
+     * principal and document specified in the supplied parameters. Releases authority of a group by a
+     * member of that group.
      *
      * @param parameters the parameters which indicate which principal is executing the action
      *        against which document, as well as additional operations to take against the document,
@@ -985,6 +985,28 @@ public interface WorkflowDocumentActionsService {
             @WebParam(name = "groupId") String groupId)
             throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
+    /**
+     * Triggers the execution of a {@link ActionType#SAVE} action for the given
+     * principal and document specified in the supplied parameters. Saves a document to a
+     * at the current point.
+     *
+     * @param parameters the parameters which indicate which principal is executing the action
+     *        against which document, as well as additional operations to take against the document,
+     *        such as updating document data
+     *
+     * @return the result of executing the action, including a view on the updated state of the
+     *         document and related actions
+     *
+     * @throws RiceIllegalArgumentException if {@code parameters} is null
+     * @throws RiceIllegalArgumentException if no document with the {@code documentId} specified in
+     *         {@code parameters} exists
+     * @throws RiceIllegalArgumentException if no principal with the {@code principalId} specified
+     *         in {@code parameters} exists
+     * @throws InvalidDocumentContentException if the document content on the
+     *         {@link DocumentContentUpdate} supplied with the {@code parameters} is invalid.
+     * @throws InvalidActionTakenException if the supplied principal is not allowed to execute this
+     *         action
+     */
     @WebMethod(operationName = "save")
     @WebResult(name = "documentActionResult")
     @XmlElement(name = "documentActionResult", required = true)
@@ -992,8 +1014,27 @@ public interface WorkflowDocumentActionsService {
             throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
     /**
-     * TODO - document the fact that passing an annotation to this will have no effect as it's not
-     * actually recorded on the route log
+     * Triggers the execution of a {@link ActionType#SAVE} action for the given
+     * principal and document specified in the supplied parameters. Saves the current document data for
+     * the document.  Note that passing an annotation to this will have no effect because it is not
+     * recorded in the route log
+     *
+     * @param parameters the parameters which indicate which principal is executing the action
+     *        against which document, as well as additional operations to take against the document,
+     *        such as updating document data
+     *
+     * @return the result of executing the action, including a view on the updated state of the
+     *         document and related actions
+     *
+     * @throws RiceIllegalArgumentException if {@code parameters} is null
+     * @throws RiceIllegalArgumentException if no document with the {@code documentId} specified in
+     *         {@code parameters} exists
+     * @throws RiceIllegalArgumentException if no principal with the {@code principalId} specified
+     *         in {@code parameters} exists
+     * @throws InvalidDocumentContentException if the document content on the
+     *         {@link DocumentContentUpdate} supplied with the {@code parameters} is invalid.
+     * @throws InvalidActionTakenException if the supplied principal is not allowed to execute this
+     *         action
      */
     @WebMethod(operationName = "saveDocumentData")
     @WebResult(name = "documentActionResult")
@@ -1001,6 +1042,20 @@ public interface WorkflowDocumentActionsService {
     DocumentActionResult saveDocumentData(@WebParam(name = "parameters") DocumentActionParameters parameters)
             throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
+    /**
+     * Deletes the document.
+     *
+     * @param documentId the unique id of the document to delete
+     * @param principalId
+     *
+     * @return the document that was removed from the system
+     *
+     * @throws RiceIllegalArgumentException if {@code documentId} is null
+     * @throws RiceIllegalArgumentException if {@code principalId} is null
+     * @throws RiceIllegalArgumentException if no document with the {@code documentId} exists
+     * @throws InvalidActionTakenException if the supplied principal is not allowed to execute this
+     *         action
+     */
     @WebMethod(operationName = "delete")
     @WebResult(name = "document")
     @XmlElement(name = "document", required = true)
@@ -1009,6 +1064,22 @@ public interface WorkflowDocumentActionsService {
             @WebParam(name = "principalId") String principalId)
             throws RiceIllegalArgumentException, InvalidActionTakenException;
 
+    /**
+     * Records the non-routed document action. - Checks to make sure the document status
+     * allows the action. Records the action.
+     *
+     * @param documentId the unique id of the document to delete
+     * @param principalId
+     *
+     * @return the document that was removed from the system
+     *
+     * @throws RiceIllegalArgumentException if {@code documentId} is null
+     * @throws RiceIllegalArgumentException if {@code principalId} is null
+     * @throws RiceIllegalArgumentException if {@code annotation} is null
+     * @throws RiceIllegalArgumentException if no document with the {@code documentId} exists
+     * @throws InvalidActionTakenException if the supplied principal is not allowed to execute this
+     *         action
+     */
     @WebMethod(operationName = "logAnnotation")
     void logAnnotation(
             @WebParam(name = "documentId") String documentId,
@@ -1016,10 +1087,42 @@ public interface WorkflowDocumentActionsService {
             @WebParam(name = "annotation") String annotation)
             throws RiceIllegalArgumentException, InvalidActionTakenException;
 
+    // TODO  finish javadoc
+    /**
+     *
+     *
+     * @param documentId the unique id of the document to delete
+     *
+     * @throws RiceIllegalArgumentException if {@code documentId} is null
+     */
     @WebMethod(operationName = "initiateIndexing")
     void initiateIndexing(@WebParam(name = "documentId") String documentId)
             throws RiceIllegalArgumentException;
 
+
+    /**
+     * Triggers the execution of a {@link ActionType#SU_BLANKET_APPROVE} action for the given
+     * principal and document specified in the supplied parameters. Does a blanket approve for a super user
+     * and runs post-processing depending on {@code executePostProcessor}
+     *
+     * @param parameters the parameters which indicate which principal is executing the action
+     *        against which document, as well as additional operations to take against the document,
+     *        such as updating document data
+     * @param executePostProcessor boolean value determining if the post-processor should be run or not
+     *
+     * @return the result of executing the action, including a view on the updated state of the
+     *         document and related actions
+     *
+     * @throws RiceIllegalArgumentException if {@code parameters} is null
+     * @throws RiceIllegalArgumentException if no document with the {@code documentId} specified in
+     *         {@code parameters} exists
+     * @throws RiceIllegalArgumentException if no principal with the {@code principalId} specified
+     *         in {@code parameters} exists
+     * @throws InvalidDocumentContentException if the document content on the
+     *         {@link DocumentContentUpdate} supplied with the {@code parameters} is invalid.
+     * @throws InvalidActionTakenException if the supplied principal is not allowed to execute this
+     *         action
+     */
     @WebMethod(operationName = "superUserBlanketApprove")
     @WebResult(name = "documentActionResult")
     @XmlElement(name = "documentActionResult", required = true)
@@ -1028,6 +1131,29 @@ public interface WorkflowDocumentActionsService {
             @WebParam(name = "executePostProcessor") boolean executePostProcessor)
             throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
+    /**
+     * Triggers the execution of a {@link ActionType#SU_APPROVE} action for the given
+     * principal and document specified in the supplied parameters. Does an approve for a super user
+     * on a node and runs post-processing depending on {@code executePostProcessor}
+     *
+     * @param parameters the parameters which indicate which principal is executing the action
+     *        against which document, as well as additional operations to take against the document,
+     *        such as updating document data
+     * @param executePostProcessor boolean value determining if the post-processor should be run or not
+     *
+     * @return the result of executing the action, including a view on the updated state of the
+     *         document and related actions
+     *
+     * @throws RiceIllegalArgumentException if {@code parameters} is null
+     * @throws RiceIllegalArgumentException if no document with the {@code documentId} specified in
+     *         {@code parameters} exists
+     * @throws RiceIllegalArgumentException if no principal with the {@code principalId} specified
+     *         in {@code parameters} exists
+     * @throws InvalidDocumentContentException if the document content on the
+     *         {@link DocumentContentUpdate} supplied with the {@code parameters} is invalid.
+     * @throws InvalidActionTakenException if the supplied principal is not allowed to execute this
+     *         action
+     */
     @WebMethod(operationName = "superUserNodeApprove")
     @WebResult(name = "documentActionResult")
     @XmlElement(name = "documentActionResult", required = true)
@@ -1037,6 +1163,31 @@ public interface WorkflowDocumentActionsService {
             @WebParam(name = "nodeName") String nodeName)
             throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
+    /**
+     * Triggers the execution of a {@link ActionType#SU_APPROVE} action for the given
+     * actionRequestId and principal and document specified in the supplied parameters. Does an approve for a super user
+     * on a node and runs post-processing depending on {@code executePostProcessor}
+     *
+     * @param parameters the parameters which indicate which principal is executing the action
+     *        against which document, as well as additional operations to take against the document,
+     *        such as updating document data
+     * @param actionRequestId unique Id of an action request to take action on
+     * @param executePostProcessor boolean value determining if the post-processor should be run or not
+     *
+     * @return the result of executing the action, including a view on the updated state of the
+     *         document and related actions
+     *
+     * @throws RiceIllegalArgumentException if {@code parameters} is null
+     * @throws RiceIllegalArgumentException if (@code actionRequestId}
+     * @throws RiceIllegalArgumentException if no document with the {@code documentId} specified in
+     *         {@code parameters} exists
+     * @throws RiceIllegalArgumentException if no principal with the {@code principalId} specified
+     *         in {@code parameters} exists
+     * @throws InvalidDocumentContentException if the document content on the
+     *         {@link DocumentContentUpdate} supplied with the {@code parameters} is invalid.
+     * @throws InvalidActionTakenException if the supplied principal is not allowed to execute this
+     *         action
+     */
     @WebMethod(operationName = "superUserTakeRequestedAction")
     @WebResult(name = "documentActionResult")
     @XmlElement(name = "documentActionResult", required = true)
@@ -1046,6 +1197,29 @@ public interface WorkflowDocumentActionsService {
             @WebParam(name = "actionRequestId") String actionRequestId)
             throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
+    /**
+     * Triggers the execution of a {@link ActionType#SU_DISAPPROVE} action for the given
+     * principal and document specified in the supplied parameters. Does a disapprove for a super user
+     * on a node and runs post-processing depending on {@code executePostProcessor}
+     *
+     * @param parameters the parameters which indicate which principal is executing the action
+     *        against which document, as well as additional operations to take against the document,
+     *        such as updating document data
+     * @param executePostProcessor boolean value determining if the post-processor should be run or not
+     *
+     * @return the result of executing the action, including a view on the updated state of the
+     *         document and related actions
+     *
+     * @throws RiceIllegalArgumentException if {@code parameters} is null
+     * @throws RiceIllegalArgumentException if no document with the {@code documentId} specified in
+     *         {@code parameters} exists
+     * @throws RiceIllegalArgumentException if no principal with the {@code principalId} specified
+     *         in {@code parameters} exists
+     * @throws InvalidDocumentContentException if the document content on the
+     *         {@link DocumentContentUpdate} supplied with the {@code parameters} is invalid.
+     * @throws InvalidActionTakenException if the supplied principal is not allowed to execute this
+     *         action
+     */
     @WebMethod(operationName = "superUserDisapprove")
     @WebResult(name = "documentActionResult")
     @XmlElement(name = "documentActionResult", required = true)
@@ -1054,6 +1228,29 @@ public interface WorkflowDocumentActionsService {
             @WebParam(name = "executePostProcessor") boolean executePostProcessor)
             throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
+    /**
+     * Triggers the execution of a {@link ActionType#SU_CANCEL} action for the given
+     * principal and document specified in the supplied parameters. Does an cancel for a super user
+     * on a node and runs post-processing depending on {@code executePostProcessor}
+     *
+     * @param parameters the parameters which indicate which principal is executing the action
+     *        against which document, as well as additional operations to take against the document,
+     *        such as updating document data
+     * @param executePostProcessor boolean value determining if the post-processor should be run or not
+     *
+     * @return the result of executing the action, including a view on the updated state of the
+     *         document and related actions
+     *
+     * @throws RiceIllegalArgumentException if {@code parameters} is null
+     * @throws RiceIllegalArgumentException if no document with the {@code documentId} specified in
+     *         {@code parameters} exists
+     * @throws RiceIllegalArgumentException if no principal with the {@code principalId} specified
+     *         in {@code parameters} exists
+     * @throws InvalidDocumentContentException if the document content on the
+     *         {@link DocumentContentUpdate} supplied with the {@code parameters} is invalid.
+     * @throws InvalidActionTakenException if the supplied principal is not allowed to execute this
+     *         action
+     */
     @WebMethod(operationName = "superUserCancel")
     @WebResult(name = "documentActionResult")
     @XmlElement(name = "documentActionResult", required = true)
@@ -1062,6 +1259,30 @@ public interface WorkflowDocumentActionsService {
             @WebParam(name = "executePostProcessor") boolean executePostProcessor)
             throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
+    /**
+     * Triggers the execution of a {@link ActionType#SU_RETURN_TO_PREVIOUS} action for the given
+     * principal and document specified in the supplied parameters. Returns the document to the
+     * previous node for a super user on a node and runs post-processing depending on {@code executePostProcessor}
+     *
+     * @param parameters the parameters which indicate which principal is executing the action
+     *        against which document, as well as additional operations to take against the document,
+     *        such as updating document data
+     * @param executePostProcessor boolean value determining if the post-processor should be run or not
+     * @param returnPoint point to return to
+     *
+     * @return the result of executing the action, including a view on the updated state of the
+     *         document and related actions
+     *
+     * @throws RiceIllegalArgumentException if {@code parameters} is null
+     * @throws RiceIllegalArgumentException if no document with the {@code documentId} specified in
+     *         {@code parameters} exists
+     * @throws RiceIllegalArgumentException if no principal with the {@code principalId} specified
+     *         in {@code parameters} exists
+     * @throws InvalidDocumentContentException if the document content on the
+     *         {@link DocumentContentUpdate} supplied with the {@code parameters} is invalid.
+     * @throws InvalidActionTakenException if the supplied principal is not allowed to execute this
+     *         action
+     */
     @WebMethod(operationName = "superUserReturnToPreviousNode")
     @WebResult(name = "documentActionResult")
     @XmlElement(name = "documentActionResult", required = true)
@@ -1071,12 +1292,49 @@ public interface WorkflowDocumentActionsService {
             @WebParam(name = "returnPoint") ReturnPoint returnPoint)
             throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
+    /**
+     * Places a document in exception routing or the given principal and document specified in the supplied parameters.
+     *
+     * @param parameters the parameters which indicate which principal is executing the action
+     *        against which document, as well as additional operations to take against the document,
+     *        such as updating document data
+     *
+     * @return the result of executing the action, including a view on the updated state of the
+     *         document and related actions
+     *
+     * @throws RiceIllegalArgumentException if {@code parameters} is null
+     * @throws RiceIllegalArgumentException if no document with the {@code documentId} specified in
+     *         {@code parameters} exists
+     * @throws RiceIllegalArgumentException if no principal with the {@code principalId} specified
+     *         in {@code parameters} exists
+     * @throws InvalidDocumentContentException if the document content on the
+     *         {@link DocumentContentUpdate} supplied with the {@code parameters} is invalid.
+     * @throws InvalidActionTakenException if the supplied principal is not allowed to execute this
+     *         action
+     */
     @WebMethod(operationName = "placeInExceptionRouting")
     @WebResult(name = "documentActionResult")
     @XmlElement(name = "documentActionResult", required = true)
     DocumentActionResult placeInExceptionRouting(@WebParam(name = "parameters") DocumentActionParameters parameters)
             throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
+    /**
+     * Validates a workflow attribute definition and returns a list of validation errors
+     *
+     * @param definition WorkflowAttributeDefinition to validate
+     *
+     * @return a list of WorkflowAttributeValidationErrors caused by validation of the passed in {@code definition}
+     *
+     * @throws RiceIllegalArgumentException if {@code parameters} is null
+     * @throws RiceIllegalArgumentException if no document with the {@code documentId} specified in
+     *         {@code parameters} exists
+     * @throws RiceIllegalArgumentException if no principal with the {@code principalId} specified
+     *         in {@code parameters} exists
+     * @throws InvalidDocumentContentException if the document content on the
+     *         {@link DocumentContentUpdate} supplied with the {@code parameters} is invalid.
+     * @throws InvalidActionTakenException if the supplied principal is not allowed to execute this
+     *         action
+     */
     @WebMethod(operationName = "validateWorkflowAttributeDefinition")
     @WebResult(name = "validationErrors")
     @XmlElementWrapper(name = "validationErrors", required = true)
@@ -1086,54 +1344,223 @@ public interface WorkflowDocumentActionsService {
             throws RiceIllegalArgumentException;
 
     // TODO add, annotate, and javadoc the following methods to this service
-
+    /**
+     * Determines if a passed in user exists in a document's route log or future route depending on the passed in
+     * {@code lookFuture} value
+     *
+     * @param documentId unique Id of document
+     * @param principalId unique Id of Principal to look for in document's route log
+     * @param lookFuture boolean value determines whether or not to look at the future route log
+     *
+     * @return boolean value representing if a principal exists in a Document's route log
+     *
+     * @throws RiceIllegalArgumentException if {@code documentId} is null
+     * @throws RiceIllegalArgumentException if {@code principalId} is null
+     * @throws RiceIllegalArgumentException if no document with the {@code documentId} specified in
+     *         {@code parameters} exists
+     * @throws RiceIllegalArgumentException if no principal with the {@code principalId} specified
+     *         in {@code parameters} exists
+     */
+    @WebMethod(operationName = "isUserInRouteLog")
+    @WebResult(name = "userInRouteLog")
     boolean isUserInRouteLog(
             @WebParam(name = "documentId") String documentId,
             @WebParam(name = "principalId") String principalId,
-            @WebParam(name = "lookFuture") boolean lookFuture);
+            @WebParam(name = "lookFuture") boolean lookFuture)
+            throws RiceIllegalArgumentException;
 
+    /**
+     * Determines if a passed in user exists in a document's route log or future route depending on the passed in
+     * {@code lookFuture} value and {@code flattenNodes}
+     *
+     * @param documentId unique Id of document
+     * @param principalId unique Id of Principal to look for in document's route log
+     * @param lookFuture boolean value determines whether or not to look at the future route log
+     *
+     * @return boolean value representing if a principal exists in a Document's route log
+     *
+     * @throws RiceIllegalArgumentException if {@code documentId} is null
+     * @throws RiceIllegalArgumentException if {@code principalId} is null
+     * @throws RiceIllegalArgumentException if no document with the {@code documentId} specified in
+     *         {@code parameters} exists
+     * @throws RiceIllegalArgumentException if no principal with the {@code principalId} specified
+     *         in {@code parameters} exists
+     */
+    @WebMethod(operationName = "isUserInRouteLogWithOptionalFlattening")
+    @WebResult(name = "userInRouteLogWithOptionalFlattening")
     boolean isUserInRouteLogWithOptionalFlattening(
             @WebParam(name = "documentId") String documentId,
             @WebParam(name = "principalId") String principalId,
             @WebParam(name = "lookFuture") boolean lookFuture,
-            @WebParam(name = "flattenNodes") boolean flattenNodes);
+            @WebParam(name = "flattenNodes") boolean flattenNodes)
+            throws RiceIllegalArgumentException;
 
+    /**
+     * Re-resolves the given role for all documents for the given document type (including children).
+     *
+     * @param documentTypeName documentTypeName of DocuemntType for role
+     * @param roleName name of Role to reresolve
+     * @param qualifiedRoleNameLabel qualified role name label
+     *
+     * @throws RiceIllegalArgumentException if {@code documentTypeName} is null
+     * @throws RiceIllegalArgumentException if {@code roleName} is null
+     * @throws RiceIllegalArgumentException if {@code qualifiedRoleNameLable} is null
+     */
+    @WebMethod(operationName = "reResolveRoleByDocTypeName")
     void reResolveRoleByDocTypeName(
     		@WebParam(name = "documentTypeName") String documentTypeName,
     		@WebParam(name = "roleName") String roleName,
-    		@WebParam(name = "qualifiedRoleNameLabel") String qualifiedRoleNameLabel);
+    		@WebParam(name = "qualifiedRoleNameLabel") String qualifiedRoleNameLabel)
+            throws RiceIllegalArgumentException;
 
+    /**
+     * Re-resolves the given role for all documents for the given document id (including children).
+     *
+     * @param documentId documentId of Docuemnt for role
+     * @param roleName name of Role to reresolve
+     * @param qualifiedRoleNameLabel qualified role name label
+     *
+     * @throws RiceIllegalArgumentException if {@code documentTypeName} is null
+     * @throws RiceIllegalArgumentException if {@code roleName} is null
+     * @throws RiceIllegalArgumentException if {@code qualifiedRoleNameLable} is null
+     */
+    @WebMethod(operationName = "reResolveRoleByDocumentId")
     void reResolveRoleByDocumentId(
     		@WebParam(name = "documentId") String documentId,
     		@WebParam(name = "roleName") String roleName,
-    		@WebParam(name = "qualifiedRoleNameLabel") String qualifiedRoleNameLabel);
+    		@WebParam(name = "qualifiedRoleNameLabel") String qualifiedRoleNameLabel)
+            throws RiceIllegalArgumentException;
 
-    DocumentDetail executeSimulation(@WebParam(name = "reportCriteria") RoutingReportCriteria reportCriteria);
+    /**
+     * Executes a simulation of a document to get all previous and future route information
+     *
+     * @param reportCriteria criteria for the simulation to follow
+     *
+     * @return DocumentDetail object representing the results of the simulation
+     *
+     * @throws RiceIllegalArgumentException if {@code reportCriteria} is null
+     */
+    @WebMethod(operationName = "executeSimulation")
+    @WebResult(name = "documentDetail")
+    DocumentDetail executeSimulation(
+            @WebParam(name = "reportCriteria") RoutingReportCriteria reportCriteria)
+            throws RiceIllegalArgumentException;
 
-    List<Rule> ruleReport(@WebParam(name = "ruleCriteria") RuleReportCriteria reportCriteria);
+    /**
+     * Executes a simulation of a document to get all previous and future route information
+     *
+     * @param reportCriteria criteria for the rule report to follow
+     *
+     * @return list of Rules representing the results of the rule report
+     *
+     * @throws RiceIllegalArgumentException if {@code reportCriteria} is null
+     */
+    @WebMethod(operationName = "ruleReport")
+    @WebResult(name = "rules")
+    @XmlElementWrapper(name = "rules", required = true)
+    @XmlElement(name = "rule", required = true)
+    List<Rule> ruleReport(
+            @WebParam(name = "ruleCriteria") RuleReportCriteria reportCriteria)
+            throws RiceIllegalArgumentException;
 
+    /**
+     * Determines if a passed in user is the final approver for a document
+     *
+     * @param documentId unique Id of the document
+     * @param principalId unique Id of Principal to look for in document's route log
+     *
+     * @return boolean value representing if a principal is the final approver for a document
+     *
+     * @throws RiceIllegalArgumentException if {@code documentId} is null
+     * @throws RiceIllegalArgumentException if {@code principalId} is null
+     */
+    @WebMethod(operationName = "isFinalApprover")
+    @WebResult(name = "finalApprover")
     boolean isFinalApprover(
         	@WebParam(name = "documentId") String documentId,
-    		@WebParam(name = "principalId") String principalId);
+    		@WebParam(name = "principalId") String principalId)
+            throws RiceIllegalArgumentException;
 
+    /**
+     * Determines if a passed in user is the last approver at a specified route node
+     *
+     * @param documentId unique Id of the document
+     * @param principalId unique Id of Principal to look for in document's route log
+     * @param nodeName name of route node to determine last approver for
+     *
+     * @return boolean value representing if a principal is the last approver at the specified route node
+     *
+     * @throws RiceIllegalArgumentException if {@code documentId} is null
+     * @throws RiceIllegalArgumentException if {@code principalId} is null
+     * @throws RiceIllegalArgumentException if {@code nodeName} is null
+     */
+    @WebMethod(operationName = "isLastApproverAtNode")
+    @WebResult(name = "lastApproverAtNode")
     boolean isLastApproverAtNode(
     		@WebParam(name = "documentId") String documentId,
     		@WebParam(name = "principalId") String principalId,
-    		@WebParam(name = "nodeName") String nodeName);
+    		@WebParam(name = "nodeName") String nodeName)
+            throws RiceIllegalArgumentException;
 
+    /**
+     * Determines if a route node has an 'approve action' request
+     *
+     * @param docType document type of document
+     * @param docContent string representing content of document
+     * @param nodeName name of route node to determine if approve action request exists
+     *
+     * @return boolean value representing if a route node has an 'approve action' request
+     *
+     * @throws RiceIllegalArgumentException if {@code docType} is null
+     * @throws RiceIllegalArgumentException if {@code docContent} is null
+     * @throws RiceIllegalArgumentException if {@code nodeName} is null
+     */
+    @WebMethod(operationName = "routeNodeHasApproverActionRequest")
+    @WebResult(name = "routeNodeHasApproverActionRequest")
     boolean routeNodeHasApproverActionRequest(
     		@WebParam(name = "docType") String docType,
     		@WebParam(name = "docContent") String docContent,
-    		@WebParam(name = "nodeName") String nodeName);
+    		@WebParam(name = "nodeName") String nodeName)
+            throws RiceIllegalArgumentException;
 
+    /**
+     * Determines if a document has at least one action request
+     *
+     * @param reportCriteria criteria for routing report
+     * @param actionRequestedCodes list of action request codes to see if they exist for the document
+     * @param ignoreCurrentActionRequests boolean value to determine if current action requests should be ignored
+     *
+     * @return boolean value representing if a document will have at least one action request
+     *
+     * @throws RiceIllegalArgumentException if {@code docType} is null
+     * @throws RiceIllegalArgumentException if {@code docContent} is null
+     * @throws RiceIllegalArgumentException if {@code nodeName} is null
+     */
+    @WebMethod(operationName = "documentWillHaveAtLeastOneActionRequest")
+    @WebResult(name = "documentWillHaveAtLeastOneActionRequest")
     boolean documentWillHaveAtLeastOneActionRequest(
     		@WebParam(name = "reportCriteria") RoutingReportCriteria reportCriteria,
     		@WebParam(name = "actionRequestedCodes") List<String> actionRequestedCodes,
-    		@WebParam(name = "ignoreCurrentActionRequests") boolean ignoreCurrentActionRequests);
+    		@WebParam(name = "ignoreCurrentActionRequests") boolean ignoreCurrentActionRequests)
+            throws RiceIllegalArgumentException;
 
-
+    /**
+     * Returns a list of principal Ids that exist in a route log
+     *
+     * @param documentId unique id of the document to get the route log for
+     * @param lookFuture boolean value that determines if the method should look at future action requests
+     *
+     * @return list of principal ids that exist in a route log
+     *
+     * @throws RiceIllegalArgumentException if {@code documentId} is null
+     */
+    @WebMethod(operationName = "getPrincipalIdsInRouteLog")
+    @WebResult(name = "principalIds")
+    @XmlElementWrapper(name = "principalIds", required = true)
+    @XmlElement(name = "principalId", required = true)
     List<String> getPrincipalIdsInRouteLog(
     		@WebParam(name = "documentId") String documentId,
-    		@WebParam(name = "lookFuture") boolean lookFuture);
+    		@WebParam(name = "lookFuture") boolean lookFuture)
+            throws RiceIllegalArgumentException;
 
 }

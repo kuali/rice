@@ -15,26 +15,85 @@
  */
 package org.kuali.rice.kew.api.actionlist;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.action.ActionItem;
 
+import javax.jws.WebMethod;
 import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.List;
 
 public interface ActionListService {
 
-	// TODO add the following methods to this service
-	
-	public Integer getUserActionItemCount(
-			@WebParam(name = "principalId") String principalId);
+    /**
+     * Gets the number of ActionItems for a given principal
+     *
+     * @param principalId unique Id for a principal in the system
+     *
+     * @return a count of ActionItems for a given principal
+     *
+     * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException if {@code principalId} is null
+     */
+    @WebMethod(operationName = "getUserActionItemCount")
+    @WebResult(name = "userActionItemCount")
+	Integer getUserActionItemCount(
+			@WebParam(name = "principalId") String principalId)
+            throws RiceIllegalArgumentException;
 
-	public List<ActionItem> getAllActionItems(
-			@WebParam(name = "documentId") String documentId);
+    /**
+     * Returns a list of all {@link ActionItem}s for a {@link org.kuali.rice.kew.api.document.Document}
+     *
+     * @param documentId unique id of the document to get the ActionItems for
+     *
+     * @return list of ActionItems for a document
+     *
+     * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException if {@code documentId} is null
+     */
+    @WebMethod(operationName = "getAllActionItems")
+    @WebResult(name = "actionItems")
+    @XmlElementWrapper(name = "actionItems", required = true)
+    @XmlElement(name = "actionItem", required = true)
+	List<ActionItem> getAllActionItems(
+			@WebParam(name = "documentId") String documentId)
+            throws RiceIllegalArgumentException;
 
-	public List<ActionItem> getActionItems(
+    /**
+     * Returns a list of {@link ActionItem}s for a {@link org.kuali.rice.kew.api.document.Document} that match one of the
+     * passed in actionRequestCodes
+     *
+     * @param documentId unique id of the document to get the ActionItems for
+     * @param actionRequestedCodes list of action request codes to match with the ActionItems
+     *
+     * @return list of ActionItems for a document with a given action request code
+     *
+     * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException if {@code documentId} is null
+     */
+    @WebMethod(operationName = "getActionItems")
+    @WebResult(name = "actionItems")
+    @XmlElementWrapper(name = "actionItems", required = true)
+    @XmlElement(name = "actionItem", required = true)
+	List<ActionItem> getActionItems(
 			@WebParam(name = "documentId") String documentId,
-			@WebParam(name = "actionRequestedCodes") List<String> actionRequestedCodes);
+			@WebParam(name = "actionRequestedCodes") List<String> actionRequestedCodes)
+            throws RiceIllegalArgumentException;
 
+    /**
+     * Returns a list of {@link ActionItem}s for a Principal in the system
+     *
+     * @param principalId unique Id for a principal in the system
+     *
+     * @return list of ActionItems for a given principal
+     *
+     * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException if {@code principalId} is null
+     */
+    @WebMethod(operationName = "getActionItemsForPrincipal")
+    @WebResult(name = "actionItems")
+    @XmlElementWrapper(name = "actionItems", required = true)
+    @XmlElement(name = "actionItem", required = true)
 	List<ActionItem> getActionItemsForPrincipal(
-			@WebParam(name = "principalId") String principalId);
+			@WebParam(name = "principalId") String principalId)
+            throws RiceIllegalArgumentException;
 	
 }

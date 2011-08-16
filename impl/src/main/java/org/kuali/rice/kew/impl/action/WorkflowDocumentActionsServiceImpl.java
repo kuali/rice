@@ -689,6 +689,9 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 
     @Override
     public void logAnnotation(String documentId, String principalId, String annotation) {
+        incomingParamCheck(documentId, "documentId");
+        incomingParamCheck(principalId, "principalId");
+        incomingParamCheck(annotation, "annotation");
         DocumentRouteHeaderValue documentBo = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
         try {
             KEWServiceLocator.getWorkflowDocumentService().logDocumentAction(principalId, documentBo, annotation);
@@ -1117,18 +1120,20 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 
     @Override
     public boolean isUserInRouteLogWithOptionalFlattening(String documentId, String principalId, boolean lookFuture, boolean flattenNodes) {
-        if (StringUtils.isEmpty(documentId)) {
-            throw new IllegalArgumentException("documentId passed in is null or blank");
-        }
-        if (StringUtils.isEmpty(documentId)) {
-            throw new IllegalArgumentException("princpalId passed in is null or blank");
-        }
+        incomingParamCheck(documentId, "documentId");
+        incomingParamCheck(principalId, "principalId");
         boolean authorized = false;
         if ( LOG.isDebugEnabled() ) {
         	LOG.debug("Evaluating isUserInRouteLog [docId=" + documentId + ", principalId=" + principalId + ", lookFuture=" + lookFuture + "]");
         }
         DocumentRouteHeaderValue routeHeader = loadDocument(documentId);
+        if (routeHeader == null) {
+            throw new IllegalArgumentException("Document for documentId: " + documentId + " does not exist");
+        }
         Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
+        if (principal == null) {
+            throw new IllegalArgumentException("Principal for principalId: " + principalId + " does not exist");
+        }
         List<ActionTakenValue> actionsTaken = KEWServiceLocator.getActionTakenService().findByDocumentIdWorkflowId(documentId, principal.getPrincipalId());
 
         if(routeHeader.getInitiatorWorkflowId().equals(principal.getPrincipalId())){

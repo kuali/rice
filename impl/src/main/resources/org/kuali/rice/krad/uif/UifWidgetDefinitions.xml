@@ -106,13 +106,13 @@
       <property name="componentOptions">
           <map>
               <entry key="autoScale" value="true"/>
-              <entry key="centerOnScroll" value="true"/>     
+              <entry key="centerOnScroll" value="true"/>
               <entry key="transitionIn" value="fade"/>   
               <entry key="transitionOut" value="fade"/>
               <entry key="speedIn" value="200"/>
               <entry key="speedOut" value="200"/>
               <entry key="hideOnOverlayClick" value="false"/>
-              <entry key="type" value="iframe"/>                               	
+              <entry key="type" value="iframe"/>
           </map>
       </property>
   </bean> 

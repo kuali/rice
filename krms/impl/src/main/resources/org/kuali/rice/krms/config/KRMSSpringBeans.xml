@@ -17,74 +17,167 @@
   -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:p="http://www.springframework.org/schema/p"
-    xmlns:context="http://www.springframework.org/schema/context"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
                         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
                         http://www.springframework.org/schema/context
                         http://www.springframework.org/schema/context/spring-context-3.0.xsd">
-                        
-    
-    <!-- TODO: there is one of these in krad-servlet.xml, remove that one or this one -->
-    <context:component-scan base-package="org.kuali.rice.krms.impl" />                        
-	
-    <bean class="org.kuali.rice.core.framework.resourceloader.RiceSpringResourceLoaderConfigurer">
-      <property name="localServiceName" value="KRMSContext" />
-    </bean>
 
-    <!-- Heck, why doesn't this work? -->
 
-    <bean id="businessObjectService"
+  <!-- TODO: there is one of these in krad-servlet.xml, remove that one or this one -->
+  <context:component-scan base-package="org.kuali.rice.krms.impl" />
+
+  <bean class="org.kuali.rice.core.framework.resourceloader.RiceSpringResourceLoaderConfigurer">
+    <property name="localServiceName" value="KRMSContext" />
+  </bean>
+
+  <bean id="businessObjectService"
         class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
-        <property name="serviceName" value="businessObjectService" />
-    </bean>
-	 
-	<!-- bean id="termBoService" class="org.kuali.rice.krms.impl.repository.TermBoServiceImpl">
-	   <property name="businessObjectService">
-	       <ref bean="businessObjectService"/>
-	   </property>
-	</bean -->
- 	
-	<bean id="krmsModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
-        <property name="namespaceCode" value="krms"/>
-        <property name="initializeDataDictionary" value="true"/>
-        <property name="dataDictionaryPackages">
-            <list>
-                <value>classpath:org/kuali/rice/krms/datadictionary/ContextBo.xml</value>
-                <value>classpath:org/kuali/rice/krms/datadictionary/ActionBo.xml</value>
-                <value>classpath:org/kuali/rice/krms/datadictionary/AgendaBo.xml</value>
-                <value>classpath:org/kuali/rice/krms/datadictionary/AgendaMaintenance.xml</value>
-                <value>classpath:org/kuali/rice/krms/datadictionary/AgendaItemBo.xml</value>
-                <value>classpath:org/kuali/rice/krms/datadictionary/RuleBo.xml</value>
-                <value>classpath:org/kuali/rice/krms/datadictionary/RuleAttributeBo.xml</value>
-                <value>classpath:org/kuali/rice/krms/datadictionary/RuleMaintenance.xml</value>
-                <value>classpath:org/kuali/rice/krms/datadictionary/KrmsAttributeDefinitionBo.xml</value>
-                <value>classpath:org/kuali/rice/krms/datadictionary/TermBo.xml</value>
-                <value>classpath:org/kuali/rice/krms/datadictionary/TermParameterBo.xml</value>
-                <value>classpath:org/kuali/rice/krms/datadictionary/TermSpecificationBo.xml</value>
-                <value>classpath:org/kuali/rice/krms/datadictionary/CategoryBo.xml</value>
-                <value>classpath:org/kuali/rice/krms/datadictionary/PropositionBo.xml</value>
-                <value>classpath:org/kuali/rice/krms/datadictionary/PropositionParameterBo.xml</value>
-                <value>classpath:org/kuali/rice/krms/uif/AgendaEditorView.xml</value>
-                <value>classpath:org/kuali/rice/krms/uif/EditorView.xml</value>
-            </list>
-        </property>
-        <property name="databaseRepositoryFilePaths">
-            <list>
-                <value>org/kuali/rice/krms/config/OJB-repository-krms.xml</value>
-            </list>
-        </property>
-        <property name="packagePrefixes">
-            <list>
-                <value>org.kuali.rice.krms.impl.repository</value>
-                <value>org.kuali.rice.krms.impl</value>
-            </list>
-        </property>
-    </bean>
+    <property name="serviceName" value="businessObjectService" />
+  </bean>
 
-    <bean id="krmsModuleService" class="org.kuali.rice.krad.service.impl.ModuleServiceBase">
-        <property name="moduleConfiguration" ref="krmsModuleConfiguration" />
-    </bean>
+  <bean id="criteriaLookupService"
+        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="criteriaLookupService" />
+  </bean>
+
+  <bean id="krmsModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
+    <property name="namespaceCode" value="krms"/>
+    <property name="initializeDataDictionary" value="true"/>
+    <property name="dataDictionaryPackages">
+      <list>
+        <value>classpath:org/kuali/rice/krms/datadictionary/ActionBo.xml</value>
+        <value>classpath:org/kuali/rice/krms/datadictionary/ContextBo.xml</value>
+        <value>classpath:org/kuali/rice/krms/datadictionary/AgendaBo.xml</value>
+        <value>classpath:org/kuali/rice/krms/datadictionary/AgendaMaintenance.xml</value>
+        <value>classpath:org/kuali/rice/krms/datadictionary/AgendaItemBo.xml</value>
+        <value>classpath:org/kuali/rice/krms/datadictionary/RuleBo.xml</value>
+        <value>classpath:org/kuali/rice/krms/datadictionary/RuleAttributeBo.xml</value>
+        <value>classpath:org/kuali/rice/krms/datadictionary/RuleMaintenance.xml</value>
+        <value>classpath:org/kuali/rice/krms/datadictionary/KrmsAttributeDefinitionBo.xml</value>
+        <value>classpath:org/kuali/rice/krms/datadictionary/TermBo.xml</value>
+        <value>classpath:org/kuali/rice/krms/datadictionary/TermParameterBo.xml</value>
+        <value>classpath:org/kuali/rice/krms/datadictionary/TermSpecificationBo.xml</value>
+        <value>classpath:org/kuali/rice/krms/datadictionary/CategoryBo.xml</value>
+        <value>classpath:org/kuali/rice/krms/datadictionary/PropositionBo.xml</value>
+        <value>classpath:org/kuali/rice/krms/datadictionary/PropositionParameterBo.xml</value>
+        <value>classpath:org/kuali/rice/krms/uif/AgendaEditorView.xml</value>
+        <value>classpath:org/kuali/rice/krms/uif/EditorView.xml</value>
+        <value>classpath:org/kuali/rice/krms/uif/TestDataView.xml</value>
+      </list>
+    </property>
+    <property name="databaseRepositoryFilePaths">
+      <list>
+        <value>org/kuali/rice/krms/config/OJB-repository-krms.xml</value>
+      </list>
+    </property>
+    <property name="packagePrefixes">
+      <list>
+        <value>org.kuali.rice.krms.impl.repository</value>
+        <value>org.kuali.rice.krms.impl</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="krmsModuleService" class="org.kuali.rice.krad.service.impl.ModuleServiceBase">
+    <property name="moduleConfiguration" ref="krmsModuleConfiguration" />
+  </bean>
+
+  <!-- wire up BO services and the like -->
+
+  <bean id="termBoService" class="org.kuali.rice.krms.impl.repository.TermBoServiceImpl">
+    <property name="businessObjectService" ref="businessObjectService"/>
+  </bean>
+
+  <bean id="contextBoService" class="org.kuali.rice.krms.impl.repository.ContextBoServiceImpl">
+    <property name="businessObjectService" ref="businessObjectService"/>
+  </bean>
+
+  <bean id="krmsTypeRepository" class="org.kuali.rice.krms.impl.repository.KrmsTypeBoServiceImpl">
+    <property name="businessObjectService" ref="businessObjectService"/>
+  </bean>
+
+  <bean id="propositionBoService" class="org.kuali.rice.krms.impl.repository.PropositionBoServiceImpl">
+    <property name="businessObjectService" ref="businessObjectService"/>
+  </bean>
+
+  <bean id="ruleBoService" class="org.kuali.rice.krms.impl.repository.RuleBoServiceImpl">
+    <property name="businessObjectService" ref="businessObjectService"/>
+  </bean>
+
+  <bean id="agendaBoService" class="org.kuali.rice.krms.impl.repository.AgendaBoServiceImpl">
+    <property name="businessObjectService" ref="businessObjectService"/>
+  </bean>
+
+  <bean id="actionBoService" class="org.kuali.rice.krms.impl.repository.ActionBoServiceImpl">
+    <property name="businessObjectService" ref="businessObjectService"/>
+  </bean>
+
+  <bean id="krmsAttributeDefinitionService" class="org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionServiceImpl">
+    <property name="businessObjectService" ref="businessObjectService"/>
+  </bean>
+
+  <!-- wire up services needed for execution -->
+
+  <bean id="ruleRepositoryService" class="org.kuali.rice.krms.impl.repository.RuleRepositoryServiceImpl">
+    <property name="businessObjectService" ref="businessObjectService"/>
+    <property name="criteriaLookupService" ref="criteriaLookupService" />
+  </bean>
+
+  <bean id="compoundPropositionTypeService" class="org.kuali.rice.krms.impl.provider.repository.CompoundPropositionTypeService">
+    <property name="translator" ref="repositoryToEngineTranslator"/>
+  </bean>
+
+  <bean id="krmsTypeResolver" class="org.kuali.rice.krms.impl.type.KrmsTypeResolverImpl">
+    <property name="typeRepositoryService" ref="krmsTypeRepository"/>
+    <property name="defaultCompoundPropositionTypeService" ref="compoundPropositionTypeService"/>
+    <property name="defaultSimplePropositionTypeService">
+      <bean class="org.kuali.rice.krms.impl.provider.repository.SimplePropositionTypeService">
+        <property name="typeResolver" ref="krmsTypeResolver"/>
+        <property name="termBoService" ref="termBoService"/>
+        <!-- TODO:
+        <property name="functionRepositoryService" ref="..."/>
+        -->
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="repositoryToEngineTranslator" class="org.kuali.rice.krms.impl.provider.repository.RepositoryToEngineTranslatorImpl">
+    <property name="termBoService" ref="termBoService"/>
+    <property name="ruleRepositoryService" ref="ruleRepositoryService"/>
+    <property name="typeRepositoryService" ref="krmsTypeRepository"/>
+    <property name="typeResolver" ref="krmsTypeResolver"/>
+  </bean>
+
+  <bean id="contextProvider" class="org.kuali.rice.krms.impl.provider.repository.RuleRepositoryContextProvider">
+    <property name="ruleRepositoryService" ref="ruleRepositoryService"/>
+    <property name="repositoryToEngineTranslator" ref="repositoryToEngineTranslator"/>
+  </bean>
+
+  <bean id="resultLogger" class="org.kuali.rice.krms.framework.engine.ResultLogger" factory-method="getInstance"/>
+
+  <!-- register result loggers -->
+
+  <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="targetObject"><ref local="resultLogger"/></property>
+    <property name="targetMethod"><value>addListener</value></property>
+    <property name="arguments">
+      <list>
+        <bean class="org.kuali.rice.krms.framework.engine.result.EngineResultListener"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="targetObject"><ref local="resultLogger"/></property>
+    <property name="targetMethod"><value>addListener</value></property>
+    <property name="arguments">
+      <list>
+        <bean class="org.kuali.rice.krms.framework.engine.result.Log4jResultListener"/>
+      </list>
+    </property>
+  </bean>
 
 </beans>

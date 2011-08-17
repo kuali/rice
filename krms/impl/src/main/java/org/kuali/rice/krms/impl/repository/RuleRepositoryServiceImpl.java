@@ -1,14 +1,6 @@
 package org.kuali.rice.krms.impl.repository;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.Predicate;
@@ -23,6 +15,11 @@ import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.api.repository.context.ContextSelectionCriteria;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.impl.util.KRMSPropertyConstants;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
@@ -102,12 +99,23 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
 	
 	@Override
 	public List<RuleDefinition> getRules(List<String> ruleIds) {
-		Map<String,String> fieldValues = new HashMap<String,String>();
-		for (String ruleId : ruleIds){
-			fieldValues.put("id", ruleId);
-		}
-		Collection<RuleBo> bos = getBusinessObjectService().findMatching(RuleBo.class, fieldValues);
-		ArrayList<RuleDefinition> rules = new ArrayList<RuleDefinition>();
+        if (ruleIds == null) throw new IllegalArgumentException("ruleIds must not be null");
+
+        // Fetch BOs
+        List<RuleBo> bos = null;
+        if (ruleIds.size() == 0) {
+            bos = Collections.emptyList();
+        } else {
+            QueryByCriteria.Builder qBuilder = QueryByCriteria.Builder.create();
+            List<Predicate> pList = new ArrayList<Predicate>();
+            qBuilder.setPredicates(in("id", ruleIds.toArray()));
+            GenericQueryResults<RuleBo> results = getCriteriaLookupService().lookup(RuleBo.class, qBuilder.build());
+
+    	    bos = results.getResults();
+    	}
+
+        // Translate BOs
+        ArrayList<RuleDefinition> rules = new ArrayList<RuleDefinition>();
         for (RuleBo bo : bos) {
             RuleDefinition rule = RuleBo.to(bo);
             rules.add(rule);
@@ -231,10 +239,6 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
     }
 
     protected CriteriaLookupService getCriteriaLookupService() {
-        if (criteriaLookupService == null) {
-            // TODO: inject this instead
-            criteriaLookupService = KrmsRepositoryServiceLocator.getCriteriaLookupService();
-        }
         return criteriaLookupService;
     }
     

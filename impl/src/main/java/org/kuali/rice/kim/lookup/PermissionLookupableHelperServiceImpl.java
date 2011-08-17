@@ -35,6 +35,7 @@ import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.UrlFactory;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -212,6 +213,7 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 				criteria.put("id", rolePermission.getRoleId());
 	//			permission.getAssignedToRoles().add((RoleBo)getBusinessObjectService().findByPrimaryKey(RoleBo.class, criteria));
                 RoleBo roleBo = getBusinessObjectService().findByPrimaryKey(RoleBo.class, criteria);
+                permission.getAssignedToRoles().add(roleBo);
 
 			}
 		}
@@ -257,16 +259,21 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 	
 	private List<UberPermissionBo> getPermissionsSearchResultsCopy(List<PermissionBo> permissionSearchResults){
 		List<UberPermissionBo> permissionSearchResultsCopy = new CollectionIncomplete<UberPermissionBo>(
-			new ArrayList<UberPermissionBo>(), getActualSizeIfTruncated(permissionSearchResults));
-		for(PermissionBo permissionImpl: permissionSearchResults){
+				new ArrayList<UberPermissionBo>(), getActualSizeIfTruncated(permissionSearchResults));
+		for(PermissionBo permissionBo: permissionSearchResults){
 			UberPermissionBo permissionCopy = new UberPermissionBo();
-			try{
-				PropertyUtils.copyProperties(permissionCopy, permissionImpl);
-			} catch(Exception ex){
-				LOG.error( "Unable to copy properties from KimPermissionImpl to PermissionImpl, skipping.", ex );
-				continue;
-			}
-			permissionSearchResultsCopy.add(permissionCopy);
+
+            try {
+                PropertyUtils.copyProperties(permissionCopy, permissionBo);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException("unable to copy properties");
+            } catch (InvocationTargetException e) {
+                throw new RuntimeException("unable to copy properties");
+            } catch (NoSuchMethodException e) {
+                throw new RuntimeException("unable to copy properties");
+            }
+
+            permissionSearchResultsCopy.add(permissionCopy);
 		}
 		return permissionSearchResultsCopy;
 	}

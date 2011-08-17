@@ -139,7 +139,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
             List<Predicate> predicates = new ArrayList<Predicate>();
             for (Map.Entry<String, String> entry : criteriaMap.entrySet()) {
                 if (StringUtils.isNotBlank(entry.getValue())) {
-                    if (entry.getKey().equals("principalName")) {
+                    if ("principalName".equals(entry.getKey())) {
                         //get principalId, which we can actually use
                         Timestamp currentTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
                         String principalId = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(criteriaMap.get(entry.getKey())).getPrincipalId();
@@ -158,7 +158,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
                 }
             }
             if (!predicates.isEmpty()) {
-                criteria.setPredicates(and(predicates.toArray(new Predicate[] {})));
+                criteria.setPredicates(and(predicates.toArray(new Predicate[predicates.size()])));
             }
         }
 

@@ -137,8 +137,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KimLookupabl
         	EntityQueryResults qr = KimApiServiceLocator.getIdentityService().findEntities(query.build());
         	if(qr.getResults() == null || qr.getResults().isEmpty()) {
         		return null;
-        	}
-        	else {
+        	} else {
         		for (Entity kimEntityInfo : qr.getResults()) {
         			if(kimEntityInfo.getPrincipals() != null){
         				principals.addAll(kimEntityInfo.getPrincipals());
@@ -157,9 +156,10 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KimLookupabl
                             like(NAMESPACE_CODE, getQueryString(assignedToGroupNamespaceCode)),
                             like(GROUP_NAME, getQueryString(assignedToGroupName))));
         	GroupQueryResults qr = KimApiServiceLocator.getGroupService().findGroups(builder.build());
-        	if(qr.getTotalRowCount() == 0) {
+        	if (qr.getResults() == null || qr.getResults().isEmpty()) {
         		return null;
             }
+            groups = qr.getResults();
         }
 
         String assignedToRoleNamespaceCode = fieldValues.get(ASSIGNED_TO_NAMESPACE_FOR_LOOKUP);
@@ -174,7 +174,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KimLookupabl
         }
 
     	StringBuffer memberQueryString = null;
-        if(principals!=null) {
+        if(!principals.isEmpty()) {
         	memberQueryString = new StringBuffer();
         	for(Principal principal: principals){
         		memberQueryString.append(principal.getPrincipalId()+KimConstants.KimUIConstants.OR_OPERATOR);

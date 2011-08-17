@@ -3,7 +3,7 @@ package org.kuali.rice.core.api.uif;
 import java.util.ArrayList;
 import java.util.List;
 
-/** utility class for copying widgets. */
+/** utility class for copying controls. */
 final class ControlCopy {
 
     private ControlCopy() {

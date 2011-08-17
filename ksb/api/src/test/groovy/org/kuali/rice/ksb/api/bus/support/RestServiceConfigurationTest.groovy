@@ -14,6 +14,7 @@ class RestServiceConfigurationTest {
 
 	private static final QName SERVICE_NAME = new QName(APPLICATION_ID, "myRadService");
 	private static final String APPLICATION_ID = "TEST";
+    private static final String INSTANCE_ID = "TEST1";
 	private static final URL ENDPOINT_URL = new URL("http://this.is.my.url");
 	private static final String SERVICE_VERSION = "1.0";
 	
@@ -21,6 +22,7 @@ class RestServiceConfigurationTest {
 <restServiceConfiguration xmlns="http://rice.kuali.org/ksb/v2_0">
 	<serviceName>{TEST}myRadService</serviceName>
 	<endpointUrl>http://this.is.my.url</endpointUrl>
+	<instanceId>TEST1</instanceId>
 	<applicationId>TEST</applicationId>
 	<serviceVersion>1.0</serviceVersion>
 	<type>REST</type>
@@ -33,6 +35,7 @@ class RestServiceConfigurationTest {
 <restServiceConfiguration xmlns="http://rice.kuali.org/ksb/v2_0">
 	<serviceName>{TEST}myRadService</serviceName>
 	<endpointUrl>http://this.is.my.url</endpointUrl>
+	<instanceId>TEST1</instanceId>
 	<applicationId>TEST</applicationId>
 	<serviceVersion>1.0</serviceVersion>
 	<type>REST</type>
@@ -46,6 +49,7 @@ class RestServiceConfigurationTest {
 <restServiceConfiguration xmlns:ns2="http://rice.kuali.org/core/v2_0" xmlns="http://rice.kuali.org/ksb/v2_0">
 	<serviceName>{TEST}myRadService</serviceName>
 	<endpointUrl>http://this.is.my.url</endpointUrl>
+	<instanceId>TEST1</instanceId>
 	<applicationId>TEST</applicationId>
 	<serviceVersion>1.0</serviceVersion>
 	<type>REST</type>
@@ -66,6 +70,7 @@ class RestServiceConfigurationTest {
 <restServiceConfiguration xmlns:ns2="http://rice.kuali.org/core/v2_0" xmlns="http://rice.kuali.org/ksb/v2_0">
 	<serviceName>{TEST}myRadService</serviceName>
 	<endpointUrl>http://this.is.my.url</endpointUrl>
+	<instanceId>TEST1</instanceId>
 	<applicationId>TEST</applicationId>
 	<serviceVersion>1.0</serviceVersion>
 	<type>REST</type>
@@ -88,6 +93,7 @@ class RestServiceConfigurationTest {
 		RestServiceDefinition definition = new RestServiceDefinition();
 		definition.setServiceName(SERVICE_NAME)
 		definition.setEndpointUrl(ENDPOINT_URL);
+        definition.setInstanceId(INSTANCE_ID);
 		definition.setApplicationId(APPLICATION_ID);
 		definition.setServiceVersion(SERVICE_VERSION);
 		return definition;
@@ -137,7 +143,8 @@ class RestServiceConfigurationTest {
 		assert configuration != null;
 			
 		assert configuration.getServiceName() == SERVICE_NAME;
-		assert configuration.getApplicationId() == APPLICATION_ID;
+		assert configuration.getInstanceId() == INSTANCE_ID;
+        assert configuration.getApplicationId() == APPLICATION_ID;
 		assert configuration.getEndpointUrl() == ENDPOINT_URL;
 		assert configuration.getServiceVersion() == SERVICE_VERSION;
 		

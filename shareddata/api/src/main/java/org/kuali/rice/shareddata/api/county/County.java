@@ -30,6 +30,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.shareddata.api.SharedDataConstants;
 import org.w3c.dom.Element;
 
 /**
@@ -289,5 +290,9 @@ public final class County extends AbstractDataTransferObject implements CountyCo
         final static String COUNTRY_CODE = "countryCode";
         final static String STATE_CODE = "stateCode";
         final static String ACTIVE = "active";
+    }
+
+    public static class Cache {
+        public static final String NAME = SharedDataConstants.Namespaces.SHAREDDATA_NAMESPACE + "/" + County.Constants.TYPE_NAME;
     }
 }

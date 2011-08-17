@@ -58,6 +58,7 @@ public class InstanceIdFactoryBean extends AbstractFactoryBean<String> {
 			String ipNumber = RiceUtilities.getIpNumber();
 			this.instanceId = applicationId + "-" + ipNumber;
 		}
+        ConfigContext.getCurrentContextConfig().putProperty(KSBConstants.Config.INSTANCE_ID, this.instanceId);
 		return this.instanceId;
 	}
 	

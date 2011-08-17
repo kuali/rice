@@ -18,6 +18,7 @@ package org.kuali.rice.shareddata.api.campus;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.shareddata.api.SharedDataConstants;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 
@@ -39,6 +40,7 @@ public interface CampusService {
      * specific code
      */
     @WebMethod(operationName="getCampus")
+    @Cacheable(value=Campus.Cache.NAME, key="'code=' + #code")
     Campus getCampus(@WebParam(name = "code") String code) throws RiceIllegalArgumentException;
     
     /**
@@ -46,6 +48,7 @@ public interface CampusService {
      *
      */
     @WebMethod(operationName="findAllCampuses")
+    @Cacheable(value=Campus.Cache.NAME, key="all")
     List<Campus> findAllCampuses();
     
     /**
@@ -58,6 +61,7 @@ public interface CampusService {
      * specific code
      */
     @WebMethod(operationName="getCampusType")
+    @Cacheable(value=CampusType.Cache.NAME, key="'code=' + #code")
     CampusType getCampusType(@WebParam(name = "code") String code) throws RiceIllegalArgumentException;
     
     /**
@@ -65,7 +69,6 @@ public interface CampusService {
      *
      */
     @WebMethod(operationName="findAllCampusTypes")
+    @Cacheable(value=CampusType.Cache.NAME, key="all")
     List<CampusType> findAllCampusTypes();
-    
-    //lookup method?
 }

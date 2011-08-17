@@ -54,7 +54,7 @@ public class PropertyConditionalServiceBusExporter extends ServiceBusExporter {
 			serviceValue = ConfigContext.getCurrentContextConfig().getProperty(expIf);
 			// if any are true, set boolean and exit loop.
 			if (!StringUtils.isBlank(serviceValue)) {
-				remoteThisService = new Boolean(serviceValue);
+				remoteThisService = Boolean.parseBoolean(serviceValue);
 				if (remoteThisService) {
 					break;
 				}
@@ -69,9 +69,9 @@ public class PropertyConditionalServiceBusExporter extends ServiceBusExporter {
 					.getProperty(expUnless);
 			// if any are true, set boolean and exit loop.
 			if (!StringUtils.isBlank(serviceValue)) {
-				remoteThisService = new Boolean(serviceValue);
+				remoteThisService = Boolean.parseBoolean(serviceValue);
 				if (remoteThisService) {
-					remoteThisService = new Boolean("false");
+					remoteThisService = false;
 					break;
 				}
 			}

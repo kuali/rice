@@ -20,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.shareddata.api.SharedDataConstants;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -252,4 +253,8 @@ public final class CampusType extends AbstractDataTransferObject implements Camp
 		final static String NAME = "name";
 		final static String ACTIVE = "active";
 	}
+
+    public static class Cache {
+        public static final String NAME = SharedDataConstants.Namespaces.SHAREDDATA_NAMESPACE + "/" + CampusType.Constants.TYPE_NAME;
+    }
 }

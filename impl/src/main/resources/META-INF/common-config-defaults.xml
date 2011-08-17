@@ -287,25 +287,6 @@
     <param name="org.kuali.rice.kim.bo.ui.PersonDocumentEmploymentInfo.hidden" override="false">baseSalaryAmount</param>
 	  <param name="kim.hide.PersonDocumentAddress.type" override="false">HM</param>
 	  <param name="kim.hide.PersonDocumentPhone.type" override="false">HM</param>
-	
-  	<param name="kim.cache.entity.max.size" override="false">3000</param>
-    <param name="kim.cache.entity.max.age.seconds" override="false">3600</param>
-    <param name="kim.cache.group.max.size" override="false">3000</param>
-    <param name="kim.cache.group.max.age.seconds" override="false">3600</param>
-    <param name="kim.cache.role.max.size" override="false">3000</param>
-    <param name="kim.cache.role.max.age.seconds" override="false">300</param>
-    <param name="kim.cache.permission.max.size" override="false">3000</param>
-    <param name="kim.cache.permission.max.age.seconds" override="false">30</param>
-    <param name="kim.cache.responsibility.max.size" override="false">3000</param>
-    <param name="kim.cache.responsibility.max.age.seconds" override="false">30</param>
-    <param name="kim.cache.person.max.size" override="false">3000</param>
-    <param name="kim.cache.person.max.age.seconds" override="false">3600</param>
-    
-    <param name="kim.cache.permission.refresh.period.seconds" override="false">3600</param>
-    <param name="kim.cache.role.refresh.period.seconds" override="false">3600</param>
-
-    <param name="kim.identityArchiveServiceImpl.executionIntervalSeconds" override="false">300</param>
-    <param name="kim.identityArchiveServiceImpl.maxWriteQueueSize" override="false">300</param>
 
     <param name="kim.soapExposedService.jaxws.security" override="false">true</param>
     
@@ -434,7 +415,15 @@
 	<param name="rice.kim.set.soap.services.as.default" override="false">true</param>
 	<param name="rice.kim.expose.services.on.bus" override="false">true</param>
 	<param name="rice.kim.include.user.interface.components" override="false">true</param>
-	
+
+  <!-- SHAREDDATA -->
+
+	<param name="shareddata.mode" override="false">LOCAL</param>
+	<param name="rice.shareddata.set.soap.services.as.default" override="false">true</param>
+	<param name="rice.shareddata.expose.services.on.bus" override="false">true</param>
+	<param name="rice.shareddata.include.user.interface.components" override="false">false</param>
+    <param name="shareddata.soapExposedService.jaxws.security" override="false">true</param>
+
 	<!-- KSB -->
 	<param name="rice.ksb.struts.config.files" override="false">/ksb/WEB-INF/struts-config.xml</param>
 	<param name="ksb.url" override="false">${application.url}/ksb</param>

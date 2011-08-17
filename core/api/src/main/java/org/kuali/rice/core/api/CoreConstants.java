@@ -83,6 +83,8 @@ public final class CoreConstants {
     
     public static final class Config {
     	public static final String APPLICATION_ID = "application.id";
+        //FIXME: this should be a core config property
+        public static final String INSTANCE_ID = "rice.ksb.bus.instanceId";
     }
     
 	private CoreConstants() {

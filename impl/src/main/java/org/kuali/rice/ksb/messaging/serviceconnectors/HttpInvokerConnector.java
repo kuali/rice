@@ -71,28 +71,29 @@ public class HttpInvokerConnector extends AbstractServiceConnector {
 		super(serviceConfiguration, alternateEndpointUrl);
 		initializeHttpClientParams();
 	}
-	
-	protected JavaServiceConfiguration getJavaServiceConfiguration() {
-		return (JavaServiceConfiguration)getServiceConfiguration();
+
+    @Override
+	public JavaServiceConfiguration getServiceConfiguration() {
+		return (JavaServiceConfiguration) super.getServiceConfiguration();
 	}
 	
 	public Object getService() {
 	    LOG.debug("Getting connector for endpoint " + getActualEndpointUrl());
 		KSBHttpInvokerProxyFactoryBean client = new KSBHttpInvokerProxyFactoryBean();
 		client.setServiceUrl(getActualEndpointUrl().toExternalForm());
-		client.setServiceConfiguration(getJavaServiceConfiguration());
+		client.setServiceConfiguration(getServiceConfiguration());
 		
 		KSBHttpInvokerRequestExecutor executor;
 		
 		if (getCredentialsSource() != null) {
-		    executor = new AuthenticationCommonsHttpInvokerRequestExecutor(getHttpClient(), getCredentialsSource(), getJavaServiceConfiguration());
+		    executor = new AuthenticationCommonsHttpInvokerRequestExecutor(getHttpClient(), getCredentialsSource(), getServiceConfiguration());
 		} else {
 		    executor = new KSBHttpInvokerRequestExecutor(getHttpClient());
 		}
-		executor.setSecure(getJavaServiceConfiguration().getBusSecurity());
+		executor.setSecure(getServiceConfiguration().getBusSecurity());
 		client.setHttpInvokerRequestExecutor(executor);	
 		client.afterPropertiesSet();
-		return getServiceProxyWithFailureMode(client.getObject(), getJavaServiceConfiguration());
+		return getServiceProxyWithFailureMode(client.getObject(), getServiceConfiguration());
 	}
 
 	/**

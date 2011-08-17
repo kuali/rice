@@ -44,7 +44,7 @@ class ServiceRegistryDiffCalculatorImplTest {
 	private static final String TEST3_NAMESPACE = "TEST3"
 	private static final String TEST3_INSTANCE_ID = "${TEST3_NAMESPACE}-${LOCALHOST_IP}";
 	
-	private static final def CONFIG_MAP = [(CoreConstants.Config.APPLICATION_ID) : "TEST"]
+	private static final def CONFIG_MAP = [(CoreConstants.Config.APPLICATION_ID) : "TEST", (CoreConstants.Config.INSTANCE_ID) : "TEST1"]
 	
 	int nextServiceId = 1
     ServiceRegistryDiffCalculatorImpl diffCalculatorImpl
@@ -341,10 +341,7 @@ class ServiceRegistryDiffCalculatorImplTest {
 		assert found[1]
 	}
 	
-	ServiceInfo.Builder newServiceInfoPrototype(String instanceId) {
-		if (instanceId == null) {
-			instanceId = TEST1_INSTANCE_ID
-		}
+	ServiceInfo.Builder newServiceInfoPrototype(String instanceId = TEST1_INSTANCE_ID) {
 		ServiceInfo.Builder builder = ServiceInfo.Builder.create()
 		builder.setApplicationId(TEST1_NAMESPACE)
 		builder.setChecksum(RandomStringUtils.randomAlphanumeric(30))

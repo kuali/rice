@@ -720,26 +720,6 @@
 
   <bean id="ojbCollectionHelper" class="org.kuali.rice.krad.util.OjbCollectionHelper"/>
 
-  <bean id="postalCodeService" class="org.kuali.rice.shareddata.impl.postalcode.PostalCodeServiceImpl">
-    <property name="businessObjectService" ref="businessObjectService"/>
-  </bean>
-
-  <bean id="countyService" class="org.kuali.rice.shareddata.impl.county.CountyServiceImpl">
-    <property name="businessObjectService" ref="businessObjectService"/>
-  </bean>
-
-  <bean id="stateService" class="org.kuali.rice.shareddata.impl.state.StateServiceImpl">
-    <property name="businessObjectService" ref="businessObjectService"/>
-  </bean>
-
-  <bean id="countryService" class="org.kuali.rice.shareddata.impl.country.CountryServiceImpl">
-    <property name="businessObjectService" ref="businessObjectService"/>
-  </bean>
-
-  <bean id="campusService" class="org.kuali.rice.shareddata.impl.campus.CampusServiceImpl">
-    <property name="businessObjectService" ref="businessObjectService"/>
-  </bean>
-
   <bean id="persistedLookupMetadataDao" class="org.kuali.rice.krad.dao.proxy.PersistedLookupMetadataDaoProxy">
     <property name="persistedLookupMetadataDaoJpa" ref="persistedLookupMetadataDaoJpa"/>
     <property name="persistedLookupMetadataDaoOjb" ref="persistedLookupMetadataDaoOjb"/>

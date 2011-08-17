@@ -19,7 +19,10 @@
             <artifactId>rice-api</artifactId>
             <version>${project.version}</version>
         </dependency>
-
+         <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-context</artifactId>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -33,7 +36,21 @@
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-java2ws-plugin</artifactId>
                 <executions>
-                    <execution>
+                  <execution>
+                        <id>sharedDataCacheService-wsdl</id>
+						              <phase>${rice.java2ws.phase}</phase>
+                        <configuration>
+                            <className>org.kuali.rice.core.api.cache.CacheService</className>
+                          <outputFile>${project.build.outputDirectory}/wsdl/CountryService.wsdl</outputFile>
+                          <targetNamespace>http://rice.kuali.org/shareddata</targetNamespace>
+                          <serviceName>SharedDataCacheService</serviceName>
+                        </configuration>
+                        <goals>
+                            <goal>java2ws</goal>
+                        </goals>
+                    </execution>
+
+                  <execution>
                         <id>countryService-wsdl</id>
 						<phase>${rice.java2ws.phase}</phase>
                         <configuration>

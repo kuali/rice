@@ -18,6 +18,7 @@ package org.kuali.rice.shareddata.api.postalcode;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.shareddata.api.SharedDataConstants;
+import org.springframework.cache.annotation.Cacheable;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -51,6 +52,7 @@ public interface PostalCodeService {
      */
     @WebMethod(operationName="getPostalCode")
     @WebResult(name = "postalCode")
+    @Cacheable(value=PostalCode.Cache.NAME, key="'countryCode=' + #countryCode + '|' + 'code=' + #code")
     PostalCode getPostalCode(@WebParam(name = "countryCode") String countryCode, @WebParam(name = "code") String code)
             throws RiceIllegalArgumentException;
 
@@ -72,6 +74,7 @@ public interface PostalCodeService {
      */
     @WebMethod(operationName="findAllPostalCodesInCountry")
     @WebResult(name = "postalCodes")
+    @Cacheable(value=PostalCode.Cache.NAME, key="'countryCode=' + #countryCode")
     List<PostalCode> findAllPostalCodesInCountry(@WebParam(name = "countryCode") String countryCode)
             throws RiceIllegalArgumentException;
 }

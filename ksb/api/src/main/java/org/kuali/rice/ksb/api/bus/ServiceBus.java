@@ -39,7 +39,7 @@ public interface ServiceBus {
      * 
      * @return the instance ID for the application in which this service bus client is resident
      */
-    public String getInstanceId();
+    String getInstanceId();
 
     /**
      * Returns an unmodifiable list of accessible endpoints that are available to the service bus
@@ -56,7 +56,7 @@ public interface ServiceBus {
      *         given service name
      * @throws IllegalArgumentException if serviceName is null
      */
-    public List<Endpoint> getEndpoints(QName serviceName);
+    List<Endpoint> getEndpoints(QName serviceName);
 
     /**
      * Returns an unmodifiable list of remotely accessible endpoints that are available in the
@@ -77,7 +77,7 @@ public interface ServiceBus {
      *         never be null but may be empty if there are no endpoints for the given service name
      * @throws IllegalArgumentException if serviceName is null
      */
-    public List<Endpoint> getRemoteEndpoints(QName serviceName);
+    List<Endpoint> getRemoteEndpoints(QName serviceName);
 
     /**
      * Returns the endpoint for the service with the given name that was published by this service
@@ -89,7 +89,7 @@ public interface ServiceBus {
      *         null if no such service has been published
      * @throws IllegalArgumentException if serviceName is null
      */
-    public Endpoint getLocalEndpoint(QName serviceName);
+    Endpoint getLocalEndpoint(QName serviceName);
 
     /**
      * Returns an unmodifiable list of all services that have been published by this service bus
@@ -99,7 +99,7 @@ public interface ServiceBus {
      *         which contains all local services published by this service bus client. This map may
      *         be empty if this client has published no services, but it should never be null.
      */
-    public Map<QName, Endpoint> getLocalEndpoints();
+    Map<QName, Endpoint> getLocalEndpoints();
 
     /**
      * Returns an unmodifiable list of all available and online endpoints of which the service bus
@@ -108,7 +108,7 @@ public interface ServiceBus {
      * @return all available endpoints, this list may be empty if no endpoints exist but will never
      *         be null
      */
-    public List<Endpoint> getAllEndpoints();
+    List<Endpoint> getAllEndpoints();
 
     /**
      * Returns an available endpoint for the service with the given name. If the service with the
@@ -125,7 +125,7 @@ public interface ServiceBus {
      *         available
      * @throws IllegalArgumentException if serviceName is null
      */
-    public Endpoint getEndpoint(QName serviceName);
+    Endpoint getEndpoint(QName serviceName);
 
     /**
      * Returns an available endpoint for the service with the given name which is hosted by the
@@ -144,7 +144,7 @@ public interface ServiceBus {
      *         if none is available
      * @throws IllegalArgumentException if serviceName is null
      */
-    public Endpoint getEndpoint(QName serviceName, String applicationId);
+    Endpoint getEndpoint(QName serviceName, String applicationId);
 
     /**
      * Returns the endpoint matching the given service configuration, if one exists. In the case of
@@ -156,7 +156,7 @@ public interface ServiceBus {
      *         no such match could be determined
      * @throws IllegalArgumentException if the given serviceConfiguration is null
      */
-    public Endpoint getConfiguredEndpoint(ServiceConfiguration serviceConfiguration);
+    Endpoint getConfiguredEndpoint(ServiceConfiguration serviceConfiguration);
 
     /**
      * Returns a proxy to the service with the given name. This proxy should have built-in support
@@ -173,7 +173,7 @@ public interface ServiceBus {
      * @return an available proxy for the service with the given name, or null if none is available
      * @throws IllegalArgumentException if serviceName is null
      */
-    public Object getService(QName serviceName);
+    Object getService(QName serviceName);
 
     /**
      * Returns a proxy to the service with the given name which is hosted by the application with
@@ -191,7 +191,7 @@ public interface ServiceBus {
      * @return an available proxy for the service with the given name, or null if none is available
      * @throws IllegalArgumentException if serviceName is null
      */
-    public Object getService(QName serviceName, String applicationId);
+    Object getService(QName serviceName, String applicationId);
 
     /**
      * Publish a service with the given ServiceDefinition to the service bus. This effectively
@@ -211,7 +211,7 @@ public interface ServiceBus {
      * @return the service configuration for the published service
      * @throws IllegalArgumentException if serviceDefinition is null
      */
-    public ServiceConfiguration publishService(ServiceDefinition serviceDefinition, boolean synchronize);
+    ServiceConfiguration publishService(ServiceDefinition serviceDefinition, boolean synchronize);
 
     /**
      * Functions as per {@link #publishService(ServiceDefinition, boolean)} but allows for multiple
@@ -230,7 +230,7 @@ public interface ServiceBus {
      *         the list of service definitions
      * @throws IllegalArgumentException if serviceDefinitions is null
      */
-    public List<ServiceConfiguration> publishServices(List<ServiceDefinition> definition, boolean synchronize);
+    List<ServiceConfiguration> publishServices(List<ServiceDefinition> serviceDefinitions, boolean synchronize);
 
     /**
      * Removes the service from the service bus and the service registry with the given service
@@ -251,7 +251,7 @@ public interface ServiceBus {
      * @return true if the service was removed, false otherwise
      * @throws IllegalArgumentException if the given serviceName is null
      */
-    public boolean removeService(QName serviceName, boolean synchronize);
+    boolean removeService(QName serviceName, boolean synchronize);
 
     /**
      * Functions as per {@link #removeService(QName, boolean)} but allows for multiple services to
@@ -274,7 +274,7 @@ public interface ServiceBus {
      *         in.
      * @throws IllegalArgumentException if serviceNames is null
      */
-    public List<Boolean> removeServices(List<QName> serviceConfigurations, boolean synchronize);
+    List<Boolean> removeServices(List<QName> serviceNames, boolean synchronize);
 
     /**
      * Synchronizes the current client's service bus with the central service registry. This is done
@@ -283,6 +283,6 @@ public interface ServiceBus {
      * detect any changes in remote services that have been published/removed by other applications
      * in the registry and update local service bus state accordingly.
      */
-    public void synchronize();
+    void synchronize();
 
 }

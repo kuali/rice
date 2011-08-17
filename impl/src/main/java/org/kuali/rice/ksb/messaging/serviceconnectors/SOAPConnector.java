@@ -43,8 +43,9 @@ public class SOAPConnector extends AbstractServiceConnector {
 		super(serviceConfiguration, alternateEndpointUrl);
 	}
 
-	protected SoapServiceConfiguration getSoapServiceConfiguration() {
-		return (SoapServiceConfiguration)getServiceConfiguration();
+    @Override
+	public SoapServiceConfiguration getServiceConfiguration() {
+		return (SoapServiceConfiguration) super.getServiceConfiguration();
 	}
 	
 	/**
@@ -56,7 +57,7 @@ public class SOAPConnector extends AbstractServiceConnector {
 		ClientProxyFactoryBean clientFactory;
 		
 		//Use the correct bean factory depending on pojo service or jaxws service
-		if (getSoapServiceConfiguration().isJaxWsService()){			
+		if (getServiceConfiguration().isJaxWsService()){
 			clientFactory = new JaxWsProxyFactoryBean();
 		} else {
 			clientFactory = new ClientProxyFactoryBean();
@@ -64,27 +65,27 @@ public class SOAPConnector extends AbstractServiceConnector {
 		}		
 
 		try {
-			clientFactory.setServiceClass(Class.forName(getSoapServiceConfiguration().getServiceInterface()));
+			clientFactory.setServiceClass(Class.forName(getServiceConfiguration().getServiceInterface()));
 		} catch (ClassNotFoundException e) {
-			throw new RiceRuntimeException("Failed to connect to soap service " + getServiceConfiguration().getServiceName() + " because failed to load interface class: " + getSoapServiceConfiguration().getServiceInterface(), e);
+			throw new RiceRuntimeException("Failed to connect to soap service " + getServiceConfiguration().getServiceName() + " because failed to load interface class: " + getServiceConfiguration().getServiceInterface(), e);
 		}
 		clientFactory.setBus(KSBServiceLocator.getCXFBus());
-		clientFactory.setServiceName(getSoapServiceConfiguration().getServiceName());
+		clientFactory.setServiceName(getServiceConfiguration().getServiceName());
 		clientFactory.setAddress(getActualEndpointUrl().toExternalForm());
 		
 		//Set logging, transformation, and security interceptors
 		clientFactory.getOutInterceptors().add(new LoggingOutInterceptor());
-		clientFactory.getOutInterceptors().add(new CXFWSS4JOutInterceptor(getSoapServiceConfiguration().getBusSecurity()));
+		clientFactory.getOutInterceptors().add(new CXFWSS4JOutInterceptor(getServiceConfiguration().getBusSecurity()));
 		if (getCredentialsSource() != null) {
-			clientFactory.getOutInterceptors().add(new CredentialsOutHandler(getCredentialsSource(), getSoapServiceConfiguration()));
+			clientFactory.getOutInterceptors().add(new CredentialsOutHandler(getCredentialsSource(), getServiceConfiguration()));
 		}
 		
 		clientFactory.getInInterceptors().add(new LoggingInInterceptor());
-		clientFactory.getInInterceptors().add(new CXFWSS4JInInterceptor(getSoapServiceConfiguration().getBusSecurity()));
+		clientFactory.getInInterceptors().add(new CXFWSS4JInInterceptor(getServiceConfiguration().getBusSecurity()));
         clientFactory.getInInterceptors().add(new ImmutableCollectionsInInterceptor());
 
 		
 		Object service = clientFactory.create();		
-		return getServiceProxyWithFailureMode(service, getSoapServiceConfiguration());
+		return getServiceProxyWithFailureMode(service, getServiceConfiguration());
 	}	
 }

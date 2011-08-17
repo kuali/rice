@@ -30,7 +30,15 @@ public interface ServiceConfiguration extends Serializable {
 	 * @return the endpoint URL of the service, should never be null
 	 */
 	URL getEndpointUrl();
-	
+
+    /**
+	 * Returns the id of the specific instance of the application which owns this service.
+	 *
+	 * @return the id of the specific instance of the application which owns this service, should never
+	 * be null
+     */
+    String getInstanceId();
+
 	/**
 	 * Returns the id of the application which owns this service.
 	 * 
@@ -111,5 +119,12 @@ public interface ServiceConfiguration extends Serializable {
 	 * @return the type of security credentials to use when access this service
 	 */
 	CredentialsType getCredentialsType();
-	
+
+	/**
+	 * Returns the name of the cache manager to use. If null or blank then caching is effectively
+     * disabled for this service.
+	 *
+	 * @return the cache manager name or null
+	 */
+    String getCacheManager();
 }

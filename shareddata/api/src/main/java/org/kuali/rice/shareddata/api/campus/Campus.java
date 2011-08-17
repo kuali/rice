@@ -31,6 +31,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.shareddata.api.SharedDataConstants;
 import org.w3c.dom.Element;
 /**
  * An immutable representation of a {@link CampusContract}.
@@ -305,5 +306,9 @@ public final class Campus extends AbstractDataTransferObject implements CampusCo
         final static String SHORT_NAME = "shortName";
         final static String CAMPUS_TYPE = "campusType";
         final static String ACTIVE = "active";
+    }
+
+    public static class Cache {
+        public static final String NAME = SharedDataConstants.Namespaces.SHAREDDATA_NAMESPACE + "/" + Campus.Constants.TYPE_NAME;
     }
 }

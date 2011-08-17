@@ -27,6 +27,21 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
  */
 public final class CoreConfigHelper {
 
+    /**
+	 * Returns the ID of this instance.
+	 *
+	 * @return the ID of this instance, should never return a null or blank value
+	 *
+	 * @throws IllegalStateException if the instance ID is not configured properly
+	 */
+	public static String getInstanceId() {
+		String applicationId = ConfigContext.getCurrentContextConfig().getProperty(CoreConstants.Config.INSTANCE_ID);
+		if (StringUtils.isBlank(applicationId)) {
+			throw new IllegalStateException(CoreConstants.Config.INSTANCE_ID + " configuration parameter was not configured, please configure a proper non-empty value.");
+		}
+		return applicationId;
+	}
+
 	/**
 	 * Returns the ID of this application.
 	 * 

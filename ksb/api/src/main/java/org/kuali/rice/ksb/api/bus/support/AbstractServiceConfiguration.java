@@ -25,6 +25,7 @@ import java.util.Collection;
 		AbstractServiceConfiguration.Elements.SERVICE_NAME,
 		AbstractServiceConfiguration.Elements.ENDPOINT_URL,
 		AbstractServiceConfiguration.Elements.APPLICATION_ID,
+        AbstractServiceConfiguration.Elements.INSTANCE_ID,
 		AbstractServiceConfiguration.Elements.SERVICE_VERSION,
 		AbstractServiceConfiguration.Elements.TYPE,
 		AbstractServiceConfiguration.Elements.QUEUE,
@@ -34,6 +35,7 @@ import java.util.Collection;
 		AbstractServiceConfiguration.Elements.MESSAGE_EXCEPTION_HANDLER,
 		AbstractServiceConfiguration.Elements.BUS_SECURITY,
 		AbstractServiceConfiguration.Elements.CREDENTIALS_TYPE,
+        AbstractServiceConfiguration.Elements.CACHE_MANAGER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public abstract class AbstractServiceConfiguration extends AbstractDataTransferObject implements ServiceConfiguration {
@@ -46,7 +48,10 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
 	
 	@XmlElement(name = Elements.ENDPOINT_URL, required = true)
 	private final URL endpointUrl;
-	
+
+    @XmlElement(name = Elements.INSTANCE_ID, required = true)
+	private final String instanceId;
+
 	@XmlElement(name = Elements.APPLICATION_ID, required = true)
 	private final String applicationId;
 	
@@ -77,6 +82,9 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
 	@XmlJavaTypeAdapter(CredentialsTypeAdapter.class)
 	@XmlElement(name = Elements.CREDENTIALS_TYPE, required = false)
 	private final String credentialsType;
+
+    @XmlElement(name = Elements.CACHE_MANAGER, required = false)
+    private final String cacheManager;
 	
 	@SuppressWarnings("unused")
     @XmlAnyElement
@@ -88,6 +96,7 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
 	protected AbstractServiceConfiguration() {
 		this.serviceName = null;
 		this.endpointUrl = null;
+        this.instanceId = null;
 		this.applicationId = null;
 		this.serviceVersion = null;
 		this.type = null;
@@ -98,11 +107,13 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
 		this.messageExceptionHandler = null;
 		this.busSecurity = null;
 		this.credentialsType = null;
+        this.cacheManager = null;
 	}
 	
 	protected AbstractServiceConfiguration(Builder<?> builder) {
 		this.serviceName = builder.getServiceName();
 		this.endpointUrl = builder.getEndpointUrl();
+        this.instanceId = builder.getInstanceId();
 		this.applicationId = builder.getApplicationId();
 		this.serviceVersion = builder.getServiceVersion();
 		this.type = builder.getType();
@@ -114,6 +125,7 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
 		this.busSecurity = builder.getBusSecurity();
 		CredentialsType cred = builder.getCredentialsType();
 		this.credentialsType = cred == null ? null : cred.name();
+        this.cacheManager = builder.getCacheManager();
 	}
 	
 	public QName getServiceName() {
@@ -123,7 +135,11 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
 	public URL getEndpointUrl() {
 		return endpointUrl;
 	}
-	
+
+    public String getInstanceId() {
+        return instanceId;
+    }
+
 	public String getApplicationId() {
 		return applicationId;
 	}
@@ -166,6 +182,10 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
 		}
 		return CredentialsType.valueOf(credentialsType);
 	}
+
+    public String getCacheManager() {
+		return cacheManager;
+	}
 		
 	protected static abstract class Builder<T> implements Serializable {
 		
@@ -173,6 +193,7 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
 
 		private QName serviceName;
 		private URL endpointUrl;
+        private String instanceId;
 		private String applicationId;
 		private String serviceVersion;
 		private String type;
@@ -183,6 +204,7 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
 		private String messageExceptionHandler;
 		private Boolean busSecurity;
 		private CredentialsType credentialsType;
+        private String cacheManager;
 		
 		public abstract T build();
 		
@@ -190,6 +212,7 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
 			setServiceName(serviceDefinition.getServiceName());
 			setEndpointUrl(serviceDefinition.getEndpointUrl());
 			setApplicationId(serviceDefinition.getApplicationId());
+            setInstanceId(serviceDefinition.getInstanceId());
 			setServiceVersion(serviceDefinition.getServiceVersion());
 			setType(serviceDefinition.getType());
 			setQueue(serviceDefinition.isQueue());
@@ -199,6 +222,7 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
 			setMessageExceptionHandler(serviceDefinition.getMessageExceptionHandler());
 			setBusSecurity(serviceDefinition.getBusSecurity());
 			setCredentialsType(serviceDefinition.getCredentialsType());
+            setCacheManager(serviceDefinition.getCacheManager());
 		}
 		
 		public QName getServiceName() {
@@ -213,6 +237,12 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
 		public void setEndpointUrl(URL endpointUrl) {
 			this.endpointUrl = endpointUrl;
 		}
+        public String getInstanceId() {
+           return instanceId;
+        }
+        public void setInstanceId(String instanceId) {
+            this.instanceId = instanceId;
+        }
 		public String getApplicationId() {
 			return applicationId;
 		}
@@ -273,7 +303,14 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
 		public void setCredentialsType(CredentialsType credentialsType) {
 			this.credentialsType = credentialsType;
 		}
-		
+
+        public String getCacheManager() {
+		    return cacheManager;
+	    }
+
+        public void setCacheManager(String cacheManager) {
+            this.cacheManager = cacheManager;
+        }
 	}
 	
     /**
@@ -290,6 +327,7 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
     protected static class Elements {
     	protected final static String SERVICE_NAME = "serviceName";
     	protected final static String ENDPOINT_URL = "endpointUrl";
+        protected final static String INSTANCE_ID = "instanceId";
     	protected final static String APPLICATION_ID = "applicationId";
     	protected final static String SERVICE_VERSION = "serviceVersion";
     	protected final static String TYPE = "type";
@@ -300,6 +338,7 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
     	protected final static String MESSAGE_EXCEPTION_HANDLER = "messageExceptionHandler";
     	protected final static String BUS_SECURITY = "busSecurity";
     	protected final static String CREDENTIALS_TYPE = "credentialsType";
+        protected final static String CACHE_MANAGER = "cacheManager";
     }
     
     static final class CredentialsTypeAdapter extends EnumStringAdapter<CredentialsType> {

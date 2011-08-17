@@ -19,6 +19,7 @@ package org.kuali.rice.shareddata.api.country;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.shareddata.api.SharedDataConstants;
+import org.springframework.cache.annotation.Cacheable;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -41,6 +42,7 @@ public interface CountryService {
      */
     @WebMethod(operationName = "getCountry")
     @WebResult(name = "country")
+    @Cacheable(value=Country.Cache.NAME, key="'code=' + #code")
     Country getCountry(@WebParam(name = "code") String code) throws RiceIllegalArgumentException;
 
     /**
@@ -54,6 +56,7 @@ public interface CountryService {
      */
     @WebMethod(operationName = "getCountryByAlternateCode")
     @WebResult(name = "country")
+    @Cacheable(value=Country.Cache.NAME, key="'alternateCode=' + #alternateCode")
     Country getCountryByAlternateCode(@WebParam(name = "alternateCode") String alternateCode)
             throws RiceIllegalStateException, RiceIllegalArgumentException;
 
@@ -64,6 +67,7 @@ public interface CountryService {
      */
     @WebMethod(operationName = "findAllCountriesNotRestricted")
     @WebResult(name = "countriesNotRestricted")
+    @Cacheable(value=Country.Cache.NAME, key="allRestricted")
     List<Country> findAllCountriesNotRestricted();
 
     /**
@@ -73,5 +77,6 @@ public interface CountryService {
      */
     @WebMethod(operationName = "findAllCountries")
     @WebResult(name = "allCountries")
+    @Cacheable(value=Country.Cache.NAME, key="all")
     List<Country> findAllCountries();
 }

@@ -17,6 +17,7 @@
 package org.kuali.rice.ksb.api.messaging;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.xml.namespace.QName;
 
@@ -28,14 +29,14 @@ import javax.xml.namespace.QName;
  */
 public interface MessageHelper {
 
-	public String serializeObject(Serializable object);
-	public Object deserializeObject(String serializedObject);
-	public Object getServiceAsynchronously(QName qname);
-    public Object getServiceAsynchronously(QName qname, String applicationId);
-	public Object getServiceAsynchronously(QName qname, AsynchronousCallback callback);
-	public Object getServiceAsynchronously(QName qname, AsynchronousCallback callback, Serializable context);
-	public Object getServiceAsynchronously(QName qname, AsynchronousCallback callback, Serializable context, String value1, String value2);
-	public Object getServiceAsynchronously(QName qname, Serializable context, String value1, String value2, long delayMilliseconds);
-    public Object getServiceAsynchronously(QName qname, String applicationId, Serializable context, String value1, String value2, long delayMilliseconds);
-    
+	<T extends Serializable> String serializeObject(T object);
+	<T extends Serializable> T deserializeObject(String serializedObject);
+	<T> T getServiceAsynchronously(QName qname);
+    <T> T getServiceAsynchronously(QName qname, String applicationId);
+	<T> T getServiceAsynchronously(QName qname, AsynchronousCallback callback);
+	<T> T getServiceAsynchronously(QName qname, AsynchronousCallback callback, Serializable context);
+	<T> T getServiceAsynchronously(QName qname, AsynchronousCallback callback, Serializable context, String value1, String value2);
+	<T> T getServiceAsynchronously(QName qname, Serializable context, String value1, String value2, long delayMilliseconds);
+    <T> T getServiceAsynchronously(QName qname, String applicationId, Serializable context, String value1, String value2, long delayMilliseconds);
+    <T> List<T> getAllRemoteServicesAsynchronously(QName qname);
 }

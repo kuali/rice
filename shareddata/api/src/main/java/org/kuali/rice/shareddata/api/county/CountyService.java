@@ -18,6 +18,7 @@ package org.kuali.rice.shareddata.api.county;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.shareddata.api.SharedDataConstants;
+import org.springframework.cache.annotation.Cacheable;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -51,6 +52,7 @@ public interface CountyService {
      */
     @WebMethod(operationName = "getCounty")
     @WebResult(name = "county")
+    @Cacheable(value=County.Cache.NAME, key="'countryCode=' + #countryCode + '|' + 'stateCode=' + #stateCode + '|' + 'code=' + #code")
     County getCounty(@WebParam(name = "countryCode") String countryCode, @WebParam(name = "stateCode") String stateCode, @WebParam(name = "code") String code)
             throws RiceIllegalArgumentException;
 
@@ -75,6 +77,7 @@ public interface CountyService {
     @XmlElementWrapper(name = "counties", required = true)
     @XmlElement(name = "county", required = false)
     @WebResult(name = "counties")
+    @Cacheable(value=County.Cache.NAME, key="'countryCode=' + #countryCode + '|' + 'stateCode=' + #stateCode")
     List<County> findAllCountiesInCountryAndState(@WebParam(name = "countryCode") String countryCode, @WebParam(name = "stateCode") String stateCode)
             throws RiceIllegalArgumentException;
 }

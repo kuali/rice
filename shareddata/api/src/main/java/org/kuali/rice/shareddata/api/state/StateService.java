@@ -29,6 +29,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.shareddata.api.SharedDataConstants;
+import org.springframework.cache.annotation.Cacheable;
 
 /**
  * Service for interacting with {@link State States}.
@@ -55,6 +56,7 @@ public interface StateService {
      */
     @WebMethod(operationName = "getState")
     @WebResult(name = "state")
+    @Cacheable(value=State.Cache.NAME, key="'countryCode=' + #countryCode + '|' + 'code=' + #code")
     State getState(@WebParam(name = "countryCode") String countryCode, @WebParam(name = "code") String code)
             throws RiceIllegalArgumentException;
 
@@ -78,6 +80,7 @@ public interface StateService {
     @XmlElementWrapper(name = "states", required = true)
     @XmlElement(name = "state", required = false)
     @WebResult(name = "states")
+    @Cacheable(value=State.Cache.NAME, key="countryCode=#countryCode")
     List<State> findAllStatesInCountry(@WebParam(name = "countryCode") String countryCode)
             throws RiceIllegalArgumentException;
     
@@ -93,7 +96,7 @@ public interface StateService {
      * This method will only return active states.
      * </p>
      *
-     * @param alternateCode. cannot be blank.
+     * @param alternateCode cannot be blank.
      * @return an immutable collection of states
      * @throws RiceIllegalArgumentException alternate country code is null
      * @throws RiceIllegalStateException when no countries are found for alternate country code
@@ -102,6 +105,7 @@ public interface StateService {
     @XmlElementWrapper(name = "states", required = true)
     @XmlElement(name = "state", required = false)
     @WebResult(name = "states")
+    @Cacheable(value=State.Cache.NAME, key="alternateCode=#alternateCode")
     List<State> findAllStatesInCountryByAltCode(@WebParam(name = "alternateCode") String alternateCode)
             throws RiceIllegalArgumentException, RiceIllegalStateException;
 }

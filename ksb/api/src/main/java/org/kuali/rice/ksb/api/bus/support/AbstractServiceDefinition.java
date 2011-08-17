@@ -61,8 +61,10 @@ public abstract class AbstractServiceDefinition implements ServiceDefinition {
 	private CredentialsType credentialsType;
 	private String serviceVersion;
 	private String applicationId;
+    private String instanceId;
 	// if the service is exported from a plugin, we need to ensure it's invoked within the proper classloading context!
 	private ClassLoader serviceClassLoader;
+    private String cacheManager;
 			
 	protected AbstractServiceDefinition() {
 		this.busSecurity = Boolean.TRUE;
@@ -164,7 +166,16 @@ public abstract class AbstractServiceDefinition implements ServiceDefinition {
 		this.applicationId = applicationId;
 	}
 
-	@Override
+    @Override
+    public String getInstanceId() {
+        return instanceId;
+    }
+
+    public void setInstanceId(String instanceId) {
+        this.instanceId = instanceId;
+    }
+
+    @Override
 	public ClassLoader getServiceClassLoader() {
 		return this.serviceClassLoader;
 	}
@@ -172,6 +183,15 @@ public abstract class AbstractServiceDefinition implements ServiceDefinition {
 	public void setServiceClassLoader(ClassLoader serviceClassLoader) {
 		this.serviceClassLoader = serviceClassLoader;
 	}
+
+    @Override
+    public String getCacheManager() {
+        return cacheManager;
+    }
+
+    public void setCacheManager(String cacheManager) {
+        this.cacheManager = cacheManager;
+    }
 	
 	@Override
 	public void validate() {
@@ -179,13 +199,21 @@ public abstract class AbstractServiceDefinition implements ServiceDefinition {
 		if (this.serviceName == null && this.localServiceName == null) {
 			throw new ConfigurationException("Must give a serviceName or localServiceName");
 		}
-		
+
 		if (this.applicationId == null) {
 			String applicationId = CoreConfigHelper.getApplicationId();
 			if (applicationId == null) {
 				throw new ConfigurationException("Must have an applicationId");
 			}	
 			this.applicationId = applicationId;
+		}
+
+        if (this.instanceId == null) {
+			String instanceId = CoreConfigHelper.getInstanceId();
+			if (instanceId == null) {
+				throw new ConfigurationException("Must have an instanceId");
+			}
+			this.instanceId = instanceId;
 		}
 		
 		if (this.serviceName != null && this.localServiceName == null) {

@@ -50,7 +50,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 	
     public ActionItem findByActionItemId(String actionItemId) {
         Criteria crit = new Criteria();
-        crit.addEqualTo("actionItemId", actionItemId);
+        crit.addEqualTo("id", actionItemId);
         return (ActionItem) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(ActionItem.class, crit));
     }
 

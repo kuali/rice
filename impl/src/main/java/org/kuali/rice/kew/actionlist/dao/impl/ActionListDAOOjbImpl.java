@@ -662,7 +662,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
      */
     public void removeOutboxItems(String principalId, List<String> outboxItems) {
         Criteria crit = new Criteria();
-        crit.addIn("actionItemId", outboxItems);
+        crit.addIn("id", outboxItems);
         getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(OutboxItemActionListExtension.class, crit));
     }
 

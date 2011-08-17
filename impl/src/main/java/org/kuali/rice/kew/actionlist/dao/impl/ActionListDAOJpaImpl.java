@@ -520,7 +520,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
      */
     public void removeOutboxItems(String principalId, List<String> outboxItems) {
         Criteria crit = new Criteria(OutboxItemActionListExtension.class.getName());
-        crit.in("actionItemId", outboxItems);
+        crit.in("id", outboxItems);
         for(Object entity:new QueryByCriteria(entityManager, crit).toQuery().getResultList()){
         	entityManager.remove(entity);
         }

@@ -30,7 +30,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="KREW_OUT_BOX_ITM_T")
 @AttributeOverrides({
-	@AttributeOverride(name="actionItemId", column=@Column(name="ACTN_ITM_ID")),
+	@AttributeOverride(name="id", column=@Column(name="ACTN_ITM_ID")),
 	@AttributeOverride(name="principalId", column=@Column(name="PRNCPL_ID")),
 	@AttributeOverride(name="dateAssigned", column=@Column(name="ASND_DT")),
 	@AttributeOverride(name="actionRequestCd", column=@Column(name="RQST_CD")),

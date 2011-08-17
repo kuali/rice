@@ -1571,7 +1571,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		RoleBo roleBo = getBusinessObjectService().findByPrimaryKey(RoleBo.class, criteria);
 
         Map<String, String> subClassCriteria = new HashMap<String, String>();
-		criteria.put(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID, role.getId());
+		subClassCriteria.put(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID, role.getId());
 
 		identityManagementRoleDocument.setRoleId(roleBo.getId());
 		identityManagementRoleDocument.setKimType(KimTypeBo.to(roleBo.getKimRoleType()));

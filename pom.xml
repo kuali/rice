@@ -858,13 +858,6 @@
         <enabled>true</enabled>
       </snapshots>
     </repository>
-
-    <!-- temp.  remove before release -->
-    <repository>
-      <id>spring.milestones</id>
-      <name>Spring Milestone</name>
-      <url>http://maven.springframework.org/milestone</url>
-    </repository>
   </repositories>
 
   <dependencyManagement>

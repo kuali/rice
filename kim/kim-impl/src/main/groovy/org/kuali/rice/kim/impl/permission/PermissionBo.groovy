@@ -41,6 +41,7 @@ import org.kuali.rice.kim.util.KimConstants
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb
+import org.springframework.util.AutoPopulatingList
 
 @Entity
 @Table(name = "KRIM_PERM_T")
@@ -80,7 +81,7 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
 
     @OneToMany(targetEntity = RolePermissionBo.class, cascade = [CascadeType.ALL], fetch = FetchType.EAGER, mappedBy = "id")
     @Fetch(value = FetchMode.SELECT)
-    List<RolePermissionBo> rolePermissions
+    List<RolePermissionBo> rolePermissions = new AutoPopulatingList(RolePermissionBo.class)
 
     Map<String,String> getAttributes() {
         return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes

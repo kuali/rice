@@ -25,7 +25,8 @@ import org.kuali.rice.kim.api.responsibility.ResponsibilityQueryResults
 import org.kuali.rice.core.api.criteria.Predicate
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.*
-import org.kuali.rice.core.api.criteria.LookupCustomizer;
+import org.kuali.rice.core.api.criteria.LookupCustomizer
+import org.kuali.rice.kim.api.common.template.TemplateQueryResults;
 
 /*
  * Copyright 2007-2009 The Kuali Foundation
@@ -792,5 +793,36 @@ class ResponsibilityServiceImplTest {
         List<Responsibility> actualResponsibilities = responsibilityQueryResults.getResults();
 
         Assert.assertEquals("respidone", actualResponsibilities[0].id);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testFindResponsibilityTemplatesWithNullFails() {
+        TemplateQueryResults templateQueryResults = responsibilityService.findResponsibilityTemplates(null);
+    }
+
+    @Test
+    public void testFindResponsibilityTemplatesSucceeds() {
+        Predicate p = equal("id", "resptemplateidone");
+
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(p);
+
+        GenericQueryResults.Builder<ResponsibilityTemplateBo> genericQueryResults = new GenericQueryResults.Builder<ResponsibilityTemplateBo>();
+        genericQueryResults.totalRowCount = 1;
+        genericQueryResults.moreResultsAvailable = false;
+        List<ResponsibilityTemplateBo> responsibilityTemplates = new ArrayList<ResponsibilityTemplateBo>();
+        responsibilityTemplates.add(sampleTemplates.get("resptemplateidone"));
+        genericQueryResults.results = responsibilityTemplates;
+        GenericQueryResults<ResponsibilityTemplateBo> results = genericQueryResults.build();
+
+        mockCriteriaLookupService.demand.lookup(1..1) {
+            Class<ResponsibilityTemplateBo> queryClass, QueryByCriteria criteria -> return results;
+        }
+
+        injectCriteriaLookupServiceIntoResponsibilityService();
+
+        TemplateQueryResults templateQueryResults = responsibilityService.findResponsibilityTemplates(builder.build());
+        List<Template> actualTemplates = templateQueryResults.getResults();
+        Assert.assertEquals("resptemplateidone", actualTemplates[0].id);
     }
 }

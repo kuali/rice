@@ -9,7 +9,6 @@ import org.kuali.rice.krad.service.BusinessObjectService
 import org.junit.BeforeClass
 import org.kuali.rice.core.api.exception.RiceIllegalStateException
 import org.junit.Assert
-import org.kuali.rice.kim.api.common.attribute.KimAttributeData
 import org.kuali.rice.kim.api.common.template.Template
 import org.kuali.rice.kim.api.type.KimTypeInfoService
 import org.kuali.rice.kim.impl.type.KimTypeBo
@@ -22,6 +21,11 @@ import org.kuali.rice.kim.api.role.RoleService
 import org.kuali.rice.kim.api.responsibility.ResponsibilityAction
 import org.kuali.rice.kim.api.role.RoleMembership
 import org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo
+import org.kuali.rice.kim.api.responsibility.ResponsibilityQueryResults
+import org.kuali.rice.core.api.criteria.Predicate
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.*
+import org.kuali.rice.core.api.criteria.LookupCustomizer;
 
 /*
  * Copyright 2007-2009 The Kuali Foundation
@@ -720,5 +724,73 @@ class ResponsibilityServiceImplTest {
         Assert.assertEquals("embeddedroleidone", responsibilityActions[0].memberRoleId);
         Assert.assertEquals("respidone", responsibilityActions[0].responsibilityId);
         Assert.assertEquals("roleidone", responsibilityActions[0].roleId);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetRoleIdsForResponsibilityWithNullIdFails() {
+        List<String> roleIds = responsibilityService.getRoleIdsForResponsibility(null, new HashMap<String, String>());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetRoleIdsForResponsibilityWithBlankIdFails() {
+        List<String> roleIds = responsibilityService.getRoleIdsForResponsibility("", new HashMap<String, String>());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetRoleIdsForResponsibilityWithNullQualificationFails() {
+        List<String> roleIds = responsibilityService.getRoleIdsForResponsibility("test", null);
+    }
+
+    @Test
+    public void testGetRoleIdsForResponsibilitySucceeds() {
+        GenericQueryResults.Builder<RoleResponsibilityBo> genericQueryResults = new GenericQueryResults.Builder<RoleResponsibilityBo>();
+        genericQueryResults.totalRowCount = 1;
+        genericQueryResults.moreResultsAvailable = false;
+        List<RoleResponsibilityBo> roleResponsibilities = new ArrayList<RoleResponsibilityBo>();
+        roleResponsibilities.add(sampleRoleResponsibilities.get("rolerespidone"));
+        genericQueryResults.results = roleResponsibilities;
+        GenericQueryResults<RoleResponsibilityBo> results = genericQueryResults.build();
+
+        mockCriteriaLookupService.demand.lookup(1..1) {
+            Class<RoleResponsibilityBo> queryClass, QueryByCriteria criteria -> return results;
+        }
+
+        injectCriteriaLookupServiceIntoResponsibilityService();
+
+        List<String> roleIds = responsibilityService.getRoleIdsForResponsibility("respidone", new HashMap<String, String>());
+
+        Assert.assertEquals("rolerespidone", roleIds[0]);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testFindResponsibilitiesWithNullFails() {
+        ResponsibilityQueryResults responsibilityQueryResults = responsibilityService.findResponsibilities(null);
+    }
+
+    @Test
+    public void testFindResponsibilitiesSucceeds() {
+        Predicate p = equal("id", "respidone");
+
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(p);
+
+        GenericQueryResults.Builder<ResponsibilityBo> genericQueryResults = new GenericQueryResults.Builder<ResponsibilityBo>();
+        genericQueryResults.totalRowCount = 1;
+        genericQueryResults.moreResultsAvailable = false;
+        List<ResponsibilityBo> responsibilities = new ArrayList<ResponsibilityBo>();
+        responsibilities.add(sampleResponsibilities.get("respidone"));
+        genericQueryResults.results = responsibilities;
+        GenericQueryResults<ResponsibilityBo> results = genericQueryResults.build();
+
+        mockCriteriaLookupService.demand.lookup(1..1) {
+            Class<ResponsibilityBo> queryClass, QueryByCriteria criteria, LookupCustomizer<ResponsibilityBo> customizer -> return results;
+        }
+
+        injectCriteriaLookupServiceIntoResponsibilityService();
+
+        ResponsibilityQueryResults responsibilityQueryResults = responsibilityService.findResponsibilities(builder.build());
+        List<Responsibility> actualResponsibilities = responsibilityQueryResults.getResults();
+
+        Assert.assertEquals("respidone", actualResponsibilities[0].id);
     }
 }

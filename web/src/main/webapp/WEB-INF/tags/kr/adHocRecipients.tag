@@ -141,8 +141,8 @@
                     </td>
                     <td class="infoline" ><div align=center>
                         <kul:htmlControlAttribute property="newAdHocRouteWorkgroup.recipientName" attributeEntry="${DataDictionary.PersonDocumentGroup.attributes.groupName}" readOnly="${displayReadOnly}" />
-                        <kul:workflowWorkgroupLookup fieldConversions="namespaceCode:newAdHocRouteWorkgroup.recipientNamespaceCode,groupName:newAdHocRouteWorkgroup.recipientName"
-                          lookupParameters="newAdHocRouteWorkgroup.recipientNamespaceCode:namespaceCode,newAdHocRouteWorkgroup.recipientName:groupName" /></div>
+                        <kul:workflowWorkgroupLookup fieldConversions="namespaceCode:newAdHocRouteWorkgroup.recipientNamespaceCode,name:newAdHocRouteWorkgroup.recipientName"
+                          lookupParameters="newAdHocRouteWorkgroup.recipientNamespaceCode:namespaceCode,newAdHocRouteWorkgroup.recipientName:name" /></div>
                     </td>
                     <td class="infoline" ><div align=center>
                         <html:image property="methodToCall.insertAdHocRouteWorkgroup" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif" title="Insert Additional Ad Hoc Workgroup" alt="Insert Additional Ad Hoc Workgroup" styleClass="tinybutton"/></div>

@@ -101,8 +101,14 @@ public class ServiceConnectorFactory {
 			throw new RiceRuntimeException("Don't support service type of "	+ serviceConfiguration);
 		}
 		serviceConnector.setCredentialsSource(credentialsSource);
-        CacheManager c = GlobalResourceLoader.getService(serviceConfiguration.getCacheManager());
-		return c != null ? new CacheServiceConnector(serviceConnector, c) : serviceConnector;
+        if (StringUtils.isNotBlank(serviceConfiguration.getCacheManager())) {
+            CacheManager c = GlobalResourceLoader.getService(serviceConfiguration.getCacheManager());
+            if (c != null) {
+                return new CacheServiceConnector(serviceConnector, c);
+            }
+        }
+
+		return serviceConnector;
 	}
 
     private static class CacheServiceConnector implements ServiceConnector {

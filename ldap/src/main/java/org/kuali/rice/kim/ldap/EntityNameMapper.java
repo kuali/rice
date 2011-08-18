@@ -19,6 +19,7 @@ import org.springframework.ldap.core.ContextMapper;
 import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.ldap.core.support.AbstractContextMapper;
 
+import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.util.Constants;
 
@@ -29,8 +30,20 @@ import org.kuali.rice.kim.util.Constants;
 public class EntityNameMapper extends AbstractContextMapper {
     private Constants constants;
     
+    public EntityName mapFromContext(DirContextOperations context, boolean isdefault) {
+        return new EntityName((EntityName.Builder) doMapFromContext(context, isdefault));
+    }
+
+    public EntityName mapFromContext(DirContextOperations context) {
+        return mapFromContext(context, true);
+    }
+
     public Object doMapFromContext(DirContextOperations context) {
-        final EntityName person = new EntityName();
+        return doMapFromContext(context, true);
+    }
+
+    protected Object doMapFromContext(DirContextOperations context, boolean isdefault) {        
+        final EntityName.Builder person = EntityName.Builder.create();
         person.setEntityNameId(context.getStringAttribute(getConstants().getKimLdapIdProperty()));
         
         final String fullName = (String) context.getStringAttribute(getConstants().getGivenNameLdapProperty());
@@ -38,10 +51,8 @@ public class EntityNameMapper extends AbstractContextMapper {
         if (fullName != null) {
             final String[] name = fullName.split(" ");
             person.setFirstName(name[0]);
-            person.setFirstNameUnmasked(name[0]);
             if (name.length > 1) {
                 person.setMiddleName(name[1]);
-                person.setMiddleNameUnmasked(name[1]);
             }
         }
         else {
@@ -49,12 +60,9 @@ public class EntityNameMapper extends AbstractContextMapper {
         }
         
         person.setLastName(context.getStringAttribute(getConstants().getSnLdapProperty()));
-        person.setLastNameUnmasked(context.getStringAttribute(getConstants().getSnLdapProperty()));
-        person.setFormattedName(context.getStringAttribute("cn"));
-        person.setFormattedNameUnmasked(context.getStringAttribute("cn"));
-        person.setDefault(true);
+        person.setDefaultValue(isdefault);
         person.setActive(true);
-        person.setNameTypeCode("PRI");
+        person.setNameTypeCode(Type.Builder.create("PRI").build());
         
         return person;
     }

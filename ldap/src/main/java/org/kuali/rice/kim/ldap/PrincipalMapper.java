@@ -40,8 +40,12 @@ public class PrincipalMapper extends AbstractContextMapper {
     private Constants constants;
     private ParameterService parameterService;
     
+    public Principal mapFromContext(DirContextOperations context) {
+        return new Principal((Principal.Builder) doMapFromContext(context));
+    }
+
     public Object doMapFromContext(DirContextOperations context) {
-        final Principal person = new Principal();
+        final Principal.Builder builder = Principal.Builder.create();
         final String uaid = context.getStringAttribute(getConstants().getKimLdapIdProperty());
         
         if (uaid == null) {
@@ -53,7 +57,7 @@ public class PrincipalMapper extends AbstractContextMapper {
         person.setEntityId(uaid);
         person.setPrincipalName(context.getStringAttribute(getConstants().getKimLdapNameProperty()));
         person.setActive(isPersonActive(context));
-        
+
         return person;
     }
     

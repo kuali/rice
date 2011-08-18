@@ -44,24 +44,22 @@ public class EntityTypeContactInfoMapper extends AbstractContextMapper {
 
     
     public Object doMapFromContext(DirContextOperations context) {
-        final EntityTypeContactInfo retval = new EntityTypeContactInfo(); 
-        
-        final EntityAddress address = (EntityAddress) getAddressMapper().mapFromContext(context);
-        retval.setDefaultAddress(address);
+        final String entityId       = (String) context.getStringAttribute(getConstants().getKimLdapIdProperty());
+        final String entityTypeCode = (String ) getConstants().getPersonEntityTypeCode();
+
+        final EntityTypeContactInfo.Builder builder = EntityTypeContactInfo.Builder.create(entityId, entityTypeCode); 
+        final EntityAddress address = ((EntityAddressMapper) getAddressMapper()).mapFromContext(context);
         final List<EntityAddress> addresses = new ArrayList<EntityAddress>();
         addresses.add(address);
-        retval.setAddresses(addresses);
-        
         final List<EntityEmail> email = new ArrayList<EntityEmail>();
-        email.add((EntityEmail) getEmailMapper().mapFromContext(context));
-        retval.setDefaultEmailAddress(email.get(0));
+        email.add(((EntityEmailMapper) getEmailMapper()).mapFromContext(context, true));
         final List<EntityPhone> phone = new ArrayList<EntityPhone>();
-        phone.add((EntityPhone) getPhoneMapper().mapFromContext(context));
-        retval.setDefaultPhoneNumber(phone.get(0));
-        retval.setEmailAddresses(email);
-        retval.setPhoneNumbers(phone);
-        retval.setEntityTypeCode(getConstants().getPersonEntityTypeCode());
-        debug("Created Entity Type with code ", retval.getEntityTypeCode());
+        phone.add(((EntityPhoneMapper) getPhoneMapper()).mapFromContext(context, true));
+        builder.setAddresses(addresses);
+        builder.setEmailAddresses(email);
+        builder.setPhoneNumbers(phone);
+        debug("Created Entity Type with code ", builder.getEntityTypeCode());
+        final EntityTypeContactInfo retval = new EntityTypeContactInfo(builder); 
                 
         return retval;
     }

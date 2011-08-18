@@ -18,6 +18,7 @@ package org.kuali.rice.kim.ldap;
 import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.ldap.core.support.AbstractContextMapper;
 
+import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.email.EntityEmail;
 import org.kuali.rice.kim.util.Constants;
 
@@ -29,11 +30,14 @@ public class EntityEmailMapper extends AbstractContextMapper {
     private Constants constants;
     
     public Object doMapFromContext(DirContextOperations context) {
-        final EntityEmail retval = new EntityEmail();
+        return doMapFromContext(context, true);
+    }
+
+    public Object doMapFromContext(DirContextOperations context, boolean isdefault) {        
+        final EntityEmail.Builder retval = EntityEmail.Builder.create();
         final String emailAddress = context.getStringAttribute(getConstants().getEmployeeMailLdapProperty());
         retval.setEmailAddress(emailAddress);
-        retval.setEmailAddressUnmasked(emailAddress);
-        retval.setEmailTypeCode("WORK");
+        retval.setEmailTypeCode(Type.Builder.create("WORK").build());
         retval.setDefault(true);
         retval.setActive(true);
         return retval;

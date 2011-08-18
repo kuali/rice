@@ -30,23 +30,25 @@ import org.kuali.rice.core.api.util.type.KualiDecimal;
 public class EntityEmploymentMapper extends AbstractContextMapper {
     private Constants constants;
     
+    
+    public EntityEmployment mapFromContext(DirContextOperations context) {
+        return new EntityEmployment((EntityEmployment.Builder) doMapFromContext(context));
+    }
+
     public Object doMapFromContext(DirContextOperations context) {
-        final EntityEmployment employee = new EntityEmployment();
         final String departmentCode = context.getStringAttribute(getConstants().getDepartmentLdapProperty());
         
         if (departmentCode == null) {
             return null;
         }
-        
+
+        final EntityEmployment.Builder employee = EntityEmployment.Builder.create();
         employee.setEmployeeId(context.getStringAttribute(getConstants().getEmployeeIdProperty()));
         employee.setEmployeeStatusCode(context.getStringAttribute(getConstants().getEmployeeStatusProperty()));
         //employee.setEmployeeTypeCode(context.getStringAttribute(getConstants().getEmployeeTypeProperty()));
         employee.setEmployeeTypeCode("P");
         employee.setBaseSalaryAmount(KualiDecimal.ZERO);
         
-        if (departmentCode != null) {
-            employee.setPrimaryDepartmentCode("UA-" + Integer.parseInt(departmentCode));
-        }
         employee.setActive(true);
         return employee;
     }

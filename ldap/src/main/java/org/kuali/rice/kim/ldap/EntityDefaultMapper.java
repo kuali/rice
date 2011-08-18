@@ -43,12 +43,13 @@ public class EntityDefaultMapper extends AbstractContextMapper {
     private ContextMapper employmentMapper;
     
     public Object doMapFromContext(DirContextOperations context) {
-        EntityDefault person = new EntityDefault();
         
-        final String uaid = context.getStringAttribute(getConstants().getKimLdapIdProperty());
-        final String uid = context.getStringAttribute(getConstants().getKimLdapNameProperty());
+        final String entityId = context.getStringAttribute(getConstants().getKimLdapIdProperty());
+        final String principalName = context.getStringAttribute(getConstants().getKimLdapNameProperty());
+
+        final EntityDefault.Builder person = EntityDefault.Builder.create(entityId);
         
-        if (uaid == null) {
+        if (entityId == null) {
             throw new InvalidLdapEntityException("LDAP Search Results yielded an invalid result with attributes " 
                                                  + context.getAttributes());
         }
@@ -58,28 +59,28 @@ public class EntityDefaultMapper extends AbstractContextMapper {
         
         final EntityExternalIdentifier externalId = new EntityExternalIdentifier();
         externalId.setExternalIdentifierTypeCode(getConstants().getTaxExternalIdTypeCode());
-        externalId.setExternalId(uaid);
+        externalId.setExternalId(entityId);
         person.getExternalIdentifiers().add(externalId);
         
-        person.setAffiliations((List<EntityAffiliation>) getAffiliationMapper().mapFromContext(context));
+        person.setAffiliations((List<EntityAffiliation.Builder>) getAffiliationMapper().mapFromContext(context));
         
         person.setEntityTypes(new ArrayList());
         person.getEntityTypes().add((EntityTypeContactInfoDefault) getEntityTypeMapper().mapFromContext(context));
         
         person.setDefaultName(new EntityName((EntityName) getDefaultNameMapper().mapFromContext(context)));
-        person.setEntityId(uaid);
+        person.setEntityId(entityId);
         
-        person.setPrimaryEmployment((EntityEmployment) getEmploymentMapper().mapFromContext(context));
+        person.setPrimaryEmployment((EntityEmployment.Builder) getEmploymentMapper().mapFromContext(context));
 
-        person.setEntityId(uaid);
+        person.setEntityId(entityId);
         person.setPrincipals(new ArrayList()); 
         //inactivate unless we find a matching affiliation
         person.setActive(true);
         
-        final Principal defaultPrincipal = new Principal();
-        defaultPrincipal.setPrincipalId(uaid);
-        defaultPrincipal.setEntityId(uaid);
-        defaultPrincipal.setPrincipalName(uid);
+        final Principal.Builder defaultPrincipal = Principal.Builder.create();
+        defaultPrincipal.setPrincipalId(entityId);
+        defaultPrincipal.setEntityId(entityId);
+        defaultPrincipal.setPrincipalName(principalName);
 
         List entityPrincipals = person.getPrincipals();
         entityPrincipals.add((Principal) defaultPrincipal);

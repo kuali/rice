@@ -18,7 +18,7 @@ package org.kuali.rice.kim.ldap;
 import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.ldap.core.support.AbstractContextMapper;
 
-import org.kuali.rice.kim.api.identity.EntityPhone;
+import org.kuali.rice.kim.api.identity.phone.EntityPhone;
 import org.kuali.rice.kim.util.Constants;
 
 import static org.kuali.rice.core.util.BufferedLogger.*;
@@ -32,9 +32,20 @@ import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
 public class EntityPhoneMapper extends AbstractContextMapper {
     private Constants constants;
     
+    public EntityPhone mapFromContext(DirContextOperations context, boolean isdefault) {
+        return new EntityPhone((EntityPhone.Builder) doMapFromContext(context, isdefault));
+    }
+
+    public EntityPhone mapFromContext(DirContextOperations context) {
+        return mapFromContext(context, true);
+    }
+
     public Object doMapFromContext(DirContextOperations context) {
-        final EntityPhone retval = new EntityPhone();
-        
+        return doMapFromContext(context, true);
+    }
+
+    protected Object doMapFromContext(DirContextOperations context, boolean isdefault) {        
+        final EntityPhone.Builder builder = EntityPhone.Builder.create();
         debug("Looking up attribute from context ", getConstants().getEmployeePhoneLdapProperty());
         final String pn = context.getStringAttribute(getConstants().getEmployeePhoneLdapProperty());
         
@@ -51,16 +62,14 @@ public class EntityPhoneMapper extends AbstractContextMapper {
         }
         final String countryCode = getConstants().getDefaultCountryCode();
         
-        retval.setCountryCode(countryCode);
-        retval.setPhoneNumber(phoneNumber);
-        retval.setCountryCodeUnmasked(countryCode);
-        retval.setPhoneNumberUnmasked(countryCode + pn);
-        retval.setFormattedPhoneNumber(phoneNumber);
-        retval.setFormattedPhoneNumberUnmasked(phoneNumber);
-        retval.setPhoneTypeCode("WORK");
-        retval.setActive(true);
-        retval.setDefault(true);
-        return retval;
+        builder.setCountryCode(countryCode);
+        builder.setPhoneNumber(phoneNumber);
+        builder.setFormattedPhoneNumber(phoneNumber);
+        builder.setPhoneTypeCode("WORK");
+        builder.setActive(true);
+        builder.setDefaultValue(isdefault);
+
+        return builder;
     }
     
     /**

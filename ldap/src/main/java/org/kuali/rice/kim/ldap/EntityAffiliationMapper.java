@@ -21,6 +21,7 @@ import java.util.List;
 import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.ldap.core.support.AbstractContextMapper;
 
+import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.util.Constants;
 
@@ -38,7 +39,7 @@ public class EntityAffiliationMapper extends AbstractContextMapper {
     private Constants constants;
     
     public Object doMapFromContext(DirContextOperations context) {
-        List<EntityAffiliation> retval = new ArrayList();
+        List<EntityAffiliation.Builder> retval = new ArrayList();
         final String primaryAffiliationProperty = getConstants().getPrimaryAffiliationLdapProperty();
         final String affiliationProperty = getConstants().getAffiliationLdapProperty();
         debug("Got affiliation ", context.getStringAttribute(primaryAffiliationProperty));
@@ -48,11 +49,12 @@ public class EntityAffiliationMapper extends AbstractContextMapper {
         
         int affiliationId = 1;
         String affiliationCode = getAffiliationTypeCodeForName(primaryAffiliation);
-        EntityAffiliation aff1 = new EntityAffiliation();
-        aff1.setAffiliationTypeCode(affiliationCode == null ? "AFLT" : affiliationCode);
+
+        final EntityAffiliation.Builder aff1 = EntityAffiliation.Builder.create();
+        aff1.setAffiliationTypeCode(Type.Builder.create(affiliationCode == null ? "AFLT" : affiliationCode).build());
         aff1.setCampusCode(getConstants().getDefaultCampusCode());
         aff1.setEntityAffiliationId("" + affiliationId++);
-        aff1.setDefault(true);
+        aff1.setDefaultValue(true);
         aff1.setActive(true);
         retval.add(aff1);
         
@@ -63,14 +65,14 @@ public class EntityAffiliationMapper extends AbstractContextMapper {
         }
 
         for (String affiliation : affiliations) {
-            if (!StringUtils.equals(affiliation, primaryAffiliation)) {
+            if (!equals(affiliation, primaryAffiliation)) {
                 affiliationCode = getAffiliationTypeCodeForName(affiliation);
                 if (affiliationCode != null && !hasAffiliation(retval, affiliationCode)) {
-                    EntityAffiliation aff = new EntityAffiliation();
+                    final EntityAffiliation.Builder aff = EntityAffiliation.Builder.create();
                     aff.setAffiliationTypeCode(affiliationCode);
                     aff.setCampusCode(getConstants().getDefaultCampusCode());
                     aff.setEntityAffiliationId("" + affiliationId++);
-                    aff.setDefault(false);
+                    aff.setDefaultValue(false);
                     aff.setActive(true);
                     retval.add(aff);
                 }

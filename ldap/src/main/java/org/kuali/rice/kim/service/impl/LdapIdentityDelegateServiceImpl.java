@@ -25,7 +25,7 @@ import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
-import org.kuali.rice.kim.service.IdentityService;
+import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.service.impl.IdentityServiceImpl;
 
 import org.kuali.rice.kim.dao.LdapPrincipalDao;
@@ -154,28 +154,6 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl impleme
         return getPrincipalByPrincipalName(principalName);
     }
 	
-
-    /**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#findEntities(org.kuali.rice.core.api.criteria.QueryByCriteria)
-	 */
-	@SuppressWarnings("unchecked")
-	public EntityQueryResults findEntities(QueryByCriteria queryByCriteria) {
-	}
-
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#findEntityDefault(Map, boolean)
-	 */
-	@SuppressWarnings("unchecked")
-	public EntityDefaultQueryResults findEntityDefaults(QueryByCriteria queryByCriteria) {
-	}
-
-    /**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#findEntity(Map, boolean)
-	 */
-	@SuppressWarnings("unchecked")
-	public EntityNameQueryResults findNames(QueryByCriteria queryByCriteria) {
-	}
-
 	/**
 	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityPrivacyPreferences(java.lang.String)
 	 */

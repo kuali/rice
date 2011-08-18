@@ -18,6 +18,7 @@ package org.kuali.rice.kim.ldap;
 import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.ldap.core.support.AbstractContextMapper;
 
+import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.address.EntityAddress;
 import org.kuali.rice.kim.util.Constants;
 
@@ -28,28 +29,35 @@ import org.kuali.rice.kim.util.Constants;
 public class EntityAddressMapper extends AbstractContextMapper {
     private Constants constants;
 
+    public EntityAddress mapFromContext(DirContextOperations context, boolean isdefault) {
+        return new EntityAddress((EntityAddress.Builder) doMapFromContext(context, isdefault));
+    }
+
+    public EntityAddress mapFromContext(DirContextOperations context) {
+        return mapFromContext(context, false);
+    }
+
     public Object doMapFromContext(DirContextOperations context) {
-        final EntityAddress retval = new EntityAddress();
+        return doMapFromContext(context, false);
+    }
+
+    protected Object doMapFromContext(DirContextOperations context, boolean isdefault) {        
+        final EntityAddress.Builder builder = new EntityAddress.Builder.create();
         final String line1      = context.getStringAttribute("employeePrimaryDeptName");
         final String line2      = context.getStringAttribute("employeePoBox");
         final String cityName   = context.getStringAttribute("employeeCity");
         final String stateCode  = context.getStringAttribute("employeeState");
         final String postalCode = context.getStringAttribute("employeeZip");
         
-        retval.setAddressTypeCode("WORK");
-        retval.setLine1(line1);
-        retval.setLine1Unmasked(line1);
-        retval.setLine2(line2);
-        retval.setLine2Unmasked(line2);
-        retval.setCityName(cityName);
-        retval.setCityNameUnmasked(cityName);
-        retval.setStateCode(stateCode);
-        retval.setStateCodeUnmasked(stateCode);
-        retval.setPostalCode(postalCode);
-        retval.setPostalCodeUnmasked(postalCode);
-        retval.setDefault(true);
-        retval.setActive(true);
-        return retval;
+        builder.setAddressTypeCode(Type.Builder.create("WORK").build());
+        builder.setLine1(line1);
+        builder.setLine2(line2);
+        builder.setCityName(cityName);
+        builder.setStateCode(stateCode);
+        builder.setPostalCode(postalCode);
+        builder.setDefaultValue(isdefault);
+        builder.setActive(true);
+        return builder;
     }
     
     

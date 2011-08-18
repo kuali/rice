@@ -20,7 +20,7 @@ import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.ldap.core.support.AbstractContextMapper;
 
 import org.kuali.rice.kim.bo.entity.name.EntityName;
-import org.kuali.rice.kim.bo.entity.principal.EntityNamePrincipalName;
+import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
 import org.kuali.rice.kim.util.Constants;
 
 /**
@@ -32,9 +32,12 @@ public class EntityNamePrincipalNameMapper extends AbstractContextMapper {
 
     private ContextMapper defaultNameMapper;
     
+    public EntityNamePrincipalName mapFromContext(DirContextOperations context) {
+        return new EntityNamePrincipalName((EntityNamePrincipalName.Builder) doMapFromContext(context));
+    }
     
     public Object doMapFromContext(DirContextOperations context) {
-        final EntityNamePrincipalName person = new EntityNamePrincipalName();
+        final EntityNamePrincipalName.Builder person = EntityNamePrincipalName.Builder.create();
         person.setDefaultEntityName((EntityName) getDefaultNameMapper().mapFromContext(context));
         person.setPrincipalName(context.getStringAttribute(getConstants().getKimLdapNameProperty()));
         return person;

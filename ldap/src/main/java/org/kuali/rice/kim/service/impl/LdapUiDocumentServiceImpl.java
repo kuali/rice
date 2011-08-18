@@ -304,20 +304,6 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 		}
 	}
 
-    protected List<KimPrincipalImpl> getPrincipalImplsFromPrincipals(List<? extends KimPrincipal> principals) {
-        List<KimPrincipalImpl> retval = new ArrayList<KimPrincipalImpl>();
-
-        for (KimPrincipal principal : principals) {
-            KimPrincipalImpl impl = getPrincipalImplById(principal.getPrincipalId());
-            impl.setPrincipalId(principal.getPrincipalId());
-            impl.setPrincipalName(principal.getPrincipalName());
-            impl.setEntityId(principal.getEntityId());
-            impl.setActive(principal.isActive());
-        }
-
-        return retval;
-    }
-
     protected boolean setupPrincipal(IdentityManagementPersonDocument identityManagementPersonDocument,EntityBo kimEntity, List<PrincipalBo> origPrincipals) {
     	boolean inactivatingPrincipal = false;
 		List<PrincipalBo> principals = new ArrayList<PrincipalBo>();

@@ -33,7 +33,7 @@ import org.springframework.ldap.core.LdapTemplate;
 /**
  * Interface class with public methods for accessing LDAP data store for entity information
  *
- * @author Leo Przybylski (przybyls@arizona.edu)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface LdapPrincipalDao {
     LdapTemplate getLdapTemplate();
@@ -43,45 +43,45 @@ public interface LdapPrincipalDao {
     /**
      * In EDS, the principalId, principalName, and entityId will all be the same.
      */
-    KimPrincipalInfo getPrincipal(String principalId);
+    Principal getPrincipal(String principalId);
 
     /**
      * In EDS, the principalId, principalName, and entityId will all be the same.
      */
-    KimPrincipalInfo getPrincipalByName(String principalName);
+    Principal getPrincipalByName(String principalName);
 
     <T> List<T> search(Class<T> type, Map<String, Object> criteria);
 
 	/** Find entity objects based on the given criteria. */
-	KimEntityDefaultInfo getEntityDefaultInfo(String entityId);
+	EntityDefault getEntityDefaultInfo(String entityId);
 
-	KimEntityInfo getEntityInfo(String entityId);
+	Entity getEntityInfo(String entityId);
 	
 	/**
      * Fetches full entity info, populated from EDS, based on the Entity's principal id
      * @param principalId the principal id to look the entity up for
      * @return the corresponding entity info
      */
-    public abstract KimEntityInfo getEntityInfoByPrincipalId(String principalId);
+    public abstract Entity getEntityByPrincipalId(String principalId);
 
     /**
      * entityid and principalId are treated as the same.
      * 
      * @see #getEntityDefaultInfo(String)
      */
-	KimEntityDefaultInfo getEntityDefaultInfoByPrincipalId(String principalId);
+	EntityDefault getEntityDefaultByPrincipalId(String principalId);
 
-	KimEntityDefaultInfo getEntityDefaultInfoByPrincipalName(String principalName);
+	EntityDefault getEntityDefaultByPrincipalName(String principalName);
 
-	List<KimEntityDefaultInfo> lookupEntityDefaultInfo(Map<String,String> searchCriteria, boolean unbounded);
+	List<EntityDefault> lookupEntityDefaultInfo(Map<String,String> searchCriteria, boolean unbounded);
 
-	List<KimEntityInfo> lookupEntityInfo(Map<String,String> searchCriteria, boolean unbounded);
+	List<Entity> lookupEntityInfo(Map<String,String> searchCriteria, boolean unbounded);
 
-	KimEntityPrivacyPreferencesInfo getEntityPrivacyPreferences(String entityId);
+	EntityPrivacyPreferences getEntityPrivacyPreferences(String entityId);
 	
-    Map<String, KimEntityNamePrincipalNameInfo> getDefaultNamesForPrincipalIds(List<String> principalIds);
+    Map<String, EntitynamePrincipalName> getDefaultNamesForPrincipalIds(List<String> principalIds);
 
-    Map<String, KimEntityNameInfo> getDefaultNamesForEntityIds(List<String> entityIds);
+    Map<String, EntityName> getDefaultNamesForEntityIds(List<String> entityIds);
 
     Map<String, ContextMapper> getContextMappers();
 }

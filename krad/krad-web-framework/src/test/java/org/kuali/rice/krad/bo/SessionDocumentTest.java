@@ -19,7 +19,6 @@ package org.kuali.rice.krad.bo;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.test.KRADTestCase;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -33,13 +32,12 @@ import static org.junit.Assert.assertEquals;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class SessionDocumentTest extends KRADTestCase {
+public class SessionDocumentTest {
 
 	SessionDocument dummySessionDocument;
 	
 	@Before
 	public void setUp() throws Exception {
-		super.setUp();
 		dummySessionDocument = new SessionDocument();
 	}
 
@@ -50,7 +48,6 @@ public class SessionDocumentTest extends KRADTestCase {
 	 */
 	@After
 	public void tearDown() throws Exception {
-		super.tearDown();
 		dummySessionDocument = null;
 	}
 	

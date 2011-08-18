@@ -19,7 +19,6 @@ package org.kuali.rice.krad.bo;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.test.KRADTestCase;
 
 import static org.junit.Assert.assertEquals;
 
@@ -29,14 +28,12 @@ import static org.junit.Assert.assertEquals;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class PersistableAttachmentBaseTest extends KRADTestCase {
+public class LookupResultsTest {
 
-	PersistableAttachmentBase persistableAttachmentBase;
-	
+	 LookupResults  lookupResults;
 	@Before
 	public void setUp() throws Exception {
-		super.setUp();
-		persistableAttachmentBase = new PersistableAttachmentBase();
+		 lookupResults = new  LookupResults();
 	}
 
 	/**
@@ -46,26 +43,15 @@ public class PersistableAttachmentBaseTest extends KRADTestCase {
 	 */
 	@After
 	public void tearDown() throws Exception {
-	super.tearDown();
-	persistableAttachmentBase = null;
+		 lookupResults = null;
 	}
 	
 	@Test
-	public void testAttachmentContent(){
-		byte[] dummyByte = "dummy string".getBytes(); 
-		persistableAttachmentBase.setAttachmentContent(dummyByte);
-		assertEquals("Testing AttachmentContent in PersistableAttachmentBase.",dummyByte,persistableAttachmentBase.getAttachmentContent());
+	public void testSerializedLookupResults(){	
+		String serializedLookupResults = "SerializedLookupResults";
+		lookupResults.setSerializedLookupResults(serializedLookupResults);
+		assertEquals("Testing SerializedLookupResults in LookupResults",serializedLookupResults,lookupResults.getSerializedLookupResults());
 	}
 	
-	@Test
-	public void testFileName(){
-		persistableAttachmentBase.setFileName("FileName");
-		assertEquals("Testing FileName in PersistableAttachmentBase.","FileName",persistableAttachmentBase.getFileName());
-	}
-	
-	@Test
-	public void testContentType(){
-		persistableAttachmentBase.setContentType("contentType");
-		assertEquals("Testing FileName in PersistableAttachmentBase.","contentType",persistableAttachmentBase.getContentType());
-	}
+
 }

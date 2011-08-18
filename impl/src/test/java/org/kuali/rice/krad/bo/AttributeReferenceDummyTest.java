@@ -21,7 +21,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.core.api.util.type.KualiPercent;
-import org.kuali.test.KRADTestCase;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -34,13 +33,12 @@ import static org.junit.Assert.assertEquals;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class AttributeReferenceDummyTest  extends KRADTestCase {
+public class AttributeReferenceDummyTest {
 
 	AttributeReferenceDummy dummyARD;
 	
 	@Before
 	public void setUp() throws Exception {
-		super.setUp();
 		dummyARD = new AttributeReferenceDummy();
 	}
 
@@ -51,7 +49,6 @@ public class AttributeReferenceDummyTest  extends KRADTestCase {
 	 */
 	@After
 	public void tearDown() throws Exception {
-		super.tearDown();
 		dummyARD = null;
 	}
 	@Test

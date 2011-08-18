@@ -16,8 +16,9 @@
 package org.kuali.rice.krad.bo;
 
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
-import org.kuali.test.KRADTestCase;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -29,20 +30,18 @@ import static org.junit.Assert.assertTrue;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class NoteTypeTest extends KRADTestCase {
+public class NoteTypeTest{
 
 	NoteType dummyNoteType;
 	
-	@Override
+    @Before
 	public void setUp() throws Exception {
-		super.setUp();
 		dummyNoteType = new NoteType();
 		
 	}
 
-	@Override
+    @After
 	public void tearDown() throws Exception {
-		super.tearDown();
 		dummyNoteType = null;
 	}
 	

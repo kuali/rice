@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.rule;
+package org.kuali.rice.kns.rule;
 
 import org.junit.Test;
 import org.kuali.rice.kns.rule.event.PromptBeforeValidationEvent;
@@ -21,11 +21,10 @@ import org.kuali.rice.kns.rules.PromptBeforeValidationBase;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.MaintenanceDocument;
 import org.kuali.rice.kns.rules.PromptBeforeValidationBase.ContextSession;
-import org.kuali.test.KRADTestCase;
 
 import static org.junit.Assert.assertEquals;
 
-public class PromptBeforeValidationContinuationBaseTest extends KRADTestCase {
+public class PromptBeforeValidationContinuationBaseTest {
 
     private class TestPreRules extends PromptBeforeValidationBase {
     	@Override

@@ -18,7 +18,6 @@ package org.kuali.rice.krad.bo;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.test.KRADTestCase;
 
 import static org.junit.Assert.assertEquals;
 
@@ -29,13 +28,12 @@ import static org.junit.Assert.assertEquals;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class BusinessObjectAttributeEntryTest extends KRADTestCase {
+public class BusinessObjectAttributeEntryTest {
 
 	BusinessObjectAttributeEntry dummyBOAE;
 	
 	@Before
 	public void setUp() throws Exception {
-		super.setUp();
 		dummyBOAE = new BusinessObjectAttributeEntry();		
 	}
 
@@ -46,7 +44,6 @@ public class BusinessObjectAttributeEntryTest extends KRADTestCase {
 	 */
 	@After
 	public void tearDown() throws Exception {
-		super.tearDown();
 		dummyBOAE = null;
 	}
 	

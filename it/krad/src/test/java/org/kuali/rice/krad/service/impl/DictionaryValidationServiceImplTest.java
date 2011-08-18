@@ -45,7 +45,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DictionaryValidationServiceImplTest extends KRADTestCase{
+public class DictionaryValidationServiceImplTest {
 
 	ClassPathXmlApplicationContext context;
 	private DictionaryValidationServiceImpl service;

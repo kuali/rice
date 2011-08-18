@@ -19,7 +19,6 @@ package org.kuali.rice.krad.bo;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.test.KRADTestCase;
 
 import static org.junit.Assert.assertEquals;
 
@@ -29,13 +28,12 @@ import static org.junit.Assert.assertEquals;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class LookupResultsTest extends KRADTestCase {
+public class AttributeReferenceElementsTest {
 
-	 LookupResults  lookupResults;
+	AttributeReferenceElements dummyAttributeReferenceElement;
 	@Before
 	public void setUp() throws Exception {
-		super.setUp();
-		 lookupResults = new  LookupResults();
+		dummyAttributeReferenceElement = new AttributeReferenceElements();
 	}
 
 	/**
@@ -45,16 +43,18 @@ public class LookupResultsTest extends KRADTestCase {
 	 */
 	@After
 	public void tearDown() throws Exception {
-		super.tearDown();
-		 lookupResults = null;
+		dummyAttributeReferenceElement = null;
+	}
+
+	@Test
+	public void testInfoTextArea(){
+		dummyAttributeReferenceElement.setInfoTextArea("dummyAttributeReferenceElement");
+		assertEquals("Testing InfoTextArea in AttributeReferenceElements.","dummyAttributeReferenceElement",dummyAttributeReferenceElement.getInfoTextArea());
 	}
 	
 	@Test
-	public void testSerializedLookupResults(){	
-		String serializedLookupResults = "SerializedLookupResults";
-		lookupResults.setSerializedLookupResults(serializedLookupResults);
-		assertEquals("Testing SerializedLookupResults in LookupResults",serializedLookupResults,lookupResults.getSerializedLookupResults());
+	public void testExtendedTextArea(){
+		dummyAttributeReferenceElement.setExtendedTextArea("dummyAttributeReferenceElement");
+		assertEquals("Testing ExtendedTextArea in AttributeReferenceElements","dummyAttributeReferenceElement",dummyAttributeReferenceElement.getExtendedTextArea());
 	}
-	
-
 }

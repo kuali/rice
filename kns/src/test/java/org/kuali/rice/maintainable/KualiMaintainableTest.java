@@ -19,7 +19,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
 import org.kuali.rice.kns.maintenance.Maintainable;
-import org.kuali.test.KRADTestCase;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -27,15 +26,12 @@ import static org.junit.Assert.assertTrue;
 /**
  * Test methods for default Kuali maintainable implementation.
  */
-public class KualiMaintainableTest extends KRADTestCase {
+public class KualiMaintainableTest {
     Maintainable maintainable = null;
 
-    /**
-     * @see org.kuali.rice.test.RiceTestCase#setUp()
-     */
+
     @Before
     public void setUp() throws Exception {
-        super.setUp();
         maintainable = new KualiMaintainableImpl();
     }
 

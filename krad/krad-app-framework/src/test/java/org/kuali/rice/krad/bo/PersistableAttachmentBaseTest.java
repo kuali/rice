@@ -19,7 +19,6 @@ package org.kuali.rice.krad.bo;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.test.KRADTestCase;
 
 import static org.junit.Assert.assertEquals;
 
@@ -29,13 +28,13 @@ import static org.junit.Assert.assertEquals;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class AttributeReferenceElementsTest extends KRADTestCase {
+public class PersistableAttachmentBaseTest {
 
-	AttributeReferenceElements dummyAttributeReferenceElement;
+	PersistableAttachmentBase persistableAttachmentBase;
+	
 	@Before
 	public void setUp() throws Exception {
-		super.setUp();
-		dummyAttributeReferenceElement = new AttributeReferenceElements();
+		persistableAttachmentBase = new PersistableAttachmentBase();
 	}
 
 	/**
@@ -45,19 +44,25 @@ public class AttributeReferenceElementsTest extends KRADTestCase {
 	 */
 	@After
 	public void tearDown() throws Exception {
-		super.tearDown();
-		dummyAttributeReferenceElement = null;
-	}
-
-	@Test
-	public void testInfoTextArea(){
-		dummyAttributeReferenceElement.setInfoTextArea("dummyAttributeReferenceElement");
-		assertEquals("Testing InfoTextArea in AttributeReferenceElements.","dummyAttributeReferenceElement",dummyAttributeReferenceElement.getInfoTextArea());
+	persistableAttachmentBase = null;
 	}
 	
 	@Test
-	public void testExtendedTextArea(){
-		dummyAttributeReferenceElement.setExtendedTextArea("dummyAttributeReferenceElement");
-		assertEquals("Testing ExtendedTextArea in AttributeReferenceElements","dummyAttributeReferenceElement",dummyAttributeReferenceElement.getExtendedTextArea());
+	public void testAttachmentContent(){
+		byte[] dummyByte = "dummy string".getBytes(); 
+		persistableAttachmentBase.setAttachmentContent(dummyByte);
+		assertEquals("Testing AttachmentContent in PersistableAttachmentBase.",dummyByte,persistableAttachmentBase.getAttachmentContent());
+	}
+	
+	@Test
+	public void testFileName(){
+		persistableAttachmentBase.setFileName("FileName");
+		assertEquals("Testing FileName in PersistableAttachmentBase.","FileName",persistableAttachmentBase.getFileName());
+	}
+	
+	@Test
+	public void testContentType(){
+		persistableAttachmentBase.setContentType("contentType");
+		assertEquals("Testing FileName in PersistableAttachmentBase.","contentType",persistableAttachmentBase.getContentType());
 	}
 }

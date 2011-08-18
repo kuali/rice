@@ -20,7 +20,6 @@ import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.test.KRADTestCase;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -31,7 +30,7 @@ import static org.junit.Assert.fail;
  * 
  */
 
-public class DataDictionaryBuilderTest extends KRADTestCase {
+public class DataDictionaryBuilderTest {
     protected final Logger LOG = Logger.getLogger(getClass());
 
     static final String PACKAGE_CORE_BO = "org/kuali/rice/krad/bo/datadictionary/";
@@ -54,14 +53,12 @@ public class DataDictionaryBuilderTest extends KRADTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		super.setUp();
 
 		dd = new DataDictionary();
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		super.tearDown();
 		dd = null;
 	}
 

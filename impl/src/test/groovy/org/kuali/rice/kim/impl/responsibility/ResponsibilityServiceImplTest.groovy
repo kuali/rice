@@ -26,7 +26,10 @@ import org.kuali.rice.core.api.criteria.Predicate
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.*
 import org.kuali.rice.core.api.criteria.LookupCustomizer
-import org.kuali.rice.kim.api.common.template.TemplateQueryResults;
+import org.kuali.rice.kim.api.common.template.TemplateQueryResults
+import org.kuali.rice.kim.impl.type.KimTypeAttributeBo
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo
+import org.junit.Ignore;
 
 /*
  * Copyright 2007-2009 The Kuali Foundation
@@ -65,7 +68,13 @@ class ResponsibilityServiceImplTest {
     @BeforeClass
     static void createSampleBOs() {
         ResponsibilityTemplateBo firstResponsibilityTemplate = new ResponsibilityTemplateBo(id: "resptemplateidone", name: "resptemplateone", namespaceCode: "respnamespacecodeone", versionNumber: 1, kimTypeId: "a");
-        ResponsibilityBo firstResponsibilityBo = new ResponsibilityBo(id: "respidone", namespaceCode: "namespacecodeone", name: "respnameone", template: firstResponsibilityTemplate, versionNumber: 1, active: "Y");
+        List<KimTypeAttributeBo> kimTypeAttributes = new ArrayList<KimTypeAttributeBo>();
+        kimTypeAttributes.add(new KimTypeAttributeBo(id: "kimtypeattidone", versionNumber: 1));
+        List<ResponsibilityAttributeBo> responsibilityAttributes = new ArrayList<ResponsibilityAttributeBo>();
+        KimTypeBo firstKimType = new KimTypeBo(id: "kimtypeidone", versionNumber: 1, attributeDefinitions: kimTypeAttributes);
+        KimAttributeBo firstKimAttributeBo = new KimAttributeBo(id: "kimattidone", versionNumber: 1, attributeName: "kimattnameone");
+        responsibilityAttributes.add(new ResponsibilityAttributeBo(id: "resattributeidone", versionNumber: 1, kimType: firstKimType, kimAttributeId: "kimattidone", kimAttribute: firstKimAttributeBo, attributeValue: "kimattvalueone"));
+        ResponsibilityBo firstResponsibilityBo = new ResponsibilityBo(id: "respidone", namespaceCode: "namespacecodeone", name: "respnameone", template: firstResponsibilityTemplate, versionNumber: 1, active: "Y", attributeDetails: responsibilityAttributes);
         KimTypeBo firstKimTypeBo = new KimTypeBo(id: "kimtypeidone");
         RoleResponsibilityBo firstRoleResponsibilityBo = new RoleResponsibilityBo(roleId: "rolerespidone");
         RoleResponsibilityActionBo firstRoleResponsibilityActionBo = new RoleResponsibilityActionBo(id: "rolerespactionidone", versionNumber: 1);
@@ -201,6 +210,38 @@ class ResponsibilityServiceImplTest {
         ResponsibilityTemplateBo firstResponsibilityTemplate = new ResponsibilityTemplateBo(id: "resptemplateidone", name: "resptemplateone", namespaceCode: "respnamespacecodeone", versionNumber: 1, kimTypeId: "a");
         ResponsibilityBo newResponsibilityBo = new ResponsibilityBo(id: "respidthree", namespaceCode: "namespacecodethree", name: "respnamethree", template: firstResponsibilityTemplate, versionNumber: 1);
         Responsibility responsibility = responsibilityService.updateResponsibility(ResponsibilityBo.to(newResponsibilityBo));
+    }
+
+    @Test
+    @Ignore
+    public void testUpdateResponsibilitySucceeds() {
+        ResponsibilityTemplateBo firstResponsibilityTemplate = new ResponsibilityTemplateBo(id: "resptemplateidone", name: "resptemplateone", namespaceCode: "respnamespacecodeone", versionNumber: 1, kimTypeId: "a");
+        List<KimTypeAttributeBo> kimTypeAttributes = new ArrayList<KimTypeAttributeBo>();
+        kimTypeAttributes.add(new KimTypeAttributeBo(id: "kimtypeattidone", versionNumber: 1));
+        List<ResponsibilityAttributeBo> responsibilityAttributes = new ArrayList<ResponsibilityAttributeBo>();
+        KimTypeBo firstKimType = new KimTypeBo(id: "kimtypeidone", versionNumber: 1, attributeDefinitions: kimTypeAttributes);
+        KimAttributeBo firstKimAttributeBo = new KimAttributeBo(id: "kimattidone", versionNumber: 1, attributeName: "kimattnameone");
+        responsibilityAttributes.add(new ResponsibilityAttributeBo(id: "resattributeidone", versionNumber: 1, kimType: firstKimType, kimAttributeId: "kimattidone", kimAttribute: firstKimAttributeBo, attributeValue: "kimattvalueone"));
+        ResponsibilityBo existingResponsibilityBo = new ResponsibilityBo(id: "respidone", namespaceCode: "namespacecodeone", name: "respnameone", template: firstResponsibilityTemplate, versionNumber: 1, active: "Y", attributeDetails: responsibilityAttributes);
+
+        mockBoService.demand.findBySinglePrimaryKey(1..1) {
+            Class clazz, Object primaryKey -> for (ResponsibilityBo responsibilityBo in sampleResponsibilities.values()) {
+                if (responsibilityBo.id.equals(primaryKey))
+                {
+                    return responsibilityBo;
+                }
+            }
+        }
+
+        mockBoService.demand.save(1..1) {
+            ResponsibilityBo bo -> return existingResponsibilityBo;
+        }
+
+        injectBusinessObjectServiceIntoResponsibilityService();
+
+        Responsibility responsibility = responsibilityService.updateResponsibility(ResponsibilityBo.to(existingResponsibilityBo));
+
+        Assert.assertEquals(ResponsibilityBo.to(existingResponsibilityBo), responsibility);
     }
 
     @Test(expected = IllegalArgumentException.class)

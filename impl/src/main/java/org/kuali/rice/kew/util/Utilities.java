@@ -179,14 +179,6 @@ public final class Utilities {
         }
     }
 
-    public static String getIpNumber() {
-        try {
-            return InetAddress.getLocalHost().getHostAddress();
-        } catch (UnknownHostException e) {
-            throw new WorkflowRuntimeException("Error retrieving ip number.", e);
-        }
-    }
-
     /**
      * Helper method that takes a List of {@link KeyValue} and presents it as a Map
      * @param collection collection of {@link KeyValue}

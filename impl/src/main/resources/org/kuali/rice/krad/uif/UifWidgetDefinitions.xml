@@ -164,7 +164,7 @@
       <property name="quickfinderActionField">
         <bean parent="ActionImageField" p:methodToCall="performLookup" p:actionImageField-ref="QuickFinderImageField">
         	<property name="lightBoxLookup">
-        		<ref bean="LightBoxPost"/>
+        		<bean parent="LightBoxPost" p:lookupReturnByScript="true"/>
       		</property>
       	</bean>        
       </property>

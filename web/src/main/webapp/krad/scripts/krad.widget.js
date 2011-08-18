@@ -170,7 +170,7 @@ function createLightBoxLink(controlId, options) {
  * @param options -
  *          map of option settings (option name/value pairs) for the plugin
  */
-function createLightBoxPost(controlId, options, actionParameterMapString) {
+function createLightBoxPost(controlId, options, actionParameterMapString, lookupReturnByScript) {
     jq(function () {
 
         // Check if this is not called within a lightbox
@@ -186,6 +186,7 @@ function createLightBoxPost(controlId, options, actionParameterMapString) {
                 actionParameterMapString['actionParameters[lightBoxCall]'] = 'true';
                 actionParameterMapString['actionParameters[showHistory]'] = 'false';
                 actionParameterMapString['actionParameters[showHome]'] = 'false';
+                actionParameterMapString['actionParameters[returnByScript]'] = '' + lookupReturnByScript;
 
                 // If this is the top frame, the page is not displayed in the iframeprotlet
                 // set the return target
@@ -199,8 +200,10 @@ function createLightBoxPost(controlId, options, actionParameterMapString) {
                 for (var key in actionParameterMapString) {
                     writeHiddenToForm(key, actionParameterMapString[key]);
                 }
+                var returnByScriptMap =
                 // Do the Ajax submit on the kualiForm form
                 jq("#kualiForm").ajaxSubmit({
+
                             success: function(data) {
 
                                 // Add the returned URL to the FancyBox href setting

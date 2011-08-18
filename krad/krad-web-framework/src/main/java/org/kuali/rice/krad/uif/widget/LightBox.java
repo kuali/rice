@@ -32,6 +32,8 @@ public class LightBox extends WidgetBase {
     private String height;
     private String width;
 
+    private boolean lookupReturnByScript;
+
     public LightBox() {
         super();
     }
@@ -58,18 +60,36 @@ public class LightBox extends WidgetBase {
         return actionParameterMapString;
     }
 
+    /**
+     * @return height of light box
+     */
     public String getHeight() {
         return height;
     }
 
+    /**
+     * Setter for the height of the light box
+     * Can be percentage. ie. 75%
+     *
+     * @param height
+     */
     public void setHeight(String height) {
         this.height = height;
     }
 
+    /**
+     * @return width of light box
+     */
     public String getWidth() {
         return width;
     }
 
+     /**
+     * Setter for the width of the light box
+     * Can be percentage. ie. 75%
+     *
+     * @param width
+     */
     public void setWidth(String width) {
         this.width = width;
     }
@@ -92,5 +112,22 @@ public class LightBox extends WidgetBase {
             getComponentOptions().put("height", height);
         }
         return super.getComponentOptionsJSString();
+    }
+
+    /**
+     * @return the lookupReturnByScript flag
+     */
+    public boolean isLookupReturnByScript() {
+        return lookupReturnByScript;
+    }
+
+/**
+     * Setter for the flag to indicate that lookups will return the value
+     * by script and not a post
+     *
+     * @param lookupReturnByScript the lookupReturnByScript flag
+     */
+    public void setLookupReturnByScript(boolean lookupReturnByScript) {
+        this.lookupReturnByScript = lookupReturnByScript;
     }
 }

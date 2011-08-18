@@ -563,15 +563,39 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
         String title = LookupInquiryUtils.getLinkTitleText(linkLabel, getDataObjectClass(), returnKeyValues);
         returnLinkField.setTitle(title);
-        
+
         // Add the return target if it is set
         String returnTarget = lookupView.getReturnTarget();
         if (returnTarget != null) {
             returnLinkField.setTarget(returnTarget);
-            
-            // Close the light box if return target is not _self or _parent
+
+            //  Add the close script if lookup is in a light box
             if (!returnTarget.equals("_self") && !returnTarget.equals("_parent")) {
-                returnLinkField.setOnClickScript("parent.$.fancybox.close();");
+
+                // Add the return script if the returnByScript flag is set
+                if (lookupView.isReturnByScript()) {
+                    Properties props = getReturnUrlParameters(lookupView, lookupForm, dataObject);
+
+                    StringBuilder script = new StringBuilder("e.preventDefault();");
+                    for (String returnField : lookupForm.getFieldConversions().values()) {
+                        if (props.containsKey(returnField)) {
+                            Object fieldName = returnField.replace("'", "\\'");
+                            Object value = props.get(returnField);
+                            script = script.append("var returnField = parent.$('#iframeportlet').contents().find("
+                                    + "'[name=\""
+                                    + fieldName
+                                    + "\"]');"
+                                    + "returnField.val('"
+                                    + value
+                                    + "');"
+                                    + "returnField.focus();returnField.blur();returnField.focus();");
+                        }
+                    }
+                    returnLinkField.setOnClickScript(script.append("parent.$.fancybox.close();").toString());
+                }  else{
+                    // Close the light box if return target is not _self or _parent
+                    returnLinkField.setOnClickScript("parent.$.fancybox.close();");
+                }
             }
         }
     }

@@ -72,6 +72,9 @@ public class LookupView extends FormView {
     @RequestParameter
     private String returnTarget;
 
+    @RequestParameter
+    private boolean returnByScript;
+
     private boolean multipleValues = false;
     private boolean lookupCriteriaEnabled = true;
     private boolean supplementalActionsEnabled = false;
@@ -357,4 +360,20 @@ public class LookupView extends FormView {
         return returnTarget;
     }
 
+    /**
+     * @return the returnByScript
+     */
+    public boolean isReturnByScript() {
+        return returnByScript;
+    }
+
+    /**
+     * Setter for the flag to indicate that lookups will return the value
+     * by script and not a post
+     *
+     * @param returnByScript the returnByScript flag
+     */
+    public void setReturnByScript(boolean returnByScript) {
+        this.returnByScript = returnByScript;
+    }
 }

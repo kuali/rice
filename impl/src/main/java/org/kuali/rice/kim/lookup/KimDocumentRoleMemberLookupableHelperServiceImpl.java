@@ -106,11 +106,24 @@ public class KimDocumentRoleMemberLookupableHelperServiceImpl extends KualiLooku
                         attributesToDisplay.append(KimConstants.KimUIConstants.COMMA_SEPARATOR);
                     }
                 }
-                return KimCommonUtilsInternal.stripEnd(attributesToDisplay.toString(), KimConstants.KimUIConstants.COMMA_SEPARATOR);
+                return stripEnd(attributesToDisplay.toString(), KimConstants.KimUIConstants.COMMA_SEPARATOR);
             }
         }
         return "";
     }
+
+    private static String stripEnd(String toStripFrom, String toStrip){
+		String stripped;
+		if(toStripFrom==null) return null;
+		if(toStrip==null) return toStripFrom;
+        if(toStrip.length() > toStripFrom.length()) return toStripFrom;
+		if(toStripFrom.endsWith(toStrip)){
+			StringBuffer buffer = new StringBuffer(toStripFrom);
+			buffer.delete(buffer.length()-toStrip.length(), buffer.length());
+			stripped = buffer.toString();
+		} else stripped = toStripFrom;
+		return stripped;
+	}
 
     public RoleService getRoleService() {
         if (roleService == null) {

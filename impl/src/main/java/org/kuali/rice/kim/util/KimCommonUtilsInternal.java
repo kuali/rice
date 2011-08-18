@@ -72,19 +72,6 @@ public final class KimCommonUtilsInternal {
     	return path;
 	}
 
-	public static String stripEnd(String toStripFrom, String toStrip){
-		String stripped;
-		if(toStripFrom==null) return null;
-		if(toStrip==null) return toStripFrom;
-        if(toStrip.length() > toStripFrom.length()) return toStripFrom;
-		if(toStripFrom.endsWith(toStrip)){
-			StringBuffer buffer = new StringBuffer(toStripFrom);
-			buffer.delete(buffer.length()-toStrip.length(), buffer.length());
-			stripped = buffer.toString();
-		} else stripped = toStripFrom;
-		return stripped;
-	}
-
 	protected static boolean canOverrideEntityPrivacyPreferences( String principalId ){
 		return getPermissionService().isAuthorized(
 				GlobalVariables.getUserSession().getPrincipalId(),

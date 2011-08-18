@@ -94,23 +94,23 @@ public class MessageHelperImpl implements MessageHelper {
     }
 
     public <T> T getServiceAsynchronously(QName qname) {
-        return getAsynchronousServiceCallProxy(qname, null, null, null, null, null);
+        return (T) getAsynchronousServiceCallProxy(qname, null, null, null, null, null);
     }
 
     public <T> T getServiceAsynchronously(QName qname, String applicationId) {
-        return getAsynchronousServiceCallProxy(qname, applicationId, null, null, null, null);
+        return (T) getAsynchronousServiceCallProxy(qname, applicationId, null, null, null, null);
     }
 
     public <T> T getServiceAsynchronously(QName qname, AsynchronousCallback callback) {
-        return getAsynchronousServiceCallProxy(qname, null, callback, null, null, null);
+        return (T) getAsynchronousServiceCallProxy(qname, null, callback, null, null, null);
     }
 
     public <T> T getServiceAsynchronously(QName qname, AsynchronousCallback callback, Serializable context) {
-        return getAsynchronousServiceCallProxy(qname, null, callback, context, null, null);
+        return (T) getAsynchronousServiceCallProxy(qname, null, callback, context, null, null);
     }
 
     public <T> T getServiceAsynchronously(QName qname, AsynchronousCallback callback, Serializable context, String value1, String value2) {
-        return getAsynchronousServiceCallProxy(qname, null, callback, context, value1, value2);
+        return (T) getAsynchronousServiceCallProxy(qname, null, callback, context, value1, value2);
     }
 
     public <T> T getAsynchronousServiceCallProxy(QName qname, String applicationId, AsynchronousCallback callback, Serializable context, String value1, String value2) {
@@ -120,7 +120,7 @@ public class MessageHelperImpl implements MessageHelper {
     	if (endpoints.isEmpty()) {
     		throw new RuntimeException("Cannot create service proxy, failed to locate any endpoints with the given service name: " + qname + (applicationId != null ? ", and application id: " + applicationId : ""));
     	}
-        return createProxy(syncMode(), endpoints, callback, context, value1, value2);
+        return (T) createProxy(syncMode(), endpoints, callback, context, value1, value2);
     }
 
     public <T> T getDelayedAsynchronousServiceCallProxy(QName qname, String applicationId, Serializable context, String value1, String value2, long delayMilliseconds) {
@@ -129,15 +129,15 @@ public class MessageHelperImpl implements MessageHelper {
     	if (endpoints.isEmpty()) {
     		throw new RuntimeException("Cannot create service proxy, failed to locate any endpoints with the given service name: " + qname);
     	}
-        return createProxyDelayed(syncMode(), endpoints, context, value1, value2, delayMilliseconds);
+        return (T) createProxyDelayed(syncMode(), endpoints, context, value1, value2, delayMilliseconds);
     }
 
     public <T> T getServiceAsynchronously(QName qname, Serializable context, String value1, String value2, long delayMilliseconds) {
-        return getDelayedAsynchronousServiceCallProxy(qname, null, context, value1, value2, delayMilliseconds);
+        return (T) getDelayedAsynchronousServiceCallProxy(qname, null, context, value1, value2, delayMilliseconds);
     }
 
     public <T> T getServiceAsynchronously(QName qname, String applicationId, Serializable context, String value1, String value2, long delayMilliseconds) {
-        return getDelayedAsynchronousServiceCallProxy(qname, applicationId, context, value1, value2, delayMilliseconds);
+        return (T) getDelayedAsynchronousServiceCallProxy(qname, applicationId, context, value1, value2, delayMilliseconds);
     }
 
     @Override

@@ -65,7 +65,6 @@
         <value>classpath:org/kuali/rice/krms/datadictionary/PropositionParameterBo.xml</value>
         <value>classpath:org/kuali/rice/krms/uif/AgendaEditorView.xml</value>
         <value>classpath:org/kuali/rice/krms/uif/EditorView.xml</value>
-        <value>classpath:org/kuali/rice/krms/uif/TestDataView.xml</value>
       </list>
     </property>
     <property name="databaseRepositoryFilePaths">

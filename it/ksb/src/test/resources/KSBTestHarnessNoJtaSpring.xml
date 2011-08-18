@@ -121,6 +121,8 @@
 		</property>
 	</bean>
 
+  <bean id="rice.ksb.instanceId" class="org.kuali.rice.ksb.impl.bus.InstanceIdFactoryBean"/>
+
 	<bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
 		<property name="moduleName" value="KSB" />
 		<property name="hasWebInterface" value="true" />

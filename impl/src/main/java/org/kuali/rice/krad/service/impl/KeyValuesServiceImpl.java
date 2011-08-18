@@ -15,22 +15,23 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
+import org.kuali.rice.krad.dao.BusinessObjectDao;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.KeyValuesService;
+import org.kuali.rice.krad.service.ModuleService;
+import org.kuali.rice.krad.service.PersistenceStructureService;
+import org.kuali.rice.krad.util.KRADPropertyConstants;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
-import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
-import org.kuali.rice.krad.dao.BusinessObjectDao;
-import org.kuali.rice.krad.service.*;
-import org.kuali.rice.krad.util.KRADPropertyConstants;
-import org.kuali.rice.krad.util.spring.CacheNoCopy;
-
 /**
  * This class provides collection retrievals to populate key value pairs of business objects.
  */
-@CacheNoCopy
 public class KeyValuesServiceImpl implements KeyValuesService {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KeyValuesServiceImpl.class);
 

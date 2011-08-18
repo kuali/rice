@@ -16,8 +16,7 @@
 package org.kuali.rice.krad.util;
 
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

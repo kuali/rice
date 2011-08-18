@@ -30,7 +30,6 @@ import org.kuali.rice.core.framework.persistence.ojb.BaseOjbConfigurer;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.exception.ClassNotPersistableException;
-import org.kuali.rice.krad.util.spring.CacheNoCopy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +74,6 @@ public class PersistenceServiceStructureImplBase {
 	 * @param clazz
 	 * @return unmodifiableList of field names.  Any attempt to alter list will result in an UnsupportedOperationException
 	 */
-	@CacheNoCopy
 	public List listPrimaryKeyFieldNames(Class clazz) {
     	// Rice JPA MetadataManager
 		if (isJpaEnabledForKradClass(clazz)) {
@@ -165,7 +163,6 @@ public class PersistenceServiceStructureImplBase {
 	 * @see org.kuali.rice.krad.service.PersistenceStructureService#getBusinessObjectAttributeClass(java.lang.Class,
 	 *      java.lang.String)
 	 */
-	@CacheNoCopy
 	public Class<? extends PersistableBusinessObjectExtension> getBusinessObjectAttributeClass(Class<? extends PersistableBusinessObject> clazz, String attributeName) {
 		String baseAttributeName = attributeName;
 		String subAttributeString = null;

@@ -24,9 +24,7 @@ import java.net.URLClassLoader;
 import java.util.Enumeration;
 
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
-import org.kuali.rice.core.api.lifecycle.Lifecycle;
-import org.kuali.rice.kew.util.SimpleEnumeration;
-
+import org.kuali.rice.core.api.util.collect.CollectionUtils;
 
 /**
  * A simple class loader implementation which looks at itself before delegating to its parent.
@@ -118,7 +116,7 @@ public class PluginClassLoader extends URLClassLoader implements Lifecycle {//im
     public Enumeration<URL> getResources(String name) throws IOException {
     	Enumeration<URL> localResources = findResources(name);
     	Enumeration<URL> parentResources = getParent().getResources(name);
-    	return new SimpleEnumeration<URL>(localResources, parentResources);
+    	return CollectionUtils.concat(localResources, parentResources);
     }
 
 

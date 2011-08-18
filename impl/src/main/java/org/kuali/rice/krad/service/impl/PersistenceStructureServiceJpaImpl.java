@@ -37,7 +37,6 @@ import org.kuali.rice.krad.exception.ReferenceAttributeDoesntExistException;
 import org.kuali.rice.krad.exception.ReferenceAttributeNotAnOjbReferenceException;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.util.ForeignKeyFieldsPopulationState;
-import org.kuali.rice.krad.util.spring.Cached;
 
 public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBase implements PersistenceStructureService {
 
@@ -61,7 +60,7 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 	/**
 	 * @see org.kuali.rice.krad.service.PersistenceService#isPersistable(java.lang.Class)
 	 */
-	@Cached
+	
 	public boolean isPersistable(Class clazz) {
 		boolean isPersistable = false;
 
@@ -75,7 +74,7 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 	/**
 	 * @see org.kuali.rice.krad.service.PersistenceService#getPrimaryKeys(java.lang.Class)
 	 */
-	@Cached
+	
 	public List getPrimaryKeys(Class clazz) {
 		List pkList = new ArrayList();
 
@@ -90,7 +89,7 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 	/**
 	 * @see org.kuali.rice.krad.service.PersistenceMetadataExplorerService#listFieldNames(java.lang.Class)
 	 */
-	@Cached
+	
 	public List listFieldNames(Class clazz) {
 		List fieldNames = new ArrayList();
 
@@ -135,7 +134,7 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 	/**
 	 * @see org.kuali.rice.krad.service.PersistenceMetadataExplorerService#listPersistableSubclasses(java.lang.Class)
 	 */
-	@Cached
+	
 	// Unit tests only
 	// TODO: Write JPA Version
 	public List listPersistableSubclasses(Class superclazz) {
@@ -161,7 +160,7 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 	 * @see org.kuali.rice.krad.service.PersistenceService#getRelationshipMetadata(java.lang.Class,
 	 *      java.lang.String)
 	 */
-	@Cached
+	
 	public Map<String, DataObjectRelationship> getRelationshipMetadata(Class persistableClass, String attributeName, String attributePrefix) {
 		if (persistableClass == null) {
 			throw new IllegalArgumentException("invalid (null) persistableClass");
@@ -193,7 +192,7 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 		return relationships;
 	}
 
-	@Cached
+	
 	// Unit tests only
 	public Map<String, DataObjectRelationship> getRelationshipMetadata(Class persistableClass, String attributeName) {
 		return getRelationshipMetadata(persistableClass, attributeName, null);
@@ -203,7 +202,7 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 	 * @see org.kuali.rice.krad.service.PersistenceService#getForeignKeyFieldName(java.lang.Object,
 	 *      java.lang.String, java.lang.String)
 	 */
-	@Cached
+	
 	public String getForeignKeyFieldName(Class persistableObjectClass, String attributeName, String pkName) {
 		String fkName = null;
 
@@ -235,7 +234,7 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 	 * @see org.kuali.rice.krad.service.PersistenceService#getReferencesForForeignKey(java.lang.Class,
 	 *      java.lang.String)
 	 */
-	@Cached
+	
 	public Map getReferencesForForeignKey(Class persistableObjectClass, String attributeName) {
 		Map referenceClasses = new HashMap();
 
@@ -270,7 +269,7 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 	 *      assumes that foreign-keys map to primary keys on the other object,
 	 *      and never to a set of candidate keys, or any other column.
 	 */
-	@Cached
+	
 	public Map getForeignKeysForReference(Class clazz, String attributeName) {
 
 		// yelp if nulls were passed in
@@ -352,7 +351,7 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 		return fkMap;
 	}
 
-	@Cached
+	
 	public Map<String, String> getInverseForeignKeysForCollection(Class boClass, String collectionName) {
 		// yelp if nulls were passed in
 		if (boClass == null) {
@@ -417,7 +416,7 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 	/**
 	 * @see org.kuali.rice.krad.service.PersistenceService#getNestedForeignKeyMap(java.lang.Class)
 	 */
-	@Cached
+	
 	public Map getNestedForeignKeyMap(Class persistableObjectClass) {
 		Map fkMap = new HashMap();
 
@@ -560,7 +559,7 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 	/**
 	 * @see org.kuali.rice.krad.service.PersistenceStructureService#listReferenceObjectFieldNames(java.lang.Class)
 	 */
-	@Cached
+	
 	public Map<String, Class> listReferenceObjectFields(Class boClass) {
 		// validate parameter
 		if (boClass == null) {
@@ -579,7 +578,7 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 		return references;
 	}
 
-	@Cached
+	
 	public Map<String, Class> listCollectionObjectTypes(Class boClass) {
 		if (boClass == null) {
 			throw new IllegalArgumentException("Class specified in the parameter was null.");
@@ -626,7 +625,7 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 		return listReferenceObjectFields(bo.getClass());
 	}
 
-	@Cached
+	
 	public boolean isReferenceUpdatable(Class boClass, String referenceName) {
 		EntityDescriptor descriptor = MetadataManager.getEntityDescriptor(boClass);
 		return descriptor.getObjectDescriptorByName(referenceName).isUpdateable();
@@ -638,7 +637,7 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 //		return false;
 	}
 
-	@Cached
+	
 	public boolean isCollectionUpdatable(Class boClass, String collectionName) {
 		EntityDescriptor descriptor = MetadataManager.getEntityDescriptor(boClass);
 		return descriptor.getCollectionDescriptorByName(collectionName).isUpdateable();
@@ -650,13 +649,13 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 //		return false;
 	}
 
-	@Cached
+	
 	public boolean hasCollection(Class boClass, String collectionName) {
 		EntityDescriptor descriptor = MetadataManager.getEntityDescriptor(boClass);
 		return descriptor.getCollectionDescriptorByName(collectionName) != null;
 	}
 
-	@Cached
+	
 	public boolean hasReference(Class boClass, String referenceName) {
 		EntityDescriptor descriptor = MetadataManager.getEntityDescriptor(boClass);
 		return descriptor.getObjectDescriptorByName(referenceName) != null;
@@ -665,7 +664,7 @@ public class PersistenceStructureServiceJpaImpl extends PersistenceServiceImplBa
 	/**
 	 * @see org.kuali.rice.krad.service.PersistenceStructureService#getTableName(java.lang.Class)
 	 */
-	@Cached
+	
 	public String getTableName(Class<? extends PersistableBusinessObject> boClass) {
 		EntityDescriptor descriptor = MetadataManager.getEntityDescriptor(boClass);
 		return descriptor.getTable();

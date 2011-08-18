@@ -42,7 +42,9 @@ import com.opensymphony.oscache.plugins.clustersupport.ClusterNotification;
  * their cache if neccessary.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @deprecated this is being replaced in rice 2.0 DO NOT USE
  */
+@Deprecated
 public class RiceDistributedCacheListener extends AbstractBroadcastingListener implements KSBJavaService {
 
 	private static final Logger LOG = Logger.getLogger(RiceDistributedCacheListener.class);

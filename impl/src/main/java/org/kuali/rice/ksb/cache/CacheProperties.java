@@ -19,8 +19,10 @@ package org.kuali.rice.ksb.cache;
  * Defines some property name constants that are used as part of the internal cache implementation.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @deprecated this is being replaced in rice 2.0 DO NOT USE
  *
  */
+@Deprecated
 final class CacheProperties {
 
 	static final String FORCE_REGISTRY_REFRESH_KEY = "_FORCE_REGISTRY_REFRESH";

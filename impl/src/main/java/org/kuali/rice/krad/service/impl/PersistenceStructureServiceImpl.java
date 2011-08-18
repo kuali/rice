@@ -23,7 +23,6 @@ import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.util.ForeignKeyFieldsPopulationState;
-import org.kuali.rice.krad.util.spring.CacheNoCopy;
 
 /**
  * This class is now a proxy, which uses the @Entity annotation to decide whether to use the JPA or OJB underlying services to perform an action.
@@ -69,7 +68,7 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
 	/**
 	 * @see org.kuali.rice.krad.service.PersistenceService#isPersistable(java.lang.Class)
 	 */
-	@CacheNoCopy
+	
 	public boolean isPersistable(Class clazz) {
 		return getService(clazz).isPersistable(clazz);
 	}
@@ -77,7 +76,7 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
 	/**
 	 * @see org.kuali.rice.krad.service.PersistenceService#getPrimaryKeys(java.lang.Class)
 	 */
-	@CacheNoCopy
+	
 	public List getPrimaryKeys(Class clazz) {
 		return getService(clazz).getPrimaryKeys(clazz);
 	}
@@ -85,7 +84,7 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
 	/**
 	 * @see org.kuali.rice.krad.service.PersistenceMetadataExplorerService#listFieldNames(java.lang.Class)
 	 */
-	@CacheNoCopy
+	
 	public List listFieldNames(Class clazz) {
 		return getService(clazz).listFieldNames(clazz);
 	}
@@ -101,7 +100,7 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
 	/**
 	 * @see org.kuali.rice.krad.service.PersistenceMetadataExplorerService#listPersistableSubclasses(java.lang.Class)
 	 */
-	@CacheNoCopy
+	
 	// Unit tests only
 	public List listPersistableSubclasses(Class superclazz) {
 		return getService(superclazz).listPersistableSubclasses(superclazz);
@@ -111,12 +110,12 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
 	 * @see org.kuali.rice.krad.service.PersistenceService#getRelationshipMetadata(java.lang.Class,
 	 *      java.lang.String)
 	 */
-	@CacheNoCopy
+	
 	public Map<String, DataObjectRelationship> getRelationshipMetadata(Class persistableClass, String attributeName, String attributePrefix) {
 		return getService(persistableClass).getRelationshipMetadata(persistableClass, attributeName, attributePrefix);
 	}
 
-	@CacheNoCopy
+	
 	// Unit tests only
 	public Map<String, DataObjectRelationship> getRelationshipMetadata(Class persistableClass, String attributeName) {
 		return getService(persistableClass).getRelationshipMetadata(persistableClass, attributeName);
@@ -126,7 +125,7 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
 	 * @see org.kuali.rice.krad.service.PersistenceService#getForeignKeyFieldName(java.lang.Object,
 	 *      java.lang.String, java.lang.String)
 	 */
-	@CacheNoCopy
+	
 	public String getForeignKeyFieldName(Class persistableObjectClass, String attributeName, String pkName) {
 		return getService(persistableObjectClass).getForeignKeyFieldName(persistableObjectClass, attributeName, pkName);
 	}
@@ -135,7 +134,7 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
 	 * @see org.kuali.rice.krad.service.PersistenceService#getReferencesForForeignKey(java.lang.Class,
 	 *      java.lang.String)
 	 */
-	@CacheNoCopy
+	
 	public Map getReferencesForForeignKey(Class persistableObjectClass, String attributeName) {
 		return getService(persistableObjectClass).getReferencesForForeignKey(persistableObjectClass, attributeName);
 	}
@@ -143,12 +142,12 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
 	/**
 	 * @see org.kuali.rice.krad.service.PersistenceService#getForeignKeysForReference(java.lang.Class, java.lang.String)
 	 */
-	@CacheNoCopy
+	
 	public Map getForeignKeysForReference(Class clazz, String attributeName) {
 		return getService(clazz).getForeignKeysForReference(clazz, attributeName);
 	}
 
-	@CacheNoCopy
+	
 	public Map<String, String> getInverseForeignKeysForCollection(Class boClass, String collectionName) {
 		return getService(boClass).getInverseForeignKeysForCollection(boClass, collectionName);
 	}
@@ -156,7 +155,7 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
 	/**
 	 * @see org.kuali.rice.krad.service.PersistenceService#getNestedForeignKeyMap(java.lang.Class)
 	 */
-	@CacheNoCopy
+	
 	public Map getNestedForeignKeyMap(Class persistableObjectClass) {
 		return getService(persistableObjectClass).getNestedForeignKeyMap(persistableObjectClass);
 	}
@@ -179,12 +178,12 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
 	/**
 	 * @see org.kuali.rice.krad.service.PersistenceStructureService#listReferenceObjectFieldNames(java.lang.Class)
 	 */
-	@CacheNoCopy
+	
 	public Map<String, Class> listReferenceObjectFields(Class boClass) {
 		return getService(boClass).listReferenceObjectFields(boClass);
 	}
 
-	@CacheNoCopy
+	
 	public Map<String, Class> listCollectionObjectTypes(Class boClass) {
 		return getService(boClass).listCollectionObjectTypes(boClass);
 	}
@@ -200,22 +199,22 @@ public class PersistenceStructureServiceImpl extends PersistenceServiceImplBase 
 		return getService(bo.getClass()).listReferenceObjectFields(bo);
 	}
 
-	@CacheNoCopy
+	
 	public boolean isReferenceUpdatable(Class boClass, String referenceName) {
 		return getService(boClass).isReferenceUpdatable(boClass, referenceName);
 	}
 
-	@CacheNoCopy
+	
 	public boolean isCollectionUpdatable(Class boClass, String collectionName) {
 		return getService(boClass).isCollectionUpdatable(boClass, collectionName);
 	}
 
-	@CacheNoCopy
+	
 	public boolean hasCollection(Class boClass, String collectionName) {
 		return getService(boClass).hasCollection(boClass, collectionName);
 	}
 
-	@CacheNoCopy
+	
 	public boolean hasReference(Class boClass, String referenceName) {
 		return getService(boClass).hasReference(boClass, referenceName);
 	}

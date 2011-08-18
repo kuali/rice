@@ -16,6 +16,7 @@
 package org.kuali.rice.core.api.util.collect;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -191,6 +192,48 @@ public final class CollectionUtils {
             } finally {
                 f.setAccessible(false);
             }
+        }
+    }
+
+    /**
+    * Combines multiple Enumeration into a single enumeration. The returned enumeration
+    * has an enumeration that traverses the elements of each enumeration in
+    * {@code inputs}. The input enumerations are not polled until necessary.
+    *
+    * @throws NullPointerException if any of the provided enumerations are null
+    */
+    public static <T> Enumeration<T> concat(Enumeration<? extends T>... inputs) {
+    return new SimpleEnumeration<T>(inputs);
+    }
+
+    private static class SimpleEnumeration<T> implements Enumeration<T> {
+        private final Iterator<T> iterator;
+
+        private SimpleEnumeration(Enumeration<? extends T>... enumerations) {
+            if (enumerations == null) {
+                throw new NullPointerException("enumerations is null");
+            }
+
+            final List<T> internalList = new ArrayList<T>();
+            for (Enumeration<? extends T> enumeration : enumerations) {
+                if (enumeration == null) {
+                    throw new NullPointerException("input is null");
+                }
+
+                while (enumeration.hasMoreElements()) {
+                    internalList.add(enumeration.nextElement());
+                }
+            }
+            iterator = internalList.iterator();
+        }
+
+        @Override
+        public boolean hasMoreElements() {
+            return iterator.hasNext();
+        }
+        @Override
+        public T nextElement() {
+            return iterator.next();
         }
     }
 

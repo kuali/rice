@@ -18,16 +18,18 @@ package org.kuali.rice.kim.ldap;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.ldap.core.support.AbstractContextMapper;
 
 import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
+import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
 import org.kuali.rice.kim.util.Constants;
 
 import static org.kuali.rice.core.util.BufferedLogger.*;
 import static org.apache.commons.lang.StringUtils.contains;
-import static org.apache.commons.lang.StringUtils.equals;
 import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
 
 /**
@@ -51,9 +53,9 @@ public class EntityAffiliationMapper extends AbstractContextMapper {
         String affiliationCode = getAffiliationTypeCodeForName(primaryAffiliation);
 
         final EntityAffiliation.Builder aff1 = EntityAffiliation.Builder.create();
-        aff1.setAffiliationTypeCode(Type.Builder.create(affiliationCode == null ? "AFLT" : affiliationCode).build());
+        aff1.setAffiliationType(EntityAffiliationType.Builder.create(affiliationCode == null ? "AFLT" : affiliationCode));
         aff1.setCampusCode(getConstants().getDefaultCampusCode());
-        aff1.setEntityAffiliationId("" + affiliationId++);
+        aff1.setId("" + affiliationId++);
         aff1.setDefaultValue(true);
         aff1.setActive(true);
         retval.add(aff1);
@@ -65,13 +67,13 @@ public class EntityAffiliationMapper extends AbstractContextMapper {
         }
 
         for (String affiliation : affiliations) {
-            if (!equals(affiliation, primaryAffiliation)) {
+            if (!StringUtils.equals(affiliation, primaryAffiliation)) {
                 affiliationCode = getAffiliationTypeCodeForName(affiliation);
                 if (affiliationCode != null && !hasAffiliation(retval, affiliationCode)) {
                     final EntityAffiliation.Builder aff = EntityAffiliation.Builder.create();
-                    aff.setAffiliationTypeCode(affiliationCode);
+                    aff.setAffiliationType(EntityAffiliationType.Builder.create(affiliationCode));
                     aff.setCampusCode(getConstants().getDefaultCampusCode());
-                    aff.setEntityAffiliationId("" + affiliationId++);
+                    aff.setId("" + affiliationId++);
                     aff.setDefaultValue(false);
                     aff.setActive(true);
                     retval.add(aff);
@@ -98,9 +100,9 @@ public class EntityAffiliationMapper extends AbstractContextMapper {
         return null;
     }
 
-    protected boolean hasAffiliation(List<EntityAffiliation> affiliations, String affiliationCode) {
-        for (EntityAffiliation affiliation : affiliations) {
-            if (equalsIgnoreCase(affiliation.getAffiliationTypeCode(), affiliationCode)) {
+    protected boolean hasAffiliation(List<EntityAffiliation.Builder> affiliations, String affiliationCode) {
+        for (EntityAffiliation.Builder affiliation : affiliations) {
+            if (equalsIgnoreCase(affiliation.getAffiliationType().getCode(), affiliationCode)) {
                 return true;
             }
         }

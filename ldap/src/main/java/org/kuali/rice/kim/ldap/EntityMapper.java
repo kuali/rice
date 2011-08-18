@@ -46,10 +46,12 @@ public class EntityMapper extends AbstractContextMapper {
     private ContextMapper employmentMapper;
     
     public Object doMapFromContext(DirContextOperations context) {
-        final Entity.Builder person = new Entity.Builder.create();
         
         final String entityId      = context.getStringAttribute(getConstants().getKimLdapIdProperty());
         final String principalName = context.getStringAttribute(getConstants().getKimLdapNameProperty());
+
+        final Entity.Builder person = Entity.Builder.create();
+        person.setId(entityId);
         
         if (entityId == null) {
             throw new InvalidLdapEntityException("LDAP Search Results yielded an invalid result with attributes " 
@@ -65,10 +67,9 @@ public class EntityMapper extends AbstractContextMapper {
         person.getExternalIdentifiers().add(externalId);
         
         person.setAffiliations((List<EntityAffiliation.Builder>) getAffiliationMapper().mapFromContext(context));
-        person.getAffiliations().get(0).setDefault(true);
         
         person.setEntityTypes(new ArrayList<EntityTypeContactInfo.Builder>());
-        person.getEntityTypes().add((EntityTypeContactInfo.Builder) getEntityTypeMapper().mapFromContext(context));
+        person.getEntityTypeContactInfos().add((EntityTypeContactInfo.Builder) getEntityTypeMapper().mapFromContext(context));
         
         final List<EntityName.Builder> names = new ArrayList<EntityName.Builder>();
         final EntityName.Builder name = (EntityName.Builder) getDefaultNameMapper().mapFromContext(context);
@@ -77,24 +78,23 @@ public class EntityMapper extends AbstractContextMapper {
         person.setId(entityId);
         
         final EntityEmployment.Builder employmentInfo = (EntityEmployment.Builder) getEmploymentMapper().mapFromContext(context);
-        final String employeeAffilId = getAffiliationId(getConstants().getEmployeeAffiliationCodes(), person);
+        final EntityAffiliation.Builder employeeAffiliation = getAffiliation(getConstants().getEmployeeAffiliationCodes(), person);
         
         //only add employee information if we have an employee affiliation, otherwise ignore
-        if (employeeAffilId != null && employmentInfo != null) {
-            employmentInfo.setEntityAffiliationId(employeeAffilId);
+        if (employeeAffiliation != null && employmentInfo != null) {
+            employeeAffiliation.getAffiliationType().setEmploymentAffiliationType(true);
+            employmentInfo.setEntityAffiliation(employeeAffiliation);
             person.getEmploymentInformation().add(employmentInfo);
         }
         
-        person.setEntityId(entityId);
         person.setPrincipals(new ArrayList<Principal.Builder>());
         person.setActive(true);
         
-        final Principal.Builder defaultPrincipal = Principal.Builder.create();
+        final Principal.Builder defaultPrincipal = Principal.Builder.create(principalName);
         defaultPrincipal.setPrincipalId(entityId);
         defaultPrincipal.setEntityId(entityId);
-        defaultPrincipal.setPrincipalName(principalName);
         
-        entityPrincipals.add(defaultPrincipal);
+        person.getPrincipals().add(defaultPrincipal);
         
         return person;
     }
@@ -106,11 +106,11 @@ public class EntityMapper extends AbstractContextMapper {
      * @param person
      * @return
      */
-    protected String getAffiliationId(String affiliationCodes, Entity.Builder person) {
-        String retval = null;
+    protected EntityAffiliation.Builder getAffiliation(String affiliationCodes, Entity.Builder person) {
+        EntityAffiliation.Builder retval = null;
         for (EntityAffiliation.Builder affil : person.getAffiliations()) {
             if (contains(affiliationCodes, affil.getAffiliationType().getCode())) {
-                return affil.getEntityAffiliationId();
+                return affil;
             }
         }
         return retval;

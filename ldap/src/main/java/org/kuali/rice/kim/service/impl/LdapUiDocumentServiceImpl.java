@@ -208,79 +208,18 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 	 * @see org.kuali.rice.kim.service.UiDocumentService#saveEntityPerson(IdentityManagementPersonDocument)
 	 */
     public void saveEntityPerson(IdentityManagementPersonDocument identityManagementPersonDocument) {
-		EntityBo kimEntity = new EntityBo();
-		EntityBo origEntity = getEntityBo(identityManagementPersonDocument.getEntityId());
-		boolean creatingNew = true;
-		if (origEntity == null) {
-			origEntity = new EntityBo();
-			kimEntity.setActive(true);
-		} else {
-			// TODO : in order to resolve optimistic locking issue. has to get identity and set the version number if identity records matched
-			// Need to look into this.
-			//kimEntity = origEntity;
-			kimEntity.setActive(origEntity.isActive());
-			kimEntity.setVersionNumber(origEntity.getVersionNumber());
-			creatingNew = false;
-		}
+        final Entity kimEntity = getIdentityService().getEntity(identityManagementPersonDocument.getEntityId());
+		boolean creatingNew = false;
 
-		kimEntity.setId(identityManagementPersonDocument.getEntityId());
 		String initiatorPrincipalId = getInitiatorPrincipalId(identityManagementPersonDocument);
 		boolean inactivatingPrincipal = false;
-		if(canModifyEntity(initiatorPrincipalId, identityManagementPersonDocument.getPrincipalId())){
-			inactivatingPrincipal = setupPrincipal(identityManagementPersonDocument, kimEntity, origEntity.getPrincipals());
-			setupAffiliation(identityManagementPersonDocument, kimEntity, origEntity.getAffiliations(), origEntity.getEmploymentInformation());
-			setupName(identityManagementPersonDocument, kimEntity, origEntity.getNames());
-		// entitytype
-			List<EntityTypeContactInfoBo> entityTypes = new ArrayList<EntityTypeContactInfoBo>();
-			EntityTypeContactInfoBo entityType = new EntityTypeContactInfoBo();
-			entityType.setEntityId(identityManagementPersonDocument.getEntityId());
-			entityType.setEntityTypeCode(KimConstants.EntityTypes.PERSON);
-			entityType.setActive(true);
-			entityTypes.add(entityType);
-			EntityTypeContactInfoBo origEntityType = new EntityTypeContactInfoBo();
-			for (EntityTypeContactInfoBo type : origEntity.getEntityTypeContactInfos()) {
-				// should check identity.entitytypeid, but it's not persist in persondoc yet
-				if (type.getEntityTypeCode()!=null && StringUtils.equals(type.getEntityTypeCode(), entityType.getEntityTypeCode())) {
-					origEntityType = type;
-					entityType.setVersionNumber(type.getVersionNumber());
-					entityType.setActive(type.isActive());
-				}
-			}
-			setupPhone(identityManagementPersonDocument, entityType, origEntityType.getPhoneNumbers());
-			setupEmail(identityManagementPersonDocument, entityType, origEntityType.getEmailAddresses());
-			setupAddress(identityManagementPersonDocument, entityType, origEntityType.getAddresses());
-            kimEntity.setEntityTypeContactInfos(entityTypes);
-		} else{
-			if(ObjectUtils.isNotNull(origEntity.getExternalIdentifiers())) {
-                kimEntity.setExternalIdentifiers(origEntity.getExternalIdentifiers());
-            }
-			if(ObjectUtils.isNotNull(origEntity.getEmploymentInformation())) {
-                kimEntity.setEmploymentInformation(origEntity.getEmploymentInformation());
-            }
-			if(ObjectUtils.isNotNull(origEntity.getAffiliations())) {
-                kimEntity.setAffiliations(origEntity.getAffiliations());
-            }
-			if(ObjectUtils.isNotNull(origEntity.getNames())) {
-                kimEntity.setNames(origEntity.getNames());
-            }
-			if(ObjectUtils.isNotNull(origEntity.getEntityTypeContactInfos())) {
-                kimEntity.setEntityTypeContactInfos(origEntity.getEntityTypeContactInfos());
-            }
-		}
-		if(creatingNew || canOverrideEntityPrivacyPreferences(getInitiatorPrincipalId(identityManagementPersonDocument), identityManagementPersonDocument.getPrincipalId())) {
-			setupPrivacy(identityManagementPersonDocument, kimEntity, origEntity.getPrivacyPreferences());
-		} else {
-			if(ObjectUtils.isNotNull(origEntity.getPrivacyPreferences())) {
-				kimEntity.setPrivacyPreferences(origEntity.getPrivacyPreferences());
-			}
-		}
+
 		List <GroupMemberBo>  groupPrincipals = populateGroupMembers(identityManagementPersonDocument);
 		List <RoleMemberBo>  rolePrincipals = populateRoleMembers(identityManagementPersonDocument);
 		List <DelegateBo> personDelegations = populateDelegations(identityManagementPersonDocument);
 		List <PersistableBusinessObject> bos = new ArrayList<PersistableBusinessObject>();
 		List <RoleResponsibilityActionBo> roleRspActions = populateRoleRspActions(identityManagementPersonDocument);
 		List <RoleMemberAttributeDataBo> blankRoleMemberAttrs = getBlankRoleMemberAttrs(rolePrincipals);
-		bos.add(kimEntity);
 		//if(ObjectUtils.isNotNull(kimEntity.getPrivacyPreferences()))
 		//	bos.add(kimEntity.getPrivacyPreferences());
 		bos.addAll(groupPrincipals);
@@ -526,7 +465,6 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
     /**
      * Overridden to only check permission - users should not be able to edit themselves.
      * 
-     * KFSI-974/KITT-662
      * @see org.kuali.rice.kim.service.impl.UiDocumentServiceImpl#canModifyEntity(java.lang.String, java.lang.String)
      */
     @Override

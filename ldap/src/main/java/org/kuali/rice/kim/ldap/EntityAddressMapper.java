@@ -29,11 +29,11 @@ import org.kuali.rice.kim.util.Constants;
 public class EntityAddressMapper extends AbstractContextMapper {
     private Constants constants;
 
-    public EntityAddress mapFromContext(DirContextOperations context, boolean isdefault) {
-        return new EntityAddress((EntityAddress.Builder) doMapFromContext(context, isdefault));
+    public EntityAddress.Builder mapFromContext(DirContextOperations context, boolean isdefault) {
+        return (EntityAddress.Builder) doMapFromContext(context, isdefault);
     }
 
-    public EntityAddress mapFromContext(DirContextOperations context) {
+    public EntityAddress.Builder mapFromContext(DirContextOperations context) {
         return mapFromContext(context, false);
     }
 
@@ -42,14 +42,14 @@ public class EntityAddressMapper extends AbstractContextMapper {
     }
 
     protected Object doMapFromContext(DirContextOperations context, boolean isdefault) {        
-        final EntityAddress.Builder builder = new EntityAddress.Builder.create();
+        final EntityAddress.Builder builder = EntityAddress.Builder.create();
         final String line1      = context.getStringAttribute("employeePrimaryDeptName");
         final String line2      = context.getStringAttribute("employeePoBox");
         final String cityName   = context.getStringAttribute("employeeCity");
         final String stateCode  = context.getStringAttribute("employeeState");
         final String postalCode = context.getStringAttribute("employeeZip");
         
-        builder.setAddressTypeCode(Type.Builder.create("WORK").build());
+        builder.setAddressType(Type.Builder.create("WORK"));
         builder.setLine1(line1);
         builder.setLine2(line2);
         builder.setCityName(cityName);

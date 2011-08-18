@@ -42,40 +42,32 @@ import static org.kuali.rice.core.util.BufferedLogger.*;
 public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl implements IdentityService {
     private LdapPrincipalDao principalDao;
     
-
-    public List<EntityDefault> lookupEntityDefaultInfo(Map<String,String> searchCriteria, boolean unbounded) {
-        final List<EntityDefault> edsInfo = getPrincipalDao().lookupEntityDefaultInfo(searchCriteria, unbounded);
+	/**
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#lookupEntityIds(java.util.Map)
+	 */
+	public List<String> lookupEntityIds(Map<String,String> searchCriteria) {
+        final List<String> edsInfo = getPrincipalDao().lookupEntityIds(searchCriteria);
         if (edsInfo.size() > 0) {
             return edsInfo;
         } 
         else {
-            return super.lookupEntityDefaultInfo(searchCriteria, unbounded);
-        }
-    }
-
-	public List<Entity> lookupEntityInfo(Map<String,String> searchCriteria, boolean unbounded) {
-        final List<Entity> edsInfo = getPrincipalDao().lookupEntityInfo(searchCriteria, unbounded);
-        if (edsInfo.size() > 0) {
-            return edsInfo;
-        } 
-        else {
-            return super.lookupEntityInfo(searchCriteria, unbounded);
+            return super.lookupEntityIds(searchCriteria);
         }
     }
 
 	public int getMatchingEntityCount(Map<String,String> searchCriteria) {
-        return lookupEntityInfo(searchCriteria, true).size();
+        return lookupEntityIds(searchCriteria).size();
     }
 
 	/**
 	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityInfo(java.lang.String)
 	 */
 	public Entity getEntity(String entityId) {
-        Entity edsInfo = getPrincipalDao().getEntityInfo(entityId);
+        Entity edsInfo = getPrincipalDao().getEntity(entityId);
         if (edsInfo != null) {
             return edsInfo;
         } else {
-            return super.getEntityInfo(entityId);
+            return super.getEntity(entityId);
         }
 	}
 	
@@ -84,11 +76,11 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl impleme
 	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityByPrincipalId(java.lang.String)
 	 */
 	public Entity getEntityByPrincipalId(String principalId) {
-        Entity edsInfo = getPrincipalDao().getEntityInfo(entityId);
+        Entity edsInfo = getPrincipalDao().getEntityByPrincipalId(principalId);
         if (edsInfo != null) {
             return edsInfo;
         } else {
-            return super.getEntityInfo(entityId);
+            return super.getEntityByPrincipalId(principalId);
         }
 	}
 	
@@ -96,11 +88,11 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl impleme
 	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityByPrincipalName(java.lang.String)
 	 */
 	public Entity getEntityByPrincipalName(String principalName) {
-        final EntityDefault edsInfo = getPrincipalDao().getEntityDefaultInfoByPrincipalName(principalName);
+        final Entity edsInfo = getPrincipalDao().getEntityByPrincipalName(principalName);
         if (edsInfo != null) {
             return edsInfo;
         } else {
-            return super.getEntityDefaultInfoByPrincipalName(principalName);
+            return super.getEntityByPrincipalName(principalName);
         }
 	}
 	
@@ -108,12 +100,12 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl impleme
 	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityDefault(java.lang.String)
 	 */
 	public EntityDefault getEntityDefault(String entityId) {
-        EntityDefault edsInfo = getPrincipalDao().getEntityDefaultInfo(entityId);
+        EntityDefault edsInfo = getPrincipalDao().getEntityDefault(entityId);
         if (edsInfo != null) {
             return edsInfo;
         } 
         else {
-            return super.getEntityDefaultInfo(entityId);
+            return super.getEntityDefault(entityId);
         }
 	}
 	
@@ -121,12 +113,12 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl impleme
 	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityDefaultByPrincipalId(java.lang.String)
 	 */
 	public EntityDefault getEntityDefaultByPrincipalId(String principalId) {
-        final Entity retval = getPrincipalDao().getEntityInfoByPrincipalId(principalId);
+        final EntityDefault retval = getPrincipalDao().getEntityDefaultByPrincipalId(principalId);
         if (retval != null) {
             return retval;
         }
         else {
-            return super.getEntityInfoByPrincipalId(principalId);
+            return super.getEntityDefaultByPrincipalId(principalId);
         }
 	}
 	
@@ -134,14 +126,13 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl impleme
 	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityDefaultByPrincipalName(java.lang.String)
 	 */
 	public EntityDefault getEntityDefaultByPrincipalName(String principalName) {
-        if (StringUtils.isBlank(principalName)) {
-            throw new RiceIllegalArgumentException("principalName is blank");
+        final EntityDefault retval = getPrincipalDao().getEntityDefaultByPrincipalName(principalName);
+        if (retval != null) {
+            return retval;
         }
-		EntityBo entity = getEntityBoByPrincipalName(principalName);
-		if ( entity == null ) {
-			return null;
-		}
-		return EntityBo.toDefault(entity);
+        else {
+            return super.getEntityDefaultByPrincipalName(principalName);
+        }
 	}
 	
     /**
@@ -172,12 +163,6 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl impleme
 	        return super.getPrincipal(principalId);
 	    }
     }
-	
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#lookupEntityIds(java.util.Map)
-	 */
-	public List<String> lookupEntityIds(Map<String,String> searchCriteria) {
-	}
 
 	/**
 	 * @see org.kuali.rice.kim.api.identity.IdentityService#getPrincipalByPrincipalName(java.lang.String)
@@ -196,24 +181,28 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl impleme
 	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityIdByPrincipalId(java.lang.String)
 	 */
 	public String getEntityIdByPrincipalId(String principalId) {
+        return getEntityByPrincipalId(principalId).getId();
     }
 
 	/**
 	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityIdByPrincipalName(java.lang.String)
 	 */
 	public String getEntityIdByPrincipalName(String principalName) {
+        return getEntityByPrincipalName(principalName).getId();
     }
 	
 	/**
 	 * @see org.kuali.rice.kim.api.identity.IdentityService#getPrincipalIdByPrincipalName(java.lang.String)
 	 */
 	public String getPrincipalIdByPrincipalName(String principalName) {
+        return getPrincipalByPrincipalName(principalName).getPrincipalId();
 	}
 	
 	/**
 	 * @see org.kuali.rice.kim.api.identity.IdentityService#getDefaultNamesForEntityIds(java.util.List)
 	 */
 	public Map<String, EntityNamePrincipalName> getDefaultNamesForEntityIds(List<String> entityIds) {
+        return getPrincipalDao().getDefaultNamesForEntityIds(entityIds);
 	}
 
 
@@ -222,6 +211,7 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl impleme
 	 * @see org.kuali.rice.kim.api.identity.IdentityService#getDefaultNamesForPrincipalIds(java.util.List)
 	 */
 	public Map<String, EntityNamePrincipalName> getDefaultNamesForPrincipalIds(List<String> principalIds) {
+        return getPrincipalDao().getDefaultNamesForPrincipalIds(principalIds);
 	}
 
     public void setPrincipalDao(LdapPrincipalDao principalDao) {

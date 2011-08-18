@@ -25,10 +25,9 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.ldap.core.support.AbstractContextMapper;
 
+import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.util.Constants;
-import org.kuali.rice.kns.bo.Parameter;
-import org.kuali.rice.kns.service.ParameterService;
 
 import static java.util.Arrays.asList;
 import static org.kuali.rice.core.util.BufferedLogger.*;
@@ -40,22 +39,22 @@ public class PrincipalMapper extends AbstractContextMapper {
     private Constants constants;
     private ParameterService parameterService;
     
-    public Principal mapFromContext(DirContextOperations context) {
-        return new Principal((Principal.Builder) doMapFromContext(context));
+    public Principal.Builder mapFromContext(DirContextOperations context) {
+        return (Principal.Builder) doMapFromContext(context);
     }
 
     public Object doMapFromContext(DirContextOperations context) {
-        final Principal.Builder builder = Principal.Builder.create();
-        final String uaid = context.getStringAttribute(getConstants().getKimLdapIdProperty());
+        final String entityId      = context.getStringAttribute(getConstants().getKimLdapIdProperty());
+        final String principalName = context.getStringAttribute(getConstants().getKimLdapNameProperty());
+        final Principal.Builder person = Principal.Builder.create(principalName);
         
-        if (uaid == null) {
+        if (entityId == null) {
             throw new InvalidLdapEntityException("LDAP Search Results yielded an invalid result with attributes " 
                                                  + context.getAttributes());
         }
         
-        person.setPrincipalId(uaid);
-        person.setEntityId(uaid);
-        person.setPrincipalName(context.getStringAttribute(getConstants().getKimLdapNameProperty()));
+        person.setPrincipalId(entityId);
+        person.setEntityId(entityId);
         person.setActive(isPersonActive(context));
 
         return person;
@@ -108,19 +107,19 @@ public class PrincipalMapper extends AbstractContextMapper {
     }
 
     protected Matcher getKimAttributeMatcher(String kimAttribute) {
-        Parameter mappedParam = getParameterService().retrieveParameter(getConstants().getParameterNamespaceCode(),
+        String mappedParamValue = getParameterService().getParameterValueAsString(getConstants().getParameterNamespaceCode(),
                                                                         getConstants().getParameterDetailTypeCode(),
                                                                         getConstants().getMappedParameterName());
 
         String regexStr = String.format("(%s|.*;%s)=([^=;]*).*", kimAttribute, kimAttribute);
         debug("Matching KIM attribute with regex ", regexStr);
-        Matcher retval = Pattern.compile(regexStr).matcher(mappedParam.getParameterValue());
+        Matcher retval = Pattern.compile(regexStr).matcher(mappedParamValue);
         
         if (!retval.matches()) {
-            mappedParam = getParameterService().retrieveParameter(getConstants().getParameterNamespaceCode(),
+            mappedParamValue = getParameterService().getParameterValueAsString(getConstants().getParameterNamespaceCode(),
                                                                   getConstants().getParameterDetailTypeCode(),
                                                                   getConstants().getMappedValuesName());
-            retval = Pattern.compile(regexStr).matcher(mappedParam.getParameterValue());
+            retval = Pattern.compile(regexStr).matcher(mappedParamValue);
         }
 
         return retval;

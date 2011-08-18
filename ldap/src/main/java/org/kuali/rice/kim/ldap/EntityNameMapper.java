@@ -30,11 +30,11 @@ import org.kuali.rice.kim.util.Constants;
 public class EntityNameMapper extends AbstractContextMapper {
     private Constants constants;
     
-    public EntityName mapFromContext(DirContextOperations context, boolean isdefault) {
-        return new EntityName((EntityName.Builder) doMapFromContext(context, isdefault));
+    public EntityName.Builder mapFromContext(DirContextOperations context, boolean isdefault) {
+        return (EntityName.Builder) doMapFromContext(context, isdefault);
     }
 
-    public EntityName mapFromContext(DirContextOperations context) {
+    public EntityName.Builder mapFromContext(DirContextOperations context) {
         return mapFromContext(context, true);
     }
 
@@ -44,7 +44,8 @@ public class EntityNameMapper extends AbstractContextMapper {
 
     protected Object doMapFromContext(DirContextOperations context, boolean isdefault) {        
         final EntityName.Builder person = EntityName.Builder.create();
-        person.setEntityNameId(context.getStringAttribute(getConstants().getKimLdapIdProperty()));
+        person.setEntityId(context.getStringAttribute(getConstants().getKimLdapIdProperty()));
+        person.setId(context.getStringAttribute(getConstants().getKimLdapIdProperty()));
         
         final String fullName = (String) context.getStringAttribute(getConstants().getGivenNameLdapProperty());
         
@@ -62,7 +63,7 @@ public class EntityNameMapper extends AbstractContextMapper {
         person.setLastName(context.getStringAttribute(getConstants().getSnLdapProperty()));
         person.setDefaultValue(isdefault);
         person.setActive(true);
-        person.setNameTypeCode(Type.Builder.create("PRI").build());
+        person.setNameType(Type.Builder.create("PRI"));
         
         return person;
     }

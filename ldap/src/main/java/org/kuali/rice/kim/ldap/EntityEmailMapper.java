@@ -29,7 +29,11 @@ import org.kuali.rice.kim.util.Constants;
 public class EntityEmailMapper extends AbstractContextMapper {
     private Constants constants;
     
-    public Object doMapFromContext(DirContextOperations context) {
+    public EntityEmail.Builder mapFromContext(DirContextOperations context) {
+        return (EntityEmail.Builder) doMapFromContext(context);
+    }
+
+    public Object doMapFromContext(DirContextOperations context) {        
         return doMapFromContext(context, true);
     }
 
@@ -37,8 +41,8 @@ public class EntityEmailMapper extends AbstractContextMapper {
         final EntityEmail.Builder retval = EntityEmail.Builder.create();
         final String emailAddress = context.getStringAttribute(getConstants().getEmployeeMailLdapProperty());
         retval.setEmailAddress(emailAddress);
-        retval.setEmailTypeCode(Type.Builder.create("WORK").build());
-        retval.setDefault(true);
+        retval.setEmailType(Type.Builder.create("WORK"));
+        retval.setDefaultValue(isdefault);
         retval.setActive(true);
         return retval;
     }

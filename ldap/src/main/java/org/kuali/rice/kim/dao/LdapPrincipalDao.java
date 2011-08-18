@@ -53,35 +53,35 @@ public interface LdapPrincipalDao {
     <T> List<T> search(Class<T> type, Map<String, Object> criteria);
 
 	/** Find entity objects based on the given criteria. */
-	EntityDefault getEntityDefaultInfo(String entityId);
+	EntityDefault getEntityDefault(String entityId);
 
-	Entity getEntityInfo(String entityId);
+	Entity getEntity(String entityId);
 	
 	/**
      * Fetches full entity info, populated from EDS, based on the Entity's principal id
      * @param principalId the principal id to look the entity up for
      * @return the corresponding entity info
      */
-    public abstract Entity getEntityByPrincipalId(String principalId);
+    Entity getEntityByPrincipalId(String principalId);
+
+	Entity getEntityByPrincipalName(String principalName);
 
     /**
      * entityid and principalId are treated as the same.
      * 
-     * @see #getEntityDefaultInfo(String)
+     * @see #getEntityDefault(String)
      */
 	EntityDefault getEntityDefaultByPrincipalId(String principalId);
 
 	EntityDefault getEntityDefaultByPrincipalName(String principalName);
 
-	List<EntityDefault> lookupEntityDefaultInfo(Map<String,String> searchCriteria, boolean unbounded);
-
-	List<Entity> lookupEntityInfo(Map<String,String> searchCriteria, boolean unbounded);
+	List<String> lookupEntityIds(Map<String,String> searchCriteria);
 
 	EntityPrivacyPreferences getEntityPrivacyPreferences(String entityId);
 	
-    Map<String, EntitynamePrincipalName> getDefaultNamesForPrincipalIds(List<String> principalIds);
+    Map<String, EntityNamePrincipalName> getDefaultNamesForPrincipalIds(List<String> principalIds);
 
-    Map<String, EntityName> getDefaultNamesForEntityIds(List<String> entityIds);
+    Map<String, EntityNamePrincipalName> getDefaultNamesForEntityIds(List<String> entityIds);
 
     Map<String, ContextMapper> getContextMappers();
 }

@@ -37,10 +37,10 @@ import org.kuali.rice.kim.util.Constants;
  */
 public class EntityDefaultMapper extends AbstractContextMapper {
     private Constants constants;
-    private ContextMapper affiliationMapper;
-    private ContextMapper entityTypeMapper;
-    private ContextMapper defaultNameMapper;
-    private ContextMapper employmentMapper;
+    private EntityAffiliationMapper affiliationMapper;
+    private EntityTypeContactInfoMapper entityTypeMapper;
+    private EntityNameMapper defaultNameMapper;
+    private EntityEmploymentMapper employmentMapper;
     
     public Object doMapFromContext(DirContextOperations context) {
         
@@ -54,38 +54,34 @@ public class EntityDefaultMapper extends AbstractContextMapper {
                                                  + context.getAttributes());
         }
         
-        person.setAffiliations(new ArrayList());
-        person.setExternalIdentifiers(new ArrayList());
+        person.setAffiliations(new ArrayList<EntityAffiliation.Builder>());
+        person.setExternalIdentifiers(new ArrayList<EntityExternalIdentifier.Builder>());
         
-        final EntityExternalIdentifier externalId = new EntityExternalIdentifier();
+        final EntityExternalIdentifier.Builder externalId = EntityExternalIdentifier.Builder.create();
         externalId.setExternalIdentifierTypeCode(getConstants().getTaxExternalIdTypeCode());
         externalId.setExternalId(entityId);
         person.getExternalIdentifiers().add(externalId);
         
         person.setAffiliations((List<EntityAffiliation.Builder>) getAffiliationMapper().mapFromContext(context));
         
-        person.setEntityTypes(new ArrayList());
-        person.getEntityTypes().add((EntityTypeContactInfoDefault) getEntityTypeMapper().mapFromContext(context));
+        person.setEntityTypeContactInfos(new ArrayList<EntityTypeContactInfoDefault.Builder>());
+        person.getEntityTypeContactInfos().add((EntityTypeContactInfoDefault.Builder) getEntityTypeMapper().mapFromContext(context));
         
-        person.setDefaultName(new EntityName((EntityName) getDefaultNameMapper().mapFromContext(context)));
+        person.setName(getDefaultNameMapper().mapFromContext(context));
         person.setEntityId(entityId);
         
-        person.setPrimaryEmployment((EntityEmployment.Builder) getEmploymentMapper().mapFromContext(context));
+        person.setEmployment((EntityEmployment.Builder) getEmploymentMapper().mapFromContext(context));
 
         person.setEntityId(entityId);
-        person.setPrincipals(new ArrayList()); 
+        person.setPrincipals(new ArrayList<Principal.Builder>()); 
         //inactivate unless we find a matching affiliation
         person.setActive(true);
         
-        final Principal.Builder defaultPrincipal = Principal.Builder.create();
+        final Principal.Builder defaultPrincipal = Principal.Builder.create(principalName);
         defaultPrincipal.setPrincipalId(entityId);
         defaultPrincipal.setEntityId(entityId);
-        defaultPrincipal.setPrincipalName(principalName);
 
-        List entityPrincipals = person.getPrincipals();
-        entityPrincipals.add((Principal) defaultPrincipal);
-        
-        // debug("Finished mapping person with name ", person.getDefaultName().getLastName());
+        person.getPrincipals().add(defaultPrincipal);
         
         return person;
     }
@@ -114,7 +110,7 @@ public class EntityDefaultMapper extends AbstractContextMapper {
      *
      * @return the value of affiliationMapper
      */
-    public final ContextMapper getAffiliationMapper() {
+    public final EntityAffiliationMapper getAffiliationMapper() {
         return this.affiliationMapper;
     }
 
@@ -123,7 +119,7 @@ public class EntityDefaultMapper extends AbstractContextMapper {
      *
      * @param argAffiliationMapper Value to assign to this.affiliationMapper
      */
-    public final void setAffiliationMapper(final ContextMapper argAffiliationMapper) {
+    public final void setAffiliationMapper(final EntityAffiliationMapper argAffiliationMapper) {
         this.affiliationMapper = argAffiliationMapper;
     }
 
@@ -132,7 +128,7 @@ public class EntityDefaultMapper extends AbstractContextMapper {
      *
      * @return the value of entityTypeMapper
      */
-    public final ContextMapper getEntityTypeMapper() {
+    public final EntityTypeContactInfoMapper getEntityTypeMapper() {
         return this.entityTypeMapper;
     }
 
@@ -141,7 +137,7 @@ public class EntityDefaultMapper extends AbstractContextMapper {
      *
      * @param argEntityTypeMapper Value to assign to this.entityTypeMapper
      */
-    public final void setEntityTypeMapper(final ContextMapper argEntityTypeMapper) {
+    public final void setEntityTypeMapper(final EntityTypeContactInfoMapper argEntityTypeMapper) {
         this.entityTypeMapper = argEntityTypeMapper;
     }
 
@@ -150,7 +146,7 @@ public class EntityDefaultMapper extends AbstractContextMapper {
      *
      * @return the value of defaultNameMapper
      */
-    public final ContextMapper getDefaultNameMapper() {
+    public final EntityNameMapper getDefaultNameMapper() {
         return this.defaultNameMapper;
     }
 
@@ -159,7 +155,7 @@ public class EntityDefaultMapper extends AbstractContextMapper {
      *
      * @param argDefaultNameMapper Value to assign to this.defaultNameMapper
      */
-    public final void setDefaultNameMapper(final ContextMapper argDefaultNameMapper) {
+    public final void setDefaultNameMapper(final EntityNameMapper argDefaultNameMapper) {
         this.defaultNameMapper = argDefaultNameMapper;
     }
 
@@ -168,7 +164,7 @@ public class EntityDefaultMapper extends AbstractContextMapper {
      *
      * @return the value of employmentMapper
      */
-    public final ContextMapper getEmploymentMapper() {
+    public final EntityEmploymentMapper getEmploymentMapper() {
         return this.employmentMapper;
     }
 
@@ -177,7 +173,7 @@ public class EntityDefaultMapper extends AbstractContextMapper {
      *
      * @param argEmploymentMapper Value to assign to this.employmentMapper
      */
-    public final void setEmploymentMapper(final ContextMapper argEmploymentMapper) {
+    public final void setEmploymentMapper(final EntityEmploymentMapper argEmploymentMapper) {
         this.employmentMapper = argEmploymentMapper;
     }
 

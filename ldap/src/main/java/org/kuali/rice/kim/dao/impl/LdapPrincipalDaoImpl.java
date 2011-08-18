@@ -29,6 +29,7 @@ import javax.naming.directory.SearchControls;
 
 import org.apache.commons.lang.StringUtils;
 
+import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.address.EntityAddress;
 import org.kuali.rice.kim.api.identity.entity.Entity;
@@ -44,13 +45,9 @@ import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoDefault;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
-import org.kuali.rice.kim.bo.reference.AffiliationType;
-import org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl;
 import org.kuali.rice.kim.ldap.InvalidLdapEntityException;
-import org.kuali.rice.kns.bo.Parameter;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.ParameterService;
-import org.kuali.rice.kns.util.KualiDecimal;
+import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
 
 import org.springframework.ldap.SizeLimitExceededException;
 import org.springframework.ldap.control.PagedResultsDirContextProcessor;
@@ -110,7 +107,7 @@ public class LdapPrincipalDaoImpl implements LdapPrincipalDao {
     }
 
     /**
-     * In EDS, the principalId, principalName, and entityId will all be the same.
+     * Assuming he principalId, principalName, and entityId will all be the same.
      */
     public Principal getPrincipalByName(String principalName) {
         if (principalName == null) {
@@ -185,9 +182,9 @@ public class LdapPrincipalDaoImpl implements LdapPrincipalDao {
      * FIND entity objects based on the given criteria. 
      * 
      * @param entityId of user/person to grab entity information for
-     * @return {@link KImEntityInfo}
+     * @return {@link Entity}
      */
-	public Entity getEntityInfo(String entityId) {
+	public Entity getEntity(String entityId) {
 	    if (entityId == null) {
 	        return null;
 	    }
@@ -210,18 +207,18 @@ public class LdapPrincipalDaoImpl implements LdapPrincipalDao {
 	 * @param principalId the principal id to look the entity up for
 	 * @return the corresponding entity info
 	 */
-	public Entity getEntityInfoByPrincipalId(String principalId) {
+	public Entity getEntityByPrincipalId(String principalId) {
 	    if (principalId == null) {
 	        return null;
 	    }
 	   final Principal principal = getPrincipal(principalId);
 	   if (principal != null && !StringUtils.isBlank(principal.getEntityId())) {
-	       return getEntityInfo(principal.getEntityId());
+	       return getEntity(principal.getEntityId());
 	   }
 	   return null;
 	}
 
-	public EntityDefault getEntityDefaultInfo(String entityId) {
+	public EntityDefault getEntityDefault(String entityId) {
 	    if (entityId == null) {
 	        return null;
 	    }
@@ -244,11 +241,11 @@ public class LdapPrincipalDaoImpl implements LdapPrincipalDao {
      * 
      * @see #getEntityDefaultInfo(String)
      */
-	public EntityDefault getEntityDefaultInfoByPrincipalId(String principalId) {
-        return getEntityDefaultInfo(principalId);
+	public EntityDefault getEntityDefaultByPrincipalId(String principalId) {
+        return getEntityDefault(principalId);
     }
 
-	public EntityDefault getEntityDefaultInfoByPrincipalName(String principalName) {
+	public EntityDefault getEntityDefaultByPrincipalName(String principalName) {
         Map<String, Object> criteria = new HashMap();
         criteria.put(getKimConstants().getKimLdapNameProperty(), principalName);
 
@@ -260,7 +257,7 @@ public class LdapPrincipalDaoImpl implements LdapPrincipalDao {
         return null;
     }
 
-	public Entity getEntityInfoByPrincipalName(String principalName) {
+	public Entity getEntityByPrincipalName(String principalName) {
         Map<String, Object> criteria = new HashMap();
         criteria.put(getKimConstants().getKimLdapNameProperty(), principalName);
 
@@ -272,7 +269,7 @@ public class LdapPrincipalDaoImpl implements LdapPrincipalDao {
         return null;
     }
 
-	public List<EntityDefault> lookupEntityDefaultInfo(Map<String,String> searchCriteria, boolean unbounded) {
+	public List<EntityDefault> lookupEntityDefault(Map<String,String> searchCriteria, boolean unbounded) {
         List<EntityDefault> results = new ArrayList();
         Map<String, Object> criteria = getLdapLookupCriteria(searchCriteria);
         
@@ -281,11 +278,13 @@ public class LdapPrincipalDaoImpl implements LdapPrincipalDao {
         return results;
     }
 
-	public List<Entity> lookupEntityInfo(Map<String,String> searchCriteria, boolean unbounded) {
-        List<Entity> results = new ArrayList();
-        Map<String, Object> criteria = getLdapLookupCriteria(searchCriteria);
+	public List<String> lookupEntityIds(Map<String,String> searchCriteria) {
+        final List<String> results = new ArrayList<String>();
+        final Map<String, Object> criteria = getLdapLookupCriteria(searchCriteria);
         
-        results = search(Entity.class, criteria);
+        for (final Entity entity : search(Entity.class, criteria)) {
+            results.add(entity.getId());
+        }
         
         return results;
     }
@@ -347,46 +346,37 @@ public class LdapPrincipalDaoImpl implements LdapPrincipalDao {
         return null;
     }
 	
-    public Map<String, KimEntityNamePrincipalNameInfo> getDefaultNamesForPrincipalIds(List<String> principalIds) {
+    public Map<String, EntityNamePrincipalName> getDefaultNamesForPrincipalIds(List<String> principalIds) {
         Map<String, Object> criteria = new HashMap();
-        Map<String, KimEntityNamePrincipalNameInfo> retval = new HashMap();
+        Map<String, EntityNamePrincipalName> retval = new HashMap();
         criteria.put(getKimConstants().getKimLdapIdProperty(), principalIds);
 
-        List<KimEntityNamePrincipalNameInfo> results = search(KimEntityNamePrincipalNameInfo.class, criteria);
+        List<EntityNamePrincipalName> results = search(EntityNamePrincipalName.class, criteria);
 
-        for (KimEntityNamePrincipalNameInfo nameInfo : results) {
+        for (EntityNamePrincipalName nameInfo : results) {
             retval.put(nameInfo.getPrincipalName(), nameInfo);
         }
         return retval;
     }
 
-    public Map<String, EntityName> getDefaultNamesForEntityIds(List<String> entityIds) {
-        Map<String, Object> criteria = new HashMap();
-        Map<String, EntityName> retval = new HashMap();
-        criteria.put(getKimConstants().getKimLdapIdProperty(), entityIds);
-
-        List<EntityName> results = search(EntityName.class, criteria);
-
-        for (EntityName nameInfo : results) {
-            retval.put(nameInfo.getEntityNameId(), nameInfo);
-        }
-        return retval;
+    public Map<String, EntityNamePrincipalName> getDefaultNamesForEntityIds(List<String> entityIds) {
+        return getDefaultNamesForPrincipalIds(entityIds);
     }
 
     protected Matcher getKimAttributeMatcher(String kimAttribute) {
-        Parameter mappedParam = getParameterService().retrieveParameter(getKimConstants().getParameterNamespaceCode(),
-                                                                        getKimConstants().getParameterDetailTypeCode(),
-                                                                        getKimConstants().getMappedParameterName());
+        String mappedParamValue = getParameterService().getParameterValueAsString(getKimConstants().getParameterNamespaceCode(),
+                                                                                  getKimConstants().getParameterDetailTypeCode(),
+                                                                                  getKimConstants().getMappedParameterName());
 
         String regexStr = String.format("(%s|.*;%s)=([^=;]*).*", kimAttribute, kimAttribute);
         debug("Matching KIM attribute with regex ", regexStr);
-        Matcher retval = Pattern.compile(regexStr).matcher(mappedParam.getParameterValue());
+        Matcher retval = Pattern.compile(regexStr).matcher(mappedParamValue);
         
         if (!retval.matches()) {
-            mappedParam = getParameterService().retrieveParameter(getKimConstants().getParameterNamespaceCode(),
-                                                                  getKimConstants().getParameterDetailTypeCode(),
-                                                                  getKimConstants().getMappedValuesName());
-            retval = Pattern.compile(regexStr).matcher(mappedParam.getParameterValue());
+            mappedParamValue = getParameterService().getParameterValueAsString(getKimConstants().getParameterNamespaceCode(),
+                                                                          getKimConstants().getParameterDetailTypeCode(),
+                                                                          getKimConstants().getMappedValuesName());
+            retval = Pattern.compile(regexStr).matcher(mappedParamValue);
         }
 
         return retval;

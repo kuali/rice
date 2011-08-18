@@ -38,9 +38,9 @@ import static org.kuali.rice.core.util.BufferedLogger.*;
 public class EntityTypeContactInfoMapper extends AbstractContextMapper {
     private Constants constants;
 
-    private ContextMapper addressMapper;
-    private ContextMapper phoneMapper;
-    private ContextMapper emailMapper;;
+    private EntityAddressMapper addressMapper;
+    private EntityPhoneMapper phoneMapper;
+    private EntityEmailMapper emailMapper;;
 
     
     public Object doMapFromContext(DirContextOperations context) {
@@ -48,20 +48,19 @@ public class EntityTypeContactInfoMapper extends AbstractContextMapper {
         final String entityTypeCode = (String ) getConstants().getPersonEntityTypeCode();
 
         final EntityTypeContactInfo.Builder builder = EntityTypeContactInfo.Builder.create(entityId, entityTypeCode); 
-        final EntityAddress address = ((EntityAddressMapper) getAddressMapper()).mapFromContext(context);
-        final List<EntityAddress> addresses = new ArrayList<EntityAddress>();
+        final EntityAddress.Builder address = getAddressMapper().mapFromContext(context);
+        final List<EntityAddress.Builder> addresses = new ArrayList<EntityAddress.Builder>();
         addresses.add(address);
-        final List<EntityEmail> email = new ArrayList<EntityEmail>();
-        email.add(((EntityEmailMapper) getEmailMapper()).mapFromContext(context, true));
-        final List<EntityPhone> phone = new ArrayList<EntityPhone>();
-        phone.add(((EntityPhoneMapper) getPhoneMapper()).mapFromContext(context, true));
+        final List<EntityEmail.Builder> email = new ArrayList<EntityEmail.Builder>();
+        email.add(getEmailMapper().mapFromContext(context));
+        final List<EntityPhone.Builder> phone = new ArrayList<EntityPhone.Builder>();
+        phone.add(getPhoneMapper().mapFromContext(context));
         builder.setAddresses(addresses);
         builder.setEmailAddresses(email);
         builder.setPhoneNumbers(phone);
-        debug("Created Entity Type with code ", builder.getEntityTypeCode());
-        final EntityTypeContactInfo retval = new EntityTypeContactInfo(builder); 
-                
-        return retval;
+        debug("Created Entity Type with code ", builder.getEntityTypeCode());                
+
+        return builder;
     }
     
     /**
@@ -87,7 +86,7 @@ public class EntityTypeContactInfoMapper extends AbstractContextMapper {
      *
      * @return the value of addressMapper
      */
-    public final ContextMapper getAddressMapper() {
+    public final EntityAddressMapper getAddressMapper() {
         return this.addressMapper;
     }
 
@@ -96,7 +95,7 @@ public class EntityTypeContactInfoMapper extends AbstractContextMapper {
      *
      * @param argAddressMapper Value to assign to this.addressMapper
      */
-    public final void setAddressMapper(final ContextMapper argAddressMapper) {
+    public final void setAddressMapper(final EntityAddressMapper argAddressMapper) {
         this.addressMapper = argAddressMapper;
     }
 
@@ -105,7 +104,7 @@ public class EntityTypeContactInfoMapper extends AbstractContextMapper {
      *
      * @return the value of phoneMapper
      */
-    public final ContextMapper getPhoneMapper() {
+    public final EntityPhoneMapper getPhoneMapper() {
         return this.phoneMapper;
     }
 
@@ -114,7 +113,7 @@ public class EntityTypeContactInfoMapper extends AbstractContextMapper {
      *
      * @param argPhoneMapper Value to assign to this.phoneMapper
      */
-    public final void setPhoneMapper(final ContextMapper argPhoneMapper) {
+    public final void setPhoneMapper(final EntityPhoneMapper argPhoneMapper) {
         this.phoneMapper = argPhoneMapper;
     }
 
@@ -123,7 +122,7 @@ public class EntityTypeContactInfoMapper extends AbstractContextMapper {
      *
      * @return the value of emailMapper
      */
-    public final ContextMapper getEmailMapper() {
+    public final EntityEmailMapper getEmailMapper() {
         return this.emailMapper;
     }
 
@@ -132,7 +131,7 @@ public class EntityTypeContactInfoMapper extends AbstractContextMapper {
      *
      * @param argEmailMapper Value to assign to this.emailMapper
      */
-    public final void setEmailMapper(final ContextMapper argEmailMapper) {
+    public final void setEmailMapper(final EntityEmailMapper argEmailMapper) {
         this.emailMapper = argEmailMapper;
     }
 }

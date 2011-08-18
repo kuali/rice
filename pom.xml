@@ -836,6 +836,7 @@
     <module>ksb</module>
     <module>edl</module>
     <module>impl</module>
+    <module>ldap</module>
     <module>krms</module>
     <module>web</module>
     <module>development-tools</module>

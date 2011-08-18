@@ -17,9 +17,7 @@ package org.kuali.rice.kim.util;
 
 import java.util.Collection;
 
-import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
-
-import static org.kuali.rice.kim.service.KIMServiceLocator.getService;
+import org.kuali.rice.kim.api.identity.entity.Entity;
 
 /**
  * KIM Related Constants Implementation
@@ -28,7 +26,7 @@ import static org.kuali.rice.kim.service.KIMServiceLocator.getService;
  */ 
 class ConstantsImpl implements Constants {    
     private Collection<String> testPrincipalNames;
-    private KimEntityInfo entityPrototype;
+    private Entity entityPrototype;
     private String externalIdTypeProperty;
     private String taxExternalIdTypeCode;
     private String externalIdProperty;
@@ -70,10 +68,8 @@ class ConstantsImpl implements Constants {
      *
      * @return the value of entityPrototype
      */
-    public KimEntityInfo getEntityPrototype() {
-        // return this.entityPrototype;
-        return (KimEntityInfo) getService("entityPrototype");
-        // return (KimEntityDefaultInfo) getService("entityPrototype");
+    public Entity getEntityPrototype() {
+        return entityPrototype;
     }
 
     /**
@@ -81,7 +77,7 @@ class ConstantsImpl implements Constants {
      *
      * @param argEntityPrototype Value to assign to this.entityPrototype
      */
-    public void setEntityPrototype(KimEntityInfo argEntityPrototype) {
+    public void setEntityPrototype(Entity argEntityPrototype) {
         this.entityPrototype = argEntityPrototype;
     }
 

@@ -18,6 +18,7 @@ package org.kuali.rice.kim.ldap;
 import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.ldap.core.support.AbstractContextMapper;
 
+import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
 import org.kuali.rice.kim.util.Constants;
 
@@ -31,8 +32,8 @@ public class EntityEmploymentMapper extends AbstractContextMapper {
     private Constants constants;
     
     
-    public EntityEmployment mapFromContext(DirContextOperations context) {
-        return new EntityEmployment((EntityEmployment.Builder) doMapFromContext(context));
+    public EntityEmployment.Builder mapFromContext(DirContextOperations context) {
+        return (EntityEmployment.Builder) doMapFromContext(context);
     }
 
     public Object doMapFromContext(DirContextOperations context) {
@@ -43,10 +44,10 @@ public class EntityEmploymentMapper extends AbstractContextMapper {
         }
 
         final EntityEmployment.Builder employee = EntityEmployment.Builder.create();
-        employee.setEmployeeId(context.getStringAttribute(getConstants().getEmployeeIdProperty()));
-        employee.setEmployeeStatusCode(context.getStringAttribute(getConstants().getEmployeeStatusProperty()));
+        employee.setId(context.getStringAttribute(getConstants().getEmployeeIdProperty()));
+        employee.setEmployeeStatus(Type.Builder.create(context.getStringAttribute(getConstants().getEmployeeStatusProperty())));
         //employee.setEmployeeTypeCode(context.getStringAttribute(getConstants().getEmployeeTypeProperty()));
-        employee.setEmployeeTypeCode("P");
+        employee.setEmployeeType(Type.Builder.create("P"));
         employee.setBaseSalaryAmount(KualiDecimal.ZERO);
         
         employee.setActive(true);

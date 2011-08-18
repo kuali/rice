@@ -29,7 +29,8 @@ public class EntityPrivacyPreferencesMapper extends AbstractContextMapper {
     private Constants constants;
     
     public Object doMapFromContext(DirContextOperations context) {
-        EntityPrivacyPreferences person = new EntityPrivacyPreferences();
+        final String entityId      = context.getStringAttribute(getConstants().getKimLdapIdProperty());
+        final EntityPrivacyPreferences.Builder person = EntityPrivacyPreferences.Builder.create(entityId);
         person.setSuppressName(false);
         person.setSuppressEmail(false);
         person.setSuppressPhone(false);

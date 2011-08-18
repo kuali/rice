@@ -119,7 +119,7 @@
       <quartz.version>2.0.1</quartz.version>
     -->
     <quartz.version>1.8.4</quartz.version>
-    <selenium-java.version>2.3.1</selenium-java.version>
+    <selenium-java.version>2.4.0</selenium-java.version>
     <serializer.version>2.7.1</serializer.version>
     <servlet-api.version>2.5</servlet-api.version>
     <slf4j.version>1.6.1</slf4j.version>

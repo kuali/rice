@@ -157,14 +157,14 @@ public class MessageHelperImpl implements MessageHelper {
         return proxies;
     }
 
-    public static <T> T createProxy(boolean async, List<Endpoint> endpoints, AsynchronousCallback callback, Serializable context, String value1, String value2) {
-        return async ? (T) AsynchronousServiceCallProxy.createInstance(endpoints, callback, context, value1, value2)
-                : (T) SynchronousServiceCallProxy.createInstance(endpoints, callback, context, value1, value2);
+    public static <T> T createProxy(boolean sync, List<Endpoint> endpoints, AsynchronousCallback callback, Serializable context, String value1, String value2) {
+        return sync ? (T) SynchronousServiceCallProxy.createInstance(endpoints, callback, context, value1, value2)
+                : (T) AsynchronousServiceCallProxy.createInstance(endpoints, callback, context, value1, value2);
     }
 
-    public static <T> T createProxyDelayed(boolean async, List<Endpoint> endpoints,Serializable context, String value1, String value2, long delayMilliseconds) {
-        return async ? (T) DelayedAsynchronousServiceCallProxy.createInstance(endpoints, context, value1, value2, delayMilliseconds)
-                : (T) SynchronousServiceCallProxy.createInstance(endpoints, null, context, value1, value2);
+    public static <T> T createProxyDelayed(boolean sync, List<Endpoint> endpoints,Serializable context, String value1, String value2, long delayMilliseconds) {
+        return sync ? (T) SynchronousServiceCallProxy.createInstance(endpoints, null, context, value1, value2)
+                : (T) DelayedAsynchronousServiceCallProxy.createInstance(endpoints, context, value1, value2, delayMilliseconds);
     }
 
     private static boolean syncMode() {

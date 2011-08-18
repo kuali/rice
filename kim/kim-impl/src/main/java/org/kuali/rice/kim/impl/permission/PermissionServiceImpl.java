@@ -131,9 +131,6 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
         if (StringUtils.isBlank(permissionName)) {
             throw new RiceIllegalArgumentException("permissionName is null or blank");
         }
-        if (permissionDetails == null) {
-            throw new RiceIllegalArgumentException("permissionDetails is null");
-        }
         return isAuthorized( principalId, namespaceCode, permissionName, permissionDetails, null );
     }
 
@@ -148,12 +145,6 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 
         if (StringUtils.isBlank(permissionName)) {
             throw new RiceIllegalArgumentException("permissionName is null or blank");
-        }
-        if (permissionDetails == null) {
-            throw new RiceIllegalArgumentException("permissionDetails is null");
-        }
-        if (qualification == null) {
-            throw new RiceIllegalArgumentException("qualification is null");
         }
         List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName, permissionDetails );
     	if ( roleIds.isEmpty() ) {

@@ -58,8 +58,8 @@ public class ExtensionAttributeTest extends KRADTestCase {
         dd.addConfigFileLocation("file:" + getUserDir() + "/impl/src/main/resources/org/kuali/rice/krad/uif/UifGroupDefinitions.xml");
         dd.addConfigFileLocation("file:" + getUserDir() + "/impl/src/main/resources/org/kuali/rice/krad/uif/UifHeaderFooterDefinitions.xml");
         dd.addConfigFileLocation("file:" + getUserDir() + "/impl/src/main/resources/org/kuali/rice/krad/uif/UifLayoutManagerDefinitions.xml");
-        dd.addConfigFileLocation("file:" + getUserDir() + "/impl/src/main/resources/org/kuali/rice/krad/uif/UifMiscDefinitions.xml");
         dd.addConfigFileLocation("file:" + getUserDir() + "/impl/src/main/resources/org/kuali/rice/krad/uif/UifViewPageDefinitions.xml");
+        dd.addConfigFileLocation("file:" + getUserDir() + "/impl/src/main/resources/org/kuali/rice/krad/uif/UifWidgetDefinitions.xml");
         dd.addConfigFileLocation("file:" + getUserDir() + "/impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary");
 		dd.addConfigFileLocation("file:" + getUserDir() + "/impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml");
 		dd.addConfigFileLocation("file:" + getUserDir() + "/impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/EmploymentStatus.xml");

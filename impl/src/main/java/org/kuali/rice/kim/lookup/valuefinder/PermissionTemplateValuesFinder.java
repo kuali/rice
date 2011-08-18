@@ -18,8 +18,8 @@ package org.kuali.rice.kim.lookup.valuefinder;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
+import org.kuali.rice.kim.api.common.template.Template;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,10 +39,10 @@ public class PermissionTemplateValuesFinder extends KeyValuesBase {
 	 */
 	@Override
 	public List<KeyValue> getKeyValues() {
-		List<KimPermissionTemplateInfo> templates = KimApiServiceLocator.getPermissionService().getAllTemplates();
+		List<Template> templates = KimApiServiceLocator.getPermissionService().getAllTemplates();
 		List<KeyValue> result = new ArrayList<KeyValue>( templates.size() ); 
-		for ( KimPermissionTemplateInfo template : templates ) {
-			result.add( new ConcreteKeyValue( template.getPermissionTemplateId(), template.getNamespaceCode() + " : " + template.getName() ) );
+		for ( Template template : templates ) {
+			result.add( new ConcreteKeyValue( template.getId(), template.getNamespaceCode() + " : " + template.getName() ) );
 		}
 		return result;
 	}

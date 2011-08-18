@@ -35,11 +35,11 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Fetch
 import org.hibernate.annotations.FetchMode
 import org.hibernate.annotations.Type
+import org.kuali.rice.kim.api.permission.Permission
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
 import org.kuali.rice.kim.api.type.KimType
 import org.kuali.rice.kim.api.type.KimTypeAttribute
 import org.kuali.rice.kim.api.type.KimTypeInfoService
-import org.kuali.rice.kim.api.permission.Permission
 import org.kuali.rice.kim.api.permission.PermissionContract
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo
 import org.kuali.rice.kim.impl.role.RolePermissionBo
@@ -78,37 +78,37 @@ public class GenericPermissionBo extends PersistableBusinessObjectBase {
     @Transient
     protected Map<String, String> details;
 
-//    @OneToOne(targetEntity = PermissionTemplateBo.class, cascade = [], fetch = FetchType.EAGER)
-//    @JoinColumn(name = "PERM_TMPL_ID", insertable = false, updatable = false)
-//    PermissionTemplateBo template;
-//
-//    @OneToMany(targetEntity = PermissionAttributeBo.class, cascade = [CascadeType.ALL], fetch = FetchType.EAGER, mappedBy = "id")
-//    @Fetch(value = FetchMode.SELECT)
-//    List<PermissionAttributeBo> attributeDetails
-//
-//    @Transient
-//    Map<String,String> attributes;
-//
-//    @OneToMany(targetEntity = RolePermissionBo.class, cascade = [CascadeType.ALL], fetch = FetchType.EAGER, mappedBy = "id")
-//    @Fetch(value = FetchMode.SELECT)
-//    List<RolePermissionBo> rolePermissions
-//
-//    Map<String,String> getAttributes() {
-//        return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes
-//    }
-//
-//    //TODO: rename/fix later - only including this method and attributeDetails field for Role conversion
-//
-//    Map<String,String> getDetails() {
-//        return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes
-//    }
+    @OneToOne(targetEntity = PermissionTemplateBo.class, cascade = [], fetch = FetchType.EAGER)
+    @JoinColumn(name = "PERM_TMPL_ID", insertable = false, updatable = false)
+    PermissionTemplateBo template;
+
+    @OneToMany(targetEntity = PermissionAttributeBo.class, cascade = [CascadeType.ALL], fetch = FetchType.EAGER, mappedBy = "id")
+    @Fetch(value = FetchMode.SELECT)
+    List<PermissionAttributeBo> attributeDetails
+
+    @Transient
+    Map<String,String> attributes;
+
+    @OneToMany(targetEntity = RolePermissionBo.class, cascade = [CascadeType.ALL], fetch = FetchType.EAGER, mappedBy = "id")
+    @Fetch(value = FetchMode.SELECT)
+    List<RolePermissionBo> rolePermissions
+
+    Map<String,String> getAttributes() {
+        return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes
+    }
+
+    //TODO: rename/fix later - only including this method and attributeDetails field for Role conversion
+
+    Map<String,String> getDetails() {
+        return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes
+    }
 
     /**
      * Converts a mutable bo to its immutable counterpart
      * @param bo the mutable business object
      * @return the immutable object
      */
-    static Permission to(GenericPermissionBo bo) {
+    static PermissionBo to(GenericPermissionBo bo) {
         if (bo == null) {
             return null
         }
@@ -121,7 +121,7 @@ public class GenericPermissionBo extends PersistableBusinessObjectBase {
      * @param im immutable object
      * @return the mutable bo
      */
-    static GenericPermissionBo from(Permission im) {
+    static GenericPermissionBo from(PermissionBo im) {
         if (im == null) {
             return null
         }
@@ -145,46 +145,6 @@ public class GenericPermissionBo extends PersistableBusinessObjectBase {
         return template;
     }
     
-//    public String getDetailObjectsValues() {
-//        StringBuffer detailObjectsToDisplay = new StringBuffer();
-//        Iterator<PermissionAttributeBo> permIter = attributeDetails.iterator();
-//        while (permIter.hasNext()) {
-//            PermissionAttributeBo permissionAttributeData = permIter.next();
-//            detailObjectsToDisplay.append(permissionAttributeData.getAttributeValue());
-//            if (permIter.hasNext()) {
-//                detailObjectsToDisplay.append(KimApiConstants.KimUIConstants.COMMA_SEPARATOR);
-//            }
-//        }
-//        return detailObjectsToDisplay.toString();
-//    }
-//
-//    String getDetailObjectsToDisplay() {
-//        final KimType kimType = getTypeInfoService().getKimType( getTemplate().getKimTypeId() );
-//
-//        return attributeDetails.collect {
-//            getKimAttributeLabelFromDD(kimType.getAttributeDefinitionById(it.kimAttributeId)) + ":" + it.attributeValue
-//        }.join(",")
-//    }
-//    
-//    private String getKimAttributeLabelFromDD( KimTypeAttribute attribute ){
-//        return getDataDictionaryService().getAttributeLabel(attribute.getKimAttribute().getComponentName(), attribute.getKimAttribute().getAttributeName() );
-//    }
-//
-//    private DataDictionaryService dataDictionaryService;
-//    private DataDictionaryService getDataDictionaryService() {
-//        if(dataDictionaryService == null){
-//            dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
-//        }
-//        return dataDictionaryService;
-//    }
-//    
-//    private KimTypeInfoService kimTypeInfoService;
-//    private KimTypeInfoService getTypeInfoService() {
-//        if(kimTypeInfoService == null){
-//            kimTypeInfoService = KimApiServiceLocator.getKimTypeInfoService();
-//        }
-//        return kimTypeInfoService;
-//    }
     public String getDetailValues() {
         /*StringBuffer sb = new StringBuffer();
         if ( details != null ) {

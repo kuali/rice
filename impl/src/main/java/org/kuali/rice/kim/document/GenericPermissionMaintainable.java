@@ -16,8 +16,9 @@
 package org.kuali.rice.kim.document;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.impl.GenericPermission;
+import org.kuali.rice.kim.impl.permission.GenericPermissionBo;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
 import org.kuali.rice.krad.bo.BusinessObject;
@@ -45,17 +46,11 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 	public void saveBusinessObject() {
 		try {
 			if ( LOG.isInfoEnabled() ) {
-				LOG.info( "Attempting to save GenericPermission BO via PermissionUpdateService: " + getBusinessObject() );
+				LOG.info( "Attempting to save Permission BO via PermissionService: " + getBusinessObject() );
 			}
-			GenericPermission perm = (GenericPermission)getBusinessObject();
+			PermissionBo perm = (PermissionBo)getBusinessObject();
 			
-			KimApiServiceLocator.getPermissionUpdateService().savePermission( perm.getPermissionId(),
-					perm.getTemplateId(),
-					perm.getNamespaceCode(), 
-					perm.getName(), 
-					perm.getDescription(), 
-					perm.isActive(), 
-					new HashMap<String, String>(perm.getDetails()) );
+			KimApiServiceLocator.getPermissionService().createPermission(PermissionBo.to(perm));
 		} catch ( RuntimeException ex ) {
 			LOG.error( "Exception in saveBusinessObject()", ex );
 			throw ex;
@@ -69,7 +64,7 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 	 */
 	@Override
 	public Class<? extends PersistableBusinessObject> getBoClass() {
-		return GenericPermission.class;
+		return GenericPermissionBo.class;
 	}
 	
 	/**
@@ -95,11 +90,11 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 			}
 			if ( businessObject instanceof PermissionBo ) {
 				PermissionBo perm = getBusinessObjectService().findBySinglePrimaryKey(PermissionBo.class, ((PermissionBo)businessObject).getId() );
-				businessObject = new GenericPermission( perm );
-			} else if ( businessObject instanceof GenericPermission ) {
+				businessObject = GenericPermissionBo.from(perm);
+			} else if ( businessObject instanceof GenericPermissionBo ) {
 				// lookup the KimResponsibilityImpl and convert to a ReviewResponsibility
-				PermissionBo perm = getBusinessObjectService().findBySinglePrimaryKey(PermissionBo.class, ((GenericPermission)businessObject).getPermissionId() );		
-				((GenericPermission)businessObject).loadFromKimPermission(perm);
+				PermissionBo perm = getBusinessObjectService().findBySinglePrimaryKey(PermissionBo.class, ((GenericPermissionBo)businessObject).getId() );		
+				((GenericPermissionBo)businessObject).from(perm);
 			} else {
 				throw new RuntimeException( "Configuration ERROR: GenericPermissionMaintainable passed an unsupported object type: " + businessObject.getClass() );
 			}

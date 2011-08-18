@@ -136,17 +136,6 @@
   <property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kimJaxWsSoapService"
-        p:service-ref="kimPermissionUpdateService"
-        p:localServiceName="permissionUpdateServiceSoap"
-        p:serviceInterface="org.kuali.rice.kim.service.PermissionUpdateService" />
-    </property>
-    <property name="exportIf" value="permissionServiceSoap.expose"/>
-  </bean>
-
-  <bean parent="kimLocalServiceExporter">
-  <property name="serviceBus" ref="rice.ksb.serviceBus"/>
-    <property name="serviceDefinition">
-      <bean parent="kimJaxWsSoapService"
         p:service-ref="kimResponsibilityService"
         p:localServiceName="responsibilityServiceSoap"
         p:serviceInterface="org.kuali.rice.kim.api.responsibility.ResponsibilityService" />

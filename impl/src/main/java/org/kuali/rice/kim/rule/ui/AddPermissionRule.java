@@ -16,7 +16,6 @@
 package org.kuali.rice.kim.rule.ui;
 
 import org.kuali.rice.kim.api.permission.Permission;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.rule.event.ui.AddPermissionEvent;
 import org.kuali.rice.krad.rule.BusinessRule;

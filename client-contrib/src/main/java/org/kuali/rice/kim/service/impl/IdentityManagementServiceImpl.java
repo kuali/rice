@@ -35,8 +35,9 @@ import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.services.IdentityManagementService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.common.assignee.Assignee;
+import org.kuali.rice.kim.api.permission.PermissionService;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
-import org.kuali.rice.kim.service.PermissionService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -147,14 +148,14 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
     }
 
     @Override
-	public List<PermissionAssigneeInfo> getPermissionAssignees(String namespaceCode,
+	public List<Assignee> getPermissionAssignees(String namespaceCode,
 			String permissionName, Map<String, String> permissionDetails, Map<String, String> qualification) {
 		return this.permissionService.getPermissionAssignees(namespaceCode, permissionName,
                 permissionDetails, qualification);
 	}
 
     @Override
-	public List<PermissionAssigneeInfo> getPermissionAssigneesForTemplateName(String namespaceCode,
+	public List<Assignee> getPermissionAssigneesForTemplateName(String namespaceCode,
 			String permissionTemplateName, Map<String, String> permissionDetails,
 			Map<String, String> qualification) {
 		return this.permissionService.getPermissionAssigneesForTemplateName( namespaceCode,

@@ -18,6 +18,8 @@ package org.kuali.rice.kim.impl.jaxb;
 import javax.xml.bind.UnmarshalException;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.api.common.template.Template;
+import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.permission.PermissionContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
@@ -49,15 +51,13 @@ public final class PermissionXmlUtil {
         // Validate the new permission.
         validatePermission(newPermission);
         
-        // If the permission is a new one and not an override of an existing one, set its ID.
-        if (StringUtils.isBlank(newPermission.getPermissionId())) {
-            newPermission.setPermissionId(KimApiServiceLocator.getPermissionUpdateService().getNextAvailablePermissionId());
-        }
-        
         // Save the permission.
-        KimApiServiceLocator.getPermissionUpdateService().savePermission(newPermission.getPermissionId(), newPermission.getPermissionTemplateId(),
-                newPermission.getNamespaceCode(), newPermission.getPermissionName(), newPermission.getPermissionDescription(),
-                        newPermission.getActive().booleanValue(), newPermission.getPermissionDetails());
+        Permission.Builder builder = Permission.Builder.create(newPermission.getNamespaceCode(), newPermission.getPermissionName());
+        builder.setDescription(newPermission.getPermissionDescription());
+        builder.setActive(newPermission.getActive().booleanValue());
+        builder.setAttributes(newPermission.getPermissionDetails());
+        
+        KimApiServiceLocator.getPermissionService().createPermission(builder.build());
     }
 
     /**

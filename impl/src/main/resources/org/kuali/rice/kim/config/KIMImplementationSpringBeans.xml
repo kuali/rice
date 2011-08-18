@@ -108,7 +108,7 @@
 
     <bean id="kimRoleDao" class="org.kuali.rice.kim.impl.role.RoleDaoOjb" parent="kimPlatformAwareDao" />
 	<!--<bean id="kimGroupDao" class="org.kuali.rice.kim.impl.group.GroupDaoOjb" parent="kimPlatformAwareDao" />-->
-	<bean id="kimPermissionDao" class="org.kuali.rice.kim.dao.impl.KimPermissionDaoOjb" parent="kimPlatformAwareDao" />
+	<bean id="kimPermissionDao" class="org.kuali.rice.kim.impl.permission.PermissionDaoOjb" parent="kimPlatformAwareDao" />
 
   <!-- START JPA CONFIGURATION -->
 
@@ -157,11 +157,13 @@
   <!--
         Permission Service
   -->
-  <bean id="kimPermissionService" class="org.kuali.rice.kim.service.impl.PermissionServiceImpl"
+  <bean id="kimPermissionService" class="org.kuali.rice.kim.impl.permission.PermissionServiceImpl"
     p:permissionDao-ref="kimPermissionDao"
+    p:businessObjectService-ref="businessObjectService"
+    p:criteriaLookupService-ref="criteriaLookupService"
+    p:kimTypeInfoService-ref="kimTypeInfoService"
+    p:roleService-ref="kimRoleService"
   />
-
-  <bean id="kimPermissionUpdateService" class="org.kuali.rice.kim.service.impl.PermissionUpdateServiceImpl" />
 
   <!--
         Responsibility Service

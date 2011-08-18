@@ -20,8 +20,8 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
-import org.kuali.rice.kim.service.PermissionService;
+import org.kuali.rice.kim.api.common.assignee.Assignee;
+import org.kuali.rice.kim.api.permission.PermissionService;
 import org.kuali.rice.kns.kim.role.DerivedRoleTypeServiceBase;
 
 import java.util.ArrayList;
@@ -64,15 +64,15 @@ public class PermissionDerivedRoleTypeServiceImpl extends DerivedRoleTypeService
 		this.permissionTemplateName = permissionTemplateName;
 	}
 	
-	protected List<PermissionAssigneeInfo> getPermissionAssignees(Map<String, String> qualification) {
+	protected List<Assignee> getPermissionAssignees(Map<String, String> qualification) {
 		return getPermissionService().getPermissionAssigneesForTemplateName(permissionTemplateNamespace, permissionTemplateName, new HashMap<String, String>(qualification),  new HashMap<String, String>(qualification));
 	}
 
     @Override
     public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Map<String, String> qualification) {
-        List<PermissionAssigneeInfo> permissionAssignees = getPermissionAssignees(qualification);
+        List<Assignee> permissionAssignees = getPermissionAssignees(qualification);
         List<RoleMembership> members = new ArrayList<RoleMembership>();
-        for (PermissionAssigneeInfo permissionAssigneeInfo : permissionAssignees) {
+        for (Assignee permissionAssigneeInfo : permissionAssignees) {
             if (StringUtils.isNotBlank(permissionAssigneeInfo.getPrincipalId())) {
                 members.add(RoleMembership.Builder.create(null/*roleId*/, null, permissionAssigneeInfo.getPrincipalId(), Role.PRINCIPAL_MEMBER_TYPE, null).build());
             } else if (StringUtils.isNotBlank(permissionAssigneeInfo.getGroupId())) {

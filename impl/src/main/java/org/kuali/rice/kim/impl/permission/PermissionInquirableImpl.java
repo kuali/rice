@@ -25,7 +25,7 @@ import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.impl.role.RolePermissionBo;
 import org.kuali.rice.kim.inquiry.RoleMemberInquirableImpl;
 import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
-import org.kuali.rice.kim.service.PermissionService;
+import org.kuali.rice.kim.api.permission.PermissionService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.krad.bo.BusinessObject;

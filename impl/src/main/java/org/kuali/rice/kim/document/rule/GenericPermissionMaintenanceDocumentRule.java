@@ -18,10 +18,12 @@ package org.kuali.rice.kim.document.rule;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.bo.impl.GenericPermission;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
+import org.kuali.rice.kim.impl.permission.GenericPermissionBo;
+import org.kuali.rice.kim.impl.permission.PermissionBo;
+import org.kuali.rice.kim.impl.permission.PermissionTemplateBo;
 import org.kuali.rice.kim.framework.permission.PermissionTypeService;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.document.MaintenanceDocument;
@@ -50,11 +52,11 @@ public class GenericPermissionMaintenanceDocumentRule extends MaintenanceDocumen
 	protected boolean processCustomRouteDocumentBusinessRules(MaintenanceDocument document) {
 		boolean rulesPassed = true;
 		try {
-			GenericPermission perm = (GenericPermission)getNewBo();
+			GenericPermissionBo perm = (GenericPermissionBo)getNewBo();
 			validateDetailValuesFormat(perm.getDetailValues());
 			// detailValues
 			// get the type from the template for validation
-			KimPermissionTemplateInfo template = KimApiServiceLocator.getPermissionService().getPermissionTemplate( perm.getTemplateId() );
+			Template template = KimApiServiceLocator.getPermissionService().getPermissionTemplate( PermissionTemplateBo.to(perm.getTemplate()).getId());
 			if ( template == null ) {
 				GlobalVariables.getMessageMap().addToErrorPath( MAINTAINABLE_ERROR_PATH );
 				GlobalVariables.getMessageMap().putError( DETAIL_VALUES_PROPERTY, ERROR_MISSING_TEMPLATE, perm.getTemplateId() );

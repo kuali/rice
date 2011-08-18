@@ -21,7 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.impl.GenericPermission;
+import org.kuali.rice.kim.impl.permission.GenericPermissionBo;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.impl.permission.UberPermissionBo;
 import org.kuali.rice.kim.impl.role.RoleBo;
@@ -72,7 +72,7 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 	public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames) {
     	List<HtmlData> htmlDataList = new ArrayList<HtmlData>();
     	// convert the PermissionImpl class into a GenericPermission object
-    	businessObject = new GenericPermission( (UberPermissionBo)businessObject );
+    	businessObject = GenericPermissionBo.from( (UberPermissionBo)businessObject );
         if (allowsMaintenanceEditAction(businessObject)) {
         	htmlDataList.add(getUrlData(businessObject, KRADConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames));
         }
@@ -104,7 +104,7 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 	@Override
 	protected String getMaintenanceDocumentTypeName() {
 		if ( !genericPermissionDocumentTypeNameLoaded ) {
-			genericPermissionDocumentTypeName = getMaintenanceDocumentDictionaryService().getDocumentTypeName(GenericPermission.class);
+			genericPermissionDocumentTypeName = getMaintenanceDocumentDictionaryService().getDocumentTypeName(GenericPermissionBo.class);
 			genericPermissionDocumentTypeNameLoaded = true;
 		}
 		return genericPermissionDocumentTypeName;

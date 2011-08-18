@@ -120,11 +120,42 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
      * @see org.kuali.rice.kim.service.PermissionService#hasPermission(java.lang.String, String, java.lang.String, Map<String, String>)
      */
     public boolean hasPermission(String principalId, String namespaceCode, String permissionName, Map<String, String> permissionDetails) {
-    	return isAuthorized( principalId, namespaceCode, permissionName, permissionDetails, null );
+        if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId is null or blank");
+        }
+
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
+        }
+
+        if (StringUtils.isBlank(permissionName)) {
+            throw new RiceIllegalArgumentException("permissionName is null or blank");
+        }
+        if (permissionDetails == null) {
+            throw new RiceIllegalArgumentException("permissionDetails is null");
+        }
+        return isAuthorized( principalId, namespaceCode, permissionName, permissionDetails, null );
     }
 
     public boolean isAuthorized(String principalId, String namespaceCode, String permissionName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
-    	List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName, permissionDetails );
+        if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId is null or blank");
+        }
+
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
+        }
+
+        if (StringUtils.isBlank(permissionName)) {
+            throw new RiceIllegalArgumentException("permissionName is null or blank");
+        }
+        if (permissionDetails == null) {
+            throw new RiceIllegalArgumentException("permissionDetails is null");
+        }
+        if (qualification == null) {
+            throw new RiceIllegalArgumentException("qualification is null");
+        }
+        List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName, permissionDetails );
     	if ( roleIds.isEmpty() ) {
     		return false;
     	}
@@ -136,11 +167,42 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     }
 
     public boolean hasPermissionByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails) {
-    	return isAuthorizedByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails, null );
+        if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId is null or blank");
+        }
+
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
+        }
+
+        if (StringUtils.isBlank(permissionTemplateName)) {
+            throw new RiceIllegalArgumentException("permissionTemplateName is null or blank");
+        }
+        if (permissionDetails == null) {
+            throw new RiceIllegalArgumentException("permissionDetails is null");
+        }
+        return isAuthorizedByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails, null );
     }
 
     public boolean isAuthorizedByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
-    	List<String> roleIds = getRoleIdsForPermissionTemplate( namespaceCode, permissionTemplateName, permissionDetails );
+        if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId is null or blank");
+        }
+
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
+        }
+
+        if (StringUtils.isBlank(permissionTemplateName)) {
+            throw new RiceIllegalArgumentException("permissionTemplateName is null or blank");
+        }
+        if (qualification == null) {
+            throw new RiceIllegalArgumentException("qualification is null");
+        }
+        if (permissionDetails == null) {
+            throw new RiceIllegalArgumentException("permissionDetails is null");
+        }
+        List<String> roleIds = getRoleIdsForPermissionTemplate( namespaceCode, permissionTemplateName, permissionDetails );
     	if ( roleIds.isEmpty() ) {
     		return false;
     	}
@@ -148,7 +210,24 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     }
 
     public List<Permission> getAuthorizedPermissions( String principalId, String namespaceCode, String permissionName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
-    	// get all the permission objects whose name match that requested
+        if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId is null or blank");
+        }
+
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
+        }
+
+        if (StringUtils.isBlank(permissionName)) {
+            throw new RiceIllegalArgumentException("permissionName is null or blank");
+        }
+        if (qualification == null) {
+            throw new RiceIllegalArgumentException("qualification is null");
+        }
+        if (permissionDetails == null) {
+            throw new RiceIllegalArgumentException("permissionDetails is null");
+        }
+        // get all the permission objects whose name match that requested
     	PermissionBo permissions = getPermissionImplsByName( namespaceCode, permissionName );
     	// now, filter the full list by the detail passed
     	List<Permission> applicablePermissions = getMatchingPermissions( Collections.singletonList(permissions), permissionDetails );
@@ -156,7 +235,24 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     }
 
     public List<Permission> getAuthorizedPermissionsByTemplateName( String principalId, String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
-    	// get all the permission objects whose name match that requested
+        if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId is null or blank");
+        }
+
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
+        }
+
+        if (StringUtils.isBlank(permissionTemplateName)) {
+            throw new RiceIllegalArgumentException("permissionTemplateName is null or blank");
+        }
+        if (qualification == null) {
+            throw new RiceIllegalArgumentException("qualification is null");
+        }
+        if (permissionDetails == null) {
+            throw new RiceIllegalArgumentException("permissionDetails is null");
+        }
+        // get all the permission objects whose name match that requested
     	PermissionBo permissions = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
     	// now, filter the full list by the detail passed
     	List<Permission> applicablePermissions = getMatchingPermissions( Collections.singletonList(permissions), permissionDetails );
@@ -361,7 +457,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
         return businessObjectService.findByPrimaryKey( PermissionBo.class, pk );
     }
     
-    protected PermissionBo getPermissionImplsByTemplateName( String namespaceCode, String permissionTemplateName ) {
+    protected PermissionBo getPermissionImplsByTemplateName( String namespaceCode, String permissionTemplateName ){
         HashMap<String,Object> pk = new HashMap<String,Object>( 3 );
         pk.put( "template.namespaceCode", namespaceCode );
         pk.put( "template.name", permissionTemplateName );
@@ -374,6 +470,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
         pk.put( KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode );
         pk.put( KimConstants.UniqueKeyConstants.PERMISSION_NAME, permissionName );
         pk.put( KRADPropertyConstants.ACTIVE, "Y" );
+        
         return ((List<PermissionBo>) businessObjectService.findMatching( PermissionBo.class, pk )).get(0);
     }
 
@@ -529,7 +626,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
      *
      * @param dataDictionaryService The dataDictionaryService to set.
      */
-	protected void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
+	public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
 		this.dataDictionaryService = dataDictionaryService;
 	}
 	
@@ -538,7 +635,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
      *
      * @param kimTypeInfoService The kimTypeInfoService to set.
      */
-	protected void setKimTypeInfoService(KimTypeInfoService kimTypeInfoService) {
+	public void setKimTypeInfoService(KimTypeInfoService kimTypeInfoService) {
 		this.kimTypeInfoService = kimTypeInfoService;
 	}
 	
@@ -547,16 +644,17 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
      *
      * @param defaultPermissionTypeService The defaultPermissionTypeService to set.
      */
-	protected void setDefaultPermissionTypeService(PermissionTypeService defaultPermissionTypeService) {
+	public void setDefaultPermissionTypeService(PermissionTypeService defaultPermissionTypeService) {
     	this.defaultPermissionTypeService = defaultPermissionTypeService;
 	}
 	
+	// TODO remove business object dd service?
 	/**
      * Sets the businessObjectDictionaryService attribute value.
      *
      * @param businessObjectDictionaryService The businessObjectDictionaryService to set.
      */
-	protected void setBusinessObjectDictionaryService(BusinessObjectDictionaryService businessObjectDictionaryService) {
+	public void setBusinessObjectDictionaryService(BusinessObjectDictionaryService businessObjectDictionaryService) {
 		this.businessObjectDictionaryService = businessObjectDictionaryService;
 	}
 	

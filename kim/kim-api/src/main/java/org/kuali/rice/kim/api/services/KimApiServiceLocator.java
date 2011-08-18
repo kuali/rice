@@ -6,8 +6,7 @@ import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
-import org.kuali.rice.kim.service.PermissionService;
-import org.kuali.rice.kim.service.PermissionUpdateService;
+import org.kuali.rice.kim.api.permission.PermissionService;
 import org.kuali.rice.kim.api.identity.PersonService;
 
 public class KimApiServiceLocator {
@@ -19,7 +18,6 @@ public class KimApiServiceLocator {
     public static final String KIM_RESPONSIBILITY_SERVICE = "kimResponsibilityService";
     public static final String KIM_ROLE_SERVICE = "kimRoleService";
     public static final String KIM_PERSON_SERVICE = "personService";
-	public static final String KIM_PERMISSION_UPDATE_SERVICE = "kimPermissionUpdateService";
     public static final String KIM_TYPE_INFO_SERVICE = "kimTypeInfoService";
 
     static <T> T getService(String serviceName) {
@@ -53,9 +51,5 @@ public class KimApiServiceLocator {
     }
     public static ResponsibilityService getResponsibilityService() {
     	return getService(KIM_RESPONSIBILITY_SERVICE);
-    }
-
-    public static PermissionUpdateService getPermissionUpdateService() {
-    	return getService(KIM_PERMISSION_UPDATE_SERVICE);
     }
 }

@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.document.authorization;
 
-import org.kuali.rice.kim.bo.impl.GenericPermission;
+import org.kuali.rice.kim.impl.permission.GenericPermissionBo;
 import org.kuali.rice.krad.document.authorization.MaintenanceDocumentPresentationControllerBase;
 
 /**
@@ -34,7 +34,7 @@ public class GenericPermissionMaintenanceDocumentPresentationController extends
 	 */
 	@Override
 	public boolean canCreate(Class boClass) {
-		return super.canCreate( GenericPermission.class );
+		return super.canCreate( GenericPermissionBo.class );
 	}
 	
 	

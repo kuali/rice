@@ -153,9 +153,6 @@ public class Assignee extends AbstractDataTransferObject implements AssigneeCont
         }
 
         public void setPrincipalId(final String principalId) {
-            if (StringUtils.isBlank(principalId)) {
-                throw new IllegalArgumentException("principalId is blank");
-            }
             this.principalId = principalId;
         }
 
@@ -165,9 +162,6 @@ public class Assignee extends AbstractDataTransferObject implements AssigneeCont
         }
 
         public void setGroupId(final String groupId) {
-        	if (StringUtils.isBlank(groupId)) {
-                throw new IllegalArgumentException("groupId is blank");
-            }
         	this.groupId = groupId;
         }
 
@@ -177,14 +171,17 @@ public class Assignee extends AbstractDataTransferObject implements AssigneeCont
 		}
 		
         public void setDelegates(final List<DelegateType.Builder> delegates) {
-        	if (delegates == null || delegates.isEmpty()) {
-                throw new IllegalArgumentException("delegates is null or empty");
-            }
         	this.delegates = Collections.unmodifiableList(new ArrayList<DelegateType.Builder>(delegates));
         }		
 		
 		@Override
 		public Assignee build() {
+		    //validate required fields
+            final boolean requiredSet = (groupId != null ^ principalId != null) && delegates != null;
+            if (!requiredSet) {
+                throw new IllegalStateException("all the required fields are not set");
+            }
+
 			return new Assignee(this);
 		}
        

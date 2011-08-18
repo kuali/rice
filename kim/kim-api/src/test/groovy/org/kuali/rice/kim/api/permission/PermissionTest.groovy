@@ -93,23 +93,22 @@ class PermissionTest {
 	
     @Test
     void happy_path() {
-        Permission.Builder.create(NAMESPACE_CODE, NAME, TEMPLATE)
+        Permission.Builder.create(NAMESPACE_CODE, NAME)
     }
 
 	@Test(expected = IllegalArgumentException.class)
 	void test_Builder_fail_ver_num_null() {
-		Permission.Builder.create(NAMESPACE_CODE, NAME, TEMPLATE).setVersionNumber(null);
+		Permission.Builder.create(NAMESPACE_CODE, NAME).setVersionNumber(null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	void test_Builder_fail_ver_num_less_than_1() {
-		Permission.Builder.create(NAMESPACE_CODE, NAME, TEMPLATE).setVersionNumber(-1);
+		Permission.Builder.create(NAMESPACE_CODE, NAME).setVersionNumber(-1);
 	}
 	
 	@Test
 	void test_copy() {
-		def o1b = Permission.Builder.create(NAMESPACE_CODE, NAME, TEMPLATE)
-		o1b.description = DESCRIPTION
+		def o1b = Permission.Builder.create(NAMESPACE_CODE, NAME)
 
 		def o1 = o1b.build()
 

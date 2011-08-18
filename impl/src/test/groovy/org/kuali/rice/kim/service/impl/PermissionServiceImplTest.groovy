@@ -1,20 +1,25 @@
 package org.kuali.rice.kim.service.impl
 
+import java.util.List;
+
 import org.junit.Test;
 import groovy.mock.interceptor.MockFor
 import org.junit.Before
 import org.kuali.rice.kim.api.role.RoleService
-import org.kuali.rice.kim.service.PermissionService
+import org.kuali.rice.kim.api.permission.PermissionService
 import org.kuali.rice.krad.service.BusinessObjectService
 import org.kuali.rice.kim.impl.permission.PermissionBo
 import org.junit.Assert
 import org.junit.BeforeClass
-import org.kuali.rice.kim.dao.KimPermissionDao
+import org.kuali.rice.kim.impl.permission.PermissionDao
+import org.kuali.rice.kim.api.common.assignee.Assignee
 import org.kuali.rice.kim.api.permission.Permission
 import org.kuali.rice.kim.impl.permission.PermissionTemplateBo
 import org.kuali.rice.kim.api.role.RoleMembership
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo
+import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.common.delegate.DelegateType
+import org.kuali.rice.kim.impl.permission.PermissionServiceImpl
 
 /*
  * Copyright 2007-2009 The Kuali Foundation
@@ -34,10 +39,10 @@ import org.kuali.rice.kim.api.common.delegate.DelegateType
 class PermissionServiceImplTest {
     private MockFor mockRoleService;
     private MockFor mockBoService;
-    private MockFor mockKimPermissionDao;
+    private MockFor mockPermissionDao;
     private RoleService roleService;
     private BusinessObjectService boService;
-    private KimPermissionDao kimPermissionDao;
+    private PermissionDao permissionDao;
     PermissionService permissionService;
     PermissionServiceImpl permissionServiceImpl;
 
@@ -60,7 +65,7 @@ class PermissionServiceImplTest {
     void setupMockContext() {
         mockRoleService = new MockFor(RoleService.class);
         mockBoService = new MockFor(BusinessObjectService.class);
-        mockKimPermissionDao = new MockFor(KimPermissionDao.class);
+        mockPermissionDao = new MockFor(PermissionDao.class);
     }
 
     @Before
@@ -80,8 +85,8 @@ class PermissionServiceImplTest {
     }
 
     void injectKimPermissionDaoIntoPermissionService() {
-        kimPermissionDao = mockKimPermissionDao.proxyDelegateInstance();
-        permissionServiceImpl.setPermissionDao(kimPermissionDao);
+        permissionDao = mockPermissionDao.proxyDelegateInstance();
+        permissionServiceImpl.setPermissionDao(permissionDao);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -113,7 +118,7 @@ class PermissionServiceImplTest {
             }
         }
 
-        mockKimPermissionDao.demand.getRoleIdsForPermissions(1) {
+        mockPermissionDao.demand.getRoleIdsForPermissions(1) {
             Collection<PermissionBo> permissions -> List<String> roleIds = new ArrayList<String>(1);
             roleIds.add("test");
             return roleIds;
@@ -161,7 +166,7 @@ class PermissionServiceImplTest {
             }
         }
 
-        mockKimPermissionDao.demand.getRoleIdsForPermissions(1) {
+        mockPermissionDao.demand.getRoleIdsForPermissions(1) {
             Collection<PermissionBo> permissions -> List<String> roleIds = new ArrayList<String>(1);
             roleIds.add("test");
             return roleIds;
@@ -211,7 +216,7 @@ class PermissionServiceImplTest {
             }
         }
 
-        mockKimPermissionDao.demand.getRoleIdsForPermissions(1) {
+        mockPermissionDao.demand.getRoleIdsForPermissions(1) {
             Collection<PermissionBo> permissions -> List<String> roleIds = new ArrayList<String>(1);
             roleIds.add("test");
             return roleIds;
@@ -225,7 +230,7 @@ class PermissionServiceImplTest {
         injectKimPermissionDaoIntoPermissionService();
         injectRoleServiceIntoPermissionService();
 
-        List<Permission> actualPermissions = permissionService.getAuthorizedPermissions(authorizedPrincipalId, authorizedNamespaceCode, authorizedPermissionName, authorizedPermissionDetails, authorizedQualification);
+		List<Permission> actualPermissions = permissionService.getAuthorizedPermissions(authorizedPrincipalId, authorizedNamespaceCode, authorizedPermissionName, authorizedPermissionDetails, authorizedQualification);
 
         Assert.assertEquals(expectedPermissions.size(), actualPermissions.size());
         Assert.assertEquals(expectedPermissions[0], actualPermissions[0]);
@@ -264,7 +269,7 @@ class PermissionServiceImplTest {
             }
         }
 
-        mockKimPermissionDao.demand.getRoleIdsForPermissions(1) {
+        mockPermissionDao.demand.getRoleIdsForPermissions(1) {
             Collection<PermissionBo> permissions -> List<String> roleIds = new ArrayList<String>(1);
             roleIds.add("test");
             return roleIds;
@@ -288,47 +293,50 @@ class PermissionServiceImplTest {
 
     @Test
     void testGetPermissionAssigneesSucceeds() {
-        String authorizedNamespaceCode = "namespaceone";
-        String permissionName = "permission";
-        Map<String, String> authorizedPermissionDetails = new HashMap<String, String>();
-        Map<String, String> authorizedQualification = new HashMap<String, String>();
-        List<PermissionAssigneeInfo> expectedPermissions = new ArrayList<PermissionAssigneeInfo>();
-        expectedPermissions.add(new PermissionAssigneeInfo("memberid", null, new ArrayList<DelegateType>()));
+		String authorizedPrincipalId = "principalid";
+		String authorizedNamespaceCode = "namespacecodeone";
+		String authorizedPermissionName = "permissionone";
+		Map<String, String> authorizedPermissionDetails = new HashMap<String, String>();
+		Map<String, String> authorizedQualification = new HashMap<String, String>();
 
-        mockBoService.demand.findMatching(1..samplePermissions.size()) {
-            Class clazz, Map map -> for (PermissionBo permissionBo in samplePermissions.values()) {
-                if (permissionBo.namespaceCode.equals(map.get("namespaceCode")))
-                {
-                    Collection<PermissionBo> permissions = new ArrayList<PermissionBo>();
-                    permissions.add(permissionBo);
-                    return permissions;
-                }
-            }
-        }
+		Assignee.Builder assigneeBuilder = Assignee.Builder.create("memberid", null, new ArrayList<DelegateType.Builder>());
+		List<Assignee> expectedPermissions = new ArrayList<Assignee>();
+		expectedPermissions.add(assigneeBuilder.build());
+		
+		mockBoService.demand.findMatching(1..samplePermissions.size()) {
+			Class clazz, Map map -> for (PermissionBo permissionBo in samplePermissions.values()) {
+				if (permissionBo.namespaceCode.equals(map.get("namespaceCode")))
+				{
+					Collection<PermissionBo> permissions = new ArrayList<PermissionBo>();
+					permissions.add(permissionBo);
+					return permissions;
+				}
+			}
+		}
 
-        mockKimPermissionDao.demand.getRoleIdsForPermissions(1) {
-            Collection<PermissionBo> permissions -> List<String> roleIds = new ArrayList<String>(1);
-            roleIds.add("test");
-            return roleIds;
-        }
+		mockPermissionDao.demand.getRoleIdsForPermissions(1) {
+			Collection<PermissionBo> permissions -> List<String> roleIds = new ArrayList<String>(1);
+			roleIds.add("test");
+			return roleIds;
+		}
 
-        mockRoleService.demand.getRoleMembers(1) {
+		mockRoleService.demand.getRoleMembers(1) {
             List<String> roleIds, Map<String, String> qualification -> List<RoleMembership> memberships = new ArrayList<RoleMembership>(1);
             RoleMembership.Builder builder = RoleMembership.Builder.create("roleidone", "rolememberId", "memberid", "P", null);
             memberships.add(builder.build());
             return memberships;
         }
 
-        injectBusinessObjectServiceIntoPermissionService();
-        injectKimPermissionDaoIntoPermissionService();
-        injectRoleServiceIntoPermissionService();
+		injectBusinessObjectServiceIntoPermissionService();
+		injectKimPermissionDaoIntoPermissionService();
+		injectRoleServiceIntoPermissionService();
 
-        List<PermissionAssigneeInfo> actualPermissions = permissionService.getPermissionAssignees(authorizedNamespaceCode, permissionName, authorizedPermissionDetails, authorizedQualification);
+		List<Assignee> actualPermissions = permissionService.getPermissionAssignees(authorizedNamespaceCode, authorizedPermissionName, authorizedPermissionDetails, authorizedQualification);
 
-        Assert.assertEquals(expectedPermissions.size(), actualPermissions.size());
-        Assert.assertEquals(expectedPermissions[0].principalId, actualPermissions[0].principalId);
+		Assert.assertEquals(expectedPermissions.size(), actualPermissions.size());
+		Assert.assertEquals(expectedPermissions[0], actualPermissions[0]);
 
-        mockBoService.verify(boService)
+		mockBoService.verify(boService)
     }
 
     @Test
@@ -338,7 +346,7 @@ class PermissionServiceImplTest {
         Map<String, String> authorizedPermissionDetails = new HashMap<String, String>();
         Map<String, String> authorizedQualification = new HashMap<String, String>();
         List<PermissionAssigneeInfo> expectedPermissions = new ArrayList<PermissionAssigneeInfo>();
-        expectedPermissions.add(new PermissionAssigneeInfo("memberid", null, new ArrayList<DelegateType>()));
+        expectedPermissions.add(new PermissionAssigneeInfo("memberid", "groupId", new ArrayList<DelegateType>()));
 
         mockBoService.demand.findMatching(1..samplePermissions.size()) {
             Class clazz, Map map -> for (PermissionBo permissionBo in samplePermissions.values()) {
@@ -351,7 +359,7 @@ class PermissionServiceImplTest {
             }
         }
 
-        mockKimPermissionDao.demand.getRoleIdsForPermissions(1) {
+        mockPermissionDao.demand.getRoleIdsForPermissions(1) {
             Collection<PermissionBo> permissions -> List<String> roleIds = new ArrayList<String>(1);
             roleIds.add("test");
             return roleIds;

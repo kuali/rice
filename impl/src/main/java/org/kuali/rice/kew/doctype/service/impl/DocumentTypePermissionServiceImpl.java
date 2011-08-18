@@ -24,7 +24,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.service.PermissionService;
+import org.kuali.rice.kim.api.permission.PermissionService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.datadictionary.MaintenanceDocumentEntry;

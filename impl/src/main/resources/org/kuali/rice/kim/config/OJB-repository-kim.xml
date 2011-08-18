@@ -594,7 +594,7 @@
   <!-- ******************************************************************* -->
 
   <class-descriptor class="org.kuali.rice.kim.impl.permission.PermissionBo" table="KRIM_PERM_T">
-    <field-descriptor name="id" column="PERM_ID" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="id" column="PERM_ID" jdbc-type="VARCHAR" primarykey="true" sequence-name="KRIM_PERM_ID_S" autoincrement="true"/>
     <field-descriptor name="namespaceCode" column="NMSPC_CD" jdbc-type="VARCHAR" />
     <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
     <field-descriptor name="description" column="DESC_TXT" jdbc-type="VARCHAR" />

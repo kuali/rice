@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.api.services;
 
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.kim.api.common.assignee.Assignee;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.Type;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
@@ -28,7 +29,6 @@ import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
-import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -224,14 +224,14 @@ public interface IdentityManagementService {
               Map<String, String> qualification
     );
 
-    List<PermissionAssigneeInfo> getPermissionAssignees(
+    List<Assignee> getPermissionAssignees(
              String namespaceCode,
              String permissionName,
               Map<String, String> permissionDetails,
               Map<String, String> qualification
     );
 
-    List<PermissionAssigneeInfo> getPermissionAssigneesForTemplateName(
+    List<Assignee> getPermissionAssigneesForTemplateName(
              String namespaceCode,
              String permissionTemplateName,
              Map<String, String> permissionDetails,

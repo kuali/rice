@@ -18,7 +18,7 @@ package org.kuali.rice.kim.lookup;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.bo.impl.GenericPermission;
+import org.kuali.rice.kim.impl.permission.GenericPermissionBo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.KualiLookupableImpl;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -45,7 +45,7 @@ public class PermissionLookupableImpl extends KualiLookupableImpl {
         if (getLookupableHelperService().allowsNewOrCopyAction(KimConstants.KimUIConstants.KIM_PERMISSION_DOCUMENT_TYPE_NAME)) {
             Properties parameters = new Properties();
             parameters.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.MAINTENANCE_NEW_METHOD_TO_CALL);
-            parameters.put(KRADConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, GenericPermission.class.getName());
+            parameters.put(KRADConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, GenericPermissionBo.class.getName());
 	        if (StringUtils.isNotBlank(getReturnLocation())) {
 	        	parameters.put(KRADConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());
 	        	}

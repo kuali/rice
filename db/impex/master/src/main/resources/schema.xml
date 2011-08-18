@@ -940,41 +940,6 @@
             <index-column name="TYP_ID"/>
         </index>
     </table>
-    <table name="KREW_RIA_DOCTYPE_MAP_T">
-        <column name="ID" primaryKey="true" size="22" type="DECIMAL"/>
-        <column name="RIA_DOC_TYPE_NAME" size="100" type="VARCHAR"/>
-        <column name="UPDATED_AT" type="DATE"/>
-        <column name="RIA_URL" size="255" type="VARCHAR"/>
-        <column name="HELP_URL" size="255" type="VARCHAR"/>
-        <column name="EDITABLE" size="1" type="CHAR"/>
-        <column name="INIT_GROUPS" size="255" type="VARCHAR"/>
-        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column default="SYS_GUID()" name="OBJ_ID" required="true"
-            size="36" type="VARCHAR"/>
-    </table>
-    <table name="KREW_RIA_DOC_T">
-        <column name="RIA_ID" primaryKey="true" size="22" type="DECIMAL"/>
-        <column name="XML_CONTENT" size="4000" type="VARCHAR"/>
-        <column name="RIA_DOC_TYPE_NAME" size="100" type="VARCHAR"/>
-        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column default="SYS_GUID()" name="OBJ_ID" required="true"
-            size="36" type="VARCHAR"/>
-    </table>
-    <table name="KREW_RMV_RPLC_DOC_T">
-        <column name="DOC_HDR_ID" primaryKey="true" size="40" type="VARCHAR"/>
-        <column name="OPRN" required="true" size="1" type="CHAR"/>
-        <column name="PRNCPL_ID" required="true" size="40" type="VARCHAR"/>
-        <column name="RPLC_PRNCPL_ID" size="40" type="VARCHAR"/>
-        <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
-    </table>
-    <table name="KREW_RMV_RPLC_GRP_T">
-        <column name="DOC_HDR_ID" primaryKey="true" size="40" type="VARCHAR"/>
-        <column name="GRP_ID" primaryKey="true" size="14" type="DECIMAL"/>
-    </table>
-    <table name="KREW_RMV_RPLC_RULE_T">
-        <column name="DOC_HDR_ID" primaryKey="true" size="40" type="VARCHAR"/>
-        <column name="RULE_ID" primaryKey="true" size="19" type="DECIMAL"/>
-    </table>
     <table name="KREW_RTE_BRCH_PROTO_T">
         <column name="RTE_BRCH_PROTO_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="BRCH_NM" required="true" size="255" type="VARCHAR"/>
@@ -3693,7 +3658,6 @@
     <sequence name="KREW_PPL_FLW_ATTR_S" nextval="10000"/>
     <sequence name="KREW_PPL_FLW_MBR_S" nextval="10000"/>
     <sequence name="KREW_PPL_FLW_S" nextval="10000"/>
-    <sequence name="KREW_RIA_DOCTYPE_MAP_ID_S" nextval="1000"/>
     <sequence name="KREW_RSP_S" nextval="2065"/>
     <sequence name="KREW_RTE_NODE_CFG_PARM_S" nextval="2456"/>
     <sequence name="KREW_RTE_NODE_S" nextval="2912"/>

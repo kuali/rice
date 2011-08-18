@@ -30,11 +30,6 @@
         PARM_NM="CHECK_ENCRYPTION_SERVICE_OVERRIDE_IND"
         PARM_TYP_CD="CONFG" VAL="Y" VER_NBR="1"/>
     <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="All" EVAL_OPRTR_CD="A"
-        NMSPC_CD="KR-NS" OBJ_ID="664F8ABEC723DBCDE0404F8189D85427"
-        PARM_DESC_TXT="A single date format string that the DateTimeService will use to format dates to be used in a file name when DateTimeServiceImpl.toDateStringForFilename(Date) is called. For a more technical description of how characters in the parameter value will be interpreted, please consult the javadocs for java.text.SimpleDateFormat. Any changes will be applied when the application is restarted."
-        PARM_NM="DATE_TO_STRING_FORMAT_FOR_FILE_NAME"
-        PARM_TYP_CD="CONFG" VAL="yyyyMMdd" VER_NBR="1"/>
-    <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="All" EVAL_OPRTR_CD="A"
         NMSPC_CD="KR-NS" OBJ_ID="664F8ABEC725DBCDE0404F8189D85427"
         PARM_DESC_TXT="A single date format string that the DateTimeService will use to format a date to be displayed on a web page. For a more technical description of how characters in the parameter value will be interpreted, please consult the javadocs for java.text.SimpleDateFormat. Any changes will be applied when the application is restarted."
         PARM_NM="DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE"
@@ -68,26 +63,6 @@
         PARM_DESC_TXT="If set to 'Y' when sensitive data is found the user will be prompted to continue the action or cancel. If this is set to 'N' the user will be presented with an error message and will not be allowed to continue with the action until the sensitive data is removed."
         PARM_NM="SENSITIVE_DATA_PATTERNS_WARNING_IND"
         PARM_TYP_CD="CONFG" VAL="N" VER_NBR="1"/>
-    <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="All" EVAL_OPRTR_CD="A"
-        NMSPC_CD="KR-NS" OBJ_ID="664F8ABEC722DBCDE0404F8189D85427"
-        PARM_DESC_TXT="A semi-colon delimted list of strings representing date formats that the DateTimeService will use to parse dates when DateTimeServiceImpl.convertToSqlDate(String) or DateTimeServiceImpl.convertToDate(String) is called. Note that patterns will be applied in the order listed (and the first applicable one will be used). For a more technical description of how characters in the parameter value will be interpreted, please consult the javadocs for java.text.SimpleDateFormat. Any changes will be applied when the application is restarted."
-        PARM_NM="STRING_TO_DATE_FORMATS" PARM_TYP_CD="CONFG"
-        VAL="MM/dd/yyyy hh:mm a;MM/dd/yy;MM/dd/yyyy;MM-dd-yy;MMddyy;MMMM dd;yyyy;MM/dd/yy HH:mm:ss;MM/dd/yyyy HH:mm:ss;MM-dd-yy HH:mm:ss;MMddyy HH:mm:ss;MMMM dd HH:mm:ss;yyyy HH:mm:ss" VER_NBR="1"/>
-    <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="All" EVAL_OPRTR_CD="A"
-        NMSPC_CD="KR-NS" OBJ_ID="664F8ABEC727DBCDE0404F8189D85427"
-        PARM_DESC_TXT="A semi-colon delimted list of strings representing date formats that the DateTimeService will use to parse date and times when DateTimeServiceImpl.convertToDateTime(String) or DateTimeServiceImpl.convertToSqlTimestamp(String) is called. Note that patterns will be applied in the order listed (and the first applicable one will be used). For a more technical description of how characters in the parameter value will be interpreted, please consult the javadocs for java.text.SimpleDateFormat. Any changes will be applied when the application is restarted."
-        PARM_NM="STRING_TO_TIMESTAMP_FORMATS" PARM_TYP_CD="CONFG"
-        VAL="MM/dd/yyyy hh:mm a;MM/dd/yy;MM/dd/yyyy;MM-dd-yy;MMddyy;MMMM dd;yyyy;MM/dd/yy HH:mm:ss;MM/dd/yyyy HH:mm:ss;MM-dd-yy HH:mm:ss;MMddyy HH:mm:ss;MMMM dd HH:mm:ss;yyyy HH:mm:ss" VER_NBR="1"/>
-    <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="All" EVAL_OPRTR_CD="A"
-        NMSPC_CD="KR-NS" OBJ_ID="664F8ABEC724DBCDE0404F8189D85427"
-        PARM_DESC_TXT="A single date format string that the DateTimeService will use to format a date and time string to be used in a file name when DateTimeServiceImpl.toDateTimeStringForFilename(Date) is called.. For a more technical description of how characters in the parameter value will be interpreted, please consult the javadocs for java.text.SimpleDateFormat. Any changes will be applied when the application is restarted."
-        PARM_NM="TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME"
-        PARM_TYP_CD="CONFG" VAL="yyyyMMdd-HH-mm-ss-S" VER_NBR="1"/>
-    <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="All" EVAL_OPRTR_CD="A"
-        NMSPC_CD="KR-NS" OBJ_ID="664F8ABEC726DBCDE0404F8189D85427"
-        PARM_DESC_TXT="A single date format string that the DateTimeService will use to format a date and time to be displayed on a web page. For a more technical description of how characters in the parameter value will be interpreted, please consult the javadocs for java.text.SimpleDateFormat. Any changes will be applied when the application is restarted."
-        PARM_NM="TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE"
-        PARM_TYP_CD="CONFG" VAL="MM/dd/yyyy hh:mm a" VER_NBR="1"/>
     <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="All" EVAL_OPRTR_CD="A"
         NMSPC_CD="KR-WKFLW" OBJ_ID="5C731F2968A3689AE0404F8189D86653"
         PARM_DESC_TXT="Flag for enabling/disabling document type permission checks to use KIM Permissions as priority over Document Type policies."

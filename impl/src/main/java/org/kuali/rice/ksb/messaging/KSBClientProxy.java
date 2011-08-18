@@ -15,15 +15,14 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-
-import javax.xml.namespace.QName;
-
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+
+import javax.xml.namespace.QName;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 /**
  * This class creates a proxy for services deployed on KSB. A 
@@ -37,29 +36,50 @@ public class KSBClientProxy implements InvocationHandler {
 
 private static final Logger LOG = Logger.getLogger(KSBClientProxy.class);
     
-    QName serviceName;
-    Object service;
+    private QName serviceName;
+    private volatile Object service;
 
-    @SuppressWarnings("unchecked")
+
     public static <T> T newInstance(String serviceQName, Class<T> interfaceClass) throws InstantiationException, IllegalAccessException {
-        return (T)Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class[] { interfaceClass }, new KSBClientProxy(serviceQName));
+        if (StringUtils.isBlank(serviceQName)) {
+            throw new IllegalArgumentException("the qname was blank");
+        }
+
+        if (interfaceClass == null) {
+            throw new IllegalArgumentException("the interfaceClass was null");
+        }
+
+        @SuppressWarnings("unchecked")
+        final T t = (T)Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class[] { interfaceClass }, new KSBClientProxy(serviceQName));
+        return t;
     }
 
     public KSBClientProxy(String serviceQName){
+        if (StringUtils.isBlank(serviceQName)) {
+            throw new IllegalArgumentException("the qname was blank");
+        }
+
         this.serviceName = QName.valueOf(serviceQName);
     }
     
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        if (this.service == null){
-            LOG.info("Getting service using GRL for: " + serviceName);
-            service = GlobalResourceLoader.getService(serviceName);
-            LOG.info("Obtained service using GRL for: " + serviceName);
+        //using DCL idiom
+        //see effective java 2nd ed. pg. 71
+        Object s = service;
+        if (s == null) {
+            synchronized (this) {
+                s = service;
+                if (s == null) {
+                    service = s = GlobalResourceLoader.getService(serviceName);
+                }
+            }
         }
-        try {
-	        return method.invoke(service, args);
-	    } catch (InvocationTargetException e) {
-	        throw e.getCause();
-	    }
-    }
 
+        if (s != null) {
+            return method.invoke(s, args);
+        }
+
+        LOG.warn("serviceName: " + serviceName + " was not found");
+        return null;
+    }
 }

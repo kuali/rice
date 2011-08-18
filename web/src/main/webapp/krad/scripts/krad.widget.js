@@ -200,7 +200,7 @@ function createLightBoxPost(controlId, options, actionParameterMapString, lookup
                 for (var key in actionParameterMapString) {
                     writeHiddenToForm(key, actionParameterMapString[key]);
                 }
-                var returnByScriptMap =
+
                 // Do the Ajax submit on the kualiForm form
                 jq("#kualiForm").ajaxSubmit({
 

@@ -29,8 +29,6 @@ import javax.xml.namespace.QName;
  */
 public interface MessageHelper {
 
-	<T extends Serializable> String serializeObject(T object);
-	<T extends Serializable> T deserializeObject(String serializedObject);
 	<T> T getServiceAsynchronously(QName qname);
     <T> T getServiceAsynchronously(QName qname, String applicationId);
 	<T> T getServiceAsynchronously(QName qname, AsynchronousCallback callback);

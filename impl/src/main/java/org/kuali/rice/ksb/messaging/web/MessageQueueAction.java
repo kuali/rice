@@ -29,6 +29,7 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.RiceUtilities;
+import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.messaging.AsynchronousCall;
 import org.kuali.rice.ksb.api.registry.ServiceInfo;
@@ -437,7 +438,7 @@ public class MessageQueueAction extends KSBAction {
 	}
 	Object decodedPayload = null;
 	if (encodedPayload != null) {
-	    decodedPayload = KsbApiServiceLocator.getMessageHelper().deserializeObject(encodedPayload);
+	    decodedPayload = SerializationUtils.deserializeFromBase64(encodedPayload);
 	}
 	// fail fast if its not the expected type of AsynchronousCall
 	if ((decodedPayload != null) && !(decodedPayload instanceof AsynchronousCall)) {

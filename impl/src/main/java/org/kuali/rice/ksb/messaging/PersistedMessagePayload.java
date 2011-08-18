@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.ksb.messaging;
 
+import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.messaging.AsynchronousCall;
 
@@ -49,7 +50,7 @@ public class PersistedMessagePayload implements Serializable {
     public PersistedMessagePayload() {}
     
     public PersistedMessagePayload (AsynchronousCall methodCall, PersistedMessageBO message) {
-	this.setPayload(KsbApiServiceLocator.getMessageHelper().serializeObject(methodCall));
+	this.setPayload(SerializationUtils.serializeToBase64(methodCall));
 	this.methodCall = methodCall;
 	this.message = message;
     }
@@ -70,7 +71,7 @@ public class PersistedMessagePayload implements Serializable {
 	if (this.methodCall != null) {
 	    return this.methodCall;
 	} 
-	this.methodCall = (AsynchronousCall) KsbApiServiceLocator.getMessageHelper().deserializeObject(getPayload());
+	this.methodCall = (AsynchronousCall) SerializationUtils.deserializeFromBase64(getPayload());
 	return this.methodCall;
     }
 

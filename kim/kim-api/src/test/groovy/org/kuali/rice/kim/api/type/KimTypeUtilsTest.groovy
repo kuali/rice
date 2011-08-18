@@ -1,0 +1,48 @@
+package org.kuali.rice.kim.api.type
+
+import org.junit.Test
+import static org.junit.Assert.*;
+import javax.xml.namespace.QName
+import org.kuali.rice.kim.util.KimConstants
+
+/**
+ * Tests the {@link KimTypeUtils} class.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ */
+class KimTypeUtilsTest {
+
+    @Test
+	public void testResolveKimTypeServiceName() throws Exception {
+
+		// first test by resolving the "null" or default kim type service
+
+		QName defaultKimTypeServiceQName = QName.valueOf(KimConstants.DEFAULT_KIM_TYPE_SERVICE);
+		assertEquals("default kim type service name should have no namespace", "", defaultKimTypeServiceQName.getNamespaceURI());
+
+		assertEquals("When null is passed to resolveKimTypeService, should return default kim type service.", defaultKimTypeServiceQName, KimTypeUtils.resolveKimTypeServiceName(null));
+		assertEquals("When empty string is passed to resolveKimTypeService, should return default kim type service.", defaultKimTypeServiceQName, KimTypeUtils.resolveKimTypeServiceName(""));
+		assertEquals("When blank string is passed to resolveKimTypeService, should return default kim type service.", defaultKimTypeServiceQName, KimTypeUtils.resolveKimTypeServiceName(" "));
+
+		// test resolving a custom kim type service name with no namespace
+
+		String serviceName1 = "customKimTypeServiceName_noNamespace";
+
+		QName serviceQName1 = KimTypeUtils.resolveKimTypeServiceName(serviceName1);
+		assertNotNull("Service name was not successfully resolved", serviceQName1);
+		assertEquals("Incorrect local part", serviceName1, serviceQName1.getLocalPart());
+		assertEquals("Incorrect namespace uri, should have been empty string", "", serviceQName1.getNamespaceURI());
+
+		// test resolving a custom kim type service name with a namespace
+
+		String serviceNamespaceUri2 = "TestNamespace";
+		String serviceLocalPart2 = "customKimTypeServiceName";
+		String serviceName2 = "{" + serviceNamespaceUri2 + "}" + serviceLocalPart2;
+		QName serviceQName2 = KimTypeUtils.resolveKimTypeServiceName(serviceName2);
+		assertNotNull("Service name was not successfully resolved", serviceName2);
+		assertEquals("Incorrect local part", serviceLocalPart2, serviceQName2.getLocalPart());
+		assertEquals("Incorrect namespace uri", serviceNamespaceUri2, serviceQName2.getNamespaceURI());
+		assertEquals("Incorrect full service name", serviceName2, serviceQName2.toString());
+	}
+}

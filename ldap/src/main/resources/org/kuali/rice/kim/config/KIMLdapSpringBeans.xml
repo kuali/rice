@@ -230,18 +230,4 @@
 
     <bean id="kimUiDocumentService" class="org.kuali.rice.kim.service.impl.LdapUiDocumentServiceImpl" />
     
-	<bean id="kimResponsibilityDao" class="org.kuali.rice.kim.dao.impl.LdapKimResponsibilityDaoImpl" parent="kimPlatformAwareDao"/>
-
-	<bean id="kimResponsibilityService" class="org.kuali.rice.kim.service.impl.LdapResponsibilityServiceImpl"
-  		p:responsibilityDao-ref="kimResponsibilityDao">
-  		<property name="cacheClearingDocumentTypes">
-  			<set>
-  				<value>OR</value>
-  				<value>ORR</value>
-  				<value>ORG</value>
-  			</set>
-  		</property>
-	</bean>
-	
-	<bean id="kimGroupDao" class="org.kuali.rice.kim.dao.impl.LdapKimGroupDaoImpl" parent="kimPlatformAwareDao" p:personService-ref="personService"/>
 </beans>

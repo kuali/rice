@@ -822,3 +822,22 @@ ul.ui-autocomplete.ui-widget-content {
     border-color: #3F7826;
     color:#000;
 }
+
+/* collections styles */
+
+.collection-header + div > .fl-theme-ks {
+    padding: 5px 0 5px 10px;
+    background: url(../../images/pattern_dotted.png);
+    margin-bottom:15px;
+}
+
+
+.collection-header h3 {
+    border-bottom: 1px dotted #000;
+    font-family: arial, helvetica, sans-serif;
+    text-transform: uppercase;
+}
+
+.dataTables_length {
+    margin-bottom:5px;
+}

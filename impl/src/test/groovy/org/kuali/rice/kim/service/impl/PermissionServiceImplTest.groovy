@@ -403,9 +403,9 @@ class PermissionServiceImplTest {
 
         injectBusinessObjectServiceIntoPermissionService();
 
-        Permission permission = permissionService.getPermissionsByNameIncludingInactive(expectedPermissionBo.namespaceCode, expectedPermissionBo.name);
+        List<Permission> permissions = permissionService.getPermissionsByNameIncludingInactive(expectedPermissionBo.namespaceCode, expectedPermissionBo.name);
 
-        Assert.assertEquals(PermissionBo.to(expectedPermissionBo), permission);
+        Assert.assertEquals(PermissionBo.to(expectedPermissionBo), permissions.get(0));
 
         mockBoService.verify(boService);
     }

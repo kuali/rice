@@ -76,7 +76,7 @@ public final class PermissionXmlUtil {
         }
         
         // If another permission with that name and namespace exists, use its ID on the new permission.
-        PermissionContract permission = KimApiServiceLocator.getPermissionService().getPermissionsByName(newPermission.getNamespaceCode(), newPermission.getPermissionName());
+        PermissionContract permission = KimApiServiceLocator.getPermissionService().getPermissionByName(newPermission.getNamespaceCode(), newPermission.getPermissionName());
         if (permission != null) {
             newPermission.setPermissionId(permission.getId());
         }

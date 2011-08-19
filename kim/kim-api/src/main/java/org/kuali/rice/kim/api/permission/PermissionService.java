@@ -322,6 +322,15 @@ public interface PermissionService {
 	@WebMethod(operationName = "getPermission")
     @WebResult(name = "permission")
     Permission getPermission( @WebParam(name="permissionId") String permissionId );
+	
+	/** Get the Permission object with the unique combination of namespace and permission name.
+     *
+     * If any parameter is blank, this method returns <code>null</code>.
+     */
+    @WebMethod(operationName = "getPermissionByName")
+    @WebResult(name = "permission")
+    Permission getPermissionByName(@WebParam(name = "namespaceCode") String namespaceCode,
+                       @WebParam(name = "permissionName") String permissionName);
    
 	/** 
 	 * Return the permission object for the given unique combination of namespace,
@@ -329,7 +338,7 @@ public interface PermissionService {
 	 */
 	@WebMethod(operationName = "getPermissionsByTemplateName")
     @WebResult(name = "permission")
-    Permission getPermissionsByTemplateName( @WebParam(name="namespaceCode") String namespaceCode,
+    List<Permission> getPermissionsByTemplateName( @WebParam(name="namespaceCode") String namespaceCode,
     													  @WebParam(name="permissionTemplateName") String permissionTemplateName );
 
 	/** 
@@ -338,7 +347,7 @@ public interface PermissionService {
 	 */
 	@WebMethod(operationName = "getPermissionsByName")
     @WebResult(name = "permissions")
-    Permission getPermissionsByName( @WebParam(name="namespaceCode") String namespaceCode,
+    List<Permission> getPermissionsByName( @WebParam(name="namespaceCode") String namespaceCode,
 			    											  @WebParam(name="permissionName") String permissionName );
     
 	/**
@@ -433,5 +442,5 @@ public interface PermissionService {
      */
 	@WebMethod(operationName = "getPermissionsByNameIncludingInactive")
     @WebResult(name = "permissionsIncludingInactive")
-    Permission getPermissionsByNameIncludingInactive(@WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "permissionName") String permissionName);
+    List<Permission> getPermissionsByNameIncludingInactive(@WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "permissionName") String permissionName);
 }

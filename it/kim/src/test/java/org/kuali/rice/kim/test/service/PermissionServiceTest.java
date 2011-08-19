@@ -16,11 +16,12 @@
 package org.kuali.rice.kim.test.service;
 
 import org.junit.Test;
+import org.kuali.rice.kim.api.common.assignee.Assignee;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.impl.common.template.TemplateBo;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
-import org.kuali.rice.kim.service.PermissionService;
+import org.kuali.rice.kim.api.permission.PermissionService;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.test.BaselineTestCase;
 
@@ -75,10 +76,10 @@ public class PermissionServiceTest extends KIMTestCase {
 	@Test
 	public void testGetPermissionAssignees() {
 		
-		List<PermissionAssigneeInfo> assignees = getPermissionService().getPermissionAssignees("KUALI", "Log In Kuali Portal", null, null);
+		List<Assignee> assignees = getPermissionService().getPermissionAssignees("KUALI", "Log In Kuali Portal", null, null);
 		assertNotNull(assignees);
 		assertEquals(1, assignees.size());
-		PermissionAssigneeInfo permInfo = assignees.get(0);
+		Assignee permInfo = assignees.get(0);
 		assertEquals("entity123pId", permInfo.getPrincipalId());
 		assignees = getPermissionService().getPermissionAssignees("KUALI", "Not A Valid Permission Name", null, null);
 		// TODO - jax-ws remoted service returns null; local return empty List. Fix webservice return

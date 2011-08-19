@@ -61,7 +61,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
   <bean id="Permission-InquiryView" parent="InquiryView">
 	<property name="title" value="Permission Inquiry"/>
-    <property name="dataObjectClassName" value="org.kuali.rice.kim.bo.impl.PermissionImpl"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.permission.PermissionBo"/>
     <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.impl.permission.PermissionInquirableImpl"/>
     <property name="Items">
         <list>

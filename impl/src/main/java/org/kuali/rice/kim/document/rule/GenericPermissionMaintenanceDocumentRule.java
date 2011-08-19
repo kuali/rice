@@ -52,8 +52,8 @@ public class GenericPermissionMaintenanceDocumentRule extends MaintenanceDocumen
 	protected boolean processCustomRouteDocumentBusinessRules(MaintenanceDocument document) {
 		boolean rulesPassed = true;
 		try {
-			GenericPermissionBo perm = (GenericPermissionBo)getNewBo();
-			validateDetailValuesFormat(perm.getDetailValues());
+			PermissionBo perm = (PermissionBo)getNewBo();
+			validateDetailValuesFormat(perm.getDetailObjectsValues());
 			// detailValues
 			// get the type from the template for validation
 			Template template = KimApiServiceLocator.getPermissionService().getPermissionTemplate( PermissionTemplateBo.to(perm.getTemplate()).getId());

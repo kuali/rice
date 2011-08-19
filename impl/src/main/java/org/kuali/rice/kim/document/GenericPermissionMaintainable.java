@@ -20,6 +20,7 @@ import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.permission.GenericPermissionBo;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
+import org.kuali.rice.kim.impl.responsibility.ReviewResponsibilityBo;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
@@ -90,11 +91,11 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 			}
 			if ( businessObject instanceof PermissionBo ) {
 				PermissionBo perm = getBusinessObjectService().findBySinglePrimaryKey(PermissionBo.class, ((PermissionBo)businessObject).getId() );
-				businessObject = GenericPermissionBo.from(perm);
+				businessObject = new GenericPermissionBo(perm);
 			} else if ( businessObject instanceof GenericPermissionBo ) {
-				// lookup the KimResponsibilityImpl and convert to a ReviewResponsibility
-				PermissionBo perm = getBusinessObjectService().findBySinglePrimaryKey(PermissionBo.class, ((GenericPermissionBo)businessObject).getId() );		
-				((GenericPermissionBo)businessObject).from(perm);
+				// lookup the PermissionBo and convert to a GenericPermissionBo
+				PermissionBo perm = getBusinessObjectService().findBySinglePrimaryKey(PermissionBo.class, ((PermissionBo)businessObject).getId() );		
+				((GenericPermissionBo)businessObject).loadFromPermission(perm);
 			} else {
 				throw new RuntimeException( "Configuration ERROR: GenericPermissionMaintainable passed an unsupported object type: " + businessObject.getClass() );
 			}

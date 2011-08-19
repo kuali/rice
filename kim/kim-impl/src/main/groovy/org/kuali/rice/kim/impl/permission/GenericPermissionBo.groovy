@@ -54,98 +54,37 @@ public class GenericPermissionBo extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "PERM_ID")
-    String id
-
-    @Column(name = "NMSPC_CD")
-    String namespaceCode
-
-    @Column(name = "NM")
-    String name
-
-    @Column(name = "DESC_TXT", length = 400)
-    String description;
-
-    @Column(name = "PERM_TMPL_ID")
-    String templateId
-
-    @Column(name = "ACTV_IND")
-    @Type(type = "yes_no")
-    boolean active
-    
-    @Transient
+    @Column(name="PERM_ID")
+    protected String id;
+    protected String namespaceCode;
+    protected String name;
+    protected String description;
+    protected boolean active;
+    protected String templateId;
     protected String detailValues;
-    @Transient
-    protected Map<String, String> details;
-
-    @OneToOne(targetEntity = PermissionTemplateBo.class, cascade = [], fetch = FetchType.EAGER)
-    @JoinColumn(name = "PERM_TMPL_ID", insertable = false, updatable = false)
-    PermissionTemplateBo template;
-
-    @OneToMany(targetEntity = PermissionAttributeBo.class, cascade = [CascadeType.ALL], fetch = FetchType.EAGER, mappedBy = "id")
-    @Fetch(value = FetchMode.SELECT)
-    List<PermissionAttributeBo> attributeDetails
-
-    @Transient
-    Map<String,String> attributes;
-
-    @OneToMany(targetEntity = RolePermissionBo.class, cascade = [CascadeType.ALL], fetch = FetchType.EAGER, mappedBy = "id")
-    @Fetch(value = FetchMode.SELECT)
-    List<RolePermissionBo> rolePermissions
-
-    Map<String,String> getAttributes() {
-        return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes
-    }
-
-    //TODO: rename/fix later - only including this method and attributeDetails field for Role conversion
-
-    Map<String,String> getDetails() {
-        return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes
-    }
-
+    protected Map<String,String> details;
+    
     /**
-     * Converts a mutable bo to its immutable counterpart
-     * @param bo the mutable business object
-     * @return the immutable object
+     * This constructs a ...
+     * 
      */
-    static PermissionBo to(GenericPermissionBo bo) {
-        if (bo == null) {
-            return null
-        }
+    public GenericPermissionBo() {
+    }
+    
+    public GenericPermissionBo( PermissionBo perm ) {
+        loadFromPermission( perm );
 
-        return Permission.Builder.create(bo).build();
+    }
+    public void loadFromPermission( PermissionBo perm ) {
+        setId( perm.getId() );
+        setNamespaceCode( perm.getNamespaceCode() );
+        setName( perm.getName() );
+        setTemplateId( perm.getTemplate().getId() );
+        setDescription( perm.getDescription() );
+        setActive( perm.isActive() );
+        setDetails( perm.getAttributes() );
     }
 
-    /**
-     * Converts a immutable object to its mutable counterpart
-     * @param im immutable object
-     * @return the mutable bo
-     */
-    static GenericPermissionBo from(PermissionBo im) {
-        if (im == null) {
-            return null
-        }
-
-        GenericPermissionBo bo = new GenericPermissionBo()
-        bo.id = im.id
-        bo.namespaceCode = im.namespaceCode
-        bo.name = im.name
-        bo.description = im.description
-        bo.active = im.active
-        if (im.getTemplate() != null) {
-            bo.templateId = im.template.getId()
-            bo.template = PermissionTemplateBo.from(im.template)
-        }
-        //bo.attributes = im.attributes
-        bo.versionNumber = im.versionNumber
-        bo.objectId = im.objectId;
-
-        return bo
-    }
-
-    PermissionTemplateBo getTemplate() {
-        return template;
-    }
     
     public String getDetailValues() {
         /*StringBuffer sb = new StringBuffer();
@@ -197,6 +136,67 @@ public class GenericPermissionBo extends PersistableBusinessObjectBase {
             }
         }
         detailValues = sb.toString();
+    }
+
+   public boolean isActive() {
+       return active;
+   }
+
+   public void setActive(boolean active) {
+       this.active = active;
+   }
+
+   public String getDescription() {
+       return description;
+   }
+
+   public String getId() {
+       return id;
+   }
+
+   public String getName() {
+       return name;
+   }
+
+   PermissionTemplateBo getTemplate() {
+       return template;
+   }
+
+   public void setDescription(String permissionDescription) {
+       this.description = permissionDescription;
+   }
+
+   public void setName(String permissionName) {
+       this.name = permissionName;
+   }
+
+    public void setDetails( Map<String,String> details ) {
+        this.details = details;
+        setDetailValues(details);
+    }
+    
+    public String getTemplateId() {
+        return this.templateId;
+    }
+
+    public void setTemplateId(String templateId) {
+        this.templateId = templateId;
+    }
+
+    public Map<String,String> getDetails() {
+        return details;
+    }
+    
+    public String getNamespaceCode() {
+        return this.namespaceCode;
+    }
+
+    public void setNamespaceCode(String namespaceCode) {
+        this.namespaceCode = namespaceCode;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
     
     @Override

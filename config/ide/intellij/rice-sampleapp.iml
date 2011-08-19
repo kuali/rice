@@ -31,17 +31,13 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/it/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/it/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/test-annotations" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/annotations" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/test/groovy" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/annotations" isTestSource="false" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/maven-archiver" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/rice-sampleapp-2.0.0-m8-SNAPSHOT" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/war" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

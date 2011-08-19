@@ -33,6 +33,7 @@ import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -69,6 +70,7 @@ public class UifFormBase implements Serializable {
     protected Map<String, Object> newCollectionLines;
     protected Map<String, String> actionParameters;
     protected Map<String, Object> clientStateForSyncing;
+    protected Map<String, Set<String>> selectedCollectionLines;
 
     protected MultipartFile attachmentFile;
 
@@ -90,6 +92,7 @@ public class UifFormBase implements Serializable {
         newCollectionLines = new HashMap<String, Object>();
         actionParameters = new HashMap<String, String>();
         clientStateForSyncing = new HashMap<String, Object>();
+        selectedCollectionLines = new HashMap<String, Set<String>>();
     }
 
     /**
@@ -367,6 +370,32 @@ public class UifFormBase implements Serializable {
      */
     public Map<String, Object> getClientStateForSyncing() {
         return clientStateForSyncing;
+    }
+
+    /**
+     * Holds Set of String identifiers for lines that were selected in a collection
+     *
+     * <p>
+     * When the select field is enabled for a <code>CollectionGroup</code>, the framework will be
+     * default bind the selected identifier strings to this property. The key of the map uniquely identifies the
+     * collection by the full binding path to the collection, and the value is a set of Strings for the checked
+     * lines.
+     * </p>
+     *
+     * @return Map<String, Set<String>> map of collections and their selected lines
+     * @see org.kuali.rice.krad.service.DataObjectMetaDataService#getDataObjectIdentifierString(java.lang.Object)
+     */
+    public Map<String, Set<String>> getSelectedCollectionLines() {
+        return selectedCollectionLines;
+    }
+
+    /**
+     * Setter for the map that holds selected collection lines
+     *
+     * @param selectedCollectionLines
+     */
+    public void setSelectedCollectionLines(Map<String, Set<String>> selectedCollectionLines) {
+        this.selectedCollectionLines = selectedCollectionLines;
     }
 
     /**

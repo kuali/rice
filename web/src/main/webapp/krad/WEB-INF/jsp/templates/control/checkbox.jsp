@@ -22,6 +22,6 @@
     Standard HTML Checkbox Input
     
  --%>
- 
-<form:checkbox id="${field.id}" path="${field.bindingInfo.bindingPath}" 
+
+<form:checkbox id="${field.id}" path="${field.bindingInfo.bindingPath}" value="${control.value}"
             cssClass="${control.styleClassesAsString}" cssStyle="${field.style}" tabindex="${control.tabIndex}"/> 

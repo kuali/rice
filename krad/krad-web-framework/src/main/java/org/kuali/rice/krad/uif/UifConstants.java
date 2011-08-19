@@ -182,4 +182,10 @@ public class UifConstants {
     public static class ClientSideVariables {
         public static final String KRAD_IMAGE_LOCATION = "kradImageLocation";
     }
+
+    public static class RefreshCallerTypes {
+        public static final String LOOKUP = "LOOKUP";
+        public static final String MULTI_VALUE_LOOKUP = "MULTI_VALUE_LOOKUP";
+        public static final String QUESTION = "QUESTION";
+    }
 }

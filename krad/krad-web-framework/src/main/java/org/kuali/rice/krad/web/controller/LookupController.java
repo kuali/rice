@@ -25,10 +25,12 @@ import org.kuali.rice.krad.lookup.Lookupable;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.view.LookupView;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
+import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.krad.web.form.LookupForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
@@ -42,6 +44,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Properties;
+import java.util.Set;
 
 /**
  * Controller that handles requests coming from a <code>LookupView</code>
@@ -61,7 +64,7 @@ public class LookupController extends UifControllerBase {
         return new LookupForm();
     }
 
-    protected void supressActionsIfNeeded(LookupForm lookupForm) {
+    protected void suppressActionsIfNeeded(LookupForm lookupForm) {
         try {
             Class<?> dataObjectClass = Class.forName(lookupForm.getDataObjectClassName());
             Person user = GlobalVariables.getUserSession().getPerson();
@@ -112,7 +115,7 @@ public class LookupController extends UifControllerBase {
             HttpServletRequest request, HttpServletResponse response) {
         LookupForm lookupForm = (LookupForm) form;
 //		checkAuthorization(lookupForm, request.getParameter("methodToCall"));
-        supressActionsIfNeeded(lookupForm);
+        suppressActionsIfNeeded(lookupForm);
 
         return super.start(lookupForm, result, request, response);
     }
@@ -125,7 +128,7 @@ public class LookupController extends UifControllerBase {
     public ModelAndView cancel(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         LookupForm lookupForm = (LookupForm) form;
-        supressActionsIfNeeded(lookupForm);
+        suppressActionsIfNeeded(lookupForm);
 
         Properties props = new Properties();
         props.put(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.REFRESH);
@@ -145,7 +148,7 @@ public class LookupController extends UifControllerBase {
     @RequestMapping(params = "methodToCall=clearValues")
     public ModelAndView clearValues(@ModelAttribute("KualiForm") LookupForm lookupForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
-        supressActionsIfNeeded(lookupForm);
+        suppressActionsIfNeeded(lookupForm);
 
         Lookupable lookupable = (Lookupable) lookupForm.getLookupable();
         lookupForm.setCriteriaFields(lookupable.performClear(lookupForm, lookupForm.getCriteriaFields()));
@@ -160,8 +163,7 @@ public class LookupController extends UifControllerBase {
     @RequestMapping(params = "methodToCall=search")
     public ModelAndView search(@ModelAttribute("KualiForm") LookupForm lookupForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
-        supressActionsIfNeeded(lookupForm);
-        GlobalVariables.getUserSession().removeObjectsByPrefix(KRADConstants.SEARCH_METHOD);
+        suppressActionsIfNeeded(lookupForm);
 
         Lookupable lookupable = lookupForm.getLookupable();
         if (lookupable == null) {
@@ -185,5 +187,53 @@ public class LookupController extends UifControllerBase {
         lookupForm.setSearchResults(displayList);
 
         return getUIFModelAndView(lookupForm);
+    }
+
+    /**
+     * Invoked from the UI to return the selected lookup results lines, parameters are collected to build a URL to
+     * the caller and then a redirect is performed
+     *
+     * @param lookupForm - lookup form instance containing the selected results and lookup configuration
+     */
+    @RequestMapping(params = "methodToCall=returnSelected")
+    public ModelAndView returnSelected(@ModelAttribute("KualiForm") LookupForm lookupForm, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        Properties parameters = new Properties();
+        parameters.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.RETURN_METHOD_TO_CALL);
+        parameters.put(UifParameters.SKIP_VIEW_INIT, "true");
+
+        if (StringUtils.isNotBlank(lookupForm.getReturnFormKey())) {
+            parameters.put(UifParameters.FORM_KEY, lookupForm.getReturnFormKey());
+        }
+
+        parameters.put(KRADConstants.REFRESH_CALLER, lookupForm.getView().getId());
+        parameters.put(KRADConstants.REFRESH_CALLER_TYPE, UifConstants.RefreshCallerTypes.MULTI_VALUE_LOOKUP);
+        parameters.put(KRADConstants.REFRESH_DATA_OBJECT_CLASS, lookupForm.getDataObjectClassName());
+
+        if (StringUtils.isNotBlank(lookupForm.getDocNum())) {
+            parameters.put(UifParameters.DOC_NUM, lookupForm.getDocNum());
+        }
+
+        if (StringUtils.isNotBlank(lookupForm.getLookupCollectionName())) {
+            parameters.put(UifParameters.LOOKUP_COLLECTION_NAME, lookupForm.getLookupCollectionName());
+        }
+
+        if (StringUtils.isNotBlank(lookupForm.getReferencesToRefresh())) {
+            parameters.put(KRADConstants.REFERENCES_TO_REFRESH, lookupForm.getReferencesToRefresh());
+        }
+
+        // build string of select line identifiers
+        String selectedLineValues = "";
+        Set<String> selectedLines = lookupForm.getSelectedCollectionLines().get(UifPropertyPaths.SEARCH_RESULTS);
+        if (selectedLines != null) {
+            for (String selectedLine : selectedLines) {
+                selectedLineValues += selectedLine + ",";
+            }
+            selectedLineValues = StringUtils.removeEnd(selectedLineValues, ",");
+        }
+
+        parameters.put(UifParameters.SELECTED_LINE_VALUES, selectedLineValues);
+
+        return performRedirect(lookupForm, lookupForm.getReturnLocation(), parameters);
     }
 }

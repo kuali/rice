@@ -25,17 +25,25 @@
 
 <krad:attributeBuilder component="${field}" />
 
-<c:if test="${(field.lightBox != null)}">
-	<krad:template component="${field.lightBox}" componentId="${field.id}" />
-</c:if>
+<krad:span component="${field}">
 
-<c:if test="${field.skipInTabOrder}">
-	<c:set var="tabindex" value="tabindex=-1" />
-</c:if>
+  <krad:fieldLabel field="${field}">
 
-<c:if test="${empty fn:trim(body)}">
-    <c:set var="body" value="${field.linkLabel}" />
-</c:if>
+    <c:if test="${(field.lightBox != null)}">
+      <krad:template component="${field.lightBox}" componentId="${field.id}"/>
+    </c:if>
 
-<a id="${field.id}" href="${field.hrefText}" target="${field.target}" title="${field.title}"
-   ${style} ${styleClass} ${tabindex} >${body}</a>
+    <c:if test="${field.skipInTabOrder}">
+      <c:set var="tabindex" value="tabindex=-1"/>
+    </c:if>
+
+    <c:if test="${empty fn:trim(body)}">
+      <c:set var="body" value="${field.linkLabel}"/>
+    </c:if>
+
+    <a id="${field.id}" href="${field.hrefText}" target="${field.target}" title="${field.title}"
+      ${style} ${styleClass} ${tabindex} >${body}</a>
+
+  </krad:fieldLabel>
+
+</krad:span>

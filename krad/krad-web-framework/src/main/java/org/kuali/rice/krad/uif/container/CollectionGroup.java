@@ -26,6 +26,7 @@ import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.LabelField;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.widget.QuickFinder;
 
 /**
  * Group that holds a collection of objects and configuration for presenting the
@@ -65,6 +66,11 @@ public class CollectionGroup extends Group implements DataBinding {
     private boolean renderLineActions;
     private List<ActionField> actionFields;
 
+    private boolean renderSelectField;
+    private String selectPropertyName;
+
+    private QuickFinder collectionLookup;
+
     private boolean showHideInactiveButton;
     private boolean showInactive;
     private CollectionFilter activeCollectionFilter;
@@ -79,6 +85,7 @@ public class CollectionGroup extends Group implements DataBinding {
         renderLineActions = true;
         showInactive = false;
         showHideInactiveButton = true;
+        renderSelectField = false;
 
         actionFields = new ArrayList<ActionField>();
         addLineFields = new ArrayList<Field>();
@@ -199,8 +206,7 @@ public class CollectionGroup extends Group implements DataBinding {
     protected void pushCollectionGroupToReference() {
         List<Component> components = this.getNestedComponents();
         
-        ComponentUtils
-                .pushObjectToContext(components, UifConstants.ContextVariableNames.COLLECTION_GROUP, this);
+        ComponentUtils.pushObjectToContext(components, UifConstants.ContextVariableNames.COLLECTION_GROUP, this);
 
         List<ActionField> actionFields =
                 ComponentUtils.getComponentsOfTypeDeep(components, ActionField.class);
@@ -258,6 +264,7 @@ public class CollectionGroup extends Group implements DataBinding {
         components.add(addLineLabelField);
         components.addAll(actionFields);
         components.addAll(addLineActionFields);
+        components.add(collectionLookup);
 
         // remove the containers items because we don't want them as children
         // (they will become children of the layout manager as the rows are
@@ -518,6 +525,85 @@ public class CollectionGroup extends Group implements DataBinding {
      */
     public void setAddLineActionFields(List<ActionField> addLineActionFields) {
         this.addLineActionFields = addLineActionFields;
+    }
+
+    /**
+     * Indicates whether lines of the collection group should be selected by rendering a
+     * field for each line that will allow selection
+     *
+     * <p>
+     * For example, having the select field enabled could allow selecting multiple lines from a search
+     * to return (multi-value lookup)
+     * </p>
+     *
+     * @return boolean true if select field should be rendered, false if not
+     */
+    public boolean isRenderSelectField() {
+        return renderSelectField;
+    }
+
+    /**
+     * Setter for the render selected field indicator
+     *
+     * @param renderSelectField
+     */
+    public void setRenderSelectField(boolean renderSelectField) {
+        this.renderSelectField = renderSelectField;
+    }
+
+    /**
+     * When {@link #isRenderSelectField()} is true, gives the name of the property the select field
+     * should bind to
+     *
+     * <p>
+     * Note if no prefix is given in the property name, such as 'form.', it is assumed the property is
+     * contained on the collection line. In this case the binding path to the collection line will be
+     * appended. In other cases, it is assumed the property is a list or set of String that will hold the
+     * selected identifier strings
+     * </p>
+     *
+     * <p>
+     * This property is not required. If not the set the framework will use a property contained on
+     * <code>UifFormBase</code>
+     * </p>
+     *
+     * @return String property name for select field
+     */
+    public String getSelectPropertyName() {
+        return selectPropertyName;
+    }
+
+    /**
+     * Setter for the property name that will bind to the select field
+     *
+     * @param selectPropertyName
+     */
+    public void setSelectPropertyName(String selectPropertyName) {
+        this.selectPropertyName = selectPropertyName;
+    }
+
+    /**
+     * Instance of the <code>QuickFinder</code> widget that configures a multi-value lookup for the collection
+     *
+     * <p>
+     * If the collection lookup is enabled (by the render property of the quick finder), {@link
+     * #getCollectionObjectClass()} will be used as the data object class for the lookup (if not set). Field
+     * conversions need to be set as usual and will be applied for each line returned
+     * </p>
+     *
+     * @return QuickFinder instance configured for the collection lookup
+     */
+    public QuickFinder getCollectionLookup() {
+        return collectionLookup;
+    }
+
+    /**
+     * Setter for the collection lookup quickfinder instance
+     *
+     * @param collectionLookup
+     */
+    public void setCollectionLookup(QuickFinder collectionLookup) {
+        this.collectionLookup = collectionLookup;
     }
 
     /**

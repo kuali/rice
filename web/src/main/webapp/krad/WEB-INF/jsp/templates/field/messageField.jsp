@@ -20,5 +20,13 @@
 <%--
     Renders text in a span tag     
  --%>
- 
-<krad:span component="${field}">${field.messageText}</krad:span>
+
+<krad:span component="${field}">
+
+  <krad:fieldLabel field="${field}">
+
+    ${field.messageText}
+
+  </krad:fieldLabel>
+
+</krad:span>

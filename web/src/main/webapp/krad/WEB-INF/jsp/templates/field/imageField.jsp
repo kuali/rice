@@ -27,6 +27,14 @@
 </c:if>
  
 <krad:attributeBuilder component="${field}"/>
- 
-<img id="${field.id}" src="${field.source}" alt="${field.altText}" 
-     ${height} ${style} ${styleClass} ${title} />
+
+<krad:span component="${field}">
+
+  <krad:fieldLabel field="${field}">
+
+    <img id="${field.id}" src="${field.source}" alt="${field.altText}"
+      ${height} ${style} ${styleClass} ${title} />
+
+  </krad:fieldLabel>
+
+</krad:span>

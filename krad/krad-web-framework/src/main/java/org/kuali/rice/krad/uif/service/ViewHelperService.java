@@ -173,6 +173,18 @@ public interface ViewHelperService {
 	 *            - index of the collection line that was selected for removal
 	 */
 	public void processCollectionDeleteLine(View view, Object model, String collectionPath, int lineIndex);
+
+    /**
+     * Process the results returned from a multi-value lookup populating the lines for the collection given
+     * by the path
+     *
+     * @param view - view instance the collection belongs to
+     * @param model - object containing the view data
+     * @param collectionPath - binding path to the collection to populated
+     * @param lookupResultValues - String containing the selected line values
+     */
+    public void processMultipleValueLookupResults(View view, Object model, String collectionPath,
+            String lookupResultValues);
 	
 	/**
 	 * Invoked by the <code>Inquiry</code> widget to build the inquiry link

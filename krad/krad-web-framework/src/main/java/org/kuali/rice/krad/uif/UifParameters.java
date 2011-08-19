@@ -37,6 +37,8 @@ public class UifParameters {
 	public static final String HIDE_RETURN_LINK = "hideReturnLink";
 	public static final String LOOKUP_CRITERIA_ENABLED = "lookupCriteriaEnabled";
 	public static final String LOOKUP_PARAMETERS = "lookupParameters";
+    public static final String LOOKUP_COLLECTION_NAME = "lookupCollectionName";
+    public static final String MULTIPLE_VALUES_SELECT = "multipleValuesSelect";
 	public static final String READ_ONLY_FIELDS = "readOnlyFields";
 	public static final String REFERENCES_TO_REFRESH = "referencesToRefresh";
 	public static final String RENDER_FULL_VIEW = "renderFullView";
@@ -47,6 +49,7 @@ public class UifParameters {
     public static final String SKIP_VIEW_INIT = "skipViewInit";
 	public static final String SELLECTED_COLLECTION_PATH = "selectedCollectionPath";
 	public static final String SELECTED_LINE_INDEX = "selectedLineIndex";
+    public static final String SELECTED_LINE_VALUES = "selectedLineValues";
 	public static final String SHOW_MAINTENANCE_LINKS = "showMaintenanceLinks";
 	public static final String SUPRESS_ACTIONS = "supressActions";
 	public static final String SUPPLEMENTAL_ACTIONS_ENABLED = "supplementalActionsEnabled";

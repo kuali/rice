@@ -10,13 +10,17 @@
  */
 package org.kuali.rice.krad.uif.service.impl;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
+import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.inquiry.Inquirable;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.authorization.Authorizer;
 import org.kuali.rice.krad.uif.authorization.PresentationController;
@@ -44,6 +48,7 @@ import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.widget.Inquiry;
+import org.kuali.rice.krad.uif.widget.QuickFinder;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -54,7 +59,9 @@ import org.springframework.util.MethodInvoker;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -1001,6 +1008,76 @@ public class ViewHelperServiceImpl implements ViewHelperService {
         // should create the document delete line event
 
         return isValid;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#processMultipleValueLookupResults
+     */
+    public void processMultipleValueLookupResults(View view, Object model, String collectionPath,
+            String lookupResultValues) {
+        // if no line values returned, no population is needed
+        if (StringUtils.isBlank(lookupResultValues)) {
+            return;
+        }
+
+        // retrieve the collection group so we can get the collection class and collection lookup
+        CollectionGroup collectionGroup = view.getViewIndex().getCollectionGroupByPath(collectionPath);
+        if (collectionGroup == null) {
+            throw new RuntimeException("Unable to find collection group for path: " + collectionPath);
+        }
+
+        Class<?> collectionObjectClass = collectionGroup.getCollectionObjectClass();
+        Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(model,
+                collectionGroup.getBindingInfo().getBindingPath());
+        if (collection == null) {
+            Class<?> collectionClass = ObjectPropertyUtils.getPropertyType(model,
+                    collectionGroup.getBindingInfo().getBindingPath());
+            collection = (Collection<Object>) ObjectUtils.newInstance(collectionClass);
+            ObjectPropertyUtils.setPropertyValue(model, collectionGroup.getBindingInfo().getBindingPath(), collection);
+        }
+
+        Map<String, String> fieldConversions = collectionGroup.getCollectionLookup().getFieldConversions();
+        List<String> toFieldNamesColl = new ArrayList(fieldConversions.values());
+        Collections.sort(toFieldNamesColl);
+        String[] toFieldNames = new String[toFieldNamesColl.size()];
+        toFieldNamesColl.toArray(toFieldNames);
+
+        // first split to get the line value sets
+        String[] lineValues = StringUtils.split(lookupResultValues, ",");
+
+        // for each returned set create a new instance of collection class and populate with returned line values
+        for (String lineValue : lineValues) {
+            Object lineDataObject = null;
+
+            // TODO: need to put this in data object service so logic can be reused
+            ModuleService moduleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(
+                    collectionObjectClass);
+            if (moduleService != null && moduleService.isExternalizable(collectionObjectClass)) {
+                lineDataObject = moduleService.createNewObjectFromExternalizableClass(collectionObjectClass.asSubclass(
+                        ExternalizableBusinessObject.class));
+            } else {
+                lineDataObject = ObjectUtils.newInstance(collectionObjectClass);
+            }
+
+            // apply default values to new line
+            applyDefaultValuesForCollectionLine(view, model, collectionGroup, lineDataObject);
+
+            String[] fieldValues = StringUtils.split(lineValue, ":");
+            if (fieldValues.length != toFieldNames.length) {
+                throw new RuntimeException(
+                        "Value count passed back from multi-value lookup does not match field conversion count");
+            }
+
+            // set each field value on the line
+            for (int i = 0; i < fieldValues.length; i++) {
+                String fieldName = toFieldNames[i];
+                ObjectPropertyUtils.setPropertyValue(lineDataObject, fieldName, fieldValues[i]);
+            }
+
+            // TODO: duplicate identifier check
+
+            collection.add(lineDataObject);
+        }
     }
 
     /**

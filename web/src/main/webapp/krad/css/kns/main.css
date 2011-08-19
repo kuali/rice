@@ -688,3 +688,12 @@ span .fieldLine.boxLayoutVerticalItem.clearfix span .fieldLine.boxLayoutVertical
 	background-color: inherit;
 	 text-align:right;
 }
+
+.kr-mvQuickfinder-cntr {
+    font-size: 0.7em;
+    float:right;
+    clear: both;
+    padding-top: 5px;
+    padding-bottom: 15px;
+    padding-right: 10px;
+}

@@ -144,8 +144,24 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         </list>
       </property>  
   </bean>
+
+  <bean id="FooterLookupResults" parent="Footer">
+      <property name="items">
+        <list>
+          <bean parent="ActionField" p:methodToCall="selectAllPages" p:actionLabel="select all from all pages"
+                p:clientSideJs="selectAllLines('@{#collectionGroup.id}');"/>
+          <bean parent="ActionField" p:methodToCall="deselectAllPages" p:actionLabel="deselect all from all pages"
+                p:clientSideJs="deselectAllLines('@{#collectionGroup.id}');"/>
+          <bean parent="ActionField" p:methodToCall="selectAllPage" p:actionLabel="select all from this page"
+                p:clientSideJs="selectAllLines('@{#collectionGroup.id}');"/>
+          <bean parent="ActionField" p:methodToCall="deselectAllPage" p:actionLabel="deselect all from this page"
+                p:clientSideJs="deselectAllLines('@{#collectionGroup.id}');"/>
+          <bean parent="ActionField" p:methodToCall="returnSelected" p:actionLabel="return selected"/>
+        </list>
+      </property>
+  </bean>
   
- <bean id="FooterIncidentReport" parent="Footer">
+  <bean id="FooterIncidentReport" parent="Footer">
       <property name="items">
         <list> 
           <bean parent="ActionField" p:methodToCall="submitReport" p:actionLabel="Submit Report"/>

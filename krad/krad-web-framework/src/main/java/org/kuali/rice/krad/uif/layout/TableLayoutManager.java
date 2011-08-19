@@ -17,6 +17,8 @@ package org.kuali.rice.krad.uif.layout;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifPropertyPaths;
+import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.field.FieldGroup;
@@ -61,8 +63,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	private Field sequenceFieldPrototype;
 
 	private FieldGroup actionFieldPrototype;
-
 	private FieldGroup subCollectionFieldGroupPrototype;
+    private Field selectFieldPrototype;
 
 	// internal counter for the data columns (not including sequence, action)
 	private int numberOfDataColumns;
@@ -106,6 +108,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 		view.getViewHelperService().performComponentInitialization(view, sequenceFieldPrototype);
 		view.getViewHelperService().performComponentInitialization(view, actionFieldPrototype);
 		view.getViewHelperService().performComponentInitialization(view, subCollectionFieldGroupPrototype);
+        view.getViewHelperService().performComponentInitialization(view, selectFieldPrototype);
 	}
 
 	/**
@@ -125,6 +128,10 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 		if (renderSequenceField) {
 			totalColumns++;
 		}
+
+        if (collectionGroup.isRenderSelectField()) {
+            totalColumns++;
+        }
 
 		if (collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly()) {
 			totalColumns++;
@@ -200,14 +207,22 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 			}
 			sequenceField.setRowSpan(rowSpan);
 
-			if (sequenceField instanceof AttributeField) {
-				((AttributeField) sequenceField).getBindingInfo().setBindByNamePrefix(bindingPath);
+			if (sequenceField instanceof DataBinding) {
+				((DataBinding) sequenceField).getBindingInfo().setBindByNamePrefix(bindingPath);
 			}
 
 			ComponentUtils.updateContextForLine(sequenceField, currentLine, lineIndex);
-
 			dataFields.add(sequenceField);
 		}
+
+        // select field will come after sequence field (if enabled) or be first column
+        if (collectionGroup.isRenderSelectField()) {
+            Field selectField = ComponentUtils.copy(selectFieldPrototype, idSuffix);
+            CollectionLayoutUtils.prepareSelectFieldForLine(selectField, collectionGroup, bindingPath, currentLine);
+
+            ComponentUtils.updateContextForLine(selectField, currentLine, lineIndex);
+            dataFields.add(selectField);
+        }
 
 		// now add the fields in the correct position
 		int cellPosition = 0;
@@ -269,6 +284,13 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 			sequenceFieldPrototype.setRowSpan(rowCount);
 			addHeaderField(sequenceFieldPrototype, 1);
 		}
+
+        // next is select field
+        if (collectionGroup.isRenderSelectField()) {
+            selectFieldPrototype.setLabelFieldRendered(true);
+            selectFieldPrototype.setRowSpan(rowCount);
+            addHeaderField(selectFieldPrototype, 1);
+        }
 
 		// pull out label fields from the container's items
 		int cellPosition = 0;
@@ -576,7 +598,33 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 		this.subCollectionFieldGroupPrototype = subCollectionFieldGroupPrototype;
 	}
 
-	/**
+    /**
+     * Field instance that serves as a prototype for creating the select field on each line when
+     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#isRenderSelectField()} is true
+     *
+     * <p>
+     * This prototype can be used to set the control used for the select field (generally will be a checkbox control)
+     * in addition to styling and other setting. The binding path will be formed with using the
+     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getSelectPropertyName()} or if not set the framework
+     * will use {@link org.kuali.rice.krad.web.form.UifFormBase#getSelectedCollectionLines()}
+     * </p>
+     *
+     * @return Field select field prototype instance
+     */
+    public Field getSelectFieldPrototype() {
+        return selectFieldPrototype;
+    }
+
+    /**
+     * Setter for the prototype instance for select fields
+     *
+     * @param selectFieldPrototype
+     */
+    public void setSelectFieldPrototype(Field selectFieldPrototype) {
+        this.selectFieldPrototype = selectFieldPrototype;
+    }
+
+    /**
 	 * List of <code>Field</code> instances that make up the tables body. Pulled
 	 * by the layout manager template to send through the Grid layout
 	 * 

@@ -36,27 +36,31 @@
   </c:if>
 </c:if>
 
-
 <c:choose>
 
-  <c:when
-          test="${(field.actionImageField != null) && field.actionImageField.render && (empty field.actionImageLocation)}">
+  <c:when test="${(field.actionImageField != null) && field.actionImageField.render && (empty field.actionImageLocation)}">
     <krad:attributeBuilder component="${field.actionImageField}"/>
 
-    <input type="image" id="${field.id}"
-           src="${field.actionImageField.source}"
-           alt="${field.actionImageField.altText}" ${height} ${width} ${style} ${styleClass} ${title} ${tabindex} />
+    <krad:span component="${field}">
+      <krad:fieldLabel field="${field}">
+
+        <input type="image" id="${field.id}"
+               src="${field.actionImageField.source}"
+               alt="${field.actionImageField.altText}" ${height} ${width} ${style} ${styleClass} ${title} ${tabindex} />
+
+      </krad:fieldLabel>
+    </krad:span>
   </c:when>
   <c:otherwise>
     <krad:attributeBuilder component="${field}"/>
-
 
     <c:choose>
       <c:when test="${not empty field.actionImageLocation && (field.actionImageField != null) && field.actionImageField.render}">
 
         <c:choose>
           <c:when test="${(field.actionImageLocation eq 'TOP')}">
-            <button id="${field.id}" ${style} ${styleClass} ${title}><span class="topBottomSpan"><img ${height} ${width}
+            <button id="${field.id}" ${style} ${styleClass} ${title}><span
+                    class="topBottomSpan"><img ${height} ${width}
                     class="actionImage topActionImage ${field.actionImageField.styleClassesAsString}"
                     style="${field.actionImageField.style}"
                     src="${field.actionImageField.source}"

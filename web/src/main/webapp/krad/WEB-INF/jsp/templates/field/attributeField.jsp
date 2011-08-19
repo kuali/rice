@@ -17,68 +17,59 @@
 
 <tiles:useAttribute name="field" classname="org.kuali.rice.krad.uif.field.AttributeField"/>
 
-<%-- check to see if label has been rendered in another field (grid layout)--%>
-<c:set var="renderLabel" value="${!field.labelFieldRendered}"/>
-
 <krad:span component="${field}">
 
-  <%-- render field label left --%>
-  <c:if test="${renderLabel && ((field.labelPlacement eq 'LEFT') || (field.labelPlacement eq 'TOP'))}">
-    <krad:template component="${field.labelField}"/>
-  </c:if>
+  <krad:fieldLabel field="${field}">
 
-  <%-- render field value (if read-only) or control (if edit) --%>
-  <c:choose>
-    <c:when test="${field.readOnly}">
-      <c:set var="readOnlyDisplay">
-        <%-- display alternate display value if set --%>
-        <c:if test="${not empty field.alternateDisplayValue}">
-          ${field.alternateDisplayValue}
-        </c:if>
-
-        <c:if test="${empty field.alternateDisplayValue}">
-          <%-- display actual field value --%>
-          <s:bind path="${field.bindingInfo.bindingPath}"
-                  htmlEscape="${field.escapeHtmlInPropertyValue}">${status.value}</s:bind>
-
-          <%-- add alternate display value if set --%>
-          <c:if test="${not empty field.additionalDisplayValue}">
-            *-* ${field.additionalDisplayValue}
+    <%-- render field value (if read-only) or control (if edit) --%>
+    <c:choose>
+      <c:when test="${field.readOnly}">
+        <c:set var="readOnlyDisplay">
+          <%-- display alternate display value if set --%>
+          <c:if test="${not empty field.alternateDisplayValue}">
+            ${field.alternateDisplayValue}
           </c:if>
+
+          <c:if test="${empty field.alternateDisplayValue}">
+            <%-- display actual field value --%>
+            <s:bind path="${field.bindingInfo.bindingPath}"
+                    htmlEscape="${field.escapeHtmlInPropertyValue}">${status.value}</s:bind>
+
+            <%-- add alternate display value if set --%>
+            <c:if test="${not empty field.additionalDisplayValue}">
+              *-* ${field.additionalDisplayValue}
+            </c:if>
+          </c:if>
+        </c:set>
+
+        <%-- render inquiry if enabled --%>
+        <c:if test="${field.fieldInquiry.render}">
+          <krad:template component="${field.fieldInquiry}" componentId="${field.id}" body="${readOnlyDisplay}"/>
         </c:if>
-      </c:set>
 
-      <%-- render inquiry if enabled --%>
-      <c:if test="${field.fieldInquiry.render}">
-        <krad:template component="${field.fieldInquiry}" componentId="${field.id}" body="${readOnlyDisplay}" />
-      </c:if>
+        <c:if test="${!field.fieldInquiry.render}">
+          ${readOnlyDisplay}
+        </c:if>
+      </c:when>
 
-      <c:if test="${!field.fieldInquiry.render}">
-        ${readOnlyDisplay}
-      </c:if>
-    </c:when>
+      <c:otherwise>
+        <%-- render field summary --%>
+        <krad:template component="${field.summaryMessageField}"/>
 
-    <c:otherwise>
-      <%-- render field summary --%>
-      <krad:template component="${field.summaryMessageField}"/>
+        <%-- render control for input --%>
+        <krad:template component="${field.control}" field="${field}"/>
+      </c:otherwise>
+    </c:choose>
 
-      <%-- render control for input --%>
-      <krad:template component="${field.control}" field="${field}"/>
-    </c:otherwise>
-  </c:choose>
+    <%-- render field quickfinder --%>
+    <krad:template component="${field.fieldLookup}" componentId="${field.id}"/>
 
-  <%-- render field quickfinder --%>
-  <krad:template component="${field.fieldLookup}" componentId="${field.id}"/>
+    <%-- render field direct inquiry if field is editable --%>
+    <c:if test="${field.fieldDirectInquiry.render && !field.readOnly}">
+      <krad:template component="${field.fieldDirectInquiry}" componentId="${field.id}"/>
+    </c:if>
 
-  <%-- render field direct inquiry if field is editable --%>
-  <c:if test="${field.fieldDirectInquiry.render && !field.readOnly}">
-    <krad:template component="${field.fieldDirectInquiry}" componentId="${field.id}"/>
-  </c:if>
-
-  <%-- render field label right --%>
-  <c:if test="${renderLabel && (field.labelPlacement eq 'RIGHT')}">
-    <krad:template component="${field.labelField}"/>
-  </c:if>
+  </krad:fieldLabel>
 
   <!-- placeholder for dynamic field markers -->
   <span id="${field.id}_markers"></span>

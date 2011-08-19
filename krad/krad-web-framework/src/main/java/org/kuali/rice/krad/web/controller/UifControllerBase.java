@@ -97,7 +97,7 @@ public abstract class UifControllerBase {
         if (StringUtils.isNotBlank(formKeyParam)) {
             form = (UifFormBase) request.getSession().getAttribute(formKeyParam);
 
-            // retreive from db if form not in session
+            // retrieve from db if form not in session
             if (form == null) {
                 UserSession userSession = (UserSession) request.getSession().getAttribute(
                         KRADConstants.USER_SESSION_KEY);
@@ -356,6 +356,7 @@ public abstract class UifControllerBase {
                 hist.setCurrent(null);
             }
         }
+
         // Add the refresh call
         Properties props = new Properties();
         props.put(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.REFRESH);
@@ -380,9 +381,36 @@ public abstract class UifControllerBase {
     @RequestMapping(params = "methodToCall=refresh")
     public ModelAndView refresh(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
-        // TODO: this code still needs ported with whatever we are supposed
-        // to do on refresh
+        // TODO: this code still needs to handle reference refreshes
+        String refreshCallerType = "";
+        if (request.getParameterMap().containsKey(KRADConstants.REFRESH_CALLER_TYPE)) {
+            refreshCallerType = request.getParameter(KRADConstants.REFRESH_CALLER_TYPE);
+        }
+
+        // process multi-value lookup returns
+        if (StringUtils.equals(refreshCallerType, UifConstants.RefreshCallerTypes.MULTI_VALUE_LOOKUP)) {
+            String lookupCollectionName = "";
+            if (request.getParameterMap().containsKey(UifParameters.LOOKUP_COLLECTION_NAME)) {
+                lookupCollectionName = request.getParameter(UifParameters.LOOKUP_COLLECTION_NAME);
+            }
+
+            if (StringUtils.isBlank(lookupCollectionName)) {
+                throw new RuntimeException(
+                        "Lookup collection name is required for processing multi-value lookup results");
+            }
+
+            String selectedLineValues = "";
+            if (request.getParameterMap().containsKey(UifParameters.SELECTED_LINE_VALUES)) {
+                selectedLineValues = request.getParameter(UifParameters.SELECTED_LINE_VALUES);
+            }
+
+            // invoked view helper to populate the collection from lookup results
+            form.getView().getViewHelperService().processMultipleValueLookupResults(form.getPreviousView(), form,
+                    lookupCollectionName, selectedLineValues);
+        }
+
         form.setRenderFullView(true);
+
         return getUIFModelAndView(form);
     }
 

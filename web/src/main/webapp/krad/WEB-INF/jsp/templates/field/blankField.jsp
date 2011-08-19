@@ -19,5 +19,9 @@
     Writes out HTML space entity
     
  --%>
- 
-&nbsp;
+
+<krad:span component="${field}">
+
+  &nbsp;
+
+</krad:span>

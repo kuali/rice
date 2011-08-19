@@ -68,6 +68,8 @@ public class LookupView extends FormView {
     private boolean suppressActions = false;
     @RequestParameter
     private boolean showMaintenanceLinks = false;
+    @RequestParameter
+    private boolean multipleValuesSelect = false;
 
     @RequestParameter
     private String returnTarget;
@@ -75,7 +77,6 @@ public class LookupView extends FormView {
     @RequestParameter
     private boolean returnByScript;
 
-    private boolean multipleValues = false;
     private boolean lookupCriteriaEnabled = true;
     private boolean supplementalActionsEnabled = false;
     private boolean disableSearchButtons = false;
@@ -132,7 +133,6 @@ public class LookupView extends FormView {
     @Override
     public void performApplyModel(View view, Object model, Component parent) {
         LookupForm lookupForm = (LookupForm) model;
-
 
         // TODO: need to check lookupForm.isAtLeastOneRowHasActions() somewhere
         if (!isSuppressActions() && isShowMaintenanceLinks()) {
@@ -239,6 +239,29 @@ public class LookupView extends FormView {
      */
     public void setShowMaintenanceLinks(boolean showMaintenanceLinks) {
         this.showMaintenanceLinks = showMaintenanceLinks;
+    }
+
+    /**
+     * Indicates whether multiple values select should be enabled for the lookup
+     *
+     * <p>
+     * When set to true, the select field is enabled for the lookup results group that allows the user
+     * to select one or more rows for returning
+     * </p>
+     *
+     * @return boolean true if multiple values should be enabled, false otherwise
+     */
+    public boolean isMultipleValuesSelect() {
+        return multipleValuesSelect;
+    }
+
+    /**
+     * Setter for the multiple values select indicator
+     *
+     * @param multipleValuesSelect
+     */
+    public void setMultipleValuesSelect(boolean multipleValuesSelect) {
+        this.multipleValuesSelect = multipleValuesSelect;
     }
 
     /**

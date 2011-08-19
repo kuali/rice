@@ -15,12 +15,18 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="widget" classname="org.kuali.rice.krad.uif.widget.Inquiry"/>
-<tiles:useAttribute name="body"/>
+<tiles:useAttribute name="group" classname="org.kuali.rice.krad.uif.container.CollectionGroup"/>
 
-<%--
-    Renders an inquiry link for a field value
-    Check if the field is read only
-    Render the direct inquiry for editable fields
- --%>
-<krad:template component="${widget.inquiryLinkField}" body="${body}"/>
+<krad:group group="${group}">
+
+    <%-- render collection quickfinder --%>
+    <krad:template component="${group.collectionLookup}"/>
+
+    <%-- render items through layout manager --%>
+    <tiles:insertTemplate template="${group.layoutManager.template}">
+        <tiles:putAttribute name="items" value="${group.items}"/>
+        <tiles:putAttribute name="manager" value="${group.layoutManager}"/>
+        <tiles:putAttribute name="container" value="${group}"/>
+    </tiles:insertTemplate>
+
+</krad:group>

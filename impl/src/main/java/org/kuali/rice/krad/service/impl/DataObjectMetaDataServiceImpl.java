@@ -16,10 +16,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
+import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.krad.datadictionary.DataObjectEntry;
@@ -32,6 +34,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.service.PersistenceStructureService;
+import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -358,7 +361,6 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
     /**
      * @see org.kuali.rice.krad.service.DataObjectMetaDataService#getTitleAttribute(java.lang.Class)
      */
-    @Override
     public String getTitleAttribute(Class<?> dataObjectClass) {
         String titleAttribute = null;
 
@@ -373,7 +375,6 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
     /**
      * @see org.kuali.rice.krad.service.DataObjectMetaDataService#areNotesSupported(java.lang.Class)
      */
-    @Override
     public boolean areNotesSupported(Class dataObjectClass) {
         boolean hasNotesSupport = false;
 
@@ -383,6 +384,45 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
         }
 
         return hasNotesSupport;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.service.DataObjectMetaDataService#getDataObjectIdentifierString
+     */
+    public String getDataObjectIdentifierString(Object dataObject) {
+        String identifierString = "";
+
+        if (dataObject == null) {
+            identifierString = "Null";
+            return identifierString;
+        }
+
+        Class<?> dataObjectClass = dataObject.getClass();
+
+        // if PBO, use object id property
+        if (PersistableBusinessObject.class.isAssignableFrom(dataObjectClass)) {
+            String objectId = ObjectPropertyUtils.getPropertyValue(dataObject, UifPropertyPaths.OBJECT_ID);
+            if (StringUtils.isBlank(objectId)) {
+                objectId = UUID.randomUUID().toString();
+                ObjectPropertyUtils.setPropertyValue(dataObject, UifPropertyPaths.OBJECT_ID, objectId);
+            }
+
+            identifierString = objectId;
+        } else {
+            // build identifier string from primary key values
+            Map<String, ?> primaryKeyFieldValues = getPrimaryKeyFieldValues(dataObject, true);
+            for (Map.Entry<String, ?> primaryKeyValue : primaryKeyFieldValues.entrySet()) {
+                if (primaryKeyValue.getValue() == null) {
+                    identifierString += "Null";
+                } else {
+                    identifierString += primaryKeyValue.getValue();
+                }
+                identifierString += ":";
+            }
+            identifierString = StringUtils.removeEnd(identifierString, ":");
+        }
+
+        return identifierString;
     }
 
     /**

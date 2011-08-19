@@ -45,6 +45,9 @@ public class LookupForm extends UifFormBase {
     private String docNum;
     private String referencesToRefresh;
 
+    private boolean multipleValuesSelect;
+    private String lookupCollectionName;
+
     private Map<String, String> criteriaFields;
     private Map<String, String> fieldConversions;
     private List<String> readOnlyFieldsList;
@@ -60,6 +63,7 @@ public class LookupForm extends UifFormBase {
         setViewTypeName(ViewType.LOOKUP);
         atLeastOneRowReturnable = false;
         atLeastOneRowHasActions = false;
+        multipleValuesSelect = false;
 
         criteriaFields = new HashMap<String, String>();
         fieldConversions = new HashMap<String, String>();
@@ -186,6 +190,48 @@ public class LookupForm extends UifFormBase {
 
     public void setReferencesToRefresh(String referencesToRefresh) {
         this.referencesToRefresh = referencesToRefresh;
+    }
+
+    /**
+     * Indicates whether multiple values select should be enabled for the lookup
+     *
+     * <p>
+     * When set to true, the select field is enabled for the lookup results group that allows the user
+     * to select one or more rows for returning
+     * </p>
+     *
+     * @return boolean true if multiple values should be enabled, false otherwise
+     */
+    public boolean isMultipleValuesSelect() {
+        return multipleValuesSelect;
+    }
+
+    /**
+     * Setter for the multiple values select indicator
+     *
+     * @param multipleValuesSelect
+     */
+    public void setMultipleValuesSelect(boolean multipleValuesSelect) {
+        this.multipleValuesSelect = multipleValuesSelect;
+    }
+
+    /**
+     * For the case of multi-value lookup, indicates the collection that should be populated with
+     * the return results
+     *
+     * @return String collection name (must be full binding path)
+     */
+    public String getLookupCollectionName() {
+        return lookupCollectionName;
+    }
+
+    /**
+     * Setter for the name of the collection that should be populated with lookup results
+     *
+     * @param lookupCollectionName
+     */
+    public void setLookupCollectionName(String lookupCollectionName) {
+        this.lookupCollectionName = lookupCollectionName;
     }
 
     public Map<String, String> getCriteriaFields() {

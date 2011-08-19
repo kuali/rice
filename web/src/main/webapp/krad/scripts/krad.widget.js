@@ -413,6 +413,26 @@ function createTable(tableId, options) {
 }
 
 /**
+ * Select all checkboxes within the collection div that are marked with class 'kr-select-line' (used
+ * for multi-value select collections)
+ *
+ * @param collectionId - id for the collection to select checkboxes for
+ */
+function selectAllLines(collectionId) {
+    jq("#" + collectionId + "_div" + " input:checkbox.kr-select-line").attr('checked', true);
+}
+
+/**
+ * Deselects all checkboxes within the collection div that are marked with class 'kr-select-line' (used
+ * for multi-value select collections)
+ *
+ * @param collectionId - id for the collection to deselect checkboxes for
+ */
+function deselectAllLines(collectionId) {
+    jq("#" + collectionId + "_div" + " input:checkbox.kr-select-line").attr('checked', false);
+}
+
+/**
  * Uses jQuery jsTree plug-in to decorate a div with tree functionality. The
  * second argument is a Map of options that are available
  * for the plug-in. See <link>http://www.jstree.com/documentation/</link> for

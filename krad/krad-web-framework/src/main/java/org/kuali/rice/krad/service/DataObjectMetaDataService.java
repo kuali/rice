@@ -135,4 +135,19 @@ public interface DataObjectMetaDataService {
      * @return boolean true if notes are supported for data object, false if notes are not supported
      */
     public boolean areNotesSupported(Class dataObjectClass);
+
+    /**
+     * Builds a string that uniquely identifiers the data object instance
+     *
+     * <p>
+     * Based on the metadata available for the class of the data object, the values for fields that uniquely
+     * identify an instance are concatenated together into one string. For general data objects these fields
+     * will be the primary key fields defined in the data dictionary. For the case of objects with type
+     * <code>PersistableBusinessObject</code>, the object id field will be used.
+     * </p>
+     *
+     * @param dataObject - data object instance to build identifier string for
+     * @return String identifier string for data object
+     */
+    public String getDataObjectIdentifierString(Object dataObject);
 }

@@ -14,6 +14,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
@@ -56,6 +57,9 @@ public class QuickFinder extends WidgetBase {
     private Boolean headerBarEnabled;
     private Boolean showMaintenanceLinks;
 
+    private Boolean multipleValuesSelect;
+    private String lookupCollectionName;
+
     private ActionField quickfinderActionField;
 
     public QuickFinder() {
@@ -66,7 +70,23 @@ public class QuickFinder extends WidgetBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.widget.WidgetBase#performFinalize(org.kuali.rice.krad.uif.view.View,
+     * The following finalization is performed:
+     *
+     * <ul>
+     * <li>
+     * Sets defaults on collectionLookup such as collectionName, and the class if not set
+     *
+     * <p>
+     * If the data object class was not configured for the lookup, the class configured for the collection group will
+     * be used if it has a lookup defined. If not data object class is found for the lookup it will be disabled. The
+     * collection name is also defaulted to the binding path for this collection group, so the results returned from
+     * the lookup will populate this collection. Finally field conversions will be generated based on the PK fields of
+     * the collection object class
+     * </p>
+     * </li>
+     * </ul>
+     *
+     * @see org.kuali.rice.krad.uif.widget.Widget#performFinalize(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
@@ -77,33 +97,67 @@ public class QuickFinder extends WidgetBase {
             return;
         }
 
-        AttributeField field = (AttributeField) parent;
+        if (parent instanceof AttributeField) {
+            AttributeField field = (AttributeField) parent;
 
-        // determine lookup class, field conversions and lookup parameters in
-        // not set
-        if (StringUtils.isBlank(dataObjectClassName)) {
-            DataObjectRelationship relationship = getRelationshipForField(view, model, field);
+            // determine lookup class, field conversions and lookup parameters in
+            // not set
+            if (StringUtils.isBlank(dataObjectClassName)) {
+                DataObjectRelationship relationship = getRelationshipForField(view, model, field);
 
-            // if no relationship found cannot have a quickfinder
-            if (relationship == null) {
-                setRender(false);
-                return;
+                // if no relationship found cannot have a quickfinder
+                if (relationship == null) {
+                    setRender(false);
+                    return;
+                }
+
+                dataObjectClassName = relationship.getRelatedClass().getName();
+
+                if ((fieldConversions == null) || fieldConversions.isEmpty()) {
+                    generateFieldConversions(field, relationship);
+                }
+
+                if ((lookupParameters == null) || lookupParameters.isEmpty()) {
+                    generateLookupParameters(field, relationship);
+                }
             }
 
-            dataObjectClassName = relationship.getRelatedClass().getName();
+            // adjust paths based on associated attribute field
+            updateFieldConversions(field.getBindingInfo());
+            updateLookupParameters(field.getBindingInfo());
+        } else if (parent instanceof CollectionGroup) {
+            CollectionGroup collectionGroup = (CollectionGroup) parent;
 
-            if ((fieldConversions == null) || fieldConversions.isEmpty()) {
-                generateFieldConversions(field, relationship);
+            // check to see if data object class is configured for lookup, if so we will assume it should be enabled
+            // if not and the class configured for the collection group is lookupable, use that
+            if (StringUtils.isBlank(getDataObjectClassName())) {
+                Class<?> collectionObjectClass = collectionGroup.getCollectionObjectClass();
+                boolean isCollectionClassLookupable = KRADServiceLocatorWeb.getViewDictionaryService().isLookupable(
+                        collectionObjectClass);
+                if (isCollectionClassLookupable) {
+                    setDataObjectClassName(collectionObjectClass.getName());
+
+                    if ((fieldConversions == null) || fieldConversions.isEmpty()) {
+                        // use PK fields for collection class
+                        List<String> collectionObjectPKFields =
+                                KRADServiceLocatorWeb.getDataObjectMetaDataService().listPrimaryKeyFieldNames(
+                                        collectionObjectClass);
+
+                        for (String pkField : collectionObjectPKFields) {
+                            fieldConversions.put(pkField, pkField);
+                        }
+                    }
+                } else {
+                    // no available data object class to lookup so need to disable quickfinder
+                    setRender(false);
+                }
             }
 
-            if ((lookupParameters == null) || lookupParameters.isEmpty()) {
-                generateLookupParameters(field, relationship);
+            // set the lookup return collection name to this collection path
+            if (isRender() && StringUtils.isBlank(getLookupCollectionName())) {
+                setLookupCollectionName(collectionGroup.getBindingInfo().getBindingPath());
             }
         }
-
-        // adjust paths based on associated attribute field
-        updateFieldConversions(field.getBindingInfo());
-        updateLookupParameters(field.getBindingInfo());
 
         quickfinderActionField.addActionParameter(UifParameters.BASE_LOOKUP_URL, baseLookupUrl);
         quickfinderActionField.addActionParameter(UifParameters.DATA_OBJECT_CLASS_NAME, dataObjectClassName);
@@ -129,6 +183,8 @@ public class QuickFinder extends WidgetBase {
         addActionParameterIfNotNull(UifParameters.DISABLE_SEARCH_BUTTONS, disableSearchButtons);
         addActionParameterIfNotNull(UifParameters.HEADER_BAR_ENABLED, headerBarEnabled);
         addActionParameterIfNotNull(UifParameters.SHOW_MAINTENANCE_LINKS, showMaintenanceLinks);
+        addActionParameterIfNotNull(UifParameters.MULTIPLE_VALUES_SELECT, multipleValuesSelect);
+        addActionParameterIfNotNull(UifParameters.LOOKUP_COLLECTION_NAME, lookupCollectionName);
 
         // TODO:
         // org.kuali.rice.kns.util.FieldUtils.populateQuickfinderDefaultsForLookup(Class,
@@ -152,8 +208,8 @@ public class QuickFinder extends WidgetBase {
         }
 
         // get relationship from metadata service
-        return KRADServiceLocatorWeb.getDataObjectMetaDataService()
-                .getDataObjectRelationship(parentObject, parentObjectClass, propertyName, "", true, true, false);
+        return KRADServiceLocatorWeb.getDataObjectMetaDataService().getDataObjectRelationship(parentObject,
+                parentObjectClass, propertyName, "", true, true, false);
     }
 
     protected void generateFieldConversions(AttributeField field, DataObjectRelationship relationship) {
@@ -180,8 +236,8 @@ public class QuickFinder extends WidgetBase {
             // generateLookupParameters(BusinessObject,
             // String, DataObjectRelationship, String, List, String)
 
-            if (relationship.getUserVisibleIdentifierKey() == null ||
-                    relationship.getUserVisibleIdentifierKey().equals(fromField)) {
+            if (relationship.getUserVisibleIdentifierKey() == null || relationship.getUserVisibleIdentifierKey().equals(
+                    fromField)) {
                 lookupParameters.put(fromField, toField);
             }
         }
@@ -361,5 +417,47 @@ public class QuickFinder extends WidgetBase {
 
     public void setQuickfinderActionField(ActionField quickfinderActionField) {
         this.quickfinderActionField = quickfinderActionField;
+    }
+
+    /**
+     * Indicates whether a multi-values lookup should be requested
+     *
+     * @return boolean true if multi-value lookup should be requested, false for normal lookup
+     */
+    public Boolean getMultipleValuesSelect() {
+        return multipleValuesSelect;
+    }
+
+    /**
+     * Setter for the multi-values lookup indicator
+     *
+     * @param multipleValuesSelect
+     */
+    public void setMultipleValuesSelect(Boolean multipleValuesSelect) {
+        this.multipleValuesSelect = multipleValuesSelect;
+    }
+
+    /**
+     * For the case of multi-value lookup, indicates the collection that should be populated with
+     * the return results
+     *
+     * <p>
+     * Note when the quickfinder is associated with a <code>CollectionGroup</code>, this property is
+     * set automatically from the collection name associated with the group
+     * </p>
+     *
+     * @return String collection name (must be full binding path)
+     */
+    public String getLookupCollectionName() {
+        return lookupCollectionName;
+    }
+
+    /**
+     * Setter for the name of the collection that should be populated with lookup results
+     *
+     * @param lookupCollectionName
+     */
+    public void setLookupCollectionName(String lookupCollectionName) {
+        this.lookupCollectionName = lookupCollectionName;
     }
 }

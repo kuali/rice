@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.lookup;
 
+import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.web.form.LookupForm;
@@ -128,4 +129,6 @@ public interface Lookupable extends ViewHelperService, java.io.Serializable {
      * @param maintenanceMethodToCall - name of the method that should be invoked in the maintenance controller
      */
     public void getMaintenanceActionLink(LinkField actionLinkField, Object model, String maintenanceMethodToCall);
+
+    public void setMultiValueLookupSelect(AttributeField selectField, Object model);
 }

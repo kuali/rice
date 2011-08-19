@@ -705,19 +705,16 @@
           </property>
         </bean>
 				<bean parent="LinkField" p:linkLabel="Kuali Website"
-					p:hrefText="http://www.kuali.org" p:label="LinkField is used for href links:" />
-        <bean parent="LinkGroup" p:title="LinkGroup" p:summary="LinkGroup with | delimeter and [] begin and end delimeter"
+					p:hrefText="http://www.kuali.org" p:label="LinkField is used for href links" />
+        <bean parent="LinkGroup" p:title="LinkGroup" p:summary="LinkGroup with | delimiter and [] begin and end delimiter"
               p:groupBeginDelimiter="[" p:groupEndDelimiter="]" p:linkSeparator="|">
           <property name="items">
             <list>
                  <bean parent="ActionLinkField"
-					p:label="ActionLinkField can process a js, jquery, or js method:"
 					p:clientSideJs="alert('You clicked the link');" p:actionLabel="Link 1" />
               <bean parent="ActionLinkField"
-					p:label="ActionLinkField can process a js, jquery, or js method:"
 					p:clientSideJs="alert('You clicked the link');" p:actionLabel="Link 2" />
               <bean parent="ActionLinkField"
-					p:label="ActionLinkField can process a js, jquery, or js method:"
 					p:clientSideJs="alert('You clicked the link');" p:actionLabel="Link 3" />
             </list>
           </property>

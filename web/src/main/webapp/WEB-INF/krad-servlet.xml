@@ -52,5 +52,14 @@
   <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
     <property name="maxUploadSize" value="500000"/>
   </bean>
+
+  <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+    <property name="basenames">
+      <list>
+        <value>org/kuali/rice/krad/ApplicationResources</value>
+        <value>org/kuali/rice/krad/KRAD-ApplicationResources</value>
+      </list>
+    </property>
+  </bean>
   
 </beans>

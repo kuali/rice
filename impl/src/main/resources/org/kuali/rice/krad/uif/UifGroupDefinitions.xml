@@ -185,6 +185,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="CollectionGroup" abstract="true" parent="CollectionGroup-parentBean"/>
   <bean id="CollectionGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.CollectionGroup" parent="Group">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/group/collectionGroup.jsp"/>
       <property name="bindingInfo">
         <ref bean="BindingInfo"/>
       </property>
@@ -206,6 +207,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
       <property name="header.group">
          <bean parent="Group_ShowHideInactive" p:styleClasses="group-actions"/>
+      </property>
+      <property name="collectionLookup">
+        <bean parent="QuickFinder" p:multipleValuesSelect="true" p:quickfinderActionField.styleClasses="kr-mvQuickfinder-cntr"
+              p:quickfinderActionField.label="Look Up/Add Multiple Account Lines"/>
       </property>
       <property name="layoutManager">
         <bean parent="StackedLayoutManager"/>
@@ -520,11 +525,18 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     <property name="showInactive" value="true"/>
     <property name="propertyName" value="searchResults"/>
     <property name="layoutManager.renderSequenceField" value="false"/>
+    <property name="renderLineActions" value="false"/>
+    <property name="layoutManager.selectFieldPrototype.finalizeMethodToCall" value="setMultiValueLookupSelect"/>
     <property name="renderAddLine" value="false"/>
     <property name="readOnly" value="true"/>
     <property name="accordion.render" value="false"/>
+    <property name="renderSelectField" value="@{#view.multipleValuesSelect}"/>
     <property name="header.group">
       <bean parent="GroupBodyOnly"/>
+    </property>
+    <property name="footer">
+      <bean parent="FooterLookupResults"
+            p:render="@{#view.multipleValuesSelect and (searchResults != null) and !searchResults.empty}"/>
     </property>
   </bean>
 

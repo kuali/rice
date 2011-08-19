@@ -39,35 +39,44 @@
   <c:set var="imageRole" value="role='presentation'"/>
 </c:if>
 
-<c:choose>
-  <c:when test="${(field.actionImageField != null) && field.actionImageField.render}">
-    <c:if test="${not empty field.actionImageField.height}">
-      <c:set var="height" value="height='${field.actionImageField.height}'"/>
-    </c:if>
-    <c:if test="${not empty field.actionImageField.width}">
-      <c:set var="width" value="width='${field.actionImageField.width}'"/>
-    </c:if>
+<krad:span component="${field}">
+
+  <krad:fieldLabel field="${field}">
+
     <c:choose>
-      <c:when test="${field.actionImageLocation != null && (field.actionImageLocation eq 'RIGHT')}">
-        <a id="${field.id}" ${href}
-           onclick="return false;"${name} ${style} ${styleClass} ${tabindex}>${field.actionLabel}
-          <img ${imageRole}
-                  class="actionImage rightActionImage ${field.actionImageField.styleClassesAsString}" ${height} ${width}
-                  style="${field.actionImageField.style}" src="${field.actionImageField.source}"
-                  alt="${field.actionImageField.altText}"/>
-        </a>
+      <c:when test="${(field.actionImageField != null) && field.actionImageField.render}">
+        <c:if test="${not empty field.actionImageField.height}">
+          <c:set var="height" value="height='${field.actionImageField.height}'"/>
+        </c:if>
+        <c:if test="${not empty field.actionImageField.width}">
+          <c:set var="width" value="width='${field.actionImageField.width}'"/>
+        </c:if>
+        <c:choose>
+          <c:when test="${field.actionImageLocation != null && (field.actionImageLocation eq 'RIGHT')}">
+            <a id="${field.id}" ${href}
+               onclick="return false;"${name} ${style} ${styleClass} ${tabindex}>${field.actionLabel}
+              <img ${imageRole}
+                      class="actionImage rightActionImage ${field.actionImageField.styleClassesAsString}" ${height} ${width}
+                      style="${field.actionImageField.style}" src="${field.actionImageField.source}"
+                      alt="${field.actionImageField.altText}"/>
+            </a>
+          </c:when>
+          <c:otherwise>
+            <a id="${field.id}" ${href}
+               onclick="return false;"${name} ${style} ${styleClass} ${tabindex}><img ${imageRole}
+                    class="actionImage leftActionImage ${field.actionImageField.styleClassesAsString}" ${height} ${width}
+                    style="${field.actionImageField.style}" src="${field.actionImageField.source}"
+                    alt="${field.actionImageField.altText}"/>${field.actionLabel}
+            </a>
+          </c:otherwise>
+        </c:choose>
       </c:when>
       <c:otherwise>
-        <a id="${field.id}" ${href} onclick="return false;"${name} ${style} ${styleClass} ${tabindex}><img ${imageRole}
-                class="actionImage leftActionImage ${field.actionImageField.styleClassesAsString}" ${height} ${width}
-                style="${field.actionImageField.style}" src="${field.actionImageField.source}"
-                alt="${field.actionImageField.altText}"/>${field.actionLabel}
-        </a>
+        <a id="${field.id}" ${href}
+           onclick="return false;"${name} ${style} ${styleClass} ${tabindex}>${field.actionLabel}</a>
       </c:otherwise>
     </c:choose>
-  </c:when>
-  <c:otherwise>
-    <a id="${field.id}" ${href}
-       onclick="return false;"${name} ${style} ${styleClass} ${tabindex}>${field.actionLabel}</a>
-  </c:otherwise>
-</c:choose>
+
+  </krad:fieldLabel>
+
+</krad:span>

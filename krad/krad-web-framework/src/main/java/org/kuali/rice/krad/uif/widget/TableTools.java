@@ -103,7 +103,7 @@ public class TableTools extends WidgetBase {
     protected void buildTableSortOptions(CollectionGroup collectionGroup) {
         LayoutManager layoutManager = collectionGroup.getLayoutManager();
 
-        // if subcollection exists, dont allow the table sortable
+        // if sub collection exists, don't allow the table sortable
         if (!collectionGroup.getSubCollections().isEmpty()) {
             setDisableTableSort(true);
         }
@@ -115,59 +115,64 @@ public class TableTools extends WidgetBase {
                         "[" + UifConstants.TableToolsValues.ADD_ROW_DEFAULT_INDEX + "]");
             }
 
-            if (!collectionGroup.isReadOnly()) {
-                StringBuffer tableToolsColumnOptions = new StringBuffer("[");
+            StringBuffer tableToolsColumnOptions = new StringBuffer("[");
 
-                if (layoutManager instanceof TableLayoutManager && ((TableLayoutManager) layoutManager)
-                        .isRenderSequenceField()) {
-                    tableToolsColumnOptions.append(" null ,");
-                }
-
-                String sortType = null;
-                // TODO: does this handle multiple rows correctly?
-                for (Component component : collectionGroup.getItems()) {
-                    // For FieldGroup, get the first field from that group
-                    if (component instanceof FieldGroup) {
-                        component = ((FieldGroup) component).getItems().get(0);
-                    }
-
-                    if (component instanceof AttributeField) {
-                        AttributeField field = (AttributeField) component;
-
-                        if (field.getControl() instanceof TextControl) {
-                            sortType = UifConstants.TableToolsValues.DOM_TEXT;
-                        } else if (field.getControl() instanceof SelectControl) {
-                            sortType = UifConstants.TableToolsValues.DOM_SELECT;
-                        } else if (field.getControl() instanceof CheckboxControl || field
-                                .getControl() instanceof CheckboxGroupControl) {
-                            sortType = UifConstants.TableToolsValues.DOM_CHECK;
-                        } else if (field.getControl() instanceof RadioGroupControl) {
-                            sortType = UifConstants.TableToolsValues.DOM_RADIO;
-                        }
-
-                        Class dataTypeClass = ObjectPropertyUtils.getPropertyType(
-                                collectionGroup.getCollectionObjectClass(),
-                                ((AttributeField) component).getPropertyName());
-                        String colOptions = constructTableColumnOptions(true, dataTypeClass, sortType);
-                        tableToolsColumnOptions.append(colOptions + " , ");
-                    } else {
-                        String colOptions = constructTableColumnOptions(false, null, null);
-                        tableToolsColumnOptions.append(colOptions + " , ");
-                    }
-                }
-
-                if (collectionGroup.isRenderLineActions()) {
-                    String colOptions = constructTableColumnOptions(false, null, null);
-                    tableToolsColumnOptions.append(colOptions);
-                } else {
-                    tableToolsColumnOptions = new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
-                            ", "));
-                }
-
-                tableToolsColumnOptions.append("]");
-
-                getComponentOptions().put(UifConstants.TableToolsKeys.AO_COLUMNS, tableToolsColumnOptions.toString());
+            if (layoutManager instanceof TableLayoutManager && ((TableLayoutManager) layoutManager)
+                    .isRenderSequenceField()) {
+                tableToolsColumnOptions.append(" null ,");
             }
+
+            // skip select field if enabled
+            if (collectionGroup.isRenderSelectField()) {
+                String colOptions = constructTableColumnOptions(false, null, null);
+                tableToolsColumnOptions.append(colOptions + " , ");
+            }
+
+            // TODO: does this handle multiple rows correctly?
+            for (Component component : collectionGroup.getItems()) {
+                // For FieldGroup, get the first field from that group
+                if (component instanceof FieldGroup) {
+                    component = ((FieldGroup) component).getItems().get(0);
+                }
+
+                if (component instanceof AttributeField) {
+                    AttributeField field = (AttributeField) component;
+
+                    String sortType = null;
+                    if (collectionGroup.isReadOnly() || (field.getControl() == null)) {
+                        sortType = UifConstants.TableToolsValues.DOM_TEXT;
+                    } else if (field.getControl() instanceof TextControl) {
+                        sortType = UifConstants.TableToolsValues.DOM_TEXT;
+                    } else if (field.getControl() instanceof SelectControl) {
+                        sortType = UifConstants.TableToolsValues.DOM_SELECT;
+                    } else if (field.getControl() instanceof CheckboxControl || field
+                            .getControl() instanceof CheckboxGroupControl) {
+                        sortType = UifConstants.TableToolsValues.DOM_CHECK;
+                    } else if (field.getControl() instanceof RadioGroupControl) {
+                        sortType = UifConstants.TableToolsValues.DOM_RADIO;
+                    }
+
+                    Class dataTypeClass = ObjectPropertyUtils.getPropertyType(
+                            collectionGroup.getCollectionObjectClass(), ((AttributeField) component).getPropertyName());
+                    String colOptions = constructTableColumnOptions(true, dataTypeClass, sortType);
+                    tableToolsColumnOptions.append(colOptions + " , ");
+                } else {
+                    String colOptions = constructTableColumnOptions(false, null, null);
+                    tableToolsColumnOptions.append(colOptions + " , ");
+                }
+            }
+
+            if (collectionGroup.isRenderLineActions()) {
+                String colOptions = constructTableColumnOptions(false, null, null);
+                tableToolsColumnOptions.append(colOptions);
+            } else {
+                tableToolsColumnOptions = new StringBuffer(StringUtils.removeEnd(tableToolsColumnOptions.toString(),
+                        ", "));
+            }
+
+            tableToolsColumnOptions.append("]");
+
+            getComponentOptions().put(UifConstants.TableToolsKeys.AO_COLUMNS, tableToolsColumnOptions.toString());
         }
     }
 

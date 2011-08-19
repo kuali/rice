@@ -56,7 +56,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>  
       <property name="subCollectionFieldGroupPrototype">
         <bean parent="FieldGroup" p:labelField.render="false"/>
-      </property>         
+      </property>
+      <property name="selectFieldPrototype">
+        <bean parent="AttributeField" p:readOnly="false" p:label="Select?" p:shortLabel="Select?" p:control-ref="CheckboxControl"/>
+      </property>
       <property name="tableTools">
         <ref bean="TableTools-Paging"/>
       </property>   
@@ -74,7 +77,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="subCollectionFieldGroupPrototype">
         <bean parent="FieldGroup" p:labelField.render="false" p:group.header.render="false"
               p:colSpan="@{#parent.layoutManager.numberOfColumns}" />
-      </property>       
+      </property>
+      <property name="selectFieldPrototype">
+        <bean parent="AttributeField" p:readOnly="false" p:label="Select?" p:shortLabel="Select?" p:control-ref="CheckboxControl"/>
+      </property>
   </bean>  
   
   <bean id="StackedGroupPrototype" parent="StackedGroupPrototype-parentBean"/> 

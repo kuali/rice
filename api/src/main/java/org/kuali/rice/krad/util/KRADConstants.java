@@ -390,6 +390,7 @@ public final class KRADConstants {
     public static final String QUESTION_SHOW_REASON_FIELD = "showReasonField";
 
     public static final String REFRESH_CALLER = "refreshCaller";
+    public static final String REFRESH_CALLER_TYPE = "refreshCallerType";
     public static final String REFRESH_DATA_OBJECT_CLASS = "refreshDataObjectClass";
     public static final String REFRESH_MAPPING_PREFIX = "/Refresh";
 

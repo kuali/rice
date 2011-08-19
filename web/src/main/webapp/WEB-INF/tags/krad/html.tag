@@ -35,7 +35,7 @@
     <krad:scriptingVariables/>
 
     <title>
-      <!-- bean:message key="app.title" /--> <!--  TODO: find spring replacement -->
+      <s:message code="app.title"/>
       :: ${view.title}
     </title>
 

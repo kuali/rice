@@ -37,6 +37,8 @@ import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.control.Control;
+import org.kuali.rice.krad.uif.control.ValueConfiguredControl;
 import org.kuali.rice.krad.uif.view.LookupView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.control.HiddenControl;
@@ -553,8 +555,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         returnLinkField.setHrefText(href);
 
         // build return link label and title
-        String linkLabel =
-                getConfigurationService().getPropertyValueAsString(
+        String linkLabel = getConfigurationService().getPropertyValueAsString(
                         KRADConstants.Lookup.TITLE_RETURN_URL_PREPENDTEXT_PROPERTY);
         returnLinkField.setLinkLabel(linkLabel);
 
@@ -751,6 +752,40 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         props.put(UifParameters.VIEW_TYPE_NAME, UifConstants.ViewType.MAINTENANCE);
 
         return UrlFactory.parameterizeUrl(KRADConstants.Maintenance.REQUEST_MAPPING_MAINTENANCE, props);
+    }
+
+    /**
+     * Sets the value for the attribute field control to contain the field conversion values for the line
+     *
+     * @see org.kuali.rice.krad.lookup.LookupableImpl#setMultiValueLookupSelect
+     */
+    @Override
+    public void setMultiValueLookupSelect(AttributeField selectField, Object model) {
+        LookupForm lookupForm = (LookupForm) model;
+        Object lineDataObject = selectField.getContext().get(UifConstants.ContextVariableNames.LINE);
+        if (lineDataObject == null) {
+            throw new RuntimeException("Unable to get data object for line from component: " + selectField.getId());
+        }
+
+        Control selectControl = ((AttributeField) selectField).getControl();
+        if ((selectControl != null) && (selectControl instanceof ValueConfiguredControl)) {
+            String lineIdentifier = "";
+
+            // get value for each field conversion from line and add to lineIdentifier
+            Map<String, String> fieldConversions = lookupForm.getFieldConversions();
+            List<String> fromFieldNames = new ArrayList<String>(fieldConversions.keySet());
+            Collections.sort(fromFieldNames);
+            for (String fromFieldName : fromFieldNames) {
+                Object fromFieldValue = ObjectPropertyUtils.getPropertyValue(lineDataObject, fromFieldName);
+                if (fromFieldValue != null) {
+                    lineIdentifier += fromFieldValue;
+                }
+                lineIdentifier += ":";
+            }
+            lineIdentifier = StringUtils.removeEnd(lineIdentifier, ":");
+
+            ((ValueConfiguredControl) selectControl).setValue(lineIdentifier);
+        }
     }
 
     /**

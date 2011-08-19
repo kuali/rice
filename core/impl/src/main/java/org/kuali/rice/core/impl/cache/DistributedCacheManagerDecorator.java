@@ -14,7 +14,7 @@ import java.util.Collections;
  * A distributed cache manager that wraps a cache manager and adds distributed cache capabilities
  * through the kuali service bus.
  */
-public final class DistributedCacheManager implements CacheManager {
+public final class DistributedCacheManagerDecorator implements CacheManager {
 
     private final CacheManager cacheManager;
     private final MessageHelper messageHelper;
@@ -23,12 +23,12 @@ public final class DistributedCacheManager implements CacheManager {
     /**
      * Creates an instance.
      *
-     * @param cacheManager the cache manager to wrap
-     * @param messageHelper the message helper used to interact with the ksb
-     * @param serviceName the serviceName of the {@link CacheService}
+     * @param cacheManager the cache manager to wrap. cannot be null.
+     * @param messageHelper the message helper used to interact with the ksb. cannot be null.
+     * @param serviceName the serviceName of the {@link CacheService}. cannot be null or blank.
      * @throws IllegalArgumentException if the cacheManager, messageHelper is null or the serviceName is null or blank
      */
-    public DistributedCacheManager(CacheManager cacheManager, MessageHelper messageHelper, String serviceName) {
+    public DistributedCacheManagerDecorator(CacheManager cacheManager, MessageHelper messageHelper, String serviceName) {
         if (cacheManager == null) {
             throw new IllegalArgumentException("cacheManager was null");
         }
@@ -48,7 +48,7 @@ public final class DistributedCacheManager implements CacheManager {
 
     @Override
     public Cache getCache(String name) {
-        return DistributedCache.wrap(cacheManager.getCache(name), messageHelper, serviceName);
+        return DistributedCacheDecorator.wrap(cacheManager.getCache(name), messageHelper, serviceName);
     }
 
     @Override
@@ -60,13 +60,13 @@ public final class DistributedCacheManager implements CacheManager {
      * a cache wrapper that adds distributed cache flush capabilities.  Note: that all cache keys are
      * coerced to a String.  This means that all cache keys must have well-behaved toString methods.
      */
-    private static final class DistributedCache implements Cache {
+    private static final class DistributedCacheDecorator implements Cache {
 
         private final Cache cache;
         private final MessageHelper messageHelper;
         private final String serviceName;
 
-        private DistributedCache(Cache cache, MessageHelper messageHelper, String serviceName) {
+        private DistributedCacheDecorator(Cache cache, MessageHelper messageHelper, String serviceName) {
             this.cache = cache;
             this.messageHelper = messageHelper;
             this.serviceName = serviceName;
@@ -75,8 +75,8 @@ public final class DistributedCacheManager implements CacheManager {
         private static Cache wrap(Cache cache, MessageHelper messageHelper, String serviceName) {
             //just in case they are cached do not want to wrap twice. Obviously this only works
             //if the Cache isn't wrapped a second time.
-            if (!(cache instanceof DistributedCache)) {
-                return new DistributedCache(cache, messageHelper, serviceName);
+            if (!(cache instanceof DistributedCacheDecorator)) {
+                return new DistributedCacheDecorator(cache, messageHelper, serviceName);
             }
             return cache;
         }

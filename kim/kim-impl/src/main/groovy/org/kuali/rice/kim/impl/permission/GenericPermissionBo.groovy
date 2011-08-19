@@ -132,8 +132,10 @@ public class GenericPermissionBo extends PersistableBusinessObjectBase {
         bo.name = im.name
         bo.description = im.description
         bo.active = im.active
-        bo.templateId = im.template.getId()
-        bo.template = PermissionTemplateBo.from(im.template)
+        if (im.getTemplate() != null) {
+            bo.templateId = im.template.getId()
+            bo.template = PermissionTemplateBo.from(im.template)
+        }
         //bo.attributes = im.attributes
         bo.versionNumber = im.versionNumber
         bo.objectId = im.objectId;

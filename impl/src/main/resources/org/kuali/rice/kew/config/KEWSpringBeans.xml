@@ -163,6 +163,7 @@
         <idref local="rice.kew.workflowDocumentService" />
         <idref local="rice.kew.documentTypeService" />
         <idref local="rice.kew.noteService" />
+        <idref local="rice.kew.ruleService" />
         <idref local="rice.kew.documentLookupCustomizationHandlerService" />
         <idref local="rice.kew.extensionRepositoryService" />
                 
@@ -783,6 +784,8 @@
 	<bean id="rice.kew.noteService" class="org.kuali.rice.kew.impl.note.NoteServiceImpl">
 		<property name="noteDao" ref="enNoteDAO" />
 	</bean>
+
+  <bean id="rice.kew.ruleService" class="org.kuali.rice.kew.impl.rule.RuleServiceImpl"/>
 
   <bean id="rice.kew.documentLookupCustomizationHandlerService" class="org.kuali.rice.kew.docsearch.DocumentLookupCustomizationHandlerServiceImpl">
 		<property name="extensionRepositoryService" ref="rice.kew.extensionRepositoryService" />

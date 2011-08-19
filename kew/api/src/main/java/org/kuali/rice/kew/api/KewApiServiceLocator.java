@@ -28,6 +28,7 @@ import org.kuali.rice.kew.api.group.GroupMembershipChangeQueue;
 import org.kuali.rice.kew.api.note.NoteService;
 import org.kuali.rice.kew.api.rule.RuleCacheProcessor;
 import org.kuali.rice.kew.api.rule.RuleDelegationCacheProcessor;
+import org.kuali.rice.kew.api.rule.RuleService;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 
 /**
@@ -43,6 +44,7 @@ public class KewApiServiceLocator {
 	public static final String DOCUMENT_TYPE_SERVICE = "rice.kew.documentTypeService";
 	public static final String NOTE_SERVICE = "rice.kew.noteService";
     public static final String EXTENSION_REPOSITORY_SERVICE = "rice.kew.extensionRepositoryService";
+    public static final String RULE_SERVICE = "rice.kew.ruleService";
 
     public static final QName DOCUMENT_ATTRIBUTE_INDEXING_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "documentAttributeIndexingQueueSoap");
     public static final QName GROUP_MEMBERSHIP_CHANGE_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "groupMembershipChangeQueueSoap");
@@ -71,6 +73,10 @@ public class KewApiServiceLocator {
     
     public static NoteService getNoteService() {
     	return getService(NOTE_SERVICE);
+    }
+
+    public static RuleService getRuleService() {
+    	return getService(RULE_SERVICE);
     }
 
     public static ExtensionRepositoryService getExtensionRepositoryService() {

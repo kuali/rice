@@ -41,6 +41,7 @@ import org.kuali.rice.kew.api.document.WorkflowDocumentService;
 import org.kuali.rice.kew.api.rule.Rule;
 import org.kuali.rice.kew.api.rule.RuleReportCriteria;
 import org.kuali.rice.kew.api.rule.RuleResponsibility;
+import org.kuali.rice.kew.api.rule.RuleService;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeDateTime;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeFloat;
@@ -986,7 +987,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         this.ruleExceptionTest(ruleReportCriteria.build(), "Sending in one or more RuleExtentionVO objects with no Rule Template Name should throw Exception");
 
 
-        WorkflowDocumentActionsService wdas = KewApiServiceLocator.getWorkflowDocumentActionsService();
+        RuleService wdas = KewApiServiceLocator.getRuleService();
         List<Rule> rules = null;
         ruleReportCriteria = RuleReportCriteria.Builder.create();
         ruleReportCriteria.setConsiderGroupMembership(Boolean.FALSE.booleanValue());
@@ -1130,7 +1131,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
     @Test public void testRuleReportOrgReviewTest() throws Exception {
         loadXmlFile("WorkflowUtilityRuleReportConfig.xml");
 
-        WorkflowDocumentActionsService wdas = KewApiServiceLocator.getWorkflowDocumentActionsService();
+        RuleService wdas = KewApiServiceLocator.getRuleService();
 
         RuleReportCriteria.Builder ruleReportCriteria = RuleReportCriteria.Builder.create();
         ruleReportCriteria.setDocumentTypeName(RuleTestOrgReviewSetup.DOCUMENT_TYPE_NAME);
@@ -1760,7 +1761,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
     private void ruleExceptionTest(RuleReportCriteria ruleReportCriteria, String message) {
         try {
-            KewApiServiceLocator.getWorkflowDocumentActionsService().ruleReport(ruleReportCriteria);
+            KewApiServiceLocator.getRuleService().ruleReport(ruleReportCriteria);
             fail(message);
         } catch (Exception e) {
             //e.printStackTrace();

@@ -362,25 +362,6 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
         return DTOConverter.convertDocumentDetailNew(KEWServiceLocator.getRoutingReportService().report(criteria));
     }
 
-    public List<org.kuali.rice.kew.api.rule.Rule> ruleReport(RuleReportCriteria ruleReportCriteria) {
-        incomingParamCheck(ruleReportCriteria, "ruleReportCriteria");
-        if ( LOG.isDebugEnabled() ) {
-        	LOG.debug("Executing rule report [responsibleUser=" + ruleReportCriteria.getResponsiblePrincipalId() + ", responsibleWorkgroup=" +
-                    ruleReportCriteria.getResponsibleGroupId() + "]");
-        }
-        Collection<RuleBaseValues> rulesFound = KEWServiceLocator.getRuleService().searchByTemplate(
-                ruleReportCriteria.getDocumentTypeName(), ruleReportCriteria.getRuleTemplateName(),
-                ruleReportCriteria.getRuleDescription(), ruleReportCriteria.getResponsibleGroupId(),
-                ruleReportCriteria.getResponsiblePrincipalId(), ruleReportCriteria.isConsiderGroupMembership(),
-                ruleReportCriteria.isIncludeDelegations(), ruleReportCriteria.isActive(), ruleReportCriteria.getRuleExtensions(),
-                ruleReportCriteria.getActionRequestCodes());
-        List<org.kuali.rice.kew.api.rule.Rule> returnableRules = new ArrayList<org.kuali.rice.kew.api.rule.Rule>(rulesFound.size());
-        for (RuleBaseValues rule : rulesFound) {
-            returnableRules.add(RuleBaseValues.to(rule));
-        }
-        return returnableRules;
-    }
-
     protected DocumentActionResult constructDocumentActionResult(DocumentRouteHeaderValue documentBo, String principalId) {
         Document document = DocumentRouteHeaderValue.to(documentBo);
         ValidActions validActions = determineValidActionsInternal(documentBo, principalId);

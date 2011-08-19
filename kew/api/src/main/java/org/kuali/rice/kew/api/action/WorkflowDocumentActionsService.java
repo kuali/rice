@@ -1447,23 +1447,6 @@ public interface WorkflowDocumentActionsService {
             throws RiceIllegalArgumentException;
 
     /**
-     * Executes a simulation of a document to get all previous and future route information
-     *
-     * @param reportCriteria criteria for the rule report to follow
-     *
-     * @return list of Rules representing the results of the rule report
-     *
-     * @throws RiceIllegalArgumentException if {@code reportCriteria} is null
-     */
-    @WebMethod(operationName = "ruleReport")
-    @WebResult(name = "rules")
-    @XmlElementWrapper(name = "rules", required = true)
-    @XmlElement(name = "rule", required = true)
-    List<Rule> ruleReport(
-            @WebParam(name = "ruleCriteria") RuleReportCriteria reportCriteria)
-            throws RiceIllegalArgumentException;
-
-    /**
      * Determines if a passed in user is the final approver for a document
      *
      * @param documentId unique Id of the document

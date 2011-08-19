@@ -95,6 +95,19 @@
 			</bean>
 		</property>
 	</bean>
+
+    <bean id="rice.kew.ruleService.exporter" parent="kewEmbeddedServiceExporter">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
+		<property name="serviceDefinition">
+			<bean parent="kewJaxWsSoapService">
+				<property name="service">
+					<ref bean="rice.kew.ruleService" />
+				</property>
+				<property name="localServiceName" value="ruleServiceSoap" />
+				<property name="busSecurity" value="${rice.kew.ruleServiceSoap.secure}" />
+			</bean>
+		</property>
+	</bean>
 	
 	<bean id="rice.kew.documentTypeService.exporter" parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />

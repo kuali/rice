@@ -68,19 +68,13 @@ class ResponsibilityServiceImplTest {
     @BeforeClass
     static void createSampleBOs() {
         ResponsibilityTemplateBo firstResponsibilityTemplate = new ResponsibilityTemplateBo(id: "resptemplateidone", name: "resptemplateone", namespaceCode: "respnamespacecodeone", versionNumber: 1, kimTypeId: "a");
-        List<KimTypeAttributeBo> kimTypeAttributes = new ArrayList<KimTypeAttributeBo>();
-        kimTypeAttributes.add(new KimTypeAttributeBo(id: "kimtypeattidone", versionNumber: 1));
-        List<ResponsibilityAttributeBo> responsibilityAttributes = new ArrayList<ResponsibilityAttributeBo>();
-        KimTypeBo firstKimType = new KimTypeBo(id: "kimtypeidone", versionNumber: 1, attributeDefinitions: kimTypeAttributes);
-        KimAttributeBo firstKimAttributeBo = new KimAttributeBo(id: "kimattidone", versionNumber: 1, attributeName: "kimattnameone");
-        responsibilityAttributes.add(new ResponsibilityAttributeBo(id: "resattributeidone", versionNumber: 1, kimType: firstKimType, kimAttributeId: "kimattidone", kimAttribute: firstKimAttributeBo, attributeValue: "kimattvalueone"));
-        ResponsibilityBo firstResponsibilityBo = new ResponsibilityBo(id: "respidone", namespaceCode: "namespacecodeone", name: "respnameone", template: firstResponsibilityTemplate, versionNumber: 1, active: "Y", attributeDetails: responsibilityAttributes);
+        ResponsibilityBo firstResponsibilityBo = new ResponsibilityBo(id: "respidone", namespaceCode: "namespacecodeone", name: "respnameone", template: firstResponsibilityTemplate, versionNumber: 1, active: true);
         KimTypeBo firstKimTypeBo = new KimTypeBo(id: "kimtypeidone");
         RoleResponsibilityBo firstRoleResponsibilityBo = new RoleResponsibilityBo(roleId: "rolerespidone");
         RoleResponsibilityActionBo firstRoleResponsibilityActionBo = new RoleResponsibilityActionBo(id: "rolerespactionidone", versionNumber: 1);
 
         ResponsibilityTemplateBo secondResponsibilityTemplate = new ResponsibilityTemplateBo(id: "resptemplateidtwo", name: "resptemplatetwo", namespaceCode: "respnamespacecodetwo", versionNumber: 1, kimTypeId: "a");
-        ResponsibilityBo secondResponsibilityBo = new ResponsibilityBo(id: "respidtwo", namespaceCode: "namespacecodetwo", name: "respnametwo", template: secondResponsibilityTemplate, versionNumber: 1, active: "Y");
+        ResponsibilityBo secondResponsibilityBo = new ResponsibilityBo(id: "respidtwo", namespaceCode: "namespacecodetwo", name: "respnametwo", template: secondResponsibilityTemplate, versionNumber: 1, active: true);
         KimTypeBo secondKimTypeBo = new KimTypeBo(id: "kimtypeidtwo");
         RoleResponsibilityBo secondRoleResponsibilityBo = new RoleResponsibilityBo(roleId: "rolerespidtwo");
         RoleResponsibilityActionBo secondRoleResponsibilityActionBo = new RoleResponsibilityActionBo(id: "rolerespactionidtwo", versionNumber: 1);
@@ -213,16 +207,9 @@ class ResponsibilityServiceImplTest {
     }
 
     @Test
-    @Ignore
     public void testUpdateResponsibilitySucceeds() {
         ResponsibilityTemplateBo firstResponsibilityTemplate = new ResponsibilityTemplateBo(id: "resptemplateidone", name: "resptemplateone", namespaceCode: "respnamespacecodeone", versionNumber: 1, kimTypeId: "a");
-        List<KimTypeAttributeBo> kimTypeAttributes = new ArrayList<KimTypeAttributeBo>();
-        kimTypeAttributes.add(new KimTypeAttributeBo(id: "kimtypeattidone", versionNumber: 1));
-        List<ResponsibilityAttributeBo> responsibilityAttributes = new ArrayList<ResponsibilityAttributeBo>();
-        KimTypeBo firstKimType = new KimTypeBo(id: "kimtypeidone", versionNumber: 1, attributeDefinitions: kimTypeAttributes);
-        KimAttributeBo firstKimAttributeBo = new KimAttributeBo(id: "kimattidone", versionNumber: 1, attributeName: "kimattnameone");
-        responsibilityAttributes.add(new ResponsibilityAttributeBo(id: "resattributeidone", versionNumber: 1, kimType: firstKimType, kimAttributeId: "kimattidone", kimAttribute: firstKimAttributeBo, attributeValue: "kimattvalueone"));
-        ResponsibilityBo existingResponsibilityBo = new ResponsibilityBo(id: "respidone", namespaceCode: "namespacecodeone", name: "respnameone", template: firstResponsibilityTemplate, versionNumber: 1, active: "Y", attributeDetails: responsibilityAttributes);
+        ResponsibilityBo existingResponsibilityBo = new ResponsibilityBo(id: "respidone", namespaceCode: "namespacecodeone", name: "respnameone", template: firstResponsibilityTemplate, versionNumber: 1, active: true);
 
         mockBoService.demand.findBySinglePrimaryKey(1..1) {
             Class clazz, Object primaryKey -> for (ResponsibilityBo responsibilityBo in sampleResponsibilities.values()) {

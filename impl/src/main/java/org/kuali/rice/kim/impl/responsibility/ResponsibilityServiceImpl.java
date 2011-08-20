@@ -80,7 +80,11 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
         List<ResponsibilityAttributeBo> attrBos = KimAttributeDataBo.createFrom(ResponsibilityAttributeBo.class, responsibility.getAttributes(), responsibility.getTemplate().getKimTypeId());
         ResponsibilityBo bo = ResponsibilityBo.from(responsibility);
-        bo.getAttributeDetails().addAll(attrBos);
+
+        if (bo.getAttributeDetails() != null) {
+            bo.getAttributeDetails().addAll(attrBos);
+        }
+
         return ResponsibilityBo.to(businessObjectService.save(bo));
     }
 

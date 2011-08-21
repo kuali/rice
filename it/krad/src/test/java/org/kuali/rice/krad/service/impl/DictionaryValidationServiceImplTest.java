@@ -278,17 +278,19 @@ public class DictionaryValidationServiceImplTest {
         Assert.assertTrue(hasError(dictionaryValidationResult, "employees", RiceKeyConstants.ERROR_QUANTITY_RANGE));
         Assert.assertTrue(hasError(dictionaryValidationResult, "slogans", RiceKeyConstants.ERROR_MIN_OCCURS));
         
-        //Add an invalid, employee this should result in one error
-        Employee invalidEmployee = new Employee();
-        employees.add(invalidEmployee);
+        //Add two invalid employees, this should result in size constraint, and invalid employee errors
+        employees.add(new Employee());
+        employees.add(new Employee());
         slogans.add("Slogan Two");
         
         dictionaryValidationResult = service.validate(acmeCompany, "org.kuali.rice.krad.datadictionary.validation.Company",companyEntry, true);
-        Assert.assertEquals(2, dictionaryValidationResult.getNumberOfErrors());
+        Assert.assertEquals(5, dictionaryValidationResult.getNumberOfErrors());
         
-        //FIXME: The path returned is in incorrect and doesn't take into account index
-        Assert.assertTrue(hasError(dictionaryValidationResult, "employeeDetails", RiceKeyConstants.ERROR_REQUIRED));
-        
+        Assert.assertTrue(hasError(dictionaryValidationResult, "employees[1].employeeId", RiceKeyConstants.ERROR_REQUIRED));        
+        Assert.assertTrue(hasError(dictionaryValidationResult, "employees[1].employeeDetails", RiceKeyConstants.ERROR_REQUIRED));
+        Assert.assertTrue(hasError(dictionaryValidationResult, "employees[2].employeeId", RiceKeyConstants.ERROR_REQUIRED));        
+        Assert.assertTrue(hasError(dictionaryValidationResult, "employees[2].employeeDetails", RiceKeyConstants.ERROR_REQUIRED));
+
 	}
 	
 	protected boolean hasError(DictionaryValidationResult dvr, String attributeName, String errorKey){
@@ -297,7 +299,11 @@ public class DictionaryValidationServiceImplTest {
 	    boolean containsError = false;
 	    while (dvrIterator.hasNext() && !containsError){
 	        ConstraintValidationResult cvr = dvrIterator.next();
-	        containsError = attributeName.equals(cvr.getAttributeName()) && errorKey.equals(cvr.getErrorKey()) && ErrorLevel.ERROR==cvr.getStatus(); 
+	        if (attributeName.contains("[")){
+	            containsError = attributeName.equals(cvr.getAttributePath()) && errorKey.equals(cvr.getErrorKey()) && ErrorLevel.ERROR==cvr.getStatus();
+	        } else {
+	            containsError = attributeName.equals(cvr.getAttributeName()) && errorKey.equals(cvr.getErrorKey()) && ErrorLevel.ERROR==cvr.getStatus();
+	        }
 	    }
 	    
 	    return containsError;

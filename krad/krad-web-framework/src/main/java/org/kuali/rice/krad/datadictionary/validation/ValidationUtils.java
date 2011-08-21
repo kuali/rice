@@ -42,6 +42,30 @@ public class ValidationUtils {
 		return attributePath;
 	}
 	
+	/**
+	 * Used to get the rightmost index value of an attribute path.
+	 *  
+	 * @param attributePath
+	 * @return the right index of value of attribute path, -1 if path has no index
+	 */
+	public static int getLastPathIndex(String attributePath){
+	    int index = -1;
+	    
+	    int leftBracket = attributePath.lastIndexOf("[");
+	    int rightBracket = attributePath.lastIndexOf("]");
+	    
+	    if (leftBracket > 0 && rightBracket > leftBracket){
+	        String indexString = attributePath.substring(leftBracket +1, rightBracket);
+	        try {
+                index = Integer.valueOf(indexString).intValue();
+            } catch (NumberFormatException e) {
+                // Will just return -1
+            }
+	    }
+	    
+	    return index;
+	}
+	
 	public static boolean compareValues(Object value1, Object value2,
 			DataType dataType, String operator, boolean isCaseSensitive, DateTimeService dateTimeService) {
 

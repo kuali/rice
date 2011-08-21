@@ -17,6 +17,7 @@ package org.kuali.rice.krad.datadictionary.validation.result;
 
 import org.kuali.rice.krad.datadictionary.validation.AttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.ErrorLevel;
+import org.kuali.rice.krad.datadictionary.validation.ValidationUtils;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -63,17 +64,26 @@ public class DictionaryValidationResult {
 		// Give the constraint a chance to override the entry and attribute name - important if the attribute name is not the same as the one in the attribute value reader!
 		String entryName = constraintValidationResult.getEntryName();
 		String attributeName = constraintValidationResult.getAttributeName();
+		String attributePath = constraintValidationResult.getAttributePath();
 		
-		if (entryName == null)
+		if (entryName == null){
 			entryName = attributeValueReader.getEntryName();
+		}
 		
-		if (attributeName == null)
+		if (attributeName == null){
 			attributeName = attributeValueReader.getAttributeName();
+		}
+		
+		if (attributePath == null){
+		    attributePath = attributeValueReader.getPath();
+		}
 		
 		constraintValidationResult.setEntryName(entryName);
 		constraintValidationResult.setAttributeName(attributeName);
+		constraintValidationResult.setAttributePath(attributePath);
 		
-		getEntryValidationResult(entryName).getAttributeValidationResult(attributeName).addConstraintValidationResult(constraintValidationResult);
+		String entryKey = getEntryValdidationResultKey(entryName, attributePath);
+		getEntryValidationResult(entryKey).getAttributeValidationResult(attributeName).addConstraintValidationResult(constraintValidationResult);
 	}
 	
 	public ConstraintValidationResult addError(AttributeValueReader attributeValueReader, String constraintName, String errorKey, String... errorParameters) {
@@ -188,14 +198,31 @@ public class DictionaryValidationResult {
 	}
 	
 	private ConstraintValidationResult getConstraintValidationResult(String entryName, String attributeName, String attributePath, String constraintName) {
-		ConstraintValidationResult constraintValidationResult = getEntryValidationResult(entryName).getAttributeValidationResult(attributeName).getConstraintValidationResult(constraintName);
+	    String entryKey = getEntryValdidationResultKey(entryName, attributePath);
+	    ConstraintValidationResult constraintValidationResult = getEntryValidationResult(entryKey).getAttributeValidationResult(attributeName).getConstraintValidationResult(constraintName);
 		constraintValidationResult.setEntryName(entryName);
 		constraintValidationResult.setAttributeName(attributeName);
 		constraintValidationResult.setAttributePath(attributePath);
 		return constraintValidationResult;
 	}
-
+		
 	/**
+     * Returns the key to the EntryValidationResult entry in the EntryValidationResultMap.
+     * Most cases entry key will be the entryName, unless the attribute is part of a collection,
+     * in which case entry key will be suffixed with index of attribute's parent item.
+     * 
+     * @param entryName
+     * @param attributePath
+     * @return
+     */
+    private String getEntryValdidationResultKey(String entryName, String attributePath) {
+        if (attributePath.contains("[")){
+            return entryName + "[" + ValidationUtils.getLastPathIndex(attributePath) + "]";
+        } 
+        return entryName;
+    }
+
+    /**
 	 * @return the errorLevel
 	 */
 	public ErrorLevel getErrorLevel() {

@@ -121,7 +121,6 @@
           <list>
             <bean parent="WhenConstraint">
               <property name="value" value="CN"/>
-              <property name="valuePath" value="street1"/>
               <property name="constraint">
                 <bean parent="SimpleConstraint">
                   <property name="required" value="true"/>

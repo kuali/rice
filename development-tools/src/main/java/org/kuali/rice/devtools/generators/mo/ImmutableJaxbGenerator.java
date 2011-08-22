@@ -53,7 +53,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
+ * This is a simple utility class which generates an "immutable" object complete with a builder based on a supplied
+ * contract interface definition.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -122,8 +123,7 @@ public class ImmutableJaxbGenerator {
 			renderBuilderConstructor(classModel, fields);
 			renderGetters(classModel, fields);
 			renderBuilderClass(classModel, fields, contractInterface);
-			//renderStandardObjectMethods(classModel);
-			
+
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 			codeModel.build(new SingleStreamCodeWriter(outputStream));
 			return outputStream.toByteArray();
@@ -168,15 +168,7 @@ public class ImmutableJaxbGenerator {
 			// render type name
 			JFieldVar typeNameField = constantsClass.field(JMod.FINAL | JMod.STATIC, String.class, Util.TYPE_NAME_FIELD);
 			typeNameField.init(JExpr.lit(classModel.name() + Util.TYPE_NAME_SUFFIX));
-			
-			// hash code excludes array
-			/*JFieldVar hashCodeExcludesField = constantsClass.field(JMod.FINAL | JMod.STATIC, String[].class, Util.HASH_CODE_EQUALS_EXCLUDE_FIELD);
-			JArray excludeArray = JExpr.newArray(codeModel.ref(String.class));
-			JClass coreConstants = codeModel.ref(CoreConstants.class);
-			JFieldRef futureElementsRef = coreConstants.staticRef(Util.COMMON_ELEMENTS_CLASS).ref(Util.FUTURE_ELEMENTS_FIELD);
-			excludeArray.add(futureElementsRef);
-			hashCodeExcludesField.init(excludeArray);*/
-			
+            
 		}
 		
 		private void renderElementsClass(JDefinedClass classModel, List<FieldModel> fields) throws Exception {
@@ -373,43 +365,7 @@ public class ImmutableJaxbGenerator {
 				setterMethod.body().directStatement("this." + fieldName + " = " + fieldName + ";");
 			}
 		}
-		
-		/**
-		 * Generates standard hashCode, equals, and toString methods
-		 */
-		private void renderStandardObjectMethods(JDefinedClass classModel) {
-			
-			JClass constantsClass = codeModel.ref(Util.CONSTANTS_CLASS_NAME);
-			JFieldRef hashCodeEqualsExcludes = constantsClass.staticRef(Util.HASH_CODE_EQUALS_EXCLUDE_FIELD);
-			
-			// hashCode
-			JMethod hashCodeMethod = classModel.method(JMod.PUBLIC, codeModel.INT, "hashCode");
-			JInvocation hcInvoke = codeModel.ref(HashCodeBuilder.class).staticInvoke("reflectionHashCode");
-			hcInvoke.arg(JExpr._this());
-			hcInvoke.arg(hashCodeEqualsExcludes);
-			hashCodeMethod.body()._return(hcInvoke);
-			hashCodeMethod.annotate(Override.class);
-			
-			// equals
-			JMethod equalsMethod = classModel.method(JMod.PUBLIC, codeModel.BOOLEAN, "equals");
-			JVar objectParam = equalsMethod.param(Object.class, "object");
-			JInvocation equalsInvoke = codeModel.ref(EqualsBuilder.class).staticInvoke("reflectionEquals");
-			equalsInvoke.arg(objectParam);
-			equalsInvoke.arg(JExpr._this());
-			equalsInvoke.arg(hashCodeEqualsExcludes);
-			equalsMethod.body()._return(equalsInvoke);
-			equalsMethod.annotate(Override.class);
-			
-			// toString
-			JMethod toStringMethod = classModel.method(JMod.PUBLIC, String.class, "toString");
-			JInvocation toStringInvoke = codeModel.ref(ToStringBuilder.class).staticInvoke("reflectionToString");
-			toStringInvoke.arg(JExpr._this());
-			toStringMethod.body()._return(toStringInvoke);
-			toStringMethod.annotate(Override.class);
-			
-			
-		}
-				
+
 	}
 	
 	private static class FieldModel {

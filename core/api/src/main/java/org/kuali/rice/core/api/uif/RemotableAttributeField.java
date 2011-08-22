@@ -175,7 +175,12 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         this.regexConstraint = b.regexConstraint;
         this.regexContraintMsg = b.regexContraintMsg;
         this.required = b.required;
-        this.defaultValues = b.defaultValues;
+        if (b.defaultValues == null) {
+            this.defaultValues = Collections.emptyList();
+        } else {
+            List<String> defaultValuesCopy = new ArrayList<String>(b.defaultValues);
+            this.defaultValues = Collections.unmodifiableList(defaultValuesCopy);
+        }
         this.lookupCaseSensitive = b.lookupCaseSensitive;
         if (b.attributeLookupSettings == null) {
             this.attributeLookupSettings = null;
@@ -348,12 +353,12 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
 
         private boolean required;
 
-        private Collection<String> defaultValues = Collections.emptyList();
+        private Collection<String> defaultValues = new ArrayList<String>();
         private Boolean lookupCaseSensitive;
         private RemotableAttributeLookupSettings.Builder attributeLookupSettings;
         private RemotableAbstractControl.Builder control;
 
-        private Collection<RemotableAbstractWidget.Builder> widgets = Collections.emptyList();
+        private Collection<RemotableAbstractWidget.Builder> widgets = new ArrayList<RemotableAbstractWidget.Builder>();
 
         private Builder(String name) {
             setName(name);
@@ -399,7 +404,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
                     temp.add(WidgetCopy.toBuilder(w));
                 }
             }
-            b.setWidgets(Collections.unmodifiableList(temp));
+            b.setWidgets(temp);
 
             return b;
         }

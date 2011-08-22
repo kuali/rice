@@ -142,8 +142,8 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
 	}
 
     @Override
-    public List<DocumentAttribute<?>> getDocumentAttributes(ExtensionDefinition extensionDefinition, DocumentSearchContext documentSearchContext) {
-		List<DocumentAttribute<?>> searchStorageValues = new ArrayList<DocumentAttribute<?>>();
+    public List<DocumentAttribute> getDocumentAttributes(ExtensionDefinition extensionDefinition, DocumentSearchContext documentSearchContext) {
+		List<DocumentAttribute> searchStorageValues = new ArrayList<DocumentAttribute>();
 		Document document;
         String fullDocumentContent = documentSearchContext.getDocumentContent().getFullContent();
         if (StringUtils.isBlank(documentSearchContext.getDocumentContent().getFullContent())) {
@@ -187,7 +187,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
                                 // being that this is the standard xml attribute we will return the key with an empty value
                                 // so we can find it from a doc search using this key
                                 if (searchValues.getLength() == 0) {
-                                	DocumentAttribute<?> searchableValue = this.setupSearchableAttributeValue(fieldDataType, fieldAttributes.getNamedItem("name").getNodeValue(), null);
+                                	DocumentAttribute searchableValue = this.setupSearchableAttributeValue(fieldDataType, fieldAttributes.getNamedItem("name").getNodeValue(), null);
                                 	if (searchableValue != null) {
                                         searchStorageValues.add(searchableValue);
                                 	}
@@ -198,7 +198,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
                                         if (searchValue.getFirstChild() != null && (!StringUtils.isEmpty(searchValue.getFirstChild().getNodeValue()))) {
                                         	value = searchValue.getFirstChild().getNodeValue();
                                         }
-                                    	DocumentAttribute<?> searchableValue = this.setupSearchableAttributeValue(fieldDataType, fieldAttributes.getNamedItem("name").getNodeValue(), value);
+                                    	DocumentAttribute searchableValue = this.setupSearchableAttributeValue(fieldDataType, fieldAttributes.getNamedItem("name").getNodeValue(), value);
                                     	if (searchableValue != null) {
                                             searchStorageValues.add(searchableValue);
                                     	}
@@ -214,7 +214,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
                                 if (StringUtils.isNotBlank(searchValue)) {
                                     value = searchValue;
                                 }
-                            	DocumentAttribute<?> searchableValue = this.setupSearchableAttributeValue(fieldDataType, fieldAttributes.getNamedItem("name").getNodeValue(), value);
+                            	DocumentAttribute searchableValue = this.setupSearchableAttributeValue(fieldDataType, fieldAttributes.getNamedItem("name").getNodeValue(), value);
                             	if (searchableValue != null) {
                                     searchStorageValues.add(searchableValue);
                             	}
@@ -236,7 +236,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
 		return searchStorageValues;
 	}
 
-	private DocumentAttribute<?> setupSearchableAttributeValue(String dataType, String key, String value) {
+	private DocumentAttribute setupSearchableAttributeValue(String dataType, String key, String value) {
 		SearchableAttributeValue attValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(dataType);
 		if (attValue == null) {
 			String errorMsg = "Cannot find a SearchableAttributeValue associated with the data type '" + dataType + "'";

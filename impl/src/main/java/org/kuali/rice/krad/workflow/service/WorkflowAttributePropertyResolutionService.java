@@ -44,7 +44,7 @@ public interface WorkflowAttributePropertyResolutionService {
      * @param workflowAttributes the WorkflowAttributes data dictionary metadata which contains the searchable attributes to index 
      * @return a List of SearchableAttributeValue objects for index
      */
-    public abstract List<DocumentAttribute<?>> resolveSearchableAttributeValues(Document document, WorkflowAttributes workflowAttributes);
+    public abstract List<DocumentAttribute> resolveSearchableAttributeValues(Document document, WorkflowAttributes workflowAttributes);
     
     /**
      * Retrieves an object, the child of another given object passed in as a parameter, by the given path
@@ -68,6 +68,6 @@ public interface WorkflowAttributePropertyResolutionService {
      * @param value
      * @return
      */
-    public DocumentAttribute<?> buildSearchableAttribute(Class<? extends BusinessObject> businessObjectClass, String attributeKey, Object value);
+    public DocumentAttribute buildSearchableAttribute(Class<? extends BusinessObject> businessObjectClass, String attributeKey, Object value);
     
 }

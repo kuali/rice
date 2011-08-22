@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeDateTime;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeDecimal;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeInteger;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeString;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -191,8 +192,8 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
      * Resolves all of the searching values to index for the given document, returning a list of SearchableAttributeValue implementations
      *
      */
-    public List<DocumentAttribute<?>> resolveSearchableAttributeValues(Document document, WorkflowAttributes workflowAttributes) {
-        List<DocumentAttribute<?>> valuesToIndex = new ArrayList<DocumentAttribute<?>>();
+    public List<DocumentAttribute> resolveSearchableAttributeValues(Document document, WorkflowAttributes workflowAttributes) {
+        List<DocumentAttribute> valuesToIndex = new ArrayList<DocumentAttribute>();
         if (workflowAttributes != null && workflowAttributes.getSearchingTypeDefinitions() != null) {
             for (SearchingTypeDefinition definition : workflowAttributes.getSearchingTypeDefinitions()) {
                 valuesToIndex.addAll(aardvarkValuesForSearchingTypeDefinition(document, definition));
@@ -207,13 +208,13 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
      * @param searchingTypeDefinition the current SearchingTypeDefinition to find values for
      * @return a List of SearchableAttributeValue implementations
      */
-    protected List<DocumentAttribute<?>> aardvarkValuesForSearchingTypeDefinition(Document document, SearchingTypeDefinition searchingTypeDefinition) {
-        List<DocumentAttribute<?>> searchAttributes = new ArrayList<DocumentAttribute<?>>();
+    protected List<DocumentAttribute> aardvarkValuesForSearchingTypeDefinition(Document document, SearchingTypeDefinition searchingTypeDefinition) {
+        List<DocumentAttribute> searchAttributes = new ArrayList<DocumentAttribute>();
         
         final List<Object> searchValues = aardvarkSearchValuesForPaths(document, searchingTypeDefinition.getDocumentValues());
         for (Object value : searchValues) {
             try {
-                final DocumentAttribute<?> searchableAttributeValue = buildSearchableAttribute(((Class<? extends BusinessObject>)Class.forName(searchingTypeDefinition.getSearchingAttribute().getBusinessObjectClassName())), searchingTypeDefinition.getSearchingAttribute().getAttributeName(), value);
+                final DocumentAttribute searchableAttributeValue = buildSearchableAttribute(((Class<? extends BusinessObject>)Class.forName(searchingTypeDefinition.getSearchingAttribute().getBusinessObjectClassName())), searchingTypeDefinition.getSearchingAttribute().getAttributeName(), value);
                 if (searchableAttributeValue != null) {
                     searchAttributes.add(searchableAttributeValue);
                 }
@@ -264,7 +265,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
      * @param value
      * @return
      */
-    public DocumentAttribute<?> buildSearchableAttribute(Class<? extends BusinessObject> businessObjectClass, String attributeKey, Object value) {
+    public DocumentAttribute buildSearchableAttribute(Class<? extends BusinessObject> businessObjectClass, String attributeKey, Object value) {
         if (value == null) return null;
         final String fieldDataType = determineFieldDataType(businessObjectClass, attributeKey);
         if (fieldDataType.equals(KEWConstants.SearchableAttributeConstants.DATA_TYPE_STRING)) return buildSearchableStringAttribute(attributeKey, value); // our most common case should go first
@@ -282,7 +283,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
      * @return the generated SearchableAttributeDateTimeValue
      */
     protected DocumentAttributeDateTime buildSearchableDateTimeAttribute(String attributeKey, Object value) {
-        return new DocumentAttributeDateTime(attributeKey, new DateTime(value));
+        return DocumentAttributeFactory.createDateTimeAttribute(attributeKey, new DateTime(value));
     }
     
     /**
@@ -300,7 +301,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
         } else {
             decimalValue = new BigDecimal(((Number)value).doubleValue());
         }
-        return new DocumentAttributeDecimal(attributeKey, decimalValue);
+        return DocumentAttributeFactory.createDecimalAttribute(attributeKey, decimalValue);
     }
     
     /**
@@ -316,7 +317,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
         } else {
             integerValue = BigInteger.valueOf(((Number)value).longValue());
         }
-        return new DocumentAttributeInteger(attributeKey, integerValue);
+        return DocumentAttributeFactory.createIntegerAttribute(attributeKey, integerValue);
     }
     
     /**
@@ -326,7 +327,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
      * @return the generated SearchableAttributeStringValue
      */
     protected DocumentAttributeString buildSearchableStringAttribute(String attributeKey, Object value) {
-        return new DocumentAttributeString(attributeKey, value.toString());
+        return DocumentAttributeFactory.createStringAttribute(attributeKey, value.toString());
     }
     
     /**
@@ -337,7 +338,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
      */
     protected DocumentAttributeString buildSearchableYesNoAttribute(String attributeKey, Object value) {
         final String boolValueAsString = booleanValueAsString((Boolean)value);
-        return new DocumentAttributeString(attributeKey, boolValueAsString);
+        return DocumentAttributeFactory.createStringAttribute(attributeKey, boolValueAsString);
    }
     
     /**

@@ -53,7 +53,7 @@ public interface SearchableAttribute {
     @WebResult(name = "documentAttributes")
     @XmlElementWrapper(name = "documentAttributes", required = false)
     @XmlElement(name = "documentAttribute", required = false)
-    public List<DocumentAttribute<?>> getDocumentAttributes(
+    public List<DocumentAttribute> getDocumentAttributes(
             @WebParam(name = "extensionDefinition") ExtensionDefinition extensionDefinition,
             @WebParam(name = "documentSearchContext") DocumentSearchContext documentSearchContext
     );

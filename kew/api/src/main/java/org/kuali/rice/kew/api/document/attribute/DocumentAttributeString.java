@@ -1,39 +1,35 @@
 package org.kuali.rice.kew.api.document.attribute;
 
-/**
- * TODO...
- */
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+/**
+ * A document attribute which contains character data.  Construct instances of {@code DocumentAttributeString} using
+ * it's builder or the {@link DocumentAttributeFactory}.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 @XmlRootElement(name = DocumentAttributeString.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = DocumentAttributeString.Constants.TYPE_NAME, propOrder = {
     DocumentAttributeString.Elements.VALUE
 })
-public final class DocumentAttributeString extends DocumentAttribute<String> {
+public final class DocumentAttributeString extends DocumentAttribute {
 
     @XmlElement(name = Elements.VALUE, required = false)
     private final String value;
 
-    /**
-     * Private constructor used only by JAXB.
-     */
+    @SuppressWarnings("unused")
     private DocumentAttributeString() {
         this.value = null;
     }
 
-    public DocumentAttributeString(String name, String value) {
-        super(name);
-        this.value = value;
-    }
-
-    public static DocumentAttributeString create(String name, String value) {
-        return new DocumentAttributeString(name, value);
+    private DocumentAttributeString(Builder builder) {
+        super(builder.getName());
+        this.value = builder.getValue();
     }
 
     @Override
@@ -44,6 +40,28 @@ public final class DocumentAttributeString extends DocumentAttribute<String> {
     @Override
     public DocumentAttributeDataType getDataType() {
         return DocumentAttributeDataType.STRING;
+    }
+
+    public static final class Builder extends AbstractBuilder<String> {
+
+        private Builder(String name) {
+            super(name);
+        }
+
+        public static Builder create(String name) {
+            return new Builder(name);
+        }
+
+        @Override
+        public DocumentAttributeDataType getDataType() {
+            return DocumentAttributeDataType.STRING;
+        }
+
+        @Override
+        public DocumentAttributeString build() {
+            return new DocumentAttributeString(this);
+        }
+
     }
 
     /**

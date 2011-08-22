@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeInteger;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
@@ -47,10 +48,10 @@ public class TestXMLSearchableAttributeLong implements SearchableAttribute {
     }
 
     @Override
-    public List<DocumentAttribute<?>> getDocumentAttributes(ExtensionDefinition extensionDefinition,
+    public List<DocumentAttribute> getDocumentAttributes(ExtensionDefinition extensionDefinition,
             DocumentSearchContext documentSearchContext) {
-        List<DocumentAttribute<?>> savs = new ArrayList<DocumentAttribute<?>>();
-        savs.add(new DocumentAttributeInteger(SEARCH_STORAGE_KEY, SEARCH_STORAGE_VALUE));
+        List<DocumentAttribute> savs = new ArrayList<DocumentAttribute>();
+        savs.add(DocumentAttributeFactory.createIntegerAttribute(SEARCH_STORAGE_KEY, SEARCH_STORAGE_VALUE));
         return savs;
     }
 

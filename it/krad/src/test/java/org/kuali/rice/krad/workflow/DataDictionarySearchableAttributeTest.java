@@ -259,7 +259,9 @@ public class DataDictionarySearchableAttributeTest extends KRADTestCase {
             sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getDataType()));
             boolean isRange = field.getAttributeLookupSettings() != null && field.getAttributeLookupSettings().isRanged();
             sacc.setRangeSearch(isRange);
-            sacc.setCaseSensitive(field.isLookupCaseSensitive());
+            if (field.isLookupCaseSensitive() != null) {
+                sacc.setCaseSensitive(field.isLookupCaseSensitive());
+            }
             if (isRange) {
                 if (field.getAttributeLookupSettings().getLowerBoundName().equals(formKey)) {
                     sacc.setSearchInclusive(field.getAttributeLookupSettings().isLowerBoundInclusive());

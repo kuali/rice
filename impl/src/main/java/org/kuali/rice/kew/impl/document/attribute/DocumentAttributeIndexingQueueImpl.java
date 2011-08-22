@@ -19,6 +19,7 @@ package org.kuali.rice.kew.impl.document.attribute;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
@@ -41,6 +42,7 @@ import org.kuali.rice.kew.framework.document.lookup.DocumentSearchContext;
 import org.kuali.rice.kew.framework.document.lookup.SearchableAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,9 +91,9 @@ public class DocumentAttributeIndexingQueueImpl implements DocumentAttributeInde
 		for (DocumentType.ExtensionHolder<SearchableAttribute> searchableAttributeHolder : documentTypeBo.loadSearchableAttributes()) {
             DocumentSearchContext context = DocumentSearchContext.createFullContext(document, documentContent, document.getDocumentTypeName());
             SearchableAttribute searchableAttribute = searchableAttributeHolder.getExtension();
-            List<DocumentAttribute<?>> documentAttributes = searchableAttribute.getDocumentAttributes(searchableAttributeHolder.getExtensionDefinition(), context);
+            List<DocumentAttribute> documentAttributes = searchableAttribute.getDocumentAttributes(searchableAttributeHolder.getExtensionDefinition(), context);
 			if (documentAttributes != null) {
-                for (DocumentAttribute<?> documentAttribute : documentAttributes) {
+                for (DocumentAttribute documentAttribute : documentAttributes) {
                     if (documentAttribute == null) {
                         LOG.warn("Encountered a 'null' DocumentAttribute from searchable attribute: " + searchableAttribute);
                         continue;
@@ -102,11 +104,13 @@ public class DocumentAttributeIndexingQueueImpl implements DocumentAttributeInde
                         ((SearchableAttributeStringValue)searchableAttributeValue).setSearchableAttributeValue(((DocumentAttributeString)documentAttribute).getValue());
                     } else if (documentAttribute instanceof DocumentAttributeDateTime) {
                         searchableAttributeValue = new SearchableAttributeDateTimeValue();
-                        Timestamp timestamp = new Timestamp(((DocumentAttributeDateTime)documentAttribute).getValue().getMillis());
+                        DateTime dateTimeValue = ((DocumentAttributeDateTime)documentAttribute).getValue();
+                        Timestamp timestamp = (dateTimeValue == null ? null : new Timestamp(dateTimeValue.getMillis()));
                         ((SearchableAttributeDateTimeValue)searchableAttributeValue).setSearchableAttributeValue(timestamp);
                     } else if (documentAttribute instanceof DocumentAttributeInteger) {
                         searchableAttributeValue = new SearchableAttributeLongValue();
-                        Long longValue = new Long(((DocumentAttributeInteger)documentAttribute).getValue().longValue());
+                        BigInteger bigIntegerValue = ((DocumentAttributeInteger)documentAttribute).getValue();
+                        Long longValue = (bigIntegerValue == null ? null : bigIntegerValue.longValue());
                         ((SearchableAttributeLongValue)searchableAttributeValue).setSearchableAttributeValue(longValue);
                     } else if (documentAttribute instanceof DocumentAttributeDecimal) {
                         searchableAttributeValue = new SearchableAttributeFloatValue();

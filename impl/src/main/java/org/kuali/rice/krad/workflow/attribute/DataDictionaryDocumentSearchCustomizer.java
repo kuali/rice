@@ -104,7 +104,7 @@ public class DataDictionaryDocumentSearchCustomizer implements SearchableAttribu
     }
 
     @Override
-    public List<DocumentAttribute<?>> getDocumentAttributes(ExtensionDefinition extensionDefinition,
+    public List<DocumentAttribute> getDocumentAttributes(ExtensionDefinition extensionDefinition,
             DocumentSearchContext documentSearchContext) {
         return getSearchableAttribute().getDocumentAttributes(extensionDefinition, documentSearchContext);
     }

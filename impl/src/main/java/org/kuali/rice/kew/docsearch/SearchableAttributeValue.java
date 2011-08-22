@@ -74,5 +74,5 @@ public interface SearchableAttributeValue {
 
     public Object getSearchableAttributeValue();
 
-    public DocumentAttribute<?> toDocumentAttribute();
+    public DocumentAttribute toDocumentAttribute();
 }

@@ -24,6 +24,7 @@ import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.jaxb.MultiValuedStringMapAdapter;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeString;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
@@ -85,9 +86,9 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
     }
 
     @Override
-    public List<DocumentAttribute<?>> getDocumentAttributes(ExtensionDefinition extensionDefinition,
+    public List<DocumentAttribute> getDocumentAttributes(ExtensionDefinition extensionDefinition,
             DocumentSearchContext documentSearchContext) {
-        List<DocumentAttribute<?>> attributes = new ArrayList<DocumentAttribute<?>>();
+        List<DocumentAttribute> attributes = new ArrayList<DocumentAttribute>();
 
         String docId = documentSearchContext.getDocument().getDocumentId();
 
@@ -109,7 +110,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
         } else {
     		attributeValue = "null document";
         }
-        DocumentAttributeString attribute = new DocumentAttributeString("documentDescription", attributeValue);
+        DocumentAttributeString attribute = DocumentAttributeFactory.createStringAttribute("documentDescription", attributeValue);
         attributes.add(attribute);
 
         attributeValue = "";
@@ -122,7 +123,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
         } else {
     		attributeValue = "null document";
         }
-        attribute = new DocumentAttributeString("organizationDocumentNumber", attributeValue);
+        attribute = DocumentAttributeFactory.createStringAttribute("organizationDocumentNumber", attributeValue);
         attributes.add(attribute);
 
         if ( doc != null && doc instanceof MaintenanceDocument) {
@@ -313,14 +314,14 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
         return searchFields;
     }
 
-    protected List<DocumentAttribute<?>> parsePrimaryKeyValuesFromDocument(Class<? extends BusinessObject> businessObjectClass, MaintenanceDocument document) {
-        List<DocumentAttribute<?>> values = new ArrayList<DocumentAttribute<?>>();
+    protected List<DocumentAttribute> parsePrimaryKeyValuesFromDocument(Class<? extends BusinessObject> businessObjectClass, MaintenanceDocument document) {
+        List<DocumentAttribute> values = new ArrayList<DocumentAttribute>();
 
         final List primaryKeyNames = KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(businessObjectClass);
 
         for (Object primaryKeyNameAsObj : primaryKeyNames) {
             final String primaryKeyName = (String)primaryKeyNameAsObj;
-            final DocumentAttribute<?> searchableValue = parseSearchableAttributeValueForPrimaryKey(primaryKeyName, businessObjectClass, document);
+            final DocumentAttribute searchableValue = parseSearchableAttributeValueForPrimaryKey(primaryKeyName, businessObjectClass, document);
             if (searchableValue != null) {
                 values.add(searchableValue);
             }
@@ -335,7 +336,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
      * @param document the document XML
      * @return a generated SearchableAttributeValue, or null if a value could not be created
      */
-    protected DocumentAttribute<?> parseSearchableAttributeValueForPrimaryKey(String propertyName, Class<? extends BusinessObject> businessObjectClass, MaintenanceDocument document) {
+    protected DocumentAttribute parseSearchableAttributeValueForPrimaryKey(String propertyName, Class<? extends BusinessObject> businessObjectClass, MaintenanceDocument document) {
 
         Maintainable maintainable  = document.getNewMaintainableObject();
         PersistableBusinessObject bo = maintainable.getBusinessObject();
@@ -344,7 +345,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
         if (propertyValue == null) return null;
 
         final WorkflowAttributePropertyResolutionService propertyResolutionService = KRADServiceLocatorInternal.getWorkflowAttributePropertyResolutionService();
-        DocumentAttribute<?> value = propertyResolutionService.buildSearchableAttribute(businessObjectClass, propertyName, propertyValue);
+        DocumentAttribute value = propertyResolutionService.buildSearchableAttribute(businessObjectClass, propertyName, propertyValue);
         return value;
     }
 
@@ -392,11 +393,11 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
         return globalBO;
     }
 
-    protected List<DocumentAttribute<?>> findAllDocumentAttributesForGlobalBusinessObject(GlobalBusinessObject globalBO) {
-        List<DocumentAttribute<?>> searchValues = new ArrayList<DocumentAttribute<?>>();
+    protected List<DocumentAttribute> findAllDocumentAttributesForGlobalBusinessObject(GlobalBusinessObject globalBO) {
+        List<DocumentAttribute> searchValues = new ArrayList<DocumentAttribute>();
 
         for (PersistableBusinessObject bo : globalBO.generateGlobalChangesToPersist()) {
-            DocumentAttribute<?> value = generateSearchableAttributeFromChange(bo);
+            DocumentAttribute value = generateSearchableAttributeFromChange(bo);
             if (value != null) {
                 searchValues.add(value);
             }
@@ -405,7 +406,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
         return searchValues;
     }
 
-    protected DocumentAttribute<?> generateSearchableAttributeFromChange(PersistableBusinessObject changeToPersist) {
+    protected DocumentAttribute generateSearchableAttributeFromChange(PersistableBusinessObject changeToPersist) {
         List<String> primaryKeyNames = KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(changeToPersist.getClass());
 
         for (Object primaryKeyNameAsObject : primaryKeyNames) {
@@ -414,7 +415,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
 
             if (value != null) {
                 final WorkflowAttributePropertyResolutionService propertyResolutionService = KRADServiceLocatorInternal.getWorkflowAttributePropertyResolutionService();
-                DocumentAttribute<?> saValue = propertyResolutionService.buildSearchableAttribute(changeToPersist.getClass(), primaryKeyName, value);
+                DocumentAttribute saValue = propertyResolutionService.buildSearchableAttribute(changeToPersist.getClass(), primaryKeyName, value);
                 return saValue;
             }
         }

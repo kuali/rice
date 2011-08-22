@@ -1,41 +1,40 @@
 package org.kuali.rice.kew.api.document.attribute;
 
-/**
- * TODO...
- */
-
 import org.joda.time.DateTime;
+import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+/**
+ * A document attribute which contains date/time data.  Construct instances of {@code DocumentAttributeDateTime} using
+ * it's builder or the {@link DocumentAttributeFactory}.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 @XmlRootElement(name = DocumentAttributeDateTime.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = DocumentAttributeDateTime.Constants.TYPE_NAME, propOrder = {
     DocumentAttributeDateTime.Elements.VALUE
 })
-public final class DocumentAttributeDateTime extends DocumentAttribute<DateTime> {
+public final class DocumentAttributeDateTime extends DocumentAttribute {
 
     @XmlElement(name = Elements.VALUE, required = false)
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
     private final DateTime value;
 
-    /**
-     * Private constructor used only by JAXB.
-     */
+    @SuppressWarnings("unused")
     private DocumentAttributeDateTime() {
         this.value = null;
     }
 
-    public DocumentAttributeDateTime(String name, DateTime value) {
-        super(name);
-        this.value = value;
-    }
-
-    public static DocumentAttributeDateTime create(String name, DateTime value) {
-        return new DocumentAttributeDateTime(name, value);
+    private DocumentAttributeDateTime(Builder builder) {
+        super(builder.getName());
+        this.value = builder.getValue();
     }
 
     @Override
@@ -46,6 +45,28 @@ public final class DocumentAttributeDateTime extends DocumentAttribute<DateTime>
     @Override
     public DocumentAttributeDataType getDataType() {
         return DocumentAttributeDataType.DATE_TIME;
+    }
+
+    public static final class Builder extends AbstractBuilder<DateTime> {
+
+        private Builder(String name) {
+            super(name);
+        }
+
+        public static Builder create(String name) {
+            return new Builder(name);
+        }
+
+        @Override
+        public DocumentAttributeDataType getDataType() {
+            return DocumentAttributeDataType.DATE_TIME;
+        }
+
+        @Override
+        public DocumentAttributeDateTime build() {
+            return new DocumentAttributeDateTime(this);
+        }
+        
     }
 
     /**

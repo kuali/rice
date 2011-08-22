@@ -21,6 +21,7 @@ import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeDecimal;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.framework.document.lookup.DocumentSearchContext;
@@ -47,10 +48,10 @@ public class TestXMLSearchableAttributeFloat implements SearchableAttribute {
     }
 
     @Override
-    public List<DocumentAttribute<?>> getDocumentAttributes(ExtensionDefinition extensionDefinition,
+    public List<DocumentAttribute> getDocumentAttributes(ExtensionDefinition extensionDefinition,
             DocumentSearchContext documentSearchContext) {
-        List<DocumentAttribute<?>> savs = new ArrayList<DocumentAttribute<?>>();
-        savs.add(new DocumentAttributeDecimal(SEARCH_STORAGE_KEY, SEARCH_STORAGE_VALUE));
+        List<DocumentAttribute> savs = new ArrayList<DocumentAttribute>();
+        savs.add(DocumentAttributeFactory.createDecimalAttribute(SEARCH_STORAGE_KEY, SEARCH_STORAGE_VALUE));
         return savs;
     }
 

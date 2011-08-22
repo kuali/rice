@@ -15,9 +15,14 @@
  */
 package org.kuali.rice.kew.attribute;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.uif.RemotableQuickFinder;
+import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -32,6 +37,8 @@ import java.util.Map;
  *
  */
 public final class XMLAttributeUtils {
+
+    private static final Logger LOG = Logger.getLogger(XMLAttributeUtils.class);
 
 	private XMLAttributeUtils() {
 		throw new UnsupportedOperationException("do not call");
@@ -64,9 +71,23 @@ public final class XMLAttributeUtils {
 
     public static void establishFieldLookup(RemotableAttributeField.Builder fieldBuilder, Node lookupNode) {
 		NamedNodeMap quickfinderAttributes = lookupNode.getAttributes();
-		String businessObjectClass = quickfinderAttributes.getNamedItem("dataObjectClass").getNodeValue();
-        // TODO - Rice 2.0 - Not sure if null is appropriate for baseLookupUrl, maybe we need to look this up somewhere?
-        RemotableQuickFinder.Builder quickFinderBuilder = RemotableQuickFinder.Builder.create(null, businessObjectClass);
+        Node dataObjectNode = quickfinderAttributes.getNamedItem("dataObjectClass");
+        if (dataObjectNode == null) {
+            // for legacy compatibility, though businessObjectClass is deprecated
+            dataObjectNode = quickfinderAttributes.getNamedItem("businessObjectClass");
+            if (dataObjectNode != null) {
+                LOG.warn("Field is using deprecated 'businessObjectClass' instead of 'dataObjectClass' for lookup definition, field name is: " + fieldBuilder.getName());
+            } else {
+                throw new ConfigurationException("Failed to locate 'dataObjectClass' for lookup definition.");
+            }
+        }
+        String dataObjectClass = dataObjectNode.getNodeValue();
+        String baseLookupUrl = KRADServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getBaseLookupUrl(dataObjectClass);
+        if (StringUtils.isBlank(baseLookupUrl)) {
+            // if it's blank, default the baseLookupUrl
+            baseLookupUrl = LookupUtils.getBaseLookupUrl(false);
+        }
+        RemotableQuickFinder.Builder quickFinderBuilder = RemotableQuickFinder.Builder.create(baseLookupUrl, dataObjectClass);
 		for (int lcIndex = 0; lcIndex < lookupNode.getChildNodes().getLength(); lcIndex++) {
 			Map<String, String> fieldConversionsMap = new HashMap<String, String>();
 			Node fieldConversionsChildNode = lookupNode.getChildNodes().item(lcIndex);

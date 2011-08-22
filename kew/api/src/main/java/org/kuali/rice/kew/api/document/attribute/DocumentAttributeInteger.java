@@ -1,9 +1,5 @@
 package org.kuali.rice.kew.api.document.attribute;
 
-/**
- * TODO...
- */
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -11,30 +7,30 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.math.BigInteger;
 
+/**
+ * A document attribute which contains integer data.  Construct instances of {@code DocumentAttributeInteger} using
+ * it's builder or the {@link DocumentAttributeFactory}.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 @XmlRootElement(name = DocumentAttributeInteger.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = DocumentAttributeInteger.Constants.TYPE_NAME, propOrder = {
     DocumentAttributeInteger.Elements.VALUE
 })
-public final class DocumentAttributeInteger extends DocumentAttribute<BigInteger> {
+public final class DocumentAttributeInteger extends DocumentAttribute {
 
     @XmlElement(name = Elements.VALUE, required = false)
     private final BigInteger value;
 
-    /**
-     * Private constructor used only by JAXB.
-     */
+    @SuppressWarnings("unused")
     private DocumentAttributeInteger() {
         this.value = null;
     }
 
-    public DocumentAttributeInteger(String name, BigInteger value) {
-        super(name);
-        this.value = value;
-    }
-
-    public static DocumentAttributeInteger create(String name, BigInteger value) {
-        return new DocumentAttributeInteger(name, value);
+    private DocumentAttributeInteger(Builder builder) {
+        super(builder.getName());
+        this.value = builder.getValue();
     }
 
     @Override
@@ -45,6 +41,28 @@ public final class DocumentAttributeInteger extends DocumentAttribute<BigInteger
     @Override
     public DocumentAttributeDataType getDataType() {
         return DocumentAttributeDataType.INTEGER;
+    }
+
+    public static final class Builder extends AbstractBuilder<BigInteger> {
+
+        private Builder(String name) {
+            super(name);
+        }
+
+        public static Builder create(String name) {
+            return new Builder(name);
+        }
+
+        @Override
+        public DocumentAttributeDataType getDataType() {
+            return DocumentAttributeDataType.INTEGER;
+        }
+
+        @Override
+        public DocumentAttributeInteger build() {
+            return new DocumentAttributeInteger(this);
+        }
+
     }
 
     /**

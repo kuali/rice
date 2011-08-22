@@ -22,6 +22,7 @@ import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeInteger;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -295,7 +296,7 @@ public class SearchableAttributeLongValue implements SearchableAttributeValue, S
         if (getSearchableAttributeValue() != null) {
             integer = BigInteger.valueOf(getSearchableAttributeValue().longValue());
         }
-        return DocumentAttributeInteger.create(getSearchableAttributeKey(), integer);
+        return DocumentAttributeFactory.createIntegerAttribute(getSearchableAttributeKey(), integer);
     }
 
 }

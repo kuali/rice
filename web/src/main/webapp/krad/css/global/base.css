@@ -1,0 +1,252 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/* GENERAL - applies to all look and feel (KNS and KS)********************/
+
+a{
+	font-weight:normal;
+	cursor: pointer;
+	text-decoration:none;
+}
+a:hover {
+	text-decoration:underline;
+}
+:focus{
+	outline: 1px dotted #000;
+}
+textarea{
+    font-size:0.923077em;
+    font-family: Arial, Helvetica, sans-serif;
+}
+table td, table th {
+	vertical-align:top;
+	text-align:left;
+}
+
+
+/* CONTAINERS - e.g.: kr-nav-menu, ks-error-cont *************************/
+
+
+.constraint {
+	font-size:0.84615385em;    /* 11px divided by 13px */
+}
+
+/* headers */
+h1.kr-page-title-header {		/* was h1.page-title-header */
+	margin:0;
+}
+h2.kr-page-action {				/* was h2.page-action */
+	font-weight:normal;
+	margin:0;
+}
+h3.kr-page-section-title {		/* was h2.page-section-title */
+	font-weight: bold;
+	margin:0;
+	border-bottom: 2px solid #000;
+}
+h4.kr-section-subhead-no-border {	/* was h4.kr-section-subhead-no-border */
+	border-bottom:none;
+	padding-bottom: 0.3em;
+	margin:0;
+}
+.kr-page-action h2 {			/* was .page-action h2 */
+	clear:left;
+}
+.kr-field_attribute {			/* was .field_attribute */
+    float:left;
+}
+.kr-field-attribute .kr-labelTop label {   /* was .field_attribute .labelTop label */
+	margin: 5px 5px 0px 0px;  /* field top labels should not have left-margins  -David */
+}
+.kr-field-attribute span {			/* was .field_attribute span */
+	clear:left;/*float:left;       removing for non-table display, but may possibly break elsewhere - David */
+    }
+.kr-field-attribute input {			/* was .field_attribute input */
+/*float:left;        removing for non-table display. Not sure why we need to pull input from inline flow */
+    }
+.kr-field-attribute .summary {		/* was .field_attribute .summary */
+	line-height: 1.125em;
+}
+.kr-labelTop {						/* was .labelTop */
+	float:none;
+	display:block;
+}
+.kr-labelTop label {				/* was .labelTop label */
+	font-weight:bold;
+}
+.kr-errorsField {					/* was .errorsField */
+	padding-left: 10px;
+	overflow: hidden;
+ *zoom: 1;
+}
+.kr-errorsFieldForContainer {		/* was .errorsFieldForContainer */
+	float: none;
+	padding-left: 10px;
+	display:inline-block;
+	zoom:1;
+ *display:inline;
+}
+.kr-errorMessages {					/* was .errorMessages */
+	padding-left: 20px;
+	background: url("/kr-dev/krad/images/exclamation-red.png") no-repeat scroll left top transparent;
+}
+.kr-warningMessages {		/* was .warningMessages */
+	padding-left: 20px;
+	background: url("/kr-dev/krad/images/exclamation-diamond-frame.png") no-repeat scroll left top transparent;
+}
+.kr-infoMessages {			/* was .infoMessages*/
+	padding-left: 20px;
+	background: url("/kr-dev/krad/images/information-frame.png") no-repeat scroll left top transparent;
+}
+.kr-errorsFieldForContainer .kr-errorMessages {		/* was .errorsFieldForContainer .errorMessages */
+	border: 1px solid red;
+	background-color: #FFE0E9;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	padding-right: 10px;
+}
+.kr-errorsFieldForContainer .kr-warningMessages {	/* was .errorsFieldForContainer .warningMessages */
+	border: 1px solid goldenrod;
+	background-color: #F4E271;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	padding-right: 10px;
+}
+.kr-errorsFieldForContainer .kr-infoMessages {	/* was .errorsFieldForContainer .infoMessages*/
+	border: 1px solid #82CAFA;
+	background-color: #AFDCEC;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	padding-right: 10px;
+}
+.kr-errorsField ul {		/* was .errorsField ul*/
+	list-style: none outside none;
+	margin: 0;
+}
+.kr-errorsField li {		/* was .errorsField li */
+	list-style: none outside none;
+	margin-left: 0;
+	padding: 1px 0;
+	line-height: 1.3em;
+}
+.kr-errorsField .kr-errorMessages { /* was .errorsField .errorMessages */
+	color: #DF0000;
+	font-weight: bold;
+}
+span.kr-clientError, div.kr-clientError, td.kr-clientError, span.kr-serverError, div.kr-serverError, td.kr-serverError {
+	/* was span.clientError, div.clientError, td.clientError, span.serverError, div.serverError, td.serverError*/
+	background-color: #FFE0E9 !important;
+}
+span.kr-information, div.kr-information, td.kr-information {	/* was span.information, div.information, td.information */
+	background-color: #AFDCEC;
+}
+span.kr-warning, div.kr-warning, td.kr-warning {	/* was span.warning, div.arning, td.warning */
+	background-color: #F4E271;
+}
+label.kr-clientError, a.kr-clientError, label.kr-serverError {			/* was label.kr-clientError, a.kr-clientError, label.kr-serverError */
+	color: #DF0000;
+}
+li label.kr-error {				/* was li label.error */
+	display: inline !important;
+}
+
+
+
+/* COMPONENTS - e.g.: kr-button-one, ks-button-secondary ****************/
+/* button styles */
+.ui-corner-all {
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+}
+.button-primary {
+	cursor:pointer;
+}
+.button-secondary1 {
+	cursor:pointer;
+	/*remove extra padding in IE*/
+	overflow: visible;
+	padding: 0.1em 2.1em;
+}
+
+/* LAYOUTS - e.g.: kr-box-horizontal, ks-left, ks-right *****************/
+.clearfix {
+	clear:both;
+}
+.clearfix:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+/* IE specific */
+* html .clearfix {
+	height: 1%;
+}
+.boxLayoutHorizontalItem {
+	float:left;
+	display:block;
+	margin-right:25px;
+}
+
+.fieldContainerVerticalItem {
+	padding-bottom: 5px;
+	display: block;
+}
+
+/* JQUERY - e.g.: ui-calendar *******************************************/
+/* date-picker */
+
+.ui-datepicker-group-first {
+    float:left;
+    margin-right:15px;
+}
+
+.ui-datepicker-trigger {
+	cursor: pointer;
+}
+
+/* tabs */
+/* Tab menu */
+.tab-navigation-block {
+	padding: 0 !important;
+	padding-left: 20px !important;
+}
+
+.tab-navigation-block li {
+	float: left;
+	list-style: none outside none;
+	margin: 0 0.2em 1px 0;
+	padding: 0;
+	position: relative;
+	top: 2px;
+ 	*top: 1px;
+	white-space: nowrap;
+	clear: none;
+}
+
+.tab-navigation-block li a {
+	float: left;
+	padding: 0.5em 1em;
+	text-decoration: none;
+}
+
+.tab-navigation-block li.ui-state-active a {
+	color: black !important;
+}
+.clientError img {
+	margin-left:10px;   /* adds spacing between tab label and the icon */
+}
+.ui-tabs li {
+	clear: none;
+}
+.ui-tabs .ui-tabs-nav li {
+	border-bottom: 1px solid #000 !important; /* over-writing the style that removes it in tabs.css */
+}

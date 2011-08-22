@@ -33,11 +33,10 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
 
-//@Transactional
 public class RiceApplicationConfigurationMediationServiceImpl implements RiceApplicationConfigurationMediationService {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RiceApplicationConfigurationMediationServiceImpl.class);
      
- // Max age defined in seconds
+    // Max age defined in seconds
     protected int configurationParameterCacheMaxSize = 200;
     protected int configurationParameterCacheMaxAgeSeconds = 3600;
     protected int nonDatabaseComponentsCacheMaxSize = 50;

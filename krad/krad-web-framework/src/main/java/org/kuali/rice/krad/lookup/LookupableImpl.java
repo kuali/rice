@@ -748,7 +748,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             props.put(KRADConstants.RETURN_LOCATION_PARAMETER, lookupForm.getReturnLocation());
         }
 
-        props.put(UifParameters.DATA_OBJECT_CLASS_NAME, dataObject.getClass().getName());
+        props.put(UifParameters.DATA_OBJECT_CLASS_NAME, lookupForm.getDataObjectClassName());
         props.put(UifParameters.VIEW_TYPE_NAME, UifConstants.ViewType.MAINTENANCE);
 
         return UrlFactory.parameterizeUrl(KRADConstants.Maintenance.REQUEST_MAPPING_MAINTENANCE, props);

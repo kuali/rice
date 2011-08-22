@@ -310,8 +310,14 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         
   <bean id="ActionLinkField_CreateNew" parent="LinkField"
         p:styleClasses="action" p:linkLabel="Create New"
-        p:hrefText="maintenance?methodToCall=start&amp;dataObjectClassName=@{#getName(#view.dataObjectClassName)}&amp;viewTypeName=MAINTENANCE"
-        p:render="@{!#view.suppressActions and #view.showMaintenanceLinks and #ViewHelper.allowsMaintenanceNewOrCopyAction()}" />
+        p:render="@{!#view.suppressActions and #view.showMaintenanceLinks and #ViewHelper.allowsMaintenanceNewOrCopyAction()}" >
+    <property name="finalizeMethodToCall" value="getMaintenanceActionLink"/>
+    <property name="finalizeMethodAdditionalArguments">
+      <list>
+        <value>start</value>
+      </list>
+    </property>
+  </bean>
 
   <bean id="ActionField_ShowInactive" parent="ActionField_SmallSecondary" p:methodToCall="toggleInactiveRecordDisplay"
         p:actionLabel="show inactive" p:clientSideJs="toggleInactiveRecordDisplay('@{#component.context['collectionGroup'].id}', true);"/>

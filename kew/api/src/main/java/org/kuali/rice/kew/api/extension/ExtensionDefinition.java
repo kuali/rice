@@ -20,6 +20,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Immutable implementation of the {@link ExtensionDefinitionContract}.  Defines an extension to some component of
+ * Kuali Enterprise Workflow.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 @XmlRootElement(name = ExtensionDefinition.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = ExtensionDefinition.Constants.TYPE_NAME, propOrder = {
@@ -73,6 +79,7 @@ public final class ExtensionDefinition extends AbstractDataTransferObject implem
     /**
      * Private constructor used only by JAXB.
      */
+    @SuppressWarnings("unused")
     private ExtensionDefinition() {
         this.id = null;
         this.name = null;
@@ -147,7 +154,8 @@ public final class ExtensionDefinition extends AbstractDataTransferObject implem
     }
 
     /**
-     * A builder which can be used to construct {@link ExtensionDefinition} instances.  Enforces the constraints of the {@link ExtensionDefinitionContract}.
+     * A builder which can be used to construct {@link ExtensionDefinition} instances.  Enforces the constraints of the
+     * {@link ExtensionDefinitionContract}.
      */
     public final static class Builder implements Serializable, ModelBuilder, ExtensionDefinitionContract {
 

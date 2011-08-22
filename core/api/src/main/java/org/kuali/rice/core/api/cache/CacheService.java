@@ -7,6 +7,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 
 import javax.jws.soap.SOAPBinding;
+import java.util.Collection;
 
 /**
  * A service that enables executes various tasks on rice's caching infrastructure.
@@ -16,22 +17,11 @@ import javax.jws.soap.SOAPBinding;
 public interface CacheService {
 
     /**
-     * Evicts a object from the cache based on a given key.  Keys will always be Strings even though
-     * various caching implementations may allow generic Object types as keys.
+     * Flushes an object from the cache based on a cache target.
      *
-     * @param cache the cache store to remove the key from. cannot be null or blank.
-     * @param key the key to remove. cannot be null or blank.
-     * @throws IllegalArgumentException if the cache or key is null or blank.
+     * @param cacheTargets the targets to flush. cannot be null or contain null items
+     * @throws IllegalArgumentException if the cacheTargets is null contains a null item.
      */
-    @WebMethod(operationName="evict")
-    void evict(@WebParam(name = "cache") String cache, @WebParam(name = "key") String key) throws RiceIllegalArgumentException;
-
-    /**
-     * Clears an entire cache of all objects.
-     *
-     * @param cache the cache store to clear.  cannot be null or blank.
-     * @throws IllegalArgumentException if the cache is null or blank.
-     */
-    @WebMethod(operationName="clear")
-	void clear(@WebParam(name = "cache") String cache) throws RiceIllegalArgumentException;
+    @WebMethod(operationName="flush")
+    void flush(@WebParam(name = "cacheTargets") Collection<CacheTarget> cacheTargets) throws RiceIllegalArgumentException;
 }

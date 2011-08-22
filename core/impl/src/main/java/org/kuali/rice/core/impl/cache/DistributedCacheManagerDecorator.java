@@ -1,54 +1,78 @@
 package org.kuali.rice.core.impl.cache;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.cache.CacheService;
+import org.kuali.rice.core.api.cache.CacheTarget;
 import org.kuali.rice.ksb.api.messaging.MessageHelper;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
 import javax.xml.namespace.QName;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Queue;
+import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A distributed cache manager that wraps a cache manager and adds distributed cache capabilities
- * through the kuali service bus.
+ * through the kuali service bus. Distributed cache messages are queued for a max period of time
+ * and sent as a single message rather than sending the messages immediately.
  */
-public final class DistributedCacheManagerDecorator implements CacheManager {
+public final class DistributedCacheManagerDecorator implements CacheManager, InitializingBean {
 
-    private final CacheManager cacheManager;
-    private final MessageHelper messageHelper;
-    private final String serviceName;
+    private static final Log LOG = LogFactory.getLog(DistributedCacheManagerDecorator.class);
+    private static final long MAX_WAIT_DEFAULT = TimeUnit.SECONDS.toMillis(60);
 
-    /**
-     * Creates an instance.
-     *
-     * @param cacheManager the cache manager to wrap. cannot be null.
-     * @param messageHelper the message helper used to interact with the ksb. cannot be null.
-     * @param serviceName the serviceName of the {@link CacheService}. cannot be null or blank.
-     * @throws IllegalArgumentException if the cacheManager, messageHelper is null or the serviceName is null or blank
-     */
-    public DistributedCacheManagerDecorator(CacheManager cacheManager, MessageHelper messageHelper, String serviceName) {
-        if (cacheManager == null) {
-            throw new IllegalArgumentException("cacheManager was null");
+    private CacheManager cacheManager;
+    private MessageHelper messageHelper;
+    private String serviceName;
+    private String flushQueueMaxWait;
+
+    private final LinkedBlockingQueue<CacheTarget> flushQueue = new LinkedBlockingQueue<CacheTarget>();
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private final Runnable flusher = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                //this code may not look the prettiest but we do not want to call into the KSB
+                //unless it is necessary to do so.  Also, handling most common fail points to avoid
+                //exceptions.
+                if (!flushQueue.isEmpty()) {
+                    final Collection<CacheService> services = getCacheServices();
+                    if (services != null) {
+                        for (CacheService service : services) {
+                            if (service != null) {
+                                service.flush(exhaustQueue(flushQueue));
+                            }
+                        }
+                    }
+                }
+            } catch (Throwable t) {
+                try {
+                    LOG.error("failed to flush the queue for serviceName " + serviceName, t);
+                } catch (Throwable t2) {
+                    //do not want the scheduler to ever stop
+                }
+            }
         }
-
-        if (messageHelper == null) {
-            throw new IllegalArgumentException("messageHelper was null");
-        }
-
-        if (StringUtils.isBlank(serviceName)) {
-            throw new IllegalArgumentException("serviceName was null or blank");
-        }
-
-        this.cacheManager = cacheManager;
-        this.messageHelper = messageHelper;
-        this.serviceName = serviceName;
-    }
+    };
 
     @Override
     public Cache getCache(String name) {
-        return DistributedCacheDecorator.wrap(cacheManager.getCache(name), messageHelper, serviceName);
+        return wrap(cacheManager.getCache(name));
     }
 
     @Override
@@ -56,29 +80,94 @@ public final class DistributedCacheManagerDecorator implements CacheManager {
         return cacheManager.getCacheNames();
     }
 
+    private Cache wrap(Cache cache) {
+        //just in case they are cached do not want to wrap twice. Obviously this only works
+        //if the Cache isn't wrapped a second time.
+        if (!(cache instanceof DistributedCacheDecorator)) {
+            return new DistributedCacheDecorator(cache);
+        }
+        return cache;
+    }
+
+    private Collection<CacheService> getCacheServices() {
+        final Collection<CacheService> services = messageHelper.getAllRemoteServicesAsynchronously(QName.valueOf(serviceName));
+        return services != null ? services : Collections.<CacheService>emptyList();
+    }
+
+    /**
+     * Iterates over the passed in {@link Queue} calling the {@link Queue#poll} for each item.
+     *
+     * The returned list will also be normalized such that cache targets with keys will not be
+     * present in the returned collection if a cache target exists for the same cache but
+     * w/o a key (a complete cache flush)
+     *
+     * @param targets the queue to iterate over and exhaust
+     * @return a new collection containing CacheTargets
+     */
+    private static Collection<CacheTarget> exhaustQueue(Queue<CacheTarget> targets) {
+        final List<CacheTarget> normalized = new ArrayList<CacheTarget>();
+        final Set<String> completeFlush = new HashSet<String>();
+
+        CacheTarget target;
+        while ((target = targets.poll()) != null) {
+            normalized.add(target);
+            if (!target.containsKey()) {
+                completeFlush.add(target.getCache());
+            }
+        }
+
+        return Collections2.filter(normalized, new Predicate<CacheTarget>() {
+            @Override
+            public boolean apply(CacheTarget input) {
+                return !input.containsKey() || (input.containsKey() && !completeFlush.contains(input.getCache()));
+            }
+        });
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        if (cacheManager == null) {
+            throw new IllegalStateException("cacheManager was null");
+        }
+
+        if (messageHelper == null) {
+            throw new IllegalStateException("messageHelper was null");
+        }
+
+        if (StringUtils.isBlank(serviceName)) {
+            throw new IllegalStateException("serviceName was null or blank");
+        }
+
+        final long maxWait = NumberUtils.isNumber(flushQueueMaxWait) ? Long.parseLong(flushQueueMaxWait) : MAX_WAIT_DEFAULT;
+        scheduler.scheduleAtFixedRate(flusher, maxWait, maxWait, TimeUnit.MILLISECONDS);
+    }
+
+    public void setCacheManager(CacheManager cacheManager) {
+        this.cacheManager = cacheManager;
+    }
+
+    public void setMessageHelper(MessageHelper messageHelper) {
+        this.messageHelper = messageHelper;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
+    public void setFlushQueueMaxWait(String flushQueueMaxWait) {
+        this.flushQueueMaxWait = flushQueueMaxWait;
+    }
+
     /**
      * a cache wrapper that adds distributed cache flush capabilities.  Note: that all cache keys are
      * coerced to a String.  This means that all cache keys must have well-behaved toString methods.
      */
-    private static final class DistributedCacheDecorator implements Cache {
+    private final class DistributedCacheDecorator implements Cache {
 
         private final Cache cache;
-        private final MessageHelper messageHelper;
-        private final String serviceName;
 
-        private DistributedCacheDecorator(Cache cache, MessageHelper messageHelper, String serviceName) {
+        private DistributedCacheDecorator(Cache cache) {
             this.cache = cache;
-            this.messageHelper = messageHelper;
-            this.serviceName = serviceName;
-        }
-
-        private static Cache wrap(Cache cache, MessageHelper messageHelper, String serviceName) {
-            //just in case they are cached do not want to wrap twice. Obviously this only works
-            //if the Cache isn't wrapped a second time.
-            if (!(cache instanceof DistributedCacheDecorator)) {
-                return new DistributedCacheDecorator(cache, messageHelper, serviceName);
-            }
-            return cache;
         }
 
         @Override
@@ -107,28 +196,33 @@ public final class DistributedCacheManagerDecorator implements CacheManager {
         public void evict(Object key) {
             final String sKey = coerceStr(key);
             cache.evict(sKey);
-
-            for (CacheService s : getCacheServices()) {
-                s.evict(getName(), sKey);
+            final CacheTarget target = CacheTarget.singleEntry(getName(), sKey);
+            try {
+                flushQueue.put(target);
+            } catch (InterruptedException e) {
+                throw new DistributedCacheException(e);
             }
         }
 
         @Override
         public void clear() {
             cache.clear();
-
-            for (CacheService s : getCacheServices()) {
-                s.clear(getName());
+            final CacheTarget target = CacheTarget.entireCache(getName());
+            try {
+                flushQueue.put(target);
+            } catch (InterruptedException e) {
+                throw new DistributedCacheException(e);
             }
         }
 
-        private static String coerceStr(Object key) {
+        private String coerceStr(Object key) {
             return key != null ? key.toString(): (String) key;
         }
+    }
 
-        private Collection<CacheService> getCacheServices() {
-            final Collection<CacheService> services = messageHelper.getAllRemoteServicesAsynchronously(QName.valueOf(serviceName));
-            return services != null ? services : Collections.<CacheService>emptyList();
+    private static final class DistributedCacheException extends RuntimeException {
+        private DistributedCacheException(Throwable cause) {
+            super(cause);
         }
     }
 }

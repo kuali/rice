@@ -13,7 +13,8 @@ class CacheProxyTest {
 
     private FooService fooService;
     private FooCacheManager cacheManager;
-    private static final CACHE_NAME = "foo";
+    private static final CACHE_NAME_FOO = "foo";
+    private static final CACHE_NAME_FOO_ANOTHER = "fooAnother";
     private static final Foo FOO1 = new Foo("1")
     private static final Foo FOO2 = new Foo("2")
 
@@ -49,7 +50,7 @@ class CacheProxyTest {
         def proxy = CacheProxy.createCacheProxy(fooService, cacheManager);
         def foos = proxy.getFoos();
         Assert.assertTrue(foos.isEmpty())
-        Assert.assertTrue(cacheManager.getCache(CACHE_NAME).getNativeCache().isEmpty())
+        Assert.assertTrue(cacheManager.getCache(CACHE_NAME_FOO).getNativeCache().isEmpty())
     }
 
     @Test
@@ -57,7 +58,7 @@ class CacheProxyTest {
         def proxy = CacheProxy.createCacheProxy(fooService, cacheManager);
         def foo = proxy.getFoo(FOO1.id)
         Assert.assertTrue(FOO1.is(foo))
-        def nativeCache = cacheManager.getCache(CACHE_NAME).getNativeCache();
+        def nativeCache = cacheManager.getCache(CACHE_NAME_FOO).getNativeCache();
         Assert.assertFalse(nativeCache.isEmpty())
         Assert.assertTrue(nativeCache[FOO1.id].get().is(FOO1))
     }
@@ -67,7 +68,7 @@ class CacheProxyTest {
         def proxy = CacheProxy.createCacheProxy(fooService, cacheManager);
 
         //prime cache
-        def cache = cacheManager.getCache(CACHE_NAME).getNativeCache()
+        def cache = cacheManager.getCache(CACHE_NAME_FOO).getNativeCache()
         prime(cache)
 
         Assert.assertTrue(cache.size() == 2)
@@ -84,7 +85,7 @@ class CacheProxyTest {
         def proxy = CacheProxy.createCacheProxy(fooService, cacheManager);
 
         //prime cache
-        def cache = cacheManager.getCache(CACHE_NAME).getNativeCache()
+        def cache = cacheManager.getCache(CACHE_NAME_FOO).getNativeCache()
         prime(cache)
 
         Assert.assertTrue(cache.size() == 2)
@@ -111,16 +112,16 @@ class CacheProxyTest {
 
     static interface FooService {
 
-        @Cacheable(value = CacheProxyTest.CACHE_NAME, key = "#id")
+        @Cacheable(value = CacheProxyTest.CACHE_NAME_FOO, key = "#id")
         Foo getFoo(String id)
 
         //not caching
         List<Foo> getFoos();
 
-        @CacheEvict(value = CacheProxyTest.CACHE_NAME, key = "#f.id", allEntries = false)
+        @CacheEvict(value = CacheProxyTest.CACHE_NAME_FOO, key = "#f.id", allEntries = false)
         void updateFoo(Foo f);
 
-        @CacheEvict(value = CacheProxyTest.CACHE_NAME, allEntries = true)
+        @CacheEvict(value = CacheProxyTest.CACHE_NAME_FOO, allEntries = true)
         void addFoo(Foo f);
     }
 
@@ -158,7 +159,10 @@ class CacheProxyTest {
     }
 
     static class FooCacheManager implements CacheManager {
-        Map<String, FooCache> internalCaches = [(CacheProxyTest.CACHE_NAME): new FooCache()];
+        Map<String, FooCache> internalCaches = [
+                (CacheProxyTest.CACHE_NAME_FOO): new FooCache(CacheProxyTest.CACHE_NAME_FOO),
+                (CacheProxyTest.CACHE_NAME_FOO_ANOTHER): new FooCache(CacheProxyTest.CACHE_NAME_FOO_ANOTHER)
+        ];
 
         FooCache getCache(String name) {
             return internalCaches[name]
@@ -171,9 +175,14 @@ class CacheProxyTest {
 
     static class FooCache implements Cache {
         Map<Object, ValueWrapper> internalCache = [:];
+        String name;
+
+        FooCache(String name) {
+            this.name = name;
+        }
 
         String getName() {
-            return CACHE_NAME
+            return name;
         }
 
         Map<Object, ValueWrapper> getNativeCache() {

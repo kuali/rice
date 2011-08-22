@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,8 @@
  */
 package org.kuali.rice.kew.rule;
 
+import org.kuali.rice.kew.api.validation.ValidationResults;
 import org.kuali.rice.kew.validation.RuleValidationContext;
-import org.kuali.rice.kew.validation.ValidationResults;
-
 
 /**
  * A simple test implementation of a RuleValidationAttribute that can be used in the unit tests.
@@ -28,7 +27,7 @@ import org.kuali.rice.kew.validation.ValidationResults;
 public class TestRuleValidationAttribute implements RuleValidationAttribute {
 
     public ValidationResults validate(RuleValidationContext validationContext) throws Exception {
-	return new ValidationResults();
+        return ValidationResults.Builder.create().build();
     }
 
 }

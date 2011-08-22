@@ -71,7 +71,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.validation.RuleValidationContext;
-import org.kuali.rice.kew.validation.ValidationResults;
+import org.kuali.rice.kew.api.validation.ValidationResults;
 import org.kuali.rice.kew.xml.RuleXmlParser;
 import org.kuali.rice.kew.xml.export.RuleXmlExporter;
 import org.kuali.rice.kim.api.group.Group;
@@ -866,7 +866,7 @@ public class RuleServiceImpl implements RuleService {
                 RuleValidationAttribute attribute = templateAttribute.getRuleValidationAttribute();
                 UserSession userSession = GlobalVariables.getUserSession();
                 try {
-                    RuleValidationContext validationContext = new RuleValidationContext(ruleBaseValues, ruleDelegation, userSession);
+                    RuleValidationContext validationContext = new RuleValidationContext(RuleBaseValues.to(ruleBaseValues), RuleDelegation.to(ruleDelegation), userSession);
                     ValidationResults results = attribute.validate(validationContext);
                     if (results != null && !results.getValidationResults().isEmpty()) {
                         errors.add(results);

@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.rule;
 
 import org.kuali.rice.kew.validation.RuleValidationContext;
-import org.kuali.rice.kew.validation.ValidationResults;
+import org.kuali.rice.kew.api.validation.ValidationResults;
 
 /**
  * A simple interface for handling validation of rules.  Validation results are returned in a

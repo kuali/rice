@@ -16,10 +16,31 @@
  */
 package org.kuali.rice.kew.validation;
 
+import javassist.SerialVersionUID;
+import org.apache.commons.collections.CollectionUtils;
+import org.joda.time.DateTime;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
+import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.kew.api.rule.RuleContract;
+import org.kuali.rice.kew.api.rule.RuleDelegationContract;
+import org.kuali.rice.kew.api.rule.RuleResponsibility;
+import org.kuali.rice.kew.api.rule.RuleResponsibilityContract;
+import org.kuali.rice.kew.api.validation.RuleValidationContextContract;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.krad.UserSession;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The RuleValidationContext represents the context under which to validate a Rule which is being entered
@@ -34,17 +55,45 @@ import org.kuali.rice.krad.UserSession;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class RuleValidationContext {
+@XmlRootElement(name = RuleValidationContext.Constants.ROOT_ELEMENT_NAME)
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlType(name = RuleValidationContext.Constants.TYPE_NAME, propOrder = {
+    RuleValidationContext.Elements.RULE,
+    RuleValidationContext.Elements.RULE_DELEGATION,
+    CoreConstants.CommonElements.FUTURE_ELEMENTS
+})
+public class RuleValidationContext
+    extends AbstractDataTransferObject
+    implements RuleValidationContextContract {
 
-	private final RuleBaseValues rule;
-	private final RuleDelegation ruleDelegation;
+    @XmlElement(name = Elements.RULE, required = true)
+	private final RuleContract rule;
+    @XmlElement(name = Elements.RULE_DELEGATION, required = true)
+	private final RuleDelegationContract ruleDelegation;
+    //@XmlElement(name = Elements.RULE_AUTHOR, required = false)
 	private final UserSession ruleAuthor;
+
+    /**
+     * Private constructor used only by JAXB.
+     */
+    private RuleValidationContext() {
+        this.rule = null;
+        this.ruleDelegation = null;
+        this.ruleAuthor = null;
+    }
+
+    private RuleValidationContext(Builder builder) {
+        this.rule = builder.getRule();
+        this.ruleDelegation = builder.getRuleDelegation();
+        this.ruleAuthor = null;
+    }
 
 	/**
 	 * Construct a RuleValidationContext under which to validate a rule.  The rule must be non-null, the delegation
 	 * and author can be <code>null</code> given the circumstances defined in the description of this class.
+     * @deprecated use Builder instead
 	 */
-	public RuleValidationContext(RuleBaseValues rule, RuleDelegation ruleDelegation, UserSession ruleAuthor) {
+	public RuleValidationContext(RuleContract rule, RuleDelegationContract ruleDelegation, UserSession ruleAuthor) {
 		this.ruleAuthor = ruleAuthor;
 		this.rule = rule;
 		this.ruleDelegation = ruleDelegation;
@@ -53,7 +102,8 @@ public class RuleValidationContext {
 	/**
 	 * Retrieve the rule which is being validated.
 	 */
-	public RuleBaseValues getRule() {
+    @Override
+	public RuleContract getRule() {
 		return rule;
 	}
 
@@ -69,8 +119,76 @@ public class RuleValidationContext {
 	 * Retrieve the RuleDelegation representing the parent of the rule being validated.  If the rule is
 	 * not a delegation rule, then this will return null;
 	 */
-	public RuleDelegation getRuleDelegation() {
+    @Override
+	public RuleDelegationContract getRuleDelegation() {
 		return ruleDelegation;
 	}
-	
+
+    /**
+     * A builder which can be used to construct {@link RuleValidationContext} instances.  Enforces the constraints of the {@link RuleValidationContextContract}.
+     *
+     */
+    public final static class Builder
+        implements Serializable, ModelBuilder, RuleValidationContextContract
+    {
+
+        private RuleContract rule;
+	    private RuleDelegationContract ruleDelegation;
+
+        private Builder() {
+        }
+
+        public static Builder create() {
+            return new Builder();
+        }
+
+        public static Builder create(RuleValidationContextContract contract) {
+            if (contract == null) {
+                throw new IllegalArgumentException("contract was null");
+            }
+            Builder builder = create();
+            builder.setRule(contract.getRule());
+            builder.setRuleDelegation(contract.getRuleDelegation());
+            return builder;
+        }
+
+        public RuleValidationContext build() {
+            return new RuleValidationContext(this);
+        }
+
+        @Override
+        public RuleContract getRule() {
+            return this.rule;
+        }
+
+        @Override
+        public RuleDelegationContract getRuleDelegation() {
+            return this.ruleDelegation;
+        }
+
+        public void setRule(RuleContract rule) {
+            this.rule = rule;
+        }
+
+        public void setRuleDelegation(RuleDelegationContract ruleDelegation) {
+            this.ruleDelegation = ruleDelegation;
+        }
+    }
+
+    /**
+     * Defines some internal constants used on this class.
+     */
+    static class Constants {
+        final static String ROOT_ELEMENT_NAME = "ruleValidationContext";
+        final static String TYPE_NAME = "RuleValidationContextType";
+    }
+
+    /**
+     * A private class which exposes constants which define the XML element names to use when this object is marshalled to XML.
+     */
+    static class Elements {
+        final static String RULE = "rule";
+        final static String RULE_DELEGATION = "ruleDelegation";
+        //final static String RULE_AUTHOR = "ruleAuthor";
+    }
 }

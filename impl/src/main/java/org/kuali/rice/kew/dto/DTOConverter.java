@@ -27,7 +27,6 @@ import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
-import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
@@ -39,7 +38,6 @@ import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionTaken;
 import org.kuali.rice.kew.api.action.AdHocRevoke;
-import org.kuali.rice.kew.api.action.MovePoint;
 import org.kuali.rice.kew.api.document.DocumentContentUpdate;
 import org.kuali.rice.kew.api.document.DocumentDetail;
 import org.kuali.rice.kew.api.document.InvalidDocumentContentException;
@@ -53,13 +51,11 @@ import org.kuali.rice.kew.docsearch.DocumentSearchResult;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.docsearch.web.SearchAttributeFormContainer;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.documentlink.DocumentLink;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.State;
-import org.kuali.rice.kew.engine.simulation.SimulationActionToTake;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.framework.document.lookup.SearchableAttribute;
 import org.kuali.rice.kew.notes.Note;
@@ -72,7 +68,6 @@ import org.kuali.rice.kew.postprocessor.DocumentLockingEvent;
 import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
 import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.routeheader.DocumentStatusTransition;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;
 import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
@@ -86,7 +81,6 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.w3c.dom.Document;
@@ -451,17 +445,6 @@ public class DTOConverter {
         return new AttributeDefinition(ruleAttribute, extensionDefinition, objectDefinition);
     }
 
-    public static ResponsiblePartyDTO convertResponsibleParty(ResponsibleParty responsibleParty) {
-        if (responsibleParty == null) {
-            return null;
-        }
-        ResponsiblePartyDTO responsiblePartyVO = new ResponsiblePartyDTO();
-        responsiblePartyVO.setGroupId(responsibleParty.getGroupId());
-        responsiblePartyVO.setPrincipalId(responsibleParty.getPrincipalId());
-        responsiblePartyVO.setRoleName(responsibleParty.getRoleName());
-        return responsiblePartyVO;
-    }
-
     public static ResponsibleParty convertResponsiblePartyVO(ResponsiblePartyDTO responsiblePartyVO) {
         if (responsiblePartyVO == null) {
             return null;
@@ -592,49 +575,6 @@ public class DTOConverter {
         return documentLockingEvent;
     }
 
-    public static AttributeDefinition convertWorkflowAttributeDefinitionVO(WorkflowAttributeDefinitionDTO definitionVO,
-            org.kuali.rice.kew.doctype.bo.DocumentType documentType) {
-        if (definitionVO == null) {
-            return null;
-        }
-        ExtensionDefinition extensionDefinition = KewApiServiceLocator.getExtensionRepositoryService().getExtensionByName(
-                definitionVO.getAttributeName());
-        if (extensionDefinition == null) {
-            throw new WorkflowRuntimeException("Extension " + definitionVO.getAttributeName() + " not found");
-        }
-        RuleAttribute ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByName(definitionVO.getAttributeName());
-        if (ruleAttribute == null) {
-            throw new WorkflowRuntimeException("Attribute " + definitionVO.getAttributeName() + " not found");
-        }
-
-        ObjectDefinition definition = new ObjectDefinition(extensionDefinition.getResourceDescriptor());
-        for (int index = 0; index < definitionVO.getConstructorParameters().length; index++) {
-            String parameter = definitionVO.getConstructorParameters()[index];
-            definition.addConstructorParameter(new DataDefinition(parameter, String.class));
-        }
-        boolean propertiesAsMap = KEWConstants.RULE_XML_ATTRIBUTE_TYPE.equals(extensionDefinition.getType()) || KEWConstants
-                .SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(extensionDefinition.getType());
-        if (!propertiesAsMap) {
-            for (int index = 0; index < definitionVO.getProperties().length; index++) {
-                PropertyDefinitionDTO propertyDefVO = definitionVO.getProperties()[index];
-                definition.addProperty(new PropertyDefinition(propertyDefVO.getName(), new DataDefinition(
-                        propertyDefVO.getValue(), String.class)));
-            }
-        }
-
-        // this is likely from an EDL validate call and ME may needed to be added to the AttDefinitionVO.
-        if (extensionDefinition.getApplicationId() != null) {
-            definition.setApplicationId(extensionDefinition.getApplicationId());
-        } else {
-            // get the me from the document type if it's been passed in - the document is having action taken on it.
-            if (documentType != null) {
-                definition.setApplicationId(documentType.getApplicationId());
-            }
-        }
-
-        return new AttributeDefinition(ruleAttribute, extensionDefinition, definition);
-    }
-
     public static DocumentDetail convertDocumentDetailNew(DocumentRouteHeaderValue routeHeader) {
         if (routeHeader == null) {
             return null;
@@ -675,34 +615,6 @@ public class DTOConverter {
         return detail.build();
     }
 
-    public static RouteNodeInstanceDTO convertRouteNodeInstance(
-            RouteNodeInstance nodeInstance) throws WorkflowException {
-        if (nodeInstance == null) {
-            return null;
-        }
-        RouteNodeInstanceDTO nodeInstanceVO = new RouteNodeInstanceDTO();
-        nodeInstanceVO.setActive(nodeInstance.isActive());
-        nodeInstanceVO.setBranchId(nodeInstance.getBranch().getBranchId());
-        nodeInstanceVO.setComplete(nodeInstance.isComplete());
-        nodeInstanceVO.setDocumentId(nodeInstance.getDocumentId());
-        nodeInstanceVO.setInitial(nodeInstance.isInitial());
-        nodeInstanceVO.setName(nodeInstance.getName());
-        nodeInstanceVO.setProcessId(
-                nodeInstance.getProcess() != null ? nodeInstance.getProcess().getRouteNodeInstanceId() : null);
-        nodeInstanceVO.setRouteNodeId(nodeInstance.getRouteNode().getRouteNodeId());
-        nodeInstanceVO.setRouteNodeInstanceId(nodeInstance.getRouteNodeInstanceId());
-        nodeInstanceVO.setState(convertStates(nodeInstance.getState()));
-
-        nodeInstanceVO.setNextNodes(new RouteNodeInstanceDTO[nodeInstance.getNextNodeInstances().size()]);
-        int i = 0;
-        for (Iterator iter = nodeInstance.getNextNodeInstances().iterator(); iter.hasNext(); i++) {
-            RouteNodeInstance nextNodeInstance = (RouteNodeInstance) iter.next();
-            nodeInstanceVO.getNextNodes()[i] = convertRouteNodeInstance(nextNodeInstance);
-        }
-
-        return nodeInstanceVO;
-    }
-
     public static StateDTO[] convertStates(Collection states) {
         if (states == null) {
             return null;
@@ -727,10 +639,6 @@ public class DTOConverter {
         return stateVO;
     }
 
-    public static MovePoint convertMovePointVO(MovePointDTO movePointVO) {
-        return MovePoint.create(movePointVO.getStartNodeName(), movePointVO.getStepsToMove());
-    }
-
     /**
      * TODO: Temporary, just to keep compiler happy.  Remove once AdHocRevokeDTO can be removed.
      */
@@ -748,11 +656,6 @@ public class DTOConverter {
             principalIds.add(revokeVO.getGroupId());
         }
         return AdHocRevoke.create(nodeNames, principalIds, groupIds);
-    }
-
-    public static WorkflowAttributeValidationErrorDTO convertWorkflowAttributeValidationError(
-            WorkflowAttributeValidationError error) {
-        return new WorkflowAttributeValidationErrorDTO(error.getKey(), error.getMessage());
     }
 
     // Method added for updating notes on server sites based on NoteVO change. Modfy on April 7, 2006
@@ -818,29 +721,6 @@ public class DTOConverter {
         } else {
             return null;
         }
-    }
-
-    public static SimulationActionToTake convertReportActionToTakeVO(ReportActionToTakeDTO actionToTakeVO) {
-        if (actionToTakeVO == null) {
-            return null;
-        }
-        SimulationActionToTake actionToTake = new SimulationActionToTake();
-        actionToTake.setNodeName(actionToTakeVO.getNodeName());
-        if (StringUtils.isBlank(actionToTakeVO.getActionToPerform())) {
-            throw new IllegalArgumentException("ReportActionToTakeVO must contain an action taken code and does not");
-        }
-        actionToTake.setActionToPerform(actionToTakeVO.getActionToPerform());
-        if (actionToTakeVO.getPrincipalId() == null) {
-            throw new IllegalArgumentException("ReportActionToTakeVO must contain a principalId and does not");
-        }
-        Principal kPrinc = KEWServiceLocator.getIdentityHelperService().getPrincipal(actionToTakeVO.getPrincipalId());
-        Person user = KimApiServiceLocator.getPersonService().getPerson(kPrinc.getPrincipalId());
-        if (user == null) {
-            throw new RiceRuntimeException(
-                    "Could not locate Person for the given id: " + actionToTakeVO.getPrincipalId());
-        }
-        actionToTake.setUser(user);
-        return actionToTake;
     }
 
     public static DocSearchCriteriaDTO convertDocumentSearchCriteriaDTO(
@@ -958,17 +838,6 @@ public class DTOConverter {
         return rowVO;
     }
 
-    public static DocumentStatusTransitionDTO convertDocumentStatusTransition(
-            DocumentStatusTransition transition) throws WorkflowException {
-        DocumentStatusTransitionDTO tranVO = new DocumentStatusTransitionDTO();
-        tranVO.setStatusTransitionId(transition.getStatusTransitionId());
-        tranVO.setDocumentId(transition.getDocumentId());
-        tranVO.setOldAppDocStatus(transition.getOldAppDocStatus());
-        tranVO.setNewAppDocStatus(transition.getNewAppDocStatus());
-        tranVO.setStatusTransitionDate(transition.getStatusTransitionDate());
-        return tranVO;
-    }
-
     //    public static RuleBaseValues convertRuleVO(RuleVO ruleVO) throws WorkflowException {}
 
     private static void handleException(String message, Exception e) throws WorkflowException {
@@ -978,47 +847,6 @@ public class DTOConverter {
             throw (WorkflowException) e;
         }
         throw new WorkflowException(message, e);
-    }
-
-    //convert DocumentLink beans to array of DocumentLinkDTO
-    public static DocumentLinkDTO[] convertDocumentLink(Collection<DocumentLink> links) {
-        if (links == null) {
-            return null;
-        }
-        DocumentLinkDTO[] docLinkVOs = new DocumentLinkDTO[links.size()];
-
-        int index = 0;
-
-        for (DocumentLink link : links) {
-            docLinkVOs[index++] = convertDocumentLink(link);
-        }
-        return docLinkVOs;
-    }
-
-    //convert DocumentLink beans to list of DocumentLinkDTO
-    public static List<DocumentLinkDTO> convertDocumentLinkToArrayList(Collection<DocumentLink> links) {
-        if (links == null) {
-            return null;
-        }
-        List<DocumentLinkDTO> docLinkVOs = new ArrayList<DocumentLinkDTO>(links.size());
-
-        for (DocumentLink link : links) {
-            docLinkVOs.add(convertDocumentLink(link));
-        }
-        return docLinkVOs;
-    }
-
-    //covert DocumentLink bean to DocumentLinkDTO
-    public static DocumentLinkDTO convertDocumentLink(DocumentLink link) {
-        if (link == null) {
-            return null;
-        }
-        DocumentLinkDTO linkVO = new DocumentLinkDTO();
-        linkVO.setLinbkId(link.getDocLinkId());
-        linkVO.setOrgnDocId(link.getOrgnDocId());
-        linkVO.setDestDocId(link.getDestDocId());
-
-        return linkVO;
     }
 
 }

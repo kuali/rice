@@ -33,7 +33,6 @@ import org.kuali.rice.kew.doctype.SecuritySession;
 import org.kuali.rice.kew.doctype.service.DocumentSecurityService;
 import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.DTOConverter.RouteNodeInstanceLoader;
-import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.RouteNode;
@@ -350,7 +349,7 @@ public class RouteLogAction extends KewKualiAction {
 		}
 		
 		/**
-		 * helper method for {@link #importRouteNodeInstanceDTO(RouteNodeInstanceDTO)} which does all
+		 * helper method for {@link #importRouteNodeInstanceDTO(RouteNodeInstance)} which does all
 		 * the work.  The public method just wraps this one but hides the returned RouteNodeInstance,
 		 * which is used for the recursive call to populate the nextNodeInstanceS inside our 
 		 * RouteNodeInstanceS.

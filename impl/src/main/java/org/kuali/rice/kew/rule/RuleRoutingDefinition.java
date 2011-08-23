@@ -17,10 +17,9 @@
 package org.kuali.rice.kew.rule;
 
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
-import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 
 /**
- * A {@link WorkflowAttributeDefinitionDTO} for the {@link RuleRoutingAttribute}.
+ * A {@link WorkflowAttributeDefinition} for the {@link RuleRoutingAttribute}.
  * 
  * @see RuleRoutingAttribute
  *

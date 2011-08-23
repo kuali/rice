@@ -44,7 +44,6 @@ import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.workflow.service.KualiWorkflowInfo;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -69,7 +68,6 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
     private ConfigurationService kualiConfigurationService;
     private KualiModuleService kualiModuleService;
-    private KualiWorkflowInfo workflowInfoService;
     private volatile DocumentTypeService documentTypeService;
 
     /**

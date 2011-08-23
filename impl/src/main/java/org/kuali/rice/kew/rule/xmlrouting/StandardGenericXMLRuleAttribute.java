@@ -54,7 +54,7 @@ import java.util.regex.Pattern;
 /**
  * A generic WorkflowAttribute implementation that can be defined completely by XML.
  * <ol>
- *   <li>This attribute implementation takes "properties" defined on the the {@link org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO}
+ *   <li>This attribute implementation takes "properties" defined on the the {@link org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition}
  *       and maps them to the param map of {@link GenericXMLRuleAttribute}, which relate directly to a set of fields defined by the
  *       XML <code>&lt;routingConfig&gt;</code> configuration.</li>
  *   <li>Application of the properties defined on the WorkflowAttributeDefinition

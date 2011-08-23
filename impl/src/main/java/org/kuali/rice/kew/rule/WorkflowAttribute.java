@@ -16,15 +16,14 @@
  */
 package org.kuali.rice.kew.rule;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
-
-import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
-import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kns.web.ui.Row;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -49,13 +48,13 @@ import org.kuali.rice.kew.util.KEWConstants;
  * </ol>
  * <p>Runtime evaluation</p>
  * <ol>
- *   <li>Client application constructs {@link org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO} and attaches
+ *   <li>Client application constructs {@link org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition} and attaches
  *       it to the client-side document</li>
  *   <li>Upon action taken on the document, the Attributes that are described by the <code>WorkflowAttributeDefinitionVO</code>s
  *       are looked up (... how ...) and constructed on the client side.</li>
  *   <li>If the attribute is a {@link WorkflowAttributeXmlValidator} (e.g. {@link org.kuali.rice.kew.rule.xmlrouting.StandardGenericXMLRuleAttribute}),
  *       then {@link WorkflowAttributeXmlValidator#validateClientRoutingData()} is called to validate any data the client app may have set
- *       on the client-instantiated attribute (the {@link org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO})</li>
+ *       on the client-instantiated attribute (the {@link org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition})</li>
  *   <li>Attribute content (content the attribute generates to place in the eDoc document content) is obtained from the attribute
  *       via {@link WorkflowAttribute#getDocContent()} or {@link org.kuali.rice.kew.framework.document.lookup.SearchableAttribute#generateSearchContent(org.kuali.rice.kew.api.extension.ExtensionDefinition, String, org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition)},
  *       depending on whether the attribute is a WorkflowAttribute or {@link org.kuali.rice.kew.framework.document.lookup.SearchableAttribute}</li>
@@ -72,8 +71,6 @@ import org.kuali.rice.kew.util.KEWConstants;
  *    </li>
  *    <li>If all attributes for the rule match, the rule is fired</li>
  * </ol>
- * 
- * @see WorkflowAttributeDefinitionDTO
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

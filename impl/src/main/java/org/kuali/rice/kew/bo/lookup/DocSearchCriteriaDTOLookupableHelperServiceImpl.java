@@ -194,12 +194,11 @@ public class DocSearchCriteriaDTOLookupableHelperServiceImpl extends KualiLookup
 
         for (DocumentSearchResult documentSearchResult : result) {
 
-        	DocumentSearchResult docSearchResult = (DocumentSearchResult)documentSearchResult;
         	String actionUrls = "";
 
             List<? extends Column> origColumns = components.getColumns();
             List<Column> newColumns = new ArrayList<Column>();
-            List<KeyValueSort> keyValues = docSearchResult.getResultContainers();
+            List<KeyValueSort> keyValues = documentSearchResult.getResultContainers();
             for (int i = 0; i < origColumns.size(); i++) {
 
             	  Column col = (Column) origColumns.get(i);

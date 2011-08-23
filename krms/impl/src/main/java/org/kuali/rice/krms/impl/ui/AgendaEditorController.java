@@ -55,11 +55,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
     private SequenceAccessorService sequenceAccessorService;
 
-    @Override
-    public MaintenanceForm createInitialForm(HttpServletRequest request) {
-        return new MaintenanceForm();
-    }
-    
     /**
      * This overridden method does extra work on refresh to populate the context and agenda
      *
@@ -252,7 +247,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaBo agenda = editorDocument.getAgenda();
         AgendaItemBo newAgendaItem = editorDocument.getAgendaItemLine();
         newAgendaItem.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_AGENDA_ITM_S").toString());
-        newAgendaItem.setAgendaId(agenda.getId());
+        newAgendaItem.setAgendaId(getCreateAgendaId(agenda));
         if (agenda.getItems() == null) {
             agenda.setItems(new ArrayList<AgendaItemBo>());
         }
@@ -273,7 +268,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             } else {
                 // add after selected node
                 AgendaItemBo firstItem = getFirstAgendaItem(agenda);
-                AgendaItemBo node = getAgendaItemById(firstItem, getSelectedAgendaItemId(form));
+                AgendaItemBo node = getAgendaItemById(firstItem, selectedAgendaItemId);
                 newAgendaItem.setAlwaysId(node.getAlwaysId());
                 newAgendaItem.setAlways(node.getAlways());
                 node.setAlwaysId(newAgendaItem.getId());
@@ -287,6 +282,15 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return super.navigate(form, result, request, response);
     }
 
+    /**
+     * This method returns the agendaId of the given agenda.  If the agendaId is null a new id will be created.
+     */
+    private String getCreateAgendaId(AgendaBo agenda) {
+        if (agenda.getId() == null) {
+            agenda.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_AGENDA_S").toString());
+        }
+        return agenda.getId();
+    }
     /**
      * This method updates the existing rule in the agenda.
      */

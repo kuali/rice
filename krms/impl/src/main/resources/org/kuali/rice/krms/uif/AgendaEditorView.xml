@@ -159,7 +159,7 @@
                         p:queryFieldMapping="name:name" p:returnFieldMapping="name:name,namespace:namespace,id:id"/>
                 </property> -->
               </bean>
-              <bean parent="AttributeField" p:propertyName="agenda.active" p:label="Active" p:defaultValue="true">
+              <bean parent="AttributeField" p:propertyName="agenda.active" p:label="Active">
                 <property name="control">
                   <bean parent="CheckboxControl"/>
                 </property>

@@ -18,6 +18,10 @@ public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDef
 	
 	def List<AgendaItemBo> items
 
+    public AgendaBo() {
+        active = true;
+    }
+
 	public String getNamespaceCode(){
 		return namespace
 	}

@@ -32,6 +32,7 @@ import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.framework.permission.PermissionTypeService;
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -538,9 +539,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 		return null;
 	}
 
-	/**
-	 * This overridden method ...
-	 * 
+	/** 
 	 * @see org.kuali.rice.kim.service.PermissionService#getPermissionTemplateByName(java.lang.String, java.lang.String)
 	 */
 	public Template getPermissionTemplateByName(String namespaceCode,
@@ -607,27 +606,46 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     }
 
 	/**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.rice.kim.api.permission.PermissionService#createPermission(org.kuali.rice.kim.api.permission.Permission)
 	 */
 	@Override
-	public String createPermission(Permission permission)
+	public Permission createPermission(Permission permission)
 			throws RiceIllegalArgumentException, RiceIllegalStateException {
-		// TODO eldavid - THIS METHOD NEEDS JAVADOCS
-		return null;
+        if (permission == null) {
+            throw new RiceIllegalArgumentException("permission is null");
+        }
+
+        if (StringUtils.isNotBlank(permission.getId()) && getPermission(permission.getId()) != null) {
+            throw new RiceIllegalStateException("the permission to create already exists: " + permission);
+        }
+        List<PermissionAttributeBo> attrBos = KimAttributeDataBo.createFrom(PermissionAttributeBo.class, permission.getAttributes(), permission.getTemplate().getKimTypeId());
+        PermissionBo bo = PermissionBo.from(permission);
+        bo.setAttributeDetails(attrBos);
+        return PermissionBo.to(businessObjectService.save(bo));
 	}
 
 	/**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.rice.kim.api.permission.PermissionService#updatePermission(org.kuali.rice.kim.api.permission.Permission)
 	 */
 	@Override
-	public void updatePermission(Permission permission)
+	public Permission updatePermission(Permission permission)
 			throws RiceIllegalArgumentException, RiceIllegalStateException {
-		// TODO eldavid - THIS METHOD NEEDS JAVADOCS
-		
+        if (permission == null) {
+            throw new RiceIllegalArgumentException("permission is null");
+        }
+
+        if (StringUtils.isBlank(permission.getId()) || getPermission(permission.getId()) == null) {
+            throw new RiceIllegalStateException("the permission does not exist: " + permission);
+        }
+
+        List<PermissionAttributeBo> attrBos = KimAttributeDataBo.createFrom(PermissionAttributeBo.class, permission.getAttributes(), permission.getTemplate().getKimTypeId());
+        PermissionBo bo = PermissionBo.from(permission);
+
+        if (bo.getAttributeDetails() != null) {
+            bo.getAttributeDetails().addAll(attrBos);
+        }
+
+        return PermissionBo.to(businessObjectService.save(bo));		
 	}
 	
     @Override

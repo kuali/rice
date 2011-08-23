@@ -77,7 +77,7 @@ public interface PermissionService {
      */
     @WebMethod(operationName="createPermission")
     @WebResult(name = "id")
-    String createPermission(@WebParam(name = "permission") Permission permission)
+    Permission createPermission(@WebParam(name = "permission") Permission permission)
             throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
@@ -88,7 +88,7 @@ public interface PermissionService {
      * @throws IllegalStateException if the permission does not exist in the system
      */
     @WebMethod(operationName="updatePermission")
-    void updatePermission(@WebParam(name = "permission") Permission permission)
+    Permission updatePermission(@WebParam(name = "permission") Permission permission)
             throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     // --------------------

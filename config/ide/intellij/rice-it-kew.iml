@@ -14,6 +14,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../it/kew/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/kew/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/kew/src/test/resources/META-INF" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../it/kew/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/kew/target/generated-sources/groovy-stubs" />
     </content>
     <orderEntry type="inheritedJdk" />

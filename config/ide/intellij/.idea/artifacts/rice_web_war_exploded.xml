@@ -34,9 +34,9 @@
           <element id="library" level="project" name="Maven: org.slf4j:jcl-over-slf4j:1.6.1" />
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.6.1" />
           <element id="library" level="project" name="Maven: org.kuali.commons:commons-beanutils:1.8.3-kuali" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-beans:3.0.5.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-core:3.0.5.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-beans:3.1.0.M2" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-core:3.1.0.M2" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-asm:3.1.0.M2" />
           <element id="library" level="project" name="Maven: org.jdom:jdom:1.1" />
           <element id="library" level="project" name="Maven: joda-time:joda-time:2.0" />
           <element id="library" level="project" name="Maven: org.codehaus.groovy:groovy-all:1.8.1" />
@@ -51,13 +51,13 @@
           <element id="archive" name="rice-core-framework-2.0.0-m8-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-framework" />
           </element>
-          <element id="library" level="project" name="Maven: org.springframework:spring-tx:3.0.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-tx:3.1.0.M2" />
           <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-aop:3.0.5.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-context:3.0.5.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-expression:3.0.5.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-orm:3.0.5.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:3.0.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-aop:3.1.0.M2" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context:3.1.0.M2" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-expression:3.1.0.M2" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-orm:3.1.0.M2" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:3.1.0.M2" />
           <element id="library" level="project" name="Maven: org.springmodules:spring-modules-ojb:0.8a" />
           <element id="library" level="project" name="Maven: org.hibernate:hibernate-core:3.6.6.Final" />
           <element id="library" level="project" name="Maven: dom4j:dom4j:1.6.1" />
@@ -93,9 +93,9 @@
           <element id="archive" name="rice-kim-framework-2.0.0-m8-SNAPSHOT.jar">
             <element id="module-output" name="rice-kim-framework" />
           </element>
-          <element id="library" level="project" name="Maven: org.springframework:spring-web:3.0.5.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:3.0.5.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-context-support:3.0.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-web:3.1.0.M2" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:3.1.0.M2" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context-support:3.1.0.M2" />
           <element id="library" level="project" name="Maven: org.apache.tiles:tiles-core:2.2.2" />
           <element id="library" level="project" name="Maven: org.apache.tiles:tiles-api:2.2.2" />
           <element id="library" level="project" name="Maven: commons-digester:commons-digester:2.0" />
@@ -164,6 +164,12 @@
           <element id="archive" name="rice-krms-api-2.0.0-m8-SNAPSHOT.jar">
             <element id="module-output" name="rice-krms-api" />
           </element>
+          <element id="archive" name="rice-shareddata-web-2.0.0-m8-SNAPSHOT.jar">
+            <element id="module-output" name="rice-shareddata-web" />
+          </element>
+          <element id="archive" name="rice-shareddata-impl-2.0.0-m8-SNAPSHOT.jar">
+            <element id="module-output" name="rice-shareddata-impl" />
+          </element>
           <element id="archive" name="rice-kew-impl-2.0.0-m8-SNAPSHOT.jar">
             <element id="module-output" name="rice-kew-impl" />
           </element>
@@ -181,12 +187,6 @@
           </element>
           <element id="archive" name="rice-shareddata-framework-2.0.0-m8-SNAPSHOT.jar">
             <element id="module-output" name="rice-shareddata-framework" />
-          </element>
-          <element id="archive" name="rice-shareddata-impl-2.0.0-m8-SNAPSHOT.jar">
-            <element id="module-output" name="rice-shareddata-impl" />
-          </element>
-          <element id="archive" name="rice-shareddata-web-2.0.0-m8-SNAPSHOT.jar">
-            <element id="module-output" name="rice-shareddata-web" />
           </element>
           <element id="archive" name="rice-ksb-framework-2.0.0-m8-SNAPSHOT.jar">
             <element id="module-output" name="rice-ksb-framework" />

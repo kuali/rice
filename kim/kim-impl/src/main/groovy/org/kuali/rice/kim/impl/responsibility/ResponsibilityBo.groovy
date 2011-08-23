@@ -39,6 +39,7 @@ import org.kuali.rice.kim.impl.role.RoleResponsibilityBo
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.krad.service.DataDictionaryService
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb
+import org.springframework.util.AutoPopulatingList
 
 @Entity
 @Table(name = "KRIM_RSP_T")
@@ -76,7 +77,7 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
 
     @OneToMany(targetEntity=RoleResponsibilityBo.class,cascade=[CascadeType.ALL],fetch=FetchType.EAGER,mappedBy="id")
     @Fetch(value = FetchMode.SELECT)
-    List<RoleResponsibilityBo> roleResponsibilities
+    List<RoleResponsibilityBo> roleResponsibilities = new AutoPopulatingList(RoleResponsibilityBo.class)
 
     Map<String,String> attributes
 

@@ -60,7 +60,7 @@
     
     <c:forEach items="${view.additionalScriptFiles}" var="scriptFile" >
       <c:if test="${fn:startsWith(scriptFile, '/')}">
-        <c:set var="scriptFile" value="${pageContext.request.contextPath}/${scriptFile}"/>
+        <c:set var="scriptFile" value="${pageContext.request.contextPath}/${fn:substringAfter(scriptFile,'/')}"/>
       </c:if>
       <script language="JavaScript" type="text/javascript" src="${scriptFile}"></script>
     </c:forEach>

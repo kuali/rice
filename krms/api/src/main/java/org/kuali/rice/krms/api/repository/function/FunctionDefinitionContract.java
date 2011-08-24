@@ -97,7 +97,7 @@ public interface FunctionDefinitionContract extends Versioned, Identifiable, Ina
 	List<? extends FunctionParameterDefinitionContract> getParameters();
 
     /**
-     * Returns an ordered, immutable list of the categories which this function
+     * Returns an ordered list of the categories which this function
      * definition requires.  This list can be empty (in the case of a function
      * which has no arguments) but will never be null.
      *

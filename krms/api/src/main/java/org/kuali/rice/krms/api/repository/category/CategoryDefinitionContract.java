@@ -3,6 +3,9 @@ package org.kuali.rice.krms.api.repository.category;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 
+/**
+ * Defines the category definition.
+ */
 public interface CategoryDefinitionContract extends Identifiable, Versioned {
 
     /**

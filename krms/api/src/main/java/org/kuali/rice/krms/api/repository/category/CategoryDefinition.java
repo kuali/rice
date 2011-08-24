@@ -29,11 +29,11 @@ public class CategoryDefinition extends AbstractDataTransferObject implements Ca
     private static final long serialVersionUID = -4748818967880857017L;
 
     @XmlElement(name = Elements.ID, required=true)
-    private String id;
+    private final String id;
     @XmlElement(name = Elements.NAME, required=true)
-    private String name;
+    private final String name;
     @XmlElement(name = Elements.NAMESPACE, required=true)
-    private String namespace;
+    private final String namespace;
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
 

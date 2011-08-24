@@ -55,7 +55,7 @@ public interface TermSpecificationDefinitionContract extends Identifiable, Versi
     String getDescription();
 
     /**
-     * Returns an ordered, immutable list of the categories which this term specification
+     * Returns an ordered list of the categories which this term specification
      * definition requires.  This list can be empty (in the case of a term
      * which has no arguments) but will never be null.
      *

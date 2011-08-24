@@ -151,7 +151,7 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
     }
 
     @Override
-    public void destroy() throws Exception {
+    public void destroy() {
         //shutdown the flush task, null out the old reference to the future
         ScheduledFuture<?> f = flusherFuture.get();
         if (f != null) {

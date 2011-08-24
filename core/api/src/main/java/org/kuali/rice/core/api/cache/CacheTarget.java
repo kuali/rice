@@ -64,7 +64,7 @@ public final class CacheTarget extends AbstractDataTransferObject {
     /**
      * Creates an instance targeting a single item in a cache.
      * @param cache The name of the cache.  cannot be a null of blank string.
-     * @param key The key of the item in the cache.  optional. can be null or blank string..
+     * @param key The key of the item in the cache.  cannot be a null of blank string.
      * @return an instance
      * @throws IllegalArgumentException if the cache or key is null or blank
      */

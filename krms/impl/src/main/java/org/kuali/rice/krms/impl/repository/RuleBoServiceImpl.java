@@ -19,7 +19,7 @@ package org.kuali.rice.krms.impl.repository;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
-import org.kuali.rice.krms.impl.util.KRMSPropertyConstants;
+import org.kuali.rice.krms.impl.util.KrmsImplConstants.PropertyNames;
 
 import java.util.*;
 
@@ -80,7 +80,7 @@ public final class RuleBoServiceImpl implements RuleBoService {
 
 		// delete any old, existing attributes
 		Map<String,String> fields = new HashMap<String,String>(1);
-		fields.put(KRMSPropertyConstants.Rule.RULE_ID, toUpdate.getId());
+		fields.put(PropertyNames.Rule.RULE_ID, toUpdate.getId());
 		businessObjectService.deleteMatching(RuleAttributeBo.class, fields);
         
 		// update the rule and create new attributes

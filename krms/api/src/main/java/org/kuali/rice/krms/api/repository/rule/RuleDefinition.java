@@ -51,21 +51,21 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
 	private static final long serialVersionUID = 2783959459503209577L;
 
 	@XmlElement(name = Elements.ID, required=true)
-	private String id;
+	private final String id;
     @XmlElement(name = Elements.NAME, required=true)
-	private String name;
+	private final String name;
 	@XmlElement(name = Elements.NAMESPACE, required=true)
-	private String namespace;
+	private final String namespace;
     @XmlElement(name = Elements.DESCRIPTION, required=false)
-    private String description;
+    private final String description;
 	@XmlElement(name = Elements.TYPE_ID, required=true)
-	private String typeId;
+	private final String typeId;
 	@XmlElement(name = Elements.PROPOSITION, required=true)
-	private PropositionDefinition proposition;
+	private final PropositionDefinition proposition;
 	
 	@XmlElementWrapper(name = Elements.ACTIONS)
 	@XmlElement(name = Elements.ACTION, required=false)
-	private List<ActionDefinition> actions;
+	private final List<ActionDefinition> actions;
 	
 	@XmlElement(name = Elements.ATTRIBUTES, required = false)
 	@XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
@@ -89,6 +89,7 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
     	this.id = null;
     	this.name = null;
     	this.namespace = null;
+        this.description = null;
     	this.typeId = null;
     	this.propId = null;
     	this.proposition = null;
@@ -109,9 +110,12 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
         this.namespace = builder.getNamespace();
         this.typeId = builder.getTypeId();
         this.propId = builder.getPropId();
+        this.description = builder.getDescription();
         
         if (builder.getProposition() != null) {
             this.proposition = builder.getProposition().build();
+        } else {
+            this.proposition = null;
         }
         
         List<ActionDefinition> actionList = new ArrayList<ActionDefinition> ();
@@ -120,6 +124,8 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
         		actionList.add(b.build());
         	}
             this.actions = Collections.unmodifiableList(actionList);
+        } else {
+            this.actions = Collections.emptyList();
         }
         if (builder.attributes != null){
         	this.attributes = Collections.unmodifiableMap(builder.getAttributes());
@@ -247,7 +253,7 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
 		/**
 		 * Sets the value of the id on this builder to the given value.
 		 * 
-		 * @param id the id value to set, must not be null or blank
+		 * @param ruleId the id value to set, must not be null or blank
 		 * @throws IllegalArgumentException if the id is null or blank
 		 */
 

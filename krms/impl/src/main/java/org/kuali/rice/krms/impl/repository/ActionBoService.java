@@ -71,7 +71,8 @@ public interface ActionBoService {
 	public ActionDefinition getActionByNameAndNamespace(String name, String namespace);
 
     /**
-     * Retrieves an ordered List of Actions associated with a {@link Rule}.
+     * Retrieves an ordered List of Actions associated with a
+     * {@link org.kuali.rice.krms.api.repository.rule.RuleDefinition}.
      * The order of the list is determined by the sequenceNumber property
      * of the Actions.
      *

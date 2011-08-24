@@ -14,7 +14,7 @@ import org.kuali.rice.krms.api.repository.agenda.AgendaTreeSubAgendaEntry;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.api.repository.context.ContextSelectionCriteria;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
-import org.kuali.rice.krms.impl.util.KRMSPropertyConstants;
+import org.kuali.rice.krms.impl.util.KrmsImplConstants.PropertyNames;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -189,20 +189,20 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
 		QueryByCriteria.Builder qBuilder = QueryByCriteria.Builder.create();
     	List<Predicate> pList = new ArrayList<Predicate>();
     	if (selectionCriteria.getNamespaceCode() != null){
-    		p = equal(KRMSPropertyConstants.Context.NAMESPACE, selectionCriteria.getNamespaceCode());
+    		p = equal(PropertyNames.Context.NAMESPACE, selectionCriteria.getNamespaceCode());
     		pList.add(p);
     	}
     	if (selectionCriteria.getName() != null){
-    		p = equal(KRMSPropertyConstants.Context.NAME, selectionCriteria.getName());
+    		p = equal(PropertyNames.Context.NAME, selectionCriteria.getName());
     		pList.add(p);
     	}
     	if (selectionCriteria.getContextQualifiers() != null){
     		for (Map.Entry<String, String> entry : selectionCriteria.getContextQualifiers().entrySet()){
-    			p = and(equal(KRMSPropertyConstants.Context.ATTRIBUTE_BOS
-    					+ "." + KRMSPropertyConstants.BaseAttribute.ATTRIBUTE_DEFINITION
-    					+ "." + KRMSPropertyConstants.KrmsAttributeDefinition.NAME, entry.getKey()),
-    				equal(KRMSPropertyConstants.Context.ATTRIBUTE_BOS
-    					+ "." + KRMSPropertyConstants.BaseAttribute.VALUE, entry.getValue()));
+    			p = and(equal(PropertyNames.Context.ATTRIBUTE_BOS
+    					+ "." + PropertyNames.BaseAttribute.ATTRIBUTE_DEFINITION
+    					+ "." + PropertyNames.KrmsAttributeDefinition.NAME, entry.getKey()),
+    				equal(PropertyNames.Context.ATTRIBUTE_BOS
+    					+ "." + PropertyNames.BaseAttribute.VALUE, entry.getValue()));
     			pList.add(p);
     		}
     	}

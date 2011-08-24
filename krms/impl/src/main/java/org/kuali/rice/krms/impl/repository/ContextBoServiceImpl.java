@@ -20,7 +20,7 @@ package org.kuali.rice.krms.impl.repository;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
-import org.kuali.rice.krms.impl.util.KRMSPropertyConstants;
+import org.kuali.rice.krms.impl.util.KrmsImplConstants.PropertyNames;
 
 import java.util.*;
 
@@ -36,7 +36,7 @@ public final class ContextBoServiceImpl implements ContextBoService {
     private BusinessObjectService businessObjectService;
 
 	/**
-	 * This method will create a {@link ContextDefintion} as described
+	 * This method will create a {@link ContextDefinition} as described
 	 * by the parameter passed in.
 	 * 
 	 * @see org.kuali.rice.krms.impl.repository.ContextBoService#createContext(org.kuali.rice.krms.api.repository.context.ContextDefinition)
@@ -57,8 +57,6 @@ public final class ContextBoServiceImpl implements ContextBoService {
 
 	/**
 	 * This method updates an existing Context in the repository.
-	 * 
-	 * @see org.kuali.rice.krms.impl.repository.ContextBoService#updateContext(org.kuali.rice.krms.api.repository.context.ContextDefinition)
 	 */
 	@Override
 	public void updateContext(ContextDefinition context) {
@@ -87,7 +85,7 @@ public final class ContextBoServiceImpl implements ContextBoService {
 
 		// delete any old, existing attributes
 		Map<String,String> fields = new HashMap<String,String>(1);
-		fields.put(KRMSPropertyConstants.Context.CONTEXT_ID, toUpdate.getId());
+		fields.put(PropertyNames.Context.CONTEXT_ID, toUpdate.getId());
 		businessObjectService.deleteMatching(ContextAttributeBo.class, fields);
         
 		// update the rule and create new attributes
@@ -96,8 +94,6 @@ public final class ContextBoServiceImpl implements ContextBoService {
 
 	/**
 	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.krms.impl.repository.ContextBoService#getContextsByRuleId(java.lang.String)
 	 */
 	@Override
 	public ContextDefinition getContextByContextId(String contextId) {
@@ -109,10 +105,7 @@ public final class ContextBoServiceImpl implements ContextBoService {
 	}
 
 	/**
-	 * 
 	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.krms.impl.repository.ContextBoService#getContextByNameAndNamespace(java.lang.String, java.lang.String)
 	 */
 	public ContextDefinition getContextByNameAndNamespace( String name, String namespace ){
 		if (StringUtils.isBlank(name)){

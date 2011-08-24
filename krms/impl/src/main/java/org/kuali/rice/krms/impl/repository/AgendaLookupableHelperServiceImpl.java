@@ -32,8 +32,6 @@ import java.util.Properties;
 
 public class AgendaLookupableHelperServiceImpl extends LookupableImpl {
 
-    private final String KRMS_AGENDA_EDITOR = "krmsAgendaEditor";
-
     @Override
     protected String getActionUrlHref(LookupForm lookupForm, Object dataObject, String methodToCall, List<String> pkNames) {
         Properties props = new Properties();
@@ -54,6 +52,6 @@ public class AgendaLookupableHelperServiceImpl extends LookupableImpl {
         props.put(UifParameters.DATA_OBJECT_CLASS_NAME, AgendaEditor.class.getName());
         props.put(UifParameters.VIEW_TYPE_NAME, UifConstants.ViewType.MAINTENANCE);
 
-        return UrlFactory.parameterizeUrl(KRMS_AGENDA_EDITOR, props);
+        return UrlFactory.parameterizeUrl(org.kuali.rice.krms.impl.util.KrmsImplConstants.WebPaths.AGENDA_EDITOR_PATH, props);
     }
 }

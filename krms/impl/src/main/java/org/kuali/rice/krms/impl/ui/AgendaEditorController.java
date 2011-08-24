@@ -15,23 +15,13 @@
  */
 package org.kuali.rice.krms.impl.ui;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.controller.MaintenanceDocumentController;
-import org.kuali.rice.krad.web.form.DocumentFormBase;
 import org.kuali.rice.krad.web.form.MaintenanceForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
@@ -44,13 +34,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Controller for the Test UI Page
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Controller
-@RequestMapping(value = "/krmsAgendaEditor")
+@RequestMapping(value = org.kuali.rice.krms.impl.util.KrmsImplConstants.WebPaths.AGENDA_EDITOR_PATH)
 public class AgendaEditorController extends MaintenanceDocumentController {
 
     private SequenceAccessorService sequenceAccessorService;

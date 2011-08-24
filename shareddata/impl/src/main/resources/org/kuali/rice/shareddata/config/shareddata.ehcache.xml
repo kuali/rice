@@ -1,0 +1,20 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+         updateCheck="true" monitoring="autodetect"
+         dynamicConfig="true">
+
+  <cache name="http://rice.kuali.org/shareddata/CampusType" eternal="false" overflowToDisk="false" copyOnRead="false"
+         copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/shareddata/CampusTypeType" eternal="false" overflowToDisk="false"
+         copyOnRead="false"
+         copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/shareddata/CountryType" eternal="false" overflowToDisk="false" copyOnRead="false"
+         copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/shareddata/CountyType" eternal="false" overflowToDisk="false" copyOnRead="false"
+         copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/shareddata/PostalCodeType" eternal="false" overflowToDisk="false"
+         copyOnRead="false" copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/shareddata/StateType" eternal="false" overflowToDisk="false" copyOnRead="false"
+         copyOnWrite="false"/>
+
+</ehcache>

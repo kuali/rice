@@ -15,5 +15,5 @@
   -->
 
 <config>
-
+   <param name="shareddata.ehcache.config.location" override="false">classpath:org/kuali/rice/shareddata/config/shareddata.ehcache.xml</param>
 </config>

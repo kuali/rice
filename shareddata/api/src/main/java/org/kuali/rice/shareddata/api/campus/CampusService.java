@@ -48,7 +48,7 @@ public interface CampusService {
      *
      */
     @WebMethod(operationName="findAllCampuses")
-    @Cacheable(value=Campus.Cache.NAME, key="all")
+    @Cacheable(value=Campus.Cache.NAME, key="'all'")
     List<Campus> findAllCampuses();
     
     /**
@@ -69,6 +69,6 @@ public interface CampusService {
      *
      */
     @WebMethod(operationName="findAllCampusTypes")
-    @Cacheable(value=CampusType.Cache.NAME, key="all")
+    @Cacheable(value=CampusType.Cache.NAME, key="'all'")
     List<CampusType> findAllCampusTypes();
 }

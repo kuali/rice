@@ -53,18 +53,11 @@
     <property name="serviceName" value="rice.ksb.messageHelper"/>
   </bean>
 
-  <!-- this can be swapped by whatever cache manager we choose... ehcache maybe? -->
-  <bean id="sharedDataLocalCacheManager" class="org.springframework.cache.support.SimpleCacheManager">
-      <property name="caches">
-        <set>
-          <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="#{T(org.kuali.rice.shareddata.api.campus.Campus$Cache).NAME}"/>
-          <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="#{T(org.kuali.rice.shareddata.api.campus.CampusType$Cache).NAME}"/>
-          <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="#{T(org.kuali.rice.shareddata.api.country.Country$Cache).NAME}"/>
-          <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="#{T(org.kuali.rice.shareddata.api.county.County$Cache).NAME}"/>
-          <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="#{T(org.kuali.rice.shareddata.api.postalcode.PostalCode$Cache).NAME}"/>
-          <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="#{T(org.kuali.rice.shareddata.api.state.State$Cache).NAME}"/>
-        </set>
-      </property>
+  <!-- this can be swapped with whatever cache manager you want (ehcache, java.util.concurrent, etc.) -->
+  <bean id="sharedDataLocalCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+    <property name="cacheManager">
+      <bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" p:config-location="${shareddata.ehcache.config.location}"/>
+    </property>
   </bean>
 
   <!-- the distributed cache manager that calls into the sharedDataCacheService on the ksb -->

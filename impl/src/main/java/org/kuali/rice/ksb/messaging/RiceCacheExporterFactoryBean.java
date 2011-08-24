@@ -29,7 +29,9 @@ import org.springframework.beans.factory.InitializingBean;
  * cache with the bus.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @deprecated this is being replaced in rice 2.0 DO NOT USE
  */
+@Deprecated
 public class RiceCacheExporterFactoryBean implements FactoryBean<RiceCacheAdministrator>, InitializingBean {
 	
 	private String serviceName;

@@ -9,6 +9,7 @@ import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.cache.CacheService;
 import org.kuali.rice.core.api.cache.CacheTarget;
 import org.kuali.rice.ksb.api.messaging.MessageHelper;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -24,14 +25,16 @@ import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A distributed cache manager that wraps a cache manager and adds distributed cache capabilities
  * through the kuali service bus. Distributed cache messages are queued for a max period of time
  * and sent as a single message rather than sending the messages immediately.
  */
-public final class DistributedCacheManagerDecorator implements CacheManager, InitializingBean {
+public final class DistributedCacheManagerDecorator implements CacheManager, InitializingBean, DisposableBean {
 
     private static final Log LOG = LogFactory.getLog(DistributedCacheManagerDecorator.class);
     private static final long MAX_WAIT_DEFAULT = TimeUnit.SECONDS.toMillis(60);
@@ -43,6 +46,7 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
 
     private final LinkedBlockingQueue<CacheTarget> flushQueue = new LinkedBlockingQueue<CacheTarget>();
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private final AtomicReference<ScheduledFuture<?>> flusherFuture = new AtomicReference<ScheduledFuture<?>>();
     private final Runnable flusher = new Runnable() {
         @Override
         public void run() {
@@ -53,9 +57,11 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
                 if (!flushQueue.isEmpty()) {
                     final Collection<CacheService> services = getCacheServices();
                     if (services != null) {
+                        //exhaustQueue clears out the queue. it cannot be placed in the inner loop
+                        final Collection<CacheTarget> targets = exhaustQueue(flushQueue);
                         for (CacheService service : services) {
                             if (service != null) {
-                                service.flush(exhaustQueue(flushQueue));
+                                service.flush(targets);
                             }
                         }
                     }
@@ -69,6 +75,8 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
             }
         }
     };
+
+
 
     @Override
     public Cache getCache(String name) {
@@ -125,7 +133,7 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         if (cacheManager == null) {
             throw new IllegalStateException("cacheManager was null");
         }
@@ -139,7 +147,20 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
         }
 
         final long maxWait = NumberUtils.isNumber(flushQueueMaxWait) ? Long.parseLong(flushQueueMaxWait) : MAX_WAIT_DEFAULT;
-        scheduler.scheduleAtFixedRate(flusher, maxWait, maxWait, TimeUnit.MILLISECONDS);
+        flusherFuture.set(scheduler.scheduleAtFixedRate(flusher, maxWait, maxWait, TimeUnit.MILLISECONDS));
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        //shutdown the flush task, null out the old reference to the future
+        ScheduledFuture<?> f = flusherFuture.get();
+        if (f != null) {
+            f.cancel(false);
+            flusherFuture.set(null);
+        }
+
+        //shutdown the scheduler
+        scheduler.shutdown();
     }
 
     public void setCacheManager(CacheManager cacheManager) {
@@ -196,22 +217,26 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
         public void evict(Object key) {
             final String sKey = coerceStr(key);
             cache.evict(sKey);
-            final CacheTarget target = CacheTarget.singleEntry(getName(), sKey);
-            try {
-                flushQueue.put(target);
-            } catch (InterruptedException e) {
-                throw new DistributedCacheException(e);
-            }
+            putInQueue(CacheTarget.singleEntry(getName(), sKey));
         }
 
         @Override
         public void clear() {
             cache.clear();
-            final CacheTarget target = CacheTarget.entireCache(getName());
+            putInQueue(CacheTarget.entireCache(getName()));
+        }
+
+        private void putInQueue(CacheTarget target) throws DistributedCacheException {
             try {
                 flushQueue.put(target);
             } catch (InterruptedException e) {
                 throw new DistributedCacheException(e);
+            }
+
+            //check to see if the cache flush task is done for some reason.  if so restart it.
+            if (flusherFuture.get().isDone()) {
+                LOG.warn("The distributed cache flush task is no longer running.  This may indicate an error.");
+                afterPropertiesSet();
             }
         }
 

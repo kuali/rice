@@ -61,17 +61,19 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
                         final Collection<CacheTarget> targets = exhaustQueue(flushQueue);
                         for (CacheService service : services) {
                             if (service != null) {
-                                service.flush(targets);
+                                //wrap the each call in a try block so if one message send fails
+                                //we still attempt the others
+                                try {
+                                    service.flush(targets);
+                                } catch (Throwable t) {
+                                    LOG.error("failed to flush the queue for specific endpoint for serviceName " + serviceName, t);
+                                }
                             }
                         }
                     }
                 }
             } catch (Throwable t) {
-                try {
-                    LOG.error("failed to flush the queue for serviceName " + serviceName, t);
-                } catch (Throwable t2) {
-                    //do not want the scheduler to ever stop
-                }
+                LOG.error("failed to flush the queue for serviceName " + serviceName, t);
             }
         }
     };

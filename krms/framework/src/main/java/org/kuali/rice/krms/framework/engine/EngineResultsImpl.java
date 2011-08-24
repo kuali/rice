@@ -1,19 +1,18 @@
 package org.kuali.rice.krms.framework.engine;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.kuali.rice.krms.api.engine.EngineResults;
 import org.kuali.rice.krms.api.engine.ResultEvent;
-import org.kuali.rice.krms.api.engine.Term;
 
 
 public class EngineResultsImpl implements EngineResults {
 	
 	private List<ResultEvent> results = new ArrayList<ResultEvent>();
-	private Map<Object, Set<Term>> termPropositionMap;
+	private Map<String, Object> attributes = new HashMap<String, Object>();
 	
 	@Override
 	public void addResult(ResultEvent result) {
@@ -43,4 +42,21 @@ public class EngineResultsImpl implements EngineResults {
 		}
 		return newList;
 	}
+	
+	/**
+	 * @see org.kuali.rice.krms.api.engine.EngineResults#getAttribute(java.lang.String)
+	 */
+	@Override
+	public Object getAttribute(String key) {
+	    return attributes.get(key);
+	}
+	
+	/**
+	 * @see org.kuali.rice.krms.api.engine.EngineResults#setAttribute(java.lang.String, java.lang.Object)
+	 */
+	@Override
+	public void setAttribute(String key, Object attr) {
+	    attributes.put(key, attr);
+	}
+	
 }

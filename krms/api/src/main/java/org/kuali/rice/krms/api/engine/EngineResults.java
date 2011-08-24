@@ -8,6 +8,8 @@ public interface EngineResults {
 	public ResultEvent getResultEvent(int index);
 	public List<ResultEvent> getAllResults();
 	public List<ResultEvent> getResultsOfType(String type);
+	public Object getAttribute(String key);
+	public void setAttribute(String key, Object attr);
 	
 	public void addResult(ResultEvent result);
 }

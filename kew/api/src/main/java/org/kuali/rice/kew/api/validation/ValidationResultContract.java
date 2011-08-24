@@ -22,6 +22,6 @@ package org.kuali.rice.kew.api.validation;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ValidationResultContract {
-	public String getErrorMessage();
+    public String getErrorMessage();
     public String getFieldName();
 }

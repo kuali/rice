@@ -24,5 +24,5 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ValidationResultsContract {
-	public List<ValidationResultContract> getValidationResults();
+	public List<? extends ValidationResultContract> getValidationResults();
 }

@@ -30,14 +30,17 @@ import org.kuali.rice.kew.api.validation.RuleValidationContextContract;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.krad.UserSession;
+import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +75,10 @@ public class RuleValidationContext
 	private final RuleDelegationContract ruleDelegation;
     //@XmlElement(name = Elements.RULE_AUTHOR, required = false)
 	private final UserSession ruleAuthor;
+
+    @SuppressWarnings("unused")
+    @XmlAnyElement
+    private final Collection<Element> _futureElements = null;
 
     /**
      * Private constructor used only by JAXB.

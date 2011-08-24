@@ -16,20 +16,26 @@
  */
 package org.kuali.rice.kew.api.validation;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.kew.api.rule.RuleContract;
 import org.kuali.rice.kew.api.rule.RuleDelegationContract;
 import org.kuali.rice.kew.api.rule.RuleResponsibility;
+import org.kuali.rice.kew.api.rule.RuleResponsibilityContract;
+import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -40,7 +46,7 @@ import java.util.List;
 @XmlRootElement(name = ValidationResults.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = ValidationResults.Constants.TYPE_NAME, propOrder = {
-    ValidationResults.Elements.RESULTS,
+    ValidationResults.Constants.RESULTS_LIST_PROPERTY,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public class ValidationResults
@@ -49,23 +55,33 @@ public class ValidationResults
 
 	public static final String GLOBAL = "org.kuali.rice.kew.api.validation.ValidationResults.GLOBAL";
 
-    @XmlElement(name = Elements.RESULTS, required = false)
-    private final List<ValidationResultContract> validationResults;
+    @XmlElement(name = Elements.ERROR, required = false)
+    private final List<ValidationResult> results;
+
+    @SuppressWarnings("unused")
+    @XmlAnyElement
+    private final Collection<Element> _futureElements = null;
 
     /**
      * Private constructor used only by JAXB.
      */
     private ValidationResults() {
-        this.validationResults = new ArrayList<ValidationResultContract>();
+        this.results = new ArrayList<ValidationResult>();
     }
 
     private ValidationResults(Builder builder) {
-        this.validationResults = builder.getValidationResults();
+       List<ValidationResult> results = new ArrayList<ValidationResult>();
+       if (builder.getValidationResults() != null) {
+           for (ValidationResult.Builder validationResultBuilder: builder.getValidationResults()) {
+               results.add(validationResultBuilder.build());
+           }
+       }
+       this.results = results;
     }
 
     @Override
-	public List<ValidationResultContract> getValidationResults() {
-		return validationResults;
+	public List<ValidationResult> getValidationResults() {
+		return results;
 	}
 
     /**
@@ -76,7 +92,7 @@ public class ValidationResults
         implements Serializable, ModelBuilder, ValidationResultsContract
     {
 
-        private List<ValidationResultContract> validationResults = new ArrayList<ValidationResultContract>();
+        private List<ValidationResult.Builder> results = new ArrayList<ValidationResult.Builder>();
 
         private Builder() {
         }
@@ -90,7 +106,14 @@ public class ValidationResults
                 throw new IllegalArgumentException("contract was null");
             }
             Builder builder = create();
-            builder.setValidationResults(contract.getValidationResults());
+
+            if (CollectionUtils.isNotEmpty(contract.getValidationResults())) {
+                List<ValidationResult.Builder> resultBuilders= new ArrayList<ValidationResult.Builder>();
+                for (ValidationResultContract c : contract.getValidationResults()) {
+                    resultBuilders.add(ValidationResult.Builder.create(c));
+                }
+                builder.setValidationResults(resultBuilders);
+            }
             return builder;
         }
 
@@ -99,12 +122,12 @@ public class ValidationResults
         }
 
         @Override
-        public List<ValidationResultContract> getValidationResults() {
-            return this.validationResults;
+        public List<ValidationResult.Builder> getValidationResults() {
+            return this.results;
         }
 
-        public void setValidationResults(List<ValidationResultContract> results) {
-            this.validationResults = results;
+        public void setValidationResults(List<ValidationResult.Builder> results) {
+            this.results = results;
         }
 
         /**
@@ -123,7 +146,7 @@ public class ValidationResults
             ValidationResult.Builder b = ValidationResult.Builder.create();
             b.setFieldName(fieldName);
             b.setErrorMessage(errorMessage);
-            validationResults.add(b.build());
+            results.add(b);
         }
     }
 
@@ -133,11 +156,12 @@ public class ValidationResults
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "validationResults";
         final static String TYPE_NAME = "ValidationResultsType";
+        final static String RESULTS_LIST_PROPERTY = "results";
     }
     /**
      * A private class which exposes constants which define the XML element names to use when this object is marshalled to XML.
      */
     static class Elements {
-        final static String RESULTS = "results";
+        final static String ERROR = "error";
     }
 }

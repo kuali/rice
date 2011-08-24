@@ -19,14 +19,17 @@ package org.kuali.rice.kew.api.validation;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -47,8 +50,12 @@ public class ValidationResult
 
     @XmlElement(name = Elements.FIELD_NAME, required = true)
 	private final String fieldName;
-    @XmlElement(name = Elements.FIELD_NAME, required = false)
+    @XmlElement(name = Elements.ERROR_MESSAGE, required = false)
 	private final String errorMessage;
+
+    @SuppressWarnings("unused")
+    @XmlAnyElement
+    private final Collection<Element> _futureElements = null;
 
     /**
      * Private constructor used only by JAXB.
@@ -98,6 +105,16 @@ public class ValidationResult
             Builder builder = create();
             builder.setFieldName(contract.getFieldName());
             builder.setErrorMessage(contract.getErrorMessage());
+            return builder;
+        }
+
+        public static Builder create(String fieldName, String errorMessage) {
+            if (fieldName == null) {
+                throw new IllegalArgumentException("fieldName was null");
+            }
+            Builder builder = create();
+            builder.setFieldName(fieldName);
+            builder.setErrorMessage(errorMessage);
             return builder;
         }
 

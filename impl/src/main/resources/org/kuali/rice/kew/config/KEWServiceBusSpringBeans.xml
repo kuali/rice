@@ -352,7 +352,7 @@
 	</bean>  
   
 	<bean id="enCacheAdministrator"
-		class="org.kuali.rice.ksb.messaging.RiceCacheExporterFactoryBean">
+		class="org.kuali.rice.ksb.cache.RiceCacheExporterFactoryBean">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 	</bean>
 	

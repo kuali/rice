@@ -9,8 +9,10 @@ import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.cache.CacheService;
 import org.kuali.rice.core.api.cache.CacheTarget;
 import org.kuali.rice.ksb.api.messaging.MessageHelper;
+import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.NamedBean;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
@@ -34,7 +36,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * through the kuali service bus. Distributed cache messages are queued for a max period of time
  * and sent as a single message rather than sending the messages immediately.
  */
-public final class DistributedCacheManagerDecorator implements CacheManager, InitializingBean, DisposableBean {
+public final class DistributedCacheManagerDecorator implements CacheManager, InitializingBean, DisposableBean, BeanNameAware, NamedBean {
 
     private static final Log LOG = LogFactory.getLog(DistributedCacheManagerDecorator.class);
     private static final long MAX_WAIT_DEFAULT = TimeUnit.SECONDS.toMillis(60);
@@ -43,6 +45,7 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
     private MessageHelper messageHelper;
     private String serviceName;
     private String flushQueueMaxWait;
+    private String name;
 
     private final LinkedBlockingQueue<CacheTarget> flushQueue = new LinkedBlockingQueue<CacheTarget>();
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -148,6 +151,10 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
             throw new IllegalStateException("serviceName was null or blank");
         }
 
+        if (StringUtils.isBlank(name)) {
+            name = "NOT_NAMED";
+        }
+
         final long maxWait = NumberUtils.isNumber(flushQueueMaxWait) ? Long.parseLong(flushQueueMaxWait) : MAX_WAIT_DEFAULT;
         flusherFuture.set(scheduler.scheduleAtFixedRate(flusher, maxWait, maxWait, TimeUnit.MILLISECONDS));
     }
@@ -179,6 +186,16 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
 
     public void setFlushQueueMaxWait(String flushQueueMaxWait) {
         this.flushQueueMaxWait = flushQueueMaxWait;
+    }
+
+    @Override
+    public String getBeanName() {
+        return name;
+    }
+
+    @Override
+    public void setBeanName(String name) {
+        this.name = name;
     }
 
     /**

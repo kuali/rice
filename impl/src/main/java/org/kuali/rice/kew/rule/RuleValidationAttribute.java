@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.rule;
 
-import org.kuali.rice.kew.validation.RuleValidationContext;
+import org.kuali.rice.kew.api.validation.RuleValidationContext;
 import org.kuali.rice.kew.api.validation.ValidationResults;
 
 /**

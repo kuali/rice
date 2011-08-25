@@ -39,12 +39,10 @@ public interface RuleValidationContextContract {
 	public RuleContract getRule();
 
 	/**
-	 * Retrieve the UserSession of the individual entering the rule into the system.  May be null in the
+	 * Retrieve the principal of the rule author.  May be null in the
 	 * case of an XML rule import.
 	 */
-    // TODO: find alternative to passing UserSession object
-    // @XmlJavaTypeAdapter(UserSessionAdapter.class) but UserSession would still have to live in API
-	//public UserSession getRuleAuthor();
+	public String getRuleAuthorPrincipalId();
 
 	/**
 	 * Retrieve the RuleDelegation representing the parent of the rule being validated.  If the rule is

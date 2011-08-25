@@ -14,22 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.validation;
+package org.kuali.rice.kew.api.validation;
 
-import javassist.SerialVersionUID;
-import org.apache.commons.collections.CollectionUtils;
-import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.kew.api.rule.Rule;
 import org.kuali.rice.kew.api.rule.RuleContract;
+import org.kuali.rice.kew.api.rule.RuleDelegation;
 import org.kuali.rice.kew.api.rule.RuleDelegationContract;
-import org.kuali.rice.kew.api.rule.RuleResponsibility;
-import org.kuali.rice.kew.api.rule.RuleResponsibilityContract;
-import org.kuali.rice.kew.api.validation.RuleValidationContextContract;
-import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleDelegation;
-import org.kuali.rice.krad.UserSession;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -39,11 +32,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 /**
  * The RuleValidationContext represents the context under which to validate a Rule which is being entered
@@ -63,6 +52,7 @@ import java.util.Map;
 @XmlType(name = RuleValidationContext.Constants.TYPE_NAME, propOrder = {
     RuleValidationContext.Elements.RULE,
     RuleValidationContext.Elements.RULE_DELEGATION,
+    RuleValidationContext.Elements.RULE_AUTHOR_PRINCIPAL_ID,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public class RuleValidationContext
@@ -70,11 +60,11 @@ public class RuleValidationContext
     implements RuleValidationContextContract {
 
     @XmlElement(name = Elements.RULE, required = true)
-	private final RuleContract rule;
+	private final Rule rule;
     @XmlElement(name = Elements.RULE_DELEGATION, required = true)
-	private final RuleDelegationContract ruleDelegation;
-    //@XmlElement(name = Elements.RULE_AUTHOR, required = false)
-	private final UserSession ruleAuthor;
+	private final RuleDelegation ruleDelegation;
+    @XmlElement(name = Elements.RULE_AUTHOR_PRINCIPAL_ID, required = false)
+	private final String ruleAuthorPrincipalId;
 
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -86,40 +76,34 @@ public class RuleValidationContext
     private RuleValidationContext() {
         this.rule = null;
         this.ruleDelegation = null;
-        this.ruleAuthor = null;
+        this.ruleAuthorPrincipalId = null;
     }
 
     private RuleValidationContext(Builder builder) {
-        this.rule = builder.getRule();
-        this.ruleDelegation = builder.getRuleDelegation();
-        this.ruleAuthor = null;
+        this.rule = builder.getRule().build();
+        if (builder.getRuleDelegation() != null) {
+            this.ruleDelegation = builder.getRuleDelegation().build();
+        } else {
+            this.ruleDelegation = null;
+        }
+        this.ruleAuthorPrincipalId = builder.getRuleAuthorPrincipalId();
     }
-
-	/**
-	 * Construct a RuleValidationContext under which to validate a rule.  The rule must be non-null, the delegation
-	 * and author can be <code>null</code> given the circumstances defined in the description of this class.
-     * @deprecated use Builder instead
-	 */
-	public RuleValidationContext(RuleContract rule, RuleDelegationContract ruleDelegation, UserSession ruleAuthor) {
-		this.ruleAuthor = ruleAuthor;
-		this.rule = rule;
-		this.ruleDelegation = ruleDelegation;
-	}
 
 	/**
 	 * Retrieve the rule which is being validated.
 	 */
     @Override
-	public RuleContract getRule() {
+	public Rule getRule() {
 		return rule;
 	}
 
 	/**
-	 * Retrieve the UserSession of the individual entering the rule into the system.  May be null in the
+	 * Retrieve the principal id of the individual entering the rule into the system.  May be null in the
 	 * case of an XML rule import. 
 	 */
-	public UserSession getRuleAuthor() {
-		return ruleAuthor;
+    @Override
+	public String getRuleAuthorPrincipalId() {
+		return ruleAuthorPrincipalId;
 	}
 
 	/**
@@ -127,20 +111,21 @@ public class RuleValidationContext
 	 * not a delegation rule, then this will return null;
 	 */
     @Override
-	public RuleDelegationContract getRuleDelegation() {
+	public RuleDelegation getRuleDelegation() {
 		return ruleDelegation;
 	}
 
     /**
-     * A builder which can be used to construct {@link RuleValidationContext} instances.  Enforces the constraints of the {@link RuleValidationContextContract}.
+     * A builder which can be used to construct {@link RuleValidationContext} instances.  Enforces the constraints of the {@link org.kuali.rice.kew.api.validation.RuleValidationContextContract}.
      *
      */
     public final static class Builder
         implements Serializable, ModelBuilder, RuleValidationContextContract
     {
 
-        private RuleContract rule;
-	    private RuleDelegationContract ruleDelegation;
+        private Rule.Builder rule;
+	    private RuleDelegation.Builder ruleDelegation;
+        private String ruleAuthorPrincipalId;
 
         private Builder() {
         }
@@ -153,9 +138,23 @@ public class RuleValidationContext
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
             }
-            Builder builder = create();
-            builder.setRule(contract.getRule());
-            builder.setRuleDelegation(contract.getRuleDelegation());
+            return Builder.create(contract.getRule(), contract.getRuleDelegation(), contract.getRuleAuthorPrincipalId());
+        }
+
+        /**
+         * Construct a RuleValidationContext under which to validate a rule.  The rule must be non-null, the delegation
+         * and author can be <code>null</code> given the circumstances defined in the description of this class.
+         */
+        public static Builder create(RuleContract rule, RuleDelegationContract ruleDelegation, String ruleAuthorPrincipalId) {
+            if (rule == null) {
+                throw new IllegalArgumentException("contract was null");
+            }
+            Builder builder = Builder.create();
+            builder.setRule(Rule.Builder.create(rule));
+            if (ruleDelegation != null) {
+                builder.setRuleDelegation(RuleDelegation.Builder.create(ruleDelegation));
+            }
+            builder.setRuleAuthorPrincipalId(ruleAuthorPrincipalId);
             return builder;
         }
 
@@ -164,22 +163,32 @@ public class RuleValidationContext
         }
 
         @Override
-        public RuleContract getRule() {
+        public Rule.Builder getRule() {
             return this.rule;
         }
 
         @Override
-        public RuleDelegationContract getRuleDelegation() {
+        public RuleDelegation.Builder getRuleDelegation() {
             return this.ruleDelegation;
         }
 
-        public void setRule(RuleContract rule) {
+        @Override
+        public String getRuleAuthorPrincipalId() {
+            return this.ruleAuthorPrincipalId;
+        }
+
+        public void setRule(Rule.Builder rule) {
             this.rule = rule;
         }
 
-        public void setRuleDelegation(RuleDelegationContract ruleDelegation) {
+        public void setRuleDelegation(RuleDelegation.Builder ruleDelegation) {
             this.ruleDelegation = ruleDelegation;
         }
+
+        public void setRuleAuthorPrincipalId(String ruleAuthorPrincipalId) {
+            this.ruleAuthorPrincipalId = ruleAuthorPrincipalId;
+        }
+
     }
 
     /**
@@ -196,6 +205,6 @@ public class RuleValidationContext
     static class Elements {
         final static String RULE = "rule";
         final static String RULE_DELEGATION = "ruleDelegation";
-        //final static String RULE_AUTHOR = "ruleAuthor";
+        final static String RULE_AUTHOR_PRINCIPAL_ID = "ruleAuthorPrincipalId";
     }
 }

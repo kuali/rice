@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -171,8 +172,8 @@ public final class Rule
         private DateTime fromDate;
         private DateTime toDate;
         private boolean forceAction;
-        private List<RuleResponsibility.Builder> ruleResponsibilities;
-        private Map<String, String> ruleExtensions;
+        private List<RuleResponsibility.Builder> ruleResponsibilities = Collections.<RuleResponsibility.Builder>emptyList();
+        private Map<String, String> ruleExtensions = Collections.<String,String>emptyMap();
         private String ruleTemplateName;
 
         private Builder() {

@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.kew.rule;
 
+import org.kuali.rice.kew.api.validation.RuleValidationContext;
 import org.kuali.rice.kew.api.validation.ValidationResults;
-import org.kuali.rice.kew.validation.RuleValidationContext;
 
 /**
  * A simple test implementation of a RuleValidationAttribute that can be used in the unit tests.

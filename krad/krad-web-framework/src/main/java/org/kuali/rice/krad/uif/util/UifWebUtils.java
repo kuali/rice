@@ -129,7 +129,7 @@ public class UifWebUtils {
                     prepareHistory(request, form);
 
                     // store form to session and persist document form to db as well
-                    request.getSession().setAttribute(form.getFormKey(), model);
+                    request.getSession().setAttribute(form.getFormKey(), form);
                     if (form instanceof DocumentFormBase) {
                         UserSession userSession =
                                 (UserSession) request.getSession().getAttribute(KRADConstants.USER_SESSION_KEY);

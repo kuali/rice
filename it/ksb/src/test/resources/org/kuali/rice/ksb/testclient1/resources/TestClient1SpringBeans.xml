@@ -314,5 +314,5 @@
 		</property>
 	</bean>	
 	
-	<bean id="cache" class="org.kuali.rice.ksb.messaging.RiceCacheExporterFactoryBean" />
+	<bean id="cache" class="org.kuali.rice.ksb.cache.RiceCacheExporterFactoryBean" />
 </beans>

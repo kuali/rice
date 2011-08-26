@@ -95,6 +95,24 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40" />
     </property>
+    <property name="caseConstraint">
+      <bean parent="CaseConstraint">
+        <property name="caseSensitive" value="false"/>
+        <property name="fieldPath" value="state"/>
+        <property name="whenConstraint">
+          <list>
+            <bean parent="WhenConstraint">
+              <property name="value" value="DC"/>
+              <property name="constraint">
+                <bean parent="ValidCharactersConstraint">
+                  <property name="value" value="\d{3}\s+\w+\s+Ave"/>
+                </bean>
+              </property>
+            </bean>
+          </list>
+        </property>
+      </bean>
+    </property>
   </bean>
 
   <bean id="Address-street2" parent="Address-street2-parentBean" />
@@ -164,24 +182,6 @@
     </property>
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40" />
-    </property>
-    <property name="caseConstraint">
-      <bean parent="CaseConstraint">
-        <property name="caseSensitive" value="false"/>
-        <property name="whenConstraint">
-          <list>
-            <bean parent="WhenConstraint">
-              <property name="value" value="DC"/>
-              <property name="valuePath" value="street1"/>
-              <property name="constraint">
-                <bean parent="ValidCharactersConstraint">
-                  <property name="value" value="\d{3}\s+\w+\s+Ave"/>
-                </bean>
-              </property>
-            </bean>
-          </list>
-        </property>
-      </bean>
     </property>
   </bean>
 

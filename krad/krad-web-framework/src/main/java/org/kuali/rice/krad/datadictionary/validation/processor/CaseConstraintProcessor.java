@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.processor;
 
+import java.util.List;
+
 import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
@@ -30,8 +32,6 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.WhenConstraint;
 import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.krad.datadictionary.validation.result.ProcessorResult;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-
-import java.util.List;
 
 /**
  * This object processes 'case constraints', which are constraints that are imposed only in specific cases, for example, when a value is
@@ -53,13 +53,15 @@ public class CaseConstraintProcessor extends MandatoryElementConstraintProcessor
         if (null == caseConstraint) {
             return new ProcessorResult(result.addNoConstraint(attributeValueReader, CONSTRAINT_NAME));
         }
-
+        AttributeValueReader constraintAttributeReader = ((DictionaryObjectAttributeValueReader)attributeValueReader).clone();
+        //AttributeValueReader constraintAttributeReader = attributeValueReader;
+        
+        
         String operator = (ValidationUtils.hasText(caseConstraint.getOperator())) ? caseConstraint.getOperator() : "EQUALS";
-        AttributeValueReader nestedReader = (ValidationUtils.hasText(caseConstraint.getFieldPath())) ? getChildAttributeValueReader(caseConstraint.getFieldPath(), attributeValueReader) : attributeValueReader;
+        AttributeValueReader fieldPathReader = (ValidationUtils.hasText(caseConstraint.getFieldPath())) ? getChildAttributeValueReader(caseConstraint.getFieldPath(), attributeValueReader) : attributeValueReader;
 
-        // TODO: What happens when the field is not in the dataProvider?
-        Constrainable caseField = (null != nestedReader) ? nestedReader.getDefinition(nestedReader.getAttributeName()) : null;
-        Object fieldValue = (null != nestedReader) ? nestedReader.getValue(nestedReader.getAttributeName()) : value;
+        Constrainable caseField = (null != fieldPathReader) ? fieldPathReader.getDefinition(fieldPathReader.getAttributeName()) : null;
+        Object fieldValue = (null != fieldPathReader) ? fieldPathReader.getValue(fieldPathReader.getAttributeName()) : value;
         DataType fieldDataType = (null != caseField && caseField instanceof DataTypeConstraint) ? ((DataTypeConstraint)caseField).getDataType() : null;
 
         // Default to a string comparison
@@ -69,21 +71,28 @@ public class CaseConstraintProcessor extends MandatoryElementConstraintProcessor
         // If fieldValue is null then skip Case check
         if (null == fieldValue) {
         	// FIXME: not sure if the definition and attribute value reader should change under this case
-            return new ProcessorResult(result.addSkipped(attributeValueReader, CONSTRAINT_NAME), caseField, nestedReader);
+            return new ProcessorResult(result.addSkipped(attributeValueReader, CONSTRAINT_NAME), caseField, fieldPathReader);
         }
 
         // Extract value for field Key
         for (WhenConstraint wc : caseConstraint.getWhenConstraint()) {
-
-        	List<Object> whenValueList = wc.getValues();
-
-        	for (Object whenValue : whenValueList) {
-        		if (ValidationUtils.compareValues(fieldValue, whenValue, fieldDataType, operator, caseConstraint.isCaseSensitive(), dateTimeService) && null != wc.getConstraint()) {
-        			if (nestedReader != null && wc.getValuePath() != null)
-        				nestedReader.setAttributeName(wc.getValuePath());
-        			return new ProcessorResult(result.addSuccess(nestedReader, CONSTRAINT_NAME), null, nestedReader, wc.getConstraint());
-        		}
-        	}
+            
+            if (ValidationUtils.hasText(wc.getValuePath())){
+                Object whenValue = null;
+                AttributeValueReader whenValueReader = getChildAttributeValueReader(wc.getValuePath(), attributeValueReader);
+                whenValue = whenValueReader.getValue(whenValueReader.getAttributeName());
+                if (ValidationUtils.compareValues(fieldValue, whenValue, fieldDataType, operator, caseConstraint.isCaseSensitive(), dateTimeService) && null != wc.getConstraint()) {                    
+                    return new ProcessorResult(result.addSuccess(attributeValueReader, CONSTRAINT_NAME), null, constraintAttributeReader, wc.getConstraint());
+                }
+            } else {
+            	List<Object> whenValueList = wc.getValues();
+    
+            	for (Object whenValue : whenValueList) {
+            		if (ValidationUtils.compareValues(fieldValue, whenValue, fieldDataType, operator, caseConstraint.isCaseSensitive(), dateTimeService) && null != wc.getConstraint()) {
+            			return new ProcessorResult(result.addSuccess(attributeValueReader, CONSTRAINT_NAME), null, constraintAttributeReader, wc.getConstraint());
+            		}
+            	}
+            }
         }
 
         // Assuming that not finding any case constraints is equivalent to 'skipping' the constraint

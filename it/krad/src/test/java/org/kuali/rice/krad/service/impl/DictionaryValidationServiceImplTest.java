@@ -175,6 +175,8 @@ public class DictionaryValidationServiceImplTest {
         
         Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
         Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
+        
+        Assert.assertTrue(hasError(dictionaryValidationResult, "street2", RiceKeyConstants.ERROR_REQUIRED));        
     }
 
 	@Test

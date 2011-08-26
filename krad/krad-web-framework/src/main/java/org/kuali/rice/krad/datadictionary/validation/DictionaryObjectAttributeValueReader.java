@@ -170,4 +170,13 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 	public boolean isNestedAttribute(){
 	    return (attributePath != null || attributeName.contains("."));
 	}
+	
+	public DictionaryObjectAttributeValueReader clone(){
+	    DictionaryObjectAttributeValueReader readerClone = 
+	        new DictionaryObjectAttributeValueReader(this.object, this.attributePath, this.entry);
+	    readerClone.setAttributeName(this.attributeName);
+	    
+	    return readerClone;	    
+	}
+	
 }

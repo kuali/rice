@@ -39,14 +39,14 @@ import java.util.Enumeration;
 public final class RiceUtilities {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RiceUtilities.class);
 
-	private static String instanceIpAddress = null;
-	private static String instanceHostName = null;
+	private static String instanceIpAddress;
+	private static String instanceHostName;
 	
 	private RiceUtilities() {
 		throw new UnsupportedOperationException("do not call");
 	}
-    
-    public static String getIpNumber() {
+
+    public static synchronized String getIpNumber() {
         if ( instanceIpAddress == null ) {
             // protect from running upon startup
             if ( ConfigContext.getCurrentContextConfig() != null ) {
@@ -108,7 +108,7 @@ public final class RiceUtilities {
 	}
 	
 	
-	public static String getHostName() {
+	public static synchronized String getHostName() {
         if ( instanceHostName == null ) {
             try {
                 // protect from running upon startup

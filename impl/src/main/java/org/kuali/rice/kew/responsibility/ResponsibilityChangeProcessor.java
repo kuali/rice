@@ -20,7 +20,7 @@ import java.util.Set;
 
 import org.kuali.rice.kew.messaging.ParameterTranslator;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.ksb.messaging.service.KSBXMLService;
+import org.kuali.rice.ksb.api.messaging.service.KSBXMLService;
 
 /**
  * This is a description of what this class does - Garey don't forget to fill this in.

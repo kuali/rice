@@ -150,6 +150,7 @@
         <idref local="rice.kew.groupMembershipChangeQueue" />
         <idref local="rice.kew.ruleCacheProcessor" />
         <idref local="rice.kew.ruleDelegationCacheProcessor" />
+        <idref local="rice.kew.responsibilityChangeProcessor" />
         <idref local="enMoveDocumentService" />
         <idref local="enActionInvocationService" />
         <idref local="enImmediateEmailReminderService" />
@@ -504,6 +505,8 @@
 	<bean id="rice.kew.ruleCacheProcessor" class="org.kuali.rice.kew.rule.service.impl.RuleCacheProcessorImpl" />
 	
 	<bean id="rice.kew.ruleDelegationCacheProcessor" class="org.kuali.rice.kew.rule.service.impl.RuleDelegationCacheProcessorImpl" />
+
+  <bean id="rice.kew.responsibilityChangeProcessor" class="org.kuali.rice.kew.responsibility.ResponsibilityChangeProcessor" />
 
 	<bean id="dataDictionaryService"
 		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">

@@ -464,6 +464,7 @@
   <param name="rice.kew.groupMembershipChangeQueueSoap.secure">true</param>
   <param name="rice.kew.ruleCacheProcessorSoap.secure">true</param>
   <param name="rice.kew.ruleDelegationCacheProcessorSoap.secure">true</param>
+  <param name="rice.kew.responsibilityChangeProcessorSoap.secure">true</param>
 
   <param name="secure.workflowutility.javaservice.endpoint">true</param>
   <param name="secure.workflowutility.soapservice.endpoint">true</param>

@@ -15,8 +15,11 @@
  */
 package org.kuali.rice.krms.framework.type;
 
+import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.framework.engine.Action;
+
+import java.util.List;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in. 
@@ -24,8 +27,8 @@ import org.kuali.rice.krms.framework.engine.Action;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface ActionTypeService {
+public interface ActionTypeService extends RemotableAttributeOwner {
 
 	public Action loadAction(ActionDefinition actionDefinition);
-	
+
 }

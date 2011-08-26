@@ -18,6 +18,7 @@ package org.kuali.rice.kew.framework;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCustomizationHandlerService;
+import org.kuali.rice.kew.framework.validation.RuleValidationAttributeExporterService;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 
 import javax.xml.namespace.QName;
@@ -28,6 +29,7 @@ import javax.xml.namespace.QName;
 public class KewFrameworkServiceLocator {
 
     public static final String DOCUMENT_LOOKUP_CUSTOMIZATION_HANDLER_SERVICE = "documentLookupCustomizationHandlerServiceSoap";
+    public static final String RULE_VALIDATION_ATTRIBUTE_EXPORTER_SERVICE = "ruleValidationAttributeExporterService";
 
     static <T> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
@@ -45,5 +47,12 @@ public class KewFrameworkServiceLocator {
             String applicationId) {
         return getServiceOnBus(DOCUMENT_LOOKUP_CUSTOMIZATION_HANDLER_SERVICE, applicationId);
     }
-    
+
+    public static RuleValidationAttributeExporterService getRuleValidationAttributeExporterService() {
+        return getRuleValidationAttributeExporterService(null);
+    }
+
+    public static RuleValidationAttributeExporterService getRuleValidationAttributeExporterService(String applicationId) {
+        return getServiceOnBus(RULE_VALIDATION_ATTRIBUTE_EXPORTER_SERVICE, applicationId);
+    }
 }

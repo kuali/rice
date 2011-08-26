@@ -130,14 +130,16 @@ public class RuleValidationContext
         private Builder() {
         }
 
-        public static Builder create() {
-            return new Builder();
+        public static Builder create(RuleContract rule) {
+            if (rule == null) {
+                throw new IllegalArgumentException("contract was null");
+            }
+            Builder builder = new Builder();
+            builder.setRule(Rule.Builder.create(rule));
+            return builder;
         }
 
         public static Builder create(RuleValidationContextContract contract) {
-            if (contract == null) {
-                throw new IllegalArgumentException("contract was null");
-            }
             return Builder.create(contract.getRule(), contract.getRuleDelegation(), contract.getRuleAuthorPrincipalId());
         }
 
@@ -146,11 +148,7 @@ public class RuleValidationContext
          * and author can be <code>null</code> given the circumstances defined in the description of this class.
          */
         public static Builder create(RuleContract rule, RuleDelegationContract ruleDelegation, String ruleAuthorPrincipalId) {
-            if (rule == null) {
-                throw new IllegalArgumentException("contract was null");
-            }
-            Builder builder = Builder.create();
-            builder.setRule(Rule.Builder.create(rule));
+            Builder builder = Builder.create(rule);
             if (ruleDelegation != null) {
                 builder.setRuleDelegation(RuleDelegation.Builder.create(ruleDelegation));
             }

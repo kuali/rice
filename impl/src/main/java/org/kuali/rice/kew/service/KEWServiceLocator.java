@@ -45,6 +45,7 @@ import org.kuali.rice.kew.engine.node.service.BranchService;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.engine.simulation.SimulationWorkflowEngine;
 import org.kuali.rice.kew.exception.WorkflowDocumentExceptionRoutingService;
+import org.kuali.rice.kew.framework.validation.RuleValidationAttributeExporterService;
 import org.kuali.rice.kew.identity.service.IdentityHelperService;
 import org.kuali.rice.kew.impl.document.WorkflowDocumentPrototype;
 import org.kuali.rice.kew.mail.service.ActionListEmailService;
@@ -64,6 +65,7 @@ import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.validation.RuleValidationAttributeResolver;
 import org.springframework.transaction.PlatformTransactionManager;
 
 
@@ -212,6 +214,8 @@ public final class KEWServiceLocator {
 	public static final String WORKFLOW_DOCUMENT_PROTOTYPE = "rice.kew.workflowDocumentPrototype";
 
     public static final String DOCUMENT_LOOKUP_CUSTOMIZATION_MEDIATOR = "rice.kew.documentLookupCustomizationMediator";
+
+    public static final String RULE_VALIDATION_ATTRIBUTE_RESOLVER = "rice.kew.ruleValidationAttributeResolver";
 
     public static EntityManagerFactory getEntityManagerFactory() {
         return (EntityManagerFactory) getService(ENTITY_MANAGER_FACTORY);
@@ -410,5 +414,10 @@ public final class KEWServiceLocator {
 
     public static DocumentLookupCustomizationMediator getDocumentLookupCustomizationMediator() {
         return getBean(DOCUMENT_LOOKUP_CUSTOMIZATION_MEDIATOR);
+    }
+
+
+    public static RuleValidationAttributeResolver getRuleValidationAttributeResolver() {
+        return getBean(RULE_VALIDATION_ATTRIBUTE_RESOLVER);
     }
 }

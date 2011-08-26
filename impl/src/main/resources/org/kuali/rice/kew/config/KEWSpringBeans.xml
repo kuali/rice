@@ -799,5 +799,12 @@
   <bean id="rice.kew.extensionRepositoryService" class="org.kuali.rice.kew.impl.extension.ExtensionRepositoryServiceImpl">
 		<property name="ruleAttributeService" ref="enRuleAttributeService"/>
 	</bean>
-    
+
+  <!-- RuleValidationAttribute support -->
+
+  <bean id="rice.kew.ruleValidationAttributeExporterService" class="org.kuali.rice.kew.validation.RuleValidationAttributeExporterServiceImpl">
+		<property name="extensionRepositoryService" ref="rice.kew.extensionRepositoryService" />
+	</bean>
+
+  <bean id="rice.kew.ruleValidationAttributeResolver" class="org.kuali.rice.kew.validation.RuleValidationAttributeResolverImpl"/>
 </beans>

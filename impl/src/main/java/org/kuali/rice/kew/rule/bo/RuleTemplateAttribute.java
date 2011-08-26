@@ -86,49 +86,49 @@ public class RuleTemplateAttribute extends PersistableBusinessObjectBase impleme
     
     
     public RuleTemplateAttribute() {
-	this.required = Boolean.FALSE;
-	this.active = Boolean.TRUE;
+        this.required = Boolean.FALSE;
+        this.active = Boolean.TRUE;
     }
    
     public int compareTo(RuleTemplateAttribute ruleTemplateAttribute) {
-    	if ((this.getDisplayOrder() != null) && (ruleTemplateAttribute.getDisplayOrder() != null)) {
-	    	return this.getDisplayOrder().compareTo(ruleTemplateAttribute.getDisplayOrder());
-	    }
-    	return 0;
+        if ((this.getDisplayOrder() != null) && (ruleTemplateAttribute.getDisplayOrder() != null)) {
+            return this.getDisplayOrder().compareTo(ruleTemplateAttribute.getDisplayOrder());
+        }
+        return 0;
     }
 
     public Object getAttribute() {
-	try {
-	    ObjectDefinition objectDefinition = new ObjectDefinition(getRuleAttribute().getClassName(), getRuleAttribute().getApplicationId());
-	    Object attribute = GlobalResourceLoader.getObject(objectDefinition);
-	    if (attribute == null) {
-		throw new WorkflowRuntimeException("Could not find attribute " + objectDefinition);
-	    }
-	    if (attribute instanceof WorkflowAttribute) {
-		((WorkflowAttribute) attribute).setRequired(required.booleanValue());
-	    }
-	    return attribute;
-	} catch (Exception e) {
-	    throw new RuntimeException("Caught error attempting to load attribute class: " + getRuleAttribute().getClassName(), e);
-	}
+        try {
+            ObjectDefinition objectDefinition = new ObjectDefinition(getRuleAttribute().getClassName(), getRuleAttribute().getApplicationId());
+            Object attribute = GlobalResourceLoader.getObject(objectDefinition);
+            if (attribute == null) {
+                throw new WorkflowRuntimeException("Could not find attribute " + objectDefinition);
+            }
+            if (attribute instanceof WorkflowAttribute) {
+                ((WorkflowAttribute) attribute).setRequired(required.booleanValue());
+            }
+            return attribute;
+        } catch (Exception e) {
+            throw new RuntimeException("Caught error attempting to load attribute class: " + getRuleAttribute().getClassName(), e);
+        }
     }
 
     public boolean isWorkflowAttribute() {
-	try {
-	    Object attributeObject = getAttribute();//GlobalResourceLoader.getResourceLoader().getObject(new ObjectDefinition(getRuleAttribute().getClassName()));
-	    if (attributeObject == null) {
-		return false;
-	    }
-	    Class<?> attributeClass = attributeObject.getClass();
-	    return WorkflowAttribute.class.isAssignableFrom(attributeClass);
-	} catch (Exception e) {
-	    throw new RuntimeException("Caught error attempting to load WorkflowAttribute class: " + getRuleAttribute().getClassName(), e);
-	}
+        try {
+            Object attributeObject = getAttribute();//GlobalResourceLoader.getResourceLoader().getObject(new ObjectDefinition(getRuleAttribute().getClassName()));
+            if (attributeObject == null) {
+                return false;
+            }
+            Class<?> attributeClass = attributeObject.getClass();
+            return WorkflowAttribute.class.isAssignableFrom(attributeClass);
+        } catch (Exception e) {
+            throw new RuntimeException("Caught error attempting to load WorkflowAttribute class: " + getRuleAttribute().getClassName(), e);
+        }
     }
 
     public boolean isRuleValidationAttribute() {
-	// just check the type here to avoid having to load the class from the class loader if it's not actually there
-	return KEWConstants.RULE_VALIDATION_ATTRIBUTE_TYPE.equals(getRuleAttribute().getType());
+        // just check the type here to avoid having to load the class from the class loader if it's not actually there
+        return KEWConstants.RULE_VALIDATION_ATTRIBUTE_TYPE.equals(getRuleAttribute().getType());
     }
 
     /**
@@ -137,17 +137,17 @@ public class RuleTemplateAttribute extends PersistableBusinessObjectBase impleme
      * is that of a WorkflowAttribute.  Otherwise a RuntimeException will be thrown.
      */
     public WorkflowAttribute getWorkflowAttribute() {
-	try {
-	    ObjectDefinition objectDefinition = new ObjectDefinition(getRuleAttribute().getClassName(), getRuleAttribute().getApplicationId());
-	    WorkflowAttribute workflowAttribute = (WorkflowAttribute) GlobalResourceLoader.getResourceLoader().getObject(objectDefinition);
-	    if (workflowAttribute == null) {
-		throw new WorkflowRuntimeException("Could not find workflow attribute " + objectDefinition);
-	    }
-	    workflowAttribute.setRequired(required.booleanValue());
-	    return workflowAttribute;
-	} catch (Exception e) {
-	    throw new RuntimeException("Caught exception instantiating new " + getRuleAttribute().getClassName(), e);
-	}
+        try {
+            ObjectDefinition objectDefinition = new ObjectDefinition(getRuleAttribute().getClassName(), getRuleAttribute().getApplicationId());
+            WorkflowAttribute workflowAttribute = (WorkflowAttribute) GlobalResourceLoader.getResourceLoader().getObject(objectDefinition);
+            if (workflowAttribute == null) {
+                throw new WorkflowRuntimeException("Could not find workflow attribute " + objectDefinition);
+            }
+            workflowAttribute.setRequired(required.booleanValue());
+            return workflowAttribute;
+        } catch (Exception e) {
+            throw new RuntimeException("Caught exception instantiating new " + getRuleAttribute().getClassName(), e);
+        }
     }
 
     /**
@@ -156,54 +156,55 @@ public class RuleTemplateAttribute extends PersistableBusinessObjectBase impleme
      * is that of a RuleValidationAttribute.  Otherwise a RuntimeException will be thrown.
      */
     public RuleValidationAttribute getRuleValidationAttribute() {
-	try {
-	    return (RuleValidationAttribute) getAttribute();
-	} catch (Exception e) {
-	    throw new RuntimeException("Caught exception instantiating new " + getRuleAttribute().getClassName(), e);
-	}
+        try {
+            RuleAttribute attrib = getRuleAttribute();
+            return KEWServiceLocator.getRuleValidationAttributeResolver().resolveRuleValidationAttribute(attrib.getName(), attrib.getApplicationId());
+        } catch (Exception e) {
+            throw new RuntimeException("Caught exception instantiating new " + getRuleAttribute().getClassName(), e);
+        }
     }
 
     public List<RuleExtension> getRuleExtensions() {
-	return ruleExtensions;
+        return ruleExtensions;
     }
 
     public void setRuleExtensions(List<RuleExtension> ruleExtensions) {
-	this.ruleExtensions = ruleExtensions;
+        this.ruleExtensions = ruleExtensions;
     }
 
     public RuleAttribute getRuleAttribute() {
-	if (ruleAttribute == null && ruleAttributeId != null) {
-	    ruleAttribute = ((RuleAttributeService) KEWServiceLocator.getService(KEWServiceLocator.RULE_ATTRIBUTE_SERVICE)).findByRuleAttributeId(ruleAttributeId);
-	}
-	return ruleAttribute;
+        if (ruleAttribute == null && ruleAttributeId != null) {
+            ruleAttribute = ((RuleAttributeService) KEWServiceLocator.getService(KEWServiceLocator.RULE_ATTRIBUTE_SERVICE)).findByRuleAttributeId(ruleAttributeId);
+        }
+        return ruleAttribute;
     }
 
     public void setRuleAttribute(RuleAttribute ruleAttribute) {
-	this.ruleAttribute = ruleAttribute;
+        this.ruleAttribute = ruleAttribute;
     }
 
     public RuleTemplate getRuleTemplate() {
-	return ruleTemplate;
+        return ruleTemplate;
     }
 
     public void setRuleTemplate(RuleTemplate ruleTemplate) {
-	this.ruleTemplate = ruleTemplate;
+        this.ruleTemplate = ruleTemplate;
     }
 
     public String getDefaultValue() {
-	return defaultValue;
+        return defaultValue;
     }
 
     public void setDefaultValue(String defaultValue) {
-	this.defaultValue = defaultValue;
+        this.defaultValue = defaultValue;
     }
 
     public Integer getDisplayOrder() {
-	return displayOrder;
+        return displayOrder;
     }
 
     public void setDisplayOrder(Integer displayOrder) {
-	this.displayOrder = displayOrder;
+        this.displayOrder = displayOrder;
     }
 
     public boolean isRequired() {
@@ -211,11 +212,11 @@ public class RuleTemplateAttribute extends PersistableBusinessObjectBase impleme
     }
 
     public Boolean getRequired() {
-	return required;
+        return required;
     }
 
     public void setRequired(Boolean required) {
-	this.required = required;
+        this.required = required;
     }
 
     public boolean isActive() {

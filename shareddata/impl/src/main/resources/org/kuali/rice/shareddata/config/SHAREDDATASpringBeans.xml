@@ -65,7 +65,6 @@
     <property name="cacheManager" ref="sharedDataLocalCacheManager" />
     <property name="messageHelper" ref="rice.ksb.messageHelper" />
     <property name="serviceName" value="{http://rice.kuali.org/shareddata}sharedDataCacheServiceSoap" />
-    <property name="flushQueueMaxWait" value="${rice.cache.flush.queue.max.wait}" />
   </bean>
 
   <!-- spring service that should be exposed on the ksb to receive messages from the distributed cache manager -->

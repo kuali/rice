@@ -3,18 +3,19 @@ package org.kuali.rice.core.impl.cache;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.cache.CacheService;
 import org.kuali.rice.core.api.cache.CacheTarget;
 import org.kuali.rice.ksb.api.messaging.MessageHelper;
 import org.springframework.beans.factory.BeanNameAware;
-import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.NamedBean;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationAdapter;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import javax.xml.namespace.QName;
 import java.util.ArrayList;
@@ -24,64 +25,30 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
-import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A distributed cache manager that wraps a cache manager and adds distributed cache capabilities
- * through the kuali service bus. Distributed cache messages are queued for a max period of time
- * and sent as a single message rather than sending the messages immediately.
+ * through the kuali service bus.
+ *
+ * <p>
+ * If in a transaction, distributed cache messages are queued until a transaction completes successfully.
+ * They are then sent as a single message rather than sending individual messages.
+ * If the transaction does not complete successfully then all messages are discarded.
+ * </p>
+ *
+ * <p>
+ * If not in a transaction, distributed messages are sent immediately.  This should be avoided and is likely
+ * the result of a programming error.
+ * </p>
  */
-public final class DistributedCacheManagerDecorator implements CacheManager, InitializingBean, DisposableBean, BeanNameAware, NamedBean {
-
+public final class DistributedCacheManagerDecorator implements CacheManager, InitializingBean, BeanNameAware, NamedBean {
     private static final Log LOG = LogFactory.getLog(DistributedCacheManagerDecorator.class);
-    private static final long MAX_WAIT_DEFAULT = TimeUnit.SECONDS.toMillis(60);
 
     private CacheManager cacheManager;
     private MessageHelper messageHelper;
     private String serviceName;
-    private String flushQueueMaxWait;
     private String name;
-
-    private final LinkedBlockingQueue<CacheTarget> flushQueue = new LinkedBlockingQueue<CacheTarget>();
-    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-    private final AtomicReference<ScheduledFuture<?>> flusherFuture = new AtomicReference<ScheduledFuture<?>>();
-    private final Runnable flusher = new Runnable() {
-        @Override
-        public void run() {
-            try {
-                //this code may not look the prettiest but we do not want to call into the KSB
-                //unless it is necessary to do so.  Also, handling most common fail points to avoid
-                //exceptions.
-                if (!flushQueue.isEmpty()) {
-                    final Collection<CacheService> services = getCacheServices();
-                    if (services != null) {
-                        //exhaustQueue clears out the queue. it cannot be placed in the inner loop
-                        final Collection<CacheTarget> targets = exhaustQueue(flushQueue);
-                        for (CacheService service : services) {
-                            if (service != null) {
-                                //wrap the each call in a try block so if one message send fails
-                                //we still attempt the others
-                                try {
-                                    service.flush(targets);
-                                } catch (Throwable t) {
-                                    LOG.error("failed to flush the queue for specific endpoint for serviceName " + serviceName, t);
-                                }
-                            }
-                        }
-                    }
-                }
-            } catch (Throwable t) {
-                LOG.error("failed to flush the queue for serviceName " + serviceName, t);
-            }
-        }
-    };
-
-
 
     @Override
     public Cache getCache(String name) {
@@ -107,34 +74,31 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
         return services != null ? services : Collections.<CacheService>emptyList();
     }
 
-    /**
-     * Iterates over the passed in {@link Queue} calling the {@link Queue#poll} for each item.
-     *
-     * The returned list will also be normalized such that cache targets with keys will not be
-     * present in the returned collection if a cache target exists for the same cache but
-     * w/o a key (a complete cache flush)
-     *
-     * @param targets the queue to iterate over and exhaust
-     * @return a new collection containing CacheTargets
-     */
-    private static Collection<CacheTarget> exhaustQueue(Queue<CacheTarget> targets) {
-        final List<CacheTarget> normalized = new ArrayList<CacheTarget>();
-        final Set<String> completeFlush = new HashSet<String>();
-
-        CacheTarget target;
-        while ((target = targets.poll()) != null) {
-            normalized.add(target);
-            if (!target.containsKey()) {
-                completeFlush.add(target.getCache());
+    private void flushCache(Collection<CacheTarget> cacheTargets) {
+        try {
+            //this code may not look the prettiest but we do not want to call into the KSB
+            //unless it is necessary to do so.  Also, handling most common fail points to avoid
+            //exceptions.
+            if (!cacheTargets.isEmpty()) {
+                final Collection<CacheService> services = getCacheServices();
+                if (services != null) {
+                    for (CacheService service : services) {
+                        if (service != null) {
+                            //wrap the each call in a try block so if one message send fails
+                            //we still attempt the others
+                            try {
+                                service.flush(cacheTargets);
+                            } catch (Throwable t) {
+                                LOG.error("failed to flush the queue for specific endpoint for serviceName "
+                                        + serviceName, t);
+                            }
+                        }
+                    }
+                }
             }
+        } catch (Throwable t) {
+            LOG.error("failed to flush the queue for serviceName " + serviceName, t);
         }
-
-        return Collections2.filter(normalized, new Predicate<CacheTarget>() {
-            @Override
-            public boolean apply(CacheTarget input) {
-                return !input.containsKey() || (input.containsKey() && !completeFlush.contains(input.getCache()));
-            }
-        });
     }
 
     @Override
@@ -154,22 +118,6 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
         if (StringUtils.isBlank(name)) {
             name = "NOT_NAMED";
         }
-
-        final long maxWait = NumberUtils.isNumber(flushQueueMaxWait) ? Long.parseLong(flushQueueMaxWait) : MAX_WAIT_DEFAULT;
-        flusherFuture.set(scheduler.scheduleAtFixedRate(flusher, maxWait, maxWait, TimeUnit.MILLISECONDS));
-    }
-
-    @Override
-    public void destroy() {
-        //shutdown the flush task, null out the old reference to the future
-        ScheduledFuture<?> f = flusherFuture.get();
-        if (f != null) {
-            f.cancel(false);
-            flusherFuture.set(null);
-        }
-
-        //shutdown the scheduler
-        scheduler.shutdown();
     }
 
     public void setCacheManager(CacheManager cacheManager) {
@@ -182,10 +130,6 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
 
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
-    }
-
-    public void setFlushQueueMaxWait(String flushQueueMaxWait) {
-        this.flushQueueMaxWait = flushQueueMaxWait;
     }
 
     @Override
@@ -236,31 +180,122 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
         public void evict(Object key) {
             final String sKey = coerceStr(key);
             cache.evict(sKey);
-            putInQueue(CacheTarget.singleEntry(getName(), sKey));
+            doDistributed(CacheTarget.singleEntry(getName(), sKey));
         }
 
         @Override
         public void clear() {
             cache.clear();
-            putInQueue(CacheTarget.entireCache(getName()));
+            doDistributed(CacheTarget.entireCache(getName()));
         }
 
-        private void putInQueue(CacheTarget target) throws DistributedCacheException {
+        private String coerceStr(Object key) {
+            return key != null ? key.toString() : (String) key;
+        }
+
+        /**
+         * Sends a cache target message to distributed endpoints.  It will either send it in a delayed fashion when
+         * bound to a transaction or immediately if no transaction is present.
+         * @param target the cache target.  cannot be null.
+         */
+        private void doDistributed(CacheTarget target) {
+            if (doTransactionalFlush()) {
+                final CacheMessageSendingTransactionSynchronization ts = getCacheMessageSendingTransactionSynchronization();
+                //adding to internal queue.  the Synchronization is already registered at this point
+                ts.add(target);
+            } else {
+                flushCache(Collections.singleton(target));
+            }
+        }
+
+        /**
+         * Gets the {@link CacheMessageSendingTransactionSynchronization} that is registered with the transaction.  If no
+         * synchronization is currently registered, then one is created and registered.
+         * @return the synchronization. will no return null.
+         */
+        private CacheMessageSendingTransactionSynchronization getCacheMessageSendingTransactionSynchronization() {
+            final Collection<TransactionSynchronization> sycs = TransactionSynchronizationManager.getSynchronizations();
+            if (sycs != null) {
+                for (final TransactionSynchronization ts : sycs) {
+                    if (ts instanceof CacheMessageSendingTransactionSynchronization) {
+                        return (CacheMessageSendingTransactionSynchronization) ts;
+                    }
+                }
+            }
+            final CacheMessageSendingTransactionSynchronization ts = new CacheMessageSendingTransactionSynchronization();
+            TransactionSynchronizationManager.registerSynchronization(ts);
+            return ts;
+        }
+
+        /**
+         * Should a transaction bound flush be performed?
+         * @return true for transaction based flushing
+         */
+        private boolean doTransactionalFlush() {
+            return TransactionSynchronizationManager.isSynchronizationActive() && TransactionSynchronizationManager.isActualTransactionActive();
+        }
+    }
+
+    /**
+     * A TransactionSynchronizer that contains a queue of pending messages.  After the initial creation of this
+     * synchronizer and when in the same transaction, this instance should be retrieved from the Spring Transaction
+     * registry and messages should be added to the internal queue.  This way messages can be "bundled" into a single
+     * message send.
+     *
+     * <p>
+     *     This synchronizer will only send cache messages when the transaction complete successfully.
+     * </p>
+     */
+    private final class CacheMessageSendingTransactionSynchronization extends TransactionSynchronizationAdapter {
+
+        private final LinkedBlockingQueue<CacheTarget> flushQueue = new LinkedBlockingQueue<CacheTarget>();
+
+        private void add(CacheTarget target) throws DistributedCacheException {
             try {
                 flushQueue.put(target);
             } catch (InterruptedException e) {
                 throw new DistributedCacheException(e);
             }
+        }
 
-            //check to see if the cache flush task is done for some reason.  if so restart it.
-            if (flusherFuture.get().isDone()) {
-                LOG.warn("The distributed cache flush task is no longer running.  This may indicate an error.");
-                afterPropertiesSet();
+        @Override
+        public void afterCompletion(int status) {
+            if (status == STATUS_COMMITTED) {
+                flushCache(exhaustQueue(flushQueue));
+            } else {
+                //clear the queue. destroys all messages
+                flushQueue.clear();
             }
         }
 
-        private String coerceStr(Object key) {
-            return key != null ? key.toString(): (String) key;
+        /**
+         * Iterates over the passed in {@link Queue} calling the {@link Queue#poll} for each item.
+         *
+         * The returned list will also be normalized such that cache targets with keys will not be
+         * present in the returned collection if a cache target exists for the same cache but
+         * w/o a key (a complete cache flush)
+         *
+         * @param targets the queue to iterate over and exhaust
+         * @return a new collection containing CacheTargets
+         */
+        private Collection<CacheTarget> exhaustQueue(Queue<CacheTarget> targets) {
+            final List<CacheTarget> normalized = new ArrayList<CacheTarget>();
+            final Set<String> completeFlush = new HashSet<String>();
+
+            CacheTarget target;
+            while ((target = targets.poll()) != null) {
+                normalized.add(target);
+                if (!target.containsKey()) {
+                    completeFlush.add(target.getCache());
+                }
+            }
+
+            return Collections2.filter(normalized, new Predicate<CacheTarget>() {
+                @Override
+                public boolean apply(CacheTarget input) {
+                    return !input.containsKey() || (input.containsKey() && !completeFlush.contains(input.getCache()));
+                }
+            });
         }
     }
 

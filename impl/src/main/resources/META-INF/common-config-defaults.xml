@@ -520,7 +520,4 @@
       enQuickLinksService
       enDocumentLinkService
   </param>
-
-  <!-- milliseconds -->
-  <param name="rice.cache.flush.queue.max.wait">60000</param>
 </config>

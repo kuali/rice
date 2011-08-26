@@ -45,8 +45,8 @@ public class TransactionMessagingTest extends KSBTestCase {
     @Override
     public void setUp() throws Exception {
 	super.setUp();
-	MessageSendingTransactionSynchronization.CALLED_TRANS_COMMITTED = false;
-	MessageSendingTransactionSynchronization.CALLED_TRANS_ROLLEDBACKED = false;
+	    MessageSendingTransactionSynchronization.CALLED_TRANS_COMMITTED.set(false);
+	    MessageSendingTransactionSynchronization.CALLED_TRANS_ROLLEDBACKED.set(false);
     }
 
     @Test
@@ -63,12 +63,12 @@ public class TransactionMessagingTest extends KSBTestCase {
 
 		// this is a sanity check that we haven't sent the message before the trans is committed. dont remove this
                 // line.
-		assertFalse(MessageSendingTransactionSynchronization.CALLED_TRANS_COMMITTED);
+		assertFalse(MessageSendingTransactionSynchronization.CALLED_TRANS_COMMITTED.get());
 		return null;
 	    }
 	});
 
-	assertTrue("Message not sent transactionallY", MessageSendingTransactionSynchronization.CALLED_TRANS_COMMITTED);
+	assertTrue("Message not sent transactionallY", MessageSendingTransactionSynchronization.CALLED_TRANS_COMMITTED.get());
 
     }
 
@@ -87,13 +87,13 @@ public class TransactionMessagingTest extends KSBTestCase {
 		status.setRollbackOnly();
 		// this is a sanity check that we haven't sent the message before the trans is committed. dont remove this
                 // line.
-		assertFalse(MessageSendingTransactionSynchronization.CALLED_TRANS_ROLLEDBACKED);
+		assertFalse(MessageSendingTransactionSynchronization.CALLED_TRANS_ROLLEDBACKED.get());
 		return null;
 	    }
 	});
 
-	assertFalse("Message not sent transactionallY", MessageSendingTransactionSynchronization.CALLED_TRANS_COMMITTED);
-	assertTrue("Message not sent transactionallY", MessageSendingTransactionSynchronization.CALLED_TRANS_ROLLEDBACKED);
+	assertFalse("Message not sent transactionallY", MessageSendingTransactionSynchronization.CALLED_TRANS_COMMITTED.get());
+	assertTrue("Message not sent transactionallY", MessageSendingTransactionSynchronization.CALLED_TRANS_ROLLEDBACKED.get());
 
     }
 

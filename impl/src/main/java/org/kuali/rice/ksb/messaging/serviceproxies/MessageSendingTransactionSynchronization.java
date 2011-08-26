@@ -19,8 +19,10 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.ksb.messaging.MessageServiceInvoker;
 import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
-import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.core.Ordered;
+import org.springframework.transaction.support.TransactionSynchronizationAdapter;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Sends message when current transaction commits.  
@@ -28,48 +30,31 @@ import org.springframework.transaction.support.TransactionSynchronization;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class MessageSendingTransactionSynchronization implements TransactionSynchronization {
+public class MessageSendingTransactionSynchronization extends TransactionSynchronizationAdapter {
     
     private static final Logger LOG = Logger.getLogger(MessageSendingTransactionSynchronization.class);
+    public static final AtomicBoolean CALLED_TRANS_COMMITTED = new AtomicBoolean(false);
+    public static final AtomicBoolean CALLED_TRANS_ROLLEDBACKED = new AtomicBoolean(false);
 
-    //this is to verify this was called without implementing some sort of plugability in this 
-    //layer of the code for the tests.
-    public static boolean CALLED_TRANS_COMMITTED = false;
-    public static boolean CALLED_TRANS_ROLLEDBACKED = false;
-    
-    private PersistedMessageBO message;
+    private final PersistedMessageBO message;
     
     public MessageSendingTransactionSynchronization(PersistedMessageBO message) {
-	this.message = message;
+	    this.message = message;
     }
 
-    public void afterCommit() {
-
-    }
-
+    @Override
     public void afterCompletion(int status) {
-	if (status == STATUS_COMMITTED) {
-	    KSBServiceLocator.getThreadPool().execute(new MessageServiceInvoker(message));
-	    CALLED_TRANS_COMMITTED = true;
-	} else {
-	    LOG.info("Message " + message + " not sent because transaction not committed.");
-	    CALLED_TRANS_ROLLEDBACKED = true;
+        if (status == STATUS_COMMITTED) {
+            KSBServiceLocator.getThreadPool().execute(new MessageServiceInvoker(message));
+            CALLED_TRANS_COMMITTED.set(true);
+        } else {
+            LOG.info("Message " + message + " not sent because transaction not committed.");
+            CALLED_TRANS_ROLLEDBACKED.set(true);
+        }
+    }
+
+    @Override
+	public int getOrder() {
+		return Ordered.HIGHEST_PRECEDENCE;
 	}
-    }
-
-    public void beforeCommit(boolean readOnly) {
-    }
-
-    public void beforeCompletion() {
-    }
-
-    public void resume() {
-    }
-
-    public void suspend() {
-    }
-    
-    public void flush() {
-    }
-
 }

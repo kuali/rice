@@ -15,10 +15,7 @@
  */
 package org.kuali.rice.kim.impl.responsibility;
 
-import org.kuali.rice.kew.api.WorkflowRuntimeException;
-import org.kuali.rice.kew.messaging.MessageServiceNames;
-import org.kuali.rice.kew.responsibility.ResponsibilityChangeProcessor;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.role.RoleResponsibility;
@@ -27,10 +24,7 @@ import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.ksb.api.KsbApiServiceLocator;
-import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
-import javax.xml.namespace.QName;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -86,16 +80,7 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
 	 * @see ResponsibilityInternalService#updateActionRequestsForResponsibilityChange(java.util.Set)
 	 */
 	public void updateActionRequestsForResponsibilityChange(Set<String> responsibilityIds) {
-
-		KSBXMLService responsibilityChangeProcessor = (KSBXMLService) KsbApiServiceLocator.getMessageHelper()
-        .getServiceAsynchronously(new QName(KEWConstants.KEW_MODULE_NAMESPACE, MessageServiceNames.RESPONSIBILITY_CHANGE_SERVICE));
-        try {
-        	responsibilityChangeProcessor.invoke(ResponsibilityChangeProcessor.getResponsibilityChangeContents(responsibilityIds));
-
-        } catch (Exception e) {
-            throw new WorkflowRuntimeException(e);
-        }
-
+        KewApiServiceLocator.getResponsibilityChangeProcessor().ResponsibilityChangeContents(responsibilityIds);
 	}
 
 	@SuppressWarnings("unchecked")

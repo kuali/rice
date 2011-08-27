@@ -201,38 +201,10 @@
 			</bean>
 		</property>
 	</bean>
-	
-	<bean parent="kewLocalServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus" />
-		<property name="serviceDefinition">
-			<bean parent="kewSoapService">
-				<property name="service">
-					<bean
-						class="org.kuali.rice.kew.responsibility.ResponsibilityChangeProcessor" />
-				</property>
-				<property name="localServiceName" value="ResponsibilityChangeService" />
-				<property name="priority" value="10" />
-			</bean>
-		</property>
-	</bean>
 
 	<bean id="rice.ksb.serviceBus"
 		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="rice.ksb.serviceBus" />
-	</bean>
-
-	<bean parent="kewLocalServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus" />
-		<property name="serviceDefinition">
-			<bean parent="kewSoapService">
-				<property name="service">
-					<bean
-						class="org.kuali.rice.kew.responsibility.ResponsibilityChangeProcessor" />
-				</property>
-				<property name="localServiceName" value="ResponsibilityChangeService" />
-				<property name="priority" value="10" />
-			</bean>
-		</property>
 	</bean>
 
 	<bean parent="kewEmbeddedServiceExporter">
@@ -323,19 +295,19 @@
 		</property>
 	</bean>
 
-  <bean id="rice.ksb.ResponsibilityChangeProcessor.exporter" parent="kewLocalServiceExporter">
-      <property name="serviceBus" ref="rice.ksb.serviceBus" />
-      <property name="serviceDefinition">
-        <bean parent="kewJaxWsSoapService">
-          <property name="service">
-            <ref bean="rice.kew.responsibilityChangeProcessor" />
-          </property>
-          <property name="localServiceName" value="kSBXMLServiceSoap" />
-          <property name="busSecurity" value="${rice.kew.responsibilityChangeProcessorSoap.secure}" />
-          <property name="queue" value="false" />
-        </bean>
-      </property>
-    </bean>
+  <bean id="rice.kew.responsibilityChangeProcessorSoap.exporter" parent="kewLocalServiceExporter">
+    <property name="serviceBus" ref="rice.ksb.serviceBus" />
+    <property name="serviceDefinition">
+      <bean parent="kewJaxWsSoapService">
+        <property name="service">
+          <ref bean="rice.kew.responsibilityChangeProcessor" />
+        </property>
+        <property name="localServiceName" value="responsibilityChangeProcessorSoap" />
+        <property name="busSecurity" value="${rice.kew.responsibilityChangeProcessorSoap.secure}" />
+        <property name="queue" value="false" />
+      </bean>
+    </property>
+  </bean>
 
 	<bean parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />

@@ -506,7 +506,7 @@
 	
 	<bean id="rice.kew.ruleDelegationCacheProcessor" class="org.kuali.rice.kew.rule.service.impl.RuleDelegationCacheProcessorImpl" />
 
-  <bean id="rice.kew.responsibilityChangeProcessor" class="org.kuali.rice.kew.responsibility.ResponsibilityChangeProcessor" />
+  <bean id="rice.kew.responsibilityChangeProcessor" class="org.kuali.rice.kew.impl.Responsibility.ResponsibilityChangeProcessorImpl" />
 
 	<bean id="dataDictionaryService"
 		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">

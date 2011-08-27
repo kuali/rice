@@ -4,7 +4,6 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.api.bus.ServiceBus;
 import org.kuali.rice.ksb.api.cache.RiceCacheAdministrator;
 import org.kuali.rice.ksb.api.messaging.MessageHelper;
-import org.kuali.rice.ksb.api.messaging.service.KSBXMLService;
 import org.kuali.rice.ksb.api.registry.ServiceRegistry;
 
 /**
@@ -17,7 +16,6 @@ public class KsbApiServiceLocator {
 	public static final String SERVICE_REGISTRY = "rice.ksb.serviceRegistry";
     public static final String CACHE_ADMINISTRATOR = "enCacheAdministrator";
     public static final String MESSAGE_HELPER = "rice.ksb.messageHelper";
-    public static final String KSBXML_SERVICE = "rice.ksb.service.KSBXMLService";
 
     static <T> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
@@ -37,9 +35,5 @@ public class KsbApiServiceLocator {
 
     public static MessageHelper getMessageHelper() {
         return getService(MESSAGE_HELPER);
-    }
-
-    public static KSBXMLService getKSBXMLService() {
-        return getService(KSBXML_SERVICE);
     }
 }

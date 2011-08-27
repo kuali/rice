@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl2.php
+ * http://www.opensource.org/licenses/ecl1.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,17 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.ksb.api.messaging.service;
+package org.kuali.rice.kew.api.Responsibility;
 
-import org.kuali.rice.ksb.api.KsbApiConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import java.util.Set;
 
-@WebService(name = "kSBXMLServiceSoap", targetNamespace = KsbApiConstants.Namespaces.KSB_NAMESPACE_2_0)
+@WebService(name = "responsibilityChangeProcessorSoap", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
-public interface KSBXMLService {
-    @WebMethod(operationName = "invoke")
-    public void invoke(String message) throws Exception;
+public interface ResponsibilityChangeProcessor {
+    @WebMethod(operationName = "responsibilityChangeContents")
+    void ResponsibilityChangeContents(@WebParam(name="responsibilities") Set<String> responsibilities);
 }

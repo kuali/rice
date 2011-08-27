@@ -18,6 +18,7 @@ package org.kuali.rice.kew.api;
 import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.api.Responsibility.ResponsibilityChangeProcessor;
 import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
 import org.kuali.rice.kew.api.actionlist.ActionListService;
 import org.kuali.rice.kew.api.doctype.DocumentTypeService;
@@ -50,7 +51,8 @@ public class KewApiServiceLocator {
     public static final QName GROUP_MEMBERSHIP_CHANGE_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "groupMembershipChangeQueueSoap");
     public static final QName RULE_CACHE_PROCESSOR_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "ruleCacheProcessorSoap");
     public static final QName RULE_DELEGATION_CACHE_PROCESSOR_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "ruleDelegationCacheProcessorSoap");
-    
+    public static final QName RESPONSIBILITY_CHANGE_PROCESSOR_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "responsibilityChangeProcessorSoap");
+
     static <T> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
     }
@@ -101,5 +103,9 @@ public class KewApiServiceLocator {
     
     public static RuleDelegationCacheProcessor getRuleDelegationCacheProcessor() {
         return (RuleDelegationCacheProcessor)KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(RULE_DELEGATION_CACHE_PROCESSOR_QUEUE_NAME);
+    }
+
+    public static ResponsibilityChangeProcessor getResponsibilityChangeProcessor() {
+        return (ResponsibilityChangeProcessor)KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(RESPONSIBILITY_CHANGE_PROCESSOR_QUEUE_NAME);
     }
 }

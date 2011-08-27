@@ -25,8 +25,6 @@ import org.kuali.rice.kim.impl.common.delegate.DelegateBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberAttributeDataBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.group.GroupMemberBo;
-import org.kuali.rice.kim.impl.services.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
@@ -48,6 +46,16 @@ import java.util.concurrent.TimeUnit;
 public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     private static final Logger LOG = Logger.getLogger(RoleServiceImpl.class);
 
+    private static final Map<String, RoleDaoAction> memberTypeToRoleDaoActionMap = populateMemberTypeToRoleDaoActionMap();
+
+    private static Map<String, RoleDaoAction> populateMemberTypeToRoleDaoActionMap() {
+        Map<String, RoleDaoAction> map = new HashMap<String, RoleDaoAction>();
+        map.put(Role.GROUP_MEMBER_TYPE, RoleDaoAction.ROLE_GROUPS_FOR_GROUP_IDS_AND_ROLE_IDS);
+        map.put(Role.PRINCIPAL_MEMBER_TYPE, RoleDaoAction.ROLE_PRINCIPALS_FOR_PRINCIPAL_ID_AND_ROLE_IDS);
+        map.put(Role.ROLE_MEMBER_TYPE, RoleDaoAction.ROLE_MEMBERSHIPS_FOR_ROLE_IDS_AS_MEMBERS);     
+        return Collections.unmodifiableMap(map);
+    }
+    
     @Override
     public Role getRole(@WebParam(name = "roleId") String roleId) {
         RoleBo roleBo = getRoleBo(roleId);
@@ -1013,38 +1021,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                 Collections.singletonMap(KimConstants.PrimaryKeyConstants.DELEGATION_ID, delegationId));
     }
 
-    /**
-     * Retrieves the role type service associated with the given role ID
-     *
-     * @param roleId the role ID to get the role type service for
-     * @return the Role Type Service
-     */
-    protected RoleTypeService getRoleTypeService(String roleId) {
-        RoleBo roleBo = getRoleBo(roleId);
-        KimType roleType = KimTypeBo.to(roleBo.getKimRoleType());
-        if (roleType != null) {
-            return getRoleTypeService(roleType);
-        }
-        return null;
-    }
-
-    protected RoleTypeService getRoleTypeService(KimType typeInfo) {
-        String serviceName = typeInfo.getServiceName();
-        if (serviceName != null) {
-            try {
-                KimTypeService service = (KimTypeService) KIMServiceLocatorInternal.getService(serviceName);
-                if (service != null && service instanceof RoleTypeService) {
-                    return (RoleTypeService) service;
-                }
-                return (RoleTypeService) KIMServiceLocatorInternal.getService("kimNoMembersRoleTypeService");
-            } catch (Exception ex) {
-                LOG.error("Unable to find role type service with name: " + serviceName, ex);
-                return (RoleTypeService) KIMServiceLocatorInternal.getService("kimNoMembersRoleTypeService");
-            }
-        }
-        return null;
-    }
-
     protected DelegationTypeService getDelegationTypeService(String delegationId) {
         DelegationTypeService service = null;
         DelegateBo delegateBo = getKimDelegationImpl(delegationId);
@@ -1133,18 +1109,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         return roleMemberBoList;
     }
 
-    private Map<String, String> populateQualifiersForExactMatch(Map<String, String> defaultQualification, List<String> attributes) {
-        Map<String,String> qualifiersForExactMatch = new HashMap<String,String>();
-        if (defaultQualification != null && CollectionUtils.isNotEmpty(defaultQualification.keySet())) {
-            for (String attributeName : attributes) {
-                if (StringUtils.isNotEmpty(defaultQualification.get(attributeName))) {
-                    qualifiersForExactMatch.put(attributeName, defaultQualification.get(attributeName));
-                }
-            }
-        }
-        return qualifiersForExactMatch;
-    }
-
     private List<RoleMemberBo> getStoredRoleGroupsUsingExactMatchOnQualification(List<String> groupIds, Set<String> roleIds, Map<String, String> qualification) {
         List<String> copyRoleIds = new ArrayList<String>(roleIds);
         List<RoleMemberBo> roleMemberBos = new ArrayList<RoleMemberBo>();
@@ -1221,9 +1185,10 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         role.refreshReferenceObject("members");
 
         // check that identical member does not already exist
-        if (doAnyMemberRecordsMatch(role.getMembers(), principalId, Role.PRINCIPAL_MEMBER_TYPE, qualifier)) {
-            return;
-        }
+    	if ( doAnyMemberRecordsMatchByExactQualifier(role, principalId, memberTypeToRoleDaoActionMap.get(Role.PRINCIPAL_MEMBER_TYPE), qualifier) || 
+    			doAnyMemberRecordsMatch( role.getMembers(), principalId, Role.PRINCIPAL_MEMBER_TYPE, qualifier ) ) {
+    		return;
+    	}
         // create the new role member object
         RoleMemberBo newRoleMember = new RoleMemberBo();
         // get a new ID from the sequence
@@ -1250,9 +1215,10 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         // look up the role
         RoleBo role = getRoleBoByName(namespaceCode, roleName);
         // check that identical member does not already exist
-        if (doAnyMemberRecordsMatch(role.getMembers(), groupId, Role.GROUP_MEMBER_TYPE, qualifier)) {
-            return;
-        }
+    	if ( doAnyMemberRecordsMatchByExactQualifier(role, groupId, memberTypeToRoleDaoActionMap.get(Role.GROUP_MEMBER_TYPE), qualifier) || 
+    			doAnyMemberRecordsMatch( role.getMembers(), groupId, Role.GROUP_MEMBER_TYPE, qualifier ) ) { 
+    		return;
+    	}
         // create the new role member object
         RoleMemberBo newRoleMember = new RoleMemberBo();
         // get a new ID from the sequence
@@ -1278,9 +1244,10 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         // look up the roleBo
         RoleBo roleBo = getRoleBoByName(namespaceCode, roleName);
         // check that identical member does not already exist
-        if (doAnyMemberRecordsMatch(roleBo.getMembers(), roleId, Role.ROLE_MEMBER_TYPE, qualifier)) {
-            return;
-        }
+    	if ( doAnyMemberRecordsMatchByExactQualifier(roleBo, roleId, memberTypeToRoleDaoActionMap.get(Role.ROLE_MEMBER_TYPE), qualifier) || 
+    			doAnyMemberRecordsMatch( roleBo.getMembers(), roleId, Role.ROLE_MEMBER_TYPE, qualifier ) ) {
+    		return;
+    	}
         // Check to make sure this doesn't create a circular membership
         if (!checkForCircularRoleMembership(roleId, roleBo)) {
             throw new IllegalArgumentException("Circular roleBo reference.");
@@ -1444,54 +1411,70 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	getIdentityManagementNotificationService().roleUpdated();
     }
 
+    private void removeRoleMembers(List<RoleMemberBo> members) {
+        if(CollectionUtils.isNotEmpty(members)) {
+            for ( RoleMemberBo rm : members ) {
+                getResponsibilityInternalService().removeRoleMember(rm);
+            }
+        }
+    }
+    
+    private List<RoleMemberBo> getRoleMembersByDefaultStrategy(RoleBo role, String memberId, String memberTypeCode, Map<String, String> qualifier) {
+        List<RoleMemberBo> rms = new ArrayList<RoleMemberBo>();
+        role.refreshReferenceObject("members");
+        for ( RoleMemberBo rm : role.getMembers() ) {
+            if ( doesMemberMatch( rm, memberId, memberTypeCode, qualifier ) ) {
+                // if found, remove
+                rms.add(rm);
+            }
+        }
+        return rms;
+    }
+    
     @Override
     public void removePrincipalFromRole(@WebParam(name = "principalId") String principalId, @WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualifier") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifier) throws UnsupportedOperationException {
         // look up the role
     	RoleBo role = getRoleBoByName(namespaceCode, roleName);
     	// pull all the principal members
-    	role.refreshReferenceObject("members");
     	// look for an exact qualifier match
-		for ( RoleMemberBo rm : role.getMembers() ) {
-			if ( doesMemberMatch( rm, principalId, Role.PRINCIPAL_MEMBER_TYPE, qualifier ) ) {
-		    	// if found, remove
-				// When members are removed from roles, clients must be notified.
-		    	getResponsibilityInternalService().removeRoleMember(rm);
-			}
-		}
-		getIdentityManagementNotificationService().roleUpdated();
+        List<RoleMemberBo> rms = getRoleMembersByExactQualifierMatch(role, principalId, memberTypeToRoleDaoActionMap.get(Role.PRINCIPAL_MEMBER_TYPE), qualifier);
+        if(CollectionUtils.isEmpty(rms)) {
+            rms = getRoleMembersByDefaultStrategy(role, principalId, Role.PRINCIPAL_MEMBER_TYPE, qualifier);
+        } 
+        removeRoleMembers(rms);
+        // When members are removed from roles, clients must be notified.
+        getIdentityManagementNotificationService().roleUpdated();
     }
-
+    
     @Override
     public void removeGroupFromRole(@WebParam(name = "groupId") String groupId, @WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualifier") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifier) throws UnsupportedOperationException {
         // look up the roleBo
     	RoleBo roleBo = getRoleBoByName(namespaceCode, roleName);
     	// pull all the group roleBo members
     	// look for an exact qualifier match
-		for ( RoleMemberBo rm : roleBo.getMembers() ) {
-			if ( doesMemberMatch( rm, groupId, Role.GROUP_MEMBER_TYPE, qualifier ) ) {
-		    	// if found, remove
-				// When members are removed from roles, clients must be notified.
-		    	getResponsibilityInternalService().removeRoleMember(rm);
-			}
-		}
+        List<RoleMemberBo> rms = getRoleMembersByExactQualifierMatch(roleBo, groupId, memberTypeToRoleDaoActionMap.get(Role.GROUP_MEMBER_TYPE), qualifier);
+        if(CollectionUtils.isEmpty(rms)) {
+            rms = getRoleMembersByDefaultStrategy(roleBo, groupId, Role.GROUP_MEMBER_TYPE, qualifier);
+        } 
+        removeRoleMembers(rms);
+        // When members are removed from roles, clients must be notified.
 		getIdentityManagementNotificationService().roleUpdated();
-    }
-
+    }   
+    
     @Override
     public void removeRoleFromRole(@WebParam(name = "roleId") String roleId, @WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualifier") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifier) throws UnsupportedOperationException {
         // look up the role
     	RoleBo role = getRoleBoByName(namespaceCode, roleName);
     	// pull all the group role members
     	// look for an exact qualifier match
-		for ( RoleMemberBo rm : role.getMembers() ) {
-			if ( doesMemberMatch( rm, roleId, Role.ROLE_MEMBER_TYPE, qualifier ) ) {
-		    	// if found, remove
-				// When members are removed from roles, clients must be notified.
-		    	getResponsibilityInternalService().removeRoleMember(rm);
-			}
-		}
+        List<RoleMemberBo> rms = getRoleMembersByExactQualifierMatch(role, roleId, memberTypeToRoleDaoActionMap.get(Role.ROLE_MEMBER_TYPE), qualifier);
+        if(CollectionUtils.isEmpty(rms)) {
+            rms = getRoleMembersByDefaultStrategy(role, roleId, Role.ROLE_MEMBER_TYPE, qualifier);
+        } 
+        removeRoleMembers(rms);
+        // When members are removed from roles, clients must be notified.
 		getIdentityManagementNotificationService().roleUpdated();
-    }
+    }    
 
     @Override
     public void saveRole(@WebParam(name = "roleId") String roleId, @WebParam(name = "roleName") String roleName, @WebParam(name = "roleDescription") String roleDescription, @WebParam(name = "active") boolean active, @WebParam(name = "kimTypeId") String kimTypeId, @WebParam(name = "namespaceCode") String namespaceCode) throws UnsupportedOperationException {

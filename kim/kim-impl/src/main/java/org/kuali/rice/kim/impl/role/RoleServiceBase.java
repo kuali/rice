@@ -2,6 +2,7 @@ package org.kuali.rice.kim.impl.role;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
@@ -14,11 +15,15 @@ import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimType;
+import org.kuali.rice.kim.framework.role.RoleTypeService;
+import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
 import org.kuali.rice.kim.impl.services.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.service.BusinessObjectService;
@@ -40,6 +45,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class RoleServiceBase {
+    private static final Logger LOG = Logger.getLogger( RoleServiceBase.class );
 
     private BusinessObjectService businessObjectService;
     private LookupService lookupService;
@@ -54,7 +60,7 @@ public class RoleServiceBase {
      *
      * @author Kuali Rice Team (rice.collab@kuali.org)
      */
-    private static enum RoleDaoAction {
+    protected static enum RoleDaoAction {
         ROLE_PRINCIPALS_FOR_PRINCIPAL_ID_AND_ROLE_IDS,
         ROLE_GROUPS_FOR_GROUP_IDS_AND_ROLE_IDS,
         ROLE_MEMBERS_FOR_ROLE_IDS,
@@ -505,6 +511,44 @@ public class RoleServiceBase {
         return getBusinessObjectService().findByPrimaryKey(RoleBo.class, criteria);
     }
 
+	protected boolean doAnyMemberRecordsMatchByExactQualifier( RoleBo role, String memberId, RoleDaoAction daoActionToTake, Map<String, String> qualifier ) {
+		if(CollectionUtils.isNotEmpty(getRoleMembersByExactQualifierMatch(role, memberId, daoActionToTake, qualifier))) {
+			return true;
+		}
+
+		return false;
+	}
+	
+	protected List<RoleMemberBo> getRoleMembersByExactQualifierMatch(RoleBo role, String memberId, RoleDaoAction daoActionToTake, Map<String, String> qualifier) {
+		List<RoleMemberBo> rms = new ArrayList<RoleMemberBo>();
+		RoleTypeService roleTypeService = getRoleTypeService( role.getId() );
+		if(roleTypeService != null) {
+    		List<String> attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
+    		if(CollectionUtils.isNotEmpty(attributesForExactMatch)) {
+    			switch (daoActionToTake) {
+	    			case ROLE_GROUPS_FOR_GROUP_IDS_AND_ROLE_IDS : // Search for group role members only.
+	        			rms = getStoredRoleGroupsForGroupIdsAndRoleIds(Collections.singletonList(role.getId()), Collections.singletonList(memberId), populateQualifiersForExactMatch(qualifier, attributesForExactMatch));
+	    				break;
+	    			case ROLE_PRINCIPALS_FOR_PRINCIPAL_ID_AND_ROLE_IDS : // Search for principal role members only.
+	        			rms = getStoredRolePrincipalsForPrincipalIdAndRoleIds(Collections.singletonList(role.getId()), memberId, populateQualifiersForExactMatch(qualifier, attributesForExactMatch));
+	    				break;
+	    			case ROLE_MEMBERSHIPS_FOR_ROLE_IDS_AS_MEMBERS : // Search for roles as role members only.
+	    				List<RoleMemberBo> allRoleMembers = getStoredRoleMembershipsForRoleIdsAsMembers(Collections.singletonList(role.getId()), populateQualifiersForExactMatch(qualifier, attributesForExactMatch));
+	        			for(RoleMemberBo rm : allRoleMembers) {
+	        				if ( rm.getMemberId().equals(memberId) ) { 
+	        					rms.add(rm);
+	        				}
+	        			}
+	        			break;	    				
+	    			default : // The daoActionToTake parameter is invalid; throw an exception.
+	    				throw new IllegalArgumentException("The 'daoActionToTake' parameter cannot refer to a non-role-member-related value!");
+    			}
+    			
+    		} 
+		}
+		return rms;
+	}
+    
     protected boolean doAnyMemberRecordsMatch(List<RoleMemberBo> roleMembers, String memberId, String memberTypeCode, Map<String, String> qualifier) {
         for (RoleMemberBo rm : roleMembers) {
             if (doesMemberMatch(rm, memberId, memberTypeCode, qualifier)) {
@@ -528,6 +572,50 @@ public class RoleServiceBase {
             }
         }
         return false;
+    }
+    
+    /**
+     * Retrieves the role type service associated with the given role ID
+     *
+     * @param roleId the role ID to get the role type service for
+     * @return the Role Type Service
+     */
+    protected RoleTypeService getRoleTypeService(String roleId) {
+        RoleBo roleBo = getRoleBo(roleId);
+        KimType roleType = KimTypeBo.to(roleBo.getKimRoleType());
+        if (roleType != null) {
+            return getRoleTypeService(roleType);
+        }
+        return null;
+    }
+
+    protected RoleTypeService getRoleTypeService(KimType typeInfo) {
+        String serviceName = typeInfo.getServiceName();
+        if (serviceName != null) {
+            try {
+                KimTypeService service = (KimTypeService) KIMServiceLocatorInternal.getService(serviceName);
+                if (service != null && service instanceof RoleTypeService) {
+                    return (RoleTypeService) service;
+                }
+                return (RoleTypeService) KIMServiceLocatorInternal.getService("kimNoMembersRoleTypeService");
+            } catch (Exception ex) {
+                LOG.error("Unable to find role type service with name: " + serviceName, ex);
+                return (RoleTypeService) KIMServiceLocatorInternal.getService("kimNoMembersRoleTypeService");
+            }
+        }
+        return null;
+    }
+    
+    protected Map<String, String> populateQualifiersForExactMatch(Map<String, String> defaultQualification, List<String> attributes) {
+        Map<String,String> qualifiersForExactMatch = new HashMap<String,String>();
+        if (defaultQualification != null && CollectionUtils.isNotEmpty(defaultQualification.keySet())) {
+            for (String attributeName : attributes) {
+                if (StringUtils.isNotEmpty(defaultQualification.get(attributeName))) {
+                    qualifiersForExactMatch.put(attributeName, defaultQualification.get(attributeName));
+                }
+            }
+        }
+        return qualifiersForExactMatch;
     }
 
     /**

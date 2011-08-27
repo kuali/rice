@@ -76,10 +76,6 @@ public class KSBDispatcherServlet extends DispatcherServlet {
 	 * @see #setContextClass
 	 * @see org.springframework.web.context.support.XmlWebApplicationContext
 	 */
-	protected WebApplicationContext initWebApplicationContext() throws BeansException {
-		return null;//we want to start spring all by ourselves
-	}
-
 	protected void initFrameworkServlet() throws ServletException, BeansException {
 		this.httpInvokerHandler = new KSBHttpInvokerHandler();
 		

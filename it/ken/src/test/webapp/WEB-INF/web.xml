@@ -159,6 +159,10 @@
     <servlet>
         <servlet-name>remoting</servlet-name>
         <servlet-class>org.kuali.rice.ksb.messaging.servlet.KSBDispatcherServlet</servlet-class>
+    	<init-param>
+         	<param-name>contextConfigLocation</param-name>
+          	<param-value>classpath:org/kuali/rice/ksb/config/remoting-servlet.xml</param-value>
+        </init-param>
         <load-on-startup>3</load-on-startup>
     </servlet>
     <!-- Embedded KEW export servlet -->

@@ -76,6 +76,9 @@ public class ValidationUtils {
 			if(value1==null){
 				return "false".equals(value2.toString().toLowerCase());
 			}
+			if (value1 instanceof String && ((String) value1).isEmpty()){
+			    return "false".equals(value2.toString().toLowerCase());			    
+			}
 			if(value1 instanceof Collection && ((Collection<?>) value1).isEmpty()){
 				return "false".equals(value2.toString().toLowerCase());
 			}

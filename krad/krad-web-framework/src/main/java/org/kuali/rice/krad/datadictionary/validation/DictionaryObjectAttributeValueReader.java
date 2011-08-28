@@ -173,8 +173,9 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 	
 	public DictionaryObjectAttributeValueReader clone(){
 	    DictionaryObjectAttributeValueReader readerClone = 
-	        new DictionaryObjectAttributeValueReader(this.object, this.attributePath, this.entry);
+	        new DictionaryObjectAttributeValueReader(this.object, this.entryName, this.entry, this.attributePath);
 	    readerClone.setAttributeName(this.attributeName);
+	    
 	    
 	    return readerClone;	    
 	}

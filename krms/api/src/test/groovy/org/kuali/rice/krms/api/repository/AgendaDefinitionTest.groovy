@@ -35,7 +35,7 @@ class AgendaDefinitionTest {
 	private static final String NAMESPACE = "KRMS_TEST"
 	private static final String AGENDA_ID_1 = "AGENDAID001"
 	private static final String AGENDA_NAME = "Agenda1"
-	private static final String TYPE_ID = "1234XYZ"
+	private static final String TYPE_ID = null;
 	private static final String CONTEXT_ID_1 = "CONTEXT-001"
 	private static final String AGENDA_ITEM_ID_1 = "ITEM01"
 
@@ -96,21 +96,6 @@ class AgendaDefinitionTest {
 	@Test(expected=IllegalArgumentException.class)
 	void test_AgendaDefinition_Builder_create_fail_whitespace_agenda_name() {
 		AgendaDefinition.Builder.create(AGENDA_ID_1, "  	", TYPE_ID, CONTEXT_ID_1)
-	}
-
-	@Test(expected=IllegalArgumentException.class)
-	void test_AgendaDefinition_Builder_create_fail_null_type_id() {
-		AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, null, CONTEXT_ID_1)
-	}
-
-	@Test(expected=IllegalArgumentException.class)
-	void test_AgendaDefinition_Builder_create_fail_empty_type_id() {
-		AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, "", CONTEXT_ID_1)
-	}
-
-	@Test(expected=IllegalArgumentException.class)
-	void test_AgendaDefinition_Builder_create_fail_whitespace_type_id() {
-		AgendaDefinition.Builder.create(AGENDA_ID_1, AGENDA_NAME, "    ", CONTEXT_ID_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)

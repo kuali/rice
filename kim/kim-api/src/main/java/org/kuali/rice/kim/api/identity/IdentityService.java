@@ -83,7 +83,7 @@ public interface IdentityService {
     /**
      * This method finds EntityDefault data based on a query criteria.  The criteria cannot be null.
      *
-     * @param queryByCriteria the criteria.  Cannot be null.
+     * @param query the criteria.  Cannot be null.
      * @return query results.  will never return null.
      * @throws IllegalArgumentException if the queryByCriteria is null
      */
@@ -94,7 +94,7 @@ public interface IdentityService {
     /**
      * This method finds Entities based on a query criteria.  The criteria cannot be null.
      *
-     * @param queryByCriteria the criteria.  Cannot be null.
+     * @param query the criteria.  Cannot be null.
      * @return query results.  will never return null.
      * @throws IllegalArgumentException if the queryByCriteria is null
      */
@@ -322,7 +322,7 @@ public interface IdentityService {
      * This will inactivate a {@link org.kuali.rice.kim.api.identity.principal.Principal}.
      *
      *
-     * @param id the unique id of the principal to inactivate
+     * @param principalId the unique id of the principal to inactivate
      * @return the inactivated Principal object.
      * @throws IllegalArgumentException if the principal is null
      * @throws IllegalStateException if the principal does not exist in the system.
@@ -621,7 +621,7 @@ public interface IdentityService {
 	 * as well as the principalName.
      * </p>
      *
-     * @param principalIds list of  unique principalIds to retrieve the names by. Cannot be null.
+     * @param entityIds list of  unique entityIds to retrieve the names by. Cannot be null.
      * @return a map of {@link org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName}
      * @throws IllegalArgumentException if the list of principalIds is null
      */
@@ -823,7 +823,7 @@ public interface IdentityService {
      * This will inactivate a {@link org.kuali.rice.kim.api.identity.citizenship.EntityCitizenship} with the unique id passed in.
      *
      *
-     * @param citizenship the EntityCitizenship to inactivate
+     * @param id the id of the EntityCitizenship to inactivate
      * @return the inactivated EntityCitizenship object.
      * @throws IllegalArgumentException if the citizenship is null
      * @throws IllegalStateException if the citizenship does not exist in the system.
@@ -834,7 +834,7 @@ public interface IdentityService {
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
-     * This will create a {@link org.kuali.rice.kim.api.identity.ethnicity.EntityEthnicity} exactly like the ethnicity passed in.
+     * This will create a {@link EntityEthnicity} exactly like the ethnicity passed in.
      *
      * The EntityEthnicity object passed in must be populated with an entityId and a ethnicity code
      *
@@ -849,7 +849,7 @@ public interface IdentityService {
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
-     * This will update a {@link org.kuali.rice.kim.api.identity.ethnicity.EntityEthnicity} exactly like the ethnicity passed in.
+     * This will update a {@link EntityEthnicity} exactly like the ethnicity passed in.
      *
      *
      * @param ethnicity the EntityEthnicity to update

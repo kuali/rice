@@ -414,12 +414,16 @@
                       -->
                       <exclude>commons-beanutils:commons-beanutils</exclude>
                       <exclude>org.apache.commons:commons-beanutils</exclude>
+
+                      <!-- exclude eh cache in general - only allow at a specific scope -->
+                      <exclude>net.sf.ehcache</exclude>
                     </excludes>
 
                     <includes>
                       <!-- only allow in this specific version -->
                       <include>javax.servlet:jstl:${jstl.version}</include>
                       <include>org.slf4j:*:${slf4j.version}</include>
+                      <include>net.sf.ehcache:*:${ehcache.version}:jar:runtime</include>
                     </includes>
                   </bannedDependencies>
                 </rules>
@@ -1108,6 +1112,7 @@
         <groupId>net.sf.ehcache</groupId>
         <artifactId>ehcache-core</artifactId>
         <version>${ehcache.version}</version>
+        <!-- consider making this optional so it's not always shipped with rice -->
         <scope>runtime</scope>
       </dependency>
 

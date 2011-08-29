@@ -60,7 +60,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * DAO-based EDocLiteService implementation
@@ -70,7 +70,7 @@ import java.util.List;
 public class EDocLiteServiceImpl implements EDocLiteService {
     private static final Logger LOG = Logger.getLogger(EDocLiteServiceImpl.class);
 
-	private EDLGlobalConfig edlGlobalConfig;
+	private final AtomicReference<EDLGlobalConfig> edlGlobalConfig = new AtomicReference<EDLGlobalConfig>(null);
     /**
      * The Spring-wired DAO bean
      */
@@ -91,10 +91,8 @@ public class EDocLiteServiceImpl implements EDocLiteService {
         if (edlAssociation == null) {
             throw new WorkflowRuntimeException("No document association active for EDL: " + edlName);
         }
-		if (edlGlobalConfig == null) {
-			initEDLGlobalConfig();
-		}
-		return EDLControllerFactory.createEDLController(edlAssociation, edlGlobalConfig);
+		initEDLGlobalConfig();
+		return EDLControllerFactory.createEDLController(edlAssociation, edlGlobalConfig.get());
 	}
 
 	public EDLController getEDLControllerUsingDocumentId(String documentId) {
@@ -107,15 +105,18 @@ public class EDocLiteServiceImpl implements EDocLiteService {
         if (edlAssociation == null) {
             throw new WorkflowRuntimeException("No document association active for EDL: " + edlName);
         }
-		if (edlGlobalConfig == null) {
-			initEDLGlobalConfig();
-		}
-		return EDLControllerFactory.createEDLController(edlAssociation, edlGlobalConfig, document);
+        initEDLGlobalConfig();
+		return EDLControllerFactory.createEDLController(edlAssociation, edlGlobalConfig.get(), document);
 	}
 
-	public void initEDLGlobalConfig() {
+    @Override
+    public void initEDLGlobalConfig() {
+        edlGlobalConfig.compareAndSet(null, getEDLGlobalConfig());
+    }
+
+	private EDLGlobalConfig getEDLGlobalConfig() {
 		try {
-			this.edlGlobalConfig = EDLGlobalConfigFactory.createEDLGlobalConfig(ConfigContext.getCurrentContextConfig().getEDLConfigLocation());
+			return EDLGlobalConfigFactory.createEDLGlobalConfig(ConfigContext.getCurrentContextConfig().getEDLConfigLocation());
 		} catch (Exception e) {
 			throw new WorkflowRuntimeException(e);
 		}
@@ -262,7 +263,6 @@ public class EDocLiteServiceImpl implements EDocLiteService {
             data.setActiveInd(Boolean.TRUE);
         }
         dao.saveEDocLiteDefinition(data);
-        removeDefinitionFromCache(data.getName());
     }
 
     public void saveEDocLiteAssociation(EDocLiteAssociation assoc) {
@@ -314,11 +314,6 @@ public class EDocLiteServiceImpl implements EDocLiteService {
         }
 
         return styleService.getStyleAsTranslet(name);
-    }
-
-    public void removeDefinitionFromCache(String defName) {
-        LOG.info("Removing definition " + defName + " from cache");
-        EDLControllerFactory.flushDefinitionFromConfigCache(defName);
     }
 
     public List search(EDocLiteAssociation edocLite) {

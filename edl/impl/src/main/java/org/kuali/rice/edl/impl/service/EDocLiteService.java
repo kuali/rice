@@ -32,24 +32,23 @@ import org.w3c.dom.Document;
 
 public interface EDocLiteService extends XmlLoader, XmlExporter {
 
-	public void saveEDocLiteDefinition(InputStream xml);
-    public void saveEDocLiteAssociation(InputStream xml);
+	void saveEDocLiteDefinition(InputStream xml);
+    void saveEDocLiteAssociation(InputStream xml);
 
-    public EDocLiteDefinition getEDocLiteDefinition(String defName);
-    public EDocLiteAssociation getEDocLiteAssociation(String docType);
-    public EDocLiteAssociation getEDocLiteAssociation(Long associationId);
+    EDocLiteDefinition getEDocLiteDefinition(String defName);
+    EDocLiteAssociation getEDocLiteAssociation(String docType);
+    EDocLiteAssociation getEDocLiteAssociation(Long associationId);
 
-    public List<EDocLiteDefinition> getEDocLiteDefinitions();
-    public List<EDocLiteAssociation> getEDocLiteAssociations();
+    List<EDocLiteDefinition> getEDocLiteDefinitions();
+    List<EDocLiteAssociation> getEDocLiteAssociations();
 
-    public void removeDefinitionFromCache(String edlName);
-    public Templates getStyleAsTranslet(String styleName) throws TransformerConfigurationException;
-    public List<EDocLiteAssociation> search(EDocLiteAssociation edocLite);
+    Templates getStyleAsTranslet(String styleName) throws TransformerConfigurationException;
+    List<EDocLiteAssociation> search(EDocLiteAssociation edocLite);
 
-    public EDLController getEDLControllerUsingEdlName(String edlName);
-	public EDLController getEDLControllerUsingDocumentId(String documentId);
-	public void initEDLGlobalConfig();
-    public void saveEDocLiteDefinition(EDocLiteDefinition data) ;
-    public void saveEDocLiteAssociation(EDocLiteAssociation assoc);
-    public Document getDefinitionXml(EDocLiteAssociation edlAssociation);
+    EDLController getEDLControllerUsingEdlName(String edlName);
+	EDLController getEDLControllerUsingDocumentId(String documentId);
+	void initEDLGlobalConfig();
+    void saveEDocLiteDefinition(EDocLiteDefinition data) ;
+    void saveEDocLiteAssociation(EDocLiteAssociation assoc);
+    Document getDefinitionXml(EDocLiteAssociation edlAssociation);
 }

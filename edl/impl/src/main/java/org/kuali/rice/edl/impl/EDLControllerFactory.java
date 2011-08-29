@@ -24,7 +24,6 @@ import org.kuali.rice.edl.impl.service.EDocLiteService;
 import org.kuali.rice.edl.impl.service.EdlServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -38,19 +37,19 @@ import java.util.Map;
 
 
 /**
- * Creates EDL controllers.  Contains a cache of parsed EDL configurations.  The parsed config is a definition name related to 
+ * Creates EDL controllers.  The parsed config is a definition name related to
  * a Map containing config element and their associated class.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class EDLControllerFactory {
+public final class EDLControllerFactory {
+
+    private EDLControllerFactory() {
+        throw new UnsupportedOperationException("do not call");
+    }
 
 	private static final Logger LOG = Logger.getLogger(EDLControllerFactory.class);
-	
-	private static final String CONFIG_CACHE_GROUP_NAME = "EDLConfig";
-
-	//private static Map edlConfigCache = new HashMap();
 
 	public static EDLController createEDLController(EDocLiteAssociation edlAssociation, EDLGlobalConfig edlGlobalConfig) {
         EDLController edlController = new EDLController();
@@ -99,64 +98,44 @@ public class EDLControllerFactory {
 		return edlController;
 	}
 
-	private synchronized static void loadStyle(EDLController edlController) throws Exception {
+	private static synchronized void loadStyle(EDLController edlController) throws Exception {
 		EDocLiteService edlService = getEDLService();
-		Templates styleSheet = null;
-		styleSheet = edlService.getStyleAsTranslet(edlController.getEdocLiteAssociation().getStyle());
+		final Templates styleSheet = edlService.getStyleAsTranslet(edlController.getEdocLiteAssociation().getStyle());
 		edlController.setStyle(styleSheet);
 	}
 	
-	private synchronized static void loadPreProcessors(EDLController edlController, EDLGlobalConfig edlGlobalConfig) {
+	private static synchronized void loadPreProcessors(EDLController edlController, EDLGlobalConfig edlGlobalConfig) {
 		edlController.setPreProcessors(cloneConfigMap(edlGlobalConfig.getPreProcessors(), edlController.getDefaultDOM()));
 	}
 	
-	private synchronized static void loadPostProcessor(EDLController edlController, EDLGlobalConfig edlGlobalConfig) {
+	private static synchronized void loadPostProcessor(EDLController edlController, EDLGlobalConfig edlGlobalConfig) {
 		edlController.setPostProcessors(cloneConfigMap(edlGlobalConfig.getPostProcessors(), edlController.getDefaultDOM()));
 	}
 	
-	private synchronized static void loadStateComponents(EDLController edlController, EDLGlobalConfig edlGlobalConfig) {
+	private static synchronized void loadStateComponents(EDLController edlController, EDLGlobalConfig edlGlobalConfig) {
 		edlController.setStateComponents(cloneConfigMap(edlGlobalConfig.getStateComponents(), edlController.getDefaultDOM()));
 	}
 
-	private synchronized static void loadConfigProcessors(EDLController edlController, EDLGlobalConfig edlGlobalConfig) throws Exception {
+	private static synchronized void loadConfigProcessors(final EDLController edlController, final EDLGlobalConfig edlGlobalConfig) throws Exception {
 		EDocLiteAssociation edlAssociation = edlController.getEdocLiteAssociation();
-		Map configProcessorMappings = fetchConfigFromCache(edlAssociation.getDefinition());
-		if (configProcessorMappings != null) {
-			edlController.setConfigProcessors(cloneConfigMap(configProcessorMappings, edlController.getDefaultDOM()));
-		} else {
-			// these are classes mapped to the conf element from the edlconfig.
-			Document document = getEDLService().getDefinitionXml(edlAssociation);
-			Element definitionElement = (Element) document.getFirstChild();
+        // these are classes mapped to the conf element from the edlconfig.
+        Document document = getEDLService().getDefinitionXml(edlAssociation);
+        Element definitionElement = (Element) document.getFirstChild();
 
-			configProcessorMappings = new LinkedHashMap();
-			edlController.setEdlGlobalConfig(edlGlobalConfig);
-			NodeList edlDefinitionNodes = definitionElement.getChildNodes();
-			for (int i = 0; i < edlDefinitionNodes.getLength(); i++) {
-				Node definitionNode = edlDefinitionNodes.item(i);
-				Class configProcessorClass = edlGlobalConfig.getConfigProcessor(definitionNode);
-				if (configProcessorClass != null) {
-					configProcessorMappings.put(definitionNode, configProcessorClass);
-				}
-			}
-			putConfigInCache(edlAssociation.getDefinition(), configProcessorMappings);
-//			edlConfigCache.put(edlAssociation.getDefinition(), configProcessorMappings);
-			loadConfigProcessors(edlController, edlGlobalConfig);
-		}
+        Map configProcessorMappings = new LinkedHashMap();
+        edlController.setEdlGlobalConfig(edlGlobalConfig);
+        NodeList edlDefinitionNodes = definitionElement.getChildNodes();
+        for (int i = 0; i < edlDefinitionNodes.getLength(); i++) {
+            Node definitionNode = edlDefinitionNodes.item(i);
+            Class configProcessorClass = edlGlobalConfig.getConfigProcessor(definitionNode);
+            if (configProcessorClass != null) {
+                configProcessorMappings.put(definitionNode, configProcessorClass);
+            }
+        }
+        edlController.setConfigProcessors(cloneConfigMap(configProcessorMappings, edlController.getDefaultDOM()));
 	}
 	
-	protected synchronized static Map fetchConfigFromCache(String definition) {
-		return (Map) KsbApiServiceLocator.getCacheAdministrator().getFromCache(getConfigCacheKey(definition));
-	}
-	
-	private synchronized static void putConfigInCache(String definition, Map configProcessorMappings) {
-		KsbApiServiceLocator.getCacheAdministrator().putInCache(getConfigCacheKey(definition), configProcessorMappings, CONFIG_CACHE_GROUP_NAME);
-	}
-	
-	private static String getConfigCacheKey(String definition) {
-		return CONFIG_CACHE_GROUP_NAME + ":" + definition;
-	}
-	
-	private synchronized static Map cloneConfigMap(Map configMap, Document defaultDom) {
+	private static synchronized Map cloneConfigMap(Map configMap, Document defaultDom) {
 		Map tempConfigProcessors = new LinkedHashMap();
 		for (Iterator iter = configMap.entrySet().iterator(); iter.hasNext();) {
 			Map.Entry configProcessorMapping = (Map.Entry) iter.next();
@@ -188,14 +167,5 @@ public class EDLControllerFactory {
 		edlData.setAttribute("edlName", edlAssociation.getEdlName());
 		
 		return dom;
-	}
-
-	public static void flushDefinitionFromConfigCache(String definition) {
-		KsbApiServiceLocator.getCacheAdministrator().flushEntry(getConfigCacheKey(definition));
-//		edlConfigCache.remove(defName);
-	}
-	
-	public static void flushDefinitionCache() {
-		KsbApiServiceLocator.getCacheAdministrator().flushGroup(CONFIG_CACHE_GROUP_NAME);
 	}
 }

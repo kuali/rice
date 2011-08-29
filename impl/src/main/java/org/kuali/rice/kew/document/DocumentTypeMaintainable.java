@@ -146,8 +146,6 @@ public class DocumentTypeMaintainable extends KualiMaintainableImpl {
                     prevDocType.setUnresolvedDocSearchHelpUrl(newDocumentType.getUnresolvedDocSearchHelpUrl());
                     docTypeService.save(prevDocType, false);
                 }
-                // TODO: delyea - do we need to call this multiple times as in "DocumentTypeServiceImpl.save(DocumentType, boolean)"
-                docTypeService.flushCache();
                 // save all former/current action items matching document type name
                 // fields: docLabel
                 ActionListService actionListService = KEWServiceLocator.getActionListService(); 

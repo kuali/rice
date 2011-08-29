@@ -150,7 +150,7 @@ public abstract class KEWTestCase extends BaselineTestCase {
 	public class ClearCacheLifecycle extends BaseLifecycle {
 		@Override
 		public void stop() throws Exception {
-			KsbApiServiceLocator.getCacheAdministrator().flushAll();
+			//KsbApiServiceLocator.getCacheAdministrator().flushAll();
 			//KimApiServiceLocator.getIdentityManagementService().flushAllCaches();
 			//KimApiServiceLocator.getRoleService().flushRoleCaches();
 			super.stop();

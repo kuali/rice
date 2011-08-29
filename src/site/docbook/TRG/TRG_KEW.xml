@@ -2607,11 +2607,6 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                                     Rule Quicklinks.</entry>
                             </row>
                             <row>
-                                <entry>CACHING_IND</entry>
-                                <entry>Y</entry>
-                                <entry>Indicator to determine if rule caching is enabled.</entry>
-                            </row>
-                            <row>
                                 <entry>CUSTOM_DOCUMENT_TYPES</entry>
                                 <entry/>
                                 <entry>Defines custom Document Type processes to use for certain

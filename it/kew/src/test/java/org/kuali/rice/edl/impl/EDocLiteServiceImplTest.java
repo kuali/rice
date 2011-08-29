@@ -157,48 +157,6 @@ public class EDocLiteServiceImplTest extends KEWTestCase {
     }
 
     /**
-     * Tests the caching behavior of configs in EDocLiteServiceImpl.  The config cache is a
-     * map of XML org.w3c.dom.Element to config classname mappings.  This cache is, in-reality, maintained
-     * by the EDLControllerFactory.
-     */
-    @Test public void testConfigCaching() throws Exception {
-    	ConfigContext.getCurrentContextConfig().putProperty(Config.EDL_CONFIG_LOCATION, "classpath:org/kuali/rice/kew/edl/TestEDLConfig.xml");
-
-    	loadXmlFile("EDocLiteContent.xml");
-        loadXmlFile("edlstyle.xml");
-        loadXmlFile("widgets.xml");
-
-    	Map config = EDLControllerFactory.fetchConfigFromCache("profile");
-    	assertNull("Config should not be cached initially.", config);
-
-    	// fetch the edl controller which should result in caching
-		EDLController edlController = EdlServiceLocator.getEDocLiteService().getEDLControllerUsingEdlName("EDocLiteDocType");
-		assertNotNull(edlController);
-
-		config = EDLControllerFactory.fetchConfigFromCache("profile");
-    	assertNotNull("Config should now be cached.", config);
-
-    	// compare the config in the cache with the config on the EDLController
-    	assertEquals("Config processors should be the same.", edlController.getConfigProcessors().size(), config.size());
-    	assertEquals(1, config.size());
-    	Element key1 = (Element)edlController.getConfigProcessors().keySet().iterator().next();
-    	Element key2 = (Element)config.keySet().iterator().next();
-    	assertEquals("Key values should be the same", XmlJotter.jotNode(key1), XmlJotter.jotNode(key2));
-    	assertEquals("Values should be the same", edlController.getConfigProcessors().get(key1), config.get(key2));
-
-    	// now import the EDocLite again and it should be cleared from the cache
-    	loadXmlFile("EDocLiteContent.xml");
-    	config = EDLControllerFactory.fetchConfigFromCache("profile");
-    	assertNull("Config should no longer be cached.", config);
-
-    	// fetch again and we should be back in action
-		edlController = EdlServiceLocator.getEDocLiteService().getEDLControllerUsingEdlName("EDocLiteDocType");
-		assertNotNull(edlController);
-		config = EDLControllerFactory.fetchConfigFromCache("profile");
-    	assertNotNull("Config should now be cached.", config);
-    }
-
-    /**
      * Tests the caching of "styles" in EDocLiteServiceImpl.
      *
      * The style cache is really a cache of java.xml.transform.Templates objects which represent

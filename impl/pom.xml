@@ -176,11 +176,6 @@
     </dependency>
 
     <dependency>
-      <groupId>opensymphony</groupId>
-      <artifactId>oscache</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcprov-jdk16</artifactId>
     </dependency>

@@ -24,21 +24,19 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 
 
 /**
- * Service for data access and some cache behavior of document types.
+ * Service for data access of document types.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface DocumentTypeService extends DocumentTypeQueryService, XmlExporter {
 
-    public void versionAndSave(DocumentType documentType);
-    public void save(DocumentType documentType);
-    public void save(DocumentType documentType, boolean flushCache);
-    public void flushCache();
-    public List findAllCurrentRootDocuments();
-    public List findAllCurrent();
-    public List<DocumentType> findPreviousInstances(String documentTypeName);
-    public List getChildDocumentTypes(String documentTypeId);
-    public void clearCacheForAttributeUpdate(RuleAttribute ruleAttribute);
+    void versionAndSave(DocumentType documentType);
+    void save(DocumentType documentType);
+    void save(DocumentType documentType, boolean flushCache);
+    List findAllCurrentRootDocuments();
+    List findAllCurrent();
+    List<DocumentType> findPreviousInstances(String documentTypeName);
+    List getChildDocumentTypes(String documentTypeId);
 
     /**
      *
@@ -47,5 +45,5 @@ public interface DocumentTypeService extends DocumentTypeQueryService, XmlExport
      * @param name
      * @return
      */
-    public DocumentType findByNameCaseInsensitive(String name);
+    DocumentType findByNameCaseInsensitive(String name);
 }

@@ -275,11 +275,6 @@ public final class KimConstants {
 			throw new UnsupportedOperationException("do not call");
 		}
 	}
-	
-	public static class CacheRefreshPeriodSeconds {
-		public static final String KIM_CACHE_PERMISSION_REFRESH_PERIOD_SECONDS = "kim.cache.permission.refresh.period.seconds";
-		public static final String KIM_CACHE_ROLE_REFRESH_PERIOD_SECONDS = "kim.cache.role.refresh.period.seconds";
-	}
 
     public final static class AttributeConstants {
 

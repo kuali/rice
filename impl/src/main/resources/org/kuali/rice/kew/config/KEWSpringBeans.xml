@@ -148,8 +148,6 @@
         <idref local="enBlanketApproveProcessor" />
         <idref local="rice.kew.documentAttributeIndexingQueue" />
         <idref local="rice.kew.groupMembershipChangeQueue" />
-        <idref local="rice.kew.ruleCacheProcessor" />
-        <idref local="rice.kew.ruleDelegationCacheProcessor" />
         <idref local="rice.kew.responsibilityChangeProcessor" />
         <idref local="enMoveDocumentService" />
         <idref local="enActionInvocationService" />
@@ -331,14 +329,7 @@
 	<!--  PreferencesService -->
 	<bean id="enPreferencesService" class="org.kuali.rice.kew.preferences.service.impl.PreferencesServiceImpl" lazy-init="true" />
 	<!--  UserOptionsService -->
-	<bean id="enUserOptionsService" class="org.kuali.rice.kew.useroptions.UserOptionsServiceCache" lazy-init="true">
-		<property name="innerService">
-			<ref local="UserOptionsServiceInner" />
-		</property>
-	</bean>
-
-	<!--  UserOptionsServiceInner -->
-	<bean id="UserOptionsServiceInner" class="org.kuali.rice.kew.useroptions.UserOptionsServiceImpl" lazy-init="true">
+	<bean id="enUserOptionsService" class="org.kuali.rice.kew.useroptions.UserOptionsServiceImpl" lazy-init="true">
 		<property name="userOptionsDAO">
             <ref bean="enUserOptionsDAO" />
 		</property>
@@ -502,10 +493,6 @@
   	<bean id="rice.kew.documentAttributeIndexingQueue" class="org.kuali.rice.kew.impl.document.attribute.DocumentAttributeIndexingQueueImpl" />
 
 	<bean id="rice.kew.groupMembershipChangeQueue" class="org.kuali.rice.kew.impl.group.GroupMembershipChangeQueueImpl" />
-
-	<bean id="rice.kew.ruleCacheProcessor" class="org.kuali.rice.kew.rule.service.impl.RuleCacheProcessorImpl" />
-	
-	<bean id="rice.kew.ruleDelegationCacheProcessor" class="org.kuali.rice.kew.rule.service.impl.RuleDelegationCacheProcessorImpl" />
 
   <bean id="rice.kew.responsibilityChangeProcessor" class="org.kuali.rice.kew.impl.Responsibility.ResponsibilityChangeProcessorImpl" />
 

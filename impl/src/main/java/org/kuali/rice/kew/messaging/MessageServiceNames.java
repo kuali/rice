@@ -16,19 +16,17 @@
  */
 package org.kuali.rice.kew.messaging;
 
-import javax.xml.namespace.QName;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService;
 import org.kuali.rice.kew.actions.asyncservices.ActionInvocationService;
 import org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessorService;
 import org.kuali.rice.kew.actions.asyncservices.MoveDocumentService;
-import org.kuali.rice.kew.api.document.attribute.DocumentAttributeIndexingQueue;
-import org.kuali.rice.kew.api.rule.RuleCacheProcessor;
 import org.kuali.rice.kew.mail.service.ActionListImmediateEmailReminderService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
+
+import javax.xml.namespace.QName;
 
 
 /**
@@ -46,17 +44,11 @@ public class MessageServiceNames {
 
 	public static final String DOCUMENT_REQUEUE_PROCESSING_SERVICE = "DocumentRequeueProcessorService";
 
-	public static final String WORKGROUP_MEMBERSHIP_CHANGE_SERVICE = "WorkgroupMembershipChangeService";
-
-	public static final String SERVICE_REMOVER_SERVICE = "RemoteClassRemoverService";
-
 	public static final String ROLE_POKER = "RolePokerProcessorService";
 
 	public static final String MOVE_DOCUMENT_PROCESSOR = "MoveDocumentProcessor";
 
 	public static final String ACTION_INVOCATION_PROCESSOR = "ActionInvocationProcessor";
-
-	public static final String RESPONSIBILITY_CHANGE_SERVICE = "ResponsibilityChangeService";
 
 	private static QName getQName(String baseServiceName, DocumentRouteHeaderValue document) {
 		if (document != null) {

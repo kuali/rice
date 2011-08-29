@@ -50,13 +50,6 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RuleDelegationServiceImpl implements RuleDelegationService {
-	
-
-    private static final String USING_RULE_DLGN_CACHE_IND = "CACHING_IND";
-    private static final String RULE_DLGN_GROUP_CACHE = "org.kuali.rice.kew.rule.RuleDlgnCache";
-
-
-    
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
 			.getLogger(RuleDelegationServiceImpl.class);
 	
@@ -177,54 +170,6 @@ public class RuleDelegationServiceImpl implements RuleDelegationService {
 
     
     public List findByResponsibilityId(String responsibilityId, boolean ignoreCache) {
-    	if ( responsibilityId != null ) {
-    		PerformanceLogger performanceLogger = new PerformanceLogger();
-    		Boolean cachingRules = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_DLGN_CACHE_IND);
-    		if (cachingRules.booleanValue()) {
-    			List<RuleDelegation> rules = getListFromCache(responsibilityId);
-    			if (rules != null && !ignoreCache) {
-    				performanceLogger.log("Time to fetchDelegationRules by responsibility Id " + responsibilityId + " cached.");
-    				return rules;
-    			}
-            
-    			rules = dao.findByResponsibilityIdWithCurrentRule(responsibilityId);
-    			putListInCache(responsibilityId, rules);
-    			performanceLogger.log("Time to fetchDlgnRules by responsibilityId " + responsibilityId + " cache refreshed.");
-    			return rules;
-
-    		} else {
-    			performanceLogger.log("Time to fetchDelegationRules by responsibility Id " + responsibilityId + " not caching.");
-    			return dao.findByResponsibilityIdWithCurrentRule(responsibilityId);
-    		}
-    	} else {
-    		return dao.findByResponsibilityIdWithCurrentRule(responsibilityId);
-    	}
+   		return dao.findByResponsibilityIdWithCurrentRule(responsibilityId);
     }
-    
-    protected void putListInCache(String responsibilityId, List<RuleDelegation> rules) {
-    	String responsibilityIdStr = responsibilityId.toString();
-        LOG.info("Caching " + rules.size() + " rules for responsibilityId=" + responsibilityIdStr );
-
-        KsbApiServiceLocator.getCacheAdministrator().putInCache(getRuleDlgnCacheKey(responsibilityIdStr), rules, RULE_DLGN_GROUP_CACHE);
-
-    }
-    
-    protected List<RuleDelegation> getListFromCache(String responsibilityId) {
-    	String responsibilityIdStr = responsibilityId.toString();
-        LOG.debug("Retrieving List of Delegation Rules from cache for responsibilityId = " + responsibilityIdStr );
-        return (List) KsbApiServiceLocator.getCacheAdministrator().getFromCache(getRuleDlgnCacheKey(responsibilityIdStr));
-    }
-        
-    protected String getRuleDlgnCacheKey(String responsibilityIdStr) {
-        return "RuleDlgnCache:" + responsibilityIdStr;
-    }
-    
-   
-    public void flushRuleDlgnCache() {
-        LOG.info("Flushing entire Rule Delegation Cache.");
-        KsbApiServiceLocator.getCacheAdministrator().flushGroup(RULE_DLGN_GROUP_CACHE);
-    }
-    
-
-    
 }

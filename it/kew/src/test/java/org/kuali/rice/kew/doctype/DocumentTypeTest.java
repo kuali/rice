@@ -28,7 +28,6 @@ import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
-import org.kuali.rice.kew.doctype.service.impl.DocumentTypeServiceImpl;
 import org.kuali.rice.kew.engine.node.NodeType;
 import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.engine.node.RouteNode;
@@ -42,10 +41,8 @@ import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.xml.export.DocumentTypeXmlExporter;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
-import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 
 import java.util.ArrayList;
@@ -247,101 +244,6 @@ public class DocumentTypeTest extends KEWTestCase {
         assertEquals("Wrong node name", "RuleTemplate3", ruleTemplate3.getRouteNodeName());
         assertTrue("Wrong node type", NodeType.REQUESTS.isAssignableFrom(Class.forName(ruleTemplate3.getNodeType())));
         assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", ruleTemplate3.getExceptionWorkgroup().getName());
-    }
-
-    /**
-     * verify that saved documents are impacting the documents in the rest of they're hierarchy.
-     * This means cache notification by document type will work.
-     *
-     * @throws Exception
-     */
-    @Test public void testDocumentTypeServiceCacheInteractions() throws Exception {
-    	DocumentType child = KEWServiceLocator.getDocumentTypeService().findByName("SaveTestDocumentTypeChild1");
-    	DocumentType childDeux = KEWServiceLocator.getDocumentTypeService().findById(child.getDocumentTypeId());
-//    	System.out.println(child == childDeux);
-    	assertEquals("Names should be the same.", child.getName(), childDeux.getName());
-    	assertEquals("Versions should be the same.", child.getVersion(), childDeux.getVersion());
-
-    	// verify that the entry exists in OSCache
-    	String childIdKey = DocumentTypeServiceImpl.DOCUMENT_TYPE_ID_CACHE_PREFIX+child.getDocumentTypeId().toString();
-    	String childNameKey = DocumentTypeServiceImpl.DOCUMENT_TYPE_NAME_CACHE_PREFIX+child.getName();
-    	assertNotNull("No entry was found in the id cache.", KsbApiServiceLocator.getCacheAdministrator().getFromCache(childIdKey));
-    	assertNotNull("No entry was found in the name cache.", KsbApiServiceLocator.getCacheAdministrator().getFromCache(childNameKey));
-
-    	// the parent document type should not be in the cache yet
-    	String parentIdKey = DocumentTypeServiceImpl.DOCUMENT_TYPE_ID_CACHE_PREFIX+child.getDocTypeParentId();
-    	assertNull("Entry for parent should not have been found in the id cache.", KsbApiServiceLocator.getCacheAdministrator().getFromCache(parentIdKey));
-
-    	DocumentType parent = child.getParentDocType();
-    	// the act of fetching the parent from the child should result in the parent being cached
-    	assertNotNull("Entry for parent should have been found in the id cache.", KsbApiServiceLocator.getCacheAdministrator().getFromCache(parentIdKey));
-
-    	// now flush the cache, there should be no entries
-    	KsbApiServiceLocator.getCacheAdministrator().flushAll();
-    	assertNull(KsbApiServiceLocator.getCacheAdministrator().getFromCache(childIdKey));
-    	assertNull(KsbApiServiceLocator.getCacheAdministrator().getFromCache(childNameKey));
-
-    	DocumentType child2 = null;
-    	for (Iterator iter = parent.getChildrenDocTypes().iterator(); iter.hasNext();) {
-			DocumentType childTmp = (DocumentType) iter.next();
-			if (childTmp.getName().equals("SaveTestDocumentTypeChild2")) {
-				child2 = childTmp;
-			}
-		}
-
-    	//update the first child and verify that everything we fetch is a different object - ie it's been refetched
-    	//from the db
-    	DocumentType childEdit = new DocumentType();
-    	childEdit.setName(child.getName());
-    	childEdit.setActive(Boolean.TRUE);
-    	Group workflowAdmin = KimApiServiceLocator.getGroupService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "WorkflowAdmin");
-    	childEdit.setBlanketApproveWorkgroup(workflowAdmin);
-    	childEdit.setDefaultExceptionWorkgroup(workflowAdmin);
-    	childEdit.setDescription("desc");
-    	childEdit.setUnresolvedDocHandlerUrl("url");
-    	childEdit.setLabel("lable");
-    	childEdit.setDocumentTypePolicies(new ArrayList());
-    	childEdit.setRoutingVersion("1");
-    	childEdit.setDocTypeParentId(child.getDocTypeParentId());
-    	childEdit.setPostProcessorName("somename");
-    	childEdit.setSuperUserWorkgroupNoInheritence(workflowAdmin);
-
-    	KEWServiceLocator.getDocumentTypeService().versionAndSave(childEdit);
-
-    	DocumentType child1Ver2 = KEWServiceLocator.getDocumentTypeService().findByName("SaveTestDocumentTypeChild1");
-    	assertTrue("the fetched document should a document type version number 1 larger than the previous version", child.getVersion().intValue() + 1 == child1Ver2.getVersion().intValue());
-    	DocumentType previousVersion = child1Ver2.getPreviousVersion();
-    	//refetch to make sure the previous version diddn't get put in our name catch
-    	DocumentType child1Ver2_2 = KEWServiceLocator.getDocumentTypeService().findByName("SaveTestDocumentTypeChild1");
-    	assertEquals("DocumentType should have been fetched from cache", child1Ver2, child1Ver2_2);
-    	assertFalse("Previous Version should not be an object already fetched from cache", previousVersion.equals(child1Ver2));
-    	assertEquals("Fetched wrong previous document type ", previousVersion.getDocumentTypeId(), child.getDocumentTypeId());
-
-    	DocumentType parentV2 = child1Ver2.getParentDocType();
-    	assertFalse("These should be different objects", parentV2.equals(parent));
-
-    	DocumentType child2V2 = null;
-    	for (Iterator iter = parentV2.getChildrenDocTypes().iterator(); iter.hasNext();) {
-			DocumentType childTmp = (DocumentType) iter.next();
-			if (! childTmp.equals(child1Ver2)) {
-				child2V2 = childTmp;
-				assertFalse("These should be different objects", child2V2.equals(child2));
-			}
-		}
-    }
-
-    @Test public void testAttributeSaveClearsCache() throws Exception {
-    	super.loadXmlFile("DocTypeWithSearchableAttributes.xml");
-    	//fetch our document types out of the document service and therefore the cache
-    	DocumentType shouldClearedFromCache = KEWServiceLocator.getDocumentTypeService().findByName("DocumentType");
-    	DocumentType clearedFromCacheDuex = KEWServiceLocator.getDocumentTypeService().findByName("DocumentTypeDuex");
-
-    	//upload the new xml
-    	super.loadXmlFile("DocTypeRelatedAttributes.xml");
-    	DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName("DocumentType");
-    	DocumentType documentTypeDuex = KEWServiceLocator.getDocumentTypeService().findByName("DocumentTypeDuex");
-    	assertFalse("This documenttype should have been cleared from the cache", shouldClearedFromCache.equals(documentType));
-    	assertFalse("This documenttype should have been cleared from the cache", clearedFromCacheDuex.equals(documentTypeDuex));
     }
 
     //verifies the documenttype hierarchy is intact after multiple uploads
@@ -692,16 +594,6 @@ public class DocumentTypeTest extends KEWTestCase {
     	} else {
     		verifyHierarchy(docType.getParentDocType(), rootDocIds);
     	}
-    }
-
-    protected void flushCache() {
-    	// invalidate locally because if we're doing an upload of a document hierarchy we can't wait the 5 secs for this nodes cache
-		//to be accurate-the data going in the db depends on it being accurate now.  This means the cache will be cleared multiple times
-    	//over during an upload and the subsequent notification to this node.
-    	LOG.info("clearing DocumentType cache because of local update");
-    	KsbApiServiceLocator.getCacheAdministrator().flushGroup(DocumentTypeServiceImpl.DOCUMENT_TYPE_ID_CACHE_GROUP);
-    	KsbApiServiceLocator.getCacheAdministrator().flushGroup(DocumentTypeServiceImpl.DOCUMENT_TYPE_NAME_CACHE_GROUP);
-    	KsbApiServiceLocator.getCacheAdministrator().flushEntry(DocumentTypeServiceImpl.CURRENT_ROOTS_IN_CACHE_KEY);
     }
 
     private class LoadXml implements Runnable {

@@ -1358,90 +1358,6 @@ testXmlAsyncService.invoke("message content");</programlisting>
         </sect2>
     </sect1>
     <sect1>
-        <title>KSB Clustered Caching Using OSCache</title>
-        <para>You can use OSCache two ways with KSB to provide clustered caching:<orderedlist>
-                <listitem>
-                    <para>Use the KSB-provided wrapper classes and Spring configuration to configure
-                        caching </para>
-                </listitem>
-                <listitem>
-                    <para>Configure OSCache to use KSB and then use OSCache directly </para>
-                </listitem>
-            </orderedlist></para>
-        <sect2>
-            <title>Distributed caching using the KSB wrapper classes and Spring
-                configuration</title>
-            <para>These classes were created to:<orderedlist>
-                    <listitem>
-                        <para>Simplify the configuration of the OSCache distributed caching </para>
-                    </listitem>
-                    <listitem>
-                        <para>Return null when the cache doesn't have a value instead of throwing an
-                            exception. Without this, OSCache throws a NeedsRefreshException when it
-                            can't find an entry in the cache. </para>
-                    </listitem>
-                </orderedlist></para>
-            <para>Configure the cache in Spring:</para>
-            <programlisting>&lt;bean id="cache" class=" org.kuali.rice.ksb.cache.RiceCacheAdministratorImpl"  /></programlisting>
-            <para>Inject the cache into KSBConfigurer:</para>
-            <programlisting>&lt;bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
-    &lt;property name="serviceNamespace" value="KEW" />
-    &lt;property name="dataSource" ref="dataSource" />
-    &lt;property name="nonTransactionalDataSource" ref="nonTransactionalDataSource" />
-    &lt;property name="transactionManager" ref="jotm" />
-    &lt;property name="userTransaction" ref="jotm" />
-    &lt;property name="rootConfig" ref="config" />
-    &lt;property name=”ksbConfigurer”>
-        &lt;bean class=” org.kuali.rice.ksb.messaging.config.KSBConfigurer”>
-        &lt;property name="serviceServletUrl" value="http://localhost:${ksb.testharness.port}/en-test/remoting/" />
-        &lt;property name="cache">
-            &lt;ref bean="cache"/>
-        &lt;/property>
-</programlisting>
-            <para>(The entire RiceConfigurer is shown here for clarity.)</para>
-            <para>Now use the cache:</para>
-            <programlisting>RiceCacheAdministrator cache = getBeanFromSpring("cache");
-
-//clear cache
-cache.flushAll();
-
-//put entry in cache
-cache.putInCache(this.key, this.value, this.group);
-
-//flush entry
-cache.flushEntry(this.key);
-
-//flush group
-cache.flushGroup(this.group);</programlisting>
-        
-        
-            <para>All flushing will be broadcast across the cluster. The cache cluster is a topic
-                base off the messageEntity in the KRice configurer. As machines with a KRice cache
-                configured with the same messageEntity come up, they will automatically join the
-                cluster.</para>
-        </sect2>        
-        <sect2>
-            <title>Configuring the OSCache behind the scenes</title>
-            <para>OSCache has many configuration options available as properties. You can use the
-                Rice XML Configuration Subsystem to make those properties available to OSCache.
-                Simply prefix any parameter with the string 'cache' and that parameter will be given
-                to OSCache when the RiceCacheAdministratorImpl configures OSCache.</para>
-        </sect2>
-        <sect2>
-            <title>Using OSCache directly and using the bus to distribute cache
-                notifications</title>
-            <para>OSCache is configured through a properties object. This is the easiest way to
-                configure it to use KSB with these properties. Putting the following property in the
-                OSCache configuration properties will configure OSCache to use the KSB to cluster
-                its caching:</para>
-            <programlisting>properties.put(AbstractCacheAdministrator.CACHE_ENTRY_EVENT_LISTENERS_KEY, RiceDistributedCacheListener.class.getName());</programlisting>
-            <para>It is also possible to put the RiceDistributedCacheListener in a properties file
-                that configures OSCache. KSB must be fully configured and properly running for this
-                to work. The cluster is based on a topic using the messageEntity given to the KSB in
-                its configuration.</para>
-        </sect2>
-    </sect1>
-    <sect1>
         <title>KSB Exception Messaging</title>
         <para>Exception Messaging is the set of services and configuration options that handle
             messages that cannot be delivered successfully. Exception Messaging is primarily used by
@@ -2081,38 +1997,6 @@ protected WorkflowDocumentService workflowDocumentService;</programlisting>
 &lt;/beans></programlisting>
             </sect3>
         </sect2>
-    </sect1>
-    <sect1>
-        <title>Distributed Caching Implementation</title>
-        <para>Each Rice node defines a RiceCacheExporterFactoryBean. This creates a
-            RiceCacheAdministratorImpl that wraps an OSCache caching implementation with a
-            registered RiceDistributedCacheListener. That RiceDistributedCacheListener is
-            responsible for distributing local cache events to a topic and receiving remote cache
-            events from that same topic. </para>
-        <para>OSCache will initialize the RiceDistributedCacheListener (which is an OSCache
-            AbstractBroadcastingListener and/or CacheEntryEventListener). The
-            RiceDistributedCacheListener will then register itself as a Java topic service under the
-            name specified in the OSCache properties. The RiceCacheAdministratorImpl (by default,
-            "OSCacheNotificationService") sets those properties. This name is namespace-less (and,
-            therefore, "global").</para>
-        <para>When a given node flushes its cache, the RiceDistributedCacheListener detects this and
-            sends an asynchronous cache flush message to the topic (all other
-            OSCacheNotificationServices registered in the bus). Correspondingly, the
-            RiceDistributedCacheListener invoke method will be called to handle events coming from
-            the bus. The implementation simply unpacks the OSCache ClusterNotification and delivers
-            it to the superclass (handleClusterNotification).</para>
-        <warning>
-            <para>If a topic can be invoked by client nodes (not the standalone server, which presumably
-                has all the client keys imported), then other nodes in the cluster that have registered
-                a service in the topic must cooperate. Due to the current keystore-based, point-to-point
-                bus security mechanism, this is only tenable for small cluster sizes. For large clusters
-                (more than two or three nodes), there is significant overhead in keystore-crossing.
-                (This is proportional to the factorial of cluster size!) Applications that have not been
-                configured to trust each other will simply not receive these notifications.</para>
-            <para>You may be able to work around this by ensuring that actions that cause cluster cache
-                notification only occur in the standalone server (for example, uploading new document
-                types).</para>
-        </warning>
     </sect1>
     <sect1>
         <title>KSB Security</title>

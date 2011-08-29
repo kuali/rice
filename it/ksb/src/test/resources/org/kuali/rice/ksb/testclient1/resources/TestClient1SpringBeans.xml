@@ -312,7 +312,5 @@
 				</bean>
 			</list>
 		</property>
-	</bean>	
-	
-	<bean id="cache" class="org.kuali.rice.ksb.cache.RiceCacheExporterFactoryBean" />
+	</bean>
 </beans>

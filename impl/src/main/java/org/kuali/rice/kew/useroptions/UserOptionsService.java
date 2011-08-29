@@ -28,14 +28,14 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface UserOptionsService {
-    public Collection<UserOptions> findByWorkflowUser(String principalId);
-    public List<UserOptions> findByUserQualified(String principalId, String likeString);
-    public void save(UserOptions userOptions);
-    public void save(String principalId, Map<String,String> optionsMap);
-    public void save(String principalId, String optionId, String optionValue);
-    public void deleteUserOptions(UserOptions userOptions);
-    public UserOptions findByOptionId(String optionId, String principalId);
-    public Collection<UserOptions> findByOptionValue(String optionId, String optionValue);
-    public boolean refreshActionList(String principalId);
-    public void saveRefreshUserOption(String principalId);
+    Collection<UserOptions> findByWorkflowUser(String principalId);
+    List<UserOptions> findByUserQualified(String principalId, String likeString);
+    void save(UserOptions userOptions);
+    void save(String principalId, Map<String,String> optionsMap);
+    void save(String principalId, String optionId, String optionValue);
+    void deleteUserOptions(UserOptions userOptions);
+    UserOptions findByOptionId(String optionId, String principalId);
+    Collection<UserOptions> findByOptionValue(String optionId, String optionValue);
+    boolean refreshActionList(String principalId);
+    void saveRefreshUserOption(String principalId);
 }

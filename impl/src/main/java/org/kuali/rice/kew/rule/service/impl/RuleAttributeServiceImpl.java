@@ -49,7 +49,6 @@ public class RuleAttributeServiceImpl implements RuleAttributeService {
 
     public void save(RuleAttribute ruleAttribute) {
         validate(ruleAttribute);
-        KEWServiceLocator.getDocumentTypeService().clearCacheForAttributeUpdate(ruleAttribute);
         getRuleAttributeDAO().save(ruleAttribute);
     }
 

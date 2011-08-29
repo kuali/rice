@@ -293,9 +293,6 @@ INSERT INTO KRCR_PARM_T(NMSPC_CD, CMPNT_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_C
   VALUES('KR-WKFLW', 'Rule', 'GENERATE_ACTION_REQUESTS_IND', '96868C896B4B4A8BA87AD20E42948431', 1, 'CONFG', 'Y', 'Flag to determine whether or not a change to a routing rule should be applied retroactively to existing documents.', 'A', 'KUALI')
 /
 INSERT INTO KRCR_PARM_T(NMSPC_CD, CMPNT_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, VAL, PARM_DESC_TXT, EVAL_OPRTR_CD, APPL_ID)
-  VALUES('KR-WKFLW', 'Rule', 'CACHING_IND', 'E05A692D62E54B87901D872DC37208A1', 1, 'CONFG', 'Y', 'Indicator to determine if rule caching is enabled.', 'A', 'KUALI')
-/
-INSERT INTO KRCR_PARM_T(NMSPC_CD, CMPNT_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, VAL, PARM_DESC_TXT, EVAL_OPRTR_CD, APPL_ID)
   VALUES('KR-WKFLW', 'RuleTemplate', 'RULE_TEMPLATE_CREATE_NEW_INSTRUCTION', '09ECF812733D499C906ACBE17F13AFEE', 1, 'CONFG', 'Enter a rule template name and description. Please select all necessary rule attributes for this template.', 'Instructions for creating new rule templates.', 'A', 'KUALI')
 /
 INSERT INTO KRCR_PARM_T(NMSPC_CD, CMPNT_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, VAL, PARM_DESC_TXT, EVAL_OPRTR_CD, APPL_ID)

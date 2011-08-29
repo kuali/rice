@@ -86,9 +86,7 @@ import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 
 public class RuleServiceImpl implements RuleService {
 
-    private static final String USING_RULE_CACHE_IND = "CACHING_IND";
     private static final String XML_PARSE_ERROR = "general.error.parsexml";
-    private static final String RULE_GROUP_CACHE = "org.kuali.workflow.rules.RuleCache";
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RuleServiceImpl.class);
 
@@ -226,13 +224,7 @@ public class RuleServiceImpl implements RuleService {
             RuleBaseValues rule = (RuleBaseValues) iterator.next();
             getRuleDAO().save(rule);
             performanceLogger.log("Saved rule: " + rule.getRuleBaseValuesId());
-            installNotification(rule, notifyMap);
         }
-        LOG.info("Notifying rule cache of "+notifyMap.size()+" cache changes.");
-        for (String element : notifyMap.values()) {
-            queueRuleCache(element);
-        }
-
         getActionRequestService().updateActionRequestsForResponsibilityChange(responsibilityIds);
         performanceLogger.log("Time to make current");
     }
@@ -304,12 +296,7 @@ public class RuleServiceImpl implements RuleService {
         for (RuleBaseValues rule : rulesToSave.values()) {
             getRuleDAO().save(rule);
             performanceLogger.log("Saved rule: " + rule.getRuleBaseValuesId());
-            installNotification(rule, notifyMap);
-        }
-        if (LOG.isInfoEnabled())
-        	LOG.info("Notifying rule cache of "+notifyMap.size()+" cache changes.");
-        for (String element : notifyMap.values()) {
-            queueRuleCache(element);
+
         }
         if (isGenerateRuleArs) {
             getActionRequestService().updateActionRequestsForResponsibilityChange(responsibilityIds);
@@ -378,26 +365,12 @@ public class RuleServiceImpl implements RuleService {
         for (RuleBaseValues ruleToSave : rulesToSave.values()) {        	
         	getRuleDAO().save(ruleToSave);
         	performanceLogger.log("Saved rule: " + ruleToSave.getRuleBaseValuesId());
-            if (!isRuleDelegation) {
-                installNotification(ruleToSave, notifyMap);
-            } 
         }
         if (isRuleDelegation) {
         	responsibilityIds.add(ruleDelegation.getResponsibilityId());
         	ruleDelegation.setDelegateRuleId(rule.getRuleBaseValuesId());
         	getRuleDelegationService().save(ruleDelegation);
-        	installDelegationNotification(ruleDelegation.getResponsibilityId(), notifyMap);
         }
-        LOG.info("Notifying rule cache of "+notifyMap.size()+" cache changes.");
-        for (String value : notifyMap.values()) {
-            if (isRuleDelegation) {
-                queueDelegationRuleCache(value);
-            } else {
-                queueRuleCache(value);
-            } 
-        }
-        
-
         
         if (isGenerateRuleArs) {
             getActionRequestService().updateActionRequestsForResponsibilityChange(responsibilityIds);
@@ -405,189 +378,8 @@ public class RuleServiceImpl implements RuleService {
         performanceLogger.log("Time to make current");
     }
 
-
-    private void queueRuleCache(String ruleId){
-        KewApiServiceLocator.getRuleCacheProcessor().clearRuleFromCache(ruleId);
-    }
-
-//  private RouteQueueService getRouteQueueService() {
-//  return (RouteQueueService)SpringServiceLocator.getService(SpringServiceLocator.ROUTE_QUEUE_SRV);
-//  }
-
-    /**
-     * Ensure that we don't have any notification duplication.
-     */
-    private void installNotification(RuleBaseValues rule, Map<String, String> notifyMap) {
-    	// don't notify the cache if it's a "template" rule!
-    	if (!rule.getTemplateRuleInd()) {
-    		String key = getRuleCacheKey(rule.getRuleTemplateName(), rule.getDocTypeName());
-    		if (!notifyMap.containsKey(key)) {
-    			notifyMap.put(key, rule.getRuleBaseValuesId());
-    		}
-    	}
-    }
-
-    private void queueDelegationRuleCache(String responsibilityId) {
-        KewApiServiceLocator.getRuleDelegationCacheProcessor().clearRuleDelegationFromCache(responsibilityId);    	
-    }
-    
-    private void installDelegationNotification(String responsibilityId, Map<String, String> notifyMap) {
-    	// don't notify the cache if it's a "template" rule!
-    	String key = getRuleDlgnCacheKey(responsibilityId);
-    	if (!notifyMap.containsKey(key)) {
-    		notifyMap.put(key, responsibilityId);
-    	}
-    }
-
-	protected String getRuleDlgnCacheKey(String responsibilityId) {
-		return "RuleDlgnCache:" + responsibilityId;
-	}
-	
     public RuleBaseValues getParentRule(String ruleBaseValuesId) {
         return getRuleDAO().getParentRule(ruleBaseValuesId);
-    }
-
-    public void notifyCacheOfDocumentTypeChange(DocumentType documentType) {
-        DocumentType rootDocumentType = KEWServiceLocator.getDocumentTypeService().findRootDocumentType(documentType);
-        notifyCacheOfDocumentTypeChangeFromRoot(rootDocumentType, documentType);
-        notifyCacheOfDocumentTypeChangeFromParent(documentType);
-    }
-
-    /**
-     * Flushes rules cached for the given DocumentType and then recursivley flushes rules cached
-     * for all children DocumentTypes.
-     */
-    protected void notifyCacheOfDocumentTypeChangeFromParent(DocumentType documentType) {
-        flushDocumentTypeFromCache(documentType.getName());
-        for (Iterator iter = documentType.getChildrenDocTypes().iterator(); iter.hasNext();) {
-            notifyCacheOfDocumentTypeChangeFromParent((DocumentType) iter.next());
-        }
-    }
-
-    /**
-     * Flushes rules cached from the root of the DocumentType hierarchy (at the given root DocumentType).  Stops
-     * when it hits the given DocumentType.  This method exists because of the nature of
-     * DocumentTypeService.findRootDocumentType(...).  Whenever we have a modification to child document type
-     * and we call findRootDocumentType(...) on it, we end up getting back a version of the root document type
-     * which is cached in the OJB transaction cache and doesn't have the appropriate child document type attached.
-     * A better way to handle this would be to go into the DocumentType service and fix how it versions document
-     * types in versionAndSave to prevent this issue from occurring.
-     *
-     * <p>If such a fix was made then we could simply pass the root DocumentType into notifyCacheOfDocumentTypeChange
-     * and be gauranteed that we will see all appropriate children as we call getChildrenDocTypes().
-     *
-     * <p>One last note, we don't necesarily have to stop this cache flusing at the given DocumentType but there's
-     * no reason to duplicate the work that is going to be done in notifyCacheOfDocumentTypeChangeFromParent.
-     */
-    protected void notifyCacheOfDocumentTypeChangeFromRoot(DocumentType rootDocumentType, DocumentType documentType) {
-        if (rootDocumentType.getName().equals(documentType.getName())) {
-            return;
-        }
-        flushDocumentTypeFromCache(rootDocumentType.getName());
-        for (Iterator iter = rootDocumentType.getChildrenDocTypes().iterator(); iter.hasNext();) {
-            notifyCacheOfDocumentTypeChangeFromRoot((DocumentType) iter.next(), documentType);
-        }
-    }
-
-    public void notifyCacheOfRuleChange(RuleBaseValues rule, DocumentType documentType) {
-        Boolean cachingRules = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_CACHE_IND);
-
-        LOG.info("Entering notifyCacheOfRuleChange.  CachingRules: " + cachingRules + " ; ruleID: " + rule.getRuleBaseValuesId());
-        if (!cachingRules.booleanValue()) {
-            return;
-        }
-        // named rules may be templateless, and therefore cannot be mapped into the cache by templatename/doctype key
-        // but we still need to make sure that if there was a previous version with a template, that the cache is blown away
-        String ruleTemplateName = null;
-        if (rule.getRuleTemplate() == null) {
-            if (rule.getPreviousVersion() != null) {
-                RuleBaseValues prev = rule.getPreviousVersion();
-                if (prev.getRuleTemplate() != null) {
-                    ruleTemplateName = prev.getRuleTemplate().getName();
-                }
-            }
-        } else {
-            ruleTemplateName = rule.getRuleTemplate().getName();
-        }
-
-        if (documentType == null) {
-            documentType = getDocumentTypeService().findByName(rule.getDocTypeName());
-            // if it's a delegate rule, we need to look at the parent's template
-            if (Boolean.TRUE.equals(rule.getDelegateRule())) {
-                List delegations = getRuleDelegationService().findByDelegateRuleId(rule.getRuleBaseValuesId());
-                for (Iterator iterator = delegations.iterator(); iterator.hasNext();) {
-                    RuleDelegation ruleDelegation = (RuleDelegation) iterator.next();
-                    RuleBaseValues parentRule = ruleDelegation.getRuleResponsibility().getRuleBaseValues();
-                    if (Boolean.TRUE.equals(parentRule.getCurrentInd())) {
-                        ruleTemplateName = parentRule.getRuleTemplate().getName();
-                        break;
-                    }
-                }
-            }
-        }
-        flushListFromCache(ruleTemplateName, documentType.getName());
-
-//      if (getListFromCache(ruleTemplateName, documentType.getName()) != null) {
-//      eventGenerator.notify(new CacheDataModifiedEvent(RULE_CACHE_NAME, getRuleCacheKey(ruleTemplateName, documentType.getName())));
-//      }
-        //}
-        //walk the down the document hierarchy when refreshing the cache. The
-        // rule could be cached through more than one path
-        //HREDOC could be cached under HREDOC.child and HREDOC.child1
-        for (Iterator iter = documentType.getChildrenDocTypes().iterator(); iter.hasNext();) {
-            DocumentType childDocumentType = (DocumentType) iter.next();
-            //SpringServiceLocator.getCacheAdministrator().flushEntry(getRuleCacheKey(ruleTemplateName, childDocumentType.getName()));
-//          if (getListFromCache(rule.getRuleTemplate().getName(), childDocumentType.getName()) != null) {
-//          eventGenerator.notify(new CacheDataModifiedEvent(RULE_CACHE_NAME, getRuleCacheKey(rule.getRuleTemplate().getName(), childDocumentType.getName())));
-//          }
-            notifyCacheOfRuleChange(rule, childDocumentType);
-        }
-        LOG.info("Leaving notifyCacheOfRuleChange.  CachingRules: " + cachingRules + " ; ruleID: " + rule.getRuleBaseValuesId() + " ; documentType: " + documentType.getDocumentTypeId());
-
-
-
-    }
-
-    /**
-     * Returns the key of the rule cache.
-     */
-    protected String getRuleCacheKey(String ruleTemplateName, String docTypeName) {
-        return "RuleCache:" + ruleTemplateName + "_" + docTypeName;
-    }
-
-    /*
-     * Return the cache group name for the given DocumentType
-     */
-    protected String getDocumentTypeRuleCacheGroupName(String documentTypeName) {
-        return "DocumentTypeRuleCache:"+documentTypeName;
-    }
-
-    protected List<RuleBaseValues> getListFromCache(String ruleTemplateName, String documentTypeName) {
-        LOG.debug("Retrieving List of Rules from cache for ruleTemplate='" + ruleTemplateName + "' and documentType='" + documentTypeName + "'");
-        return (List) KsbApiServiceLocator.getCacheAdministrator().getFromCache(getRuleCacheKey(ruleTemplateName, documentTypeName));
-        //return (List) SpringServiceLocator.getCache().getCachedObjectById(RULE_CACHE_NAME, getRuleCacheKey(ruleTemplateName, documentTypeName));
-    }
-
-    protected void putListInCache(String ruleTemplateName, String documentTypeName, List<RuleBaseValues> rules) {
-        assert(ruleTemplateName != null) : "putListInCache was called with a null ruleTemplateName";
-        LOG.info("Caching " + rules.size() + " rules for ruleTemplate='" + ruleTemplateName + "' and documentType='" + documentTypeName + "'");
-        String groups[] = new String[] { getDocumentTypeRuleCacheGroupName(documentTypeName), RULE_GROUP_CACHE };
-        KsbApiServiceLocator.getCacheAdministrator().putInCache(getRuleCacheKey(ruleTemplateName, documentTypeName), rules, groups);
-    }
-
-    protected void flushDocumentTypeFromCache(String documentTypeName) {
-        LOG.info("Flushing DocumentType from Cache for the given name: " + documentTypeName);
-        KsbApiServiceLocator.getCacheAdministrator().flushGroup(getDocumentTypeRuleCacheGroupName(documentTypeName));
-    }
-
-    protected void flushListFromCache(String ruleTemplateName, String documentTypeName) {
-        LOG.info("Flushing rules from Cache for ruleTemplate='" + ruleTemplateName + "' and documentType='" + documentTypeName + "'");
-        KsbApiServiceLocator.getCacheAdministrator().flushEntry(getRuleCacheKey(ruleTemplateName, documentTypeName));
-    }
-
-    public void flushRuleCache() {
-        LOG.info("Flushing entire Rule Cache.");
-        KsbApiServiceLocator.getCacheAdministrator().flushGroup(RULE_GROUP_CACHE);
     }
 
     private Set getResponsibilityIdsFromGraph(RuleBaseValues rule, boolean isRuleCollecting) {
@@ -958,38 +750,9 @@ public class RuleServiceImpl implements RuleService {
         return getRuleDAO().findRuleResponsibility(responsibilityId);
     }
 
-    public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType, boolean ignoreCache) {
-        PerformanceLogger performanceLogger = new PerformanceLogger();
-        Boolean cachingRules = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_CACHE_IND);
-        if (cachingRules.booleanValue()) {
-            //Cache cache = SpringServiceLocator.getCache();
-            List<RuleBaseValues> rules = getListFromCache(ruleTemplateName, documentType);
-            if (rules != null && !ignoreCache) {
-                performanceLogger.log("Time to fetchRules by template " + ruleTemplateName + " cached.");
-                return rules;
-            }
-            RuleTemplate ruleTemplate = getRuleTemplateService().findByRuleTemplateName(ruleTemplateName);
-            if (ruleTemplate == null) {
-                return Collections.EMPTY_LIST;
-            }
-            String ruleTemplateId = ruleTemplate.getRuleTemplateId();
-            //RuleListCache translatedRules = new RuleListCache();
-            //translatedRules.setId(getRuleCacheKey(ruleTemplateName, documentType));
-            rules = getRuleDAO().fetchAllCurrentRulesForTemplateDocCombination(ruleTemplateId, getDocGroupAndTypeList(documentType));
-            //translatedRules.addAll(rules);
-            putListInCache(ruleTemplateName, documentType, rules);
-            //cache.add(RULE_CACHE_NAME, translatedRules);
-            performanceLogger.log("Time to fetchRules by template " + ruleTemplateName + " cache refreshed.");
-            return rules;
-        } else {
-        	String ruleTemplateId = getRuleTemplateService().findByRuleTemplateName(ruleTemplateName).getRuleTemplateId();
-            performanceLogger.log("Time to fetchRules by template " + ruleTemplateName + " not caching.");
-            return getRuleDAO().fetchAllCurrentRulesForTemplateDocCombination(ruleTemplateId, getDocGroupAndTypeList(documentType));
-        }
-    }
-
     public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType) {
-        return fetchAllCurrentRulesForTemplateDocCombination(ruleTemplateName, documentType, false);
+        	String ruleTemplateId = getRuleTemplateService().findByRuleTemplateName(ruleTemplateName).getRuleTemplateId();
+            return getRuleDAO().fetchAllCurrentRulesForTemplateDocCombination(ruleTemplateId, getDocGroupAndTypeList(documentType));
     }
 
     public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType, Timestamp effectiveDate){
@@ -1408,7 +1171,7 @@ public class RuleServiceImpl implements RuleService {
     	List extensions = rule.getRuleExtensions();
     	String docTypeName = rule.getDocTypeName();
     	String ruleTemplateName = rule.getRuleTemplateName();
-        List rules = fetchAllCurrentRulesForTemplateDocCombination(rule.getRuleTemplateName(), rule.getDocTypeName(), false);
+        List rules = fetchAllCurrentRulesForTemplateDocCombination(rule.getRuleTemplateName(), rule.getDocTypeName());
         Iterator it = rules.iterator();
         while (it.hasNext()) {
             RuleBaseValues r = (RuleBaseValues) it.next();

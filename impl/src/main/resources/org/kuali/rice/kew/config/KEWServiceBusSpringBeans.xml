@@ -276,38 +276,6 @@
 		</property>
 	</bean>
 
-
-	<bean id="rice.kew.ruleCacheProcessorSoap.exporter" parent="kewLocalServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus" />
-		<property name="serviceDefinition">
-			<bean parent="kewJaxWsSoapService">
-				<property name="service">
-					<ref bean="rice.kew.ruleCacheProcessor" />
-				</property>
-				<property name="localServiceName" value="ruleCacheProcessorSoap" />
-				<property name="priority" value="3" />
-				<property name="queue" value="false" />
-				<property name="retryAttempts" value="1" />
-				<property name="messageExceptionHandler"
-					value="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler" />
-			</bean>
-		</property>
-	</bean>
-
-	<bean id="rice.kew.ruleDelegationCacheProcessorSoap.exporter" parent="kewLocalServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus" />
-		<property name="serviceDefinition">
-			<bean parent="kewJaxWsSoapService">
-				<property name="service">
-					<ref bean="rice.kew.ruleDelegationCacheProcessor" />
-				</property>
-				<property name="localServiceName" value="ruleDelegationCacheProcessorSoap" />
-				<property name="busSecurity" value="${rice.kew.ruleDelegationCacheProcessorSoap.secure}" />
-				<property name="queue" value="false" />
-			</bean>
-		</property>
-	</bean>
-
   <bean id="rice.kew.responsibilityChangeProcessorSoap.exporter" parent="kewLocalServiceExporter">
     <property name="serviceBus" ref="rice.ksb.serviceBus" />
     <property name="serviceDefinition">
@@ -348,11 +316,6 @@
 					value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
 			</bean>
 		</property>
-	</bean>  
-  
-	<bean id="enCacheAdministrator"
-		class="org.kuali.rice.ksb.cache.RiceCacheExporterFactoryBean">
-		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 	</bean>
 	
 	<bean parent="kewLocalServiceExporter" name="routeLogDerivedRoleTypeServiceBean">

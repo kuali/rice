@@ -113,7 +113,6 @@
     <log4j.version>1.2.16</log4j.version>
     <mysql-connector-java.version>5.1.17</mysql-connector-java.version>
     <ojdbc14.version>10.2.0.3.0</ojdbc14.version>
-    <oscache.version>2.4.1</oscache.version>
     <persistence.version>1.0.1.Final</persistence.version>
     <!--
       http://www.quartz-scheduler.org/docs/2.0/migrationGuide.html
@@ -1120,27 +1119,6 @@
         <groupId>no.geosoft</groupId>
         <artifactId>filemonitor</artifactId>
         <version>${filemonitor.version}</version>
-      </dependency>
-
-      <dependency>
-        <!-- groupid will change to org.opensymphony.oscache if they ever release another version -->
-        <groupId>opensymphony</groupId>
-        <artifactId>oscache</artifactId>
-        <version>${oscache.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>javax.jms</groupId>
-            <artifactId>jms</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
 
       <dependency>

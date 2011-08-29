@@ -60,7 +60,6 @@ public interface RuleService extends XmlLoader, XmlExporter {
     public void deleteRuleResponsibilityById(String ruleResponsibilityId);
     public RuleResponsibility findByRuleResponsibilityId(String ruleResponsibilityId);
     public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType);
-    public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType, boolean ignoreCache);
     public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType, Timestamp effectiveDate);
     public List<RuleBaseValues> findByDocumentId(String documentId);
     public void makeCurrent(String documentId);
@@ -71,19 +70,7 @@ public interface RuleService extends XmlLoader, XmlExporter {
     public String isLockedForRouting(String currentRuleBaseValuesId);
     public List fetchAllRules(boolean currentRules);
     public RuleBaseValues findDefaultRuleByRuleTemplateId(String ruleTemplateId);
-    public void notifyCacheOfRuleChange(RuleBaseValues rule, DocumentType documentType);
     public RuleBaseValues getParentRule(String ruleBaseValuesId);
-
-
-    /**
-     * Notifies the Rule system that the given DocumentType has been changed.  When a DocumentType changes this
-     * could result in the change to the DocumentType hierarchy.  In these cases we want to ensure that all
-     * Rules within that DocumentType hierarchy get flushed from the cache so they can be re-cached with the proper
-     * DocumentType hierarchy in place.
-     */
-    public void notifyCacheOfDocumentTypeChange(DocumentType documentType);
-
-    public void flushRuleCache();
 
     /**
      * Returns the name of the document type definition that should be used to route the given List of rules.  This method will never

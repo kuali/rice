@@ -25,11 +25,9 @@ import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.resourceloader.BaseResourceLoader;
 
 import javax.xml.namespace.QName;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A BaseResourceLoader implementation which wraps services with a Proxy that
@@ -41,7 +39,7 @@ public class BaseWrappingResourceLoader extends BaseResourceLoader {
 
 	private static final String[] PACKAGES_TO_FILTER = new String[] { "org.springframework" };
 	private Set<QName> servicesToCache = new HashSet<QName>();
-	private Map<QName, Object> serviceCache = Collections.synchronizedMap(new HashMap<QName, Object>());
+	private final ConcurrentHashMap<QName, Object> serviceCache = new ConcurrentHashMap<QName, Object>();
 
 	public BaseWrappingResourceLoader(QName name, ClassLoader classLoader, ServiceLocator serviceLocator) {
 		super(name, classLoader, serviceLocator);

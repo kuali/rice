@@ -240,8 +240,6 @@
         </property>
     </bean>
 
-    <bean id="cache" class="org.kuali.rice.ksb.cache.RiceCacheExporterFactoryBean"/>
-
     <bean id="testHarnessSharedTopic" class="org.kuali.rice.ksb.messaging.remotedservices.TestHarnessSharedTopic"/>
     <bean id="testRepeatMessageQueue" class="org.kuali.rice.ksb.messaging.remotedservices.TestRepeatMessageQueue"/>
     <bean id="testExplodingQueueTimeLimit"

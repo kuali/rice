@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kew.api;
 
-import javax.xml.namespace.QName;
-
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.api.Responsibility.ResponsibilityChangeProcessor;
 import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
@@ -27,10 +25,10 @@ import org.kuali.rice.kew.api.document.attribute.DocumentAttributeIndexingQueue;
 import org.kuali.rice.kew.api.extension.ExtensionRepositoryService;
 import org.kuali.rice.kew.api.group.GroupMembershipChangeQueue;
 import org.kuali.rice.kew.api.note.NoteService;
-import org.kuali.rice.kew.api.rule.RuleCacheProcessor;
-import org.kuali.rice.kew.api.rule.RuleDelegationCacheProcessor;
 import org.kuali.rice.kew.api.rule.RuleService;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
+
+import javax.xml.namespace.QName;
 
 /**
  * A static service locator which aids in locating the various services that
@@ -49,8 +47,6 @@ public class KewApiServiceLocator {
 
     public static final QName DOCUMENT_ATTRIBUTE_INDEXING_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "documentAttributeIndexingQueueSoap");
     public static final QName GROUP_MEMBERSHIP_CHANGE_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "groupMembershipChangeQueueSoap");
-    public static final QName RULE_CACHE_PROCESSOR_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "ruleCacheProcessorSoap");
-    public static final QName RULE_DELEGATION_CACHE_PROCESSOR_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "ruleDelegationCacheProcessorSoap");
     public static final QName RESPONSIBILITY_CHANGE_PROCESSOR_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "responsibilityChangeProcessorSoap");
 
     static <T> T getService(String serviceName) {
@@ -95,14 +91,6 @@ public class KewApiServiceLocator {
     
     public static GroupMembershipChangeQueue getGroupMembershipChangeQueue() {
         return (GroupMembershipChangeQueue)KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(GROUP_MEMBERSHIP_CHANGE_QUEUE_NAME);
-    }
-    
-    public static RuleCacheProcessor getRuleCacheProcessor() {
-        return (RuleCacheProcessor)KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(RULE_CACHE_PROCESSOR_QUEUE_NAME);
-    }
-    
-    public static RuleDelegationCacheProcessor getRuleDelegationCacheProcessor() {
-        return (RuleDelegationCacheProcessor)KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(RULE_DELEGATION_CACHE_PROCESSOR_QUEUE_NAME);
     }
 
     public static ResponsibilityChangeProcessor getResponsibilityChangeProcessor() {

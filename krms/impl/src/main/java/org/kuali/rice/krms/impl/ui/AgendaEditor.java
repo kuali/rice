@@ -174,4 +174,10 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
 		this.agenda = agenda;
 	}
 
+    // Need to override this method since the actual persistable BO is wrapped inside dataObject.
+    @Override
+    public void refreshNonUpdateableReferences() {
+        getPersistenceService().refreshAllNonUpdatingReferences(this.getAgenda());
+    }
+
 }

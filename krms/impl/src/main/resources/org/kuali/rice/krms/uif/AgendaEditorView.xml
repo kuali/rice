@@ -30,6 +30,7 @@
     <property name="documentTypeName" value="AgendaEditorMaintenanceDocument"/>
     <property name="documentAuthorizerClass"
               value="org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizerBase"/>
+    <property name="businessRulesClass" value="org.kuali.rice.krms.impl.rule.AgendaEditorBusRule" />
     <property name="lockingKeys">
       <list>
         <value>agenda.id</value>

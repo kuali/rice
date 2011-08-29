@@ -83,7 +83,8 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
 			Map<String, String[]> requestParameters) {
 
 		super.processAfterNew(document, requestParameters);
-		
+        document.getDocumentHeader().setDocumentDescription("New Agenda Editor Document");
+
 //		if (KRADConstants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction)) {
 //			String[] agendaIds = requestParameters.get("agendaId");
 //			if (agendaIds == null || agendaIds.length != 1) { 
@@ -106,6 +107,18 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
 		
 		
 	}
+
+    @Override
+    public void processAfterCopy(MaintenanceDocument document, Map<String, String[]> requestParameters) {
+        super.processAfterCopy(document, requestParameters);
+        document.getDocumentHeader().setDocumentDescription("New Agenda Editor Document");
+    }
+
+    @Override
+    public void processAfterEdit(MaintenanceDocument document, Map<String, String[]> requestParameters) {
+        super.processAfterEdit(document, requestParameters);
+        document.getDocumentHeader().setDocumentDescription("Modify Agenda Editor Document");
+    }
 
     @Override
     public void saveDataObject() {

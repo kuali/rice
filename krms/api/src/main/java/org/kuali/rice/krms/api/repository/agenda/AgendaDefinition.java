@@ -221,9 +221,6 @@ public final class AgendaDefinition extends AbstractDataTransferObject implement
 		}
      
 		public void setTypeId(String typeId) {
-			if (StringUtils.isBlank(typeId)) {
-	                throw new IllegalArgumentException("KRMS type id is blank");
-			}
 			this.typeId = typeId;
 		}
 		

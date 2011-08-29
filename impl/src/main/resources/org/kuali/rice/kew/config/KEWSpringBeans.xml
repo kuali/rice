@@ -166,6 +166,7 @@
         <idref local="rice.kew.noteService" />
         <idref local="rice.kew.ruleService" />
         <idref local="rice.kew.documentLookupCustomizationHandlerService" />
+        <idref local="rice.kew.ruleValidationAttributeExporterService" />
         <idref local="rice.kew.extensionRepositoryService" />
                 
         <!-- it's important that this service remains non-transactionally proxied for various reasons

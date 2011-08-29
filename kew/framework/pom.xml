@@ -45,6 +45,18 @@
 							<goal>java2ws</goal>
 						</goals>
 					</execution>
+          <execution>
+						<id>ruleValidationAttributeExporterService-wsdl</id>
+						<phase>${rice.java2ws.phase}</phase>
+						<configuration>
+							<className>org.kuali.rice.kew.framework.validation.RuleValidationAttributeExporterService</className>
+							<outputFile>${project.build.outputDirectory}/wsdl/RuleValidationAttributeExporterService.wsdl</outputFile>
+							<serviceName>RuleValidationAttributeExporterService</serviceName>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
         </executions>
       </plugin>
     </plugins>

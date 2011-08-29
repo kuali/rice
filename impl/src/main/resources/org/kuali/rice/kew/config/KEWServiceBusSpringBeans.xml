@@ -148,6 +148,19 @@
 		</property>
 	</bean>
 
+  <bean id="rice.kew.ruleValidationAttributeExporterService.exporter" parent="kewEmbeddedServiceExporter">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
+		<property name="serviceDefinition">
+			<bean parent="kewJaxWsSoapService">
+				<property name="service">
+					<ref bean="rice.kew.ruleValidationAttributeExporterService" />
+				</property>
+				<property name="localServiceName" value="ruleValidationAttributeExporterServiceSoap" />
+				<property name="busSecurity" value="${rice.kew.ruleValidationAttributeExporterServiceSoap.secure}" />
+			</bean>
+		</property>
+	</bean>
+
 	<bean parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">

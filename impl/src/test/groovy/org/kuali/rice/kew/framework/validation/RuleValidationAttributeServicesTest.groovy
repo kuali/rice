@@ -47,7 +47,7 @@ import org.junit.Ignore
 /**
  * Unit test for RuleValidationAttributeExporterService
  */
-public class RuleValidationAttributeRemotingServicesTest {
+public class RuleValidationAttributeServicesTest {
     public static class TestRuleValidationAttribute implements RuleValidationAttribute {
         public ValidationResults validate(RuleValidationContext validationContext) throws Exception {
             return ValidationResults.Builder.create().build();
@@ -57,11 +57,11 @@ public class RuleValidationAttributeRemotingServicesTest {
     static final def MOCK_ATTR_NAME = "mock_attr_name"
     static final def MOCK_APP_ID = "mock_app_id"
     private RuleValidationAttributeExporterService exporter
-    private RuleValidationAttributeResolver resolver = new RuleValidationAttributeResolverImpl() {
+    private RuleValidationAttributeResolver resolver= new RuleValidationAttributeResolverImpl() {
         protected RuleValidationAttributeExporterService findRuleValidationAttributeExporterService(String applicationId) {
             return exporter;
         }
-    };
+    }
 
     private static void mockTheConfig() {
         def mock_config = new MockFor(Config)
@@ -93,21 +93,6 @@ public class RuleValidationAttributeRemotingServicesTest {
 
         exporter = new RuleValidationAttributeExporterServiceImpl()
         exporter.setExtensionRepositoryService(extension_repo)
-
-        //def kfsl = new MockFor(KewFrameworkServiceLocator)
-        //kfsl.ignore.getRuleValidationAttributeExporterService() { app_id -> exporter }
-        //kfsl.ignore.getRuleValidationAttributeExporterService() { exporter }
-        //Assert.assertTrue(exporter == KewFrameworkServiceLocator.getRuleValidationAttributeExporterService(MOCK_APP_ID))
-        //Assert.assertTrue(exporter == KewFrameworkServiceLocator.getRuleValidationAttributeExporterService())
-
-        //def resolver_mock = new StubFor(RuleValidationAttributeResolverImpl)
-        // stubbing the static method on the KewFrameworkServiceLocator doesn't work so great, so just stub it here directly
-        //resolver_mock.ignore.findRuleValidationAttributeExporterService { app_id -> exporter }
-        //resolver_mock.ignore.findRuleValidationAttributeExporterService { exporter }
-        // adding this superflous demand so that the test passes because it seems to want to assert against expected calls...
-        // junit.framework.AssertionFailedError: No more calls to 'resolveRuleValidationAttribute' expected at this point. End of demands.
-        //resolver_mock.ignore.resolveRuleValidationAttribute()
-        //resolver = resolver_mock
     }
 
     @After

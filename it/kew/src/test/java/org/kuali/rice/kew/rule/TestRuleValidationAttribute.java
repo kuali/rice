@@ -25,8 +25,10 @@ import org.kuali.rice.kew.api.validation.ValidationResults;
  *
  */
 public class TestRuleValidationAttribute implements RuleValidationAttribute {
+    public static int invocations = 0;
 
     public ValidationResults validate(RuleValidationContext validationContext) throws Exception {
+        invocations++;
         return ValidationResults.Builder.create().build();
     }
 

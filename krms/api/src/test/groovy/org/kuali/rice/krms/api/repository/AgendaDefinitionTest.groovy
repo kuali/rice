@@ -49,7 +49,6 @@ class AgendaDefinitionTest {
     <id>AGENDAID001</id>
     <name>Agenda1</name>
     <namespace>KRMS_TEST</namespace>
-    <typeId>1234XYZ</typeId>
     <contextId>CONTEXT-001</contextId>
     <active>true</active>
     <firstItemId>ITEM01</firstItemId>

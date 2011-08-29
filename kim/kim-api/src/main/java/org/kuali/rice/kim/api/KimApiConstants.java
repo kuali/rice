@@ -34,11 +34,9 @@ public final class KimApiConstants {
     }
 
     public static final class ServiceNames {
-        public static final String IDENTITY_MANAGEMENT_NOTIFICATION_SERVICE_SOAP = "identityManagementNotificationServiceSoap";
+
         public static final String ROLE_SERVICE_SOAP = "roleServiceSoap";
         public static final String GROUP_SERVICE_SOAP = "groupServiceSoap";
-        public static final String RESPONSIBILITY_SERVICE_SOAP = "responsibilityServiceSoap";
-        public static final String PERMISSION_SERVICE_SOAP = "permissionServiceSoap";
         public static final String IDENTITY_SERVICE_SOAP = "identityServiceSoap";
     }
 

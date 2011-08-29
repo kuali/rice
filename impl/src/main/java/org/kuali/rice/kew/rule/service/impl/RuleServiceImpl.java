@@ -219,7 +219,6 @@ public class RuleServiceImpl implements RuleService {
                 }
             }
         }
-        Map<String, String> notifyMap = new HashMap<String, String>();
         for (Iterator iterator = rulesToSave.values().iterator(); iterator.hasNext();) {
             RuleBaseValues rule = (RuleBaseValues) iterator.next();
             getRuleDAO().save(rule);
@@ -429,31 +428,6 @@ public class RuleServiceImpl implements RuleService {
         !ObjectUtils.equals(oldResponsibility.getRuleResponsibilityType(), newResponsibility.getRuleResponsibilityType());
     }
 
-    /*
-     private Map findOldDelegationRules(RuleBaseValues oldRule, RuleBaseValues newRule, PerformanceLogger performanceLogger) {
-        Map oldRules = new HashMap();
-        performanceLogger.log("Begin to get delegation rules.");
-        for (Iterator iterator = oldRule.getResponsibilities().iterator(); iterator.hasNext();) {
-            RuleResponsibility responsibility = (RuleResponsibility) iterator.next();
-            for (Iterator delIterator = responsibility.getDelegationRules().iterator(); delIterator.hasNext();) {
-                RuleDelegation ruleDelegation = (RuleDelegation) delIterator.next();
-                RuleBaseValues delegateRule = ruleDelegation.getDelegationRuleBaseValues();
-                performanceLogger.log("Found delegate rule: "+ delegateRule.getRuleBaseValuesId());
-                oldRules.put(ruleDelegation.getDelegateRuleId(), delegateRule);
-            }
-        }
-        performanceLogger.log("Begin removing rule delegations from new rule.");
-        for (Iterator iterator = newRule.getResponsibilities().iterator(); iterator.hasNext();) {
-            RuleResponsibility responsibility = (RuleResponsibility) iterator.next();
-            for (Iterator delIterator = responsibility.getDelegationRules().iterator(); delIterator.hasNext();) {
-                RuleDelegation ruleDelegation = (RuleDelegation) delIterator.next();
-                performanceLogger.log("Removing rule delegation: "+ ruleDelegation.getDelegateRuleId()+" from new rule.");
-                oldRules.remove(ruleDelegation.getDelegateRuleId());
-            }
-        }
-        return oldRules;
-    }
-     */
     /**
      * This method will find any old delegation rules on the previous version of the parent rule which are not on the
      * new version of the rule so that they can be marked non-current.

@@ -1050,11 +1050,7 @@
         class="org.kuali.rice.krad.service.impl.DocumentTypeAndExistingRecordsOnlyPermissionTypeServiceImpl"/>
 
   <bean id="riceApplicationConfigurationMediationService"
-        class="org.kuali.rice.krad.service.impl.RiceApplicationConfigurationMediationServiceImpl"
-        p:configurationParameterCacheMaxSize="${krad.cache.parameter.max.size}"
-        p:configurationParameterCacheMaxAgeSeconds="${krad.cache.parameter.max.age.seconds}"
-        p:nonDatabaseComponentsCacheMaxSize="${krad.cache.nonDatabaseComponent.max.size}"
-        p:nonDatabaseComponentsCacheMaxAgeSeconds="${krad.cache.nonDatabaseComponent.max.age.seconds}"/>
+        class="org.kuali.rice.krad.service.impl.RiceApplicationConfigurationMediationServiceImpl" />
 
   <!-- RiceApplicationConfigurationService needs to be published using the applicationId as its namespace and not KNS -->
   <bean id="riceApplicationConfigurationService"

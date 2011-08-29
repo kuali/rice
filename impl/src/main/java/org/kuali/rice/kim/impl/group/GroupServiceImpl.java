@@ -27,13 +27,11 @@ import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.api.group.GroupMemberQueryResults;
 import org.kuali.rice.kim.api.group.GroupQueryResults;
 import org.kuali.rice.kim.api.group.GroupService;
-import org.kuali.rice.kim.api.identity.IdentityManagementNotificationService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.common.attribute.AttributeTransform;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
@@ -41,9 +39,7 @@ import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 
-import javax.xml.namespace.QName;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,9 +50,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.in;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
 public class GroupServiceImpl extends GroupServiceBase implements GroupService {
     private static final Logger LOG = Logger.getLogger(GroupServiceImpl.class);
@@ -501,30 +495,6 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         return groups;
     }
 
-    /*protected List<String> getMemberIdsByType(Group group, String memberType) {
-        List<String> principalIds = new ArrayList<String>();
-        if (group != null) {
-            for (GroupMember member : getMembersOfGroup(group.getId())) {
-                if (member.getTypeCode().equals(memberType)) {
-                    principalIds.add(member.getMemberId());
-                }
-            }
-        }
-        return principalIds;
-    }*/
-
-    protected List<GroupMember> getMembersByType(Collection<GroupMember> members, String memberType) {
-        List<GroupMember> membersByType = new ArrayList<GroupMember>();
-        if (members != null) {
-            for (GroupMember member : members) {
-                if (member.getTypeCode().equals(memberType)) {
-                    membersByType.add(member);
-                }
-            }
-        }
-        return membersByType;
-    }
-
     protected List<String> getMemberIdsByType(Collection<GroupMember> members, String memberType) {
         List<String> membersIds = new ArrayList<String>();
         if (members != null) {
@@ -631,8 +601,6 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         groupMember.setMemberId(childId);
 
         this.businessObjectService.save(groupMember);
-        getIdentityManagementNotificationService().groupUpdated();
-
         return true;
     }
 
@@ -646,8 +614,8 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         groupMember.setMemberId(principalId);
 
         groupMember = (GroupMemberBo)this.businessObjectService.save(groupMember);
-        KIMServiceLocatorInternal.getGroupInternalService().updateForUserAddedToGroup(groupMember.getMemberId(), groupMember.getGroupId());
-        getIdentityManagementNotificationService().groupUpdated();
+        KIMServiceLocatorInternal.getGroupInternalService().updateForUserAddedToGroup(groupMember.getMemberId(),
+                groupMember.getGroupId());
         return true;
     }
 
@@ -754,8 +722,8 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
        }
 
        // do updates
-       KIMServiceLocatorInternal.getGroupInternalService().updateForWorkgroupChange(groupId, memberPrincipalsBefore, memberPrincipalsAfter);
-       getIdentityManagementNotificationService().groupUpdated();
+       KIMServiceLocatorInternal.getGroupInternalService().updateForWorkgroupChange(groupId, memberPrincipalsBefore,
+               memberPrincipalsAfter);
    }
 
 	/**
@@ -771,7 +739,6 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         	GroupMemberBo groupMember = groupMembers.get(0);
         	groupMember.setActiveToDateValue(today);
             this.businessObjectService.save(groupMember);
-            getIdentityManagementNotificationService().groupUpdated();
             return true;
         }
 
@@ -790,8 +757,8 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         	GroupMemberBo member = groupMembers.iterator().next();
         	member.setActiveToDateValue(new java.sql.Timestamp(System.currentTimeMillis()));
         	this.businessObjectService.save(member);
-            KIMServiceLocatorInternal.getGroupInternalService().updateForUserRemovedFromGroup(member.getMemberId(), member.getGroupId());
-            getIdentityManagementNotificationService().groupUpdated();
+            KIMServiceLocatorInternal.getGroupInternalService().updateForUserRemovedFromGroup(member.getMemberId(),
+                    member.getGroupId());
             return true;
         }
 
@@ -837,7 +804,6 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 		}
 
 		GroupBo savedGroup = KIMServiceLocatorInternal.getGroupInternalService().saveWorkgroup(group);
-		getIdentityManagementNotificationService().groupUpdated();
 		return savedGroup;
 	}
 
@@ -878,13 +844,6 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 
         return new ArrayList<GroupMemberBo>(groupMembers);
 	}
-
-    protected IdentityManagementNotificationService getIdentityManagementNotificationService() {
-        return (IdentityManagementNotificationService) KsbApiServiceLocator
-                .getMessageHelper().getServiceAsynchronously(
-                        new QName(KimApiConstants.Namespaces.KIM_NAMESPACE_2_0,
-                                KimApiConstants.ServiceNames.IDENTITY_MANAGEMENT_NOTIFICATION_SERVICE_SOAP));
-    }
 
     /**
      * Sets the businessObjectService attribute value.

@@ -17,7 +17,6 @@ import org.kuali.rice.core.api.component.Component;
 import org.kuali.rice.core.api.namespace.Namespace;
 import org.kuali.rice.core.api.namespace.NamespaceService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
 import org.kuali.rice.krad.service.RiceApplicationConfigurationMediationService;
@@ -31,31 +30,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.TimeUnit;
 
 public class RiceApplicationConfigurationMediationServiceImpl implements RiceApplicationConfigurationMediationService {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RiceApplicationConfigurationMediationServiceImpl.class);
-     
-    // Max age defined in seconds
-    protected int configurationParameterCacheMaxSize = 200;
-    protected int configurationParameterCacheMaxAgeSeconds = 3600;
-    protected int nonDatabaseComponentsCacheMaxSize = 50;
-    protected int nonDatabaseComponentsCacheMaxAgeSeconds = 3600;
 
     //TODO: use the concurrentMap properties rather than synchronized blocks
-    protected final ConcurrentMap<String, String> configurationParameterCache = new MapMaker().maximumSize(configurationParameterCacheMaxSize).expireAfterAccess(configurationParameterCacheMaxAgeSeconds, TimeUnit.SECONDS).softValues().makeMap();
-    protected final ConcurrentMap<String,List<Component>> nonDatabaseComponentsCache = new MapMaker().maximumSize(nonDatabaseComponentsCacheMaxSize).expireAfterAccess(nonDatabaseComponentsCacheMaxAgeSeconds, TimeUnit.SECONDS).softValues().makeMap();
-    protected final ConcurrentMap<String,RiceApplicationConfigurationService> responsibleServiceByPackageClass = new MapMaker().maximumSize(configurationParameterCacheMaxSize).expireAfterAccess(configurationParameterCacheMaxAgeSeconds, TimeUnit.SECONDS).softValues().makeMap();
+    protected final ConcurrentMap<String,RiceApplicationConfigurationService> responsibleServiceByPackageClass = new MapMaker().softValues().makeMap();
     
     public String getConfigurationParameter( String namespaceCode, String parameterName ){
     	
     	String parameterValue = null;
     	if ( namespaceCode != null ) {
-    	    String parameterKey = (new StringBuffer(namespaceCode).append(SearchOperator.OR.op()).append(parameterName)).toString();
-    	    parameterValue = getParameterValueFromConfigurationParameterCache( parameterKey );
-    	    if ( parameterValue != null ) {
-                return parameterValue;
-            }
     	    NamespaceService nsService = KRADServiceLocatorInternal.getNamespaceService();
     	    final String applicationNamespaceCode;
     	    Namespace namespace = nsService.getNamespace(namespaceCode);
@@ -70,22 +55,8 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
 					parameterValue = rac.getConfigurationParameter(parameterName);
 				}
 			}
-			if (parameterValue != null){
-				synchronized (configurationParameterCache) {
-				    configurationParameterCache.put( parameterKey, parameterValue);
-				}
-			}
 		}
     	return parameterValue;
-    }
-    
-
-    protected String getParameterValueFromConfigurationParameterCache(String parameterKey) {
-        return configurationParameterCache.get( parameterKey );
-    }
-    
-    protected List<Component> getComponentListFromNonDatabaseComponentsCache(String nonDatabaseServiceNameKey) {
-        return nonDatabaseComponentsCache.get( nonDatabaseServiceNameKey );
     }
 
     public List<Component> getNonDatabaseComponents() {
@@ -103,24 +74,10 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
 		List<Component> nonDatabaseComponents = new ArrayList<Component>();
 		//add cache per serviceName
 		for ( QName serviceName : serviceNames ) {
-		    List<Component> nonDatabaseComponentFromCache = this.getComponentListFromNonDatabaseComponentsCache(serviceName.toString());
-	        if (nonDatabaseComponentFromCache != null) {
-	            nonDatabaseComponents.addAll(nonDatabaseComponentFromCache);
-	        } else {
-    			RiceApplicationConfigurationService rac = findRiceApplicationConfigurationService(serviceName);
-    			try {
-        			if (rac != null) {
-        				nonDatabaseComponents.addAll(rac.getNonDatabaseComponents());
-        				synchronized (nonDatabaseComponentsCache) {
-            	            nonDatabaseComponentsCache.put(serviceName.toString(), rac.getNonDatabaseComponents() );
-    					}
-        			}
-    			} catch (Exception e) {
-    			    //TODO : Need a better way to catch if service is not active (404 error)
-    			    LOG.warn("Invalid RiceApplicationConfigurationService with name: " + serviceName + ".  ");
-    			}
-	        }
-			
+    	    RiceApplicationConfigurationService rac = findRiceApplicationConfigurationService(serviceName);
+            if (rac != null) {
+                return rac.getNonDatabaseComponents();
+            }
 		}
 		
 		return nonDatabaseComponents;
@@ -156,30 +113,6 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
     		LOG.warn("Failed to locate RiceApplicationConfigurationService with namespace: " + namespace,e);
     	}
     	return null;
-    }
-
-
-    public void setConfigurationParameterCacheMaxSize(
-            int configurationParameterCacheMaxSize) {
-        this.configurationParameterCacheMaxSize = configurationParameterCacheMaxSize;
-    }
-
-
-    public void setConfigurationParameterCacheMaxAgeSeconds(
-            int configurationParameterCacheMaxAgeSeconds) {
-        this.configurationParameterCacheMaxAgeSeconds = configurationParameterCacheMaxAgeSeconds;
-    }
-
-
-    public void setNonDatabaseComponentsCacheMaxSize(
-            int nonDatabaseComponentsCacheMaxSize) {
-        this.nonDatabaseComponentsCacheMaxSize = nonDatabaseComponentsCacheMaxSize;
-    }
-
-
-    public void setNonDatabaseComponentsCacheMaxAgeSeconds(
-            int nonDatabaseComponentsCacheMaxAgeSeconds) {
-        this.nonDatabaseComponentsCacheMaxAgeSeconds = nonDatabaseComponentsCacheMaxAgeSeconds;
     }
     
     /**

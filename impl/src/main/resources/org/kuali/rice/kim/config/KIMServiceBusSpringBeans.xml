@@ -146,18 +146,6 @@
   <bean parent="kimLocalServiceExporter">
     <property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
-      <bean parent="kimJaxWsSoapService"
-        p:service-ref="kimIdentityManagementNotificationService"
-        p:localServiceName="identityManagementNotificationServiceSoap"
-        p:serviceInterface="org.kuali.rice.kim.api.identity.IdentityManagementNotificationService"
-        />
-    </property>
-    <property name="exportIf" value="identityManagementNotificationServiceSoap.expose"/>
-  </bean>
-
-  <bean parent="kimLocalServiceExporter">
-    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
-    <property name="serviceDefinition">
       <bean parent="kimService"
         p:service-ref="documentInitiatorRoleTypeService"
         p:localServiceName="documentInitiatorRoleTypeService" />

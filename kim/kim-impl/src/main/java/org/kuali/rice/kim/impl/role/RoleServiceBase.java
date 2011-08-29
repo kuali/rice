@@ -8,7 +8,6 @@ import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
-import org.kuali.rice.kim.api.identity.IdentityManagementNotificationService;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.role.Role;
@@ -715,12 +714,6 @@ public class RoleServiceBase {
             responsibilityInternalService = KIMServiceLocatorInternal.getResponsibilityInternalService();
         }
         return responsibilityInternalService;
-    }
-
-    protected IdentityManagementNotificationService getIdentityManagementNotificationService() {
-        return (IdentityManagementNotificationService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(new QName(
-                KimApiConstants.Namespaces.KIM_NAMESPACE_2_0,
-                                KimApiConstants.ServiceNames.IDENTITY_MANAGEMENT_NOTIFICATION_SERVICE_SOAP));
     }
 
     /**

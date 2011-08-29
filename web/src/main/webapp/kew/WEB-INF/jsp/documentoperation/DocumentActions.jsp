@@ -22,10 +22,6 @@
 	  <tr>
 		<td class="thnormal" colspan="2" align="center" height="30"><strong>Document Actions</strong></td>
 	  </tr>
-	      <tr>
-	  	    <td width="33%" align="right" class="thnormal">Flush Rule Cache<html-el:image property="methodToCall.flushRuleCache" src="${ConfigProperties.kew.url}/images/buttonsmall_submit.gif" alt="Flush Rule Cache" /></td>
-	  	    <td width="66%" class="datacell">&nbsp;</td>
-	  	  </tr>
 		  <tr>
 	  	    <td width="33%" align="right" class="thnormal">Queue Document<html-el:image property="methodToCall.queueDocument" src="${ConfigProperties.kew.url}/images/buttonsmall_submit.gif" alt="Queue Document" /></td>
 	  	    <td width="66%" class="datacell">&nbsp;</td>

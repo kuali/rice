@@ -104,10 +104,4 @@ public interface PersonService {
 	 * to be taken when performing a search.
 	 */
 	boolean hasPersonProperty(Class<? extends BusinessObject> businessObjectClass, Map<String,String> fieldValues);
-	
-	
-	/**
-     * Flush all of the role-related caches.
-     */
-    void flushPersonCaches();
 }

@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import com.google.common.collect.MapMaker;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -24,6 +23,7 @@ import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.kim.api.identity.PersonService;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.entity.EntityDefaultQueryResults;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType;
@@ -32,7 +32,6 @@ import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoDefault;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
-import org.kuali.rice.kim.api.identity.PersonService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -43,7 +42,6 @@ import org.kuali.rice.krad.lookup.CollectionIncomplete;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
-import org.springframework.beans.factory.InitializingBean;
 
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -53,8 +51,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.TimeUnit;
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
@@ -64,7 +60,7 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class PersonServiceImpl implements PersonService, InitializingBean {
+public class PersonServiceImpl implements PersonService {
 
 	private static Logger LOG = Logger.getLogger( PersonServiceImpl.class );
 	protected static final String ENTITY_EXT_ID_PROPERTY_PREFIX = "externalIdentifiers.";
@@ -83,13 +79,6 @@ public class PersonServiceImpl implements PersonService, InitializingBean {
 	private RoleService roleService;
 	private BusinessObjectMetaDataService businessObjectMetaDataService;
 	private MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
-
-	// Max age defined in seconds
-	protected int personCacheMaxSize = 3000;
-	protected int personCacheMaxAgeSeconds = 3600;
-
-	protected ConcurrentMap<String,Person> personCache;
-	// PERSON/ENTITY RELATED METHODS
 
 	protected List<String> personEntityTypeCodes = new ArrayList<String>( 4 );
 	// String that can be passed to the lookup framework to create an type = X OR type = Y criteria
@@ -150,25 +139,19 @@ public class PersonServiceImpl implements PersonService, InitializingBean {
 		if ( StringUtils.isBlank(principalId) ) {
 			return null;
 		}
-		// check the cache
-		Person person = getPersonImplFromPrincipalIdCache( principalId );
-		if ( person != null ) {
-			return person;
-		}
-		EntityDefault entity = null;
+
 		// get the corresponding principal
-		Principal principal = getIdentityService().getPrincipal( principalId );
+		final Principal principal = getIdentityService().getPrincipal( principalId );
 		// get the identity
 		if ( principal != null ) {
-			entity = getIdentityService().getEntityDefault(principal.getEntityId());
+			final EntityDefault entity = getIdentityService().getEntityDefault(principal.getEntityId());
+         	// convert the principal and identity to a Person
+            // skip if the person was created from the DB cache
+            if (entity != null ) {
+                return convertEntityToPerson( entity, principal );
+            }
 		}
-		// convert the principal and identity to a Person
-		// skip if the person was created from the DB cache
-		if (entity != null ) {
-			person = convertEntityToPerson( entity, principal );
-			addPersonToCache( person );
-		}
-		return person;
+		return null;
 	}
 
 	protected PersonImpl convertEntityToPerson( EntityDefault entity, Principal principal ) {
@@ -194,32 +177,6 @@ public class PersonServiceImpl implements PersonService, InitializingBean {
 		}
 	}
 	
-	protected Person getPersonImplFromPrincipalNameCache( String principalName ) {
-		return personCache.get( "principalName="+principalName );
-	}
-
-	protected Person getPersonImplFromPrincipalIdCache( String principalId ) {
-		return personCache.get( "principalId="+principalId );
-	}
-	
-	protected Person getPersonImplFromEmployeeIdCache( String principalId ) {
-		return personCache.get( "employeeId="+principalId );
-	}
-	
-	protected void addPersonToCache( Person person ) {
-		if ( person != null ) {
-			synchronized (personCache) {
-				personCache.put( "principalName="+person.getPrincipalName(), person );
-				personCache.put( "principalId="+person.getPrincipalId(), person );
-				personCache.put( "employeeId="+person.getEmployeeId(), person );
-			}
-		}
-	}
-	
-	public void flushPersonCaches() {
-	    personCache.clear();
-	}
-	
 	
 	/**
 	 * @see org.kuali.rice.kim.api.identity.PersonService#getPersonByPrincipalName(java.lang.String)
@@ -228,45 +185,32 @@ public class PersonServiceImpl implements PersonService, InitializingBean {
 		if ( StringUtils.isBlank(principalName) ) {
 			return null;
 		}
-		Person person = null;
-		// check the cache		
-		person = getPersonImplFromPrincipalNameCache( principalName );
-		if ( person != null ) {
-			return person;
-		}
-		EntityDefault entity = null;
+
 		// get the corresponding principal
-		Principal principal = getIdentityService().getPrincipalByPrincipalName( principalName );
+		final Principal principal = getIdentityService().getPrincipalByPrincipalName( principalName );
 		// get the identity
 		if ( principal != null ) {
-			entity = getIdentityService().getEntityDefault(principal.getEntityId());
+            final EntityDefault entity = getIdentityService().getEntityDefault(principal.getEntityId());
+
+            // convert the principal and identity to a Person
+            if ( entity != null ) {
+                return convertEntityToPerson( entity, principal );
+            }
 		}
-		// convert the principal and identity to a Person
-		if ( entity != null ) {
-			person = convertEntityToPerson( entity, principal );
-		}
-		addPersonToCache( person );
-		return person;
+		return null;
 	}
 
 	public Person getPersonByEmployeeId(String employeeId) {
 		if ( StringUtils.isBlank( employeeId  ) ) {
 			return null;
 		}
-		
-		Person person = getPersonImplFromEmployeeIdCache( employeeId );
-		if ( person != null ) {
-			return person;
-		}
-		
-		Map<String,String> criteria = new HashMap<String,String>( 1 );
-		criteria.put( KIMPropertyConstants.Person.EMPLOYEE_ID, employeeId );
-		List<Person> people = findPeople( criteria ); 
+
+		final List<Person> people = findPeople( Collections.singletonMap(KIMPropertyConstants.Person.EMPLOYEE_ID, employeeId) );
 		if ( !people.isEmpty() ) {
-			person = people.get(0);
-			addPersonToCache( person );
+			return people.get(0);
+
 		}
-		return person;
+		return null;
 	}
 	
 	/**
@@ -871,17 +815,4 @@ public class PersonServiceImpl implements PersonService, InitializingBean {
 		}
 		return maintenanceDocumentDictionaryService;
 	}
-
-	public void setPersonCacheMaxSize(int personCacheMaxSize) {
-		this.personCacheMaxSize = personCacheMaxSize;
-	}
-
-	public void setPersonCacheMaxAgeSeconds(int personCacheMaxAgeSeconds) {
-		this.personCacheMaxAgeSeconds = personCacheMaxAgeSeconds;
-	}
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        personCache = new MapMaker().expireAfterAccess(personCacheMaxAgeSeconds, TimeUnit.SECONDS).maximumSize(personCacheMaxSize).softValues().makeMap();
-    }
 }

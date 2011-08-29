@@ -211,11 +211,6 @@
     <param name="session.document.cache.size" override="false">100</param>
 
 
-    <param name="krad.cache.parameter.max.size" override="false">200</param>
-    <param name="krad.cache.parameter.max.age.seconds" override="false">3600</param>
-    <param name="krad.cache.nonDatabaseComponent.max.size" override="false">50</param>
-    <param name="krad.cache.nonDatabaseComponent.max.age.seconds" override="false">3600</param>
-
 	  <param name="attachments.directory" override="false">${java.io.tmpdir}/${environment}/attachments</param>
     <param name="attachments.pending.directory" override="false">${attachments.directory}/pending</param>
 

@@ -465,40 +465,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
     @SuppressWarnings("unchecked")
     protected void inactivateApplicationRoleMemberships(String principalId, Timestamp yesterday) {
-        //FIXME: why isn't this method using the passed in Timestamp?
-        //FIXME: flush caching
-        /*
-        // get all role type services
-        Collection<KimType> types = KimApiServiceLocator.getKimTypeInfoService().findAllKimTypes();
-        // create sub list of only application role types
-        ArrayList<KimType> applicationRoleTypes = new ArrayList<KimType>(types.size());
-        for (KimType typeInfo : types) {
-            RoleTypeService service = getRoleTypeService(typeInfo);
-            try {//log service unavailable as WARN error
-                if (isApplicationRoleType(typeInfo.getId(), service)) {
-                    applicationRoleTypes.add(typeInfo);
-                }
-            } catch (Exception e) {
-                LOG.warn(e.getMessage(), e);
-            }
-        }
 
-        Map<String, Object> roleLookupMap = new HashMap<String, Object>(2);
-        roleLookupMap.put(KIMPropertyConstants.Role.ACTIVE, "Y");
-
-        // loop over application types
-        for (KimType typeInfo : applicationRoleTypes) {
-            RoleTypeService service = getRoleTypeService(typeInfo);
-            // get all roles for that type
-            roleLookupMap.put(KIMPropertyConstants.Role.KIM_TYPE_ID, typeInfo.getId());
-            Collection<RoleBo> roles = getBusinessObjectService().findMatching(RoleBo.class, roleLookupMap);
-            // loop over all roles in those types
-            for (RoleBo role : roles) {
-                // call the principalInactivated() on the role type service for each role
-                service.principalInactivated(principalId, role.getNamespaceCode(), role.getName());
-            }
-        }
-        */
     }
 
 
@@ -511,22 +478,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             roleIds.add(roleMemberBo.getRoleId()); // add to the set of IDs
         }
         getBusinessObjectService().save(roleMembers);
-        //FIXME: flush cache
-        /*
-        // find all distinct role IDs and type services
-        for (String roleId : roleIds) {
-            RoleBo role = getRoleBo(roleId);
-            RoleTypeService roleTypeService = getRoleTypeService(roleId);
-            try {
-                if (roleTypeService != null) {
-                    roleTypeService.principalInactivated(principalId, role.getNamespaceCode(), role.getName());
-                }
-            } catch (Exception ex) {
-                LOG.error("Problem notifying role type service of principal inactivation: " + role.getKimRoleType().getServiceName(), ex);
-            }
-        }
-        getIdentityManagementNotificationService().roleUpdated();
-        */
     }
 
     protected void inactivateGroupRoleMemberships(List<String> groupIds, Timestamp yesterday) {
@@ -535,7 +486,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             roleMemberbo.setActiveToDateValue(yesterday);
         }
         getBusinessObjectService().save(roleMemberBosOfGroupType);
-        getIdentityManagementNotificationService().roleUpdated();
     }
 
     protected void inactivatePrincipalGroupMemberships(String principalId, Timestamp yesterday) {
@@ -566,7 +516,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             delegateMemberBo.setActiveToDateValue(yesterday);
         }
         getBusinessObjectService().save(delegationMembers);
-        getIdentityManagementNotificationService().delegationUpdated();
     }
 
 
@@ -1135,7 +1084,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             roleMemberBo.setActiveToDateValue(yesterday);
         }
         getBusinessObjectService().save(roleMemberBoList);
-        getIdentityManagementNotificationService().roleUpdated();
     }
 
     private void inactivateRoleDelegations(List<String> roleIds, Timestamp yesterday) {
@@ -1147,7 +1095,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             }
         }
         getBusinessObjectService().save(delegations);
-        getIdentityManagementNotificationService().delegationUpdated();
     }
 
     private void inactivateMembershipsForRoleAsMember(List<String> roleIds, Timestamp yesterday) {
@@ -1156,7 +1103,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             roleMemberBo.setActiveToDateValue(yesterday);
         }
         getBusinessObjectService().save(roleMemberBoList);
-        getIdentityManagementNotificationService().roleUpdated();
     }
 
     private List<DelegateMember> getDelegateMembersForDelegation(DelegateBo delegateBo) {
@@ -1207,7 +1153,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         // add row to member table
         // When members are added to roles, clients must be notified.
         getResponsibilityInternalService().saveRoleMember(newRoleMember);
-        getIdentityManagementNotificationService().roleUpdated();
     }
 
     @Override
@@ -1236,7 +1181,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
         // When members are added to roles, clients must be notified.
         getResponsibilityInternalService().saveRoleMember(newRoleMember);
-        getIdentityManagementNotificationService().roleUpdated();
     }
 
     @Override
@@ -1268,7 +1212,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
         // When members are added to roles, clients must be notified.
         getResponsibilityInternalService().saveRoleMember(newRoleMember);
-        getIdentityManagementNotificationService().roleUpdated();
     }
 
     @Override
@@ -1315,8 +1258,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	// When members are added to roles, clients must be notified.
     	getResponsibilityInternalService().saveRoleMember(newRoleMember);
     	deleteNullMemberAttributeData(newRoleMember.getAttributeDetails());
-    	getIdentityManagementNotificationService().roleUpdated();
-
     	return findRoleMember(newRoleMember.getRoleMemberId());
     }
 
@@ -1357,7 +1298,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 			}
 		}
 		getBusinessObjectService().save(newRoleRspAction);
-		getIdentityManagementNotificationService().roleUpdated();
     }
 
     @Override
@@ -1408,7 +1348,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	for(DelegateMemberBo delegationMember: delegation.getMembers()){
     		deleteNullDelegationMemberAttributeData(delegationMember.getAttributes());
     	}
-    	getIdentityManagementNotificationService().roleUpdated();
     }
 
     private void removeRoleMembers(List<RoleMemberBo> members) {
@@ -1442,8 +1381,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             rms = getRoleMembersByDefaultStrategy(role, principalId, Role.PRINCIPAL_MEMBER_TYPE, qualifier);
         } 
         removeRoleMembers(rms);
-        // When members are removed from roles, clients must be notified.
-        getIdentityManagementNotificationService().roleUpdated();
     }
     
     @Override
@@ -1457,8 +1394,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             rms = getRoleMembersByDefaultStrategy(roleBo, groupId, Role.GROUP_MEMBER_TYPE, qualifier);
         } 
         removeRoleMembers(rms);
-        // When members are removed from roles, clients must be notified.
-		getIdentityManagementNotificationService().roleUpdated();
     }   
     
     @Override
@@ -1472,8 +1407,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             rms = getRoleMembersByDefaultStrategy(role, roleId, Role.ROLE_MEMBER_TYPE, qualifier);
         } 
         removeRoleMembers(rms);
-        // When members are removed from roles, clients must be notified.
-		getIdentityManagementNotificationService().roleUpdated();
     }    
 
     @Override
@@ -1523,7 +1456,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         newRolePermission.setActive(true);
 
         getBusinessObjectService().save(newRolePermission);
-        getIdentityManagementNotificationService().roleUpdated();
     }
 
     protected void addMemberAttributeData(RoleMemberBo roleMember, Map<String, String> qualifier, String kimTypeId) {

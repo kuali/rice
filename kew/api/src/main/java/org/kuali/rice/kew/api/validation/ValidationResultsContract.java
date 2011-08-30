@@ -17,6 +17,7 @@
 package org.kuali.rice.kew.api.validation;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * A set of results from validation of a field of data.
@@ -24,5 +25,5 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ValidationResultsContract {
-	public List<? extends ValidationResultContract> getValidationResults();
+	public Map<String, String> getErrors();
 }

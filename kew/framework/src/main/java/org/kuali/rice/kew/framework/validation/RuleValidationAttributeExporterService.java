@@ -23,16 +23,16 @@ import java.util.List;
 @WebService(name = KewFrameworkServiceLocator.RULE_VALIDATION_ATTRIBUTE_EXPORTER_SERVICE, targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface RuleValidationAttributeExporterService {
-   /**
-	 * Validates the rule within the given RuleValidationContext.
-	 *
-	 * @return a ValidationResults object representing the results of the validation, if this is
-	 * empty or <code>null</code> this signifies that validation was successful.
-	 */
-   @WebMethod(operationName = "validate")
-   @WebResult(name = "validationResults")
-   @XmlElement(name = "validationResults", required = false)
-	public ValidationResults validate(
+    /**
+     * Validates the rule within the given RuleValidationContext.
+     *
+     * @return a ValidationResults object representing the results of the validation, if this is
+     * empty or <code>null</code> this signifies that validation was successful.
+     */
+    @WebMethod(operationName = "validate")
+    @WebResult(name = "validationResults")
+    @XmlElement(name = "validationResults", required = false)
+    public ValidationResults validate(
                                 @WebParam(name = "attributeName") String attributeName,
                                 @WebParam(name = "validationContext") RuleValidationContext validationContext) throws Exception;
 }

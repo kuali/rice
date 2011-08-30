@@ -634,7 +634,7 @@ public class RuleServiceImpl implements RuleService {
                 try {
                     RuleValidationContext validationContext = RuleValidationContext.Builder.create(RuleBaseValues.to(ruleBaseValues), RuleDelegation.to(ruleDelegation), userSession.getPrincipalId()).build();
                     ValidationResults results = attribute.validate(validationContext);
-                    if (results != null && !results.getValidationResults().isEmpty()) {
+                    if (results != null && !results.getErrors().isEmpty()) {
                         errors.add(results);
                     }
                 } catch (Exception e) {

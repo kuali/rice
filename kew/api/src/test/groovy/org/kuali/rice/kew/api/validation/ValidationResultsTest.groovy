@@ -35,12 +35,7 @@ class ValidationResultsTest {
     }
 
     private static final String vr_xml(fieldName, errorMessage) {
-        return """
-        <error>
- 	 	    <fieldName>${fieldName}</fieldName>
- 	 	    <errorMessage>${errorMessage}</errorMessage>
- 	 	</error>
- 	 	"""
+        return """<entry key="${fieldName}">${errorMessage}</entry>"""
     }
 
     private static final ValidationResults create_vrs(num=1) {
@@ -48,58 +43,57 @@ class ValidationResultsTest {
         System.out.println(num)
         if (num > 0) {
             0.upto(num-1) {
-              b.addValidationResult("field_${it}", "field_${it} error message")
+              b.addError("field_${it}", "field_${it} error message")
             }
         }
         return b.build()
     }
 
     private static final String vrs_xml(num=1) {
-        def xml = """<validationResults xmlns="http://rice.kuali.org/kew/v2_0">"""
+        def xml = """<ns2:validationResults xmlns:ns2="http://rice.kuali.org/kew/v2_0" xmlns="http://rice.kuali.org/core/v2_0">"""
         if (num > 0) {
-          xml += (0..num-1).toArray().inject('') { str, i-> str + vr_xml(i) }
+            xml += "<ns2:errors>"
+            xml += (0..num-1).toArray().inject('') { str, i-> str + vr_xml(i) }
+            xml += "</ns2:errors>"
         }
-        return xml + """</validationResults>"""
+        return xml + "</ns2:validationResults>"
     }
 
     @Test(expected=IllegalArgumentException.class)
  	void test_Builder_create_fail_null() {
- 	    ValidationResult.Builder.create(null)
+ 	    ValidationResults.Builder.create(null)
  	}
 
     @Test
     void test_Builder_create_single_success() {
         def vrs = create_vrs(1)
-        Assert.assertEquals(1, vrs.getValidationResults().size())
-        def vr = vrs.getValidationResults().first()
-        Assert.assertEquals("field_0", vr.getFieldName())
-        Assert.assertEquals("field_0 error message", vr.getErrorMessage())
+        def vr = vrs.getErrors();
+        Assert.assertEquals(1, vr.size())
+        Assert.assertEquals("field_0 error message", vr.get("field_0"));
  	}
 
     @Test
     void test_Builder_create_multiple_success() {
         def vrs = create_vrs(3)
-        Assert.assertEquals(3, vrs.getValidationResults().size())
-        vrs.getValidationResults().eachWithIndex { obj, i ->
-            Assert.assertEquals("field_" + i, obj.getFieldName())
-            Assert.assertEquals("field_" + i + " error message", obj.getErrorMessage())
+        Assert.assertEquals(3, vrs.getErrors().size())
+        0.upto(2) {
+          Assert.assertEquals("field_" + it + " error message", vrs.getErrors().get("field_" + it));
         }
  	}
 
     @Test
     void test_Builder_create_none_success() {
         def vrs = create_vrs(0)
-        Assert.assertEquals(0, vrs.getValidationResults().size())
+        Assert.assertEquals(0, vrs.getErrors().size())
     }
 
     @Test
     void test_Builder_create_copy_success() {
         def vrs = create_vrs(3)
         vrs = ValidationResults.Builder.create(vrs)
-        Assert.assertEquals(3, vrs.getValidationResults().size())
-        vrs.getValidationResults().eachWithIndex { obj, i ->
-            Assert.assertEquals("field_" + i, obj.getFieldName())
-            Assert.assertEquals("field_" + i + " error message", obj.getErrorMessage())
+        Assert.assertEquals(3, vrs.getErrors().size())
+        0.upto(2) {
+          Assert.assertEquals("field_" + it + " error message", vrs.getErrors().get("field_" + it));
         }
  	}
 

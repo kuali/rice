@@ -20,6 +20,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kew.api.rule.RuleContract;
 import org.kuali.rice.kew.api.rule.RuleDelegationContract;
 import org.kuali.rice.kew.api.rule.RuleResponsibility;
@@ -32,11 +33,14 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A set of results from validation of a field of data.
@@ -46,7 +50,7 @@ import java.util.List;
 @XmlRootElement(name = ValidationResults.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = ValidationResults.Constants.TYPE_NAME, propOrder = {
-    ValidationResults.Constants.RESULTS_LIST_PROPERTY,
+    ValidationResults.Elements.ERRORS,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public class ValidationResults
@@ -55,8 +59,9 @@ public class ValidationResults
 
 	public static final String GLOBAL = "org.kuali.rice.kew.api.validation.ValidationResults.GLOBAL";
 
-    @XmlElement(name = Elements.ERROR, required = false)
-    private final List<ValidationResult> results;
+    @XmlElement(name = Elements.ERRORS, required = false)
+    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+    private final Map<String, String> errors;
 
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -66,22 +71,16 @@ public class ValidationResults
      * Private constructor used only by JAXB.
      */
     private ValidationResults() {
-        this.results = new ArrayList<ValidationResult>();
+        this.errors = Collections.emptyMap();
     }
 
     private ValidationResults(Builder builder) {
-       List<ValidationResult> results = new ArrayList<ValidationResult>();
-       if (builder.getValidationResults() != null) {
-           for (ValidationResult.Builder validationResultBuilder: builder.getValidationResults()) {
-               results.add(validationResultBuilder.build());
-           }
-       }
-       this.results = results;
+       this.errors = Collections.unmodifiableMap(builder.getErrors());
     }
 
     @Override
-	public List<ValidationResult> getValidationResults() {
-		return results;
+	public Map<String, String> getErrors() {
+		return errors;
 	}
 
     /**
@@ -92,7 +91,7 @@ public class ValidationResults
         implements Serializable, ModelBuilder, ValidationResultsContract
     {
 
-        private List<ValidationResult.Builder> results = new ArrayList<ValidationResult.Builder>();
+        private Map<String, String> errors = new HashMap<String, String>();
 
         private Builder() {
         }
@@ -106,13 +105,8 @@ public class ValidationResults
                 throw new IllegalArgumentException("contract was null");
             }
             Builder builder = create();
-
-            if (CollectionUtils.isNotEmpty(contract.getValidationResults())) {
-                List<ValidationResult.Builder> resultBuilders= new ArrayList<ValidationResult.Builder>();
-                for (ValidationResultContract c : contract.getValidationResults()) {
-                    resultBuilders.add(ValidationResult.Builder.create(c));
-                }
-                builder.setValidationResults(resultBuilders);
+            if (contract.getErrors() != null) {
+                builder.setErrors(contract.getErrors());
             }
             return builder;
         }
@@ -122,31 +116,28 @@ public class ValidationResults
         }
 
         @Override
-        public List<ValidationResult.Builder> getValidationResults() {
-            return this.results;
+        public Map<String, String> getErrors() {
+            return Collections.unmodifiableMap(this.errors);
         }
 
-        public void setValidationResults(List<ValidationResult.Builder> results) {
-            this.results = results;
+        public void setErrors(Map<String, String> errors) {
+            this.errors = new HashMap<String, String>(errors);
         }
 
         /**
          * Convenience method for adding an error message
          * @param errorMessage
          */
-        public void addValidationResult(String errorMessage) {
-            addValidationResult(GLOBAL, errorMessage);
+        public void addError(String errorMessage) {
+            addError(GLOBAL, errorMessage);
         }
 
         /**
          * Convenience method for adding an error message for a given field
          * @param errorMessage
          */
-        public void addValidationResult(String fieldName, String errorMessage) {
-            ValidationResult.Builder b = ValidationResult.Builder.create();
-            b.setFieldName(fieldName);
-            b.setErrorMessage(errorMessage);
-            results.add(b);
+        public void addError(String fieldName, String errorMessage) {
+            errors.put(fieldName, errorMessage);
         }
     }
 
@@ -156,12 +147,11 @@ public class ValidationResults
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "validationResults";
         final static String TYPE_NAME = "ValidationResultsType";
-        final static String RESULTS_LIST_PROPERTY = "results";
     }
     /**
      * A private class which exposes constants which define the XML element names to use when this object is marshalled to XML.
      */
     static class Elements {
-        final static String ERROR = "error";
+        final static String ERRORS = "errors";
     }
 }

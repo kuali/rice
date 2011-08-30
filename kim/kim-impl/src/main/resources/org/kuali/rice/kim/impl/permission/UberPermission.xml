@@ -15,36 +15,36 @@
  limitations under the License.
 -->
 
-  <bean id="PermissionImpl" parent="PermissionImpl-parentBean"/>
+  <bean id="UberPermissionImpl" parent="UberPermissionImpl-parentBean"/>
 
-  <bean id="PermissionImpl-parentBean" abstract="true" parent="BusinessObjectEntry" 
+  <bean id="UberPermissionImpl-parentBean" abstract="true" parent="BusinessObjectEntry" 
         p:businessObjectClass="org.kuali.rice.kim.impl.permission.UberPermissionBo"
         p:titleAttribute="id"
         p:objectLabel="Permission"
-        p:inquiryDefinition-ref="PermissionImpl-inquiryDefinition" 
-        p:lookupDefinition-ref="PermissionImpl-lookupDefinition">
+        p:inquiryDefinition-ref="UberPermissionImpl-inquiryDefinition" 
+        p:lookupDefinition-ref="UberPermissionImpl-lookupDefinition">
     <property name="attributes">
       <list>
-        <ref bean="PermissionImpl-template.namespaceCode"/>
-        <ref bean="PermissionImpl-template.name"/>
-        <ref bean="PermissionImpl-namespaceCode"/>
-        <ref bean="PermissionImpl-id"/>
-        <ref bean="PermissionImpl-name"/>
-        <ref bean="PermissionImpl-assignedToRoleNamespaceForLookup"/>
-        <ref bean="PermissionImpl-assignedToRoleNameForLookup"/>
-        <ref bean="PermissionImpl-assignedToPrincipalNameForLookup"/>
-        <ref bean="PermissionImpl-assignedToGroupNamespaceForLookup"/>
-        <ref bean="PermissionImpl-assignedToGroupNameForLookup"/>
-        <ref bean="PermissionImpl-templateId"/>
-        <ref bean="PermissionImpl-roleId"/>
-        <ref bean="PermissionImpl-principalId"/>
-        <ref bean="PermissionImpl-groupId"/>
-        <ref bean="PermissionImpl-attributeValue"/>
-        <ref bean="PermissionImpl-detailObjectsValues"/>
-        <ref bean="PermissionImpl-detailObjectsToDisplay"/>
-        <ref bean="PermissionImpl-assignedToRolesToDisplay"/>
-        <ref bean="PermissionImpl-detailCriteria"/>
-        <ref bean="PermissionImpl-active"/>
+        <ref bean="UberPermissionImpl-template.namespaceCode"/>
+        <ref bean="UberPermissionImpl-template.name"/>
+        <ref bean="UberPermissionImpl-namespaceCode"/>
+        <ref bean="UberPermissionImpl-id"/>
+        <ref bean="UberPermissionImpl-name"/>
+        <ref bean="UberPermissionImpl-assignedToRoleNamespaceForLookup"/>
+        <ref bean="UberPermissionImpl-assignedToRoleNameForLookup"/>
+        <ref bean="UberPermissionImpl-assignedToPrincipalNameForLookup"/>
+        <ref bean="UberPermissionImpl-assignedToGroupNamespaceForLookup"/>
+        <ref bean="UberPermissionImpl-assignedToGroupNameForLookup"/>
+        <ref bean="UberPermissionImpl-templateId"/>
+        <ref bean="UberPermissionImpl-roleId"/>
+        <ref bean="UberPermissionImpl-principalId"/>
+        <ref bean="UberPermissionImpl-groupId"/>
+        <ref bean="UberPermissionImpl-attributeValue"/>
+        <ref bean="UberPermissionImpl-detailObjectsValues"/>
+        <ref bean="UberPermissionImpl-detailObjectsToDisplay"/>
+        <ref bean="UberPermissionImpl-assignedToRolesToDisplay"/>
+        <ref bean="UberPermissionImpl-detailCriteria"/>
+        <ref bean="UberPermissionImpl-active"/>
       </list>
     </property>
 	<property name="collections">
@@ -112,63 +112,63 @@
 	</property>
   </bean>
 
-  <bean id="PermissionImpl-template.namespaceCode" parent="PermissionImpl-template.namespaceCode-parentBean"/>
-  <bean id="PermissionImpl-template.namespaceCode-parentBean" parent="RoleBo-namespaceCode" abstract="true" p:name="template.namespaceCode" p:label="Template Namespace" p:shortLabel="Template Namespace">
+  <bean id="UberPermissionImpl-template.namespaceCode" parent="UberPermissionImpl-template.namespaceCode-parentBean"/>
+  <bean id="UberPermissionImpl-template.namespaceCode-parentBean" parent="RoleBo-namespaceCode" abstract="true" p:name="template.namespaceCode" p:label="Template Namespace" p:shortLabel="Template Namespace">
   </bean>
     
-  <bean id="PermissionImpl-templateId" parent="PermissionImpl-templateId-parentBean"/>
-  <bean id="PermissionImpl-templateId-parentBean" parent="AttributeDefinition" abstract="true" p:name="template.id" p:label="Template Identifier" p:shortLabel="Template Identifier" p:maxLength="40" p:required="false">
+  <bean id="UberPermissionImpl-templateId" parent="UberPermissionImpl-templateId-parentBean"/>
+  <bean id="UberPermissionImpl-templateId-parentBean" parent="AttributeDefinition" abstract="true" p:name="template.id" p:label="Template Identifier" p:shortLabel="Template Identifier" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="HiddenControlDefinition"/>
     </property>
   </bean>
     
 
-  <bean id="PermissionImpl-roleId" parent="PermissionImpl-roleId-parentBean"/>
-  <bean id="PermissionImpl-roleId-parentBean" parent="AttributeDefinition" abstract="true" p:name="assignedToRole.id" p:label="Role Identifier" p:shortLabel="Role Identifier" p:maxLength="40" p:required="false">
+  <bean id="UberPermissionImpl-roleId" parent="UberPermissionImpl-roleId-parentBean"/>
+  <bean id="UberPermissionImpl-roleId-parentBean" parent="AttributeDefinition" abstract="true" p:name="assignedToRole.id" p:label="Role Identifier" p:shortLabel="Role Identifier" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="HiddenControlDefinition"/>
     </property>
   </bean>
 
-  <bean id="PermissionImpl-principalId" parent="PermissionImpl-principalId-parentBean"/>
-  <bean id="PermissionImpl-principalId-parentBean" parent="AttributeDefinition" abstract="true" p:name="assignedToPrincipal.principalId" p:label="Principal Identifier" p:shortLabel="Principal Identifier" p:maxLength="40" p:required="false">
+  <bean id="UberPermissionImpl-principalId" parent="UberPermissionImpl-principalId-parentBean"/>
+  <bean id="UberPermissionImpl-principalId-parentBean" parent="AttributeDefinition" abstract="true" p:name="assignedToPrincipal.principalId" p:label="Principal Identifier" p:shortLabel="Principal Identifier" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="HiddenControlDefinition"/>
     </property>
   </bean>
 
-  <bean id="PermissionImpl-groupId" parent="PermissionImpl-groupId-parentBean"/>
-  <bean id="PermissionImpl-groupId-parentBean" parent="AttributeDefinition" abstract="true" p:name="assignedToGroup.id" p:label="Group Identifier" p:shortLabel="Group Identifier" p:maxLength="40" p:required="false">
+  <bean id="UberPermissionImpl-groupId" parent="UberPermissionImpl-groupId-parentBean"/>
+  <bean id="UberPermissionImpl-groupId-parentBean" parent="AttributeDefinition" abstract="true" p:name="assignedToGroup.id" p:label="Group Identifier" p:shortLabel="Group Identifier" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="HiddenControlDefinition"/>
     </property>
   </bean>
   
-  <bean id="PermissionImpl-attributeValue" parent="PermissionImpl-attributeValue-parentBean"/>
-  <bean id="PermissionImpl-attributeValue-parentBean" parent="PermissionAttribute-attributeValue" abstract="true"/>
+  <bean id="UberPermissionImpl-attributeValue" parent="UberPermissionImpl-attributeValue-parentBean"/>
+  <bean id="UberPermissionImpl-attributeValue-parentBean" parent="PermissionAttribute-attributeValue" abstract="true"/>
   
-  <bean id="PermissionImpl-template.name" parent="PermissionImpl-template.name-parentBean"/>
-  <bean id="PermissionImpl-template.name-parentBean" parent="AttributeDefinition" abstract="true" p:name="template.name" p:label="Template Name" p:shortLabel="Template Name" p:maxLength="40" p:required="false">
+  <bean id="UberPermissionImpl-template.name" parent="UberPermissionImpl-template.name-parentBean"/>
+  <bean id="UberPermissionImpl-template.name-parentBean" parent="AttributeDefinition" abstract="true" p:name="template.name" p:label="Template Name" p:shortLabel="Template Name" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>
   </bean>
   
   
-  <bean id="PermissionImpl-namespaceCode" parent="PermissionImpl-namespaceCode-parentBean"/>
-  <bean id="PermissionImpl-namespaceCode-parentBean" parent="RoleBo-namespaceCode" abstract="true" p:name="namespaceCode" p:label="Permission Namespace" p:shortLabel="Permission Namespace">
+  <bean id="UberPermissionImpl-namespaceCode" parent="UberPermissionImpl-namespaceCode-parentBean"/>
+  <bean id="UberPermissionImpl-namespaceCode-parentBean" parent="RoleBo-namespaceCode" abstract="true" p:name="namespaceCode" p:label="Permission Namespace" p:shortLabel="Permission Namespace">
   </bean>
   
-  <bean id="PermissionImpl-id" parent="PermissionImpl-id-parentBean"/>
-  <bean id="PermissionImpl-id-parentBean" parent="AttributeDefinition" abstract="true" p:name="id" p:label="Permission Identifier" p:shortLabel="Permission Identifier" p:maxLength="10" p:required="false">
+  <bean id="UberPermissionImpl-id" parent="UberPermissionImpl-id-parentBean"/>
+  <bean id="UberPermissionImpl-id-parentBean" parent="AttributeDefinition" abstract="true" p:name="id" p:label="Permission Identifier" p:shortLabel="Permission Identifier" p:maxLength="10" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="10"/>
     </property>
   </bean>
   
-  <bean id="PermissionImpl-name" parent="PermissionImpl-name-parentBean"/>
-  <bean id="PermissionImpl-name-parentBean" abstract="true" parent="KimType-name">
+  <bean id="UberPermissionImpl-name" parent="UberPermissionImpl-name-parentBean"/>
+  <bean id="UberPermissionImpl-name-parentBean" abstract="true" parent="KimType-name">
     <property name="name" value="name"/>
     <property name="label" value="Permission Name"/>
     <property name="shortLabel" value="Permission Name"/>
@@ -180,73 +180,73 @@
 	</property>
   </bean>
 
-  <bean id="PermissionImpl-assignedToRoleNamespaceForLookup" parent="PermissionImpl-assignedToRoleNamespaceForLookup-parentBean"/>
-  <bean id="PermissionImpl-assignedToRoleNamespaceForLookup-parentBean" parent="RoleBo-namespaceCode" abstract="true" p:name="assignedToRoleNamespaceForLookup" p:label="Role Namespace" p:shortLabel="Role Namespace">
+  <bean id="UberPermissionImpl-assignedToRoleNamespaceForLookup" parent="UberPermissionImpl-assignedToRoleNamespaceForLookup-parentBean"/>
+  <bean id="UberPermissionImpl-assignedToRoleNamespaceForLookup-parentBean" parent="RoleBo-namespaceCode" abstract="true" p:name="assignedToRoleNamespaceForLookup" p:label="Role Namespace" p:shortLabel="Role Namespace">
   </bean>
 
-  <bean id="PermissionImpl-assignedToRoleNameForLookup" parent="PermissionImpl-assignedToRoleNameForLookup-parentBean"/>
-  <bean id="PermissionImpl-assignedToRoleNameForLookup-parentBean" parent="RoleBo-name" abstract="true" p:name="assignedToRole.name">
+  <bean id="UberPermissionImpl-assignedToRoleNameForLookup" parent="UberPermissionImpl-assignedToRoleNameForLookup-parentBean"/>
+  <bean id="UberPermissionImpl-assignedToRoleNameForLookup-parentBean" parent="RoleBo-name" abstract="true" p:name="assignedToRole.name">
   </bean>
 
-  <bean id="PermissionImpl-assignedToPrincipalNameForLookup" parent="PermissionImpl-assignedToPrincipalNameForLookup-parentBean"/>
-  <bean id="PermissionImpl-assignedToPrincipalNameForLookup-parentBean" parent="AttributeDefinition" abstract="true" p:name="assignedToPrincipal.principalName" p:label="Principal Name" p:shortLabel="Principal Name" p:maxLength="40" p:required="false">
+  <bean id="UberPermissionImpl-assignedToPrincipalNameForLookup" parent="UberPermissionImpl-assignedToPrincipalNameForLookup-parentBean"/>
+  <bean id="UberPermissionImpl-assignedToPrincipalNameForLookup-parentBean" parent="AttributeDefinition" abstract="true" p:name="assignedToPrincipal.principalName" p:label="Principal Name" p:shortLabel="Principal Name" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>
   </bean>
   
-    <bean id="PermissionImpl-assignedToGroupNamespaceForLookup" parent="PermissionImpl-assignedToGroupNamespaceForLookup-parentBean"/>
-  <bean id="PermissionImpl-assignedToGroupNamespaceForLookup-parentBean" parent="AttributeDefinition" abstract="true" p:name="assignedToGroupNamespaceForLookup" p:label="Group Namespace" p:shortLabel="Group Namespace" p:maxLength="40" p:required="false">
+    <bean id="UberPermissionImpl-assignedToGroupNamespaceForLookup" parent="UberPermissionImpl-assignedToGroupNamespaceForLookup-parentBean"/>
+  <bean id="UberPermissionImpl-assignedToGroupNamespaceForLookup-parentBean" parent="AttributeDefinition" abstract="true" p:name="assignedToGroupNamespaceForLookup" p:label="Group Namespace" p:shortLabel="Group Namespace" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>
   </bean>
 
-  <bean id="PermissionImpl-assignedToGroupNameForLookup" parent="PermissionImpl-assignedToGroupNameForLookup-parentBean"/>
-  <bean id="PermissionImpl-assignedToGroupNameForLookup-parentBean" parent="AttributeDefinition" abstract="true" p:name="assignedToGroup.name" p:label="Group Name" p:shortLabel="Group Name" p:maxLength="40" p:required="false">
+  <bean id="UberPermissionImpl-assignedToGroupNameForLookup" parent="UberPermissionImpl-assignedToGroupNameForLookup-parentBean"/>
+  <bean id="UberPermissionImpl-assignedToGroupNameForLookup-parentBean" parent="AttributeDefinition" abstract="true" p:name="assignedToGroup.name" p:label="Group Name" p:shortLabel="Group Name" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>
   </bean>    
 
-	<bean id="PermissionImpl-detailObjects" parent="PermissionImpl-detailObjects-parentBean"/>
-		<bean id="PermissionImpl-detailObjects-parentBean" parent="AttributeDefinition" abstract="true" p:name="detailObjectsValues" p:label="Permission Detail Values" p:shortLabel="Detail Values" p:maxLength="40" p:required="false">
+	<bean id="UberPermissionImpl-detailObjects" parent="UberPermissionImpl-detailObjects-parentBean"/>
+		<bean id="UberPermissionImpl-detailObjects-parentBean" parent="AttributeDefinition" abstract="true" p:name="detailObjectsValues" p:label="Permission Detail Values" p:shortLabel="Detail Values" p:maxLength="40" p:required="false">
 		<property name="control">
 	     <bean parent="TextControlDefinition" p:size="40"/>
 		</property>
 	</bean>
           
-  <bean id="PermissionImpl-detailObjectsValues" parent="PermissionImpl-detailObjectsValues-parentBean"/>
-  <bean id="PermissionImpl-detailObjectsValues-parentBean" parent="AttributeDefinition" abstract="true" p:name="detailObjectsValues" p:label="Permission Detail Values" p:shortLabel="Detail Values" p:maxLength="40" p:required="false">
+  <bean id="UberPermissionImpl-detailObjectsValues" parent="UberPermissionImpl-detailObjectsValues-parentBean"/>
+  <bean id="UberPermissionImpl-detailObjectsValues-parentBean" parent="AttributeDefinition" abstract="true" p:name="detailObjectsValues" p:label="Permission Detail Values" p:shortLabel="Detail Values" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>
   </bean>
 
-  <bean id="PermissionImpl-detailCriteria" parent="PermissionImpl-detailCriteria-parentBean"/>
-  <bean id="PermissionImpl-detailCriteria-parentBean" parent="AttributeDefinition" abstract="true" p:name="detailCriteria" p:label="Permission Detail Criteria" p:shortLabel="Detail Criteria" p:maxLength="200" p:required="false">
+  <bean id="UberPermissionImpl-detailCriteria" parent="UberPermissionImpl-detailCriteria-parentBean"/>
+  <bean id="UberPermissionImpl-detailCriteria-parentBean" parent="AttributeDefinition" abstract="true" p:name="detailCriteria" p:label="Permission Detail Criteria" p:shortLabel="Detail Criteria" p:maxLength="200" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>
   </bean>
 
-  <bean id="PermissionImpl-detailObjectsToDisplay" parent="PermissionImpl-detailObjectsValues" p:name="detailObjectsToDisplay">
+  <bean id="UberPermissionImpl-detailObjectsToDisplay" parent="UberPermissionImpl-detailObjectsValues" p:name="detailObjectsToDisplay">
   </bean>
   
-  <bean id="PermissionImpl-assignedToRolesToDisplay" parent="PermissionImpl-assignedToRolesToDisplay-parentBean"/>
-  <bean id="PermissionImpl-assignedToRolesToDisplay-parentBean" parent="AttributeDefinition" abstract="true" p:name="assignedToRolesToDisplay" p:label="Granted to Roles" p:shortLabel="Granted to Roles" p:maxLength="40" p:required="false">
+  <bean id="UberPermissionImpl-assignedToRolesToDisplay" parent="UberPermissionImpl-assignedToRolesToDisplay-parentBean"/>
+  <bean id="UberPermissionImpl-assignedToRolesToDisplay-parentBean" parent="AttributeDefinition" abstract="true" p:name="assignedToRolesToDisplay" p:label="Granted to Roles" p:shortLabel="Granted to Roles" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>
   </bean>
    
-  <bean id="PermissionImpl-active" parent="PermissionImpl-active-parentBean"/>
-  <bean id="PermissionImpl-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
+  <bean id="UberPermissionImpl-active" parent="UberPermissionImpl-active-parentBean"/>
+  <bean id="UberPermissionImpl-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
     <property name="name" value="active"/>
   </bean>
     
-  <bean id="PermissionImpl-inquiryDefinition" parent="PermissionImpl-inquiryDefinition-parentBean"/>
-  <bean id="PermissionImpl-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition" p:title="Permission Inquiry">
+  <bean id="UberPermissionImpl-inquiryDefinition" parent="UberPermissionImpl-inquiryDefinition-parentBean"/>
+  <bean id="UberPermissionImpl-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition" p:title="Permission Inquiry">
     <property name="inquirySections">
       <list>
         <bean parent="InquirySectionDefinition" p:title="Permission Attributes" p:numberOfColumns="1">
@@ -314,8 +314,8 @@
     <property name="inquirableClass" value="org.kuali.rice.kim.impl.permission.PermissionInquirableImpl"/>
   </bean>
 
-  <bean id="PermissionImpl-lookupDefinition" parent="PermissionImpl-lookupDefinition-parentBean"/>
-  <bean id="PermissionImpl-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition" p:title="Permission Lookup">
+  <bean id="UberPermissionImpl-lookupDefinition" parent="UberPermissionImpl-lookupDefinition-parentBean"/>
+  <bean id="UberPermissionImpl-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition" p:title="Permission Lookup">
     <property name="lookupableID" value="permissionLookupable"/>
     <property name="defaultSort">
       <bean parent="SortDefinition">

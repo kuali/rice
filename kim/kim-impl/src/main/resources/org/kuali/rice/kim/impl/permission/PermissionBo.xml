@@ -179,10 +179,10 @@
     </property>
     <property name="resultFields">
       <list>
-        <!-- bean parent="FieldDefinition" p:attributeName="kimTypeInfo.name"/ -->
-        <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
-        <bean parent="FieldDefinition" p:attributeName="name"/>
-        <bean parent="FieldDefinition" p:attributeName="description"/>
+          <bean parent="FieldDefinition" p:attributeName="template.namespaceCode"/>
+          <bean parent="FieldDefinition" p:attributeName="template.name"/>
+       	  <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
+       	  <bean parent="FieldDefinition" p:attributeName="name"/>
       </list>
     </property>
   </bean>

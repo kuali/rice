@@ -52,7 +52,7 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 	public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames) {
     	List<HtmlData> htmlDataList = new ArrayList<HtmlData>();
     	// convert the PermissionImpl class into a GenericPermission object
-    	businessObject = (UberPermissionBo)businessObject;
+    	businessObject = new GenericPermissionBo ( (UberPermissionBo)businessObject);
         if (allowsMaintenanceEditAction(businessObject)) {
         	htmlDataList.add(getUrlData(businessObject, KRADConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames));
         }

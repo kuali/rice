@@ -79,7 +79,7 @@ public class GenericPermissionBo extends PersistableBusinessObjectBase {
         setId( perm.getId() );
         setNamespaceCode( perm.getNamespaceCode() );
         setName( perm.getName() );
-        setTemplateId( perm.getTemplate().getId() );
+        setTemplateId( perm.getTemplateId() );
         setDescription( perm.getDescription() );
         setActive( perm.isActive() );
         setDetails( perm.getAttributes() );

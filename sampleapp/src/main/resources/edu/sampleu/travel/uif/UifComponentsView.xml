@@ -1570,6 +1570,9 @@
 		<property name="propertyName" value="list2" />
 		<property name="layoutManager.sequencePropertyName" value="field1" />
 		<property name="layoutManager.tableTools.render" value="true" />
+    <property name="collectionLookup.render" value="true"/>
+    <property name="collectionLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
+    <property name="collectionLookup.fieldConversions" value="number:field1,name:field2,subAccount:field3,subAccountName:field4"/>
 		<property name="items">
 			<list>
 				<bean parent="AttributeField" p:label="Field 1" p:propertyName="field1"

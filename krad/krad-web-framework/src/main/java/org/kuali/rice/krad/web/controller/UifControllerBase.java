@@ -405,7 +405,7 @@ public abstract class UifControllerBase {
             }
 
             // invoked view helper to populate the collection from lookup results
-            form.getView().getViewHelperService().processMultipleValueLookupResults(form.getPreviousView(), form,
+            form.getView().getViewHelperService().processMultipleValueLookupResults(form.getView(), form,
                     lookupCollectionName, selectedLineValues);
         }
 
@@ -612,6 +612,9 @@ public abstract class UifControllerBase {
         // On post redirects we need to make sure we are sending the history
         // forward:
         urlParameters.setProperty(UifConstants.UrlParams.HISTORY, form.getFormHistory().getHistoryParameterString());
+
+        // since view will not be built, set previous view back as main view
+        form.setView(form.getPreviousView());
 
         // If this is an Light Box call only return the redirectURL view with the URL
         // set this is to avoid automatic redirect when using light boxes

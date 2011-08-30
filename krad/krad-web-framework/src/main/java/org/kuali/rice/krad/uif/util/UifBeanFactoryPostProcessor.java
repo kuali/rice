@@ -101,6 +101,11 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 
         MutablePropertyValues pvs = beanDefinition.getPropertyValues();
 
+        if (pvs.getPropertyValue(UifPropertyPaths.PROPERTY_EXPRESSIONS) != null) {
+            // already processed so skip (could be reloading dictionary)
+            return;
+        }
+
         Map<String, String> propertyExpressions = new ManagedMap<String, String>();
         Map<String, String> parentPropertyExpressions = getPropertyExpressionsFromParent(beanDefinition.getParentName(),
                 beanFactory, processedBeanNames);
@@ -130,7 +135,7 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 
             // if property is nested, need to override any parent expressions set on nested beans
             if (StringUtils.contains(pv.getName(), ".")) {
-                //removeParentExpressionsOnNested(pv.getName(), pvs, beanDefinition.getParentName(), beanFactory);
+                removeParentExpressionsOnNested(pv.getName(), pvs, beanDefinition.getParentName(), beanFactory);
             }
         }
 

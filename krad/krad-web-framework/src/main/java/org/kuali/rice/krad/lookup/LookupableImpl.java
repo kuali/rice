@@ -599,7 +599,6 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                 }
             }
         } else {
-
             // If no return target is set return in same frame
             // This is to insure that non light box lookups return correctly
             returnLinkField.setTarget("_self");

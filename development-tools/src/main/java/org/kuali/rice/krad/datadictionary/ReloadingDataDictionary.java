@@ -22,6 +22,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.uif.util.UifBeanFactoryPostProcessor;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.InputStreamResource;
@@ -133,6 +134,9 @@ public class ReloadingDataDictionary extends DataDictionary implements FileListe
 			Resource resource = new FileSystemResource(file);
 			xmlReader.loadBeanDefinitions(resource);
 
+            UifBeanFactoryPostProcessor factoryPostProcessor = new UifBeanFactoryPostProcessor();
+            factoryPostProcessor.postProcessBeanFactory(ddBeans);
+
 			// re-index
 			ddIndex.run();
 		}
@@ -151,6 +155,9 @@ public class ReloadingDataDictionary extends DataDictionary implements FileListe
             xmlReader.setValidationMode(XmlBeanDefinitionReader.VALIDATION_XSD);
             xmlReader.loadBeanDefinitions(resource);
             xmlReader.setValidationMode(originalValidationMode);
+
+            UifBeanFactoryPostProcessor factoryPostProcessor = new UifBeanFactoryPostProcessor();
+            factoryPostProcessor.postProcessBeanFactory(ddBeans);
 
             // re-index
             ddIndex.run();

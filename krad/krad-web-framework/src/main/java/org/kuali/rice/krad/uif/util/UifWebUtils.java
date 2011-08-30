@@ -239,6 +239,7 @@ public class UifWebUtils {
             }
 
             view = getViewService().getView(viewId, form.getViewRequestParameters());
+            form.setView(view);
 
             // view changed so force full render
             form.setRenderFullView(true);
@@ -251,6 +252,7 @@ public class UifWebUtils {
             }
 
             view = getViewService().rebuildView(viewId, form, form.getViewRequestParameters());
+            form.setView(view);
         } else {
             // update the view with the model data
             getViewService().buildView(view, form);

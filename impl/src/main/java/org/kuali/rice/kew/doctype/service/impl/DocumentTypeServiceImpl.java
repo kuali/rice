@@ -155,7 +155,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     }
 
     public void save(DocumentType documentType) {
-    	save(documentType);
+    	getDocumentTypeDAO().save(documentType);
     }
 
     public DocumentTypeDAO getDocumentTypeDAO() {

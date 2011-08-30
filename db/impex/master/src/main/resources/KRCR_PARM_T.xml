@@ -200,10 +200,6 @@
         PARM_DESC_TXT="Comma seperated list of Document Types to exclude from the Rule Quicklinks."
         PARM_NM="RESTRICT_DOCUMENT_TYPES" PARM_TYP_CD="CONFG" VER_NBR="1"/>
     <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="Rule" EVAL_OPRTR_CD="A"
-        NMSPC_CD="KR-WKFLW" OBJ_ID="E05A692D62E54B87901D872DC37208A1"
-        PARM_DESC_TXT="Indicator to determine if rule caching is enabled."
-        PARM_NM="CACHING_IND" PARM_TYP_CD="CONFG" VAL="Y" VER_NBR="1"/>
-    <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="Rule" EVAL_OPRTR_CD="A"
         NMSPC_CD="KR-WKFLW" OBJ_ID="BDE964269F2743338C00A4326B676195"
         PARM_DESC_TXT="Defines custom Document Type processes to use for certain types of routing rules."
         PARM_NM="CUSTOM_DOCUMENT_TYPES" PARM_TYP_CD="CONFG" VER_NBR="1"/>

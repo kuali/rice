@@ -444,10 +444,6 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		return null;
 	}
 
-	public void clearCache() {
-		//TODO clear the cache
-	}
-
 	public void retrieveAllReferences(RuleBaseValues rule) {
 		// getPersistenceBroker().retrieveAllReferences(rule);
 	}

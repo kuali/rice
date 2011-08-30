@@ -196,29 +196,11 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 			}
 		}
 	}
-	
-	/* Since most queries will only be on the template namespace and name, cache the results for 30 seconds
-	 * so that queries against the details, which are done in memory, do not require repeated database trips.
-	 */
-    //TODO: use the concurrentMap properties rather than synchronized blocks
-    //TODO: no copying list/bos?
-    private static final long RESP_CACHE_EXPIRE_SECONDS = 30L;
-    private static final ConcurrentMap<Map<String,String>,List<UberResponsibilityBo>> respResultCache = new MapMaker().expireAfterAccess(RESP_CACHE_EXPIRE_SECONDS, TimeUnit.SECONDS).softValues().makeMap();
 
-	
 	private List<UberResponsibilityBo> getResponsibilitiesWithResponsibilitySearchCriteria(Map<String, String> responsibilitySearchCriteria, boolean unbounded){
 		String detailCriteriaStr = responsibilitySearchCriteria.remove( DETAIL_CRITERIA );
 		Map<String, String> detailCriteria = parseDetailCriteria(detailCriteriaStr);
-		List<UberResponsibilityBo> cachedResult = respResultCache.get(responsibilitySearchCriteria);
-		List<UberResponsibilityBo> responsibilities = null;
-		if ( cachedResult == null ) {
-			responsibilities = searchResponsibilities(responsibilitySearchCriteria, unbounded);
-            synchronized( respResultCache ) {
-				respResultCache.put(responsibilitySearchCriteria, responsibilities );
-			}
-		} else {
-			responsibilities = cachedResult;
-		}
+		final List<UberResponsibilityBo> responsibilities = searchResponsibilities(responsibilitySearchCriteria, unbounded);
 		List<UberResponsibilityBo> filteredResponsibilities = new CollectionIncomplete<UberResponsibilityBo>(
 				new ArrayList<UberResponsibilityBo>(), getActualSizeIfTruncated(responsibilities)); 
 		for(UberResponsibilityBo responsibility: responsibilities){

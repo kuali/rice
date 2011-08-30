@@ -158,8 +158,6 @@ public final class KEWServiceLocator {
 
 	public static final String WORKFLOW_MBEAN = "workflowMBean";
 
-	public static final String APPLICATION_CONSTANTS_CACHE = "applicationConstantsCache";
-
 	public static final String JTA_TRANSACTION_MANAGER = "jtaTransactionManager";
 
 	public static final String USER_TRANSACTION = "userTransaction";

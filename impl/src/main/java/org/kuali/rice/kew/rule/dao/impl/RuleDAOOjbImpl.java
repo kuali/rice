@@ -442,10 +442,6 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		return null;
 	}
 
-	public void clearCache() {
-		this.getPersistenceBroker(false).clearCache();
-	}
-
 	public void retrieveAllReferences(RuleBaseValues rule) {
 		// getPersistenceBroker().retrieveAllReferences(rule);
 	}

@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kim.lookup;
 
-import com.google.common.collect.MapMaker;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.role.RoleService;
@@ -40,8 +39,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.TimeUnit;
 
 public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableHelperServiceImpl {
 
@@ -49,7 +46,7 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 
 	private transient LookupService lookupService;
 	private transient RoleService roleService;
-	private String genericPermissionDocumentTypeName;
+	private volatile String genericPermissionDocumentTypeName;
 
 	@Override
 	public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames) {

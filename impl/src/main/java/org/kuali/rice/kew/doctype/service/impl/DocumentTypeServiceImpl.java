@@ -112,7 +112,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
             if ( LOG.isInfoEnabled() ) {
                 LOG.info("Saving old document type Id " + oldDocumentType.getDocumentTypeId() + " name '" + oldDocumentType.getName() + "' (current = " + oldDocumentType.getCurrentInd() + ")");
             }
-            save(oldDocumentType, false);
+            save(oldDocumentType);
         }
         // check to see that no current documents exist in database
         if (!CollectionUtils.isEmpty(documentTypeDAO.findAllCurrentByName(documentType.getName()))) {
@@ -123,7 +123,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         // set up the previous current doc type on the new doc type
         documentType.setPreviousVersionId(existingDocTypeId);
         documentType.setCurrentInd(Boolean.TRUE);
-        save(documentType, false);
+        save(documentType);
         if ( LOG.isInfoEnabled() ) {
             LOG.info("Saved current document type Id " + documentType.getDocumentTypeId() + " name '" + documentType.getName() + "' (current = " + documentType.getCurrentInd() + ")");
         }
@@ -134,7 +134,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
 //    			for (Iterator iterator = oldDocumentType.getChildrenDocTypes().iterator(); iterator.hasNext();) {
                 DocumentType child = (DocumentType) iterator.next();
                 child.setDocTypeParentId(documentType.getDocumentTypeId());
-                save(child, false);
+                save(child);
                 if ( LOG.isInfoEnabled() ) {
                     LOG.info("Saved child document type Id " + child.getDocumentTypeId() + " name '" + child.getName() + "' (parent = " + child.getDocTypeParentId() + ", current = " + child.getCurrentInd() + ")");
                 }
@@ -147,19 +147,15 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         // be sure to get the parent doc type directly from the db and not from the cache
         if (documentType.getDocTypeParentId() != null) {
             DocumentType parent = getDocumentTypeDAO().findById(documentType.getDocTypeParentId());
-            save(parent, false);
+            save(parent);
             if ( LOG.isInfoEnabled() ) {
                 LOG.info("Saved parent document type Id " + parent.getDocumentTypeId() + " name '" + parent.getName() + "' (current = " + parent.getCurrentInd() + ")");
             }
         }
     }
 
-    public void save(DocumentType documentType, boolean flushCache) {
-    	getDocumentTypeDAO().save(documentType);
-    }
-
     public void save(DocumentType documentType) {
-    	save(documentType, true);
+    	save(documentType);
     }
 
     public DocumentTypeDAO getDocumentTypeDAO() {

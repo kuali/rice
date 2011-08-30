@@ -509,7 +509,6 @@
       enDocumentSecurityService,
       enEmailContentService,
       enActionRegistry,
-      enCacheAdministrator,
       enEncryptionService,
       enQuickLinksService
       enDocumentLinkService

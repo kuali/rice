@@ -16,11 +16,10 @@
  */
 package org.kuali.rice.kew.doctype.service;
 
-import java.util.List;
-
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.rule.bo.RuleAttribute;
+
+import java.util.List;
 
 
 /**
@@ -32,7 +31,6 @@ public interface DocumentTypeService extends DocumentTypeQueryService, XmlExport
 
     void versionAndSave(DocumentType documentType);
     void save(DocumentType documentType);
-    void save(DocumentType documentType, boolean flushCache);
     List findAllCurrentRootDocuments();
     List findAllCurrent();
     List<DocumentType> findPreviousInstances(String documentTypeName);

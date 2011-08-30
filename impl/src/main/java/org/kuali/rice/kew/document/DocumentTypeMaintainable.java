@@ -76,7 +76,7 @@ public class DocumentTypeMaintainable extends KualiMaintainableImpl {
     /**
      * This overridden method resets the name
      * 
-     * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#processAfterCopy(org.kuali.rice.krad.document.MaintenanceDocument, java.util.Map)
+     *
      */
     @Override
     public void processAfterCopy(MaintenanceDocument document, Map<String, String[]> parameters) {
@@ -87,9 +87,6 @@ public class DocumentTypeMaintainable extends KualiMaintainableImpl {
         docType.setPreviousVersionId(null);
     }
 
-    /**
-     * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#doRouteStatusChange(org.kuali.rice.krad.bo.DocumentHeader)
-     */
     @Override
     public void doRouteStatusChange(DocumentHeader documentHeader) {
         super.doRouteStatusChange(documentHeader);
@@ -110,8 +107,7 @@ public class DocumentTypeMaintainable extends KualiMaintainableImpl {
      * This is a complete override which does not call into
      * {@link KualiMaintainableImpl}. This method calls
      * {@link DocumentTypeService#versionAndSave(DocumentType)}.
-     * 
-     * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#saveBusinessObject()
+     *
      */
     @Override
     public void saveBusinessObject() {
@@ -144,7 +140,7 @@ public class DocumentTypeMaintainable extends KualiMaintainableImpl {
                     prevDocType.setDescription(newDocumentType.getDescription());
                     prevDocType.setUnresolvedHelpDefinitionUrl(newDocumentType.getUnresolvedHelpDefinitionUrl());
                     prevDocType.setUnresolvedDocSearchHelpUrl(newDocumentType.getUnresolvedDocSearchHelpUrl());
-                    docTypeService.save(prevDocType, false);
+                    docTypeService.save(prevDocType);
                 }
                 // save all former/current action items matching document type name
                 // fields: docLabel

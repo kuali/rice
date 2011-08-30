@@ -81,7 +81,6 @@ public final class KSBConstants {
     	public static final String BUS_ADMIN_SERVICE = "rice.ksb.busAdminService";
     	public static final String BUS_IN_INTERCEPTORS = "ksbInInterceptors";
         public static final String BUS_OUT_INTERCEPTORS = "ksbOutInterceptors";
-    	public static final String CACHE_ADMINISTRATOR_FACTORY = "enKEWCacheAdministratorFactoryService";
     	public static final String CXF_BUS = "cxf";
     	public static final String CXF_SERVER_REGISTRY = "org.apache.cxf.endpoint.ServerRegistry";
     	public static final String CXF_SERVLET_TRANSPORT_FACTORY = "org.apache.cxf.transport.servlet.ServletTransportFactory";

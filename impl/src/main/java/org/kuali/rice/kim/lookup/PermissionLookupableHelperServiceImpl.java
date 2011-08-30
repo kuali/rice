@@ -18,7 +18,6 @@ package org.kuali.rice.kim.lookup;
 import com.google.common.collect.MapMaker;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.permission.GenericPermissionBo;
@@ -44,30 +43,14 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
 
-/**
- * This is a description of what this class does - bhargavp don't forget to fill this in. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
- *
- */
 public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableHelperServiceImpl {
 
 	private static final long serialVersionUID = -3578448525862270477L;
 
-	private static final Logger LOG = Logger.getLogger( PermissionLookupableHelperServiceImpl.class );
-	
-	private static LookupService lookupService;
-	private static RoleService roleService;
+	private transient LookupService lookupService;
+	private transient RoleService roleService;
+	private String genericPermissionDocumentTypeName;
 
-	private static boolean genericPermissionDocumentTypeNameLoaded = false;
-	private static String genericPermissionDocumentTypeName = null;
-	
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getCustomActionUrls(org.kuali.rice.krad.bo.BusinessObject, java.util.List)
-	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames) {
     	List<HtmlData> htmlDataList = new ArrayList<HtmlData>();
@@ -82,7 +65,6 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
         return htmlDataList;
 	}
 
-    @SuppressWarnings("unchecked")
 	protected String getActionUrlHref(BusinessObject businessObject, String methodToCall, List pkNames){
         Properties parameters = new Properties();
         parameters.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, methodToCall);
@@ -96,23 +78,24 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
         return UrlFactory.parameterizeUrl(KRADConstants.MAINTENANCE_ACTION, parameters);
     }
 	
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl#getMaintenanceDocumentTypeName()
-	 */
 	@Override
 	protected String getMaintenanceDocumentTypeName() {
-		if ( !genericPermissionDocumentTypeNameLoaded ) {
-			genericPermissionDocumentTypeName = getMaintenanceDocumentDictionaryService().getDocumentTypeName(GenericPermissionBo.class);
-			genericPermissionDocumentTypeNameLoaded = true;
-		}
-		return genericPermissionDocumentTypeName;
+		//using DCL idiom to cache genericPermissionDocumentTypeName.
+        //see effective java 2nd ed. pg. 71
+        String g = genericPermissionDocumentTypeName;
+        if (g == null) {
+            synchronized (this) {
+                g = genericPermissionDocumentTypeName;
+                if (g == null) {
+                    genericPermissionDocumentTypeName = g = getMaintenanceDocumentDictionaryService().getDocumentTypeName(
+                            GenericPermissionBo.class);
+                }
+            }
+        }
+
+        return g;
 	}
 		
-	/**
-	 * @see org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl#getSearchResults(java.util.Map)
-	 */
 	@Override
 	protected List<? extends BusinessObject> getMemberSearchResults(Map<String, String> searchCriteria, boolean unbounded) {
 		Map<String, String> permissionSearchCriteria = buildSearchCriteria(searchCriteria);
@@ -161,7 +144,6 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 		return matchedPermissions;
 	}
 	
-	@SuppressWarnings("unchecked")
 	private List<UberPermissionBo> searchPermissions(Map<String, String> permissionSearchCriteria, boolean unbounded){
 		return getPermissionsSearchResultsCopy(new ArrayList<PermissionBo>(getLookupService().findCollectionBySearchHelper(
 				PermissionBo.class, permissionSearchCriteria, unbounded)));
@@ -218,29 +200,13 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 			}
 		}
 	}
-	
-	/* Since most queries will only be on the template namespace and name, cache the results for 30 seconds
-	 * so that queries against the details, which are done in memory, do not require repeated database trips.
-	 */
-    private static final long PERM_CACHE_EXPIRE_SECONDS = 30L;
-    private static final ConcurrentMap<Map<String,String>,List<UberPermissionBo>> permResultCache = new MapMaker().expireAfterAccess(PERM_CACHE_EXPIRE_SECONDS, TimeUnit.SECONDS).softValues().makeMap();
 
-	
 	private List<UberPermissionBo> getPermissionsWithPermissionSearchCriteria(
 			Map<String, String> permissionSearchCriteria, boolean unbounded){
 		String detailCriteriaStr = permissionSearchCriteria.remove( DETAIL_CRITERIA );
 		Map<String, String> detailCriteria = parseDetailCriteria(detailCriteriaStr);
 
-		List<UberPermissionBo> cachedResult = permResultCache.get(permissionSearchCriteria);
-		List<UberPermissionBo> permissions;
-		if ( cachedResult == null ) {
-			permissions = searchPermissions(permissionSearchCriteria, unbounded);
-			synchronized (permResultCache) {
-				permResultCache.put(permissionSearchCriteria, permissions);
-			} 
-		} else {
-			permissions = cachedResult;
-		}
+		final List<UberPermissionBo> permissions = searchPermissions(permissionSearchCriteria, unbounded);
 		List<UberPermissionBo> filteredPermissions = new CollectionIncomplete<UberPermissionBo>(
 				new ArrayList<UberPermissionBo>(), getActualSizeIfTruncated(permissions));
 		for(UberPermissionBo perm: permissions){
@@ -281,14 +247,14 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 	/**
 	 * @return the lookupService
 	 */
-	public LookupService getLookupService() {
+	public synchronized LookupService getLookupService() {
 		if ( lookupService == null ) {
 			lookupService = KRADServiceLocatorWeb.getLookupService();
 		}
 		return lookupService;
 	}
 
-	public RoleService getRoleService() {
+	public synchronized RoleService getRoleService() {
 		if (roleService == null) {
 			roleService = KimApiServiceLocator.getRoleService();
 		}

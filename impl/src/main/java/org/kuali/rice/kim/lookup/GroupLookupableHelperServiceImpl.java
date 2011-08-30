@@ -43,7 +43,6 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceHelper;
 import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Column;
@@ -76,23 +75,17 @@ import java.util.Properties;
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
-/**
- * This is a description of what this class does - shyu don't forget to fill this in.
- *
- * @author Kuali Rice Team (rice.collab@kuali.org)
- *
- */
 public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServiceImpl {
 
 	// need this so kimtypeId value can be retained in 'rows'
 	// 1st pass populate the grprows
 	// 2nd pass for jsp, no populate, so return the existing one.
-    private static String KIM_TYPE_ID_PROPERTY_NAME = "kimTypeId";
+    private static final String KIM_TYPE_ID_PROPERTY_NAME = "kimTypeId";
 	private List<Row> grpRows = new ArrayList<Row>();
 	private List<Row> attrRows = new ArrayList<Row>();
 	private String typeId = "";
 	private List<KimAttributeField> attrDefinitions;
-	private Map<String, String> groupTypeValuesCache = new HashMap<String, String>();
+	private final Map<String, String> groupTypeValuesCache = new HashMap<String, String>();
 
     @Override
     public List<HtmlData> getCustomActionUrls(BusinessObject bo, List pkNames) {

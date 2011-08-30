@@ -260,6 +260,9 @@
         <value>classpath:org/kuali/rice/shareddata/web/county/CountyMaintenanceDocument.xml</value>
         <value>classpath:org/kuali/rice/core/web/component/ComponentMaintenanceDocument.xml</value>
         <value>classpath:org/kuali/rice/core/web/parameter/ParameterMaintenanceDocument.xml</value>
+
+        <value>classpath:org/kuali/rice/core/web/cache/CacheAdmin.xml</value>
+
         <value>classpath:org/kuali/rice/core/web/namespace/NamespaceMaintenanceDocument.xml</value>
         <value>classpath:org/kuali/rice/core/web/parameter/ParameterTypeMaintenanceDocument.xml</value>
         <value>classpath:org/kuali/rice/shareddata/web/postalcode/PostalCodeMaintenanceDocument.xml</value>
@@ -348,6 +351,8 @@
         <value>classpath:org/kuali/rice/core/web/parameter/ParameterTypeMaintenanceDocument.xml</value>
         <value>classpath:org/kuali/rice/core/web/component/ComponentMaintenanceDocument.xml</value>
         <value>classpath:org/kuali/rice/core/web/parameter/ParameterMaintenanceDocument.xml</value>
+
+        <value>classpath:org/kuali/rice/core/web/cache/CacheAdmin.xml</value>
 
         <value>classpath:org/kuali/rice/shareddata/web/campus/CampusMaintenanceDocument.xml</value>
         <value>classpath:org/kuali/rice/shareddata/web/campus/CampusTypeMaintenanceDocument.xml</value>

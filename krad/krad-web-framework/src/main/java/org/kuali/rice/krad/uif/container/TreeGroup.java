@@ -143,6 +143,10 @@ public class TreeGroup extends Group implements DataBinding{
 
     protected Node<Group, MessageField> buildTreeNode(Node<Object, String> nodeData, String bindingPrefix,
             int nodeCounter) {
+        if (nodeData == null) {
+            return null;
+        }
+
         Node<Group, MessageField> node = new Node<Group, MessageField>();
         node.setNodeType(nodeData.getNodeType());
 

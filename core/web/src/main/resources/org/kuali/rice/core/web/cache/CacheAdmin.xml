@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:beans="http://www.springframework.org/schema/beans"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+  <bean id="CacheAdmin-view1" parent="FormView">
+    <property name="title" value="Cache Admin"/>
+    <property name="items">
+      <list>
+        <bean parent="Page">
+          <property name="items">
+            <list>
+              <ref bean="mainGroup"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+    <property name="formClass" value="org.kuali.rice.core.web.cache.CacheAdminForm"/>
+  </bean>
+
+  <bean id="mainGroup" parent="Group">
+    <property name="title" value="Caches"/>
+    <property name="items">
+      <list>
+        <bean parent="FieldGroup">
+          <property name="items">
+            <list>
+              <bean parent="ActionField" p:methodToCall="button1" p:actionLabel="Button 1"/>
+              <bean parent="ActionField" p:methodToCall="button2" p:actionLabel="Button 2"/>
+              <bean parent="ActionField" p:methodToCall="button3" p:actionLabel="Button 3"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="TreeGroup">
+          <property name="header.render" value="false"/>
+          <property name="propertyName" value="cacheTree"/>
+        </bean>
+      </list>
+    </property>
+    <property name="summary" value="This shows the various caches allowing administrative actions."/>
+  </bean>
+</beans>

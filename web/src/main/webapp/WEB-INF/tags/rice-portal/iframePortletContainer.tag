@@ -56,7 +56,7 @@
     /** gets the current height of the passed in frame in numeric form (ex: 500). Could generate a permission exception.  */
     function getFrameHeight(frame) {
       if (frame.contentWindow && frame.contentWindow.document.body){
-        return frame.contentWindow.document.body.offsetHeight;
+        return frame.contentWindow.document.body.scrollHeight;
       } else if(frame.contentDocument.body){
         //using the offsetHeight to set the correct height for IE
         return frame.contentDocument.body.offsetHeight;
@@ -69,12 +69,13 @@
     /** sets the portlet container's height. */
     function setContainerHeight() {
       //reset the height to shrink the scroll height.  For the usecase where the portlet's contents got smaller.
-      getPortlet().style.height = '${frameHeight}px';
-   	  getPortlet().height = '${frameHeight}px';
+      var portlet = getPortlet();
+      portlet.style.height = '${frameHeight}px';
+   	  portlet.height = '${frameHeight}px';
       
       var height = '${frameHeight}';
       try {
-         height = getFrameHeight(getPortlet());
+         height = getFrameHeight(portlet);
       } catch (e) {
         //fallback for crossdomain permission problems.
         height = '${frameHeight}';
@@ -86,8 +87,8 @@
       } catch ( ex ) {
           // do nothing, we can't get to the container
       }
-      getPortlet().style.height = (parseFloat(height) + getHorScrollBarHeight() + 50) + 'px';
-      getPortlet().height = (parseFloat(height) + getHorScrollBarHeight() + 50) + 'px';
+      portlet.style.height = (parseFloat(height) + getHorScrollBarHeight() + 50) + 'px';
+      portlet.height = (parseFloat(height) + getHorScrollBarHeight() + 50) + 'px';
     }
     
     /** 

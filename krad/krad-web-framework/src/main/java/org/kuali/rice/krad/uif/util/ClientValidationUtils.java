@@ -235,8 +235,9 @@ public class ClientValidationUtils {
 		field.getControl().addStyleClass("dependsOn-" + constraint.getFieldPath());
 
 		if (constraint.getWhenConstraint() != null && !constraint.getWhenConstraint().isEmpty()) {
-			for (WhenConstraint wc : constraint.getWhenConstraint()) {
-				processWhenConstraint(field, view, constraint, wc, constraint.getFieldPath(), operator, andedCase);
+			String fieldPath = field.getBindingInfo().getBindingObjectPath() + "." + constraint.getFieldPath();
+		    for (WhenConstraint wc : constraint.getWhenConstraint()) {
+				processWhenConstraint(field, view, constraint, wc, fieldPath, operator, andedCase);
 			}
 		}
 	}

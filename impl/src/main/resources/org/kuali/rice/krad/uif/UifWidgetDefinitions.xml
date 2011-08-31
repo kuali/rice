@@ -37,7 +37,7 @@
 
   <util:list id="ks-css">
      <value>/krad/css/ks/ks-theme.css</value>
-     <value>/krad/css/ks/fss-theme.css</value>
+     <value>/krad/css/ks/fss-theme-ks.css</value>
   </util:list>
 
   <!-- Widgets -->

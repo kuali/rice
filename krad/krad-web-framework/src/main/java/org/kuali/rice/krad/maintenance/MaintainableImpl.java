@@ -74,7 +74,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
     private transient MaintenanceDocumentService maintenanceDocumentService;
 
     /**
-     * @see Maintainable#retrieveObjectForEditOrCopy(java.util.Map)
+     * @see org.kuali.rice.krad.maintenance.Maintainable#retrieveObjectForEditOrCopy(MaintenanceDocument, java.util.Map)
      */
     @Override
     public Object retrieveObjectForEditOrCopy(MaintenanceDocument document, Map<String, String> dataObjectKeys) {
@@ -299,7 +299,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
     }
 
     /**
-     * @see org.kuali.rice.krad.maintenance.Maintainable#isBoNotesEnabled
+     * @see org.kuali.rice.krad.maintenance.Maintainable#isNotesEnabled
      */
     @Override
     public boolean isNotesEnabled() {
@@ -431,7 +431,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
                     .getPropertyValue(document.getOldMaintainableObject().getDataObject(),
                             collectionGroup.getPropertyName());
             try {
-                Object blankLine = getDataObjectClass().newInstance();
+                Object blankLine = collectionGroup.getCollectionObjectClass().newInstance();
                 oldCollection.add(blankLine);
             } catch (Exception e) {
                 throw new RuntimeException("Unable to create new line instance for old maintenance object", e);
@@ -443,9 +443,8 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
      * In the case of edit maintenance deleted the item on the old side
      *
      *
-     * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#processAfterDeleteLine(org.kuali.rice.krad.uif.view.View,
-     *      org.kuali.rice.krad.uif.container.CollectionGroup, java.lang.Object,
-     *      java.lang.Object)
+     * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#processAfterDeleteLine(View,
+     *      org.kuali.rice.krad.uif.container.CollectionGroup, java.lang.Object,  int)
      */
     @Override
     protected void processAfterDeleteLine(View view, CollectionGroup collectionGroup, Object model, int lineIndex) {

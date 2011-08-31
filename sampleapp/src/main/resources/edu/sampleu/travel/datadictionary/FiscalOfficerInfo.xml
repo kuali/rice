@@ -175,7 +175,6 @@
   <bean id="FiscalOfficerInfo-InquiryView3" parent="FiscalOfficerInfo-InquiryView">
     <property name="id" value="FiscalOfficerInfoInquiry3"/>
     <property name="viewName" value="FiscalOfficerInfoInquiry3"/>
-    <property name="additionalCssFiles" ref="ka-css"/>
     <property name="title" value="Fiscal Officer Inquiry 3"/>
   </bean>
   

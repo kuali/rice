@@ -106,6 +106,11 @@
   </c:forEach>
 </krad:span>
 
+<%-- Transform all text on attribute field to uppercase--%>
+<c:if test="${field.performUppercase}">
+  <krad:script value="jq('#${field.control.id}').css('text-transform', 'uppercase');"/>
+</c:if>
+
 <%-- render error container for field --%>
 <c:if test="${!field.errorsField.alternateContainer}">
   <krad:template component="${field.errorsField}"/>

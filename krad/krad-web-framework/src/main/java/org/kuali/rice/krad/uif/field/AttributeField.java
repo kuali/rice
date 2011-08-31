@@ -124,6 +124,8 @@ public class AttributeField extends FieldBase implements DataBinding {
 
     private boolean escapeHtmlInPropertyValue;
 
+    private boolean performUppercase;
+
     // widgets
     private Inquiry fieldInquiry;
     private QuickFinder fieldLookup;
@@ -1334,5 +1336,28 @@ public class AttributeField extends FieldBase implements DataBinding {
      */
     public boolean isEscapeHtmlInPropertyValue() {
         return this.escapeHtmlInPropertyValue;
+    }
+
+    /**
+     * Perform uppercase flag for this field to force input to uppercase.
+     *
+     * <p>
+     * It this flag is set to true the 'text-transform' style on the field will be set to 'uppercase'
+     * which will automatically change any text input into the field to uppercase.
+     * </p>
+     *
+     * @return performUppercase flag
+     */
+    public boolean isPerformUppercase() {
+        return performUppercase;
+    }
+
+    /**
+     * Setter for this fields performUppercase flag
+     *
+     * @param performUppercase flag
+     */
+    public void setPerformUppercase(boolean performUppercase) {
+        this.performUppercase = performUppercase;
     }
 }

@@ -176,7 +176,7 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
 		
 	@Override
 	public Map<String, String> getAttributes() {
-		return this.attributes; 
+		return this.attributes;
 	}
 
     @Override
@@ -286,9 +286,6 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
 		}
      
 		public void setTypeId(String typeId) {
-			if (StringUtils.isBlank(typeId)) {
-	                throw new IllegalArgumentException("KRMS type id is blank");
-			}
 			this.typeId = typeId;
 		}
 		

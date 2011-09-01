@@ -45,6 +45,7 @@ public final class KRMSPropertyConstants {
 
 	public static final class Rule {
 		public static final String RULE_ID ="ruleId";
+        public static final String NAME = "dataObject.agendaItemLine.rule.name";
 	}
 
 	public static final class KrmsAttributeDefinition {

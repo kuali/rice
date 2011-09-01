@@ -40,7 +40,6 @@ class RuleDefinitionTest {
 	private static final String NAMESPACE = "KRMS_TEST"
 	private static final String RULE_ID_1 = "RULEID001"
 	private static final String RULE_NAME = "Rule1"
-	private static final String TYPE_ID = "1234XYZ"
 	private static final String PROP_ID_1 = "PROP-001"
 	private static final String ACTION_ID_1 = "ACTIONID01"
 
@@ -57,12 +56,10 @@ class RuleDefinitionTest {
 			<id>RULEID001</id>
 			<name>Rule1</name>
 			<namespace>KRMS_TEST</namespace>
-			<typeId>1234XYZ</typeId>
 			<proposition>
 				<id>PROP-001</id>
 				<description>is Campus Bloomington</description>
                 <ruleId>RULEID001</ruleId>
-				<typeId>1234XYZ</typeId>
         		<propositionTypeCode>S</propositionTypeCode>
         		<parameters>
         			<parameter>
@@ -99,7 +96,6 @@ class RuleDefinitionTest {
 			<id>RULEID001</id>
 			<name>Rule1</name>
 			<namespace>KRMS_TEST</namespace>
-			<typeId>1234XYZ</typeId>
 			<proposition>
 			<actions>
 				<action></action>
@@ -118,101 +114,86 @@ class RuleDefinitionTest {
 	@Test
 	void test_RuleDefinition_Builder_create_null_rule_id() {
         // null id is legit
-		RuleDefinition.Builder.create(null, RULE_NAME, NAMESPACE, TYPE_ID, PROP_ID_1)
+		RuleDefinition.Builder.create(null, RULE_NAME, NAMESPACE, null, PROP_ID_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_RuleDefinition_Builder_create_fail_empty_rule_id() {
-		RuleDefinition.Builder.create("", RULE_NAME, NAMESPACE, TYPE_ID, PROP_ID_1)
+		RuleDefinition.Builder.create("", RULE_NAME, NAMESPACE, null, PROP_ID_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_RuleDefinition_Builder_create_fail_whitespace_rule_id() {
-		RuleDefinition.Builder.create("  	", RULE_NAME, NAMESPACE, TYPE_ID, PROP_ID_1)
+		RuleDefinition.Builder.create("  	", RULE_NAME, NAMESPACE, null, PROP_ID_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_RuleDefinition_Builder_create_fail_null_rule_name() {
-		RuleDefinition.Builder.create(RULE_ID_1, null, NAMESPACE, TYPE_ID, PROP_ID_1)
+		RuleDefinition.Builder.create(RULE_ID_1, null, NAMESPACE, null, PROP_ID_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_RuleDefinition_Builder_create_fail_empty_rule_name() {
-		RuleDefinition.Builder.create(RULE_ID_1, "", NAMESPACE, TYPE_ID, PROP_ID_1)
+		RuleDefinition.Builder.create(RULE_ID_1, "", NAMESPACE, null, PROP_ID_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_RuleDefinition_Builder_create_fail_whitespace_rule_name() {
-		RuleDefinition.Builder.create(RULE_ID_1, "  	", NAMESPACE, TYPE_ID, PROP_ID_1)
+		RuleDefinition.Builder.create(RULE_ID_1, "  	", NAMESPACE, null, PROP_ID_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_RuleDefinition_Builder_create_fail_null_rule_namespace() {
-		RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, null, TYPE_ID, PROP_ID_1)
+		RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, null, null, PROP_ID_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_RuleDefinition_Builder_create_fail_empty_rule_namespace() {
-		RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME,"", TYPE_ID, PROP_ID_1)
+		RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME,"", null, PROP_ID_1)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_RuleDefinition_Builder_create_fail_whitespace_rule_namespace() {
-		RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, "  	", TYPE_ID, PROP_ID_1)
-	}
-
-	@Test(expected=IllegalArgumentException.class)
-	void test_RuleDefinition_Builder_create_fail_null_type_id() {
-		RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, NAMESPACE, null, PROP_ID_1)
-	}
-
-	@Test(expected=IllegalArgumentException.class)
-	void test_RuleDefinition_Builder_create_fail_empty_type_id() {
-		RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, NAMESPACE, "", PROP_ID_1)
-	}
-
-	@Test(expected=IllegalArgumentException.class)
-	void test_RuleDefinition_Builder_create_fail_whitespace_type_id() {
-		RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, NAMESPACE, "    ", PROP_ID_1)
+		RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, "  	", null, PROP_ID_1)
 	}
 
 	@Test
 	void test_RuleDefinition_Builder_create_null_prop_id() {
         // null propId is legit
-		RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, NAMESPACE, TYPE_ID, null)
+		RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, NAMESPACE, null, null)
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_RuleDefinition_Builder_create_fail_empty_prop_id() {
-		RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, NAMESPACE, TYPE_ID, "")
+		RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, NAMESPACE, null, "")
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_RuleDefinition_Builder_create_fail_whitespace_prop_id() {
-		RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, NAMESPACE, TYPE_ID, "    ")
+		RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, NAMESPACE, null, "    ")
 	}
 
 	@Test
 	void test_RuleDefinition_Builder_create() {
-		RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, NAMESPACE, TYPE_ID, PROP_ID_1)
+		RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, NAMESPACE, null, PROP_ID_1)
 	}
 	
 	@Test
 	void test_RuleDefinition_Builder_create_and_build() {
-		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROP_ID_1, PROPOSITION_TYPE_CD_S, RULE_ID_1, TYPE_ID, PARM_LIST_1)
+		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROP_ID_1, PROPOSITION_TYPE_CD_S, RULE_ID_1, null, PARM_LIST_1)
 		myPropBuilder.setDescription(PROP_DESCRIPTION)
 
-		RuleDefinition.Builder myBuilder = RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, NAMESPACE, TYPE_ID, PROP_ID_1)
+		RuleDefinition.Builder myBuilder = RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, NAMESPACE, null, PROP_ID_1)
 		myBuilder.setProposition myPropBuilder
 		myBuilder.build()
 	}
 	
 	@Test
 	public void testXmlMarshaling_small_RuleDefinition() {
-		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROP_ID_1, PROPOSITION_TYPE_CD_S, RULE_ID_1, TYPE_ID, PARM_LIST_1)
+		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROP_ID_1, PROPOSITION_TYPE_CD_S, RULE_ID_1, null, PARM_LIST_1)
 		myPropBuilder.setDescription(PROP_DESCRIPTION)
 
-		RuleDefinition.Builder myBuilder = RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, NAMESPACE, TYPE_ID, PROP_ID_1)
+		RuleDefinition.Builder myBuilder = RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, NAMESPACE, null, PROP_ID_1)
 		myBuilder.setProposition myPropBuilder
 		RuleDefinition myRule = myBuilder.build()
 
@@ -242,10 +223,10 @@ class RuleDefinitionTest {
 	@Test
 	// TODO: add attributes
 	public void testXmlMarshaling_RuleDefinition_with_attributes() {
-		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROP_ID_1, PROPOSITION_TYPE_CD_S, RULE_ID_1, TYPE_ID, PARM_LIST_1)
+		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROP_ID_1, PROPOSITION_TYPE_CD_S, RULE_ID_1, null, PARM_LIST_1)
 		myPropBuilder.setDescription(PROP_DESCRIPTION)
 
-		RuleDefinition.Builder myBuilder = RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, NAMESPACE, TYPE_ID, PROP_ID_1)
+		RuleDefinition.Builder myBuilder = RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, NAMESPACE, null, PROP_ID_1)
 		myBuilder.setProposition myPropBuilder
 		RuleDefinition myRule = myBuilder.build()
 
@@ -276,11 +257,10 @@ class RuleDefinitionTest {
 	@Test
 	// TODO: add actions
 	public void testXmlMarshaling_RuleDefinition_with_actions() {
-		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROP_ID_1, PROPOSITION_TYPE_CD_S, RULE_ID_1, TYPE_ID, PARM_LIST_1)
+		PropositionDefinition.Builder myPropBuilder = PropositionDefinition.Builder.create(PROP_ID_1, PROPOSITION_TYPE_CD_S, RULE_ID_1, null, PARM_LIST_1)
 		myPropBuilder.setDescription(PROP_DESCRIPTION)
-		myPropBuilder.setTypeId(TYPE_ID)
 
-		RuleDefinition.Builder myBuilder = RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, NAMESPACE, TYPE_ID, PROP_ID_1)
+		RuleDefinition.Builder myBuilder = RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, NAMESPACE, null, PROP_ID_1)
 		myBuilder.setProposition myPropBuilder
 		RuleDefinition myRule = myBuilder.build()
 

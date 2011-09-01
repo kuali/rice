@@ -170,4 +170,10 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         return isOldDataObjectInExistence;
     }
 
+     // Since the dataObject is a wrapper class we need to return the agendaBo instead.
+    @Override
+    public Class getDataObjectClass() {
+        return AgendaBo.class;
+    }
+
 }

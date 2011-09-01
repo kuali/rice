@@ -27,6 +27,7 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.AgendaItemBo;
 import org.kuali.rice.krms.impl.repository.ContextBo;
+import org.kuali.rice.krms.impl.rule.AgendaEditorBusRule;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -244,39 +245,45 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaEditor editorDocument = getAgendaEditor(form);
         AgendaBo agenda = editorDocument.getAgenda();
         AgendaItemBo newAgendaItem = editorDocument.getAgendaItemLine();
-        newAgendaItem.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_AGENDA_ITM_S").toString());
-        newAgendaItem.setAgendaId(getCreateAgendaId(agenda));
+
         if (agenda.getItems() == null) {
             agenda.setItems(new ArrayList<AgendaItemBo>());
         }
-        if (agenda.getFirstItemId() == null) {
-            agenda.setFirstItemId(newAgendaItem.getId());
-            agenda.getItems().add(newAgendaItem);
-        } else {
-            // insert agenda in tree
-            String selectedAgendaItemId = getSelectedAgendaItemId(form);
-            if (StringUtils.isBlank(selectedAgendaItemId)) {
-                // add after the last root node
-                AgendaItemBo node = getFirstAgendaItem(agenda);
-                while (node.getAlways() != null) {
-                    node = node.getAlways();
-                }
-                node.setAlwaysId(newAgendaItem.getId());
-                node.setAlways(newAgendaItem);
-            } else {
-                // add after selected node
-                AgendaItemBo firstItem = getFirstAgendaItem(agenda);
-                AgendaItemBo node = getAgendaItemById(firstItem, selectedAgendaItemId);
-                newAgendaItem.setAlwaysId(node.getAlwaysId());
-                newAgendaItem.setAlways(node.getAlways());
-                node.setAlwaysId(newAgendaItem.getId());
-                node.setAlways(newAgendaItem);
-            }
-        }
-        // add it to the collection on the agenda too
-        agenda.getItems().add(newAgendaItem);
 
-        form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-Agenda-Page");
+        AgendaEditorBusRule rule = new AgendaEditorBusRule();
+        if (rule.processAddAgendaItemBusinessRules(newAgendaItem, agenda)) {
+            newAgendaItem.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_AGENDA_ITM_S").toString());
+            newAgendaItem.setAgendaId(getCreateAgendaId(agenda));
+            if (agenda.getFirstItemId() == null) {
+                agenda.setFirstItemId(newAgendaItem.getId());
+            } else {
+                // insert agenda in tree
+                String selectedAgendaItemId = getSelectedAgendaItemId(form);
+                if (StringUtils.isBlank(selectedAgendaItemId)) {
+                    // add after the last root node
+                    AgendaItemBo node = getFirstAgendaItem(agenda);
+                    while (node.getAlways() != null) {
+                        node = node.getAlways();
+                    }
+                    node.setAlwaysId(newAgendaItem.getId());
+                    node.setAlways(newAgendaItem);
+                } else {
+                    // add after selected node
+                    AgendaItemBo firstItem = getFirstAgendaItem(agenda);
+                    AgendaItemBo node = getAgendaItemById(firstItem, selectedAgendaItemId);
+                    newAgendaItem.setAlwaysId(node.getAlwaysId());
+                    newAgendaItem.setAlways(node.getAlways());
+                    node.setAlwaysId(newAgendaItem.getId());
+                    node.setAlways(newAgendaItem);
+                }
+            }
+            // add it to the collection on the agenda too
+            agenda.getItems().add(newAgendaItem);
+
+            form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-Agenda-Page");
+        } else {
+            form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-AddRule-Page");
+        }
         return super.navigate(form, result, request, response);
     }
 

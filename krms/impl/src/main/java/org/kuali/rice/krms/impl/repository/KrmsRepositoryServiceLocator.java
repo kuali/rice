@@ -33,10 +33,12 @@ public final class KrmsRepositoryServiceLocator {
     public static final String CRITERIA_LOOKUP_SERVICE = "criteriaLookupService";
     public static final String KRMS_CONTEXT_BO_SERVICE = "contextBoService";
     public static final String KRMS_AGENDA_BO_SERVICE = "agendaBoService";
-	
+    public static final String KRMS_RULE_BO_SERVICE = "ruleBoService";
+
 	private static KrmsAttributeDefinitionService krmsAttributeDefinitionService;
     private static ContextBoService contextBoService;
     private static AgendaBoService agendaBoService;
+    private static RuleBoService ruleBoService;
 
     public static <T extends Object> T getService(String serviceName) {
 		return KrmsRepositoryServiceLocator.<T>getBean(serviceName);
@@ -76,5 +78,12 @@ public final class KrmsRepositoryServiceLocator {
             agendaBoService = getService(KRMS_AGENDA_BO_SERVICE);
         }
         return agendaBoService;
+    }
+
+    public static RuleBoService getRuleBoService() {
+        if (ruleBoService == null) {
+            ruleBoService = getService(KRMS_RULE_BO_SERVICE);
+        }
+        return ruleBoService;
     }
 }

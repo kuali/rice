@@ -368,7 +368,13 @@ public class CollectionGroupBuilder implements Serializable {
 					.getBindingPath());
 			actionField.addActionParameter(UifParameters.SELECTED_LINE_INDEX, Integer.toString(lineIndex));
 			actionField.setJumpToIdAfterSubmit(collectionGroup.getId() + "_div");
-			actionField.setClientSideJs("performCollectionAction('"+collectionGroup.getId()+"');");
+
+            // If the originalId is set use that for the script
+            if (StringUtils.isEmpty(collectionGroup.getOriginalId())) {
+			    actionField.setClientSideJs("performCollectionAction('"+collectionGroup.getId()+"');");
+            }else{
+                actionField.setClientSideJs("performCollectionAction('"+collectionGroup.getOriginalId()+"');");
+            }
 		}
 
 		ComponentUtils.updateContextsForLine(lineActions, collectionLine, lineIndex);
@@ -399,7 +405,14 @@ public class CollectionGroupBuilder implements Serializable {
 			//actionField.addActionParameter(UifParameters.COLLECTION_ID, collectionGroup.getId());
 			actionField.setJumpToIdAfterSubmit(collectionGroup.getId() + "_div");
 			actionField.addActionParameter(UifParameters.ACTION_TYPE, UifParameters.ADD_LINE);
-			actionField.setClientSideJs("addLineToCollection('"+collectionGroup.getId()+"', '"+ collectionGroup.getBaseId() +"');");
+
+            // If the originalId is set use that for the script
+            if (StringUtils.isEmpty(collectionGroup.getOriginalId())) {
+                actionField.setClientSideJs("addLineToCollection('"+collectionGroup.getId()+"', '"+ collectionGroup.getBaseId() +"');");
+            }else{
+                actionField.setClientSideJs("addLineToCollection('"+collectionGroup.getOriginalId()+"', '"+ collectionGroup.getBaseId() +"');");
+            }
+
 		}
 
 		// get add line for context

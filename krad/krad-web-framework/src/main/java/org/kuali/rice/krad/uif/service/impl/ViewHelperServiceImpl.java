@@ -176,6 +176,13 @@ public class ViewHelperServiceImpl implements ViewHelperService {
         Component parent = (Component) origComponent.getContext().get(UifConstants.ContextVariableNames.PARENT);
         component.pushAllToContext(origComponent.getContext());
 
+        // Set the original id for CollectionGroups so that the onClick script for the action
+        // fields can be generated with the originalId which will be set as the
+        // component id later.
+        if (component instanceof CollectionGroup) {
+            ((CollectionGroup) component).setOriginalId(origId);
+        }
+
         performComponentInitialization(form.getView(), component);
         performComponentApplyModel(form.getView(), component, form);
 

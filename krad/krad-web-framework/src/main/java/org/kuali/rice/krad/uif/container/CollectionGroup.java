@@ -80,6 +80,8 @@ public class CollectionGroup extends Group implements DataBinding {
 
     private CollectionGroupBuilder collectionGroupBuilder;
 
+    private String originalId;
+
     public CollectionGroup() {
         renderAddLine = true;
         renderLineActions = true;
@@ -738,4 +740,21 @@ public class CollectionGroup extends Group implements DataBinding {
         return showHideInactiveButton;
     }
 
+    /**
+     * The originalId if this component is copied from another instance
+     *
+     * @return originalId
+     */
+    public String getOriginalId() {
+        return originalId;
+    }
+
+    /**
+     * Setter for the originalId
+     *
+     * @param originalId
+     */
+    public void setOriginalId(String originalId) {
+        this.originalId = originalId;
+    }
 }

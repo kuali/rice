@@ -380,49 +380,4 @@
 			</bean>
 		</property>
 	</bean>
-
-
-<!-- ************************************************************************** -->
-<!-- **** These are not SOAP methods... They need to be refactored for 1.1***** -->
-<!-- ************************************************************************** -->
-<!--  can't be exported as soap until 1.1 because the move document service has methods that can't be soaped -->
-	<bean parent="kewEmbeddedServiceExporter" name="MoveDocumentProcessorBean">
-		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
-		<property name="serviceDefinition">
-        <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
-          <property name="service">
-          <!-- this should be replaced with enMoveDocumentSerice in the 1.1 release of rice -->
-            <ref bean="enMoveDocumentService" />
-          </property>
-          <property name="localServiceName" value="MoveDocumentProcessor" />
-          <property name="priority" value="10"/>
-          <property name="retryAttempts" value="1" />
-          <property name="messageExceptionHandler" value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
-        </bean>
-    </property>
-  </bean>
-  
-  <bean parent="kewLocalServiceExporter" name="ImmediateEmailServiceBean">
-		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
-		<property name="serviceDefinition">
-        <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
-          <property name="service">
-            <ref bean="enImmediateEmailReminderService" />
-          </property>
-          <property name="localServiceName" value="ImmediateEmailService" />
-          <property name="serviceNameSpaceURI" value=""/>
-          <property name="priority" value="30"/>
-          <property name="retryAttempts" value="1" />
-          <property name="messageExceptionHandler" value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
-        </bean>
-		</property>
-		<property name="exportIf" value="Email.useRemoteServices" />
-	</bean>	
-
-  
-<!-- ************************************************************************** -->
-<!-- **** END OF NON SOAP METHODS ********************************************* -->
-<!-- ************************************************************************** -->
-
-
 </beans>

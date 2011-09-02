@@ -246,6 +246,10 @@ public class ExpressionUtils {
             }
         }
 
+        if(StringUtils.isNotEmpty(stack)){
+           evaluateCurrentStack(stack.trim(), controlNames);
+        }
+
         conditionJs = conditionJs.replaceAll("\\s(?i:ne)\\s", " != ").replaceAll("\\s(?i:eq)\\s", " == ").replaceAll(
                 "\\s(?i:gt)\\s", " > ").replaceAll("\\s(?i:lt)\\s", " < ").replaceAll("\\s(?i:lte)\\s", " <= ")
                 .replaceAll("\\s(?i:gte)\\s", " >= ").replaceAll("\\s(?i:and)\\s", " && ").replaceAll("\\s(?i:or)\\s",

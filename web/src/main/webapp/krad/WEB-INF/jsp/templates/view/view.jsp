@@ -15,18 +15,24 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="view"
-	classname="org.kuali.rice.krad.uif.view.View" />
+<tiles:useAttribute name="view"	classname="org.kuali.rice.krad.uif.view.View" />
 
 <!-- begin of view render -->
 <krad:html view="${view}">
-<krad:template component="${view.breadcrumbs}"/>
-<!----------------------------------- #VIEW HEADER --------------------------------------->
+
+<!----------------------------------- #APPLICATION HEADER --------------------------------------->
+<krad:template component="${view.applicationHeader}"/>
+
+<c:if test="${!view.breadcrumbsInApplicationHeader}">
+  <krad:template component="${view.breadcrumbs}"/>
+</c:if>
+
+  <!----------------------------------- #VIEW HEADER --------------------------------------->
 <div id="viewheader_div">
 	<krad:template component="${view.header}" />
 </div>
 
-<!--Changing any ids here will break navigation slide out functionality -->
+<!-- changing any ids here will break navigation slide out functionality -->
 <div id="viewlayout_div">
 	<!----------------------------------- #VIEW NAVIGATION --------------------------------------->
 	<div id="viewnavigation_div">
@@ -72,6 +78,9 @@
 <div id="viewfooter_div">
 	<krad:template component="${view.footer}" />
 </div>
+
+<!----------------------------------- #APPLICATION FOOTER --------------------------------------->
+<krad:template component="${view.applicationFooter}"/>
 
 </krad:html>
 <!-- end of view render -->

@@ -13,6 +13,7 @@
   <context:component-scan base-package="org.kuali.rice.krad" />
   <context:component-scan base-package="edu.sampleu.travel.krad" />
   <context:component-scan base-package="edu.sampleu.kew.krad" />
+  <context:component-scan base-package="edu.sampleu.student.web.controller" />
   <context:component-scan base-package="org.kuali.rice.krms" />
   <context:component-scan base-package="org.kuali.rice.core.web" />
 

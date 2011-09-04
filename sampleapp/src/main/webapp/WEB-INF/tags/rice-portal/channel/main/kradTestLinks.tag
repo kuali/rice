@@ -34,5 +34,9 @@
      <li><portal:portalLink displayTitle="true" title="Travel Account Lookup" url="${ConfigProperties.application.url}/spring/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&viewName=ks_lookup&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
      <li><portal:portalLink displayTitle="true" title="Travel Account Multi-Value Lookup" url="${ConfigProperties.application.url}/spring/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&viewName=ks_lookup&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&multipleValuesSelect=true&suppressActions=true&conversionFields=number:foo,name:foo" /></li>
   </ul>
+  <strong>Demo Views</strong>
+  <ul class="chan">
+    <li><a class="portal_link" href="${ConfigProperties.application.url}/spring/courseOffering?viewId=CourseOfferingView&methodToCall=start" title="Course Offering" target="_blank">Course Offering</a></li>
+  </ul>
 </div>
 <channel:portalChannelBottom />

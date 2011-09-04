@@ -20,19 +20,24 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 -->
 
   <!-- Base Fields -->
+
+  <bean id="Field" abstract="true" parent="Field-parentBean"/>
+  <bean id="Field-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.FieldBase">
+    <property name="readOnly" value="@{#parent.readOnly}"/>
+  </bean>
   
   <bean id="AttributeField" abstract="true" parent="AttributeField-parentBean"/>
-  <bean id="AttributeField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.AttributeField" scope="prototype">
+  <bean id="AttributeField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.AttributeField" parent="Field" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/attributeField.jsp"/>
       <property name="styleClasses" value="field_attribute"/>
 	    <property name="errorsField">
         <bean parent="ErrorsField"/>
       </property>
-      <property name="labelField">
-        <bean parent="LabelField"/>
-      </property>      
       <property name="bindingInfo">
         <ref bean="BindingInfo"/>
+      </property>
+      <property name="labelField">
+        <bean parent="LabelField"/>
       </property>
       <property name="fieldLookup">
         <bean parent="QuickFinder"/>
@@ -52,8 +57,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="constraintMessageField">
         <bean parent="MessageField" p:messageType="CONSTRAINT" p:styleClasses="constraint"/>
       </property>  
-      <property name="readOnly" value="@{#parent.readOnly}"/>
-  </bean>  
+  </bean>
   
   <bean id="AttributeField_Form" parent="AttributeField_Form-parentBean"/>
   <bean id="AttributeField_Form-parentBean" abstract="true" parent="AttributeField">
@@ -70,7 +74,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     <property name="template" value="/krad/WEB-INF/jsp/templates/field/labelField.jsp"/>
     <property name="styleClasses" value="desc"/>
     <property name="requiredMessageField">
-      <bean parent="MessageField" p:messageText="*" p:messageType="REQUIRED" p:styleClasses="required"/>
+      <bean class="org.kuali.rice.krad.uif.field.MessageField" parent="Field" p:messageText="*"
+            p:messageType="REQUIRED" p:styleClasses="required" p:template="/krad/WEB-INF/jsp/templates/field/messageField.jsp"/>
     </property>
   </bean>
 
@@ -98,8 +103,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>
   
   <bean id="ErrorsField_Group" parent="ErrorsField">
-      <property name="styleClasses" value="errorsField errorsFieldForContainer"/>
-      <property name="displayErrorTitle" value="false"/>
+    <property name="styleClasses" value="errorsField errorsFieldForContainer"/>
+    <property name="displayErrorTitle" value="false"/>
 	  <property name="displayWarningTitle" value="false"/> 
 	  <property name="displayInfoTitle" value="false"/> 
 	  <property name="displayFieldLabelWithMessages" value="true"/>
@@ -165,13 +170,16 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>
   
   <bean id="ActionField" parent="ActionField-parentBean"/>
-  <bean id="ActionField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.ActionField" scope="prototype">
+  <bean id="ActionField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.ActionField" parent="Field" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/actionField.jsp"/>
       <property name="styleClasses" value="button-primary"/>
+      <property name="labelField">
+        <bean parent="LabelField"/>
+      </property>
   </bean>
 
   <bean id="ActionImageField" parent="ActionImageField-parentBean"/>
-  <bean id="ActionImageField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.ActionField" scope="prototype">
+  <bean id="ActionImageField-parentBean" abstract="true" parent="ActionField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/actionField.jsp"/>
       <property name="actionImageLocation" value=""/>
   </bean>
@@ -222,44 +230,63 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>
   
   <bean id="LinkField" parent="LinkField-parentBean"/>
-  <bean id="LinkField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.LinkField" scope="prototype">
+  <bean id="LinkField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.LinkField" parent="Field" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/linkField.jsp"/>
       <property name="target" value="_blank"/>
+      <property name="labelField">
+        <bean parent="LabelField"/>
+      </property>
   </bean>  
   
   <bean id="MessageField" parent="MessageField-parentBean"/>
-  <bean id="MessageField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.MessageField" scope="prototype">
+  <bean id="MessageField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.MessageField" parent="Field" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/messageField.jsp"/>
+      <property name="labelField">
+        <bean parent="LabelField" p:render="false"/>
+      </property>
   </bean> 
   
   <bean id="IframeField" parent="IframeField-parentBean"/>
-  <bean id="IframeField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.IframeField" scope="prototype">
+  <bean id="IframeField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.IframeField" parent="Field" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/iframeField.jsp"/>
+      <property name="labelField">
+        <bean parent="LabelField"/>
+      </property>
   </bean>  
   
   <bean id="ImageField" parent="ImageField-parentBean"/>
-  <bean id="ImageField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.ImageField" scope="prototype">
+  <bean id="ImageField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.ImageField" parent="Field" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/imageField.jsp"/>
+      <property name="labelField">
+        <bean parent="LabelField"/>
+      </property>
   </bean> 
 
   <bean id="BlankField" parent="BlankField-parentBean"/>
-  <bean id="BlankField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.BlankField" scope="prototype">
+  <bean id="BlankField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.BlankField" parent="Field" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/blankField.jsp"/>
   </bean>
-  
+
   <bean id="GenericField" parent="GenericField-parentBean"/>
-  <bean id="GenericField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.GenericField" scope="prototype"/>
-  
+  <bean id="GenericField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.GenericField" parent="Field" scope="prototype">
+    <property name="labelField">
+      <bean parent="LabelField"/>
+    </property>
+  </bean>
+
   <bean id="FieldGroup" parent="FieldGroup-parentBean"/>
-  <bean id="FieldGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.FieldGroup" scope="prototype">
+  <bean id="FieldGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.FieldGroup" parent="Field" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/fieldGroup.jsp"/>
       <property name="group">
          <bean parent="GroupBodyOnly" p:fieldContainer="true"/>
       </property>
       <property name="labelField">
         <bean parent="LabelField"/>
-      </property>        
-  </bean>    
+      </property>
+  </bean>
+
+  <bean id="HorizontalFieldGroup" parent="HorizontalFieldGroup-parentBean"/>
+  <bean id="HorizontalFieldGroup-parentBean" parent="FieldGroup" p:group.layoutManager.orientation="HORIZONTAL"/>
 
   <!-- Common Fields -->
   

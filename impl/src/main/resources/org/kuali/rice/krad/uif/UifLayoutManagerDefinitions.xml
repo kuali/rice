@@ -92,5 +92,17 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
          <bean parent="Footer"/>
       </property>
   </bean>
+
+  <bean id="StackedLayoutManagerBox" parent="StackedLayoutManagerBox-parentBean"/>
+  <bean id="StackedLayoutManagerBox-parentBean" abstract="true" parent="StackedLayoutManager">
+      <property name="addLineGroup">
+        <bean parent="Group" p:header.render="false" p:layoutManager.orientation="HORIZONTAL"
+              p:styleClasses="kr-collectionLine-cntr" p:footer-ref="Footer"/>
+      </property>
+      <property name="lineGroupPrototype">
+        <bean parent="Group" p:header.render="false" p:layoutManager.orientation="HORIZONTAL"
+              p:styleClasses="kr-collectionLine-cntr" p:footer-ref="Footer"/>
+      </property>
+  </bean>
   
 </beans>  

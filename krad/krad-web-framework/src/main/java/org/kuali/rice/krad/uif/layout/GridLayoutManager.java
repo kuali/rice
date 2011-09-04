@@ -38,7 +38,6 @@ public class GridLayoutManager extends LayoutManagerBase {
     private static final long serialVersionUID = 1890011900375071128L;
 
     private int numberOfColumns;
-    private String conditionalNumberOfColumns;
 
     private boolean suppressLineWrapping;
     private boolean applyAlternatingRowStyles;
@@ -105,24 +104,6 @@ public class GridLayoutManager extends LayoutManagerBase {
      */
     public void setNumberOfColumns(int numberOfColumns) {
         this.numberOfColumns = numberOfColumns;
-    }
-
-    /**
-     * Conditional string expression for setting the number of columns field
-     * 
-     * @return String expression that should evaluate to an int
-     */
-    public String getConditionalNumberOfColumns() {
-        return this.conditionalNumberOfColumns;
-    }
-
-    /**
-     * Setter for the conditional number of columns string
-     * 
-     * @param conditionalNumberOfColumns
-     */
-    public void setConditionalNumberOfColumns(String conditionalNumberOfColumns) {
-        this.conditionalNumberOfColumns = conditionalNumberOfColumns;
     }
 
     /**

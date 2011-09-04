@@ -125,9 +125,6 @@ public class UifWebUtils {
 
                     form.setPreviousView(null);
 
-                    // update history for view
-                    prepareHistory(request, form);
-
                     // store form to session and persist document form to db as well
                     request.getSession().setAttribute(form.getFormKey(), form);
                     if (form instanceof DocumentFormBase) {
@@ -142,6 +139,9 @@ public class UifWebUtils {
 
                     // prepare view contained in form
                     prepareViewForRendering(form);
+
+                    // update history for view
+                    prepareHistory(request, form);
                 }
             }
         }

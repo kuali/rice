@@ -414,7 +414,5 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	public void setFieldContainer(boolean fieldContainer) {
 		this.fieldContainer = fieldContainer;
 	}
-	
-	
 
 }

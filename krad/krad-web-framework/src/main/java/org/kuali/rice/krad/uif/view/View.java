@@ -24,6 +24,7 @@ import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
 import org.kuali.rice.krad.uif.component.RequestParameter;
+import org.kuali.rice.krad.uif.field.HeaderField;
 import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.BooleanMap;
@@ -73,10 +74,15 @@ public class View extends ContainerBase {
 
     private int idSequence;
 
+    // application
+    private HeaderField applicationHeader;
+    private Group applicationFooter;
+
     // Breadcrumbs
     private BreadCrumbs breadcrumbs;
     private String viewLabelFieldPropertyName;
     private String appendOption;
+    private boolean breadcrumbsInApplicationHeader;
 
     // Growls support
     private GrowlsWidget growlsWidget;
@@ -136,6 +142,7 @@ public class View extends ContainerBase {
         translateCodes = false;
         viewTypeName = ViewType.DEFAULT;
         viewStatus = UifConstants.ViewStatus.CREATED;
+        breadcrumbsInApplicationHeader = false;
 
         idSequence = 0;
 
@@ -218,6 +225,8 @@ public class View extends ContainerBase {
     public List<Component> getNestedComponents() {
         List<Component> components = super.getNestedComponents();
 
+        components.add(applicationHeader);
+        components.add(applicationFooter);
         components.add(navigation);
         components.add(breadcrumbs);
         components.add(growlsWidget);
@@ -287,6 +296,54 @@ public class View extends ContainerBase {
      */
     public void setViewName(String viewName) {
         this.viewName = viewName;
+    }
+
+    /**
+     * Header for the application containing the view
+     *
+     * <p>
+     * When deploying outside a portal, the application header and footer property can be configured to
+     * display a consistent header/footer across all views. Here application logos, menus, login controls
+     * and so on can be rendered.
+     * </p>
+     *
+     * @return HeaderField application header
+     */
+    public HeaderField getApplicationHeader() {
+        return applicationHeader;
+    }
+
+    /**
+     * Setter for the application header
+     *
+     * @param applicationHeader
+     */
+    public void setApplicationHeader(HeaderField applicationHeader) {
+        this.applicationHeader = applicationHeader;
+    }
+
+    /**
+     * Footer for the application containing the view
+     *
+     * <p>
+     * When deploying outside a portal, the application header and footer property can be configured to
+     * display a consistent header/footer across all views. Here such things as application links, copyrights
+     * and so on can be rendered.
+     * </p>
+     *
+     * @return Group application footer
+     */
+    public Group getApplicationFooter() {
+        return applicationFooter;
+    }
+
+    /**
+     * Setter for the application footer
+     *
+     * @param applicationFooter
+     */
+    public void setApplicationFooter(Group applicationFooter) {
+        this.applicationFooter = applicationFooter;
     }
 
     /**
@@ -934,6 +991,31 @@ public class View extends ContainerBase {
      */
     public void setBreadcrumbs(BreadCrumbs breadcrumbs) {
         this.breadcrumbs = breadcrumbs;
+    }
+
+    /**
+     * Indicates whether the breadcrumbs are rendered in the application header and should not
+     * be rendered as part of the view template
+     *
+     * <p>
+     * For layout purposes it is sometimes necessary to render the breadcrumbs in the application header. This flag
+     * indicates that is being done and therefore should not be rendered in the view template.
+     * </p>
+     *
+     * @return boolean true if breadcrumbs are rendered in the application header, false if not and they should be
+     *         rendered with the view
+     */
+    public boolean isBreadcrumbsInApplicationHeader() {
+        return breadcrumbsInApplicationHeader;
+    }
+
+    /**
+     * Setter for the breadcrumbs in application header indicator
+     *
+     * @param breadcrumbsInApplicationHeader
+     */
+    public void setBreadcrumbsInApplicationHeader(boolean breadcrumbsInApplicationHeader) {
+        this.breadcrumbsInApplicationHeader = breadcrumbsInApplicationHeader;
     }
 
     /**

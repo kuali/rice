@@ -41,7 +41,7 @@
   <c:when test="${(field.actionImageField != null) && field.actionImageField.render && (empty field.actionImageLocation)}">
     <krad:attributeBuilder component="${field.actionImageField}"/>
 
-    <krad:span component="${field}">
+    <span id="${field.id}_span">
       <krad:fieldLabel field="${field}">
 
         <input type="image" id="${field.id}"
@@ -49,7 +49,7 @@
                alt="${field.actionImageField.altText}" ${height} ${width} ${style} ${styleClass} ${title} ${tabindex} />
 
       </krad:fieldLabel>
-    </krad:span>
+    </span>
   </c:when>
   <c:otherwise>
     <krad:attributeBuilder component="${field}"/>

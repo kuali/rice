@@ -17,10 +17,7 @@
 
 <c:choose>
   <c:when test="${KualiForm.renderFullView}">
-  
-     <%-- NOTE: Put application content here (such as a header, 
-          or application navigation) to wrap all the views --%>
-  
+
      <%-- render full view --%>
      <krad:template component="${KualiForm.view}"/>
 

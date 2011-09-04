@@ -10,13 +10,16 @@
  */
 package org.kuali.rice.krad.uif.field;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants.Position;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.view.View;
 
 import java.util.List;
 
 /**
  * Contains a label for another <code>Field</code> instance
+ *
  * <p>
  * The <code>LabelField</code> exists so that the label can be placed separate
  * from the component in a layout manager such as the
@@ -41,6 +44,24 @@ public class LabelField extends FieldBase {
         renderColon = true;
 
         requiredMessagePlacement = Position.LEFT;
+    }
+
+    /**
+	 * The following finalization is performed:
+	 *
+	 * <ul>
+	 * <li>If label text is blank, set render to false for field</li>
+	 *
+	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
+	 *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+	 */
+    @Override
+    public void performFinalize(View view, Object model, Component parent) {
+        super.performFinalize(view, model, parent);
+
+        if (StringUtils.isBlank(getLabelText())) {
+            setRender(false);
+        }
     }
 
     /**

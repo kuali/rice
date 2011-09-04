@@ -37,6 +37,7 @@ public class ComponentFactory {
 
     private static final Map<String, Component> componentDefinitions = new HashMap<String, Component>();
 
+    protected static final String GROUP = "Group";
     protected static final String LABEL_FIELD = "LabelField";
     protected static final String MESSAGE_FIELD = "MessageField";
     protected static final String TEXT_CONTROL = "TextControl";
@@ -91,6 +92,10 @@ public class ComponentFactory {
         return (RadioGroupControl) getNewComponentInstance(RADIO_GROUP_CONTROL_HORIZONTAL);
     }
 
+    public static Group getGroup() {
+        return (Group) getNewComponentInstance(GROUP);
+    }
+
     /**
      * Gets a fresh copy of the component by the id passed in which is translated to the
      * corresponding dictionary id
@@ -143,11 +148,12 @@ public class ComponentFactory {
                 }
             }
 
-            List<CollectionGroup> collections =
-                    ComponentUtils.getComponentsOfTypeDeep(component, CollectionGroup.class);
+            List<CollectionGroup> collections = ComponentUtils.getComponentsOfTypeDeep(component,
+                    CollectionGroup.class);
             for (CollectionGroup collection : collections) {
-                CollectionGroup origField = (CollectionGroup) form.getView().getViewIndex().getComponentById(StringUtils
-                        .replaceOnce(collection.getId(), collection.getBaseId(), collection.getBaseId() + suffix));
+                CollectionGroup origField = (CollectionGroup) form.getView().getViewIndex().getComponentById(
+                        StringUtils.replaceOnce(collection.getId(), collection.getBaseId(),
+                                collection.getBaseId() + suffix));
                 if (origField != null) {
                     collection.setBindingInfo(origField.getBindingInfo());
                 }

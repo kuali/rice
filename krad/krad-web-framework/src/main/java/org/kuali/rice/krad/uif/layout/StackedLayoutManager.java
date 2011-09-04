@@ -150,7 +150,7 @@ public class StackedLayoutManager extends BoxLayoutManager implements Collection
         lineGroup.setItems(groupFields);
 
         // set line actions on group footer
-        if (collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly()) {
+        if (collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly() && (lineGroup.getFooter() != null)) {
             lineGroup.getFooter().setItems(actions);
         }
 

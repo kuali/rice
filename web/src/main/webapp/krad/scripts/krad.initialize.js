@@ -89,11 +89,14 @@ function setupValidator(){
 			error.appendTo(errorList);
 		}
 	});
+
     jq(".required").each(function(){
         jq(this).attr("aria-required", "true");
     });
+
 	jq(document).trigger('validationSetup');
 	pageValidatorReady = true;
+
 	jq.watermark.showAll();
 }
 

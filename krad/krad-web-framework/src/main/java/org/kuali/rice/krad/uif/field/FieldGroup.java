@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 
@@ -117,10 +118,10 @@ public class FieldGroup extends FieldBase {
 	 * 
 	 * @param items
 	 */
-	public void setItems(List<? extends Component> items) {
-		if (group != null) {
-			group.setItems(items);
-		}
-	}
+    public void setItems(List<? extends Component> items) {
+        if (group != null) {
+            group.setItems(items);
+        }
+    }
 
 }

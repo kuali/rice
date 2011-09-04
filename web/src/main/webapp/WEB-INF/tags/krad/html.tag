@@ -81,8 +81,8 @@
   <!----------------------------------- #BEGIN BODY --------------------------------------->
 
   <body>
-    <krad:div component="${view}">
-      <div id="view_div">
+    <div id="view_div">
+     <krad:div component="${view}">
 
       <krad:backdoor/>
 
@@ -115,7 +115,7 @@
          <jsp:doBody/>
       </c:if>  
     
-      </div>
-    </krad:div> 
+     </krad:div>
+    </div>
   </body>
 </html>

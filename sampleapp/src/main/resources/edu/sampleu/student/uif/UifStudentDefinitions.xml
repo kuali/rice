@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <bean id="GenericTextArea" parent="AttributeField_Form" abstract="true"
+        p:label="Field Label" p:labelPlacement="TOP"
+        p:labelField.styleClasses="labelTop" p:labelField.renderColon="false">
+    <property name="control">
+      <bean parent="TextAreaControl" p:rows="5" p:cols="40"/>
+    </property>
+  </bean>
+
+  <bean id="GenericTextField" parent="AttributeField_Form" abstract="true"
+        p:label="Field Label" p:labelPlacement="TOP"
+        p:labelField.styleClasses="labelTop" p:labelField.renderColon="false">
+    <property name="control">
+      <bean parent="TextControl" p:size="30"/>
+    </property>
+  </bean>
+
+  <bean id="GenericTextFieldMedium" parent="GenericTextField" p:control.size="12"/>
+  <bean id="GenericTextFieldSmall" parent="GenericTextField" p:control.size="5"/>
+
+  <bean id="GenericDateField" parent="GenericTextField">
+    <property name="control">
+      <bean parent="TextControl" p:size="10" p:datePicker-ref="DatePicker"/>
+    </property>
+  </bean>
+
+  <bean id="GenericSelection" parent="AttributeField_Form" abstract="true"
+        p:label="Select" p:labelPlacement="TOP" p:labelField.styleClasses="labelTop"
+        p:labelField.renderColon="false">
+    <property name="control">
+      <bean parent="SelectControl">
+        <property name="options">
+          <list>
+            <bean parent="KeyLabelPair" p:key="" p:value=""/>
+            <bean parent="KeyLabelPair" p:key="1" p:value="Select 1"/>
+            <bean parent="KeyLabelPair" p:key="2" p:value="Select 2"/>
+            <bean parent="KeyLabelPair" p:key="3" p:value="Select 3"/>
+            <bean parent="KeyLabelPair" p:key="4" p:value="Select 4"/>
+            <bean parent="KeyLabelPair" p:key="4" p:value="Select 5"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="GenericGroup" parent="Group" p:accordion.render="false" p:header.styleClasses="group_header"/>
+
+  <bean id="genericTextGroup" parent="Group"
+        p:layoutManager.orientation="HORIZONTAL">
+    <property name="accordion.render" value="false"/>
+    <property name="styleClasses" value="group_header"/>
+    <property name="items">
+      <list>
+        <bean parent="GenericTextField" p:label="Field 1" p:required="true"
+              p:propertyName="gField1"/>
+        <bean parent="GenericTextField" p:label="Field 2" p:required="true"
+              p:propertyName="gField2"/>
+        <bean parent="GenericTextField" p:label="Field 3" p:required="true"
+              p:propertyName="gField3"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="GenericCollectionGroup" parent="CollectionGroup" p:accordion.render="false"
+        p:layoutManager-ref="StackedLayoutManagerBox" p:header.styleClasses="group_header">
+    <property name="addLineActionFields">
+      <list>
+        <bean parent="ActionField_Small" p:methodToCall="addLine" p:actionLabel="add">
+          <property name="actionImageField">
+            <bean parent="ImageField"
+                  p:source="@{#ConfigProperties['krad.externalizable.images.url']}ks/icon_btn_add.png"/>
+          </property>
+        </bean>
+      </list>
+    </property>
+    <property name="actionFields">
+      <list>
+        <bean parent="ActionField_SmallSecondary" p:methodToCall="deleteLine" p:actionLabel="delete">
+          <property name="actionImageField">
+            <bean parent="ImageField"
+                  p:source="@{#ConfigProperties['krad.externalizable.images.url']}ks/icon_btn_minus.png"/>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="GenericRadio" parent="AttributeField_Form" abstract="true"
+        p:label="Radio" p:labelPlacement="TOP" p:labelField.styleClasses="labelTop"
+        p:labelField.renderColon="false">
+    <property name="control">
+      <bean parent="RadioGroupControl">
+        <property name="options">
+          <list>
+            <bean parent="KeyLabelPair" p:key="1" p:value="Radio 1"/>
+            <bean parent="KeyLabelPair" p:key="2" p:value="Radio 2"/>
+            <bean parent="KeyLabelPair" p:key="3" p:value="Radio 3"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="GenericCheckbox" parent="AttributeField_Form" abstract="true"
+        p:labelPlacement="RIGHT"
+        p:labelField.styleClasses="labelRight" p:labelField.renderColon="false">
+    <property name="control">
+      <bean parent="CheckboxControl"/>
+    </property>
+  </bean>
+
+  <bean id="KSFormView" parent="FormView" p:breadcrumbsInApplicationHeader="true"
+        p:breadcrumbs.styleClasses="fl-container-flex75 fl-col breadcrumbs gutter-right">
+    <property name="applicationHeader">
+      <bean parent="Header" p:id="ks-banner" p:template="/WEB-INF/jsp/templates/StudentApplicationHeader.jsp" p:styleClasses="fl-container-flex"/>
+    </property>
+    <property name="applicationFooter">
+      <bean parent="Footer" p:template="/WEB-INF/jsp/templates/StudentApplicationFooter.jsp"
+            p:styleClasses="fl-container-flex ks-page-bottom"/>
+    </property>
+    <property name="additionalCssFiles">
+      <list>
+        <value>/krad/css/ks/ks-theme.css</value>
+        <value>/krad/css/ks/fss-theme-ks.css</value>
+      </list>
+    </property>
+  </bean>
+
+</beans>

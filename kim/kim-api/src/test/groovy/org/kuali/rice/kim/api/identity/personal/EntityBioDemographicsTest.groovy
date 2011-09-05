@@ -38,7 +38,7 @@ class EntityBioDemographicsTest {
         <maritalStatusCode>${MARITAL_STATUS_CODE}</maritalStatusCode>
         <primaryLanguageCode>${PRIMARY_LANGUAGE_CODE}</primaryLanguageCode>
         <secondaryLanguageCode>${SECONDARY_LANGUAGE_CODE}</secondaryLanguageCode>
-        <countryOfBirthCode>${COUNTRY_OF_BIRTH_CODE}</countryOfBirthCode>
+        <birthCountry>${COUNTRY_OF_BIRTH_CODE}</birthCountry>
         <birthStateProvinceCode>${BIRTH_STATE_PROVINCE_CODE}</birthStateProvinceCode>
         <birthCity>${BIRTH_CITY}</birthCity>
         <geographicOrigin>${GEOGRAPHIC_ORIGIN}</geographicOrigin>
@@ -47,7 +47,7 @@ class EntityBioDemographicsTest {
         <maritalStatusCodeUnmasked>${MARITAL_STATUS_CODE}</maritalStatusCodeUnmasked>
         <primaryLanguageCodeUnmasked>${PRIMARY_LANGUAGE_CODE}</primaryLanguageCodeUnmasked>
         <secondaryLanguageCodeUnmasked>${SECONDARY_LANGUAGE_CODE}</secondaryLanguageCodeUnmasked>
-        <countryOfBirthCodeUnmasked>${COUNTRY_OF_BIRTH_CODE}</countryOfBirthCodeUnmasked>
+        <birthCountryUnmasked>${COUNTRY_OF_BIRTH_CODE}</birthCountryUnmasked>
         <birthStateProvinceCodeUnmasked>${BIRTH_STATE_PROVINCE_CODE}</birthStateProvinceCodeUnmasked>
         <birthCityUnmasked>${BIRTH_CITY}</birthCityUnmasked>
         <geographicOriginUnmasked>${GEOGRAPHIC_ORIGIN}</geographicOriginUnmasked>
@@ -150,7 +150,7 @@ class EntityBioDemographicsTest {
             def String maritalStatusCode = EntityBioDemographicsTest.MARITAL_STATUS_CODE
             def String primaryLanguageCode = EntityBioDemographicsTest.PRIMARY_LANGUAGE_CODE
             def String secondaryLanguageCode = EntityBioDemographicsTest.SECONDARY_LANGUAGE_CODE
-            def String countryOfBirthCode = EntityBioDemographicsTest.COUNTRY_OF_BIRTH_CODE
+            def String birthCountry = EntityBioDemographicsTest.COUNTRY_OF_BIRTH_CODE
             def String birthCityCode = EntityBioDemographicsTest.BIRTH_CITY
             def String birthStateProvinceCode = EntityBioDemographicsTest.BIRTH_STATE_PROVINCE_CODE
             def String birthCity = EntityBioDemographicsTest.BIRTH_CITY
@@ -160,7 +160,7 @@ class EntityBioDemographicsTest {
             def String maritalStatusCodeUnmasked = EntityBioDemographicsTest.MARITAL_STATUS_CODE
             def String primaryLanguageCodeUnmasked = EntityBioDemographicsTest.PRIMARY_LANGUAGE_CODE
             def String secondaryLanguageCodeUnmasked = EntityBioDemographicsTest.SECONDARY_LANGUAGE_CODE
-            def String countryOfBirthCodeUnmasked = EntityBioDemographicsTest.COUNTRY_OF_BIRTH_CODE
+            def String birthCountryUnmasked = EntityBioDemographicsTest.COUNTRY_OF_BIRTH_CODE
             def String birthCityCodeUnmasked = EntityBioDemographicsTest.BIRTH_CITY
             def String birthStateProvinceCodeUnmasked = EntityBioDemographicsTest.BIRTH_STATE_PROVINCE_CODE
             def String birthCityUnmasked = EntityBioDemographicsTest.BIRTH_CITY

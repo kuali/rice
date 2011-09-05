@@ -55,9 +55,10 @@ public interface EntityBioDemographicsContract extends Versioned, GloballyUnique
 
 	/**
      * Gets this {@link EntityBioDemographicsContract}'s country of birth code.
+     * Corresponds to PESC BirthCountry.
      * @return the country of birth code for this {@link EntityBioDemographicsContract}, or null if none has been assigned.
      */
-	String getCountryOfBirthCode();
+	String getBirthCountry();
 
 	/**
      * Gets this {@link EntityBioDemographicsContract}'s birth state or extra-state jurisdiction code.  Corresponds to PESC BirthStateProvinceCode.
@@ -118,7 +119,7 @@ public interface EntityBioDemographicsContract extends Versioned, GloballyUnique
      * Gets this {@link EntityBioDemographicsContract}'s unmasked country of birth code.
      * @return the unmasked country of birth code for this {@link EntityBioDemographicsContract}, or null if none has been assigned.
      */
-	String getCountryOfBirthCodeUnmasked();
+	String getBirthCountryUnmasked();
 
 	/**
      * Gets this {@link EntityBioDemographicsContract}'s unmasked birth state or extra-state jurisdiction code. Corresponds to PESC BirthStateProvinceCode.

@@ -99,7 +99,7 @@ class IdentityServiceImplTest {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Date birthDate = formatter.parse(birthDateString);
         Date deceasedDate = formatter.parse(deceasedDateString);
-        EntityBioDemographicsBo firstEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "AAA", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", countryOfBirthCode: "US", birthStateProvinceCode: "IN", birthCity: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
+        EntityBioDemographicsBo firstEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "AAA", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", birthCountry: "US", birthStateProvinceCode: "IN", birthCity: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
         PrincipalBo firstEntityPrincipal = new PrincipalBo(entityId: "AAA", principalId: "P1", active: true, principalName: "first", versionNumber: 1, password: "first_password");
         List<PrincipalBo> firstPrincipals = new ArrayList<PrincipalBo>();
         firstPrincipals.add(firstEntityPrincipal);
@@ -127,7 +127,7 @@ class IdentityServiceImplTest {
         EntityBo firstEntityBo = new EntityBo(active: true, id: "AAA", privacyPreferences: firstEntityPrivacyPreferencesBo, bioDemographics: firstEntityBioDemographicsBo, principals: firstPrincipals);
 
         EntityPrivacyPreferencesBo secondEntityPrivacyPreferencesBo = new EntityPrivacyPreferencesBo(entityId: "BBB", suppressName: true, suppressEmail: true, suppressAddress: true, suppressPhone: true, suppressPersonal: false);
-        EntityBioDemographicsBo secondEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "BBB", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", countryOfBirthCode: "US", birthStateProvinceCode: "IN", birthCity: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
+        EntityBioDemographicsBo secondEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "BBB", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", birthCountry: "US", birthStateProvinceCode: "IN", birthCity: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
         PrincipalBo secondEntityPrincipal = new PrincipalBo(entityId: "BBB", principalId: "P2", active: true, principalName: "second", versionNumber: 1, password: "second_password");
         List<PrincipalBo> secondPrincipals = new ArrayList<PrincipalBo>();
         secondPrincipals.add(secondEntityPrincipal);
@@ -1531,7 +1531,7 @@ class IdentityServiceImplTest {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Date birthDate = formatter.parse(birthDateString);
         Date deceasedDate = formatter.parse(deceasedDateString);
-        EntityBioDemographicsBo firstEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "AAA", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", countryOfBirthCode: "US", birthStateProvinceCode: "IN", birthCity: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
+        EntityBioDemographicsBo firstEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "AAA", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", birthCountry: "US", birthStateProvinceCode: "IN", birthCity: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
         PrincipalBo firstEntityPrincipal = new PrincipalBo(entityId: "AAA", principalId: "P1", active: true, principalName: "first", versionNumber: 1, password: "first_password");
         List<PrincipalBo> firstPrincipals = new ArrayList<PrincipalBo>();
         firstPrincipals.add(firstEntityPrincipal);
@@ -1569,7 +1569,7 @@ class IdentityServiceImplTest {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Date birthDate = formatter.parse(birthDateString);
         Date deceasedDate = formatter.parse(deceasedDateString);
-        EntityBioDemographicsBo firstEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "AAA", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", countryOfBirthCode: "US", birthStateProvinceCode: "IN", birthCity: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
+        EntityBioDemographicsBo firstEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "AAA", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", birthCountry: "US", birthStateProvinceCode: "IN", birthCity: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
         PrincipalBo firstEntityPrincipal = new PrincipalBo(entityId: "AAA", principalId: "P1", active: true, principalName: "first", versionNumber: 1, password: "first_password");
         List<PrincipalBo> firstPrincipals = new ArrayList<PrincipalBo>();
         firstPrincipals.add(firstEntityPrincipal);
@@ -1616,7 +1616,7 @@ class IdentityServiceImplTest {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Date birthDate = formatter.parse(birthDateString);
         Date deceasedDate = formatter.parse(deceasedDateString);
-        EntityBioDemographicsBo firstEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "AAA", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", countryOfBirthCode: "US", birthStateProvinceCode: "IN", birthCity: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
+        EntityBioDemographicsBo firstEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "AAA", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", birthCountry: "US", birthStateProvinceCode: "IN", birthCity: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
         PrincipalBo firstEntityPrincipal = new PrincipalBo(entityId: "AAA", principalId: "P1", active: true, principalName: "first", versionNumber: 1, password: "first_password");
         List<PrincipalBo> firstPrincipals = new ArrayList<PrincipalBo>();
         firstPrincipals.add(firstEntityPrincipal);
@@ -2457,7 +2457,7 @@ class IdentityServiceImplTest {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Date birthDate = formatter.parse(birthDateString);
         Date deceasedDate = formatter.parse(deceasedDateString);
-        EntityBioDemographicsBo newEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "AAA", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", countryOfBirthCode: "US", birthStateProvinceCode: "IN", birthCity: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
+        EntityBioDemographicsBo newEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "AAA", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", birthCountry: "US", birthStateProvinceCode: "IN", birthCity: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
         EntityBioDemographics entityBioDemographics = identityService.addBioDemographicsToEntity(EntityBioDemographicsBo.to(newEntityBioDemographicsBo));
     }
 
@@ -2468,7 +2468,7 @@ class IdentityServiceImplTest {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Date birthDate = formatter.parse(birthDateString);
         Date deceasedDate = formatter.parse(deceasedDateString);
-        EntityBioDemographicsBo newEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "CCC", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", countryOfBirthCode: "US", birthStateProvinceCode: "IN", birthCity: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
+        EntityBioDemographicsBo newEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "CCC", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", birthCountry: "US", birthStateProvinceCode: "IN", birthCity: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
 
         mockBoService.demand.findByPrimaryKey(1..sampleEntityBioDemographics.size()) {
             Class clazz, Map map -> for (EntityBioDemographicsBo entityBioDemographicsBo in sampleEntityBioDemographics.values()) {
@@ -2513,7 +2513,7 @@ class IdentityServiceImplTest {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Date birthDate = formatter.parse(birthDateString);
         Date deceasedDate = formatter.parse(deceasedDateString);
-        EntityBioDemographicsBo newEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "CCC", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", countryOfBirthCode: "US", birthStateProvinceCode: "IN", birthCity: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
+        EntityBioDemographicsBo newEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "CCC", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", birthCountry: "US", birthStateProvinceCode: "IN", birthCity: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
         EntityBioDemographics entityBioDemographics = identityService.updateBioDemographics(EntityBioDemographicsBo.to(newEntityBioDemographicsBo));
     }
 
@@ -2524,7 +2524,7 @@ class IdentityServiceImplTest {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Date birthDate = formatter.parse(birthDateString);
         Date deceasedDate = formatter.parse(deceasedDateString);
-        EntityBioDemographicsBo existingEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "AAA", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", countryOfBirthCode: "US", birthStateProvinceCode: "IN", birthCity: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
+        EntityBioDemographicsBo existingEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "AAA", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", birthCountry: "US", birthStateProvinceCode: "IN", birthCity: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
 
         mockBoService.demand.findByPrimaryKey(1..sampleEntityBioDemographics.size()) {
             Class clazz, Map map -> for (EntityBioDemographicsBo entityBioDemographicsBo in sampleEntityBioDemographics.values()) {

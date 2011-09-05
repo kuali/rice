@@ -253,7 +253,7 @@
     <field-descriptor name="secondaryLanguageCode" column="SEC_LANG_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="birthCity" column="BIRTH_CITY" jdbc-type="VARCHAR"  />
     <field-descriptor name="birthStateProvinceCode" column="BIRTH_STATE_CD" jdbc-type="VARCHAR"  />
-    <field-descriptor name="countryOfBirthCode" column="BIRTH_CNTRY_CD" jdbc-type="VARCHAR"  />
+    <field-descriptor name="birthCountry" column="BIRTH_CNTRY_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="geographicOrigin" column="GEO_ORIGIN" jdbc-type="VARCHAR"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />

@@ -17,7 +17,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -34,7 +33,7 @@ import java.util.Date;
     EntityBioDemographics.Elements.MARITAL_STATUS_CODE,
     EntityBioDemographics.Elements.PRIMARY_LANGUAGE_CODE,
     EntityBioDemographics.Elements.SECONDARY_LANGUAGE_CODE,
-    EntityBioDemographics.Elements.COUNTRY_OF_BIRTH_CODE,
+    EntityBioDemographics.Elements.BIRTH_COUNTRY,
     EntityBioDemographics.Elements.BIRTH_STATE_PROVINCE_CODE,
     EntityBioDemographics.Elements.BIRTH_CITY,
     EntityBioDemographics.Elements.GEOGRAPHIC_ORIGIN,
@@ -43,7 +42,7 @@ import java.util.Date;
     EntityBioDemographics.Elements.MARITAL_STATUS_CODE_UNMASKED,
     EntityBioDemographics.Elements.PRIMARY_LANGUAGE_CODE_UNMASKED,
     EntityBioDemographics.Elements.SECONDARY_LANGUAGE_CODE_UNMASKED,
-    EntityBioDemographics.Elements.COUNTRY_OF_BIRTH_CODE_UNMASKED,
+    EntityBioDemographics.Elements.BIRTH_COUNTRY_UNMASKED,
     EntityBioDemographics.Elements.BIRTH_STATE_PROVINCE_CODE_UNMASKED,
     EntityBioDemographics.Elements.BIRTH_CITY_UNMASKED,
     EntityBioDemographics.Elements.GEOGRAPHIC_ORIGIN_UNMASKED,
@@ -71,8 +70,8 @@ public final class EntityBioDemographics extends AbstractDataTransferObject
     private final String primaryLanguageCode;
     @XmlElement(name = Elements.SECONDARY_LANGUAGE_CODE, required = false)
     private final String secondaryLanguageCode;
-    @XmlElement(name = Elements.COUNTRY_OF_BIRTH_CODE, required = false)
-    private final String countryOfBirthCode;
+    @XmlElement(name = Elements.BIRTH_COUNTRY, required = false)
+    private final String birthCountry;
     @XmlElement(name = Elements.BIRTH_STATE_PROVINCE_CODE, required = false)
     private final String birthStateProvinceCode;
     @XmlElement(name = Elements.BIRTH_CITY, required = false)
@@ -89,8 +88,8 @@ public final class EntityBioDemographics extends AbstractDataTransferObject
     private final String primaryLanguageCodeUnmasked;
     @XmlElement(name = Elements.SECONDARY_LANGUAGE_CODE_UNMASKED, required = false)
     private final String secondaryLanguageCodeUnmasked;
-    @XmlElement(name = Elements.COUNTRY_OF_BIRTH_CODE_UNMASKED, required = false)
-    private final String countryOfBirthCodeUnmasked;
+    @XmlElement(name = Elements.BIRTH_COUNTRY_UNMASKED, required = false)
+    private final String birthCountryUnmasked;
     @XmlElement(name = Elements.BIRTH_STATE_PROVINCE_CODE_UNMASKED, required = false)
     private final String birthStateProvinceCodeUnmasked;
     @XmlElement(name = Elements.BIRTH_CITY_UNMASKED, required = false)
@@ -119,7 +118,7 @@ public final class EntityBioDemographics extends AbstractDataTransferObject
         this.maritalStatusCode = null;
         this.primaryLanguageCode = null;
         this.secondaryLanguageCode = null;
-        this.countryOfBirthCode = null;
+        this.birthCountry = null;
         this.birthStateProvinceCode = null;
         this.birthCity = null;
         this.geographicOrigin = null;
@@ -128,7 +127,7 @@ public final class EntityBioDemographics extends AbstractDataTransferObject
         this.maritalStatusCodeUnmasked = null;
         this.primaryLanguageCodeUnmasked = null;
         this.secondaryLanguageCodeUnmasked = null;
-        this.countryOfBirthCodeUnmasked = null;
+        this.birthCountryUnmasked = null;
         this.birthStateProvinceCodeUnmasked = null;
         this.birthCityUnmasked = null;
         this.geographicOriginUnmasked = null;
@@ -145,7 +144,7 @@ public final class EntityBioDemographics extends AbstractDataTransferObject
         this.maritalStatusCode = builder.getMaritalStatusCode();
         this.primaryLanguageCode = builder.getPrimaryLanguageCode();
         this.secondaryLanguageCode = builder.getSecondaryLanguageCode();
-        this.countryOfBirthCode = builder.getCountryOfBirthCode();
+        this.birthCountry = builder.getBirthCountry();
         this.birthStateProvinceCode = builder.getBirthStateProvinceCode();
         this.birthCity = builder.getBirthCity();
         this.geographicOrigin = builder.getGeographicOrigin();
@@ -154,7 +153,7 @@ public final class EntityBioDemographics extends AbstractDataTransferObject
         this.maritalStatusCodeUnmasked = builder.getMaritalStatusCodeUnmasked();
         this.primaryLanguageCodeUnmasked = builder.getPrimaryLanguageCodeUnmasked();
         this.secondaryLanguageCodeUnmasked = builder.getSecondaryLanguageCodeUnmasked();
-        this.countryOfBirthCodeUnmasked = builder.getCountryOfBirthCodeUnmasked();
+        this.birthCountryUnmasked = builder.getBirthCountryUnmasked();
         this.birthStateProvinceCodeUnmasked = builder.getBirthStateProvinceCodeUnmasked();
         this.birthCityUnmasked = builder.getBirthCityUnmasked();
         this.geographicOriginUnmasked = builder.getGeographicOriginUnmasked();
@@ -205,8 +204,8 @@ public final class EntityBioDemographics extends AbstractDataTransferObject
     }
 
     @Override
-    public String getCountryOfBirthCode() {
-        return this.countryOfBirthCode;
+    public String getBirthCountry() {
+        return this.birthCountry;
     }
 
     @Override
@@ -250,8 +249,8 @@ public final class EntityBioDemographics extends AbstractDataTransferObject
     }
 
     @Override
-    public String getCountryOfBirthCodeUnmasked() {
-        return this.countryOfBirthCodeUnmasked;
+    public String getBirthCountryUnmasked() {
+        return this.birthCountryUnmasked;
     }
 
     @Override
@@ -331,7 +330,7 @@ public final class EntityBioDemographics extends AbstractDataTransferObject
         private String maritalStatusCode;
         private String primaryLanguageCode;
         private String secondaryLanguageCode;
-        private String countryOfBirthCode;
+        private String birthCountry;
         private String birthStateProvinceCode;
         private String birthCity;
         private String geographicOrigin;
@@ -359,7 +358,7 @@ public final class EntityBioDemographics extends AbstractDataTransferObject
             builder.setMaritalStatusCode(contract.getMaritalStatusCode());
             builder.setPrimaryLanguageCode(contract.getPrimaryLanguageCode());
             builder.setSecondaryLanguageCode(contract.getSecondaryLanguageCode());
-            builder.setCountryOfBirthCode(contract.getCountryOfBirthCode());
+            builder.setBirthCountry(contract.getBirthCountry());
             builder.setBirthStateProvinceCode(contract.getBirthStateProvinceCode());
             builder.setBirthCity(contract.getBirthCity());
             builder.setGeographicOrigin(contract.getGeographicOrigin());
@@ -429,11 +428,11 @@ public final class EntityBioDemographics extends AbstractDataTransferObject
         }
 
         @Override
-        public String getCountryOfBirthCode() {
+        public String getBirthCountry() {
             if (isSuppressPersonal()) {
                 return KimConstants.RESTRICTED_DATA_MASK;
             }
-            return this.countryOfBirthCode;
+            return this.birthCountry;
         }
 
         @Override
@@ -486,8 +485,8 @@ public final class EntityBioDemographics extends AbstractDataTransferObject
         }
 
         @Override
-        public String getCountryOfBirthCodeUnmasked() {
-            return this.countryOfBirthCode;
+        public String getBirthCountryUnmasked() {
+            return this.birthCountry;
         }
 
         @Override
@@ -580,8 +579,8 @@ public final class EntityBioDemographics extends AbstractDataTransferObject
             this.secondaryLanguageCode = secondaryLanguageCode;
         }
 
-        public void setCountryOfBirthCode(String countryOfBirthCode) {
-            this.countryOfBirthCode = countryOfBirthCode;
+        public void setBirthCountry(String birthCountry) {
+            this.birthCountry = birthCountry;
         }
 
         public void setBirthStateProvinceCode(String birthStateProvinceCode) {
@@ -636,7 +635,7 @@ public final class EntityBioDemographics extends AbstractDataTransferObject
         final static String MARITAL_STATUS_CODE = "maritalStatusCode";
         final static String PRIMARY_LANGUAGE_CODE = "primaryLanguageCode";
         final static String SECONDARY_LANGUAGE_CODE = "secondaryLanguageCode";
-        final static String COUNTRY_OF_BIRTH_CODE = "countryOfBirthCode";
+        final static String BIRTH_COUNTRY = "birthCountry";
         final static String BIRTH_STATE_PROVINCE_CODE = "birthStateProvinceCode";
         final static String BIRTH_CITY = "birthCity";
         final static String GEOGRAPHIC_ORIGIN = "geographicOrigin";
@@ -645,7 +644,7 @@ public final class EntityBioDemographics extends AbstractDataTransferObject
         final static String MARITAL_STATUS_CODE_UNMASKED = "maritalStatusCodeUnmasked";
         final static String PRIMARY_LANGUAGE_CODE_UNMASKED = "primaryLanguageCodeUnmasked";
         final static String SECONDARY_LANGUAGE_CODE_UNMASKED = "secondaryLanguageCodeUnmasked";
-        final static String COUNTRY_OF_BIRTH_CODE_UNMASKED = "countryOfBirthCodeUnmasked";
+        final static String BIRTH_COUNTRY_UNMASKED = "birthCountryUnmasked";
         final static String BIRTH_STATE_PROVINCE_CODE_UNMASKED = "birthStateProvinceCodeUnmasked";
         final static String BIRTH_CITY_UNMASKED = "birthCityUnmasked";
         final static String GEOGRAPHIC_ORIGIN_UNMASKED = "geographicOriginUnmasked";

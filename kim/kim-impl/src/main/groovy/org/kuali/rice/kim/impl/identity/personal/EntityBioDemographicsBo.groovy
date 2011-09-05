@@ -44,7 +44,7 @@ class EntityBioDemographicsBo extends PersistableBusinessObjectBase implements E
     String secondaryLanguageCode;
 
     @Column(name = "BIRTH_CNTRY_CD")
-    String countryOfBirthCode;
+    String birthCountry;
 
     @Column(name = "BIRTH_STATE_CD")
     String birthStateProvinceCode;
@@ -83,7 +83,7 @@ class EntityBioDemographicsBo extends PersistableBusinessObjectBase implements E
     }
     bo.birthStateProvinceCode = immutable.birthStateProvinceCodeUnmasked
     bo.birthCity = immutable.birthCityUnmasked
-    bo.countryOfBirthCode = immutable.countryOfBirthCodeUnmasked
+    bo.birthCountry = immutable.birthCountryUnmasked
     if (immutable.deceasedDate != null) {
         bo.deceasedDateValue = new SimpleDateFormat(EntityBioDemographicsContract.DECEASED_DATE_FORMAT).parse(immutable.deceasedDate)
     }
@@ -178,11 +178,11 @@ class EntityBioDemographicsBo extends PersistableBusinessObjectBase implements E
         }
         return this.secondaryLanguageCode
     }
-    String getCountryOfBirthCode() {
+    String getBirthCountry() {
         if (isSuppressPersonal()) {
             return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE
         }
-        return this.countryOfBirthCode
+        return this.birthCountry
     }
     String getBirthStateProvinceCode() {
         if (isSuppressPersonal()) {
@@ -216,8 +216,8 @@ class EntityBioDemographicsBo extends PersistableBusinessObjectBase implements E
     String getSecondaryLanguageCodeUnmasked() {
         return this.secondaryLanguageCode
     }
-    String getCountryOfBirthCodeUnmasked() {
-        return this.countryOfBirthCode
+    String getBirthCountryUnmasked() {
+        return this.birthCountry
     }
     String getBirthStateProvinceCodeUnmasked() {
         return this.birthStateProvinceCode

@@ -389,7 +389,7 @@ class EntityTest {
                     <maritalStatusCode>${BIO.maritalStatusCode}</maritalStatusCode>
                     <primaryLanguageCode>${BIO.primaryLanguageCode}</primaryLanguageCode>
                     <secondaryLanguageCode>${BIO.secondaryLanguageCode}</secondaryLanguageCode>
-                    <countryOfBirthCode>${BIO.countryOfBirthCode}</countryOfBirthCode>
+                    <birthCountry>${BIO.birthCountry}</birthCountry>
                     <birthStateProvinceCode>${BIO.birthStateProvinceCode}</birthStateProvinceCode>
                     <birthCity>${BIO.birthCity}</birthCity>
                     <geographicOrigin>${BIO.geographicOrigin}</geographicOrigin>
@@ -398,7 +398,7 @@ class EntityTest {
                     <maritalStatusCodeUnmasked>${BIO.maritalStatusCodeUnmasked}</maritalStatusCodeUnmasked>
                     <primaryLanguageCodeUnmasked>${BIO.primaryLanguageCodeUnmasked}</primaryLanguageCodeUnmasked>
                     <secondaryLanguageCodeUnmasked>${BIO.secondaryLanguageCodeUnmasked}</secondaryLanguageCodeUnmasked>
-                    <countryOfBirthCodeUnmasked>${BIO.countryOfBirthCodeUnmasked}</countryOfBirthCodeUnmasked>
+                    <birthCountryUnmasked>${BIO.birthCountryUnmasked}</birthCountryUnmasked>
                     <birthStateProvinceCodeUnmasked>${BIO.birthStateProvinceCodeUnmasked}</birthStateProvinceCodeUnmasked>
                     <birthCityUnmasked>${BIO.birthCityUnmasked}</birthCityUnmasked>
                     <geographicOriginUnmasked>${BIO.geographicOriginUnmasked}</geographicOriginUnmasked>

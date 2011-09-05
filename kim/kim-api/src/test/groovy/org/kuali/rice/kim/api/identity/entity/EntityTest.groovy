@@ -304,18 +304,18 @@ class EntityTest {
                             <versionNumber>${NAME.nameType.versionNumber}</versionNumber>
                             <objectId>${NAME.nameType.objectId}</objectId>
                         </nameType>
-                        <title>${NAME.title}</title>
+                        <namePrefix>${NAME.namePrefix}</namePrefix>
                         <firstName>${NAME.firstName}</firstName>
                         <middleName>${NAME.middleName}</middleName>
                         <lastName>${NAME.lastName}</lastName>
-                        <suffix>${NAME.suffix}</suffix>
-                        <formattedName>${NAME.formattedName}</formattedName>
-                        <titleUnmasked>${NAME.titleUnmasked}</titleUnmasked>
+                        <nameSuffix>${NAME.nameSuffix}</nameSuffix>
+                        <compositeName>${NAME.compositeName}</compositeName>
+                        <namePrefixUnmasked>${NAME.namePrefixUnmasked}</namePrefixUnmasked>
                         <firstNameUnmasked>${NAME.firstNameUnmasked}</firstNameUnmasked>
                         <middleNameUnmasked>${NAME.middleNameUnmasked}</middleNameUnmasked>
                         <lastNameUnmasked>${NAME.lastNameUnmasked}</lastNameUnmasked>
-                        <suffixUnmasked>${NAME.suffixUnmasked}</suffixUnmasked>
-                        <formattedNameUnmasked>${NAME.formattedNameUnmasked}</formattedNameUnmasked>
+                        <nameSuffixUnmasked>${NAME.nameSuffixUnmasked}</nameSuffixUnmasked>
+                        <compositeNameUnmasked>${NAME.compositeNameUnmasked}</compositeNameUnmasked>
                         <suppressName>${NAME.suppressName}</suppressName>
                         <defaultValue>${NAME.defaultValue}</defaultValue>
                         <active>${NAME.active}</active>
@@ -390,8 +390,8 @@ class EntityTest {
                     <primaryLanguageCode>${BIO.primaryLanguageCode}</primaryLanguageCode>
                     <secondaryLanguageCode>${BIO.secondaryLanguageCode}</secondaryLanguageCode>
                     <countryOfBirthCode>${BIO.countryOfBirthCode}</countryOfBirthCode>
-                    <birthStateCode>${BIO.birthStateCode}</birthStateCode>
-                    <cityOfBirth>${BIO.cityOfBirth}</cityOfBirth>
+                    <birthStateProvinceCode>${BIO.birthStateProvinceCode}</birthStateProvinceCode>
+                    <birthCity>${BIO.birthCity}</birthCity>
                     <geographicOrigin>${BIO.geographicOrigin}</geographicOrigin>
                     <birthDateUnmasked>${BIO.birthDateUnmasked}</birthDateUnmasked>
                     <genderCodeUnmasked>${BIO.genderCodeUnmasked}</genderCodeUnmasked>
@@ -399,8 +399,8 @@ class EntityTest {
                     <primaryLanguageCodeUnmasked>${BIO.primaryLanguageCodeUnmasked}</primaryLanguageCodeUnmasked>
                     <secondaryLanguageCodeUnmasked>${BIO.secondaryLanguageCodeUnmasked}</secondaryLanguageCodeUnmasked>
                     <countryOfBirthCodeUnmasked>${BIO.countryOfBirthCodeUnmasked}</countryOfBirthCodeUnmasked>
-                    <birthStateCodeUnmasked>${BIO.birthStateCodeUnmasked}</birthStateCodeUnmasked>
-                    <cityOfBirthUnmasked>${BIO.cityOfBirthUnmasked}</cityOfBirthUnmasked>
+                    <birthStateProvinceCodeUnmasked>${BIO.birthStateProvinceCodeUnmasked}</birthStateProvinceCodeUnmasked>
+                    <birthCityUnmasked>${BIO.birthCityUnmasked}</birthCityUnmasked>
                     <geographicOriginUnmasked>${BIO.geographicOriginUnmasked}</geographicOriginUnmasked>
                     <suppressPersonal>${BIO.suppressPersonal}</suppressPersonal>
                     <versionNumber>${BIO.versionNumber}</versionNumber>
@@ -455,18 +455,18 @@ class EntityTest {
                         <versionNumber>${NAME.nameType.versionNumber}</versionNumber>
                         <objectId>${NAME.nameType.objectId}</objectId>
                     </nameType>
-                    <title>${NAME.title}</title>
+                    <namePrefix>${NAME.namePrefix}</namePrefix>
                     <firstName>${NAME.firstName}</firstName>
                     <middleName>${NAME.middleName}</middleName>
                     <lastName>${NAME.lastName}</lastName>
-                    <suffix>${NAME.suffix}</suffix>
-                    <formattedName>${NAME.formattedName}</formattedName>
-                    <titleUnmasked>${NAME.titleUnmasked}</titleUnmasked>
+                    <nameSuffix>${NAME.nameSuffix}</nameSuffix>
+                    <compositeName>${NAME.compositeName}</compositeName>
+                    <namePrefixUnmasked>${NAME.namePrefixUnmasked}</namePrefixUnmasked>
                     <firstNameUnmasked>${NAME.firstNameUnmasked}</firstNameUnmasked>
                     <middleNameUnmasked>${NAME.middleNameUnmasked}</middleNameUnmasked>
                     <lastNameUnmasked>${NAME.lastNameUnmasked}</lastNameUnmasked>
-                    <suffixUnmasked>${NAME.suffixUnmasked}</suffixUnmasked>
-                    <formattedNameUnmasked>${NAME.formattedNameUnmasked}</formattedNameUnmasked>
+                    <nameSuffixUnmasked>${NAME.nameSuffixUnmasked}</nameSuffixUnmasked>
+                    <compositeNameUnmasked>${NAME.compositeNameUnmasked}</compositeNameUnmasked>
                     <suppressName>${NAME.suppressName}</suppressName>
                     <defaultValue>${NAME.defaultValue}</defaultValue>
                     <active>${NAME.active}</active>

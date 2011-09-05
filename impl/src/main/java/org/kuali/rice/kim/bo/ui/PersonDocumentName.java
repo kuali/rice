@@ -55,7 +55,7 @@ public class PersonDocumentName extends PersonDocumentBoDefaultBase {
 	protected String entityId;
 
 	@Column(name = "NM_TYP_CD")
-	protected String nameTypeCode ;
+	protected String nameCode;
 
 	@Column(name = "FIRST_NM")
 	protected String firstName;
@@ -67,10 +67,10 @@ public class PersonDocumentName extends PersonDocumentBoDefaultBase {
 	protected String lastName;
 
 	@Column(name = "TITLE_NM")
-	protected String title;
+	protected String namePrefix;
 
 	@Column(name = "SUFFIX_NM")
-	protected String suffix;
+	protected String nameSuffix;
 	
 	@ManyToOne(targetEntity=EntityNameTypeBo.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "NM_TYP_CD", insertable = false, updatable = false)
@@ -111,22 +111,22 @@ public class PersonDocumentName extends PersonDocumentBoDefaultBase {
 	/**
 	 * @see org.kuali.rice.kim.api.identity.name.EntityNameContract#getNameTypeCode()
 	 */
-	public String getNameTypeCode() {
-		return nameTypeCode;
+	public String getNameCode() {
+		return nameCode;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.identity.name.EntityNameContract#getSuffix()
+	 * @see org.kuali.rice.kim.api.identity.name.EntityNameContract#getNameSuffix()
 	 */
-	public String getSuffix() {
-		return suffix;
+	public String getNameSuffix() {
+		return nameSuffix;
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.api.identity.name.EntityNameContract#getTitle()
+	 * @see org.kuali.rice.kim.api.identity.name.EntityNameContract#getNamePrefix()
 	 */
-	public String getTitle() {
-		return title;
+	public String getNamePrefix() {
+		return namePrefix;
 	}
 
 	public void setFirstName(String firstName) {
@@ -141,24 +141,24 @@ public class PersonDocumentName extends PersonDocumentBoDefaultBase {
 		this.middleName = middleName;
 	}
 
-	public void setNameTypeCode(String nameTypeCode) {
-		this.nameTypeCode = nameTypeCode;
+	public void setNameCode(String nameCode) {
+		this.nameCode = nameCode;
 	}
 
-	public void setSuffix(String suffix) {
-		this.suffix = suffix;
+	public void setNameSuffix(String nameSuffix) {
+		this.nameSuffix = nameSuffix;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public void setNamePrefix(String namePrefix) {
+		this.namePrefix = namePrefix;
 	}
 
 	/**
 	 * This default implementation formats the name as LAST, FIRST MIDDLE.
 	 * 
-	 * @see org.kuali.rice.kim.api.identity.name.EntityNameContract#getFormattedName()
+	 * @see org.kuali.rice.kim.api.identity.name.EntityNameContract#getCompositeName()
 	 */
-	public String getFormattedName() {
+	public String getCompositeName() {
 		return getLastName() + ", " + getFirstName() + " " + getMiddleName();
 	}
 

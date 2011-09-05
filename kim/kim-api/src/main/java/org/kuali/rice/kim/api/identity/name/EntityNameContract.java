@@ -57,40 +57,46 @@ public interface EntityNameContract extends Versioned, GloballyUnique, Defaultab
 	String getLastNameUnmasked();
 
 	/**
-     * Gets this {@link EntityNameContract}'s title.
-     * @return the title for this {@link EntityNameContract}, or null if none has been assigned.
+     * Gets this {@link EntityNameContract}'s name prefix.
+     * Corresponds to PESC NamePrefix.
+     * @return the name prefix for this {@link EntityNameContract}, or null if none has been assigned.
      */
-	String getTitle();
+	String getNamePrefix();
 
 	/**
-     * Gets this {@link EntityNameContract}'s unmasked title.
-     * @return the unmasked title for this {@link EntityNameContract}, or null if none has been assigned.
+     * Gets this {@link EntityNameContract}'s unmasked name prefix.
+     * Corresponds to PESC NamePrefix.
+     * @return the unmasked name prefix for this {@link EntityNameContract}, or null if none has been assigned.
      */
-	String getTitleUnmasked();
+	String getNamePrefixUnmasked();
 
 	/**
      * Gets this {@link EntityNameContract}'s suffix.
+     * Corresponds to PESC NameSuffix.
      * @return the suffix for this {@link EntityNameContract}, or null if none has been assigned.
      */
-	String getSuffix();
+	String getNameSuffix();
 
 	/**
      * Gets this {@link EntityNameContract}'s unmasked suffix.
+     * Corresponds to PESC NameSuffix.
      * @return the unmasked suffix for this {@link EntityNameContract}, or null if none has been assigned.
      */
-	String getSuffixUnmasked();
+	String getNameSuffixUnmasked();
 
 	/**
 	 * Return the entire name as the person or system wants it displayed.
+     * Corresponds to PESC CompositeName.
      * @return the complete name in the format of "lastName, firstName middleName"
 	 */
-	String getFormattedName();
+	String getCompositeName();
 
 	/**
      * Gets this {@link EntityNameContract}'s unmasked formatted name.
+     * Corresponds to PESC CompositeName.
      * @return the complete name in the format of "lastName, firstName middleName"
      */
-	String getFormattedNameUnmasked();
+	String getCompositeNameUnmasked();
 
     /**
      * Returns a boolean value that determines if email fields should be suppressed.

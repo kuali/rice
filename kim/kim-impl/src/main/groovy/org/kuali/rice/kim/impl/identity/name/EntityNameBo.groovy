@@ -26,7 +26,7 @@ class EntityNameBo extends PersistableBusinessObjectBase implements EntityNameCo
 	String entityId;
 
 	@Column(name = "NM_TYP_CD")
-	String nameTypeCode ;
+	String nameCode;
 
 	@Column(name = "FIRST_NM")
 	String firstName;
@@ -38,10 +38,10 @@ class EntityNameBo extends PersistableBusinessObjectBase implements EntityNameCo
 	String lastName;
 
 	@Column(name = "TITLE_NM")
-	String title;
+	String namePrefix;
 
 	@Column(name = "SUFFIX_NM")
-	String suffix;
+	String nameSuffix;
 	
 	@ManyToOne(targetEntity=EntityNameTypeBo.class, fetch = FetchType.EAGER, cascade = [])
 	@JoinColumn(name = "NM_TYP_CD", insertable = false, updatable = false)
@@ -82,13 +82,13 @@ class EntityNameBo extends PersistableBusinessObjectBase implements EntityNameCo
 
         bo.entityId = immutable.entityId
         if (immutable.nameType != null) {
-            bo.nameTypeCode = immutable.nameType.code
+            bo.nameCode = immutable.nameType.code
         }
         bo.firstName = immutable.firstNameUnmasked
         bo.lastName = immutable.lastNameUnmasked
         bo.middleName = immutable.middleNameUnmasked
-        bo.title = immutable.titleUnmasked
-        bo.suffix = immutable.suffixUnmasked
+        bo.namePrefix = immutable.namePrefixUnmasked
+        bo.nameSuffix = immutable.nameSuffixUnmasked
 
         bo.defaultValue = immutable.defaultValue
         bo.versionNumber = immutable.versionNumber
@@ -124,11 +124,11 @@ class EntityNameBo extends PersistableBusinessObjectBase implements EntityNameCo
         return this.lastName
     }
 
-    String getTitle() {
+    String getNamePrefix() {
         if (isSuppressName()) {
             return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK
         }
-        return this.title
+        return this.namePrefix
     }
 
 
@@ -144,22 +144,22 @@ class EntityNameBo extends PersistableBusinessObjectBase implements EntityNameCo
         return this.lastName
     }
 
-    String getTitleUnmasked() {
-        return this.title
+    String getNamePrefixUnmasked() {
+        return this.namePrefix
     }
 
-    String getSuffixUnmasked() {
-        return this.suffix
+    String getNameSuffixUnmasked() {
+        return this.nameSuffix
     }
 
-    String getFormattedName() {
+    String getCompositeName() {
         if (isSuppressName()) {
             return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK
         }
-        return getFormattedNameUnmasked()
+        return getCompositeNameUnmasked()
     }
 
-    String getFormattedNameUnmasked() {
+    String getCompositeNameUnmasked() {
         return getLastName() + ", " + getFirstName() + (getMiddleName()==null?"":" " + getMiddleName())
     }
 

@@ -941,10 +941,10 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 	        	if (name != null) {
 	        		docSearchRow.setInitiatorFirstName(name.getDefaultName().getFirstName());
 	        		docSearchRow.setInitiatorLastName(name.getDefaultName().getLastName());
-	        		docSearchRow.setInitiatorName(name.getDefaultName().getFormattedName());
+	        		docSearchRow.setInitiatorName(name.getDefaultName().getCompositeName());
 	        		docSearchRow.setInitiatorNetworkId(name.getPrincipalName());
-					if (StringUtils.isNotBlank(name.getDefaultName().getFormattedName())) {
-						docSearchRow.setInitiatorTransposedName(name.getDefaultName().getFormattedName());
+					if (StringUtils.isNotBlank(name.getDefaultName().getCompositeName())) {
+						docSearchRow.setInitiatorTransposedName(name.getDefaultName().getCompositeName());
 					} else if (StringUtils.isNotBlank(name.getPrincipalName())) {
 						docSearchRow.setInitiatorTransposedName(name.getPrincipalName());
 					} else {

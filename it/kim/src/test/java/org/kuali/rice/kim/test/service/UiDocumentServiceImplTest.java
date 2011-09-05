@@ -20,7 +20,6 @@ import org.junit.Test;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.address.EntityAddressContract;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
@@ -57,7 +56,6 @@ import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceBase;
 import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.test.BaselineTestCase;
 
 import java.lang.reflect.Field;
@@ -245,14 +243,14 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		List<PersonDocumentName> docNames = new ArrayList<PersonDocumentName>();
 			PersonDocumentName docName = new PersonDocumentName();
 			docName.setEntityNameId("nameId123");
-			docName.setNameTypeCode("PRFR");
+			docName.setNameCode("PRFR");
             docName.setEntityNameType(
                     EntityNameTypeBo.from(KimApiServiceLocator.getIdentityService().getNameType("PRFR")));
 			docName.setFirstName("John");
 			docName.setLastName("Doe");
 			docName.setMiddleName("M");
-			docName.setTitle("Mr");
-			docName.setSuffix("Jr");
+			docName.setNamePrefix("Mr");
+			docName.setNameSuffix("Jr");
 			docName.setActive(true);
 			docName.setDflt(true);
 			docNames.add(docName);
@@ -384,9 +382,9 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		assertEquals(docName.getEntityNameId(), entityName.getId());
 		assertEquals(docName.getFirstName(), entityName.getFirstName());
 		assertEquals(docName.getLastName(), entityName.getLastName());
-		assertEquals(docName.getNameTypeCode(), entityName.getNameType().getCode());
-		assertEquals(docName.getSuffix(), entityName.getSuffix());
-		assertEquals(docName.getTitle(), entityName.getTitle());
+		assertEquals(docName.getNameCode(), entityName.getNameType().getCode());
+		assertEquals(docName.getNameSuffix(), entityName.getNameSuffix());
+		assertEquals(docName.getNamePrefix(), entityName.getNamePrefix());
 	}
 
 	private void assertAffiliationTrue(PersonDocumentAffiliation docAffln, EntityAffiliation entityAffln) {

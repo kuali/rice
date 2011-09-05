@@ -17,14 +17,14 @@
 
   <bean id="DocName" parent="DocName-parentBean"/>
 
-  <bean id="DocName-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.bo.ui.PersonDocumentName" p:titleAttribute="nameTypeCode" p:objectLabel="Names" p:inquiryDefinition-ref="DocName-inquiryDefinition" p:lookupDefinition-ref="DocName-lookupDefinition">
+  <bean id="DocName-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.bo.ui.PersonDocumentName" p:titleAttribute="nameCode" p:objectLabel="Names" p:inquiryDefinition-ref="DocName-inquiryDefinition" p:lookupDefinition-ref="DocName-lookupDefinition">
     <property name="attributes">
       <list>
         <ref bean="DocName-firstName"/>
         <ref bean="DocName-lastName"/>
-        <ref bean="DocName-suffix"/>
-        <ref bean="DocName-title"/>
-        <ref bean="DocName-nameTypeCode"/>
+        <ref bean="DocName-nameSuffix"/>
+        <ref bean="DocName-namePrefix"/>
+        <ref bean="DocName-nameCode"/>
         <ref bean="DocName-active"/>
         <ref bean="DocName-dflt"/>
       </list>
@@ -55,24 +55,24 @@
     </property>
   </bean>
 
-  <bean id="DocName-suffix" parent="DocName-suffix-parentBean"/>
-  <bean id="DocName-suffix-parentBean" parent="AttributeDefinition" abstract="true" p:name="suffix" p:forceUppercase="true" p:label="Suffix" p:shortLabel="Suffix" p:maxLength="20" p:required="false">
+  <bean id="DocName-nameSuffix" parent="DocName-nameSuffix-parentBean"/>
+  <bean id="DocName-nameSuffix-parentBean" parent="AttributeDefinition" abstract="true" p:name="nameSuffix" p:forceUppercase="true" p:label="Name Suffix" p:shortLabel="Name Suffix" p:maxLength="20" p:required="false">
     <property name="control">
       <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.core.impl.parameter.ParameterBo" p:valuesFinderClass="org.kuali.rice.kim.bo.options.NameSuffixValuesFinder" p:includeKeyInLabel="false" p:keyAttribute="namespaceCode" p:labelAttribute="name"/>
     </property>
   </bean>
  
-   <bean id="DocName-nameTypeCode" parent="DocName-nameTypeCode-parentBean"/>
-  <bean id="DocName-nameTypeCode-parentBean" parent="AttributeDefinition" abstract="true" p:name="nameTypeCode" p:forceUppercase="true" p:label="Name Type" p:shortLabel="Name Type" p:maxLength="40" p:required="false">
+   <bean id="DocName-nameCode" parent="DocName-nameCode-parentBean"/>
+  <bean id="DocName-nameCode-parentBean" parent="AttributeDefinition" abstract="true" p:name="nameCode" p:forceUppercase="true" p:label="Name Code" p:shortLabel="Name Code" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="false" p:keyAttribute="code" p:labelAttribute="name"/>
     </property>
   </bean>
     
-  <bean id="DocName-title" parent="DocName-title-parentBean"/>
-  <bean id="DocName-title-parentBean" parent="AttributeDefinition" abstract="true" p:name="title" p:forceUppercase="true" p:label="Title" p:shortLabel="Title" p:maxLength="20" p:required="false">
+  <bean id="DocName-namePrefix" parent="DocName-namePrefix-parentBean"/>
+  <bean id="DocName-namePrefix-parentBean" parent="AttributeDefinition" abstract="true" p:name="namePrefix" p:forceUppercase="true" p:label="Name Prefix" p:shortLabel="Name Prefix" p:maxLength="20" p:required="false">
     <property name="control">
-      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.core.impl.parameter.ParameterBo" p:valuesFinderClass="org.kuali.rice.kim.bo.options.NameTitleValuesFinder" p:includeKeyInLabel="false" p:keyAttribute="namespaceCode" p:labelAttribute="name"/>
+      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.core.impl.parameter.ParameterBo" p:valuesFinderClass="org.kuali.rice.kim.bo.options.NamePrefixValuesFinder" p:includeKeyInLabel="false" p:keyAttribute="namespaceCode" p:labelAttribute="name"/>
     </property>
   </bean>
   
@@ -106,11 +106,11 @@
         <bean parent="InquirySectionDefinition" p:title="Person Attributes" p:numberOfColumns="1">
           <property name="inquiryFields">
             <list>
-              <bean parent="FieldDefinition" p:attributeName="nameTypeCode"/>
-              <bean parent="FieldDefinition" p:attributeName="title"/>
+              <bean parent="FieldDefinition" p:attributeName="nameCode"/>
+              <bean parent="FieldDefinition" p:attributeName="namePrefix"/>
               <bean parent="FieldDefinition" p:attributeName="firstName"/>
         	  <bean parent="FieldDefinition" p:attributeName="lastName"/>
-              <bean parent="FieldDefinition" p:attributeName="suffix"/>
+              <bean parent="FieldDefinition" p:attributeName="nameSuffix"/>
             </list>
           </property>
         </bean>
@@ -125,7 +125,7 @@
       <bean parent="SortDefinition">
         <property name="attributeNames">
           <list>
-            <value>nameTypeCode</value>
+            <value>nameCode</value>
           </list>
         </property>
         <property name="sortAscending" value="true"/>
@@ -133,20 +133,20 @@
     </property>
     <property name="lookupFields">
       <list>
-        <bean parent="FieldDefinition" p:attributeName="nameTypeCode"/>
-        <bean parent="FieldDefinition" p:attributeName="title"/>
+        <bean parent="FieldDefinition" p:attributeName="nameCode"/>
+        <bean parent="FieldDefinition" p:attributeName="namePrefix"/>
         <bean parent="FieldDefinition" p:attributeName="firstName"/>
         <bean parent="FieldDefinition" p:attributeName="lastName"/>
-        <bean parent="FieldDefinition" p:attributeName="suffix"/>
+        <bean parent="FieldDefinition" p:attributeName="nameSuffix"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="FieldDefinition" p:attributeName="nameTypeCode"/>
+        <bean parent="FieldDefinition" p:attributeName="nameCode"/>
         <bean parent="FieldDefinition" p:attributeName="title"/>
         <bean parent="FieldDefinition" p:attributeName="firstName"/>
         <bean parent="FieldDefinition" p:attributeName="lastName"/>
-        <bean parent="FieldDefinition" p:attributeName="suffix"/>
+        <bean parent="FieldDefinition" p:attributeName="nameSuffix"/>
       </list>
     </property>
   </bean>

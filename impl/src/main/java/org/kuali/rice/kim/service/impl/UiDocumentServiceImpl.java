@@ -745,15 +745,15 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				if(name.isActive()){
 					PersonDocumentName docName = new PersonDocumentName();
                     if (name.getNameType() != null) {
-					    docName.setNameTypeCode(name.getNameType().getCode());
+					    docName.setNameCode(name.getNameType().getCode());
                     }
 
 					//We do not need to check the privacy setting here - The UI should care of it
 					docName.setFirstName(name.getFirstNameUnmasked());
 					docName.setLastName(name.getLastNameUnmasked());
 					docName.setMiddleName(name.getMiddleNameUnmasked());
-					docName.setTitle(name.getTitleUnmasked());
-					docName.setSuffix(name.getSuffixUnmasked());
+					docName.setNamePrefix(name.getNamePrefixUnmasked());
+					docName.setNameSuffix(name.getNameSuffixUnmasked());
 
 					docName.setActive(name.isActive());
 					docName.setDflt(name.isDefaultValue());
@@ -908,20 +908,20 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			if(CollectionUtils.isNotEmpty(identityManagementPersonDocument.getNames())){
 				for (PersonDocumentName name : identityManagementPersonDocument.getNames()) {
 				    EntityNameBo entityName = new EntityNameBo();
-					entityName.setNameTypeCode(name.getNameTypeCode());
+					entityName.setNameCode(name.getNameCode());
                     if (name.getEntityNameType() != null) {
                         entityName.setNameType(name.getEntityNameType());
                     } else {
-                        if (StringUtils.isNotEmpty(name.getNameTypeCode())) {
+                        if (StringUtils.isNotEmpty(name.getNameCode())) {
                             entityName.setNameType(
-                                    EntityNameTypeBo.from(getIdentityService().getNameType(name.getNameTypeCode())));
+                                    EntityNameTypeBo.from(getIdentityService().getNameType(name.getNameCode())));
                         }
                     }
 					entityName.setFirstName(name.getFirstName());
 					entityName.setLastName(name.getLastName());
 					entityName.setMiddleName(name.getMiddleName());
-					entityName.setTitle(name.getTitle());
-					entityName.setSuffix(name.getSuffix());
+					entityName.setNamePrefix(name.getNamePrefix());
+					entityName.setNameSuffix(name.getNameSuffix());
 					entityName.setActive(name.isActive());
 					entityName.setDefaultValue(name.isDflt());
 					entityName.setId(name.getEntityNameId());

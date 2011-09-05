@@ -167,7 +167,7 @@ public class UserXmlParser {
 			name.setId("" + entityNameId);
 			name.setEntityId(entity.getId());
 			// must be in krim_ent_nm_typ_t.ent_nm_typ_cd
-			name.setNameTypeCode("PRFR");
+			name.setNameCode("PRFR");
 			name.setFirstName(firstName);
 			name.setMiddleName("");
 			name.setLastName(lastName);

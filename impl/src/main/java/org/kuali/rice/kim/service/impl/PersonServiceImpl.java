@@ -436,7 +436,7 @@ public class PersonServiceImpl implements PersonService {
 			if ( nameCriteria ) {
 				newCriteria.put( ENTITY_NAME_PROPERTY_PREFIX + "active", "Y" );
 				newCriteria.put( ENTITY_NAME_PROPERTY_PREFIX + "defaultValue", "Y" );
-				//newCriteria.put(ENTITY_NAME_PROPERTY_PREFIX + "nameTypeCode", "PRFR");//so we only display 1 result
+				//newCriteria.put(ENTITY_NAME_PROPERTY_PREFIX + "nameCode", "PRFR");//so we only display 1 result
 			}
 			if ( addressCriteria ) {
 				newCriteria.put( ENTITY_ADDRESS_PROPERTY_PREFIX + "active", "Y" );

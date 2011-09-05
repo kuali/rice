@@ -100,7 +100,7 @@ public class KimEntityDefaultInfoCacheImpl extends PersistableBusinessObjectBase
 				firstName = entity.getName().getFirstNameUnmasked();
 				middleName = entity.getName().getMiddleNameUnmasked();
 				lastName = entity.getName().getLastNameUnmasked();
-				name = entity.getName().getFormattedNameUnmasked();
+				name = entity.getName().getCompositeNameUnmasked();
 			}
 			if ( entity.getDefaultAffiliation() != null ) {
 				campusCode = entity.getDefaultAffiliation().getCampusCode();

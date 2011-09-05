@@ -236,15 +236,15 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 				if(name.isActive()){
 					PersonDocumentName docName = new PersonDocumentName();
                     if (name.getNameType() != null) {
-					    docName.setNameTypeCode(name.getNameType().getCode());
+					    docName.setNameCode(name.getNameType().getCode());
                     }
 
 					//We do not need to check the privacy setting here - The UI should care of it
 					docName.setFirstName(name.getFirstNameUnmasked());
 					docName.setLastName(name.getLastNameUnmasked());
 					docName.setMiddleName(name.getMiddleNameUnmasked());
-					docName.setTitle(name.getTitleUnmasked());
-					docName.setSuffix(name.getSuffixUnmasked());
+					docName.setNamePrefix(name.getNamePrefixUnmasked());
+					docName.setNameSuffix(name.getNameSuffixUnmasked());
 
 					docName.setActive(name.isActive());
 					docName.setDflt(name.isDefaultValue());

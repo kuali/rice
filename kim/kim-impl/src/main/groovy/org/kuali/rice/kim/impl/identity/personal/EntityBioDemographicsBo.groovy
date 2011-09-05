@@ -13,6 +13,8 @@ import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.kim.api.KimApiConstants
+import org.joda.time.Years
+import org.joda.time.DateTime
 
 @Entity
 @Table(name = "KRIM_ENTITY_BIO_T")
@@ -45,10 +47,10 @@ class EntityBioDemographicsBo extends PersistableBusinessObjectBase implements E
     String countryOfBirthCode;
 
     @Column(name = "BIRTH_STATE_CD")
-    String birthStateCode;
+    String birthStateProvinceCode;
 
     @Column(name = "BIRTH_CITY")
-    String cityOfBirth;
+    String birthCity;
 
     @Column(name = "GEO_ORIGIN")
     String geographicOrigin;
@@ -77,13 +79,13 @@ class EntityBioDemographicsBo extends PersistableBusinessObjectBase implements E
     EntityBioDemographicsBo bo = new EntityBioDemographicsBo()
     bo.entityId = immutable.entityId
     if (immutable.birthDateUnmasked != null) {
-        bo.birthDateValue = new SimpleDateFormat("yyyy-MM-dd").parse(immutable.birthDateUnmasked)
+        bo.birthDateValue = new SimpleDateFormat(EntityBioDemographicsContract.BIRTH_DATE_FORMAT).parse(immutable.birthDateUnmasked)
     }
-    bo.birthStateCode = immutable.birthStateCodeUnmasked
-    bo.cityOfBirth = immutable.cityOfBirthUnmasked
+    bo.birthStateProvinceCode = immutable.birthStateProvinceCodeUnmasked
+    bo.birthCity = immutable.birthCityUnmasked
     bo.countryOfBirthCode = immutable.countryOfBirthCodeUnmasked
     if (immutable.deceasedDate != null) {
-        bo.deceasedDateValue = new SimpleDateFormat("yyyy-MM-dd").parse(immutable.deceasedDate)
+        bo.deceasedDateValue = new SimpleDateFormat(EntityBioDemographicsContract.DECEASED_DATE_FORMAT).parse(immutable.deceasedDate)
     }
     bo.genderCode = immutable.genderCodeUnmasked
     bo.geographicOrigin = immutable.geographicOriginUnmasked
@@ -102,7 +104,21 @@ class EntityBioDemographicsBo extends PersistableBusinessObjectBase implements E
             if (isSuppressPersonal()) {
                 return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK
             }
-            return new SimpleDateFormat("yyyy-MM-dd").format(this.birthDateValue)
+            return new SimpleDateFormat(BIRTH_DATE_FORMAT).format(this.birthDateValue)
+        }
+        return null;
+    }
+
+    @Override
+    Integer getAge() {
+        if (this.birthDateValue != null && ! isSuppressPersonal()) {
+            DateTime endDate;
+            if (this.deceasedDateValue != null) {
+                endDate = new DateTime(this.deceasedDateValue);
+            } else {
+                endDate = new DateTime();
+            }
+            return Years.yearsBetween(new DateTime(this.birthDateValue), endDate).getYears();
         }
         return null;
     }
@@ -110,7 +126,7 @@ class EntityBioDemographicsBo extends PersistableBusinessObjectBase implements E
     @Override
     String getDeceasedDate() {
         if (this.deceasedDateValue != null) {
-            return new SimpleDateFormat("yyyy-MM-dd").format(this.deceasedDateValue)
+            return new SimpleDateFormat(DECEASED_DATE_FORMAT).format(this.deceasedDateValue)
         }
         return null
     }
@@ -118,7 +134,7 @@ class EntityBioDemographicsBo extends PersistableBusinessObjectBase implements E
     @Override
     String getBirthDateUnmasked() {
         if (this.birthDateValue != null) {
-            return new SimpleDateFormat("yyyy-MM-dd").format(this.birthDateValue)
+            return new SimpleDateFormat(BIRTH_DATE_FORMAT).format(this.birthDateValue)
         }
         return null;
     }
@@ -168,17 +184,17 @@ class EntityBioDemographicsBo extends PersistableBusinessObjectBase implements E
         }
         return this.countryOfBirthCode
     }
-    String getBirthStateCode() {
+    String getBirthStateProvinceCode() {
         if (isSuppressPersonal()) {
             return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE
         }
-        return this.birthStateCode
+        return this.birthStateProvinceCode
     }
-    String getCityOfBirth() {
+    String getBirthCity() {
         if (isSuppressPersonal()) {
             return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE
         }
-        return this.cityOfBirth
+        return this.birthCity
     }
     String getGeographicOrigin() {
         if (isSuppressPersonal()) {
@@ -203,11 +219,11 @@ class EntityBioDemographicsBo extends PersistableBusinessObjectBase implements E
     String getCountryOfBirthCodeUnmasked() {
         return this.countryOfBirthCode
     }
-    String getBirthStateCodeUnmasked() {
-        return this.birthStateCode
+    String getBirthStateProvinceCodeUnmasked() {
+        return this.birthStateProvinceCode
     }
-    String getCityOfBirthUnmasked() {
-        return this.cityOfBirth
+    String getBirthCityUnmasked() {
+        return this.birthCity
     }
     String getGeographicOriginUnmasked() {
         return this.geographicOrigin

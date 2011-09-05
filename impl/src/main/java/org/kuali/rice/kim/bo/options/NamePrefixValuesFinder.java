@@ -32,7 +32,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class NameTitleValuesFinder extends KeyValuesBase {
+public class NamePrefixValuesFinder extends KeyValuesBase {
 
 	private static final String PARAM_BO_CLASSNAME = PersonDocumentName.class.getSimpleName();
 	

@@ -1295,7 +1295,7 @@ public class IdentityServiceImpl implements IdentityService {
         }
         Map<String,Object> criteria = new HashMap<String,Object>();
         criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, entityId);
-        criteria.put("nameTypeCode", nameTypeCode);
+        criteria.put("nameCode", nameTypeCode);
         criteria.put(KIMPropertyConstants.Entity.ACTIVE, "Y");
         return businessObjectService.findByPrimaryKey(EntityNameBo.class, criteria);
     }

@@ -8,6 +8,9 @@ import java.util.Date;
 
 
 public interface EntityBioDemographicsContract extends Versioned, GloballyUnique {
+    public static final String BIRTH_DATE_FORMAT = "yyyy-MM-dd";
+    public static final String DECEASED_DATE_FORMAT = "yyyy-MM-dd";
+
     /**
      * Gets this {@link EntityBioDemographicsContract}'s identity id.
      * @return the identity id for this {@link EntityBioDemographicsContract}, or null if none has been assigned.
@@ -57,16 +60,16 @@ public interface EntityBioDemographicsContract extends Versioned, GloballyUnique
 	String getCountryOfBirthCode();
 
 	/**
-     * Gets this {@link EntityBioDemographicsContract}'s birth state code.
+     * Gets this {@link EntityBioDemographicsContract}'s birth state or extra-state jurisdiction code.  Corresponds to PESC BirthStateProvinceCode.
      * @return the birth state code for this {@link EntityBioDemographicsContract}, or null if none has been assigned.
      */
-	String getBirthStateCode();
+	String getBirthStateProvinceCode();
 
 	/**
-     * Gets this {@link EntityBioDemographicsContract}'s city of birth.
+     * Gets this {@link EntityBioDemographicsContract}'s city of birth. Corresponds to PESC BirthCity.
      * @return the city of birth for this {@link EntityBioDemographicsContract}, or null if none has been assigned.
      */
-	String getCityOfBirth();
+	String getBirthCity();
 
 	/**
      * Gets this {@link EntityBioDemographicsContract}'s geographic origin.
@@ -79,6 +82,13 @@ public interface EntityBioDemographicsContract extends Versioned, GloballyUnique
      * @return the unmasked birth date for this {@link EntityBioDemographicsContract}, or null if none has been assigned.
      */
 	String getBirthDateUnmasked();
+
+    /**
+     * Gets this {@link EntityBioDemographicsContract}'s current age based on birth date if present.  Age calculation uses
+     * deceased date if present.
+     * @return the calculated age for this {@link EntityBioDemographicsContract}, or null if {@link org.kuali.rice.kim.api.identity.personal.EntityBioDemographicsContract#getBirthDate()} is unpresent, suppressed, or there is a calculation error.
+     */
+    Integer getAge();
 
 	/**
      * Gets this {@link EntityBioDemographicsContract}'s unmasked gender code.
@@ -111,16 +121,16 @@ public interface EntityBioDemographicsContract extends Versioned, GloballyUnique
 	String getCountryOfBirthCodeUnmasked();
 
 	/**
-     * Gets this {@link EntityBioDemographicsContract}'s unmaksed birth state code.
+     * Gets this {@link EntityBioDemographicsContract}'s unmasked birth state or extra-state jurisdiction code. Corresponds to PESC BirthStateProvinceCode.
      * @return the unmaksed birth state code for this {@link EntityBioDemographicsContract}, or null if none has been assigned.
      */
-	String getBirthStateCodeUnmasked();
+	String getBirthStateProvinceCodeUnmasked();
 
 	/**
-     * Gets this {@link EntityBioDemographicsContract}'s unmasked city of birth.
+     * Gets this {@link EntityBioDemographicsContract}'s unmasked city of birth. Corresponds to PESC BirthCity.
      * @return the unmasked city of birth for this {@link EntityBioDemographicsContract}, or null if none has been assigned.
      */
-	String getCityOfBirthUnmasked();
+	String getBirthCityUnmasked();
 
 	/**
      * Gets this {@link EntityBioDemographicsContract}'s unmasked geographic origin.

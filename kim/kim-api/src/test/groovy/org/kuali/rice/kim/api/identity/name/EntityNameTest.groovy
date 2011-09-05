@@ -16,12 +16,12 @@ class EntityNameTest {
     private static final String TYPE_ACTIVE = "true"
     private static final Long TYPE_VERSION_NUMBER = new Integer(1)
 	private static final String TYPE_OBJECT_ID = UUID.randomUUID()
-	private static final String TITLE = "Mr"
+	private static final String NAME_PREFIX = "Mr"
     private static final String FIRST_NAME = "Bob"
     private static final String MIDDLE_NAME = "Mob"
     private static final String LAST_NAME = "Sob"
-    private static final String SUFFIX = "Jr"
-    private static final String FORMATTED_NAME = LAST_NAME + ", " + FIRST_NAME + " " + MIDDLE_NAME;
+    private static final String NAME_SUFFIX = "Jr"
+    private static final String COMPOSITE_NAME = LAST_NAME + ", " + FIRST_NAME + " " + MIDDLE_NAME;
     
     private static final String SUPPRESS = "false"
     private static final String DEFAULT = "true"
@@ -41,18 +41,18 @@ class EntityNameTest {
             <versionNumber>${TYPE_VERSION_NUMBER}</versionNumber>
             <objectId>${TYPE_OBJECT_ID}</objectId>
         </nameType>
-        <title>${TITLE}</title>
+        <namePrefix>${NAME_PREFIX}</namePrefix>
         <firstName>${FIRST_NAME}</firstName>
         <middleName>${MIDDLE_NAME}</middleName>
         <lastName>${LAST_NAME}</lastName>
-        <suffix>${SUFFIX}</suffix>
-        <formattedName>${FORMATTED_NAME}</formattedName>
-        <titleUnmasked>${TITLE}</titleUnmasked>
+        <nameSuffix>${NAME_SUFFIX}</nameSuffix>
+        <compositeName>${COMPOSITE_NAME}</compositeName>
+        <namePrefixUnmasked>${NAME_PREFIX}</namePrefixUnmasked>
         <firstNameUnmasked>${FIRST_NAME}</firstNameUnmasked>
         <middleNameUnmasked>${MIDDLE_NAME}</middleNameUnmasked>
         <lastNameUnmasked>${LAST_NAME}</lastNameUnmasked>
-        <suffixUnmasked>${SUFFIX}</suffixUnmasked>
-        <formattedNameUnmasked>${FORMATTED_NAME}</formattedNameUnmasked>
+        <nameSuffixUnmasked>${NAME_SUFFIX}</nameSuffixUnmasked>
+        <compositeNameUnmasked>${COMPOSITE_NAME}</compositeNameUnmasked>
         <suppressName>${SUPPRESS}</suppressName>
         <defaultValue>${DEFAULT}</defaultValue>
         <active>${ACTIVE}</active>
@@ -97,18 +97,18 @@ class EntityNameTest {
                 def Long versionNumber = EntityNameTest.TYPE_VERSION_NUMBER
 				def String objectId = EntityNameTest.TYPE_OBJECT_ID
 			}).build()}
-            def String title = EntityNameTest.TITLE
+            def String namePrefix= EntityNameTest.NAME_PREFIX
             def String firstName = EntityNameTest.FIRST_NAME
             def String middleName = EntityNameTest.MIDDLE_NAME
             def String lastName = EntityNameTest.LAST_NAME
-            def String suffix = EntityNameTest.SUFFIX
-            def String formattedName = EntityNameTest.FORMATTED_NAME
-            def String titleUnmasked = EntityNameTest.TITLE
+            def String nameSuffix = EntityNameTest.NAME_SUFFIX
+            def String compositeName = EntityNameTest.COMPOSITE_NAME
+            def String namePrefixUnmasked = EntityNameTest.NAME_PREFIX
             def String firstNameUnmasked = EntityNameTest.FIRST_NAME
             def String middleNameUnmasked = EntityNameTest.MIDDLE_NAME
             def String lastNameUnmasked = EntityNameTest.LAST_NAME
-            def String suffixUnmasked = EntityNameTest.SUFFIX
-            def String formattedNameUnmasked = EntityNameTest.FORMATTED_NAME
+            def String nameSuffixUnmasked = EntityNameTest.NAME_SUFFIX
+            def String compositeNameUnmasked = EntityNameTest.COMPOSITE_NAME
             def boolean suppressName = EntityNameTest.SUPPRESS.toBoolean()
             def boolean defaultValue = EntityNameTest.DEFAULT.toBoolean()
             def boolean active = EntityNameTest.ACTIVE.toBoolean()

@@ -251,8 +251,8 @@
     <field-descriptor name="maritalStatusCode" column="MARITAL_STATUS" jdbc-type="VARCHAR"  />
     <field-descriptor name="primaryLanguageCode" column="PRIM_LANG_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="secondaryLanguageCode" column="SEC_LANG_CD" jdbc-type="VARCHAR"  />
-    <field-descriptor name="cityOfBirth" column="BIRTH_CITY" jdbc-type="VARCHAR"  />
-    <field-descriptor name="birthStateCode" column="BIRTH_STATE_CD" jdbc-type="VARCHAR"  />
+    <field-descriptor name="birthCity" column="BIRTH_CITY" jdbc-type="VARCHAR"  />
+    <field-descriptor name="birthStateProvinceCode" column="BIRTH_STATE_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="countryOfBirthCode" column="BIRTH_CNTRY_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="geographicOrigin" column="GEO_ORIGIN" jdbc-type="VARCHAR"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
@@ -325,18 +325,18 @@
   <class-descriptor class="org.kuali.rice.kim.impl.identity.name.EntityNameBo" table="KRIM_ENTITY_NM_T">
     <field-descriptor name="id" column="ENTITY_NM_ID" jdbc-type="VARCHAR" primarykey="true"  />
     <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR"  />
-    <field-descriptor name="nameTypeCode" column="NM_TYP_CD" jdbc-type="VARCHAR"  />
+    <field-descriptor name="nameCode" column="NM_TYP_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="firstName" column="FIRST_NM" jdbc-type="VARCHAR"  />
     <field-descriptor name="middleName" column="MIDDLE_NM" jdbc-type="VARCHAR"  />
     <field-descriptor name="lastName" column="LAST_NM" jdbc-type="VARCHAR"  />
-    <field-descriptor name="title" column="TITLE_NM" jdbc-type="VARCHAR"  />
-    <field-descriptor name="suffix" column="SUFFIX_NM" jdbc-type="VARCHAR"  />
+    <field-descriptor name="namePrefix" column="TITLE_NM" jdbc-type="VARCHAR"  />
+    <field-descriptor name="nameSuffix" column="SUFFIX_NM" jdbc-type="VARCHAR"  />
     <field-descriptor name="defaultValue" column="DFLT_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />
     <reference-descriptor name="nameType" class-ref="org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
-      <foreignkey field-ref="nameTypeCode" />
+      <foreignkey field-ref="nameCode" />
     </reference-descriptor>
   </class-descriptor>
 
@@ -851,19 +851,19 @@
   <class-descriptor class="org.kuali.rice.kim.bo.ui.PersonDocumentName" table="KRIM_PND_NM_MT">
     <field-descriptor name="entityNameId" column="ENTITY_NM_ID" jdbc-type="VARCHAR" primarykey="true"  autoincrement="true" sequence-name="KRIM_ENTITY_NM_ID_S"  />
 	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" />
-    <field-descriptor name="nameTypeCode" column="NM_TYP_CD" jdbc-type="VARCHAR"  />
+    <field-descriptor name="nameCode" column="NM_TYP_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="firstName" column="FIRST_NM" jdbc-type="VARCHAR"  />
     <field-descriptor name="middleName" column="MIDDLE_NM" jdbc-type="VARCHAR"  />
     <field-descriptor name="lastName" column="LAST_NM" jdbc-type="VARCHAR"  />
-    <field-descriptor name="title" column="TITLE_NM" jdbc-type="VARCHAR"  />
-    <field-descriptor name="suffix" column="SUFFIX_NM" jdbc-type="VARCHAR"  />
+    <field-descriptor name="namePrefix" column="TITLE_NM" jdbc-type="VARCHAR"  />
+    <field-descriptor name="nameSuffix" column="SUFFIX_NM" jdbc-type="VARCHAR"  />
     <field-descriptor name="dflt" column="DFLT_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />
     <field-descriptor name="edit" column="EDIT_FLAG" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <reference-descriptor name="entityNameType" class-ref="org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
-      <foreignkey field-ref="nameTypeCode" />
+      <foreignkey field-ref="nameCode" />
     </reference-descriptor>
   </class-descriptor>
 

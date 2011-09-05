@@ -24,18 +24,18 @@ import org.w3c.dom.Element;
     EntityName.Elements.ID,
     EntityName.Elements.ENTITY_ID,
     EntityName.Elements.NAME_TYPE,
-    EntityName.Elements.TITLE,
+    EntityName.Elements.NAME_PREFIX,
     EntityName.Elements.FIRST_NAME,
     EntityName.Elements.MIDDLE_NAME,
     EntityName.Elements.LAST_NAME,
-    EntityName.Elements.SUFFIX,
-    EntityName.Elements.FORMATTED_NAME,
-    EntityName.Elements.TITLE_UNMASKED,
+    EntityName.Elements.NAME_SUFFIX,
+    EntityName.Elements.COMPOSITE_NAME,
+    EntityName.Elements.NAME_PREFIX_UNMASKED,
     EntityName.Elements.FIRST_NAME_UNMASKED,
     EntityName.Elements.MIDDLE_NAME_UNMASKED,
     EntityName.Elements.LAST_NAME_UNMASKED,
-    EntityName.Elements.SUFFIX_UNMASKED,
-    EntityName.Elements.FORMATTED_NAME_UNMASKED,
+    EntityName.Elements.NAME_SUFFIX_UNMASKED,
+    EntityName.Elements.COMPOSITE_NAME_UNMASKED,
     EntityName.Elements.SUPPRESS_NAME,
     EntityName.Elements.DEFAULT_VALUE,
     EntityName.Elements.ACTIVE,
@@ -47,8 +47,8 @@ public final class EntityName extends AbstractDataTransferObject
     implements EntityNameContract
 {
 
-    @XmlElement(name = Elements.SUFFIX, required = false)
-    private final String suffix;
+    @XmlElement(name = Elements.NAME_SUFFIX, required = false)
+    private final String nameSuffix;
     @XmlElement(name = Elements.ENTITY_ID, required = false)
     private final String entityId;
     @XmlElement(name = Elements.NAME_TYPE, required = false)
@@ -65,16 +65,16 @@ public final class EntityName extends AbstractDataTransferObject
     private final String lastName;
     @XmlElement(name = Elements.LAST_NAME_UNMASKED, required = false)
     private final String lastNameUnmasked;
-    @XmlElement(name = Elements.TITLE, required = false)
-    private final String title;
-    @XmlElement(name = Elements.TITLE_UNMASKED, required = false)
-    private final String titleUnmasked;
-    @XmlElement(name = Elements.SUFFIX_UNMASKED, required = false)
-    private final String suffixUnmasked;
-    @XmlElement(name = Elements.FORMATTED_NAME, required = false)
-    private final String formattedName;
-    @XmlElement(name = Elements.FORMATTED_NAME_UNMASKED, required = false)
-    private final String formattedNameUnmasked;
+    @XmlElement(name = Elements.NAME_PREFIX, required = false)
+    private final String namePrefix;
+    @XmlElement(name = Elements.NAME_PREFIX_UNMASKED, required = false)
+    private final String namePrefixUnmasked;
+    @XmlElement(name = Elements.NAME_SUFFIX_UNMASKED, required = false)
+    private final String nameSuffixUnmasked;
+    @XmlElement(name = Elements.COMPOSITE_NAME, required = false)
+    private final String compositeName;
+    @XmlElement(name = Elements.COMPOSITE_NAME_UNMASKED, required = false)
+    private final String compositeNameUnmasked;
     @XmlElement(name = Elements.SUPPRESS_NAME, required = false)
     private final boolean suppressName;
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
@@ -96,7 +96,7 @@ public final class EntityName extends AbstractDataTransferObject
      * 
      */
     private EntityName() {
-        this.suffix = null;
+        this.nameSuffix = null;
         this.entityId = null;
         this.nameType = null;
         this.firstName = null;
@@ -105,11 +105,11 @@ public final class EntityName extends AbstractDataTransferObject
         this.middleNameUnmasked = null;
         this.lastName = null;
         this.lastNameUnmasked = null;
-        this.title = null;
-        this.titleUnmasked = null;
-        this.suffixUnmasked = null;
-        this.formattedName = null;
-        this.formattedNameUnmasked = null;
+        this.namePrefix = null;
+        this.namePrefixUnmasked = null;
+        this.nameSuffixUnmasked = null;
+        this.compositeName = null;
+        this.compositeNameUnmasked = null;
         this.suppressName = false;
         this.versionNumber = null;
         this.objectId = null;
@@ -119,7 +119,7 @@ public final class EntityName extends AbstractDataTransferObject
     }
 
     private EntityName(Builder builder) {
-        this.suffix = builder.getSuffix();
+        this.nameSuffix = builder.getNameSuffix();
         this.entityId = builder.getEntityId();
         this.nameType = builder.getNameType() != null ? builder.getNameType().build() : null;
         this.firstName = builder.getFirstName();
@@ -128,11 +128,11 @@ public final class EntityName extends AbstractDataTransferObject
         this.middleNameUnmasked = builder.getMiddleNameUnmasked();
         this.lastName = builder.getLastName();
         this.lastNameUnmasked = builder.getLastNameUnmasked();
-        this.title = builder.getTitle();
-        this.titleUnmasked = builder.getTitleUnmasked();
-        this.suffixUnmasked = builder.getSuffixUnmasked();
-        this.formattedName = builder.getFormattedName();
-        this.formattedNameUnmasked = builder.getFormattedNameUnmasked();
+        this.namePrefix = builder.getNamePrefix();
+        this.namePrefixUnmasked = builder.getNamePrefixUnmasked();
+        this.nameSuffixUnmasked = builder.getNameSuffixUnmasked();
+        this.compositeName = builder.getCompositeName();
+        this.compositeNameUnmasked = builder.getCompositeNameUnmasked();
         this.suppressName = builder.isSuppressName();
         this.versionNumber = builder.getVersionNumber();
         this.objectId = builder.getObjectId();
@@ -142,8 +142,8 @@ public final class EntityName extends AbstractDataTransferObject
     }
 
     @Override
-    public String getSuffix() {
-        return this.suffix;
+    public String getNameSuffix() {
+        return this.nameSuffix;
     }
 
     @Override
@@ -187,28 +187,28 @@ public final class EntityName extends AbstractDataTransferObject
     }
 
     @Override
-    public String getTitle() {
-        return this.title;
+    public String getNamePrefix() {
+        return this.namePrefix;
     }
 
     @Override
-    public String getTitleUnmasked() {
-        return this.titleUnmasked;
+    public String getNamePrefixUnmasked() {
+        return this.namePrefixUnmasked;
     }
 
     @Override
-    public String getSuffixUnmasked() {
-        return this.suffixUnmasked;
+    public String getNameSuffixUnmasked() {
+        return this.nameSuffixUnmasked;
     }
 
     @Override
-    public String getFormattedName() {
-        return this.formattedName;
+    public String getCompositeName() {
+        return this.compositeName;
     }
 
     @Override
-    public String getFormattedNameUnmasked() {
-        return this.formattedNameUnmasked;
+    public String getCompositeNameUnmasked() {
+        return this.compositeNameUnmasked;
     }
 
     @Override
@@ -250,13 +250,13 @@ public final class EntityName extends AbstractDataTransferObject
         implements Serializable, ModelBuilder, EntityNameContract
     {
 
-        private String suffix;
+        private String nameSuffix;
         private String entityId;
         private Type.Builder nameType;
         private String firstName;
         private String middleName;
         private String lastName;
-        private String title;
+        private String namePrefix;
         private boolean suppressName;
         private Long versionNumber;
         private String objectId;
@@ -275,7 +275,7 @@ public final class EntityName extends AbstractDataTransferObject
                 throw new IllegalArgumentException("contract was null");
             }
             Builder builder = create();
-            builder.setSuffix(contract.getSuffix());
+            builder.setNameSuffix(contract.getNameSuffix());
             builder.setEntityId(contract.getEntityId());
             if (contract.getNameType() != null) {
                 builder.setNameType(Type.Builder.create(contract.getNameType()));
@@ -283,7 +283,7 @@ public final class EntityName extends AbstractDataTransferObject
             builder.setFirstName(contract.getFirstName());
             builder.setMiddleName(contract.getMiddleName());
             builder.setLastName(contract.getLastName());
-            builder.setTitle(contract.getTitle());
+            builder.setNamePrefix(contract.getNamePrefix());
             builder.setSuppressName(contract.isSuppressName());
             builder.setVersionNumber(contract.getVersionNumber());
             builder.setObjectId(contract.getObjectId());
@@ -298,11 +298,11 @@ public final class EntityName extends AbstractDataTransferObject
         }
 
         @Override
-        public String getSuffix() {
+        public String getNameSuffix() {
             if (isSuppressName()) {
                 return KimConstants.RESTRICTED_DATA_MASK;
             }
-            return this.suffix;
+            return this.nameSuffix;
         }
 
         @Override
@@ -355,33 +355,33 @@ public final class EntityName extends AbstractDataTransferObject
         }
 
         @Override
-        public String getTitle() {
+        public String getNamePrefix() {
             if (isSuppressName()) {
                 return KimConstants.RESTRICTED_DATA_MASK;
             }
-            return this.title;
+            return this.namePrefix;
         }
 
         @Override
-        public String getTitleUnmasked() {
-            return this.title;
+        public String getNamePrefixUnmasked() {
+            return this.namePrefix;
         }
 
         @Override
-        public String getSuffixUnmasked() {
-            return this.suffix;
+        public String getNameSuffixUnmasked() {
+            return this.nameSuffix;
         }
 
         @Override
-        public String getFormattedName() {
+        public String getCompositeName() {
             if (isSuppressName()) {
                 return KimConstants.RESTRICTED_DATA_MASK;
             }
-            return getFormattedNameUnmasked();
+            return getCompositeNameUnmasked();
         }
 
         @Override
-        public String getFormattedNameUnmasked() {
+        public String getCompositeNameUnmasked() {
             return getLastName() + ", " + getFirstName() + (getMiddleName()==null?"":" " + getMiddleName());
         }
 
@@ -415,8 +415,8 @@ public final class EntityName extends AbstractDataTransferObject
             return this.id;
         }
 
-        public void setSuffix(String suffix) {
-            this.suffix = suffix;
+        public void setNameSuffix(String nameSuffix) {
+            this.nameSuffix = nameSuffix;
         }
 
         public void setEntityId(String entityId) {
@@ -440,8 +440,8 @@ public final class EntityName extends AbstractDataTransferObject
             this.lastName = lastName;
         }
 
-        public void setTitle(String title) {
-            this.title = title;
+        public void setNamePrefix(String namePrefix) {
+            this.namePrefix = namePrefix;
         }
 
 
@@ -492,7 +492,7 @@ public final class EntityName extends AbstractDataTransferObject
      */
     static class Elements {
 
-        final static String SUFFIX = "suffix";
+        final static String NAME_SUFFIX = "nameSuffix";
         final static String ENTITY_ID = "entityId";
         final static String NAME_TYPE = "nameType";
         final static String FIRST_NAME = "firstName";
@@ -501,11 +501,11 @@ public final class EntityName extends AbstractDataTransferObject
         final static String MIDDLE_NAME_UNMASKED = "middleNameUnmasked";
         final static String LAST_NAME = "lastName";
         final static String LAST_NAME_UNMASKED = "lastNameUnmasked";
-        final static String TITLE = "title";
-        final static String TITLE_UNMASKED = "titleUnmasked";
-        final static String SUFFIX_UNMASKED = "suffixUnmasked";
-        final static String FORMATTED_NAME = "formattedName";
-        final static String FORMATTED_NAME_UNMASKED = "formattedNameUnmasked";
+        final static String NAME_PREFIX = "namePrefix";
+        final static String NAME_PREFIX_UNMASKED = "namePrefixUnmasked";
+        final static String NAME_SUFFIX_UNMASKED = "nameSuffixUnmasked";
+        final static String COMPOSITE_NAME = "compositeName";
+        final static String COMPOSITE_NAME_UNMASKED = "compositeNameUnmasked";
         final static String SUPPRESS_NAME = "suppressName";
         final static String DEFAULT_VALUE = "defaultValue";
         final static String ACTIVE = "active";

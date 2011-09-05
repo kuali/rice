@@ -68,9 +68,10 @@ public interface EntityAddressContract extends Versioned, GloballyUnique, Defaul
 	
 	/**
      * Gets this {@link EntityAddressContract}'s city name.
+     * Corresponds to PESC City.
      * @return the city name for this {@link EntityAddressContract}, or null if none has been assigned.
      */
-	String getCityName();
+	String getCity();
 	
 	/**
      * Gets this {@link EntityAddressContract}'s state code.
@@ -112,7 +113,7 @@ public interface EntityAddressContract extends Versioned, GloballyUnique, Defaul
      * Gets this {@link EntityAddressContract}'s unmasked city name.
      * @return the unmasked city name for this {@link EntityAddressContract}, or null if none has been assigned.
      */
-    String getCityNameUnmasked();
+    String getCityUnmasked();
     
     /**
      * Gets this {@link EntityAddressContract}'s unmasked state code.

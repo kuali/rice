@@ -340,7 +340,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 			docAddress.setStateCode("IN");
 			docAddress.setPostalCode("46123");
 			docAddress.setCountryCode("US");
-			docAddress.setCityName("Indianapolis");
+			docAddress.setCity("Indianapolis");
 			docAddress.setActive(true);
 			docAddress.setDflt(true);
 			docAddresses.add(docAddress);
@@ -359,7 +359,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		assertEquals(docAddress.getAddressTypeCode(), entityAddress.getAddressType().getCode());
 		assertEquals(docAddress.getCountryCode(), entityAddress.getCountryCode());
 		assertEquals(docAddress.getLine1(), entityAddress.getLine1());
-		assertEquals(docAddress.getCityName(), entityAddress.getCityName());
+		assertEquals(docAddress.getCity(), entityAddress.getCity());
 		assertEquals(docAddress.getPostalCode(), entityAddress.getPostalCode());
 		assertEquals(docAddress.getStateCode(), entityAddress.getStateCode());
 	}

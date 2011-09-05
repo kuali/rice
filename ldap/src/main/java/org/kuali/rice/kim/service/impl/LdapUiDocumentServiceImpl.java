@@ -273,7 +273,7 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 					docAddress.setStateCode(address.getStateCodeUnmasked());
 					docAddress.setPostalCode(address.getPostalCodeUnmasked());
 					docAddress.setCountryCode(address.getCountryCodeUnmasked());
-					docAddress.setCityName(address.getCityNameUnmasked());
+					docAddress.setCity(address.getCityUnmasked());
 
 					docAddress.setActive(address.isActive());
 					docAddress.setDflt(address.isDefaultValue());

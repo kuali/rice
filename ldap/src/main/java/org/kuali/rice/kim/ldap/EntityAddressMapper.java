@@ -45,14 +45,14 @@ public class EntityAddressMapper extends AbstractContextMapper {
         final EntityAddress.Builder builder = EntityAddress.Builder.create();
         final String line1      = context.getStringAttribute("employeePrimaryDeptName");
         final String line2      = context.getStringAttribute("employeePoBox");
-        final String cityName   = context.getStringAttribute("employeeCity");
+        final String city   = context.getStringAttribute("employeeCity");
         final String stateCode  = context.getStringAttribute("employeeState");
         final String postalCode = context.getStringAttribute("employeeZip");
         
         builder.setAddressType(Type.Builder.create("WORK"));
         builder.setLine1(line1);
         builder.setLine2(line2);
-        builder.setCityName(cityName);
+        builder.setCity(city);
         builder.setStateCode(stateCode);
         builder.setPostalCode(postalCode);
         builder.setDefaultValue(isdefault);

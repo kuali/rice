@@ -27,7 +27,7 @@ import org.w3c.dom.Element;
     EntityAddress.Elements.LINE1,
     EntityAddress.Elements.LINE2,
     EntityAddress.Elements.LINE3,
-    EntityAddress.Elements.CITY_NAME,
+    EntityAddress.Elements.CITY,
     EntityAddress.Elements.STATE_CODE,
     EntityAddress.Elements.POSTAL_CODE,
     EntityAddress.Elements.COUNTRY_CODE,
@@ -35,7 +35,7 @@ import org.w3c.dom.Element;
     EntityAddress.Elements.LINE1_UNMASKED,
     EntityAddress.Elements.LINE2_UNMASKED,
     EntityAddress.Elements.LINE3_UNMASKED,
-    EntityAddress.Elements.CITY_NAME_UNMASKED,
+    EntityAddress.Elements.CITY_UNMASKED,
     EntityAddress.Elements.STATE_CODE_UNMASKED,
     EntityAddress.Elements.POSTAL_CODE_UNMASKED,
     EntityAddress.Elements.COUNTRY_CODE_UNMASKED,
@@ -63,8 +63,8 @@ public final class EntityAddress extends AbstractDataTransferObject
     private final String line2;
     @XmlElement(name = Elements.LINE3, required = false)
     private final String line3;
-    @XmlElement(name = Elements.CITY_NAME, required = false)
-    private final String cityName;
+    @XmlElement(name = Elements.CITY, required = false)
+    private final String city;
     @XmlElement(name = Elements.STATE_CODE, required = false)
     private final String stateCode;
     @XmlElement(name = Elements.POSTAL_CODE, required = false)
@@ -77,8 +77,8 @@ public final class EntityAddress extends AbstractDataTransferObject
     private final String line2Unmasked;
     @XmlElement(name = Elements.LINE3_UNMASKED, required = false)
     private final String line3Unmasked;
-    @XmlElement(name = Elements.CITY_NAME_UNMASKED, required = false)
-    private final String cityNameUnmasked;
+    @XmlElement(name = Elements.CITY_UNMASKED, required = false)
+    private final String cityUnmasked;
     @XmlElement(name = Elements.STATE_CODE_UNMASKED, required = false)
     private final String stateCodeUnmasked;
     @XmlElement(name = Elements.POSTAL_CODE_UNMASKED, required = false)
@@ -110,14 +110,14 @@ public final class EntityAddress extends AbstractDataTransferObject
         this.line1 = null;
         this.line2 = null;
         this.line3 = null;
-        this.cityName = null;
+        this.city = null;
         this.stateCode = null;
         this.postalCode = null;
         this.countryCode = null;
         this.line1Unmasked = null;
         this.line2Unmasked = null;
         this.line3Unmasked = null;
-        this.cityNameUnmasked = null;
+        this.cityUnmasked = null;
         this.stateCodeUnmasked = null;
         this.postalCodeUnmasked = null;
         this.countryCodeUnmasked = null;
@@ -137,14 +137,14 @@ public final class EntityAddress extends AbstractDataTransferObject
         this.line1 = builder.getLine1();
         this.line2 = builder.getLine2();
         this.line3 = builder.getLine3();
-        this.cityName = builder.getCityName();
+        this.city = builder.getCity();
         this.stateCode = builder.getStateCode();
         this.postalCode = builder.getPostalCode();
         this.countryCode = builder.getCountryCode();
         this.line1Unmasked = builder.getLine1Unmasked();
         this.line2Unmasked = builder.getLine2Unmasked();
         this.line3Unmasked = builder.getLine3Unmasked();
-        this.cityNameUnmasked = builder.getCityNameUnmasked();
+        this.cityUnmasked = builder.getCityUnmasked();
         this.stateCodeUnmasked = builder.getStateCodeUnmasked();
         this.postalCodeUnmasked = builder.getPostalCodeUnmasked();
         this.countryCodeUnmasked = builder.getCountryCodeUnmasked();
@@ -187,8 +187,8 @@ public final class EntityAddress extends AbstractDataTransferObject
     }
 
     @Override
-    public String getCityName() {
-        return this.cityName;
+    public String getCity() {
+        return this.city;
     }
 
     @Override
@@ -222,8 +222,8 @@ public final class EntityAddress extends AbstractDataTransferObject
     }
 
     @Override
-    public String getCityNameUnmasked() {
-        return this.cityNameUnmasked;
+    public String getCityUnmasked() {
+        return this.cityUnmasked;
     }
 
     @Override
@@ -285,7 +285,7 @@ public final class EntityAddress extends AbstractDataTransferObject
         private String line1Unmasked;
         private String line2Unmasked;
         private String line3Unmasked;
-        private String cityNameUnmasked;
+        private String cityUnmasked;
         private String stateCodeUnmasked;
         private String postalCodeUnmasked;
         private String countryCodeUnmasked;
@@ -316,7 +316,7 @@ public final class EntityAddress extends AbstractDataTransferObject
             builder.setLine1(contract.getLine1Unmasked());
             builder.setLine2(contract.getLine2Unmasked());
             builder.setLine3(contract.getLine3Unmasked());
-            builder.setCityName(contract.getCityNameUnmasked());
+            builder.setCity(contract.getCityUnmasked());
             builder.setStateCode(contract.getStateCodeUnmasked());
             builder.setPostalCode(contract.getPostalCodeUnmasked());
             builder.setCountryCode(contract.getCountryCodeUnmasked());
@@ -373,11 +373,11 @@ public final class EntityAddress extends AbstractDataTransferObject
         }
 
         @Override
-        public String getCityName() {
+        public String getCity() {
             if (isSuppressAddress()) {
                 return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
             }
-            return this.cityNameUnmasked;
+            return this.cityUnmasked;
         }
 
         @Override
@@ -420,8 +420,8 @@ public final class EntityAddress extends AbstractDataTransferObject
         }
 
         @Override
-        public String getCityNameUnmasked() {
-            return this.cityNameUnmasked;
+        public String getCityUnmasked() {
+            return this.cityUnmasked;
         }
 
         @Override
@@ -493,8 +493,8 @@ public final class EntityAddress extends AbstractDataTransferObject
             this.line3Unmasked = line3;
         }
 
-        public void setCityName(String cityName) {
-            this.cityNameUnmasked = cityName;
+        public void setCity(String city) {
+            this.cityUnmasked = city;
         }
 
         public void setStateCode(String stateCode) {
@@ -562,14 +562,14 @@ public final class EntityAddress extends AbstractDataTransferObject
         final static String LINE1 = "line1";
         final static String LINE2 = "line2";
         final static String LINE3 = "line3";
-        final static String CITY_NAME = "cityName";
+        final static String CITY = "city";
         final static String STATE_CODE = "stateCode";
         final static String POSTAL_CODE = "postalCode";
         final static String COUNTRY_CODE = "countryCode";
         final static String LINE1_UNMASKED = "line1Unmasked";
         final static String LINE2_UNMASKED = "line2Unmasked";
         final static String LINE3_UNMASKED = "line3Unmasked";
-        final static String CITY_NAME_UNMASKED = "cityNameUnmasked";
+        final static String CITY_UNMASKED = "cityUnmasked";
         final static String STATE_CODE_UNMASKED = "stateCodeUnmasked";
         final static String POSTAL_CODE_UNMASKED = "postalCodeUnmasked";
         final static String COUNTRY_CODE_UNMASKED = "countryCodeUnmasked";

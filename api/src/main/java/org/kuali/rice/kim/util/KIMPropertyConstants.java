@@ -74,8 +74,8 @@ public final class KIMPropertyConstants {
 		public static final String ADDRESS_LINE_1 = "line1";
 		public static final String ADDRESS_LINE_2 = "line2";
 		public static final String ADDRESS_LINE_3 = "line3";
-		public static final String CITY_NAME = "cityName";
-		public static final String STATE_CODE = KRADPropertyConstants.STATE_CODE;
+                public static final String CITY = "city";
+                public static final String STATE_CODE = KRADPropertyConstants.STATE_CODE;
 		public static final String POSTAL_CODE = KRADPropertyConstants.POSTAL_CODE;
 		public static final String COUNTRY_CODE = KRADPropertyConstants.COUNTY_CODE;
 		public static final String CAMPUS_CODE = KRADPropertyConstants.CAMPUS_CODE;

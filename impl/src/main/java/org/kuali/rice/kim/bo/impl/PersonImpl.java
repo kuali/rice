@@ -220,12 +220,12 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
                 address = defaultAddress;
 			} else {
                 EntityAddress.Builder builder = EntityAddress.Builder.create();
-                builder.setCityName("");
+                builder.setCity("");
                 builder.setCountryCode("");
                 builder.setLine1("");
                 builder.setLine2("");
                 builder.setLine3("");
-                builder.setCityName("");
+                builder.setCity("");
                 builder.setPostalCode("");
                 builder.setStateCode("");
                 builder.setActive(true);
@@ -524,11 +524,11 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
     }
 
 	public String getAddressCityName() {
-	    return address.getCityName();
+	    return address.getCity();
 	}
 	
 	public String getAddressCityNameUnmasked() {
-        return address.getCityNameUnmasked();
+        return address.getCityUnmasked();
     }
 
 	public String getAddressStateCode() {

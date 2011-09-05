@@ -20,7 +20,7 @@ class EntityAddressTest {
 	private static final String LINE1 = "Line 1";
     private static final String LINE2 = "Line 2";
     private static final String LINE3 = "Line 3";
-    private static final String CITY_NAME = "Super Sweet City";
+    private static final String CITY = "Super Sweet City";
 	private static final String STATE_CODE = "CA";
 	private static final String POSTAL_CODE = "55555"
     private static final String COUNTRY_CODE = "USA"
@@ -46,14 +46,14 @@ class EntityAddressTest {
         <line1>${LINE1}</line1>
         <line2>${LINE2}</line2>
         <line3>${LINE3}</line3>
-        <cityName>${CITY_NAME}</cityName>
+        <city>${CITY}</city>
         <stateCode>${STATE_CODE}</stateCode>
         <postalCode>${POSTAL_CODE}</postalCode>
         <countryCode>${COUNTRY_CODE}</countryCode>
         <line1Unmasked>${LINE1}</line1Unmasked>
         <line2Unmasked>${LINE2}</line2Unmasked>
         <line3Unmasked>${LINE3}</line3Unmasked>
-        <cityNameUnmasked>${CITY_NAME}</cityNameUnmasked>
+        <cityUnmasked>${CITY}</cityUnmasked>
         <stateCodeUnmasked>${STATE_CODE}</stateCodeUnmasked>
         <postalCodeUnmasked>${POSTAL_CODE}</postalCodeUnmasked>
         <countryCodeUnmasked>${COUNTRY_CODE}</countryCodeUnmasked>
@@ -105,14 +105,14 @@ class EntityAddressTest {
             def String line1 = EntityAddressTest.LINE1
             def String line2 = EntityAddressTest.LINE2
             def String line3 = EntityAddressTest.LINE3
-            def String cityName = EntityAddressTest.CITY_NAME
+            def String city = EntityAddressTest.CITY
             def String stateCode = EntityAddressTest.STATE_CODE
             def String postalCode = EntityAddressTest.POSTAL_CODE
             def String countryCode = EntityAddressTest.COUNTRY_CODE
             def String line1Unmasked = EntityAddressTest.LINE1
             def String line2Unmasked = EntityAddressTest.LINE2
             def String line3Unmasked = EntityAddressTest.LINE3
-            def String cityNameUnmasked = EntityAddressTest.CITY_NAME
+            def String cityUnmasked = EntityAddressTest.CITY
             def String stateCodeUnmasked = EntityAddressTest.STATE_CODE
             def String postalCodeUnmasked = EntityAddressTest.POSTAL_CODE
             def String countryCodeUnmasked = EntityAddressTest.COUNTRY_CODE

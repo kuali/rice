@@ -33,7 +33,7 @@
             <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docAddressAttributes.line1}" noColon="true" /> 
             <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docAddressAttributes.line2}" noColon="true" /> 
             <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docAddressAttributes.line3}" noColon="true" /> 
-            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docAddressAttributes.cityName}" noColon="true" /> 
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docAddressAttributes.city}" noColon="true" />
             <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docAddressAttributes.stateCode}" noColon="true" /> 
             <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docAddressAttributes.postalCode}" noColon="true" /> 
             <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docAddressAttributes.countryCode}" noColon="true" /> 
@@ -68,7 +68,7 @@
                 </div>
                 </td>
                 <td>
-                    <div align="center"><kul:htmlControlAttribute property="newAddress.cityName" attributeEntry="${docAddressAttributes.cityName}" readOnly="${readOnlyEntity}" />
+                    <div align="center"><kul:htmlControlAttribute property="newAddress.city" attributeEntry="${docAddressAttributes.city}" readOnly="${readOnlyEntity}" />
                     </div>
                 </td>
                 <td>
@@ -109,7 +109,7 @@
 				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.addrs[${status.index}].line1" attributeEntry="${docAddressAttributes.line1}" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
 				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.addrs[${status.index}].line2" attributeEntry="${docAddressAttributes.line2}" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
 				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.addrs[${status.index}].line3" attributeEntry="${docAddressAttributes.line3}" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
-				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.addrs[${status.index}].cityName" attributeEntry="${docAddressAttributes.cityName}" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
+				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.addrs[${status.index}].city" attributeEntry="${docAddressAttributes.city}" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
 				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.addrs[${status.index}].stateCode" attributeEntry="${docAddressAttributes.stateCode}" styleClass="fixed-size-200-select" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="XX" />
 				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.addrs[${status.index}].postalCode" attributeEntry="${docAddressAttributes.postalCode}" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="XXXXX" />
 				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.addrs[${status.index}].countryCode" attributeEntry="${docAddressAttributes.countryCode}" styleClass="fixed-size-200-select" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="XX" />

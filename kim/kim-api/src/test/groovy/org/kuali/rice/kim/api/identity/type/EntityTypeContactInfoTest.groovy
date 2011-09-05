@@ -36,7 +36,7 @@ class EntityTypeContactInfoTest {
 	private static final String ADDR_LINE1 = "Line 1";
     private static final String ADDR_LINE2 = "Line 2";
     private static final String ADDR_LINE3 = "Line 3";
-    private static final String ADDR_CITY_NAME = "Super Sweet City";
+    private static final String ADDR_CITY = "Super Sweet City";
 	private static final String ADDR_STATE_CODE = "CA";
 	private static final String ADDR_POSTAL_CODE = "55555"
     private static final String ADDR_COUNTRY_CODE = "USA"
@@ -104,14 +104,14 @@ class EntityTypeContactInfoTest {
             <line1>${ADDR_LINE1}</line1>
             <line2>${ADDR_LINE2}</line2>
             <line3>${ADDR_LINE3}</line3>
-            <cityName>${ADDR_CITY_NAME}</cityName>
+            <city>${ADDR_CITY}</city>
             <stateCode>${ADDR_STATE_CODE}</stateCode>
             <postalCode>${ADDR_POSTAL_CODE}</postalCode>
             <countryCode>${ADDR_COUNTRY_CODE}</countryCode>
             <line1Unmasked>${ADDR_LINE1}</line1Unmasked>
             <line2Unmasked>${ADDR_LINE2}</line2Unmasked>
             <line3Unmasked>${ADDR_LINE3}</line3Unmasked>
-            <cityNameUnmasked>${ADDR_CITY_NAME}</cityNameUnmasked>
+            <cityUnmasked>${ADDR_CITY}</cityUnmasked>
             <stateCodeUnmasked>${ADDR_STATE_CODE}</stateCodeUnmasked>
             <postalCodeUnmasked>${ADDR_POSTAL_CODE}</postalCodeUnmasked>
             <countryCodeUnmasked>${ADDR_COUNTRY_CODE}</countryCodeUnmasked>
@@ -186,14 +186,14 @@ class EntityTypeContactInfoTest {
             <line1>${ADDR_LINE1}</line1>
             <line2>${ADDR_LINE2}</line2>
             <line3>${ADDR_LINE3}</line3>
-            <cityName>${ADDR_CITY_NAME}</cityName>
+            <city>${ADDR_CITY}</city>
             <stateCode>${ADDR_STATE_CODE}</stateCode>
             <postalCode>${ADDR_POSTAL_CODE}</postalCode>
             <countryCode>${ADDR_COUNTRY_CODE}</countryCode>
             <line1Unmasked>${ADDR_LINE1}</line1Unmasked>
             <line2Unmasked>${ADDR_LINE2}</line2Unmasked>
             <line3Unmasked>${ADDR_LINE3}</line3Unmasked>
-            <cityNameUnmasked>${ADDR_CITY_NAME}</cityNameUnmasked>
+            <cityUnmasked>${ADDR_CITY}</cityUnmasked>
             <stateCodeUnmasked>${ADDR_STATE_CODE}</stateCodeUnmasked>
             <postalCodeUnmasked>${ADDR_POSTAL_CODE}</postalCodeUnmasked>
             <countryCodeUnmasked>${ADDR_COUNTRY_CODE}</countryCodeUnmasked>
@@ -310,14 +310,14 @@ class EntityTypeContactInfoTest {
                     def String line1 = EntityTypeContactInfoTest.ADDR_LINE1
                     def String line2 = EntityTypeContactInfoTest.ADDR_LINE2
                     def String line3 = EntityTypeContactInfoTest.ADDR_LINE3
-                    def String cityName = EntityTypeContactInfoTest.ADDR_CITY_NAME
+                    def String city = EntityTypeContactInfoTest.ADDR_CITY
                     def String stateCode = EntityTypeContactInfoTest.ADDR_STATE_CODE
                     def String postalCode = EntityTypeContactInfoTest.ADDR_POSTAL_CODE
                     def String countryCode = EntityTypeContactInfoTest.ADDR_COUNTRY_CODE
                     def String line1Unmasked = EntityTypeContactInfoTest.ADDR_LINE1
                     def String line2Unmasked = EntityTypeContactInfoTest.ADDR_LINE2
                     def String line3Unmasked = EntityTypeContactInfoTest.ADDR_LINE3
-                    def String cityNameUnmasked = EntityTypeContactInfoTest.ADDR_CITY_NAME
+                    def String cityUnmasked = EntityTypeContactInfoTest.ADDR_CITY
                     def String stateCodeUnmasked = EntityTypeContactInfoTest.ADDR_STATE_CODE
                     def String postalCodeUnmasked = EntityTypeContactInfoTest.ADDR_POSTAL_CODE
                     def String countryCodeUnmasked = EntityTypeContactInfoTest.ADDR_COUNTRY_CODE

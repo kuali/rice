@@ -10,7 +10,7 @@ class EntityAddressBoTest {
   public void testNotEqualsWithAddress() {
       EntityAddress.Builder builder = EntityAddress.Builder.create();
       builder.setActive(true)
-      builder.setCityName("city")
+      builder.setCity("city")
       builder.setStateCode("IA")
       builder.setCountryCode("USA")
       builder.setDefaultValue(true)

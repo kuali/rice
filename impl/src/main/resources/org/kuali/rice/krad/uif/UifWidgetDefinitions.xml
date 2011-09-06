@@ -127,6 +127,7 @@
   <bean id="QuickFinder-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.QuickFinder" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/widget/quickFinder.jsp"/>
       <property name="baseLookupUrl" value="@{#ConfigProperties['application.url']}/spring/lookup"/>
+      <property name="multipleValuesSelect" value="false"/>
       <property name="quickfinderActionField">
         <bean parent="ActionImageField" p:methodToCall="performLookup" p:actionImageField-ref="QuickFinderImageField">
         	<property name="lightBoxLookup">

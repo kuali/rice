@@ -134,11 +134,17 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="FooterInquiry" parent="Footer">
       <property name="items">
         <list> 
-          <bean parent="ActionField" p:methodToCall="export" p:actionLabel="export" p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_EXPORT]}" p:onClickScript="writeHiddenToForm(&quot;unblockUIOnLoading&quot;, &quot;true&quot;);"/>
-          <bean parent="ActionField" p:methodToCall="returnToPrevious" p:actionLabel="Cancel" p:render="@{#view.dialogMode and !formHistory?.historyEntries?.empty}"/>
-          <bean parent="ActionField" p:methodToCall="returnToHub" p:actionLabel="Home" p:render="@{#view.dialogMode and (formHistory?.historyEntries?.size() > 1)}"/>
-          <bean parent="ActionField" p:actionLabel="Close" p:render="@{#view.dialogMode}" p:onClickScript="e.preventDefault();parent.$.fancybox.close();return false;"/>
-          <bean parent="ActionField" p:actionLabel="Close" p:render="@{!#view.dialogMode}" p:onClickScript="e.preventDefault();window.close();return false;"/>
+          <bean parent="ActionField" p:methodToCall="export" p:actionLabel="export"
+                p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_EXPORT]}"
+                p:onClickScript="writeHiddenToForm(&quot;unblockUIOnLoading&quot;, &quot;true&quot;);"/>
+          <bean parent="ActionField" p:methodToCall="returnToPrevious" p:actionLabel="Cancel"
+                p:render="@{#view.dialogMode and formHistory != null and !formHistory?.historyEntries?.empty}"/>
+          <bean parent="ActionField" p:methodToCall="returnToHub" p:actionLabel="Home"
+                p:render="@{#view.dialogMode and formHistory != null and (formHistory?.historyEntries?.size() > 1)}"/>
+          <bean parent="ActionField" p:actionLabel="Close" p:render="@{#view.dialogMode}"
+                p:onClickScript="e.preventDefault();parent.$.fancybox.close();return false;"/>
+          <bean parent="ActionField" p:actionLabel="Close" p:render="@{!#view.dialogMode}"
+                p:onClickScript="e.preventDefault();window.close();return false;"/>
         </list>
       </property>  
   </bean>
@@ -149,9 +155,12 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           <bean parent="ActionField" p:methodToCall="search" p:actionLabel="Search"/>
           <bean parent="ActionField" p:methodToCall="clearValues" p:actionLabel="Clear Values"/>
           <bean parent="ActionField" p:methodToCall="cancel" p:actionLabel="Cancel" p:render="@{!#view.dialogMode}"/>
-          <bean parent="ActionField" p:methodToCall="returnToPrevious" p:actionLabel="Cancel" p:render="@{#view.dialogMode and !formHistory?.historyEntries?.empty}"/>
-          <bean parent="ActionField" p:methodToCall="returnToHub" p:actionLabel="Home" p:render="@{#view.dialogMode and (formHistory?.historyEntries?.size() > 1)}"/>
-          <bean parent="ActionField" p:actionLabel="Close" p:render="@{#view.dialogMode}" p:onClickScript="e.preventDefault();parent.$.fancybox.close();return false;"/>
+          <bean parent="ActionField" p:methodToCall="returnToPrevious" p:actionLabel="Cancel"
+                p:render="@{#view.dialogMode and formHistory != null and !formHistory?.historyEntries?.empty}"/>
+          <bean parent="ActionField" p:methodToCall="returnToHub" p:actionLabel="Home"
+                p:render="@{#view.dialogMode and formHistory != null and (formHistory?.historyEntries?.size() > 1)}"/>
+          <bean parent="ActionField" p:actionLabel="Close" p:render="@{#view.dialogMode}"
+                p:onClickScript="e.preventDefault();parent.$.fancybox.close();return false;"/>
         </list>
       </property>  
   </bean>

@@ -135,7 +135,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 <bean parent="MessageField"/>
             </property>
             <property name="dataGroupPrototype">
-                <bean parent="Group"/>
+                <bean parent="GroupBodyOnly"/>
             </property>
         </bean>
       </property>

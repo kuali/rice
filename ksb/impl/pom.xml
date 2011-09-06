@@ -3,10 +3,10 @@
   <parent>
     <artifactId>rice-ksb</artifactId>
     <groupId>org.kuali.rice</groupId>
-    <version>2.0.0-m8</version>
+    <version>2.0.0-m9-SNAPSHOT</version>
   </parent>
   <artifactId>rice-ksb-impl</artifactId>
-  <version>2.0.0-m8</version>
+  <version>2.0.0-m9-SNAPSHOT</version>
   <name>Rice KSB Impl</name>
   <dependencies>
     <dependency>

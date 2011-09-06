@@ -27,7 +27,7 @@ table td, table th {
 /* CONTAINERS - e.g.: kr-nav-menu, ks-error-cont *************************/
 
 
-.constraint {
+.kr-constraint {                                /* was .constraint */
 	font-size:0.84615385em;    /* 11px divided by 13px */
 }
 
@@ -160,15 +160,11 @@ li label.kr-error {				/* was li label.error */
 
 /* COMPONENTS - e.g.: kr-button-one, ks-button-secondary ****************/
 /* button styles */
-.ui-corner-all {
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
-	border-radius: 4px;
-}
-.button-primary {
+
+.kr-button-primary {
 	cursor:pointer;
 }
-.button-secondary1 {
+.kr-button-secondary1 {
 	cursor:pointer;
 	/*remove extra padding in IE*/
 	overflow: visible;
@@ -204,6 +200,12 @@ li label.kr-error {				/* was li label.error */
 /* JQUERY - e.g.: ui-calendar *******************************************/
 /* date-picker */
 
+.ui-corner-all {
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+}
+
 .ui-datepicker-group-first {
     float:left;
     margin-right:15px;
@@ -212,6 +214,56 @@ li label.kr-error {				/* was li label.error */
 .ui-datepicker-trigger {
 	cursor: pointer;
 }
+
+
+/* fg buttons */
+.fg-button {
+   outline: 0;
+   margin:0 4px 0 0;
+   padding: 0.1em 2.4em;
+   text-decoration:none !important;
+   cursor:pointer;
+   position: relative;
+   text-align: center;
+   zoom: 1;
+   }
+   .fg-button .ui-icon {
+   position: absolute;
+   top: 50%;
+   margin-top: -8px;
+   left: 50%;
+   margin-left: -8px;
+   }
+   a.fg-button {
+   float:left;
+   }
+   /* remove extra button width in IE */
+   button.fg-button {
+   width:auto;
+   overflow:visible;
+   }
+   .fg-button-icon-left {
+   padding-left: 2.5em;
+   padding-right: 1.4em;
+   }
+   .fg-button-icon-right {
+   padding-right: 2.1em;
+   }
+   .fg-button-icon-left .ui-icon {
+   right: auto;
+   left: 0.8em;
+   margin-left: 0;
+   }
+   .fg-button-icon-right .ui-icon {
+   left: auto;
+   right: .2em;
+   margin-left: 0;
+   }
+   .fg-button-icon-solo {
+   display:block;
+   width:8px;
+   text-indent: -9999px;
+   }	 /* solo icon buttons must have block properties for the text-indent to work */
 
 /* tabs */
 /* Tab menu */

@@ -143,7 +143,7 @@
     <property name="resultFields">
       <list>
         <bean parent="FieldDefinition" p:attributeName="nameCode"/>
-        <bean parent="FieldDefinition" p:attributeName="title"/>
+        <bean parent="FieldDefinition" p:attributeName="namePrefix"/>
         <bean parent="FieldDefinition" p:attributeName="firstName"/>
         <bean parent="FieldDefinition" p:attributeName="lastName"/>
         <bean parent="FieldDefinition" p:attributeName="nameSuffix"/>

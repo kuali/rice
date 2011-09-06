@@ -154,7 +154,7 @@ public class CollectionGroupBuilder implements Serializable {
 	 *            - binding path for the line fields (if DataBinding)
 	 * @param actions
 	 *            - List of actions to set in the lines action column
-	 * @param bindLineToForm
+	 * @param bindToForm
 	 *            - whether the bindToForm property on the items bindingInfo
 	 *            should be set to true (needed for add line)
 	 * @param currentLine
@@ -369,12 +369,7 @@ public class CollectionGroupBuilder implements Serializable {
 			actionField.addActionParameter(UifParameters.SELECTED_LINE_INDEX, Integer.toString(lineIndex));
 			actionField.setJumpToIdAfterSubmit(collectionGroup.getId() + "_div");
 
-            // If the originalId is set use that for the script
-            if (StringUtils.isEmpty(collectionGroup.getOriginalId())) {
-			    actionField.setClientSideJs("performCollectionAction('"+collectionGroup.getId()+"');");
-            }else{
-                actionField.setClientSideJs("performCollectionAction('"+collectionGroup.getOriginalId()+"');");
-            }
+            actionField.setClientSideJs("performCollectionAction('"+collectionGroup.getId()+"');");
 		}
 
 		ComponentUtils.updateContextsForLine(lineActions, collectionLine, lineIndex);
@@ -406,13 +401,7 @@ public class CollectionGroupBuilder implements Serializable {
 			actionField.setJumpToIdAfterSubmit(collectionGroup.getId() + "_div");
 			actionField.addActionParameter(UifParameters.ACTION_TYPE, UifParameters.ADD_LINE);
 
-            // If the originalId is set use that for the script
-            if (StringUtils.isEmpty(collectionGroup.getOriginalId())) {
-                actionField.setClientSideJs("addLineToCollection('"+collectionGroup.getId()+"', '"+ collectionGroup.getBaseId() +"');");
-            }else{
-                actionField.setClientSideJs("addLineToCollection('"+collectionGroup.getOriginalId()+"', '"+ collectionGroup.getBaseId() +"');");
-            }
-
+            actionField.setClientSideJs("addLineToCollection('"+collectionGroup.getId()+"', '"+ collectionGroup.getBaseId() +"');");
 		}
 
 		// get add line for context
@@ -440,7 +429,7 @@ public class CollectionGroupBuilder implements Serializable {
      * also applied
      * </p>
      * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup.
+     * @see org.kuali.rice.krad.uif.container.CollectionGroup#
      *      initializeNewCollectionLine(View, Object, CollectionGroup, boolean)
      */
     public void initializeNewCollectionLine(View view, Object model, CollectionGroup collectionGroup,

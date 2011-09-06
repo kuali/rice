@@ -150,6 +150,46 @@ public class ComponentUtils {
         return copiedComponentList;
     }
 
+    /**
+     * Removes any known suffix from the id
+     *
+     * @param id
+     * @return id String with suffixes removed
+     */
+    public static String getIdWithoutSuffixes(String id) {
+        for (String suffix : getIdSuffixList()) {
+            id = id.replace(suffix, "");
+        }
+        return id;
+    }
+
+    /**
+     * Returns a list of all known id suffixes
+     *
+     * <p>
+     * Builds a list of all the public String fields of the
+     * <code>UifConstants.IdSuffixes</code> class
+     * </p>
+     *
+     * @return id suffix list
+     */
+    public static ArrayList<String> getIdSuffixList()  {
+        ArrayList<String> suffixList = new ArrayList();
+        for (java.lang.reflect.Field field : UifConstants.IdSuffixes.class.getDeclaredFields()) {
+            field.setAccessible(true);
+            try {
+                Object valueObject = field.get(null);
+                if (valueObject instanceof String) {
+                    suffixList.add((String)valueObject);
+                }
+                // Ignore Access exception - we just need the public fields
+            }catch (IllegalAccessException e) {
+
+            }
+        }
+        return suffixList;
+    }
+
     @SuppressWarnings("unchecked")
     public static <T extends Component> List<T> getComponentsOfType(List<? extends Component> items,
             Class<T> componentType) {
@@ -353,7 +393,7 @@ public class ComponentUtils {
      * @param items
      * @param defaultOrderSequence
      * @return List<Ordered> sorted items
-     * @see org.kuali.rice.krad.uif.Component.getOrder()
+     * @see org.kuali.rice.krad.uif.component.Component#getOrder()
      * @see @see org.springframework.core.Ordered
      */
     public static List<? extends Ordered> sort(List<? extends Ordered> items, int defaultOrderSequence) {

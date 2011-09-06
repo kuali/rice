@@ -80,8 +80,6 @@ public class CollectionGroup extends Group implements DataBinding {
 
     private CollectionGroupBuilder collectionGroupBuilder;
 
-    private String originalId;
-
     public CollectionGroup() {
         renderAddLine = true;
         renderLineActions = true;
@@ -187,7 +185,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * necessary components based on the collection data
      * 
      * @see org.kuali.rice.krad.uif.container.ContainerBase#performApplyModel(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object)
+     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
     public void performApplyModel(View view, Object model, Component parent) {
@@ -627,7 +625,7 @@ public class CollectionGroup extends Group implements DataBinding {
     /**
      * Setter for the show inactive indicator
      *
-     * @param boolean show inactive
+     * @param showInactive boolean show inactive
      */
     public void setShowInactive(boolean showInactive) {
         this.showInactive = showInactive;
@@ -740,21 +738,4 @@ public class CollectionGroup extends Group implements DataBinding {
         return showHideInactiveButton;
     }
 
-    /**
-     * The originalId if this component is copied from another instance
-     *
-     * @return originalId
-     */
-    public String getOriginalId() {
-        return originalId;
-    }
-
-    /**
-     * Setter for the originalId
-     *
-     * @param originalId
-     */
-    public void setOriginalId(String originalId) {
-        this.originalId = originalId;
-    }
 }

@@ -153,8 +153,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.service.ViewHelperService#performInitialization(org.kuali.rice.krad.uif.view.View,
-     *      java.util.Map)
+     * @see org.kuali.rice.krad.uif.service.ViewHelperService#performInitialization(org.kuali.rice.krad.uif.view.View)
      */
     @Override
     public void performInitialization(View view) {
@@ -168,7 +167,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
      * @see {@link ViewHelperService#performComponentLifecycle(org.kuali.rice.krad.web.form.UifFormBase, org.kuali.rice.krad.uif.component.Component, String)}
      * @see {@link #performComponentInitialization(View, Component)}
      * @see {@link #performComponentApplyModel(View, Component, Object)}
-     * @see {@link #performComponentFinalize(View, Component, Object, Component)}
+     * @see {@link #performComponentFinalize(View, Component, Object, Component, Map)}
      */
     public void performComponentLifecycle(UifFormBase form, Component component, String origId) {
         Component origComponent = form.getView().getViewIndex().getComponentById(origId);
@@ -176,12 +175,8 @@ public class ViewHelperServiceImpl implements ViewHelperService {
         Component parent = (Component) origComponent.getContext().get(UifConstants.ContextVariableNames.PARENT);
         component.pushAllToContext(origComponent.getContext());
 
-        // Set the original id for CollectionGroups so that the onClick script for the action
-        // fields can be generated with the originalId which will be set as the
-        // component id later.
-        if (component instanceof CollectionGroup) {
-            ((CollectionGroup) component).setOriginalId(origId);
-        }
+        origId = ComponentUtils.getIdWithoutSuffixes(origId);
+        component.setId(origId);
 
         performComponentInitialization(form.getView(), component);
         performComponentApplyModel(form.getView(), component, form);
@@ -198,7 +193,6 @@ public class ViewHelperServiceImpl implements ViewHelperService {
         }
         component.setOnLoadScript(clientStateScript);
 
-        component.setId(origId);
     }
 
     /**

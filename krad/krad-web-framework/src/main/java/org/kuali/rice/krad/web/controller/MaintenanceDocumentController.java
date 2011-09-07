@@ -53,8 +53,8 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
     protected static final Logger LOG = Logger.getLogger(MaintenanceDocumentController.class);
 
     @Override
-    public MaintenanceForm createInitialForm(HttpServletRequest request) {
-        return new MaintenanceForm();
+    protected Class<MaintenanceForm> formType() {
+        return MaintenanceForm.class;
     }
 
     /**

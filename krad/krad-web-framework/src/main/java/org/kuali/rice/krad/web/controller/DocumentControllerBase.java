@@ -47,8 +47,6 @@ import org.kuali.rice.krad.service.NoteService;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
-import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.view.ViewIndex;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
@@ -68,7 +66,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -104,7 +101,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     private NoteService noteService;
 
 	@Override
-	public abstract DocumentFormBase createInitialForm(HttpServletRequest request);
+	protected abstract Class<? extends DocumentFormBase> formType();
 
 	/**
 	 * Used to funnel all document handling through, we could do useful things

@@ -39,8 +39,8 @@ import javax.servlet.http.HttpServletResponse;
 public class IncidentReportController extends UifControllerBase {
 
     @Override
-    protected UifFormBase createInitialForm(HttpServletRequest request) {
-        return new IncidentReportForm();
+    protected Class<IncidentReportForm> formType() {
+        return IncidentReportForm.class;
     }
 
     /**

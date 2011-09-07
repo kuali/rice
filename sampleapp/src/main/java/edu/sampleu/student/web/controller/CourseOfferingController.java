@@ -42,8 +42,8 @@ import java.util.GregorianCalendar;
 public class CourseOfferingController extends UifControllerBase {
 
     @Override
-    protected UifFormBase createInitialForm(HttpServletRequest request) {
-        return new CourseOfferingForm();
+    protected Class<CourseOfferingForm> formType() {
+        return CourseOfferingForm.class;
     }
 
     /**

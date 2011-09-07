@@ -12,6 +12,7 @@ package org.kuali.rice.krad.web.controller;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.web.format.BooleanFormatter;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -79,8 +80,6 @@ public abstract class UifControllerBase {
 
     protected static final String REDIRECT_PREFIX = "redirect:";
 
-    private SessionDocumentService sessionDocumentService;
-
     /**
      * Create/obtain the model(form) object before it is passed
      * to the Binder/BeanWrapper. This method is not intended to be overridden
@@ -105,7 +104,7 @@ public abstract class UifControllerBase {
                         request.getRemoteAddr());
             }
         } else {
-            form = createInitialForm(request);
+            form = createInitialForm();
         }
 
         return form;
@@ -118,7 +117,22 @@ public abstract class UifControllerBase {
      * overridden when extending a controller and using a different form type
      * than the superclass.
      */
-    protected abstract UifFormBase createInitialForm(HttpServletRequest request);
+    protected abstract Class<? extends UifFormBase> formType();
+
+    /**
+     * Called to create a new model(form) object when
+     * necessary. This usually occurs on the initial request in a conversation
+     * (when the model is not present in the session).
+     */
+    protected UifFormBase createInitialForm() {
+        try {
+            return formType().newInstance();
+        } catch (InstantiationException e) {
+            throw new RiceRuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RiceRuntimeException(e);
+        }
+    }
 
     private Set<String> methodToCallsToNotCheckAuthorization = new HashSet<String>();
 

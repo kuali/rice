@@ -15,9 +15,7 @@
  */
 package edu.sampleu.travel.krad.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import edu.sampleu.travel.krad.form.UILayoutTestForm;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
@@ -29,7 +27,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import edu.sampleu.travel.krad.form.UILayoutTestForm;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Controller for the Test UI Page
@@ -40,9 +39,9 @@ import edu.sampleu.travel.krad.form.UILayoutTestForm;
 @RequestMapping(value = "/uicomponents")
 public class UIComponentsTestController extends UifControllerBase {
 
-	@Override
-    protected UILayoutTestForm createInitialForm(HttpServletRequest request) {
-        return new UILayoutTestForm();
+    @Override
+    protected Class<UILayoutTestForm> formType() {
+        return UILayoutTestForm.class;
     }
 
 	@Override

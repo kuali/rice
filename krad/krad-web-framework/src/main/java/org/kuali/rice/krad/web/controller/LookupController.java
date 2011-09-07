@@ -30,7 +30,6 @@ import org.kuali.rice.krad.uif.view.LookupView;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
-import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.krad.web.form.LookupForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
@@ -56,12 +55,9 @@ import java.util.Set;
 public class LookupController extends UifControllerBase {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupController.class);
 
-    /**
-     * @see UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
-     */
     @Override
-    protected LookupForm createInitialForm(HttpServletRequest request) {
-        return new LookupForm();
+    protected Class<LookupForm> formType() {
+        return LookupForm.class;
     }
 
     protected void suppressActionsIfNeeded(LookupForm lookupForm) {

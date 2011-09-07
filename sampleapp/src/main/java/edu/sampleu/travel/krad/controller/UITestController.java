@@ -43,9 +43,9 @@ import java.util.List;
 @RequestMapping(value = "/uitest")
 public class UITestController extends UifControllerBase {
 
-	@Override
-    protected UITestForm createInitialForm(HttpServletRequest request) {
-        return new UITestForm();
+    @Override
+    protected Class<UITestForm> formType() {
+        return UITestForm.class;
     }
 
 	@Override

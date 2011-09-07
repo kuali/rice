@@ -9,7 +9,7 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
   <bean id="CacheAdmin-view1" parent="FormView">
-    <property name="title" value="Cache Admin"/>
+    <property name="title" value="Cache Management"/>
     <property name="items">
       <list>
         <bean parent="Page">
@@ -25,24 +25,51 @@
   </bean>
 
   <bean id="mainGroup" parent="Group">
-    <property name="title" value="Caches"/>
+    <property name="title" value="Cache Management"/>
     <property name="items">
       <list>
-        <bean parent="FieldGroup">
-          <property name="items">
-            <list>
-              <bean parent="ActionField" p:methodToCall="button1" p:actionLabel="Button 1"/>
-              <bean parent="ActionField" p:methodToCall="button2" p:actionLabel="Button 2"/>
-              <bean parent="ActionField" p:methodToCall="button3" p:actionLabel="Button 3"/>
-            </list>
-          </property>
-        </bean>
-        <bean parent="TreeGroup">
-          <property name="header.render" value="false"/>
+        <bean parent="TreeGroup" p:accordion.render="false" p:header.render="false"
+              p:style="float:left; margin-left: 2em;">
+          <property name="title" value="Cache Elements"/>
           <property name="propertyName" value="cacheTree"/>
+
+          <property name="treeWidget">
+            <bean parent="TreeWidget">
+              <property name="componentOptions">
+                <map>
+                  <entry key="themes">
+                    <map>
+                      <entry key="theme" value="default" />
+                      <entry key="dots" value="#{true}" />
+                      <entry key="icons" value="#{false}" />
+                    </map>
+                  </entry>
+                  <entry key="ui">
+                    <map>
+                      <entry key="select_limit" value="#{1}"/>
+                    </map>
+                  </entry>
+                  <entry key="dnd">
+                    <map>
+                      <entry key="drag_target" value="#{false}"/>
+                      <entry key="drop_target" value="#{false}"/>
+                    </map>
+                  </entry>
+                  <entry key="plugins">
+                    <list>
+                      <value>themes</value>
+                      <value>html_data</value>
+                      <value>ui</value>
+                      <value>crrm</value>
+                      <value>dnd</value>
+                    </list>
+                  </entry>
+                </map>
+              </property>
+            </bean>
+          </property>
         </bean>
       </list>
     </property>
-    <property name="summary" value="This shows the various caches allowing administrative actions."/>
   </bean>
 </beans>

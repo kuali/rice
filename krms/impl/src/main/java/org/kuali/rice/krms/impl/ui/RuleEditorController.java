@@ -57,8 +57,8 @@ public class RuleEditorController extends MaintenanceDocumentController {
     private SequenceAccessorService sequenceAccessorService;
 
     @Override
-    public MaintenanceForm createInitialForm(HttpServletRequest request) {
-        return new MaintenanceForm();
+    protected Class<MaintenanceForm> formType() {
+        return MaintenanceForm.class;
     }
     
     /**

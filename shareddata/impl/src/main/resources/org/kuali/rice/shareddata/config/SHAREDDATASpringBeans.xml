@@ -67,6 +67,10 @@
     <property name="serviceName" value="{http://rice.kuali.org/shareddata}sharedDataCacheServiceSoap" />
   </bean>
 
+  <bean id="cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl">
+    <property name="cacheManager" ref="sharedDataDistributedCacheManager" />
+  </bean>
+
   <!-- spring service that should be exposed on the ksb to receive messages from the distributed cache manager -->
   <bean id="sharedDataCacheService" class="org.kuali.rice.core.impl.cache.CacheServiceImpl" p:cacheManager-ref="sharedDataLocalCacheManager" />
   <!-- caching end -->

@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.krms.impl.ui;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
@@ -30,6 +27,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * Controller for the Test UI Page
  * 
@@ -39,9 +39,9 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = "/krmsEditor")
 public class EditorController extends UifControllerBase {
 
-	@Override
-    protected EditorForm createInitialForm(HttpServletRequest request) {
-        return new EditorForm();
+    @Override
+    protected Class<EditorForm> formType() {
+        return EditorForm.class;
     }
 
 	@RequestMapping(params = "methodToCall=start")

@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krad.uif.view;
 
-import org.kuali.rice.krad.uif.view.View;
-
 /**
  * Provides configuration for <code>View</code> instances that render an HTML
  * form

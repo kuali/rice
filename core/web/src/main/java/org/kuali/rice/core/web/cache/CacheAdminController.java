@@ -14,12 +14,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/core/admin/cache")
@@ -56,8 +59,11 @@ public final class CacheAdminController extends UifControllerBase {
             final String name = getName(cm);
             final Node<String, String> cmNode = new Node<String, String>(name, name);
 
-            for (final String c : cm.getCacheNames()) {
-                final Node<String, String> cNode = new Node<String, String>(c, c);
+            for (final String cn : cm.getCacheNames()) {
+                final Node<String, String> cNode = new Node<String, String>(cn, cn);
+                //no way to get a keySet from the cache w/o calling the nativeCache
+                //method which is a bad idea b/c it will tie the rice codebase to
+                //a caching implementation
                 cmNode.addChild(cNode);
             }
 
@@ -67,6 +73,17 @@ public final class CacheAdminController extends UifControllerBase {
         cacheTree.setRootElement(root);
         ((CacheAdminForm) form).setCacheTree(cacheTree);
 
+        return super.start(form, result, request, response);
+    }
+
+	@RequestMapping(params = "methodToCall=flush", method = RequestMethod.POST)
+	public ModelAndView flush(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+			HttpServletRequest request, HttpServletResponse response) {
+
+        System.err.println("flushing cache!!!!!");
+        for (Object entry : request.getParameterMap().entrySet()) {
+            System.out.println(((Map.Entry) entry).getKey() + " = " + Arrays.toString((String[]) ((Map.Entry) entry).getValue()));
+        }
         return super.start(form, result, request, response);
     }
 

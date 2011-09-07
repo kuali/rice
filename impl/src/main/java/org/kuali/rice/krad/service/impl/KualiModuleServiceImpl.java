@@ -182,6 +182,9 @@ public class KualiModuleServiceImpl implements KualiModuleService, InitializingB
         if (documentClass.getName().startsWith("org.kuali.rice.kew")) {
             return "KR-WKFLW";
         }
+        if (documentClass.getName().startsWith("org.kuali.rice.edl")) {
+        	return "KR-WKFLW";
+    	}
         if (documentClass.getName().startsWith("org.kuali.rice.kim")) {
             return "KR-IDM";
         }

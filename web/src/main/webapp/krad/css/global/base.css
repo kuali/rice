@@ -302,3 +302,45 @@ li label.kr-error {				/* was li label.error */
 .ui-tabs .ui-tabs-nav li {
 	border-bottom: 1px solid #000 !important; /* over-writing the style that removes it in tabs.css */
 }
+
+/* breadcrumbs */
+
+.kr-breadcrumbs { 					/* was .breadcrumbs */
+    border-bottom: 1px dotted #C9C9C9;
+    border-top: 1px dotted #C9C9C9;
+    display: block;
+    width: 100%;
+    color: #3F7826;
+    letter-spacing: 0.02em;
+    padding: 3px 0 3px 15px;
+ }
+ 
+ .kr-breadcrumbs span {  /* was .breadcrumbs span*/
+	color: #3F7826;
+ }
+ 
+ .kr-breadcrumbs a {		/*  was .breadcrumbs a*/
+	color: #3F7826;
+	text-decoration: none;
+ }
+ 
+ .kr-breadcrumbs a:visited{		/* was .breadcrumbs a:visited*/
+	color: #3F7826;
+	text-decoration: none;
+ }
+ 
+ .kr-breadcrumbs a:focus, .breadcrumbs a:hover{  /* was .breadcrumbs a:focus, .breadcrumbs a:hover*/
+ 	text-decoration: underline;
+ }
+ 
+ .kr-breadcrumbs .current{  /*  was .breadcrumbs .current*/
+	color: #000000;
+	font-weight: bold;
+ }
+
+ .kr-breadcrumbs ol, li{   /* was .breadcrumbs ol, li*/
+    display: inline;
+    margin: 0;
+    list-style: none;
+    width: auto;
+}

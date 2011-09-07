@@ -52,3 +52,51 @@
 	filter:Alpha(Opacity=35);
 	background-image:;
 }
+
+
+/* breadcrumbs */
+
+.kr-breadcrumbs { 					/* was .breadcrumbs */
+	border-bottom: 1px solid #000000;
+	border-top: 1px solid #000000;
+	display: block;
+	width: 100%;
+	color: #FFFFFF;
+	letter-spacing: 0.02em;
+	padding: 3px 0 5px 15px;
+	background: #333;
+ }
+ 
+ .kr-breadcrumbs span {  /* was .breadcrumbs span*/
+	color: #FFFFFF;
+	font-size:.8em;
+	
+ }
+ 
+ .kr-breadcrumbs a {		/*  was .breadcrumbs a*/
+	color: #FFFFFF;
+	text-decoration: none;
+	font-size:.8em; 
+ }
+ 
+ .kr-breadcrumbs a:visited{		/* was .breadcrumbs a:visited*/
+	color: #FFFFFF;
+	text-decoration: none;
+ }
+ 
+ .kr-breadcrumbs a:focus, .kr-breadcrumbs a:hover{  /* was .breadcrumbs a:focus, .breadcrumbs a:hover*/
+ 	text-decoration: underline;
+ }
+ 
+ .kr-breadcrumbs .current{  /*  was .breadcrumbs .current*/
+	color: #FFFFFF;
+	font-weight: bold;
+	font-size:0.8em;
+ }
+
+ .kr-breadcrumbs ol, li{   /* was .breadcrumbs ol, li*/
+    display: inline;
+    margin: 0;
+    list-style: none;
+    width: auto;
+}

@@ -514,16 +514,16 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
      * the option name, with the Map value as the option value. See
      * documentation on the particular widget render for available options.
      *
-     * @return Map<String, String> options
+     * @return Map<String, Object> options
      */
-    public Map<String, String> getComponentOptions();
+    public Map<String, Object> getComponentOptions();
 
     /**
      * Setter for the widget's options
      *
      * @param widgetOptions
      */
-    public void setComponentOptions(Map<String, String> componentOptions);
+    public void setComponentOptions(Map<String, Object> componentOptions);
 
     /**
      * Can be used to order a component within a List of other components, lower

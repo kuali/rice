@@ -11,24 +11,24 @@
 package org.kuali.rice.krad.uif.component;
 
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
-import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.control.ControlBase;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
+import org.kuali.rice.krad.uif.view.View;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Base implementation of <code>Component</code> which other component
@@ -112,7 +112,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
 
     private List<ComponentModifier> componentModifiers;
 
-    private Map<String, String> componentOptions;
+    private Map<String, Object> componentOptions;
 
     @ReferenceCopy(newCollectionInstance = true)
     private transient Map<String, Object> context;
@@ -134,7 +134,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         finalizeMethodAdditionalArguments = new ArrayList<Object>();
         styleClasses = new ArrayList<String>();
         componentModifiers = new ArrayList<ComponentModifier>();
-        componentOptions = new HashMap<String, String>();
+        componentOptions = new HashMap<String, Object>();
         context = new HashMap<String, Object>();
         propertyReplacers = new ArrayList<PropertyReplacer>();
     }
@@ -186,8 +186,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * <li></li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.Component#performApplyModel(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object)
      */
     public void performApplyModel(View view, Object model, Component parent) {
 
@@ -285,10 +283,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
 
         return components;
     }        
-    
-    /**
-     * @see org.kuali.rice.krad.uif.core.Component#getPropertyReplacerComponents()
-     */
+
     @Override
     public List<Component> getPropertyReplacerComponents() {
         List<Component> components = new ArrayList<Component>();
@@ -608,7 +603,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     /**
      * Setter for the method invoker instance
      *
-     * @param renderingMethodInvoker
+     * @param finalizeMethodInvoker
      */
     public void setFinalizeMethodInvoker(MethodInvokerConfig finalizeMethodInvoker) {
         this.finalizeMethodInvoker = finalizeMethodInvoker;
@@ -1147,20 +1142,14 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         this.onMouseMoveScript = onMouseMoveScript;
     }
 
-    /**
-     * @see org.kuali.rice.krad.uif.widget.Widget#getWidgetOptions()
-     */
-    public Map<String, String> getComponentOptions() {
+    public Map<String, Object> getComponentOptions() {
         if (componentOptions == null) {
-            componentOptions = new HashMap<String, String>();
+            componentOptions = new HashMap<String, Object>();
         }
         return this.componentOptions;
     }
 
-    /**
-     * @see org.kuali.rice.krad.uif.widget.Widget#setWidgetOptions(java.util.Map)
-     */
-    public void setComponentOptions(Map<String, String> componentOptions) {
+    public void setComponentOptions(Map<String, Object> componentOptions) {
         this.componentOptions = componentOptions;
     }
 
@@ -1173,57 +1162,14 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public String getComponentOptionsJSString() {
         if (componentOptions == null) {
-            componentOptions = new HashMap<String, String>();
-        }
-        StringBuffer sb = new StringBuffer();
-
-        sb.append("{");
-
-        for (String optionKey : componentOptions.keySet()) {
-            String optionValue = componentOptions.get(optionKey);
-
-            if (sb.length() > 1) {
-                sb.append(",");
-            }
-
-            sb.append(optionKey);
-            sb.append(":");
-
-            boolean isNumber = false;
-            if (StringUtils.isNotBlank(optionValue) && (StringUtils.isNumeric(optionValue.trim().substring(0, 1)) ||
-                    optionValue.trim().substring(0, 1).equals("-"))) {
-                try {
-                    Double.parseDouble(optionValue.trim());
-                    isNumber = true;
-                } catch (NumberFormatException e) {
-                    isNumber = false;
-                }
-            }
-            // If an option value starts with { or [, it would be a nested value
-            // and it should not use quotes around it
-            if (StringUtils.startsWith(optionValue, "{") || StringUtils.startsWith(optionValue, "[")) {
-                sb.append(optionValue);
-            }
-            // need to be the base boolean value "false" is true in js - a non
-            // empty string
-            else if (optionValue.equalsIgnoreCase("false") || optionValue.equalsIgnoreCase("true")) {
-                sb.append(optionValue);
-            }
-            // if it is a call back function, do not add the quotes
-            else if (StringUtils.startsWith(optionValue, "function") && StringUtils.endsWith(optionValue, "}")) {
-                sb.append(optionValue);
-            }
-            // for numerics
-            else if (isNumber) {
-                sb.append(optionValue);
-            } else {
-                sb.append("\"" + optionValue + "\"");
-            }
+            componentOptions = Collections.emptyMap();
         }
 
-        sb.append("}");
-
-        return sb.toString();
+        try {
+            return new ObjectMapper().writeValueAsString(componentOptions);
+        } catch (IOException e) {
+            return "{}";
+        }
     }
 
     public String getEventCode() {
@@ -1416,7 +1362,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @param setter for the skipInTabOrder flag
+     * @param skipInTabOrder flag
      */
     public void setSkipInTabOrder(boolean skipInTabOrder) {
         this.skipInTabOrder = skipInTabOrder;

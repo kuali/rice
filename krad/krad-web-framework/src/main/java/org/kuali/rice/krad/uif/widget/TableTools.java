@@ -81,12 +81,16 @@ public class TableTools extends WidgetBase {
             }
 
             if (!isShowSearchAndExportOptions()) {
-                String sDomOption = getComponentOptions().get(UifConstants.TableToolsKeys.SDOM);
-                if (StringUtils.isNotBlank(sDomOption)) {
-                    sDomOption = StringUtils.remove(sDomOption, "T"); //Removes Export option
-                    sDomOption = StringUtils.remove(sDomOption, "f"); //Removes search option
-                    getComponentOptions().put(UifConstants.TableToolsKeys.SDOM, sDomOption);
+                Object domOption = getComponentOptions().get(UifConstants.TableToolsKeys.SDOM);
+                if (domOption instanceof String) {
+                    String sDomOption = (String) domOption;
+                    if (StringUtils.isNotBlank(sDomOption)) {
+                        sDomOption = StringUtils.remove(sDomOption, "T"); //Removes Export option
+                        sDomOption = StringUtils.remove(sDomOption, "f"); //Removes search option
+                        getComponentOptions().put(UifConstants.TableToolsKeys.SDOM, sDomOption);
+                    }
                 }
+
             }
 
             if (component instanceof CollectionGroup) {

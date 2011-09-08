@@ -77,8 +77,8 @@ public interface Person extends ExternalizableBusinessObject {
 	 * Returns the city name from the default address for the Person.  Will lazy-load the information from the
 	 * IdentityManagementService if requested.
 	 */
-	String getAddressCityName();
-	String getAddressCityNameUnmasked();
+	String getAddressCity();
+	String getAddressCityUnmasked();
 	/**
 	 * Returns the state code from the default address for the Person.  Will lazy-load the information from the
 	 * IdentityManagementService if requested.

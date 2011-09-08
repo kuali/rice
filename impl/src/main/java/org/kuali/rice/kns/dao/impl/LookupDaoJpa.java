@@ -100,6 +100,10 @@ public class LookupDaoJpa implements LookupDao {
 			boolean treatWildcardsAndOperatorsAsLiteral = KNSServiceLocator.
 					getBusinessObjectDictionaryService().isLookupFieldTreatWildcardsAndOperatorsAsLiteral(example.getClass(), propertyName); 
 			// build criteria
+    		if (!caseInsensitive) { 
+    			// Verify that the searchValue is uppercased if caseInsensitive is false 
+    			searchValue = searchValue.toUpperCase(); 
+    		}
 			addCriteria(propertyName, searchValue, propertyType, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria);
 		}
 
@@ -141,12 +145,22 @@ public class LookupDaoJpa implements LookupDao {
 			if (formProps.get(propertyName) instanceof Collection) {
 				Iterator iter = ((Collection) formProps.get(propertyName)).iterator();
 				while (iter.hasNext()) {
-					if (!createCriteria(example, (String) iter.next(), propertyName, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria, formProps)) {
+                    String searchValue = (String) iter.next();
+            		if (!caseInsensitive) { 
+            			// Verify that the searchValue is uppercased if caseInsensitive is false 
+            			searchValue = searchValue.toUpperCase(); 
+            		}
+					if (!createCriteria(example, searchValue, propertyName, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria, formProps)) {
 						throw new RuntimeException("Invalid value in Collection");
 					}
 				}
 			} else {
-				if (!createCriteria(example, (String) formProps.get(propertyName), propertyName, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria, formProps)) {
+                String searchValue = (String) formProps.get(propertyName);
+        		if (!caseInsensitive) { 
+        			// Verify that the searchValue is uppercased if caseInsensitive is false 
+        			searchValue = searchValue.toUpperCase(); 
+        		}
+				if (!createCriteria(example, searchValue, propertyName, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria, formProps)) {
 					continue;
 				}
 			}

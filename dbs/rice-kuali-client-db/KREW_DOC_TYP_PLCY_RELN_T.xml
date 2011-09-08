@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<!DOCTYPE dataset SYSTEM "data.dtd">
+<dataset>
+    <KREW_DOC_TYP_PLCY_RELN_T DOC_PLCY_NM="LOOK_FUTURE"
+        DOC_TYP_ID="320822"
+        OBJ_ID="50C8E3A6-7ABD-2332-2E6F-FCB4AD02A594" PLCY_NM="1" VER_NBR="4"/>
+</dataset>

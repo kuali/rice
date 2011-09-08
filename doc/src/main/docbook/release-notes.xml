@@ -15,18 +15,14 @@
     <sect1 xml:id="overview" xreflabel="Overview">
         <title>Overview</title>
         <para>This Release Notes documentation includes information on the list of changes between
-            Rice ${previous.version} (released ${previous.reldate}) and Rice ${pom.version}.</para>
+            Rice ${previous.version} (released ${previous.reldate}) and Rice ${pom.version}. There
+            are no database or impacting changes between Rice ${previous.version} and ${pom.version}
+            and ${pom.version} should be a drop-in replacement.</para>
         <para>If you encounter any difficulty, please don’t hesitate to contact the Rice team on our
             public collaboration mailing list at <email>rice.collab@kuali.org</email></para>
         <itemizedlist>
             <title>Highlights of this release include:</title>
-            <listitem>
-                <para>Support for Tomcat 7</para>
-            </listitem>
-            <listitem>
-                <para>Performance fixes </para>
-            </listitem>
-            <listitem><para>Numerous bug fixes</para></listitem>
+            <listitem><para>Bug fixes</para></listitem>
         </itemizedlist>
         <para>Kuali Rice ${pom.version} can be downloaded from the Rice website at <link xlink:href="http://kuali.org/rice/download">http://kuali.org/rice/download</link>.</para>
         <para>There are three differient distributions of Rice available: source, binary and server.
@@ -37,79 +33,11 @@
                 >http://kuali.org/rice/docs/${pom.version}</link>.</para>
             <sect2 xml:id="bug-fix" xreflabel="Bug Fix">
                 <title>Bug Fix</title>            
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4680">KULRICE-4680</link>: KIM Type is not copied onto the person document version of the group object</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5022">KULRICE-5022</link>: RoleServiceImpl.getRoleQualifiersForPrincipalIncludingNested(..) returns wrong result</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5026">KULRICE-5026</link>: Hiding Base Salary Amount on Person Inquiry causes next two fields to shift left and appear under the wrong headings.</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5031">KULRICE-5031</link>: Occasional NullPointerExceptions in StyleableEmailContentServiceImpl</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5040">KULRICE-5040</link>: DataExporter class in KNS does not flush outputstream after export which can result in truncated xml files</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5044">KULRICE-5044</link>: createproject.pom.template points to https://test.kuali.org/maven</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5047">KULRICE-5047</link>: createproject.groovy is broken on 1.0.3.1</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5077">KULRICE-5077</link>: Lookup - Conditional enabling of 'return value' causes issues with the Lookup result table alignment</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5078">KULRICE-5078</link>: MultiLookup Export functionality failing for pages spilling beyond a certain size</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5089">KULRICE-5089</link>: Nested KSB Calls failing due to Null LocaleResolver reference</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5097">KULRICE-5097</link>: KIM Caches are not being flushed as required.</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5106">KULRICE-5106</link>: Maintenance Document does not display attached file</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5118">KULRICE-5118</link>: Old attachments in Maintenance Documents not showing except on a document reload</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5120">KULRICE-5120</link>: Deletes from a collection in a Maintenance Documents do not persist to BO table</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5140">KULRICE-5140</link>: "java.sql.SQLException: Closed Connection" errors happening after rice applications run for a period of time</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5166">KULRICE-5166</link>: methods in BusinessObjectAuthorizationService assume an inquiry collection will contain objects of type BusinessObjectEntry</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5170">KULRICE-5170</link>: BeanPropertyComparator throws exception when a null value is found in sortable non-string data type column.</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5199">KULRICE-5199</link>: Fix overrice="false" in common-config-defaults.xml</para>
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5249">KULRICE-5249</link>: Case Insensitive flag ignored in KNS</para>
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5314">KULRICE-5314</link>: KEN Notification's FYI / ACK buttons in detail view throw RuntimeException on click</para>
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5438">KULRICE-5438</link>: install-ant-jar and other maven related tasks in rice build.xml do not work with maven 3.0.x</para>
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5520">KULRICE-5520</link>: page's header menu bar has title/hover "Create a new record"</para>
            </sect2>
-            <sect2 xml:id="improvement" xreflabel="Improvement">
-                <title>Improvement</title> 
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5010"
-                    >KULRICE-5010</link>: Improve performance for
-                RoleManagementServiceImpl.removePrincipalFromRole</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5011">KULRICE-5011</link>: Implement an improved way to delete RELOAD_ACTION_LIST prefs for users</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5034">KULRICE-5034</link>: CXF SOAP service logging does not honor log4j.properties</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5072">KULRICE-5072</link>: 1.0.3.2 fixes for Tomcat 7 support</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5073">KULRICE-5073</link>: use HTML &lt;label&gt; tag in KR htmlControlAttribute tag</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5101">KULRICE-5101</link>: Improve messaging for simultaneous workflow actions</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5114">KULRICE-5114</link>: Allow config.xml files to include HTTPSessionListeners</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5173">KULRICE-5173</link>: Making immutable properties on startup results in an excessive amount of copying</para>
-            </sect2>
-            <sect2 xml:id="task" xreflabel="Task">
-                <title>Task</title>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-3972">KULRICE-3972</link>: need to be able to sort by column header like on lookups when editing large roles and groups</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4904">KULRICE-4904</link>: KC needs FAX to be supported as a Phone type</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4905">KULRICE-4905</link>: Display appropriate icon based on attachment type in Maintenance Documents</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5028">KULRICE-5028</link>: Apply improvements from KS' perf branch of Rice to 1.0.3.2</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5071">KULRICE-5071</link>: Move the 'show blank qualifier' kim toggle from a Config param to a System param</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5088">KULRICE-5088</link>: Need to be able to retrieve States based on Alternate Country Code</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5144">KULRICE-5144</link>: Create test for multiple attachments</para>
-            </sect2>
     </sect1>
-    <sect1>
-        <title>Upgrade Guide: Rice 1.0.3.1 to 1.0.3.2</title>
-        <para><emphasis role="bold">Please Note</emphasis>: We recommend backing up any data in your
-            database prior to performing an upgrade!</para>
-        <sect2> 
-            <title>Upgrading the Server Database</title>
-            <sect3>
-                <title>Oracle Rice Database</title>
-                <para>Please execute the <emphasis role="bold">update_final_oracle.sql</emphasis>
-                    upgrade script from the <emphasis role="bold">scripts/upgrades/1.0.3.1 to
-                        1.0.3.2/final</emphasis> directory.</para>
-            </sect3>
-            <sect3>
-                <title>MySQL Rice Database</title>
-                <para>Please execute the <emphasis role="bold">update_final_mysql.sql</emphasis>
-                    upgrade script from the <emphasis role="bold">scripts/upgrades/1.0.3.1 to
-                        1.0.3.2/final</emphasis> directory.</para>
-            </sect3>
-        </sect2>
-        <sect2> 
-            <title>Upgrading the Client Database</title>
-            <para>There are no client database upgrades required.</para>
-        </sect2>
-        <sect2>
-            <title>Dependencies</title>
-            <para>There are no dependency changes for this release.</para>
-        </sect2>
-    </sect1>
-    <sect1>
-        <title>Impacting Changes</title>
-        <para>There are no impacting changes for this release.</para>
-    </sect1>
+    <!-- Note: Include sections for Database Changes or Impacting Changed if we have them. See previous revisions of this file for template on these sections -->
 </article>

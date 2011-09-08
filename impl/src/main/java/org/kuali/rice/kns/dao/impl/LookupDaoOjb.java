@@ -16,7 +16,6 @@
 package org.kuali.rice.kns.dao.impl;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -87,6 +86,9 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
             String propertyName = (String) propsIter.next();
             Boolean caseInsensitive = Boolean.TRUE;
         	if ( KNSServiceLocator.getDataDictionaryService().isAttributeDefined( example.getClass(), propertyName )) {
+        		// If forceUppercase is true, both the database value and the user entry should be converted to Uppercase -- so change the caseInsensitive to false since we don't need to 
+        		// worry about the values not matching.  However, if forceUppercase is false, make sure to do a caseInsensitive search because the database value and user entry 
+        		// could be mixed case.  Thus, caseInsensitive will be the opposite of forceUppercase. 
         		caseInsensitive = !KNSServiceLocator.getDataDictionaryService().getAttributeForceUppercase( example.getClass(), propertyName );
         	}
         	if ( caseInsensitive == null ) { caseInsensitive = Boolean.TRUE; }
@@ -96,13 +98,23 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
             if (formProps.get(propertyName) instanceof Collection) {
                 Iterator iter = ((Collection) formProps.get(propertyName)).iterator();
                 while (iter.hasNext()) {
-                    if (!createCriteria(example, (String) iter.next(), propertyName, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria, formProps )) {
+                    String searchValue = (String) iter.next();
+            		if (!caseInsensitive) { 
+            			// Verify that the searchValue is uppercased if caseInsensitive is false 
+            			searchValue = searchValue.toUpperCase(); 
+            		}
+                    if (!createCriteria(example, searchValue, propertyName, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria, formProps )) {
                         throw new RuntimeException("Invalid value in Collection");
                     }
                 }
             }
             else {
-                if (!createCriteria(example, (String) formProps.get(propertyName), propertyName, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria, formProps)) {
+                String searchValue = (String) formProps.get(propertyName);
+        		if (!caseInsensitive) { 
+        			// Verify that the searchValue is uppercased if caseInsensitive is false 
+        			searchValue = searchValue.toUpperCase(); 
+        		}
+                if (!createCriteria(example, searchValue, propertyName, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria, formProps)) {
                     continue;
                 }
             }
@@ -244,6 +256,11 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         	boolean treatWildcardsAndOperatorsAsLiteral = KNSServiceLocator
 					.getBusinessObjectDictionaryService().isLookupFieldTreatWildcardsAndOperatorsAsLiteral(example.getClass(), propertyName);
         	
+    		if (!caseInsensitive) { 
+    			// Verify that the searchValue is uppercased if caseInsensitive is false 
+    			searchValue = searchValue.toUpperCase(); 
+    		}
+    		
             // build criteria
             addCriteria(propertyName, searchValue, propertyType, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria);
         }

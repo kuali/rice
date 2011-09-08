@@ -20,12 +20,12 @@ input:focus, textarea:focus {
 
 
 /* CONTAINERS - e.g.: kr-nav-menu, ks-error-cont *************************/
-.kr-collection-header h2 {			/* was .collection-header h2  */
+.kr-collection-header h2 {			/* was .collection-header h2  */ /* renamed in xml and/or jsp */
 	font-family: georgia, serif;
 	font-size: 1.0em;
 }
 
-.kr-watermark {			/* was .watermark */
+.kr-watermark {			/* was .watermark */ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
     font-family: Arial, Helvetica, sans-serif;
     font-size:0.923077em;
     color:#999;}
@@ -36,7 +36,7 @@ input:focus, textarea:focus {
 	padding: 0 12px 4px;
 }
 
-.kr-breadcrumbs { 					/* was .breadcrumbs */
+.kr-breadcrumbs { 					/* was .breadcrumbs */ /* renamed in xml and/or jsp */
 	border-bottom: 1px dotted #C9C9C9;
 	border-top: 1px dotted #C9C9C9;
 	clear: both;
@@ -45,75 +45,75 @@ input:focus, textarea:focus {
 	padding: 3px 0 3px 15px;
 }
 
-.kr-breadcrumbs span {				/* was .breadcrumbs span */
+.kr-breadcrumbs span {				/* was .breadcrumbs span */ /* renamed in xml and/or jsp */
 	color: #3F7826;
 }
 
-.kr-breadcrumbs a {					/* was .breadcrumbs a */
-	color: #3F7826;
-	text-decoration: none;
-}
-
-.kr-breadcrumbs a:visited {			/* was .breadcrumbs a:visited */
+.kr-breadcrumbs a {					/* was .breadcrumbs a */ /* renamed in xml and/or jsp */
 	color: #3F7826;
 	text-decoration: none;
 }
 
-.kr-breadcrumbs a:focus, .ks-breadcrumbs a:hover {	/* was .breadcrumbs a:focus, .breadcrumbs a:hover */
+.kr-breadcrumbs a:visited {			/* was .breadcrumbs a:visited */ /* renamed in xml and/or jsp */
+	color: #3F7826;
+	text-decoration: none;
+}
+
+.kr-breadcrumbs a:focus, .kr-breadcrumbs a:hover {	/* was .breadcrumbs a:focus, .breadcrumbs a:hover */ /* renamed in xml and/or jsp */
 	text-decoration: underline;
 }
 
-.kr-breadcrumbs .current {			/* was .breadcrumbs .current */
+.kr-breadcrumbs .kr-current {			/* was .breadcrumbs .current */ /* renamed in xml and/or jsp */
 	color: #000000;
 	font-weight: bold;
 }
 
-h2 img.kr-expand_collapse-buttons[alt="expand"] {		/* was h2 img.expand_collapse-buttons[alt="expand"] */
+h2 img.kr-expand_collapse-buttons[alt="expand"] {		/* was h2 img.expand_collapse-buttons[alt="expand"] */ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
 	background: url(../../images/h2_expand-back-ks.png);
 	background-repeat:no-repeat;
 }
 
-h2 img.kr-expand_collapse-buttons[alt="collapse"] {		/* was h2 img.expand_collapse-buttons[alt="collapse"]*/
+h2 img.kr-expand_collapse-buttons[alt="collapse"] {		/* was h2 img.expand_collapse-buttons[alt="collapse"]*/ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
 	background: url(../../images/h2_collapse-back-ks.png);
 	background-repeat:no-repeat;
 }
 
-h3 img.kr-expand_collapse-buttons[alt="expand"] {		/* was h3 img.expand_collapse-buttons[alt="expand"]*/
+h3 img.kr-expand_collapse-buttons[alt="expand"] {		/* was h3 img.expand_collapse-buttons[alt="expand"]*/ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
 	background: url(../../images/h3_expand-back-ks.png);
 	background-repeat:no-repeat;
 }
 
-h3 img.kr-expand_collapse-buttons[alt="collapse"] {		/* was h3 img.expand_collapse-buttons[alt="collapse"]*/
+h3 img.kr-expand_collapse-buttons[alt="collapse"] {		/* was h3 img.expand_collapse-buttons[alt="collapse"]*/ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
 	background: url(../../images/h3_collapse-back-ks.png);
 	background-repeat:no-repeat;
 }
-h1.kr-header-object-title {			/* was h1.header-object-title*/
+h1.kr-header-object-title {			/* was h1.header-object-title*/  /* NOT FOUND in xml and/or jsp */
 	font-family:Arial, Helvetica, sans-serif;
 	font-size: 1.58em;
 	border-bottom: 1px solid #000;
 	padding-bottom: 0.3em;
 	font-weight: bold;
 }
-h2.kr-header-page-title {		/* was h2.header-page-title */
+h2.kr-header-page-title {		/* was h2.header-page-title */  /* NOT FOUND in xml and/or jsp */
 	font-family:Arial, Helvetica, sans-serif;
 	font-size: 1.42em;
 	border-bottom: 1px solid #000;
 	padding-bottom: 0.3em;
 	font-weight: normal;
 }
-h3.kr-header-page-action {		/* was h3.header-page-action*/
+h3.kr-header-page-action {		/* was h3.header-page-action*/  /* NOT FOUND in xml and/or jsp */
 	font-family:Georgia, 'Times New Roman', Times, serif;
 	font-size: 2.1em;
 	font-weight: normal;
 }
-h4.kr-header-page-subsection {		/* was h4.header-page-subsection  */
+h4.kr-header-page-subsection {		/* was h4.header-page-subsection  */  /* NOT FOUND in xml and/or jsp */
 	font-family:Arial, Helvetica, sans-serif;
 	font-size: 1.26em;
 	border-bottom: 1px dotted #000;
 	padding-bottom: 0.3em;
 	font-weight: bold;
 }
-h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/
+h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/ /* NOT FOUND in xml and/or jsp */
 	font-family:Arial, Helvetica, sans-serif;
 	font-size: 1em;
 	font-weight: bold;
@@ -121,7 +121,7 @@ h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/
 
 
 /* Lightbox Styles */
-.kr-view-header {          /* was .view_header /* remove background image for lightbox headers */
+.kr-view-header {          /* was .view_header /* remove background image for lightbox headers */ /* renamed in xml and/or jsp */
 	background: none;
 }
 .kr-view-header h1 {         /* was .view_header h1            /* h1 style for lightboxes */
@@ -133,7 +133,7 @@ h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/
 /*buttons*/
 
 
-.kr-button-primary {
+.kr-button-primary {			/* was .button-primary */ /* renamed in xml and/or jsp */
 	border: 1px solid #62D255;
 	/*defines gradient background*/
 	background-image: -moz-linear-gradient(top, #99DE80, #62D255);
@@ -156,7 +156,7 @@ h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/
    }
 
 
-.kr-button-secondary1 {				/* was .button-secondary1 */
+.kr-button-secondary1 {				/* was .button-secondary1 */ /* renamed in xml and/or jsp */
 	border: 1px solid #62D255;
 	/*defines gradient background*/
 	background-image: -moz-linear-gradient(top, #99DE80, #62D255);
@@ -174,7 +174,7 @@ h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/
 
 }
 
-.kr-button-secondary2 {				/* was .button-secondary2 */
+.kr-button-secondary2 {				/* was .button-secondary2 */ /* NOT FOUND in xml and/or jsp */
 	border:1px solid #3F7826;
 	background: rgb(255,255,255);
 	background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%);
@@ -196,7 +196,7 @@ h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/
 }
 
 
-.kr-button-secondary2:hover { /* was .button-secondary2:hover */
+.kr-button-secondary2:hover { /* was .button-secondary2:hover */ /* NOT FOUND in xml and/or jsp */
     background: rgb(153,153,153);
 	background: -moz-linear-gradient(top, rgba(153,153,153,1) 0%, rgba(51,51,51,1) 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(153,153,153,1)), color-stop(100%, rgba(51,51,51,1)));
@@ -210,12 +210,12 @@ h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/
     cursor:pointer;
 }
 
-.kr-button-primary a, .kr-button-primary a:link, .kr-button-primary a:visited {		/* was .button-primary a, .button-primary a:link, .button-primary a:visited */
+.kr-button-primary a, .kr-button-primary a:link, .kr-button-primary a:visited {		/* was .button-primary a, .button-primary a:link, .button-primary a:visited */ /* renamed in xml and/or jsp */
 	color: #eeeeee;
 	text-decoration:none;
 }
 
-.kr-button-primary:hover, .kr-button-secondary1:hover {		/* was .button-primary:hover, .button-secondary1:hover */
+.kr-button-primary:hover, .kr-button-secondary1:hover {		/* was .button-primary:hover, .button-secondary1:hover */ /* renamed in xml and/or jsp */
 	border-color:#07662a;
 	/*defines gradient background*/
 	background-image: -moz-linear-gradient(top, #07662a, #044d1f);
@@ -229,11 +229,11 @@ h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/
 }
 
 /* LAYOUTS - e.g.: kr-box-horizontal, ks-left, ks-right *****************/
-#kr-viewpage_div {				/* was #viewpage_div - I'm not sure this should be changed */
+#kr-viewpage_div {				/* was #viewpage_div - I'm not sure this should be changed */ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
 	margin-left: 120px;
 	margin-right: 20px;
 }
-#kr-viewheader_div {			/* was #viewheader_div - I'm not sure this should be changed */
+#kr-viewheader_div {			/* was #viewheader_div - I'm not sure this should be changed */ /* NOT renamed in xml and/or jsp, even though there's no impact on js functionality   */
 	margin: 10px 15px 30px 20px;
 }
 

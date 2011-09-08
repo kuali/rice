@@ -25,7 +25,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="Header-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.HeaderField" scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/field/headerField.jsp"/>
     <property name="headerLevel" value="h1"/>
-    <property name="headerStyleClasses" value="fl-font-serif fl-font-size-150 page-title-header"/>
+    <property name="headerStyleClasses" value="fl-font-serif fl-font-size-150 kr-page-title-header"/>
     <property name="group">
       <bean class="org.kuali.rice.krad.uif.container.Group">
         <property name="template" value="/krad/WEB-INF/jsp/templates/group/group.jsp"/>
@@ -40,36 +40,36 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="HeaderTwo" parent="HeaderTwo-parentBean"/>
   <bean id="HeaderTwo-parentBean" abstract="true" parent="Header">
       <property name="headerLevel" value="h2"/>
-      <property name="headerStyleClasses" value="fl-font-serif fl-font-size-150 page-action"/>
+      <property name="headerStyleClasses" value="fl-font-serif fl-font-size-150 kr-page-action"/>
   </bean>
   
   <bean id="HeaderThree" parent="HeaderThree-parentBean"/>
   <bean id="HeaderThree-parentBean" abstract="true" parent="Header">
       <property name="headerLevel" value="h3"/>
-      <property name="headerStyleClasses" value="fl-font-serif fl-font-size-120 page-section-title"/>
+      <property name="headerStyleClasses" value="fl-font-serif fl-font-size-120 kr-page-section-title"/>
   </bean>
   
   <bean id="HeaderFour" parent="HeaderFour-parentBean"/>
   <bean id="HeaderFour-parentBean" abstract="true" parent="Header">
       <property name="headerLevel" value="h4"/>
-      <property name="headerStyleClasses" value="fl-font-arial fl-font-size-110 section-subhead"/>
+      <property name="headerStyleClasses" value="fl-font-arial fl-font-size-110 kr-section-subhead"/>
   </bean>
   
   <bean id="HeaderFive" parent="HeaderFive-parentBean"/>
   <bean id="HeaderFive-parentBean" abstract="true" parent="Header">
       <property name="headerLevel" value="h5"/>
-      <property name="headerStyleClasses" value="fl-font-arial fl-font-size-110 section-subhead-no-border"/>
+      <property name="headerStyleClasses" value="fl-font-arial fl-font-size-110 kr-section-subhead-no-border"/>
   </bean>
   
   <bean id="HeaderSix" parent="HeaderSix-parentBean"/>
   <bean id="HeaderSix-parentBean" abstract="true" parent="Header">
       <property name="headerLevel" value="h6"/>
-      <property name="headerStyleClasses" value="fl-font-arial fl-font-size-110 section-subhead-no-border"/>
+      <property name="headerStyleClasses" value="fl-font-arial fl-font-size-110 kr-section-subhead-no-border"/>
   </bean>      
   
   <bean id="HeaderView" parent="HeaderView-parentBean"/>
   <bean id="HeaderView-parentBean" abstract="true" parent="Header">
-      <property name="styleClasses" value="view_header"/>
+      <property name="styleClasses" value="kr-view-header"/>
   </bean>
   
   <bean id="HeaderPage" parent="HeaderPage-parentBean"/>

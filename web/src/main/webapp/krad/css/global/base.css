@@ -27,78 +27,78 @@ table td, table th {
 /* CONTAINERS - e.g.: kr-nav-menu, ks-error-cont *************************/
 
 
-.kr-constraint {                                /* was .constraint */
+.kr-constraint {                                /* was .constraint */ /* NOT RENAMED - changing this classname will break some javascript functionality  */
 	font-size:0.84615385em;    /* 11px divided by 13px */
 }
 
 /* headers */
-h1.kr-page-title-header {		/* was h1.page-title-header */
+h1.kr-page-title-header {		/* was h1.page-title-header */ /* renamed in xml and/or jsp */
 	margin:0;
 }
-h2.kr-page-action {				/* was h2.page-action */
+h2.kr-page-action {				/* was h2.page-action */ /* renamed in xml and/or jsp */
 	font-weight:normal;
 	margin:0;
 }
-h3.kr-page-section-title {		/* was h2.page-section-title */
+h3.kr-page-section-title {		/* was h2.page-section-title */ /* renamed in xml and/or jsp */
 	font-weight: bold;
 	margin:0;
 	border-bottom: 2px solid #000;
 }
-h4.kr-section-subhead-no-border {	/* was h4.kr-section-subhead-no-border */
+h4.kr-section-subhead-no-border {	/* was h4.kr-section-subhead-no-border */ /* renamed in xml and/or jsp */
 	border-bottom:none;
 	padding-bottom: 0.3em;
 	margin:0;
 }
-.kr-page-action h2 {			/* was .page-action h2 */
+.kr-page-action h2 {			/* was .page-action h2 */ /* renamed in xml and/or jsp */
 	clear:left;
 }
-.kr-field_attribute {			/* was .field_attribute */
+.kr-field_attribute {			/* was .field_attribute */ /* renamed in xml and/or jsp */
     float:left;
 }
-.kr-field-attribute .kr-labelTop label {   /* was .field_attribute .labelTop label */
+.kr-field-attribute .kr-labelTop label {   /* was .field_attribute .labelTop label */  /* renamed in xml and/or jsp */
 	margin: 5px 5px 0px 0px;  /* field top labels should not have left-margins  -David */
 }
-.kr-field-attribute span {			/* was .field_attribute span */
+.kr-field-attribute span {			/* was .field_attribute span */ /* renamed in xml and/or jsp */
 	clear:left;/*float:left;       removing for non-table display, but may possibly break elsewhere - David */
     }
-.kr-field-attribute input {			/* was .field_attribute input */
+.kr-field-attribute input {			/* was .field_attribute input */ /* renamed in xml and/or jsp */
 /*float:left;        removing for non-table display. Not sure why we need to pull input from inline flow */
     }
-.kr-field-attribute .summary {		/* was .field_attribute .summary */
+.kr-field-attribute .summary {		/* was .field_attribute .summary */ /* renamed in xml and/or jsp */
 	line-height: 1.125em;
 }
-.kr-labelTop {						/* was .labelTop */
+.kr-labelTop {						/* was .labelTop */ /* renamed in xml and/or jsp */
 	float:none;
 	display:block;
 }
-.kr-labelTop label {				/* was .labelTop label */
+.kr-labelTop label {				/* was .labelTop label */ /* renamed in xml and/or jsp */
 	font-weight:bold;
 }
-.kr-errorsField {					/* was .errorsField */
+.kr-errorsField {					/* was .errorsField */  /* renamed in xml and/or jsp */
 	padding-left: 10px;
 	overflow: hidden;
  *zoom: 1;
 }
-.kr-errorsFieldForContainer {		/* was .errorsFieldForContainer */
+.kr-errorsFieldForContainer {		/* was .errorsFieldForContainer */ /* renamed in xml and/or jsp */
 	float: none;
 	padding-left: 10px;
 	display:inline-block;
 	zoom:1;
  *display:inline;
 }
-.kr-errorMessages {					/* was .errorMessages */
+.kr-errorMessages {					/* was .errorMessages */ /* NOT RENAMED in errorsField.jsp - changing this classname will break some javascript functionality  */
 	padding-left: 20px;
 	background: url("/kr-dev/krad/images/exclamation-red.png") no-repeat scroll left top transparent;
 }
-.kr-warningMessages {		/* was .warningMessages */
+.kr-warningMessages {		/* was .warningMessages */ /* renamed in xml and/or jsp */
 	padding-left: 20px;
 	background: url("/kr-dev/krad/images/exclamation-diamond-frame.png") no-repeat scroll left top transparent;
 }
-.kr-infoMessages {			/* was .infoMessages*/
+.kr-infoMessages {			/* was .infoMessages*/ /* renamed in xml and/or jsp */
 	padding-left: 20px;
 	background: url("/kr-dev/krad/images/information-frame.png") no-repeat scroll left top transparent;
 }
-.kr-errorsFieldForContainer .kr-errorMessages {		/* was .errorsFieldForContainer .errorMessages */
+.kr-errorsFieldForContainer .kr-errorMessages {		/* was .errorsFieldForContainer .errorMessages */ /* .errorsFieldForContainer renamed in xml; .errorMessages NOT renamed, as this will break js functionality   */
 	border: 1px solid red;
 	background-color: #FFE0E9;
 	margin-top: 3px;
@@ -107,7 +107,7 @@ h4.kr-section-subhead-no-border {	/* was h4.kr-section-subhead-no-border */
 	padding-top: 5px;
 	padding-right: 10px;
 }
-.kr-errorsFieldForContainer .kr-warningMessages {	/* was .errorsFieldForContainer .warningMessages */
+.kr-errorsFieldForContainer .kr-warningMessages {	/* was .errorsFieldForContainer .warningMessages *//* renamed in xml and/or jsp */
 	border: 1px solid goldenrod;
 	background-color: #F4E271;
 	margin-top: 3px;
@@ -116,7 +116,7 @@ h4.kr-section-subhead-no-border {	/* was h4.kr-section-subhead-no-border */
 	padding-top: 5px;
 	padding-right: 10px;
 }
-.kr-errorsFieldForContainer .kr-infoMessages {	/* was .errorsFieldForContainer .infoMessages*/
+.kr-errorsFieldForContainer .kr-infoMessages {	/* was .errorsFieldForContainer .infoMessages*/ /* renamed in xml and/or jsp */
 	border: 1px solid #82CAFA;
 	background-color: #AFDCEC;
 	margin-top: 3px;
@@ -125,34 +125,34 @@ h4.kr-section-subhead-no-border {	/* was h4.kr-section-subhead-no-border */
 	padding-top: 5px;
 	padding-right: 10px;
 }
-.kr-errorsField ul {		/* was .errorsField ul*/
+.kr-errorsField ul {		/* was .errorsField ul*/ /* renamed in xml and/or jsp */
 	list-style: none outside none;
 	margin: 0;
 }
-.kr-errorsField li {		/* was .errorsField li */
+.kr-errorsField li {		/* was .errorsField li */ /* renamed in xml and/or jsp */
 	list-style: none outside none;
 	margin-left: 0;
 	padding: 1px 0;
 	line-height: 1.3em;
 }
-.kr-errorsField .kr-errorMessages { /* was .errorsField .errorMessages */
+.kr-errorsField .kr-errorMessages { /* was .errorsField .errorMessages */ /* .errorsField renamed in xml; .errorMessages NOT renamed, as this will break js functionality   */
 	color: #DF0000;
 	font-weight: bold;
 }
 span.kr-clientError, div.kr-clientError, td.kr-clientError, span.kr-serverError, div.kr-serverError, td.kr-serverError {
-	/* was span.clientError, div.clientError, td.clientError, span.serverError, div.serverError, td.serverError*/
+	/* was span.clientError, div.clientError, td.clientError, span.serverError, div.serverError, td.serverError*/ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
 	background-color: #FFE0E9 !important;
 }
-span.kr-information, div.kr-information, td.kr-information {	/* was span.information, div.information, td.information */
+span.kr-information, div.kr-information, td.kr-information {	/* was span.information, div.information, td.information *//* NOT renamed in xml and/or jsp, as this will break js functionality   */
 	background-color: #AFDCEC;
 }
-span.kr-warning, div.kr-warning, td.kr-warning {	/* was span.warning, div.arning, td.warning */
+span.kr-warning, div.kr-warning, td.kr-warning {	/* was span.warning, div.arning, td.warning *//* NOT renamed in xml and/or jsp, as this will break js functionality   */
 	background-color: #F4E271;
 }
-label.kr-clientError, a.kr-clientError, label.kr-serverError {			/* was label.kr-clientError, a.kr-clientError, label.kr-serverError */
+label.kr-clientError, a.kr-clientError, label.kr-serverError {			/* was label.kr-clientError, a.kr-clientError, label.kr-serverError */ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
 	color: #DF0000;
 }
-li label.kr-error {				/* was li label.error */
+li label.kr-error {				/* was li label.error *//* NOT renamed in xml and/or jsp, as this will break js functionality   */
 	display: inline !important;
 }
 
@@ -161,10 +161,10 @@ li label.kr-error {				/* was li label.error */
 /* COMPONENTS - e.g.: kr-button-one, ks-button-secondary ****************/
 /* button styles */
 
-.kr-button-primary {
+.kr-button-primary { /* was .button-primary */ /* renamed in xml and/or jsp */
 	cursor:pointer;
 }
-.kr-button-secondary1 {
+.kr-button-secondary1 { /* was .button-secondary1 */ /* renamed in xml and/or jsp */
 	cursor:pointer;
 	/*remove extra padding in IE*/
 	overflow: visible;
@@ -305,7 +305,7 @@ li label.kr-error {				/* was li label.error */
 
 /* breadcrumbs */
 
-.kr-breadcrumbs { 					/* was .breadcrumbs */
+.kr-breadcrumbs { 					/* was .breadcrumbs */ /* renamed in xml and/or jsp */
     border-bottom: 1px dotted #C9C9C9;
     border-top: 1px dotted #C9C9C9;
     display: block;
@@ -315,30 +315,30 @@ li label.kr-error {				/* was li label.error */
     padding: 3px 0 3px 15px;
  }
  
- .kr-breadcrumbs span {  /* was .breadcrumbs span*/
+ .kr-breadcrumbs span {  /* was .breadcrumbs span*/ /* renamed in xml and/or jsp */
 	color: #3F7826;
  }
  
- .kr-breadcrumbs a {		/*  was .breadcrumbs a*/
-	color: #3F7826;
-	text-decoration: none;
- }
- 
- .kr-breadcrumbs a:visited{		/* was .breadcrumbs a:visited*/
+ .kr-breadcrumbs a {		/*  was .breadcrumbs a*/ /* renamed in xml and/or jsp */
 	color: #3F7826;
 	text-decoration: none;
  }
  
- .kr-breadcrumbs a:focus, .breadcrumbs a:hover{  /* was .breadcrumbs a:focus, .breadcrumbs a:hover*/
+ .kr-breadcrumbs a:visited{		/* was .breadcrumbs a:visited*/ /* renamed in xml and/or jsp */
+	color: #3F7826;
+	text-decoration: none;
+ }
+ 
+ .kr-breadcrumbs a:focus, .breadcrumbs a:hover{  /* was .breadcrumbs a:focus, .breadcrumbs a:hover*/ /* renamed in xml and/or jsp */
  	text-decoration: underline;
  }
  
- .kr-breadcrumbs .current{  /*  was .breadcrumbs .current*/
+ .kr-breadcrumbs .kr-current{  /*  was .breadcrumbs .current*/ /* renamed in xml and/or jsp */
 	color: #000000;
 	font-weight: bold;
  }
 
- .kr-breadcrumbs ol, li{   /* was .breadcrumbs ol, li*/
+ .kr-breadcrumbs ol, li{   /* was .breadcrumbs ol, li*/ /* renamed in xml and/or jsp */
     display: inline;
     margin: 0;
     list-style: none;

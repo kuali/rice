@@ -31,7 +31,7 @@ link again through jquery as in setPageBreadcrumb when needed --%>
       <c:forEach var="entry" items="${crumbs}">
         <li><a href="${entry.url}">${entry.title}</a><span role="presentation"> &raquo; </span></li>
       </c:forEach>
-      <span class="current" id="current_breadcrumb_span">${current.title}</span>
+      <span class="kr-current" id="current_breadcrumb_span">${current.title}</span>
       <a style="display:none;" id="current_breadcrumb_anchor" href="${current.url}"/>${current.title}</a>
     </ol>
   </span>

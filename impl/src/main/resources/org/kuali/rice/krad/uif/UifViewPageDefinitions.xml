@@ -20,7 +20,7 @@
     <property name="viewName" value="default" />
 		<property name="viewHelperServiceClassName"
 			value="org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl" />
-		<property name="styleClasses" value="workarea" />
+		<!--<property name="styleClasses" value="workarea" />-->
 		<property name="presentationControllerClass"
 			value="org.kuali.rice.krad.uif.authorization.PresentationControllerBase" />
 		<property name="authorizerClass"
@@ -278,7 +278,7 @@
 		<property name="items">
 			<list>
 				<bean parent="AttributeField" p:propertyName="exceptionStackTrace" p:labelPlacement="TOP"
-              p:labelField.styleClasses="labelTop" p:labelField.renderColon="false" p:label="" p:readOnly="true"
+              p:labelField.styleClasses="kr-labelTop" p:labelField.renderColon="false" p:label="" p:readOnly="true"
 				    	p:width="auto">
 					<property name="control">
 						<bean parent="TextControl" p:size="100" />

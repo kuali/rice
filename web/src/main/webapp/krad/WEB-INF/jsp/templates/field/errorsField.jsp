@@ -44,7 +44,7 @@
 
   <!-- Warning messages -->
   <c:if test="${field.warningCount > 0 && field.displayWarningMessages}">
-    <div id="${field.id}_warningMessages" class="warningMessages">
+    <div id="${field.id}_warningMessages" class="kr-warningMessages">
       <c:if test="${field.displayWarningTitle}">
         <strong>${field.warningTitle}</strong>
       </c:if>
@@ -63,7 +63,7 @@
 
   <!-- Info messages -->
   <c:if test="${field.infoCount > 0 && field.displayInfoMessages}">
-    <div id="${field.id}_infoMessages" class="infoMessages">
+    <div id="${field.id}_infoMessages" class="kr-infoMessages">
       <c:if test="${field.displayInfoTitle}">
         <strong>${field.infoTitle}</strong>
       </c:if>

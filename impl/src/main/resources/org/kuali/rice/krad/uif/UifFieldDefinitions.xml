@@ -29,7 +29,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="AttributeField" abstract="true" parent="AttributeField-parentBean"/>
   <bean id="AttributeField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.AttributeField" parent="Field" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/attributeField.jsp"/>
-      <property name="styleClasses" value="field_attribute"/>
+      <property name="styleClasses" value="kr-field-attribute"/>
 	    <property name="errorsField">
         <bean parent="ErrorsField"/>
       </property>
@@ -103,7 +103,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>
   
   <bean id="ErrorsField_Group" parent="ErrorsField">
-    <property name="styleClasses" value="errorsField errorsFieldForContainer"/>
+    <property name="styleClasses" value="kr-errorsField kr-errorsFieldForContainer"/>
     <property name="displayErrorTitle" value="false"/>
 	  <property name="displayWarningTitle" value="false"/> 
 	  <property name="displayInfoTitle" value="false"/> 
@@ -119,7 +119,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>
 
   <bean id="ErrorsField_Page" parent="ErrorsField">
-    <property name="styleClasses" value="errorsField errorsFieldForContainer"/>
+    <property name="styleClasses" value="kr-errorsField kr-errorsFieldForContainer"/>
     <property name="additionalKeysToMatch">
       <list>
         <value>GLOBAL_ERRORS</value>
@@ -146,7 +146,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
   <!-- No longer used - views cannot update errors if page retrieval is through ajax -->
   <bean id="ErrorsField_View" parent="ErrorsField">
-    <property name="styleClasses" value="errorsField errorsFieldForContainer"/>
+    <property name="styleClasses" value="kr-errorsField kr-errorsFieldForContainer"/>
     <property name="additionalKeysToMatch">
       <list>
         <value>GLOBAL_ERRORS</value>
@@ -172,7 +172,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="ActionField" parent="ActionField-parentBean"/>
   <bean id="ActionField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.ActionField" parent="Field" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/actionField.jsp"/>
-      <property name="styleClasses" value="button-primary"/>
+      <property name="styleClasses" value="kr-button-primary"/>
       <property name="labelField">
         <bean parent="LabelField"/>
       </property>
@@ -186,7 +186,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="ActionField_Secondary" parent="ActionField_Secondary-parentBean"/>
   <bean id="ActionField_Secondary-parentBean" abstract="true" parent="ActionField">
-      <property name="styleClasses" value="button-secondary1"/>
+      <property name="styleClasses" value="kr-button-secondary1"/>
   </bean>  
   
   <bean id="ActionField_Small" parent="ActionField_Small-parentBean"/>

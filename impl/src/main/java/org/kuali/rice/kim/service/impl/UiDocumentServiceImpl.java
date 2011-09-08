@@ -1229,7 +1229,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					entityAddress.setLine1(address.getLine1());
 					entityAddress.setLine2(address.getLine2());
 					entityAddress.setLine3(address.getLine3());
-					entityAddress.setStateProvinceCode(address.getStateCode());
+					entityAddress.setStateProvinceCode(address.getStateProvinceCode());
 					entityAddress.setPostalCode(address.getPostalCode());
 					entityAddress.setCountryCode(address.getCountryCode());
 					entityAddress.setCity(address.getCity());
@@ -1263,7 +1263,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					docAddress.setLine1(address.getLine1Unmasked());
 					docAddress.setLine2(address.getLine2Unmasked());
 					docAddress.setLine3(address.getLine3Unmasked());
-					docAddress.setStateCode(address.getStateProvinceCodeUnmasked());
+					docAddress.setStateProvinceCode(address.getStateProvinceCodeUnmasked());
 					docAddress.setPostalCode(address.getPostalCodeUnmasked());
 					docAddress.setCountryCode(address.getCountryCodeUnmasked());
 					docAddress.setCity(address.getCityUnmasked());

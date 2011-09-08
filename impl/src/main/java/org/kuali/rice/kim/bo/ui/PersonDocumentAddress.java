@@ -61,7 +61,7 @@ public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
 	protected String city;
 
 	@Column(name = "POSTAL_STATE_CD")
-	protected String stateCode;
+	protected String stateProvinceCode;
 
 	@Column(name = "POSTAL_CD")
 	protected String postalCode;
@@ -151,8 +151,8 @@ public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getStateCode()
 	 */
-	public String getStateCode() {
-		return stateCode;
+	public String getStateProvinceCode() {
+		return stateProvinceCode;
 	}
 
 	/**
@@ -207,8 +207,8 @@ public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#setStateCode(java.lang.String)
 	 */
-	public void setStateCode(String stateCode) {
-		this.stateCode = stateCode;
+	public void setStateProvinceCode(String stateProvinceCode) {
+		this.stateProvinceCode = stateProvinceCode;
 	}
 
 	/**

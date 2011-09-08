@@ -337,7 +337,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 			docAddress.setAddressTypeCode("HM");
             docAddress.setAddressType(EntityAddressTypeBo.from(KimApiServiceLocator.getIdentityService().getAddressType("HM")));
 			docAddress.setLine1("PO box 123");
-			docAddress.setStateCode("IN");
+			docAddress.setStateProvinceCode("IN");
 			docAddress.setPostalCode("46123");
 			docAddress.setCountryCode("US");
 			docAddress.setCity("Indianapolis");
@@ -361,7 +361,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		assertEquals(docAddress.getLine1(), entityAddress.getLine1());
 		assertEquals(docAddress.getCity(), entityAddress.getCity());
 		assertEquals(docAddress.getPostalCode(), entityAddress.getPostalCode());
-		assertEquals(docAddress.getStateCode(), entityAddress.getStateProvinceCode());
+		assertEquals(docAddress.getStateProvinceCode(), entityAddress.getStateProvinceCode());
 	}
 
 	private void assertEmailTrue(PersonDocumentEmail docEmail, EntityEmailContract entityEmail) {

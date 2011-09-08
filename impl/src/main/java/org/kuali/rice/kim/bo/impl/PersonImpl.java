@@ -77,7 +77,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	protected String addressLine2 = "";
 	protected String addressLine3 = "";
 	protected String addressCityName = "";
-	protected String addressStateCode = "";
+	protected String addressStateProvinceCode = "";
 	protected String addressPostalCode = "";
 	protected String addressCountryCode = "";*/
 	// email data
@@ -531,11 +531,11 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
         return address.getCityUnmasked();
     }
 
-	public String getAddressStateCode() {
+	public String getAddressStateProvinceCode() {
 	    return address.getStateProvinceCode();
 	}
 	
-	public String getAddressStateCodeUnmasked() {
+	public String getAddressStateProvinceCodeUnmasked() {
         return address.getStateProvinceCodeUnmasked();
     }
 

@@ -83,8 +83,8 @@ public interface Person extends ExternalizableBusinessObject {
 	 * Returns the state code from the default address for the Person.  Will lazy-load the information from the
 	 * IdentityManagementService if requested.
 	 */
-	String getAddressStateCode();
-	String getAddressStateCodeUnmasked();
+	String getAddressStateProvinceCode();
+	String getAddressStateProvinceCodeUnmasked();
 	/**
 	 * Returns the postal code from the default address for the Person.  Will lazy-load the information from the
 	 * IdentityManagementService if requested.

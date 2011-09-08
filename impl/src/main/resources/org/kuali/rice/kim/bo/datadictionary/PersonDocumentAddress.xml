@@ -41,7 +41,7 @@
         <ref bean="DocAddress-city"/>
         <ref bean="DocAddress-line1"/>
         <ref bean="DocAddress-addressTypeCode"/>
-        <ref bean="DocAddress-stateCode"/>
+        <ref bean="DocAddress-stateProvinceCode"/>
         <ref bean="DocAddress-postalCode"/>
         <ref bean="DocAddress-countryCode"/>
         <ref bean="DocAddress-active"/>
@@ -95,8 +95,8 @@
   </bean>
   
   
-    <bean id="DocAddress-stateCode" parent="DocAddress-stateCode-parentBean"/>
-  <bean id="DocAddress-stateCode-parentBean" parent="AttributeDefinition" abstract="true" p:name="stateCode" p:forceUppercase="true" p:label="State" p:shortLabel="State" p:maxLength="2" p:required="false">
+    <bean id="DocAddress-stateProvinceCode" parent="DocAddress-stateProvinceCode-parentBean"/>
+  <bean id="DocAddress-stateProvinceCode-parentBean" parent="AttributeDefinition" abstract="true" p:name="stateProvinceCode" p:forceUppercase="true" p:label="State/Province" p:shortLabel="State/Province" p:maxLength="2" p:required="false">
     <!-- <property name="control" >
       <bean parent="TextControlDefinition" p:size="2" />
     </property> -->
@@ -153,7 +153,7 @@
               <bean parent="FieldDefinition" p:attributeName="line2"/>
         	  <bean parent="FieldDefinition" p:attributeName="line3"/>
               <bean parent="FieldDefinition" p:attributeName="city"/>
-              <bean parent="FieldDefinition" p:attributeName="stateCode"/>
+              <bean parent="FieldDefinition" p:attributeName="stateProvinceCode"/>
               <bean parent="FieldDefinition" p:attributeName="countryCode"/>
               <bean parent="FieldDefinition" p:attributeName="postalCode"/>
             </list>
@@ -183,7 +183,7 @@
         <bean parent="FieldDefinition" p:attributeName="line2"/>
         <bean parent="FieldDefinition" p:attributeName="line3"/>
         <bean parent="FieldDefinition" p:attributeName="city"/>
-        <bean parent="FieldDefinition" p:attributeName="stateCode"/>
+        <bean parent="FieldDefinition" p:attributeName="stateProvinceCode"/>
         <bean parent="FieldDefinition" p:attributeName="countryCode"/>
         <bean parent="FieldDefinition" p:attributeName="postalCode"/>
       </list>
@@ -195,7 +195,7 @@
         <bean parent="FieldDefinition" p:attributeName="line2"/>
         <bean parent="FieldDefinition" p:attributeName="line3"/>
         <bean parent="FieldDefinition" p:attributeName="city"/>
-        <bean parent="FieldDefinition" p:attributeName="stateCode"/>
+        <bean parent="FieldDefinition" p:attributeName="stateProvinceCode"/>
         <bean parent="FieldDefinition" p:attributeName="countryCode"/>
         <bean parent="FieldDefinition" p:attributeName="postalCode"/>
       </list>

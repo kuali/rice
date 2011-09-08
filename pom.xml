@@ -43,7 +43,6 @@
   </ciManagement>
 
   <properties>
-    <gmaven.phase>generate-sources</gmaven.phase>
     <kuali.cm.tools.version>1.5</kuali.cm.tools.version>
     <checkstyle.suppressions.location>/org/kuali/rice/suppressions.xml</checkstyle.suppressions.location>
     <oracle.ojdbc.version>10.2.0.3.0</oracle.ojdbc.version>
@@ -477,7 +476,6 @@
                 <!--<goal>generateTestStubs</goal> -->
                 <goal>testCompile</goal>
               </goals>
-              <phase>${gmaven.phase}</phase>
             </execution>
           </executions>
         </plugin>

@@ -11,7 +11,7 @@ class EntityAddressBoTest {
       EntityAddress.Builder builder = EntityAddress.Builder.create();
       builder.setActive(true)
       builder.setCity("city")
-      builder.setStateCode("IA")
+      builder.setStateProvinceCode("IA")
       builder.setCountryCode("USA")
       builder.setDefaultValue(true)
       builder.setEntityId("10101")

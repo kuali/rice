@@ -21,7 +21,7 @@ class EntityAddressTest {
     private static final String LINE2 = "Line 2";
     private static final String LINE3 = "Line 3";
     private static final String CITY = "Super Sweet City";
-	private static final String STATE_CODE = "CA";
+	private static final String STATE_PROVINCE_CODE = "CA";
 	private static final String POSTAL_CODE = "55555"
     private static final String COUNTRY_CODE = "USA"
     private static final String SUPPRESS = "false"
@@ -47,14 +47,14 @@ class EntityAddressTest {
         <line2>${LINE2}</line2>
         <line3>${LINE3}</line3>
         <city>${CITY}</city>
-        <stateCode>${STATE_CODE}</stateCode>
+        <stateProvinceCode>${STATE_PROVINCE_CODE}</stateProvinceCode>
         <postalCode>${POSTAL_CODE}</postalCode>
         <countryCode>${COUNTRY_CODE}</countryCode>
         <line1Unmasked>${LINE1}</line1Unmasked>
         <line2Unmasked>${LINE2}</line2Unmasked>
         <line3Unmasked>${LINE3}</line3Unmasked>
         <cityUnmasked>${CITY}</cityUnmasked>
-        <stateCodeUnmasked>${STATE_CODE}</stateCodeUnmasked>
+        <stateProvinceCodeUnmasked>${STATE_PROVINCE_CODE}</stateProvinceCodeUnmasked>
         <postalCodeUnmasked>${POSTAL_CODE}</postalCodeUnmasked>
         <countryCodeUnmasked>${COUNTRY_CODE}</countryCodeUnmasked>
         <defaultValue>${DEFAULT}</defaultValue>
@@ -106,14 +106,14 @@ class EntityAddressTest {
             def String line2 = EntityAddressTest.LINE2
             def String line3 = EntityAddressTest.LINE3
             def String city = EntityAddressTest.CITY
-            def String stateCode = EntityAddressTest.STATE_CODE
+            def String stateProvinceCode = EntityAddressTest.STATE_PROVINCE_CODE
             def String postalCode = EntityAddressTest.POSTAL_CODE
             def String countryCode = EntityAddressTest.COUNTRY_CODE
             def String line1Unmasked = EntityAddressTest.LINE1
             def String line2Unmasked = EntityAddressTest.LINE2
             def String line3Unmasked = EntityAddressTest.LINE3
             def String cityUnmasked = EntityAddressTest.CITY
-            def String stateCodeUnmasked = EntityAddressTest.STATE_CODE
+            def String stateProvinceCodeUnmasked = EntityAddressTest.STATE_PROVINCE_CODE
             def String postalCodeUnmasked = EntityAddressTest.POSTAL_CODE
             def String countryCodeUnmasked = EntityAddressTest.COUNTRY_CODE
             def boolean suppressAddress = EntityAddressTest.SUPPRESS.toBoolean()

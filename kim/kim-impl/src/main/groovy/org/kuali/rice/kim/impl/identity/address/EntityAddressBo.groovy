@@ -42,7 +42,7 @@ public class EntityAddressBo extends PersistableBusinessObjectBase implements En
 	String city
 
 	@Column(name = "POSTAL_STATE_CD")
-	String stateCode
+	String stateProvinceCode
 
 	@Column(name = "POSTAL_CD")
 	String postalCode
@@ -105,7 +105,7 @@ public class EntityAddressBo extends PersistableBusinessObjectBase implements En
     bo.line2 = immutable.line2Unmasked
     bo.line3 = immutable.line3Unmasked
     bo.city = immutable.cityUnmasked
-    bo.stateCode = immutable.stateCodeUnmasked
+    bo.stateProvinceCode = immutable.stateProvinceCodeUnmasked
     bo.countryCode = immutable.countryCodeUnmasked
     bo.postalCode = immutable.postalCodeUnmasked
     bo.id = immutable.id
@@ -174,11 +174,11 @@ public class EntityAddressBo extends PersistableBusinessObjectBase implements En
     }
 
     @Override
-    String getStateCode() {
+    String getStateProvinceCode() {
         if (isSuppressAddress()) {
             return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE;
         }
-        return this.stateCode;
+        return this.stateProvinceCode;
     }
 
     @Override
@@ -214,8 +214,8 @@ public class EntityAddressBo extends PersistableBusinessObjectBase implements En
         return city
     }
     @Override
-    String getStateCodeUnmasked() {
-        return stateCode
+    String getStateProvinceCodeUnmasked() {
+        return stateProvinceCode
     }
     @Override
     String getPostalCodeUnmasked() {

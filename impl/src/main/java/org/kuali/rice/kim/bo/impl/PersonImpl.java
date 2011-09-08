@@ -227,7 +227,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
                 builder.setLine3("");
                 builder.setCity("");
                 builder.setPostalCode("");
-                builder.setStateCode("");
+                builder.setStateProvinceCode("");
                 builder.setActive(true);
 				address = builder.build();
 			}
@@ -532,11 +532,11 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
     }
 
 	public String getAddressStateCode() {
-	    return address.getStateCode();
+	    return address.getStateProvinceCode();
 	}
 	
 	public String getAddressStateCodeUnmasked() {
-        return address.getStateCodeUnmasked();
+        return address.getStateProvinceCodeUnmasked();
     }
 
 	public String getAddressPostalCode() {

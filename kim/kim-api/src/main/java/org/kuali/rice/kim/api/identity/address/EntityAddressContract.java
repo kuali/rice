@@ -75,9 +75,10 @@ public interface EntityAddressContract extends Versioned, GloballyUnique, Defaul
 	
 	/**
      * Gets this {@link EntityAddressContract}'s state code.
+     * Corresponds to PESC StateProvinceCode.
      * @return the state code for this {@link EntityAddressContract}, or null if none has been assigned.
      */
-	String getStateCode();
+	String getStateProvinceCode();
 	
 	/**
      * Gets this {@link EntityAddressContract}'s postal code.
@@ -119,7 +120,7 @@ public interface EntityAddressContract extends Versioned, GloballyUnique, Defaul
      * Gets this {@link EntityAddressContract}'s unmasked state code.
      * @return the unmasked state code for this {@link EntityAddressContract}, or null if none has been assigned.
      */
-    String getStateCodeUnmasked();
+    String getStateProvinceCodeUnmasked();
     
     /**
      * Gets this {@link EntityAddressContract}'s unmasked postal code.

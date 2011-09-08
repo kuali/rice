@@ -37,7 +37,7 @@ class EntityTypeContactInfoTest {
     private static final String ADDR_LINE2 = "Line 2";
     private static final String ADDR_LINE3 = "Line 3";
     private static final String ADDR_CITY = "Super Sweet City";
-	private static final String ADDR_STATE_CODE = "CA";
+	private static final String ADDR_STATE_PROVINCE_CODE = "CA";
 	private static final String ADDR_POSTAL_CODE = "55555"
     private static final String ADDR_COUNTRY_CODE = "USA"
     private static final String ADDR_SUPPRESS = "false"
@@ -105,14 +105,14 @@ class EntityTypeContactInfoTest {
             <line2>${ADDR_LINE2}</line2>
             <line3>${ADDR_LINE3}</line3>
             <city>${ADDR_CITY}</city>
-            <stateCode>${ADDR_STATE_CODE}</stateCode>
+            <stateProvinceCode>${ADDR_STATE_PROVINCE_CODE}</stateProvinceCode>
             <postalCode>${ADDR_POSTAL_CODE}</postalCode>
             <countryCode>${ADDR_COUNTRY_CODE}</countryCode>
             <line1Unmasked>${ADDR_LINE1}</line1Unmasked>
             <line2Unmasked>${ADDR_LINE2}</line2Unmasked>
             <line3Unmasked>${ADDR_LINE3}</line3Unmasked>
             <cityUnmasked>${ADDR_CITY}</cityUnmasked>
-            <stateCodeUnmasked>${ADDR_STATE_CODE}</stateCodeUnmasked>
+            <stateProvinceCodeUnmasked>${ADDR_STATE_PROVINCE_CODE}</stateProvinceCodeUnmasked>
             <postalCodeUnmasked>${ADDR_POSTAL_CODE}</postalCodeUnmasked>
             <countryCodeUnmasked>${ADDR_COUNTRY_CODE}</countryCodeUnmasked>
             <defaultValue>${ADDR_DEFAULT}</defaultValue>
@@ -187,14 +187,14 @@ class EntityTypeContactInfoTest {
             <line2>${ADDR_LINE2}</line2>
             <line3>${ADDR_LINE3}</line3>
             <city>${ADDR_CITY}</city>
-            <stateCode>${ADDR_STATE_CODE}</stateCode>
+            <stateProvinceCode>${ADDR_STATE_PROVINCE_CODE}</stateProvinceCode>
             <postalCode>${ADDR_POSTAL_CODE}</postalCode>
             <countryCode>${ADDR_COUNTRY_CODE}</countryCode>
             <line1Unmasked>${ADDR_LINE1}</line1Unmasked>
             <line2Unmasked>${ADDR_LINE2}</line2Unmasked>
             <line3Unmasked>${ADDR_LINE3}</line3Unmasked>
             <cityUnmasked>${ADDR_CITY}</cityUnmasked>
-            <stateCodeUnmasked>${ADDR_STATE_CODE}</stateCodeUnmasked>
+            <stateProvinceCodeUnmasked>${ADDR_STATE_PROVINCE_CODE}</stateProvinceCodeUnmasked>
             <postalCodeUnmasked>${ADDR_POSTAL_CODE}</postalCodeUnmasked>
             <countryCodeUnmasked>${ADDR_COUNTRY_CODE}</countryCodeUnmasked>
             <defaultValue>${ADDR_DEFAULT}</defaultValue>
@@ -311,14 +311,14 @@ class EntityTypeContactInfoTest {
                     def String line2 = EntityTypeContactInfoTest.ADDR_LINE2
                     def String line3 = EntityTypeContactInfoTest.ADDR_LINE3
                     def String city = EntityTypeContactInfoTest.ADDR_CITY
-                    def String stateCode = EntityTypeContactInfoTest.ADDR_STATE_CODE
+                    def String stateProvinceCode = EntityTypeContactInfoTest.ADDR_STATE_PROVINCE_CODE
                     def String postalCode = EntityTypeContactInfoTest.ADDR_POSTAL_CODE
                     def String countryCode = EntityTypeContactInfoTest.ADDR_COUNTRY_CODE
                     def String line1Unmasked = EntityTypeContactInfoTest.ADDR_LINE1
                     def String line2Unmasked = EntityTypeContactInfoTest.ADDR_LINE2
                     def String line3Unmasked = EntityTypeContactInfoTest.ADDR_LINE3
                     def String cityUnmasked = EntityTypeContactInfoTest.ADDR_CITY
-                    def String stateCodeUnmasked = EntityTypeContactInfoTest.ADDR_STATE_CODE
+                    def String stateProvinceCodeUnmasked = EntityTypeContactInfoTest.ADDR_STATE_PROVINCE_CODE
                     def String postalCodeUnmasked = EntityTypeContactInfoTest.ADDR_POSTAL_CODE
                     def String countryCodeUnmasked = EntityTypeContactInfoTest.ADDR_COUNTRY_CODE
                     def boolean suppressAddress = EntityTypeContactInfoTest.ADDR_SUPPRESS.toBoolean()

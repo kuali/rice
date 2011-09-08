@@ -107,7 +107,7 @@ public class PersonServiceImpl implements PersonService {
 		criteriaConversion.put( KIMPropertyConstants.Person.ADDRESS_LINE_2, "entityTypeContactInfos.addresses.line2" );
 		criteriaConversion.put( KIMPropertyConstants.Person.ADDRESS_LINE_3, "entityTypeContactInfos.addresses.line3" );
 		criteriaConversion.put( KIMPropertyConstants.Person.CITY, "entityTypeContactInfos.addresses.city" );
-		criteriaConversion.put( KIMPropertyConstants.Person.STATE_CODE, "entityTypeContactInfos.addresses.stateCode" );
+		criteriaConversion.put( KIMPropertyConstants.Person.STATE_CODE, "entityTypeContactInfos.addresses.stateProvinceCode" );
 		criteriaConversion.put( KIMPropertyConstants.Person.POSTAL_CODE, "entityTypeContactInfos.addresses.postalCode" );
 		criteriaConversion.put( KIMPropertyConstants.Person.COUNTRY_CODE, "entityTypeContactInfos.addresses.countryCode" );
 		criteriaConversion.put( KIMPropertyConstants.Person.CAMPUS_CODE, "affiliations.campusCode" );

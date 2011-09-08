@@ -103,14 +103,14 @@ class EntityTest {
                                 <line2>${ENTITY_TYPE.addresses.get(0).line2}</line2>
                                 <line3>${ENTITY_TYPE.addresses.get(0).line3}</line3>
                                 <city>${ENTITY_TYPE.addresses.get(0).city}</city>
-                                <stateCode>${ENTITY_TYPE.addresses.get(0).stateCode}</stateCode>
+                                <stateProvinceCode>${ENTITY_TYPE.addresses.get(0).stateProvinceCode}</stateProvinceCode>
                                 <postalCode>${ENTITY_TYPE.addresses.get(0).postalCode}</postalCode>
                                 <countryCode>${ENTITY_TYPE.addresses.get(0).countryCode}</countryCode>
                                 <line1Unmasked>${ENTITY_TYPE.addresses.get(0).line1Unmasked}</line1Unmasked>
                                 <line2Unmasked>${ENTITY_TYPE.addresses.get(0).line2Unmasked}</line2Unmasked>
                                 <line3Unmasked>${ENTITY_TYPE.addresses.get(0).line3Unmasked}</line3Unmasked>
                                 <cityUnmasked>${ENTITY_TYPE.addresses.get(0).cityUnmasked}</cityUnmasked>
-                                <stateCodeUnmasked>${ENTITY_TYPE.addresses.get(0).stateCodeUnmasked}</stateCodeUnmasked>
+                                <stateProvinceCodeUnmasked>${ENTITY_TYPE.addresses.get(0).stateProvinceCodeUnmasked}</stateProvinceCodeUnmasked>
                                 <postalCodeUnmasked>${ENTITY_TYPE.addresses.get(0).postalCodeUnmasked}</postalCodeUnmasked>
                                 <countryCodeUnmasked>${ENTITY_TYPE.addresses.get(0).countryCodeUnmasked}</countryCodeUnmasked>
                                 <suppressAddress>${ENTITY_TYPE.addresses.get(0).suppressAddress}</suppressAddress>
@@ -186,14 +186,14 @@ class EntityTest {
                             <line2>${ENTITY_TYPE.addresses.get(0).line2}</line2>
                             <line3>${ENTITY_TYPE.addresses.get(0).line3}</line3>
                             <city>${ENTITY_TYPE.addresses.get(0).city}</city>
-                            <stateCode>${ENTITY_TYPE.addresses.get(0).stateCode}</stateCode>
+                            <stateProvinceCode>${ENTITY_TYPE.addresses.get(0).stateProvinceCode}</stateProvinceCode>
                             <postalCode>${ENTITY_TYPE.addresses.get(0).postalCode}</postalCode>
                             <countryCode>${ENTITY_TYPE.addresses.get(0).countryCode}</countryCode>
                             <line1Unmasked>${ENTITY_TYPE.addresses.get(0).line1Unmasked}</line1Unmasked>
                             <line2Unmasked>${ENTITY_TYPE.addresses.get(0).line2Unmasked}</line2Unmasked>
                             <line3Unmasked>${ENTITY_TYPE.addresses.get(0).line3Unmasked}</line3Unmasked>
                             <cityUnmasked>${ENTITY_TYPE.addresses.get(0).cityUnmasked}</cityUnmasked>
-                            <stateCodeUnmasked>${ENTITY_TYPE.addresses.get(0).stateCodeUnmasked}</stateCodeUnmasked>
+                            <stateProvinceCodeUnmasked>${ENTITY_TYPE.addresses.get(0).stateProvinceCodeUnmasked}</stateProvinceCodeUnmasked>
                             <postalCodeUnmasked>${ENTITY_TYPE.addresses.get(0).postalCodeUnmasked}</postalCodeUnmasked>
                             <countryCodeUnmasked>${ENTITY_TYPE.addresses.get(0).countryCodeUnmasked}</countryCodeUnmasked>
                             <suppressAddress>${ENTITY_TYPE.addresses.get(0).suppressAddress}</suppressAddress>

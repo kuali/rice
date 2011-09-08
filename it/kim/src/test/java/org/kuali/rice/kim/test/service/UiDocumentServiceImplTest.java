@@ -361,7 +361,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		assertEquals(docAddress.getLine1(), entityAddress.getLine1());
 		assertEquals(docAddress.getCity(), entityAddress.getCity());
 		assertEquals(docAddress.getPostalCode(), entityAddress.getPostalCode());
-		assertEquals(docAddress.getStateCode(), entityAddress.getStateCode());
+		assertEquals(docAddress.getStateCode(), entityAddress.getStateProvinceCode());
 	}
 
 	private void assertEmailTrue(PersonDocumentEmail docEmail, EntityEmailContract entityEmail) {

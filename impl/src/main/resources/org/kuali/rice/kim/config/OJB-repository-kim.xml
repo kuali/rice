@@ -401,7 +401,7 @@
     <field-descriptor name="addressTypeCode" column="ADDR_TYP_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="entityTypeCode" column="ENT_TYP_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="city" column="CITY_NM" jdbc-type="VARCHAR"  />
-    <field-descriptor name="stateCode" column="POSTAL_STATE_CD" jdbc-type="VARCHAR"  />
+    <field-descriptor name="stateProvinceCode" column="POSTAL_STATE_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="postalCode" column="postal_cd" jdbc-type="VARCHAR"  />
     <field-descriptor name="countryCode" column="POSTAL_CNTRY_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="line1" column="ADDR_LINE_1" jdbc-type="VARCHAR"  />

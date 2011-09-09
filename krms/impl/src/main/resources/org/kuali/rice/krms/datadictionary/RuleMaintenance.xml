@@ -185,6 +185,11 @@
           p:actionLabel="[-] collapse all" p:style="font-size: smaller; margin-right: 15pt;">
           <property name="actionImageField"><null/></property>
         </bean>
+        <bean id="proposition_selected" parent="AttributeField" p:propertyName="selectedPropositionId" p:showLabel="false">
+          <property name="control">
+            <bean parent="HiddenControl"/>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>
@@ -193,6 +198,8 @@
     <property name="items">
       <list>
         <bean parent="ActionField" p:methodToCall="add" p:actionLabel="Add Proposition"  p:clientSideJs="alert('Not Yet Implemented');" 
+          p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt;"/>        
+        <bean parent="ActionField" p:methodToCall="goToEditProposition" p:actionLabel="Edit Proposition"   
           p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt;"/>        
         <bean parent="MessageField" p:messageText="Move: [" p:style="display: inline;"/>
         <bean parent="ActionField" p:methodToCall="moveLeft"

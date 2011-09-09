@@ -55,7 +55,7 @@
     <property name="template" value="/krad/WEB-INF/jsp/templates/widget/agendaTree.jsp"/>
   </bean>
 
-  <bean id="Editor-MaintenanceView" parent="MaintenanceView" p:refreshWhenChanged="document.newMaintainableObject.agenda.name" p:additionalScriptFiles="/krms/scripts/agendaTree.js">
+  <bean id="Editor-MaintenanceView" parent="MaintenanceView" p:refreshWhenChanged="document.newMaintainableObject.agenda.name" p:additionalScriptFiles="/krms/scripts/ruleTree.js,../krms/scripts/agendaTree.js">
     <property name="additionalCssFiles" ref="krms-css" />
     <property name="title" value="Business Rules"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.ui.AgendaEditor"/>

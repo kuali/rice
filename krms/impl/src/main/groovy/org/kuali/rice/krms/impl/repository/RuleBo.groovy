@@ -56,6 +56,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
    // for rule editor display
    def String propositionSummary;
    private StringBuffer propositionSummaryBuffer;
+   def String selectedPropositionId;
    
    public PropositionBo getProposition(){
        return proposition;

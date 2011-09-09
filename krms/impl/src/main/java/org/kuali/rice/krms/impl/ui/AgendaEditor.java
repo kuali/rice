@@ -39,6 +39,7 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
 	private AgendaItemBo agendaItemLine;
     private String selectedAgendaItemId;
     private String cutAgendaItemId;
+    private String selectedPropositionId;
 
     public AgendaEditor() {
         agenda = new AgendaBo();

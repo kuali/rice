@@ -387,7 +387,9 @@
 		<condition property="dist.database.properties.set">
 			<and>
 				<isset property="impex.home.directory" />
+				<!--
 				<isset property="dist.database.svn.base" />
+				-->
 				<isset property="dist.database.password" />
 				<isset property="dist.database.admin.user" />
 				<isset property="dist.database.admin.password" />
@@ -433,7 +435,7 @@ in order to package the various Rice datasets.
 		<echo>Checking out the rice-cfg-dbs project from SVN to ${dist.dba.server.dataset.dir}</echo>
 
 		<ant dir="${impex.home.directory}" inheritall="false" target="satellite-init">
-			<property name="svn.base" value="${dist.database.svn.base}"/>
+			<property name="svn.base" value="dbs/rice-main-db"/>
 			<property name="torque.schema.dir" value="${dist.dba.server.dataset.dir}"/>
 			<property file="scripts/dataset/server-dataset-impex-build.properties"/>
 		</ant>
@@ -493,7 +495,7 @@ in order to package the various Rice datasets.
 		<echo>Checking out the rice-client-db project from SVN to ${dist.dba.client.dataset.dir}</echo>
 
 		<ant dir="${impex.home.directory}" inheritall="false" target="satellite-init">
-			<property name="svn.base" value="${dist.database.svn.base}"/>
+			<property name="svn.base" value="dbs/rice-client-db"/>
 			<property name="torque.schema.dir" value="${dist.dba.client.dataset.dir}"/>
 			<property file="scripts/dataset/client-dataset-impex-build.properties"/>
 		</ant>

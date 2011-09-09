@@ -1219,5 +1219,36 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             }
         }
     }
+    //
+    // Rule Editor Controller methods
+    //
+    /**
+     * This method starts an edit proposition.
+     */
+    @RequestMapping(params = "methodToCall=" + "goToEditProposition")
+    public ModelAndView goToEditProposition(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        // WARN: WORK IN PROGRESS!! Just a stub at this point really.
+        // TODO: for a simple prop add an edit simple proposition node
+
+        AgendaEditor agendaEditor = getAgendaEditor(form);
+        // this is the root of the tree:
+        AgendaItemBo firstItem = getFirstAgendaItem(agendaEditor.getAgenda());
+        
+        String selectedPropId = request.getParameter("proposition_selected_attribute");
+        String selectedPropId2 = agendaEditor.getAgendaItemLine().getRule().getSelectedPropositionId();
+        String selectedItemId = agendaEditor.getSelectedAgendaItemId();
+        AgendaItemBo node = getAgendaItemById(firstItem, selectedItemId);
+        
+        agendaEditor.getAgendaItemLine().getRule().getSelectedPropositionId();
+
+        setSelectedAgendaItemId(form, selectedItemId);
+        setAgendaItemLine(form, node);
+
+        return super.updateComponent(form, result, request, response);
+    }
+
+    
 
 }

@@ -85,7 +85,7 @@ public class RouteLogAction extends KewKualiAction {
         DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 
         DocumentSecurityService security = KEWServiceLocator.getDocumentSecurityService();
-        if (!security.routeLogAuthorized(getUserSession(), routeHeader, new SecuritySession(GlobalVariables.getUserSession()))) {
+        if (!security.routeLogAuthorized(getUserSession().getPrincipalId(), routeHeader, new SecuritySession(GlobalVariables.getUserSession().getPrincipalId()))) {
           return mapping.findForward("NotAuthorized");
         }
         
@@ -217,7 +217,7 @@ public class RouteLogAction extends KewKualiAction {
         // gather the IDs for action requests that predate the simulation
 		Set<String> preexistingActionRequestIds = getActionRequestIds(document);
         
-		// run the simulation via WorkflowUtility
+		// run the simulation
         DocumentDetail documentDetail = KewApiServiceLocator.getWorkflowDocumentActionsService().executeSimulation(
                 reportCriteria);
 

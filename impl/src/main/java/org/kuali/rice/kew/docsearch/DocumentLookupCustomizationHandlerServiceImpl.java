@@ -4,27 +4,23 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.exception.RiceRemoteServiceConnectionException;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
-import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.document.attribute.AttributeFields;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupConfiguration;
+import org.kuali.rice.kew.framework.document.lookup.DocumentLookupResultSetConfiguration;
+import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCriteriaConfiguration;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult;
+import org.kuali.rice.kew.framework.document.lookup.DocumentLookupResultValues;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.api.extension.ExtensionRepositoryService;
 import org.kuali.rice.kew.api.extension.ExtensionUtils;
-import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCustomization;
 import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCustomizationHandlerService;
 import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCustomizer;
 import org.kuali.rice.kew.framework.document.lookup.SearchableAttribute;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 
-import javax.jws.WebParam;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -44,11 +40,11 @@ public class DocumentLookupCustomizationHandlerServiceImpl implements DocumentLo
     private ExtensionRepositoryService extensionRepositoryService;
 
     @Override
-    public DocumentLookupConfiguration getDocumentLookupConfiguration(String documentTypeName, List<String> searchableAttributeNames) {
+    public DocumentLookupCriteriaConfiguration getDocumentLookupConfiguration(String documentTypeName, List<String> searchableAttributeNames) {
         if (StringUtils.isBlank(documentTypeName)) {
             throw new RiceIllegalArgumentException("documentTypeName was null or blank");
         }
-        DocumentLookupConfiguration.Builder configBuilder = DocumentLookupConfiguration.Builder.create(documentTypeName);
+        DocumentLookupCriteriaConfiguration.Builder configBuilder = DocumentLookupCriteriaConfiguration.Builder.create();
         if (CollectionUtils.isNotEmpty(searchableAttributeNames)) {
             try {
                 List<AttributeFields> searchAttributeFields = new ArrayList<AttributeFields>();
@@ -126,24 +122,7 @@ public class DocumentLookupCustomizationHandlerServiceImpl implements DocumentLo
     }
 
     @Override
-    public List<RemotableAttributeField> customizeResultSetFields(DocumentLookupCriteria documentLookupCriteria,
-            List<RemotableAttributeField> defaultResultSetFields,
-            String customizerName) throws RiceIllegalArgumentException {
-        if (documentLookupCriteria == null) {
-            throw new RiceIllegalArgumentException("documentLookupCriteria was null");
-        }
-        if (defaultResultSetFields == null) {
-            throw new RiceIllegalArgumentException("defaultResultSetFields was null");
-        }
-        if (StringUtils.isBlank(customizerName)) {
-            throw new RiceIllegalArgumentException("customizerName was null or blank");
-        }
-        DocumentLookupCustomizer customizer = loadCustomizer(customizerName);
-        return customizer.customizeResultSetFields(documentLookupCriteria, defaultResultSetFields);
-    }
-
-    @Override
-    public List<DocumentLookupResult> customizeResults(DocumentLookupCriteria documentLookupCriteria,
+    public DocumentLookupResultValues customizeResults(DocumentLookupCriteria documentLookupCriteria,
             List<DocumentLookupResult> defaultResults,
             String customizerName) throws RiceIllegalArgumentException {
         if (documentLookupCriteria == null) {
@@ -157,6 +136,19 @@ public class DocumentLookupCustomizationHandlerServiceImpl implements DocumentLo
         }
         DocumentLookupCustomizer customizer = loadCustomizer(customizerName);
         return customizer.customizeResults(documentLookupCriteria, defaultResults);
+    }
+
+    @Override
+    public DocumentLookupResultSetConfiguration customizeResultSetConfiguration(
+            DocumentLookupCriteria documentLookupCriteria, String customizerName) throws RiceIllegalArgumentException {
+        if (documentLookupCriteria == null) {
+            throw new RiceIllegalArgumentException("documentLookupCriteria was null");
+        }
+        if (StringUtils.isBlank(customizerName)) {
+            throw new RiceIllegalArgumentException("customizerName was null or blank");
+        }
+        DocumentLookupCustomizer customizer = loadCustomizer(customizerName);
+        return customizer.customizeResultSetConfiguration(documentLookupCriteria);
     }
 
     @Override

@@ -38,6 +38,7 @@ import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentContract;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.DocumentUpdate;
+import org.kuali.rice.kew.docsearch.DocumentEbo;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
@@ -130,7 +131,7 @@ import java.util.Map;
 	@NamedQuery(name="DocumentRouteHeaderValue.QuickLinks.FindWatchedDocumentsByInitiatorWorkflowId", query="SELECT NEW org.kuali.rice.kew.quicklinks.WatchedDocument(documentId, docRouteStatus, docTitle) FROM DocumentRouteHeaderValue WHERE initiatorWorkflowId = :initiatorWorkflowId AND docRouteStatus IN ('"+ KEWConstants.ROUTE_HEADER_ENROUTE_CD +"','"+ KEWConstants.ROUTE_HEADER_EXCEPTION_CD +"') ORDER BY createDate DESC"),
 	@NamedQuery(name="DocumentRouteHeaderValue.GetAppDocId", query="SELECT d.appDocId from DocumentRouteHeaderValue as d where d.documentId = :documentId")
 })
-public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase implements DocumentContract {
+public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase implements DocumentContract, DocumentEbo {
     private static final long serialVersionUID = -4700736340527913220L;
     private static final Logger LOG = Logger.getLogger(DocumentRouteHeaderValue.class);
 

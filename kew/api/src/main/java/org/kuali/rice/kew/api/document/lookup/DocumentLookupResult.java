@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
@@ -67,6 +68,24 @@ public final class DocumentLookupResult extends AbstractDataTransferObject imple
     @Override
     public List<DocumentAttribute> getDocumentAttributes() {
         return this.documentAttributes;
+    }
+
+    public List<DocumentAttribute> getDocumentAttributeByName(String attributeName) {
+        List<DocumentAttribute> namedAttributes = new ArrayList<DocumentAttribute>();
+        for (DocumentAttribute attribute : getDocumentAttributes()) {
+            if (attribute.getName().equals(attributeName)) {
+                namedAttributes.add(attribute);
+            }
+        }
+        return Collections.unmodifiableList(namedAttributes);
+    }
+
+    public DocumentAttribute getSingleDocumentAttributeByName(String attributeName) {
+        List<DocumentAttribute> namedAttributes = getDocumentAttributeByName(attributeName);
+        if (namedAttributes.isEmpty()) {
+            return null;
+        }
+        return namedAttributes.get(0);
     }
 
     /**

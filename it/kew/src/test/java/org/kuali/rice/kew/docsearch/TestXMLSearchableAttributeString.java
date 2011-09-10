@@ -19,12 +19,11 @@ package org.kuali.rice.kew.docsearch;
 import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.kew.api.document.DocumentWithContent;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
-import org.kuali.rice.kew.api.document.attribute.DocumentAttributeString;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
-import org.kuali.rice.kew.framework.document.lookup.DocumentSearchContext;
 import org.kuali.rice.kew.framework.document.lookup.SearchableAttribute;
 
 import java.util.ArrayList;
@@ -47,8 +46,8 @@ public class TestXMLSearchableAttributeString implements SearchableAttribute {
     }
 
     @Override
-    public List<DocumentAttribute> getDocumentAttributes(ExtensionDefinition extensionDefinition,
-            DocumentSearchContext documentSearchContext) {
+    public List<DocumentAttribute> extractDocumentAttributes(ExtensionDefinition extensionDefinition,
+            DocumentWithContent documentWithContent) {
         List<DocumentAttribute> savs = new ArrayList<DocumentAttribute>();
         savs.add(DocumentAttributeFactory.createStringAttribute(SEARCH_STORAGE_KEY, SEARCH_STORAGE_VALUE));
         return savs;

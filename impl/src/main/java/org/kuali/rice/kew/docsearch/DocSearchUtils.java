@@ -18,14 +18,18 @@ package org.kuali.rice.kew.docsearch;
 
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
+import org.joda.time.MutableDateTime;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
+import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.framework.resourceloader.ObjectDefinitionResolver;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupConfiguration;
+import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCriteriaConfiguration;
 import org.kuali.rice.kew.docsearch.web.SearchAttributeFormContainer;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
@@ -35,9 +39,13 @@ import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -106,7 +114,7 @@ public final class DocSearchUtils {
     }
 
     public static SearchableAttributeValue getSearchableAttributeValueByDataTypeString(DataType dataType) {
-        if (dataType == null || dataType == DataType.STRING || dataType == DataType.BOOLEAN) {
+        if (dataType == null || dataType == DataType.STRING || dataType == DataType.BOOLEAN || dataType == DataType.MARKUP) {
             return new SearchableAttributeStringValue();
         } else if (dataType == DataType.DATE || dataType == DataType.TRUNCATED_DATE) {
             return new SearchableAttributeDateTimeValue();
@@ -167,13 +175,17 @@ public final class DocSearchUtils {
 
         if (docType != null) {
 
-            DocumentLookupConfiguration lookupConfiguration = KEWServiceLocator.getDocumentLookupCustomizationMediator().getDocumentLookupConfiguration(docType);
-            List<RemotableAttributeField> searchFields = lookupConfiguration.getFlattenedSearchAttributeFields();
+            DocumentLookupCriteriaConfiguration lookupConfiguration =
+                    KEWServiceLocator.getDocumentLookupCustomizationMediator().
+                            getDocumentLookupCriteriaConfiguration(docType);
+            if (lookupConfiguration != null) {
+                List<RemotableAttributeField> searchFields = lookupConfiguration.getFlattenedSearchAttributeFields();
 
-            for (RemotableAttributeField searchField : searchFields) {
-                List<SearchAttributeCriteriaComponent> components = DocSearchUtils.translateSearchFieldToCriteriaComponent(searchField);
-                for (SearchAttributeCriteriaComponent searchableAttributeComponent : components) {
-                    criteriaComponentsByKey.put(searchField.getName(), searchableAttributeComponent);
+                for (RemotableAttributeField searchField : searchFields) {
+                    List<SearchAttributeCriteriaComponent> components = DocSearchUtils.translateSearchFieldToCriteriaComponent(searchField);
+                    for (SearchAttributeCriteriaComponent searchableAttributeComponent : components) {
+                        criteriaComponentsByKey.put(searchField.getName(), searchableAttributeComponent);
+                    }
                 }
             }
 
@@ -249,133 +261,6 @@ public final class DocSearchUtils {
         return searchableAttributes;
     }
 
-    /**
-     * This method takes the given <code>propertyFields</code> parameter and populates the {@link DocSearchCriteriaDTO}
-     * object search attributes based on the document type name set on the <code>criteria</code> object.<br>
-     * <br>
-     * This is identical to calling {@link #addSearchableAttributesToCriteria(DocSearchCriteriaDTO, List, String, boolean)}
-     * with a boolean value of false for the <code>setAttributesStrictly</code> parameter.
-     *
-     * @param criteria -
-     *            The object that needs a list of {@link SearchAttributeCriteriaComponent} objects set up based on the
-     *            document type name and <code>propertyFields</code> parameter
-     * @param propertyFields -
-     *            The list of {@link SearchAttributeFormContainer} objects that need to be converted to
-     *            {@link SearchAttributeCriteriaComponent} objects and set on the <code>criteria</code> parameter
-     * @param searchAttributesString -
-     *            A potential string that must be parsed to use to set attributes on the <code>criteria</code> object
-     */
-    public static void addSearchableAttributesToCriteria(DocSearchCriteriaDTO criteria, List propertyFields, String searchAttributesString) {
-        addSearchableAttributesToCriteria(criteria, propertyFields, searchAttributesString, false);
-    }
-
-    /**
-     * This method takes the given <code>propertyFields</code> parameter and populates the {@link DocSearchCriteriaDTO}
-     * object search attributes based on the document type name set on the <code>criteria</code> object.<br>
-     * <br>
-     * This is identical to calling {@link #addSearchableAttributesToCriteria(DocSearchCriteriaDTO, List, String, boolean)}
-     * with a null value for the <code>searchAttributesString</code> parameter.
-     *
-     * @param criteria -
-     *            The object that needs a list of {@link SearchAttributeCriteriaComponent} objects set up based on the
-     *            document type name and <code>propertyFields</code> parameter
-     * @param propertyFields -
-     *            The list of {@link SearchAttributeFormContainer} objects that need to be converted to
-     *            {@link SearchAttributeCriteriaComponent} objects and set on the <code>criteria</code> parameter
-     * @param setAttributesStrictly -
-     *            A boolean to specify whether to explicitly throw an error when a given value from
-     *            <code>propertyFields</code> does not match a search attribute on the specified document type. If set to
-     *            true an error with be thrown. If set to false the mismatch will be ignored.
-     */
-    public static void addSearchableAttributesToCriteria(DocSearchCriteriaDTO criteria, List propertyFields, boolean setAttributesStrictly) {
-        addSearchableAttributesToCriteria(criteria, propertyFields, null, setAttributesStrictly);
-    }
-
-    /**
-     * This method takes the given <code>propertyFields</code> parameter and populates the {@link DocSearchCriteriaDTO}
-     * object search attributes based on the document type name set on the <code>criteria</code> object.
-     *
-     * @param criteria -
-     *            The object that needs a list of {@link SearchAttributeCriteriaComponent} objects set up based on the
-     *            document type name and <code>propertyFields</code> parameter
-     * @param propertyFields -
-     *            The list of {@link SearchAttributeFormContainer} objects that need to be converted to
-     *            {@link SearchAttributeCriteriaComponent} objects and set on the <code>criteria</code> parameter
-     * @param searchAttributesString -
-     *            A potential string that must be parsed to use to set attributes on the <code>criteria</code> object
-     * @param setAttributesStrictly -
-     *            A boolean to specify whether to explicitly throw an error when a given value from
-     *            <code>propertyFields</code> does not match a search attribute on the specified document type. If set to
-     *            true an error with be thrown. If set to false the mismatch will be ignored.
-     */
-    public static void addSearchableAttributesToCriteria(DocSearchCriteriaDTO criteria, List propertyFields, String searchAttributesString, boolean setAttributesStrictly) {
-        if (criteria != null) {
-            DocumentType docType = getDocumentType(criteria.getDocTypeFullName());
-            if (docType == null) {
-                return;
-            }
-            criteria.getSearchableAttributes().clear();
-            Map<String, SearchAttributeCriteriaComponent> urlParameterSearchAttributesByFormKey = new HashMap<String, SearchAttributeCriteriaComponent>();
-
-            if (!StringUtils.isBlank(searchAttributesString)) {
-                List<SearchAttributeCriteriaComponent> components = buildSearchableAttributesFromString(searchAttributesString, docType.getName());
-                for (SearchAttributeCriteriaComponent component : components) {
-                    urlParameterSearchAttributesByFormKey.put(component.getFormKey(), component);
-                    criteria.addSearchableAttribute(component);
-                }
-            }
-
-            if (!propertyFields.isEmpty()) {
-                Map<String, SearchAttributeCriteriaComponent> criteriaComponentsByFormKey = new HashMap<String, SearchAttributeCriteriaComponent>();
-
-                DocumentLookupConfiguration lookupConfiguration = KEWServiceLocator.getDocumentLookupCustomizationMediator().getDocumentLookupConfiguration(docType);
-                List<RemotableAttributeField> searchFields = lookupConfiguration.getFlattenedSearchAttributeFields();
-
-                for (RemotableAttributeField searchField : searchFields) {
-                    List<SearchAttributeCriteriaComponent> components = DocSearchUtils.translateSearchFieldToCriteriaComponent(searchField);
-                    for (SearchAttributeCriteriaComponent searchableAttributeComponent : components) {
-                        criteriaComponentsByFormKey.put(searchField.getName(), searchableAttributeComponent);
-                    }
-                }
-
-                for (Iterator iterator = propertyFields.iterator(); iterator.hasNext();) {
-                    SearchAttributeFormContainer propertyField = (SearchAttributeFormContainer) iterator.next();
-                    SearchAttributeCriteriaComponent sacc = criteriaComponentsByFormKey.get(propertyField.getKey());
-                    if (sacc != null) {
-                        if (sacc.getSearchableAttributeValue() == null) {
-                            String errorMsg = "Searchable attribute with form field key " + sacc.getFormKey() + " does not have a valid SearchableAttributeValue";
-                            LOG.error("addSearchableAttributesToCriteria() " + errorMsg);
-                            throw new RuntimeException(errorMsg);
-                        }
-                        // if the url parameter has already set up the search attribute change the propertyField
-                        if (urlParameterSearchAttributesByFormKey.containsKey(sacc.getFormKey())) {
-                            setupPropertyField(urlParameterSearchAttributesByFormKey.get(sacc.getFormKey()), propertyFields);
-                        } else {
-                            if (Field.MULTI_VALUE_FIELD_TYPES.contains(sacc.getLookupableFieldType())) {
-                                // set the multivalue lookup indicator
-                                sacc.setCanHoldMultipleValues(true);
-                                if (propertyField.getValues() == null) {
-                                    sacc.setValues(new ArrayList<String>());
-                                } else {
-                                    sacc.setValues(Arrays.asList(propertyField.getValues()));
-                                }
-                            } else {
-                                sacc.setValue(propertyField.getValue());
-                            }
-                            criteria.addSearchableAttribute(sacc);
-                        }
-                    } else {
-                        if (setAttributesStrictly) {
-                            String message = "Cannot find matching search attribute with key '" + propertyField.getKey() + "' on document type '" + docType.getName() + "'";
-                            LOG.error(message);
-                            throw new WorkflowRuntimeException(message);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     public static void setupPropertyField(SearchAttributeCriteriaComponent searchableAttribute, List propertyFields) {
         SearchAttributeFormContainer propertyField = getPropertyField(searchableAttribute.getFormKey(), propertyFields);
         if (propertyField != null) {
@@ -405,5 +290,143 @@ public final class DocSearchUtils {
         }
         return null;
     }
+
+    public static DateTime getLowerDateTimeBound(String dateRange) throws ParseException {
+        Range range = parseRange(dateRange);
+        if (range == null) {
+            throw new IllegalArgumentException("Failed to parse date range from given string: " + dateRange);
+        }
+        if (range.getLowerBoundValue() != null) {
+            java.util.Date lowerRangeDate = CoreApiServiceLocator.getDateTimeService().convertToDate(range.getLowerBoundValue());
+            MutableDateTime dateTime = new MutableDateTime(lowerRangeDate);
+            dateTime.setMillisOfDay(0);
+            return dateTime.toDateTime();
+        }
+        return null;
+    }
+
+    public static DateTime getUpperDateTimeBound(String dateRange) throws ParseException {
+        Range range = parseRange(dateRange);
+        if (range == null) {
+            throw new IllegalArgumentException("Failed to parse date range from given string: " + dateRange);
+        }
+        if (range.getUpperBoundValue() != null) {
+            java.util.Date upperRangeDate = CoreApiServiceLocator.getDateTimeService().convertToDate(range.getUpperBoundValue());
+            MutableDateTime dateTime = new MutableDateTime(upperRangeDate);
+            // set it to the last millisecond of the day
+            dateTime.setMillisOfDay((24 * 60 * 60 * 1000) - 1);
+            return dateTime.toDateTime();
+        }
+        return null;
+    }
+
+    public static Range parseRange(String rangeString) {
+        if (StringUtils.isBlank(rangeString)) {
+            throw new IllegalArgumentException("rangeString was null or blank");
+        }
+        Range range = new Range();
+        rangeString = rangeString.trim();
+        if (rangeString.startsWith(SearchOperator.LESS_THAN_EQUAL.op())) {
+            rangeString = StringUtils.remove(rangeString, SearchOperator.LESS_THAN_EQUAL.op()).trim();
+            range.setUpperBoundValue(rangeString);
+            range.setUpperBoundInclusive(true);
+        } else if (rangeString.startsWith(SearchOperator.LESS_THAN.op())) {
+            rangeString = StringUtils.remove(rangeString, SearchOperator.LESS_THAN.op()).trim();
+            range.setUpperBoundValue(rangeString);
+            range.setUpperBoundInclusive(false);
+        } else if (rangeString.startsWith(SearchOperator.GREATER_THAN_EQUAL.op())) {
+            rangeString = StringUtils.remove(rangeString, SearchOperator.GREATER_THAN_EQUAL.op()).trim();
+            range.setLowerBoundValue(rangeString);
+            range.setLowerBoundInclusive(true);
+        } else if (rangeString.startsWith(SearchOperator.GREATER_THAN.op())) {
+            rangeString = StringUtils.remove(rangeString, SearchOperator.GREATER_THAN.op()).trim();
+            range.setLowerBoundValue(rangeString);
+            range.setLowerBoundInclusive(false);
+        } else if (rangeString.contains(SearchOperator.BETWEEN_EXCLUSIVE_UPPER.op())) {
+            String[] rangeBounds = StringUtils.split(rangeString, SearchOperator.BETWEEN_EXCLUSIVE_UPPER.op());
+            range.setLowerBoundValue(rangeBounds[0]);
+            range.setLowerBoundInclusive(true);
+            range.setUpperBoundValue(rangeBounds[1]);
+            range.setUpperBoundInclusive(false);
+        } else if (rangeString.contains(SearchOperator.BETWEEN.op())) {
+            String[] rangeBounds = StringUtils.split(rangeString, SearchOperator.BETWEEN.op());
+            range.setLowerBoundValue(rangeBounds[0]);
+            range.setLowerBoundInclusive(true);
+            range.setUpperBoundValue(rangeBounds[1]);
+            range.setUpperBoundInclusive(true);
+        } else {
+            // if it has no range specification, return null
+            return null;
+        }
+        return range;
+    }
+
+/**
+     * Cleans upper bounds on an entire list of values.
+     * @param stringDates list
+     * @return list of dates
+     */
+    private static List<String> cleanUpperBounds(List<String> stringDates) {
+        List<String> lRet = null;
+        if(stringDates != null && !stringDates.isEmpty()){
+            lRet = new ArrayList<String>();
+            for(String stringDate:stringDates){
+                lRet.add(cleanUpperBound(stringDate));
+            }
+        }
+        return lRet;
+    }
+
+    /**
+     * When dealing with upperbound dates, it is a business requirement that if a timestamp isn't already
+     * stated append 23:59:59 to the end of the date.  This ensures that you are searching for the entire
+     * day.
+     * @param stringDate
+     * @return upper bound date
+     */
+    private static String cleanUpperBound(String stringDate){
+        try{
+            java.sql.Timestamp dt = CoreApiServiceLocator.getDateTimeService().convertToSqlTimestamp(stringDate);
+            SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
+
+            if("00:00:00".equals(sdfTime.format(dt))){
+                stringDate = stringDate + " 23:59:59";
+            }
+        } catch (Exception ex){
+            GlobalVariables.getMessageMap().putError(KRADConstants.DOCUMENT_ERRORS, RiceKeyConstants.ERROR_CUSTOM, new String[] { "Invalid Date Input: " + stringDate });
+        }
+        return stringDate;
+    }
+
+
+    /**
+     *
+     * This method takes in any valid date string, like <12/30/09 and convert
+     * it into <12/30/09 23:59:59, but only for upper bound type values.
+     *
+     *  This method only really cares about .., <, <=. other operators
+     *  are not evaluated.
+     *
+     * In order to do this it has to parse the inline date string
+     *
+     * @param propertyValue
+     * @return
+     */
+    private static String parseAndConvertDateToRange(String propertyValue) {
+
+        String sRet = propertyValue;
+
+        if (StringUtils.contains(propertyValue, SearchOperator.BETWEEN.op())) {
+            String[] rangeValues = propertyValue.split("\\.\\."); // this translate to the .. operator
+            sRet = ObjectUtils.clean(rangeValues[0].trim()) + " " + SearchOperator.BETWEEN.op() + " " + cleanUpperBound(ObjectUtils.clean(rangeValues[1].trim()));
+        }  else if (propertyValue.startsWith(SearchOperator.LESS_THAN_EQUAL.op())) {
+            sRet = SearchOperator.LESS_THAN_EQUAL + cleanUpperBound(ObjectUtils.clean(propertyValue));
+        }  else if (propertyValue.startsWith(SearchOperator.LESS_THAN.op())) {
+            sRet = SearchOperator.LESS_THAN + cleanUpperBound(ObjectUtils.clean(propertyValue));
+        }
+
+        return sRet;
+    }
+
 
 }

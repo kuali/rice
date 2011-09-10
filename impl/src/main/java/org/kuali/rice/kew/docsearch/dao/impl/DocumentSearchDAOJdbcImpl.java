@@ -17,11 +17,11 @@
 package org.kuali.rice.kew.docsearch.dao.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
-import org.kuali.rice.kew.docsearch.DocSearchDTO;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
-import org.kuali.rice.kew.docsearch.StandardDocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.dao.DocumentSearchDAO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
@@ -39,7 +39,6 @@ import java.sql.Statement;
 import java.util.List;
 
 /**
- *
  * Spring JdbcTemplate implementation of DocumentSearchDAO
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -48,43 +47,32 @@ import java.util.List;
 public class DocumentSearchDAOJdbcImpl implements DocumentSearchDAO {
 
     public static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentSearchDAOJdbcImpl.class);
-
     private static final int DEFAULT_FETCH_MORE_ITERATION_LIMIT = 10;
-    private DataSource ds;
+    
+    private DataSource dataSource;
 
-    public List<DocSearchDTO> getListBoundedByCritera(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaDTO criteria, String principalId) {
-        return getList(documentSearchGenerator, criteria, criteria.getThreshold(), principalId);
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = new TransactionAwareDataSourceProxy(dataSource);
     }
 
-    public List<DocSearchDTO> getList(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaDTO criteria, String principalId) {
-        return getList(documentSearchGenerator, criteria, getSearchResultCap(documentSearchGenerator), principalId);
-    }
-
-    public void setDataSource(DataSource ds) {
-        this.ds = new TransactionAwareDataSourceProxy(ds);
-     }
-
-    @SuppressWarnings("unchecked")
-    private List<DocSearchDTO> getList(final DocumentSearchGenerator documentSearchGenerator, final DocSearchCriteriaDTO criteria, final Integer searchResultCap, final String principalId) {
-        LOG.debug("start getList");
+    @Override
+    public DocumentLookupResults.Builder findDocuments(final DocumentSearchGenerator documentSearchGenerator, final DocumentLookupCriteria.Builder criteria, final List<RemotableAttributeField> searchFields) {
+        final int maxResultCap = getMaxResultCap(criteria);
         try {
-            final JdbcTemplate template = new JdbcTemplate(ds);
+            final JdbcTemplate template = new JdbcTemplate(dataSource);
 
-            return (List<DocSearchDTO>) template.execute(new ConnectionCallback() {
-                public Object doInConnection(final Connection con) throws SQLException {
+            return template.execute(new ConnectionCallback<DocumentLookupResults.Builder>() {
+                @Override
+                public DocumentLookupResults.Builder doInConnection(final Connection con) throws SQLException {
                     final Statement statement = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
                     try {
-                        criteria.setThreshold(searchResultCap);
-                        if (searchResultCap != null) {
-                            final int fetchLimit = getFetchMoreIterationLimit() * searchResultCap;
-                            criteria.setFetchLimit(fetchLimit);
-                            statement.setFetchSize(searchResultCap + 1);
-                            statement.setMaxRows(fetchLimit + 1);
-                        } else {
-                            criteria.setFetchLimit(null);
-                        }
+                        final int fetchIterationLimit = getFetchMoreIterationLimit();
+                        final int fetchLimit = fetchIterationLimit * maxResultCap;
+                        statement.setFetchSize(maxResultCap + 1);
+                        statement.setMaxRows(fetchLimit + 1);
+
                         PerformanceLogger perfLog = new PerformanceLogger();
-                        String sql = documentSearchGenerator.generateSearchSql(criteria);
+                        String sql = documentSearchGenerator.generateSearchSql(criteria, searchFields);
                         perfLog.log("Time to generate search sql from documentSearchGenerator class: " + documentSearchGenerator.getClass().getName(), true);
                         LOG.info("Executing document search with statement max rows: " + statement.getMaxRows());
                         LOG.info("Executing document search with statement fetch size: " + statement.getFetchSize());
@@ -92,14 +80,9 @@ public class DocumentSearchDAOJdbcImpl implements DocumentSearchDAO {
                         final ResultSet rs = statement.executeQuery(sql);
                         try {
                             perfLog.log("Time to execute doc search database query.", true);
-                            // TODO delyea - look at refactoring
                             final Statement searchAttributeStatement = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
                             try {
-                            	if(documentSearchGenerator.isProcessResultSet()){
-                            		return documentSearchGenerator.processResultSet(searchAttributeStatement, rs, criteria, principalId);
-                            	}else{
-                            		return new StandardDocumentSearchGenerator().processResultSet(searchAttributeStatement, rs, criteria, principalId);
-                            	}
+                           		return documentSearchGenerator.processResultSet(criteria, searchAttributeStatement, rs, maxResultCap, fetchLimit);
                             } finally {
                                 try {
                                     searchAttributeStatement.close();
@@ -135,15 +118,24 @@ public class DocumentSearchDAOJdbcImpl implements DocumentSearchDAO {
         }
     }
 
-    private int getSearchResultCap(DocumentSearchGenerator docSearchGenerator) {
-        int resultCap = docSearchGenerator.getDocumentSearchResultSetLimit();
-        String resultCapValue = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP);
-        if (!StringUtils.isBlank(resultCapValue)) {
+    /**
+     * Returns the maximum number of results that should be returned from the document lookup.
+     *
+     * @param criteria the criteria in which to check for a max results value
+     * @return the maximum number of results that should be returned from a document lookup
+     */
+    protected int getMaxResultCap(DocumentLookupCriteria.Builder criteria) {
+        int maxResults = KEWConstants.DOCUMENT_LOOKUP_DEFAULT_RESULT_CAP;
+        if (criteria.getMaxResults() != null) {
+            maxResults = criteria.getMaxResults().intValue();
+        }
+        String resultCapValue = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.DOCUMENT_LOOKUP_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP);
+        if (StringUtils.isNotBlank(resultCapValue)) {
             try {
                 Integer maxResultCap = Integer.parseInt(resultCapValue);
-                if (resultCap > maxResultCap) {
-                    LOG.warn("Document Search Generator (" + docSearchGenerator.getClass().getName() + ") gives result set cap of " + resultCap + " which is greater than parameter " + KEWConstants.DOC_SEARCH_RESULT_CAP + " value of " + maxResultCap);
-                    resultCap = maxResultCap;
+                if (maxResults > maxResultCap) {
+                    LOG.warn("Result set cap of " + maxResults + " is greater than parameter " + KEWConstants.DOC_SEARCH_RESULT_CAP + " value of " + maxResultCap);
+                    maxResults = maxResultCap;
                 } else if (maxResultCap <= 0) {
                     LOG.warn(KEWConstants.DOC_SEARCH_RESULT_CAP + " was less than or equal to zero.  Please use a positive integer.");
                 }
@@ -151,13 +143,12 @@ public class DocumentSearchDAOJdbcImpl implements DocumentSearchDAO {
                 LOG.warn(KEWConstants.DOC_SEARCH_RESULT_CAP + " is not a valid number.  Value was " + resultCapValue);
             }
         }
-        return resultCap;
+        return maxResults;
     }
 
-    // TODO delyea: use searchable attribute count here?
-    private int getFetchMoreIterationLimit() {
+    protected int getFetchMoreIterationLimit() {
         int fetchMoreLimit = DEFAULT_FETCH_MORE_ITERATION_LIMIT;
-        String fetchMoreLimitValue = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT);
+        String fetchMoreLimitValue = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.DOCUMENT_LOOKUP_DETAIL_TYPE, KEWConstants.DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT);
         if (!StringUtils.isBlank(fetchMoreLimitValue)) {
             try {
                 fetchMoreLimit = Integer.parseInt(fetchMoreLimitValue);
@@ -172,8 +163,4 @@ public class DocumentSearchDAOJdbcImpl implements DocumentSearchDAO {
         return fetchMoreLimit;
     }
 
-    //
-    //    protected DatabasePlatform getPlatform() {
-    //    	return (DatabasePlatform)GlobalResourceLoader.getService(KEWServiceLocator.DB_PLATFORM);
-    //    }
 }

@@ -27,6 +27,7 @@ import org.w3c.dom.Element;
         RemotableAttributeLookupSettings.Elements.UPPER_BOUND_NAME,
         RemotableAttributeLookupSettings.Elements.UPPER_BOUND_LABEL,
         RemotableAttributeLookupSettings.Elements.UPPER_BOUND_INCLUSIVE,
+        RemotableAttributeLookupSettings.Elements.CASE_SENSITIVE,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class RemotableAttributeLookupSettings extends AbstractDataTransferObject implements AttributeLookupSettings {
@@ -57,6 +58,9 @@ public final class RemotableAttributeLookupSettings extends AbstractDataTransfer
 
     @XmlElement(name = Elements.UPPER_BOUND_INCLUSIVE, required = false)
     private final boolean upperBoundInclusive;
+
+    @XmlElement(name = Elements.CASE_SENSITIVE, required = false)
+    private final Boolean caseSensitive;
     
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -75,6 +79,7 @@ public final class RemotableAttributeLookupSettings extends AbstractDataTransfer
         this.upperBoundName = null;
         this.upperBoundLabel = null;
         this.upperBoundInclusive = false;
+        this.caseSensitive = null;
     }
 
     private RemotableAttributeLookupSettings(Builder builder) {
@@ -87,6 +92,7 @@ public final class RemotableAttributeLookupSettings extends AbstractDataTransfer
         this.upperBoundName = builder.getUpperBoundName();
         this.upperBoundLabel = builder.getUpperBoundLabel();
         this.upperBoundInclusive = builder.isUpperBoundInclusive();
+        this.caseSensitive = builder.isCaseSensitive();
     }
 
     @Override
@@ -134,6 +140,11 @@ public final class RemotableAttributeLookupSettings extends AbstractDataTransfer
         return this.upperBoundInclusive;
     }
 
+    @Override
+    public Boolean isCaseSensitive() {
+        return caseSensitive;
+    }
+
     /**
      * A builder which can be used to construct {@link RemotableAttributeLookupSettings} instances.  Enforces the constraints of the {@link AttributeLookupSettings}.
      */
@@ -148,6 +159,7 @@ public final class RemotableAttributeLookupSettings extends AbstractDataTransfer
         private String upperBoundName;
         private String upperBoundLabel;
         private boolean upperBoundInclusive;
+        private Boolean caseSensitive;
 
         private Builder() {
             setInCriteria(true);
@@ -164,8 +176,16 @@ public final class RemotableAttributeLookupSettings extends AbstractDataTransfer
                 throw new IllegalArgumentException("contract was null");
             }
             Builder builder = create();
+            builder.setInCriteria(contract.isInCriteria());
+            builder.setInResults(contract.isInResults());
+            builder.setRanged(contract.isRanged());
+            builder.setLowerBoundName(contract.getLowerBoundName());
+            builder.setLowerBoundLabel(contract.getLowerBoundLabel());
             builder.setLowerBoundInclusive(contract.isLowerBoundInclusive());
+            builder.setUpperBoundName(contract.getUpperBoundName());
+            builder.setUpperBoundLabel(contract.getUpperBoundLabel());
             builder.setUpperBoundInclusive(contract.isUpperBoundInclusive());
+            builder.setCaseSensitive(contract.isCaseSensitive());
             return builder;
         }
 
@@ -218,6 +238,11 @@ public final class RemotableAttributeLookupSettings extends AbstractDataTransfer
             return this.upperBoundInclusive;
         }
 
+        @Override
+        public Boolean isCaseSensitive() {
+            return caseSensitive;
+        }
+
         public void setInCriteria(boolean inCriteria) {
             this.inCriteria = inCriteria;
         }
@@ -260,6 +285,10 @@ public final class RemotableAttributeLookupSettings extends AbstractDataTransfer
             this.upperBoundInclusive = upperBoundInclusive;
         }
 
+        public void setCaseSensitive(Boolean caseSensitive) {
+            this.caseSensitive = caseSensitive;
+        }
+
     }
 
     /**
@@ -283,6 +312,7 @@ public final class RemotableAttributeLookupSettings extends AbstractDataTransfer
         final static String UPPER_BOUND_NAME = "upperBoundName";
         final static String UPPER_BOUND_LABEL = "upperBoundLabel";
         final static String UPPER_BOUND_INCLUSIVE = "upperBoundInclusive";
+        final static String CASE_SENSITIVE = "caseSensitive";
     }
 
 }

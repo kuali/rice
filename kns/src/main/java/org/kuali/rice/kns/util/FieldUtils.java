@@ -20,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.uif.Control;
+import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.uif.RemotableAttributeLookupSettings;
 import org.kuali.rice.core.api.uif.RemotableCheckboxGroup;
@@ -31,6 +32,7 @@ import org.kuali.rice.core.api.uif.RemotableTextInput;
 import org.kuali.rice.core.api.uif.RemotableTextarea;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.web.format.FormatException;
+import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
@@ -48,6 +50,8 @@ import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
+import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.PropertyRenderingConfigElement;
 import org.kuali.rice.kns.web.ui.Row;
@@ -256,6 +260,13 @@ public final class FieldUtils {
 				}
 				field.setExpandedTextArea(control.isExpandedTextArea());
 			}
+
+            if (Field.MULTISELECT.equals(fieldType)) {
+                Integer size = control.getSize();
+				if (size != null) {
+					field.setSize(size.intValue());
+				}
+            }
 
 			// for dropdown and radio, get instance of specified KeyValuesFinder and set field values
 			if (Field.DROPDOWN.equals(fieldType) || Field.RADIO.equals(fieldType)
@@ -1563,6 +1574,57 @@ public final class FieldUtils {
                 field.setFieldType(Field.HIDDEN);
             }
         }
+    }
+
+    public static Column constructColumnFromAttributeField(RemotableAttributeField attributeField) {
+        if (attributeField == null) {
+            throw new IllegalArgumentException("attributeField was null");
+        }
+        DataType dataType = DataType.STRING;
+        if (attributeField.getDataType() != null) {
+            dataType = attributeField.getDataType();
+        }
+        Column column = new Column();
+        String columnTitle = "";
+        if (StringUtils.isBlank(attributeField.getShortLabel())) {
+            if (StringUtils.isBlank(attributeField.getLongLabel())) {
+                columnTitle = attributeField.getName();
+            } else {
+                columnTitle = attributeField.getLongLabel();
+            }
+        } else {
+            columnTitle = attributeField.getShortLabel();
+        }
+        column.setColumnTitle(columnTitle);
+        column.setSortable(Boolean.TRUE.toString());
+        // TODO - Rice 2.0 - maybe need this to be smaller than the actual attribute's max length?
+        if (attributeField.getMaxLength() != null) {
+            column.setMaxLength(attributeField.getMaxLength());
+        }
+        column.setPropertyName(attributeField.getName());
+        if (attributeField.getDataType() == DataType.MARKUP) {
+            column.setEscapeXMLValue(false);
+        } else {
+            column.setEscapeXMLValue(true);
+        }
+        column.setComparator(CellComparatorHelper.getAppropriateComparatorForPropertyClass(dataType.getClass()));
+        column.setValueComparator(CellComparatorHelper.getAppropriateValueComparatorForPropertyClass(dataType.getClass()));
+        column.setFormatter(FieldUtils.getFormatterForDataType(dataType));
+        return column;
+    }
+
+    public static List<Column> constructColumnsFromAttributeFields(List<RemotableAttributeField> attributeFields) {
+        List<Column> attributeColumns = new ArrayList<Column>();
+        if (attributeFields != null) {
+            for (RemotableAttributeField attributeField : attributeFields) {
+                attributeColumns.add(constructColumnFromAttributeField(attributeField));
+            }
+        }
+        return attributeColumns;
+    }
+
+    public static Formatter getFormatterForDataType(DataType dataType) {
+        return Formatter.getFormatter(dataType.getType());
     }
 
     private static DataDictionaryService getDataDictionaryService() {

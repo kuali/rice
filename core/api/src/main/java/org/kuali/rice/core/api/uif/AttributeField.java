@@ -136,16 +136,6 @@ public interface AttributeField {
     Collection<? extends Widget> getWidgets();
 
     /**
-     * Indicates if lookups which use this attribute should execute the lookup against this attribute
-     * in a case sensitive fashion.  If this method returns null, it means that the system-level
-     * default for case sensitivity of attributes on lookups should be used.
-     *
-     * @return true if the attribute should be case sensitive on lookups, false if it should not, and
-     * null if the system-level default should be used
-     */
-    Boolean isLookupCaseSensitive();
-
-    /**
      * If this method returns a non-null value, it defines various settings for this attribute whenever
      * it is used on a lookup.
      *

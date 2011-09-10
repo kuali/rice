@@ -19,8 +19,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kuali.rice.krad.UserSession;
-
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
+import org.kuali.rice.kew.framework.document.security.DocumentSecurityAttribute;
 
 /**
  * Caches information about various security constraints for a single user which have already been
@@ -34,18 +34,20 @@ public class SecuritySession implements Serializable {
 
 	private static final long serialVersionUID = 2542191040889845305L;
 
-	private final UserSession userSession;
+	private final String principalId;
 	private Map<String, Boolean> authenticatedWorkgroups = new HashMap<String, Boolean>();
 	private Map<String, Boolean> passesRoleSecurity = new HashMap<String, Boolean>();
+    private Map<String, DocumentSecurityAttribute> securityAttributeClassNameMap = new HashMap<String, DocumentSecurityAttribute>();
+    private Map<String, ExtensionDefinition> extensionDefinitionMap = new HashMap<String, ExtensionDefinition>();
 
 	private Map<String, DocumentTypeSecurity> documentTypeSecurity = new HashMap<String, DocumentTypeSecurity>();
 
-	public SecuritySession(UserSession userSession) {
-		this.userSession = userSession;
+	public SecuritySession(String principalId) {
+		this.principalId = principalId;
 	}
 
-	public UserSession getUserSession() {
-		return userSession;
+	public String getPrincipalId() {
+		return principalId;
 	}
 
 	public Map<String, Boolean> getPassesRoleSecurity() {
@@ -72,4 +74,19 @@ public class SecuritySession implements Serializable {
 		this.documentTypeSecurity = documentTypeSecurity;
 	}
 
+    public DocumentSecurityAttribute getSecurityAttributeForClass(String className) {
+        return this.securityAttributeClassNameMap.get(className);
+    }
+
+    public void setSecurityAttributeForClass(String className, DocumentSecurityAttribute securityAttribute) {
+        this.securityAttributeClassNameMap.put(className, securityAttribute);
+    }
+
+    public ExtensionDefinition getExtensionByName(String extensionName) {
+        return extensionDefinitionMap.get(extensionName);
+    }
+
+    public void setExtensionForName(String extensionName, ExtensionDefinition extension) {
+        this.extensionDefinitionMap.put(extensionName, extension);
+    }
 }

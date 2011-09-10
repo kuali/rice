@@ -29,6 +29,8 @@ import org.kuali.rice.kew.api.document.DocumentContent;
 import org.kuali.rice.kew.api.document.DocumentDetail;
 import org.kuali.rice.kew.api.document.DocumentLink;
 import org.kuali.rice.kew.api.document.WorkflowDocumentService;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
 import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
 import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -37,7 +39,9 @@ import org.kuali.rice.kew.routeheader.DocumentStatusTransition;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 
+import javax.jws.WebMethod;
 import javax.jws.WebParam;
+import javax.jws.WebResult;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -134,6 +138,14 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         }
  	 	return KEWServiceLocator.getRouteHeaderService().getAppDocId(documentId);
  	}
+
+    @Override
+    public DocumentLookupResults lookupDocuments(String principalId, DocumentLookupCriteria criteria) {
+        if (criteria == null) {
+            throw new RiceIllegalArgumentException("criteria was null");
+        }
+        return KEWServiceLocator.getDocumentSearchService().lookupDocuments(principalId, criteria);
+    }
 
     @Override
     public List<String> getSearchableAttributeStringValuesByKey(String documentId, String key) {

@@ -22,6 +22,8 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.kuali.rice.core.api.mo.common.Coded;
 
+import java.util.EnumSet;
+
 /**
  * TODO...
  * 
@@ -33,25 +35,31 @@ import org.kuali.rice.core.api.mo.common.Coded;
 @XmlEnum
 public enum DocumentStatus implements Coded {
 
-	@XmlEnumValue("I") INITIATED("I"),
-	@XmlEnumValue("S") SAVED("S"),
-	@XmlEnumValue("R") ENROUTE("R"),
-	@XmlEnumValue("P") PROCESSED("P"),
-	@XmlEnumValue("F") FINAL("F"),
-	@XmlEnumValue("X") CANCELED("X"),
-	@XmlEnumValue("D") DISAPPROVED("D"),
-	@XmlEnumValue("E") EXCEPTION("E");
-	
+	@XmlEnumValue("I") INITIATED("I", DocumentStatusCategory.PENDING),
+	@XmlEnumValue("S") SAVED("S", DocumentStatusCategory.PENDING),
+	@XmlEnumValue("R") ENROUTE("R", DocumentStatusCategory.PENDING),
+    @XmlEnumValue("E") EXCEPTION("E", DocumentStatusCategory.PENDING),
+	@XmlEnumValue("P") PROCESSED("P", DocumentStatusCategory.SUCCESSFUL),
+	@XmlEnumValue("F") FINAL("F", DocumentStatusCategory.SUCCESSFUL),
+	@XmlEnumValue("X") CANCELED("X", DocumentStatusCategory.UNSUCCESSFUL),
+	@XmlEnumValue("D") DISAPPROVED("D", DocumentStatusCategory.UNSUCCESSFUL);
+
 	private final String code;
+    private final DocumentStatusCategory category;
 	
-	private DocumentStatus(String code) {
+	private DocumentStatus(String code, DocumentStatusCategory category) {
 		this.code = code;
+        this.category = category;
 	}
 	
 	@Override
 	public String getCode() {
 		return code;
 	}
+
+    public DocumentStatusCategory getCategory() {
+        return category;
+    }
 	
 	public String getLabel() {
 	    return name();
@@ -68,5 +76,18 @@ public enum DocumentStatus implements Coded {
 		}
 		throw new IllegalArgumentException("Failed to locate the DocumentStatus with the given code: " + code);
 	}
+
+    public static EnumSet<DocumentStatus> getStatusesForCategory(DocumentStatusCategory category) {
+        if (category == null) {
+            throw new IllegalArgumentException("category was null");
+        }
+        EnumSet<DocumentStatus> categoryStatuses = EnumSet.noneOf(DocumentStatus.class);
+        for (DocumentStatus status : values()) {
+			if (status.category == category) {
+				categoryStatuses.add(status);
+			}
+		}
+        return categoryStatuses;
+    }
 	
 }

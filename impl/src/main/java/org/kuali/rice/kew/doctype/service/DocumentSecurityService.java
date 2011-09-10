@@ -15,13 +15,16 @@
  */
 package org.kuali.rice.kew.doctype.service;
 
-import org.kuali.rice.kew.docsearch.DocSearchDTO;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
 import org.kuali.rice.kew.doctype.SecuritySession;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.krad.UserSession;
 
+import java.util.Set;
 
 public interface DocumentSecurityService {
-  public boolean docSearchAuthorized(UserSession userSession, DocSearchDTO docCriteriaDTO, SecuritySession session);
-  public boolean routeLogAuthorized(UserSession userSession, DocumentRouteHeaderValue routeHeader, SecuritySession session);
+
+    boolean routeLogAuthorized(String principalId, DocumentRouteHeaderValue routeHeader, SecuritySession session);
+
+    Set<String> documentLookupResultAuthorized(String principalId, DocumentLookupResults results, SecuritySession securitySession);
+
 }

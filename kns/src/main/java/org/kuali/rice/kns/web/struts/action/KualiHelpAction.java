@@ -404,10 +404,7 @@ public class KualiHelpAction extends KualiAction {
     	KualiHelpForm helpForm = (KualiHelpForm) form;
     	
     	final String lookupBusinessObjectClassName = helpForm.getLookupBusinessObjectClassName();
-        // TODO: fix once kew refactoring is complete
-    	if (!StringUtils.isBlank(lookupBusinessObjectClassName) && 
-    	        // don't do this for doc search
-    	        !"org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO".equals(lookupBusinessObjectClassName)) {
+    	if (!StringUtils.isBlank(lookupBusinessObjectClassName)) {
     		final DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();
     		final BusinessObjectEntry entry = (BusinessObjectEntry) dataDictionary.getBusinessObjectEntry(lookupBusinessObjectClassName);
     		final LookupDefinition lookupDefinition = entry.getLookupDefinition();

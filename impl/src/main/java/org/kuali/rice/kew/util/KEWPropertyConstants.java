@@ -35,6 +35,8 @@ public final class KEWPropertyConstants {
     public static final String DOC_SEARCH_RESULT_PROPERTY_NAME_DATE_CREATED = "dateCreated";
     public static final String DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG = "routeLog";
     public static final String DOC_SEARCH_RESULT_PROPERTY_NAME_DOC_STATUS = "appDocStatus";
+    public static final String DOC_SEARCH_RESULT_PROPERTY_NAME_STATUS_CODE = "statusCode";
+
     
     // Constants used by DocumentTypeLookupableHelperServiceImpl
     public static final String DOCUMENT_TYPE_ID = "documentTypeId";

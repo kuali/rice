@@ -19,8 +19,11 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.impex.xml.XmlConstants;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -61,7 +64,8 @@ public class DocumentTypeSecurity implements Serializable {
   private List<SecurityPermissionInfo> permissions = new ArrayList<SecurityPermissionInfo>();
   private List<String> allowedRoles = new ArrayList<String>();
   private List<String> disallowedRoles = new ArrayList<String>();
-  private List<SecurityAttribute> securityAttributes = new ArrayList<SecurityAttribute>();
+  private List<String> securityAttributeExtensionNames = new ArrayList<String>();
+  private List<String> securityAttributeClassNames = new ArrayList<String>();
 
   private static XPath xpath = XPathHelper.newXPath();
 
@@ -242,26 +246,20 @@ public class DocumentTypeSecurity implements Serializable {
           for (int i = 0; i < attributeNodes.getLength(); i++) {
             Element attributeElement = (Element)attributeNodes.item(i);
             NamedNodeMap elemAttributes = attributeElement.getAttributes();
-            String className = null;
+            // can be an attribute name or an actual classname
+            String attributeOrClassName = null;
             String applicationId = standardApplicationId;
             if (elemAttributes.getNamedItem("name") != null) {
                 // found a name attribute so find the class name
-                String ruleAttributeName = elemAttributes.getNamedItem("name").getNodeValue().trim();
-                RuleAttribute ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByName(ruleAttributeName);
-                if (ruleAttribute == null) {
-                    throw new WorkflowException("Could not find rule attribute: " + ruleAttributeName);
-                }
-                applicationId = ruleAttribute.getApplicationId();
-                className = ruleAttribute.getClassName();
+                String extensionName = elemAttributes.getNamedItem("name").getNodeValue().trim();
+                this.securityAttributeExtensionNames.add(extensionName);
             } else if (elemAttributes.getNamedItem("class") != null) {
                 // class name defined
-                className = elemAttributes.getNamedItem("class").getNodeValue().trim();
+                String className = elemAttributes.getNamedItem("class").getNodeValue().trim();
+                this.securityAttributeClassNames.add(className);
             } else {
                 throw new WorkflowException("Cannot find attribute 'name' or attribute 'class' for securityAttribute Node");
             }
-          
-            this.securityAttributes.add(new LazyLoadSecurityAttribute(className, applicationId));
-            
           }
         }
     } catch (Exception err) {
@@ -269,15 +267,23 @@ public class DocumentTypeSecurity implements Serializable {
     }
   }
 
-  public List<SecurityAttribute> getSecurityAttributes() {
-    return this.securityAttributes;
+  public List<String> getSecurityAttributeExtensionNames() {
+    return this.securityAttributeExtensionNames;
   }
 
-  public void setSecurityAttributes(List<SecurityAttribute> securityAttributes) {
-    this.securityAttributes = securityAttributes;
+  public void setSecurityAttributeExtensionNames(List<String> securityAttributeExtensionNames) {
+    this.securityAttributeExtensionNames = securityAttributeExtensionNames;
   }
 
-  public Boolean getInitiatorOk() {
+    public List<String> getSecurityAttributeClassNames() {
+        return securityAttributeClassNames;
+    }
+
+    public void setSecurityAttributeClassNames(List<String> securityAttributeClassNames) {
+        this.securityAttributeClassNames = securityAttributeClassNames;
+    }
+
+    public Boolean getInitiatorOk() {
     return initiatorOk;
   }
   public void setInitiatorOk(Boolean initiatorOk) {

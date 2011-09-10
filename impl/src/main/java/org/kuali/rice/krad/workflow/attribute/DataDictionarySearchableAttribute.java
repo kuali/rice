@@ -22,16 +22,14 @@ import org.apache.struts.util.MessageResources;
 import org.apache.struts.util.MessageResourcesFactory;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
-import org.kuali.rice.core.api.util.jaxb.MultiValuedStringMapAdapter;
+import org.kuali.rice.kew.api.document.DocumentWithContent;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeString;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.framework.document.lookup.DocumentSearchContext;
 import org.kuali.rice.kew.framework.document.lookup.SearchableAttribute;
-import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.document.MaintenanceDocument;
@@ -64,10 +62,7 @@ import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.workflow.service.WorkflowAttributePropertyResolutionService;
 
-import javax.jws.WebParam;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,11 +81,11 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
     }
 
     @Override
-    public List<DocumentAttribute> getDocumentAttributes(ExtensionDefinition extensionDefinition,
-            DocumentSearchContext documentSearchContext) {
+    public List<DocumentAttribute> extractDocumentAttributes(ExtensionDefinition extensionDefinition,
+            DocumentWithContent documentWithContent) {
         List<DocumentAttribute> attributes = new ArrayList<DocumentAttribute>();
 
-        String docId = documentSearchContext.getDocument().getDocumentId();
+        String docId = documentWithContent.getDocument().getDocumentId();
 
         DocumentService docService = KRADServiceLocatorWeb.getDocumentService();
         Document doc = null;
@@ -127,7 +122,8 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
         attributes.add(attribute);
 
         if ( doc != null && doc instanceof MaintenanceDocument) {
-            final Class<? extends BusinessObject> businessObjectClass = getBusinessObjectClass(documentSearchContext.getDocumentTypeName());
+            final Class<? extends BusinessObject> businessObjectClass = getBusinessObjectClass(
+                    documentWithContent.getDocument().getDocumentTypeName());
             if (businessObjectClass != null) {
                 if (GlobalBusinessObject.class.isAssignableFrom(businessObjectClass)) {
                     final GlobalBusinessObject globalBO = retrieveGlobalBusinessObject(docId, businessObjectClass);
@@ -142,14 +138,16 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
             }
         }
         if ( doc != null ) {
-            DocumentEntry docEntry = (DocumentEntry) KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(documentSearchContext.getDocumentTypeName());
+            DocumentEntry docEntry = (DocumentEntry) KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(
+                    documentWithContent.getDocument().getDocumentTypeName());
             if ( docEntry != null ) {
 		        WorkflowAttributes workflowAttributes = docEntry.getWorkflowAttributes();
 		        WorkflowAttributePropertyResolutionService waprs = KRADServiceLocatorInternal
                         .getWorkflowAttributePropertyResolutionService();
 		        attributes.addAll(waprs.resolveSearchableAttributeValues(doc, workflowAttributes));
             } else {
-            	LOG.error( "Unable to find DD document entry for document type: " + documentSearchContext.getDocumentTypeName() );
+            	LOG.error("Unable to find DD document entry for document type: " + documentWithContent.getDocument()
+                        .getDocumentTypeName());
             }
         }
         return attributes;
@@ -231,6 +229,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
         }
 
         // TODO - Rice 2.0 - Not sure if this is exactly right, need to do some more research to find the best way
+        // can we use KualiConfigurationService?  It seemed to be used elsewhere...
         MessageResourcesFactory factory = MessageResourcesFactory.createFactory();
         MessageResources messageResources = factory.createResources(null);
 

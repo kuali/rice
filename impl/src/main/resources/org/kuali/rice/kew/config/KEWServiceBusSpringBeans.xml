@@ -148,6 +148,19 @@
 		</property>
 	</bean>
 
+  <bean id="rice.kew.documentSecurityHandlerService.exporter" parent="kewEmbeddedServiceExporter">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
+		<property name="serviceDefinition">
+			<bean parent="kewJaxWsSoapService">
+				<property name="service">
+					<ref bean="rice.kew.documentSecurityHandlerService" />
+				</property>
+				<property name="localServiceName" value="documentSecurityHandlerServiceSoap" />
+				<property name="busSecurity" value="${rice.kew.documentSecurityHandlerServiceSoap.secure}" />
+			</bean>
+		</property>
+	</bean>
+  
   <bean id="rice.kew.ruleValidationAttributeExporterService.exporter" parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
@@ -161,43 +174,6 @@
 		</property>
 	</bean>
 
-	<bean parent="kewEmbeddedServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus" />
-		<property name="serviceDefinition">
-			<bean parent="kewSoapService">
-				<property name="service">
-					<ref bean="enWorkflowUtilityService" />
-				</property>
-				<property name="localServiceName" value="WorkflowUtilityService" />
-			</bean>
-		</property>
-	</bean>
-
-	<bean parent="kewLocalServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus" />
-		<property name="serviceDefinition">
-			<bean parent="kewJaxWsSoapService">
-				<property name="service" ref="enWorkflowUtilityService" />
-				<property name="localServiceName" value="WorkflowUtilityServiceSOAP" />
-				<property name="serviceInterface" value="org.kuali.rice.kew.service.WorkflowUtility" />
-				<property name="busSecurity"
-					value="${secure.workflowutility.soapservice.endpoint}" />
-			</bean>
-		</property>
-		<property name="exportIf" value="WorkflowUtilityServiceSOAP.expose" />
-	</bean>
-
-	<bean parent="kewLocalServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus" />
-		<property name="serviceDefinition">
-			<bean parent="kewSoapService">
-				<property name="service">
-					<ref bean="enWorkflowUtilityService" />
-				</property>
-				<property name="localServiceName" value="enWorkflowUtilityService" />
-			</bean>
-		</property>
-	</bean>
 
 	<bean id="rice.kew.rice.kew.groupMembershipChangeQueueSoap.exporter"
 		parent="kewEmbeddedServiceExporter">

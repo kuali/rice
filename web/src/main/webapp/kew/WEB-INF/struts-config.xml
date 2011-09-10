@@ -81,7 +81,7 @@
             <forward name="basic" path="/../kr/WEB-INF/jsp/TextArea.jsp"/>
         </action>
        	<action path="/DocumentSearch" scope="request" validate="false" type="org.apache.struts.actions.ForwardAction"
-	  		parameter="/../kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO"/> 
+	  		parameter="/../kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.impl.document.lookup.DocumentLookupCriteriaBo"/>
        	<!-- End required KNS mappings -->
 
       <action path="/ActionList" scope="request" validate="false" parameter="methodToCall"

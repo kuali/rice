@@ -153,7 +153,6 @@
         <idref local="enActionInvocationService" />
         <idref local="enImmediateEmailReminderService" />
         <idref local="enActionListEmailService" />
-        <idref local="enWorkflowUtilityService" />
         <idref local="enQuickLinksService" />
         <idref local="enDocumentRequeuerService"/>
                 
@@ -164,6 +163,7 @@
         <idref local="rice.kew.noteService" />
         <idref local="rice.kew.ruleService" />
         <idref local="rice.kew.documentLookupCustomizationHandlerService" />
+        <idref local="rice.kew.documentSecurityHandlerService" />
         <idref local="rice.kew.ruleValidationAttributeExporterService" />
         <idref local="rice.kew.extensionRepositoryService" />
                 
@@ -307,11 +307,6 @@
     <bean id="enDocumentSearchDAO" class="org.kuali.rice.kew.docsearch.dao.impl.DocumentSearchDAOJdbcImpl" lazy-init="true">
         <property name="dataSource" ref="enWorkflowDataSource" />
     </bean>
-    <!--
-	<bean id="enDocumentSearchDAO" class="org.kuali.rice.kew.docsearch.dao.impl.DocumentSearchDAOOjbImpl" lazy-init="true">
-		<property name="jcdAlias" value="enWorkflowDataSource" />
-	</bean>
-    -->
 
 	<!--  DocumentTypeService -->
 	<bean id="enDocumentTypeService" class="org.kuali.rice.kew.doctype.service.impl.DocumentTypeServiceImpl" lazy-init="true">
@@ -321,7 +316,9 @@
 	<bean id="enDocumentTypePermissionService" class="org.kuali.rice.kew.doctype.service.impl.DocumentTypePermissionServiceImpl" lazy-init="true"/>
 
     <!--  DocumentSecurityService -->
-    <bean id="enDocumentSecurityService" class="org.kuali.rice.kew.doctype.service.impl.DocumentSecurityServiceImpl"/>
+    <bean id="enDocumentSecurityService" class="org.kuali.rice.kew.doctype.service.impl.DocumentSecurityServiceImpl">
+      <property name="extensionRepositoryService" ref="rice.kew.extensionRepositoryService" />
+    </bean>
 
 	<!-- Exception routing service -->
 	<bean id="enExceptionRoutingService" class="org.kuali.rice.kew.messaging.exceptionhandling.ExceptionRoutingServiceImpl"  lazy-init="true"/>
@@ -373,20 +370,21 @@
       </property>
     </bean>
 
-    <bean id="documentSearchCriteriaProcessor" class="org.kuali.rice.kew.docsearch.StandardDocumentSearchCriteriaProcessor" scope="prototype" />
-
     <bean id="documentLookupCriteriaProcessor" class="org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessorKEWAdapter" scope="prototype">
       <property name="dataDictionaryService" ref="dataDictionaryService" />
-      <property name="criteriaProcessor" ref="documentSearchCriteriaProcessor" />
     </bean>
 
-    <bean id="docSearchCriteriaDTOLookupHelperService" class="org.kuali.rice.kew.bo.lookup.DocSearchCriteriaDTOLookupableHelperServiceImpl" scope="prototype">
-      <property name="documentLookupCriteriaProcessor" ref="documentLookupCriteriaProcessor" />
+    <bean id="documentLookupCriteriaBoLookupableHelperService"
+          class="org.kuali.rice.kew.impl.document.lookup.DocumentLookupCriteriaBoLookupableHelperService"
+          scope="prototype">
+      <property name="documentLookupCriteriaProcessor" ref="documentLookupCriteriaProcessor"/>
+      <property name="documentSearchService" ref="enDocumentSearchService"/>
     </bean>
 
-    <bean id="docSearchCriteriaDTOLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
+    <bean id="documentLookupCriteriaBoLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl"
+          scope="prototype">
       <property name="lookupableHelperService">
-        <ref local="docSearchCriteriaDTOLookupHelperService" />
+        <ref local="documentLookupCriteriaBoLookupableHelperService" />
       </property>
       <property name="extraOnLoad" value="storeCurrentDocTypeNameOnLoad()"/>
     </bean>
@@ -482,15 +480,14 @@
   <bean id="enGroupXmlService" class="org.kuali.rice.kew.xml.GroupXmlServiceImpl" />
   <bean id="enUserXmlService" class="org.kuali.rice.kew.xml.UserXmlServiceImpl"/>
 
-	<bean id="enWorkflowUtilityService" class="org.kuali.rice.kew.service.impl.WorkflowUtilityWebServiceImpl" lazy-init="true" />
-    <bean id="enDocumentRoutingService" class="org.kuali.rice.kew.messaging.RouteDocumentMessageService"/>
-    <bean id="enBlanketApproveProcessor" class="org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessor"/>
-    <bean id="enMoveDocumentService" class="org.kuali.rice.kew.actions.asyncservices.MoveDocumentProcessor" />
-    <bean id="enActionInvocationService" class="org.kuali.rice.kew.actions.asyncservices.ActionInvocationProcessor" />
-    <bean id="enImmediateEmailReminderService" class="org.kuali.rice.kew.mail.service.impl.ActionListImmediateProcessorImpl" />
-    <bean id="enDocumentRequeuerService" class="org.kuali.rice.kew.actionrequest.service.impl.DocumentRequeuerImpl" />
+  <bean id="enDocumentRoutingService" class="org.kuali.rice.kew.messaging.RouteDocumentMessageService"/>
+  <bean id="enBlanketApproveProcessor" class="org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessor"/>
+  <bean id="enMoveDocumentService" class="org.kuali.rice.kew.actions.asyncservices.MoveDocumentProcessor" />
+  <bean id="enActionInvocationService" class="org.kuali.rice.kew.actions.asyncservices.ActionInvocationProcessor" />
+  <bean id="enImmediateEmailReminderService" class="org.kuali.rice.kew.mail.service.impl.ActionListImmediateProcessorImpl" />
+  <bean id="enDocumentRequeuerService" class="org.kuali.rice.kew.actionrequest.service.impl.DocumentRequeuerImpl" />
 
-  	<bean id="rice.kew.documentAttributeIndexingQueue" class="org.kuali.rice.kew.impl.document.attribute.DocumentAttributeIndexingQueueImpl" />
+  <bean id="rice.kew.documentAttributeIndexingQueue" class="org.kuali.rice.kew.impl.document.attribute.DocumentAttributeIndexingQueueImpl" />
 
 	<bean id="rice.kew.groupMembershipChangeQueue" class="org.kuali.rice.kew.impl.group.GroupMembershipChangeQueueImpl" />
 
@@ -540,10 +537,10 @@
 			    <value>classpath:org/kuali/rice/kew/rule/document/datadictionary/RuleDocument.xml</value>
                 <value>classpath:org/kuali/rice/kew/bo/datadictionary/DocumentType.xml</value>
               	<value>classpath:org/kuali/rice/kew/bo/datadictionary/DocumentRouteHeaderValue.xml</value>
-              	<value>classpath:org/kuali/rice/kew/bo/datadictionary/DocSearchCriteriaDTO.xml</value>
                 <value>classpath:org/kuali/rice/kew/document/datadictionary/DocumentTypeMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kew/document/datadictionary/RoutingRuleMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kew/document/datadictionary/RoutingRuleDelegationMaintenanceDocument.xml</value>
+          <value>classpath:org/kuali/rice/kew/impl/document/lookup/DocumentLookupCriteriaBo.xml</value>
                 
                 <!-- from KIM-->
                 
@@ -629,7 +626,7 @@
         <property name="externalizableBusinessObjectImplementations">
             <map>
 	           <entry key="org.kuali.rice.kew.doctype.bo.DocumentTypeEBO" value="org.kuali.rice.kew.doctype.bo.DocumentType" />
-	           <entry key="org.kuali.rice.kew.docsearch.DocumentSearchEbo" value="org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO" />
+	           <entry key="org.kuali.rice.kew.docsearch.DocumentEbo" value="org.kuali.rice.kew.impl.document.lookup.DocumentLookupCriteriaBo" />
             </map>
         </property>
 	</bean>
@@ -783,6 +780,10 @@
 	</bean>
 
   <bean id="rice.kew.documentLookupCustomizationMediator" class="org.kuali.rice.kew.docsearch.DocumentLookupCustomizationMediatorImpl" />
+
+  <bean id="rice.kew.documentSecurityHandlerService" class="org.kuali.rice.kew.impl.document.security.DocumentSecurityHandlerServiceImpl">
+		<property name="extensionRepositoryService" ref="rice.kew.extensionRepositoryService" />
+	</bean>
 
   <bean id="rice.kew.extensionRepositoryService" class="org.kuali.rice.kew.impl.extension.ExtensionRepositoryServiceImpl">
 		<property name="ruleAttributeService" ref="enRuleAttributeService"/>

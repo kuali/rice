@@ -17,6 +17,7 @@ import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.jaxb.MultiValuedStringMapAdapter;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.document.DocumentWithContent;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
@@ -49,14 +50,13 @@ public interface SearchableAttribute {
             @WebParam(name = "attributeDefinition") WorkflowAttributeDefinition attributeDefinition
     );
 
-    @WebMethod(operationName = "getDocumentAttributes")
+    @WebMethod(operationName = "extractDocumentAttributes")
     @WebResult(name = "documentAttributes")
     @XmlElementWrapper(name = "documentAttributes", required = false)
     @XmlElement(name = "documentAttribute", required = false)
-    public List<DocumentAttribute> getDocumentAttributes(
+    public List<DocumentAttribute> extractDocumentAttributes(
             @WebParam(name = "extensionDefinition") ExtensionDefinition extensionDefinition,
-            @WebParam(name = "documentSearchContext") DocumentSearchContext documentSearchContext
-    );
+            @WebParam(name = "documentWithContent") DocumentWithContent documentWithContent);
 
     @WebMethod(operationName = "getSearchFields")
     @WebResult(name = "searchFields")

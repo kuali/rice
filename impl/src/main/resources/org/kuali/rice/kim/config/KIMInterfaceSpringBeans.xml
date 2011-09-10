@@ -114,7 +114,6 @@
 			    <value>classpath:org/kuali/rice/kew/rule/document/datadictionary/RuleDocument.xml</value>
                 <value>classpath:org/kuali/rice/kew/bo/datadictionary/DocumentType.xml</value>
               	<value>classpath:org/kuali/rice/kew/bo/datadictionary/DocumentRouteHeaderValue.xml</value>
-              	<value>classpath:org/kuali/rice/kew/bo/datadictionary/DocSearchCriteriaDTO.xml</value>
                 <value>classpath:org/kuali/rice/kew/document/datadictionary/DocumentTypeMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kew/document/datadictionary/RoutingRuleMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kew/document/datadictionary/RoutingRuleDelegationMaintenanceDocument.xml</value>

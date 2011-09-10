@@ -30,12 +30,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.document.DocumentContentUpdate;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
@@ -185,132 +189,92 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
 
         workflowDocument = WorkflowDocumentFactory.loadDocument(getPrincipalId(userNetworkId), workflowDocument.getDocumentId());
         DocumentRouteHeaderValue doc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getDocumentId());
-        /*assertEquals("Wrong number of searchable attributes", 4, doc.getSearchableAttributeValues().size());
-        for (Iterator<SearchableAttributeValue> iter = doc.getSearchableAttributeValues().iterator(); iter.hasNext();) {
-            SearchableAttributeValue attributeValue = iter.next();
-            if (attributeValue instanceof SearchableAttributeStringValue) {
-                SearchableAttributeStringValue realValue = (SearchableAttributeStringValue) attributeValue;
-                assertEquals("The only String attribute that should have been added has key '" + TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY + "'", TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, realValue.getSearchableAttributeKey());
-                assertEquals("The only String attribute that should have been added has value '" + TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE + "'", TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, realValue.getSearchableAttributeValue());
-            } else if (attributeValue instanceof SearchableAttributeLongValue) {
-                SearchableAttributeLongValue realValue = (SearchableAttributeLongValue) attributeValue;
-                assertEquals("The only Long attribute that should have been added has key '" + TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY + "'", TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, realValue.getSearchableAttributeKey());
-                assertEquals("The only Long attribute that should have been added has value '" + TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE + "'", TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE, realValue.getSearchableAttributeValue());
-            } else if (attributeValue instanceof SearchableAttributeFloatValue) {
-                SearchableAttributeFloatValue realValue = (SearchableAttributeFloatValue) attributeValue;
-                assertEquals("The only Float attribute that should have been added has key '" + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY + "'", TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, realValue.getSearchableAttributeKey());
-                assertTrue("The only Float attribute that should have been added has value '" + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE + "'", 0 == TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.compareTo(realValue.getSearchableAttributeValue()));
-            } else if (attributeValue instanceof SearchableAttributeDateTimeValue) {
-                SearchableAttributeDateTimeValue realValue = (SearchableAttributeDateTimeValue) attributeValue;
-                assertEquals("The only DateTime attribute that should have been added has key '" + TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY + "'", TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, realValue.getSearchableAttributeKey());
-                Calendar testDate = Calendar.getInstance();
-                testDate.setTimeInMillis(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS);
-                testDate.set(Calendar.SECOND, 0);
-                testDate.set(Calendar.MILLISECOND, 0);
-                Calendar attributeDate = Calendar.getInstance();
-                attributeDate.setTimeInMillis(realValue.getSearchableAttributeValue().getTime());
-                attributeDate.set(Calendar.SECOND, 0);
-                attributeDate.set(Calendar.MILLISECOND, 0);
-                assertEquals("The month value for the searchable attribute is wrong",testDate.get(Calendar.MONTH),attributeDate.get(Calendar.MONTH));
-                assertEquals("The date value for the searchable attribute is wrong",testDate.get(Calendar.DATE),attributeDate.get(Calendar.DATE));
-                assertEquals("The year value for the searchable attribute is wrong",testDate.get(Calendar.YEAR),attributeDate.get(Calendar.YEAR));
-            } else {
-                fail("Searchable Attribute Value base class should be one of the four checked always");
-            }
-        }
-		*/
 
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
         Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
 
+        DocumentLookupCriteria.Builder criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        addSearchableAttribute(criteria, TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY,
+                TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE);
+        DocumentLookupResults results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
+        assertEquals("Search results should have one document.", 1, results.getLookupResults().size());
 
-        DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, null, docType));
-        DocumentSearchResultComponents result = docSearchService.getList(user.getPrincipalId(), criteria);
-        List searchResults = result.getSearchResults();
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        addSearchableAttribute(criteria, TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, "fred");
+        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
+        assertEquals("Search results should be empty.", 0, results.getLookupResults().size());
 
-        assertEquals("Search results should have one document.", 1, searchResults.size());
-
-        criteria = new DocSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, "fred", null, docType));
-        result = docSearchService.getList(user.getPrincipalId(), criteria);
-        searchResults = result.getSearchResults();
-
-        assertEquals("Search results should be empty.", 0, searchResults.size());
-
-        criteria = new DocSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent("fakeproperty", "doesntexist", null, docType));
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        addSearchableAttribute(criteria, "fakeproperty", "doesntexist");
         try {
-            result = docSearchService.getList(user.getPrincipalId(), criteria);
+            docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
         } catch (WorkflowServiceErrorException e) {}
 
-        criteria = new DocSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString(), null, docType));
-        result = docSearchService.getList(user.getPrincipalId(), criteria);
-        searchResults = result.getSearchResults();
-        assertEquals("Search results should have one document.", 1, searchResults.size());
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        addSearchableAttribute(criteria, TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY,
+                TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString());
+        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
+        assertEquals("Search results should have one document.", 1, results.getLookupResults().size());
 
-        criteria = new DocSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, "1111111", null, docType));
-        result = docSearchService.getList(user.getPrincipalId(), criteria);
-        searchResults = result.getSearchResults();
-        assertEquals("Search results should be empty.", 0, searchResults.size());
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        addSearchableAttribute(criteria, TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, "1111111");
+        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
+        assertEquals("Search results should be empty.", 0, results.getLookupResults().size());
 
-        criteria = new DocSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent("fakeymcfakefake", "99999999", null, docType));
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        addSearchableAttribute(criteria, "fakeymcfakefake", "99999999");
         try {
-            result = docSearchService.getList(user.getPrincipalId(), criteria);
+            docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
         } catch (WorkflowServiceErrorException e) {}
 
-        criteria = new DocSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString(), null, docType));
-        result = docSearchService.getList(user.getPrincipalId(), criteria);
-        searchResults = result.getSearchResults();
-        assertEquals("Search results should have one document.", 1, searchResults.size());
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        addSearchableAttribute(criteria, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY,
+                TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString());
+        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
+        assertEquals("Search results should have one document.", 1, results.getLookupResults().size());
 
-        criteria = new DocSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, "215.3548", null, docType));
-        result = docSearchService.getList(user.getPrincipalId(), criteria);
-        searchResults = result.getSearchResults();
-        assertEquals("Search results should be empty.", 0, searchResults.size());
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        addSearchableAttribute(criteria, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, "215.3548");
+        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
+        assertEquals("Search results should be empty.", 0, results.getLookupResults().size());
 
-        criteria = new DocSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent("fakeylostington", "9999.9999", null, docType));
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        addSearchableAttribute(criteria, "fakeylostington", "9999.9999");
         try {
-            result = docSearchService.getList(user.getPrincipalId(), criteria);
+            docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
         } catch (WorkflowServiceErrorException e) {}
 
-        criteria = new DocSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, DocSearchUtils.getDisplayValueWithDateOnly(new Timestamp(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS)), null, docType));
-        result = docSearchService.getList(user.getPrincipalId(), criteria);
-        searchResults = result.getSearchResults();
-        assertEquals("Search results should have one document.", 1, searchResults.size());
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        addSearchableAttribute(criteria, TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY,
+                DocSearchUtils.getDisplayValueWithDateOnly(new Timestamp(
+                        TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS)));
+        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
+        assertEquals("Search results should have one document.", 1, results.getLookupResults().size());
 
-        criteria = new DocSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, "07/06/1979", null, docType));
-        result = docSearchService.getList(user.getPrincipalId(), criteria);
-        searchResults = result.getSearchResults();
-        assertEquals("Search results should be empty.", 0, searchResults.size());
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        addSearchableAttribute(criteria, TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, "07/06/1979");
+        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
+        assertEquals("Search results should be empty.", 0, results.getLookupResults().size());
 
-        criteria = new DocSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent("lastingsfakerson", "07/06/2007", null, docType));
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        addSearchableAttribute(criteria, "lastingsfakerson", "07/06/2007");
         try {
-            result = docSearchService.getList(user.getPrincipalId(), criteria);
+            docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
         } catch (WorkflowServiceErrorException e) {}
     }
@@ -330,13 +294,13 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
 
         DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
 
-        DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.setFromDateCreated("01/01/2004");
+        DocumentLookupCriteria.Builder criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        criteria.setDateCreatedFrom(new DateTime(2004, 1, 1, 0, 0));
 
         Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("arh14");
-        DocumentSearchResultComponents result = docSearchService.getList(user.getPrincipalId(), criteria);
-        assertEquals(1, result.getSearchResults().size());
+        DocumentLookupResults results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
+        assertEquals(1, results.getLookupResults().size());
 
         // now upload the new version with a searchable attribute
         loadXmlFile("testdoc1.xml");
@@ -347,34 +311,32 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         doc.route("routing");
 
         // with no attribute criteria, both docs should be found
-        criteria = new DocSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.setFromDateCreated("01/01/2004");
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        criteria.setDateCreatedFrom(new DateTime(2004, 1, 1, 0, 0));
 
-        result = docSearchService.getList(user.getPrincipalId(), criteria);
-        assertEquals(2, result.getSearchResults().size());
+        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
+        assertEquals(2, results.getLookupResults().size());
 
         // search with specific SearchableAttributeOld value
-        criteria = new DocSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.setFromDateCreated("01/01/2004");
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent("MockSearchableAttributeKey", "Mock Searchable Attribute", null, docType));
-        criteria.getSearchableAttributes().set(0, createSearchAttributeCriteriaComponent("MockSearchableAttributeKey", "MockSearchableAttributeValue", null, docType));
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        criteria.setDateCreatedFrom(new DateTime(2004, 1, 1, 0, 0));
+        addSearchableAttribute(criteria, "MockSearchableAttributeKey", "MockSearchableAttributeValue");
 
-        result = docSearchService.getList(user.getPrincipalId(), criteria);
-        assertEquals(1, result.getSearchResults().size());
+        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
+        assertEquals(1, results.getLookupResults().size());
 
         // search with any SearchableAttributeOld value
-        criteria = new DocSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.setFromDateCreated("01/01/2004");
-        criteria.addSearchableAttribute(createSearchAttributeCriteriaComponent("MockSearchableAttributeKey", "Mock Searchable Attribute", null, docType));
-        criteria.getSearchableAttributes().set(0, createSearchAttributeCriteriaComponent("MockSearchableAttributeKey", "", null, docType));
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        criteria.setDateCreatedFrom(new DateTime(2004, 1, 1, 0, 0));
+        addSearchableAttribute(criteria, "MockSearchableAttributeKey", "");
 
-        result = docSearchService.getList(user.getPrincipalId(), criteria);
+        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
         // should return two because an empty value above will return any value of the 'MockSearchableAttributeKey' key including the previous document
         // that doesn't even have a record of that field being saved to the database
-        assertEquals(2, result.getSearchResults().size());
+        assertEquals(2, results.getLookupResults().size());
     }
 
     /**
@@ -488,22 +450,20 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
      */
     private void assertSearchableAttributeWildcardsWork(DocumentType docType, String principalId, String fieldDefKey, String[] searchValues,
     		int[] resultSizes) throws Exception {
-    	DocSearchCriteriaDTO criteria = null;
-        DocumentSearchResultComponents result = null;
-        List<DocumentSearchResult> searchResults = null;
+    	DocumentLookupCriteria.Builder criteria = null;
+        DocumentLookupResults results = null;
         DocumentSearchService docSearchService = KEWServiceLocator.getDocumentSearchService();
         for (int i = 0; i < resultSizes.length; i++) {
-        	criteria = new DocSearchCriteriaDTO();
-        	criteria.setDocTypeFullName(docType.getName());
-        	criteria.addSearchableAttribute(this.createSearchAttributeCriteriaComponent(fieldDefKey, searchValues[i], docType));
+        	criteria = DocumentLookupCriteria.Builder.create();
+        	criteria.setDocumentTypeName(docType.getName());
+        	addSearchableAttribute(criteria, fieldDefKey, searchValues[i]);
         	try {
-        		result = docSearchService.getList(principalId, criteria);
-        		searchResults = result.getSearchResults();
+        		results = docSearchService.lookupDocuments(principalId, criteria.build());
         		if (resultSizes[i] < 0) {
         			fail(fieldDefKey + "'s search at loop index " + i + " should have thrown an exception");
         		}
-        		if(resultSizes[i] != searchResults.size()){
-        			assertEquals(fieldDefKey + "'s search results at loop index " + i + " returned the wrong number of documents.", resultSizes[i], searchResults.size());
+        		if(resultSizes[i] != results.getLookupResults().size()){
+        			assertEquals(fieldDefKey + "'s search results at loop index " + i + " returned the wrong number of documents.", resultSizes[i], results.getLookupResults().size());
         		}
         	} catch (Exception ex) {
         		if (resultSizes[i] >= 0) {
@@ -526,22 +486,20 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
      */
     private void assertSearchableAttributeMultiplesWork(DocumentType docType, String principalId, String fieldDefKey, String[][] searchValues,
     		int[] resultSizes) throws Exception {
-    	DocSearchCriteriaDTO criteria = null;
-        DocumentSearchResultComponents result = null;
-        List<DocumentSearchResult> searchResults = null;
+        DocumentLookupCriteria.Builder criteria = null;
+        DocumentLookupResults results = null;
         DocumentSearchService docSearchService = KEWServiceLocator.getDocumentSearchService();
         for (int i = 0; i < resultSizes.length; i++) {
-        	criteria = new DocSearchCriteriaDTO();
-        	criteria.setDocTypeFullName(docType.getName());
-        	criteria.addSearchableAttribute(this.createSearchAttributeCriteriaComponent(fieldDefKey, searchValues[i], docType));
+            criteria = DocumentLookupCriteria.Builder.create();
+        	criteria.setDocumentTypeName(docType.getName());
+        	addSearchableAttribute(criteria, fieldDefKey, searchValues[i]);
         	try {
-        		result = docSearchService.getList(principalId, criteria);
-        		searchResults = result.getSearchResults();
-        		if (resultSizes[i] < 0) {
+                results = docSearchService.lookupDocuments(principalId, criteria.build());
+                if (resultSizes[i] < 0) {
         			fail(fieldDefKey + "'s search at loop index " + i + " should have thrown an exception");
         		}
-        		if(resultSizes[i] != searchResults.size()){
-        			assertEquals(fieldDefKey + "'s search results at loop index " + i + " returned the wrong number of documents.", resultSizes[i], searchResults.size());
+        		if(resultSizes[i] != results.getLookupResults().size()){
+        			assertEquals(fieldDefKey + "'s search results at loop index " + i + " returned the wrong number of documents.", resultSizes[i], results.getLookupResults().size());
         		}
         	} catch (Exception ex) {
         		if (resultSizes[i] >= 0) {

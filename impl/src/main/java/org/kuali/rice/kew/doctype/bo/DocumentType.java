@@ -34,8 +34,6 @@ import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.doctype.DocumentTypeContract;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
-import org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor;
-import org.kuali.rice.kew.docsearch.xml.DocumentSearchXMLResultProcessor;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
@@ -1178,33 +1176,6 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
             return getParentDocType().getDocumentSearchResultProcessorAttribute();
         }
         return null;
-    }
-
-    public DocumentSearchResultProcessor getDocumentSearchResultProcessor() {
-        if ((documentTypeAttributes == null || documentTypeAttributes.isEmpty())) {
-            if (getParentDocType() != null) {
-                return getParentDocType().getDocumentSearchResultProcessor();
-            } else {
-                return KEWServiceLocator.getDocumentSearchService().getStandardDocumentSearchResultProcessor();
-// 		    return new StandardDocumentSearchResultProcessor();
-            }
-        }
-        for (Iterator iterator = documentTypeAttributes.iterator(); iterator.hasNext();) {
-            DocumentTypeAttribute attribute = (DocumentTypeAttribute) iterator.next();
-            RuleAttribute ruleAttribute = attribute.getRuleAttribute();
-            if (KEWConstants.SEARCH_RESULT_PROCESSOR_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
-                ObjectDefinition objDef = getAttributeObjectDefinition(ruleAttribute);
-                return (DocumentSearchResultProcessor) GlobalResourceLoader.getObject(objDef);
-            } else if (KEWConstants.SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
-                ObjectDefinition objDef = getAttributeObjectDefinition(ruleAttribute);
-                DocumentSearchResultProcessor resultProcessor = (DocumentSearchResultProcessor) GlobalResourceLoader.getObject(objDef);
-                //required to make it work because ruleAttribute XML is required to construct custom columns
-                ((DocumentSearchXMLResultProcessor) resultProcessor).setRuleAttribute(ruleAttribute);
-                return resultProcessor;
-            }
-        }
-        return KEWServiceLocator.getDocumentSearchService().getStandardDocumentSearchResultProcessor();
-//    	return new StandardDocumentSearchResultProcessor();
     }
 
     public CustomActionListAttribute getCustomActionListAttribute() throws ResourceUnavailableException {

@@ -31,7 +31,5 @@ import org.kuali.rice.kns.web.ui.Row;
 public interface DocumentLookupCriteriaProcessor {
 
 	public List<Row> getRows(DocumentType documentType, List<Row> defaultRows, boolean detailed, boolean superSearch);
-	public boolean shouldDisplayHeaderNonMaintActions();
-	public boolean shouldDisplayLookupCriteria();
-    
+
 }

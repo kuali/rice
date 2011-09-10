@@ -49,6 +49,14 @@ public final class UserUtils {
 	    }
 	    return null;
 	  }
+
+    public static String getIdValue(String idType, String principalId) {
+        if ("workflowId".equalsIgnoreCase(idType) || "w".equalsIgnoreCase(idType) || "principalId".equalsIgnoreCase(idType)) {
+            return principalId;
+        }
+        Person person = KimApiServiceLocator.getPersonService().getPerson(principalId);
+        return getIdValue(idType, person);
+    }
 	
 	public static String getTransposedName(UserSession userSession, PrincipalContract principal) {
 		Person person = getPersonService().getPerson(principal.getPrincipalId());

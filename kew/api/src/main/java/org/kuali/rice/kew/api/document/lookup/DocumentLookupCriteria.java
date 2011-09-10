@@ -1,12 +1,15 @@
 package org.kuali.rice.kew.api.document.lookup;
 
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.core.api.util.jaxb.MultiValuedStringMapAdapter;
 import org.kuali.rice.kew.api.document.DocumentStatus;
+import org.kuali.rice.kew.api.document.DocumentStatusCategory;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -35,8 +38,10 @@ import java.util.Map;
 @XmlType(name = DocumentLookupCriteria.Constants.TYPE_NAME, propOrder = {
     DocumentLookupCriteria.Elements.DOCUMENT_ID,
     DocumentLookupCriteria.Elements.DOCUMENT_STATUSES,
+    DocumentLookupCriteria.Elements.DOCUMENT_STATUS_CATEGORIES,
     DocumentLookupCriteria.Elements.TITLE,
     DocumentLookupCriteria.Elements.APPLICATION_DOCUMENT_ID,
+    DocumentLookupCriteria.Elements.APPLICATION_DOCUMENT_STATUS,
     DocumentLookupCriteria.Elements.INITIATOR_PRINCIPAL_NAME,
     DocumentLookupCriteria.Elements.VIEWER_PRINCIPAL_NAME,
     DocumentLookupCriteria.Elements.VIEWER_GROUP_ID,
@@ -52,7 +57,10 @@ import java.util.Map;
     DocumentLookupCriteria.Elements.DATE_APPROVED_TO,
     DocumentLookupCriteria.Elements.DATE_FINALIZED_FROM,
     DocumentLookupCriteria.Elements.DATE_FINALIZED_TO,
+    DocumentLookupCriteria.Elements.DATE_APPLICATION_DOCUMENT_STATUS_CHANGED_FROM,
+    DocumentLookupCriteria.Elements.DATE_APPLICATION_DOCUMENT_STATUS_CHANGED_TO,
     DocumentLookupCriteria.Elements.DOCUMENT_ATTRIBUTE_VALUES,
+    DocumentLookupCriteria.Elements.SAVE_NAME,
     DocumentLookupCriteria.Elements.START_AT_INDEX,
     DocumentLookupCriteria.Elements.MAX_RESULTS,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
@@ -68,11 +76,18 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
     @XmlElement(name = Elements.DOCUMENT_STATUS, required = false)
     private final List<DocumentStatus> documentStatuses;
 
+    @XmlElementWrapper(name = Elements.DOCUMENT_STATUS_CATEGORIES, required = false)
+    @XmlElement(name = Elements.DOCUMENT_STATUS_CATEGORY, required = false)
+    private final List<DocumentStatusCategory> documentStatusCategories;
+
     @XmlElement(name = Elements.TITLE, required = false)
     private final String title;
 
     @XmlElement(name = Elements.APPLICATION_DOCUMENT_ID, required = false)
     private final String applicationDocumentId;
+
+    @XmlElement(name = Elements.APPLICATION_DOCUMENT_STATUS, required = false)
+    private final String applicationDocumentStatus;
 
     @XmlElement(name = Elements.INITIATOR_PRINCIPAL_NAME, required = false)
     private final String initiatorPrincipalName;
@@ -127,9 +142,20 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
     @XmlJavaTypeAdapter(DateTimeAdapter.class)
     private final DateTime dateFinalizedTo;
 
+    @XmlElement(name = Elements.DATE_APPLICATION_DOCUMENT_STATUS_CHANGED_FROM, required = false)
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
+    private final DateTime dateApplicationDocumentStatusChangedFrom;
+
+    @XmlElement(name = Elements.DATE_APPLICATION_DOCUMENT_STATUS_CHANGED_TO, required = false)
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
+    private final DateTime dateApplicationDocumentStatusChangedTo;
+
     @XmlElement(name = Elements.DOCUMENT_ATTRIBUTE_VALUES, required = false)
-    @XmlJavaTypeAdapter(MapStringStringAdapter.class)
-    private final Map<String, String> documentAttributeValues;
+    @XmlJavaTypeAdapter(MultiValuedStringMapAdapter.class)
+    private final Map<String, List<String>> documentAttributeValues;
+
+    @XmlElement(name = Elements.SAVE_NAME, required = false)
+    private final String saveName;
 
     @XmlElement(name = Elements.START_AT_INDEX, required = false)
     private final Integer startAtIndex;
@@ -147,8 +173,10 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
     private DocumentLookupCriteria() {
         this.documentId = null;
         this.documentStatuses = null;
+        this.documentStatusCategories = null;
         this.title = null;
         this.applicationDocumentId = null;
+        this.applicationDocumentStatus = null;
         this.initiatorPrincipalName = null;
         this.viewerPrincipalName = null;
         this.viewerGroupId = null;
@@ -164,7 +192,10 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
         this.dateApprovedTo = null;
         this.dateFinalizedFrom = null;
         this.dateFinalizedTo = null;
+        this.dateApplicationDocumentStatusChangedFrom = null;
+        this.dateApplicationDocumentStatusChangedTo = null;
         this.documentAttributeValues = null;
+        this.saveName = null;
         this.startAtIndex = null;
         this.maxResults = null;
     }
@@ -176,8 +207,14 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
         } else {
             this.documentStatuses = Collections.unmodifiableList(new ArrayList<DocumentStatus>(builder.getDocumentStatuses()));
         }
+        if (builder.getDocumentStatusCategories() == null) {
+            this.documentStatusCategories = Collections.emptyList();
+        } else {
+            this.documentStatusCategories = Collections.unmodifiableList(new ArrayList<DocumentStatusCategory>(builder.getDocumentStatusCategories()));
+        }
         this.title = builder.getTitle();
         this.applicationDocumentId = builder.getApplicationDocumentId();
+        this.applicationDocumentStatus = builder.getApplicationDocumentStatus();
         this.initiatorPrincipalName = builder.getInitiatorPrincipalName();
         this.viewerPrincipalName = builder.getViewerPrincipalName();
         this.viewerGroupId = builder.getViewerGroupId();
@@ -193,11 +230,14 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
         this.dateApprovedTo = builder.getDateApprovedTo();
         this.dateFinalizedFrom = builder.getDateFinalizedFrom();
         this.dateFinalizedTo = builder.getDateFinalizedTo();
+        this.dateApplicationDocumentStatusChangedFrom = builder.getDateApplicationDocumentStatusChangedFrom();
+        this.dateApplicationDocumentStatusChangedTo = builder.getDateApplicationDocumentStatusChangedTo();
         if (builder.getDocumentAttributeValues() == null) {
             this.documentAttributeValues = Collections.emptyMap();
         } else {
-            this.documentAttributeValues = Collections.unmodifiableMap(new HashMap<String, String>(builder.getDocumentAttributeValues()));
+            this.documentAttributeValues = Collections.unmodifiableMap(new HashMap<String, List<String>>(builder.getDocumentAttributeValues()));
         }
+        this.saveName = builder.getSaveName();
         this.startAtIndex = builder.getStartAtIndex();
         this.maxResults = builder.getMaxResults();
     }
@@ -213,6 +253,11 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
     }
 
     @Override
+    public List<DocumentStatusCategory> getDocumentStatusCategories() {
+        return this.documentStatusCategories;
+    }
+
+    @Override
     public String getTitle() {
         return this.title;
     }
@@ -220,6 +265,11 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
     @Override
     public String getApplicationDocumentId() {
         return this.applicationDocumentId;
+    }
+
+    @Override
+    public String getApplicationDocumentStatus() {
+        return this.applicationDocumentStatus;
     }
 
     @Override
@@ -298,8 +348,23 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
     }
 
     @Override
-    public Map<String, String> getDocumentAttributeValues() {
+    public DateTime getDateApplicationDocumentStatusChangedFrom() {
+        return dateApplicationDocumentStatusChangedFrom;
+    }
+
+    @Override
+    public DateTime getDateApplicationDocumentStatusChangedTo() {
+        return dateApplicationDocumentStatusChangedTo;
+    }
+
+    @Override
+    public Map<String, List<String>> getDocumentAttributeValues() {
         return this.documentAttributeValues;
+    }
+
+    @Override
+    public String getSaveName() {
+        return saveName;
     }
 
     @Override
@@ -312,7 +377,6 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
         return this.maxResults;
     }
 
-
     /**
      * A builder which can be used to construct {@link DocumentLookupCriteria} instances.  Enforces the constraints of
      * the {@link DocumentLookupCriteriaContract}.
@@ -321,8 +385,10 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
 
         private String documentId;
         private List<DocumentStatus> documentStatuses;
+        private List<DocumentStatusCategory> documentStatusCategories;
         private String title;
         private String applicationDocumentId;
+        private String applicationDocumentStatus;
         private String initiatorPrincipalName;
         private String viewerPrincipalName;
         private String viewerGroupId;
@@ -338,11 +404,17 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
         private DateTime dateApprovedTo;
         private DateTime dateFinalizedFrom;
         private DateTime dateFinalizedTo;
-        private Map<String, String> documentAttributeValues;
+        private DateTime dateApplicationDocumentStatusChangedFrom;
+        private DateTime dateApplicationDocumentStatusChangedTo;
+        private Map<String, List<String>> documentAttributeValues;
+        private String saveName;
         private Integer startAtIndex;
         private Integer maxResults;
 
         private Builder() {
+            setDocumentStatuses(new ArrayList<DocumentStatus>());
+            setDocumentStatusCategories(new ArrayList<DocumentStatusCategory>());
+            setDocumentAttributeValues(new HashMap<String, List<String>>());
         }
 
         public static Builder create() {
@@ -358,8 +430,12 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
             if (contract.getDocumentStatuses() != null) {
                 builder.setDocumentStatuses(new ArrayList<DocumentStatus>(contract.getDocumentStatuses()));
             }
+            if (contract.getDocumentStatusCategories() != null) {
+                builder.setDocumentStatusCategories(new ArrayList<DocumentStatusCategory>(contract.getDocumentStatusCategories()));
+            }
             builder.setTitle(contract.getTitle());
             builder.setApplicationDocumentId(contract.getApplicationDocumentId());
+            builder.setApplicationDocumentStatus(contract.getApplicationDocumentStatus());
             builder.setInitiatorPrincipalName(contract.getInitiatorPrincipalName());
             builder.setViewerPrincipalName(contract.getViewerPrincipalName());
             builder.setViewerGroupId(contract.getViewerGroupId());
@@ -375,9 +451,12 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
             builder.setDateApprovedTo(contract.getDateApprovedTo());
             builder.setDateFinalizedFrom(contract.getDateFinalizedFrom());
             builder.setDateFinalizedTo(contract.getDateFinalizedTo());
+            builder.setDateApplicationDocumentStatusChangedFrom(contract.getDateApplicationDocumentStatusChangedFrom());
+            builder.setDateApplicationDocumentStatusChangedTo(contract.getDateApplicationDocumentStatusChangedTo());
             if (contract.getDocumentAttributeValues() != null) {
-                builder.setDocumentAttributeValues(new HashMap<String, String>(contract.getDocumentAttributeValues()));
+                builder.setDocumentAttributeValues(new HashMap<String, List<String>>(contract.getDocumentAttributeValues()));
             }
+            builder.setSaveName(contract.getSaveName());
             builder.setStartAtIndex(contract.getStartAtIndex());
             builder.setMaxResults(contract.getMaxResults());
             return builder;
@@ -399,6 +478,11 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
         }
 
         @Override
+        public List<DocumentStatusCategory> getDocumentStatusCategories() {
+            return this.documentStatusCategories;
+        }
+
+        @Override
         public String getTitle() {
             return this.title;
         }
@@ -406,6 +490,11 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
         @Override
         public String getApplicationDocumentId() {
             return this.applicationDocumentId;
+        }
+
+        @Override
+        public String getApplicationDocumentStatus() {
+            return this.applicationDocumentStatus;
         }
 
         @Override
@@ -484,8 +573,23 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
         }
 
         @Override
-        public Map<String, String> getDocumentAttributeValues() {
+        public DateTime getDateApplicationDocumentStatusChangedFrom() {
+            return dateApplicationDocumentStatusChangedFrom;
+        }
+
+        @Override
+        public DateTime getDateApplicationDocumentStatusChangedTo() {
+            return dateApplicationDocumentStatusChangedTo;
+        }
+
+        @Override
+        public Map<String, List<String>> getDocumentAttributeValues() {
             return this.documentAttributeValues;
+        }
+
+        @Override
+        public String getSaveName() {
+            return this.saveName;
         }
 
         @Override
@@ -506,12 +610,20 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
             this.documentStatuses = documentStatuses;
         }
 
+        public void setDocumentStatusCategories(List<DocumentStatusCategory> documentStatusCategories) {
+            this.documentStatusCategories = documentStatusCategories;
+        }
+
         public void setTitle(String title) {
             this.title = title;
         }
 
         public void setApplicationDocumentId(String applicationDocumentId) {
             this.applicationDocumentId = applicationDocumentId;
+        }
+
+        public void setApplicationDocumentStatus(String applicationDocumentStatus) {
+            this.applicationDocumentStatus = applicationDocumentStatus;
         }
 
         public void setInitiatorPrincipalName(String initiatorPrincipalName) {
@@ -574,8 +686,32 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
             this.dateFinalizedTo = dateFinalizedTo;
         }
 
-        public void setDocumentAttributeValues(Map<String, String> documentAttributeValues) {
+        public void setDateApplicationDocumentStatusChangedFrom(DateTime dateApplicationDocumentStatusChangedFrom) {
+            this.dateApplicationDocumentStatusChangedFrom = dateApplicationDocumentStatusChangedFrom;
+        }
+
+        public void setDateApplicationDocumentStatusChangedTo(DateTime dateApplicationDocumentStatusChangedTo) {
+            this.dateApplicationDocumentStatusChangedTo = dateApplicationDocumentStatusChangedTo;
+        }
+
+        public void setDocumentAttributeValues(Map<String, List<String>> documentAttributeValues) {
             this.documentAttributeValues = documentAttributeValues;
+        }
+
+        public void addDocumentAttributeValue(String name, String value) {
+            if (StringUtils.isBlank(value)) {
+                throw new IllegalArgumentException("value was null or blank");
+            }
+            List<String> values = getDocumentAttributeValues().get(name);
+            if (values == null) {
+                values = new ArrayList<String>();
+                getDocumentAttributeValues().put(name, values);
+            }
+            values.add(value);
+        }
+
+        public void setSaveName(String saveName) {
+            this.saveName = saveName;
         }
 
         public void setStartAtIndex(Integer startAtIndex) {
@@ -603,8 +739,11 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
         final static String DOCUMENT_ID = "documentId";
         final static String DOCUMENT_STATUSES = "documentStatuses";
         final static String DOCUMENT_STATUS = "documentStatus";
+        final static String DOCUMENT_STATUS_CATEGORIES = "documentStatusCategories";
+        final static String DOCUMENT_STATUS_CATEGORY = "documentStatusCategory";
         final static String TITLE = "title";
         final static String APPLICATION_DOCUMENT_ID = "applicationDocumentId";
+        final static String APPLICATION_DOCUMENT_STATUS = "applicationDocumentStatus";
         final static String INITIATOR_PRINCIPAL_NAME = "initiatorPrincipalName";
         final static String VIEWER_PRINCIPAL_NAME = "viewerPrincipalName";
         final static String VIEWER_GROUP_ID = "viewerGroupId";
@@ -620,7 +759,10 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
         final static String DATE_APPROVED_TO = "dateApprovedTo";
         final static String DATE_FINALIZED_FROM = "dateFinalizedFrom";
         final static String DATE_FINALIZED_TO = "dateFinalizedTo";
+        final static String DATE_APPLICATION_DOCUMENT_STATUS_CHANGED_FROM = "dateApplicationDocumentStatusChangedFrom";
+        final static String DATE_APPLICATION_DOCUMENT_STATUS_CHANGED_TO = "dateApplicationDocumentStatusChangedTo";
         final static String DOCUMENT_ATTRIBUTE_VALUES = "documentAttributeValues";
+        final static String SAVE_NAME = "saveName";
         final static String START_AT_INDEX = "startAtIndex";
         final static String MAX_RESULTS = "maxResults";
     }

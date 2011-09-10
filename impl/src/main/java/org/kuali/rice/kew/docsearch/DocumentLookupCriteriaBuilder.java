@@ -18,11 +18,12 @@ package org.kuali.rice.kew.docsearch;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.uif.RemotableAttributeField;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupConfiguration;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.krad.util.KRADConstants;
+import org.joda.time.DateTime;
+import org.kuali.rice.kew.api.document.DocumentStatus;
+import org.kuali.rice.kew.api.document.DocumentStatusCategory;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
+import org.kuali.rice.kew.api.document.lookup.RouteNodeLookupLogic;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import java.util.*;
 
@@ -36,116 +37,92 @@ public class DocumentLookupCriteriaBuilder  {
 
     private static final Logger LOG = Logger.getLogger(DocumentLookupCriteriaBuilder.class);
 
-	/**
-	 * This method populates the criteria given a map of fields from the lookup
-	 *
-	 * @param fieldsForLookup map of fields
-	 * @return constructed criteria
-	 */
-	public static DocSearchCriteriaDTO populateCriteria(Map<String,String[]> fieldsForLookup) {
-    	DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
-    	Map<String,String[]> fieldsToSet = new HashMap<String,String[]>();
-		for (String formKey : fieldsForLookup.keySet()) {
-			if(!(formKey.equalsIgnoreCase(KRADConstants.BACK_LOCATION) ||
-			   formKey.equalsIgnoreCase(KRADConstants.DOC_FORM_KEY)) && fieldsForLookup.get(formKey)!=null && fieldsForLookup.get(formKey).length!=0) {
-				fieldsToSet.put(formKey, fieldsForLookup.get(formKey));
-			}
-		}
-    	for (String fieldToSet : fieldsToSet.keySet()) {
-    		 String valueToSet = "";
-    		 String[] valuesToSet = fieldsToSet.get(fieldToSet);
-    		 // some inputs are now multi-select
-    		 if(valuesToSet.length >= 1){
-    			 for(String value: valuesToSet){
-    				 valueToSet += value + ",";
-    			 }
-    			 valueToSet = valueToSet.substring(0, valueToSet.length()-1);
-    		 }else{
-    			 valueToSet = valuesToSet[0];
-    		 }
+    private static final String DOCUMENT_STATUSES = "documentStatuses";
+    private static final String GROUP_VIEWER_NAMESPACE = "groupViewerNamespace";
+    private static final String GROUP_VIEWER_NAME = "groupViewerName";
+    private static final String ROUTE_NODE_LOOKUP_LOGIC = "routeNodeLookupLogic";
 
-            if (PropertyUtils.isWriteable(criteria, fieldToSet)) {
-                try {
-			    	PropertyUtils.setNestedProperty(criteria, fieldToSet, valueToSet);
-			    } catch (Exception e) {
-                    throw new IllegalStateException("Failed to set document search criteria field: " + fieldToSet, e);
+    /**
+     * Fields which translate directory from criteria strings to properties on the DocumentLookupCriteria.
+     */
+    private static final String[] DIRECT_TRANSLATE_FIELD_NAMES = {
+            "documentId",
+            "applicationDocumentId",
+            "applicationDocumentStatus",
+            "initiatorPrincipalName",
+            "viewerPrincipalName",
+            "approverPrincipalName",
+            "routeNodeName",
+            "documentTypeName",
+            "saveName"
+    };
+    private static final Set<String> DIRECT_TRANSLATE_FIELD_NAMES_SET =
+            new HashSet<String>(Arrays.asList(DIRECT_TRANSLATE_FIELD_NAMES));
+
+    private static final String[] DATE_RANGE_TRANSLATE_FIELD_NAMES = {
+            "dateCreated",
+            "dateLastModified",
+            "dateApproved",
+            "dateFinalized"
+    };
+    private static final Set<String> DATE_RANGE_TRANSLATE_FIELD_NAMES_SET =
+            new HashSet<String>(Arrays.asList(DATE_RANGE_TRANSLATE_FIELD_NAMES));
+
+    public static DocumentLookupCriteria.Builder translateFieldValues(Map<String, String> fieldValues) {
+
+        DocumentLookupCriteria.Builder criteria = DocumentLookupCriteria.Builder.create();
+        for (Map.Entry<String, String> field : fieldValues.entrySet()) {
+            try {
+                if (StringUtils.isNotBlank(field.getValue())) {
+                    if (DIRECT_TRANSLATE_FIELD_NAMES_SET.contains(field.getKey())) {
+                        PropertyUtils.setNestedProperty(criteria, field.getKey(), field.getValue());
+                    } else if (DATE_RANGE_TRANSLATE_FIELD_NAMES_SET.contains(field.getKey())) {
+                        applyDateRangeField(criteria, field.getKey(), field.getValue());
+                    } else if (field.getKey().startsWith(KEWConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX)) {
+                        String documentAttributeName = field.getKey().substring(KEWConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX.length());
+                        applyDocumentAttribute(criteria, documentAttributeName, field.getValue());
+                    }
+
                 }
-            } else {
-                LOG.warn("Document Search was passed a piece of criteria it did not understand, ignoring: " + fieldToSet);
-			}
-		}
-
-        DocumentType documentType = getValidDocumentTypeByNameCaseInsensitive(criteria.getDocTypeFullName());
-
-    	// This will make sure that the docType is case insensitive after this point.
-        if (documentType != null) {
-    	    criteria.setDocTypeFullName(documentType.getName());
+            } catch (Exception e) {
+                throw new IllegalStateException("Failed to set document lookup criteria field: " + field.getKey(), e);
+            }
         }
 
-    	addSearchableAttributesToCriteria(documentType, criteria, fieldsForLookup);
+        String routeNodeLookupLogic = fieldValues.get(ROUTE_NODE_LOOKUP_LOGIC);
+        if (StringUtils.isNotBlank(routeNodeLookupLogic)) {
+            criteria.setRouteNodeLookupLogic(RouteNodeLookupLogic.valueOf(routeNodeLookupLogic));
+        }
 
-    	return criteria;
-	}
+        String documentStatusesValue = fieldValues.get(DOCUMENT_STATUSES);
+        if (StringUtils.isNotBlank(documentStatusesValue)) {
+            String[] documentStatuses = documentStatusesValue.split(",");
+            for (String documentStatus : documentStatuses) {
+                if (documentStatus.startsWith("category:")) {
+                    String categoryCode = StringUtils.remove(documentStatus, "category:");
+                    criteria.getDocumentStatusCategories().add(DocumentStatusCategory.fromCode(categoryCode));
+                } else {
+                    criteria.getDocumentStatuses().add(DocumentStatus.fromCode(documentStatus));
+                }
+            }
+        }
 
-	public static void addSearchableAttributesToCriteria(DocumentType documentType, DocSearchCriteriaDTO criteria, Map<String,String[]> propertyFields) {
-		if (documentType != null && documentType.hasSearchableAttributes() && criteria != null) {
-			criteria.getSearchableAttributes().clear();
-			if (!propertyFields.isEmpty()) {
-                DocumentLookupConfiguration lookupConfiguration = KEWServiceLocator.getDocumentLookupCustomizationMediator().getDocumentLookupConfiguration(documentType);
-                List<RemotableAttributeField> searchFields = lookupConfiguration.getFlattenedSearchAttributeFields();
-				for (RemotableAttributeField searchField : searchFields) {
-                    SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(searchField.getDataType());
-                    SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(searchField.getName(), null, searchField.getName(), searchableAttributeValue);
+        return criteria;
+    }
 
-                    /*
+    protected static void applyDateRangeField(DocumentLookupCriteria.Builder criteria, String fieldName, String fieldValue) throws Exception {
+        DateTime lowerDateTime = DocSearchUtils.getLowerDateTimeBound(fieldValue);
+        DateTime upperDateTime = DocSearchUtils.getUpperDateTimeBound(fieldValue);
+        if (lowerDateTime != null) {
+            PropertyUtils.setNestedProperty(criteria, fieldName + "From", lowerDateTime);
+        }
+        if (upperDateTime != null) {
+            PropertyUtils.setNestedProperty(criteria, fieldName + "To", upperDateTime);
+        }
+    }
 
-                     TODO - Rice 2.0 - implement range and case sensitivity support, pus support for this other stuff on te SearchableAttributeComponent
+    protected static void applyDocumentAttribute(DocumentLookupCriteria.Builder criteria, String documentAttributeName, String attributeValue) {
+        criteria.addDocumentAttributeValue(documentAttributeName, attributeValue);
+    }
 
-                    sacc.setRangeSearch(field.isMemberOfRange());
-                    sacc.setCaseSensitive(!field.isUpperCase());
-
-                    // FIXME: don't force this when dd changes are in, instead delete line 1 row below and uncomment one two lines below
-                    sacc.setAllowInlineRange(true);
-                    // sacc.setAllowInlineRange(dsField.isAllowInlineRange());
-
-                    sacc.setSearchInclusive(field.isInclusive());
-                    sacc.setLookupableFieldType(field.getFieldType());
-                    sacc.setSearchable(field.isIndexedForSearch());
-                    sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
-                    */
-
-                    // now set the value for the search attribute fields
-
-                    String[] propertyFieldValues = propertyFields.get(searchField.getName());
-                    if (propertyFieldValues != null) {
-                        // TODO - Rice 2.0 - add a test here to make sure the field can support multi-values
-                        if (propertyFieldValues.length > 1) {
-                            sacc.setValues(Arrays.asList(propertyFieldValues));
-                        }
-                        sacc.setValue(propertyFieldValues[0]);
-                    }
-                    criteria.addSearchableAttribute(sacc);
-				}
-			}
-		}
-	}
-
-	private static DocumentType getValidDocumentTypeByNameCaseInsensitive(String docTypeName) {
-		if (StringUtils.isNotBlank(docTypeName)) {
-			DocumentType dTypeCriteria = new DocumentType();
-		    dTypeCriteria.setName(docTypeName.trim());
-		    dTypeCriteria.setActive(true);
-		    Collection<DocumentType> docTypeList = KEWServiceLocator.getDocumentTypeService().find(dTypeCriteria, null, false);
-		    
-		    // Return the valid doc type.
-		    if(docTypeList != null){
-			    for(DocumentType dType: docTypeList){
-			        if (StringUtils.equals(docTypeName.toUpperCase(), dType.getName().toUpperCase())) {
-			            return dType;
-			        }
-			    }
-		    }
-		}
-		return null;
-	} 
 }

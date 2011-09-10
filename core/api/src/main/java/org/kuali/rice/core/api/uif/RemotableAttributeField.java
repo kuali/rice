@@ -42,7 +42,6 @@ import java.util.List;
 		RemotableAttributeField.Elements.REGEX_CONSTRAINT_MSG,
 		RemotableAttributeField.Elements.REQUIRED,
 		RemotableAttributeField.Elements.DEFAULT_VALUES,
-        RemotableAttributeField.Elements.LOOKUP_CASE_SENSITIVE,
         RemotableAttributeField.Elements.ATTRIBUTE_LOOKUP_SETTINGS,
 		RemotableAttributeField.Elements.CONTROL,
 		RemotableAttributeField.Elements.WIDGETS,
@@ -99,9 +98,6 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
     @XmlElement(name = Elements.DEFAULT_VALUE, required = false)
     private final Collection<String> defaultValues;
 
-    @XmlElement(name = Elements.LOOKUP_CASE_SENSITIVE, required = false)
-    private final Boolean lookupCaseSensitive;
-
     @XmlElement(name = Elements.ATTRIBUTE_LOOKUP_SETTINGS, required = false)
     private final RemotableAttributeLookupSettings attributeLookupSettings;
 
@@ -149,7 +145,6 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         this.regexContraintMsg = null;
         this.required = false;
         this.defaultValues = null;
-        this.lookupCaseSensitive = null;
         this.attributeLookupSettings = null;
         this.control = null;
         this.widgets = null;
@@ -181,7 +176,6 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
             List<String> defaultValuesCopy = new ArrayList<String>(b.defaultValues);
             this.defaultValues = Collections.unmodifiableList(defaultValuesCopy);
         }
-        this.lookupCaseSensitive = b.lookupCaseSensitive;
         if (b.attributeLookupSettings == null) {
             this.attributeLookupSettings = null;
         } else {
@@ -296,11 +290,6 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
     }
 
     @Override
-    public Boolean isLookupCaseSensitive() {
-        return lookupCaseSensitive;
-    }
-
-    @Override
     public RemotableAttributeLookupSettings getAttributeLookupSettings() {
         return attributeLookupSettings;
     }
@@ -354,7 +343,6 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         private boolean required;
 
         private Collection<String> defaultValues = new ArrayList<String>();
-        private Boolean lookupCaseSensitive;
         private RemotableAttributeLookupSettings.Builder attributeLookupSettings;
         private RemotableAbstractControl.Builder control;
 
@@ -389,7 +377,6 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
             b.setRegexContraintMsg(field.getRegexContraintMsg());
             b.setRequired(field.isRequired());
             b.setDefaultValues(field.getDefaultValues());
-            b.setLookupCaseSensitive(field.isLookupCaseSensitive());
             if (field.getAttributeLookupSettings() != null) {
                 b.setAttributeLookupSettings(RemotableAttributeLookupSettings.Builder.create(
                         field.getAttributeLookupSettings()));
@@ -566,15 +553,6 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         }
 
         @Override
-        public Boolean isLookupCaseSensitive() {
-            return lookupCaseSensitive;
-        }
-
-        public void setLookupCaseSensitive(Boolean lookupCaseSensitive) {
-            this.lookupCaseSensitive = lookupCaseSensitive;
-        }
-
-        @Override
         public RemotableAttributeLookupSettings.Builder getAttributeLookupSettings() {
             return attributeLookupSettings;
         }
@@ -633,7 +611,6 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         static final String REQUIRED = "required";
         static final String DEFAULT_VALUES = "defaultValues";
         static final String DEFAULT_VALUE = "defaultValue";
-        static final String LOOKUP_CASE_SENSITIVE = "lookupCaseSensitive";
         static final String ATTRIBUTE_LOOKUP_SETTINGS = "attributeLookupSettings";
         static final String CONTROL = "control";
         static final String WIDGETS = "widgets";

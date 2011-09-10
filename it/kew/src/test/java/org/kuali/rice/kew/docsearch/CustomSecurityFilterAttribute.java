@@ -21,9 +21,10 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
-import org.kuali.rice.kew.doctype.SecurityAttribute;
+import org.kuali.rice.kew.api.document.Document;
+import org.kuali.rice.kew.framework.document.security.DocumentSecurityAttribute;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 /**
  * This is a test class to verify the operation of the custom security attributes
@@ -31,7 +32,7 @@ import org.kuali.rice.kim.api.identity.Person;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class CustomSecurityFilterAttribute implements SecurityAttribute {
+public class CustomSecurityFilterAttribute implements DocumentSecurityAttribute {
 
     private static final long serialVersionUID = -8487944372203594080L;
 
@@ -43,27 +44,16 @@ public class CustomSecurityFilterAttribute implements SecurityAttribute {
         VIEWERS_BY_STATUS.put(KEWConstants.ROUTE_HEADER_FINAL_CD, "user2");
     }
 
-    /**
-     * @see org.kuali.rice.kew.doctype.SecurityAttribute#docSearchAuthorized(org.kuali.rice.kew.doctype.DocumentTypeSecurity, org.kuali.rice.kew.user.WorkflowUser, java.util.List, java.lang.String, java.lang.Long, java.lang.String, org.kuali.rice.kew.doctype.SecuritySession)
-     */
-    public Boolean docSearchAuthorized(Person currentUser, String docTypeName, String documentId, String initiatorPrincipalId) {
-        return checkAuthorizations(currentUser, docTypeName, documentId, initiatorPrincipalId);
-    }
-
-    /**
-     * @see org.kuali.rice.kew.doctype.SecurityAttribute#routeLogAuthorized(org.kuali.rice.kew.doctype.DocumentTypeSecurity, org.kuali.rice.kew.user.WorkflowUser, java.util.List, java.lang.String, java.lang.Long, java.lang.String, org.kuali.rice.kew.doctype.SecuritySession)
-     */
-    public Boolean routeLogAuthorized(Person currentUser, String docTypeName, String documentId, String initiatorPrincipalId) {
-        return checkAuthorizations(currentUser, docTypeName, documentId, initiatorPrincipalId);
-    }
-
-    private Boolean checkAuthorizations(Person currentUser, String docTypeName, String documentId, String initiatorPrincipalId) {
+    @Override
+    public boolean isAuthorizedForDocument(String principalId, Document document) {
         try {
-            WorkflowDocument doc = WorkflowDocumentFactory.loadDocument(currentUser.getPrincipalId(),documentId);
+            WorkflowDocument doc = WorkflowDocumentFactory.loadDocument(principalId, document.getDocumentId());
             String networkId = VIEWERS_BY_STATUS.get(doc.getStatus().getCode());
-            return ( (StringUtils.isNotBlank(networkId)) && (networkId.equals(currentUser.getPrincipalName())) );
+            String principalName = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalId).getPrincipalName();
+            return StringUtils.isNotBlank(networkId) && networkId.equals(principalName);
         } catch (Exception e) {
             throw new RuntimeException("Unable to process custom security filter attribute", e);
         }
     }
+
 }

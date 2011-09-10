@@ -37,8 +37,6 @@ public class KualiXMLBooleanTranslatorSearchableAttributeImpl extends KualiXmlSe
 	 * This overriden method does the translation of the given xPath expression from the XML definition of the attribute and
 	 * translates it into the true and false values based on the {@link #getValueForXPathTrueEvaluation()} and
 	 * {@link #getValueForXPathFalseEvaluation()} method's return variables
-	 * 
-	 * @see org.kuali.rice.krad.workflow.attribute.KualiXmlSearchableAttributeImpl#getConfigXML()
 	 */
 	@Override
 	public Element getConfigXML(ExtensionDefinition extensionDefinition) {

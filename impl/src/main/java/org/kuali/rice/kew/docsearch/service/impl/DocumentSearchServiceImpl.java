@@ -17,58 +17,60 @@
 package org.kuali.rice.kew.docsearch.service.impl;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
+import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
-import org.kuali.rice.core.api.util.RiceConstants;
-import org.kuali.rice.core.framework.persistence.jdbc.sql.SqlBuilder;
-import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
-import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
-import org.kuali.rice.kew.docsearch.DocSearchDTO;
-import org.kuali.rice.kew.docsearch.DocSearchUtils;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.document.attribute.AttributeFields;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
 import org.kuali.rice.kew.docsearch.DocumentLookupCustomizationMediator;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
-import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
-import org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor;
-import org.kuali.rice.kew.docsearch.SavedSearchResult;
-import org.kuali.rice.kew.docsearch.SearchAttributeCriteriaComponent;
 import org.kuali.rice.kew.docsearch.StandardDocumentSearchGenerator;
-import org.kuali.rice.kew.docsearch.StandardDocumentSearchResultProcessor;
 import org.kuali.rice.kew.docsearch.dao.DocumentSearchDAO;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
+import org.kuali.rice.kew.doctype.SecuritySession;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
+import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCriteriaConfiguration;
+import org.kuali.rice.kew.framework.document.lookup.DocumentLookupResultValue;
+import org.kuali.rice.kew.framework.document.lookup.DocumentLookupResultValues;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kns.service.DictionaryValidationService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 
-import java.text.MessageFormat;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
-
+import java.util.Map;
+import java.util.Set;
 
 public class DocumentSearchServiceImpl implements DocumentSearchService {
 
@@ -78,17 +80,12 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 	private static final String LAST_SEARCH_ORDER_OPTION = "DocSearch.LastSearch.Order";
 	private static final String NAMED_SEARCH_ORDER_BASE = "DocSearch.NamedSearch.";
 	private static final String LAST_SEARCH_BASE_NAME = "DocSearch.LastSearch.Holding";
-	private static final String DOC_SEARCH_CRITERIA_DTO_CLASS = "org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO";
 
-	private volatile DictionaryValidationService dictionaryValidationService;
-	private volatile DataDictionaryService dataDictionaryService;
 	private volatile ConfigurationService kualiConfigurationService;
     private DocumentLookupCustomizationMediator documentLookupCustomizationMediator;
 
 	private DocumentSearchDAO docSearchDao;
 	private UserOptionsService userOptionsService;
-
-	private SqlBuilder sqlBuilder = null;
 
 	public void setDocumentSearchDAO(DocumentSearchDAO docSearchDao) {
 		this.docSearchDao = docSearchDao;
@@ -117,81 +114,144 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         }
 	}
 
-	public SavedSearchResult getSavedSearchResults(String principalId, String savedSearchName) {
-		UserOptions savedSearch = userOptionsService.findByOptionId(savedSearchName, principalId);
-		if (savedSearch == null || savedSearch.getOptionId() == null) {
-			return null;
-		}
-		DocSearchCriteriaDTO criteria = getCriteriaFromSavedSearch(savedSearch);
-		return new SavedSearchResult(criteria, getList(principalId, criteria));
-	}
-
-    public DocumentSearchResultComponents getList(String principalId, DocSearchCriteriaDTO criteria) {
-        return getList(principalId, criteria, false);
+    public DocumentLookupCriteria getSavedSearchCriteria(String principalId, String searchName) {
+        UserOptions savedSearch = userOptionsService.findByOptionId(NAMED_SEARCH_ORDER_BASE + searchName, principalId);
+        if (savedSearch == null) {
+            return null;
+        }
+        return getCriteriaFromSavedSearch(savedSearch);
     }
 
-    public DocumentSearchResultComponents getListRestrictedByCriteria(String principalId, DocSearchCriteriaDTO criteria) {
-        return getList(principalId, criteria, true);
-    }
-
-	private DocumentSearchResultComponents getList(String principalId, DocSearchCriteriaDTO criteria, boolean useCriteriaRestrictions) {
-		DocumentSearchGenerator docSearchGenerator = null;
-		DocumentSearchResultProcessor docSearchResultProcessor = null;
-
-		DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(criteria.getDocTypeFullName());
-		if (documentType != null ) {
-	        docSearchGenerator = documentType.getDocumentSearchGenerator();
-	        docSearchResultProcessor = documentType.getDocumentSearchResultProcessor();
-		} else {
-			docSearchGenerator = getStandardDocumentSearchGenerator();
-	        docSearchResultProcessor = getStandardDocumentSearchResultProcessor();
-		}
-		docSearchGenerator.setSearchingUser(principalId);
-		performPreSearchConditions(docSearchGenerator,principalId,criteria);
-        validateDocumentSearchCriteria(docSearchGenerator,criteria);
-        DocSearchCriteriaDTO customizedCriteria = applyCriteriaCustomizations(documentType, criteria);
-        DocumentSearchResultComponents searchResult = null;
+    protected DocumentLookupCriteria getCriteriaFromSavedSearch(UserOptions savedSearch) {
+        String optionValue = savedSearch.getOptionVal();
         try {
-            List<DocSearchDTO> docListResults = null;
-            if (useCriteriaRestrictions) {
-                docListResults = docSearchDao.getListBoundedByCritera(docSearchGenerator, customizedCriteria, principalId);
-            } else {
-                docListResults = docSearchDao.getList(docSearchGenerator, customizedCriteria, principalId);
-            }
-            if (docSearchResultProcessor.isProcessFinalResults()) {
-                searchResult = docSearchResultProcessor.processIntoFinalResults(docListResults, customizedCriteria, principalId);
-            } else {
-                searchResult = new StandardDocumentSearchResultProcessor().processIntoFinalResults(docListResults, customizedCriteria, principalId);
-            }
+            JAXBContext jaxbContext = JAXBContext.newInstance(DocumentLookupCriteria.class);
+            return (DocumentLookupCriteria)jaxbContext.createUnmarshaller().unmarshal(new StringReader(optionValue));
+        } catch (JAXBException e) {
+            throw new WorkflowRuntimeException("Failed to load saved search for name '" + savedSearch.getOptionId() + "'", e);
+        }
+    }
 
-        } catch (Exception e) {
-			String errorMsg = "Error received trying to execute search: " + e.getLocalizedMessage();
-            throw new WorkflowServiceErrorException(errorMsg, e, new WorkflowServiceErrorImpl(errorMsg,"docsearch.DocumentSearchService.generalError",errorMsg));
-		}
+    private String getOptionCriteriaField(UserOptions userOption, String fieldName) {
+        String value = userOption.getOptionVal();
+        if (value != null) {
+            String[] fields = value.split(",,");
+            for (String field : fields)
+            {
+                if (field.startsWith(fieldName + "="))
+                {
+                    return field.substring(field.indexOf(fieldName) + fieldName.length() + 1, field.length());
+                }
+            }
+        }
+        return null;
+    }
 
-        // be sure to save the original criteria that was submitted by the user, not the "customized" criteria
-		if (!useCriteriaRestrictions || !criteria.isSaveSearchForUser()) {
-            try {
-                saveSearch(principalId, criteria);
-            } catch (RuntimeException e) {
-            	LOG.warn("Unable to save search due to RuntimeException with message: " + e.getMessage());
-            	LOG.warn("RuntimeException will be ignored and may cause transaction problems");
-                // swallerin it, cuz we look to be read only
-    		}
-	    }
-        return searchResult;
+    @Override
+	public DocumentLookupResults lookupDocuments(String principalId, DocumentLookupCriteria.Builder criteria) {
+		DocumentSearchGenerator docSearchGenerator = getStandardDocumentSearchGenerator();
+		DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(criteria.getDocumentTypeName());
+        criteria = validateDocumentSearchCriteria(docSearchGenerator, criteria);
+        criteria = applyCriteriaCustomizations(documentType, criteria);
+        List<RemotableAttributeField> searchFields = determineSearchFields(documentType);
+        DocumentLookupResults.Builder searchResults = docSearchDao.findDocuments(docSearchGenerator, criteria, searchFields);
+        DocumentLookupCriteria builtCriteria = criteria.build();
+        if (documentType != null) {
+            DocumentLookupResultValues resultValues = getDocumentLookupCustomizationMediator().customizeResults(documentType, builtCriteria, searchResults.build());
+            if (resultValues != null && CollectionUtils.isNotEmpty(resultValues.getResultValues())) {
+                Map<String, DocumentLookupResultValue> resultValueMap = new HashMap<String, DocumentLookupResultValue>();
+                for (DocumentLookupResultValue resultValue : resultValues.getResultValues()) {
+                    resultValueMap.put(resultValue.getDocumentId(), resultValue);
+                }
+                for (DocumentLookupResult.Builder result : searchResults.getLookupResults()) {
+                    DocumentLookupResultValue value = resultValueMap.get(result.getDocument().getDocumentId());
+                    if (value != null) {
+                        applyResultCustomization(result, value);
+                    }
+                }
+            }
+        }
+
+        if (StringUtils.isNotBlank(principalId) && !searchResults.getLookupResults().isEmpty()) {
+            DocumentLookupResults builtResults = searchResults.build();
+            Set<String> authorizedDocumentIds = KEWServiceLocator.getDocumentSecurityService().documentLookupResultAuthorized(principalId, builtResults, new SecuritySession(principalId));
+            if (CollectionUtils.isNotEmpty(authorizedDocumentIds)) {
+                int numFiltered = 0;
+                List<DocumentLookupResult.Builder> finalResults = new ArrayList<DocumentLookupResult.Builder>();
+                for (DocumentLookupResult.Builder result : searchResults.getLookupResults()) {
+                    if (authorizedDocumentIds.contains(result.getDocument().getDocumentId())) {
+                        finalResults.add(result);
+                    } else {
+                        numFiltered++;
+                    }
+                }
+                searchResults.setLookupResults(finalResults);
+                searchResults.setNumberOfSecurityFilteredResults(numFiltered);
+            }
+        }
+        saveSearch(principalId, builtCriteria);
+        return searchResults.build();
 	}
+
+    protected void applyResultCustomization(DocumentLookupResult.Builder result, DocumentLookupResultValue value) {
+        Map<String, List<DocumentAttribute.AbstractBuilder<?>>> customizedAttributeMap =
+                new LinkedHashMap<String, List<DocumentAttribute.AbstractBuilder<?>>>();
+        for (DocumentAttribute customizedAttribute : value.getDocumentAttributes()) {
+            List<DocumentAttribute.AbstractBuilder<?>> attributesForName = customizedAttributeMap.get(value.getDocumentId());
+            if (attributesForName == null) {
+                attributesForName = new ArrayList<DocumentAttribute.AbstractBuilder<?>>();
+                customizedAttributeMap.put(value.getDocumentId(), attributesForName);
+            }
+            attributesForName.add(DocumentAttributeFactory.loadContractIntoBuilder(customizedAttribute));
+        }
+        // keep track of what we've already applied customizations for, since those will replace existing attributes with that name
+        Set<String> documentAttributeNamesCustomized = new HashSet<String>();
+        List<DocumentAttribute.AbstractBuilder<?>> newDocumentAttributes = new ArrayList<DocumentAttribute.AbstractBuilder<?>>();
+        for (DocumentAttribute.AbstractBuilder<?> documentAttribute : result.getDocumentAttributes()) {
+            String name = documentAttribute.getName();
+            if (!documentAttributeNamesCustomized.contains(name) && customizedAttributeMap.containsKey(name)) {
+                documentAttributeNamesCustomized.add(name);
+                newDocumentAttributes.addAll(customizedAttributeMap.get(name));
+            }
+        }
+    }
+
+    @Override
+    public DocumentLookupResults lookupDocuments(String principalId, DocumentLookupCriteria criteria) {
+        return lookupDocuments(principalId, DocumentLookupCriteria.Builder.create(criteria));
+    }
 
     /**
      * Applies any document type-specific customizations to the lookup criteria.  If no customizations are configured
      * for the document type, this method will simply return the criteria that is passed to it.  If
      * the given DocumentType is null, then this method will also simply return the criteria that is passed to it.
      */
-    protected DocSearchCriteriaDTO applyCriteriaCustomizations(DocumentType documentType, DocSearchCriteriaDTO criteria) {
+    protected DocumentLookupCriteria.Builder applyCriteriaCustomizations(DocumentType documentType, DocumentLookupCriteria.Builder criteria) {
         if (documentType == null) {
             return criteria;
         }
-        return getDocumentLookupCustomizationMediator().customizeCriteria(documentType, criteria);
+        DocumentLookupCriteria customizedCriteria = getDocumentLookupCustomizationMediator().customizeCriteria(documentType, criteria.build());
+        if (customizedCriteria != null) {
+            return DocumentLookupCriteria.Builder.create(customizedCriteria);
+        }
+        return criteria;
+    }
+
+    protected List<RemotableAttributeField> determineSearchFields(DocumentType documentType) {
+        List<RemotableAttributeField> searchFields = new ArrayList<RemotableAttributeField>();
+        if (documentType != null) {
+            DocumentLookupCriteriaConfiguration lookupConfiguration =
+                    getDocumentLookupCustomizationMediator().getDocumentLookupCriteriaConfiguration(documentType);
+            if (lookupConfiguration != null) {
+                List<AttributeFields> attributeFields = lookupConfiguration.getSearchAttributeFields();
+                if (attributeFields != null) {
+                    for (AttributeFields fields : attributeFields) {
+                        searchFields.addAll(fields.getRemotableAttributeFields());
+                    }
+                }
+            }
+        }
+        return searchFields;
     }
 
     public DocumentSearchGenerator getStandardDocumentSearchGenerator() {
@@ -202,22 +262,8 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
     	return (DocumentSearchGenerator)GlobalResourceLoader.getObject(new ObjectDefinition(searchGeneratorClass));
     }
 
-    public DocumentSearchResultProcessor getStandardDocumentSearchResultProcessor() {
-	String searchGeneratorClass = ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.STANDARD_DOC_SEARCH_RESULT_PROCESSOR_CLASS_CONFIG_PARM);
-	if (searchGeneratorClass == null){
-	    return new StandardDocumentSearchResultProcessor();
-	}
-    	return (DocumentSearchResultProcessor)GlobalResourceLoader.getObject(new ObjectDefinition(searchGeneratorClass));
-    }
-
-    public void performPreSearchConditions(DocumentSearchGenerator docSearchGenerator,String principalId,DocSearchCriteriaDTO criteria) {
-        List<WorkflowServiceError> errors = docSearchGenerator.performPreSearchConditions(principalId,criteria);
-        if (!errors.isEmpty()) {
-            throw new WorkflowServiceErrorException("Document Search Precondition Errors", errors);
-        }
-    }
-
-    public void validateDocumentSearchCriteria(DocumentSearchGenerator docSearchGenerator,DocSearchCriteriaDTO criteria) {
+    @Override
+    public DocumentLookupCriteria.Builder validateDocumentSearchCriteria(DocumentSearchGenerator docSearchGenerator, DocumentLookupCriteria.Builder criteria) {
         List<WorkflowServiceError> errors = this.validateWorkflowDocumentSearchCriteria(criteria);
         List<RemotableAttributeError> searchAttributeErrors = docSearchGenerator.validateSearchableAttributes(criteria);
         if (!CollectionUtils.isEmpty(searchAttributeErrors)) {
@@ -232,230 +278,48 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         if (!errors.isEmpty() || !GlobalVariables.getMessageMap().hasNoErrors()) {
             throw new WorkflowServiceErrorException("Document Search Validation Errors", errors);
         }
+        return criteria;
     }
 
-    protected List<WorkflowServiceError> validateWorkflowDocumentSearchCriteria(DocSearchCriteriaDTO criteria) {
+    protected List<WorkflowServiceError> validateWorkflowDocumentSearchCriteria(DocumentLookupCriteria.Builder criteria) {
         List<WorkflowServiceError> errors = new ArrayList<WorkflowServiceError>();
 
-        // trim the network ids.  Validation isn't really necessary, because if not found, no results will
-        // be returned.
-        if (!StringUtils.isEmpty(criteria.getApprover())) {
-            criteria.setApprover(criteria.getApprover().trim());
-        }
-        if (!StringUtils.isEmpty(criteria.getViewer())) {
-            criteria.setViewer(criteria.getViewer().trim());
-        }
-        if (!StringUtils.isEmpty(criteria.getInitiator())) {
-            criteria.setInitiator(criteria.getInitiator().trim());
-        }
-
-        if (! validateWorkgroup(criteria.getWorkgroupViewerId(), criteria.getWorkgroupViewerName())) {
-            errors.add(new WorkflowServiceErrorImpl("Workgroup Viewer Name is not a workgroup", "docsearch.DocumentSearchService.workgroup.viewer"));
-        } else {
-            if (!org.apache.commons.lang.StringUtils.isEmpty(criteria.getWorkgroupViewerName())){
-                criteria.setWorkgroupViewerName(criteria.getWorkgroupViewerName().trim());
-            }
-        }
-
-        if (!validateNumber(criteria.getDocVersion())) {
-            errors.add(new WorkflowServiceErrorImpl("Non-numeric document version", "docsearch.DocumentSearchService.docVersion"));
-        } else {
-            if (criteria.getDocVersion() != null && !"".equals(criteria.getDocVersion().trim())) {
-                criteria.setDocVersion(criteria.getDocVersion().trim());
-            }
-        }
-
-        if (criteria.getDocumentId() != null && !"".equals(criteria.getDocumentId().trim())) {
-                criteria.setDocumentId(criteria.getDocumentId().trim());
-        }
-        
-        // validate any dates
-        boolean compareDatePairs = true;
-        if (!validateDate("fromDateCreated", criteria.getFromDateCreated(), "fromDateCreated")) {
-            compareDatePairs = false;
-        } else {
-            if (criteria.getFromDateCreated() != null && !"".equals(criteria.getFromDateCreated().trim())) {
-                criteria.setFromDateCreated(criteria.getFromDateCreated().trim());
-            } else {
-                compareDatePairs = false;
-            }
-        }
-        if (!validateDate("toDateCreated", criteria.getToDateCreated(), "toDateCreated")) {
-            compareDatePairs = false;
-        } else {
-            if (criteria.getToDateCreated() != null && !"".equals(criteria.getToDateCreated().trim())) {
-                criteria.setToDateCreated(criteria.getToDateCreated().trim());
-            } else {
-                compareDatePairs = false;
-            }
-        }
-        if (compareDatePairs) {
-            if (!checkDateRanges(criteria.getFromDateCreated(), criteria.getToDateCreated())) {
-            	String[] messageArgs = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(
-            			DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateCreated");
-            	errors.add(new WorkflowServiceErrorImpl(MessageFormat.format(getKualiConfigurationService().getPropertyValueAsString(
-                        getDataDictionaryService().getAttributeValidatingErrorMessageKey(DOC_SEARCH_CRITERIA_DTO_CLASS,
-                                "fromDateCreated") + ".range"), messageArgs[0]), "docsearch.DocumentSearchService.dateCreatedRange"));
-            }
-        }
-        compareDatePairs = true;
-        if (!validateDate("fromDateApproved", criteria.getFromDateApproved(), "fromDateApproved")) {
-            compareDatePairs = false;
-        } else {
-            if (criteria.getFromDateApproved() != null && !"".equals(criteria.getFromDateApproved().trim())) {
-                criteria.setFromDateApproved(criteria.getFromDateApproved().trim());
-            } else {
-                compareDatePairs = false;
-            }
-        }
-        if (!validateDate("toDateApproved", criteria.getToDateApproved(), "toDateApproved")) {
-            compareDatePairs = false;
-        } else {
-            if (criteria.getToDateApproved() != null && !"".equals(criteria.getToDateApproved().trim())) {
-                criteria.setToDateApproved(criteria.getToDateApproved().trim());
-            } else {
-                compareDatePairs = false;
-            }
-        }
-        if (compareDatePairs) {
-            if (!checkDateRanges(criteria.getFromDateApproved(), criteria.getToDateApproved())) {
-            	String[] messageArgs = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(
-            			DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateApproved");
-            	errors.add(new WorkflowServiceErrorImpl(MessageFormat.format(getKualiConfigurationService().getPropertyValueAsString(
-                        getDataDictionaryService().getAttributeValidatingErrorMessageKey(DOC_SEARCH_CRITERIA_DTO_CLASS,
-                                "fromDateApproved") + ".range"), messageArgs[0]), "docsearch.DocumentSearchService.dateApprovedRange"));
-            }
-        }
-        compareDatePairs = true;
-        if (!validateDate("fromDateFinalized", criteria.getFromDateFinalized(), "fromDateFinalized")) {
-            compareDatePairs = false;
-        } else {
-            if (criteria.getFromDateFinalized() != null && !"".equals(criteria.getFromDateFinalized().trim())) {
-                criteria.setFromDateFinalized(criteria.getFromDateFinalized().trim());
-            } else {
-                compareDatePairs = false;
-            }
-        }
-        if (!validateDate("toDateFinalized", criteria.getToDateFinalized(), "toDateFinalized")) {
-            compareDatePairs = false;
-        } else {
-            if (criteria.getToDateFinalized() != null && !"".equals(criteria.getToDateFinalized().trim())) {
-                criteria.setToDateFinalized(criteria.getToDateFinalized().trim());
-            } else {
-                compareDatePairs = false;
-            }
-        }
-        if (compareDatePairs) {
-            if (!checkDateRanges(criteria.getFromDateFinalized(), criteria.getToDateFinalized())) {
-            	String[] messageArgs = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(
-            			DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateFinalized");
-            	errors.add(new WorkflowServiceErrorImpl(MessageFormat.format(getKualiConfigurationService().getPropertyValueAsString(
-                        getDataDictionaryService().getAttributeValidatingErrorMessageKey(DOC_SEARCH_CRITERIA_DTO_CLASS,
-                                "fromDateFinalized") + ".range"), messageArgs[0]), "docsearch.DocumentSearchService.dateFinalizedRange"));
-            }
-        }
-        compareDatePairs = true;
-        if (!validateDate("fromDateLastModified", criteria.getFromDateLastModified(), "fromDateLastModified")) {
-            compareDatePairs = false;
-        } else {
-            if (criteria.getFromDateLastModified() != null && !"".equals(criteria.getFromDateLastModified().trim())) {
-                criteria.setFromDateLastModified(criteria.getFromDateLastModified().trim());
-            } else {
-                compareDatePairs = false;
-            }
-        }
-        if (!validateDate("toDateLastModified", criteria.getToDateLastModified(), "toDateLastModified")) {
-            compareDatePairs = false;
-        } else {
-            if (criteria.getToDateLastModified() != null && !"".equals(criteria.getToDateLastModified().trim())) {
-                criteria.setToDateLastModified(criteria.getToDateLastModified().trim());
-            } else {
-                compareDatePairs = false;
-            }
-        }
-        if (compareDatePairs) {
-            if (!checkDateRanges(criteria.getFromDateLastModified(), criteria.getToDateLastModified())) {
-            	String[] messageArgs = getDataDictionaryService().getAttributeValidatingErrorMessageParameters(
-            			DOC_SEARCH_CRITERIA_DTO_CLASS, "fromDateLastModified");
-            	errors.add(new WorkflowServiceErrorImpl(MessageFormat.format(getKualiConfigurationService().getPropertyValueAsString(
-                        getDataDictionaryService().getAttributeValidatingErrorMessageKey(DOC_SEARCH_CRITERIA_DTO_CLASS,
-                                "fromDateLastModified") + ".range"), messageArgs[0]), "docsearch.DocumentSearchService.dateLastModifiedRange"));
-            }
-        }
+        // trim the principal names, validation isn't really necessary, because if not found, no results will be
+        // returned.
+        criteria.setApproverPrincipalName(trimCriteriaValue(criteria.getApproverPrincipalName()));
+        criteria.setViewerPrincipalName(trimCriteriaValue(criteria.getViewerPrincipalName()));
+        criteria.setInitiatorPrincipalName(trimCriteriaValue(criteria.getInitiatorPrincipalName()));
+        validateGroupCriteria(criteria, errors);
+        criteria.setDocumentId(criteria.getDocumentId());
         return errors;
     }
 
-    private boolean validateNetworkId(List<String> networkIds){
-    	for(String networkId: networkIds){
-    		if(!this.validateNetworkId(networkId)){
-    			return false;
-    		}
-    	}
-    	return true;
-    }
-	private boolean validateNetworkId(String networkId) {
-		if ((networkId == null) || networkId.trim().equals("")) {
-			return true;
-		}
-		try {
-			return KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(networkId.trim()) != null;
-		} catch (Exception ex) {
-			LOG.debug(ex, ex);
-			return false;
-		}
-	}
-
-	private boolean validatePersonByPrincipalName(String principalName){
-        return true;
-		/*if(StringUtils.isBlank(principalName)) {
-			return true;
-		}
-		Person person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
-		return person != null;*/
-	}
-
-	private boolean validateDate(String dateFieldName, String dateFieldValue, String dateFieldErrorKey) {
-		// Validates the date format via the dictionary validation service. If validation fails, the validation service adds an error to the message map.
-		int oldErrorCount = GlobalVariables.getMessageMap().getErrorCount();
-		getDictionaryValidationService().validateAttributeFormat(DOC_SEARCH_CRITERIA_DTO_CLASS, dateFieldName, dateFieldValue,
-				KEWConstants.SearchableAttributeConstants.DATA_TYPE_DATE, dateFieldErrorKey);
-		return (GlobalVariables.getMessageMap().getErrorCount() <= oldErrorCount);
-		//return Utilities.validateDate(date, true);
-	}
-
-	private boolean checkDateRanges(String fromDate, String toDate) {
-		return Utilities.checkDateRanges(fromDate, toDate);
-	}
-
-	private boolean validateNumber(List<String> integers) {
-		for(String integer: integers){
-    		if(!this.validateNumber(integer)){
-    			return false;
-    		}
-    	}
-    	return true;
-	}
-
-	private boolean validateNumber(String integer) {
-		if ((integer == null) || integer.trim().equals("")) {
-			return true;
-		}
-		return SqlBuilder.isValidNumber(integer);
-
-	}
-
-    private boolean validateWorkgroup(String id, String workgroupName) {
-        if (org.apache.commons.lang.StringUtils.isEmpty(workgroupName)) {
-            return true;
+    private String trimCriteriaValue(String criteriaValue) {
+        if (StringUtils.isNotBlank(criteriaValue)) {
+            criteriaValue = criteriaValue.trim();
         }
-        Group group = KimApiServiceLocator.getGroupService().getGroup(id);
-        return group != null;
+        if (StringUtils.isBlank(criteriaValue)) {
+            return null;
+        }
+        return criteriaValue;
     }
 
+    private void validateGroupCriteria(DocumentLookupCriteria.Builder criteria, List<WorkflowServiceError> errors) {
+        if (StringUtils.isNotBlank(criteria.getViewerGroupId())) {
+            Group group = KimApiServiceLocator.getGroupService().getGroup(criteria.getViewerGroupId());
+            if (group == null) {
+                errors.add(new WorkflowServiceErrorImpl("Workgroup Viewer Name is not a workgroup", "docsearch.DocumentSearchService.workgroup.viewer"));
+            }
+        } else {
+            criteria.setViewerGroupId(null);
+        }
+    }
+
+    @Override
 	public List<KeyValue> getNamedSearches(String principalId) {
 		List<UserOptions> namedSearches = userOptionsService.findByUserQualified(principalId, NAMED_SEARCH_ORDER_BASE + "%");
 		List<KeyValue> sortedNamedSearches = new ArrayList<KeyValue>(0);
-		if (namedSearches != null && namedSearches.size() > 0) {
+		if (!namedSearches.isEmpty()) {
 			Collections.sort(namedSearches);
 			for (UserOptions namedSearch : namedSearches) {
 				KeyValue keyValue = new ConcreteKeyValue(namedSearch.getOptionId(), namedSearch.getOptionId().substring(NAMED_SEARCH_ORDER_BASE.length(), namedSearch.getOptionId().length()));
@@ -465,295 +329,178 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		return sortedNamedSearches;
 	}
 
+    @Override
 	public List<KeyValue> getMostRecentSearches(String principalId) {
 		UserOptions order = userOptionsService.findByOptionId(LAST_SEARCH_ORDER_OPTION, principalId);
 		List<KeyValue> sortedMostRecentSearches = new ArrayList<KeyValue>();
 		if (order != null && order.getOptionVal() != null && !"".equals(order.getOptionVal())) {
 			List<UserOptions> mostRecentSearches = userOptionsService.findByUserQualified(principalId, LAST_SEARCH_BASE_NAME + "%");
 			String[] ordered = order.getOptionVal().split(",");
-            for (String anOrdered : ordered)
-            {
+            for (String anOrdered : ordered) {
                 UserOptions matchingOption = null;
-                for (UserOptions option : mostRecentSearches)
-                {
-                    if (anOrdered.equals(option.getOptionId()))
-                    {
+                for (UserOptions option : mostRecentSearches) {
+                    if (anOrdered.equals(option.getOptionId())) {
                         matchingOption = option;
                         break;
                     }
                 }
-                if (matchingOption != null)
-                {
-                	sortedMostRecentSearches.add(new ConcreteKeyValue(anOrdered, getCriteriaFromSavedSearch(matchingOption).getDocumentSearchAbbreviatedString()));
+                if (matchingOption != null) {
+                    DocumentLookupCriteria matchingCriteria = getCriteriaFromSavedSearch(matchingOption);
+                	sortedMostRecentSearches.add(new ConcreteKeyValue(anOrdered, getSavedSearchAbbreviatedString(matchingCriteria)));
                 }
             }
 		}
 		return sortedMostRecentSearches;
 	}
 
-	private void saveSearch(String principalId, DocSearchCriteriaDTO criteria) {
-		if (StringUtils.isBlank(principalId)) {
-			String message = "User given to save search was null.";
-			LOG.warn(message);
-			throw new IllegalArgumentException(message);
-		}
-		StringBuffer savedSearchString = new StringBuffer();
-		savedSearchString.append(criteria.getAppDocId() == null || "".equals(criteria.getAppDocId()) ? "" : ",,appDocId=" + criteria.getAppDocId());
-		savedSearchString.append(criteria.getApprover() == null || "".equals(criteria.getApprover()) ? "" : ",,approver=" + criteria.getApprover());
+    public DocumentLookupCriteria clearCriteria(DocumentType documentType, DocumentLookupCriteria criteria) {
+        DocumentLookupCriteria clearedCriteria = getDocumentLookupCustomizationMediator().customizeClearCriteria(
+                documentType, criteria);
+        if (clearedCriteria == null) {
+            clearedCriteria = getStandardDocumentSearchGenerator().clearSearch(criteria);
+        }
+        return clearedCriteria;
+    }
 
-        if (! org.apache.commons.lang.StringUtils.isEmpty(criteria.getDocRouteNodeId()) && !criteria.getDocRouteNodeId().equals("-1")) {
-            RouteNode routeNode = KEWServiceLocator.getRouteNodeService().findRouteNodeById(criteria.getDocRouteNodeId());
-            // this block will result in NPE if routeNode is not found; is the intent to preserve the requested criteria? if so, then the following line fixes it
-            //savedSearchString.append(",,docRouteNodeId=" + (routeNode != null ? routeNode.getRouteNodeId() : criteria.getDocRouteNodeId()));
-            savedSearchString.append(",,docRouteNodeId=");
-            savedSearchString.append(routeNode.getRouteNodeId());
-            savedSearchString.append(criteria.getDocRouteNodeLogic() == null || "".equals(criteria.getDocRouteNodeLogic()) ? "" : ",,docRouteNodeLogic=" + criteria.getDocRouteNodeLogic());
+    protected String getSavedSearchAbbreviatedString(DocumentLookupCriteria criteria) {
+        Map<String, String> abbreviatedStringMap = new LinkedHashMap<String, String>();
+        addAbbreviatedString(abbreviatedStringMap, "Doc Type", criteria.getDocumentTypeName());
+        addAbbreviatedString(abbreviatedStringMap, "Initiator", criteria.getInitiatorPrincipalName());
+        addAbbreviatedString(abbreviatedStringMap, "Doc Id", criteria.getDocumentId());
+        addAbbreviatedRangeString(abbreviatedStringMap, "Created", criteria.getDateCreatedFrom(),
+                criteria.getDateCreatedTo());
+        addAbbreviatedString(abbreviatedStringMap, "Title", criteria.getTitle());
+        addAbbreviatedString(abbreviatedStringMap, "App Doc Id", criteria.getApplicationDocumentId());
+        addAbbreviatedRangeString(abbreviatedStringMap, "Approved", criteria.getDateApprovedFrom(),
+                criteria.getDateApprovedTo());
+        addAbbreviatedRangeString(abbreviatedStringMap, "Modified", criteria.getDateLastModifiedFrom(), criteria.getDateLastModifiedTo());
+        addAbbreviatedRangeString(abbreviatedStringMap, "Finalized", criteria.getDateFinalizedFrom(), criteria.getDateFinalizedTo());
+        addAbbreviatedRangeString(abbreviatedStringMap, "App Doc Status Changed", criteria.getDateApplicationDocumentStatusChangedFrom(), criteria.getDateApplicationDocumentStatusChangedTo());
+        addAbbreviatedString(abbreviatedStringMap, "Approver", criteria.getApproverPrincipalName());
+        addAbbreviatedString(abbreviatedStringMap, "Viewer", criteria.getViewerPrincipalName());
+        addAbbreviatedString(abbreviatedStringMap, "Group Viewer", criteria.getViewerGroupId());
+        addAbbreviatedString(abbreviatedStringMap, "Node", criteria.getRouteNodeName());
+        addAbbreviatedMultiValuedString(abbreviatedStringMap, "Status", criteria.getDocumentStatuses());
+        addAbbreviatedMultiValuedString(abbreviatedStringMap, "Category", criteria.getDocumentStatusCategories());
+        for (String documentAttributeName : criteria.getDocumentAttributeValues().keySet()) {
+            addAbbreviatedMultiValuedString(abbreviatedStringMap, documentAttributeName, criteria.getDocumentAttributeValues().get(documentAttributeName));
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        int iteration = 0;
+        for (String label : abbreviatedStringMap.keySet()) {
+            stringBuilder.append(label).append("=").append(abbreviatedStringMap.get(label));
+            if (iteration < abbreviatedStringMap.keySet().size()) {
+                stringBuilder.append("; ");
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+    protected void addAbbreviatedString(Map<String, String> abbreviatedStringMap, String label, String value) {
+        if (StringUtils.isNotBlank(value)) {
+            abbreviatedStringMap.put(label, value);
+        }
+    }
+
+    protected void addAbbreviatedMultiValuedString(Map<String, String> abbreviatedStringMap, String label, Collection<? extends Object> values) {
+        if (CollectionUtils.isNotEmpty(values)) {
+            List<String> stringValues = new ArrayList<String>();
+            for (Object value : values) {
+                stringValues.add(value.toString());
+            }
+            abbreviatedStringMap.put(label, StringUtils.join(stringValues, ","));
+        }
+    }
+
+    protected void addAbbreviatedRangeString(Map<String, String> abbreviatedStringMap, String label, DateTime dateFrom, DateTime dateTo) {
+        if (dateFrom != null || dateTo != null) {
+            StringBuilder abbreviatedString = new StringBuilder();
+            if (dateFrom != null) {
+                abbreviatedString.append(CoreApiServiceLocator.getDateTimeService().toDateString(dateFrom.toDate()));
+            }
+            abbreviatedString.append("..");
+            if (dateTo != null) {
+                abbreviatedString.append(CoreApiServiceLocator.getDateTimeService().toDateString(dateTo.toDate()));
+            }
+            abbreviatedStringMap.put(label, abbreviatedString.toString());
+        }
+    }
+
+    private void saveSearch(String principalId, DocumentLookupCriteria criteria) {
+        if (StringUtils.isBlank(principalId)) {
+            throw new IllegalArgumentException("principalId was null or blank");
         }
 
-		savedSearchString.append(criteria.getDocRouteStatus() == null || "".equals(criteria.getDocRouteStatus()) ? "" : ",,docRouteStatus=" + criteria.getDocRouteStatus());
-		savedSearchString.append(criteria.getDocTitle() == null || "".equals(criteria.getDocTitle()) ? "" : ",,docTitle=" + criteria.getDocTitle());
-		savedSearchString.append(criteria.getDocTypeFullName() == null || "".equals(criteria.getDocTypeFullName()) ? "" : ",,docTypeFullName=" + criteria.getDocTypeFullName());
-		savedSearchString.append(criteria.getDocVersion() == null || "".equals(criteria.getDocVersion()) ? "" : ",,docVersion=" + criteria.getDocVersion());
-		savedSearchString.append(criteria.getFromDateApproved() == null || "".equals(criteria.getFromDateApproved()) ? "" : ",,fromDateApproved=" + criteria.getFromDateApproved());
-		savedSearchString.append(criteria.getFromDateCreated() == null || "".equals(criteria.getFromDateCreated()) ? "" : ",,fromDateCreated=" + criteria.getFromDateCreated());
-		savedSearchString.append(criteria.getFromDateFinalized() == null || "".equals(criteria.getFromDateFinalized()) ? "" : ",,fromDateFinalized=" + criteria.getFromDateFinalized());
-		savedSearchString.append(criteria.getFromDateLastModified() == null || "".equals(criteria.getFromDateLastModified()) ? "" : ",,fromDateLastModified=" + criteria.getFromDateLastModified());
-		savedSearchString.append(criteria.getInitiator() == null || "".equals(criteria.getInitiator()) ? "" : ",,initiator=" + criteria.getInitiator());
-		savedSearchString.append(criteria.getOverrideInd() == null || "".equals(criteria.getOverrideInd()) ? "" : ",,overrideInd=" + criteria.getOverrideInd());
-		savedSearchString.append(criteria.getDocumentId() == null || "".equals(criteria.getDocumentId()) ? "" : ",,documentId=" + criteria.getDocumentId());
-		savedSearchString.append(criteria.getToDateApproved() == null || "".equals(criteria.getToDateApproved()) ? "" : ",,toDateApproved=" + criteria.getToDateApproved());
-		savedSearchString.append(criteria.getToDateCreated() == null || "".equals(criteria.getToDateCreated()) ? "" : ",,toDateCreated=" + criteria.getToDateCreated());
-		savedSearchString.append(criteria.getToDateFinalized() == null || "".equals(criteria.getToDateFinalized()) ? "" : ",,toDateFinalized=" + criteria.getToDateFinalized());
-		savedSearchString.append(criteria.getToDateLastModified() == null || "".equals(criteria.getToDateLastModified()) ? "" : ",,toDateLastModified=" + criteria.getToDateLastModified());
-        savedSearchString.append(criteria.getViewer() == null || "".equals(criteria.getViewer()) ? "" : ",,viewer=" + criteria.getViewer());
-        savedSearchString.append(criteria.getWorkgroupViewerName() == null || "".equals(criteria.getWorkgroupViewerName()) ? "" : ",,workgroupViewerName=" + criteria.getWorkgroupViewerName());
-        savedSearchString.append(criteria.getWorkgroupViewerName() == null || "".equals(criteria.getWorkgroupViewerId()) ? "" : ",,workgroupViewerId=" + criteria.getWorkgroupViewerId());
-		savedSearchString.append(criteria.getNamedSearch() == null || "".equals(criteria.getNamedSearch()) ? "" : ",,namedSearch=" + criteria.getNamedSearch());
-		savedSearchString.append(criteria.getSearchableAttributes().isEmpty() ? "" : ",,searchableAttributes=" + buildSearchableAttributeString(criteria.getSearchableAttributes()));
+        // TODO - Rice 2.0 - need to add support for "advanced" vs. "basic" vs. "super user" searches, this was originally stored with savedSearchString in Rice 1.x
 
-		if (savedSearchString.toString() != null && !"".equals(savedSearchString.toString().trim())) {
-
-            savedSearchString.append(criteria.getIsAdvancedSearch() == null || "".equals(criteria.getIsAdvancedSearch()) ? "" : ",,isAdvancedSearch=" + criteria.getIsAdvancedSearch());
-            savedSearchString.append(criteria.getSuperUserSearch() == null || "".equals(criteria.getSuperUserSearch()) ? "" : ",,superUserSearch=" + criteria.getSuperUserSearch());
-
-			if (criteria.getNamedSearch() != null && !"".equals(criteria.getNamedSearch().trim())) {
-				userOptionsService.save(principalId, NAMED_SEARCH_ORDER_BASE + criteria.getNamedSearch(), savedSearchString.toString());
-			} else {
-				// first determine the current ordering
-				UserOptions searchOrder = userOptionsService.findByOptionId(LAST_SEARCH_ORDER_OPTION, principalId);
-				if (searchOrder == null) {
-					userOptionsService.save(principalId, LAST_SEARCH_BASE_NAME + "0", savedSearchString.toString());
-					userOptionsService.save(principalId, LAST_SEARCH_ORDER_OPTION, LAST_SEARCH_BASE_NAME + "0");
-				} else {
-					String[] currentOrder = searchOrder.getOptionVal().split(",");
-					if (currentOrder.length == MAX_SEARCH_ITEMS) {
-						String searchName = currentOrder[currentOrder.length - 1];
-						String[] newOrder = new String[MAX_SEARCH_ITEMS];
-						newOrder[0] = searchName;
-						for (int i = 0; i < currentOrder.length - 1; i++) {
-							newOrder[i + 1] = currentOrder[i];
-						}
-						String newSearchOrder = "";
-                        for (String aNewOrder : newOrder)
-                        {
-                            if (!"".equals(newSearchOrder))
-                            {
+        try {
+            StringWriter marshalledCriteriaWriter = new StringWriter();
+            JAXBContext jaxbContext = JAXBContext.newInstance(DocumentLookupCriteria.class);
+            Marshaller marshaller = jaxbContext.createMarshaller();
+            marshaller.marshal(criteria, marshalledCriteriaWriter);
+            String savedSearchString = marshalledCriteriaWriter.toString();
+            
+            if (StringUtils.isNotBlank(criteria.getSaveName())) {
+                userOptionsService.save(principalId, NAMED_SEARCH_ORDER_BASE + criteria.getSaveName(), savedSearchString);
+            } else {
+                // first determine the current ordering
+                UserOptions searchOrder = userOptionsService.findByOptionId(LAST_SEARCH_ORDER_OPTION, principalId);
+                if (searchOrder == null) {
+                    userOptionsService.save(principalId, LAST_SEARCH_BASE_NAME + "0", savedSearchString);
+                    userOptionsService.save(principalId, LAST_SEARCH_ORDER_OPTION, LAST_SEARCH_BASE_NAME + "0");
+                } else {
+                    String[] currentOrder = searchOrder.getOptionVal().split(",");
+                    if (currentOrder.length == MAX_SEARCH_ITEMS) {
+                        String searchName = currentOrder[currentOrder.length - 1];
+                        String[] newOrder = new String[MAX_SEARCH_ITEMS];
+                        newOrder[0] = searchName;
+                        for (int i = 0; i < currentOrder.length - 1; i++) {
+                            newOrder[i + 1] = currentOrder[i];
+                        }
+                        String newSearchOrder = "";
+                        for (String aNewOrder : newOrder) {
+                            if (!"".equals(newSearchOrder)) {
                                 newSearchOrder += ",";
                             }
                             newSearchOrder += aNewOrder;
                         }
-						userOptionsService.save(principalId, searchName, savedSearchString.toString());
-						userOptionsService.save(principalId, LAST_SEARCH_ORDER_OPTION, newSearchOrder);
-					} else {
-						// here we need to do a push so identify the highest used number which is from the
-						// first one in the array, and then add one to it, and push the rest back one
-						int absMax = 0;
-                        for (String aCurrentOrder : currentOrder)
-                        {
-                            int current = new Integer(aCurrentOrder.substring(LAST_SEARCH_BASE_NAME.length(), aCurrentOrder.length()));
-                            if (current > absMax)
-                            {
+                        userOptionsService.save(principalId, searchName, savedSearchString);
+                        userOptionsService.save(principalId, LAST_SEARCH_ORDER_OPTION, newSearchOrder);
+                    } else {
+                        // here we need to do a push to identify the highest used number which is from the
+                        // first one in the array, and then add one to it, and push the rest back one
+                        int absMax = 0;
+                        for (String aCurrentOrder : currentOrder) {
+                            int current = new Integer(aCurrentOrder.substring(LAST_SEARCH_BASE_NAME.length(),
+                                    aCurrentOrder.length()));
+                            if (current > absMax) {
                                 absMax = current;
                             }
                         }
-
-						String searchName = LAST_SEARCH_BASE_NAME + ++absMax;
-						String[] newOrder = new String[currentOrder.length + 1];
-						newOrder[0] = searchName;
-						for (int i = 0; i < currentOrder.length; i++) {
-							newOrder[i + 1] = currentOrder[i];
-						}
-						String newSearchOrder = "";
-                        for (String aNewOrder : newOrder)
-                        {
-                            if (!"".equals(newSearchOrder))
-                            {
+                        String searchName = LAST_SEARCH_BASE_NAME + ++absMax;
+                        String[] newOrder = new String[currentOrder.length + 1];
+                        newOrder[0] = searchName;
+                        for (int i = 0; i < currentOrder.length; i++) {
+                            newOrder[i + 1] = currentOrder[i];
+                        }
+                        String newSearchOrder = "";
+                        for (String aNewOrder : newOrder) {
+                            if (!"".equals(newSearchOrder)) {
                                 newSearchOrder += ",";
                             }
                             newSearchOrder += aNewOrder;
                         }
-						userOptionsService.save(principalId, searchName, savedSearchString.toString());
-						userOptionsService.save(principalId, LAST_SEARCH_ORDER_OPTION, newSearchOrder);
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * Build String of searchable attributes that can be saved with search criteria
-	 *
-	 * @param searchableAttributes
-	 *            searchable attributes to save
-	 * @return String representation of searchable attributes
-	 */
-	private String buildSearchableAttributeString(List<SearchAttributeCriteriaComponent> searchableAttributes) {
-		final StringBuilder searchableAttributeBuffer = new StringBuilder();
-
-		for (SearchAttributeCriteriaComponent component : searchableAttributes) {
-			// the following code will remove quickfinder fields
-			if ( (component.getFormKey() == null) ||
-                 (component.getValue() == null && (CollectionUtils.isEmpty(component.getValues()))) ) {
-				continue;
-			}
-
-            if (component.getValue() != null) {
-				if (searchableAttributeBuffer.length() > 0) {
-					searchableAttributeBuffer.append(",");
-				}
-				searchableAttributeBuffer.append(component.getFormKey());
-				searchableAttributeBuffer.append(":");
-				searchableAttributeBuffer.append(component.getValue());
-            } else if (!CollectionUtils.isEmpty(component.getValues())) {
-                for (String value : component.getValues()) {
-                    if (searchableAttributeBuffer.length() > 0) {
-                        searchableAttributeBuffer.append(",");
+                        userOptionsService.save(principalId, searchName, savedSearchString);
+                        userOptionsService.save(principalId, LAST_SEARCH_ORDER_OPTION, newSearchOrder);
                     }
-                    searchableAttributeBuffer.append(component.getFormKey());
-                    searchableAttributeBuffer.append(":");
-                    searchableAttributeBuffer.append(value);
-                }
-            } else {
-                throw new RuntimeException("Error occurred building searchable attribute string trying to find search attribute component value or values");
-            }
-		}
-
-		return searchableAttributeBuffer.toString();
-	}
-
-	/**
-	 *
-	 * retrieve a document type. This is not a case sensitive search so "TravelRequest" == "Travelrequest"
-	 *
-	 * @param docTypeName
-	 * @return
-	 */
-   private static DocumentType getValidDocumentType(String docTypeName) {
-
-	   if (org.apache.commons.lang.StringUtils.isEmpty(docTypeName)) {
-			return null;
-		}
-   		DocumentType dTypeCriteria = new DocumentType();
-		dTypeCriteria.setName(docTypeName.trim());
-		dTypeCriteria.setActive(true);
-		Collection<DocumentType> docTypeList = KEWServiceLocator.getDocumentTypeService().find(dTypeCriteria, null, false);
-
-		// Return the first valid doc type.
-		DocumentType firstDocumentType = null;
-		if(docTypeList != null && !docTypeList.isEmpty()){
-			for(DocumentType dType: docTypeList){
-			    if (firstDocumentType == null) {
-                    firstDocumentType = dType;
-                }
-                if (StringUtils.equals(docTypeName.toUpperCase(), dType.getName().toUpperCase())) {
-                    return dType;
                 }
             }
-            return firstDocumentType;
-		}else{
-			throw new RuntimeException("No Valid Document Type Found for document type name '" + docTypeName + "'");
-		}
-   }
-
-	private DocumentType getValidDocumentTypeOld(String documentTypeFullName) {
-		if (org.apache.commons.lang.StringUtils.isEmpty(documentTypeFullName)) {
-			return null;
-		}
-		DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeFullName);
-		if (docType == null) {
-			throw new RuntimeException("No Valid Document Type Found for document type name '" + documentTypeFullName + "'");
-		} else {
-			return docType;
-		}
-	}
-
-	private DocSearchCriteriaDTO getCriteriaFromSavedSearch(UserOptions savedSearch) {
-		DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
-		if (savedSearch != null) {
-			String docTypeFullName = getOptionCriteriaField(savedSearch, "docTypeFullName");
-			if (!org.apache.commons.lang.StringUtils.isEmpty(docTypeFullName)) {
-				criteria = new DocSearchCriteriaDTO();
-			}
-			criteria.setDocTypeFullName(getOptionCriteriaField(savedSearch, "docTypeFullName"));
-			criteria.setAppDocId(getOptionCriteriaField(savedSearch, "appDocId"));
-			criteria.setApprover(getOptionCriteriaField(savedSearch, "approver"));
-			criteria.setDocRouteNodeId(getOptionCriteriaField(savedSearch, "docRouteNodeId"));
-			if (criteria.getDocRouteNodeId() != null) {
-				criteria.setDocRouteNodeLogic(getOptionCriteriaField(savedSearch, "docRouteNodeLogic"));
-			}
-            criteria.setIsAdvancedSearch(getOptionCriteriaField(savedSearch, "isAdvancedSearch"));
-            criteria.setSuperUserSearch(getOptionCriteriaField(savedSearch, "superUserSearch"));
-			criteria.setDocRouteStatus(getOptionCriteriaField(savedSearch, "docRouteStatus"));
-			criteria.setDocTitle(getOptionCriteriaField(savedSearch, "docTitle"));
-			criteria.setDocVersion(getOptionCriteriaField(savedSearch, "docVersion"));
-			criteria.setFromDateApproved(getOptionCriteriaField(savedSearch, "fromDateApproved"));
-			criteria.setFromDateCreated(getOptionCriteriaField(savedSearch, "fromDateCreated"));
-			criteria.setFromDateFinalized(getOptionCriteriaField(savedSearch, "fromDateFinalized"));
-			criteria.setFromDateLastModified(getOptionCriteriaField(savedSearch, "fromDateLastModified"));
-			criteria.setInitiator(getOptionCriteriaField(savedSearch, "initiator"));
-			criteria.setOverrideInd(getOptionCriteriaField(savedSearch, "overrideInd"));
-			criteria.setDocumentId(getOptionCriteriaField(savedSearch, "documentId"));
-			criteria.setToDateApproved(getOptionCriteriaField(savedSearch, "toDateApproved"));
-			criteria.setToDateCreated(getOptionCriteriaField(savedSearch, "toDateCreated"));
-			criteria.setToDateFinalized(getOptionCriteriaField(savedSearch, "toDateFinalized"));
-			criteria.setToDateLastModified(getOptionCriteriaField(savedSearch, "toDateLastModified"));
-			criteria.setViewer(getOptionCriteriaField(savedSearch, "viewer"));
-			criteria.setWorkgroupViewerNamespace(getOptionCriteriaField(savedSearch, "workgroupViewerNamespace"));
-            criteria.setWorkgroupViewerName(getOptionCriteriaField(savedSearch, "workgroupViewerName"));
-			criteria.setNamedSearch(getOptionCriteriaField(savedSearch, "namedSearch"));
-			criteria.setSearchableAttributes(DocSearchUtils.buildSearchableAttributesFromString(getOptionCriteriaField(savedSearch, "searchableAttributes"),criteria.getDocTypeFullName()));
-		}
-		return criteria;
-	}
-
-	private String getOptionCriteriaField(UserOptions userOption, String fieldName) {
-		String value = userOption.getOptionVal();
-		if (value != null) {
-			String[] fields = value.split(",,");
-            for (String field : fields)
-            {
-                if (field.startsWith(fieldName + "="))
-                {
-                    return field.substring(field.indexOf(fieldName) + fieldName.length() + 1, field.length());
-                }
-            }
-		}
-		return null;
-	}
-
-	public DictionaryValidationService getDictionaryValidationService() {
-		if (dictionaryValidationService == null) {
-			dictionaryValidationService = KNSServiceLocator.getDictionaryValidationService();
-		}
-		return dictionaryValidationService;
-	}
-
-	public DataDictionaryService getDataDictionaryService() {
-		if (dataDictionaryService == null) {
-			dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
-		}
-		return dataDictionaryService;
-	}
+        } catch (Exception e) {
+            // we don't want the failure when saving a search to affect the ability of the document search to succeed
+            // and return it's results, so just log and return
+            LOG.error("Unable to save search due to exception", e);
+        }
+    }
 
 	public ConfigurationService getKualiConfigurationService() {
 		if (kualiConfigurationService == null) {
@@ -762,30 +509,4 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		return kualiConfigurationService;
 	}
 
-	private List<String> tokenizeCriteria(String input){
-		List<String> lRet = null;
-
-		lRet = Arrays.asList(input.split("\\|"));
-
-		return lRet;
-	}
-
-	/**
-	 * @return the sqlBuilder
-	 */
-	public SqlBuilder getSqlBuilder() {
-		if(sqlBuilder == null){
-			sqlBuilder = new SqlBuilder();
-			sqlBuilder.setDbPlatform((DatabasePlatform) GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM));
-			sqlBuilder.setDateTimeService(CoreApiServiceLocator.getDateTimeService());
-		}
-		return this.sqlBuilder;
-	}
-
-	/**
-	 * @param sqlBuilder the sqlBuilder to set
-	 */
-	public void setSqlBuilder(SqlBuilder sqlBuilder) {
-		this.sqlBuilder = sqlBuilder;
-	}
 }

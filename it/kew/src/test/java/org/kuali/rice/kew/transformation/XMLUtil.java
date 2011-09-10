@@ -36,6 +36,8 @@ import org.xml.sax.SAXException;
 
 public final class XMLUtil {
 
+    
+
 	private XMLUtil() {
 		throw new UnsupportedOperationException("do not call");
 	}
@@ -101,4 +103,5 @@ public final class XMLUtil {
 		}
 		return parser;
 	}
+    
 }

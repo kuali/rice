@@ -25,23 +25,13 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
  */
 public class CustomDocumentSearchGenerator extends StandardDocumentSearchGenerator {
 	
-	public static final int RESULT_SET_LIMIT = 5000;
-
-	/* (non-Javadoc)
-	 * @see org.kuali.rice.kew.docsearch.StandardDocumentSearchGenerator#addExtraDocumentTypesToSearch(java.lang.StringBuffer, org.kuali.rice.kew.doctype.DocumentType)
-	 */
 	@Override
-	public void addExtraDocumentTypesToSearch(StringBuffer whereSql, DocumentType docType) {
+	public void addExtraDocumentTypesToSearch(StringBuilder whereSql, DocumentType docType) {
 		if ("SearchDocType_DefaultCustomProcessor_2".equals(docType.getName())) {
 			addDocumentTypeNameToSearchOn(whereSql, "SearchDocType_DefaultCustomProcessor");
 		} else if ("SearchDocType_DefaultCustomProcessor".equals(docType.getName())) {
 			addDocumentTypeNameToSearchOn(whereSql, "SearchDocType_DefaultCustomProcessor_2");
 		}
-	}
-	
-	@Override
-	public int getDocumentSearchResultSetLimit() {
-	    return RESULT_SET_LIMIT;
 	}
 
 }

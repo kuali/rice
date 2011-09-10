@@ -54,7 +54,7 @@ public class ClientAppDocHandlerRedirectAction extends KewKualiAction {
             RouteHeaderService rhSrv = (RouteHeaderService) KEWServiceLocator.getService(KEWServiceLocator.DOC_ROUTE_HEADER_SRV);
             DocumentRouteHeaderValue routeHeader = rhSrv.getRouteHeader(docHandlerForm.getDocId());
 
-            if (!KEWServiceLocator.getDocumentSecurityService().routeLogAuthorized(GlobalVariables.getUserSession(), routeHeader, new SecuritySession(GlobalVariables.getUserSession()))) {
+            if (!KEWServiceLocator.getDocumentSecurityService().routeLogAuthorized(GlobalVariables.getUserSession().getPrincipalId(), routeHeader, new SecuritySession(GlobalVariables.getUserSession().getPrincipalId()))) {
             	return mapping.findForward("NotAuthorized");
             }
             docHandler = routeHeader.getDocumentType().getDocHandlerUrl();

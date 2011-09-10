@@ -104,7 +104,7 @@
           <property name="primitiveAttributes">
             <list>
     		  <!-- FIXME: RICE MODULARITY -->
-    		  <!-- after configurer work app fails to start up with this relationship across modules -->              
+    		  <!-- after configurer work app fails to start up with this relationship across modules -->
               <!-- <bean parent="PrimitiveAttributeDefinition" p:sourceName="documentType.documentTypeId" p:targetName="documentTypeId"/>-->
             </list>
           </property>
@@ -159,7 +159,7 @@
     <property name="label" value="Previous Version"/>
   </bean> 
 
-  <bean id="RuleBaseValues-documentId" parent="DocSearchCriteriaDTO-documentId"/>
+  <bean id="RuleBaseValues-documentId" parent="DocumentLookupCriteria-documentId"/>
 
   <bean id="RuleBaseValues-documentId-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="documentId"/>

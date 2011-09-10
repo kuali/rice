@@ -15,12 +15,16 @@
  */
 package org.kuali.rice.kew.docsearch;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.Ignore;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.uif.Select;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
 import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.framework.document.lookup.SearchableAttribute;
@@ -55,73 +59,105 @@ public class DocumentSearchTestBase extends KEWTestCase {
         return attribute;
     }
 
-    protected SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,DocumentType docType) {
-        return createSearchAttributeCriteriaComponent(key, value, null, docType);
-    }
-    
-    protected SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String[] values,DocumentType docType) {
-        return createSearchAttributeCriteriaComponent(key, values, null, docType);
+    protected void addSearchableAttribute(DocumentLookupCriteria.Builder criteria, String name, String value) {
+        criteria.addDocumentAttributeValue(name, value);
     }
 
-    protected SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,Boolean isLowerBoundValue,DocumentType docType) {
-        String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + key : KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + key);
-        String savedKey = key;
-        SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(formKey,value,savedKey);
-        applyAttributeFieldToComponent(sacc, docType, formKey);
-        return sacc;
-    }
-    
-    protected SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String[] values,Boolean isLowerBoundValue,DocumentType docType) {
-        String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + key : KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + key);
-        String savedKey = key;
-        SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(formKey,null,savedKey);
-        sacc.setValues(Arrays.asList(values));
-        applyAttributeFieldToComponent(sacc, docType, formKey);
-        return sacc;
-    }
-
-    private void applyAttributeFieldToComponent(SearchAttributeCriteriaComponent sacc, DocumentType docType, String formKey) {
-        RemotableAttributeField field = getFieldByFormKey(docType, formKey);
-        if (field != null) {
-            sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getDataType()));
-            boolean isRange = field.getAttributeLookupSettings() != null && field.getAttributeLookupSettings().isRanged();
-            sacc.setRangeSearch(isRange);
-            if (field.isLookupCaseSensitive() != null) {
-                sacc.setCaseSensitive(field.isLookupCaseSensitive());
-            }
-            if (isRange) {
-                if (field.getAttributeLookupSettings().getLowerBoundName().equals(formKey)) {
-                    sacc.setSearchInclusive(field.getAttributeLookupSettings().isLowerBoundInclusive());
-                } else if (field.getAttributeLookupSettings().getUpperBoundName().equals(formKey)) {
-                    sacc.setSearchInclusive(field.getAttributeLookupSettings().isUpperBoundInclusive());
-                } else {
-                    throw new IllegalStateException("Encountered an invalid ranged attribute field definition.");
-                }
-            }
-            boolean canHoldMultipleValues = field.getControl() instanceof Select &&
-                    ((Select) field.getControl()).isMultiple();
-            sacc.setCanHoldMultipleValues(canHoldMultipleValues);
+    protected void addSearchableAttribute(DocumentLookupCriteria.Builder criteria, String name, String[] values) {
+        for (String value : values) {
+            addSearchableAttribute(criteria, name, value);
         }
     }
 
-    private RemotableAttributeField getFieldByFormKey(DocumentType docType, String formKey) {
-        if (docType == null) {
-            return null;
-        }
-        for (DocumentType.ExtensionHolder<SearchableAttribute> holder : docType.loadSearchableAttributes()) {
-            for (RemotableAttributeField field : holder.getExtension().getSearchFields(holder.getExtensionDefinition(),
-                    docType.getName())) {
-                if (field.getName().equals(formKey)) {
-                    return field;
-                } else if (field.getAttributeLookupSettings() != null) {
-                    if (field.getName().equals(field.getAttributeLookupSettings().getLowerBoundName()) ||
-                            field.getName().equals(field.getAttributeLookupSettings().getUpperBoundName())) {
-                        return field;
-                    }
-                }
+    protected void addSearchableAttributeRange(DocumentLookupCriteria.Builder criteria, String name, String lowerBound, String upperBound, boolean upperBoundInclusive) {
+        StringBuilder value = new StringBuilder();
+        if (StringUtils.isNotBlank(lowerBound) && StringUtils.isNotBlank(upperBound)) {
+            value.append(lowerBound);
+            if (upperBoundInclusive) {
+                value.append("..");
+            } else {
+                value.append("...");
             }
+            value.append(upperBound);
+        } else if (StringUtils.isBlank(upperBound)) {
+            value.append(">= ").append(lowerBound);
+        } else {
+            value.append("<");
+            if (upperBoundInclusive) {
+                value.append("=");
+            }
+            value.append(" ").append(upperBound);
         }
-        return null;
+        addSearchableAttribute(criteria, name, value.toString());
     }
+
+//    protected SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,DocumentType docType) {
+//        return createSearchAttributeCriteriaComponent(key, value, null, docType);
+//    }
+//
+//    protected SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String[] values,DocumentType docType) {
+//        return createSearchAttributeCriteriaComponent(key, values, null, docType);
+//    }
+//
+//    protected SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,Boolean isLowerBoundValue,DocumentType docType) {
+//        String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + key : KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + key);
+//        String savedKey = key;
+//        SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(formKey,value,savedKey);
+//        applyAttributeFieldToComponent(sacc, docType, formKey);
+//        return sacc;
+//    }
+//
+//    protected SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String[] values,Boolean isLowerBoundValue,DocumentType docType) {
+//        String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + key : KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + key);
+//        String savedKey = key;
+//        SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(formKey,null,savedKey);
+//        sacc.setValues(Arrays.asList(values));
+//        applyAttributeFieldToComponent(sacc, docType, formKey);
+//        return sacc;
+//    }
+//
+//    private void applyAttributeFieldToComponent(SearchAttributeCriteriaComponent sacc, DocumentType docType, String formKey) {
+//        RemotableAttributeField field = getFieldByFormKey(docType, formKey);
+//        if (field != null) {
+//            sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getDataType()));
+//            boolean isRange = field.getAttributeLookupSettings() != null && field.getAttributeLookupSettings().isRanged();
+//            sacc.setRangeSearch(isRange);
+//            if (field.getAttributeLookupSettings().isCaseSensitive() != null) {
+//                sacc.setCaseSensitive(field.getAttributeLookupSettings().isCaseSensitive());
+//            }
+//            if (isRange) {
+//                if (field.getAttributeLookupSettings().getLowerBoundName().equals(formKey)) {
+//                    sacc.setSearchInclusive(field.getAttributeLookupSettings().isLowerBoundInclusive());
+//                } else if (field.getAttributeLookupSettings().getUpperBoundName().equals(formKey)) {
+//                    sacc.setSearchInclusive(field.getAttributeLookupSettings().isUpperBoundInclusive());
+//                } else {
+//                    throw new IllegalStateException("Encountered an invalid ranged attribute field definition.");
+//                }
+//            }
+//            boolean canHoldMultipleValues = field.getControl() instanceof Select &&
+//                    ((Select) field.getControl()).isMultiple();
+//            sacc.setCanHoldMultipleValues(canHoldMultipleValues);
+//        }
+//    }
+//
+//    private RemotableAttributeField getFieldByFormKey(DocumentType docType, String formKey) {
+//        if (docType == null) {
+//            return null;
+//        }
+//        for (DocumentType.ExtensionHolder<SearchableAttribute> holder : docType.loadSearchableAttributes()) {
+//            for (RemotableAttributeField field : holder.getExtension().getSearchFields(holder.getExtensionDefinition(),
+//                    docType.getName())) {
+//                if (field.getName().equals(formKey)) {
+//                    return field;
+//                } else if (field.getAttributeLookupSettings() != null) {
+//                    if (field.getName().equals(field.getAttributeLookupSettings().getLowerBoundName()) ||
+//                            field.getName().equals(field.getAttributeLookupSettings().getUpperBoundName())) {
+//                        return field;
+//                    }
+//                }
+//            }
+//        }
+//        return null;
+//    }
 
 }

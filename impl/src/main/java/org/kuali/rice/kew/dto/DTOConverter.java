@@ -22,7 +22,6 @@ import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.reflect.DataDefinition;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.reflect.PropertyDefinition;
-import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
@@ -45,15 +44,9 @@ import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.api.extension.ExtensionUtils;
 import org.kuali.rice.kew.definition.AttributeDefinition;
-import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
-import org.kuali.rice.kew.docsearch.DocSearchUtils;
-import org.kuali.rice.kew.docsearch.DocumentSearchResult;
-import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
-import org.kuali.rice.kew.docsearch.web.SearchAttributeFormContainer;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.BranchState;
-import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.State;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -79,7 +72,6 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.RoleRecipient;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.ResponsibleParty;
-import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -94,7 +86,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -723,122 +714,9 @@ public class DTOConverter {
         }
     }
 
-    public static DocSearchCriteriaDTO convertDocumentSearchCriteriaDTO(
-            DocumentSearchCriteriaDTO criteriaVO) throws WorkflowException {
-        DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
-        criteria.setAppDocId(criteriaVO.getAppDocId());
-        criteria.setApprover(criteriaVO.getApprover());
-        criteria.setDocRouteStatus(criteriaVO.getDocRouteStatus());
-        criteria.setDocTitle(criteriaVO.getDocTitle());
-        criteria.setDocTypeFullName(criteriaVO.getDocTypeFullName());
-        criteria.setDocVersion(criteriaVO.getDocVersion());
-        criteria.setFromDateApproved(criteriaVO.getFromDateApproved());
-        criteria.setFromDateCreated(criteriaVO.getFromDateCreated());
-        criteria.setFromDateFinalized(criteriaVO.getFromDateFinalized());
-        criteria.setFromDateLastModified(criteriaVO.getFromDateLastModified());
-        criteria.setInitiator(criteriaVO.getInitiator());
-        criteria.setIsAdvancedSearch(
-                (criteriaVO.isAdvancedSearch()) ? DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING : "NO");
-        criteria.setSuperUserSearch(
-                (criteriaVO.isSuperUserSearch()) ? DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING : "NO");
-        criteria.setDocumentId(criteriaVO.getDocumentId());
-        criteria.setViewer(criteriaVO.getViewer());
-        criteria.setWorkgroupViewerName(criteriaVO.getGroupViewerName());
-        criteria.setToDateApproved(criteriaVO.getToDateApproved());
-        criteria.setToDateCreated(criteriaVO.getToDateCreated());
-        criteria.setToDateFinalized(criteriaVO.getToDateFinalized());
-        criteria.setToDateLastModified(criteriaVO.getToDateLastModified());
-        criteria.setThreshold(criteriaVO.getThreshold());
-        criteria.setSaveSearchForUser(criteriaVO.isSaveSearchForUser());
-
-        // generate the route node criteria
-        if ((StringUtils.isNotBlank(criteriaVO.getDocRouteNodeName())) && (StringUtils.isBlank(
-                criteriaVO.getDocTypeFullName()))) {
-            throw new WorkflowException("No document type name specified when attempting to search by route node name '"
-                    + criteriaVO.getDocRouteNodeName()
-                    + "'");
-        } else if ((StringUtils.isNotBlank(criteriaVO.getDocRouteNodeName())) && (StringUtils.isNotBlank(
-                criteriaVO.getDocTypeFullName()))) {
-            criteria.setDocRouteNodeLogic(criteriaVO.getDocRouteNodeLogic());
-            List routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(getDocumentTypeByName(
-                    criteria.getDocTypeFullName()), true);
-            boolean foundRouteNode = false;
-            for (Iterator iterator = routeNodes.iterator(); iterator.hasNext(); ) {
-                RouteNode routeNode = (RouteNode) iterator.next();
-                if (criteriaVO.getDocRouteNodeName().equals(routeNode.getRouteNodeName())) {
-                    foundRouteNode = true;
-                    break;
-                }
-            }
-            if (!foundRouteNode) {
-                throw new WorkflowException("Could not find route node name '"
-                        + criteriaVO.getDocRouteNodeName()
-                        + "' for document type name '"
-                        + criteriaVO.getDocTypeFullName()
-                        + "'");
-            }
-            criteria.setDocRouteNodeId(criteriaVO.getDocRouteNodeName());
-        }
-
-        // build a map of the search attributes passed in from the client creating lists where keys are duplicated
-        HashMap<String, List<String>> searchAttributeValues = new HashMap<String, List<String>>();
-        for (KeyValue keyValueVO : criteriaVO.getSearchAttributeValues()) {
-            if (searchAttributeValues.containsKey(keyValueVO.getKey())) {
-                searchAttributeValues.get(keyValueVO.getKey()).add(keyValueVO.getValue());
-            } else {
-                searchAttributeValues.put(keyValueVO.getKey(), Arrays.asList(new String[]{keyValueVO.getValue()}));
-            }
-        }
-        // build the list of SearchAttributeFormContainer objects
-        List propertyFields = new ArrayList();
-        for (String key : searchAttributeValues.keySet()) {
-            List<String> values = searchAttributeValues.get(key);
-            SearchAttributeFormContainer container = null;
-            if (values.size() == 1) {
-                container = new SearchAttributeFormContainer(key, values.get(0));
-            } else if (values.size() > 1) {
-                container = new SearchAttributeFormContainer(key, (String[]) values.toArray());
-            }
-            if (container != null) {
-                propertyFields.add(container);
-            }
-        }
-        DocSearchUtils.addSearchableAttributesToCriteria(criteria, propertyFields, true);
-        return criteria;
-    }
-
     private static DocumentType getDocumentTypeByName(String documentTypeName) {
         return KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
     }
-
-    public static DocumentSearchResultDTO convertDocumentSearchResultComponents(
-            DocumentSearchResultComponents searchResult) throws WorkflowException {
-        DocumentSearchResultDTO resultsVO = new DocumentSearchResultDTO();
-        resultsVO.setSearchResults(convertDocumentSearchResults(searchResult.getSearchResults()));
-        return resultsVO;
-    }
-
-    private static List<DocumentSearchResultRowDTO> convertDocumentSearchResults(
-            List<DocumentSearchResult> searchResults) throws WorkflowException {
-        List<DocumentSearchResultRowDTO> rowVOs = new ArrayList<DocumentSearchResultRowDTO>();
-        for (DocumentSearchResult documentSearchResult : searchResults) {
-            rowVOs.add(convertDocumentSearchResult(documentSearchResult));
-        }
-        return rowVOs;
-    }
-
-    public static DocumentSearchResultRowDTO convertDocumentSearchResult(
-            DocumentSearchResult resultRow) throws WorkflowException {
-        DocumentSearchResultRowDTO rowVO = new DocumentSearchResultRowDTO();
-        List<ConcreteKeyValue> fieldValues = new ArrayList<ConcreteKeyValue>();
-        for (KeyValueSort keyValueSort : resultRow.getResultContainers()) {
-            fieldValues.add(new ConcreteKeyValue(keyValueSort.getKey(), keyValueSort.getUserDisplayValue()));
-        }
-        rowVO.setFieldValues(fieldValues);
-        return rowVO;
-    }
-
-    //    public static RuleBaseValues convertRuleVO(RuleVO ruleVO) throws WorkflowException {}
 
     private static void handleException(String message, Exception e) throws WorkflowException {
         if (e instanceof RuntimeException) {

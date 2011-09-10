@@ -2,6 +2,7 @@ package org.kuali.rice.kew.api.document.lookup;
 
 import org.joda.time.DateTime;
 import org.kuali.rice.kew.api.document.DocumentStatus;
+import org.kuali.rice.kew.api.document.DocumentStatusCategory;
 
 import java.util.List;
 import java.util.Map;
@@ -18,9 +19,13 @@ public interface DocumentLookupCriteriaContract {
 
     List<DocumentStatus> getDocumentStatuses();
 
+    List<DocumentStatusCategory> getDocumentStatusCategories();
+
     String getTitle();
 
     String getApplicationDocumentId();
+
+    String getApplicationDocumentStatus();
 
     String getInitiatorPrincipalName();
 
@@ -52,7 +57,13 @@ public interface DocumentLookupCriteriaContract {
 
     DateTime getDateFinalizedTo();
 
-    Map<String, String> getDocumentAttributeValues();
+    DateTime getDateApplicationDocumentStatusChangedFrom();
+
+    DateTime getDateApplicationDocumentStatusChangedTo();
+
+    Map<String, List<String>> getDocumentAttributeValues();
+
+    String getSaveName();
 
 	Integer getStartAtIndex();
 

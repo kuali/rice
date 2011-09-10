@@ -1,7 +1,6 @@
 package org.kuali.rice.kew.framework.validation;
 
 import org.kuali.rice.kew.api.KewApiConstants;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupConfiguration;
 import org.kuali.rice.kew.api.validation.RuleValidationContext;
 import org.kuali.rice.kew.api.validation.ValidationResults;
 import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
@@ -12,7 +11,6 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlElement;
-import java.util.List;
 
 /**
  *  Service responsible for exposing custom RuleValidationAttribute functionality.

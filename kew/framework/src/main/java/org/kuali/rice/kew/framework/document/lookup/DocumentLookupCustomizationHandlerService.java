@@ -2,10 +2,8 @@ package org.kuali.rice.kew.framework.document.lookup;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
-import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.jaxb.MultiValuedStringMapAdapter;
 import org.kuali.rice.kew.api.KewApiConstants;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupConfiguration;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult;
 import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
@@ -34,7 +32,7 @@ public interface DocumentLookupCustomizationHandlerService {
     @WebMethod(operationName = "getDocumentLookupConfiguration")
 	@WebResult(name = "documentLookupConfiguration")
 	@XmlElement(name = "documentLookupConfiguration", required = false)
-    DocumentLookupConfiguration getDocumentLookupConfiguration(
+    DocumentLookupCriteriaConfiguration getDocumentLookupConfiguration(
             @WebParam(name = "documentTypeName") String documentTypeName,
             @WebParam(name = "searchableAttributeNames") List<String> searchableAttributeNames
     ) throws RiceIllegalArgumentException;
@@ -66,25 +64,21 @@ public interface DocumentLookupCustomizationHandlerService {
             @WebParam(name = "customizerName") String customizerName
     ) throws RiceIllegalArgumentException;
 
-    @WebMethod(operationName = "customizeResultSetFields")
-    @WebResult(name = "resultSetFields")
-    @XmlElementWrapper(name = "resultSetFields", required = false)
-    @XmlElement(name = "resultSetField", required = false)
-    List<RemotableAttributeField> customizeResultSetFields(
+    @WebMethod(operationName = "customizeResults")
+    @WebResult(name = "resultValues")
+    @XmlElement(name = "resultValues", required = false)
+    DocumentLookupResultValues customizeResults(
             @WebParam(name = "documentLookupCriteria") DocumentLookupCriteria documentLookupCriteria,
-            @WebParam(name = "defaultResultSetFields") List<RemotableAttributeField> defaultResultSetFields,
+            @WebParam(name = "results") List<DocumentLookupResult> results,
             @WebParam(name = "customizerName") String customizerName
     ) throws RiceIllegalArgumentException;
 
-    @WebMethod(operationName = "customizeResults")
-    @WebResult(name = "results")
-    @XmlElementWrapper(name = "results", required = false)
-    @XmlElement(name = "result", required = false)
-    List<DocumentLookupResult> customizeResults(
+    @WebMethod(operationName = "customizeResultSetConfiguration")
+    @WebResult(name = "resultSetConfiguration")
+    @XmlElement(name = "resultSetConfiguration", required = false)
+    DocumentLookupResultSetConfiguration customizeResultSetConfiguration(
             @WebParam(name = "documentLookupCriteria") DocumentLookupCriteria documentLookupCriteria,
-            @WebParam(name = "defaultResults") List<DocumentLookupResult> defaultResults,
-            @WebParam(name = "customizerName") String customizerName
-    ) throws RiceIllegalArgumentException;
+            @WebParam(name = "customizerName") String customizerName) throws RiceIllegalArgumentException;
 
     @WebMethod(operationName = "getEnabledCustomizations")
     @WebResult(name = "enabledCustomizations")

@@ -17,12 +17,10 @@
 package org.kuali.rice.kew.docsearch.service;
 
 import org.kuali.rice.core.api.util.KeyValue;
-import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
-import org.kuali.rice.kew.docsearch.DocumentSearchResult;
-import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
-import org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor;
-import org.kuali.rice.kew.docsearch.SavedSearchResult;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 
 import java.util.List;
 
@@ -35,31 +33,30 @@ import java.util.List;
 public interface DocumentSearchService {
 
     /**
-     * This method performs a standard document search
+     * This method performs a standard document search for the given criteria.
      *
-     * @param principalId - user executing the search
-     * @param criteria - criteria to use to search documents
-     * @return a {@link DocumentSearchResultComponents} object holding the search result columns and search result rows
-     *         represented by a list of {@link DocumentSearchResult} objects
+     * @param principalId the id of the principal who is executing the search, this may be null to indicate the
+     * search could be executed by an arbitrary user
+     * @param criteria criteria to use to search documents
+     * @return the results of the search, will never return null
      */
-    public DocumentSearchResultComponents getList(String principalId, DocSearchCriteriaDTO criteria);
+    DocumentLookupResults lookupDocuments(String principalId, DocumentLookupCriteria.Builder criteria);
 
-    /**
-     * This method performs a standard document search but uses the value returned by
-     * {@link DocSearchCriteriaDTO#getThreshold()} as the maximum search results returned
-     *
-     * @param principalId - user executing the search
-     * @param criteria - criteria to use to search documents
-     * @return a {@link DocumentSearchResultComponents} object holding the search result columns and search result rows
-     *         represented by a list of {@link DocumentSearchResult} objects
-     */
-    public DocumentSearchResultComponents getListRestrictedByCriteria(String principalId, DocSearchCriteriaDTO criteria);
-    public SavedSearchResult getSavedSearchResults(String principalId, String savedSearchName);
-    public void clearNamedSearches(String principalId);
-    public List<KeyValue> getNamedSearches(String principalId);
-    public List<KeyValue> getMostRecentSearches(String principalId);
+    // TODO - added temporarly when above method was changed to use a builder, need to go back and modify
+    // the hundreds of calls in unit tests so that they use the above method instead
+    DocumentLookupResults lookupDocuments(String principalId, DocumentLookupCriteria criteria);
 
-    public DocumentSearchGenerator getStandardDocumentSearchGenerator();
-    public DocumentSearchResultProcessor getStandardDocumentSearchResultProcessor();
-    public void validateDocumentSearchCriteria(DocumentSearchGenerator docSearchGenerator,DocSearchCriteriaDTO criteria);
+    DocumentLookupCriteria getSavedSearchCriteria(String principalId, String savedSearchName);
+
+    void clearNamedSearches(String principalId);
+
+    List<KeyValue> getNamedSearches(String principalId);
+
+    List<KeyValue> getMostRecentSearches(String principalId);
+
+    DocumentLookupCriteria clearCriteria(DocumentType documentType, DocumentLookupCriteria criteria);
+
+    DocumentSearchGenerator getStandardDocumentSearchGenerator();
+
+    DocumentLookupCriteria.Builder validateDocumentSearchCriteria(DocumentSearchGenerator docSearchGenerator, DocumentLookupCriteria.Builder criteria);
 }

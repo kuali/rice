@@ -9,6 +9,8 @@ import javax.xml.namespace.QName;
 /**
  * Contains utilities related to the loading of extension resources.
  *
+ * TODO - Rice 2.0 - document the methods on this class!
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class ExtensionUtils {

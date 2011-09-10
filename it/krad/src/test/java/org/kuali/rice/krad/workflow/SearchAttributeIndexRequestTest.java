@@ -18,10 +18,9 @@ package org.kuali.rice.krad.workflow;
 import org.junit.Test;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.uif.Select;
-import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
-import org.kuali.rice.kew.docsearch.DocumentSearchResult;
-import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.docsearch.SearchAttributeCriteriaComponent;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -40,7 +39,6 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.test.KRADTestCase;
 
 import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -241,22 +239,20 @@ public class SearchAttributeIndexRequestTest extends KRADTestCase {
     	if (!(searchValues instanceof String[]) && !(searchValues instanceof String[][])) {
     		throw new IllegalArgumentException("'searchValues' parameter has to be either a String[] or a String[][]");
     	}
-    	DocSearchCriteriaDTO criteria = null;
-        DocumentSearchResultComponents result = null;
-        List<DocumentSearchResult> searchResults = null;
+    	DocumentLookupCriteria.Builder criteria = null;
+        DocumentLookupResults results = null;
         DocumentSearchService docSearchService = KEWServiceLocator.getDocumentSearchService();
         for (int i = 0; i < resultSizes.length; i++) {
-        	criteria = new DocSearchCriteriaDTO();
-        	criteria.setDocTypeFullName(docType.getName());
-        	criteria.addSearchableAttribute(this.createSearchAttributeCriteriaComponent(fieldName, searchValues[i], null, docType));
+        	criteria = DocumentLookupCriteria.Builder.create();
+        	criteria.setDocumentTypeName(docType.getName());
+        	criteria.addDocumentAttributeValue(fieldName, searchValues[i].toString());
         	try {
-        		result = docSearchService.getList(principalId, criteria);
-        		searchResults = result.getSearchResults();
+        		results = docSearchService.lookupDocuments(principalId, criteria.build());
         		if (resultSizes[i] < 0) {
         			fail(fieldName + "'s search at loop index " + i + " should have thrown an exception");
         		}
-        		if(resultSizes[i] != searchResults.size()){
-        			assertEquals(fieldName + "'s search results at loop index " + i + " returned the wrong number of documents.", resultSizes[i], searchResults.size());
+        		if(resultSizes[i] != results.getLookupResults().size()){
+        			assertEquals(fieldName + "'s search results at loop index " + i + " returned the wrong number of documents.", resultSizes[i], results.getLookupResults().size());
         		}
         	} catch (Exception ex) {
         		if (resultSizes[i] >= 0) {
@@ -290,8 +286,8 @@ public class SearchAttributeIndexRequestTest extends KRADTestCase {
                sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getDataType()));
                boolean isRange = field.getAttributeLookupSettings() != null && field.getAttributeLookupSettings().isRanged();
                sacc.setRangeSearch(isRange);
-               if (field.isLookupCaseSensitive() != null) {
-                   sacc.setCaseSensitive(field.isLookupCaseSensitive());
+               if (field.getAttributeLookupSettings().isCaseSensitive() != null) {
+                   sacc.setCaseSensitive(field.getAttributeLookupSettings().isCaseSensitive());
                }
                if (isRange) {
                    if (field.getAttributeLookupSettings().getLowerBoundName().equals(formKey)) {

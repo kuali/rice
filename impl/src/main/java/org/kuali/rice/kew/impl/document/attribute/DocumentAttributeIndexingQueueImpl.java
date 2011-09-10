@@ -25,6 +25,7 @@ import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentContent;
+import org.kuali.rice.kew.api.document.DocumentWithContent;
 import org.kuali.rice.kew.api.document.WorkflowDocumentService;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeDateTime;
@@ -38,7 +39,6 @@ import org.kuali.rice.kew.docsearch.SearchableAttributeLongValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeStringValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.framework.document.lookup.DocumentSearchContext;
 import org.kuali.rice.kew.framework.document.lookup.SearchableAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
@@ -89,9 +89,10 @@ public class DocumentAttributeIndexingQueueImpl implements DocumentAttributeInde
 		List<SearchableAttributeValue> searchableAttributeValues = new ArrayList<SearchableAttributeValue>();
         DocumentType documentTypeBo = KEWServiceLocator.getDocumentTypeService().findByName(document.getDocumentTypeName());
 		for (DocumentType.ExtensionHolder<SearchableAttribute> searchableAttributeHolder : documentTypeBo.loadSearchableAttributes()) {
-            DocumentSearchContext context = DocumentSearchContext.createFullContext(document, documentContent, document.getDocumentTypeName());
+            DocumentWithContent documentWithContent = DocumentWithContent.create(document, documentContent);
             SearchableAttribute searchableAttribute = searchableAttributeHolder.getExtension();
-            List<DocumentAttribute> documentAttributes = searchableAttribute.getDocumentAttributes(searchableAttributeHolder.getExtensionDefinition(), context);
+            List<DocumentAttribute> documentAttributes = searchableAttribute.extractDocumentAttributes(
+                    searchableAttributeHolder.getExtensionDefinition(), documentWithContent);
 			if (documentAttributes != null) {
                 for (DocumentAttribute documentAttribute : documentAttributes) {
                     if (documentAttribute == null) {

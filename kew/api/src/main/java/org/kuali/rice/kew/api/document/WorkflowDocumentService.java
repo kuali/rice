@@ -23,6 +23,8 @@ import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionTaken;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
 import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
 
 import javax.jws.WebMethod;
@@ -205,16 +207,25 @@ public interface WorkflowDocumentService {
 	String getApplicationDocumentId(@WebParam(name = "documentId") String documentId)
             throws RiceIllegalArgumentException;
 
-
-//	public DocumentSearchResultDTO performDocumentSearch(
-//			@WebParam(name = "criteriaVO") DocumentSearchCriteriaDTO criteriaVO)
-//			throws WorkflowException;
-//
-//	public DocumentSearchResultDTO performDocumentSearchWithPrincipal(
-//			@WebParam(name = "principalId") String principalId,
-//			@WebParam(name = "criteriaVO") DocumentSearchCriteriaDTO criteriaVO)
-//			throws WorkflowException;
-//
+    /**
+     * Executes a search for workflow documents using the given criteria and as the principal with the given id.  Since
+     * documents can define security which permits access to view certain search results, the given principal id will
+     * be used when evaluating which documents should be filtered from the results because of lack of access.
+     *
+     * @param principalId the id of the principal to execute the lookup as, if this value is non-null then security
+     * filtering will be executed against the results, if it is null then no filtering will be performed
+     * @param criteria the criteria to use when executing the lookup
+     *
+     * @return the results of the lookup, this will never be null but may contain an empty list of results
+     *
+     * @throws RiceIllegalArgumentException if the given criteria is null
+     */
+    @WebMethod(operationName = "lookupDocuments")
+    @WebResult(name = "documentLookupResults")
+    DocumentLookupResults lookupDocuments(
+            @WebParam(name = "principalId") String principalId,
+            @WebParam(name = "criteria") DocumentLookupCriteria criteria)
+        throws RiceIllegalArgumentException;
 
     /**
      * Gets a list of all {@link RouteNodeInstance} for a {@link Document} with the given documentId

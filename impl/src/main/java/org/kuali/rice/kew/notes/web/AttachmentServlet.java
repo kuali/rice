@@ -83,7 +83,7 @@ public class AttachmentServlet extends HttpServlet {
 				DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(noteService.getNoteByNoteId(attachment.getNoteId()).getDocumentId());
 				
 				if(!secureChecks || routeHeader != null){// If we can get a valid routeHeader based on the requested attachment ID
-					boolean authorized = KEWServiceLocator.getDocumentSecurityService().routeLogAuthorized(userSession, routeHeader, new SecuritySession(userSession));
+					boolean authorized = KEWServiceLocator.getDocumentSecurityService().routeLogAuthorized(userSession.getPrincipalId(), routeHeader, new SecuritySession(userSession.getPrincipalId()));
 					
 					if(!secureChecks || authorized){// If this user can see this document, they can get the attachment(s)
 						response.setContentLength((int)file.length());

@@ -64,6 +64,10 @@ public class SqlBuilder {
 		return createCriteria(columnName, searchValue, tableName, tableAlias, propertyType, false, true);
 	}
 
+    public Criteria createCriteria(String columnName, String searchValue, String tableName, String tableAlias, Class propertyType, boolean caseInsensitive) {
+        return createCriteria(columnName, searchValue, tableName, tableAlias, propertyType, caseInsensitive, true);
+    }
+
 	public Criteria createCriteria(String columnName, String searchValue, String tableName, String tableAlias, Class propertyType, boolean caseInsensitive, boolean allowWildcards) {
 
 		if (propertyType == null) {

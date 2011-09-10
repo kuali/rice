@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.kew.service.impl;
 
-import org.kuali.rice.kew.api.KewApiServiceLocator;
-import org.kuali.rice.kew.api.document.Document;
-import org.kuali.rice.kew.docsearch.DocumentSearchEbo;
+import org.joda.time.DateTime;
+import org.kuali.rice.kew.api.document.DocumentStatus;
+import org.kuali.rice.kew.docsearch.DocumentEbo;
 import org.kuali.rice.kew.doctype.bo.DocumentTypeEBO;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -52,7 +52,7 @@ public class KEWModuleService extends ModuleServiceBase {
 			List<String> pkFields = new ArrayList<String>( 1 );
 			pkFields.add( "documentTypeId" );
 			return pkFields;
-		}else if(DocumentSearchEbo.class.isAssignableFrom( businessObjectInterfaceClass )){
+		}else if(DocumentEbo.class.isAssignableFrom( businessObjectInterfaceClass )){
 			List<String> pkFields = new ArrayList<String>( 1 );
 			pkFields.add( "documentId" );
 			return pkFields;
@@ -79,7 +79,7 @@ public class KEWModuleService extends ModuleServiceBase {
 				return (T)getDocumentTypeService().findById(fieldValues.get( "id" ).toString());
 			}
 
-		}else if(DocumentSearchEbo.class.isAssignableFrom( businessObjectClass )){
+		}else if(DocumentEbo.class.isAssignableFrom( businessObjectClass )){
 			if ( fieldValues.containsKey( "documentId" ) ) {
 				return (T)createDocumentSearchEbo(KEWServiceLocator.getRouteHeaderService().getRouteHeader(fieldValues.get( "documentId" ).toString()));
 			}
@@ -108,50 +108,55 @@ public class KEWModuleService extends ModuleServiceBase {
 		this.docTypeService = docTypeService;
 	}
 
-	private DocumentSearchEbo createDocumentSearchEbo(final DocumentRouteHeaderValue routeHeaderValue){
-		return new DocumentSearchEbo(){
+	private DocumentEbo createDocumentSearchEbo(final DocumentRouteHeaderValue routeHeaderValue){
+		return new DocumentEbo(){
 
-			public String getAppDocId() {
-				return routeHeaderValue.getAppDocId();
-			}
+            @Override
+            public String getApplicationDocumentId() {
+                return routeHeaderValue.getApplicationDocumentId();
+            }
 
-			public Timestamp getDateCreated() {
-				return routeHeaderValue.getCreateDate();
-			}
+            @Override
+            public DocumentStatus getStatus() {
+                return routeHeaderValue.getStatus();
+            }
 
-			public String getDocRouteStatus() {
+            @Override
+            public String getApplicationDocumentStatus() {
+                return routeHeaderValue.getApplicationDocumentStatus();
+            }
 
-				return routeHeaderValue.getDocRouteStatus();
-			}
+            @Override
+            public String getTitle() {
+                return routeHeaderValue.getTitle();
+            }
 
-			public String getAppDocStatus() {
+            @Override
+            public String getDocumentTypeName() {
+                return routeHeaderValue.getDocumentTypeName();
+            }
 
-				return routeHeaderValue.getAppDocStatus();
-			}
+            @Override
+            public String getInitiatorPrincipalId() {
+                return routeHeaderValue.getInitiatorPrincipalId();
+            }
 
-			public String getDocTitle() {
-				return routeHeaderValue.getDocTitle();
-			}
+            @Override
+            public String getDocumentId() {
+                return routeHeaderValue.getDocumentId();
+            }
 
-			public String getDocTypeFullName() {
-				return routeHeaderValue.getDocumentType().getName();
-			}
+            @Override
+            public DateTime getDateCreated() {
+                return routeHeaderValue.getDateCreated();
+            }
 
-			public String getInitiator() {
-				return routeHeaderValue.getInitiatorPrincipal().getPrincipalName();
-			}
-
-			public String getDocumentId() {
-
-				return routeHeaderValue.getDocumentId();
-			}
-
-			public void refresh() {
-				// do nothing
-
-			}
-
-		};
+            @Override
+            public void refresh() {
+                // do nothing
+            }
+            
+        };
 	}
 	/**
 	 * This overridden method rewrites the URL.

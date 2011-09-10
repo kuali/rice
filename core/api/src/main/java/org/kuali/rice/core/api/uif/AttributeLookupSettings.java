@@ -88,4 +88,14 @@ public interface AttributeLookupSettings {
      */
     boolean isUpperBoundInclusive();
 
+/**
+     * Indicates if lookups which use this attribute should execute the lookup against this attribute
+     * in a case sensitive fashion.  If this method returns null, it means that the system-level
+     * default for case sensitivity of attributes on lookups should be used.
+     *
+     * @return true if the attribute should be case sensitive on lookups, false if it should not, and
+     * null if the system-level default should be used
+     */
+    Boolean isCaseSensitive();
+
 }

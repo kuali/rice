@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.kew.docsearch;
 
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
+
 import java.io.Serializable;
 
 /**
@@ -26,28 +28,23 @@ import java.io.Serializable;
 public class SavedSearchResult implements Serializable {
 	
 	private static final long serialVersionUID = -764778230573234367L;
-	private DocSearchCriteriaDTO docSearchCriteriaDTO;
+
+	private final DocumentLookupCriteria criteria;
 	private DocumentSearchResultComponents searchResult;
-    
-    /**
-     * @deprecated
-     */
-    public boolean isAdvancedSearch() {
-        return docSearchCriteriaDTO.isAdvancedSearch();
-    }
-    public SavedSearchResult(DocSearchCriteriaDTO docSearchCriteriaDTO, DocumentSearchResultComponents searchResult) {
-        this.docSearchCriteriaDTO = docSearchCriteriaDTO;
+
+    public SavedSearchResult(DocumentLookupCriteria criteria, DocumentSearchResultComponents searchResult) {
+        this.criteria = criteria;
         this.searchResult = searchResult;
     }
-    public DocSearchCriteriaDTO getDocSearchCriteriaDTO() {
-        return docSearchCriteriaDTO;
+
+    public DocumentLookupCriteria getCriteria() {
+        return criteria;
     }
-//    public void setDocSearchCriteriaDTO(DocSearchCriteriaDTO docSearchCriteriaDTO) {
-//        this.docSearchCriteriaDTO = docSearchCriteriaDTO;
-//    }
+
 	public DocumentSearchResultComponents getSearchResult() {
 		return searchResult;
 	}
+
 	public void setSearchResult(DocumentSearchResultComponents searchResult) {
 		this.searchResult = searchResult;
 	}

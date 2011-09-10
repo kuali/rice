@@ -33,13 +33,13 @@ import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.document.DocumentWithContent;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.attribute.XMLAttributeUtils;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
-import org.kuali.rice.kew.framework.document.lookup.DocumentSearchContext;
 import org.kuali.rice.kew.framework.document.lookup.SearchableAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
@@ -142,20 +142,21 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
 	}
 
     @Override
-    public List<DocumentAttribute> getDocumentAttributes(ExtensionDefinition extensionDefinition, DocumentSearchContext documentSearchContext) {
+    public List<DocumentAttribute> extractDocumentAttributes(ExtensionDefinition extensionDefinition,
+            DocumentWithContent documentWithContent) {
 		List<DocumentAttribute> searchStorageValues = new ArrayList<DocumentAttribute>();
 		Document document;
-        String fullDocumentContent = documentSearchContext.getDocumentContent().getFullContent();
-        if (StringUtils.isBlank(documentSearchContext.getDocumentContent().getFullContent())) {
-            LOG.warn("Empty Document Content found for document id: " + documentSearchContext.getDocument().getDocumentId());
+        String fullDocumentContent = documentWithContent.getDocumentContent().getFullContent();
+        if (StringUtils.isBlank(documentWithContent.getDocumentContent().getFullContent())) {
+            LOG.warn("Empty Document Content found for document id: " + documentWithContent.getDocument().getDocumentId());
             return searchStorageValues;
         }
 		try {
 			document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
 					new InputSource(new BufferedReader(new StringReader(fullDocumentContent))));
 		} catch (Exception e){
-			LOG.error("error parsing docContent: "+documentSearchContext.getDocumentContent(), e);
-			throw new RuntimeException("Error trying to parse docContent: "+documentSearchContext.getDocumentContent(), e);
+			LOG.error("error parsing docContent: "+documentWithContent.getDocumentContent(), e);
+			throw new RuntimeException("Error trying to parse docContent: "+documentWithContent.getDocumentContent(), e);
 		}
 		XPath xpath = XPathHelper.newXPath(document);
 		String findField = "//searchingConfig/" + FIELD_DEF_E;
@@ -209,7 +210,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
                                 //seems like a poor way to determine our expression return type but
                                 //it's all I can come up with at the moment.
                                 String searchValue = (String) xpath.evaluate(xpathExpression, DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
-                                		new InputSource(new BufferedReader(new StringReader(documentSearchContext.getDocumentContent().getFullContent())))).getDocumentElement(), XPathConstants.STRING);
+                                		new InputSource(new BufferedReader(new StringReader(documentWithContent.getDocumentContent().getFullContent())))).getDocumentElement(), XPathConstants.STRING);
                                 String value = null;
                                 if (StringUtils.isNotBlank(searchValue)) {
                                     value = searchValue;
@@ -224,8 +225,8 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
     					LOG.error("error in isMatch ", e);
     					throw new RuntimeException("Error trying to find xml content with xpath expressions: " + findXpathExpression + " or " + xpathExpression, e);
     				} catch (Exception e){
-    					LOG.error("error parsing docContent: "+documentSearchContext.getDocumentContent(), e);
-    					throw new RuntimeException("Error trying to parse docContent: "+documentSearchContext.getDocumentContent(), e);
+    					LOG.error("error parsing docContent: " + documentWithContent.getDocumentContent(), e);
+    					throw new RuntimeException("Error trying to parse docContent: " + documentWithContent.getDocumentContent(), e);
     				}
                 }
 			}
@@ -332,7 +333,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
                     if (!isRangeSearchField) {
                         Boolean caseSensitive = getBooleanValue(searchDefAttributes, "caseSensitive");
                         if (caseSensitive != null) {
-                            fieldBuilder.setLookupCaseSensitive(caseSensitive);
+                            attributeLookupSettings.setCaseSensitive(caseSensitive);
                         }
                     } else {
                         applyAttributeRange(attributeLookupSettings, fieldBuilder, childNode);

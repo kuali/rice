@@ -8,9 +8,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.uif.DataType;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupConfigurationContract;
-import org.springframework.core.convert.converter.Converter;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -20,12 +17,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = DocumentAttribute.Constants.TYPE_NAME, propOrder = {

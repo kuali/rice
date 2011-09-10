@@ -282,6 +282,8 @@ public final class KEWConstants {
     public static final Integer DOCUMENT_SEARCH_DOC_TITLE_CREATE_DATE_DAYS_AGO = new Integer(-30);
     public static final Integer DOCUMENT_SEARCH_NO_CRITERIA_CREATE_DATE_DAYS_AGO = new Integer(0);
 
+    public static final int DOCUMENT_LOOKUP_DEFAULT_RESULT_CAP = 500;
+
     public static final Map<String, String> ACTION_LIST_COLOR_PALETTE;
     static {
         ACTION_LIST_COLOR_PALETTE = new HashMap<String, String>();
@@ -977,6 +979,11 @@ public final class KEWConstants {
 
 
     }
+
+    /**
+     * Defines the prefix to add to document attribute field names on the document lookup screens.
+     */
+    public static final String DOCUMENT_ATTRIBUTE_FIELD_PREFIX = "documentAttribute.";
     
     public static final class WorkflowProcessDirectives {
     	public static final String RUN_POST_PROCESSOR_LOGIC = "directive.run.post.processor.logic";

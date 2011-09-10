@@ -21,8 +21,6 @@ import org.junit.Test;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.parameter.Parameter;
-import org.kuali.rice.core.api.util.ConcreteKeyValue;
-import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
@@ -38,6 +36,10 @@ import org.kuali.rice.kew.api.actionlist.ActionListService;
 import org.kuali.rice.kew.api.document.DocumentDetail;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.WorkflowDocumentService;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
+import org.kuali.rice.kew.api.document.lookup.RouteNodeLookupLogic;
 import org.kuali.rice.kew.api.rule.Rule;
 import org.kuali.rice.kew.api.rule.RuleReportCriteria;
 import org.kuali.rice.kew.api.rule.RuleResponsibility;
@@ -47,16 +49,11 @@ import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeDateTime;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeFloat;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeLong;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeString;
-import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
-import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
-import org.kuali.rice.kew.dto.DocumentSearchResultRowDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -83,25 +80,9 @@ import static org.junit.Assert.*;
 public class WorkflowUtilityTest extends KEWTestCase {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(WorkflowUtilityTest.class);
 
-    private WorkflowUtility workflowUtility = null;
-
-    @Override
-	public void setUp() throws Exception {
-		super.setUp();
-		//setWorkflowUtility(KEWServiceLocator.getWorkflowUtilityService());
-	}
-
 	protected void loadTestData() throws Exception {
         loadXmlFile("WorkflowUtilityConfig.xml");
     }
-
-	public WorkflowUtility getWorkflowUtility() {
-		return this.workflowUtility;
-	}
-
-	public void setWorkflowUtility(WorkflowUtility workflowUtility) {
-		this.workflowUtility = workflowUtility;
-	}
 
 	@Test
     public void testGetDocumentDetailByAppId() throws WorkflowException{
@@ -1472,20 +1453,16 @@ public class WorkflowUtilityTest extends KEWTestCase {
         String docTitle = "Routing Style";
         setupPerformDocumentSearchTests(documentTypeName, null, docTitle);
 
-        DocumentSearchCriteriaDTO criteria = new DocumentSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        DocumentSearchResultDTO result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
-        List<DocumentSearchResultRowDTO> searchResults = result.getSearchResults();
-        assertEquals("Search results should have two documents.", 2, searchResults.size());
+        DocumentLookupCriteria.Builder criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        DocumentLookupResults results = KewApiServiceLocator.getWorkflowDocumentService().lookupDocuments(principalId, criteria.build());
+        assertEquals("Search results should have two documents.", 2, results.getLookupResults().size());
 
         int threshold = 1;
-        criteria = new DocumentSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.setThreshold(Integer.valueOf(threshold));
-        result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
-        assertTrue("Search results should signify search went over the given threshold: " + threshold, result.isOverThreshold());
-        searchResults = result.getSearchResults();
-        assertEquals("Search results should have one document.", threshold, searchResults.size());
+        criteria.setMaxResults(1);
+        results = KewApiServiceLocator.getWorkflowDocumentService().lookupDocuments(principalId, criteria.build());
+        assertTrue("Search results should signify search went over the given threshold: " + threshold, results.isOverThreshold());
+        assertEquals("Search results should have one document.", threshold, results.getLookupResults().size());
     }
 
     @Test public void testPerformDocumentSearch_WithUser_BasicCriteria() throws Exception {
@@ -1505,42 +1482,35 @@ public class WorkflowUtilityTest extends KEWTestCase {
         workflowDocument.setTitle("Get Outta Dodge");
         workflowDocument.route("routing this document.");
 
-        DocumentSearchCriteriaDTO criteria = new DocumentSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.setDocTitle(docTitle);
-        DocumentSearchResultDTO result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
-        List<DocumentSearchResultRowDTO> searchResults = result.getSearchResults();
-        assertEquals("Search results should have one document.", 1, searchResults.size());
+        DocumentLookupCriteria.Builder criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        criteria.setTitle(docTitle);
+        DocumentLookupResults results = KewApiServiceLocator.getWorkflowDocumentService().lookupDocuments(principalId, criteria.build());
+        assertEquals("Search results should have one document.", 1, results.getLookupResults().size());
 
-        criteria = new DocumentSearchCriteriaDTO();
-        criteria.setInitiator("rkirkend");
-        result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
-        searchResults = result.getSearchResults();
-        assertEquals("Search results should have one document.", 1, searchResults.size());
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setInitiatorPrincipalName("rkirkend");
+        results = KewApiServiceLocator.getWorkflowDocumentService().lookupDocuments(principalId, criteria.build());
+        assertEquals("Search results should have one document.", 1, results.getLookupResults().size());
 
-        criteria = new DocumentSearchCriteriaDTO();
-        criteria.setInitiator("user1");
-        result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
-        searchResults = result.getSearchResults();
-        assertEquals("Search results should be empty.", 0, searchResults.size());
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setInitiatorPrincipalName("user1");
+        results = KewApiServiceLocator.getWorkflowDocumentService().lookupDocuments(principalId, criteria.build());
+        assertEquals("Search results should be empty.", 0, results.getLookupResults().size());
 
-        criteria = new DocumentSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
-        searchResults = result.getSearchResults();
-        assertEquals("Search results should have two documents.", 3, searchResults.size());
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        results = KewApiServiceLocator.getWorkflowDocumentService().lookupDocuments(principalId, criteria.build());
+        assertEquals("Search results should have three documents.", 3, results.getLookupResults().size());
         // now verify that the search returned the proper document id
         boolean foundValidDocId = false;
-        for (DocumentSearchResultRowDTO documentSearchResultRowVO : searchResults) {
-			for (KeyValue keyValueVO : documentSearchResultRowVO.getFieldValues()) {
-				if ( (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_ID.equals(keyValueVO.getKey())) &&
-					 (StringUtils.equals(workflowDocument.getDocumentId(), keyValueVO.getValue())) ) {
-					foundValidDocId = true;
-					break;
-				}
-			}
-		}
-        assertTrue("Should have found document search result with specified document id",foundValidDocId);
+        for (DocumentLookupResult result : results.getLookupResults()) {
+            if (result.getDocument().getDocumentId().equals(workflowDocument.getDocumentId())) {
+                foundValidDocId = true;
+                break;
+            }
+        }
+        assertTrue("Should have found document search result with specified document id", foundValidDocId);
     }
 
     @Test public void testPerformDocumentSearch_WithUser_RouteNodeSearch() throws Exception {
@@ -1556,19 +1526,21 @@ public class WorkflowUtilityTest extends KEWTestCase {
         setupPerformDocumentSearchTests(documentTypeName, SeqSetup.WORKFLOW_DOCUMENT_NODE, "Doc Title");
 
         // test exception thrown when route node specified and no doc type specified
-        DocumentSearchCriteriaDTO criteria = new DocumentSearchCriteriaDTO();
-        criteria.setDocRouteNodeName(SeqSetup.ADHOC_NODE);
+        DocumentLookupCriteria.Builder criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setRouteNodeName(SeqSetup.ADHOC_NODE);
         try {
-            getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
+            KewApiServiceLocator.getWorkflowDocumentService().lookupDocuments(principalId, criteria.build());
             fail("Exception should have been thrown when specifying a route node name but no document type name");
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // test exception thrown when route node specified does not exist on document type
-        criteria = new DocumentSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.setDocRouteNodeName("Yo homes, smell ya later!");
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        criteria.setRouteNodeName("This is an invalid route node name!!!");
         try {
-            getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
+            KewApiServiceLocator.getWorkflowDocumentService().lookupDocuments(principalId, criteria.build());
             fail("Exception should have been thrown when specifying a route node name that does not exist on the specified document type name");
         } catch (Exception e) {}
 
@@ -1587,36 +1559,24 @@ public class WorkflowUtilityTest extends KEWTestCase {
     }
 
     private void runPerformDocumentSearch_RouteNodeSearch(String principalId, String routeNodeName, String documentTypeName, int countBeforeNode, int countAtNode, int countAfterNode) throws RemoteException, WorkflowException {
-        DocumentSearchCriteriaDTO criteria = new DocumentSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.setDocRouteNodeName(routeNodeName);
-        criteria.findDocsAtExactSpecifiedRouteNode();
-        DocumentSearchResultDTO result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
-        List<DocumentSearchResultRowDTO> searchResults = result.getSearchResults();
-        assertEquals("Wrong number of search results when checking default node qualifier.", countAtNode, searchResults.size());
 
-        criteria = new DocumentSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.setDocRouteNodeName(routeNodeName);
-        result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
-        searchResults = result.getSearchResults();
-        assertEquals("Wrong number of search results when checking docs at exact node.", countAtNode, searchResults.size());
+        DocumentLookupCriteria.Builder criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        criteria.setRouteNodeName(routeNodeName);
+        DocumentLookupResults results = KewApiServiceLocator.getWorkflowDocumentService().lookupDocuments(principalId, criteria.build());
+        assertEquals("Wrong number of search results when checking docs at default node logic.", countAtNode, results.getLookupResults().size());
 
-        criteria = new DocumentSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.setDocRouteNodeName(routeNodeName);
-        criteria.findDocsBeforeSpecifiedRouteNode();
-        result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
-        searchResults = result.getSearchResults();
-        assertEquals("Wrong number of search results when checking docs before node.", countBeforeNode, searchResults.size());
+        criteria.setRouteNodeLookupLogic(RouteNodeLookupLogic.EXACTLY);
+        results = KewApiServiceLocator.getWorkflowDocumentService().lookupDocuments(principalId, criteria.build());
+        assertEquals("Wrong number of search results when checking docs at exact node.", countAtNode, results.getLookupResults().size());
 
-        criteria = new DocumentSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.setDocRouteNodeName(routeNodeName);
-        criteria.findDocsAfterSpecifiedRouteNode();
-        result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
-        searchResults = result.getSearchResults();
-        assertEquals("Wrong number of search results when checking docs after node.", countAfterNode, searchResults.size());
+        criteria.setRouteNodeLookupLogic(RouteNodeLookupLogic.BEFORE);
+        results = KewApiServiceLocator.getWorkflowDocumentService().lookupDocuments(principalId, criteria.build());
+        assertEquals("Wrong number of search results when checking docs before node.", countBeforeNode, results.getLookupResults().size());
+
+        criteria.setRouteNodeLookupLogic(RouteNodeLookupLogic.AFTER);
+        results = KewApiServiceLocator.getWorkflowDocumentService().lookupDocuments(principalId, criteria.build());
+        assertEquals("Wrong number of search results when checking docs after node.", countAfterNode, results.getLookupResults().size());
     }
 
     @Test public void testPerformDocumentSearch_WithUser_SearchAttributes() throws Exception {
@@ -1632,91 +1592,83 @@ public class WorkflowUtilityTest extends KEWTestCase {
         String docTitle = "Routing Style";
         setupPerformDocumentSearchTests(documentTypeName, null, docTitle);
 
-        DocumentSearchCriteriaDTO criteria = new DocumentSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.setSearchAttributeValues(Collections.singletonList(new ConcreteKeyValue(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY,TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE)));
-        DocumentSearchResultDTO result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
-        List<DocumentSearchResultRowDTO> searchResults = result.getSearchResults();
-        assertEquals("Search results should have two documents.", 2, searchResults.size());
+        DocumentLookupCriteria.Builder criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        criteria.getDocumentAttributeValues().put(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, Collections.singletonList(TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE));
+        DocumentLookupResults results = KewApiServiceLocator.getWorkflowDocumentService().lookupDocuments(principalId, criteria.build());
+        assertEquals("Search results should have two documents.", 2, results.getLookupResults().size());
 
-        criteria = new DocumentSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.setSearchAttributeValues(Collections.singletonList(new ConcreteKeyValue(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY,"fred")));
-        result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
-        searchResults = result.getSearchResults();
-        assertEquals("Search results should be empty.", 0, searchResults.size());
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        criteria.getDocumentAttributeValues().put(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, Collections.singletonList("fred"));
+        results = KewApiServiceLocator.getWorkflowDocumentService().lookupDocuments(principalId, criteria.build());
+        assertEquals("Search results should be empty.", 0, results.getLookupResults().size());
 
-        criteria = new DocumentSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.setSearchAttributeValues(Collections.singletonList(new ConcreteKeyValue("fakeproperty", "doesntexist")));
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        criteria.getDocumentAttributeValues().put("fakeproperty", Collections.singletonList("doesntexist"));
         try {
-            result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
+            results = KewApiServiceLocator.getWorkflowDocumentService().lookupDocuments(principalId, criteria.build());
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
         } catch (Exception e) {}
 
-        criteria = new DocumentSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.setSearchAttributeValues(Collections.singletonList(new ConcreteKeyValue(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString())));
-        result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
-        searchResults = result.getSearchResults();
-        assertEquals("Search results should have two documents.", 2, searchResults.size());
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        criteria.getDocumentAttributeValues().put(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, Collections.singletonList(TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString()));
+        results = KewApiServiceLocator.getWorkflowDocumentService().lookupDocuments(principalId, criteria.build());
+        assertEquals("Search results should have two documents.", 2, results.getLookupResults().size());
 
-        criteria = new DocumentSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.setSearchAttributeValues(Collections.singletonList(new ConcreteKeyValue(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, "1111111")));
-        result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
-        searchResults = result.getSearchResults();
-        assertEquals("Search results should be empty.", 0, searchResults.size());
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        criteria.getDocumentAttributeValues().put(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, Collections.singletonList("1111111"));
+        results = KewApiServiceLocator.getWorkflowDocumentService().lookupDocuments(principalId, criteria.build());
+        assertEquals("Search results should be empty.", 0, results.getLookupResults().size());
 
-        criteria = new DocumentSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.setSearchAttributeValues(Collections.singletonList(new ConcreteKeyValue("fakeymcfakefake", "99999999")));
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        criteria.getDocumentAttributeValues().put("fakeymcfakefake", Collections.singletonList("99999999"));
         try {
-            result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
+            results = KewApiServiceLocator.getWorkflowDocumentService().lookupDocuments(principalId, criteria.build());
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
         } catch (Exception e) {}
 
-        criteria = new DocumentSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.setSearchAttributeValues(Collections.singletonList(new ConcreteKeyValue(TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString())));
-        result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
-        searchResults = result.getSearchResults();
-        assertEquals("Search results should have two documents.", 2, searchResults.size());
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        criteria.getDocumentAttributeValues().put(TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, Collections.singletonList(TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString()));
+        results = KewApiServiceLocator.getWorkflowDocumentService().lookupDocuments(principalId, criteria.build());
+        assertEquals("Search results should have two documents.", 2, results.getLookupResults().size());
 
-        criteria = new DocumentSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.setSearchAttributeValues(Collections.singletonList(new ConcreteKeyValue(TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, "215.3548")));
-        result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
-        searchResults = result.getSearchResults();
-        assertEquals("Search results should be empty.", 0, searchResults.size());
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        criteria.getDocumentAttributeValues().put(TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, Collections.singletonList("215.3548"));
+        results = KewApiServiceLocator.getWorkflowDocumentService().lookupDocuments(principalId, criteria.build());
+        assertEquals("Search results should be empty.", 0, results.getLookupResults().size());
 
-        criteria = new DocumentSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.setSearchAttributeValues(Collections.singletonList(new ConcreteKeyValue("fakeylostington", "9999.9999")));
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        criteria.getDocumentAttributeValues().put("fakeylostington", Collections.singletonList("9999.9999"));
         try {
-            result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
+            results = KewApiServiceLocator.getWorkflowDocumentService().lookupDocuments(principalId, criteria.build());
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
         } catch (Exception e) {}
 
-        criteria = new DocumentSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.setSearchAttributeValues(Collections.singletonList(new ConcreteKeyValue(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, DocSearchUtils.getDisplayValueWithDateOnly(new Timestamp(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS)))));
-        result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
-        searchResults = result.getSearchResults();
-        assertEquals("Search results should have two documents.", 2, searchResults.size());
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        criteria.getDocumentAttributeValues().put(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, Collections.singletonList(DocSearchUtils.getDisplayValueWithDateOnly(new Timestamp(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS))));
+        results = KewApiServiceLocator.getWorkflowDocumentService().lookupDocuments(principalId, criteria.build());
+        assertEquals("Search results should have two documents.", 2, results.getLookupResults().size());
 
-        criteria = new DocumentSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.setSearchAttributeValues(Collections.singletonList(new ConcreteKeyValue(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, "07/06/1979")));
-        result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
-        searchResults = result.getSearchResults();
-        assertEquals("Search results should be empty.", 0, searchResults.size());
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        criteria.getDocumentAttributeValues().put(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, Collections.singletonList("07/06/1979"));
+        results = KewApiServiceLocator.getWorkflowDocumentService().lookupDocuments(principalId, criteria.build());
+        assertEquals("Search results should be empty.", 0, results.getLookupResults().size());
 
-        criteria = new DocumentSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.setSearchAttributeValues(Collections.singletonList(new ConcreteKeyValue("lastingsfakerson","07/06/2007")));
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        criteria.getDocumentAttributeValues().put("lastingsfakerson", Collections.singletonList("07/06/2007"));
         try {
-            result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
+            results = KewApiServiceLocator.getWorkflowDocumentService().lookupDocuments(principalId, criteria.build());
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
         } catch (Exception e) {}
     }

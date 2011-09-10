@@ -19,6 +19,7 @@ package org.kuali.rice.kew.docsearch.service.impl;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
+import org.joda.time.MutableDateTime;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
@@ -35,6 +36,7 @@ import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
+import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaBuilder;
 import org.kuali.rice.kew.docsearch.DocumentLookupCustomizationMediator;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.StandardDocumentSearchGenerator;
@@ -148,14 +150,16 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
     }
 
     @Override
-	public DocumentLookupResults lookupDocuments(String principalId, DocumentLookupCriteria.Builder criteria) {
+	public DocumentLookupResults lookupDocuments(String principalId, DocumentLookupCriteria criteria) {
 		DocumentSearchGenerator docSearchGenerator = getStandardDocumentSearchGenerator();
 		DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(criteria.getDocumentTypeName());
-        criteria = validateDocumentSearchCriteria(docSearchGenerator, criteria);
-        criteria = applyCriteriaCustomizations(documentType, criteria);
+        DocumentLookupCriteria.Builder criteriaBuilder = DocumentLookupCriteria.Builder.create(criteria);
+        validateDocumentSearchCriteria(docSearchGenerator, criteriaBuilder);
+        DocumentLookupCriteria builtCriteria = applyCriteriaCustomizations(documentType, criteriaBuilder.build());
+        builtCriteria = applyCriteriaDefaults(builtCriteria);
+        boolean criteriaModified = !criteria.equals(builtCriteria);
         List<RemotableAttributeField> searchFields = determineSearchFields(documentType);
-        DocumentLookupResults.Builder searchResults = docSearchDao.findDocuments(docSearchGenerator, criteria, searchFields);
-        DocumentLookupCriteria builtCriteria = criteria.build();
+        DocumentLookupResults.Builder searchResults = docSearchDao.findDocuments(docSearchGenerator, builtCriteria, criteriaModified, searchFields);
         if (documentType != null) {
             DocumentLookupResultValues resultValues = getDocumentLookupCustomizationMediator().customizeResults(documentType, builtCriteria, searchResults.build());
             if (resultValues != null && CollectionUtils.isNotEmpty(resultValues.getResultValues())) {
@@ -216,25 +220,61 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         }
     }
 
-    @Override
-    public DocumentLookupResults lookupDocuments(String principalId, DocumentLookupCriteria criteria) {
-        return lookupDocuments(principalId, DocumentLookupCriteria.Builder.create(criteria));
-    }
 
     /**
      * Applies any document type-specific customizations to the lookup criteria.  If no customizations are configured
      * for the document type, this method will simply return the criteria that is passed to it.  If
      * the given DocumentType is null, then this method will also simply return the criteria that is passed to it.
      */
-    protected DocumentLookupCriteria.Builder applyCriteriaCustomizations(DocumentType documentType, DocumentLookupCriteria.Builder criteria) {
+    protected DocumentLookupCriteria applyCriteriaCustomizations(DocumentType documentType, DocumentLookupCriteria criteria) {
         if (documentType == null) {
             return criteria;
         }
-        DocumentLookupCriteria customizedCriteria = getDocumentLookupCustomizationMediator().customizeCriteria(documentType, criteria.build());
+        DocumentLookupCriteria customizedCriteria = getDocumentLookupCustomizationMediator().customizeCriteria(documentType, criteria);
         if (customizedCriteria != null) {
-            return DocumentLookupCriteria.Builder.create(customizedCriteria);
+            return customizedCriteria;
         }
         return criteria;
+    }
+
+    protected DocumentLookupCriteria applyCriteriaDefaults(DocumentLookupCriteria criteria) {
+        DocumentLookupCriteria.Builder comparisonCriteria = createEmptyComparisonCriteria(criteria);
+        boolean isCriteriaEmpty = criteria.equals(comparisonCriteria.build());
+        boolean isTitleOnly = false;
+        if (!isCriteriaEmpty) {
+            comparisonCriteria.setTitle(criteria.getTitle());
+            isTitleOnly = criteria.equals(comparisonCriteria.build());
+        }
+
+        if (isCriteriaEmpty || isTitleOnly) {
+            DocumentLookupCriteria.Builder criteriaBuilder = DocumentLookupCriteria.Builder.create(criteria);
+            Integer defaultCreateDateDaysAgoValue = null;
+            if (isCriteriaEmpty) {
+                // if they haven't set any criteria, default the from created date to today minus days from constant variable
+                defaultCreateDateDaysAgoValue = KEWConstants.DOCUMENT_SEARCH_NO_CRITERIA_CREATE_DATE_DAYS_AGO;
+            } else if (isTitleOnly) {
+                // If the document title is the only field which was entered, we want to set the "from" date to be X
+                // days ago.  This will allow for a more efficient query.
+                defaultCreateDateDaysAgoValue = KEWConstants.DOCUMENT_SEARCH_DOC_TITLE_CREATE_DATE_DAYS_AGO;
+            }
+            if (defaultCreateDateDaysAgoValue != null) {
+                // add a default create date
+                MutableDateTime mutableDateTime = new MutableDateTime();
+                mutableDateTime.addDays(defaultCreateDateDaysAgoValue.intValue());
+                criteriaBuilder.setDateCreatedFrom(mutableDateTime.toDateTime());
+            }
+            criteria = criteriaBuilder.build();
+        }
+        return criteria;
+    }
+
+    protected DocumentLookupCriteria.Builder createEmptyComparisonCriteria(DocumentLookupCriteria criteria) {
+        DocumentLookupCriteria.Builder builder = DocumentLookupCriteria.Builder.create();
+        // copy over the fields that shouldn't be considered when determining if the criteria is empty
+        builder.setSaveName(criteria.getSaveName());
+        builder.setStartAtIndex(criteria.getStartAtIndex());
+        builder.setMaxResults(criteria.getMaxResults());
+        return builder;
     }
 
     protected List<RemotableAttributeField> determineSearchFields(DocumentType documentType) {
@@ -263,7 +303,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
     }
 
     @Override
-    public DocumentLookupCriteria.Builder validateDocumentSearchCriteria(DocumentSearchGenerator docSearchGenerator, DocumentLookupCriteria.Builder criteria) {
+    public void validateDocumentSearchCriteria(DocumentSearchGenerator docSearchGenerator, DocumentLookupCriteria.Builder criteria) {
         List<WorkflowServiceError> errors = this.validateWorkflowDocumentSearchCriteria(criteria);
         List<RemotableAttributeError> searchAttributeErrors = docSearchGenerator.validateSearchableAttributes(criteria);
         if (!CollectionUtils.isEmpty(searchAttributeErrors)) {
@@ -278,7 +318,6 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         if (!errors.isEmpty() || !GlobalVariables.getMessageMap().hasNoErrors()) {
             throw new WorkflowServiceErrorException("Document Search Validation Errors", errors);
         }
-        return criteria;
     }
 
     protected List<WorkflowServiceError> validateWorkflowDocumentSearchCriteria(DocumentLookupCriteria.Builder criteria) {

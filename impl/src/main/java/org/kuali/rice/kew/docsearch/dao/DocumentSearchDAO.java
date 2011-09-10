@@ -26,6 +26,6 @@ import java.util.List;
 
 public interface DocumentSearchDAO {
 
-    public DocumentLookupResults.Builder findDocuments(DocumentSearchGenerator docSearchGenerator, DocumentLookupCriteria.Builder criteria, List<RemotableAttributeField> searchFields);
+    public DocumentLookupResults.Builder findDocuments(DocumentSearchGenerator docSearchGenerator, DocumentLookupCriteria criteria, boolean criteriaModified, List<RemotableAttributeField> searchFields);
 
 }

@@ -92,6 +92,39 @@ public class DocumentSearchTest extends KEWTestCase {
         assertEquals("for in accounts", savedCriteria.getSaveName());
     }
 
+    @Test
+    public void testDocSearch_criteriaModified() throws Exception {
+        String principalId = getPrincipalId("ewestfal");
+
+        // if no criteria is specified, the dateCreatedFrom is defaulted to today
+        DocumentLookupCriteria.Builder criteria = DocumentLookupCriteria.Builder.create();
+        DocumentLookupResults results = docSearchService.lookupDocuments(principalId, criteria.build());
+        assertTrue("criteria should have been modified", results.isCriteriaModified());
+        assertNull("original date created from should have been null", criteria.getDateCreatedFrom());
+        assertNotNull("modified date created from should be non-null", results.getCriteria().getDateCreatedFrom());
+
+        // now set some attributes which should still result in modified criteria since they don't count toward
+        // determining if the criteria is empty or not
+        criteria.setMaxResults(new Integer(50));
+        criteria.setSaveName("myRadSearch");
+        results = docSearchService.lookupDocuments(principalId, criteria.build());
+        assertTrue("criteria should have been modified", results.isCriteriaModified());
+        assertNotNull("modified date created from should be non-null", results.getCriteria().getDateCreatedFrom());
+
+        // now set the title, when only title is specified, date created from is defaulted
+        criteria.setTitle("My rad title search!");
+        results = docSearchService.lookupDocuments(principalId, criteria.build());
+        assertTrue("criteria should have been modified", results.isCriteriaModified());
+        assertNotNull("modified date created from should be non-null", results.getCriteria().getDateCreatedFrom());
+
+        // now set another field on the criteria, modification should *not* occur
+        criteria.setApplicationDocumentId("12345");
+        results = docSearchService.lookupDocuments(principalId, criteria.build());
+        assertFalse("criteria should *not* have been modified", results.isCriteriaModified());
+        assertNull("modified date created from should still be null", results.getCriteria().getDateCreatedFrom());
+        assertEquals("both criterias should be equal", criteria.build(), results.getCriteria());
+    }
+
     /**
      * Test for https://test.kuali.org/jira/browse/KULRICE-1968 - Document search fails when users are missing
      * Tests that we can safely search on docs whose initiator no longer exists in the identity management system
@@ -229,7 +262,7 @@ public class DocumentSearchTest extends KEWTestCase {
         Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
         DocumentLookupCriteria.Builder criteria = DocumentLookupCriteria.Builder.create();
         DocumentLookupResults results = docSearchService.lookupDocuments(user.getPrincipalId(),
-                criteria);
+                criteria.build());
         assertNotNull("Should have a date created value", criteria.getDateCreatedFrom());
         Calendar criteriaDate = Calendar.getInstance();
         criteriaDate.setTime(criteria.getDateCreatedFrom().toDate());
@@ -237,7 +270,7 @@ public class DocumentSearchTest extends KEWTestCase {
 
         criteria = DocumentLookupCriteria.Builder.create();
         criteria.setTitle("testing");
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria);
+        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
         assertNotNull("Should have a date created value", criteria.getDateCreatedFrom());
         criteriaDate = Calendar.getInstance();
         criteriaDate.setTime(criteria.getDateCreatedFrom().toDate());

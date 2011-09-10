@@ -23,6 +23,8 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = DocumentLookupResults.Constants.TYPE_NAME, propOrder = {
     DocumentLookupResults.Elements.LOOKUP_RESULTS,
+    DocumentLookupResults.Elements.CRITERIA,
+    DocumentLookupResults.Elements.CRITERIA_MODIFIED,
     DocumentLookupResults.Elements.OVER_THRESHOLD,
     DocumentLookupResults.Elements.NUMBER_OF_SECURITY_FILTERED_RESULTS,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
@@ -32,6 +34,12 @@ public final class DocumentLookupResults extends AbstractDataTransferObject impl
     @XmlElementWrapper(name = Elements.LOOKUP_RESULTS, required = true)
     @XmlElement(name = Elements.LOOKUP_RESULT, required = false)
     private final List<DocumentLookupResult> lookupResults;
+
+    @XmlElement(name = Elements.CRITERIA, required = true)
+    private final DocumentLookupCriteria criteria;
+
+    @XmlElement(name = Elements.CRITERIA_MODIFIED, required = true)
+    private final boolean criteriaModified;
 
     @XmlElement(name = Elements.OVER_THRESHOLD, required = true)
     private final boolean overThreshold;
@@ -46,12 +54,16 @@ public final class DocumentLookupResults extends AbstractDataTransferObject impl
     @SuppressWarnings("unused")
     private DocumentLookupResults() {
         this.lookupResults = null;
+        this.criteria = null;
+        this.criteriaModified = false;
         this.overThreshold = false;
         this.numberOfSecurityFilteredResults = 0;
     }
 
     private DocumentLookupResults(Builder builder) {
         this.lookupResults = ModelObjectUtils.buildImmutableCopy(builder.getLookupResults());
+        this.criteria = builder.getCriteria().build();
+        this.criteriaModified = builder.isCriteriaModified();
         this.overThreshold = builder.isOverThreshold();
         this.numberOfSecurityFilteredResults = builder.getNumberOfSecurityFilteredResults();
     }
@@ -59,6 +71,16 @@ public final class DocumentLookupResults extends AbstractDataTransferObject impl
     @Override
     public List<DocumentLookupResult> getLookupResults() {
         return this.lookupResults;
+    }
+
+    @Override
+    public DocumentLookupCriteria getCriteria() {
+        return this.criteria;
+    }
+
+    @Override
+    public boolean isCriteriaModified() {
+        return this.criteriaModified;
     }
 
     @Override
@@ -78,30 +100,35 @@ public final class DocumentLookupResults extends AbstractDataTransferObject impl
     public final static class Builder implements Serializable, ModelBuilder, DocumentLookupResultsContract {
 
         private List<DocumentLookupResult.Builder> lookupResults;
+        private DocumentLookupCriteria.Builder criteria;
+        private boolean criteriaModified;
         private boolean overThreshold;
         private int numberOfSecurityFilteredResults;
 
-        private Builder() {
+        private Builder(DocumentLookupCriteria.Builder criteria) {
             setLookupResults(new ArrayList<DocumentLookupResult.Builder>());
+            setCriteria(criteria);
+            setCriteriaModified(false);
             setOverThreshold(false);
             setNumberOfSecurityFilteredResults(0);
 
         }
 
-        public static Builder create() {
-            return new Builder();
+        public static Builder create(DocumentLookupCriteria.Builder criteria) {
+            return new Builder(criteria);
         }
 
         public static Builder create(DocumentLookupResultsContract contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
             }
-            Builder builder = create();
+            Builder builder = create(DocumentLookupCriteria.Builder.create(contract.getCriteria()));
             if (!CollectionUtils.isEmpty(contract.getLookupResults())) {
                 for (DocumentLookupResultContract lookupResultContract : contract.getLookupResults()) {
                     builder.getLookupResults().add(DocumentLookupResult.Builder.create(lookupResultContract));
                 }
             }
+            builder.setCriteriaModified(contract.isCriteriaModified());
             builder.setOverThreshold(contract.isOverThreshold());
             builder.setNumberOfSecurityFilteredResults(contract.getNumberOfSecurityFilteredResults());
             return builder;
@@ -117,6 +144,16 @@ public final class DocumentLookupResults extends AbstractDataTransferObject impl
         }
 
         @Override
+        public DocumentLookupCriteria.Builder getCriteria() {
+            return this.criteria;
+        }
+
+        @Override
+        public boolean isCriteriaModified() {
+            return this.criteriaModified;
+        }
+
+        @Override
         public boolean isOverThreshold() {
             return this.overThreshold;
         }
@@ -128,6 +165,17 @@ public final class DocumentLookupResults extends AbstractDataTransferObject impl
 
         public void setLookupResults(List<DocumentLookupResult.Builder> lookupResults) {
             this.lookupResults = lookupResults;
+        }
+
+        public void setCriteria(DocumentLookupCriteria.Builder criteria) {
+            if (criteria == null) {
+                throw new IllegalArgumentException("criteria was null");
+            }
+            this.criteria = criteria;
+        }
+
+        public void setCriteriaModified(boolean criteriaModified) {
+            this.criteriaModified = criteriaModified;
         }
 
         public void setOverThreshold(boolean overThreshold) {
@@ -154,6 +202,8 @@ public final class DocumentLookupResults extends AbstractDataTransferObject impl
     static class Elements {
         final static String LOOKUP_RESULTS = "lookupResults";
         final static String LOOKUP_RESULT = "lookupResult";
+        final static String CRITERIA = "criteria";
+        final static String CRITERIA_MODIFIED = "criteriaModified";
         final static String OVER_THRESHOLD = "overThreshold";
         final static String NUMBER_OF_SECURITY_FILTERED_RESULTS = "numberOfSecurityFilteredResults";
     }

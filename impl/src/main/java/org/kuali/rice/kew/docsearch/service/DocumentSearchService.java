@@ -40,10 +40,6 @@ public interface DocumentSearchService {
      * @param criteria criteria to use to search documents
      * @return the results of the search, will never return null
      */
-    DocumentLookupResults lookupDocuments(String principalId, DocumentLookupCriteria.Builder criteria);
-
-    // TODO - added temporarly when above method was changed to use a builder, need to go back and modify
-    // the hundreds of calls in unit tests so that they use the above method instead
     DocumentLookupResults lookupDocuments(String principalId, DocumentLookupCriteria criteria);
 
     DocumentLookupCriteria getSavedSearchCriteria(String principalId, String savedSearchName);
@@ -58,5 +54,5 @@ public interface DocumentSearchService {
 
     DocumentSearchGenerator getStandardDocumentSearchGenerator();
 
-    DocumentLookupCriteria.Builder validateDocumentSearchCriteria(DocumentSearchGenerator docSearchGenerator, DocumentLookupCriteria.Builder criteria);
+    void validateDocumentSearchCriteria(DocumentSearchGenerator docSearchGenerator, DocumentLookupCriteria.Builder criteria);
 }

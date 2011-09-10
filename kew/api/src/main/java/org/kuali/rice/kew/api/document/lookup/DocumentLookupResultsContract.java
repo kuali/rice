@@ -31,6 +31,10 @@ public interface DocumentLookupResultsContract {
 
     List<? extends DocumentLookupResultContract> getLookupResults();
 
+    DocumentLookupCriteriaContract getCriteria();
+
+    boolean isCriteriaModified();
+
     boolean isOverThreshold();
 
     int getNumberOfSecurityFilteredResults();

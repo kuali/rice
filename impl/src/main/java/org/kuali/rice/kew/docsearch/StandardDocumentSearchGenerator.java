@@ -803,8 +803,10 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     }
 
     @Override
-    public DocumentLookupResults.Builder processResultSet(DocumentLookupCriteria.Builder criteria, Statement searchAttributeStatement, ResultSet resultSet, int maxResultCap, int fetchLimit) throws SQLException {
-        DocumentLookupResults.Builder results = DocumentLookupResults.Builder.create();
+    public DocumentLookupResults.Builder processResultSet(DocumentLookupCriteria criteria, boolean criteriaModified, Statement searchAttributeStatement, ResultSet resultSet, int maxResultCap, int fetchLimit) throws SQLException {
+        DocumentLookupCriteria.Builder criteriaBuilder = DocumentLookupCriteria.Builder.create(criteria);
+        DocumentLookupResults.Builder results = DocumentLookupResults.Builder.create(criteriaBuilder);
+        results.setCriteriaModified(criteriaModified);
         int size = 0;
         List<DocumentLookupResult.Builder> resultList = new ArrayList<DocumentLookupResult.Builder>();
         results.setLookupResults(resultList);
@@ -848,7 +850,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         }
     }
 
-    protected DocumentLookupResult.Builder processRow(DocumentLookupCriteria.Builder criteria, Statement searchAttributeStatement, ResultSet rs) throws SQLException {
+    protected DocumentLookupResult.Builder processRow(DocumentLookupCriteria criteria, Statement searchAttributeStatement, ResultSet rs) throws SQLException {
 
         String documentId = rs.getString("DOC_HDR_ID");
         String initiatorPrincipalId = rs.getString("INITR_PRNCPL_ID");
@@ -922,7 +924,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         perfLog.log("Time to execute doc search search attribute queries.", true);
     }
 
-    public String generateSearchSql(DocumentLookupCriteria.Builder criteria, List<RemotableAttributeField> searchFields) {
+    public String generateSearchSql(DocumentLookupCriteria criteria, List<RemotableAttributeField> searchFields) {
 
         String docTypeTableAlias   = "DOC1";
         String docHeaderTableAlias = "DOC_HDR";
@@ -974,28 +976,6 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             selectSQL.append(queryComponent.getSelectSql());
             fromSQL.append(queryComponent.getFromSql());
             whereSQL.append(queryComponent.getWhereSql());
-        }
-
-        // at this point we haven't appended doc title to the query, if the document title is the only field
-        // which was entered, we want to set the "from" date to be X days ago.  This will allow for a
-        // more efficient query
-        Integer defaultCreateDateDaysAgoValue = null;
-        String tempWhereSql = getDocTitleSql(criteria.getTitle(), getGeneratedPredicatePrefix(whereSQL.length()));
-        if ( ((whereSQL == null) || (StringUtils.isBlank(whereSQL.toString()))) && (StringUtils.isNotBlank(tempWhereSql)) ) {
-            // doc title is not blank
-            defaultCreateDateDaysAgoValue = KEWConstants.DOCUMENT_SEARCH_DOC_TITLE_CREATE_DATE_DAYS_AGO;
-        }
-        whereSQL.append(tempWhereSql);
-        if ( ((whereSQL == null) || (StringUtils.isBlank(whereSQL.toString()))) && (CollectionUtils.isEmpty(criteria.getDocumentStatuses())) ) {
-            // if they haven't set any criteria, default the from created date to today minus days from constant variable
-            defaultCreateDateDaysAgoValue = KEWConstants.DOCUMENT_SEARCH_NO_CRITERIA_CREATE_DATE_DAYS_AGO;
-        }
-        if (defaultCreateDateDaysAgoValue != null) {
-            // add a default create date
-            MutableDateTime mutableDateTime = new MutableDateTime();
-            mutableDateTime.addDays(defaultCreateDateDaysAgoValue.intValue());
-            criteria.setDateCreatedFrom(mutableDateTime.toDateTime());
-            whereSQL.append(getDateCreatedSql(criteria.getDateCreatedFrom(), criteria.getDateCreatedTo(), getGeneratedPredicatePrefix(whereSQL.length())));
         }
 
         String docTypeFullNameSql = getDocTypeFullNameWhereSql(criteria.getDocumentTypeName(), getGeneratedPredicatePrefix(whereSQL.length()));
@@ -1436,7 +1416,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      * @return True if the search criteria contains at least one searchable attribute or the criteria's doc type name is
      * non-blank; false otherwise.
      */
-    protected boolean isUsingAtLeastOneSearchAttribute(DocumentLookupCriteria.Builder criteria) {
+    protected boolean isUsingAtLeastOneSearchAttribute(DocumentLookupCriteria criteria) {
         return criteria.getDocumentAttributeValues().size() > 0 || StringUtils.isNotBlank(criteria.getDocumentTypeName());
     }
 

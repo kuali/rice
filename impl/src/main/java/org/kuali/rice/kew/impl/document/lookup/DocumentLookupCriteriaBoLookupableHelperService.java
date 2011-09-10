@@ -14,6 +14,7 @@ import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteriaContract;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
 import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaBuilder;
@@ -80,7 +81,7 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
 
     // unfortunately, lookup helpers are stateful, need to store these here for other methods to use
     protected DocumentLookupResults lookupResults = null;
-    protected DocumentLookupCriteria.Builder criteria = null;
+    protected DocumentLookupCriteria criteria = null;
 
 
     @Override
@@ -149,7 +150,7 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
      * Applies changes that might have happend to the criteria back to the fields so that they show up on the form.
      * Namely, this handles populating the form with today's date if the create date was not filled in on the form.
      */
-    protected void applyCriteriaChangesToFields(DocumentLookupCriteria.Builder criteria) {
+    protected void applyCriteriaChangesToFields(DocumentLookupCriteriaContract criteria) {
         for (Row row : this.getRows()) {
             for (Field field : row.getFields()) {
                 if(StringUtils.equals(field.getPropertyName(), KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + "dateCreated") && StringUtils.isEmpty(field.getPropertyValue())) {
@@ -189,7 +190,7 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
     /**
      * Loads the document lookup criteria from the given map of field values as submitted from the search screen.
      */
-    protected DocumentLookupCriteria.Builder loadCriteria(Map<String, String> fieldValues) {
+    protected DocumentLookupCriteria loadCriteria(Map<String, String> fieldValues) {
         fieldValues = cleanupFieldValues(fieldValues, getParameters());
         String savedSearchToLoad = fieldValues.get(SAVED_SEARCH_NAME_PARAM);
         boolean savedSearch = StringUtils.isNotBlank(savedSearchToLoad);
@@ -197,11 +198,11 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
             DocumentLookupCriteria criteria = getDocumentSearchService().getSavedSearchCriteria(
                     GlobalVariables.getUserSession().getPrincipalId(), savedSearchToLoad);
             if (criteria != null) {
-                return DocumentLookupCriteria.Builder.create(criteria);
+                return criteria;
             }
         }
         // either it wasn't a saved search or the saved search failed to resolve
-        return DocumentLookupCriteriaBuilder.translateFieldValues(fieldValues);
+        return DocumentLookupCriteriaBuilder.translateFieldValues(fieldValues).build();
     }
 
     protected List<DocumentLookupCriteriaBo> populateSearchResults(List<DocumentLookupResult> lookupResults) {
@@ -469,7 +470,7 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
 
     @Override
 	public void performClear(LookupForm lookupForm) {
-        DocumentLookupCriteria criteria = loadCriteria(lookupForm.getFields()).build();
+        DocumentLookupCriteria criteria = loadCriteria(lookupForm.getFields());
         super.performClear(lookupForm);
         repopulateSearchTypeFlags();
 		DocumentType documentType = getValidDocumentType(criteria.getDocumentTypeName());
@@ -515,7 +516,6 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
         DocumentLookupResultSetConfiguration resultSetConfiguration = null;
         DocumentLookupCriteriaConfiguration criteriaConfiguration = null;
         if (documentType != null) {
-            DocumentLookupCriteria criteria = this.criteria.build();
             resultSetConfiguration =
                 KEWServiceLocator.getDocumentLookupCustomizationMediator().customizeResultSetConfiguration(
                         documentType, criteria);

@@ -56,7 +56,7 @@ public class DocumentSearchDAOJdbcImpl implements DocumentSearchDAO {
     }
 
     @Override
-    public DocumentLookupResults.Builder findDocuments(final DocumentSearchGenerator documentSearchGenerator, final DocumentLookupCriteria.Builder criteria, final List<RemotableAttributeField> searchFields) {
+    public DocumentLookupResults.Builder findDocuments(final DocumentSearchGenerator documentSearchGenerator, final DocumentLookupCriteria criteria, final boolean criteriaModified, final List<RemotableAttributeField> searchFields) {
         final int maxResultCap = getMaxResultCap(criteria);
         try {
             final JdbcTemplate template = new JdbcTemplate(dataSource);
@@ -82,7 +82,7 @@ public class DocumentSearchDAOJdbcImpl implements DocumentSearchDAO {
                             perfLog.log("Time to execute doc search database query.", true);
                             final Statement searchAttributeStatement = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
                             try {
-                           		return documentSearchGenerator.processResultSet(criteria, searchAttributeStatement, rs, maxResultCap, fetchLimit);
+                           		return documentSearchGenerator.processResultSet(criteria, criteriaModified, searchAttributeStatement, rs, maxResultCap, fetchLimit);
                             } finally {
                                 try {
                                     searchAttributeStatement.close();
@@ -124,7 +124,7 @@ public class DocumentSearchDAOJdbcImpl implements DocumentSearchDAO {
      * @param criteria the criteria in which to check for a max results value
      * @return the maximum number of results that should be returned from a document lookup
      */
-    protected int getMaxResultCap(DocumentLookupCriteria.Builder criteria) {
+    protected int getMaxResultCap(DocumentLookupCriteria criteria) {
         int maxResults = KEWConstants.DOCUMENT_LOOKUP_DEFAULT_RESULT_CAP;
         if (criteria.getMaxResults() != null) {
             maxResults = criteria.getMaxResults().intValue();

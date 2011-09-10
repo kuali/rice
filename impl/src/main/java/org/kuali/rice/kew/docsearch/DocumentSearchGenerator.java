@@ -36,9 +36,9 @@ public interface DocumentSearchGenerator {
 
     List<RemotableAttributeError> validateSearchableAttributes(DocumentLookupCriteria.Builder criteria);
 
-    String generateSearchSql(DocumentLookupCriteria.Builder criteria, List<RemotableAttributeField> searchFields);
+    String generateSearchSql(DocumentLookupCriteria criteria, List<RemotableAttributeField> searchFields);
 
-    DocumentLookupResults.Builder processResultSet(DocumentLookupCriteria.Builder criteria, Statement searchAttributeStatement, ResultSet resultSet, int actualMaxResults, int fetchLimit) throws SQLException;
+    DocumentLookupResults.Builder processResultSet(DocumentLookupCriteria criteria, boolean criteriaModified, Statement searchAttributeStatement, ResultSet resultSet, int actualMaxResults, int fetchLimit) throws SQLException;
     
     DocumentLookupCriteria clearSearch(DocumentLookupCriteria criteria);
 

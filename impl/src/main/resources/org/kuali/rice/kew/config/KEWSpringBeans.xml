@@ -796,4 +796,15 @@
 	</bean>
 
   <bean id="rice.kew.ruleValidationAttributeResolver" class="org.kuali.rice.kew.validation.RuleValidationAttributeResolverImpl"/>
+  
+    
+  <bean id="kewTypeRepository" class="org.kuali.rice.kew.impl.repository.KewTypeBoServiceImpl">
+    <property name="businessObjectService" ref="businessObjectService"/>
+  </bean>
+  
+  <bean id="businessObjectService"
+	 class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+	 <property name="serviceName" value="businessObjectService" />
+  </bean>
+	
 </beans>

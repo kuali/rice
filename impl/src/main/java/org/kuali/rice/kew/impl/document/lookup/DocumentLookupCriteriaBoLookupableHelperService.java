@@ -17,7 +17,6 @@ import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteriaContract;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
-import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaBuilder;
 import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessor;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -76,13 +75,15 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
     private static final boolean DOCUMENT_HANDLER_POPUP_DEFAULT = true;
     private static final boolean ROUTE_LOG_POPUP_DEFAULT = true;
 
+    // injected services
+
     private DocumentSearchService documentSearchService;
     private DocumentLookupCriteriaProcessor documentLookupCriteriaProcessor;
+    private DocumentLookupCriteriaTranslator documentLookupCriteriaTranslator;
 
     // unfortunately, lookup helpers are stateful, need to store these here for other methods to use
     protected DocumentLookupResults lookupResults = null;
     protected DocumentLookupCriteria criteria = null;
-
 
     @Override
     protected List<? extends BusinessObject> getSearchResultsHelper(Map<String, String> fieldValues,
@@ -111,7 +112,6 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
         populateResultWarningMessages(lookupResults);
 
         List<DocumentLookupResult> individualLookupResults = lookupResults.getLookupResults();
-        // TODO - Rice 2.0 - remember to security filter and add customizeResults hook!
 
         setBackLocation(fieldValues.get(KRADConstants.BACK_LOCATION));
         setDocFormKey(fieldValues.get(KRADConstants.DOC_FORM_KEY));
@@ -202,7 +202,7 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
             }
         }
         // either it wasn't a saved search or the saved search failed to resolve
-        return DocumentLookupCriteriaBuilder.translateFieldValues(fieldValues).build();
+        return getDocumentLookupCriteriaTranslator().translate(fieldValues);
     }
 
     protected List<DocumentLookupCriteriaBo> populateSearchResults(List<DocumentLookupResult> lookupResults) {
@@ -636,16 +636,24 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
         this.documentSearchService = documentSearchService;
     }
 
-    protected DocumentSearchService getDocumentSearchService() {
+    public DocumentSearchService getDocumentSearchService() {
         return documentSearchService;
     }
 
-    protected DocumentLookupCriteriaProcessor getDocumentLookupCriteriaProcessor() {
+    public DocumentLookupCriteriaProcessor getDocumentLookupCriteriaProcessor() {
         return documentLookupCriteriaProcessor;
     }
 
     public void setDocumentLookupCriteriaProcessor(DocumentLookupCriteriaProcessor documentLookupCriteriaProcessor) {
         this.documentLookupCriteriaProcessor = documentLookupCriteriaProcessor;
+    }
+
+    public DocumentLookupCriteriaTranslator getDocumentLookupCriteriaTranslator() {
+        return documentLookupCriteriaTranslator;
+    }
+
+    public void setDocumentLookupCriteriaTranslator(DocumentLookupCriteriaTranslator documentLookupCriteriaTranslator) {
+        this.documentLookupCriteriaTranslator = documentLookupCriteriaTranslator;
     }
 
 }

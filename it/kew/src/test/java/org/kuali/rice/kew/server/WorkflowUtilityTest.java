@@ -44,7 +44,7 @@ import org.kuali.rice.kew.api.rule.Rule;
 import org.kuali.rice.kew.api.rule.RuleReportCriteria;
 import org.kuali.rice.kew.api.rule.RuleResponsibility;
 import org.kuali.rice.kew.api.rule.RuleService;
-import org.kuali.rice.kew.docsearch.DocSearchUtils;
+import org.kuali.rice.kew.docsearch.DocumentLookupInternalUtils;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeDateTime;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeFloat;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeLong;
@@ -1654,7 +1654,9 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
         criteria = DocumentLookupCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
-        criteria.getDocumentAttributeValues().put(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, Collections.singletonList(DocSearchUtils.getDisplayValueWithDateOnly(new Timestamp(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS))));
+        criteria.getDocumentAttributeValues().put(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, Collections.singletonList(
+                DocumentLookupInternalUtils.getDisplayValueWithDateOnly(new Timestamp(
+                        TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS))));
         results = KewApiServiceLocator.getWorkflowDocumentService().lookupDocuments(principalId, criteria.build());
         assertEquals("Search results should have two documents.", 2, results.getLookupResults().size());
 

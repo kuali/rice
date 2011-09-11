@@ -17,18 +17,14 @@ package org.kuali.rice.krad.workflow;
 
 import org.junit.Test;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
-import org.kuali.rice.core.api.uif.Select;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
-import org.kuali.rice.kew.docsearch.DocSearchUtils;
-import org.kuali.rice.kew.docsearch.SearchAttributeCriteriaComponent;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.framework.document.lookup.SearchableAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.service.DocumentService;
@@ -41,7 +37,6 @@ import org.kuali.test.KRADTestCase;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
@@ -234,48 +229,7 @@ public class DataDictionarySearchableAttributeTest extends KRADTestCase {
     	date.set(year, month, day, hour, minute, second);
     	return new java.sql.Timestamp(date.getTimeInMillis());
     }
-	
-	/*
-	 * A method similar to the one from DocumentSearchTestBase. The "value" parameter has to be either a String or a String[].
-	 */
-	private SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,Object value,Boolean isLowerBoundValue,DocumentType docType) {
-        String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + key : KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + key);
-		String savedKey = key;
-		SearchAttributeCriteriaComponent sacc = null;
-		if (value instanceof String) {
-			sacc = new SearchAttributeCriteriaComponent(formKey,(String)value,savedKey);
-		} else {
-			sacc = new SearchAttributeCriteriaComponent(formKey,null,savedKey);
-			sacc.setValues(Arrays.asList((String[])value));
-		}
-		applyAttributeFieldToComponent(sacc, docType, formKey);
-		return sacc;
-	}
 
-    private void applyAttributeFieldToComponent(SearchAttributeCriteriaComponent sacc, DocumentType docType, String formKey) {
-        RemotableAttributeField field = getFieldByFormKey(docType, formKey);
-        if (field != null) {
-            sacc.setSearchableAttributeValue(DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getDataType()));
-            boolean isRange = field.getAttributeLookupSettings() != null && field.getAttributeLookupSettings().isRanged();
-            sacc.setRangeSearch(isRange);
-            if (field.getAttributeLookupSettings().isCaseSensitive() != null) {
-                sacc.setCaseSensitive(field.getAttributeLookupSettings().isCaseSensitive());
-            }
-            if (isRange) {
-                if (field.getAttributeLookupSettings().getLowerBoundName().equals(formKey)) {
-                    sacc.setSearchInclusive(field.getAttributeLookupSettings().isLowerBoundInclusive());
-                } else if (field.getAttributeLookupSettings().getUpperBoundName().equals(formKey)) {
-                    sacc.setSearchInclusive(field.getAttributeLookupSettings().isUpperBoundInclusive());
-                } else {
-                    throw new IllegalStateException("Encountered an invalid ranged attribute field definition.");
-                }
-            }
-            boolean canHoldMultipleValues = field.getControl() instanceof Select &&
-                    ((Select) field.getControl()).isMultiple();
-            sacc.setCanHoldMultipleValues(canHoldMultipleValues);
-        }
-    }
-	
 	/*
 	 * A method that was copied from DocumentSearchTestBase.
 	 */

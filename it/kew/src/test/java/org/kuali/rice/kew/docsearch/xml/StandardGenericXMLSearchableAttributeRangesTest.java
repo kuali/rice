@@ -23,7 +23,7 @@ import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
-import org.kuali.rice.kew.docsearch.DocSearchUtils;
+import org.kuali.rice.kew.docsearch.DocumentLookupInternalUtils;
 import org.kuali.rice.kew.docsearch.DocumentSearchTestBase;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeDateTime;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeFloat;
@@ -285,7 +285,8 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         workflowDocument.addSearchableDefinition(floatXMLDef.build());
         // adding string searchable attribute
         WorkflowAttributeDefinition.Builder dateXMLDef = WorkflowAttributeDefinition.Builder.create("XMLSearchableAttributeStdDateTimeRange");
-        dateXMLDef.addPropertyDefinition(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, DocSearchUtils.getDisplayValueWithDateOnly(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE));
+        dateXMLDef.addPropertyDefinition(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, DocumentLookupInternalUtils
+                .getDisplayValueWithDateOnly(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE));
         workflowDocument.addSearchableDefinition(dateXMLDef.build());
 
         workflowDocument.setTitle("Routing style");
@@ -494,7 +495,8 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         criteria = DocumentLookupCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         calendarValueToUse = (Calendar) searchAttributeDateTimeValue.clone();
-        String valueToSearch = DocSearchUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(calendarValueToUse));
+        String valueToSearch = DocumentLookupInternalUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(
+                calendarValueToUse));
         addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, valueToSearch, null, false);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
         assertEquals("Search results should have one document.", 0, results.getLookupResults().size());
@@ -503,7 +505,8 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         criteria.setDocumentTypeName(documentTypeName);
         calendarValueToUse = (Calendar) searchAttributeDateTimeValue.clone();
         calendarValueToUse.add(Calendar.DATE, -1);
-        valueToSearch = DocSearchUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(calendarValueToUse));
+        valueToSearch = DocumentLookupInternalUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(
+                calendarValueToUse));
         addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, valueToSearch, null, false);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
         assertEquals("Search results should have one document.", 1, results.getLookupResults().size());
@@ -512,7 +515,8 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         criteria.setDocumentTypeName(documentTypeName);
         calendarValueToUse = (Calendar) searchAttributeDateTimeValue.clone();
         calendarValueToUse.add(Calendar.DATE, 1);
-        valueToSearch = DocSearchUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(calendarValueToUse));
+        valueToSearch = DocumentLookupInternalUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(
+                calendarValueToUse));
         addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, valueToSearch, null, false);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
         assertEquals("Search results should have one document.", 0, results.getLookupResults().size());
@@ -522,7 +526,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         criteria.setDocumentTypeName(documentTypeName);
         calendarValueToUse = (Calendar) searchAttributeDateTimeValue.clone();
         addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, null,
-                DocSearchUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(calendarValueToUse)), true);
+                DocumentLookupInternalUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(calendarValueToUse)), true);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
         assertEquals("Search results should have one document.", 1, results.getLookupResults().size());
 
@@ -530,7 +534,8 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         criteria.setDocumentTypeName(documentTypeName);
         calendarValueToUse = (Calendar) searchAttributeDateTimeValue.clone();
         calendarValueToUse.add(Calendar.DATE, -1);
-        addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, null, DocSearchUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(calendarValueToUse)), true);
+        addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, null, DocumentLookupInternalUtils
+                .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(calendarValueToUse)), true);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
         assertEquals("Search results should have one document.", 0, results.getLookupResults().size());
 
@@ -539,7 +544,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         calendarValueToUse = (Calendar) searchAttributeDateTimeValue.clone();
         calendarValueToUse.add(Calendar.DATE, 1);
         addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, null,
-                DocSearchUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(calendarValueToUse)), true);
+                DocumentLookupInternalUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(calendarValueToUse)), true);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
         assertEquals("Search results should have one document.", 1, results.getLookupResults().size());
 
@@ -548,7 +553,9 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         criteria.setDocumentTypeName(documentTypeName);
         Calendar lowerBoundValue = (Calendar) searchAttributeDateTimeValue.clone();
         Calendar upperBoundValue = (Calendar) searchAttributeDateTimeValue.clone();
-        addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, DocSearchUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(lowerBoundValue)), DocSearchUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(upperBoundValue)), true);
+        addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, DocumentLookupInternalUtils
+                .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(lowerBoundValue)), DocumentLookupInternalUtils
+                .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(upperBoundValue)), true);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
         assertEquals("Search results should have one document.", 0, results.getLookupResults().size());
 
@@ -558,7 +565,9 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         lowerBoundValue.add(Calendar.DATE, 2);
         upperBoundValue = (Calendar) searchAttributeDateTimeValue.clone();
         upperBoundValue.add(Calendar.DATE, 4);
-        addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, DocSearchUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(lowerBoundValue)), DocSearchUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(upperBoundValue)), true);
+        addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, DocumentLookupInternalUtils
+                .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(lowerBoundValue)), DocumentLookupInternalUtils
+                .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(upperBoundValue)), true);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
         assertEquals("Search results should have one document.", 0, results.getLookupResults().size());
 
@@ -568,7 +577,9 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         lowerBoundValue.add(Calendar.DATE, -4);
         upperBoundValue = (Calendar) searchAttributeDateTimeValue.clone();
         upperBoundValue.add(Calendar.DATE, -2);
-        addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, DocSearchUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(lowerBoundValue)), DocSearchUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(upperBoundValue)), true);
+        addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, DocumentLookupInternalUtils
+                .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(lowerBoundValue)), DocumentLookupInternalUtils
+                .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(upperBoundValue)), true);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
         assertEquals("Search results should have one document.", 0, results.getLookupResults().size());
 
@@ -578,7 +589,9 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         lowerBoundValue.add(Calendar.DATE, -2);
         upperBoundValue = (Calendar) searchAttributeDateTimeValue.clone();
         upperBoundValue.add(Calendar.DATE, 2);
-        addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, DocSearchUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(lowerBoundValue)), DocSearchUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(upperBoundValue)), true);
+        addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, DocumentLookupInternalUtils
+                .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(lowerBoundValue)), DocumentLookupInternalUtils
+                .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(upperBoundValue)), true);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
         assertEquals("Search results should have one document.", 1, results.getLookupResults().size());
 
@@ -588,7 +601,9 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         lowerBoundValue.add(Calendar.DATE, 2);
         upperBoundValue = (Calendar) searchAttributeDateTimeValue.clone();
         upperBoundValue.add(Calendar.DATE, -2);
-        addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, DocSearchUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(lowerBoundValue)), DocSearchUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(upperBoundValue)), true);
+        addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, DocumentLookupInternalUtils
+                .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(lowerBoundValue)), DocumentLookupInternalUtils
+                .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(upperBoundValue)), true);
         try {
             docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
             fail("Error should have been thrown for invalid range");

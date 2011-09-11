@@ -19,7 +19,7 @@ package org.kuali.rice.kew.docsearch.service;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
-import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
+import org.kuali.rice.kew.impl.document.lookup.DocumentLookupGenerator;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 
 import java.util.List;
@@ -52,7 +52,7 @@ public interface DocumentSearchService {
 
     DocumentLookupCriteria clearCriteria(DocumentType documentType, DocumentLookupCriteria criteria);
 
-    DocumentSearchGenerator getStandardDocumentSearchGenerator();
+    DocumentLookupGenerator getStandardDocumentSearchGenerator();
 
-    void validateDocumentSearchCriteria(DocumentSearchGenerator docSearchGenerator, DocumentLookupCriteria.Builder criteria);
+    void validateDocumentSearchCriteria(DocumentLookupGenerator docLookupGenerator, DocumentLookupCriteria.Builder criteria);
 }

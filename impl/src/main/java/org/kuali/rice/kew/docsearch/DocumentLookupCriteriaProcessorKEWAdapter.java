@@ -23,7 +23,6 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
-import org.kuali.rice.krad.service.DataDictionaryService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,16 +76,6 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements DocumentLookup
             DOCUMENT_ATTRIBUTE_FIELD_MARKER,
             "saveName"
     };
-
-	private DataDictionaryService dataDictionaryService;
-
-    protected DataDictionaryService getDataDictionaryService() {
-        return this.dataDictionaryService;
-    }
-
-	public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
-		this.dataDictionaryService = dataDictionaryService;
-	}
 
     @Override
 	public List<Row> getRows(DocumentType documentType, List<Row> defaultRows, boolean advancedSearch, boolean superUserSearch) {

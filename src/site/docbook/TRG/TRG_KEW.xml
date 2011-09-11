@@ -7293,7 +7293,7 @@ EDL EDoclite Example
             <title>Custom Search Generation</title>
             <para>The best way to do custom search generation or processing is to implement a custom
                 class that extends the class <emphasis role="bold"
-                    >org.kuali.rice.kew.docsearch.DocumentSearchGenerator</emphasis>. This file is
+                    >org.kuali.rice.kew.impl.document.lookup.DocumentSearchGenerator</emphasis>. This file is
                 ingested as a Workflow Attribute in KEW using the <emphasis role="bold"
                     >&lt;type></emphasis> value of DocumentSearchGeneratorAttribute. Once the
                 Workflow Attribute is ingested, the name value of the ingested attribute can be set

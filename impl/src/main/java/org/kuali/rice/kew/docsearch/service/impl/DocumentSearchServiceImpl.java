@@ -36,10 +36,7 @@ import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
-import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaBuilder;
 import org.kuali.rice.kew.docsearch.DocumentLookupCustomizationMediator;
-import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
-import org.kuali.rice.kew.docsearch.StandardDocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.dao.DocumentSearchDAO;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.SecuritySession;
@@ -50,6 +47,8 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCriteriaConfiguration;
 import org.kuali.rice.kew.framework.document.lookup.DocumentLookupResultValue;
 import org.kuali.rice.kew.framework.document.lookup.DocumentLookupResultValues;
+import org.kuali.rice.kew.impl.document.lookup.DocumentLookupGenerator;
+import org.kuali.rice.kew.impl.document.lookup.DocumentLookupGeneratorImpl;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
@@ -151,15 +150,15 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 
     @Override
 	public DocumentLookupResults lookupDocuments(String principalId, DocumentLookupCriteria criteria) {
-		DocumentSearchGenerator docSearchGenerator = getStandardDocumentSearchGenerator();
+		DocumentLookupGenerator docLookupGenerator = getStandardDocumentSearchGenerator();
 		DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(criteria.getDocumentTypeName());
         DocumentLookupCriteria.Builder criteriaBuilder = DocumentLookupCriteria.Builder.create(criteria);
-        validateDocumentSearchCriteria(docSearchGenerator, criteriaBuilder);
+        validateDocumentSearchCriteria(docLookupGenerator, criteriaBuilder);
         DocumentLookupCriteria builtCriteria = applyCriteriaCustomizations(documentType, criteriaBuilder.build());
         builtCriteria = applyCriteriaDefaults(builtCriteria);
         boolean criteriaModified = !criteria.equals(builtCriteria);
         List<RemotableAttributeField> searchFields = determineSearchFields(documentType);
-        DocumentLookupResults.Builder searchResults = docSearchDao.findDocuments(docSearchGenerator, builtCriteria, criteriaModified, searchFields);
+        DocumentLookupResults.Builder searchResults = docSearchDao.findDocuments(docLookupGenerator, builtCriteria, criteriaModified, searchFields);
         if (documentType != null) {
             DocumentLookupResultValues resultValues = getDocumentLookupCustomizationMediator().customizeResults(documentType, builtCriteria, searchResults.build());
             if (resultValues != null && CollectionUtils.isNotEmpty(resultValues.getResultValues())) {
@@ -294,18 +293,18 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         return searchFields;
     }
 
-    public DocumentSearchGenerator getStandardDocumentSearchGenerator() {
+    public DocumentLookupGenerator getStandardDocumentSearchGenerator() {
 	String searchGeneratorClass = ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.STANDARD_DOC_SEARCH_GENERATOR_CLASS_CONFIG_PARM);
 	if (searchGeneratorClass == null){
-	    return new StandardDocumentSearchGenerator();
+	    return new DocumentLookupGeneratorImpl();
 	}
-    	return (DocumentSearchGenerator)GlobalResourceLoader.getObject(new ObjectDefinition(searchGeneratorClass));
+    	return (DocumentLookupGenerator)GlobalResourceLoader.getObject(new ObjectDefinition(searchGeneratorClass));
     }
 
     @Override
-    public void validateDocumentSearchCriteria(DocumentSearchGenerator docSearchGenerator, DocumentLookupCriteria.Builder criteria) {
+    public void validateDocumentSearchCriteria(DocumentLookupGenerator docLookupGenerator, DocumentLookupCriteria.Builder criteria) {
         List<WorkflowServiceError> errors = this.validateWorkflowDocumentSearchCriteria(criteria);
-        List<RemotableAttributeError> searchAttributeErrors = docSearchGenerator.validateSearchableAttributes(criteria);
+        List<RemotableAttributeError> searchAttributeErrors = docLookupGenerator.validateSearchableAttributes(criteria);
         if (!CollectionUtils.isEmpty(searchAttributeErrors)) {
             // attribute errors are fully materialized error messages, so the only "key" that makes sense is to use "error.custom"
             for (RemotableAttributeError searchAttributeError : searchAttributeErrors) {

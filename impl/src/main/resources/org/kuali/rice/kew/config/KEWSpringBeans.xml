@@ -370,14 +370,15 @@
       </property>
     </bean>
 
-    <bean id="documentLookupCriteriaProcessor" class="org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessorKEWAdapter" scope="prototype">
-      <property name="dataDictionaryService" ref="dataDictionaryService" />
-    </bean>
+    <bean id="documentLookupCriteriaProcessor" class="org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessorKEWAdapter"/>
+
+  <bean id="documentLookupCriteriaTranslator" class="org.kuali.rice.kew.impl.document.lookup.DocumentLookupCriteriaTranslatorImpl"/>
 
     <bean id="documentLookupCriteriaBoLookupableHelperService"
           class="org.kuali.rice.kew.impl.document.lookup.DocumentLookupCriteriaBoLookupableHelperService"
           scope="prototype">
       <property name="documentLookupCriteriaProcessor" ref="documentLookupCriteriaProcessor"/>
+      <property name="documentLookupCriteriaTranslator" ref="documentLookupCriteriaTranslator"/>
       <property name="documentSearchService" ref="enDocumentSearchService"/>
     </bean>
 

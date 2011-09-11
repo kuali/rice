@@ -1,10 +1,22 @@
 package org.kuali.rice.kew.docsearch;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.MutableDateTime;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.reflect.ObjectDefinition;
+import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.api.uif.AttributeLookupSettings;
 import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.core.framework.resourceloader.ObjectDefinitionResolver;
 
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -16,6 +28,8 @@ import java.util.List;
  */
 public class DocumentLookupInternalUtils {
 
+    private static final Logger LOG = Logger.getLogger(DocumentLookupInternalUtils.class);
+
     private static final boolean CASE_SENSITIVE_DEFAULT = true;
 
     private static final String STRING_ATTRIBUTE_TABLE_NAME = "KREW_DOC_HDR_EXT_T";
@@ -25,6 +39,15 @@ public class DocumentLookupInternalUtils {
 
     private static final List<SearchableAttributeConfiguration> CONFIGURATIONS =
             new ArrayList<SearchableAttributeConfiguration>();
+    public static final List<Class<? extends SearchableAttributeValue>> SEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST =
+            new ArrayList<Class<? extends SearchableAttributeValue>>();
+    static {
+        SEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST.add(SearchableAttributeStringValue.class);
+        SEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST.add(SearchableAttributeFloatValue.class);
+        SEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST.add(SearchableAttributeLongValue.class);
+        SEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST.add(SearchableAttributeDateTimeValue.class);
+    }
+
     static {
 
         CONFIGURATIONS.add(new SearchableAttributeConfiguration(
@@ -83,6 +106,121 @@ public class DocumentLookupInternalUtils {
             }
         }
         throw new IllegalArgumentException("Failed to determine proper searchable attribute configuration for given data type of '" + attributeField.getDataType() + "'");
+    }
+
+    public static List<SearchableAttributeValue> getSearchableAttributeValueObjectTypes() {
+        List<SearchableAttributeValue> searchableAttributeValueClasses = new ArrayList<SearchableAttributeValue>();
+        for (Class<? extends SearchableAttributeValue> searchAttributeValueClass : SEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST) {
+            ObjectDefinition objDef = new ObjectDefinition(searchAttributeValueClass);
+            SearchableAttributeValue attributeValue = (SearchableAttributeValue) ObjectDefinitionResolver.createObject(
+                    objDef, ClassLoaderUtils.getDefaultClassLoader(), false);
+            searchableAttributeValueClasses.add(attributeValue);
+        }
+        return searchableAttributeValueClasses;
+    }
+
+    /**
+     * TODO - Rice 2.0 - Move once migrated over to new doc search framework
+     */
+    public static SearchableAttributeValue getSearchableAttributeValueByDataTypeString(String dataType) {
+        SearchableAttributeValue returnableValue = null;
+        if (StringUtils.isBlank(dataType)) {
+            return returnableValue;
+        }
+        for (SearchableAttributeValue attValue : getSearchableAttributeValueObjectTypes())
+        {
+            if (dataType.equalsIgnoreCase(attValue.getAttributeDataType()))
+            {
+                if (returnableValue != null)
+                {
+                    String errorMsg = "Found two SearchableAttributeValue objects with same data type string ('" + dataType + "' while ignoring case):  " + returnableValue.getClass().getName() + " and " + attValue.getClass().getName();
+                    LOG.error("getSearchableAttributeValueByDataTypeString() " + errorMsg);
+                    throw new RuntimeException(errorMsg);
+                }
+                LOG.debug("getSearchableAttributeValueByDataTypeString() SearchableAttributeValue class name is " + attValue.getClass().getName() + "... ojbConcreteClassName is " + attValue.getOjbConcreteClass());
+                ObjectDefinition objDef = new ObjectDefinition(attValue.getClass());
+                returnableValue = (SearchableAttributeValue) ObjectDefinitionResolver.createObject(objDef, ClassLoaderUtils.getDefaultClassLoader(), false);
+            }
+        }
+        return returnableValue;
+    }
+
+    public static String getDisplayValueWithDateOnly(DateTime value) {
+        return getDisplayValueWithDateOnly(new Timestamp(value.getMillis()));
+    }
+
+    public static String getDisplayValueWithDateOnly(Timestamp value) {
+        return RiceConstants.getDefaultDateFormat().format(new Date(value.getTime()));
+    }
+
+    public static DateTime getLowerDateTimeBound(String dateRange) throws ParseException {
+        Range range = parseRange(dateRange);
+        if (range == null) {
+            throw new IllegalArgumentException("Failed to parse date range from given string: " + dateRange);
+        }
+        if (range.getLowerBoundValue() != null) {
+            java.util.Date lowerRangeDate = CoreApiServiceLocator.getDateTimeService().convertToDate(range.getLowerBoundValue());
+            MutableDateTime dateTime = new MutableDateTime(lowerRangeDate);
+            dateTime.setMillisOfDay(0);
+            return dateTime.toDateTime();
+        }
+        return null;
+    }
+
+    public static DateTime getUpperDateTimeBound(String dateRange) throws ParseException {
+        Range range = parseRange(dateRange);
+        if (range == null) {
+            throw new IllegalArgumentException("Failed to parse date range from given string: " + dateRange);
+        }
+        if (range.getUpperBoundValue() != null) {
+            java.util.Date upperRangeDate = CoreApiServiceLocator.getDateTimeService().convertToDate(range.getUpperBoundValue());
+            MutableDateTime dateTime = new MutableDateTime(upperRangeDate);
+            // set it to the last millisecond of the day
+            dateTime.setMillisOfDay((24 * 60 * 60 * 1000) - 1);
+            return dateTime.toDateTime();
+        }
+        return null;
+    }
+
+    public static Range parseRange(String rangeString) {
+        if (StringUtils.isBlank(rangeString)) {
+            throw new IllegalArgumentException("rangeString was null or blank");
+        }
+        Range range = new Range();
+        rangeString = rangeString.trim();
+        if (rangeString.startsWith(SearchOperator.LESS_THAN_EQUAL.op())) {
+            rangeString = StringUtils.remove(rangeString, SearchOperator.LESS_THAN_EQUAL.op()).trim();
+            range.setUpperBoundValue(rangeString);
+            range.setUpperBoundInclusive(true);
+        } else if (rangeString.startsWith(SearchOperator.LESS_THAN.op())) {
+            rangeString = StringUtils.remove(rangeString, SearchOperator.LESS_THAN.op()).trim();
+            range.setUpperBoundValue(rangeString);
+            range.setUpperBoundInclusive(false);
+        } else if (rangeString.startsWith(SearchOperator.GREATER_THAN_EQUAL.op())) {
+            rangeString = StringUtils.remove(rangeString, SearchOperator.GREATER_THAN_EQUAL.op()).trim();
+            range.setLowerBoundValue(rangeString);
+            range.setLowerBoundInclusive(true);
+        } else if (rangeString.startsWith(SearchOperator.GREATER_THAN.op())) {
+            rangeString = StringUtils.remove(rangeString, SearchOperator.GREATER_THAN.op()).trim();
+            range.setLowerBoundValue(rangeString);
+            range.setLowerBoundInclusive(false);
+        } else if (rangeString.contains(SearchOperator.BETWEEN_EXCLUSIVE_UPPER.op())) {
+            String[] rangeBounds = StringUtils.split(rangeString, SearchOperator.BETWEEN_EXCLUSIVE_UPPER.op());
+            range.setLowerBoundValue(rangeBounds[0]);
+            range.setLowerBoundInclusive(true);
+            range.setUpperBoundValue(rangeBounds[1]);
+            range.setUpperBoundInclusive(false);
+        } else if (rangeString.contains(SearchOperator.BETWEEN.op())) {
+            String[] rangeBounds = StringUtils.split(rangeString, SearchOperator.BETWEEN.op());
+            range.setLowerBoundValue(rangeBounds[0]);
+            range.setLowerBoundInclusive(true);
+            range.setUpperBoundValue(rangeBounds[1]);
+            range.setUpperBoundInclusive(true);
+        } else {
+            // if it has no range specification, return null
+            return null;
+        }
+        return range;
     }
 
     public static class SearchableAttributeConfiguration {

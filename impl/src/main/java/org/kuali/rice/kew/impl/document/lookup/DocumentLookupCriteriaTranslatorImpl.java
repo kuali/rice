@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.docsearch;
+package org.kuali.rice.kew.impl.document.lookup;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
@@ -23,23 +23,24 @@ import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.DocumentStatusCategory;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
 import org.kuali.rice.kew.api.document.lookup.RouteNodeLookupLogic;
+import org.kuali.rice.kew.docsearch.DocumentLookupInternalUtils;
 import org.kuali.rice.kew.util.KEWConstants;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
- * Helper class Used for building a Document Search criteria for the lookup
+ * Reference implementation of {@code DocumentLookupCriteriaTranslator}.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
-public class DocumentLookupCriteriaBuilder  {
+public class DocumentLookupCriteriaTranslatorImpl implements DocumentLookupCriteriaTranslator {
 
-    private static final Logger LOG = Logger.getLogger(DocumentLookupCriteriaBuilder.class);
+    private static final Logger LOG = Logger.getLogger(DocumentLookupCriteriaTranslatorImpl.class);
 
     private static final String DOCUMENT_STATUSES = "documentStatuses";
-    private static final String GROUP_VIEWER_NAMESPACE = "groupViewerNamespace";
-    private static final String GROUP_VIEWER_NAME = "groupViewerName";
     private static final String ROUTE_NODE_LOOKUP_LOGIC = "routeNodeLookupLogic";
 
     /**
@@ -68,7 +69,8 @@ public class DocumentLookupCriteriaBuilder  {
     private static final Set<String> DATE_RANGE_TRANSLATE_FIELD_NAMES_SET =
             new HashSet<String>(Arrays.asList(DATE_RANGE_TRANSLATE_FIELD_NAMES));
 
-    public static DocumentLookupCriteria.Builder translateFieldValues(Map<String, String> fieldValues) {
+    @Override
+    public DocumentLookupCriteria translate(Map<String, String> fieldValues) {
 
         DocumentLookupCriteria.Builder criteria = DocumentLookupCriteria.Builder.create();
         for (Map.Entry<String, String> field : fieldValues.entrySet()) {
@@ -107,12 +109,12 @@ public class DocumentLookupCriteriaBuilder  {
             }
         }
 
-        return criteria;
+        return criteria.build();
     }
 
-    protected static void applyDateRangeField(DocumentLookupCriteria.Builder criteria, String fieldName, String fieldValue) throws Exception {
-        DateTime lowerDateTime = DocSearchUtils.getLowerDateTimeBound(fieldValue);
-        DateTime upperDateTime = DocSearchUtils.getUpperDateTimeBound(fieldValue);
+    protected void applyDateRangeField(DocumentLookupCriteria.Builder criteria, String fieldName, String fieldValue) throws Exception {
+        DateTime lowerDateTime = DocumentLookupInternalUtils.getLowerDateTimeBound(fieldValue);
+        DateTime upperDateTime = DocumentLookupInternalUtils.getUpperDateTimeBound(fieldValue);
         if (lowerDateTime != null) {
             PropertyUtils.setNestedProperty(criteria, fieldName + "From", lowerDateTime);
         }
@@ -121,7 +123,7 @@ public class DocumentLookupCriteriaBuilder  {
         }
     }
 
-    protected static void applyDocumentAttribute(DocumentLookupCriteria.Builder criteria, String documentAttributeName, String attributeValue) {
+    protected void applyDocumentAttribute(DocumentLookupCriteria.Builder criteria, String documentAttributeName, String attributeValue) {
         criteria.addDocumentAttributeValue(documentAttributeName, attributeValue);
     }
 

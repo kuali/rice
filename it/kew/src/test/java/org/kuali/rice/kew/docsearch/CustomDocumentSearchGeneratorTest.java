@@ -27,11 +27,10 @@ import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
+import org.kuali.rice.kew.impl.document.lookup.DocumentLookupGeneratorImpl;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.util.KRADConstants;
 
 import static org.junit.Assert.assertEquals;
 
@@ -48,9 +47,9 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
 
     @Test public void testCustomDocumentSearchGeneratorUse() throws Exception {
     	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName("SearchDocType");
-    	assertEquals("The document search Generator class is incorrect.",StandardDocumentSearchGenerator.class,(ClassLoaderUtils.unwrapFromProxy(docType.getDocumentSearchGenerator())).getClass());
+    	assertEquals("The document search Generator class is incorrect.",DocumentLookupGeneratorImpl.class,(ClassLoaderUtils.unwrapFromProxy(docType.getDocumentSearchGenerator())).getClass());
     	docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName("SearchDocType_DefaultCustomProcessor");
-    	assertEquals("The document search Generator class is incorrect.",CustomDocumentSearchGenerator.class,(ClassLoaderUtils.unwrapFromProxy(docType.getDocumentSearchGenerator())).getClass());
+    	assertEquals("The document search Generator class is incorrect.",CustomDocumentLookupGeneratorImpl.class,(ClassLoaderUtils.unwrapFromProxy(docType.getDocumentSearchGenerator())).getClass());
     }
 
 	private DocumentType getValidDocumentType(String documentTypeFullName) {

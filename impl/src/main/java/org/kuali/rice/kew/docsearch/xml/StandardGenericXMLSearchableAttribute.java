@@ -38,7 +38,7 @@ import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.attribute.XMLAttributeUtils;
-import org.kuali.rice.kew.docsearch.DocSearchUtils;
+import org.kuali.rice.kew.docsearch.DocumentLookupInternalUtils;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.framework.document.lookup.SearchableAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
@@ -238,7 +238,8 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
 	}
 
 	private DocumentAttribute setupSearchableAttributeValue(String dataType, String key, String value) {
-		SearchableAttributeValue attValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(dataType);
+		SearchableAttributeValue attValue = DocumentLookupInternalUtils.getSearchableAttributeValueByDataTypeString(
+                dataType);
 		if (attValue == null) {
 			String errorMsg = "Cannot find a SearchableAttributeValue associated with the data type '" + dataType + "'";
 		    LOG.error("setupSearchableAttributeValue() " + errorMsg);
@@ -259,7 +260,8 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
     public List<RemotableAttributeField> getSearchFields(ExtensionDefinition extensionDefinition, String documentTypeName) {
 
         List<RemotableAttributeField> searchFields = new ArrayList<RemotableAttributeField>();
-        List<SearchableAttributeValue> searchableAttributeValues = DocSearchUtils.getSearchableAttributeValueObjectTypes();
+        List<SearchableAttributeValue> searchableAttributeValues = DocumentLookupInternalUtils
+                .getSearchableAttributeValueObjectTypes();
         NodeList fieldNodeList = getConfigXML(extensionDefinition).getElementsByTagName(FIELD_DEF_E);
         for (int i = 0; i < fieldNodeList.getLength(); i++) {
             Node field = fieldNodeList.item(i);
@@ -679,7 +681,8 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
         						fieldDataType = KEWConstants.SearchableAttributeConstants.DEFAULT_SEARCHABLE_ATTRIBUTE_TYPE_NAME;
         					}
         					// get the searchable attribute value by using the data type
-        					SearchableAttributeValue attributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(fieldDataType);
+        					SearchableAttributeValue attributeValue = DocumentLookupInternalUtils
+                                    .getSearchableAttributeValueByDataTypeString(fieldDataType);
         					if (attributeValue == null) {
         						String errorMsg = "Cannot find SearchableAttributeValue for field data type '" + fieldDataType + "'";
         						LOG.error("validateUserSearchInputs() " + errorMsg);

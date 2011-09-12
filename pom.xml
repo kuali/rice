@@ -844,12 +844,9 @@
   </build>
 
   <modules>
-<!--
     <module>db</module>
     <module>core</module>
--->
     <module>api</module>
-<!--
     <module>kim</module>
     <module>shareddata</module>
     <module>krad</module>
@@ -867,7 +864,6 @@
     <module>it</module>
     <module>client-contrib</module>
     <module>dist</module>
--->
   </modules>
 
   <repositories>

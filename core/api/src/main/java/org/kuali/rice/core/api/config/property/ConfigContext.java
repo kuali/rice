@@ -75,7 +75,7 @@ public class ConfigContext {
      * @param cl the classloader whose Config to return
      * @return the Config of a particular class loader
      */
-    private static Config getConfig(ClassLoader cl) {
+    public static Config getConfig(ClassLoader cl) {
         return CONFIGS.get(cl);
     }
 

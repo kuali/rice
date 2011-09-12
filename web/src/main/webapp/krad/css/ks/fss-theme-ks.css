@@ -6,16 +6,7 @@ For instance, 11px would equal (11 / 13) which equals 0.84615385em
 */
 
 /* General */
-a {
-	color:#3F7826;
-	font-weight:normal;
-	cursor: pointer;
-    text-decoration:none;
-}
-input {                 /* this was set as 1.2em in reset.css. Not sure why this is needed but it breaks in IE */
-    padding-left:0;
-    padding-right:0;
-}
+
 textarea{
     font-size:0.923077em;
     font-family: Arial, Helvetica, sans-serif;
@@ -24,13 +15,7 @@ textarea{
     font-family: Arial, Helvetica, sans-serif;
     font-size:0.923077em;
     color:#999;}
-a:hover {
-	text-decoration:underline;
-}
-table td, table th {
-	vertical-align:top;
-	text-align:left;
-}
+
 #testValidationGroup1_layout td, #testValidationGroup1_layout th {              /* not sure this style will be carried forward */
 	margin: 0;
 	padding: 0;
@@ -42,9 +27,6 @@ table td, table th {
 .summary {           /* fixing a pixel specification in kuali-stacked.css */
 	font-size:0.92307692em;     /* 12px divided by 13px */
     max-width: 400px;
-}
-input[type="radio"], input[type="checkbox"] {
-    margin:5px 5px 5px 0;
 }
 
 /* -------------------- Containers --------------------*/
@@ -63,43 +45,7 @@ input[type="radio"], input[type="checkbox"] {
 }
 /*  -------------------  Components  -------------------  */
 
-.button-primary {
-	border: 1px solid #62D255;
-	/*defines gradient background*/
-	background-image: -moz-linear-gradient(top, #99DE80, #62D255);
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #99DE80), color-stop(1, #62D255));
-    background-image: -o-linear-gradient(top,rgba(153,222,128,1),rgba(98,210,85,1));    /* be nice to Opera */
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#99DE80, endColorstr=#62D255);  /* IE7 and older */
-    -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#99DE80, EndColorStr=#62D255);  /*IE8 */
-    background:  linear-gradient(top, rgba(153,222,128,1) 0%, rgba(98,210,85,1) 100%);  /* for the future */
-	background-color:#73C561;
-	/* font styling */
-	color: #2A2A2A;
-	cursor:pointer;
-    border-radius:4px;font-weight: normal;
-    font-size:1.07692308em;   /* 14px divided by 13px */
-    padding: 0.6em 2em;
-   /*remove extra padding in IE*/
-   overflow: visible;
-   text-shadow: 0px 1px 0px #83d485;
-   filter: dropshadow(color=#83d485, offX=0, offY=1);
-   }
-.button-secondary1 {
-	border: 1px solid #62D255;
-	/*defines gradient background*/
-	background-image: -moz-linear-gradient(top, #99DE80, #62D255);
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #99DE80), color-stop(1, #62D255));
-    background-image: -o-linear-gradient(top,rgba(153,222,128,1),rgba(98,210,85,1)); /* be nice to Opera */
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#99DE80, endColorStr=#62D255 GradientType=0); /* IE 7 or earlier */
-    -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#99DE80, endColorStr=#62D255, GradientType=0); /* IE 8 */
-	background:  linear-gradient(top, rgba(153,222,128,1) 0%, rgba(98,210,85,1) 100%); /* for the future */
-	background-color:#73C561;
-    padding: 0.3em 1em;
-	color: #2A2A2A;
-	cursor:pointer;
-    border-radius:4px;
-}
-.button-secondary2 {
+.button-secondary2 {              /* not found in xml or JSP */
 	border:1px solid #3F7826;
 	background: rgb(255,255,255);
 	background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%);
@@ -114,7 +60,7 @@ input[type="radio"], input[type="checkbox"] {
 	cursor:pointer;
     border-radius:4px;
 }
-.button-secondary2:hover {
+.button-secondary2:hover {      /* not found in xml or JSP */
     background: rgb(153,153,153);
 	background: -moz-linear-gradient(top, rgba(153,153,153,1) 0%, rgba(51,51,51,1) 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(153,153,153,1)), color-stop(100%, rgba(51,51,51,1)));
@@ -126,22 +72,6 @@ input[type="radio"], input[type="checkbox"] {
 	color: #ffffff;
 	border: 1px solid #999;
     cursor:pointer;
-}
-
-.button-primary a, .button-primary a:link, .button-primary a:visited {
-	color: #eeeeee;
-}
-.button-primary:hover, .button-secondary1:hover {
-	border-color:#ABDEA5;
-	/*defines gradient background*/
-	background-image: -moz-linear-gradient(top, #06662a, #044d1f);
-    background-image:-o-linear-gradient(top, rgba(7,102,42,1) 0%, rgba(4,77,31,1) 100%); /* be nice to opera */
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #06662a), color-stop(1, #044d1f));
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#06662a, endColorstr=#044d1f, GradientType=0 );  /* ie 7 and older */
-    -ms-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#06662a, endColorstr=#044d1f, GradientType=0 ); /* ie8 */
-    background: linear-gradient(top, rgba(7,102,42,1) 0%, rgba(4,77,31,1) 100%);
-    color: #ffffff;
-	background-color:#060;
 }
 
 .dataTables_scrollBody thead tr th.sorting_asc, .dataTables_scrollBody thead tr th.sorting_desc, .dataTables_scrollBody thead tr th.sorting {
@@ -218,38 +148,13 @@ th.sorting label, th.sorting_asc label, th.sorting_desc label, th.sorting_disabl
 	padding: 0 12px 4px;
 }
 /* form attributes */
-    .constraint {
-	font-size:0.84615385em;    /* 11px divided by 13px */
-}
-:focus{
-	outline: 1px dotted #000;
-}
+
+
 input:focus, textarea:focus {
 	background: none repeat scroll 0 0 #ECFCE8;
     outline: none;
 }
-.field_attribute {
-    float:left;
-}
-.field_attribute .labelTop label {
-	margin: 5px 5px 0px 0px;  /* field top labels should not have left-margins  -David */
-}
-.field_attribute span {
-	clear:left;/*float:left;       removing for non-table display, but may possibly break elsewhere - David */
-    }
-.field_attribute input {
-/*float:left;        removing for non-table display. Not sure why we need to pull input from inline flow */
-    }
-.field-attribute .summary {
-	line-height: 1.125em;
-}
-.labelTop {
-	float:none;
-	display:block;
-}
-.labelTop label {
-	font-weight:bold;
-}
+
 .constraint {
 /*float:left;        removing for non-table display, but may possibly break elsewhere - David */
     }
@@ -257,67 +162,12 @@ input:focus, textarea:focus {
     /*
  * ErrorsField
 */
-.errorsField {
-	padding-left: 10px;
-	overflow: hidden;
- *zoom: 1;
-}
-.errorsFieldForContainer {
-	float: none;
-	padding-left: 10px;
-	display:inline-block;
-	zoom:1;
- *display:inline;
-}
+
 .errorMessages {
 	padding-left: 20px;
 	background: url("../../images/exclamation-red.png") no-repeat scroll left top transparent;
 }
-.warningMessages {
-	padding-left: 20px;
-	background: url("../../images/exclamation-diamond-frame.png") no-repeat scroll left top transparent;
-}
-.infoMessages {
-	padding-left: 20px;
-	background: url("../../images/information-frame.png") no-repeat scroll left top transparent;
-}
-.errorsFieldForContainer .errorMessages {
-	border: 1px solid red;
-	background-color: #FFE0E9;
-	margin-top: 3px;
-	margin-bottom: 3px;
-	padding-bottom: 5px;
-	padding-top: 5px;
-	padding-right: 10px;
-}
-.errorsFieldForContainer .warningMessages {
-	border: 1px solid goldenrod;
-	background-color: #F4E271;
-	margin-top: 3px;
-	margin-bottom: 3px;
-	padding-bottom: 5px;
-	padding-top: 5px;
-	padding-right: 10px;
-}
-.errorsFieldForContainer .infoMessages {
-	border: 1px solid #82CAFA;
-	background-color: #AFDCEC;
-	margin-top: 3px;
-	margin-bottom: 3px;
-	padding-bottom: 5px;
-	padding-top: 5px;
-	padding-right: 10px;
-}
-.errorsField ul {
-	list-style: none outside none;
-	margin: 0;
-}
-.errorsField li {
-	list-style: none outside none;
-	margin-left: 0;
-	padding: 1px 0;
-	line-height: 1.3em;
-}
+
 .errorsField .errorMessages {
 	color: #DF0000;
 	font-weight: bold;
@@ -337,24 +187,9 @@ label.clientError, a.clientError, label.serverError {
 li label.error {
 	display: inline !important;
 }
-.clearfix:after {
-	content: ".";
-	display: block;
-	height: 0;
-	clear: both;
-	visibility: hidden;
-}
+
 /* IE specific */
-    * html .clearfix {
-	height: 1%;
-}
-.boxLayoutHorizontalItem {
-	margin-right:25px;
-}
-.fieldContainerVerticalItem {
-	padding-bottom: 5px;
-	display: block;
-}
+
 /*
 Tab menu
 */
@@ -383,11 +218,6 @@ Tab menu
 	text-decoration: none;
 }
 
-
-.page-action h2 {
-	clear:left;
-}
-
 .navigation-parent-div {
 	margin-left: 225px;
 }
@@ -400,452 +230,42 @@ Tab menu
 	width: 219px;
 }
 
-.clientError img {
-	margin-left:10px;   /* adds spacing between tab label and the icon */
-}
 /*
 Basic Navigation Menu
 */
-ul.basic-navigation {
-	list-style: none outside none;
-	padding: 0;
-	margin-left: 25px;
-	font-size: .95em;
-}
-ul.basic-navigation li {
-	padding: 0;
-	border-bottom: 1px solid #bebebe;
-}
-ul.basic-navigation li.basic-element h3, ul.basic-navigation li.basic-element h2 {
-	border-top: 1px solid black;
-	color: black;
-	display: block;
-	margin: 0;
-	padding: 5px 10px;
-	font-weight: bold;
-	text-transform: uppercase;
-	font-size: .9em;
-}
-ul.basic-navigation li.basic-element a {
-	display: block;
-	padding: 5px 10px;
-}
-ul.basic-navigation li.basic-element a:hover, ul.basic-navigation li.basic-element a:focus {
-	background-image: -moz-linear-gradient(top, #07662a, #044d1f);
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #07662a), color-stop(1, #044d1f));
-    background-image: -o-linear-gradient(top, rgba(7,102,42,1), rgba(4,77,31,1)); /* be nice to opera */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#07662a, endColorStr=#044d1f); /* ie7 or earlier */
-	-ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#07662a, endColorStr=#044d1f); /* ie8 */
-    background: linear-gradient(top, rgba(7,102,42,1), rgba(4,77,31,1)); /* for the future */
-	background-color:#060;
-	color: white;
-	text-decoration: none;
-}
-ul.basic-navigation li.basic-element a.current, ul.basic-navigation li.basic-element a.current:hover {
-	background-color:#000;
-	color: white;
-}
 
-li.animated-element {
-	list-style: none outside none;
-}
 /*
 Navigation Slide Control
 */
 
-.slideLink {
-	padding-left: .5em;
-	font-size: .9em;
-	float: left;
-}
-.collapseLink {
-	float: right;
-	font-size: .9em;
-	padding-bottom: 5px;
-	color: #666;
-}
-#controlbtn.slideLink {
-	/*background:  url(../../images/icon_navCollapse.jpg) left no-repeat;  */
-	color: #666;
-}
-#controlbtn.closed {
-	/*background: url(../../images/icon_navExpand.jpg) right no-repeat;    */
-}
 /*
 Animated Navigation Menu
 */
-.animated-navigation h2.fl-font-serif {
-	font-family:arial, sans-serif; /* overrides the h2 to a sans-serif */
-}
-ul.animated-navigation {
-	list-style: none outside none;
-	padding: 0;
-	margin-top: 0px;
-}
-ul.animated-navigation li {
-	padding: 0;
-}
-ul.animated-navigation li.animated-element h3, ul.animated-navigation li.animated-element h2 {
-	color: #333333;
-	display: inline-block;
-	margin-bottom: 0;
-	padding: 0 20px 0 3px;
-	width: 170px;
-	font-weight: bold;
-	font-size: .92307692em;
-	font-family:arial, sans-serif;
-	text-transform:uppercase;
-	border-top: 2px solid #000;
-	border-bottom: 1px solid #bbb;
-}
 
 
-ul.animated-navigation li.animated-element a {
-	background-color: #fff;
-	display: inline-block;
-    height: 1%;
-	/*
-	Changing the padding here will require updating the script to correct return padding (pad_in)
-	*/
-    padding: 5px 20px 5px 3px;
-	width: 170px;
-	color: #3F7826;
-	text-decoration: none;
-	border-bottom: 1px solid #bbb;
-	font-size:.92307692em;
-}
-* html ul.animated-navigation li.animated-element a {
-    \width: 193px; /* for IE5 and IE6 in quirks mode */
-    w\idth: 170px; /* for IE6 in standards mode */
-  }
-ul.animated-navigation li.animated-element a:hover, ul.animated-navigation li.animated-element a:focus {
-	background-image: -moz-linear-gradient(top, #07662a, #044d1f);
-    background-image: -o-linear-gradient(top, rgba(7,102,42,1) 0%, rgba(4,77,31,1) 100%); /* be nice to opera */
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #07662a), color-stop(1, #044d1f));
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#07662a, endColorstr=#044d1f, GradientType=0 );   /* ie7 or older */
-    ms-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#07662a, endColorstr=#044d1f, GradientType=0 ); /* ie8 */
-	background: linear-gradient(top, rgba(7,102,42,1) 0%, rgba(4,77,31,1) 100%);
-	background-color:#060;
-	color: white;
-}
-ul.animated-navigation li.animated-element a.current, ul.animated-navigation li.animated-element a.current:hover {
-	background-color:#000;
-	background-image:none;
-	padding-left: 3px !important;
-	color: white;
-}
+
+
+
 
 /* Lightbox Styles */
-.view_header {          /* remove background image for lightbox headers */
-	background: none;
-}
-.view_header h1 {                     /* h1 style for lightboxes */
-	font-family:arial, sans-serif;
-}
+
 
 /* -------- JQUERY Styles ----------------- */
 
 /* Jquery Tab Styles */
-.ui-state-hover {
-   border: 1px solid #054ccf;
-   /*defines gradient background*/
-   background-image: -moz-linear-gradient(top, #ffffff, #c3d1f2);
-   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff), color-stop(1, #c3d1f2));
-   /*-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffffff', EndColorStr='#c3d1f2')";    */
-   filter:  progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#ffffff', endColorstr='#c3d1f2'); /* IE6 & IE7 */
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#ffffff', endColorstr='#c3d1f2')"; /* IE8 */
-   font-weight: normal;
-   color: #2c60e5;
-   text-shadow: none;
-   filter:none;
-   }
-.ui-state-hover a, .ui-state-hover a:hover {
-   color: #ffffff;
-   text-decoration: none;
-   }
-   .ui-state-disabled {
-   border: 1px solid #a6a6a6;
-   /*defines gradient background*/
-   background-image: -moz-linear-gradient(top, #ffffff, #dcdcdc);
-   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff), color-stop(1, #dcdcdc));
-   /*-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffffff', EndColorStr='#dcdcdc')";    */
-   filter:  progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#ffffff', endColorstr='#dcdcdc'); /* IE6 & IE7 */
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#ffffff', endColorstr='#dcdcdc')"; /* IE8 */
-   color:#686868;
-   background-color:#CCC;
-   text-shadow: none;
-   opacity: .75;
-   filter:Alpha(Opacity=75);
-   }
 
-   .ui-state-disabled2 {
-   border: 1px solid #a6a6a6;
-   /*defines gradient background*/
-   background-image: -moz-linear-gradient(top, #ffffff, #dcdcdc);
-   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff), color-stop(1, #dcdcdc));
-   /*-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffffff', EndColorStr='#dcdcdc')";        */
-   filter:  progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#ffffff', endColorstr='#dcdcdc'); /* IE6 & IE7 */
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#ffffff', endColorstr='#dcdcdc')"; /* IE8 */
-   color:#686868;
-   background-color:#CCC;
-   text-shadow: none;
-   opacity: .75;
-   filter:Alpha(Opacity=75);
-   }
-.ui-corner-all {
-   -moz-border-radius: 4px;
-   -webkit-border-radius: 4px;
-   border-radius: 4px;
-   }
-.ui-tabs li {
-	clear: none;
-}
-.ui-tabs .ui-tabs-nav li {
-	border-bottom: 1px solid #000 !important; /* over-writing the style that removes it in tabs.css */
-}
-.ui-tabs-nav li.ui-state-hover {
-	/*defines gradient background*/
-	background-image: -moz-linear-gradient(top, #07662a, #044d1f);
-    background-image: -o-linear-gradient(top, rgba(7,102,42,1) 0%, rgba(4,77,31,1) 100%); /* be nice to opera */
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #07662a), color-stop(1, #044d1f));
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#07662a, endColorstr=#044d1f, GradientType=0 );  /* ie 7 and older */
-    -ms-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#07662a, endColorstr=#044d1f, GradientType=0 ); /* ie8 */
-	background: linear-gradient(top, rgba(7,102,42,1) 0%, rgba(4,77,31,1) 100%);
-	color: #ffffff;
-	background-color:#060;
-}
-.button-primary .ui-state-hover, .button-secondary1 .ui-state-hover {
-    /*defines gradient background*/
-	background-image: -moz-linear-gradient(top, #07662a, #044d1f);
-    background-image: -o-linear-gradient(top, rgba(7,102,42,1) 0%, rgba(4,77,31,1) 100%); /* be nice to opera */
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #07662a), color-stop(1, #044d1f));
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#07662a, endColorstr=#044d1f, GradientType=0 );  /* ie 7 and older */
-    -ms-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#07662a, endColorstr=#044d1f, GradientType=0 ); /* ie8 */
-	background: linear-gradient(top, rgba(7,102,42,1) 0%, rgba(4,77,31,1) 100%);
-	color: #ffffff;
-	background-color:#060;
-}
-.ui-tabs-nav li.ui-state-hover a {
-	color: #ffffff;
-}
-.ui-tabs-nav li.ui-state-hover a:hover {                       /* this is hovering black in IE */
-    color: #ffffff;
-}
-.ui-tabs-nav li.ui-state-active a.clientError {
-    color:#ffffff;
-}
-.ui-tabs .ui-tabs-panel {
-    background: none repeat scroll 0 0 transparent;
-    border: 1px solid;
-    clear: left;
-    display: block;
-    padding: 1em 1.4em;
-}
-.tab-navigation-block li.ui-state-active {
-	border-bottom: 1px solid #F6F6F6;
-	background: none;
-}
+
+
 .tab-navigation-block li.ui-state-active a {
 	color: black !important;
 }
 /* jQuery Datepicker styles */
-#ui-datepicker-div {
-	background-color:#ECFCE8;
-	border:none;
-    width: 222px;
-}
-.ui-datepicker-trigger {            /* make sure the icons appear clickable*/
-	cursor:pointer;
-	background-image:url(../../images/cal_ks.gif);
-    margin-left:8px;
-}
-.ui-datepicker-header {
-	background-image:-moz-linear-gradient(top, #99DE80, #62D255);
-    background-image:-o-linear-gradient(top, rgba(153,222,128,1) 0%, rba(98,210,85,1) 100%);
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #99DE80), color-stop(1, #62D255));
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#99DE80, endColorstr=#62D255, GradientType=0 ); /* ie7 and earlier */
-    ms-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#99DE80, endColorstr=#62D255, GradientType=0 ); /* ie8 */
-	background: linear-gradient(top, rgba(153,222,128,1) 0%, rgba(98,210,85,1) 100%);
-	background-color:#81D96D;
-    padding: 3px 0;
-    width:100%;
-}
-.ui-datepicker-header .ui-state-hover {
-	background-image:none;
-	border: none;
-}
-.ui-datepicker-prev {
-	float:left;
-    margin-left:8px;
-    background:  url(../../images/sprite-icons.png) no-repeat scroll -23px 0 transparent;
-    width:25px;
-    overflow: hidden /* hide other sprite icons */
 
-}
-.ui-datepicker-prev:hover {
-    background: url(../../images/sprite-icons-hover.png) no-repeat scroll -23px 0 transparent;
-    text-decoration:none;
-}
-.ui-datepicker-prev .ui-icon {
-    color:transparent;
-    visibility:hidden;
-    background: none;
-}
-.ui-datepicker-next {
-	float:right;
-	background: url(../../images/sprite-icons.png) no-repeat scroll -48px -0px transparent;
-    width:25px;
-    overflow: hidden;     /* hide other sprite icons */
-}
-.ui-datepicker-next:hover {
-    background: url(../../images/sprite-icons.png) no-repeat scroll -48px -34px transparent;
-    text-decoration:none;
-}
-.ui-datepicker-next .ui-icon {
-	color:transparent;
-    visibility:hidden;
-    background: none;
-}
-.ui-datepicker-title select {
-	margin-right:5px;
-}
-.ui-datepicker-buttonpane {
-	background-color: #000000;
-	padding: 5px 0;
-	text-align: center;
-	-moz-border-radius: 0 0 4px 4px;
-	-webkit-border-radius: 0 0 4px 4px;
-	-o-border-radius: 0 0 4px 4px;
-	border-radius:0 0 4px 4px;
-    width:100%;
-}
-.ui-datepicker-buttonpane button {
-	margin-right: 5px;
-	margin-left:5px;
-}
-.ui-datepicker-calendar .ui-state-default {
-	background: none repeat scroll 0 0 transparent;
-	border: 1px solid #CCCCCC;
-	color: #3F7826;
-	text-decoration:none;
-	display: block;
-	font-size: 0.7em;
-	font-weight: normal;
-	height: 15px;
-	padding-bottom: 0;
-	padding-top: 3px;
-	width: 24px;
-	background-image:-moz-linear-gradient(top, #f9f9f9, #f8f8f8);
-    background-image:-o-linear-gradient(top, rgba(249,249,249,1) 0%, rgba(248,248,248,1) 100%);  /* be nice to opera */
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #f9f9f9), color-stop(1, #f8f8f8));
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorStr=#f9f9f9, endColorStr=#f8f8f8, GradientType=0 );  /* ie7 and earlier */
-    -ms-filter: progid:DXImageTransform.Microsoft.gradient( startColorStr=#f9f9f9, endColorStr=#f8f8f8, GradientType=0 ); /* ie8 */
-    background: linear-gradient(top, rgba(249,249,249,1) 0% rgba(248,248,248,1) 100%);
-	background-color:#f9f9f9;
-}
-.ui-datepicker-calendar .ui-state-hover {
-	background: none repeat scroll 0 0 transparent;
-	border: 1px solid #81D96D;
-	color: #000;
-	text-decoration:none;
-	display: block;
-	font-size: 0.7em;
-	font-weight: normal;
-	height: 15px;
-	padding-bottom: 0;
-	padding-top: 3px;
-	width: 24px;
-	background-image:-moz-linear-gradient(top, #99DE80, #62D255);
-    background-image:-o-linear-gradient(top, rgba(153,222,128,1) 0%, rgba(98,210,85,1) 100%);
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #99DE80), color-stop(1, #62D255));
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorStr=#99DE80, endColorStr=#62D255, GradientType=0 ); /* ie7 and older */
-    -ms-filter: progid:DXImageTransform.Microsoft.gradient( startColorStr=#99DE80, endColorStr=#62D255, GradientType=0 ); /* ie8 */
-	background: linear-gradient(top, rgba(153,222,128,1) 0%, rgba(98,210,85,1) 100%);    /* for the future */
-    background-color:#81D96D;
-}
-.ui-datepicker-other-month {
-	background-color: #ECFCE8;
-	background-image: -moz-linear-gradient(center top, #ECFCE8, #ECFCE8);
-    background-image: -o-linear-gradient(top, rgba(236,252,232,1) 0%, rgba(236,252,232,1) 100%); /* be nice to opera */
-    background-image: -webkit-gradient(liniear, left top, left bottom, color-stop(0, #ECFCE8), color-stop(1, #ECFCE8));
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#ECFCE8, endColorstr=#ECFCE8, GradientType=0 );  /* ie7 and older */
-    ms-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#ECFCE8, endColorstr=#ECFCE8, GradientType=0 ); /* ie8 */
-	background: linear-gradient(top, rgba(236,252,232,1) 0%, rgba(236,252,232,1) 100%);
-	border: none;
-	color: #686868;
-	opacity: 0.75;
-	text-shadow: none;
-}
-.ui-datepicker-group-first {
-    float:left;
-    margin-right:15px;
-}
-.ui-datepicker-calendar tbody {
-	border-bottom: none;
-}
 
-.ui-datepicker-trigger {
-	cursor: pointer;
-}
+
 
 /* jquery button styles      */
-.fl-theme-ks .ui-state-disabled {      /* good place where it would be good to have outer container to refer to */
-	border-color:#a6a6a6;
-	/*defines gradient background*/
-	background-image: -moz-linear-gradient(top, #ABDEA5, #C8EABC);
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ABDEA5), color-stop(1, #C8EABC));
-    background-image: -o-linear-gradient(top, rgba(171,222,165,1) 0%, rgba(200,234,188,1) 100%); /* be nice to opera */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorStr=#ABDEA5, endColorStr=#C8EABC, GradientType=0); /* IE7 or older */
-	-ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#ABDEA5, endColorStr=#C8EABC GradientType=0);  /* IE8 */
-    background:  linear-gradient(top, rgba(171,222,165,1) 0%, rgba(200,234,188,1) 100%);  /* for the future */
-	color:#7fa393;
-	background-color:#CCC;
-	text-shadow: none;
-}
-.fl-theme-ks .ui-state-disabled2 {       /* good place where it would be good to have outer container to refer to */
-	border-color:#a6a6a6;
-	/*defines gradient background*/
-	background-image: -moz-linear-gradient(top, #ffffff, #e2e2e2);
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff), color-stop(1, #e2e2e2));
-	background-image: -o-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(226,226,226,1) 100%); /* be nice to opera */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorStr=#ffffff, endColorStr=#e2e2e2, GradientType=0); /* IE7 or older */
-	-ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#ffffff, endColorStr=#e2e2e2 GradientType=0);  /* IE8 */
-    background:  linear-gradient(top, rgba(255,255,255,1) 0%, rgba(226,226,226,1) 100%);  /* for the future */
-	color:#666666;
-	background-color:#CCC;
-	text-shadow: none;
-}
 
-.ui-priority-secondary-sm {
-	-moz-border-radius:3px;
-	-o-border-radius: 3px;
-	-webkit-border-radius: 3px;
-	border-radius:3px;
-	background: rgb(255,255,255);
-	background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%);   */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255,255,255,1)), color-stop(100%, rgba(229,229,229,1)));
-	background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%);
-	background: -o-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#ffffff, endColorstr=#e5e5e5, GradientType=0 );   /* IE7 or older */
-    ms-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#ffffff, endColorstr=#e5e5e5, GradientType=0); /*IE8 */
-	background: linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%);
-	color: #3F7826;
-	border: 1px solid #999;
-    cursor:pointer;
-}
-.ui-priority-secondary-sm:hover {
-	background: rgb(153,153,153);
-	background: -moz-linear-gradient(top, rgba(153,153,153,1) 0%, rgba(51,51,51,1) 100%);   */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(153,153,153,1)), color-stop(100%, rgba(51,51,51,1)));
-	background: -webkit-linear-gradient(top, rgba(153,153,153,1) 0%, rgba(51,51,51,1) 100%);
-	background: -o-linear-gradient(top, rgba(153,153,153,1) 0%, rgba(51,51,51,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#999999, endColorstr=#333333, GradientType=0 );   /* IE7 or older */
-    ms-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#999999, endColorstr=#333333, GradientType=0); /*IE8 */
-	background: linear-gradient(top, rgba(153,153,153,1) 0%, rgba(51,51,51,1) 100%);
-	color: #ffffff;
-	border: 1px solid #999;
-    cursor:pointer;
-}
 
   /* states and images */
    .ui-icon {
@@ -874,65 +294,19 @@ ul.animated-navigation li.animated-element a.current, ul.animated-navigation li.
    .ui-icon-circle-check { background-position: 0 0px; }
    .ui-state-hover .ui-icon-circle-check { background-position: 0 0px; }
 
-   .ui-icon { width: 16px; height: 16px; background-image: url(images/ui-icons_0078ae_256x240.png); }
 
 
 /******************** NEWLY ADDED (after base.css and ks-theme.css created) ********************/
 
 /* Tab fixes */
-div.ui-tabs.ui-widget-content {
-    border: none;
-    border-radius: 0;
-}
-.ui-autocomplete-input {
-    background: url(../../images/icon_autosuggest.png) right no-repeat;
-    padding: 3px;
-    outline: none;
-}
-
-.ui-autocomplete .ui-menu-item {
-    color:#000;
-}
-ul.ui-autocomplete.ui-widget-content {
-    border: 1px solid #cccccc;
-    border-radius: 0;
-}
-.ui-autocomplete .ui-menu-item a {
-    color:#000;
-}
-.ui-autocomplete .ui-menu-item .ui-corner-all {
-    border-radius: 0;
-}
-.ui-autocomplete .ui-menu-item .ui-state-hover {
-    background:none;
-    background-color:#ECFCE8;
-    border-color: #3F7826;
-    color:#000;
-}
-
-/* collections styles */
-
-.collection-header + div > .fl-theme-ks {
-    padding: 5px 0 5px 10px;
-    background: url(../../images/pattern_dotted.png);
-    margin-bottom:15px;
-}
 
 
-.collection-header h3 {
-    border-bottom: 1px dotted #000;
-    font-family: arial, helvetica, sans-serif;
-    text-transform: uppercase;
-}
-
-.dataTables_length {
-    margin-bottom:5px;
-}
 
 
-.desc>label {
-    font-weight:bold;
-}
+
+
+
+
 
 
 

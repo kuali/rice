@@ -24,6 +24,20 @@ input:focus, textarea:focus {
 	font-family: georgia, serif;
 	font-size: 1.0em;
 }
+/* collections styles */
+
+.kr-collection-header + div > .fl-theme-ks {
+    padding: 5px 0 5px 10px;
+    background: url(../../images/pattern_dotted.png);
+    margin-bottom:15px;
+}
+
+
+.kr-collection-header h3 {
+    border-bottom: 1px dotted #000;
+    font-family: arial, helvetica, sans-serif;
+    text-transform: uppercase;
+}
 
 .kr-watermark {			/* was .watermark */ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
     font-family: Arial, Helvetica, sans-serif;
@@ -68,25 +82,11 @@ input:focus, textarea:focus {
 	font-weight: bold;
 }
 
-h2 img.kr-expand_collapse-buttons[alt="expand"] {		/* was h2 img.expand_collapse-buttons[alt="expand"] */ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
-	background: url(../../images/h2_expand-back-ks.png);
-	background-repeat:no-repeat;
+.kr-field-attribute .labelTop {
+    font-weight:bold;
 }
 
-h2 img.kr-expand_collapse-buttons[alt="collapse"] {		/* was h2 img.expand_collapse-buttons[alt="collapse"]*/ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
-	background: url(../../images/h2_collapse-back-ks.png);
-	background-repeat:no-repeat;
-}
 
-h3 img.kr-expand_collapse-buttons[alt="expand"] {		/* was h3 img.expand_collapse-buttons[alt="expand"]*/ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
-	background: url(../../images/h3_expand-back-ks.png);
-	background-repeat:no-repeat;
-}
-
-h3 img.kr-expand_collapse-buttons[alt="collapse"] {		/* was h3 img.expand_collapse-buttons[alt="collapse"]*/ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
-	background: url(../../images/h3_collapse-back-ks.png);
-	background-repeat:no-repeat;
-}
 h1.kr-header-object-title {			/* was h1.header-object-title*/  /* NOT FOUND in xml and/or jsp */
 	font-family:Arial, Helvetica, sans-serif;
 	font-size: 1.58em;
@@ -146,7 +146,8 @@ h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/ /* NOT FOUND in xml
 	/* font styling */
 	color: #2A2A2A;
 	cursor:pointer;
-    border-radius:4px;font-weight: normal;
+    border-radius:4px;
+    font-weight: normal;
     font-size:1.07692308em;   /* 14px divided by 13px */
     padding: 0.6em 2em;
    /*remove extra padding in IE*/
@@ -171,7 +172,7 @@ h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/ /* NOT FOUND in xml
 	font-size:0.92307692em;    /* 12px divided by 13px */
 	text-shadow: 0px 1px 0px #83d485;
 	filter: dropshadow(color=#83d485, offX=0, offY=1);
-
+    border-radius:4px;
 }
 
 .kr-button-secondary2 {				/* was .button-secondary2 */ /* NOT FOUND in xml and/or jsp */
@@ -229,13 +230,6 @@ h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/ /* NOT FOUND in xml
 }
 
 /* LAYOUTS - e.g.: kr-box-horizontal, ks-left, ks-right *****************/
-#kr-viewpage_div {				/* was #viewpage_div - I'm not sure this should be changed */ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
-	margin-left: 120px;
-	margin-right: 20px;
-}
-#kr-viewheader_div {			/* was #viewheader_div - I'm not sure this should be changed */ /* NOT renamed in xml and/or jsp, even though there's no impact on js functionality   */
-	margin: 10px 15px 30px 20px;
-}
 
 /* JQUERY - e.g.: ui-calendar *******************************************/
 .ui-state-hover {
@@ -286,12 +280,6 @@ h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/ /* NOT FOUND in xml
    }
 
 
-.ui-corner-all {
-   -moz-border-radius: 4px;
-   -webkit-border-radius: 4px;
-   border-radius: 4px;
-   }
-
 .ui-icon { width: 16px; height: 16px; background-image: url(images/ui-icons_0078ae_256x240.png); }
 
 /* Jquery Tab Styles */
@@ -313,6 +301,11 @@ h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/ /* NOT FOUND in xml
 	color: #ffffff;
 	background-color:#060;
 }
+
+div.ui-tabs.ui-widget-content {
+    border: none;
+    border-radius: 0;
+}
 .button-primary .ui-state-hover, .button-secondary1 .ui-state-hover {
     /*defines gradient background*/
 	background-image: -moz-linear-gradient(top, #07662a, #044d1f);
@@ -333,6 +326,9 @@ h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/ /* NOT FOUND in xml
 .ui-tabs-nav li.ui-state-active a.clientError {
     color:#ffffff;
 }
+.ui-tabs .ui-tabs-nav li {
+	border-bottom: 1px solid #000 !important; /* over-writing the style that removes it in tabs.css */
+}
 .ui-tabs .ui-tabs-panel {
     background: none repeat scroll 0 0 transparent;
     border: 1px solid;
@@ -347,7 +343,6 @@ h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/ /* NOT FOUND in xml
     width: 222px;
 }
 .ui-datepicker-trigger {            /* make sure the icons appear clickable*/
-	cursor:pointer;
 	background-image:url(../../images/cal_ks.gif);
     margin-left:8px;
 }
@@ -471,6 +466,63 @@ h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/ /* NOT FOUND in xml
 .ui-datepicker-calendar tbody {
 	border-bottom: none;
 }
+h2 img.expand_collapse-buttons[alt="expand"] {		/* was h2 img.expand_collapse-buttons[alt="expand"] */ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
+	background: url(../../images/h2_expand-back-ks.png);
+	background-repeat:no-repeat;
+}
+
+h2 img.expand_collapse-buttons[alt="collapse"] {		/* was h2 img.expand_collapse-buttons[alt="collapse"]*/ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
+	background: url(../../images/h2_collapse-back-ks.png);
+	background-repeat:no-repeat;
+}
+
+h3 img.expand_collapse-buttons[alt="expand"] {		/* was h3 img.expand_collapse-buttons[alt="expand"]*/ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
+	background: url(../../images/h3_expand-back-ks.png);
+	background-repeat:no-repeat;
+}
+
+h3 img.expand_collapse-buttons[alt="collapse"] {		/* was h3 img.expand_collapse-buttons[alt="collapse"]*/ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
+	background: url(../../images/h3_collapse-back-ks.png);
+	background-repeat:no-repeat;
+}
+#viewpage_div {				/* was #viewpage_div - I'm not sure this should be changed */ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
+	margin-left: 120px;
+	margin-right: 20px;
+}
+#viewheader_div {			/* was #viewheader_div - I'm not sure this should be changed */ /* NOT renamed in xml and/or jsp, even though there's no impact on js functionality   */
+	margin: 10px 15px 30px 20px;
+}
+.desc > label {
+    font-weight:bold;
+}
+
+/* autocomplete */
+.ui-autocomplete-input {
+    background: url(../../images/icon_autosuggest.png) right no-repeat;
+    padding: 3px;
+    outline: none;
+}
+
+.ui-autocomplete .ui-menu-item {
+    color:#000;
+}
+ul.ui-autocomplete.ui-widget-content {
+    border: 1px solid #cccccc;
+    border-radius: 0;
+}
+.ui-autocomplete .ui-menu-item a {
+    color:#000;
+}
+.ui-autocomplete .ui-menu-item .ui-corner-all {
+    border-radius: 0;
+}
+.ui-autocomplete .ui-menu-item .ui-state-hover {
+    background:none;
+    background-color:#ECFCE8;
+    border-color: #3F7826;
+    color:#000;
+}
+
 
 /*jquery buttons */
 /* jquery button styles      */
@@ -538,12 +590,16 @@ h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/ /* NOT FOUND in xml
 .dataTables_info {
 	margin-top:5px;
 }
+.dataTables_length {
+    margin-bottom:5px;
+}
 th.sorting_asc, th.sorting_desc {
 	background-color:transparent;
 }
 .datatable .field_attribute {
     float:none;
 }
+
 .sorting_asc {
     background-image: url(../../images/sort_asc.png), url(../../images/pattern_dotted.png); /* multiple background images */
     background-position: center right;
@@ -678,6 +734,7 @@ ul.animated-navigation li {
 	padding: 0;
 }
 ul.animated-navigation li.animated-element h3, ul.animated-navigation li.animated-element h2 {
+	color: #333333;
 	display: inline-block;
 	margin-bottom: 0;
 	padding: 0 20px 0 3px;
@@ -686,22 +743,36 @@ ul.animated-navigation li.animated-element h3, ul.animated-navigation li.animate
 	font-size: .92307692em;
 	font-family:arial, sans-serif;
 	text-transform:uppercase;
+	border-top: 2px solid #000;
+	border-bottom: 1px solid #bbb;
 }
 ul.animated-navigation li.animated-element a {
+	background-color: #fff;
 	display: inline-block;
     height: 1%;
+	/*
+	Changing the padding here will require updating the script to correct return padding (pad_in)
+	*/
     padding: 5px 20px 5px 3px;
+	width: 170px;
+	color: #3F7826;
 	text-decoration: none;
+	border-bottom: 1px solid #bbb;
 	font-size:.92307692em;
-    border: none;
 }
 * html ul.animated-navigation li.animated-element a {
     \width: 193px; /* for IE5 and IE6 in quirks mode */
     w\idth: 170px; /* for IE6 in standards mode */
   }
 ul.animated-navigation li.animated-element a:hover, ul.animated-navigation li.animated-element a:focus {
-    background: none repeat scroll 0 0 #889606;
-    color: white;
+	background-image: -moz-linear-gradient(top, #07662a, #044d1f);
+    background-image: -o-linear-gradient(top, rgba(7,102,42,1) 0%, rgba(4,77,31,1) 100%); /* be nice to opera */
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #07662a), color-stop(1, #044d1f));
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#07662a, endColorstr=#044d1f, GradientType=0 );   /* ie7 or older */
+    ms-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#07662a, endColorstr=#044d1f, GradientType=0 ); /* ie8 */
+	background: linear-gradient(top, rgba(7,102,42,1) 0%, rgba(4,77,31,1) 100%);
+	background-color:#060;
+	color: white;
 }
 ul.animated-navigation li.animated-element a.current {
 	background-color:#636D05;
@@ -742,6 +813,7 @@ ul.animated-navigation li.animated-element a {
 	background-color: #fff;
 	width: 170px;
 	color: #3F7826;
+    border: none;
 	border-bottom: 1px solid #bbb;
 }
 ul.animated-navigation li.animated-element a:hover, ul.animated-navigation li.animated-element a:focus {

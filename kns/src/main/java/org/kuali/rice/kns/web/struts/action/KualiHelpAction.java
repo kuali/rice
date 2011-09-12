@@ -402,7 +402,20 @@ public class KualiHelpAction extends KualiAction {
      */
     public ActionForward getLookupHelpText(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	KualiHelpForm helpForm = (KualiHelpForm) form;
-    	
+
+        // handle doc search custom help urls
+    	if (!StringUtils.isEmpty(helpForm.getSearchDocumentTypeName())) {
+    	    DocumentType docType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(helpForm.getSearchDocumentTypeName());
+    	    if (!StringUtils.isEmpty(docType.getDocSearchHelpUrl())) {
+    	        String docSearchHelpUrl = ConfigContext.getCurrentContextConfig().getProperty("externalizable.help.url") + docType.getDocSearchHelpUrl();
+
+    	        if ( StringUtils.isNotBlank(docSearchHelpUrl) ) {
+    	            response.sendRedirect(docSearchHelpUrl);
+    	            return null;
+    	        }
+    	    }
+    	}
+
     	final String lookupBusinessObjectClassName = helpForm.getLookupBusinessObjectClassName();
     	if (!StringUtils.isBlank(lookupBusinessObjectClassName)) {
     		final DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();
@@ -423,18 +436,6 @@ public class KualiHelpAction extends KualiAction {
     				return null;
     			}
     		}
-    	}
-    	// handle doc search custom help urls
-    	if (!StringUtils.isEmpty(helpForm.getSearchDocumentTypeName())) {
-    	    DocumentType docType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(helpForm.getSearchDocumentTypeName());
-    	    if (!StringUtils.isEmpty(docType.getDocSearchHelpUrl())) {
-    	        String docSearchHelpUrl = ConfigContext.getCurrentContextConfig().getProperty("externalizable.help.url") + docType.getDocSearchHelpUrl();
-
-    	        if ( StringUtils.isNotBlank(docSearchHelpUrl) ) {
-    	            response.sendRedirect(docSearchHelpUrl);
-    	            return null;
-    	        }
-    	    }
     	}
     	
     	// still here?  guess we're defaulting...

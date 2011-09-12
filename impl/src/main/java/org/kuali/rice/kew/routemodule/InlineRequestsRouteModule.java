@@ -131,6 +131,7 @@ public class InlineRequestsRouteModule extends FlexRMAdapter {
         ActionRequestFactory arf = new ActionRequestFactory(context.getDocument(), currentNode);
         // this rule is only used to obtain description, forceAction flag, and the rulebasevalues id, which may be null
         RuleBaseValues fakeRule = new RuleBaseValues();
+        fakeRule.setName("fakeRule");
         fakeRule.setActive(Boolean.TRUE);
         fakeRule.setCurrentInd(Boolean.TRUE);
         fakeRule.setDescription("a fake rule");

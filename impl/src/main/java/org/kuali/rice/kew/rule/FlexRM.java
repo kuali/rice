@@ -31,8 +31,6 @@ import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
-
-import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.api.rule.RuleTemplate;
 import org.kuali.rice.kew.api.rule.RuleTemplateAttribute;
 import org.kuali.rice.kew.engine.RouteContext;
@@ -42,7 +40,6 @@ import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.rule.service.RuleDelegationService;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -399,12 +396,12 @@ public class FlexRM {
 		}
 		Recipient recipient;
 		if (resp.isUsingPrincipal()) {
-	    recipient = new KimPrincipalRecipient(resp.getPrincipalId());
-	} else if (resp.isUsingGroup()) {
-	    recipient = new KimGroupRecipient(resp.getGroupId());
-		} else {
-		throw new RiceRuntimeException("Illegal rule responsibility type encountered");
-		}
+	        recipient = new KimPrincipalRecipient(resp.getPrincipalId());
+        } else if (resp.isUsingGroup()) {
+            recipient = new KimGroupRecipient(resp.getGroupId());
+        } else {
+            throw new RiceRuntimeException("Illegal rule responsibility type encountered");
+        }
 		ActionRequestValue actionRequest;
 		if (parentRequest == null) {
 			actionRequest = arFactory.addRootActionRequest(resp.getActionRequestedCd(),

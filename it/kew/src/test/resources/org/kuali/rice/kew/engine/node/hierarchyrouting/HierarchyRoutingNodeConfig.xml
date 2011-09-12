@@ -71,7 +71,7 @@
                 if (typeState == null)
                     throw new RuntimeException("No type state specified")
 
-                RuleResponsibility responsibility = new RuleResponsibility()
+                org.kuali.rice.kew.api.rule.RuleResponsibility.Builder responsibility = org.kuali.rice.kew.api.rule.RuleResponsibility.Builder.create()
                 responsibility.setResponsibilityId(KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID)
                 responsibility.setActionRequestedCd("A")
                 String recipient = recipState.getValue()
@@ -82,19 +82,21 @@
                         throw new RuntimeException("Could not locate principal for given network id: " + recipient);
                     }
                     println "Generating principal responsibility: " + recipient
-                    responsibility.setRuleResponsibilityName(principal.getPrincipalId())
-                    responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID)
+                    responsibility.setPrincipalId(principal.getPrincipalId())
+                    responsibility.setUsingPrincipal(true)
+                    //responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID)
                 } else {
                 	Group group = KimApiServiceLocator.getIdentityManagementService().getGroupByName("KUALI", recipient);
                     if (group == null) {
                         throw new RuntimeException("Could not locate group: " + recipient);
                     }
                     println "Generating group responsibility: " + recipient
-                    responsibility.setRuleResponsibilityName(group.getGroupId());
-                    responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKGROUP_ID)
+                    responsibility.setGroupID(group.getGroupId());
+                    responsibility.setUsingGroup(true);
+                    //responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKGROUP_ID)
                 }
 
-                return new RuleExpressionResult(rule, true, responsibility)
+                return new RuleExpressionResult(rule, true, responsibility.build())
             </expression>
             <forceAction>true</forceAction>
             <responsibilities>

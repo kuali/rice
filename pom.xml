@@ -470,10 +470,20 @@
               <id>gmaven-generate-stubs</id>
               <goals>
                 <goal>generateStubs</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>gmaven-compile-stubs</id>
+              <goals>
                 <goal>compile</goal>
+              </goals>
+            </execution>
                 <!-- test stubs aren't needed now since we are not creating
                   groovy test code for reference in java test code -->
                 <!--<goal>generateTestStubs</goal> -->
+            <execution>
+              <id>gmaven-test-compile-stubs</id>
+              <goals>
                 <goal>testCompile</goal>
               </goals>
             </execution>

@@ -72,8 +72,11 @@ public class ConfigContext {
     }
 
     /**
+     * Returns the Config which is bound to the given class loader.  If no configuration is bound to the given class
+     * loader this method will return null;
+     *
      * @param cl the classloader whose Config to return
-     * @return the Config of a particular class loader
+     * @return the Config of a particular class loader, or null if no config is bound to the given class loader
      */
     public static Config getConfig(ClassLoader cl) {
         return CONFIGS.get(cl);

@@ -298,7 +298,7 @@ function occursBefore(name1, name2){
  */
 function checkDirty(event){
 	var validateDirty = jq("[name='validateDirty']").val()
-	var dirty = jq(".field_attribute").find("input.dirty")
+	var dirty = jq(".kr-field-attribute").find("input.dirty")
 
 	if (validateDirty == "true" && dirty.length > 0)
 	{

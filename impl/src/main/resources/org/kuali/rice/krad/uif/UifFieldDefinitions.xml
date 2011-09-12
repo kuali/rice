@@ -30,7 +30,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="AttributeField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.AttributeField" parent="Field" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/attributeField.jsp"/>
       <property name="styleClasses" value="kr-field-attribute"/>
-	    <property name="errorsField">
+	    <property name="kr-errorsField">
         <bean parent="ErrorsField"/>
       </property>
       <property name="bindingInfo">
@@ -82,7 +82,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="ErrorsField" parent="ErrorsField-parentBean"/>
   <bean id="ErrorsField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.ErrorsField" scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/field/errorsField.jsp"/>
-    <property name="styleClasses" value="errorsField"/>
+    <property name="styleClasses" value="kr-errorsField"/>
     <property name="displayErrorTitle" value="false"/>
     <property name="displayWarningTitle" value="false"/>
     <property name="displayInfoTitle" value="false"/>

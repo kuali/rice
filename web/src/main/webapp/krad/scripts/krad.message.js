@@ -108,25 +108,25 @@ function applyErrorColors(errorDivId, errorNum, warningNum, infoNum, clientSide)
 
             if (highlightLine.length > 0) {
                 if (errorNum && !clientSide) {
-                    highlightLine.addClass("serverError");
-                    label.addClass("serverError");
+                    highlightLine.addClass("kr-serverError");
+                    label.addClass("kr-serverError");
                 }
                 else if (errorNum) {
-                    highlightLine.addClass("clientError");
-                    label.addClass("clientError");
+                    highlightLine.addClass("kr-clientError");
+                    label.addClass("kr-clientError");
                 }
                 else if (warningNum) {
-                    highlightLine.addClass("warning");
-                    label.addClass("warning");
+                    highlightLine.addClass("kr-warning");
+                    label.addClass("kr-warning");
                 }
                 else if (infoNum) {
-                    highlightLine.addClass("information");
-                    label.addClass("information");
+                    highlightLine.addClass("kr-information");
+                    label.addClass("kr-information");
                 }
                 else {
                     //we are only removing errors client side - no knowledge of warnings/infos
-                    if (div.parent().hasClass("errorsField")) {
-                        var error_ul = div.parent().find(".errorMessages").find("ul.errorLines");
+                    if (div.parent().hasClass("kr-errorsField")) {
+                        var error_ul = div.parent().find(".kr-errorMessages").find("ul.errorLines");
                         var moreErrors = false;
                         error_ul.each(function() {
                             jq(this).children().each(function() {
@@ -140,14 +140,14 @@ function applyErrorColors(errorDivId, errorNum, warningNum, infoNum, clientSide)
                             }
                         });
 
-                        label.removeClass("clientError");
+                        label.removeClass("kr-clientError");
                         if (!moreErrors) {
-                            highlightLine.removeClass("clientError");
+                            highlightLine.removeClass("kr-clientError");
                         }
                     }
                     else {
-                        highlightLine.removeClass("clientError");
-                        label.removeClass("clientError");
+                        highlightLine.removeClass("kr-clientError");
+                        label.removeClass("kr-clientError");
                     }
                 }
             }
@@ -166,7 +166,7 @@ function applyErrorColors(errorDivId, errorNum, warningNum, infoNum, clientSide)
                     hasErrors = true;
                 }
                 else {
-                    var error_li = tabDiv.find(".errorMessages").find("li");
+                    var error_li = tabDiv.find(".kr-errorMessages").find("li");
                     error_li.each(function() {
                         if (jq(this).css("display") != "none") {
                             hasErrors = true;
@@ -175,13 +175,13 @@ function applyErrorColors(errorDivId, errorNum, warningNum, infoNum, clientSide)
                 }
 
                 if (hasErrors) {
-                    tabAnchor.addClass("clientError");
+                    tabAnchor.addClass("kr-clientError");
                     if (errorIcon.length == 0) {
                         tabAnchor.append("<img id='" + tabId + "_errorIcon' alt='error' src='" + getConfigParam("kradImageLocation") + "'errormark.gif'>");
                     }
                 }
                 else if (!hasErrors) {
-                    tabAnchor.removeClass("clientError");
+                    tabAnchor.removeClass("kr-clientError");
                     errorIcon.remove();
                 }
             }

@@ -31,7 +31,7 @@ function setupValidator(){
 		var validateDirty = jq("[name='validateDirty']").val();
 		if (validateDirty == "true")
 		{
-			var dirty = jq(".field_attribute").find("input.dirty");
+			var dirty = jq(".kr-field-attribute").find("input.dirty");
 			//methodToCall check is needed to skip from normal way of unloading (cancel,save,close)
 			var methodToCall = jq("[name='methodToCall']").val();
 			if (dirty.length > 0 && methodToCall == null)
@@ -71,7 +71,7 @@ function setupValidator(){
 			showFieldIcon(getAttributeId(element.id, element.type) + "_errors_div", 0);
 		},
 		errorPlacement: function(error, element) {
-			var id = getAttributeId(element.attr('id'), element.attr('type'));
+			var id = getAttributeId(element.attr('id'), element[0].type);
 			//check to see if the option to use labels is on
 			if (!jq("#" + id + "_errors_div").hasClass("noLabels")) {
 				var label = getLabel(id);
@@ -208,7 +208,7 @@ jQuery.fn.dataTableExt.afnSortData['dom-text'] = function  ( oSettings, iColumn 
 		if(input.length != 0){
 			aData.push( input.val() );	
 		}else{
-			var input1 = jq(this).find('.field_attribute');
+			var input1 = jq(this).find('.kr-field-attribute');
 			if(input1.length != 0){
 				aData.push(jq.trim(input1.text()));
 			}else{
@@ -229,7 +229,7 @@ jQuery.fn.dataTableExt.afnSortData['dom-select'] = function  ( oSettings, iColum
 		if(selected.length != 0){
 			aData.push( selected.text() );	
 		}else{
-			var input1 = jq(this).find('.field_attribute');
+			var input1 = jq(this).find('.kr-field-attribute');
 			if(input1.length != 0){
 				aData.push(jq.trim(input1.text()));
 			}else{
@@ -257,7 +257,7 @@ jQuery.fn.dataTableExt.afnSortData['dom-checkbox'] = function  ( oSettings, iCol
 			}
 			aData.push( str );
 		}else{
-			var input1 = jq(this).find('.field_attribute');
+			var input1 = jq(this).find('.kr-field-attribute');
 			if(input1.length != 0){
 				aData.push(jq.trim(input1.text()));
 			}else{
@@ -286,7 +286,7 @@ jQuery.fn.dataTableExt.afnSortData['dom-radio'] = function  ( oSettings, iColumn
 			}
 			aData.push( value );
 		}else{
-			var input1 = jq(this).find('.field_attribute');
+			var input1 = jq(this).find('.kr-field-attribute');
 			if(input1.length != 0){
 				aData.push(jq.trim(input1.text()));
 			}else{

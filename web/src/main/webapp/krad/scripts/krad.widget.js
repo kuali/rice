@@ -29,7 +29,7 @@ function setPageBreadcrumb(){
 		jq("#breadcrumbs").find("#page_breadcrumb").remove();
 		var bcSet = false;
 		if(pageTitle){
-			jq("#breadcrumbs").append("<li id='page_breadcrumb'><span role='presentation'>&raquo;</span> <span class='current'>" + pageTitle + "</span></li>");
+			jq("#breadcrumbs").append("<li id='page_breadcrumb'><span role='presentation'>&raquo;</span> <span class='kr-current'>" + pageTitle + "</span></li>");
 			jq("#current_breadcrumb_span").hide();
             if(jq("#current_breadcrumb_span").parent("li").length){
                 jq("#current_breadcrumb_span").unwrap();
@@ -42,7 +42,7 @@ function setPageBreadcrumb(){
 		else if(pageId){
 			pageTitle = jq("a[name='"+ pageId + "']").text();
 			if(pageTitle){
-				jq("#breadcrumbs").append("<li id='page_breadcrumb'><span role='presentation'>&raquo;</span> <span class='current'>" + pageTitle + "</span></li>");
+				jq("#breadcrumbs").append("<li id='page_breadcrumb'><span role='presentation'>&raquo;</span> <span class='kr-current'>" + pageTitle + "</span></li>");
 				jq("#current_breadcrumb_span").hide();
                 if(jq("#current_breadcrumb_span").parent("li").length){
                     jq("#current_breadcrumb_span").unwrap();

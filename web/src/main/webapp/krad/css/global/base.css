@@ -293,7 +293,7 @@ li label.kr-error {				/* was li label.error *//* NOT renamed in xml and/or jsp,
 .tab-navigation-block li.ui-state-active a {
 	color: black !important;
 }
-.clientError img {
+.kr-clientError img {
 	margin-left:10px;   /* adds spacing between tab label and the icon */
 }
 .ui-tabs li {

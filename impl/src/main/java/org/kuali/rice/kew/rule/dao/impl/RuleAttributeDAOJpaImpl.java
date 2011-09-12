@@ -50,7 +50,7 @@ public class RuleAttributeDAOJpaImpl implements RuleAttributeDAO {
 	}
 
 	public void save(RuleAttribute ruleAttribute) {
-        if (ruleAttribute.getRuleAttributeId() == null) {
+        if (ruleAttribute.getId() == null) {
             entityManager.persist(ruleAttribute);
         } else {
             OrmUtils.merge(entityManager, ruleAttribute);
@@ -72,8 +72,8 @@ public class RuleAttributeDAOJpaImpl implements RuleAttributeDAO {
             crit.rawJpql("UPPER(RULE_ATTRIB_NM) like '" + ruleAttribute.getName().toUpperCase() + "'");
         }
 
-        if (ruleAttribute.getClassName() != null) {
-            crit.rawJpql("UPPER(RULE_ATTRIB_CLS_NM) like '" + ruleAttribute.getClassName().toUpperCase() + "'");
+        if (ruleAttribute.getResourceDescriptor() != null) {
+            crit.rawJpql("UPPER(RULE_ATTRIB_CLS_NM) like '" + ruleAttribute.getResourceDescriptor().toUpperCase() + "'");
         }
         if (ruleAttribute.getType() != null) {
             crit.rawJpql("UPPER(RULE_ATTRIB_TYP) like '" + ruleAttribute.getType().toUpperCase() + "'");

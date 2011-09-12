@@ -15,23 +15,21 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.apache.commons.lang.StringUtils;
+import org.junit.Test;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.kew.export.KewExportDataSet;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
+import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.test.BaselineTestCase;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-import org.junit.Test;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.kew.export.KewExportDataSet;
-import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.test.BaselineTestCase;
+import static org.junit.Assert.*;
 
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class RuleAttributeXmlExporterTest extends XmlExporterTestCase {
@@ -73,7 +71,7 @@ public class RuleAttributeXmlExporterTest extends XmlExporterTestCase {
     
     private void assertRuleAttributeExport(RuleAttribute oldRuleAttribute, RuleAttribute newRuleAttribute) {
         // ids should be the same because we don't version rule attributes, but thier version number should be different
-        assertEquals("Ids should be the same.", oldRuleAttribute.getRuleAttributeId(), newRuleAttribute.getRuleAttributeId());
+        assertEquals("Ids should be the same.", oldRuleAttribute.getId(), newRuleAttribute.getId());
         assertFalse("Version numbers should be different.", oldRuleAttribute.getVersionNumber().equals(newRuleAttribute.getVersionNumber()));
         assertEquals(oldRuleAttribute.getDescription(), newRuleAttribute.getDescription());
         assertEquals(oldRuleAttribute.getName(), newRuleAttribute.getName());
@@ -86,10 +84,10 @@ public class RuleAttributeXmlExporterTest extends XmlExporterTestCase {
     private void assertRuleTemplateAttributes(List oldRuleTemplateAttributes, List newRuleTemplateAttributes) {
         assertEquals(oldRuleTemplateAttributes.size(), newRuleTemplateAttributes.size());
         for (Iterator iterator = oldRuleTemplateAttributes.iterator(); iterator.hasNext();) {
-            RuleTemplateAttribute oldAttribute = (RuleTemplateAttribute) iterator.next();
+            RuleTemplateAttributeBo oldAttribute = (RuleTemplateAttributeBo) iterator.next();
             boolean foundAttribute = false;
             for (Iterator iterator2 = oldRuleTemplateAttributes.iterator(); iterator2.hasNext();) {
-                RuleTemplateAttribute newAttribute = (RuleTemplateAttribute) iterator2.next();
+                RuleTemplateAttributeBo newAttribute = (RuleTemplateAttributeBo) iterator2.next();
                 if (oldAttribute.getRuleAttribute().getName().equals(newAttribute.getRuleAttribute().getName())) {
                     assertEquals(oldAttribute.getRequired(), newAttribute.getRequired());
                     foundAttribute = true;

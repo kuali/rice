@@ -69,11 +69,11 @@ public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
 	private void initializeBusinessObjects(MaintenanceDocument document) {
 		RuleDelegation oldRuleDelegation = getOldRuleDelegation(document);
 		RuleDelegation newRuleDelegation = getNewRuleDelegation(document);
-		if (oldRuleDelegation.getDelegationRuleBaseValues() == null) {
-			oldRuleDelegation.setDelegationRuleBaseValues(new RuleBaseValues());
+		if (oldRuleDelegation.getDelegationRule() == null) {
+			oldRuleDelegation.setDelegationRule(new RuleBaseValues());
 		}
-		if (newRuleDelegation.getDelegationRuleBaseValues() == null) {
-			newRuleDelegation.setDelegationRuleBaseValues(new RuleBaseValues());
+		if (newRuleDelegation.getDelegationRule() == null) {
+			newRuleDelegation.setDelegationRule(new RuleBaseValues());
 		}
 	}
 	
@@ -113,7 +113,7 @@ public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
 			throw new RiceRuntimeException("Cannot edit a non-current version of a rule.");
 		}
 		WebRuleUtils.populateForCopyOrEdit(getOldRule(document), getNewRule(document));
-		getNewRule(document).setPreviousVersionId(getOldRule(document).getRuleBaseValuesId()); 
+		getNewRule(document).setPreviousVersionId(getOldRule(document).getId());
 		getNewRule(document).setDocumentId(document.getDocumentHeader().getDocumentNumber());
 		super.processAfterEdit(document, parameters);
 	}
@@ -121,7 +121,7 @@ public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
     
 	@Override
 	public List<MaintenanceLock> generateMaintenanceLocks() {
-		if (getThisRule().getRuleBaseValuesId() == null) {
+		if (getThisRule().getId() == null) {
 			return Collections.emptyList();
 		}
 		return super.generateMaintenanceLocks();
@@ -152,15 +152,15 @@ public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
 	}
 
 	protected RuleBaseValues getNewRule(MaintenanceDocument document) {
-		return getNewRuleDelegation(document).getDelegationRuleBaseValues();
+		return getNewRuleDelegation(document).getDelegationRule();
 	}
 
 	protected RuleBaseValues getOldRule(MaintenanceDocument document) {
-		return getOldRuleDelegation(document).getDelegationRuleBaseValues();
+		return getOldRuleDelegation(document).getDelegationRule();
 	}
 
 	protected RuleBaseValues getThisRule() {
-		return getThisRuleDelegation().getDelegationRuleBaseValues();
+		return getThisRuleDelegation().getDelegationRule();
 	}
 	
 	/**

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -16,17 +16,23 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.document.DocumentContent;
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.w3c.dom.Element;
 
 @XmlRootElement(name = Rule.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = Rule.Constants.TYPE_NAME, propOrder = {
-    Rule.Elements.RULE_TEMPLATE_ID,
+    Rule.Elements.ID,
+    Rule.Elements.NAME,
+    Rule.Elements.RULE_TEMPLATE,
     Rule.Elements.ACTIVE,
     Rule.Elements.DESCRIPTION,
     Rule.Elements.DOC_TYPE_NAME,
@@ -36,15 +42,19 @@ import org.w3c.dom.Element;
     Rule.Elements.RULE_RESPONSIBILITIES,
     Rule.Elements.RULE_EXTENSIONS,
     Rule.Elements.RULE_TEMPLATE_NAME,
+    Rule.Elements.RULE_EXPRESSION_DEF,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class Rule
     extends AbstractDataTransferObject
     implements RuleContract
 {
-
-    @XmlElement(name = Elements.RULE_TEMPLATE_ID, required = false)
-    private final String ruleTemplateId;
+    @XmlElement(name = Elements.ID, required = false)
+    private final String id;
+    @XmlElement(name = Elements.NAME, required = true)
+    private final String name;
+    @XmlElement(name = Elements.RULE_TEMPLATE, required = false)
+    private final RuleTemplate ruleTemplate;
     @XmlElement(name = Elements.ACTIVE, required = false)
     private final boolean active;
     @XmlElement(name = Elements.DESCRIPTION, required = false)
@@ -64,6 +74,8 @@ public final class Rule
     private final Map<String, String> ruleExtensions;
     @XmlElement(name = Elements.RULE_TEMPLATE_NAME, required = false)
     private final String ruleTemplateName;
+    @XmlElement(name = Elements.RULE_EXPRESSION_DEF, required = false)
+    private final RuleExpression ruleExpressionDef;
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -73,7 +85,9 @@ public final class Rule
      * 
      */
     private Rule() {
-        this.ruleTemplateId = null;
+        this.id = null;
+        this.name = null;
+        this.ruleTemplate = null;
         this.active = false;
         this.description = null;
         this.docTypeName = null;
@@ -83,10 +97,13 @@ public final class Rule
         this.ruleResponsibilities = null;
         this.ruleExtensions = null;
         this.ruleTemplateName = null;
+        this.ruleExpressionDef = null;
     }
 
     private Rule(Builder builder) {
-        this.ruleTemplateId = builder.getRuleTemplateId();
+        this.id = builder.getId();
+        this.name = builder.getName();
+        this.ruleTemplate = builder.getRuleTemplate() == null ? null : builder.getRuleTemplate().build();
         this.active = builder.isActive();
         this.description = builder.getDescription();
         this.docTypeName = builder.getDocTypeName();
@@ -102,13 +119,24 @@ public final class Rule
         } else {
             this.ruleResponsibilities = Collections.emptyList();
         }
-        this.ruleExtensions = builder.getRuleExtensions();
+        this.ruleExtensions = builder.getRuleExtensionMap();
         this.ruleTemplateName = builder.getRuleTemplateName();
+        this.ruleExpressionDef = builder.getRuleExpressionDef() == null ? null : builder.getRuleExpressionDef().build();
     }
 
     @Override
-    public String getRuleTemplateId() {
-        return this.ruleTemplateId;
+    public String getId() {
+        return this.id;
+    }
+
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    @Override
+    public RuleTemplate getRuleTemplate() {
+        return this.ruleTemplate;
     }
 
     @Override
@@ -147,7 +175,7 @@ public final class Rule
     }
 
     @Override
-    public Map<String, String> getRuleExtensions() {
+    public Map<String, String> getRuleExtensionMap() {
         return this.ruleExtensions;
     }
 
@@ -156,6 +184,10 @@ public final class Rule
         return this.ruleTemplateName;
     }
 
+    @Override
+    public RuleExpression getRuleExpressionDef() {
+        return this.ruleExpressionDef;
+    }
 
     /**
      * A builder which can be used to construct {@link Rule} instances.  Enforces the constraints of the {@link RuleContract}.
@@ -164,8 +196,9 @@ public final class Rule
     public final static class Builder
         implements Serializable, ModelBuilder, RuleContract
     {
-
-        private String ruleTemplateId;
+        private String id;
+        private String name;
+        private RuleTemplate.Builder ruleTemplate;
         private boolean active;
         private String description;
         private String docTypeName;
@@ -175,21 +208,25 @@ public final class Rule
         private List<RuleResponsibility.Builder> ruleResponsibilities = Collections.<RuleResponsibility.Builder>emptyList();
         private Map<String, String> ruleExtensions = Collections.<String,String>emptyMap();
         private String ruleTemplateName;
+        private RuleExpression.Builder ruleExpressionDef;
 
-        private Builder() {
+        private Builder(String name) {
             setActive(true);
+            setName(name);
         }
 
-        public static Builder create() {
-            return new Builder();
+        public static Builder create(String name) {
+            return new Builder(name);
         }
 
         public static Builder create(RuleContract contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
             }
-            Builder builder = create();
-            builder.setRuleTemplateId(contract.getRuleTemplateId());
+            Builder builder = create(contract.getName());
+            builder.setId(contract.getId());
+            builder.setRuleTemplate(
+                    contract.getRuleTemplate() == null ? null : RuleTemplate.Builder.create(contract.getRuleTemplate()));
             builder.setActive(contract.isActive());
             builder.setDescription(contract.getDescription());
             builder.setDocTypeName(contract.getDocTypeName());
@@ -205,8 +242,11 @@ public final class Rule
             } else {
                 builder.setRuleResponsibilities(Collections.<RuleResponsibility.Builder>emptyList());
             }
-            builder.setRuleExtensions(contract.getRuleExtensions());
+            builder.setRuleExtensions(contract.getRuleExtensionMap());
             builder.setRuleTemplateName(contract.getRuleTemplateName());
+            if (contract.getRuleExpressionDef() != null) {
+                builder.setRuleExpressionDef(RuleExpression.Builder.create(contract.getRuleExpressionDef()));
+        }
             return builder;
         }
 
@@ -215,8 +255,18 @@ public final class Rule
         }
 
         @Override
-        public String getRuleTemplateId() {
-            return this.ruleTemplateId;
+        public String getId() {
+            return this.id;
+        }
+
+        @Override
+        public String getName() {
+            return this.name;
+        }
+
+        @Override
+        public RuleTemplate.Builder getRuleTemplate() {
+            return this.ruleTemplate;
         }
 
         @Override
@@ -255,7 +305,7 @@ public final class Rule
         }
 
         @Override
-        public Map<String, String> getRuleExtensions() {
+        public Map<String, String> getRuleExtensionMap() {
             return this.ruleExtensions;
         }
 
@@ -264,8 +314,26 @@ public final class Rule
             return this.ruleTemplateName;
         }
 
-        public void setRuleTemplateId(String ruleTemplateId) {
-            this.ruleTemplateId = ruleTemplateId;
+        @Override
+        public RuleExpression.Builder getRuleExpressionDef() {
+            return this.ruleExpressionDef;
+        }
+
+        public void setId(String id) {
+            if (StringUtils.isWhitespace(id)) {
+                throw new IllegalArgumentException("id is blank");
+            }
+            this.id  = id;
+        }
+
+        public void setName(String name) {
+            if (StringUtils.isBlank(name)) {
+                throw new IllegalArgumentException("name is blank");
+            }
+            this.name = name;
+        }
+        public void setRuleTemplate(RuleTemplate.Builder ruleTemplate) {
+            this.ruleTemplate = ruleTemplate;
         }
 
         public void setActive(boolean active) {
@@ -304,6 +372,10 @@ public final class Rule
             this.ruleTemplateName = ruleTemplateName;
         }
 
+        public void setRuleExpressionDef(RuleExpression.Builder ruleExpressionDef) {
+            this.ruleExpressionDef = ruleExpressionDef;
+        }
+
     }
 
 
@@ -324,8 +396,9 @@ public final class Rule
      * 
      */
     static class Elements {
-
-        final static String RULE_TEMPLATE_ID = "ruleTemplateId";
+        final static String ID = "id";
+        final static String NAME = "name";
+        final static String RULE_TEMPLATE = "ruleTemplate";
         final static String ACTIVE = "active";
         final static String DESCRIPTION = "description";
         final static String DOC_TYPE_NAME = "docTypeName";
@@ -335,7 +408,7 @@ public final class Rule
         final static String RULE_RESPONSIBILITIES = "ruleResponsibilities";
         final static String RULE_EXTENSIONS = "ruleExtensions";
         final static String RULE_TEMPLATE_NAME = "ruleTemplateName";
-
+        final static String RULE_EXPRESSION_DEF = "ruleExpressionDef";
     }
 
 }

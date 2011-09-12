@@ -23,7 +23,7 @@ import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.rule.dao.RuleTemplateDAO;
 
 import javax.persistence.EntityManager;
@@ -37,16 +37,16 @@ public class RuleTemplateDAOJpaImpl implements RuleTemplateDAO {
 	@PersistenceContext(unitName="kew-unit")
 	private EntityManager entityManager;
 	
-    public List<RuleTemplate> findAll() {
+    public List<RuleTemplateBo> findAll() {
         return entityManager.createNamedQuery("findAllOrderedByName").getResultList();
     }
 
-    public RuleTemplate findByRuleTemplateName(String ruleTemplateName) {
+    public RuleTemplateBo findByRuleTemplateName(String ruleTemplateName) {
         if (StringUtils.isBlank(ruleTemplateName)) {
         	return null;
         }
     	
-    	Criteria crit = new Criteria(RuleTemplate.class.getName());
+    	Criteria crit = new Criteria(RuleTemplateBo.class.getName());
         crit.eq("name", ruleTemplateName);
         crit.orderBy("ruleTemplateId", false);
         
@@ -55,11 +55,11 @@ public class RuleTemplateDAOJpaImpl implements RuleTemplateDAO {
         if(ruleTemplates==null||ruleTemplates.size()==0){
         	return null;
         }
-        return (RuleTemplate) ruleTemplates.get(0);
+        return (RuleTemplateBo) ruleTemplates.get(0);
     }
 
-    public List<RuleTemplate> findByRuleTemplate(RuleTemplate ruleTemplate) {
-        Criteria crit = new Criteria(RuleTemplate.class.getName());
+    public List<RuleTemplateBo> findByRuleTemplate(RuleTemplateBo ruleTemplate) {
+        Criteria crit = new Criteria(RuleTemplateBo.class.getName());
         if (ruleTemplate.getName() != null) {
           crit.rawJpql("UPPER(RULE_TMPL_NM) like '"+ ruleTemplate.getName().toUpperCase() +"'");
         }
@@ -73,12 +73,12 @@ public class RuleTemplateDAOJpaImpl implements RuleTemplateDAO {
     	entityManager.remove(findByRuleTemplateId(ruleTemplateId));
     }
 
-    public RuleTemplate findByRuleTemplateId(String ruleTemplateId) {
-        return entityManager.find(RuleTemplate.class, ruleTemplateId);
+    public RuleTemplateBo findByRuleTemplateId(String ruleTemplateId) {
+        return entityManager.find(RuleTemplateBo.class, ruleTemplateId);
      }
 
-    public void save(RuleTemplate ruleTemplate) {
-    	if(ruleTemplate.getRuleTemplateId()==null){
+    public void save(RuleTemplateBo ruleTemplate) {
+    	if(ruleTemplate.getId()==null){
     		entityManager.persist(ruleTemplate);
     	}else{
     		OrmUtils.merge(entityManager, ruleTemplate);

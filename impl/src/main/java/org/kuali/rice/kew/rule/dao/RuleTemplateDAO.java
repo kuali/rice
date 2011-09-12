@@ -18,17 +18,16 @@ package org.kuali.rice.kew.rule.dao;
 
 import java.util.List;
 
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
-
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 
 public interface RuleTemplateDAO {
 
-    public void save(RuleTemplate ruleTemplate);
-    public List<RuleTemplate> findByRuleTemplate(RuleTemplate ruleTemplate);
-    public List<RuleTemplate> findAll();
-    public RuleTemplate findByRuleTemplateId(String ruleTemplateId);
+    public void save(RuleTemplateBo ruleTemplate);
+    public List<RuleTemplateBo> findByRuleTemplate(RuleTemplateBo ruleTemplate);
+    public List<RuleTemplateBo> findAll();
+    public RuleTemplateBo findByRuleTemplateId(String ruleTemplateId);
     public void delete(String ruleTemplateId);
-    public RuleTemplate findByRuleTemplateName(String ruleTemplateName);
+    public RuleTemplateBo findByRuleTemplateName(String ruleTemplateName);
     public String getNextRuleTemplateId();
     
 }

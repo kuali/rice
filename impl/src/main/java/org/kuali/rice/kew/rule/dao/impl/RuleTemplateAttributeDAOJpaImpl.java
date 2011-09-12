@@ -20,7 +20,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.rule.dao.RuleTemplateAttributeDAO;
 
 public class RuleTemplateAttributeDAOJpaImpl implements RuleTemplateAttributeDAO {
@@ -28,14 +28,14 @@ public class RuleTemplateAttributeDAOJpaImpl implements RuleTemplateAttributeDAO
 	@PersistenceContext(unitName = "kew-unit")
 	private EntityManager entityManager;
 
-	public RuleTemplateAttribute findByRuleTemplateAttributeId(
+	public RuleTemplateAttributeBo findByRuleTemplateAttributeId(
 			String ruleTemplateAttributeId) {
-		return entityManager.find(RuleTemplateAttribute.class,
+		return entityManager.find(RuleTemplateAttributeBo.class,
 				ruleTemplateAttributeId);
 	}
 
-	public void save(RuleTemplateAttribute ruleTemplateAttribute) {
-		if(ruleTemplateAttribute.getRuleTemplateAttributeId()==null){
+	public void save(RuleTemplateAttributeBo ruleTemplateAttribute) {
+		if(ruleTemplateAttribute.getId()==null){
 			entityManager.persist(ruleTemplateAttribute);
 		}else{
 			OrmUtils.merge(entityManager, ruleTemplateAttribute);

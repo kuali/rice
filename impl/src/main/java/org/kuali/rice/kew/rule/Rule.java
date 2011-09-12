@@ -26,5 +26,5 @@ public interface Rule extends RuleExpression {
     /**
      * @return the rule definition this rule is associated with
      */
-    public RuleBaseValues getDefinition();
+    public org.kuali.rice.kew.api.rule.RuleContract getDefinition();
 }

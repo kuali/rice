@@ -24,7 +24,7 @@
            <property name="layoutManager.numberOfColumns" value="2"/>
            <property name="items">
              <list>
-              <bean parent="AttributeField" p:propertyName="ruleAttributeId"/>
+              <bean parent="AttributeField" p:propertyName="id"/>
               <bean parent="AttributeField" p:propertyName="name"/>
               <bean parent="AttributeField" p:propertyName="label"/>
               <bean parent="AttributeField" p:propertyName="description"/>

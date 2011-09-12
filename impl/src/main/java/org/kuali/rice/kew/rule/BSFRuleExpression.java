@@ -35,7 +35,7 @@ import javax.script.ScriptException;
 //TODO: this should really be renamed since it is no longer using apache BSF
 public class BSFRuleExpression implements RuleExpression {
     public RuleExpressionResult evaluate(Rule rule, RouteContext context) {
-        RuleBaseValues ruleDefinition = rule.getDefinition();
+        org.kuali.rice.kew.api.rule.RuleContract ruleDefinition = rule.getDefinition();
         String type = ruleDefinition.getRuleExpressionDef().getType();
         String lang = parseLang(type, "groovy");
         String expression = ruleDefinition.getRuleExpressionDef().getExpression();

@@ -16,14 +16,6 @@
  */
 package org.kuali.rice.kew.rule.web;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
@@ -41,17 +33,25 @@ import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
-import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kns.web.ui.Section;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Some utilities which are utilized by the {@link RuleAction}.
@@ -87,13 +87,13 @@ public final class WebRuleUtils {
         ruleCopy.setVersionNbr(null);
 
         List responsibilities = new ArrayList();
-        for (Iterator iter = ruleCopy.getResponsibilities().iterator(); iter.hasNext();) {
+        for (Iterator iter = ruleCopy.getRuleResponsibilities().iterator(); iter.hasNext();) {
             WebRuleResponsibility responsibility = (WebRuleResponsibility) iter.next();
             WebRuleResponsibility responsibilityCopy = new WebRuleResponsibility();
             PropertyUtils.copyProperties(responsibilityCopy, responsibility);
 
             responsibilityCopy.setResponsibilityId(null);
-            responsibilityCopy.setRuleResponsibilityKey(null);
+            responsibilityCopy.setId(null);
             
             List delegations = new ArrayList();
             for (Iterator iterator = responsibilityCopy.getDelegationRules().iterator(); iterator.hasNext();) {
@@ -106,7 +106,7 @@ public final class WebRuleUtils {
                 delegationCopy.setRuleDelegationId(null);
                 delegationCopy.setResponsibilityId(null);
 
-                WebRuleBaseValues delegationRule = ((WebRuleBaseValues) delegation.getDelegationRuleBaseValues());
+                WebRuleBaseValues delegationRule = ((WebRuleBaseValues) delegation.getDelegationRule());
                 WebRuleBaseValues ruleDelegateCopy = new WebRuleBaseValues();
                 PropertyUtils.copyProperties(ruleDelegateCopy, delegationRule);
 
@@ -115,23 +115,23 @@ public final class WebRuleUtils {
                 ruleDelegateCopy.setVersionNbr(null);
 
                 List delegateResps = new ArrayList();
-                for (Iterator iterator1 = ruleDelegateCopy.getResponsibilities().iterator(); iterator1.hasNext();) {
+                for (Iterator iterator1 = ruleDelegateCopy.getRuleResponsibilities().iterator(); iterator1.hasNext();) {
                     WebRuleResponsibility delegateResp = (WebRuleResponsibility) iterator1.next();
                     WebRuleResponsibility delegateRespCopy = new WebRuleResponsibility();
                     PropertyUtils.copyProperties(delegateRespCopy, delegateResp);
 
                     delegateRespCopy.setResponsibilityId(null);
-                    delegateRespCopy.setRuleResponsibilityKey(null);
+                    delegateRespCopy.setId(null);
                     delegateResps.add(delegateRespCopy);
                 }
-                ruleDelegateCopy.setResponsibilities(delegateResps);
-                delegationCopy.setDelegationRuleBaseValues(ruleDelegateCopy);
+                ruleDelegateCopy.setRuleResponsibilities(delegateResps);
+                delegationCopy.setDelegationRule(ruleDelegateCopy);
                 delegations.add(delegationCopy);
             }
             //responsibilityCopy.setDelegationRules(delegations);
             responsibilities.add(responsibilityCopy);
         }
-        ruleCopy.setResponsibilities(responsibilities);
+        ruleCopy.setRuleResponsibilities(responsibilities);
         return ruleCopy;
     }
     
@@ -146,11 +146,11 @@ public final class WebRuleUtils {
     	WebRuleBaseValues newRule = copyRuleOntoExistingDocument(webRuleBaseValues);
     	// clear out all document IDs on the rule and it's delegates
     	newRule.setDocumentId(null);
-    	for (Iterator iterator = newRule.getResponsibilities().iterator(); iterator.hasNext(); ) {
+    	for (Iterator iterator = newRule.getRuleResponsibilities().iterator(); iterator.hasNext(); ) {
 			RuleResponsibility responsibility = (RuleResponsibility) iterator.next();
 			for (Iterator iterator2 = responsibility.getDelegationRules().iterator(); iterator2.hasNext(); ) {
 				RuleDelegation delegation = (RuleDelegation) iterator2.next();
-				delegation.getDelegationRuleBaseValues().setDocumentId(null);
+				delegation.getDelegationRule().setDocumentId(null);
 			}
 		}
     	return newRule;
@@ -166,7 +166,7 @@ public final class WebRuleUtils {
 		if (ArrayUtils.isEmpty(documentTypeNames)) {
 			throw new RiceRuntimeException("Rule document must be initiated with a valid document type name.");
 		}
-		RuleTemplate ruleTemplate = null;
+		RuleTemplateBo ruleTemplate = null;
 		if (!ArrayUtils.isEmpty(ruleTemplateIds)) {
 			String ruleTemplateId = ruleTemplateIds[0];
 			ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(ruleTemplateId);
@@ -193,9 +193,9 @@ public final class WebRuleUtils {
 		initializeRuleAfterNew(newRule, ruleTemplate, documentTypeName);
 	}
     
-	private static void initializeRuleAfterNew(RuleBaseValues rule, RuleTemplate ruleTemplate, String documentTypeName) {
+	private static void initializeRuleAfterNew(RuleBaseValues rule, RuleTemplateBo ruleTemplate, String documentTypeName) {
 		rule.setRuleTemplate(ruleTemplate);
-		rule.setRuleTemplateId(ruleTemplate.getRuleTemplateId());
+		rule.setRuleTemplateId(ruleTemplate.getId());
 		rule.setDocTypeName(documentTypeName);
 	}
 	
@@ -217,7 +217,7 @@ public final class WebRuleUtils {
 	}
 
 	public static void establishDefaultRuleValues(RuleBaseValues rule) {
-		rule.setActiveInd(true);
+		rule.setActive(true);
 
         RuleBaseValues defaultRule = ((RuleService) KEWServiceLocator.getService(KEWServiceLocator.RULE_SERVICE)).findDefaultRuleByRuleTemplateId(
         		rule.getRuleTemplate().getDelegationTemplateId());
@@ -227,7 +227,7 @@ public final class WebRuleUtils {
             defaultRule.setDeactivationDate(null);
             defaultRule.setDocTypeName(null);
             defaultRule.setVersionNumber(null);
-            defaultRule.setRuleBaseValuesId(null);
+            defaultRule.setId(null);
             defaultRule.setTemplateRuleInd(Boolean.FALSE);
             defaultRule.setVersionNbr(null);
             try {
@@ -273,17 +273,17 @@ public final class WebRuleUtils {
 	public static List<Row> getRuleTemplateRows(RuleBaseValues rule, boolean delegateRule) {
 
 		List<Row> rows = new ArrayList<Row>();
-		RuleTemplate ruleTemplate = rule.getRuleTemplate();
+		RuleTemplateBo ruleTemplate = rule.getRuleTemplate();
 		Map<String, String> fieldNameMap = new HashMap<String, String>();
 		// refetch rule template from service because after persistence in KNS, it comes back without any rule template attributes
 		if (ruleTemplate != null){
-			ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(ruleTemplate.getRuleTemplateId());
+			ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(ruleTemplate.getId());
 			if (ruleTemplate != null) {
 				
-				List<RuleTemplateAttribute> ruleTemplateAttributes = ruleTemplate.getActiveRuleTemplateAttributes();
+				List<RuleTemplateAttributeBo> ruleTemplateAttributes = ruleTemplate.getActiveRuleTemplateAttributes();
 				Collections.sort(ruleTemplateAttributes);
 
-				for (RuleTemplateAttribute ruleTemplateAttribute : ruleTemplateAttributes) {
+				for (RuleTemplateAttributeBo ruleTemplateAttribute : ruleTemplateAttributes) {
 					if (!ruleTemplateAttribute.isWorkflowAttribute()) {
 						continue;
 					}
@@ -328,7 +328,7 @@ public final class WebRuleUtils {
 
 	
 	private static boolean hasRoles(RuleBaseValues rule) {
-		RuleTemplate ruleTemplate = rule.getRuleTemplate();
+		RuleTemplateBo ruleTemplate = rule.getRuleTemplate();
 		return !ruleTemplate.getRoles().isEmpty();
 	}
 	
@@ -337,13 +337,13 @@ public final class WebRuleUtils {
 	 * field name rendered in the maintenance HTML will properly assign the value to RuleBaseValues.fieldValues.
 	 */
 	
-	public static List<Row> transformAndPopulateAttributeRows(List<Row> attributeRows, RuleTemplateAttribute ruleTemplateAttribute, RuleBaseValues rule, Map<String, String> fieldNameMap, boolean delegateRule) {
+	public static List<Row> transformAndPopulateAttributeRows(List<Row> attributeRows, RuleTemplateAttributeBo ruleTemplateAttribute, RuleBaseValues rule, Map<String, String> fieldNameMap, boolean delegateRule) {
 
 		for (Row row : attributeRows) {
 			for (Field field : row.getFields()) {
 				String fieldName = field.getPropertyName();
 				if (!StringUtils.isBlank(fieldName)) {
-					String valueKey = ruleTemplateAttribute.getRuleTemplateAttributeId() + ID_SEPARATOR + fieldName;
+					String valueKey = ruleTemplateAttribute.getId() + ID_SEPARATOR + fieldName;
 
 					String propertyName;
 					
@@ -368,7 +368,7 @@ public final class WebRuleUtils {
 	 * the primary keys of the rule and related objects.
 	 */
 	public static void clearKeysForSave(RuleBaseValues rule) {
-		rule.setRuleBaseValuesId(null);
+		rule.setId(null);
 		rule.setActivationDate(null);
 		rule.setDeactivationDate(null);
 		rule.setCurrentInd(false);
@@ -381,11 +381,11 @@ public final class WebRuleUtils {
 		ruleDelegation.setRuleDelegationId(null);
 		ruleDelegation.setObjectId(null);
 		ruleDelegation.setVersionNumber(0L);
-		clearKeysForSave(ruleDelegation.getDelegationRuleBaseValues());
+		clearKeysForSave(ruleDelegation.getDelegationRule());
 	}
 	
     public static void translateResponsibilitiesForSave(RuleBaseValues rule) {
-		rule.getResponsibilities().clear();
+		rule.getRuleResponsibilities().clear();
 		for (PersonRuleResponsibility responsibility : rule.getPersonResponsibilities()) {
 			RuleResponsibility ruleResponsibility = new RuleResponsibility();
 			ruleResponsibility.setActionRequestedCd(responsibility.getActionRequestedCd());
@@ -399,7 +399,7 @@ public final class WebRuleUtils {
 			ruleResponsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
 			// default the approve policy to First Approve
 			ruleResponsibility.setApprovePolicy(ActionRequestPolicy.FIRST.getCode());
-			rule.getResponsibilities().add(ruleResponsibility);
+			rule.getRuleResponsibilities().add(ruleResponsibility);
 		}
 		for (GroupRuleResponsibility responsibility : rule.getGroupResponsibilities()) {
 			RuleResponsibility ruleResponsibility = new RuleResponsibility();
@@ -413,7 +413,7 @@ public final class WebRuleUtils {
 			ruleResponsibility.setRuleResponsibilityName(group.getId());
 			ruleResponsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
 			ruleResponsibility.setApprovePolicy(ActionRequestPolicy.FIRST.getCode());
-			rule.getResponsibilities().add(ruleResponsibility);
+			rule.getRuleResponsibilities().add(ruleResponsibility);
 		}
 		for (RoleRuleResponsibility responsibility : rule.getRoleResponsibilities()) {
 			RuleResponsibility ruleResponsibility = new RuleResponsibility();
@@ -426,17 +426,17 @@ public final class WebRuleUtils {
 			ruleResponsibility.setRuleResponsibilityName(responsibility.getRoleName());
 			ruleResponsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_ROLE_ID);
 			ruleResponsibility.setApprovePolicy(responsibility.getApprovePolicy());
-			rule.getResponsibilities().add(ruleResponsibility);
+			rule.getRuleResponsibilities().add(ruleResponsibility);
 		}
 	}
     
     public static void translateFieldValuesForSave(RuleBaseValues rule) {
-    	RuleTemplate ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(rule.getRuleTemplateId());
+    	RuleTemplateBo ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(rule.getRuleTemplateId());
 
 		/** Populate rule extension values * */
 		List extensions = new ArrayList();
 		for (Iterator iterator = ruleTemplate.getActiveRuleTemplateAttributes().iterator(); iterator.hasNext();) {
-			RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iterator.next();
+			RuleTemplateAttributeBo ruleTemplateAttribute = (RuleTemplateAttributeBo) iterator.next();
 			if (!ruleTemplateAttribute.isWorkflowAttribute()) {
 				continue;
 			}
@@ -461,7 +461,7 @@ public final class WebRuleUtils {
 			List ruleExtensionValues = workflowAttribute.getRuleExtensionValues();
 			if (ruleExtensionValues != null && !ruleExtensionValues.isEmpty()) {
 				RuleExtension ruleExtension = new RuleExtension();
-				ruleExtension.setRuleTemplateAttributeId(ruleTemplateAttribute.getRuleTemplateAttributeId());
+				ruleExtension.setRuleTemplateAttributeId(ruleTemplateAttribute.getId());
 
 				ruleExtension.setExtensionValues(ruleExtensionValues);
 				extensions.add(ruleExtension);
@@ -475,8 +475,8 @@ public final class WebRuleUtils {
 			ruleExtension.setRuleBaseValues(rule);
 
 			for (Iterator iterator2 = ruleTemplate.getActiveRuleTemplateAttributes().iterator(); iterator2.hasNext();) {
-				RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iterator2.next();
-				if (StringUtils.equals(ruleTemplateAttribute.getRuleTemplateAttributeId(), ruleExtension.getRuleTemplateAttributeId())) {
+				RuleTemplateAttributeBo ruleTemplateAttribute = (RuleTemplateAttributeBo) iterator2.next();
+				if (StringUtils.equals(ruleTemplateAttribute.getId(), ruleExtension.getRuleTemplateAttributeId())) {
 					ruleExtension.setRuleTemplateAttribute(ruleTemplateAttribute);
 					break;
 				}
@@ -493,12 +493,12 @@ public final class WebRuleUtils {
      * Based on original logic implemented in Rule system.  Essentially constructs a Map of field values related
      * to the given RuleTemplateAttribute.
      */
-    public static Map<String, String> getFieldMapForRuleTemplateAttribute(RuleBaseValues rule, RuleTemplateAttribute ruleTemplateAttribute) {
+    public static Map<String, String> getFieldMapForRuleTemplateAttribute(RuleBaseValues rule, RuleTemplateAttributeBo ruleTemplateAttribute) {
     	Map<String, String> fieldMap = new HashMap<String, String>();
     	for (String fieldKey : rule.getFieldValues().keySet()) {
     		String ruleTemplateAttributeId = fieldKey.substring(0, fieldKey.indexOf(ID_SEPARATOR));
     		String fieldName = fieldKey.substring(fieldKey.indexOf(ID_SEPARATOR) + 1);
-    		if (ruleTemplateAttribute.getRuleTemplateAttributeId().toString().equals(ruleTemplateAttributeId)) {
+    		if (ruleTemplateAttribute.getId().toString().equals(ruleTemplateAttributeId)) {
     			fieldMap.put(fieldName, rule.getFieldValues().get(fieldKey));
     		}
     	}
@@ -506,10 +506,10 @@ public final class WebRuleUtils {
     }
     
     public static void processRuleForDelegationSave(RuleDelegation ruleDelegation) {
-    	RuleBaseValues rule = ruleDelegation.getDelegationRuleBaseValues();
+    	RuleBaseValues rule = ruleDelegation.getDelegationRule();
     	rule.setDelegateRule(true);
     	// certain items on a delegated rule responsibility are inherited from parent responsibility, set them to null
-    	for (RuleResponsibility responsibility : rule.getResponsibilities()) {
+    	for (RuleResponsibility responsibility : rule.getRuleResponsibilities()) {
     		responsibility.setActionRequestedCd(null);
     		responsibility.setPriority(null);
     	}
@@ -540,7 +540,7 @@ public final class WebRuleUtils {
 	}
 	
 	public static void translateResponsibilitiesForLoad(RuleBaseValues rule) {
-		for (RuleResponsibility responsibility : rule.getResponsibilities()) {
+		for (RuleResponsibility responsibility : rule.getRuleResponsibilities()) {
 			if (responsibility.getRuleResponsibilityType().equals(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID)) {
 				PersonRuleResponsibility personResponsibility = new PersonRuleResponsibility();
 				copyResponsibility(responsibility, personResponsibility);
@@ -559,11 +559,11 @@ public final class WebRuleUtils {
 				copyResponsibility(responsibility, roleResponsibility);
 				rule.getRoleResponsibilities().add(roleResponsibility);
 			} else {
-				throw new RiceRuntimeException("Original responsibility with id '" + responsibility.getRuleResponsibilityKey() + "' contained a bad type code of '" + responsibility.getRuleResponsibilityType());
+				throw new RiceRuntimeException("Original responsibility with id '" + responsibility.getId() + "' contained a bad type code of '" + responsibility.getRuleResponsibilityType());
 			}
 		}
 		// since we've loaded the responsibilities, let's clear the originals so they don't get serialized to the maint doc XML
-		rule.getResponsibilities().clear();
+		rule.getRuleResponsibilities().clear();
 	}
 	
 	public static void copyResponsibility(RuleResponsibility source, RuleResponsibility target) {
@@ -593,7 +593,7 @@ public final class WebRuleUtils {
 	}
 	
 	public static void clearKeysForCopy(RuleBaseValues rule) {    	
-    	rule.setRuleBaseValuesId(null);
+    	rule.setId(null);
     	rule.setPreviousVersionId(null);
     	rule.setPreviousVersion(null);
     	rule.setName(null);
@@ -610,7 +610,7 @@ public final class WebRuleUtils {
 
     private static void clearResponsibilityKeys(RuleResponsibility responsibility) {
 		responsibility.setResponsibilityId(null);
-		responsibility.setRuleResponsibilityKey(null);
+		responsibility.setId(null);
 		responsibility.setRuleBaseValuesId(null);
     }
     

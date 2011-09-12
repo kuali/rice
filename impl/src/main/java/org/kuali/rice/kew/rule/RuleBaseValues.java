@@ -16,8 +16,6 @@
  */
 package org.kuali.rice.kew.rule;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.bouncycastle.ocsp.OCSPReqGenerator;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
@@ -25,13 +23,12 @@ import org.hibernate.annotations.Parameter;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.kew.api.rule.*;
-import org.kuali.rice.kew.api.rule.Rule;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.lookupable.MyColumns;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
-import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
+import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -57,7 +54,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -74,8 +70,8 @@ import java.util.Map;
  */
 @Entity
 @Table(name="KREW_RULE_T")
-//@Sequence(name="KREW_RTE_TMPL_S", property="ruleBaseValuesId")
-public class RuleBaseValues extends PersistableBusinessObjectBase {
+//@Sequence(name="KREW_RTE_TMPL_S", property="id")
+public class RuleBaseValues extends PersistableBusinessObjectBase implements RuleContract {
 
     private static final long serialVersionUID = 6137765574728530156L;
     @Id
@@ -85,7 +81,7 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="RULE_ID")
-    private String ruleBaseValuesId;
+    private String id;
     /**
      * Unique Rule name
      */
@@ -96,7 +92,7 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
     @Column(name="PREV_RULE_VER_NBR")
 	private String previousVersionId;
     @Column(name="ACTV_IND")
-	private Boolean activeInd;
+	private boolean active = true;
     @Column(name="RULE_BASE_VAL_DESC")
 	private String description;
     @Column(name="DOC_TYP_NM")
@@ -104,26 +100,26 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
     @Column(name="DOC_HDR_ID")
 	private String documentId;
 	@Column(name="FRM_DT")
-	private Timestamp fromDate;
+	private Timestamp fromDateValue;
 	@Column(name="TO_DT")
-	private Timestamp toDate;
+	private Timestamp toDateValue;
 	@Column(name="DACTVN_DT")
 	private Timestamp deactivationDate;
     @Column(name="CUR_IND")
-	private Boolean currentInd;
+	private Boolean currentInd = Boolean.TRUE;
     @Column(name="RULE_VER_NBR")
-	private Integer versionNbr;
+	private Integer versionNbr = new Integer(0);
     @Column(name="FRC_ACTN")
-	private Boolean forceAction;
+	private boolean forceAction;
     @Fetch(value = FetchMode.SELECT)
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},mappedBy="ruleBaseValues")
-	private List<RuleResponsibility> responsibilities;
+	private List<RuleResponsibility> ruleResponsibilities;
     @Fetch(value = FetchMode.SELECT)
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},mappedBy="ruleBaseValues")
 	private List<RuleExtension> ruleExtensions;
     @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RULE_TMPL_ID")
-	private RuleTemplate ruleTemplate;
+	private RuleTemplateBo ruleTemplate;
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})
 	@JoinColumn(name="RULE_EXPR_ID")
 	private RuleExpressionDef ruleExpressionDef;
@@ -148,11 +144,11 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
     @Transient
     private MyColumns myColumns;
     @Transient
-    private List<PersonRuleResponsibility> personResponsibilities;
+    private List<PersonRuleResponsibility> personResponsibilities = new ArrayList<PersonRuleResponsibility>();
     @Transient
-    private List<GroupRuleResponsibility> groupResponsibilities;
+    private List<GroupRuleResponsibility> groupResponsibilities = new ArrayList<GroupRuleResponsibility>();
     @Transient
-    private List<RoleRuleResponsibility> roleResponsibilities;
+    private List<RoleRuleResponsibility> roleResponsibilities = new ArrayList<RoleRuleResponsibility>();
     @Transient
     private Map<String, String> fieldValues;
     @Transient
@@ -165,11 +161,11 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
     private String personReviewerType;
 
     public RuleBaseValues() {
-        responsibilities = new ArrayList<RuleResponsibility>();
+        ruleResponsibilities = new ArrayList<RuleResponsibility>();
         ruleExtensions = new ArrayList<RuleExtension>();
-        personResponsibilities = new AutoPopulatingList(PersonRuleResponsibility.class);
-        groupResponsibilities = new AutoPopulatingList(GroupRuleResponsibility.class);
-        roleResponsibilities = new AutoPopulatingList(RoleRuleResponsibility.class);
+        /*personResponsibilities = new AutoPopulatingList<PersonRuleResponsibility>(PersonRuleResponsibility.class);
+        groupResponsibilities = new AutoPopulatingList<GroupRuleResponsibility>(GroupRuleResponsibility.class);
+        roleResponsibilities = new AutoPopulatingList<RoleRuleResponsibility>(RoleRuleResponsibility.class);*/
         fieldValues = new HashMap<String, String>();
     }
 
@@ -237,12 +233,12 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
     }
 
     public RuleResponsibility getResponsibility(int index) {
-        while (getResponsibilities().size() <= index) {
+        while (getRuleResponsibilities().size() <= index) {
             RuleResponsibility ruleResponsibility = new RuleResponsibility();
             ruleResponsibility.setRuleBaseValues(this);
-            getResponsibilities().add(ruleResponsibility);
+            getRuleResponsibilities().add(ruleResponsibility);
         }
-        return (RuleResponsibility) getResponsibilities().get(index);
+        return (RuleResponsibility) getRuleResponsibilities().get(index);
     }
 
     public RuleExtension getRuleExtension(int index) {
@@ -289,15 +285,14 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
     }
 
     public void addRuleResponsibility(RuleResponsibility ruleResponsibility) {
-        addRuleResponsibility(ruleResponsibility, new Integer(getResponsibilities().size()));
+        addRuleResponsibility(ruleResponsibility, new Integer(getRuleResponsibilities().size()));
     }
 
     public void addRuleResponsibility(RuleResponsibility ruleResponsibility, Integer counter) {
         boolean alreadyAdded = false;
         int location = 0;
         if (counter != null) {
-            for (Iterator responsibilitiesIter = getResponsibilities().iterator(); responsibilitiesIter.hasNext();) {
-                RuleResponsibility ruleResponsibilityRow = (RuleResponsibility) responsibilitiesIter.next();
+            for (RuleResponsibility ruleResponsibilityRow : getRuleResponsibilities()) {
                 if (counter.intValue() == location) {
                     ruleResponsibilityRow.setPriority(ruleResponsibility.getPriority());
                     ruleResponsibilityRow.setActionRequestedCd(ruleResponsibility.getActionRequestedCd());
@@ -313,15 +308,15 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
             }
         }
         if (!alreadyAdded) {
-            getResponsibilities().add(ruleResponsibility);
+            getRuleResponsibilities().add(ruleResponsibility);
         }
     }
 
-    public RuleTemplate getRuleTemplate() {
+    public RuleTemplateBo getRuleTemplate() {
         return ruleTemplate;
     }
 
-    public void setRuleTemplate(RuleTemplate ruleTemplate) {
+    public void setRuleTemplate(RuleTemplateBo ruleTemplate) {
         this.ruleTemplate = ruleTemplate;
     }
 
@@ -349,23 +344,33 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
         return ruleExtensions;
     }
 
+    public Map<String, String> getRuleExtensionMap() {
+        Map<String, String> extensions = new HashMap<String, String>();
+        for (RuleExtension ext : this.getRuleExtensions()) {
+            for (RuleExtensionValue value : ext.getExtensionValues()) {
+                extensions.put(value.getKey(), value.getValue());
+            }
+        }
+        return extensions;
+    }
+
     public void setRuleExtensions(List<RuleExtension> ruleExtensions) {
         this.ruleExtensions = ruleExtensions;
     }
 
-    public List<RuleResponsibility> getResponsibilities() {
-        return responsibilities;
+    public List<RuleResponsibility> getRuleResponsibilities() {
+        return this.ruleResponsibilities;
     }
 
-    public void setResponsibilities(List<RuleResponsibility> responsibilities) {
-        this.responsibilities = responsibilities;
+    public void setRuleResponsibilities(List<RuleResponsibility> ruleResponsibilities) {
+        this.ruleResponsibilities = ruleResponsibilities;
     }
 
     public RuleResponsibility getResponsibility(Long ruleResponsibilityKey) {
-        for (Iterator iterator = getResponsibilities().iterator(); iterator.hasNext();) {
+        for (Iterator iterator = getRuleResponsibilities().iterator(); iterator.hasNext();) {
             RuleResponsibility responsibility = (RuleResponsibility) iterator.next();
-            if (responsibility.getRuleResponsibilityKey() != null
-                    && responsibility.getRuleResponsibilityKey().equals(ruleResponsibilityKey)) {
+            if (responsibility.getId() != null
+                    && responsibility.getId().equals(ruleResponsibilityKey)) {
                 return responsibility;
             }
         }
@@ -373,22 +378,20 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
     }
 
     public void removeResponsibility(int index) {
-        getResponsibilities().remove(index);
+        getRuleResponsibilities().remove(index);
     }
 
-    public Boolean getActiveInd() {
-        return activeInd;
+    @Override
+    public boolean isActive() {
+        return active;
     }
 
-    public void setActiveInd(Boolean activeInd) {
-        this.activeInd = activeInd;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public String getActiveIndDisplay() {
-        if (getActiveInd() == null) {
-            return KEWConstants.INACTIVE_LABEL_LOWER;
-        }
-        return CodeTranslator.getActiveIndicatorLabel(getActiveInd());
+        return CodeTranslator.getActiveIndicatorLabel(isActive());
     }
 
     public Boolean getCurrentInd() {
@@ -399,12 +402,20 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
         this.currentInd = currentInd;
     }
 
-    public Timestamp getFromDate() {
-        return fromDate;
+    public Timestamp getFromDateValue() {
+        return fromDateValue;
+    }
+    
+    @Override
+    public DateTime getFromDate() {
+        if (this.fromDateValue == null) {
+            return null;
+        }
+        return new DateTime(this.fromDateValue.getTime());
     }
 
-    public void setFromDate(Timestamp fromDate) {
-        this.fromDate = fromDate;
+    public void setFromDateValue(Timestamp fromDateValue) {
+        this.fromDateValue = fromDateValue;
     }
 
     public String getDescription() {
@@ -415,20 +426,28 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
         this.description = description;
     }
 
-    public String getRuleBaseValuesId() {
-        return ruleBaseValuesId;
+    public String getId() {
+        return id;
     }
 
-    public void setRuleBaseValuesId(String ruleBaseValuesId) {
-        this.ruleBaseValuesId = ruleBaseValuesId;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public Timestamp getToDate() {
-        return toDate;
+    public Timestamp getToDateValue() {
+        return toDateValue;
+    }
+    
+    @Override
+    public DateTime getToDate() {
+        if (this.toDateValue == null) {
+            return null;
+        }
+        return new DateTime(this.toDateValue.getTime());
     }
 
-    public void setToDate(Timestamp toDate) {
-        this.toDate = toDate;
+    public void setToDateValue(Timestamp toDateValue) {
+        this.toDateValue = toDateValue;
     }
 
     public Integer getVersionNbr() {
@@ -448,36 +467,36 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
     }
 
     public String getFromDateString() {
-        if (this.fromDate != null) {
-            return RiceConstants.getDefaultDateFormat().format(this.fromDate);
+        if (this.fromDateValue != null) {
+            return RiceConstants.getDefaultDateFormat().format(this.fromDateValue);
         }
         return null;
     }
 
     public String getToDateString() {
-        if (this.toDate != null) {
-            return RiceConstants.getDefaultDateFormat().format(this.toDate);
+        if (this.toDateValue != null) {
+            return RiceConstants.getDefaultDateFormat().format(this.toDateValue);
         }
         return null;
     }
 
-    public Boolean getForceAction() {
+    @Override
+    public boolean isForceAction() {
         return forceAction;
     }
 
-    public void setForceAction(Boolean forceAction) {
+    public void setForceAction(boolean forceAction) {
         this.forceAction = forceAction;
     }
 
     public boolean isActive(Date date) {
-    	boolean isAfterFromDate = getFromDate() == null || date.after(getFromDate());
-    	boolean isBeforeToDate = getToDate() == null || date.before(getToDate());
-    	return getActiveInd() && isAfterFromDate && isBeforeToDate;
+    	boolean isAfterFromDate = getFromDateValue() == null || date.after(getFromDateValue());
+    	boolean isBeforeToDate = getToDateValue() == null || date.before(getToDateValue());
+    	return isActive() && isAfterFromDate && isBeforeToDate;
     }
 
     public boolean isMatch(DocumentContent docContent) {
-        for (Iterator iter = getRuleTemplate().getActiveRuleTemplateAttributes().iterator(); iter.hasNext();) {
-            RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iter.next();
+        for (RuleTemplateAttributeBo ruleTemplateAttribute : getRuleTemplate().getActiveRuleTemplateAttributes()) {
             if (!ruleTemplateAttribute.isWorkflowAttribute()) {
                 continue;
             }
@@ -487,11 +506,11 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
             if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
                 ((GenericXMLRuleAttribute) routingAttribute).setRuleAttribute(ruleAttribute);
             }
-            String className = ruleAttribute.getClassName();
+            String className = ruleAttribute.getResourceDescriptor();
             List<RuleExtension> editedRuleExtensions = new ArrayList<RuleExtension>();
             for (Iterator iter2 = getRuleExtensions().iterator(); iter2.hasNext();) {
                 RuleExtension extension = (RuleExtension) iter2.next();
-                if (extension.getRuleTemplateAttribute().getRuleAttribute().getClassName().equals(className)) {
+                if (extension.getRuleTemplateAttribute().getRuleAttribute().getResourceDescriptor().equals(className)) {
                     editedRuleExtensions.add(extension);
                 }
             }
@@ -503,7 +522,7 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
     }
 
     public RuleResponsibility findResponsibility(String roleName) {
-        for (Iterator iter = getResponsibilities().iterator(); iter.hasNext();) {
+        for (Iterator iter = getRuleResponsibilities().iterator(); iter.hasNext();) {
             RuleResponsibility resp = (RuleResponsibility) iter.next();
             if (KEWConstants.RULE_RESPONSIBILITY_ROLE_ID.equals(resp.getRuleResponsibilityType())
                     && roleName.equals(resp.getRuleResponsibilityName())) {
@@ -678,18 +697,20 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
         if (bo == null) {
             return null;
         }
-        org.kuali.rice.kew.api.rule.Rule.Builder builder = org.kuali.rice.kew.api.rule.Rule.Builder.create();
-        builder.setRuleTemplateId(bo.ruleTemplateId);
-        builder.setActive(bo.getActiveInd().booleanValue());
+        return org.kuali.rice.kew.api.rule.Rule.Builder.create(bo).build();
+        /*org.kuali.rice.kew.api.rule.Rule.Builder builder = org.kuali.rice.kew.api.rule.Rule.Builder.create(bo.getName());
+        builder.setId(bo.getId());
+        builder.setId(bo.ruleTemplateId);
+        builder.setActive(bo.isActive());
         builder.setDescription(bo.getDescription());
         builder.setDocTypeName(bo.getDocTypeName());
-        builder.setFromDate(new DateTime(bo.getFromDate()));
-        builder.setToDate(new DateTime(bo.getToDate()));
-        builder.setForceAction(bo.getForceAction().booleanValue());
-        if (CollectionUtils.isNotEmpty(bo.getResponsibilities())) {
+        builder.setFromDate(new DateTime(bo.getFromDateValue()));
+        builder.setToDate(new DateTime(bo.getToDateValue()));
+        builder.setForceAction(bo.isForceAction());
+        if (CollectionUtils.isNotEmpty(bo.getRuleResponsibilities())) {
             List<org.kuali.rice.kew.api.rule.RuleResponsibility.Builder> respBuilders =
                     new ArrayList<org.kuali.rice.kew.api.rule.RuleResponsibility.Builder>();
-            for (RuleResponsibility resp : bo.getResponsibilities()) {
+            for (RuleResponsibility resp : bo.getRuleResponsibilities()) {
                 respBuilders.add(
                         org.kuali.rice.kew.api.rule.RuleResponsibility.Builder.create(RuleResponsibility.to(resp)));
             }
@@ -707,6 +728,9 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
         }
         builder.setRuleExtensions(extensions);
         builder.setRuleTemplateName(bo.getRuleTemplateName());
-        return builder.build();
+        if (bo.getRuleExpressionDef() != null) {
+            builder.setRuleExpressionDef(RuleExpression.Builder.create(bo.getRuleExpressionDef()));
+        }
+        return builder.build();*/
     }
 }

@@ -39,7 +39,7 @@ public class RuleAttributeDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
 
 	public RuleAttribute findByRuleAttributeId(String ruleAttributeId) {
 		RuleAttribute ruleAttribute = new RuleAttribute();
-		ruleAttribute.setRuleAttributeId(ruleAttributeId);
+		ruleAttribute.setId(ruleAttributeId);
 		return (RuleAttribute) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(ruleAttribute));
 	}
 
@@ -48,8 +48,8 @@ public class RuleAttributeDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
 		if (ruleAttribute.getName() != null) {
 			crit.addSql("UPPER(RULE_ATTRIB_NM) like '" + ruleAttribute.getName().toUpperCase() + "'");
 		}
-		if (ruleAttribute.getClassName() != null) {
-			crit.addSql("UPPER(RULE_ATTRIB_CLS_NM) like '" + ruleAttribute.getClassName().toUpperCase() + "'");
+		if (ruleAttribute.getResourceDescriptor() != null) {
+			crit.addSql("UPPER(RULE_ATTRIB_CLS_NM) like '" + ruleAttribute.getResourceDescriptor().toUpperCase() + "'");
 		}
 		if (ruleAttribute.getType() != null) {
 			crit.addSql("UPPER(RULE_ATTRIB_TYP) like '" + ruleAttribute.getType().toUpperCase() + "'");

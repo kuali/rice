@@ -23,13 +23,13 @@
     <property name="dataObjectClassName" value="org.kuali.rice.kew.rule.bo.RuleAttribute" />
     <property name="defaultSortAttributeNames">
       <list>
-      	<value>ruleAttributeId</value>
+      	<value>id</value>
       </list>
     </property>  
     <property name="criteriaFields">
       <list>
         <bean parent="LookupCriteriaAttributeField" p:propertyName="name" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="ruleAttributeId" />
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="id" />
         <bean parent="LookupCriteriaAttributeField" p:propertyName="className" />
         <bean parent="LookupCriteriaAttributeField" p:propertyName="applicationId" />
         <bean parent="LookupCriteriaAttributeField" p:propertyName="type" p:optionsFinderClass="org.kuali.rice.kew.rule.bo.RuleAttributeTypeValuesFinder">
@@ -42,7 +42,7 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="ruleAttributeId" />
+        <bean parent="AttributeField" p:propertyName="id" />
         <bean parent="AttributeField" p:propertyName="name" />
         <bean parent="AttributeField" p:propertyName="className" />
         <bean parent="AttributeField" p:propertyName="type" />

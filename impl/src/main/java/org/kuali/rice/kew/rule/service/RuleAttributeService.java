@@ -22,11 +22,10 @@ import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.core.framework.impex.xml.XmlLoader;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 
-
 /**
- * A service which provides data access for {@link RuleAttribute}s.
+ * A service which provides data access for {@link org.kuali.rice.kew.rule.bo.RuleAttribute}s.
  * 
- * @see RuleAttribute
+ * @see org.kuali.rice.kew.rule.bo.RuleAttribute
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

@@ -17,12 +17,20 @@ package org.kuali.rice.kew.impl.rule;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.criteria.CriteriaLookupService;
+import org.kuali.rice.core.api.criteria.GenericQueryResults;
+import org.kuali.rice.core.api.criteria.LookupCustomizer;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.kew.api.rule.Rule;
+import org.kuali.rice.kew.api.rule.RuleQueryResults;
 import org.kuali.rice.kew.api.rule.RuleReportCriteria;
 import org.kuali.rice.kew.api.rule.RuleService;
 import org.kuali.rice.kew.rule.RuleBaseValues;
+import org.kuali.rice.kew.rule.dao.RuleDAO;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kim.impl.common.attribute.AttributeTransform;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,6 +43,52 @@ import java.util.List;
  */
 public class RuleServiceImpl implements RuleService {
     private static final Logger LOG = Logger.getLogger(RuleServiceImpl.class);
+    private RuleDAO ruleDAO;
+    private CriteriaLookupService criteriaLookupService;
+
+    @Override
+    public Rule getRule(String id) throws RiceIllegalArgumentException, RiceIllegalStateException{
+        incomingParamCheck("id", id);
+        RuleBaseValues rbv = ruleDAO.findRuleBaseValuesById(id);
+        if (rbv == null) {
+            throw new RiceIllegalStateException("Rule with specified id: " + id + " does not exist");
+        }
+        return RuleBaseValues.to(rbv);
+    }
+
+    @Override
+    public Rule getRuleByName(String name) {
+        incomingParamCheck("name", name);
+        RuleBaseValues rbv = ruleDAO.findRuleBaseValuesByName(name);
+        if (rbv == null) {
+            throw new RiceIllegalStateException("Rule with specified name: " + name + " does not exist");
+        }
+        return RuleBaseValues.to(rbv);
+    }
+
+    @Override
+    public RuleQueryResults findRules(QueryByCriteria queryByCriteria) {
+        if (queryByCriteria == null) {
+            throw new RiceIllegalArgumentException("queryByCriteria is null");
+        }
+
+        LookupCustomizer.Builder<RuleBaseValues> lc = LookupCustomizer.Builder.create();
+        lc.setPredicateTransform(AttributeTransform.getInstance());
+
+        GenericQueryResults<RuleBaseValues> results = criteriaLookupService.lookup(RuleBaseValues.class, queryByCriteria, lc.build());
+
+        RuleQueryResults.Builder builder = RuleQueryResults.Builder.create();
+        builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
+        builder.setTotalRowCount(results.getTotalRowCount());
+
+        final List<Rule.Builder> ims = new ArrayList<Rule.Builder>();
+        for (RuleBaseValues bo : results.getResults()) {
+            ims.add(Rule.Builder.create(RuleBaseValues.to(bo)));
+        }
+
+        builder.setResults(ims);
+        return builder.build();
+    }
 
     @Override
     public List<Rule> ruleReport(RuleReportCriteria ruleReportCriteria) {
@@ -63,5 +117,13 @@ public class RuleServiceImpl implements RuleService {
                 && StringUtils.isBlank((String) object)) {
             throw new RiceIllegalArgumentException(name + " was blank");
         }
+    }
+
+    public RuleDAO getRuleDAO() {
+        return ruleDAO;
+    }
+
+    public void setRuleDAO(RuleDAO ruleDAO) {
+        this.ruleDAO = ruleDAO;
     }
 }

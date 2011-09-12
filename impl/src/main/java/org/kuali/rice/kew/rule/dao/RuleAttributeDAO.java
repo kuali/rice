@@ -16,10 +16,9 @@
  */
 package org.kuali.rice.kew.rule.dao;
 
-import java.util.List;
-
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 
+import java.util.List;
 
 public interface RuleAttributeDAO {
 

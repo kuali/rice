@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.rule.dao.impl;
 
 import org.apache.ojb.broker.query.QueryByCriteria;
-import org.kuali.rice.kew.rule.RuleTemplateOption;
+import org.kuali.rice.kew.rule.RuleTemplateOptionBo;
 import org.kuali.rice.kew.rule.dao.RuleTemplateOptionDAO;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
@@ -37,13 +37,13 @@ public class RuleTemplateOptionDAOOjbImpl extends PersistenceBrokerDaoSupport im
    * (non-Javadoc)
    * @see org.kuali.rice.kew.rule.dao.RuleTemplateOptionDAO#findByRuleTemplateOptionId(java.lang.Long)
    */
-  public RuleTemplateOption findByRuleTemplateOptionId(String ruleTemplateOptionId) {
-  	RuleTemplateOption ruleTemplateOption = new RuleTemplateOption();
-    ruleTemplateOption.setRuleTemplateOptionId(ruleTemplateOptionId);
-    return (RuleTemplateOption) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(ruleTemplateOption));
+  public RuleTemplateOptionBo findByRuleTemplateOptionId(String ruleTemplateOptionId) {
+  	RuleTemplateOptionBo ruleTemplateOption = new RuleTemplateOptionBo();
+    ruleTemplateOption.setId(ruleTemplateOptionId);
+    return (RuleTemplateOptionBo) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(ruleTemplateOption));
   }
   
-  public void save (RuleTemplateOption ruleTemplateOption){
+  public void save (RuleTemplateOptionBo ruleTemplateOption){
 	  this.getPersistenceBrokerTemplate().store(ruleTemplateOption);
   }
 }

@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.rule;
 
 import org.kuali.rice.kew.api.action.DelegationType;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.GroupNameId;
@@ -52,7 +52,7 @@ public final class RuleTestUtils {
 	public static RuleDelegation createDelegationToUser(String docType, String ruleTemplate, String delegateUser) {
 		// create and save a rule delegation 
     	RuleBaseValues originalRule = getRule(docType, ruleTemplate);
-    	List<RuleResponsibility> responsibilities = originalRule.getResponsibilities();
+    	List<RuleResponsibility> responsibilities = originalRule.getRuleResponsibilities();
     	assertTrue("assuming there is 1 responsibility", responsibilities != null && responsibilities.size() == 1);
     	
     	RuleResponsibility originalResp = responsibilities.get(0);
@@ -75,7 +75,7 @@ public final class RuleTestUtils {
 	public static RuleDelegation createDelegationToGroup(String docType, String ruleTemplate, String delegateGroupId) {
 		// create and save a rule delegation 
     	RuleBaseValues originalRule = getRule(docType, ruleTemplate);
-    	List<RuleResponsibility> responsibilities = originalRule.getResponsibilities();
+    	List<RuleResponsibility> responsibilities = originalRule.getRuleResponsibilities();
     	assertTrue("assuming there is 1 responsibility", responsibilities != null && responsibilities.size() == 1);
     	
     	RuleResponsibility originalResp = responsibilities.get(0);
@@ -128,14 +128,14 @@ public final class RuleTestUtils {
 	 * <p>As a side effect, active documents of this type will be requeued for workflow processing.
 	 */
 	private static RuleDelegation createRuleDelegation(RuleBaseValues parentRule, RuleResponsibility parentResponsibility, String delegateId, String groupTypeCode) {
-    	RuleTemplate delegationTemplate = parentRule.getRuleTemplate();
+    	RuleTemplateBo delegationTemplate = parentRule.getRuleTemplate();
 		RuleDelegation ruleDelegation = new RuleDelegation();
 		ruleDelegation.setResponsibilityId(parentResponsibility.getResponsibilityId());
 		ruleDelegation.setDelegationType(DelegationType.PRIMARY.getCode());
 		RuleBaseValues rule = new RuleBaseValues();
-		ruleDelegation.setDelegationRuleBaseValues(rule);
+		ruleDelegation.setDelegationRule(rule);
 		rule.setDelegateRule(true);
-		rule.setActiveInd(true);
+		rule.setActive(true);
 		rule.setCurrentInd(true);
 		rule.setDocTypeName(parentRule.getDocTypeName());
 		rule.setRuleTemplateId(delegationTemplate.getDelegationTemplateId());
@@ -143,7 +143,7 @@ public final class RuleTestUtils {
 		rule.setDescription("Description of this delegate rule");
 		rule.setForceAction(true);
 		RuleResponsibility delegationResponsibility = new RuleResponsibility();
-		rule.getResponsibilities().add(delegationResponsibility);
+		rule.getRuleResponsibilities().add(delegationResponsibility);
 		delegationResponsibility.setRuleBaseValues(rule);
 		delegationResponsibility.setRuleResponsibilityName(delegateId);
 		delegationResponsibility.setRuleResponsibilityType(groupTypeCode);

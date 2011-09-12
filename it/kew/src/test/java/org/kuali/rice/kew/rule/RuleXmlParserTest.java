@@ -138,7 +138,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         extensionValue = getExtensionValue(extensionValues, "shape");
         assertEquals("shape", extensionValue.getKey());
         assertEquals("square", extensionValue.getValue());
-        List responsibilities = rule.getResponsibilities();
+        List responsibilities = rule.getRuleResponsibilities();
         assertEquals(1, responsibilities.size());
         RuleResponsibility responsibility = (RuleResponsibility) responsibilities.get(0);
         assertEquals("user1", responsibility.getPrincipal().getPrincipalName());
@@ -166,7 +166,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         extensionValue = getExtensionValue(extensionValues, "shape");
         assertEquals("shape", extensionValue.getKey());
         assertEquals("square", extensionValue.getValue());
-        List responsibilities = rule.getResponsibilities();
+        List responsibilities = rule.getRuleResponsibilities();
         assertEquals(1, responsibilities.size());
         RuleResponsibility responsibility = (RuleResponsibility) responsibilities.get(0);
         assertEquals("user1", responsibility.getPrincipal().getPrincipalName());
@@ -182,8 +182,8 @@ public class RuleXmlParserTest extends KEWTestCase {
         RuleService ruleService = KEWServiceLocator.getRuleService();
         // let's grab the responsibility id from the original named rule
         RuleBaseValues rule = ruleService.getRuleByName("ANamedRule");
-        String responsibilityId = rule.getResponsibilities().get(0).getResponsibilityId();
-        String ruleId = rule.getRuleBaseValuesId();
+        String responsibilityId = rule.getRuleResponsibilities().get(0).getResponsibilityId();
+        String ruleId = rule.getId();
         Integer versionNumber = rule.getVersionNbr();
         
         loadXmlFile("UpdatedNamedRule.xml");
@@ -193,11 +193,11 @@ public class RuleXmlParserTest extends KEWTestCase {
         assertTrue("Rule should be current.", rule.getCurrentInd());
         assertFalse("Rule should not be a delegate rule.", rule.getDelegateRule());
         assertFalse("Rule should not be a template rule.", rule.getTemplateRuleInd());
-        assertNull("Rule should not have a from date.", rule.getFromDate());
-        assertNull("Rule should not have a to date.", rule.getToDate());
+        assertNull("Rule should not have a from date.", rule.getFromDateValue());
+        assertNull("Rule should not have a to date.", rule.getToDateValue());
         
         // check that the previous versions line up and that the rule is not the same
-        assertFalse("Rule ids should be different", ruleId.equals(rule.getRuleBaseValuesId()));
+        assertFalse("Rule ids should be different", ruleId.equals(rule.getId()));
         assertEquals("Previous version id should be correct", ruleId, rule.getPreviousVersionId());
         assertEquals("Version ids are incorrect", new Integer(versionNumber + 1), rule.getVersionNbr());
         // fetch the original rule and verify that it's no longer current
@@ -219,7 +219,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         extensionValue = getExtensionValue(extensionValues, "value");
         assertEquals("value", extensionValue.getKey());
         assertEquals("10", extensionValue.getValue());
-        List responsibilities = rule.getResponsibilities();
+        List responsibilities = rule.getRuleResponsibilities();
         assertEquals(2, responsibilities.size());
         
         // responsibility should have the same id as our original responsibility
@@ -258,7 +258,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         extensionValue = getExtensionValue(extensionValues, "value");
         assertEquals("value", extensionValue.getKey());
         assertEquals("10", extensionValue.getValue());
-        List responsibilities = rule.getResponsibilities();
+        List responsibilities = rule.getRuleResponsibilities();
         assertEquals(1, responsibilities.size());
         RuleResponsibility responsibility = (RuleResponsibility) responsibilities.get(0);
         assertEquals("user2", responsibility.getPrincipal().getPrincipalName());
@@ -306,10 +306,10 @@ public class RuleXmlParserTest extends KEWTestCase {
         List<RuleBaseValues> rules = new RuleXmlParser().parseRules(getClass().getResourceAsStream("ParameterizedRule.xml"));
         assertEquals(1, rules.size());
         RuleBaseValues rule = rules.get(0);
-        assertEquals(2, rule.getResponsibilities().size());
-        RuleResponsibility resp = (RuleResponsibility) rule.getResponsibilities().get(0);
+        assertEquals(2, rule.getRuleResponsibilities().size());
+        RuleResponsibility resp = (RuleResponsibility) rule.getRuleResponsibilities().get(0);
 
-        if (resp.isUsingWorkflowUser()) {
+        if (resp.isUsingPrincipal()) {
             assertEquals("user3", resp.getPrincipal().getPrincipalName());
         } else {
             assertEquals("WorkflowAdmin", resp.getGroup().getName());
@@ -320,10 +320,10 @@ public class RuleXmlParserTest extends KEWTestCase {
         rules = new RuleXmlParser().parseRules(getClass().getResourceAsStream("ParameterizedRule.xml"));
         assertEquals(1, rules.size());
         rule = rules.get(0);
-        assertEquals(2, rule.getResponsibilities().size());
-        resp = (RuleResponsibility) rule.getResponsibilities().get(0);
+        assertEquals(2, rule.getRuleResponsibilities().size());
+        resp = (RuleResponsibility) rule.getRuleResponsibilities().get(0);
 
-        if (resp.isUsingWorkflowUser()) 
+        if (resp.isUsingPrincipal())
         {
             assertEquals("user1", resp.getPrincipal().getPrincipalName());   
         } 
@@ -364,7 +364,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         RuleBaseValues rule = ruleService.getRuleByName("ANamedRule");
 
         assertNotNull(rule);
-        LOG.info("Rule id of latest version: " + rule.getRuleBaseValuesId());
+        LOG.info("Rule id of latest version: " + rule.getId());
         assertEquals("ANamedRule", rule.getName());
         assertEquals("A named rule with previously defined template removed", rule.getDescription());
 
@@ -377,7 +377,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         List extensions = rule.getRuleExtensions();
         assertEquals(0, extensions.size());
 
-        List responsibilities = rule.getResponsibilities();
+        List responsibilities = rule.getRuleResponsibilities();
         assertEquals(1, responsibilities.size());
         RuleResponsibility responsibility = (RuleResponsibility) responsibilities.get(0);
         assertEquals("user2", responsibility.getPrincipal().getPrincipalName());
@@ -398,32 +398,32 @@ public class RuleXmlParserTest extends KEWTestCase {
     	
     	RuleBaseValues rule = ruleService.getRuleByName("RespTypeTest1");
     	assertNotNull(rule);
-    	assertEquals("Rule should have a principal responsibility", KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID, rule.getResponsibilities().get(0).getRuleResponsibilityType());
-    	assertEquals("Rule should have a principal id of user1", "user1", rule.getResponsibilities().get(0).getRuleResponsibilityName());
+    	assertEquals("Rule should have a principal responsibility", KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID, rule.getRuleResponsibilities().get(0).getRuleResponsibilityType());
+    	assertEquals("Rule should have a principal id of user1", "user1", rule.getRuleResponsibilities().get(0).getRuleResponsibilityName());
     	
     	rule = ruleService.getRuleByName("RespTypeTest2");
     	assertNotNull(rule);
-    	assertEquals("Rule should have a principal responsibility", KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID, rule.getResponsibilities().get(0).getRuleResponsibilityType());
-    	assertEquals("Rule should have a principal id of user1", "user1", rule.getResponsibilities().get(0).getRuleResponsibilityName());
+    	assertEquals("Rule should have a principal responsibility", KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID, rule.getRuleResponsibilities().get(0).getRuleResponsibilityType());
+    	assertEquals("Rule should have a principal id of user1", "user1", rule.getRuleResponsibilities().get(0).getRuleResponsibilityName());
     	
     	rule = ruleService.getRuleByName("RespTypeTest3");
     	assertNotNull(rule);
-    	assertEquals("Rule should have a group responsibility", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID, rule.getResponsibilities().get(0).getRuleResponsibilityType());
-    	assertEquals("Rule should have a group id of 3001", "3001", rule.getResponsibilities().get(0).getRuleResponsibilityName());
+    	assertEquals("Rule should have a group responsibility", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID, rule.getRuleResponsibilities().get(0).getRuleResponsibilityType());
+    	assertEquals("Rule should have a group id of 3001", "3001", rule.getRuleResponsibilities().get(0).getRuleResponsibilityName());
 
     	rule = ruleService.getRuleByName("RespTypeTest4");
     	assertNotNull(rule);
-    	assertEquals("Rule should have a group responsibility", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID, rule.getResponsibilities().get(0).getRuleResponsibilityType());
-    	assertEquals("Rule should have a group id of 1", "1", rule.getResponsibilities().get(0).getRuleResponsibilityName());
+    	assertEquals("Rule should have a group responsibility", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID, rule.getRuleResponsibilities().get(0).getRuleResponsibilityType());
+    	assertEquals("Rule should have a group id of 1", "1", rule.getRuleResponsibilities().get(0).getRuleResponsibilityName());
 
     	rule = ruleService.getRuleByName("RespTypeTest5");
     	assertNotNull(rule);
-    	assertEquals("Rule should have a role responsibility", KEWConstants.RULE_RESPONSIBILITY_ROLE_ID, rule.getResponsibilities().get(0).getRuleResponsibilityType());
-    	assertEquals("Invalid role name", "org.kuali.rice.kew.rule.TestRuleAttribute!TEST", rule.getResponsibilities().get(0).getRuleResponsibilityName());
+    	assertEquals("Rule should have a role responsibility", KEWConstants.RULE_RESPONSIBILITY_ROLE_ID, rule.getRuleResponsibilities().get(0).getRuleResponsibilityType());
+    	assertEquals("Invalid role name", "org.kuali.rice.kew.rule.TestRuleAttribute!TEST", rule.getRuleResponsibilities().get(0).getRuleResponsibilityName());
 
     	rule = ruleService.getRuleByName("RespTypeTest6");
     	assertNotNull(rule);
-    	assertEquals("Rule should have a role responsibility", KEWConstants.RULE_RESPONSIBILITY_ROLE_ID, rule.getResponsibilities().get(0).getRuleResponsibilityType());
-    	assertEquals("Invalid role name", "org.kuali.rice.kew.rule.TestRuleAttribute!TEST", rule.getResponsibilities().get(0).getRuleResponsibilityName());
+    	assertEquals("Rule should have a role responsibility", KEWConstants.RULE_RESPONSIBILITY_ROLE_ID, rule.getRuleResponsibilities().get(0).getRuleResponsibilityType());
+    	assertEquals("Invalid role name", "org.kuali.rice.kew.rule.TestRuleAttribute!TEST", rule.getRuleResponsibilities().get(0).getRuleResponsibilityName());
     }
 }

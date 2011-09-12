@@ -16,22 +16,6 @@
  */
 package org.kuali.rice.kew.rule.xmlrouting;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.io.BufferedReader;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
-
 import org.junit.Test;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
@@ -42,12 +26,27 @@ import org.kuali.rice.kew.routeheader.StandardDocumentContent;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+import java.io.BufferedReader;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
@@ -230,7 +229,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 	@Test public void testIsMatch() {
 		RuleExtension extension = new RuleExtension();
 
-		List values = new ArrayList();
+		List<RuleExtensionValue> values = new ArrayList<RuleExtensionValue>();
 		RuleExtensionValue value = new RuleExtensionValue();
 		value.setKey("givenname");
 		value.setValue("Dave");
@@ -247,7 +246,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 		values.add(value3);
 
 		extension.setExtensionValues(values);
-		RuleTemplateAttribute ruleTemplateAttribute = new RuleTemplateAttribute();
+		RuleTemplateAttributeBo ruleTemplateAttribute = new RuleTemplateAttributeBo();
 
 		RuleAttribute ruleAttribute = new RuleAttribute();
 		ruleAttribute.setName("MyUniqueRuleAttribute1");
@@ -273,7 +272,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 		values2.add(minDollar);
 		values2.add(maxDollar);
 		extension2.setExtensionValues(values2);
-		RuleTemplateAttribute ruleTemplateAttribute2 = new RuleTemplateAttribute();
+		RuleTemplateAttributeBo ruleTemplateAttribute2 = new RuleTemplateAttributeBo();
 
 		RuleAttribute ruleAttribute2 = new RuleAttribute();
 		ruleAttribute2.setName("MyUniqueRuleAttribute2");
@@ -305,7 +304,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 		values.add(value6);
 
 		extension.setExtensionValues(values);
-		ruleTemplateAttribute = new RuleTemplateAttribute();
+		ruleTemplateAttribute = new RuleTemplateAttributeBo();
 
 		ruleAttribute = new RuleAttribute();
 		ruleAttribute.setName("MyUniqueRuleAttribute1");
@@ -321,7 +320,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
 		values2.add(valueNew);
 		extension2.setExtensionValues(values2);
-		ruleTemplateAttribute2 = new RuleTemplateAttribute();
+		ruleTemplateAttribute2 = new RuleTemplateAttributeBo();
 
 		ruleAttribute2 = new RuleAttribute();
 		ruleAttribute2.setName("MyUniqueRuleAttribute2");
@@ -351,7 +350,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
         values.add(value7);
 		values.add(value8);
 		extension.setExtensionValues(values);
-		ruleTemplateAttribute = new RuleTemplateAttribute();
+		ruleTemplateAttribute = new RuleTemplateAttributeBo();
 		ruleAttribute = new RuleAttribute();
 		ruleAttribute.setName("MyUniqueRuleAttribute1");
 		ruleTemplateAttribute.setRuleAttribute(ruleAttribute);
@@ -365,7 +364,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 		values2.add(valueNew);
 
 		extension2.setExtensionValues(values2);
-		ruleTemplateAttribute2 = new RuleTemplateAttribute();
+		ruleTemplateAttribute2 = new RuleTemplateAttributeBo();
 
 		ruleAttribute2 = new RuleAttribute();
 		ruleAttribute2.setName("MyUniqueRuleAttribute2");

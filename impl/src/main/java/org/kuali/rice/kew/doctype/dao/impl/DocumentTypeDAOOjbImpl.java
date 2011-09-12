@@ -240,7 +240,7 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 
     public List findDocumentTypeAttributes(RuleAttribute ruleAttribute) {
     	Criteria crit = new Criteria();
-    	crit.addEqualTo("ruleAttributeId", ruleAttribute.getRuleAttributeId());
+    	crit.addEqualTo("ruleAttributeId", ruleAttribute.getId());
     	return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(DocumentTypeAttribute.class, crit));
     }
 

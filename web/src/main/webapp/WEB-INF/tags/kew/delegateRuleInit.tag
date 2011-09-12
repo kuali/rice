@@ -24,7 +24,7 @@
 				<th align=right valign=middle class="bord-l-b">Select parent rule: </th>
 				<td align=left valign=middle class="datacell">
 				    <kul:htmlControlAttribute attributeEntry="${ruleAttributes.ruleBaseValuesId}" property="parentRuleId" readOnly="true" readOnlyAlternateDisplay="${fn:escapeXml(KualiForm.ruleDescription)}"/>
-				    <kul:lookup boClassName="org.kuali.rice.kew.rule.RuleBaseValues" fieldConversions="ruleBaseValuesId:parentRuleId"/>
+				    <kul:lookup boClassName="org.kuali.rice.kew.rule.RuleBaseValues" fieldConversions="id:parentRuleId"/>
 				</td>
 			</tr>
 	    </table>

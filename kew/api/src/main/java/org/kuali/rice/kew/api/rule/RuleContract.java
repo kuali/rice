@@ -1,11 +1,24 @@
 package org.kuali.rice.kew.api.rule;
 
 import org.joda.time.DateTime;
+import org.kuali.rice.core.api.mo.common.Identifiable;
 
 import java.util.List;
 import java.util.Map;
 
-public interface RuleContract {
+public interface RuleContract extends Identifiable {
+    /**
+     * Unique Name for the Rule.
+     *
+     * <p>
+     * This is the unique name of the Rule
+     *
+     * </p>
+     *
+     * @return name
+     */
+    String getName();
+
     /**
      * Unique Id for Template of Rule.
      *
@@ -15,7 +28,7 @@ public interface RuleContract {
      *
      * @return ruleTemplateId
      */
-    String getRuleTemplateId();
+    RuleTemplateContract getRuleTemplate();
 
     /**
      * The active indicator for the rule.
@@ -75,7 +88,7 @@ public interface RuleContract {
      *
      * @return ruleExtensions
      */
-    Map<String, String> getRuleExtensions();
+    Map<String, String> getRuleExtensionMap();
 
     /**
      * Template Name of the Rule.
@@ -87,4 +100,6 @@ public interface RuleContract {
      * @return ruleTemplateName
      */
     String getRuleTemplateName();
+
+    RuleExpressionContract getRuleExpressionDef();
 }

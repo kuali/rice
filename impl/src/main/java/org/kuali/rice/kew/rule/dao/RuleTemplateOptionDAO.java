@@ -16,13 +16,13 @@
  */
 package org.kuali.rice.kew.rule.dao;
 
-import org.kuali.rice.kew.rule.RuleTemplateOption;
+import org.kuali.rice.kew.rule.RuleTemplateOptionBo;
 
 
 public interface RuleTemplateOptionDAO {
 
 	public void delete(String ruleTemplateOptionId);
-	public RuleTemplateOption findByRuleTemplateOptionId(String ruleTemplateOptionId);
-	public void save(RuleTemplateOption ruleTemplateOption);
+	public RuleTemplateOptionBo findByRuleTemplateOptionId(String ruleTemplateOptionId);
+	public void save(RuleTemplateOptionBo ruleTemplateOption);
 
 }

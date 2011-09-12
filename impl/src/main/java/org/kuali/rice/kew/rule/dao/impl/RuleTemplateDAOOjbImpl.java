@@ -22,7 +22,7 @@ import org.apache.ojb.broker.query.QueryByCriteria;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.rule.dao.RuleTemplateDAO;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
@@ -35,26 +35,26 @@ import java.util.List;
 public class RuleTemplateDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleTemplateDAO {
 
 
-    public List<RuleTemplate> findAll() {
-        QueryByCriteria query = new QueryByCriteria(RuleTemplate.class);
+    public List<RuleTemplateBo> findAll() {
+        QueryByCriteria query = new QueryByCriteria(RuleTemplateBo.class);
         query.addOrderByAscending("name");
         return (List)this.getPersistenceBrokerTemplate().getCollectionByQuery(query);
     }
 
-    public RuleTemplate findByRuleTemplateName(String ruleTemplateName) {
+    public RuleTemplateBo findByRuleTemplateName(String ruleTemplateName) {
         Criteria crit = new Criteria();
         crit.addEqualTo("name", ruleTemplateName);
-        QueryByCriteria query = new QueryByCriteria(RuleTemplate.class, crit);
-        query.addOrderByDescending("ruleTemplateId");
+        QueryByCriteria query = new QueryByCriteria(RuleTemplateBo.class, crit);
+        query.addOrderByDescending("id");
 
         Iterator ruleTemplates = this.getPersistenceBrokerTemplate().getCollectionByQuery(query).iterator();
         while(ruleTemplates.hasNext()) {
-            return (RuleTemplate) ruleTemplates.next();
+            return (RuleTemplateBo) ruleTemplates.next();
         }
         return null;
     }
 
-    public List<RuleTemplate> findByRuleTemplate(RuleTemplate ruleTemplate) {
+    public List<RuleTemplateBo> findByRuleTemplate(RuleTemplateBo ruleTemplate) {
         Criteria crit = new Criteria();
         if (ruleTemplate.getName() != null) {
           crit.addSql("UPPER(RULE_TMPL_NM) like '"+ ruleTemplate.getName().toUpperCase() +"'");
@@ -62,20 +62,20 @@ public class RuleTemplateDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
         if (ruleTemplate.getDescription() != null) {
           crit.addSql("UPPER(RULE_TMPL_DESC) like '"+ ruleTemplate.getDescription().toUpperCase()+"'");
         }
-        return new ArrayList<RuleTemplate>(this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleTemplate.class, crit)));
+        return new ArrayList<RuleTemplateBo>(this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleTemplateBo.class, crit)));
     }
 
     public void delete(String ruleTemplateId) {
     	this.getPersistenceBrokerTemplate().delete(findByRuleTemplateId(ruleTemplateId));
     }
 
-    public RuleTemplate findByRuleTemplateId(String ruleTemplateId) {
+    public RuleTemplateBo findByRuleTemplateId(String ruleTemplateId) {
         Criteria crit = new Criteria();
-        crit.addEqualTo("ruleTemplateId", ruleTemplateId);
-        return (RuleTemplate) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(RuleTemplate.class, crit));
+        crit.addEqualTo("id", ruleTemplateId);
+        return (RuleTemplateBo) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(RuleTemplateBo.class, crit));
     }
 
-    public void save(RuleTemplate ruleTemplate) {
+    public void save(RuleTemplateBo ruleTemplate) {
     	this.getPersistenceBrokerTemplate().store(ruleTemplate);
     }
 

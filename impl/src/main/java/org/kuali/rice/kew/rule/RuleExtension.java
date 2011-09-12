@@ -23,8 +23,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.util.collect.CollectionUtils;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
 import javax.persistence.CascadeType;
@@ -45,11 +44,11 @@ import java.util.List;
 
 /**
  * An extension of a {@link RuleBaseValues}.  Provides attribute-specific data
- * extensions to the rule for a particular {@link RuleAttribute}.  Contains
+ * extensions to the rule for a particular {@link org.kuali.rice.kew.rule.bo.RuleAttribute}.  Contains
  * a List of {@link RuleExtensionValue}s.
  * 
  * @see RuleBaseValues
- * @see RuleAttribute
+ * @see org.kuali.rice.kew.rule.bo.RuleAttribute
  * @see RuleExtensionValue
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -86,7 +85,7 @@ public class RuleExtension implements Serializable {
 
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RULE_TMPL_ATTR_ID")
-	private RuleTemplateAttribute ruleTemplateAttribute;
+	private RuleTemplateAttributeBo ruleTemplateAttribute;
 
 	@OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, mappedBy="extension")
 	@Fetch(value = FetchMode.SELECT)
@@ -109,11 +108,11 @@ public class RuleExtension implements Serializable {
 		this.extensionValues = extensionValues;
 	}
 
-	public RuleTemplateAttribute getRuleTemplateAttribute() {
+	public RuleTemplateAttributeBo getRuleTemplateAttribute() {
 		return ruleTemplateAttribute;
 	}
 
-	public void setRuleTemplateAttribute(RuleTemplateAttribute ruleTemplateAttribute) {
+	public void setRuleTemplateAttribute(RuleTemplateAttributeBo ruleTemplateAttribute) {
 		this.ruleTemplateAttribute = ruleTemplateAttribute;
 	}
 

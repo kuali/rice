@@ -32,7 +32,7 @@
             <html-el:select property="ruleTemplateId" onchange="document.forms[0].methodToCall.value='start';document.forms[0].submit();">
               <c:set var="ruleTemplates" value="${KualiForm.ruleTemplates}"/>
               <html-el:option value="chooser">Please select a template</html-el:option>
-              <html-el:options collection="ruleTemplates" property="ruleTemplateId" labelProperty="name"/>
+              <html-el:options collection="ruleTemplates" property="id" labelProperty="name"/>
             </html-el:select>
           </td>
         </tr>

@@ -74,7 +74,7 @@ public class DelegateRuleForm extends KualiForm {
 	    if (this.parentRule != null 
 	            && parentRule != null
 	            && this.parentResponsibility != null) {
-	    	if (!StringUtils.equals(this.parentRule.getRuleBaseValuesId(), parentRule.getRuleBaseValuesId())) {
+	    	if (!StringUtils.equals(this.parentRule.getId(), parentRule.getId())) {
 	            this.parentResponsibility = null;
 	            this.parentResponsibilityId = null;
 	        }
@@ -134,7 +134,7 @@ public class DelegateRuleForm extends KualiForm {
 			setParentRule(KEWServiceLocator.getRuleService().findRuleBaseValuesById(getParentRuleId()));
 		}
 		if (getParentResponsibilityId() != null && getParentRule() != null) {
-			for (RuleResponsibility responsibility : getParentRule().getResponsibilities()) {
+			for (RuleResponsibility responsibility : getParentRule().getRuleResponsibilities()) {
 				if (responsibility.getResponsibilityId().equals(getParentResponsibilityId())) {
 					setParentResponsibility(responsibility);
 					break;
@@ -143,7 +143,7 @@ public class DelegateRuleForm extends KualiForm {
 		}
 		
 		if (getParentRule() != null) {
-			for (RuleResponsibility responsibility : getParentRule().getResponsibilities()) {
+			for (RuleResponsibility responsibility : getParentRule().getRuleResponsibilities()) {
 				if (KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(responsibility.getRuleResponsibilityType())) {
 					Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(responsibility.getRuleResponsibilityName());
 					if (principal != null) {

@@ -32,10 +32,11 @@ import org.kuali.rice.ksb.impl.bus.LocalService
 import org.kuali.rice.ksb.impl.bus.RemoteService
 import org.kuali.rice.ksb.impl.registry.ServiceRegistryImpl
 import org.kuali.rice.ksb.impl.test.util.SimpleConfig
+import org.junit.Ignore
 
 
 class ServiceRegistryDiffCalculatorImplTest {
-
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ServiceRegistryDiffCalculatorImplTest.class)
 	private static final String LOCALHOST_IP = "localhost"
 	private static final String TEST1_NAMESPACE = "TEST1"
 	private static final String TEST1_INSTANCE_ID = "${TEST1_NAMESPACE}-${LOCALHOST_IP}";
@@ -237,6 +238,7 @@ class ServiceRegistryDiffCalculatorImplTest {
 	}
 	
 	@Test
+    @Ignore
 	void testCalculateLocalServicesDiff_emptyRegistryServices() {
 				
 		List<LocalService> localServices = [
@@ -263,6 +265,7 @@ class ServiceRegistryDiffCalculatorImplTest {
 	}
 	
 	@Test
+    @Ignore
 	void testCalculateLocalServicesDiff_fullDiff() {
 				
 		List<LocalService> localServices = [

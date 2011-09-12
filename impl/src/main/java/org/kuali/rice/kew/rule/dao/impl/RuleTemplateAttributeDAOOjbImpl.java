@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.rule.dao.impl;
 
 import org.apache.ojb.broker.query.QueryByCriteria;
-import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.rule.dao.RuleTemplateAttributeDAO;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
@@ -37,14 +37,14 @@ public class RuleTemplateAttributeDAOOjbImpl extends PersistenceBrokerDaoSupport
    * (non-Javadoc)
    * @see org.kuali.rice.kew.rule.dao.RuleTemplateAttributeDAO#findByRuleTemplateAttributeId(java.lang.Long)
    */
-  public RuleTemplateAttribute findByRuleTemplateAttributeId(String ruleTemplateAttributeId) {
-    RuleTemplateAttribute ruleTemplateAttribute = new RuleTemplateAttribute();
-    ruleTemplateAttribute.setRuleTemplateAttributeId(ruleTemplateAttributeId);
+  public RuleTemplateAttributeBo findByRuleTemplateAttributeId(String ruleTemplateAttributeId) {
+    RuleTemplateAttributeBo ruleTemplateAttribute = new RuleTemplateAttributeBo();
+    ruleTemplateAttribute.setId(ruleTemplateAttributeId);
     ruleTemplateAttribute.setRequired(null);
-    return (RuleTemplateAttribute) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(ruleTemplateAttribute));
+    return (RuleTemplateAttributeBo) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(ruleTemplateAttribute));
   }
   
-  public void save (RuleTemplateAttribute ruleTemplateAttribute){
+  public void save (RuleTemplateAttributeBo ruleTemplateAttribute){
       this.getPersistenceBrokerTemplate().store(ruleTemplateAttribute);
   }
 }

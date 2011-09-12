@@ -31,6 +31,8 @@ import org.kuali.rice.kew.rule.dao.RuleDAO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.config.KRADConfigurer;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
@@ -40,6 +42,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -70,7 +73,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		crit.addIn("docTypeName", documentTypes);
 		crit.addEqualTo("ruleTemplateId", ruleTemplateId);
 		crit.addEqualTo("currentInd", Boolean.TRUE);
-		crit.addEqualTo("activeInd", Boolean.TRUE);
+		crit.addEqualTo("active", Boolean.TRUE);
 		crit.addEqualTo("delegateRule", Boolean.FALSE);
 		crit.addEqualTo("templateRuleInd", Boolean.FALSE);
 
@@ -82,7 +85,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		Criteria crit = new Criteria();
 		crit.addIn("docTypeName", documentTypes);
 		crit.addEqualTo("ruleTemplateId", ruleTemplateId);
-		crit.addEqualTo("activeInd", Boolean.TRUE);
+		crit.addEqualTo("active", Boolean.TRUE);
 		crit.addEqualTo("delegateRule", Boolean.FALSE);
 		crit.addEqualTo("templateRuleInd", Boolean.FALSE);
 		if (effectiveDate != null) {
@@ -99,17 +102,17 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 
 		Criteria fromCrit = new Criteria();
 		Criteria fromNullCrit = new Criteria();
-		fromNullCrit.addIsNull("fromDate");
+		fromNullCrit.addIsNull("fromDateValue");
 		Criteria fromLessOrEqualCrit = new Criteria();
-		fromLessOrEqualCrit.addLessOrEqualThan("fromDate", new Timestamp(date.getTime()));
+		fromLessOrEqualCrit.addLessOrEqualThan("fromDateValue", new Timestamp(date.getTime()));
 		fromCrit.addOrCriteria(fromNullCrit);
 		fromCrit.addOrCriteria(fromLessOrEqualCrit);
 
 		Criteria toCrit = new Criteria();
 		Criteria toNullCrit = new Criteria();
-		toNullCrit.addIsNull("toDate");
+		toNullCrit.addIsNull("toDateValue");
 		Criteria toGreaterOrEqualCrit = new Criteria();
-		toGreaterOrEqualCrit.addGreaterOrEqualThan("toDate", new Timestamp(date.getTime()));
+		toGreaterOrEqualCrit.addGreaterOrEqualThan("toDateValue", new Timestamp(date.getTime()));
 		toCrit.addOrCriteria(toNullCrit);
 		toCrit.addOrCriteria(toGreaterOrEqualCrit);
 
@@ -150,9 +153,12 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 
 	public RuleBaseValues findRuleBaseValuesById(String ruleBaseValuesId) {
 		Criteria crit = new Criteria();
-		crit.addEqualTo("ruleBaseValuesId", ruleBaseValuesId);
+		crit.addEqualTo("id", ruleBaseValuesId);
+        Map<String, String> criteria = new HashMap<String, String>();
+        criteria.put("id", ruleBaseValuesId);
 		// crit.addEqualTo("currentInd", new Boolean(true));
-		return (RuleBaseValues) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(RuleBaseValues.class, crit));
+        return KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(RuleBaseValues.class, criteria);
+		//return (RuleBaseValues) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(RuleBaseValues.class, crit));
 	}
 
 	public List<RuleBaseValues> findRuleBaseValuesByResponsibilityReviewer(String reviewerName, String type) {
@@ -212,17 +218,17 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		subCrit.addLike("responsibilityId", responsibilityId);
 		subQuery = QueryFactory.newReportQuery(RuleResponsibility.class, subCrit);
 		subQuery.setAttributes(new String[] {"RULE_ID"});
-		crit2.addIn("ruleBaseValuesId", subQuery);
+		crit2.addIn("id", subQuery);
 		crit2.addEqualTo("currentInd", 1);
 		QueryByCriteria outerQuery = QueryFactory.newQuery(RuleBaseValues.class, crit2);
 		RuleBaseValues rbv = (RuleBaseValues)this.getPersistenceBrokerTemplate().getObjectByQuery(outerQuery);
 		Criteria finalCrit = new Criteria();
 		finalCrit.addEqualTo("responsibilityId", responsibilityId);
-		finalCrit.addEqualTo("ruleBaseValuesId", rbv.getRuleBaseValuesId());
+		finalCrit.addEqualTo("ruleBaseValuesId", rbv.getId());
 		RuleResponsibility rResp = (RuleResponsibility)this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(RuleResponsibility.class, finalCrit));
 		
 		if(rResp != null){
-			if(rResp.getRuleBaseValuesId().equals(rbv.getRuleBaseValuesId())){
+			if(rResp.getRuleBaseValuesId().equals(rbv.getId())){
 				return rResp;
 			}
 		}	
@@ -233,10 +239,10 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 	public List<RuleBaseValues> search(String docTypeName, String ruleId, String ruleTemplateId, String ruleDescription, String workgroupId, String principalId, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
         Criteria crit = getSearchCriteria(docTypeName, ruleTemplateId, ruleDescription, delegateRule, activeInd, extensionValues);
         if (ruleId != null) {
-            crit.addEqualTo("ruleBaseValuesId", ruleId);
+            crit.addEqualTo("id", ruleId);
         }
         if (workgroupId != null) {
-            crit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupId));
+            crit.addIn("id", getResponsibilitySubQuery(workgroupId));
         }
         List<String> workgroupIds = new ArrayList<String>();
         Boolean searchUser = Boolean.FALSE;
@@ -263,7 +269,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
         }
         ReportQueryByCriteria query = getResponsibilitySubQuery(workgroupIds, principalId, searchUser, searchUserInWorkgroups);
         if (query != null) {
-        	crit.addIn("responsibilities.ruleBaseValuesId", query);
+        	crit.addIn("id", query);
         }
 
 		return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleBaseValues.class, crit, true));
@@ -344,7 +350,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
         crit.addEqualTo("currentInd", Boolean.TRUE);
         crit.addEqualTo("templateRuleInd", Boolean.FALSE);
         if (activeInd != null) {
-            crit.addEqualTo("activeInd", activeInd);
+            crit.addEqualTo("active", activeInd);
         }
         if (docTypeName != null) {
             crit.addLike("UPPER(docTypeName)", docTypeName.toUpperCase());
@@ -469,8 +475,8 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 				ResultSet rs = null;
 				try {
 					ps = pb.serviceConnectionManager().getConnection().prepareStatement(OLD_DELEGATIONS_SQL);
-					ps.setString(1, oldRule.getRuleBaseValuesId());
-					ps.setString(2, newRule.getRuleBaseValuesId());
+					ps.setString(1, oldRule.getId());
+					ps.setString(2, newRule.getId());
 					rs = ps.executeQuery();
 					while (rs.next()) {
 						oldDelegations.add(findRuleBaseValuesById(rs.getString(1)));

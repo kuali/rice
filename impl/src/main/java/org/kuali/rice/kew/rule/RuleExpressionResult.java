@@ -16,6 +16,7 @@
 package org.kuali.rice.kew.rule;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -36,7 +37,7 @@ public class RuleExpressionResult {
     /**
      * Any responsibilities generated from a successful evaluation
      */
-    private final List<RuleResponsibility> responsibilities;
+    private final List<org.kuali.rice.kew.api.rule.RuleResponsibility> responsibilities;
 
     /**
      * Constructs a rule expression result with a success indicator but no responsibilities 
@@ -53,7 +54,7 @@ public class RuleExpressionResult {
      * @param success whether the expression succeeded
      * @param responsibilities any responsibilities generated from a successful evaluation
      */
-    public RuleExpressionResult(Rule rule, boolean success, List<RuleResponsibility> responsibilities) {
+    public RuleExpressionResult(Rule rule, boolean success, List<org.kuali.rice.kew.api.rule.RuleResponsibility> responsibilities) {
         this.rule = rule;
         this.success = success;
         this.responsibilities = responsibilities;
@@ -64,12 +65,11 @@ public class RuleExpressionResult {
      * @param success whether the expression succeeded
      * @param responsibility a single responsibility generated from a successful evaluation
      */
-    public RuleExpressionResult(Rule rule, boolean success, RuleResponsibility responsibility) {
+    public RuleExpressionResult(Rule rule, boolean success, org.kuali.rice.kew.api.rule.RuleResponsibility responsibility) {
         this.rule = rule;
         this.success = success;
         if (responsibility != null) {
-            responsibilities = new ArrayList<RuleResponsibility>();
-            responsibilities.add(responsibility);
+            responsibilities = Collections.singletonList(responsibility);
         } else {
             responsibilities = null;
         }
@@ -92,7 +92,7 @@ public class RuleExpressionResult {
     /**
      * @return any responsibilities generated from a successful evaluation
      */
-    public List<RuleResponsibility> getResponsibilities() {
+    public List<org.kuali.rice.kew.api.rule.RuleResponsibility> getResponsibilities() {
         return responsibilities;
     }
 

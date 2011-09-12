@@ -60,7 +60,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		"newRsp.rule_rsp_id=newDel.rule_rsp_id)";
 
 	public void save(RuleBaseValues ruleBaseValues) {
-		if(ruleBaseValues.getRuleBaseValuesId()==null){
+		if(ruleBaseValues.getId()==null){
 			entityManager.persist(ruleBaseValues);
 		}else{
 			OrmUtils.merge(entityManager, ruleBaseValues);
@@ -72,7 +72,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		crit.in("docTypeName", documentTypes);
 		crit.eq("ruleTemplateId", ruleTemplateId);
 		crit.eq("currentInd", Boolean.TRUE);
-		crit.eq("activeInd", Boolean.TRUE);
+		crit.eq("active", Boolean.TRUE);
 		crit.eq("delegateRule", Boolean.FALSE);
 		crit.eq("templateRuleInd", Boolean.FALSE);
 
@@ -84,7 +84,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		Criteria crit = new Criteria(RuleBaseValues.class.getName());
 		crit.in("docTypeName", documentTypes);
 		crit.eq("ruleTemplateId", ruleTemplateId);
-		crit.eq("activeInd", Boolean.TRUE);
+		crit.eq("active", Boolean.TRUE);
 		crit.eq("delegateRule", Boolean.FALSE);
 		crit.eq("templateRuleInd", Boolean.FALSE);
 		if (effectiveDate != null) {
@@ -101,17 +101,17 @@ public class RuleDAOJpaImpl implements RuleDAO {
 
 		Criteria fromCrit = new Criteria(RuleBaseValues.class.getName());
 		Criteria fromNullCrit = new Criteria(RuleBaseValues.class.getName());
-		fromNullCrit.isNull("fromDate");
+		fromNullCrit.isNull("fromDateValue");
 		Criteria fromLessOrEqualCrit = new Criteria(RuleBaseValues.class.getName());
-		fromLessOrEqualCrit.lte("fromDate", new Timestamp(date.getTime()));
+		fromLessOrEqualCrit.lte("fromDateValue", new Timestamp(date.getTime()));
 		fromCrit.or(fromNullCrit);
 		fromCrit.or(fromLessOrEqualCrit);
 
 		Criteria toCrit = new Criteria(RuleBaseValues.class.getName());
 		Criteria toNullCrit = new Criteria(RuleBaseValues.class.getName());
-		toNullCrit.isNull("toDate");
+		toNullCrit.isNull("toDateValue");
 		Criteria toGreaterOrEqualCrit = new Criteria(RuleBaseValues.class.getName());
-		toGreaterOrEqualCrit.gte("toDate", new Timestamp(date.getTime()));
+		toGreaterOrEqualCrit.gte("toDateValue", new Timestamp(date.getTime()));
 		toCrit.or(toNullCrit);
 		toCrit.or(toGreaterOrEqualCrit);
 
@@ -157,7 +157,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 			return null;
 		}
 		Criteria crit = new Criteria(RuleBaseValues.class.getName());
-		crit.eq("ruleBaseValuesId", ruleBaseValuesId);
+		crit.eq("id", ruleBaseValuesId);
 		return (RuleBaseValues) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
 	}
 
@@ -227,7 +227,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 	public List<RuleBaseValues> search(String docTypeName, String ruleId, String ruleTemplateId, String ruleDescription, String groupId, String principalId, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
         Criteria crit = getSearchCriteria(docTypeName, ruleTemplateId, ruleDescription, delegateRule, activeInd, extensionValues);
         if (ruleId != null) {
-            crit.eq("ruleBaseValuesId", ruleId);
+            crit.eq("id", ruleId);
         }
         if (groupId != null) {
             //crit.in("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(groupId), "ruleBaseValuesId");
@@ -343,7 +343,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
         crit.eq("currentInd", Boolean.TRUE);
         crit.eq("templateRuleInd", Boolean.FALSE);
         if (activeInd != null) {
-            crit.eq("activeInd", activeInd);
+            crit.eq("active", activeInd);
         }
         if (docTypeName != null) {
             crit.like("UPPER(__JPA_ALIAS[[0]]__.docTypeName)", docTypeName.toUpperCase());
@@ -466,8 +466,8 @@ public class RuleDAOJpaImpl implements RuleDAO {
 	public List findOldDelegations(final RuleBaseValues oldRule, final RuleBaseValues newRule) {
 
 		Query q = entityManager.createNativeQuery(OLD_DELEGATIONS_SQL);
-		q.setParameter(1, oldRule.getRuleBaseValuesId());
-		q.setParameter(2, newRule.getRuleBaseValuesId());
+		q.setParameter(1, oldRule.getId());
+		q.setParameter(2, newRule.getId());
 		List oldDelegations = new ArrayList();
 		for(Object l:q.getResultList()){
 			// FIXME: KULRICE-5201 - This used to be a cast by new Long(l) -- assuming that the Object here in result list is actually a string or is castable to string by .toString()

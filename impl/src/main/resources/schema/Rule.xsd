@@ -87,12 +87,12 @@
 	  		</documentation>
 	  	</annotation>
 	  </element>
-	  <element name="fromDate" type="c:ShortStringType" minOccurs="0" maxOccurs="1">
+	  <element name="fromDateValue" type="c:ShortStringType" minOccurs="0" maxOccurs="1">
 	    <annotation>
 	      <documentation>The date at which this rule becomes active</documentation>
 	    </annotation>
 	  </element>
-	  <element name="toDate" type="c:ShortStringType" minOccurs="0" maxOccurs="1">
+	  <element name="toDateValue" type="c:ShortStringType" minOccurs="0" maxOccurs="1">
 	    <annotation>
 	      <documentation>The date until which this rule is active</documentation>
 	    </annotation>

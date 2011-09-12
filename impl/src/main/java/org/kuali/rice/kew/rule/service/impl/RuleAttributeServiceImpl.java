@@ -25,7 +25,6 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.dao.RuleAttributeDAO;
 import org.kuali.rice.kew.rule.service.RuleAttributeService;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.xml.RuleAttributeXmlParser;
 import org.kuali.rice.kew.xml.export.RuleAttributeXmlExporter;
 
@@ -88,7 +87,7 @@ public class RuleAttributeServiceImpl implements RuleAttributeService {
             LOG.error("Rule attribute name is missing");
         } else {
         	ruleAttribute.setName(ruleAttribute.getName().trim());
-            if (ruleAttribute.getRuleAttributeId() == null) {
+            if (ruleAttribute.getId() == null) {
                 RuleAttribute nameInUse = findByName(ruleAttribute.getName());
                 if (nameInUse != null) {
                     errors.add(new WorkflowServiceErrorImpl("Rule attribute name already in use", "routetemplate.ruleattribute.name.duplicate"));
@@ -96,11 +95,11 @@ public class RuleAttributeServiceImpl implements RuleAttributeService {
                 }
             }
         }
-        if (ruleAttribute.getClassName() == null || ruleAttribute.getClassName().trim().equals("")) {
+        if (ruleAttribute.getResourceDescriptor() == null || ruleAttribute.getResourceDescriptor().trim().equals("")) {
             errors.add(new WorkflowServiceErrorImpl("Please enter a rule attribute class name.", RULE_ATTRIBUTE_CLASS_REQUIRED));
             LOG.error("Rule attribute class name is missing");
         } else {
-        	ruleAttribute.setClassName(ruleAttribute.getClassName().trim());
+        	ruleAttribute.setResourceDescriptor(ruleAttribute.getResourceDescriptor().trim());
         }
 
         LOG.debug("end validating ruleAttribute");
@@ -118,7 +117,7 @@ public class RuleAttributeServiceImpl implements RuleAttributeService {
     public Object loadRuleAttributeService(RuleAttribute attribute, String defaultApplicationId) {
         Object attributeService = null;
         // first check if the class name is a valid and available java class
-        String attributeName = attribute.getClassName();
+        String attributeName = attribute.getResourceDescriptor();
         ObjectDefinition attributeObjectDefinition = getAttributeObjectDefinition(attribute, defaultApplicationId);
         attributeService = GlobalResourceLoader.getObject(attributeObjectDefinition);
         if (attributeService == null) {
@@ -130,9 +129,9 @@ public class RuleAttributeServiceImpl implements RuleAttributeService {
 
     protected ObjectDefinition getAttributeObjectDefinition(RuleAttribute ruleAttribute, String defaultApplicationId) {
         if (ruleAttribute.getApplicationId() == null && defaultApplicationId != null) {
-            return new ObjectDefinition(ruleAttribute.getClassName(), defaultApplicationId);
+            return new ObjectDefinition(ruleAttribute.getResourceDescriptor(), defaultApplicationId);
         } else {
-            return new ObjectDefinition(ruleAttribute.getClassName(), ruleAttribute.getApplicationId());
+            return new ObjectDefinition(ruleAttribute.getResourceDescriptor(), ruleAttribute.getApplicationId());
         }
     }
 

@@ -17,7 +17,6 @@
 package org.kuali.rice.kew.definition;
 
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
-import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 
@@ -34,6 +33,7 @@ public class AttributeDefinition {
 	private ObjectDefinition objectDefinition;
 
 	public AttributeDefinition(RuleAttribute ruleAttribute, ExtensionDefinition extensionDefinition, ObjectDefinition objectDefinition) {
+        this.ruleAttribute = ruleAttribute;
 		this.extensionDefinition = extensionDefinition;
 		this.objectDefinition = objectDefinition;
 	}

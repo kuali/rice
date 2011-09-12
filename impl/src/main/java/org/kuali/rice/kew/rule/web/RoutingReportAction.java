@@ -16,22 +16,6 @@
  */
 package org.kuali.rice.kew.rule.web;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -54,8 +38,8 @@ import org.kuali.rice.kew.routelog.web.RouteLogForm;
 import org.kuali.rice.kew.rule.FlexRM;
 import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
-import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -66,6 +50,21 @@ import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.util.GlobalVariables;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -154,7 +153,7 @@ public class RoutingReportAction extends KewKualiAction {
 			for (Iterator iter = routeNodes.iterator(); iter.hasNext();) {
                 RouteNode routeNode = (RouteNode) iter.next();
 				if (routeNode.isFlexRM()) {
-					RuleTemplate ruleTemplate = getRuleTemplateService().findByRuleTemplateName(routeNode.getRouteMethodName());
+					RuleTemplateBo ruleTemplate = getRuleTemplateService().findByRuleTemplateName(routeNode.getRouteMethodName());
 					if (ruleTemplate != null) {
 					    ruleTemplateContainers.add(new RouteReportRuleTemplateContainer(ruleTemplate, routeNode));
 						if (ruleTemplate.getDelegationTemplate() != null) {
@@ -164,7 +163,7 @@ public class RoutingReportAction extends KewKualiAction {
 				}
 			}
 		} else {
-			RuleTemplate ruleTemplate = getRuleTemplateService().findByRuleTemplateId(routingForm.getRuleTemplateId());
+			RuleTemplateBo ruleTemplate = getRuleTemplateService().findByRuleTemplateId(routingForm.getRuleTemplateId());
 			RouteNode routeNode = new RouteNode();
 			routeNode.setRouteNodeName(ruleTemplate.getName());
 			ruleTemplateContainers.add(new RouteReportRuleTemplateContainer(ruleTemplate, routeNode));
@@ -178,9 +177,9 @@ public class RoutingReportAction extends KewKualiAction {
             List attributes = new ArrayList();
             for (Object element : ruleTemplateContainers) {
                 RouteReportRuleTemplateContainer ruleTemplateContainer = (RouteReportRuleTemplateContainer) element;
-                RuleTemplate ruleTemplate = ruleTemplateContainer.ruleTemplate;
+                RuleTemplateBo ruleTemplate = ruleTemplateContainer.ruleTemplate;
                 for (Object element2 : ruleTemplate.getActiveRuleTemplateAttributes()) {
-                    RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) element2;
+                    RuleTemplateAttributeBo ruleTemplateAttribute = (RuleTemplateAttributeBo) element2;
                     if (!ruleTemplateAttribute.isWorkflowAttribute()) {
                         continue;
                     }
@@ -224,12 +223,12 @@ public class RoutingReportAction extends KewKualiAction {
 		context.setActivationContext(new ActivationContext(ActivationContext.CONTEXT_IS_SIMULATION));
 			try {
 			    RouteReportRuleTemplateContainer ruleTemplateContainer = (RouteReportRuleTemplateContainer) element;
-				RuleTemplate ruleTemplate = ruleTemplateContainer.ruleTemplate;
+				RuleTemplateBo ruleTemplate = ruleTemplateContainer.ruleTemplate;
 				RouteNode routeLevel = ruleTemplateContainer.routeNode;
 
 				if (!alreadyProcessedRuleTemplateNames.contains(ruleTemplate.getName())) {
 				    alreadyProcessedRuleTemplateNames.add(ruleTemplate.getName());
-    				List actionRequests = flexRM.getActionRequests(routeHeader, routeLevel, null, ruleTemplate.getName());
+    				List<ActionRequestValue> actionRequests = flexRM.getActionRequests(routeHeader, routeLevel, null, ruleTemplate.getName());
 
     				numberOfActionRequests += actionRequests.size();
     				numberOfRules += flexRM.getNumberOfMatchingRules();
@@ -274,18 +273,17 @@ public class RoutingReportAction extends KewKualiAction {
 	}
 
 	private class RouteReportRuleTemplateContainer {
-	    public RuleTemplate ruleTemplate = null;
+	    public RuleTemplateBo ruleTemplate = null;
 	    public RouteNode routeNode = null;
-	    public RouteReportRuleTemplateContainer(RuleTemplate template, RouteNode node) {
+	    public RouteReportRuleTemplateContainer(RuleTemplateBo template, RouteNode node) {
 	        this.ruleTemplate = template;
 	        this.routeNode = node;
 	    }
 	}
 
-	public long populateActionRequestsWithRouteLevelInformationAndIterateMagicCounter(RouteNode routeLevel, List actionRequests, long magicCounter) {
+	public long populateActionRequestsWithRouteLevelInformationAndIterateMagicCounter(RouteNode routeLevel, List<ActionRequestValue> actionRequests, long magicCounter) {
 
-		for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
-			ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
+		for (ActionRequestValue actionRequest : actionRequests) {
 			populateActionRequestsWithRouteLevelInformationAndIterateMagicCounter(routeLevel, actionRequest.getChildrenRequests(), magicCounter);
 			actionRequest.setStatus(ActionRequestStatus.INITIALIZED.getCode());
 //			actionRequest.setRouteMethodName(routeLevel.getRouteMethodName());
@@ -343,11 +341,10 @@ public class RoutingReportAction extends KewKualiAction {
                     throw new RuntimeException("Document Type is missing or invalid");
                 }
                 routingReportForm.getRuleTemplateAttributes().clear();
-                List routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(docType, true);
-                for (Iterator iter = routeNodes.iterator(); iter.hasNext();) {
-                    RouteNode routeNode = (RouteNode) iter.next();
+                List<RouteNode> routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(docType, true);
+                for (RouteNode routeNode : routeNodes) {
                     if (routeNode.isFlexRM()) {
-                        RuleTemplate ruleTemplate = getRuleTemplateService().findByRuleTemplateName(routeNode.getRouteMethodName());
+                        RuleTemplateBo ruleTemplate = getRuleTemplateService().findByRuleTemplateName(routeNode.getRouteMethodName());
                         if (ruleTemplate != null) {
                             loadRuleTemplateOnForm(ruleTemplate, routingReportForm, request, false);
                             if (ruleTemplate.getDelegationTemplate() != null) {
@@ -361,7 +358,7 @@ public class RoutingReportAction extends KewKualiAction {
         } else if (routingReportForm.getReportType().equals(TEMPLATE_REPORTING)) {
             routingReportForm.setRuleTemplates(getRuleTemplateService().findAll());
             if (routingReportForm.getRuleTemplateId() != null) {
-                RuleTemplate ruleTemplate = getRuleTemplateService().findByRuleTemplateId(routingReportForm.getRuleTemplateId());
+                RuleTemplateBo ruleTemplate = getRuleTemplateService().findByRuleTemplateId(routingReportForm.getRuleTemplateId());
                 routingReportForm.getRuleTemplateAttributes().clear();
                 loadRuleTemplateOnForm(ruleTemplate, routingReportForm, request, false);
                 if (ruleTemplate.getDelegationTemplate() != null) {
@@ -372,16 +369,15 @@ public class RoutingReportAction extends KewKualiAction {
         return null;
 	}
 
-	private void loadRuleTemplateOnForm(RuleTemplate ruleTemplate, RoutingReportForm routingReportForm, HttpServletRequest request, boolean isDelegate) {
+	private void loadRuleTemplateOnForm(RuleTemplateBo ruleTemplate, RoutingReportForm routingReportForm, HttpServletRequest request, boolean isDelegate) {
 
-		Map fieldValues = new HashMap();
+		Map<String, String> fieldValues = new HashMap<String, String>();
 
-		List ruleTemplateAttributes = ruleTemplate.getActiveRuleTemplateAttributes();
+		List<RuleTemplateAttributeBo> ruleTemplateAttributes = ruleTemplate.getActiveRuleTemplateAttributes();
 		Collections.sort(ruleTemplateAttributes);
 
-		List rows = new ArrayList();
-		for (Iterator iter = ruleTemplateAttributes.iterator(); iter.hasNext();) {
-			RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iter.next();
+		List<Row> rows = new ArrayList<Row>();
+		for (RuleTemplateAttributeBo ruleTemplateAttribute : ruleTemplateAttributes) {
 			if (!ruleTemplateAttribute.isWorkflowAttribute()) {
 				continue;
 			}
@@ -394,7 +390,7 @@ public class RoutingReportAction extends KewKualiAction {
 			for (Object element : workflowAttribute.getRoutingDataRows()) {
 				Row row = (Row) element;
 
-				List fields = new ArrayList();
+				List<Field> fields = new ArrayList<Field>();
 				for (Object element2 : row.getFields()) {
 					Field field = (Field) element2;
 					if (request.getParameter(field.getPropertyName()) != null) {
@@ -411,7 +407,7 @@ public class RoutingReportAction extends KewKualiAction {
 			List<Row> rdRows = workflowAttribute.getRoutingDataRows();
 			for (Row row : rdRows)
 			{
-				List fields = new ArrayList();
+				List<Field> fields = new ArrayList<Field>();
 				List<Field> rowFields = row.getFields();
 				for (Field field : rowFields )
 				{

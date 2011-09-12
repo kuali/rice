@@ -70,7 +70,7 @@
 	                    <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.MAINTENANCE_ACTION}">
 	                        <c:param name="methodToCall" value="start" />
 	                        <c:param name="businessObjectClassName" value="org.kuali.rice.kew.rule.RuleBaseValues"/>
-	                        <c:param name="ruleCreationValues.ruleTemplateId" value="${routeLevel.ruleTemplate.ruleTemplateId}"/>
+	                        <c:param name="ruleCreationValues.ruleTemplateId" value="${routeLevel.ruleTemplate.id}"/>
 	                        <c:param name="ruleCreationValues.ruleTemplateName" value="${routeLevel.ruleTemplate.name}"/>
 	                        <c:param name="ruleCreationValues.docTypeName" value="${documentType.name}"/>
 	                      </c:url>" target="_blank">Add Rule</a>&nbsp;
@@ -93,7 +93,7 @@
 	                          <c:param name="docFormKey" value="88888888"/>
 	                          <c:param name="delegationRuleBaseValues.documentType.name" value="${documentType.name}"/>
 	                          <c:param name="delegationRuleBaseValues.ruleTemplate.name" value="${routeLevel.ruleTemplate.name}"/>
-	                          <c:param name="delegationRuleBaseValues.ruleTemplate.ruleTemplateId" value="${routeLevel.ruleTemplate.ruleTemplateId}"/>
+	                          <c:param name="delegationRuleBaseValues.ruleTemplate.id" value="${routeLevel.ruleTemplate.id}"/>
 	                        </c:url>" target="_blank">Add Delegation</a>&nbsp;
 	                      <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.LOOKUP_ACTION}">
 	                          <c:param name="businessObjectClassName" value="org.kuali.rice.kew.rule.RuleDelegation"/>
@@ -142,7 +142,7 @@
                     <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.MAINTENANCE_ACTION}">
                         <c:param name="methodToCall" value="start" />
                         <c:param name="businessObjectClassName" value="org.kuali.rice.kew.rule.RuleBaseValues"/>
-                        <c:param name="ruleCreationValues.ruleTemplateId" value="${routeLevel.ruleTemplate.ruleTemplateId}"/>
+                        <c:param name="ruleCreationValues.ruleTemplateId" value="${routeLevel.ruleTemplate.id}"/>
                         <c:param name="ruleCreationValues.ruleTemplateName" value="${routeLevel.ruleTemplate.name}"/>
                         <c:param name="ruleCreationValues.docTypeName" value="${documentType.name}"/>
                       </c:url>" target="_blank">Add Rule</a>&nbsp;
@@ -165,7 +165,7 @@
                           <c:param name="docFormKey" value="88888888"/>
                           <c:param name="delegationRuleBaseValues.documentType.name" value="${documentType.name}"/>
                           <c:param name="delegationRuleBaseValues.ruleTemplate.name" value="${routeLevel.ruleTemplate.name}"/>
-                          <c:param name="delegationRuleBaseValues.ruleTemplate.ruleTemplateId" value="${routeLevel.ruleTemplate.ruleTemplateId}"/>
+                          <c:param name="delegationRuleBaseValues.ruleTemplate.id" value="${routeLevel.ruleTemplate.id}"/>
                         </c:url>" target="_blank">Add Delegation</a>&nbsp;
                       <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.LOOKUP_ACTION}">
                           <c:param name="businessObjectClassName" value="org.kuali.rice.kew.rule.RuleDelegation"/>

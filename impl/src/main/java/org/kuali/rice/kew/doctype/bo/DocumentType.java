@@ -467,7 +467,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
                 if (!(attributeService instanceof SearchableAttribute)) {
                     throw new WorkflowRuntimeException("Service for given attribute was found, but it does not implement SearchableAttribute: " + attributeService);
                 }
-                ExtensionDefinition extensionDefinition = KewApiServiceLocator.getExtensionRepositoryService().getExtensionById(ruleAttribute.getRuleAttributeId());
+                ExtensionDefinition extensionDefinition = KewApiServiceLocator.getExtensionRepositoryService().getExtensionById(ruleAttribute.getId());
                 loadedAttributes.add(new ExtensionHolder<SearchableAttribute>(ruleAttribute, extensionDefinition, (SearchableAttribute)attributeService));
             } catch (RiceRemoteServiceConnectionException e) {
                 LOG.warn("Unable to connect to load searchable attribute for " + ruleAttribute, e);
@@ -1216,9 +1216,9 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
 
     public ObjectDefinition getAttributeObjectDefinition(RuleAttribute ruleAttribute) {
         if (ruleAttribute.getApplicationId() == null) {
-            return new ObjectDefinition(ruleAttribute.getClassName(), this.getApplicationId());
+            return new ObjectDefinition(ruleAttribute.getResourceDescriptor(), this.getApplicationId());
         } else {
-            return new ObjectDefinition(ruleAttribute.getClassName(), ruleAttribute.getApplicationId());
+            return new ObjectDefinition(ruleAttribute.getResourceDescriptor(), ruleAttribute.getApplicationId());
         }
     }
 

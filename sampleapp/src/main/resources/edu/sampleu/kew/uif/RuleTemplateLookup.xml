@@ -20,22 +20,22 @@
 
   <bean id="RuleTemplate-LookupView" parent="LookupView">
     <property name="title" value="Rule Template Lookup" />
-    <property name="dataObjectClassName" value="org.kuali.rice.kew.rule.bo.RuleTemplate" />
+    <property name="dataObjectClassName" value="org.kuali.rice.kew.rule.bo.RuleTemplateBo" />
     <property name="defaultSortAttributeNames">
       <list>
-      	<value>ruleTemplateId</value>
+      	<value>id</value>
       </list>
     </property>  
     <property name="criteriaFields">
       <list>
         <bean parent="LookupCriteriaAttributeField" p:propertyName="name" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="ruleTemplateId" />
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="id" />
         <bean parent="LookupCriteriaAttributeField" p:propertyName="description" />
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="ruleTemplateId" />
+        <bean parent="AttributeField" p:propertyName="id" />
         <bean parent="AttributeField" p:propertyName="name" />
         <bean parent="AttributeField" p:propertyName="description" />
         <bean parent="AttributeField" p:propertyName="delegationTemplate.name" />

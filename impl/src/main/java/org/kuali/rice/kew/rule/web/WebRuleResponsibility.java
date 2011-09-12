@@ -107,7 +107,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 		if (delegationRulesMaterialized) {
 			for (Iterator iterator = getDelegationRules().iterator(); iterator.hasNext();) {
 				RuleDelegation ruleDelegation = (RuleDelegation) iterator.next();
-				WebRuleBaseValues webRule = (WebRuleBaseValues) ruleDelegation.getDelegationRuleBaseValues();
+				WebRuleBaseValues webRule = (WebRuleBaseValues) ruleDelegation.getDelegationRule();
 				webRule.initialize();
 			}
 		}
@@ -152,19 +152,19 @@ public class WebRuleResponsibility extends RuleResponsibility {
 			for (Iterator iterator = getDelegationRules().iterator(); iterator.hasNext();) {
 				RuleDelegation ruleDelegation = (RuleDelegation) iterator.next();
 				WebRuleBaseValues webRule = new WebRuleBaseValues();
-				webRule.load(ruleDelegation.getDelegationRuleBaseValues());
-				webRule.edit(ruleDelegation.getDelegationRuleBaseValues());
-				ruleDelegation.setDelegationRuleBaseValues(webRule);
+				webRule.load(ruleDelegation.getDelegationRule());
+				webRule.edit(ruleDelegation.getDelegationRule());
+				ruleDelegation.setDelegationRule(webRule);
 			}
 		}
 	}
 
 	public RuleDelegation addNewDelegation() {
 		RuleDelegation ruleDelegation = new RuleDelegation();
-		ruleDelegation.setDelegationRuleBaseValues(new WebRuleBaseValues());
+		ruleDelegation.setDelegationRule(new WebRuleBaseValues());
 		ruleDelegation.setDelegationType(DelegationType.PRIMARY.getCode());
-		ruleDelegation.getDelegationRuleBaseValues().setDelegateRule(Boolean.TRUE);
-		ruleDelegation.getDelegationRuleBaseValues().setDocTypeName(getRuleBaseValues().getDocTypeName());
+		ruleDelegation.getDelegationRule().setDelegateRule(Boolean.TRUE);
+		ruleDelegation.getDelegationRule().setDocTypeName(getRuleBaseValues().getDocTypeName());
 		getDelegationRules().add(ruleDelegation);
 		showDelegations = true;
 		return ruleDelegation;
@@ -290,7 +290,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 		if (delegationRulesMaterialized) {
 			for (Iterator iterator = getDelegationRules().iterator(); iterator.hasNext();) {
 				RuleDelegation delegation = (RuleDelegation) iterator.next();
-				((WebRuleBaseValues) delegation.getDelegationRuleBaseValues()).establishRequiredState();
+				((WebRuleBaseValues) delegation.getDelegationRule()).establishRequiredState();
 			}
 		}
 	}
@@ -336,7 +336,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 		for (Iterator respIterator = getDelegationRules().iterator(); respIterator.hasNext();) {
 			String delPrefix = keyPrefix + "delegationRule[" + delIndex + "].delegationRuleBaseValues.";
 			RuleDelegation ruleDelegation = (RuleDelegation) respIterator.next();
-			((WebRuleBaseValues) ruleDelegation.getDelegationRuleBaseValues()).validateRule(delPrefix, errors);
+			((WebRuleBaseValues) ruleDelegation.getDelegationRule()).validateRule(delPrefix, errors);
 		}
 	}
 
@@ -356,8 +356,8 @@ public class WebRuleResponsibility extends RuleResponsibility {
 		for (Iterator iterator = getDelegationRules().iterator(); iterator.hasNext();) {
 			RuleDelegation ruleDelegation = (RuleDelegation) iterator.next();
 			WebRuleBaseValues webRule = new WebRuleBaseValues();
-			webRule.edit(ruleDelegation.getDelegationRuleBaseValues());
-			ruleDelegation.setDelegationRuleBaseValues(webRule);
+			webRule.edit(ruleDelegation.getDelegationRule());
+			ruleDelegation.setDelegationRule(webRule);
 		}
 		delegationRulesMaterialized = true;
 		populatePreviousVersionIds();
@@ -367,14 +367,14 @@ public class WebRuleResponsibility extends RuleResponsibility {
 		if (delegationRulesMaterialized) {
 			for (Iterator iterator = getDelegationRules().iterator(); iterator.hasNext();) {
 				RuleDelegation delegation = (RuleDelegation) iterator.next();
-				((WebRuleBaseValues) delegation.getDelegationRuleBaseValues()).populatePreviousVersionIds();
+				((WebRuleBaseValues) delegation.getDelegationRule()).populatePreviousVersionIds();
 			}
 		}
 	}
 
 	private void fetchDelegations() {
-		if (getRuleResponsibilityKey() != null) {
-			RuleResponsibility responsibility = getRuleService().findByRuleResponsibilityId(getRuleResponsibilityKey());
+		if (getId() != null) {
+			RuleResponsibility responsibility = getRuleService().findByRuleResponsibilityId(getId());
 			if (responsibility == null) {
 				return;
 			}
@@ -397,18 +397,18 @@ public class WebRuleResponsibility extends RuleResponsibility {
 			//delegation.setRuleResponsibility(this);
 			delegation.setResponsibilityId(null);
 
-			RuleBaseValues rule = delegation.getDelegationRuleBaseValues();
+			RuleBaseValues rule = delegation.getDelegationRule();
 			rule.setVersionNumber(null);
-			rule.setPreviousVersionId(rule.getRuleBaseValuesId());
+			rule.setPreviousVersionId(rule.getId());
 			rule.setDocumentId(null);
-			rule.setRuleBaseValuesId(null);
+			rule.setId(null);
 
-			for (Iterator iterator = rule.getResponsibilities().iterator(); iterator.hasNext();) {
+			for (Iterator iterator = rule.getRuleResponsibilities().iterator(); iterator.hasNext();) {
 				RuleResponsibility responsibility = (RuleResponsibility) iterator.next();
 				responsibility.setVersionNumber(null);
 				responsibility.setRuleBaseValuesId(null);
 				responsibility.setRuleBaseValues(rule);
-				responsibility.setRuleResponsibilityKey(null);
+				responsibility.setId(null);
 			}
 
 			for (Iterator iterator = rule.getRuleExtensions().iterator(); iterator.hasNext();) {
@@ -463,9 +463,9 @@ public class WebRuleResponsibility extends RuleResponsibility {
 				for (Iterator iterator = delegationRules.iterator(); iterator.hasNext();) {
 					RuleDelegation ruleDelegation = (RuleDelegation) iterator.next();
 					WebRuleBaseValues webRule = new WebRuleBaseValues();
-					webRule.load(ruleDelegation.getDelegationRuleBaseValues());
+					webRule.load(ruleDelegation.getDelegationRule());
 					webRule.establishRequiredState();
-					ruleDelegation.setDelegationRuleBaseValues(webRule);
+					ruleDelegation.setDelegationRule(webRule);
 				}
 				delegationRulesMaterialized = true;
 

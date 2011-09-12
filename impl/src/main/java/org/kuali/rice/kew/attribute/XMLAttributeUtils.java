@@ -49,7 +49,7 @@ public final class XMLAttributeUtils {
      */
 	public static void establishFieldLookup(Field field, Node lookupNode) {
 		NamedNodeMap quickfinderAttributes = lookupNode.getAttributes();
-		String businessObjectClass = quickfinderAttributes.getNamedItem("dataObjectClass").getNodeValue();
+		String businessObjectClass = quickfinderAttributes.getNamedItem("businessObjectClass").getNodeValue();
 		field.setQuickFinderClassNameImpl(businessObjectClass);
 		for (int lcIndex = 0; lcIndex < lookupNode.getChildNodes().getLength(); lcIndex++) {
 			Map<String, String> fieldConversionsMap = new HashMap<String, String>();

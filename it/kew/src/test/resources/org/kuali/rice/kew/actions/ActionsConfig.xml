@@ -1253,8 +1253,8 @@
 			<documentType>NotificationTest</documentType>
 			<ruleTemplate>NotifyRightBranchTemplate</ruleTemplate>
 			<description>Notify Right Branch Rule 1</description>
-			<fromDate>05/30/2002</fromDate>
-			<toDate>05/30/2209</toDate>
+			<fromDateValue>05/30/2002</fromDateValue>
+			<toDateValue>05/30/2209</toDateValue>
 			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
@@ -1269,8 +1269,8 @@
 			<documentType>NotificationTest</documentType>
 			<ruleTemplate>NotifyFinalTemplate</ruleTemplate>
 			<description>Notify Final Rule 1</description>
-			<fromDate>05/30/2002</fromDate>
-			<toDate>05/30/2209</toDate>
+			<fromDateValue>05/30/2002</fromDateValue>
+			<toDateValue>05/30/2209</toDateValue>
 			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>

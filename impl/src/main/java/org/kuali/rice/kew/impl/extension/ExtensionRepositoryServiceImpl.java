@@ -7,9 +7,6 @@ import org.kuali.rice.kew.api.extension.ExtensionRepositoryService;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.service.RuleAttributeService;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Reference implementation of the {@code ExtensionRepositoryService}.  This implementation
  * essentially sits on top of the legacy "RuleAttribute" service.
@@ -39,21 +36,7 @@ public class ExtensionRepositoryServiceImpl implements ExtensionRepositoryServic
     }
 
     private ExtensionDefinition translateFromRuleAttribute(RuleAttribute ruleAttribute) {
-        if (ruleAttribute == null) {
-            return null;
-        }
-        ExtensionDefinition.Builder builder = ExtensionDefinition.Builder.create(ruleAttribute.getName(), ruleAttribute.getType(), ruleAttribute.getClassName());
-        builder.setApplicationId(ruleAttribute.getApplicationId());
-        builder.setDescription(ruleAttribute.getDescription());
-        builder.setId(ruleAttribute.getRuleAttributeId());
-        builder.setLabel(ruleAttribute.getLabel());
-        builder.setVersionNumber(ruleAttribute.getVersionNumber());
-        Map<String, String> configuration = new HashMap<String, String>();
-        if (StringUtils.isNotBlank(ruleAttribute.getXmlConfigData())) {
-            configuration.put(RuleAttribute.XML_CONFIG_DATA, ruleAttribute.getXmlConfigData());
-        }
-        builder.setConfiguration(configuration);
-        return builder.build();
+        return RuleAttribute.to(ruleAttribute);
     }
 
     public void setRuleAttributeService(RuleAttributeService ruleAttributeService) {

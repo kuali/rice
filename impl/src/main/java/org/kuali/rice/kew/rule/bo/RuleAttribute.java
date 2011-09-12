@@ -17,7 +17,9 @@
 package org.kuali.rice.kew.rule.bo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -33,10 +35,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
+import org.kuali.rice.kew.api.extension.ExtensionDefinitionContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 
@@ -48,14 +53,14 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
  */
 @Entity
 @Table(name="KREW_RULE_ATTR_T")
-//@Sequence(name="KREW_RTE_TMPL_S", property="ruleAttributeId")
+//@Sequence(name="KREW_RTE_TMPL_S", property="id")
 @NamedQueries({
   @NamedQuery(name="RuleAttribute.FindById",  query="select ra from RuleAttribute ra where ra.ruleAttributeId = :ruleAttributeId"),
   @NamedQuery(name="RuleAttribute.FindByName",  query="select ra from RuleAttribute ra where ra.name = :name"),
   @NamedQuery(name="RuleAttribute.FindByClassName",  query="select ra from RuleAttribute ra where ra.className = :className"),
   @NamedQuery(name="RuleAttribute.GetAllRuleAttributes",  query="select ra from RuleAttribute ra")
 })
-public class RuleAttribute extends PersistableBusinessObjectBase  {
+public class RuleAttribute extends PersistableBusinessObjectBase implements ExtensionDefinitionContract {
 
 	private static final long serialVersionUID = 1027673603158346349L;
 
@@ -68,7 +73,7 @@ public class RuleAttribute extends PersistableBusinessObjectBase  {
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="RULE_ATTR_ID")
-	private String ruleAttributeId;
+	private String id;
     @Column(name="NM")
 	private String name;
     @Column(name="LBL")
@@ -76,7 +81,7 @@ public class RuleAttribute extends PersistableBusinessObjectBase  {
     @Column(name="RULE_ATTR_TYP_CD")
 	private String type;
     @Column(name="CLS_NM")
-	private String className;
+	private String resourceDescriptor;
     @Column(name="DESC_TXT")
 	private String description;
     @Lob
@@ -88,7 +93,7 @@ public class RuleAttribute extends PersistableBusinessObjectBase  {
 	private String applicationId;
     
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
-           targetEntity=org.kuali.rice.kew.rule.bo.RuleTemplateAttribute.class, mappedBy="ruleAttribute")
+           targetEntity=RuleTemplateAttributeBo.class, mappedBy="ruleAttribute")
     @Fetch(value=FetchMode.SELECT)
 	private List ruleTemplateAttributes;
     @Transient
@@ -134,11 +139,11 @@ public class RuleAttribute extends PersistableBusinessObjectBase  {
     public void setName(String name) {
         this.name = name;
     }
-    public String getRuleAttributeId() {
-        return ruleAttributeId;
+    public String getId() {
+        return id;
     }
-    public void setRuleAttributeId(String ruleAttributeId) {
-        this.ruleAttributeId = ruleAttributeId;
+    public void setId(String id) {
+        this.id = id;
     }
     public String getType() {
         return type;
@@ -148,20 +153,20 @@ public class RuleAttribute extends PersistableBusinessObjectBase  {
     }
 
     /**
-     * @return Returns the className.
+     * @return Returns the resourceDescriptor.
      */
-    public String getClassName() {
-      return className;
+    public String getResourceDescriptor() {
+      return resourceDescriptor;
     }
     /**
-     * @param className The className to set.
+     * @param resourceDescriptor The className to set.
      */
-    public void setClassName(String className) {
-      this.className = className;
+    public void setResourceDescriptor(String resourceDescriptor) {
+      this.resourceDescriptor = resourceDescriptor;
     }
     
     public String getRuleAttributeActionsUrl() {
-        return "<a href=\"RuleAttributeReport.do?ruleAttributeId="+ruleAttributeId+"\" >report</a>";
+        return "<a href=\"RuleAttributeReport.do?id="+ id +"\" >report</a>";
     }
     
     public String getReturnUrl() {
@@ -175,10 +180,20 @@ public class RuleAttribute extends PersistableBusinessObjectBase  {
 		return xmlConfigData;
 	}
 
+    @Override
+    public Map<String, String> getConfiguration() {
+        Map<String, String> config = new HashMap<String, String>();
+        if (StringUtils.isNotBlank(getXmlConfigData())) {
+            config.put(XML_CONFIG_DATA, getXmlConfigData());
+        }
+        return config;
+    }
+
 	public void setXmlConfigData(String xmlConfigData) {
 		this.xmlConfigData = xmlConfigData;
 	}
 
+    @Override
 	public String getApplicationId() {
 		return applicationId;
 	}
@@ -186,4 +201,28 @@ public class RuleAttribute extends PersistableBusinessObjectBase  {
 	public void setApplicationId(String applicationId) {
 		this.applicationId = applicationId;
 	}
+
+    public static ExtensionDefinition to(RuleAttribute ruleAttribute) {
+        if (ruleAttribute == null) {
+            return null;
+        }
+        return ExtensionDefinition.Builder.create(ruleAttribute).build();
+    }
+
+    public static RuleAttribute from(ExtensionDefinition im) {
+        if (im == null) {
+            return null;
+        }
+        RuleAttribute bo = new RuleAttribute();
+        bo.setApplicationId(im.getApplicationId());
+        bo.setDescription(im.getDescription());
+        bo.setResourceDescriptor(im.getResourceDescriptor());
+        bo.setId(im.getId());
+        bo.setLabel(im.getLabel());
+        bo.setType(im.getType());
+        bo.setVersionNumber(im.getVersionNumber());
+        bo.setXmlConfigData(im.getConfiguration().get(XML_CONFIG_DATA));
+
+        return bo;
+    }
 }

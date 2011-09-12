@@ -40,7 +40,7 @@ public class RuleResponsibilityDAOOjbImpl extends PersistenceBrokerDaoSupport im
      */
     public RuleResponsibility findByRuleResponsibilityId(String ruleResponsibilityId) {
         RuleResponsibility ruleResponsibility = new RuleResponsibility();
-        ruleResponsibility.setRuleResponsibilityKey(ruleResponsibilityId);
+        ruleResponsibility.setId(ruleResponsibilityId);
         return (RuleResponsibility) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(ruleResponsibility));
     }
 }

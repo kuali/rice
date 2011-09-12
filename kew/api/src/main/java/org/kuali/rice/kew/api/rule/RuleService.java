@@ -15,7 +15,9 @@
  */
 package org.kuali.rice.kew.api.rule;
 
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.kew.api.KewApiConstants;
 
 import javax.jws.WebMethod;
@@ -30,8 +32,53 @@ import java.util.List;
 @WebService(name = "ruleServiceSoap", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface RuleService {
+    /**
+     * gets a Rule identified by the passed in id
+     *
+     * @param id unique idea for the Rule
+     *
+     * @return Rule with the passed in unique id
+     *
+     * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException if {@code id} is null
+     * @throws org.kuali.rice.core.api.exception.RiceIllegalStateException if Rule does not exist
+     */
+    @WebMethod(operationName = "getRule")
+    @WebResult(name = "rule")
+	Rule getRule(@WebParam(name="id") String id)
+        throws RiceIllegalArgumentException, RiceIllegalStateException;
 
-	    /**
+    /**
+     * gets a Rule identified by the passed in rule name
+     *
+     * @param name name of the Rule
+     *
+     * @return Rule with the passed in unique id
+     *
+     * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException if {@code name} is null
+     * @throws org.kuali.rice.core.api.exception.RiceIllegalStateException if Rule does not exist
+     */
+    @WebMethod(operationName = "getRuleByName")
+    @WebResult(name = "rule")
+	Rule getRuleByName(@WebParam(name="name") String name)
+        throws RiceIllegalArgumentException, RiceIllegalStateException;
+
+    /**
+     * Query for rules based on the given search criteria which is a Map of rule field names to values.
+     *
+     * <p>
+     * This method returns it's results as a List of Rules that match the given search criteria.
+     * </p>
+     *
+     * @param queryByCriteria the criteria.  Cannot be null.
+     * @return a list of Rule objects in which the given criteria match Rule properties.  An empty list is returned if an invalid or
+     *         non-existent criteria is supplied.
+     */
+    @WebMethod(operationName = "findRules")
+    @WebResult(name = "findRules")
+    RuleQueryResults findRules(@WebParam(name = "query") QueryByCriteria queryByCriteria)
+        throws RiceIllegalArgumentException;
+
+    /**
      * Executes a simulation of a document to get all previous and future route information
      *
      * @param reportCriteria criteria for the rule report to follow

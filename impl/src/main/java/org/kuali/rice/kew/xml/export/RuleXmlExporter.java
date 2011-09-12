@@ -30,7 +30,7 @@ import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.RuleResponsibility;
-import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.rule.web.WebRuleUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
@@ -106,9 +106,9 @@ public class RuleXmlExporter implements XmlExporter {
                 expressionElement.setAttribute("type", rule.getRuleExpressionDef().getType());
             }
         }
-        renderer.renderBooleanElement(ruleElement, FORCE_ACTION, rule.getForceAction(), false);
+        renderer.renderBooleanElement(ruleElement, FORCE_ACTION, rule.isForceAction(), false);
         
-        if (CollectionUtils.isEmpty(rule.getRuleExtensions()) && 
+        if (CollectionUtils.isEmpty(rule.getRuleExtensions()) &&
         		/* field values is not empty */
         		!(rule.getFieldValues() == null || rule.getFieldValues().size() == 0)) {
         	// the rule is in the wrong state (as far as we are concerned).
@@ -127,7 +127,7 @@ public class RuleXmlExporter implements XmlExporter {
         
         // put responsibilities in a single collection 
         Set<RuleResponsibility> responsibilities = new HashSet<RuleResponsibility>();
-        responsibilities.addAll(rule.getResponsibilities());
+        responsibilities.addAll(rule.getRuleResponsibilities());
         responsibilities.addAll(rule.getPersonResponsibilities());
         responsibilities.addAll(rule.getGroupResponsibilities());
         responsibilities.addAll(rule.getRoleResponsibilities());
@@ -141,7 +141,7 @@ public class RuleXmlExporter implements XmlExporter {
             for (Iterator iterator = ruleExtensions.iterator(); iterator.hasNext();) {
                 RuleExtension extension = (RuleExtension) iterator.next();
                 Element extElement = renderer.renderElement(extsElement, RULE_EXTENSION);
-                RuleTemplateAttribute attribute = extension.getRuleTemplateAttribute();
+                RuleTemplateAttributeBo attribute = extension.getRuleTemplateAttribute();
                 renderer.renderTextElement(extElement, ATTRIBUTE, attribute.getRuleAttribute().getName());
                 renderer.renderTextElement(extElement, RULE_TEMPLATE, attribute.getRuleTemplate().getName());
                 exportRuleExtensionValues(extElement, extension.getExtensionValues());
@@ -167,7 +167,7 @@ public class RuleXmlExporter implements XmlExporter {
             for (RuleResponsibility ruleResponsibility : responsibilities) {
                 Element respElement = renderer.renderElement(responsibilitiesElement, RESPONSIBILITY);
                 renderer.renderTextElement(respElement, RESPONSIBILITY_ID, "" + ruleResponsibility.getResponsibilityId());
-                if (ruleResponsibility.isUsingWorkflowUser()) {
+                if (ruleResponsibility.isUsingPrincipal()) {
 				    renderer.renderTextElement(respElement, PRINCIPAL_NAME, ruleResponsibility.getPrincipal().getPrincipalName());
 				} else if (ruleResponsibility.isUsingGroup()) {
 					Group group = ruleResponsibility.getGroup();
@@ -189,7 +189,7 @@ public class RuleXmlExporter implements XmlExporter {
     
     //below are for exporting rule delegations in rule exportation
     private void exportRuleDelegations(Element rootElement, RuleBaseValues rule){
-		List<RuleDelegation> ruleDelegationDefaults = KEWServiceLocator.getRuleDelegationService().findByDelegateRuleId(rule.getRuleBaseValuesId());
+		List<RuleDelegation> ruleDelegationDefaults = KEWServiceLocator.getRuleDelegationService().findByDelegateRuleId(rule.getId());
 		for(RuleDelegation dele : ruleDelegationDefaults){
 			if (LOG.isInfoEnabled()) {
 				LOG.info("*******delegates********\t"  +  dele.getRuleDelegationId()) ;
@@ -202,14 +202,14 @@ public class RuleXmlExporter implements XmlExporter {
     	Element ruleDelegationElement = renderer.renderElement(parent, RULE_DELEGATION);
     	exportRuleDelegationParentResponsibility(ruleDelegationElement, ruleDelegation);
     	renderer.renderTextElement(ruleDelegationElement, DELEGATION_TYPE, ruleDelegation.getDelegationType());
-    	exportRule(ruleDelegationElement, ruleDelegation.getDelegationRuleBaseValues());
+    	exportRule(ruleDelegationElement, ruleDelegation.getDelegationRule());
     }
     
     private void exportRuleDelegationParentResponsibility(Element parent, RuleDelegation delegation) {
         Element parentResponsibilityElement = renderer.renderElement(parent, PARENT_RESPONSIBILITY);
         RuleResponsibility ruleResponsibility = KEWServiceLocator.getRuleService().findRuleResponsibility(delegation.getResponsibilityId());
         renderer.renderTextElement(parentResponsibilityElement, PARENT_RULE_NAME, ruleResponsibility.getRuleBaseValues().getName());
-        if (ruleResponsibility.isUsingWorkflowUser()) {
+        if (ruleResponsibility.isUsingPrincipal()) {
         	Principal principal = ruleResponsibility.getPrincipal();
         	renderer.renderTextElement(parentResponsibilityElement, PRINCIPAL_NAME, principal.getPrincipalName());
         } else if (ruleResponsibility.isUsingGroup()) {

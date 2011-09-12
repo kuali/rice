@@ -23,7 +23,7 @@
     <property name="dataObjectClassName" value="org.kuali.rice.core.impl.style.StyleBo" />
     <!-- <property name="defaultSortAttributeNames">
       <list>
-      	<value>ruleAttributeId</value>
+      	<value>id</value>
       </list>
     </property>   -->
     <property name="criteriaFields">

@@ -1,6 +1,7 @@
 package org.kuali.rice.kew.api.rule;
 
 import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -13,14 +14,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.w3c.dom.Element;
 
 @XmlRootElement(name = RuleResponsibility.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = RuleResponsibility.Constants.TYPE_NAME, propOrder = {
+    RuleResponsibility.Elements.ID,
     RuleResponsibility.Elements.PRIORITY,
     RuleResponsibility.Elements.RESPONSIBILITY_ID,
     RuleResponsibility.Elements.ACTION_REQUESTED_CD,
@@ -29,16 +33,22 @@ import org.w3c.dom.Element;
     RuleResponsibility.Elements.GROUP_ID,
     RuleResponsibility.Elements.ROLE_NAME,
     RuleResponsibility.Elements.DELEGATION_RULES,
+    RuleResponsibility.Elements.USING_ROLE,
+    RuleResponsibility.Elements.USING_GROUP,
+    RuleResponsibility.Elements.USING_PRINCIPAL,
+    CoreConstants.CommonElements.VERSION_NUMBER,
+    CoreConstants.CommonElements.OBJECT_ID,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class RuleResponsibility
     extends AbstractDataTransferObject
     implements RuleResponsibilityContract
 {
-
+    @XmlElement(name = Elements.ID, required = false)
+    private final String id;
     @XmlElement(name = Elements.PRIORITY, required = false)
     private final Integer priority;
-    @XmlElement(name = Elements.RESPONSIBILITY_ID, required = false)
+    @XmlElement(name = Elements.RESPONSIBILITY_ID, required = true)
     private final String responsibilityId;
     @XmlElement(name = Elements.ACTION_REQUESTED_CD, required = false)
     private final String actionRequestedCd;
@@ -52,6 +62,16 @@ public final class RuleResponsibility
     private final String roleName;
     @XmlElement(name = Elements.DELEGATION_RULES, required = false)
     private final List<RuleDelegation> delegationRules;
+    @XmlElement(name = Elements.USING_ROLE, required = false)
+    private final boolean usingRole;
+    @XmlElement(name = Elements.USING_PRINCIPAL, required = false)
+    private final boolean usingPrincipal;
+    @XmlElement(name = Elements.USING_GROUP, required = false)
+    private final boolean usingGroup;
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
+    private final Long versionNumber;
+    @XmlElement(name = CoreConstants.CommonElements.OBJECT_ID, required = false)
+    private final String objectId;
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -61,6 +81,7 @@ public final class RuleResponsibility
      * 
      */
     private RuleResponsibility() {
+        this.id = null;
         this.priority = null;
         this.responsibilityId = null;
         this.actionRequestedCd = null;
@@ -69,9 +90,15 @@ public final class RuleResponsibility
         this.groupId = null;
         this.roleName = null;
         this.delegationRules = null;
+        this.usingGroup = false;
+        this.usingPrincipal = false;
+        this.usingRole = false;
+        this.versionNumber = null;
+        this.objectId = null;
     }
 
     private RuleResponsibility(Builder builder) {
+        this.id = builder.getId();
         this.priority = builder.getPriority();
         this.responsibilityId = builder.getResponsibilityId();
         this.actionRequestedCd = builder.getActionRequestedCd();
@@ -88,6 +115,16 @@ public final class RuleResponsibility
         } else {
             this.delegationRules = Collections.emptyList();
         }
+        this.usingGroup = builder.isUsingGroup();
+        this.usingPrincipal = builder.isUsingPrincipal();
+        this.usingRole = builder.isUsingRole();
+        versionNumber = builder.getVersionNumber();
+        objectId = builder.getObjectId();
+    }
+
+    @Override
+    public String getId() {
+        return this.id;
     }
 
     @Override
@@ -130,6 +167,41 @@ public final class RuleResponsibility
         return this.delegationRules;
     }
 
+    @Override
+    public boolean isUsingRole() {
+        return this.usingRole;
+    }
+
+    @Override
+    public boolean isUsingPrincipal() {
+        return this.usingPrincipal;
+    }
+
+    @Override
+    public boolean isUsingGroup() {
+        return this.usingGroup;
+    }
+
+    @Override
+    public Long getVersionNumber() {
+        return versionNumber;
+    }
+
+    @Override
+    public String getObjectId() {
+        return objectId;
+    }
+
+    public String getRoleAttributeName() {
+	    return getRoleName().substring(0, getRoleName().indexOf("!"));
+    }
+
+    public String getResolvedRoleName() {
+        if (isUsingRole()) {
+            return getRoleName().substring(getRoleName().indexOf("!") + 1, getRoleName().length());
+        }
+        return null;
+    }
 
     /**
      * A builder which can be used to construct {@link RuleResponsibility} instances.  Enforces the constraints of the {@link RuleResponsibilityContract}.
@@ -138,7 +210,7 @@ public final class RuleResponsibility
     public final static class Builder
         implements Serializable, ModelBuilder, RuleResponsibilityContract
     {
-
+        private String id;
         private Integer priority;
         private String responsibilityId;
         private String actionRequestedCd;
@@ -147,6 +219,11 @@ public final class RuleResponsibility
         private String groupId;
         private String roleName;
         private List<RuleDelegation.Builder> delegationRules;
+        private boolean usingRole;
+        private boolean usingPrincipal;
+        private boolean usingGroup;
+        private Long versionNumber;
+        private String objectId;
 
         private Builder() {
         }
@@ -160,6 +237,7 @@ public final class RuleResponsibility
                 throw new IllegalArgumentException("contract was null");
             }
             Builder builder = create();
+            builder.setId(contract.getId());
             builder.setPriority(contract.getPriority());
             builder.setResponsibilityId(contract.getResponsibilityId());
             builder.setActionRequestedCd(contract.getActionRequestedCd());
@@ -176,11 +254,21 @@ public final class RuleResponsibility
             } else {
                 builder.setDelegationRules(Collections.<RuleDelegation.Builder>emptyList());
             }
+            builder.setUsingGroup(contract.isUsingGroup());
+            builder.setUsingPrincipal(contract.isUsingPrincipal());
+            builder.setUsingRole(contract.isUsingRole());
+            builder.setVersionNumber(contract.getVersionNumber());
+            builder.setObjectId(contract.getObjectId());
             return builder;
         }
 
         public RuleResponsibility build() {
             return new RuleResponsibility(this);
+        }
+
+        @Override
+        public String getId() {
+            return this.id;
         }
 
         @Override
@@ -223,6 +311,37 @@ public final class RuleResponsibility
             return this.delegationRules;
         }
 
+        @Override
+        public boolean isUsingRole() {
+            return this.usingRole;
+        }
+
+        @Override
+        public boolean isUsingPrincipal() {
+            return this.usingPrincipal;
+        }
+
+        @Override
+        public boolean isUsingGroup() {
+            return this.usingGroup;
+        }
+
+        @Override
+        public Long getVersionNumber() {
+            return versionNumber;
+        }
+
+        @Override
+        public String getObjectId() {
+            return objectId;
+        }
+
+        public void setId(String id) {
+            if (StringUtils.isWhitespace(id)) {
+                throw new IllegalArgumentException("id is whitespace");
+            }
+            this.id = id;
+        }
         public void setPriority(Integer priority) {
             this.priority = priority;
         }
@@ -255,6 +374,27 @@ public final class RuleResponsibility
             this.delegationRules = delegationRules;
         }
 
+        private void setUsingRole(boolean usingRole) {
+            this.usingRole = usingRole;
+        }
+
+        private void setUsingPrincipal(boolean usingPrincipal) {
+            this.usingPrincipal = usingPrincipal;
+        }
+
+        private void setUsingGroup(boolean usingGroup) {
+            this.usingGroup = usingGroup;
+        }
+
+        public void setVersionNumber(Long versionNumber) {
+            this.versionNumber = versionNumber;
+        }
+
+        public void setObjectId(String objectId) {
+            this.objectId = objectId;
+        }
+
+
     }
 
 
@@ -275,7 +415,7 @@ public final class RuleResponsibility
      * 
      */
     static class Elements {
-
+        final static String ID = "id";
         final static String PRIORITY = "priority";
         final static String RESPONSIBILITY_ID = "responsibilityId";
         final static String ACTION_REQUESTED_CD = "actionRequestedCd";
@@ -284,7 +424,9 @@ public final class RuleResponsibility
         final static String GROUP_ID = "groupId";
         final static String ROLE_NAME = "roleName";
         final static String DELEGATION_RULES = "delegationRules";
-
+        final static String USING_ROLE = "usingRole";
+        final static String USING_PRINCIPAL = "usingPrincipal";
+        final static String USING_GROUP = "usingGroup";
     }
 
 }

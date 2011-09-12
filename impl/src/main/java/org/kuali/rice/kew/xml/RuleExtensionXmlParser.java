@@ -24,8 +24,8 @@ import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
-import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
+import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
 import java.util.ArrayList;
@@ -76,7 +76,7 @@ public class RuleExtensionXmlParser {
 	if (ruleAttribute == null) {
 	    throw new XmlException("Could not locate attribute for the given name '" + attributeName + "'");
 	}
-	RuleTemplate ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(templateName);
+	RuleTemplateBo ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(templateName);
 	if (ruleTemplate == null) {
 	    throw new XmlException("Could not locate rule template for the given name '" + templateName + "'");
 	}
@@ -84,10 +84,10 @@ public class RuleExtensionXmlParser {
 	extension.setRuleBaseValues(rule);
 	boolean attributeFound = false;
 	for (Iterator iter = ruleTemplate.getActiveRuleTemplateAttributes().iterator(); iter.hasNext();) {
-	    RuleTemplateAttribute templateAttribute = (RuleTemplateAttribute) iter.next();
-	    if (templateAttribute.getRuleAttributeId().equals(ruleAttribute.getRuleAttributeId())) {
+	    RuleTemplateAttributeBo templateAttribute = (RuleTemplateAttributeBo) iter.next();
+	    if (templateAttribute.getRuleAttributeId().equals(ruleAttribute.getId())) {
 		extension.setRuleTemplateAttribute(templateAttribute);
-		extension.setRuleTemplateAttributeId(templateAttribute.getRuleTemplateAttributeId());
+		extension.setRuleTemplateAttributeId(templateAttribute.getId());
 		attributeFound = true;
 		break;
 	    }

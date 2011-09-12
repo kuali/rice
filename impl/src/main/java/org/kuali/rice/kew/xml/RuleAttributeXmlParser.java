@@ -43,9 +43,9 @@ import static org.kuali.rice.core.api.impex.xml.XmlConstants.APPLICATION_ID;
 
 
 /**
- * Parses {@link RuleAttribute}s from XML.
+ * Parses {@link org.kuali.rice.kew.rule.bo.RuleAttribute}s from XML.
  *
- * @see RuleAttribute
+ * @see org.kuali.rice.kew.rule.bo.RuleAttribute
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -85,7 +85,7 @@ public class RuleAttributeXmlParser {
 				try {
                     RuleAttribute existingAttribute = KEWServiceLocator.getRuleAttributeService().findByName(ruleAttribute.getName());
                     if (existingAttribute != null) {
-                        ruleAttribute.setRuleAttributeId(existingAttribute.getRuleAttributeId());
+                        ruleAttribute.setId(existingAttribute.getId());
                         ruleAttribute.setVersionNumber(existingAttribute.getVersionNumber());
                     }
 				    KEWServiceLocator.getRuleAttributeService().save(ruleAttribute);
@@ -147,7 +147,7 @@ public class RuleAttributeXmlParser {
 		}
 		RuleAttribute ruleAttribute = new RuleAttribute();
 		ruleAttribute.setName(name.trim());
-		ruleAttribute.setClassName(className.trim());
+		ruleAttribute.setResourceDescriptor(className.trim());
 		ruleAttribute.setType(type.trim());
 		ruleAttribute.setLabel(label.trim());
 //		 default description to label

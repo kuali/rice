@@ -16,33 +16,28 @@
  */
 package org.kuali.rice.kew.framework.validation
 
-import org.kuali.rice.kew.impl.extension.ExtensionRepositoryServiceImpl
-import org.junit.Before
-import org.junit.After
-import org.junit.Test
-
-import org.kuali.rice.kew.rule.bo.RuleAttribute
 import groovy.mock.interceptor.MockFor
-import org.kuali.rice.kew.api.validation.RuleValidationContext
-
-import org.kuali.rice.kew.validation.RuleValidationAttributeExporterServiceImpl
-import org.kuali.rice.kew.rule.service.RuleAttributeService
-import org.junit.Assert
-import org.kuali.rice.kew.api.rule.Rule
 import javax.xml.namespace.QName
-import org.kuali.rice.core.framework.resourceloader.BaseResourceLoader
+import org.junit.After
+import org.junit.Assert
+import org.junit.Before
+import org.junit.Test
+import org.kuali.rice.core.api.CoreConstants
+import org.kuali.rice.core.api.config.property.Config
+import org.kuali.rice.core.api.config.property.ConfigContext
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader
 import org.kuali.rice.core.api.util.RiceConstants
-import org.kuali.rice.core.api.config.property.Config;
-import org.kuali.rice.core.api.CoreConstants
-import org.kuali.rice.core.api.config.property.ConfigContext
+import org.kuali.rice.core.framework.resourceloader.BaseResourceLoader
+import org.kuali.rice.kew.api.rule.Rule
+import org.kuali.rice.kew.api.validation.RuleValidationContext
 import org.kuali.rice.kew.api.validation.ValidationResults
+import org.kuali.rice.kew.impl.extension.ExtensionRepositoryServiceImpl
 import org.kuali.rice.kew.rule.RuleValidationAttribute
+import org.kuali.rice.kew.rule.bo.RuleAttribute
+import org.kuali.rice.kew.rule.service.RuleAttributeService
+import org.kuali.rice.kew.validation.RuleValidationAttributeExporterServiceImpl
 import org.kuali.rice.kew.validation.RuleValidationAttributeResolver
 import org.kuali.rice.kew.validation.RuleValidationAttributeResolverImpl
-import org.kuali.rice.kew.framework.KewFrameworkServiceLocator
-import groovy.mock.interceptor.StubFor
-import org.junit.Ignore
 
 /**
  * Unit test for RuleValidationAttributeExporterService
@@ -83,7 +78,7 @@ public class RuleValidationAttributeServicesTest {
         // ExtensionDefinition requires: name, type, classname
         mock_attr.name = MOCK_ATTR_NAME
         mock_attr.type = "RuleAttribute"
-        mock_attr.className = TestRuleValidationAttribute.class.name
+        mock_attr.resourceDescriptor = TestRuleValidationAttribute.class.name
 
         def attr_svc = new MockFor(RuleAttributeService)
         attr_svc.ignore.findByName { name -> mock_attr }
@@ -102,12 +97,12 @@ public class RuleValidationAttributeServicesTest {
 
     @Test(expected=IllegalArgumentException.class)
  	void test_exporter_validate_no_attribute_name() {
-        exporter.validate(null, RuleValidationContext.Builder.create(Rule.Builder.create().build()).build())
+        exporter.validate(null, RuleValidationContext.Builder.create(Rule.Builder.create("ruleName").build()).build())
  	}
 
     @Test
     void test_exporter_load_attribute() {
-        def result = exporter.validate(MOCK_ATTR_NAME, RuleValidationContext.Builder.create(Rule.Builder.create().build()).build())
+        def result = exporter.validate(MOCK_ATTR_NAME, RuleValidationContext.Builder.create(Rule.Builder.create("ruleName").build()).build())
         Assert.assertNotNull(result)
  	}
 
@@ -115,7 +110,7 @@ public class RuleValidationAttributeServicesTest {
     void test_resolver() {
         def attrib = resolver.resolveRuleValidationAttribute(MOCK_ATTR_NAME, MOCK_APP_ID)
         Assert.assertNotNull(attrib)
-        def result = attrib.validate(RuleValidationContext.Builder.create(Rule.Builder.create().build()).build())
+        def result = attrib.validate(RuleValidationContext.Builder.create(Rule.Builder.create("ruleName").build()).build())
         Assert.assertNotNull(result)
  	}
 }

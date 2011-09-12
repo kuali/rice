@@ -20,7 +20,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -34,7 +34,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class RuleAction extends KewKualiAction {
     private static final String RULE_TEMPLATE_NAME_PROPERTY = "ruleTemplateName";
-    private static final String DOC_TYPE_NAME_PROPERTY = "ruleTemplateName";
+    private static final String DOC_TYPE_NAME_PROPERTY = "documentTypeName";
 
     private static final String RULE_TEMPLATE_ERROR = "rule.template.name.required";
     private static final String DOCUMENT_TYPE_ERROR = "rule.docType.name.required";
@@ -69,7 +69,7 @@ public class RuleAction extends KewKualiAction {
         if (org.apache.commons.lang.StringUtils.isEmpty(form.getRuleTemplateName())) {
             GlobalVariables.getMessageMap().putError(RULE_TEMPLATE_NAME_PROPERTY, RULE_TEMPLATE_ERROR);
         } else {
-            RuleTemplate ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(form.getRuleTemplateName().trim());
+            RuleTemplateBo ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(form.getRuleTemplateName().trim());
             if (ruleTemplate == null) {
                 GlobalVariables.getMessageMap().putError(RULE_TEMPLATE_NAME_PROPERTY, RULE_TEMPLATE_ERROR);
             }

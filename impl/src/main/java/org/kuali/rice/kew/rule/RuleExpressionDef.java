@@ -18,6 +18,8 @@ package org.kuali.rice.kew.rule;
 import org.apache.commons.lang.ObjectUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.kuali.rice.kew.api.rule.*;
+import org.kuali.rice.kew.api.rule.RuleExpression;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.*;
@@ -29,7 +31,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="KREW_RULE_EXPR_T")
 //@Sequence(name="KREW_RULE_EXPR_S", property="id")
-public class RuleExpressionDef extends PersistableBusinessObjectBase {
+public class RuleExpressionDef extends PersistableBusinessObjectBase implements RuleExpressionContract {
     
     /**
      * Primary key
@@ -101,5 +103,38 @@ public class RuleExpressionDef extends PersistableBusinessObjectBase {
         if (!(obj instanceof RuleExpressionDef)) return false;
         RuleExpressionDef arg = (RuleExpressionDef) obj;
         return ObjectUtils.equals(type, arg.getType()) && ObjectUtils.equals(expression, arg.getExpression());
+    }
+
+    /**
+     * Converts a mutable bo to its immutable counterpart
+     * @param bo the mutable business object
+     * @return the immutable object
+     */
+    public static org.kuali.rice.kew.api.rule.RuleExpression to(RuleExpressionDef bo) {
+        if (bo == null) {
+            return null;
+        }
+
+        return RuleExpression.Builder.create(bo).build();
+    }
+
+    /**
+     * Converts a immutable object to its mutable counterpart
+     * @param im immutable object
+     * @return the mutable bo
+     */
+    public static RuleExpressionDef from(RuleExpression im) {
+        if (im == null) {
+            return null;
+        }
+
+        RuleExpressionDef bo = new RuleExpressionDef();
+        bo.setId(im.getId());
+        bo.setType(im.getType());
+        bo.setExpression(im.getExpression());
+        bo.setVersionNumber(im.getVersionNumber());
+        bo.setObjectId(im.getObjectId());
+
+        return bo;
     }
 }

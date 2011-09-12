@@ -24,7 +24,6 @@ import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.role.service.RoleService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -32,14 +31,19 @@ import org.kuali.rice.kew.rule.FlexRM;
 import org.kuali.rice.kew.rule.RoleAttribute;
 import org.kuali.rice.kew.rule.RolePoker;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
-import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 import javax.xml.namespace.QName;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -105,7 +109,7 @@ public class RoleServiceImpl implements RoleService {
             deletePendingRoleRequests(routeHeader.getDocumentId(), roleName, qualifiedRoleNameLabel);
             for (Iterator nodeIt = nodeInstances.iterator(); nodeIt.hasNext();) {
                 RouteNodeInstance nodeInstance = (RouteNodeInstance)nodeIt.next();
-                RuleTemplate ruleTemplate = nodeInstance.getRouteNode().getRuleTemplate();
+                RuleTemplateBo ruleTemplate = nodeInstance.getRouteNode().getRuleTemplate();
                 FlexRM flexRM = new FlexRM();
         		RouteContext context = RouteContext.getCurrentRouteContext();
         		context.setDocument(routeHeader);
@@ -143,7 +147,7 @@ public class RoleServiceImpl implements RoleService {
             deletePendingRoleRequests(routeHeader.getDocumentId(), roleName, null);
             for (Iterator nodeIt = nodeInstances.iterator(); nodeIt.hasNext();) {
                 RouteNodeInstance nodeInstance = (RouteNodeInstance)nodeIt.next();
-                RuleTemplate ruleTemplate = nodeInstance.getRouteNode().getRuleTemplate();
+                RuleTemplateBo ruleTemplate = nodeInstance.getRouteNode().getRuleTemplate();
                 FlexRM flexRM = new FlexRM();
         		RouteContext context = RouteContext.getCurrentRouteContext();
         		context.setDocument(routeHeader);
@@ -208,7 +212,7 @@ public class RoleServiceImpl implements RoleService {
         }
         for (Iterator iterator = activeNodeInstances.iterator(); iterator.hasNext();) {
             RouteNodeInstance activeNodeInstance = (RouteNodeInstance) iterator.next();
-            RuleTemplate template = activeNodeInstance.getRouteNode().getRuleTemplate();
+            RuleTemplateBo template = activeNodeInstance.getRouteNode().getRuleTemplate();
             if (templateHasRole(template, roleName)) {
                 nodeInstances.add(activeNodeInstance);
             }
@@ -219,12 +223,12 @@ public class RoleServiceImpl implements RoleService {
         return nodeInstances;
     }
 
-    private boolean templateHasRole(RuleTemplate template, String roleName) {
+    private boolean templateHasRole(RuleTemplateBo template, String roleName) {
         List templateAttributes = template.getRuleTemplateAttributes();
         for (Iterator iterator = templateAttributes.iterator(); iterator.hasNext();) {
-            RuleTemplateAttribute templateAttribute = (RuleTemplateAttribute) iterator.next();
+            RuleTemplateAttributeBo templateAttribute = (RuleTemplateAttributeBo) iterator.next();
             RuleAttribute ruleAttribute = templateAttribute.getRuleAttribute();
-            Object workflowAttribute = GlobalResourceLoader.getResourceLoader().getObject(new ObjectDefinition(ruleAttribute.getClassName()));//SpringServiceLocator.getExtensionService().getWorkflowAttribute(ruleAttribute.getClassName());
+            Object workflowAttribute = GlobalResourceLoader.getResourceLoader().getObject(new ObjectDefinition(ruleAttribute.getResourceDescriptor()));//SpringServiceLocator.getExtensionService().getWorkflowAttribute(ruleAttribute.getClassName());
             if (workflowAttribute instanceof RoleAttribute) {
                 List roleNames = ((RoleAttribute)workflowAttribute).getRoleNames();
                 for (Iterator roleIt = roleNames.iterator(); roleIt.hasNext();) {

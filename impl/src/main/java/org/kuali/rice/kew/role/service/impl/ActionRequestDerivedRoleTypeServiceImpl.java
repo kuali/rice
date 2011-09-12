@@ -74,7 +74,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends DerivedRoleTypeServ
 	public boolean hasApplicationRole(String principalId,
 			List<String> groupIds, String namespaceCode, String roleName,
 			Map<String, String> qualification) {
-		if (StringUtils.isBlank(principalId)) {
+		/*if (StringUtils.isBlank(principalId)) {
             throw new RiceIllegalArgumentException("principalId was null or blank");
         }
 
@@ -84,7 +84,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends DerivedRoleTypeServ
 
         if (StringUtils.isBlank(namespaceCode)) {
             throw new RiceIllegalArgumentException("namespaceCode was null or blank");
-        }
+        }*/
 
         if (StringUtils.isBlank(roleName)) {
             throw new RiceIllegalArgumentException("roleName was null or blank");
@@ -118,7 +118,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends DerivedRoleTypeServ
 				}
 				if (FYI_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
 					for ( ActionRequest ar : actionRequests ) {
-						if ( ar.getActionRequested().equals( KEWConstants.ACTION_REQUEST_FYI_REQ ) 
+						if ( ar.getActionRequested().getCode().equals( KEWConstants.ACTION_REQUEST_FYI_REQ )
 							&& ar.getStatus().getCode().equals( ActionRequestStatus.ACTIVATED.getCode() ) ) {
 							return true;
 						}

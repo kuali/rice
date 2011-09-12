@@ -95,12 +95,6 @@ public interface GroupService {
     /**
      * Query for groups based on the given search criteria which is a Map of group field names to values.
      *
-     * <p>This method returns it's results as a List of Group objects that match the given search criteria.
-     */
-
-    /**
-     * Query for groups based on the given search criteria which is a Map of group field names to values.
-     *
      * <p>
      * This method returns it's results as a List of Groups that match the given search criteria.
      * </p>

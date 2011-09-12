@@ -15,23 +15,23 @@
  */
 package org.kuali.rice.kew.export;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.krad.bo.Exporter;
 import org.kuali.rice.krad.exception.ExportNotSupportedException;
 import org.kuali.rice.krad.util.KRADConstants;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The DataExporter allows for exporting of KEW BusinessObjects to various
@@ -66,8 +66,8 @@ public class DataExporter implements Exporter {
 		for (Object dataObject : dataObjects) {
 			if (dataObjectClass.equals(RuleAttribute.class)) {
 				dataSet.getRuleAttributes().add((RuleAttribute)dataObject);
-			} else if (dataObjectClass.equals(RuleTemplate.class)) {
-				dataSet.getRuleTemplates().add((RuleTemplate)dataObject);
+			} else if (dataObjectClass.equals(RuleTemplateBo.class)) {
+				dataSet.getRuleTemplates().add((RuleTemplateBo)dataObject);
 			} else if (dataObjectClass.equals(DocumentType.class)) {
 				dataSet.getDocumentTypes().add((DocumentType)dataObject);
 			} else if (dataObjectClass.equals(RuleBaseValues.class)) {

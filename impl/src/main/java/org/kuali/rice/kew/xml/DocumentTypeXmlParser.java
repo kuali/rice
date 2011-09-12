@@ -41,7 +41,7 @@ import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.role.RoleRouteModule;
 import org.kuali.rice.kew.rule.FlexRM;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -1260,7 +1260,7 @@ public class DocumentTypeXmlParser {
 
         if (((Boolean) getXPath().evaluate("./ruleTemplate", node, XPathConstants.BOOLEAN)).booleanValue()) {
             String ruleTemplateName = (String) getXPath().evaluate("./ruleTemplate", node, XPathConstants.STRING);
-            RuleTemplate ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(ruleTemplateName);
+            RuleTemplateBo ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(ruleTemplateName);
             if (ruleTemplate == null) {
                 throw new XmlException("Rule template for node '" + routeNode.getRouteNodeName() + "' not found: " + ruleTemplateName);
             }

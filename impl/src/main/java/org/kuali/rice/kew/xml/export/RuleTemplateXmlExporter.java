@@ -23,9 +23,9 @@ import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
-import org.kuali.rice.kew.rule.RuleTemplateOption;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
-import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.RuleTemplateOptionBo;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
+import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
 import java.util.Iterator;
@@ -33,9 +33,9 @@ import java.util.List;
 
 import static org.kuali.rice.core.api.impex.xml.XmlConstants.*;
 /**
- * Exports {@link RuleTemplate}s to XML.
+ * Exports {@link org.kuali.rice.kew.rule.bo.RuleTemplateBo}s to XML.
  * 
- * @see RuleTemplate
+ * @see org.kuali.rice.kew.rule.bo.RuleTemplateBo
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -56,7 +56,7 @@ public class RuleTemplateXmlExporter implements XmlExporter {
             Element rootElement = renderer.renderElement(null, RULE_TEMPLATES);
             rootElement.setAttribute(SCHEMA_LOCATION_ATTR, RULE_TEMPLATE_SCHEMA_LOCATION, SCHEMA_NAMESPACE);
             for (Iterator iterator = dataSet.getRuleTemplates().iterator(); iterator.hasNext();) {
-                RuleTemplate template = (RuleTemplate)iterator.next();
+                RuleTemplateBo template = (RuleTemplateBo)iterator.next();
                 exportRuleTemplate(rootElement, template);
             }
             return rootElement;
@@ -64,7 +64,7 @@ public class RuleTemplateXmlExporter implements XmlExporter {
         return null;
     }
     
-    private void exportRuleTemplate(Element parent, RuleTemplate ruleTemplate) {
+    private void exportRuleTemplate(Element parent, RuleTemplateBo ruleTemplate) {
         Element templateElement = renderer.renderElement(parent, RULE_TEMPLATE);
         renderer.renderTextElement(templateElement, NAME, ruleTemplate.getName());
         renderer.renderTextElement(templateElement, DESCRIPTION, ruleTemplate.getDescription());
@@ -79,7 +79,7 @@ public class RuleTemplateXmlExporter implements XmlExporter {
         if (!ruleTemplateAttributes.isEmpty()) {
             Element attributesElement = renderer.renderElement(parent, ATTRIBUTES);
             for (Iterator iterator = ruleTemplateAttributes.iterator(); iterator.hasNext();) {
-                RuleTemplateAttribute attribute = (RuleTemplateAttribute) iterator.next();
+                RuleTemplateAttributeBo attribute = (RuleTemplateAttributeBo) iterator.next();
                 Element attributeElement = renderer.renderElement(attributesElement, ATTRIBUTE);
                 renderer.renderTextElement(attributeElement, NAME, attribute.getRuleAttribute().getName());
                 renderer.renderBooleanElement(attributeElement, REQUIRED, attribute.getRequired(), false);
@@ -87,8 +87,8 @@ public class RuleTemplateXmlExporter implements XmlExporter {
         }
     }
     
-    private void exportDefaults(Element parent, RuleTemplate ruleTemplate) {
-        RuleBaseValues defaultRuleValues = KEWServiceLocator.getRuleService().findDefaultRuleByRuleTemplateId(ruleTemplate.getRuleTemplateId());
+    private void exportDefaults(Element parent, RuleTemplateBo ruleTemplate) {
+        RuleBaseValues defaultRuleValues = KEWServiceLocator.getRuleService().findDefaultRuleByRuleTemplateId(ruleTemplate.getId());
         if (defaultRuleValues != null) {
             RuleDelegation defaultDelegationValues = getDefaultDelegationValues(defaultRuleValues);
             Element defaultsElement = renderer.renderElement(parent, RULE_DEFAULTS);
@@ -96,20 +96,20 @@ public class RuleTemplateXmlExporter implements XmlExporter {
                 renderer.renderTextElement(defaultsElement, DELEGATION_TYPE, defaultDelegationValues.getDelegationType());
             }
             renderer.renderTextElement(defaultsElement, DESCRIPTION, defaultRuleValues.getDescription());
-            if (defaultRuleValues.getFromDate() != null) {
-            	renderer.renderDateElement(defaultsElement, FROM_DATE, defaultRuleValues.getFromDate());
+            if (defaultRuleValues.getFromDateValue() != null) {
+            	renderer.renderDateElement(defaultsElement, FROM_DATE, defaultRuleValues.getFromDateValue());
             }
-            if (defaultRuleValues.getToDate() != null) {
-            	renderer.renderDateElement(defaultsElement, TO_DATE, defaultRuleValues.getToDate());
+            if (defaultRuleValues.getToDateValue() != null) {
+            	renderer.renderDateElement(defaultsElement, TO_DATE, defaultRuleValues.getToDateValue());
             }
-            renderer.renderBooleanElement(defaultsElement, FORCE_ACTION, defaultRuleValues.getForceAction(), false);
-            renderer.renderBooleanElement(defaultsElement, ACTIVE, defaultRuleValues.getActiveInd(), true);
+            renderer.renderBooleanElement(defaultsElement, FORCE_ACTION, defaultRuleValues.isForceAction(), false);
+            renderer.renderBooleanElement(defaultsElement, ACTIVE, defaultRuleValues.isActive(), true);
             if (defaultDelegationValues == null) {
-                RuleTemplateOption defaultActionOption = ruleTemplate.getDefaultActionRequestValue();
-                RuleTemplateOption supportsComplete = ruleTemplate.getComplete();
-                RuleTemplateOption supportsApprove = ruleTemplate.getApprove();
-                RuleTemplateOption supportsAck = ruleTemplate.getAcknowledge();
-                RuleTemplateOption supportsFYI = ruleTemplate.getFyi();
+                RuleTemplateOptionBo defaultActionOption = ruleTemplate.getDefaultActionRequestValue();
+                RuleTemplateOptionBo supportsComplete = ruleTemplate.getComplete();
+                RuleTemplateOptionBo supportsApprove = ruleTemplate.getApprove();
+                RuleTemplateOptionBo supportsAck = ruleTemplate.getAcknowledge();
+                RuleTemplateOptionBo supportsFYI = ruleTemplate.getFyi();
                 if (defaultActionOption != null) {
                 	String defaultActionValue = (defaultActionOption == null ? null : defaultActionOption.getValue());
                 	renderer.renderTextElement(defaultsElement, DEFAULT_ACTION_REQUESTED, defaultActionValue);
@@ -135,7 +135,7 @@ public class RuleTemplateXmlExporter implements XmlExporter {
     }
     
     private RuleDelegation getDefaultDelegationValues(RuleBaseValues defaultRuleValues) {
-        List ruleDelegations = KEWServiceLocator.getRuleDelegationService().findByDelegateRuleId(defaultRuleValues.getRuleBaseValuesId());
+        List ruleDelegations = KEWServiceLocator.getRuleDelegationService().findByDelegateRuleId(defaultRuleValues.getId());
         if (ruleDelegations.size() > 1) {
             LOG.warn("The rule defaults has more than one associated delegation defaults.");
         }

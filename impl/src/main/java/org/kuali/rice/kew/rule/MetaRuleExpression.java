@@ -18,6 +18,7 @@ package org.kuali.rice.kew.rule;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
+import org.kuali.rice.kew.api.rule.RuleExpressionContract;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowException;
 
@@ -46,8 +47,8 @@ public class MetaRuleExpression extends AccumulatingBSFRuleExpression {
 
     @Override
     public RuleExpressionResult evaluate(Rule rule, RouteContext context) {
-        RuleBaseValues ruleDefinition = rule.getDefinition();
-        RuleExpressionDef exprDef = ruleDefinition.getRuleExpressionDef();
+        org.kuali.rice.kew.api.rule.RuleContract ruleDefinition = rule.getDefinition();
+        RuleExpressionContract exprDef = ruleDefinition.getRuleExpressionDef();
         if (exprDef == null) {
             throw new RiceIllegalStateException("No expression defined in rule definition: " + ruleDefinition);
         }
@@ -80,15 +81,17 @@ public class MetaRuleExpression extends AccumulatingBSFRuleExpression {
             int responsibilityPriority = 0; // responsibility priority, lower value means higher priority (due to sort)...increment as we go
             RuleExpressionResult result = null;
             boolean success = false;
-            List<RuleResponsibility> responsibilities = new ArrayList<RuleResponsibility>();
+            List<org.kuali.rice.kew.api.rule.RuleResponsibility> responsibilities = new ArrayList<org.kuali.rice.kew.api.rule.RuleResponsibility>();
             while (!engine.isDone()) {
                 result = engine.processSingleStatement(context);
                 if (result.isSuccess() && result.getResponsibilities() != null) {
                     // accumulate responsibilities if the evaluation was successful
                     // make sure to reduce priority for each subsequent rule in order for sequential activation to work as desired
-                    for (RuleResponsibility responsibility: result.getResponsibilities()) {
-                        responsibility.setPriority(Integer.valueOf(responsibilityPriority));
-                        responsibilities.add(responsibility);
+                    for (org.kuali.rice.kew.api.rule.RuleResponsibility responsibility: result.getResponsibilities()) {
+                        org.kuali.rice.kew.api.rule.RuleResponsibility.Builder builder =
+                                org.kuali.rice.kew.api.rule.RuleResponsibility.Builder.create(responsibility);
+                        builder.setPriority(Integer.valueOf(responsibilityPriority));
+                        responsibilities.add(builder.build());
                     }
                     // decrement responsibilityPriority for next rule expression result responsibilities
                     responsibilityPriority++;

@@ -22,7 +22,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.kew.rule.RuleDelegation;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -55,7 +55,7 @@ public class DelegateRuleAction extends KewKualiAction {
 		if (form.getParentRule() == null) {
 			GlobalVariables.getMessageMap().putError(PARENT_RULE_PROPERTY, PARENT_RULE_ERROR);
 		} else {
-			RuleTemplate ruleTemplate = form.getParentRule().getRuleTemplate();
+			RuleTemplateBo ruleTemplate = form.getParentRule().getRuleTemplate();
 			if (ruleTemplate == null
 			        || ruleTemplate.getDelegationTemplate() == null) {
 				GlobalVariables.getMessageMap().putError(PARENT_RULE_PROPERTY, DELEGATE_RULE_INVALID_ERROR);

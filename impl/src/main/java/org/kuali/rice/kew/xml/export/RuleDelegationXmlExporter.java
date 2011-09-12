@@ -70,14 +70,14 @@ public class RuleDelegationXmlExporter implements XmlExporter {
     	Element ruleDelegationElement = renderer.renderElement(parent, RULE_DELEGATION);
     	exportParentResponsibility(ruleDelegationElement, ruleDelegation);
     	renderer.renderTextElement(ruleDelegationElement, DELEGATION_TYPE, ruleDelegation.getDelegationType());
-    	ruleExporter.exportRule(ruleDelegationElement, ruleDelegation.getDelegationRuleBaseValues());
+    	ruleExporter.exportRule(ruleDelegationElement, ruleDelegation.getDelegationRule());
     }
     
     private void exportParentResponsibility(Element parent, RuleDelegation delegation) {
         Element parentResponsibilityElement = renderer.renderElement(parent, PARENT_RESPONSIBILITY);
         RuleResponsibility ruleResponsibility = KEWServiceLocator.getRuleService().findRuleResponsibility(delegation.getResponsibilityId());
         renderer.renderTextElement(parentResponsibilityElement, PARENT_RULE_NAME, ruleResponsibility.getRuleBaseValues().getName());
-        if (ruleResponsibility.isUsingWorkflowUser()) {
+        if (ruleResponsibility.isUsingPrincipal()) {
         	Principal principal = ruleResponsibility.getPrincipal();
         	renderer.renderTextElement(parentResponsibilityElement, PRINCIPAL_NAME, principal.getPrincipalName());
         } else if (ruleResponsibility.isUsingGroup()) {

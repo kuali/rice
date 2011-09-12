@@ -1,13 +1,19 @@
 package org.kuali.rice.kew.api.rule;
 
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
+import org.kuali.rice.core.api.mo.common.Identifiable;
+import org.kuali.rice.core.api.mo.common.Versioned;
+
 import java.util.List;
 
-public interface RuleResponsibilityContract {
+public interface RuleResponsibilityContract extends Identifiable, GloballyUnique, Versioned {
+
+
     /**
-     * Unique Id for RuleResponsibility.
+     * Unique Id for Responsibility.
      *
      * <p>
-     * This is the unique Id of the RuleResponsibility
+     * This is the unique Id of the Responsibility
      * </p>
      *
      * @return responsibilityId
@@ -66,4 +72,25 @@ public interface RuleResponsibilityContract {
      * @return delegationRules
      */
     List<? extends RuleDelegationContract> getDelegationRules();
+
+    /**
+     * determines if the RuleResponsibiltity is using a kim Role
+     *
+     * @return boolean value representing if the RuleResponsibility is using a Role
+     */
+    boolean isUsingRole();
+
+    /**
+     * determines if the RuleResponsibiltity is using a kim Principal
+     *
+     * @return boolean value representing if the RuleResponsibility is using a Principal
+     */
+    boolean isUsingPrincipal();
+
+    /**
+     * determines if the RuleResponsibiltity is using a kim Group
+     *
+     * @return boolean value representing if the RuleResponsibility is using a Group
+     */
+    boolean isUsingGroup();
 }

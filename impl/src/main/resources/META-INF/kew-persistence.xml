@@ -42,10 +42,10 @@
     <class>org.kuali.rice.kew.routeheader.DocumentStatusTransition</class>
     <class>org.kuali.rice.kew.doctype.DocumentTypeAttribute</class>
     <class>org.kuali.rice.kew.useroptions.UserOptions</class>
-    <class>org.kuali.rice.kew.rule.bo.RuleTemplate</class>
-    <class>org.kuali.rice.kew.rule.RuleTemplateOption</class>
+    <class>org.kuali.rice.kew.rule.bo.RuleTemplateBo</class>
+    <class>org.kuali.rice.kew.rule.RuleTemplateOptionBo</class>
     <class>org.kuali.rice.kew.rule.bo.RuleAttribute</class>
-    <class>org.kuali.rice.kew.rule.bo.RuleTemplateAttribute</class>
+    <class>org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo</class>
     <class>org.kuali.rice.kew.rule.RuleBaseValues</class>
     <class>org.kuali.rice.kew.rule.RuleExpressionDef</class>
     <class>org.kuali.rice.kew.rule.RuleDelegation</class>

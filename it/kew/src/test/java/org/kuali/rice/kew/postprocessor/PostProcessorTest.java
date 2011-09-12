@@ -67,7 +67,7 @@ public class PostProcessorTest extends KEWTestCase {
 		WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "testModifyDocumentInPostProcessor");
 		document.saveDocument("");
 		assertEquals("application content should be empty initially", "", document.getApplicationContent());
-		assertNull("Doc title should be empty initially", document.getTitle());
+		assertTrue("Doc title should be empty initially", StringUtils.isBlank(document.getTitle()));
 		
 		// now route the document, it should through a 2 nodes, then go PROCESSED then FINAL
 		document.route("");
@@ -102,7 +102,7 @@ public class PostProcessorTest extends KEWTestCase {
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "testEmptyPostProcessor");
         document.saveDocument("");
         assertEquals("application content should be empty initially", "", document.getApplicationContent());
-        assertNull("Doc title should be empty initially", document.getTitle());
+        assertTrue("Doc title should be empty initially", StringUtils.isBlank(document.getTitle()));
         
         assertTrue("Document should be final.", document.isFinal());
                

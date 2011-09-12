@@ -15,16 +15,16 @@
  */
 package org.kuali.rice.kew.rule;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -35,15 +35,16 @@ class WorkflowAttributeRuleExpression implements RuleExpression {
     
 	public RuleExpressionResult evaluate(Rule rule, RouteContext context) {
         
-		RuleBaseValues ruleDefinition = rule.getDefinition();
+		org.kuali.rice.kew.api.rule.Rule ruleDefinition =
+                org.kuali.rice.kew.api.rule.Rule.Builder.create(rule.getDefinition()).build();
         boolean match = isMatch(ruleDefinition, context.getDocumentContent());
         if (match) {
-            return new RuleExpressionResult(rule, match, ruleDefinition.getResponsibilities());
+            return new RuleExpressionResult(rule, match, ruleDefinition.getRuleResponsibilities());
         }
 		return new RuleExpressionResult(rule, match);
     }
 
-    public boolean isMatch(RuleBaseValues ruleDefinition, DocumentContent docContent) {
+    public boolean isMatch(org.kuali.rice.kew.api.rule.Rule ruleDefinition, DocumentContent docContent) {
         if (ruleDefinition.getRuleTemplate() == null) {
             // this can happen if neither rule template nor expression was specified in the rule definition
             // because WorkflowAttributeRuleExpression is the default expression implementation, we should
@@ -56,8 +57,8 @@ class WorkflowAttributeRuleExpression implements RuleExpression {
             // or compatibilities issues, and avoids pushing compensating logic into RuleImpl
             return true;
         }
-        for (Iterator iter = ruleDefinition.getRuleTemplate().getActiveRuleTemplateAttributes().iterator(); iter.hasNext();) {
-            RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iter.next();
+        RuleBaseValues rule = KEWServiceLocator.getRuleService().getRuleByName(ruleDefinition.getName());
+        for (RuleTemplateAttributeBo ruleTemplateAttribute : rule.getRuleTemplate().getActiveRuleTemplateAttributes()) {
             if (!ruleTemplateAttribute.isWorkflowAttribute()) {
                 continue;
             }
@@ -67,11 +68,10 @@ class WorkflowAttributeRuleExpression implements RuleExpression {
             if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
                 ((GenericXMLRuleAttribute) routingAttribute).setRuleAttribute(ruleAttribute);
             }
-            String className = ruleAttribute.getClassName();
-            List editedRuleExtensions = new ArrayList();
-            for (Iterator iter2 = ruleDefinition.getRuleExtensions().iterator(); iter2.hasNext();) {
-                RuleExtension extension = (RuleExtension) iter2.next();
-                if (extension.getRuleTemplateAttribute().getRuleAttribute().getClassName().equals(className)) {
+            String className = ruleAttribute.getResourceDescriptor();
+            List<RuleExtension> editedRuleExtensions = new ArrayList();
+            for (RuleExtension extension : rule.getRuleExtensions()) {
+                if (extension.getRuleTemplateAttribute().getRuleAttribute().getResourceDescriptor().equals(className)) {
                     editedRuleExtensions.add(extension);
                 }
             }

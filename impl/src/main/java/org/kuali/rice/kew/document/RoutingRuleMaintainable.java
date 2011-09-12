@@ -22,7 +22,7 @@ import java.util.Map;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleResponsibility;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.rule.web.WebRuleUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
@@ -102,7 +102,7 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 		}
 		WebRuleUtils.populateForCopyOrEdit(getOldRule(document), getNewRule(document));
 		
-		getNewRule(document).setPreviousVersionId(getOldRule(document).getRuleBaseValuesId());       
+		getNewRule(document).setPreviousVersionId(getOldRule(document).getId());
 
 		getNewRule(document).setDocumentId(document.getDocumentHeader().getDocumentNumber());
 		super.processAfterEdit(document, parameters);
@@ -178,7 +178,10 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 			PersistableBusinessObject addLine) {
 		super.setNewCollectionLineDefaultValues(collectionName, addLine);
 		if (KEWPropertyConstants.RESP_SECTION_NAME_SET.contains(collectionName)) {
-			RuleTemplate ruleTemplate = getThisRule().getRuleTemplate();
+			RuleTemplateBo ruleTemplate = getThisRule().getRuleTemplate();
+            //if (ruleTemplate == null && getThisRule().getRuleTemplateId() != null) {
+            //    ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(getThisRule().getRuleTemplateId());
+            //}
 			if(ruleTemplate.getDefaultActionRequestValue() != null && ruleTemplate.getDefaultActionRequestValue().getValue() != null){
 				((RuleResponsibility) addLine).setActionRequestedCd(ruleTemplate.getDefaultActionRequestValue().getValue());
 	        }

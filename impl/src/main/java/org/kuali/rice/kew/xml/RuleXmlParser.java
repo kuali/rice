@@ -31,7 +31,7 @@ import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.RuleExpressionDef;
 import org.kuali.rice.kew.rule.RuleResponsibility;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
@@ -158,7 +158,7 @@ public class RuleXmlParser {
      */
     private void checkForDuplicateRuleDelegations(List<RuleDelegation> ruleDelegations) throws XmlException {
     	for (RuleDelegation ruleDelegation : ruleDelegations) {
-    		if (StringUtils.isBlank(ruleDelegation.getDelegationRuleBaseValues().getName())) {
+    		if (StringUtils.isBlank(ruleDelegation.getDelegationRule().getName())) {
     			LOG.debug("Checking for rule duplication on an anonymous rule delegation.");
     			checkRuleDelegationForDuplicate(ruleDelegation);
     		}
@@ -183,7 +183,7 @@ public class RuleXmlParser {
         Element ruleElement = element.getChild(RULE, element.getNamespace());
         RuleBaseValues rule = parseRule(ruleElement);
         rule.setDelegateRule(true);
-        ruleDelegation.setDelegationRuleBaseValues(rule);
+        ruleDelegation.setDelegationRule(rule);
     	
     	return ruleDelegation;
     }
@@ -218,7 +218,6 @@ public class RuleXmlParser {
      * Parses, and only parses, a rule definition (be it a top-level rule, or a rule delegation).  This method will
      * NOT dirty or save any existing data, it is side-effect-free.
      * @param element the rule element
-     * @param ruleDelegation the ruleDelegation object if this rule is being parsed as a delegation
      * @return a new RuleBaseValues object which is not yet saved
      * @throws XmlException
      */
@@ -231,8 +230,8 @@ public class RuleXmlParser {
         
         String toDatestr = element.getChildText( TO_DATE, element.getNamespace());
         String fromDatestr = element.getChildText( FROM_DATE, element.getNamespace());
-        rule.setToDate(formatDate("toDate", toDatestr));
-        rule.setFromDate(formatDate("fromDate", fromDatestr));
+        rule.setToDateValue(formatDate("toDate", toDatestr));
+        rule.setFromDateValue(formatDate("fromDate", fromDatestr));
 
         String description = element.getChildText(DESCRIPTION, element.getNamespace());
         if (StringUtils.isBlank(description)) {
@@ -248,7 +247,7 @@ public class RuleXmlParser {
         	throw new XmlException("Could not locate document type '" + documentTypeName + "'");
         }
 
-        RuleTemplate ruleTemplate = null;
+        RuleTemplateBo ruleTemplate = null;
         String ruleTemplateName = element.getChildText(RULE_TEMPLATE, element.getNamespace());        
         Element ruleExtensionsElement = element.getChild(RULE_EXTENSIONS, element.getNamespace());
         if (!StringUtils.isBlank(ruleTemplateName)) {
@@ -283,7 +282,7 @@ public class RuleXmlParser {
 
         rule.setDocTypeName(documentType.getName());
         if (ruleTemplate != null) {
-            rule.setRuleTemplateId(ruleTemplate.getRuleTemplateId());
+            rule.setRuleTemplateId(ruleTemplate.getId());
             rule.setRuleTemplate(ruleTemplate);
         }
         if (ruleExpressionDef != null) {
@@ -293,7 +292,7 @@ public class RuleXmlParser {
         rule.setForceAction(forceAction);
 
         Element responsibilitiesElement = element.getChild(RESPONSIBILITIES, element.getNamespace());
-        rule.setResponsibilities(parseResponsibilities(responsibilitiesElement, rule));
+        rule.setRuleResponsibilities(parseResponsibilities(responsibilitiesElement, rule));
         rule.setRuleExtensions(parseRuleExtensions(ruleExtensionsElement, rule));
 
         return rule;
@@ -310,10 +309,10 @@ public class RuleXmlParser {
     	RuleBaseValues existingRule = (ruleName != null) ? KEWServiceLocator.getRuleService().getRuleByName(ruleName) : null;
     	if (existingRule != null) {
     		// copy keys and responsibiliities from the existing rule
-    		rule.setRuleBaseValuesId(existingRule.getRuleBaseValuesId());
+    		rule.setId(existingRule.getId());
     		rule.setPreviousVersionId(existingRule.getPreviousVersionId());
     		rule.setPreviousVersion(existingRule.getPreviousVersion());
-    		rule.setResponsibilities(existingRule.getResponsibilities());
+    		rule.setRuleResponsibilities(existingRule.getRuleResponsibilities());
     	}
     	return rule;
     }
@@ -332,13 +331,13 @@ public class RuleXmlParser {
     }
     
     private void checkRuleDelegationForDuplicate(RuleDelegation ruleDelegation) throws XmlException {
-    	checkRuleForDuplicate(ruleDelegation.getDelegationRuleBaseValues());
+    	checkRuleForDuplicate(ruleDelegation.getDelegationRule());
     }
 
     private void setDefaultRuleValues(RuleBaseValues rule) throws XmlException {
         rule.setForceAction(Boolean.FALSE);
         rule.setActivationDate(new Timestamp(System.currentTimeMillis()));
-        rule.setActiveInd(Boolean.TRUE);
+        rule.setActive(Boolean.TRUE);
         rule.setCurrentInd(Boolean.TRUE);
         rule.setTemplateRuleInd(Boolean.FALSE);
         rule.setVersionNbr(new Integer(0));
@@ -349,7 +348,7 @@ public class RuleXmlParser {
         if (element == null) {
             return new ArrayList<RuleResponsibility>(0);
         }
-        List<RuleResponsibility> existingResponsibilities = rule.getResponsibilities();
+        List<RuleResponsibility> existingResponsibilities = rule.getRuleResponsibilities();
         List<RuleResponsibility> responsibilities = new ArrayList<RuleResponsibility>();
         List responsibilityElements = element.getChildren(RESPONSIBILITY, element.getNamespace());
         for (Iterator iterator = responsibilityElements.iterator(); iterator.hasNext();) {

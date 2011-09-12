@@ -50,7 +50,7 @@ import org.kuali.rice.kew.api.doctype.RouteNodeConfigurationParameterContract;
 import org.kuali.rice.kew.api.doctype.RouteNodeContract;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -120,7 +120,7 @@ public class RouteNode implements Serializable, RouteNodeContract {
     private String exceptionWorkgroupName;
 
     @Transient
-    private RuleTemplate ruleTemplate;
+    private RuleTemplateBo ruleTemplate;
     @Column(name="TYP")
     private String nodeType = RequestsNode.class.getName();
     
@@ -362,7 +362,7 @@ public class RouteNode implements Serializable, RouteNodeContract {
         this.previousNodes = parentNodes;
     }
 
-    public RuleTemplate getRuleTemplate() {
+    public RuleTemplateBo getRuleTemplate() {
         if (ruleTemplate == null) {
             RuleTemplateService ruleTemplateService = (RuleTemplateService) KEWServiceLocator.getService(KEWServiceLocator.RULE_TEMPLATE_SERVICE);
             ruleTemplate = ruleTemplateService.findByRuleTemplateName(getRouteMethodName());

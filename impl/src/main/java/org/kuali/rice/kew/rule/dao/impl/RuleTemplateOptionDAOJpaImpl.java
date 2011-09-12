@@ -20,7 +20,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.kew.rule.RuleTemplateOption;
+import org.kuali.rice.kew.rule.RuleTemplateOptionBo;
 import org.kuali.rice.kew.rule.dao.RuleTemplateOptionDAO;
 
 
@@ -41,12 +41,12 @@ public class RuleTemplateOptionDAOJpaImpl implements RuleTemplateOptionDAO {
    * (non-Javadoc)
    * @see org.kuali.rice.kew.rule.dao.RuleTemplateOptionDAO#findByRuleTemplateOptionId(java.lang.Long)
    */
-  public RuleTemplateOption findByRuleTemplateOptionId(String ruleTemplateOptionId) {
-	  return entityManager.find(RuleTemplateOption.class, ruleTemplateOptionId);
+  public RuleTemplateOptionBo findByRuleTemplateOptionId(String ruleTemplateOptionId) {
+	  return entityManager.find(RuleTemplateOptionBo.class, ruleTemplateOptionId);
   }
   
-  public void save (RuleTemplateOption ruleTemplateOption){
-	  if(ruleTemplateOption.getRuleTemplateOptionId()==null){
+  public void save (RuleTemplateOptionBo ruleTemplateOption){
+	  if(ruleTemplateOption.getId()==null){
 		  entityManager.persist(ruleTemplateOption);
 	  }else{
 		  OrmUtils.merge(entityManager, ruleTemplateOption);

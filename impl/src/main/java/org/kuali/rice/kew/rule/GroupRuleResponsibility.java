@@ -15,7 +15,9 @@
  */
 package org.kuali.rice.kew.rule;
 
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in.
@@ -44,7 +46,11 @@ public class GroupRuleResponsibility extends RuleResponsibility {
 		this.name = name;
 	}
 
+    @Override
 	public Group getGroup() {
-	    return this.group;
+        if (this.group == null) {
+	        this.group = KimApiServiceLocator.getGroupService().getGroupByName(getNamespaceCode(), getName());
+        }
+        return this.group;
 	}
 }

@@ -238,8 +238,8 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 
     public List findDocumentTypeAttributes(RuleAttribute ruleAttribute) {
     	Criteria crit = new Criteria(DocumentTypeAttribute.class.getName());
-    	if (ruleAttribute.getRuleAttributeId() != null) {
-    		crit.eq("ruleAttributeId", ruleAttribute.getRuleAttributeId());
+    	if (ruleAttribute.getId() != null) {
+    		crit.eq("ruleAttributeId", ruleAttribute.getId());
     	}
     	return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
     }

@@ -53,7 +53,7 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
@@ -622,7 +622,7 @@ public class DocumentOperationAction extends KewKualiAction {
 //					actionRequest.setRouteMethodName(null);
 					String id = request.getParameter("ruleTemplate.ruleTemplateId");
 					if (id != null && !"".equals(id.trim())) {
-						RuleTemplate ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(id);
+						RuleTemplateBo ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(id);
 //						if (ruleTemplate != null) {
 //							actionRequest.setRouteMethodName(ruleTemplate.getName());
 //						}

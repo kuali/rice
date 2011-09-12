@@ -16,13 +16,12 @@
  */
 package org.kuali.rice.kew.rule.dao;
 
-import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
-
+import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 
 public interface RuleTemplateAttributeDAO {
 
 	//  public void delete(Long ruleTemplateAttributeId);
-	public RuleTemplateAttribute findByRuleTemplateAttributeId(String ruleTemplateAttributeId);
-	public void save(RuleTemplateAttribute ruleTemplateAttribute);
+	public RuleTemplateAttributeBo findByRuleTemplateAttributeId(String ruleTemplateAttributeId);
+	public void save(RuleTemplateAttributeBo ruleTemplateAttribute);
 	
 }

@@ -455,7 +455,7 @@
     <field-descriptor column="RULE_ATTR_ID" name="ruleAttributeId" jdbc-type="VARCHAR"/>
     <field-descriptor column="ORD_INDX" name="orderIndex" jdbc-type="INTEGER"/>
     <reference-descriptor class-ref="org.kuali.rice.kew.rule.bo.RuleAttribute" name="ruleAttribute" auto-delete="false" auto-retrieve="true" auto-update="false">
-      <foreignkey field-ref="ruleAttributeId" />
+      <foreignkey field-ref="ruleAttributeId" target-field-ref="id" />
     </reference-descriptor>
     <reference-descriptor class-ref="org.kuali.rice.kew.doctype.bo.DocumentType" name="documentType"
       auto-delete="false" auto-retrieve="true" auto-update="false">
@@ -470,65 +470,65 @@
     <field-descriptor name="lockVerNbr" column="VER_NBR" jdbc-type="INTEGER" locking="true" />
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kew.rule.bo.RuleTemplate" table="KREW_RULE_TMPL_T">
-    <field-descriptor column="RULE_TMPL_ID" name="ruleTemplateId" primarykey="true" jdbc-type="VARCHAR"
+  <class-descriptor class="org.kuali.rice.kew.rule.bo.RuleTemplateBo" table="KREW_RULE_TMPL_T">
+    <field-descriptor column="RULE_TMPL_ID" name="id" primarykey="true" jdbc-type="VARCHAR"
         autoincrement="true" sequence-name="KREW_RTE_TMPL_S" />
     <field-descriptor column="NM" name="name" jdbc-type="VARCHAR" />
     <field-descriptor column="RULE_TMPL_DESC" name="description" jdbc-type="VARCHAR" />
     <field-descriptor column="DLGN_RULE_TMPL_ID" name="delegationTemplateId" jdbc-type="VARCHAR"/>
     <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" indexed="true" />
     <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true"/>
-    <reference-descriptor name="delegationTemplate" class-ref="org.kuali.rice.kew.rule.bo.RuleTemplate"
+    <reference-descriptor name="delegationTemplate" class-ref="org.kuali.rice.kew.rule.bo.RuleTemplateBo"
     	auto-delete="false" auto-retrieve="true" auto-update="false">
-      <foreignkey field-ref="delegationTemplateId"/>
+      <foreignkey field-ref="delegationTemplateId" target-field-ref="id"/>
     </reference-descriptor>
-    <collection-descriptor name="ruleTemplateAttributes" element-class-ref="org.kuali.rice.kew.rule.bo.RuleTemplateAttribute"
+    <collection-descriptor name="ruleTemplateAttributes" element-class-ref="org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo"
         auto-delete="true" auto-retrieve="true" auto-update="true">
-      <inverse-foreignkey field-ref="ruleTemplateId" />
+      <inverse-foreignkey field-ref="ruleTemplateId" target-field-ref="id"/>
     </collection-descriptor>
-    <collection-descriptor name="ruleTemplateOptions" element-class-ref="org.kuali.rice.kew.rule.RuleTemplateOption"
+    <collection-descriptor name="ruleTemplateOptions" element-class-ref="org.kuali.rice.kew.rule.RuleTemplateOptionBo"
         auto-delete="true" auto-retrieve="true" auto-update="true">
-      <inverse-foreignkey field-ref="ruleTemplateId" />
+      <inverse-foreignkey field-ref="ruleTemplateId" target-field-ref="id"/>
     </collection-descriptor>
 
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kew.rule.RuleTemplateOption" table="KREW_RULE_TMPL_OPTN_T">
-    <field-descriptor column="RULE_TMPL_OPTN_ID" name="ruleTemplateOptionId" primarykey="true" jdbc-type="VARCHAR"
+  <class-descriptor class="org.kuali.rice.kew.rule.RuleTemplateOptionBo" table="KREW_RULE_TMPL_OPTN_T">
+    <field-descriptor column="RULE_TMPL_OPTN_ID" name="id" primarykey="true" jdbc-type="VARCHAR"
         autoincrement="true" sequence-name="KREW_RULE_TMPL_OPTN_S" />
 
     <field-descriptor column="RULE_TMPL_ID" name="ruleTemplateId" jdbc-type="VARCHAR" />
-    <field-descriptor column="KEY_CD" name="key" jdbc-type="VARCHAR" />
+    <field-descriptor column="KEY_CD" name="code" jdbc-type="VARCHAR" />
     <field-descriptor column="VAL" name="value" jdbc-type="VARCHAR" />
-    <field-descriptor column="VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
+    <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true"/>
 
-    <reference-descriptor name="ruleTemplate" class-ref="org.kuali.rice.kew.rule.bo.RuleTemplate"
+    <reference-descriptor name="ruleTemplate" class-ref="org.kuali.rice.kew.rule.bo.RuleTemplateBo"
     	auto-delete="false" auto-retrieve="true" auto-update="false">
-      <foreignkey field-ref="ruleTemplateId"/>
+      <foreignkey field-ref="ruleTemplateId" target-field-ref="id" />
     </reference-descriptor>
   </class-descriptor>
 
 
   <class-descriptor class="org.kuali.rice.kew.rule.bo.RuleAttribute" table="KREW_RULE_ATTR_T">
-    <field-descriptor column="RULE_ATTR_ID" name="ruleAttributeId" primarykey="true" jdbc-type="VARCHAR"
+    <field-descriptor column="RULE_ATTR_ID" name="id" primarykey="true" jdbc-type="VARCHAR"
         autoincrement="true" sequence-name="KREW_RTE_TMPL_S" />
     <field-descriptor column="NM" name="name" jdbc-type="VARCHAR" />
     <field-descriptor column="LBL" name="label" jdbc-type="VARCHAR" />
     <field-descriptor column="RULE_ATTR_TYP_CD" name="type" jdbc-type="VARCHAR" />
-    <field-descriptor column="CLS_NM" name="className" jdbc-type="VARCHAR" />
+    <field-descriptor column="CLS_NM" name="resourceDescriptor" jdbc-type="VARCHAR" />
     <field-descriptor column="APPL_ID" name="applicationId" jdbc-type="VARCHAR"/>
     <field-descriptor column="DESC_TXT" name="description" jdbc-type="VARCHAR" />
     <field-descriptor column="XML" name="xmlConfigData" jdbc-type="CLOB" />
     <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" indexed="true" />
     <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true" />
-    <collection-descriptor name="ruleTemplateAttributes" element-class-ref="org.kuali.rice.kew.rule.bo.RuleTemplateAttribute"
+    <collection-descriptor name="ruleTemplateAttributes" element-class-ref="org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo"
         auto-delete="true" auto-retrieve="true" auto-update="true">
-      <inverse-foreignkey field-ref="ruleAttributeId" />
+      <inverse-foreignkey field-ref="ruleAttributeId" target-field-ref="id" />
     </collection-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kew.rule.bo.RuleTemplateAttribute" table="KREW_RULE_TMPL_ATTR_T">
-    <field-descriptor column="RULE_TMPL_ATTR_ID" name="ruleTemplateAttributeId" jdbc-type="VARCHAR" primarykey="true"
+  <class-descriptor class="org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo" table="KREW_RULE_TMPL_ATTR_T">
+    <field-descriptor column="RULE_TMPL_ATTR_ID" name="id" jdbc-type="VARCHAR" primarykey="true"
         autoincrement="true" sequence-name="KREW_RTE_TMPL_S" />
     <field-descriptor column="RULE_TMPL_ID" name="ruleTemplateId" jdbc-type="VARCHAR" />
     <field-descriptor column="RULE_ATTR_ID" name="ruleAttributeId" jdbc-type="VARCHAR" />
@@ -540,32 +540,31 @@
     <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true" />
     <reference-descriptor class-ref="org.kuali.rice.kew.rule.bo.RuleAttribute" name="ruleAttribute"
       auto-delete="false" auto-retrieve="true" auto-update="false">
-      <foreignkey field-ref="ruleAttributeId" />
+      <foreignkey field-ref="ruleAttributeId" target-field-ref="id" />
     </reference-descriptor>
-    <reference-descriptor class-ref="org.kuali.rice.kew.rule.bo.RuleTemplate" name="ruleTemplate"
+    <reference-descriptor class-ref="org.kuali.rice.kew.rule.bo.RuleTemplateBo" name="ruleTemplate"
       auto-delete="false" auto-retrieve="true" auto-update="false">
-      <foreignkey field-ref="ruleTemplateId" />
+      <foreignkey field-ref="ruleTemplateId" target-field-ref="id" />
     </reference-descriptor>
     <collection-descriptor name="ruleExtensions" element-class-ref="org.kuali.rice.kew.rule.RuleExtension"
         auto-delete="false" auto-retrieve="false" auto-update="false" proxy="true">
-      <inverse-foreignkey field-ref="ruleTemplateAttributeId" />
+      <inverse-foreignkey field-ref="ruleTemplateAttributeId" target-field-ref="id" />
     </collection-descriptor>
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kew.rule.RuleBaseValues" table="KREW_RULE_T">
-    <field-descriptor column="RULE_ID" name="ruleBaseValuesId" jdbc-type="VARCHAR" primarykey="true"
-        autoincrement="true" sequence-name="KREW_RTE_TMPL_S" />
+    <field-descriptor column="RULE_ID" name="id" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KREW_RTE_TMPL_S" />
     <field-descriptor column="NM" name="name" jdbc-type="VARCHAR" />
     <field-descriptor column="RULE_VER_NBR" name="versionNbr" jdbc-type="INTEGER"/>
     <field-descriptor column="RULE_TMPL_ID" name="ruleTemplateId" jdbc-type="VARCHAR" />
     <field-descriptor column="RULE_EXPR_ID" name="ruleExpressionId" jdbc-type="VARCHAR" access="anonymous" />
-    <field-descriptor column="ACTV_IND" name="activeInd" jdbc-type="BIT" />
+    <field-descriptor column="ACTV_IND" name="active" jdbc-type="BIT" />
     <field-descriptor column="RULE_BASE_VAL_DESC" name="description" jdbc-type="VARCHAR" />
     <field-descriptor column="FRC_ACTN" name="forceAction" jdbc-type="BIT" />
     <field-descriptor column="DOC_TYP_NM" name="docTypeName" jdbc-type="VARCHAR" />
     <field-descriptor column="DOC_HDR_ID" name="documentId" jdbc-type="VARCHAR" />
-    <field-descriptor column="FRM_DT" name="fromDate" jdbc-type="TIMESTAMP" />
-    <field-descriptor column="TO_DT" name="toDate" jdbc-type="TIMESTAMP" nullable="false"/>
+    <field-descriptor column="FRM_DT" name="fromDateValue" jdbc-type="TIMESTAMP" />
+    <field-descriptor column="TO_DT" name="toDateValue" jdbc-type="TIMESTAMP" nullable="false"/>
     <field-descriptor column="DACTVN_DT" name="deactivationDate" jdbc-type="TIMESTAMP" />
     <field-descriptor column="CUR_IND" name="currentInd" jdbc-type="BIT" />
     <field-descriptor column="TMPL_RULE_IND" name="templateRuleInd" jdbc-type="BIT" />
@@ -574,21 +573,21 @@
     <field-descriptor column="ACTVN_DT" name="activationDate" jdbc-type="TIMESTAMP" />
     <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" indexed="true" />
     <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true" />
-    <reference-descriptor name="ruleTemplate" class-ref="org.kuali.rice.kew.rule.bo.RuleTemplate"
+    <reference-descriptor name="ruleTemplate" class-ref="org.kuali.rice.kew.rule.bo.RuleTemplateBo"
         auto-delete="false" auto-retrieve="true" auto-update="false">
-        <foreignkey field-ref="ruleTemplateId" />
+        <foreignkey field-ref="ruleTemplateId" target-field-ref="id" />
     </reference-descriptor>
     <reference-descriptor name="ruleExpressionDef" class-ref="org.kuali.rice.kew.rule.RuleExpressionDef"
         auto-delete="true" auto-retrieve="true" auto-update="true">
-        <foreignkey field-ref="ruleExpressionId" />
+        <foreignkey field-ref="ruleExpressionId" target-field-ref="id"/>
     </reference-descriptor>
-    <collection-descriptor name="responsibilities" element-class-ref="org.kuali.rice.kew.rule.RuleResponsibility"
+    <collection-descriptor name="ruleResponsibilities" element-class-ref="org.kuali.rice.kew.rule.RuleResponsibility"
         auto-delete="true" auto-retrieve="true" auto-update="true" proxy="false">
-      <inverse-foreignkey field-ref="ruleBaseValuesId" />
+      <inverse-foreignkey field-ref="ruleBaseValuesId" target-field-ref="id" />
     </collection-descriptor>
     <collection-descriptor name="ruleExtensions" element-class-ref="org.kuali.rice.kew.rule.RuleExtension"
         auto-delete="true" auto-retrieve="true" auto-update="true" proxy="false">
-      <inverse-foreignkey field-ref="ruleBaseValuesId" />
+      <inverse-foreignkey field-ref="ruleBaseValuesId" target-field-ref="id"/>
     </collection-descriptor>
   </class-descriptor>
 
@@ -608,8 +607,8 @@
   	<field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" indexed="true" />
     <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true" />
 
-    <reference-descriptor class-ref="org.kuali.rice.kew.rule.RuleBaseValues" name="delegationRuleBaseValues" auto-delete="false" auto-retrieve="true" auto-update="false">
-      <foreignkey field-ref="delegateRuleId" />
+    <reference-descriptor class-ref="org.kuali.rice.kew.rule.RuleBaseValues" name="delegationRule" auto-delete="false" auto-retrieve="true" auto-update="false">
+      <foreignkey field-ref="delegateRuleId" target-field-ref="id"/>
     </reference-descriptor>
 <!--
     <reference-descriptor class-ref="org.kuali.rice.kew.rule.RuleResponsibility" name="ruleResponsibility"
@@ -620,7 +619,7 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kew.rule.RuleResponsibility" table="KREW_RULE_RSP_T">
-    <field-descriptor column="RULE_RSP_ID" name="ruleResponsibilityKey" jdbc-type="VARCHAR" primarykey="true" sequence-name="KREW_RSP_S" autoincrement="true"/>
+    <field-descriptor column="RULE_RSP_ID" name="id" jdbc-type="VARCHAR" primarykey="true" sequence-name="KREW_RSP_S" autoincrement="true"/>
     <field-descriptor column="RSP_ID" name="responsibilityId" jdbc-type="VARCHAR"/>
     <field-descriptor column="RULE_ID" name="ruleBaseValuesId" jdbc-type="VARCHAR" />
     <field-descriptor column="PRIO" name="priority" jdbc-type="INTEGER" />
@@ -632,7 +631,7 @@
     <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true" />
 
 	  <reference-descriptor class-ref="org.kuali.rice.kew.rule.RuleBaseValues" name="ruleBaseValues" auto-delete="false" auto-retrieve="true" auto-update="false">
-      <foreignkey field-ref="ruleBaseValuesId" />
+      <foreignkey field-ref="ruleBaseValuesId" target-field-ref="id" />
     </reference-descriptor>
 
     <!-- Uses a ManageableArrayList because we never want to delete RuleDelegation objects from the database
@@ -651,11 +650,11 @@
     <field-descriptor column="VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true" />
     <reference-descriptor class-ref="org.kuali.rice.kew.rule.RuleBaseValues" name="ruleBaseValues"
       auto-delete="false" auto-retrieve="true" auto-update="false">
-      <foreignkey field-ref="ruleBaseValuesId" />
+      <foreignkey field-ref="ruleBaseValuesId" target-field-ref="id" />
     </reference-descriptor>
-    <reference-descriptor class-ref="org.kuali.rice.kew.rule.bo.RuleTemplateAttribute" name="ruleTemplateAttribute"
+    <reference-descriptor class-ref="org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo" name="ruleTemplateAttribute"
       auto-delete="false" auto-retrieve="true" auto-update="false">
-      <foreignkey field-ref="ruleTemplateAttributeId" />
+      <foreignkey field-ref="ruleTemplateAttributeId" target-field-ref="id" />
     </reference-descriptor>
     <collection-descriptor name="extensionValues" element-class-ref="org.kuali.rice.kew.rule.RuleExtensionValue"
         auto-delete="true" auto-retrieve="true" auto-update="true">

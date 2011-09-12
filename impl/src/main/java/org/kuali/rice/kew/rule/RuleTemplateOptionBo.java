@@ -19,26 +19,35 @@ package org.kuali.rice.kew.rule;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
+import org.kuali.rice.kew.api.rule.RuleTemplateOptionContract;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.krad.bo.BusinessObjectBase;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 
-import javax.persistence.*;
-import java.io.Serializable;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
 
 /**
  * Defines default values and other preset information for a {@link RuleBaseValues} 
- * which is based off of the associated {@link RuleTemplate}.
+ * which is based off of the associated {@link org.kuali.rice.kew.rule.bo.RuleTemplateBo}.
  * 
  * @see RuleBaseValues
- * @see RuleTemplate
+ * @see org.kuali.rice.kew.rule.bo.RuleTemplateBo
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_RULE_TMPL_OPTN_T")
-//@Sequence(name="KREW_RULE_TMPL_OPTN_S", property="ruleTemplateOptionId")
-public class RuleTemplateOption implements Serializable {
+//@Sequence(name="KREW_RULE_TMPL_OPTN_S", property="id")
+public class RuleTemplateOptionBo extends BusinessObjectBase implements RuleTemplateOptionContract {
 
 	private static final long serialVersionUID = 8913119135197149224L;
 	@Id
@@ -48,25 +57,25 @@ public class RuleTemplateOption implements Serializable {
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="RULE_TMPL_OPTN_ID")
-	private String ruleTemplateOptionId;
+	private String id;
     @Column(name="RULE_TMPL_ID", insertable=false, updatable=false)
 	private String ruleTemplateId;
     @Column(name="KEY_CD")
-	private String key;
+	private String code;
     @Column(name="VAL")
 	private String value;
     @Version
 	@Column(name="VER_NBR")
-	private Integer lockVerNbr;
+	private Long versionNumber;
 
     @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RULE_TMPL_ID")
-	private RuleTemplate ruleTemplate;
+	private RuleTemplateBo ruleTemplate;
     
-    public RuleTemplateOption(){}
+    public RuleTemplateOptionBo(){}
     
-    public RuleTemplateOption(String key, String value){
-        this.key = key;
+    public RuleTemplateOptionBo(String key, String value){
+        this.code = key;
         this.value = value;
     }
 
@@ -74,31 +83,31 @@ public class RuleTemplateOption implements Serializable {
     public void beforeInsert(){
         OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
     }
-
-    public String getKey() {
-        return key;
+    @Override
+    public String getCode() {
+        return code;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setCode(String code) {
+        this.code = code;
+    }
+    @Override
+    public Long getVersionNumber() {
+        return versionNumber;
     }
 
-    public Integer getLockVerNbr() {
-        return lockVerNbr;
+    public void setVersionNumber(Long versionNumber) {
+        this.versionNumber = versionNumber;
     }
 
-    public void setLockVerNbr(Integer lockVerNbr) {
-        this.lockVerNbr = lockVerNbr;
-    }
-
-    public RuleTemplate getRuleTemplate() {
+    public RuleTemplateBo getRuleTemplate() {
         return ruleTemplate;
     }
 
-    public void setRuleTemplate(RuleTemplate ruleTemplate) {
+    public void setRuleTemplate(RuleTemplateBo ruleTemplate) {
         this.ruleTemplate = ruleTemplate;
     }
-
+    @Override
     public String getRuleTemplateId() {
         return ruleTemplateId;
     }
@@ -106,21 +115,27 @@ public class RuleTemplateOption implements Serializable {
     public void setRuleTemplateId(String ruleTemplateId) {
         this.ruleTemplateId = ruleTemplateId;
     }
-
-    public String getRuleTemplateOptionId() {
-        return ruleTemplateOptionId;
+    @Override
+    public String getId() {
+        return id;
     }
 
-    public void setRuleTemplateOptionId(String ruleTemplateOptionId) {
-        this.ruleTemplateOptionId = ruleTemplateOptionId;
+    public void setId(String id) {
+        this.id = id;
     }
 
+    @Override
     public String getValue() {
         return value;
     }
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    @Override
+    public void refresh() {
+        KRADServiceLocator.getPersistenceService().retrieveNonKeyFields(this);
     }
 }
 

@@ -16,7 +16,6 @@
  */
 package org.kuali.rice.kew.rule;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.GenericGenerator;
@@ -24,6 +23,7 @@ import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.rule.RuleResponsibilityContract;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.Group;
@@ -39,8 +39,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -54,8 +52,8 @@ import java.util.List;
  */
 @Entity
 @Table(name="KREW_RULE_RSP_T")
-//@Sequence(name="KREW_RSP_S", property="ruleResponsibilityKey")
-public class RuleResponsibility extends PersistableBusinessObjectBase {
+//@Sequence(name="KREW_RSP_S", property="id")
+public class RuleResponsibility extends PersistableBusinessObjectBase implements RuleResponsibilityContract {
 
 	private static final long serialVersionUID = -1565688857123316797L;
 	@Id
@@ -65,7 +63,7 @@ public class RuleResponsibility extends PersistableBusinessObjectBase {
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="RULE_RSP_ID")
-	private String ruleResponsibilityKey;
+	private String id;
     @Column(name="RSP_ID")
 	private String responsibilityId;
     @Column(name="RULE_ID", insertable=false, updatable=false)
@@ -90,7 +88,7 @@ public class RuleResponsibility extends PersistableBusinessObjectBase {
 
     public Principal getPrincipal()
     {
-    	if (isUsingWorkflowUser()) {
+    	if (isUsingPrincipal()) {
     		return KEWServiceLocator.getIdentityHelperService().getPrincipal(ruleResponsibilityName);
     	}
     	return null;
@@ -129,14 +127,17 @@ public class RuleResponsibility extends PersistableBusinessObjectBase {
         return null;
     }
 
+    @Override
     public boolean isUsingRole() {
     	return (ruleResponsibilityName != null && ruleResponsibilityType != null && ruleResponsibilityType.equals(KEWConstants.RULE_RESPONSIBILITY_ROLE_ID));
     }
 
-    public boolean isUsingWorkflowUser() {
+    @Override
+    public boolean isUsingPrincipal() {
     	return (ruleResponsibilityName != null && !ruleResponsibilityName.trim().equals("") && ruleResponsibilityType != null && ruleResponsibilityType.equals(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID));
     }
 
+    @Override
     public boolean isUsingGroup() {
     	return (ruleResponsibilityName != null && !ruleResponsibilityName.trim().equals("") && ruleResponsibilityType != null && ruleResponsibilityType.equals(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID));
     }
@@ -165,12 +166,12 @@ public class RuleResponsibility extends PersistableBusinessObjectBase {
         this.actionRequestedCd = actionRequestedCd;
     }
 
-    public String getRuleResponsibilityKey() {
-        return ruleResponsibilityKey;
+    public String getId() {
+        return id;
     }
 
-    public void setRuleResponsibilityKey(String ruleResponsibilityId) {
-        this.ruleResponsibilityKey = ruleResponsibilityId;
+    public void setId(String ruleResponsibilityId) {
+        this.id = ruleResponsibilityId;
     }
     public Integer getPriority() {
         return priority;
@@ -194,8 +195,8 @@ public class RuleResponsibility extends PersistableBusinessObjectBase {
         if (actionRequestedCd != null) {
             ruleResponsibilityClone.setActionRequestedCd(actionRequestedCd);
         }
-        if (ruleResponsibilityKey != null && preserveKeys) {
-            ruleResponsibilityClone.setRuleResponsibilityKey(ruleResponsibilityKey);
+        if (id != null && preserveKeys) {
+            ruleResponsibilityClone.setId(id);
         }
 
         if (responsibilityId != null) {
@@ -307,12 +308,33 @@ public class RuleResponsibility extends PersistableBusinessObjectBase {
 		.append(this.ruleResponsibilityName).toHashCode();
 	}
 
+    @Override
+    public String getGroupId() {
+        if (getGroup() == null) {
+            return null;
+        }
+        return getGroup().getId();
+    }
+
+    @Override
+    public String getPrincipalId() {
+        if (getPrincipal() == null) {
+            return null;
+        }
+        return getPrincipal().getPrincipalId();
+    }
+
+    @Override
+    public String getRoleName() {
+        return getRole();
+    }
+
     public static org.kuali.rice.kew.api.rule.RuleResponsibility to(RuleResponsibility bo) {
         if (bo == null) {
             return null;
         }
-
-        org.kuali.rice.kew.api.rule.RuleResponsibility.Builder builder = org.kuali.rice.kew.api.rule.RuleResponsibility.Builder.create();
+        return org.kuali.rice.kew.api.rule.RuleResponsibility.Builder.create(bo).build();
+        /*org.kuali.rice.kew.api.rule.RuleResponsibility.Builder builder = org.kuali.rice.kew.api.rule.RuleResponsibility.Builder.create();
         builder.setPriority(bo.getPriority());
         builder.setResponsibilityId(bo.getResponsibilityId());
         builder.setActionRequestedCd(bo.getActionRequestedCd());
@@ -331,6 +353,6 @@ public class RuleResponsibility extends PersistableBusinessObjectBase {
         } else {
             builder.setDelegationRules(Collections.<org.kuali.rice.kew.api.rule.RuleDelegation.Builder>emptyList());
         }
-        return builder.build();
+        return builder.build();*/
     }
 }

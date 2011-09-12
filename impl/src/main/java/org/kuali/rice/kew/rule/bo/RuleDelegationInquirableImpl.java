@@ -35,7 +35,7 @@ public class RuleDelegationInquirableImpl extends KualiInquirableImpl {
 	@Override
 	public Object retrieveDataObject(Map fieldValues){
 		RuleDelegation rule = (RuleDelegation)super.retrieveDataObject(fieldValues);
-		WebRuleUtils.populateRuleMaintenanceFields(rule.getDelegationRuleBaseValues());
+		WebRuleUtils.populateRuleMaintenanceFields(rule.getDelegationRule());
 		return rule;
     }
 	
@@ -46,7 +46,7 @@ public class RuleDelegationInquirableImpl extends KualiInquirableImpl {
 	 */
 	public BusinessObject getBusinessObject(Map fieldValues) {
 		RuleDelegation rule = (RuleDelegation)super.getBusinessObject(fieldValues);
-		WebRuleUtils.populateRuleMaintenanceFields(rule.getDelegationRuleBaseValues());
+		WebRuleUtils.populateRuleMaintenanceFields(rule.getDelegationRule());
 		return rule;
 	}
 
@@ -58,7 +58,7 @@ public class RuleDelegationInquirableImpl extends KualiInquirableImpl {
 	public List getSections(BusinessObject bo) {
 		List<Section> sections = super.getSections(bo);
 		
-		return WebRuleUtils.customizeSections(((RuleDelegation)bo).getDelegationRuleBaseValues(), sections, true);
+		return WebRuleUtils.customizeSections(((RuleDelegation)bo).getDelegationRule(), sections, true);
 		
 	}
 

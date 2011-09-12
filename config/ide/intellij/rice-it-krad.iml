@@ -19,13 +19,15 @@
     <output url="file://$MODULE_DIR$/../../../it/krad/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../it/krad/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../it/krad">
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/krad/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/krad/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/krad/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/krad/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/krad/src/test/resources/META-INF" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../it/krad/target/generated-sources/test-annotations" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/krad/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/krad/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../it/krad/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../it/krad/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -56,8 +58,8 @@
     <orderEntry type="library" scope="TEST" name="Maven: log4j:log4j:1.2.16" level="project" />
     <orderEntry type="library" name="Maven: hsqldb:hsqldb:1.8.0.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: xerces:xercesImpl:2.9.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.slf4j:jcl-over-slf4j:1.6.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.slf4j:slf4j-api:1.6.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.slf4j:jcl-over-slf4j:1.6.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.slf4j:slf4j-api:1.6.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.kuali.commons:commons-beanutils:1.8.3-kuali" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-beans:3.1.0.M2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-core:3.1.0.M2" level="project" />
@@ -79,16 +81,17 @@
     <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.1.0.M2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.hibernate:hibernate-core:3.6.6.Final" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.hibernate:hibernate-core:3.6.7.Final" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: dom4j:dom4j:1.6.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hibernate:hibernate-commons-annotations:3.2.0.Final" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: javax.transaction:jta:1.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: net.sf.ehcache:ehcache-core:2.4.4" level="project" />
     <orderEntry type="module" module-name="rice-core-framework" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-tx:3.1.0.M2" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-orm:3.1.0.M2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-jdbc:3.1.0.M2" level="project" />
     <orderEntry type="library" name="Maven: org.springmodules:spring-modules-ojb:0.8a" level="project" />
-    <orderEntry type="library" name="Maven: org.hibernate:hibernate-entitymanager:3.6.6.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate:hibernate-entitymanager:3.6.7.Final" level="project" />
     <orderEntry type="library" name="Maven: xapool:xapool:1.5.0-patch3" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.jotm:jotm-core:2.1.9" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.carol:carol:3.0.6" level="project" />
@@ -124,40 +127,40 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.struts:struts-taglib:1.3.10" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: displaytag:displaytag:1.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.lowagie:itext:1.3" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:slf4j-log4j12:1.6.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:slf4j-log4j12:1.6.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.directwebremoting:dwr:3.0.M1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.mortbay.jetty:cometd:6.1.4" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.mortbay.jetty:jetty-util:6.1.4" level="project" />
     <orderEntry type="module" module-name="rice-core-impl" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Maven: org.bouncycastle:bcprov-jdk16:1.46" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.cxf:cxf-rt-frontend-jaxws:2.3.5" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.cxf:cxf-rt-frontend-jaxws:2.3.6" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: xml-resolver:xml-resolver:1.2" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.cxf:cxf-api:2.3.5" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.cxf:cxf-common-utilities:2.3.5" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.cxf:cxf-api:2.3.6" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.cxf:cxf-common-utilities:2.3.6" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.ws.commons.schema:XmlSchema:1.4.7" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.codehaus.woodstox:woodstox-core-asl:4.1.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.codehaus.woodstox:stax2-api:3.1.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.neethi:neethi:2.0.5" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: wsdl4j:wsdl4j:1.6.2" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.cxf:cxf-common-schemas:2.3.5" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.cxf:cxf-rt-core:2.3.5" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.cxf:cxf-common-schemas:2.3.6" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.cxf:cxf-rt-core:2.3.6" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.sun.xml.bind:jaxb-impl:2.1.13" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.cxf:cxf-rt-bindings-soap:2.3.5" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.cxf:cxf-tools-common:2.3.5" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.cxf:cxf-rt-databinding-jaxb:2.3.5" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.cxf:cxf-rt-bindings-xml:2.3.5" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.cxf:cxf-rt-frontend-simple:2.3.5" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.cxf:cxf-rt-ws-addr:2.3.5" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.cxf:cxf-rt-frontend-jaxrs:2.3.5" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.cxf:cxf-rt-transports-http:2.3.5" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.cxf:cxf-rt-transports-common:2.3.5" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.cxf:cxf-rt-bindings-soap:2.3.6" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.cxf:cxf-tools-common:2.3.6" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.cxf:cxf-rt-databinding-jaxb:2.3.6" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.cxf:cxf-rt-bindings-xml:2.3.6" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.cxf:cxf-rt-frontend-simple:2.3.6" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.cxf:cxf-rt-ws-addr:2.3.6" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.cxf:cxf-rt-frontend-jaxrs:2.3.6" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.cxf:cxf-rt-transports-http:2.3.6" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.cxf:cxf-rt-transports-common:2.3.6" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.codehaus.jettison:jettison:1.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.cxf:cxf-rt-ws-security:2.3.5" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.cxf:cxf-rt-ws-security:2.3.6" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.ws.security:wss4j:1.5.11" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.santuario:xmlsec:1.4.4" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: xalan:xalan:2.7.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: xalan:serializer:2.7.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.cxf:cxf-rt-databinding-aegis:2.3.5" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.cxf:cxf-rt-databinding-aegis:2.3.6" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: javax.mail:mail:1.4.4" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: cglib:cglib-nodep:2.2.2" level="project" />
     <orderEntry type="library" name="Maven: javax.servlet:jstl:1.2" level="project" />
@@ -176,32 +179,32 @@
     <orderEntry type="module" module-name="rice-shareddata-web" scope="TEST" />
     <orderEntry type="module" module-name="rice-ksb-framework" scope="TEST" />
     <orderEntry type="module" module-name="rice-edl-framework" />
-    <orderEntry type="library" scope="TEST" name="Maven: opensymphony:oscache:2.4.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.jasig.cas.client:cas-client-core:3.2.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-core:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-core:3.0.6.RELEASE" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.aspectj:aspectjrt:1.6.8" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.aspectj:aspectjweaver:1.6.8" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-cas-client:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-web:3.0.5.RELEASE" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-cas-client:3.0.6.RELEASE" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-web:3.0.6.RELEASE" level="project" />
     <orderEntry type="module" module-name="rice-it-internal-tools" scope="TEST" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-deploy:7.4.5.v20110725" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-webapp:7.4.5.v20110725" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-xml:7.4.5.v20110725" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-util:7.4.5.v20110725" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-servlet:7.4.5.v20110725" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-security:7.4.5.v20110725" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-server:7.4.5.v20110725" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-deploy:7.5.0.v20110901" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-webapp:7.5.0.v20110901" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-xml:7.5.0.v20110901" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-util:7.5.0.v20110901" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-servlet:7.5.0.v20110901" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-security:7.5.0.v20110901" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-server:7.5.0.v20110901" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet:servlet-api:2.5" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-continuation:7.4.5.v20110725" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-http:7.4.5.v20110725" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-io:7.4.5.v20110725" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-jsp-2.1:7.4.5.v20110725" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-continuation:7.5.0.v20110901" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-http:7.5.0.v20110901" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-io:7.5.0.v20110901" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-jsp-2.1:7.5.0.v20110901" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.mortbay.jetty:jsp-2.1-glassfish:2.1.v20100127" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jdt.core.compiler:ecj:3.5.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.mortbay.jetty:jsp-api-2.1-glassfish:2.1.v20100127" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: ant:ant:1.6.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: no.geosoft:filemonitor:1.0-kuali" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.9" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.1" level="project" />
     <orderEntry type="module" module-name="rice-krad-web-framework" scope="TEST" />
     <orderEntry type="module" module-name="rice-krad-app-framework" scope="TEST" />
     <orderEntry type="module" module-name="rice-edl-impl" />

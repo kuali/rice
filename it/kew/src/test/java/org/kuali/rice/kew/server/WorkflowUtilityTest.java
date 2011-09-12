@@ -1166,7 +1166,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertEquals("Rule workgroup name is incorrect",RuleTestOrgReviewSetup.RULE_TEST_WORKGROUP2,ruleTestGroup2.getName());
         assertEquals("Rule priority is incorrect",Integer.valueOf(4),responsibilityVO.getPriority());
         assertEquals("Rule action request is incorrect",KEWConstants.ACTION_REQUEST_FYI_REQ,responsibilityVO.getActionRequestedCd());
-        ruleExtensions = ruleVO.getRuleExtensions();
+        ruleExtensions = ruleVO.getRuleExtensionMap();
         assertEquals("Number of Rule Extensions Returned Should be 2",2,ruleExtensions.size());
         for (Map.Entry<String, String> entry : ruleExtensions.entrySet()) {
             // if rule key is chartCode.... should equal UA

@@ -83,9 +83,9 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
     private List<?> delegationPkNames;
 
     private static final String RULE_TEMPLATE_PROPERTY_NAME = "ruleTemplate.name";
-    private static final String RULE_ID_PROPERTY_NAME = "ruleBaseValuesId";
+    private static final String RULE_ID_PROPERTY_NAME = "id";
     private static final String RULE_TEMPLATE_ID_PROPERTY_NAME = "ruleTemplateId";
-    private static final String ACTIVE_IND_PROPERTY_NAME = "activeInd";
+    private static final String ACTIVE_IND_PROPERTY_NAME = "active";
     private static final String DELEGATE_RULE_PROPERTY_NAME = "delegateRule";
     private static final String GROUP_REVIEWER_PROPERTY_NAME = "groupReviewer";
     private static final String GROUP_REVIEWER_NAME_PROPERTY_NAME = "groupReviewerName";
@@ -115,12 +115,12 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
 
         if (ruleTemplateNameParam != null && !ruleTemplateNameParam.equals("")) {
             rows = new ArrayList<Row>();
-            RuleTemplate ruleTemplate = null;
+            RuleTemplateBo ruleTemplate = null;
 
             ruleTemplate = getRuleTemplateService().findByRuleTemplateName(ruleTemplateNameParam);
 
             for (Object element : ruleTemplate.getActiveRuleTemplateAttributes()) {
-                RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) element;
+                RuleTemplateAttributeBo ruleTemplateAttribute = (RuleTemplateAttributeBo) element;
                 if (!ruleTemplateAttribute.isWorkflowAttribute()) {
                     continue;
                 }
@@ -268,22 +268,22 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         Map attributes = null;
         MyColumns myColumns = new MyColumns();
         if (ruleTemplateNameParam != null && !ruleTemplateNameParam.trim().equals("") || ruleTemplateIdParam != null && !"".equals(ruleTemplateIdParam) && !"null".equals(ruleTemplateIdParam)) {
-            RuleTemplate ruleTemplate = null;
+            RuleTemplateBo ruleTemplate = null;
             if (ruleTemplateIdParam != null && !"".equals(ruleTemplateIdParam)) {
                 ruleTemplateId = ruleTemplateIdParam;
                 ruleTemplate = getRuleTemplateService().findByRuleTemplateId(ruleTemplateId);
             } else {
                 ruleTemplate = getRuleTemplateService().findByRuleTemplateName(ruleTemplateNameParam.trim());
-                ruleTemplateId = ruleTemplate.getRuleTemplateId();
+                ruleTemplateId = ruleTemplate.getId();
             }
 
             attributes = new HashMap();
             for (Iterator iter = ruleTemplate.getActiveRuleTemplateAttributes().iterator(); iter.hasNext();) {
-                RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iter.next();
+                RuleTemplateAttributeBo ruleTemplateAttribute = (RuleTemplateAttributeBo) iter.next();
                 if (!ruleTemplateAttribute.isWorkflowAttribute()) {
                     continue;
                 }
-                WorkflowAttribute attribute = (WorkflowAttribute)GlobalResourceLoader.getObject(new ObjectDefinition(ruleTemplateAttribute.getRuleAttribute().getClassName(), ruleTemplateAttribute.getRuleAttribute().getApplicationId()));//SpringServiceLocator.getExtensionService().getWorkflowAttribute(ruleTemplateAttribute.getRuleAttribute().getClassName());
+                WorkflowAttribute attribute = (WorkflowAttribute)GlobalResourceLoader.getObject(new ObjectDefinition(ruleTemplateAttribute.getRuleAttribute().getResourceDescriptor(), ruleTemplateAttribute.getRuleAttribute().getApplicationId()));//SpringServiceLocator.getExtensionService().getWorkflowAttribute(ruleTemplateAttribute.getRuleAttribute().getClassName());
                 RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
                 if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
                     ((GenericXMLRuleAttribute) attribute).setRuleAttribute(ruleAttribute);
@@ -341,9 +341,9 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
                         }
                         if (field.getFieldType().equals(Field.TEXT) || field.getFieldType().equals(Field.DROPDOWN) || field.getFieldType().equals(Field.DROPDOWN_REFRESH) || field.getFieldType().equals(Field.RADIO)) {
                             if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
-                                myColumns.getColumns().add(new ConcreteKeyValue(field.getPropertyName(), ruleTemplateAttribute.getRuleTemplateAttributeId()+""));
+                                myColumns.getColumns().add(new ConcreteKeyValue(field.getPropertyName(), ruleTemplateAttribute.getId()+""));
                             } else {
-                                myColumns.getColumns().add(new ConcreteKeyValue(field.getPropertyName(), ruleTemplateAttribute.getRuleTemplateAttributeId()+""));
+                                myColumns.getColumns().add(new ConcreteKeyValue(field.getPropertyName(), ruleTemplateAttribute.getId()+""));
                             }
                         }
                     }
@@ -391,10 +391,10 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
             returnUrl.append(fieldValues.get(BACK_LOCATION)).append("?methodToCall=refresh&docFormKey=").append(fieldValues.get(DOC_FORM_KEY)).append("&");
 
             returnUrl.append(RULE_ID_PROPERTY_NAME);
-            returnUrl.append("=").append(record.getRuleBaseValuesId()).append("\">return value</a>");
+            returnUrl.append("=").append(record.getId()).append("\">return value</a>");
             record.setReturnUrl(returnUrl.toString());
 
-            String destinationUrl = "<a href=\"Rule.do?methodToCall=report&currentRuleId=" + record.getRuleBaseValuesId() + "\">report</a>";
+            String destinationUrl = "<a href=\"Rule.do?methodToCall=report&currentRuleId=" + record.getId() + "\">report</a>";
 
             record.setDestinationUrl(destinationUrl);
 
@@ -566,7 +566,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
                 	if (RULE_ID_PROPERTY_NAME.equals(col.getPropertyName()) && isRuleDelegation) {
                 		// If the row represents a delegate rule, make the ID column's inquiry link lead to the corresponding delegate rule instead.
                    		List<?> delegationList = KEWServiceLocator.getRuleDelegationService().findByDelegateRuleId(
-                   				((RuleBaseValues) element).getRuleBaseValuesId());
+                   				((RuleBaseValues) element).getId());
                 		if (ObjectUtils.isNotNull(delegationList) && !delegationList.isEmpty()) {
                 			BusinessObject ruleDelegation = (BusinessObject) delegationList.get(0);
                 			col.setColumnAnchor(getInquiryUrl(ruleDelegation, "ruleDelegationId"));
@@ -629,7 +629,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         if (StringUtils.isNotBlank(ruleBaseValues.getRuleTemplateName()) && StringUtils.isNotBlank(getMaintenanceDocumentTypeName())) {
         	if (ruleBaseValues.getDelegateRule().booleanValue()) {
         		// If the rule is a delegate rule, have the edit/copy links open the rule delegation maintenance document screen instead.
-        		List<?> delegationList = KEWServiceLocator.getRuleDelegationService().findByDelegateRuleId(ruleBaseValues.getRuleBaseValuesId());
+        		List<?> delegationList = KEWServiceLocator.getRuleDelegationService().findByDelegateRuleId(ruleBaseValues.getId());
         		if (ObjectUtils.isNotNull(delegationList) && !delegationList.isEmpty()) {
         			BusinessObject ruleDelegation = (BusinessObject) delegationList.get(0);
     				// Retrieve the rule delegation lookupable helper service and the primary key names, if they have not been obtained yet.

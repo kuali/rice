@@ -28,8 +28,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.hibernate.dialect.Oracle10gDialect;
 import org.kuali.rice.kew.api.action.DelegationType;
+import org.kuali.rice.kew.api.rule.RuleDelegationContract;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -46,7 +46,7 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 @Entity
 @Table(name="KREW_DLGN_RSP_T")
 //@Sequence(name="KREW_RTE_TMPL_S", property="ruleDelegationId")
-public class RuleDelegation extends PersistableBusinessObjectBase {
+public class RuleDelegation extends PersistableBusinessObjectBase implements RuleDelegationContract {
 
 	private static final long serialVersionUID = 7989203310473741293L;
 	@Id
@@ -66,7 +66,7 @@ public class RuleDelegation extends PersistableBusinessObjectBase {
 
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 	@JoinColumn(name="DLGN_RULE_BASE_VAL_ID")
-	private RuleBaseValues delegationRuleBaseValues;
+	private RuleBaseValues delegationRule;
 //    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 //	@JoinColumn(name="RULE_RSP_ID")
 //	private RuleResponsibility ruleResponsibility;
@@ -79,8 +79,8 @@ public class RuleDelegation extends PersistableBusinessObjectBase {
         if (ruleDelegationId != null && preserveKeys) {
             clone.setRuleDelegationId(ruleDelegationId);
         }
-        clone.setDelegationRuleBaseValues(delegationRuleBaseValues);
-        clone.setDelegateRuleId(delegationRuleBaseValues.getRuleBaseValuesId());
+        clone.setDelegationRule(delegationRule);
+        clone.setDelegateRuleId(delegationRule.getId());
         if (delegationType != null) {
             clone.setDelegationType(new String(delegationType));
         }
@@ -93,12 +93,19 @@ public class RuleDelegation extends PersistableBusinessObjectBase {
     public void setDelegateRuleId(String delegateRuleId) {
         this.delegateRuleId = delegateRuleId;
     }
+    @Override
+    public RuleBaseValues getDelegationRule() {
+        return delegationRule;
+    }
+
     public RuleBaseValues getDelegationRuleBaseValues() {
-        return delegationRuleBaseValues;
+        return delegationRule;
     }
-    public void setDelegationRuleBaseValues(RuleBaseValues delegationRuleBaseValues) {
-        this.delegationRuleBaseValues = delegationRuleBaseValues;
+
+    public void setDelegationRule(RuleBaseValues delegationRule) {
+        this.delegationRule = delegationRule;
     }
+    @Override
     public String getDelegationType() {
         return delegationType;
     }
@@ -124,7 +131,7 @@ public class RuleDelegation extends PersistableBusinessObjectBase {
     }
 
     public DocumentType getDocumentType() {
-        return this.getDelegationRuleBaseValues().getDocumentType();
+        return this.getDelegationRule().getDocumentType();
     }
 
     public String getResponsibilityId() {
@@ -146,12 +153,12 @@ public class RuleDelegation extends PersistableBusinessObjectBase {
 	 */
 	@Override
 	public void refresh() {
-		RuleBaseValues oldRuleBaseValues = this.getDelegationRuleBaseValues();
+		RuleBaseValues oldRuleBaseValues = this.getDelegationRule();
 		super.refresh();
-		if (this.getDelegationRuleBaseValues() == null) {
+		if (this.getDelegationRule() == null) {
 			this.refreshReferenceObject("delegationRuleBaseValues");
-			if (this.getDelegationRuleBaseValues() == null) {
-				this.setDelegationRuleBaseValues(oldRuleBaseValues);
+			if (this.getDelegationRule() == null) {
+				this.setDelegationRule(oldRuleBaseValues);
 			}
 		}
 	}
@@ -160,11 +167,12 @@ public class RuleDelegation extends PersistableBusinessObjectBase {
         if (bo == null) {
             return null;
         }
-        org.kuali.rice.kew.api.rule.RuleDelegation.Builder builder = org.kuali.rice.kew.api.rule.RuleDelegation.Builder.create();
+        return org.kuali.rice.kew.api.rule.RuleDelegation.Builder.create(bo).build();
+        /*org.kuali.rice.kew.api.rule.RuleDelegation.Builder builder = org.kuali.rice.kew.api.rule.RuleDelegation.Builder.create();
         builder.setDelegationType(bo.getDelegationType());
         builder.setDelegationRule(org.kuali.rice.kew.api.rule.Rule.Builder.create(RuleBaseValues.to(
-                bo.getDelegationRuleBaseValues())));
-        return builder.build();
+                bo.getDelegationRule())));
+        return builder.build();*/
     }
 }
 

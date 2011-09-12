@@ -79,7 +79,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
     private static final String PARENT_RULE_ID_PROPERTY_NAME = "ruleResponsibility.ruleBaseValues.ruleBaseValuesId";
     private static final String RULE_TEMPLATE_PROPERTY_NAME = "delegationRuleBaseValues.ruleTemplate.name";
     private static final String RULE_ID_PROPERTY_NAME = "delegationRuleBaseValues.ruleBaseValuesId";
-    private static final String ACTIVE_IND_PROPERTY_NAME = "delegationRuleBaseValues.activeInd";
+    private static final String ACTIVE_IND_PROPERTY_NAME = "delegationRuleBaseValues.active";
     private static final String DELEGATION_PROPERTY_NAME = "delegationType";
     private static final String GROUP_REVIEWER_PROPERTY_NAME = "delegationRuleBaseValues.groupReviewer";
     private static final String GROUP_REVIEWER_NAME_PROPERTY_NAME = "delegationRuleBaseValues.groupReviewerName";
@@ -109,12 +109,12 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
 
         if (ruleTemplateNameParam != null && !ruleTemplateNameParam.equals("")) {
             rows = new ArrayList<Row>();
-            RuleTemplate ruleTemplate = null;
+            RuleTemplateBo ruleTemplate = null;
 
             ruleTemplate = getRuleTemplateService().findByRuleTemplateName(ruleTemplateNameParam);
 
             for (Object element : ruleTemplate.getActiveRuleTemplateAttributes()) {
-                RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) element;
+                RuleTemplateAttributeBo ruleTemplateAttribute = (RuleTemplateAttributeBo) element;
                 if (!ruleTemplateAttribute.isWorkflowAttribute()) {
                     continue;
                 }
@@ -246,13 +246,13 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
         Map attributes = null;
         MyColumns myColumns = new MyColumns();
         if (ruleTemplateNameParam != null && !ruleTemplateNameParam.trim().equals("") || ruleTemplateIdParam != null && !"".equals(ruleTemplateIdParam) && !"null".equals(ruleTemplateIdParam)) {
-            RuleTemplate ruleTemplate = null;
+            RuleTemplateBo ruleTemplate = null;
             if (ruleTemplateIdParam != null && !"".equals(ruleTemplateIdParam)) {
                 ruleTemplateId = ruleTemplateIdParam;
                 ruleTemplate = getRuleTemplateService().findByRuleTemplateId(ruleTemplateId);
             } else {
                 ruleTemplate = getRuleTemplateService().findByRuleTemplateName(ruleTemplateNameParam.trim());
-                ruleTemplateId = ruleTemplate.getRuleTemplateId();
+                ruleTemplateId = ruleTemplate.getId();
             }
 
             if(ruleTemplate == null){
@@ -263,11 +263,11 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
 
             attributes = new HashMap();
             for (Object element : ruleTemplate.getActiveRuleTemplateAttributes()) {
-                RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) element;
+                RuleTemplateAttributeBo ruleTemplateAttribute = (RuleTemplateAttributeBo) element;
                 if (!ruleTemplateAttribute.isWorkflowAttribute()) {
                     continue;
                 }
-                WorkflowAttribute attribute = (WorkflowAttribute)GlobalResourceLoader.getObject(new ObjectDefinition(ruleTemplateAttribute.getRuleAttribute().getClassName(), ruleTemplateAttribute.getRuleAttribute().getApplicationId()));//SpringServiceLocator.getExtensionService().getWorkflowAttribute(ruleTemplateAttribute.getRuleAttribute().getClassName());
+                WorkflowAttribute attribute = (WorkflowAttribute)GlobalResourceLoader.getObject(new ObjectDefinition(ruleTemplateAttribute.getRuleAttribute().getResourceDescriptor(), ruleTemplateAttribute.getRuleAttribute().getApplicationId()));//SpringServiceLocator.getExtensionService().getWorkflowAttribute(ruleTemplateAttribute.getRuleAttribute().getClassName());
                 RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
                 if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
                     ((GenericXMLRuleAttribute) attribute).setRuleAttribute(ruleAttribute);
@@ -299,9 +299,9 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
                         }
                         if (field.getFieldType().equals(Field.TEXT) || field.getFieldType().equals(Field.DROPDOWN) || field.getFieldType().equals(Field.DROPDOWN_REFRESH) || field.getFieldType().equals(Field.RADIO)) {
                             if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
-                                myColumns.getColumns().add(new ConcreteKeyValue(field.getPropertyName(), ruleTemplateAttribute.getRuleTemplateAttributeId()+""));
+                                myColumns.getColumns().add(new ConcreteKeyValue(field.getPropertyName(), ruleTemplateAttribute.getId()+""));
                             } else {
-                                myColumns.getColumns().add(new ConcreteKeyValue(field.getPropertyName(), ruleTemplateAttribute.getRuleTemplateAttributeId()+""));
+                                myColumns.getColumns().add(new ConcreteKeyValue(field.getPropertyName(), ruleTemplateAttribute.getId()+""));
                             }
                         }
                     }
@@ -328,7 +328,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
 
         while (rules.hasNext()) {
             RuleDelegation ruleDelegation = rules.next();
-            RuleBaseValues record = ruleDelegation.getDelegationRuleBaseValues();
+            RuleBaseValues record = ruleDelegation.getDelegationRule();
 
             if (org.apache.commons.lang.StringUtils.isEmpty(record.getDescription())) {
                 record.setDescription(KEWConstants.HTML_NON_BREAKING_SPACE);
@@ -354,10 +354,10 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
             returnUrl.append(fieldValues.get(BACK_LOCATION)).append("?methodToCall=refresh&docFormKey=").append(fieldValues.get(DOC_FORM_KEY)).append("&");
 
             returnUrl.append(RULE_ID_PROPERTY_NAME);
-            returnUrl.append("=").append(record.getRuleBaseValuesId()).append("\">return value</a>");
+            returnUrl.append("=").append(record.getId()).append("\">return value</a>");
             record.setReturnUrl(returnUrl.toString());
 
-            String destinationUrl = "<a href=\"Rule.do?methodToCall=report&currentRuleId=" + record.getRuleBaseValuesId() + "\">report</a>";
+            String destinationUrl = "<a href=\"Rule.do?methodToCall=report&currentRuleId=" + record.getId() + "\">report</a>";
 
             record.setDestinationUrl(destinationUrl);
 
@@ -473,7 +473,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
                 boolean skipPropTypeCheck = false;
                 //try to get value elsewhere
                 if (element instanceof RuleDelegation) {
-                    prop = ((RuleDelegation)element).getDelegationRuleBaseValues().getFieldValues().get(curPropName);
+                    prop = ((RuleDelegation)element).getDelegationRule().getFieldValues().get(curPropName);
                     skipPropTypeCheck = true;
                 }
                 if (prop == null) {
@@ -576,7 +576,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
             List pkNames) {
         RuleDelegation ruleDelegation = (RuleDelegation)businessObject;
         List<HtmlData> htmlDataList = new ArrayList<HtmlData>();
-        if (StringUtils.isNotBlank(ruleDelegation.getDelegationRuleBaseValues().getRuleTemplateName()) && StringUtils.isNotBlank(getMaintenanceDocumentTypeName())) {
+        if (StringUtils.isNotBlank(ruleDelegation.getDelegationRule().getRuleTemplateName()) && StringUtils.isNotBlank(getMaintenanceDocumentTypeName())) {
         	if (allowsMaintenanceEditAction(businessObject)) {
         		htmlDataList.add(getUrlData(businessObject, KRADConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames));
         	}

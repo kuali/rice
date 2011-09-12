@@ -33,9 +33,9 @@ import java.util.Iterator;
 import static org.kuali.rice.core.api.impex.xml.XmlConstants.*;
 
 /**
- * Exports {@link RuleAttribute}s to XML.
+ * Exports {@link org.kuali.rice.kew.rule.bo.RuleAttribute}s to XML.
  * 
- * @see RuleAttribute
+ * @see org.kuali.rice.kew.rule.bo.RuleAttribute
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -67,7 +67,7 @@ public class RuleAttributeXmlExporter implements XmlExporter {
     private void exportRuleAttribute(Element parent, RuleAttribute ruleAttribute) {
         Element attributeElement = renderer.renderElement(parent, RULE_ATTRIBUTE);
         renderer.renderTextElement(attributeElement, NAME, ruleAttribute.getName());
-        renderer.renderTextElement(attributeElement, CLASS_NAME, ruleAttribute.getClassName());
+        renderer.renderTextElement(attributeElement, CLASS_NAME, ruleAttribute.getResourceDescriptor());
         renderer.renderTextElement(attributeElement, LABEL, ruleAttribute.getLabel());
         renderer.renderTextElement(attributeElement, DESCRIPTION, ruleAttribute.getDescription());
         renderer.renderTextElement(attributeElement, TYPE, ruleAttribute.getType());

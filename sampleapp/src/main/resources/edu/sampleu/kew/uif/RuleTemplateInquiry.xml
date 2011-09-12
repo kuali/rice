@@ -17,14 +17,14 @@
 
 <bean id="RuleTemplate-InquiryView" parent="InquiryView">
    <property name="title" value="Rule Template"/>
-   <property name="dataObjectClassName" value="org.kuali.rice.kew.rule.bo.RuleTemplate"/>
+   <property name="dataObjectClassName" value="org.kuali.rice.kew.rule.bo.RuleTemplateBo"/>
    <property name="Items">
        <list>
          <bean parent="GroupSectionGridLayout">
            <property name="layoutManager.numberOfColumns" value="2"/>
            <property name="items">
              <list>
-              <bean parent="AttributeField" p:propertyName="ruleTemplateId"/>
+              <bean parent="AttributeField" p:propertyName="id"/>
               <bean parent="AttributeField" p:propertyName="name"/>
               <bean parent="AttributeField" p:propertyName="description"/>
               <bean parent="AttributeField" p:propertyName="delegationTemplate.name"/>
@@ -33,7 +33,7 @@
          </bean>
           <!-- <bean parent="CollectionGroup">
              <property name="title" value="Rule Attributes"/>  
-             <property name="collectionObjectClass" value="org.kuali.rice.kew.rule.bo.RuleTemplateAttribute"/>
+             <property name="collectionObjectClass" value="org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo"/>
              <property name="propertyName" value="activeRuleTemplateAttributes"/>
              <property name="layoutManager.summaryTitle" value="Rule Attribute"/>
              <property name="layoutManager.summaryFields">

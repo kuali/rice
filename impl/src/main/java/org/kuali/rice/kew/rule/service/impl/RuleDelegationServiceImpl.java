@@ -19,24 +19,19 @@ package org.kuali.rice.kew.rule.service.impl;
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
 import org.kuali.rice.core.api.impex.ExportDataSet;
-import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.rule.RuleDelegation;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.rule.dao.RuleDelegationDAO;
 import org.kuali.rice.kew.rule.service.RuleDelegationService;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.xml.RuleXmlParser;
 import org.kuali.rice.kew.xml.export.RuleDelegationXmlExporter;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -105,10 +100,10 @@ public class RuleDelegationServiceImpl implements RuleDelegationService {
             throw new IllegalArgumentException("At least one criterion must be sent");
         }
 
-        RuleTemplate ruleTemplate = getRuleTemplateService().findByRuleTemplateName(ruleTemplateName);
+        RuleTemplateBo ruleTemplate = getRuleTemplateService().findByRuleTemplateName(ruleTemplateName);
         String ruleTemplateId = null;
         if (ruleTemplate != null) {
-            ruleTemplateId = ruleTemplate.getRuleTemplateId();
+            ruleTemplateId = ruleTemplate.getId();
         }
 
         if ( ( (extensionValues != null) && (!extensionValues.isEmpty()) ) &&

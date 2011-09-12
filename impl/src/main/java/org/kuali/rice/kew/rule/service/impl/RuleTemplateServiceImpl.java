@@ -27,9 +27,9 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
-import org.kuali.rice.kew.rule.RuleTemplateOption;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
-import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.RuleTemplateOptionBo;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
+import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.rule.dao.RuleDAO;
 import org.kuali.rice.kew.rule.dao.RuleDelegationDAO;
 import org.kuali.rice.kew.rule.dao.RuleTemplateAttributeDAO;
@@ -83,7 +83,7 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
         getRuleTemplateOptionDAO().delete(ruleTemplateOptionId);
     }
 
-    public RuleTemplate findByRuleTemplateName(String ruleTemplateName) {
+    public RuleTemplateBo findByRuleTemplateName(String ruleTemplateName) {
         return (getRuleTemplateDAO().findByRuleTemplateName(ruleTemplateName));
     }
 
@@ -92,24 +92,24 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
      *
      * @see org.kuali.rice.kew.rule.RuleTemplateAttributeService#findByRuleTemplateAttributeId(java.lang.Long)
      */
-    public RuleTemplateAttribute findByRuleTemplateAttributeId(String ruleTemplateAttributeId) {
+    public RuleTemplateAttributeBo findByRuleTemplateAttributeId(String ruleTemplateAttributeId) {
         return getRuleTemplateAttributeDAO().findByRuleTemplateAttributeId(ruleTemplateAttributeId);
     }
 
-    public List<RuleTemplate> findAll() {
+    public List<RuleTemplateBo> findAll() {
         return ruleTemplateDAO.findAll();
     }
 
-    public List findByRuleTemplate(RuleTemplate ruleTemplate) {
+    public List findByRuleTemplate(RuleTemplateBo ruleTemplate) {
         return ruleTemplateDAO.findByRuleTemplate(ruleTemplate);
     }
 
-    public void save(RuleTemplate ruleTemplate) {
+    public void save(RuleTemplateBo ruleTemplate) {
         LOG.debug("save RuleTemplateServiceImpl");
         validate(ruleTemplate);
         fixAssociations(ruleTemplate);
-//        if (ruleTemplate.getRuleTemplateId() != null) {
-//            RuleTemplate previousRuleTemplate = findByRuleTemplateId(ruleTemplate.getRuleTemplateId());
+//        if (ruleTemplate.getId() != null) {
+//            RuleTemplate previousRuleTemplate = findByRuleTemplateId(ruleTemplate.getId());
 //            if (previousRuleTemplate != null) {
 //                for (Iterator iter = previousRuleTemplate.getRuleTemplateAttributes().iterator(); iter.hasNext();) {
 //                    RuleTemplateAttribute previousAttribute = (RuleTemplateAttribute) iter.next();
@@ -123,7 +123,7 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
 //                        }
 //                    }
 //                    if (!found) {
-//                        getRuleTemplateAttributeDAO().delete(previousAttribute.getRuleTemplateAttributeId());
+//                        getRuleTemplateAttributeDAO().delete(previousAttribute.getId());
 //                    }
 //                }
 //            }
@@ -133,7 +133,7 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
         LOG.debug("end save RuleTemplateServiceImpl");
     }
 
-    public void save(RuleTemplateAttribute ruleTemplateAttribute) {
+    public void save(RuleTemplateAttributeBo ruleTemplateAttribute) {
         ruleTemplateAttributeDAO.save(ruleTemplateAttribute);
     }
 
@@ -143,7 +143,7 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
     public void saveRuleDefaults(RuleDelegation ruleDelegation, RuleBaseValues ruleBaseValues) {
         KEWServiceLocator.getRuleService().saveRule(ruleBaseValues, false);
         if (ruleDelegation != null) {
-        	KEWServiceLocator.getRuleService().saveRule(ruleDelegation.getDelegationRuleBaseValues(), false);
+        	KEWServiceLocator.getRuleService().saveRule(ruleDelegation.getDelegationRule(), false);
             KEWServiceLocator.getRuleDelegationService().save(ruleDelegation);
         }
     }
@@ -152,11 +152,11 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
      * Ensures that dependent objects have a reference to the specified rule template
      * @param ruleTemplate the rule template whose associates to check
      */
-    private void fixAssociations(RuleTemplate ruleTemplate) {
+    private void fixAssociations(RuleTemplateBo ruleTemplate) {
         // if it's a valid rule template instance
-        if (ruleTemplate != null && ruleTemplate.getRuleTemplateId() != null) {
+        if (ruleTemplate != null && ruleTemplate.getId() != null) {
             // for every rule template attribute
-            for (RuleTemplateAttribute ruleTemplateAttribute: ruleTemplate.getRuleTemplateAttributes()) {
+            for (RuleTemplateAttributeBo ruleTemplateAttribute: ruleTemplate.getRuleTemplateAttributes()) {
                 // if the rule template is not set on the attribute, set it
                 if (ruleTemplateAttribute.getRuleTemplate() == null || ruleTemplateAttribute.getRuleTemplateId() == null) {
                     ruleTemplateAttribute.setRuleTemplate(ruleTemplate);
@@ -168,7 +168,7 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
                 }
             }
             // for every rule template option
-            for (RuleTemplateOption option: ruleTemplate.getRuleTemplateOptions()) {
+            for (RuleTemplateOptionBo option: ruleTemplate.getRuleTemplateOptions()) {
                 // if the rule template is not set on the option, set it
                 if (option.getRuleTemplate() == null || option.getRuleTemplateId() == null) {
                     option.setRuleTemplate(ruleTemplate);
@@ -177,7 +177,7 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
         }
     }
 
-    private void validate(RuleTemplate ruleTemplate) {
+    private void validate(RuleTemplateBo ruleTemplate) {
         LOG.debug("validating ruleTemplate");
         Collection errors = new ArrayList();
         if (ruleTemplate.getName() == null || ruleTemplate.getName().trim().equals("")) {
@@ -185,8 +185,8 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
             LOG.error("Rule template name is missing");
         } else {
             ruleTemplate.setName(ruleTemplate.getName().trim());
-            if (ruleTemplate.getRuleTemplateId() == null) {
-                RuleTemplate nameInUse = findByRuleTemplateName(ruleTemplate.getName());
+            if (ruleTemplate.getId() == null) {
+                RuleTemplateBo nameInUse = findByRuleTemplateName(ruleTemplate.getName());
                 if (nameInUse != null) {
                     errors.add(new WorkflowServiceErrorImpl("Rule template name already in use", "rule.template.name.duplicate"));
                     LOG.error("Rule template name already in use");
@@ -209,7 +209,7 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
         }
     }
 
-    public RuleTemplate findByRuleTemplateId(String ruleTemplateId) {
+    public RuleTemplateBo findByRuleTemplateId(String ruleTemplateId) {
         LOG.debug("findByRuleTemplateId RuleTemplateServiceImpl");
         return getRuleTemplateDAO().findByRuleTemplateId(ruleTemplateId);
     }

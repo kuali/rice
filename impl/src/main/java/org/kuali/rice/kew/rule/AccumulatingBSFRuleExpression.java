@@ -52,7 +52,7 @@ public class AccumulatingBSFRuleExpression extends BSFRuleExpression {
         /**
          * Responsibilities accumulated during the evaluation
          */
-        private List<RuleResponsibility> responsibilities = new ArrayList<RuleResponsibility>();
+        private List<org.kuali.rice.kew.api.rule.RuleResponsibility> responsibilities = new ArrayList<org.kuali.rice.kew.api.rule.RuleResponsibility>();
         private int responsibilityPriority = 0;
 
         private RuleHelper(Rule rule, RouteContext context) {
@@ -63,7 +63,7 @@ public class AccumulatingBSFRuleExpression extends BSFRuleExpression {
         /**
          * @return the accumulated responsibilities
          */
-        public List<RuleResponsibility> getResponsibilities() {
+        public List<org.kuali.rice.kew.api.rule.RuleResponsibility> getResponsibilities() {
             return responsibilities;
         }
 
@@ -83,9 +83,11 @@ public class AccumulatingBSFRuleExpression extends BSFRuleExpression {
             if (result.getResponsibilities() == null || result.getResponsibilities().size() == 0) return;
 
             Integer curPriority = Integer.valueOf(responsibilityPriority);
-            for (RuleResponsibility responsibility: result.getResponsibilities()) {
-                responsibility.setPriority(curPriority);
-                responsibilities.add(responsibility);
+            for (org.kuali.rice.kew.api.rule.RuleResponsibility responsibility: result.getResponsibilities()) {
+                org.kuali.rice.kew.api.rule.RuleResponsibility.Builder builder =
+                        org.kuali.rice.kew.api.rule.RuleResponsibility.Builder.create(responsibility);
+                builder.setPriority(curPriority);
+                responsibilities.add(builder.build());
             }
             // increment responsibilityPriority for next rule expression result responsibilities
             responsibilityPriority++;

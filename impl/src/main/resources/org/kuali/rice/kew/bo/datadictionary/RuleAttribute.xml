@@ -26,11 +26,11 @@
     <property name="lookupDefinition">
       <ref bean="RuleAttribute-lookupDefinition"/>
     </property>
-    <property name="titleAttribute" value="ruleAttributeId"/>
+    <property name="titleAttribute" value="id"/>
     <property name="objectLabel" value="Rule Attribute"/>
     <property name="attributes">
       <list>
-        <ref bean="RuleAttribute-ruleAttributeId"/>
+        <ref bean="RuleAttribute-id"/>
         <ref bean="RuleAttribute-name"/>
         <ref bean="RuleAttribute-label"/>
         <ref bean="RuleAttribute-description"/>
@@ -45,9 +45,9 @@
 <!-- Attribute Definitions -->
 
 
-  <bean id="RuleAttribute-ruleAttributeId" parent="RuleAttribute-ruleAttributeId-parentBean"/>
+  <bean id="RuleAttribute-id" parent="RuleAttribute-id-parentBean"/>
 
-  <bean id="RuleAttribute-ruleAttributeId-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="RuleAttribute-id-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Id"/>
     <property name="maxLength" value="30"/>
     <property name="validationPattern">
@@ -56,7 +56,7 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="30"/>
     </property>
-    <property name="name" value="ruleAttributeId"/>
+    <property name="name" value="id"/>
     <property name="label" value="Id"/>
   </bean>
 
@@ -123,7 +123,7 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="50"/>
     </property>
-    <property name="name" value="className"/>
+    <property name="name" value="resourceDescriptor"/>
     <property name="label" value="Class Name"/>
   </bean>
   
@@ -161,14 +161,14 @@
           <property name="numberOfColumns" value="1"/>
           <property name="inquiryFields">
             <list>
-              <bean parent="FieldDefinition" p:attributeName="ruleAttributeId"/>
+              <bean parent="FieldDefinition" p:attributeName="id"/>
               <bean parent="FieldDefinition" p:attributeName="name"/>
               <bean parent="FieldDefinition" p:attributeName="label"/>
               <bean parent="FieldDefinition" p:attributeName="description"/>
-              <bean parent="FieldDefinition" p:attributeName="className"/>
+              <bean parent="FieldDefinition" p:attributeName="resourceDescriptor"/>
               <bean parent="FieldDefinition" p:attributeName="applicationId"/>
               <bean parent="FieldDefinition" p:attributeName="type"/>
-              <bean parent="FieldDefinition" p:attributeName="xmlConfigData"/>                  
+              <bean parent="FieldDefinition" p:attributeName="xmlConfigData"/>
             </list>
           </property>
         </bean>
@@ -189,17 +189,17 @@
     <property name="lookupFields">
       <list>
         <bean parent="FieldDefinition" p:attributeName="name" p:forceLookup="true"/>
-        <bean parent="FieldDefinition" p:attributeName="ruleAttributeId" p:forceLookup="true"/>
-        <bean parent="FieldDefinition" p:attributeName="className" p:forceLookup="true"/>
+        <bean parent="FieldDefinition" p:attributeName="id" p:forceLookup="true"/>
+        <bean parent="FieldDefinition" p:attributeName="resourceDescriptor" p:forceLookup="true"/>
         <bean parent="FieldDefinition" p:attributeName="applicationId" p:forceLookup="true"/>
         <bean parent="FieldDefinition" p:attributeName="type" p:forceLookup="true"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="FieldDefinition" p:attributeName="ruleAttributeId"/>
+        <bean parent="FieldDefinition" p:attributeName="id"/>
         <bean parent="FieldDefinition" p:attributeName="name"/>
-        <bean parent="FieldDefinition" p:attributeName="className"/>
+        <bean parent="FieldDefinition" p:attributeName="resourceDescriptor"/>
         <bean parent="FieldDefinition" p:attributeName="type"/>
         <bean parent="FieldDefinition" p:attributeName="applicationId"/>
       </list>

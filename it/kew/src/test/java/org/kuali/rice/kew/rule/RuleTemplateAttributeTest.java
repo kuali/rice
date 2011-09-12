@@ -17,8 +17,8 @@ package org.kuali.rice.kew.rule;
 
 import org.junit.Test;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
-import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
+import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 
@@ -39,10 +39,10 @@ public class RuleTemplateAttributeTest extends KEWTestCase {
 
     @Test
     public void testGetWorkflowAttribute() throws Exception {
-        RuleTemplate template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName("TemplateWithRuleValidationAttribute");
-        List<RuleTemplateAttribute> ruleTemplateAttributes = (List<RuleTemplateAttribute>) template.getRuleTemplateAttributes();
+        RuleTemplateBo template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName("TemplateWithRuleValidationAttribute");
+        List<RuleTemplateAttributeBo> ruleTemplateAttributes = (List<RuleTemplateAttributeBo>) template.getRuleTemplateAttributes();
         int index = 0;
-        for (RuleTemplateAttribute ruleTemplateAttribute : ruleTemplateAttributes) {
+        for (RuleTemplateAttributeBo ruleTemplateAttribute : ruleTemplateAttributes) {
             boolean runtimeThrown = false;
             WorkflowAttribute attribute = null;
             try {
@@ -67,10 +67,10 @@ public class RuleTemplateAttributeTest extends KEWTestCase {
 
     @Test
     public void testIsWorkflowAttribute() throws Exception {
-        RuleTemplate template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName("TemplateWithRuleValidationAttribute");
-        List<RuleTemplateAttribute> ruleTemplateAttributes = (List<RuleTemplateAttribute>) template.getRuleTemplateAttributes();
+        RuleTemplateBo template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName("TemplateWithRuleValidationAttribute");
+        List<RuleTemplateAttributeBo> ruleTemplateAttributes = (List<RuleTemplateAttributeBo>) template.getRuleTemplateAttributes();
         int index = 0;
-        for (RuleTemplateAttribute ruleTemplateAttribute : ruleTemplateAttributes) {
+        for (RuleTemplateAttributeBo ruleTemplateAttribute : ruleTemplateAttributes) {
             boolean isWorkflowAttribute = ruleTemplateAttribute.isWorkflowAttribute();
             Object attribute = ruleTemplateAttribute.getAttribute();
             attribute = ClassLoaderUtils.unwrapFromProxy(attribute);

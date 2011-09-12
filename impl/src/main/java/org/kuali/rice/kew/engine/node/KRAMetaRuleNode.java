@@ -25,6 +25,7 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.rule.Rule;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
 import org.kuali.rice.kew.exception.RouteManagerException;
@@ -47,7 +48,7 @@ public class KRAMetaRuleNode extends IteratedRequestActivationNode {
 
 	protected List<ActionRequestValue> generateUninitializedRequests(ActionRequestFactory arFactory, RouteContext context, RuleExpressionResult result) throws WorkflowException {
 		FlexRM flexRM = new FlexRM();
-		flexRM.makeActionRequests(arFactory, result.getResponsibilities(), context, result.getRule().getDefinition(), context.getDocument(), null, null);
+		flexRM.makeActionRequests(arFactory, result.getResponsibilities(), context, Rule.Builder.create(result.getRule().getDefinition()).build(), context.getDocument(), null, null);
 		return new ArrayList<ActionRequestValue>(arFactory.getRequestGraphs());
 	}
 

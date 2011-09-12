@@ -126,28 +126,28 @@ public class InlineRequestsRouteModule extends FlexRMAdapter {
             return actionRequests;
         }
 
-        List<RuleResponsibility> responsibilities = new ArrayList<RuleResponsibility>();
+        List<org.kuali.rice.kew.api.rule.RuleResponsibility> responsibilities = new ArrayList<org.kuali.rice.kew.api.rule.RuleResponsibility>();
         RuleXmlParser parser = new RuleXmlParser();
         ActionRequestFactory arf = new ActionRequestFactory(context.getDocument(), currentNode);
         // this rule is only used to obtain description, forceAction flag, and the rulebasevalues id, which may be null
         RuleBaseValues fakeRule = new RuleBaseValues();
-        fakeRule.setActiveInd(Boolean.TRUE);
+        fakeRule.setActive(Boolean.TRUE);
         fakeRule.setCurrentInd(Boolean.TRUE);
         fakeRule.setDescription("a fake rule");
         fakeRule.setForceAction(Boolean.TRUE);
-        fakeRule.setRuleBaseValuesId(null);
+        fakeRule.setId(null);
 
         for (Object o: root.getChildren("responsibility", XmlConstants.RULE_NAMESPACE)) {
             Element e = (Element) o;
             RuleResponsibility responsibility = parser.parseResponsibility(e, fakeRule);
             responsibility.setResponsibilityId(KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID);
-            responsibilities.add(responsibility);
+            responsibilities.add(org.kuali.rice.kew.api.rule.RuleResponsibility.Builder.create(responsibility).build());
         }
-        if (responsibilities.size() == 0) {
+        if (responsibilities.isEmpty()) {
             throw new RuntimeException("No responsibilities found on node " + currentNode.getName());
         }
 
-        makeActionRequests(arf, responsibilities, context, fakeRule, context.getDocument(), null, null); 
+        makeActionRequests(arf, responsibilities, context, RuleBaseValues.to(fakeRule), context.getDocument(), null, null);
         actionRequests.addAll(arf.getRequestGraphs());
         return actionRequests;
     }
@@ -168,10 +168,10 @@ public class InlineRequestsRouteModule extends FlexRMAdapter {
     private WorkflowAttribute materializeRuleAttribute(RuleAttribute ruleAttribute) {
         if (ruleAttribute != null) {
             if (KEWConstants.RULE_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
-                ObjectDefinition objDef = new ObjectDefinition(ruleAttribute.getClassName(), ruleAttribute.getApplicationId());
+                ObjectDefinition objDef = new ObjectDefinition(ruleAttribute.getResourceDescriptor(), ruleAttribute.getApplicationId());
                 return (WorkflowAttribute) GlobalResourceLoader.getObject(objDef);
             } else if (KEWConstants.RULE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
-                ObjectDefinition objDef = new ObjectDefinition(ruleAttribute.getClassName(), ruleAttribute.getApplicationId());
+                ObjectDefinition objDef = new ObjectDefinition(ruleAttribute.getResourceDescriptor(), ruleAttribute.getApplicationId());
                 WorkflowAttribute workflowAttribute = (WorkflowAttribute) GlobalResourceLoader.getObject(objDef);
                 //required to make it work because ruleAttribute XML is required to construct custom columns
                 ((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);

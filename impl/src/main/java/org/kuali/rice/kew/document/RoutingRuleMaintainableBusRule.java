@@ -23,8 +23,8 @@ import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
-import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
+import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.rule.web.WebRuleUtils;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -62,7 +62,7 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
 		RuleBaseValues oldRuleBaseValues = this.getOldRuleBaseValues(document);
 		
 		if (oldRuleBaseValues != null) {
-			ruleBaseValues.setPreviousVersionId(oldRuleBaseValues.getRuleBaseValuesId());
+			ruleBaseValues.setPreviousVersionId(oldRuleBaseValues.getId());
         }
 		isValid &= this.populateErrorMap(ruleBaseValues);
 
@@ -156,10 +156,6 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
             this.putFieldError("docTypeName", "doctype.documenttypeservice.doctypename.required");
             isValid &= false;
         }
-        if (ruleBaseValues.getActiveInd() == null) {
-        	this.putFieldError("activeInd", "routetemplate.ruleservice.activeind.required");
-        	isValid &= false;
-        }
         if(ruleBaseValues.getName() != null){
         	if(ruleExists(ruleBaseValues)){
         		this.putFieldError("name", "routetemplate.ruleservice.name.unique");
@@ -170,30 +166,23 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
         /*
          * Logic: If both from and to dates exist, make sure toDate is after fromDate
          */
-        if(ruleBaseValues.getToDate() != null && ruleBaseValues.getFromDate() != null){
-        	if (ruleBaseValues.getToDate().before(ruleBaseValues.getFromDate())) {
+        if(ruleBaseValues.getToDateValue() != null && ruleBaseValues.getFromDateValue() != null){
+        	if (ruleBaseValues.getToDateValue().before(ruleBaseValues.getFromDateValue())) {
     			this.putFieldError("toDate", "error.document.maintainableItems.toDate");
     			isValid &= false;
             }
         }
-
-		if (ruleBaseValues.getForceAction() == null) {
-			this.putFieldError("forceAction", "routetemplate.ruleservice.forceAction.required");
-			isValid &= false;
-        }
-
 
 		if(!setRuleAttributeErrors(ruleBaseValues)){
 			isValid &= false;
 		}
 
 		// This doesn't map directly to a single field. It's either the person or the group tab
-        if (ruleBaseValues.getResponsibilities().isEmpty()) {
+        if (ruleBaseValues.getRuleResponsibilities().isEmpty()) {
         	this.putFieldError("Responsibilities", "error.document.responsibility.required");
         	isValid &= false;
         } else {
-            for (Iterator<RuleResponsibility> iter = ruleBaseValues.getResponsibilities().iterator(); iter.hasNext();) {
-                RuleResponsibility responsibility = iter.next();
+            for (RuleResponsibility responsibility : ruleBaseValues.getRuleResponsibilities()) {
                 if (responsibility.getRuleResponsibilityName() != null && KEWConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
                     if (getGroupService().getGroup(responsibility.getRuleResponsibilityName()) == null) {
                     	this.putFieldError("Groups", "routetemplate.ruleservice.workgroup.invalid");
@@ -217,7 +206,7 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
 		if(tmp != null) {
 		    if ((rule.getPreviousVersionId() == null) 
 		         || (rule.getPreviousVersionId() != null
-		            && !rule.getPreviousVersionId().equals(tmp.getRuleBaseValuesId()))) {
+		            && !rule.getPreviousVersionId().equals(tmp.getId()))) {
 			    bRet = true;
 		    }
 		}
@@ -234,12 +223,12 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
 
 		boolean isValid = true;
 
-		RuleTemplate ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(rule.getRuleTemplateId());
+		RuleTemplateBo ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(rule.getRuleTemplateId());
 
 		/** Populate rule extension values * */
 		List extensions = new ArrayList();
 		for (Iterator iterator = ruleTemplate.getActiveRuleTemplateAttributes().iterator(); iterator.hasNext();) {
-			RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iterator.next();
+			RuleTemplateAttributeBo ruleTemplateAttribute = (RuleTemplateAttributeBo) iterator.next();
 			if (!ruleTemplateAttribute.isWorkflowAttribute()) {
 				continue;
 			}

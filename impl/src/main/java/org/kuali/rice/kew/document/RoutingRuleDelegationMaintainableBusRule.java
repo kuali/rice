@@ -39,7 +39,7 @@ public class RoutingRuleDelegationMaintainableBusRule extends RoutingRuleMaintai
 	 * of the RuleBaseValues.
 	 */
 	protected RuleBaseValues getRuleBaseValues(MaintenanceDocument document) {
-		return this.getBusObject(document).getDelegationRuleBaseValues();
+		return this.getBusObject(document).getDelegationRule();
 	}
 
 	protected RuleDelegation getBusObject(MaintenanceDocument document){
@@ -52,7 +52,7 @@ public class RoutingRuleDelegationMaintainableBusRule extends RoutingRuleMaintai
 	 * of the RuleBaseValues.
 	 */
 	protected RuleBaseValues getOldRuleBaseValues(MaintenanceDocument document) {
-		return this.getOldBusObject(document).getDelegationRuleBaseValues();
+		return this.getOldBusObject(document).getDelegationRule();
 	}
 
 	protected RuleDelegation getOldBusObject(MaintenanceDocument document){

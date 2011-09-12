@@ -52,11 +52,11 @@ public class RoleNameValuesFinder extends KeyValuesBase {
 			if (businessObject instanceof RuleBaseValues) {
 				rule = (RuleBaseValues)businessObject;
 			} else if (businessObject instanceof RuleDelegation) {
-				rule = ((RuleDelegation)businessObject).getDelegationRuleBaseValues();
+				rule = ((RuleDelegation)businessObject).getDelegationRule();
 			} else {
 				throw new RiceRuntimeException("Cannot locate RuleBaseValues business object on maintenance document.  Business Object was " + businessObject);
 			}
-			RuleTemplate ruleTemplate = rule.getRuleTemplate();
+			RuleTemplateBo ruleTemplate = rule.getRuleTemplate();
 			List<Role> roles = ruleTemplate.getRoles();
 			for (Role role : roles) {
 				roleNames.add(new ConcreteKeyValue(role.getName(), role.getLabel()));

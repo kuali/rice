@@ -475,7 +475,7 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 					BusinessObjectEntry collectionBusinessObjectEntry = (BusinessObjectEntry) getDataDictionaryService()
 							.getDataDictionary().getBusinessObjectEntry(
 									maintainableCollectionDefinition.getBusinessObjectClass().getName());
-					if (collection != null) {
+					if (collection != null && !collection.isEmpty()) {
 				    	int i = 0;
 			     		for (Iterator<BusinessObject> iterator = collection.iterator(); iterator
 							.hasNext();) {

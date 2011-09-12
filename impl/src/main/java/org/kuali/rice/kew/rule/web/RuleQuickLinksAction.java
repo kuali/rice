@@ -30,7 +30,7 @@ import org.kuali.rice.kew.engine.node.BranchPrototype;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeConfigParam;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -43,7 +43,6 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.krad.service.DocumentHelperService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -124,7 +123,7 @@ public class RuleQuickLinksAction extends KewKualiAction {
             RuleBaseValues rule = (RuleBaseValues)rules.get(0);
             String url = ConfigContext.getCurrentContextConfig().getKEWBaseURL() +
                 "/DelegateRule.do?methodToCall=start" +
-            	"&parentRuleId=" + rule.getRuleBaseValuesId();
+            	"&parentRuleId=" + rule.getId();
             result = new ActionForward(url, true);
         } else {
         	makeLookupPathParam(mapping, request);
@@ -306,7 +305,7 @@ public class RuleQuickLinksAction extends KewKualiAction {
 		public String getRouteNodeName() {
 			return this.baseNode.getRouteNodeName();
 		}
-		public RuleTemplate getRuleTemplate() {
+		public RuleTemplateBo getRuleTemplate() {
 			return this.baseNode.getRuleTemplate();
 		}
 		public int hashCode() {

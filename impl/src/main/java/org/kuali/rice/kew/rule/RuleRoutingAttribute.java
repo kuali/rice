@@ -111,7 +111,7 @@ public class RuleRoutingAttribute implements WorkflowAttribute {
     protected String getRuleDocumentTypeFromRuleExtensions(List ruleExtensions) {
 	for (Iterator extensionsIterator = ruleExtensions.iterator(); extensionsIterator.hasNext();) {
             RuleExtension extension = (RuleExtension) extensionsIterator.next();
-            if (extension.getRuleTemplateAttribute().getRuleAttribute().getClassName().equals(getClass().getName())) {
+            if (extension.getRuleTemplateAttribute().getRuleAttribute().getResourceDescriptor().equals(getClass().getName())) {
                 for (Iterator valuesIterator = extension.getExtensionValues().iterator(); valuesIterator.hasNext();) {
                     RuleExtensionValue extensionValue = (RuleExtensionValue) valuesIterator.next();
                     String key = extensionValue.getKey();

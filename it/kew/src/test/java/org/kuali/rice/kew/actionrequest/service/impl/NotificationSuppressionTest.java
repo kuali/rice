@@ -42,7 +42,7 @@ import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.RuleResponsibility;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -171,15 +171,15 @@ public class NotificationSuppressionTest extends KEWTestCase {
         RuleBaseValues originalRule = existingRules.get(0);
         assertTrue("Original rule should be current.", originalRule.getCurrentInd());
 
-        List<RuleResponsibility> originalResps = originalRule.getResponsibilities();
+        List<RuleResponsibility> originalResps = originalRule.getRuleResponsibilities();
         assertEquals(1, originalResps.size());
 
         RuleResponsibility originalResp = originalResps.get(0);
 
-        RuleTemplate ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(
+        RuleTemplateBo ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(
                 TEST_RULE_TEMPLATE);
         assertNotNull(ruleTemplate);
-        assertNotNull(ruleTemplate.getRuleTemplateId());
+        assertNotNull(ruleTemplate.getId());
         assertFalse(StringUtils.isEmpty(ruleTemplate.getName()));
 
         // save a new rule delegation
@@ -187,9 +187,9 @@ public class NotificationSuppressionTest extends KEWTestCase {
         ruleDelegation.setResponsibilityId(originalResp.getResponsibilityId());
         ruleDelegation.setDelegationType(DelegationType.PRIMARY.getCode());
         RuleBaseValues rule = new RuleBaseValues();
-        ruleDelegation.setDelegationRuleBaseValues(rule);
+        ruleDelegation.setDelegationRule(rule);
         rule.setDelegateRule(true);
-        rule.setActiveInd(true);
+        rule.setActive(true);
         rule.setCurrentInd(true);
         rule.setDocTypeName(originalRule.getDocTypeName());
         rule.setRuleTemplateId(ruleTemplate.getDelegationTemplateId());
@@ -197,7 +197,7 @@ public class NotificationSuppressionTest extends KEWTestCase {
         rule.setDescription("Description of this delegate rule");
         rule.setForceAction(true);
         RuleResponsibility delegationResponsibility = new RuleResponsibility();
-        rule.getResponsibilities().add(delegationResponsibility);
+        rule.getRuleResponsibilities().add(delegationResponsibility);
         delegationResponsibility.setRuleBaseValues(rule);
         delegationResponsibility.setRuleResponsibilityName("user2");
         delegationResponsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);

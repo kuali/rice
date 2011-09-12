@@ -278,16 +278,16 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
             <property name="title" value="Rule"/>
             <property name="items">
               <list>
-               <bean parent="AttributeField" p:propertyName="ruleBaseValuesId"/>
+               <bean parent="AttributeField" p:propertyName="id"/>
                <bean parent="AttributeField" p:propertyName="previousVersionId"/>
                <bean parent="AttributeField" p:propertyName="documentId"/>
                <bean parent="AttributeField" p:propertyName="documentType.name"/>
                <bean parent="AttributeField" p:propertyName="ruleTemplate.name"/>
                <bean parent="AttributeField" p:propertyName="description"/>
-               <bean parent="AttributeField" p:propertyName="fromDate"/>
-               <bean parent="AttributeField" p:propertyName="toDate"/>
+               <bean parent="AttributeField" p:propertyName="fromDateValue"/>
+               <bean parent="AttributeField" p:propertyName="toDateValue"/>
                <bean parent="AttributeField" p:propertyName="forceAction"/>
-               <bean parent="AttributeField" p:propertyName="activeInd"/>
+               <bean parent="AttributeField" p:propertyName="active"/>
               </list>
             </property>
           </bean>
@@ -372,15 +372,15 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
             <property name="items">
               <list>
 	              <bean parent="AttributeField" p:propertyName="ruleDelegationId"/>
-	              <bean parent="AttributeField" p:propertyName="ruleResponsibility.ruleBaseValues.ruleBaseValuesId"/>
+	              <bean parent="AttributeField" p:propertyName="ruleResponsibility.ruleBaseValues.id"/>
 	              <bean parent="AttributeField" p:propertyName="id"/>
 	              <bean parent="AttributeField" p:propertyName="delegationRuleBaseValues.documentType.name"/>
 	              <bean parent="AttributeField" p:propertyName="delegationRuleBaseValues.ruleTemplate.name"/>
 	              <bean parent="AttributeField" p:propertyName="delegationRuleBaseValues.description"/>
-	              <bean parent="AttributeField" p:propertyName="delegationRuleBaseValues.fromDate"/>
-	              <bean parent="AttributeField" p:propertyName="delegationRuleBaseValues.toDate"/>
+	              <bean parent="AttributeField" p:propertyName="delegationRuleBaseValues.fromDateValue"/>
+	              <bean parent="AttributeField" p:propertyName="delegationRuleBaseValues.toDateValue"/>
 	              <bean parent="AttributeField" p:propertyName="delegationRuleBaseValues.forceAction"/>
-	              <bean parent="AttributeField" p:propertyName="delegationRuleBaseValues.activeInd"/>
+	              <bean parent="AttributeField" p:propertyName="delegationRuleBaseValues.active"/>
 	              <bean parent="AttributeField" p:propertyName="delegationType"/>
               </list>
             </property>

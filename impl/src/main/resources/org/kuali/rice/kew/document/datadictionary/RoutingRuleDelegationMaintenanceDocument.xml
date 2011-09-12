@@ -35,7 +35,7 @@
     <property name="documentAuthorizerClass" value="org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizerBase"/>
     <property name="lockingKeys">
       <list>
-        <value>delegationRuleBaseValues.ruleBaseValuesId</value>
+        <value>delegationRuleBaseValues.id</value>
       </list>
     </property>
     <property name="businessRulesClass" value="org.kuali.rice.kew.document.RoutingRuleDelegationMaintainableBusRule"/>
@@ -51,7 +51,7 @@
     <property name="maintainableItems">
       <list>
         <bean parent="MaintainableSubSectionHeaderDefinition" p:name="Parent Rule"/>
-        <bean parent="MaintainableFieldDefinition" p:name="ruleResponsibility.ruleBaseValues.ruleBaseValuesId" p:unconditionallyReadOnly="true"/>
+        <bean parent="MaintainableFieldDefinition" p:name="ruleResponsibility.ruleBaseValues.id" p:unconditionallyReadOnly="true"/>
         <bean parent="MaintainableFieldDefinition" p:name="ruleResponsibility.ruleBaseValues.description" p:unconditionallyReadOnly="true"/>
         <bean parent="MaintainableSubSectionHeaderDefinition" p:name="Parent Rule Responsibility"/>
         <bean parent="MaintainableFieldDefinition" p:name="ruleResponsibility.ruleResponsibilityName" p:unconditionallyReadOnly="true"/>
@@ -73,10 +73,10 @@
         <bean parent="MaintainableFieldDefinition" p:name="delegationType" p:required="true"/>
         <bean parent="MaintainableFieldDefinition" p:name="delegationRuleBaseValues.name" p:required="false" p:noLookup="true"/>
         <bean parent="MaintainableFieldDefinition" p:name="delegationRuleBaseValues.description" p:required="true" p:noLookup="true"/>
-        <bean parent="MaintainableFieldDefinition" p:name="delegationRuleBaseValues.fromDate" p:required="false" p:noLookup="true"/>
-        <bean parent="MaintainableFieldDefinition" p:name="delegationRuleBaseValues.toDate" p:required="false" p:noLookup="true"/>
+        <bean parent="MaintainableFieldDefinition" p:name="delegationRuleBaseValues.fromDateValue" p:required="false" p:noLookup="true"/>
+        <bean parent="MaintainableFieldDefinition" p:name="delegationRuleBaseValues.toDateValue" p:required="false" p:noLookup="true"/>
         <bean parent="MaintainableFieldDefinition" p:name="delegationRuleBaseValues.forceAction" p:required="true" p:noLookup="true"/>
-        <bean parent="MaintainableFieldDefinition" p:name="delegationRuleBaseValues.activeInd" p:required="true" p:noLookup="true"/>
+        <bean parent="MaintainableFieldDefinition" p:name="delegationRuleBaseValues.active" p:required="true" p:noLookup="true"/>
       </list>
     </property>
   </bean>

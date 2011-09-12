@@ -179,6 +179,9 @@ public class KualiModuleServiceImpl implements KualiModuleService, InitializingB
         if (documentClass.getName().startsWith("org.kuali.rice.krad")) {
             return KRADConstants.KRAD_NAMESPACE;
         }
+        if (documentClass.getName().startsWith("org.kuali.rice.edl")) {
+            return "KR-EDL";
+        }
         if (documentClass.getName().startsWith("org.kuali.rice.kew")) {
             return "KR-WKFLW";
         }

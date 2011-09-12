@@ -16,19 +16,6 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -55,6 +42,15 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.*;
 
 
 /**
@@ -553,7 +549,7 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
     public void testSearchableAttributeTrim() {
     	RuleAttribute trimAttribute = KEWServiceLocator.getRuleAttributeService().findByName("TrimSearchableAttribute");
     	assert(trimAttribute.getName().equals("TrimSearchableAttribute"));
-    	assert(trimAttribute.getClassName().equals("org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute"));
+    	assert(trimAttribute.getResourceDescriptor().equals("org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute"));
     	assert(trimAttribute.getLabel().equals("Unit111"));
     	assert(trimAttribute.getType().equals("SearchableXmlAttribute"));
     	assert(trimAttribute.getDescription().equals("Unit111"));

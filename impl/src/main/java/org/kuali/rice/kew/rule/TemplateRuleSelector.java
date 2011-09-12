@@ -27,8 +27,8 @@ import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
-import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
+import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.PerformanceLogger;
 
@@ -55,13 +55,13 @@ class TemplateRuleSelector implements RuleSelector {
 	final String ruleTemplateName = selectionCriterion;
 
 	Set<MassRuleAttribute> massRules = new HashSet<MassRuleAttribute>();
-	RuleTemplate template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(ruleTemplateName);
+	RuleTemplateBo template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(ruleTemplateName);
 	if (template == null) {
 	    throw new WorkflowRuntimeException("Could not locate the rule template with name " + ruleTemplateName + " on document " + routeHeader.getDocumentId());
 	}
 	for (Iterator iter = template.getActiveRuleTemplateAttributes().iterator(); iter.hasNext();) {
 
-	    RuleTemplateAttribute templateAttribute = (RuleTemplateAttribute) iter.next();
+	    RuleTemplateAttributeBo templateAttribute = (RuleTemplateAttributeBo) iter.next();
 	    if (!templateAttribute.isWorkflowAttribute()) {
 		continue;
 	    }

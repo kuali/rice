@@ -18,8 +18,8 @@ package org.kuali.rice.kew.actionrequest.bo;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleTemplateOption;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
+import org.kuali.rice.kew.rule.RuleTemplateOptionBo;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.util.KNSGlobalVariables;
@@ -50,13 +50,13 @@ public class RuleMaintenanceActionRequestCodeValuesFinder extends ActionRequestC
 		}
 		// Acquire the Kuali maintenance form's document and its rule template.
 		final MaintenanceDocument maintDoc = (MaintenanceDocument) ((KualiMaintenanceForm) kForm).getDocument();
-		final RuleTemplate ruleTemplate = ((RuleBaseValues) maintDoc.getNewMaintainableObject().getBusinessObject()).getRuleTemplate();
+		final RuleTemplateBo ruleTemplate = ((RuleBaseValues) maintDoc.getNewMaintainableObject().getBusinessObject()).getRuleTemplate();
 		// Ensure that the rule template is defined.
 		if (ruleTemplate == null) {
 			throw new RuntimeException("Rule template cannot be null for document ID " + maintDoc.getDocumentNumber());
 		}
 		// get the options to check for, as well as their related KEW constants.
-		final RuleTemplateOption[] ruleOpts = {ruleTemplate.getAcknowledge(), ruleTemplate.getComplete(),
+		final RuleTemplateOptionBo[] ruleOpts = {ruleTemplate.getAcknowledge(), ruleTemplate.getComplete(),
 				ruleTemplate.getApprove(), ruleTemplate.getFyi()};
 		final String[] ruleConsts = {KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_COMPLETE_REQ,
 				KEWConstants.ACTION_REQUEST_APPROVE_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ};

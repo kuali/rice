@@ -149,8 +149,8 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
     }
 
     private void assertRuleExport(RuleBaseValues oldRule, RuleBaseValues newRule) {
-        assertFalse("Ids should be different.", oldRule.getRuleBaseValuesId().equals(newRule.getRuleBaseValuesId()));
-        assertEquals(oldRule.getActiveInd(), newRule.getActiveInd());
+        assertFalse("Ids should be different.", oldRule.getId().equals(newRule.getId()));
+        assertEquals(oldRule.isActive(), newRule.isActive());
         assertEquals(DateUtils.round(oldRule.getActivationDate(), Calendar.DATE), DateUtils.round(newRule.getActivationDate(), Calendar.DATE));
         assertEquals(oldRule.getName(), newRule.getName());
         assertEquals(oldRule.getCurrentInd(), newRule.getCurrentInd());
@@ -159,20 +159,20 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
         assertEquals(oldRule.getDescription(), newRule.getDescription());
         assertEquals(oldRule.getDocTypeName(), newRule.getDocTypeName());
         
-        if (oldRule.getFromDate() == null) {
-        	assertNull(newRule.getFromDate());
+        if (oldRule.getFromDateValue() == null) {
+        	assertNull(newRule.getFromDateValue());
         } else {
-        	assertEquals(DateUtils.round(oldRule.getFromDate(), Calendar.DATE), DateUtils.round(newRule.getFromDate(), Calendar.DATE));
+        	assertEquals(DateUtils.round(oldRule.getFromDateValue(), Calendar.DATE), DateUtils.round(newRule.getFromDateValue(), Calendar.DATE));
         }
-        if (oldRule.getToDate() == null) {
-        	assertNull(newRule.getToDate());
+        if (oldRule.getToDateValue() == null) {
+        	assertNull(newRule.getToDateValue());
         } else {
-        	assertEquals(DateUtils.round(oldRule.getToDate(), Calendar.DATE), DateUtils.round(newRule.getToDate(), Calendar.DATE));
+        	assertEquals(DateUtils.round(oldRule.getToDateValue(), Calendar.DATE), DateUtils.round(newRule.getToDateValue(), Calendar.DATE));
         }
         assertEquals(oldRule.getFromDateString(),newRule.getFromDateString() );
         assertEquals(oldRule.getToDateString(),newRule.getToDateString() );
         
-        assertEquals(oldRule.getForceAction(), newRule.getForceAction());
+        assertEquals(oldRule.isForceAction(), newRule.isForceAction());
         
         if(!oldRule.getDelegateRule().booleanValue())
         	assertEquals(oldRule.getPreviousVersionId(), newRule.getPreviousVersionId());
@@ -194,7 +194,7 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
         	assertEquals(oldRule.getVersionNbr(), newRule.getVersionNbr());
 
         assertRuleExtensions(oldRule.getRuleExtensions(), newRule.getRuleExtensions());
-        assertResponsibilities(oldRule.getResponsibilities(), newRule.getResponsibilities());
+        assertResponsibilities(oldRule.getRuleResponsibilities(), newRule.getRuleResponsibilities());
 
 
     }
@@ -263,10 +263,10 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
             boolean foundDelegation = false;
             for (Iterator iterator2 = newDelegations.iterator(); iterator2.hasNext();) {
                 RuleDelegation newDelegation = (RuleDelegation) iterator2.next();
-                if (oldDelegation.getDelegationRuleBaseValues().getName().equals(newDelegation.getDelegationRuleBaseValues().getName())) {
+                if (oldDelegation.getDelegationRule().getName().equals(newDelegation.getDelegationRule().getName())) {
                     assertEquals(oldDelegation.getDelegationType(), newDelegation.getDelegationType());
                     assertFalse(oldDelegation.getResponsibilityId().equals(newDelegation.getResponsibilityId()));
-                    assertRuleExport(oldDelegation.getDelegationRuleBaseValues(), newDelegation.getDelegationRuleBaseValues());
+                    assertRuleExport(oldDelegation.getDelegationRule(), newDelegation.getDelegationRule());
                     foundDelegation = true;
                     break;
                 }
@@ -289,7 +289,7 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
     private void assertAllRuleDelegationsHaveUniqueNames(List<RuleDelegation> ruleDelegations) throws Exception {
     	List<RuleBaseValues> rules = new ArrayList<RuleBaseValues>();
     	for (RuleDelegation ruleDelegation : ruleDelegations) {
-    		rules.add(ruleDelegation.getDelegationRuleBaseValues());
+    		rules.add(ruleDelegation.getDelegationRule());
     	}
     	assertAllRulesHaveUniqueNames(rules);
     }

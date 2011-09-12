@@ -22,28 +22,20 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.resourceloader.ResourceLoader;
-import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.validation.RuleValidationContext;
-import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
 import org.kuali.rice.kew.framework.validation.RuleValidationAttributeExporterService;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
-import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.validation.RuleValidationAttributeResolver;
-import org.kuali.rice.ksb.api.KsbApiServiceLocator;
-import org.kuali.rice.ksb.api.bus.Endpoint;
 import org.kuali.rice.ksb.messaging.resourceloader.ServiceBusResourceLoader;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 import javax.xml.namespace.QName;
 import java.util.Collection;
-import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Tests invoking the RuleValidationAttribute services.
@@ -102,7 +94,7 @@ public class RuleValidationAttributeRemotingTest extends KEWTestCase {
         for (RuleAttribute attrib: (Collection<RuleAttribute>) CollectionUtils.select(KEWServiceLocator.getRuleAttributeService().findAll(), RULE_VALIDATION_ATTRIB_PREDICATE)) {
             RuleValidationAttribute rva = resolver.resolveRuleValidationAttribute(attrib.getName(), null);
             assertNotNull("RuleValidationAttribute resolution failed", rva);
-            RuleValidationContext ctx = RuleValidationContext.Builder.create(org.kuali.rice.kew.api.rule.Rule.Builder.create().build()).build();
+            RuleValidationContext ctx = RuleValidationContext.Builder.create(org.kuali.rice.kew.api.rule.Rule.Builder.create("ruleName").build()).build();
             assertNotNull("RuleValidationAttribute returned null result", rva.validate(ctx));
             invocations++;
         }
@@ -121,7 +113,7 @@ public class RuleValidationAttributeRemotingTest extends KEWTestCase {
         TestRuleValidationAttribute.invocations = 0;
         int invocations = 0;
         for (RuleAttribute attrib: (Collection<RuleAttribute>) CollectionUtils.select(KEWServiceLocator.getRuleAttributeService().findAll(), RULE_VALIDATION_ATTRIB_PREDICATE)) {
-            RuleValidationContext ctx = RuleValidationContext.Builder.create(org.kuali.rice.kew.api.rule.Rule.Builder.create().build()).build();
+            RuleValidationContext ctx = RuleValidationContext.Builder.create(org.kuali.rice.kew.api.rule.Rule.Builder.create("ruleName").build()).build();
             assertNotNull("RuleValidationAttributeExporterService return value was null", exporter.validate(attrib.getName(), ctx));
             invocations++;
         }

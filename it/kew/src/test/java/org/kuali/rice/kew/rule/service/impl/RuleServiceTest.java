@@ -56,7 +56,7 @@ public class RuleServiceTest extends KEWTestCase {
     @Test
     public void testEmptyRuleExtension() throws Exception {
         final RuleBaseValues rbv = new RuleBaseValues();
-        rbv.setActiveInd(Boolean.TRUE);
+        rbv.setActive(Boolean.TRUE);
         rbv.setCurrentInd(Boolean.TRUE);
         rbv.setDescription("A test rule");
         rbv.setDocTypeName("TestDocumentType");
@@ -80,7 +80,7 @@ public class RuleServiceTest extends KEWTestCase {
          * A temporary hack to bypass this problem is to add the following line at the end of the 3-argument RuleServiceImpl.save2() method, which will force the
          * bad saving operation to take place at the right time for a proper rollback to occur:
          * 
-         * getRuleDAO().findRuleBaseValuesById(ruleBaseValues.getRuleBaseValuesId());
+         * getRuleDAO().findRuleBaseValuesById(ruleBaseValues.getId());
          * 
          * However, a longer-term solution will be needed in case there are similar areas in the system with these kinds of problems.
          */
@@ -119,7 +119,7 @@ public class RuleServiceTest extends KEWTestCase {
     	assertNotNull("The returned rule list should not be null", ruleList);
     	for (Iterator<?> ruleIter = ruleList.iterator(); ruleIter.hasNext();) {
     		RuleBaseValues rBaseValues = (RuleBaseValues) ruleIter.next();
-    		if (rBaseValues.getResponsibilities() == null || rBaseValues.getResponsibilities().isEmpty()) {
+    		if (rBaseValues.getRuleResponsibilities() == null || rBaseValues.getRuleResponsibilities().isEmpty()) {
    				actualResponsibilitylessRuleCount++;
     		}
     	}
@@ -135,7 +135,7 @@ public class RuleServiceTest extends KEWTestCase {
     		assertEquals("Rule '" + expectedRuleNames[i] + "' has the wrong doc type name", expectedRuleDocTypes[i], rBaseValues.getDocTypeName());
     		assertEquals("Rule '" + expectedRuleNames[i] + "' has the wrong description", expectedRuleDescriptions[i], rBaseValues.getDescription());
     		assertTrue("Rule '" + expectedRuleNames[i] + "' should not have any responsibilities",
-    				rBaseValues.getResponsibilities() == null || rBaseValues.getResponsibilities().isEmpty());
+    				rBaseValues.getRuleResponsibilities() == null || rBaseValues.getRuleResponsibilities().isEmpty());
     	}
     	
     	// Verify that when searching for rules with the same doc types but with a person responsibility specified, the responsibility-less rules are not retrieved.
@@ -148,7 +148,7 @@ public class RuleServiceTest extends KEWTestCase {
         		RuleBaseValues rBaseValues = (RuleBaseValues) ruleIter.next();
         		assertTrue((new StringBuilder()).append("Found a rule without responsibilities for doc type '").append(
         				expectedRuleDocTypes[i]).append("' and principal '").append(personResponsibilities[i]).append("'").toString(),
-        					rBaseValues.getResponsibilities() != null && !rBaseValues.getResponsibilities().isEmpty());
+        					rBaseValues.getRuleResponsibilities() != null && !rBaseValues.getRuleResponsibilities().isEmpty());
         	}
     	}
     	
@@ -162,7 +162,7 @@ public class RuleServiceTest extends KEWTestCase {
         		RuleBaseValues rBaseValues = (RuleBaseValues) ruleIter.next();
         		assertTrue((new StringBuilder()).append("Found a rule without responsibilities for doc type '").append(
         				expectedRuleDocTypes[i]).append("' and group '").append(groupResponsibilities[i]).append("' with namespace 'KR-WKFLW'").toString(),
-        					rBaseValues.getResponsibilities() != null && !rBaseValues.getResponsibilities().isEmpty());
+        					rBaseValues.getRuleResponsibilities() != null && !rBaseValues.getRuleResponsibilities().isEmpty());
         	}
     	}
     }

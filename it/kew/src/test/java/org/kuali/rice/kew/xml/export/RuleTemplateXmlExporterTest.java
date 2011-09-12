@@ -28,9 +28,9 @@ import java.util.List;
 import org.junit.Test;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.kew.export.KewExportDataSet;
-import org.kuali.rice.kew.rule.RuleTemplateOption;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
-import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
+import org.kuali.rice.kew.rule.RuleTemplateOptionBo;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
+import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
@@ -61,10 +61,10 @@ public class RuleTemplateXmlExporterTest extends XmlExporterTestCase {
         List newRuleTemplates = KEWServiceLocator.getRuleTemplateService().findAll();
         assertEquals("Should have same number of old and new RuleTemplates.", oldRuleTemplates.size(), newRuleTemplates.size());
         for (Iterator iterator = oldRuleTemplates.iterator(); iterator.hasNext();) {
-            RuleTemplate oldRuleTemplate = (RuleTemplate) iterator.next();
+            RuleTemplateBo oldRuleTemplate = (RuleTemplateBo) iterator.next();
             boolean foundTemplate = false;
             for (Iterator iterator2 = newRuleTemplates.iterator(); iterator2.hasNext();) {
-                RuleTemplate newRuleTemplate = (RuleTemplate) iterator2.next();
+                RuleTemplateBo newRuleTemplate = (RuleTemplateBo) iterator2.next();
                 if (oldRuleTemplate.getName().equals(newRuleTemplate.getName())) {
                     assertRuleTemplateExport(oldRuleTemplate, newRuleTemplate);
                     foundTemplate = true;
@@ -74,8 +74,8 @@ public class RuleTemplateXmlExporterTest extends XmlExporterTestCase {
         }
     }
 
-    private void assertRuleTemplateExport(RuleTemplate oldRuleTemplate, RuleTemplate newRuleTemplate) {
-        assertFalse("Ids should be different.", oldRuleTemplate.getRuleTemplateId().equals(newRuleTemplate.getRuleTemplateId()));
+    private void assertRuleTemplateExport(RuleTemplateBo oldRuleTemplate, RuleTemplateBo newRuleTemplate) {
+        assertFalse("Ids should be different.", oldRuleTemplate.getId().equals(newRuleTemplate.getId()));
         assertEquals(oldRuleTemplate.getDescription(), newRuleTemplate.getDescription());
         assertEquals(oldRuleTemplate.getName(), newRuleTemplate.getName());
         if (oldRuleTemplate.getDelegationTemplate() != null) {
@@ -91,10 +91,10 @@ public class RuleTemplateXmlExporterTest extends XmlExporterTestCase {
     private void assertAttributes(List oldAttributes, List newAttributes, String errorMessageAttributeLabel) {
         assertEquals(oldAttributes.size(), newAttributes.size());
         for (Iterator iterator = oldAttributes.iterator(); iterator.hasNext();) {
-            RuleTemplateAttribute oldAttribute = (RuleTemplateAttribute) iterator.next();
+            RuleTemplateAttributeBo oldAttribute = (RuleTemplateAttributeBo) iterator.next();
             boolean foundAttribute = false;
             for (Iterator iterator2 = newAttributes.iterator(); iterator2.hasNext();) {
-                RuleTemplateAttribute newAttribute = (RuleTemplateAttribute) iterator2.next();
+                RuleTemplateAttributeBo newAttribute = (RuleTemplateAttributeBo) iterator2.next();
                 if (oldAttribute.getRuleAttribute().getName().equals(newAttribute.getRuleAttribute().getName())) {
                     assertEquals(oldAttribute.getRequired(), newAttribute.getRequired());
                     foundAttribute = true;
@@ -107,11 +107,11 @@ public class RuleTemplateXmlExporterTest extends XmlExporterTestCase {
     private void assertOptions(List oldTemplateOptions, List newTemplateOptions) {
         assertEquals(oldTemplateOptions.size(), newTemplateOptions.size());
         for (Iterator iterator = oldTemplateOptions.iterator(); iterator.hasNext();) {
-            RuleTemplateOption oldOption = (RuleTemplateOption) iterator.next();
+            RuleTemplateOptionBo oldOption = (RuleTemplateOptionBo) iterator.next();
             boolean foundOption = false;
             for (Iterator iterator2 = newTemplateOptions.iterator(); iterator2.hasNext();) {
-                RuleTemplateOption newOption = (RuleTemplateOption) iterator2.next();
-                if (oldOption.getKey().equals(newOption.getKey())) {
+                RuleTemplateOptionBo newOption = (RuleTemplateOptionBo) iterator2.next();
+                if (oldOption.getCode().equals(newOption.getCode())) {
                     assertEquals(oldOption.getValue(), newOption.getValue());
                     foundOption = true;
                 }

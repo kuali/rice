@@ -14,6 +14,8 @@
  limitations under the License.
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
+<c:set var="docTypeAttributes" value="${DataDictionary.DocumentType.attributes}" />
+<c:set var="ruleTemplateAttributes" value="${DataDictionary.RuleTemplateBo.attributes}" />
 
 <kul:tabTop tabTitle="Create New Rule" defaultOpen="true">
     <div class="tab-container" align=center >
@@ -30,7 +32,7 @@
         <th align=right valign=middle class="bord-l-b">*Rule Template: </th>
         <td align=left valign=middle class="datacell">
             <kul:htmlControlAttribute attributeEntry="${ruleTemplateAttributes.name}" property="ruleTemplateName" readOnly="true" />
-            <kul:lookup boClassName="org.kuali.rice.kew.rule.bo.RuleTemplate" fieldConversions="name:ruleTemplateName"/>
+            <kul:lookup boClassName="org.kuali.rice.kew.rule.bo.RuleTemplateBo" fieldConversions="name:ruleTemplateName"/>
         </td>
       </tr>
       </table>

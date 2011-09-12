@@ -46,8 +46,7 @@ public class TestRuleAttribute implements WorkflowAttribute, RoleAttribute, Work
     
     public List getRoleNames() {
         List roleNames = new ArrayList();
-        for (Iterator iterator = roles.keySet().iterator(); iterator.hasNext();) {
-            String roleName = (String) iterator.next();
+        for (String roleName : roles.keySet()) {
             roleNames.add(new Role(getClass(), roleName, roleName));
         }
     	return roleNames;

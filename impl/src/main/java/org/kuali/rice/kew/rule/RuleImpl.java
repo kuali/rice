@@ -91,8 +91,9 @@ class RuleImpl implements Rule {
     }
 
     public RuleExpressionResult evaluate(Rule rule, RouteContext context) {
-        RuleBaseValues ruleDefinition = rule.getDefinition();
-        RuleExpressionDef ruleExprDef = ruleDefinition.getRuleExpressionDef();
+        org.kuali.rice.kew.api.rule.Rule ruleDefinition
+                = org.kuali.rice.kew.api.rule.Rule.Builder.create(rule.getDefinition()).build();
+        org.kuali.rice.kew.api.rule.RuleExpression ruleExprDef = ruleDefinition.getRuleExpressionDef();
         String type = DEFAULT_RULE_EXPRESSION;
         if (ruleExprDef != null) {
             type = ruleExprDef.getType();

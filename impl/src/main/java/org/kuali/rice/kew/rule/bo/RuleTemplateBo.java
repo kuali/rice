@@ -21,9 +21,10 @@ package org.kuali.rice.kew.rule.bo;
  import org.hibernate.annotations.FetchMode;
  import org.hibernate.annotations.GenericGenerator;
  import org.hibernate.annotations.Parameter;
+ import org.kuali.rice.kew.api.rule.RuleTemplateContract;
  import org.kuali.rice.kew.rule.Role;
  import org.kuali.rice.kew.rule.RoleAttribute;
- import org.kuali.rice.kew.rule.RuleTemplateOption;
+ import org.kuali.rice.kew.rule.RuleTemplateOptionBo;
  import org.kuali.rice.kew.rule.WorkflowAttribute;
  import org.kuali.rice.kew.util.KEWConstants;
  import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
@@ -39,15 +40,15 @@ import java.util.List;
 /**
  * A model bean which represents a template upon which a rule is created.
  * The RuleTemplate is essentially a collection of {@link RuleAttribute}s
- * (associated vai the {@link RuleTemplateAttribute} bean).
+ * (associated vai the {@link RuleTemplateAttributeBo} bean).
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_RULE_TMPL_T")
-//@Sequence(name="KREW_RTE_TMPL_S", property="ruleTemplateId")
+//@Sequence(name="KREW_RTE_TMPL_S", property="id")
 @NamedQueries({@NamedQuery(name="findAllOrderedByName", query="SELECT rt FROM RuleTemplate rt ORDER BY rt.name ASC")})
-public class RuleTemplate  extends PersistableBusinessObjectBase {
+public class RuleTemplateBo extends PersistableBusinessObjectBase implements RuleTemplateContract {
 
     private static final long serialVersionUID = -3387940485523951302L;
 
@@ -70,7 +71,7 @@ public class RuleTemplate  extends PersistableBusinessObjectBase {
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="RULE_TMPL_ID")
-	private String ruleTemplateId;
+	private String id;
     @Column(name="NM")
 	private String name;
     @Column(name="RULE_TMPL_DESC")
@@ -80,23 +81,23 @@ public class RuleTemplate  extends PersistableBusinessObjectBase {
 	private String delegationTemplateId;
     @OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="DLGN_RULE_TMPL_ID")
-	private RuleTemplate delegationTemplate;
+	private RuleTemplateBo delegationTemplate;
     @Fetch(value = FetchMode.SELECT)
     @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
            mappedBy="ruleTemplate")
-	private List<RuleTemplateAttribute> ruleTemplateAttributes;
+	private List<RuleTemplateAttributeBo> ruleTemplateAttributes;
     @Fetch(value = FetchMode.SELECT)
     @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
            mappedBy="ruleTemplate", orphanRemoval=true)
-	private List<RuleTemplateOption> ruleTemplateOptions;
+	private List<RuleTemplateOptionBo> ruleTemplateOptions;
 
     // required to be lookupable
     @Transient
     private String returnUrl;
 
-    public RuleTemplate() {
-        ruleTemplateAttributes = new ArrayList<RuleTemplateAttribute>();
-        ruleTemplateOptions = new ArrayList<RuleTemplateOption>();
+    public RuleTemplateBo() {
+        ruleTemplateAttributes = new ArrayList<RuleTemplateAttributeBo>();
+        ruleTemplateOptions = new ArrayList<RuleTemplateOptionBo>();
     }
     
  
@@ -104,11 +105,11 @@ public class RuleTemplate  extends PersistableBusinessObjectBase {
      * Removes any non-default rule template options on the template
      */
     public void removeNonDefaultOptions() {
-        Iterator<RuleTemplateOption> it = ruleTemplateOptions.iterator();
+        Iterator<RuleTemplateOptionBo> it = ruleTemplateOptions.iterator();
         while (it.hasNext()) {
-            RuleTemplateOption option = it.next();
+            RuleTemplateOptionBo option = it.next();
             // if it's not one of the default options, remove it
-            if (!ArrayUtils.contains(DEFAULT_OPTION_KEYS, option.getKey())) {
+            if (!ArrayUtils.contains(DEFAULT_OPTION_KEYS, option.getCode())) {
                 it.remove();
             }
         }
@@ -122,8 +123,8 @@ public class RuleTemplate  extends PersistableBusinessObjectBase {
     }
 
     public String getRuleTemplateActionsUrl() {
-        return "<a href=\"RuleTemplate.do?methodToCall=report&currentRuleTemplateId=" + ruleTemplateId + "\" >report</a>" /*+ "&nbsp;&nbsp;|&nbsp;&nbsp;<a href=\"RuleTemplate.do?methodToCall=edit&ruleTemplate.ruleTemplateId=" + ruleTemplateId + "\" >edit</a>"*/;
-//        		"&nbsp;&nbsp;|&nbsp;&nbsp;<a onclick=\"if (confirm('Delete this record?')){ return true; } else {return false;} \" href=\"RuleTemplate.do?methodToCall=delete&ruleTemplate.ruleTemplateId=" + ruleTemplateId + "&redirectUrl=Lookup.do?methodToCall=search&lookupableImplServiceName=RuleTemplateLookupableImplService\" >delete</a>";
+        return "<a href=\"RuleTemplate.do?methodToCall=report&currentRuleTemplateId=" + id + "\" >report</a>" /*+ "&nbsp;&nbsp;|&nbsp;&nbsp;<a href=\"RuleTemplate.do?methodToCall=edit&ruleTemplate.id=" + id + "\" >edit</a>"*/;
+//        		"&nbsp;&nbsp;|&nbsp;&nbsp;<a onclick=\"if (confirm('Delete this record?')){ return true; } else {return false;} \" href=\"RuleTemplate.do?methodToCall=delete&ruleTemplate.id=" + id + "&redirectUrl=Lookup.do?methodToCall=search&lookupableImplServiceName=RuleTemplateLookupableImplService\" >delete</a>";
     }
 
 //    public void addRuleTemplateAttribute(RuleTemplateAttribute ruleTemplateAttribute, Integer counter) {
@@ -132,14 +133,14 @@ public class RuleTemplate  extends PersistableBusinessObjectBase {
 //        if (counter != null) {
 //            for (Iterator templateAttributeIter = getRuleTemplateAttributes().iterator(); templateAttributeIter.hasNext();) {
 //                RuleTemplateAttribute ruleTemplateAtt = (RuleTemplateAttribute) templateAttributeIter.next();
-//                //                if (ruleTemplateAtt.getRuleAttributeId().longValue() == ruleTemplateAttribute.getRuleAttributeId().longValue()) {
+//                //                if (ruleTemplateAtt.getId().longValue() == ruleTemplateAttribute.getId().longValue()) {
 //                if (counter.intValue() == location) {
 //                    ruleTemplateAtt.setDefaultValue(ruleTemplateAttribute.getDefaultValue());
 //                    ruleTemplateAtt.setDisplayOrder(ruleTemplateAttribute.getDisplayOrder());
 //                    ruleTemplateAtt.setLockVerNbr(ruleTemplateAttribute.getLockVerNbr());
 //                    ruleTemplateAtt.setRequired(ruleTemplateAttribute.getRequired());
-//                    ruleTemplateAtt.setRuleTemplateAttributeId(ruleTemplateAttribute.getRuleTemplateAttributeId());
-//                    ruleTemplateAtt.setRuleTemplateId(ruleTemplateAttribute.getRuleTemplateId());
+//                    ruleTemplateAtt.setId(ruleTemplateAttribute.getId());
+//                    ruleTemplateAtt.setId(ruleTemplateAttribute.getId());
 //                    alreadyAdded = true;
 //                }
 //                location++;
@@ -155,8 +156,8 @@ public class RuleTemplate  extends PersistableBusinessObjectBase {
      * Returns the rule template attribute on this instance whose name matches the name of the rule template attribute
      * passed as a parameter, qualified by it's active state, or null if a match was not found.
      */
-    private RuleTemplateAttribute getRuleTemplateAttribute(RuleTemplateAttribute ruleTemplateAttribute, Boolean active) {
-        for (RuleTemplateAttribute currentRuleTemplateAttribute: getRuleTemplateAttributes()) {
+    private RuleTemplateAttributeBo getRuleTemplateAttribute(RuleTemplateAttributeBo ruleTemplateAttribute, Boolean active) {
+        for (RuleTemplateAttributeBo currentRuleTemplateAttribute: getRuleTemplateAttributes()) {
             if (currentRuleTemplateAttribute.getRuleAttribute().getName().equals(ruleTemplateAttribute.getRuleAttribute().getName())) {
                 if (active == null) {
                     return currentRuleTemplateAttribute;
@@ -169,26 +170,26 @@ public class RuleTemplate  extends PersistableBusinessObjectBase {
         return null;
     }
     
-    public RuleTemplateAttribute getRuleTemplateAttribute(RuleTemplateAttribute ruleTemplateAttribute) {
+    public RuleTemplateAttributeBo getRuleTemplateAttribute(RuleTemplateAttributeBo ruleTemplateAttribute) {
         return getRuleTemplateAttribute(ruleTemplateAttribute, null);
     }
     
-    public boolean containsActiveRuleTemplateAttribute(RuleTemplateAttribute templateAttribute) {
+    public boolean containsActiveRuleTemplateAttribute(RuleTemplateAttributeBo templateAttribute) {
         return (getRuleTemplateAttribute(templateAttribute, Boolean.TRUE) != null);
     }
 
-    public boolean containsRuleTemplateAttribute(RuleTemplateAttribute templateAttribute) {
+    public boolean containsRuleTemplateAttribute(RuleTemplateAttributeBo templateAttribute) {
         return (getRuleTemplateAttribute(templateAttribute, null) != null);
     }
 
-    public RuleTemplateAttribute getRuleTemplateAttribute(int index) {
+    public RuleTemplateAttributeBo getRuleTemplateAttribute(int index) {
         while (getRuleTemplateAttributes().size() <= index) {
-            getRuleTemplateAttributes().add(new RuleTemplateAttribute());
+            getRuleTemplateAttributes().add(new RuleTemplateAttributeBo());
         }
-        return (RuleTemplateAttribute) getRuleTemplateAttributes().get(index);
+        return (RuleTemplateAttributeBo) getRuleTemplateAttributes().get(index);
     }
 
-    public List<RuleTemplateAttribute> getRuleTemplateAttributes() {
+    public List<RuleTemplateAttributeBo> getRuleTemplateAttributes() {
     	Collections.sort(ruleTemplateAttributes);
         return ruleTemplateAttributes;
     }
@@ -198,9 +199,9 @@ public class RuleTemplate  extends PersistableBusinessObjectBase {
      * sorted according to display order (ascending).
      * @return
      */
-    public List<RuleTemplateAttribute> getActiveRuleTemplateAttributes() {
-        List<RuleTemplateAttribute> activeAttributes = new ArrayList<RuleTemplateAttribute>();
-        for (RuleTemplateAttribute templateAttribute : getRuleTemplateAttributes())
+    public List<RuleTemplateAttributeBo> getActiveRuleTemplateAttributes() {
+        List<RuleTemplateAttributeBo> activeAttributes = new ArrayList<RuleTemplateAttributeBo>();
+        for (RuleTemplateAttributeBo templateAttribute : getRuleTemplateAttributes())
         {
             if (templateAttribute.isActive())
             {
@@ -215,11 +216,11 @@ public class RuleTemplate  extends PersistableBusinessObjectBase {
      * This is implemented to allow us to use this collection on the inquiry for RuleTemplate.  In the
      * KNS code it does an explicit check that the property is writable.
      */
-    public void setActiveRuleTemplateAttributes(List<RuleTemplateAttribute> ruleTemplateAttributes) {
+    public void setActiveRuleTemplateAttributes(List<RuleTemplateAttributeBo> ruleTemplateAttributes) {
     	throw new UnsupportedOperationException("setActiveRuleTemplateAttributes is not implemented");
     }
 
-    public void setRuleTemplateAttributes(List<RuleTemplateAttribute> ruleTemplateAttributes) {
+    public void setRuleTemplateAttributes(List<RuleTemplateAttributeBo> ruleTemplateAttributes) {
         this.ruleTemplateAttributes = ruleTemplateAttributes;
     }
 
@@ -239,12 +240,12 @@ public class RuleTemplate  extends PersistableBusinessObjectBase {
         this.name = name;
     }
 
-    public String getRuleTemplateId() {
-        return ruleTemplateId;
+    public String getId() {
+        return id;
     }
 
-    public void setRuleTemplateId(String ruleTemplateId) {
-        this.ruleTemplateId = ruleTemplateId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getDelegationTemplateId() {
@@ -255,11 +256,11 @@ public class RuleTemplate  extends PersistableBusinessObjectBase {
         this.delegationTemplateId = delegationTemplateId;
     }
 
-    public RuleTemplate getDelegationTemplate() {
+    public RuleTemplateBo getDelegationTemplate() {
         return delegationTemplate;
     }
 
-    public void setDelegationTemplate(RuleTemplate delegationTemplate) {
+    public void setDelegationTemplate(RuleTemplateBo delegationTemplate) {
         this.delegationTemplate = delegationTemplate;
     }
 
@@ -278,17 +279,17 @@ public class RuleTemplate  extends PersistableBusinessObjectBase {
         return URLEncoder.encode(getName());
     }
 
-    public List<RuleTemplateOption> getRuleTemplateOptions() {
+    public List<RuleTemplateOptionBo> getRuleTemplateOptions() {
         return ruleTemplateOptions;
     }
 
-    public void setRuleTemplateOptions(List<RuleTemplateOption> ruleTemplateOptions) {
+    public void setRuleTemplateOptions(List<RuleTemplateOptionBo> ruleTemplateOptions) {
         this.ruleTemplateOptions = ruleTemplateOptions;
     }
 
-    public RuleTemplateOption getRuleTemplateOption(String key) {
-        for (RuleTemplateOption option: ruleTemplateOptions) {
-            if (option.getKey().equals(key)) {
+    public RuleTemplateOptionBo getRuleTemplateOption(String key) {
+        for (RuleTemplateOptionBo option: ruleTemplateOptions) {
+            if (option.getCode().equals(key)) {
                 return option;
             }
         }
@@ -298,66 +299,66 @@ public class RuleTemplate  extends PersistableBusinessObjectBase {
     public void setInstructions(RuleTemplateOption instructions) {
         RuleTemplateOption option = getRuleTemplateOption(KEWConstants.RULE_INSTRUCTIONS_CD);
         option.setValue(instructions.getValue());
-        option.setRuleTemplateOptionId(instructions.getRuleTemplateOptionId());
+        option.setId(instructions.getId());
         option.setLockVerNbr(instructions.getLockVerNbr());
     }
 */
-    public void setAcknowledge(RuleTemplateOption acknowledge) {
-        RuleTemplateOption option = getRuleTemplateOption(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
+    public void setAcknowledge(RuleTemplateOptionBo acknowledge) {
+        RuleTemplateOptionBo option = getRuleTemplateOption(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
         option.setValue(acknowledge.getValue());
-        option.setRuleTemplateOptionId(acknowledge.getRuleTemplateOptionId());
-        option.setLockVerNbr(acknowledge.getLockVerNbr());
+        option.setId(acknowledge.getId());
+        option.setVersionNumber(acknowledge.getVersionNumber());
     }
 
-    public void setComplete(RuleTemplateOption complete) {
-        RuleTemplateOption option = getRuleTemplateOption(KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+    public void setComplete(RuleTemplateOptionBo complete) {
+        RuleTemplateOptionBo option = getRuleTemplateOption(KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
         option.setValue(complete.getValue());
-        option.setRuleTemplateOptionId(complete.getRuleTemplateOptionId());
-        option.setLockVerNbr(complete.getLockVerNbr());
+        option.setId(complete.getId());
+        option.setVersionNumber(complete.getVersionNumber());
     }
 
-    public void setApprove(RuleTemplateOption approve) {
-        RuleTemplateOption option = getRuleTemplateOption(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
+    public void setApprove(RuleTemplateOptionBo approve) {
+        RuleTemplateOptionBo option = getRuleTemplateOption(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
         option.setValue(approve.getValue());
-        option.setRuleTemplateOptionId(approve.getRuleTemplateOptionId());
-        option.setLockVerNbr(approve.getLockVerNbr());
+        option.setId(approve.getId());
+        option.setVersionNumber(approve.getVersionNumber());
     }
 
-    public void setFyi(RuleTemplateOption fyi) {
-        RuleTemplateOption option = getRuleTemplateOption(KEWConstants.ACTION_REQUEST_FYI_REQ);
+    public void setFyi(RuleTemplateOptionBo fyi) {
+        RuleTemplateOptionBo option = getRuleTemplateOption(KEWConstants.ACTION_REQUEST_FYI_REQ);
         option.setValue(fyi.getValue());
-        option.setRuleTemplateOptionId(fyi.getRuleTemplateOptionId());
-        option.setLockVerNbr(fyi.getLockVerNbr());
+        option.setId(fyi.getId());
+        option.setVersionNumber(fyi.getVersionNumber());
     }
 
-    public void setDefaultActionRequestValue(RuleTemplateOption defaultActionRequestValue) {
-        RuleTemplateOption option = getRuleTemplateOption(KEWConstants.ACTION_REQUEST_DEFAULT_CD);
+    public void setDefaultActionRequestValue(RuleTemplateOptionBo defaultActionRequestValue) {
+        RuleTemplateOptionBo option = getRuleTemplateOption(KEWConstants.ACTION_REQUEST_DEFAULT_CD);
         option.setValue(defaultActionRequestValue.getValue());
-        option.setRuleTemplateOptionId(defaultActionRequestValue.getRuleTemplateOptionId());
-        option.setLockVerNbr(defaultActionRequestValue.getLockVerNbr());
+        option.setId(defaultActionRequestValue.getId());
+        option.setVersionNumber(defaultActionRequestValue.getVersionNumber());
     }
 /*
     public RuleTemplateOption getInstructions() {
         return getRuleTemplateOption(KEWConstants.RULE_INSTRUCTIONS_CD);
     }
 */
-    public RuleTemplateOption getAcknowledge() {
+    public RuleTemplateOptionBo getAcknowledge() {
         return getRuleTemplateOption(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
     }
 
-    public RuleTemplateOption getComplete() {
+    public RuleTemplateOptionBo getComplete() {
         return getRuleTemplateOption(KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
     }
 
-    public RuleTemplateOption getApprove() {
+    public RuleTemplateOptionBo getApprove() {
         return getRuleTemplateOption(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
     }
 
-    public RuleTemplateOption getFyi() {
+    public RuleTemplateOptionBo getFyi() {
         return getRuleTemplateOption(KEWConstants.ACTION_REQUEST_FYI_REQ);
     }
 
-    public RuleTemplateOption getDefaultActionRequestValue() {
+    public RuleTemplateOptionBo getDefaultActionRequestValue() {
         return getRuleTemplateOption(KEWConstants.ACTION_REQUEST_DEFAULT_CD);
     }
     
@@ -367,9 +368,9 @@ public class RuleTemplate  extends PersistableBusinessObjectBase {
      */
     public List<Role> getRoles() {
     	List<Role> roles = new ArrayList<Role>();
-    	List<RuleTemplateAttribute> ruleTemplateAttributes = getActiveRuleTemplateAttributes();
+    	List<RuleTemplateAttributeBo> ruleTemplateAttributes = getActiveRuleTemplateAttributes();
 		Collections.sort(ruleTemplateAttributes);
-        for (RuleTemplateAttribute ruleTemplateAttribute : ruleTemplateAttributes)
+        for (RuleTemplateAttributeBo ruleTemplateAttribute : ruleTemplateAttributes)
         {
             if (!ruleTemplateAttribute.isWorkflowAttribute())
             {

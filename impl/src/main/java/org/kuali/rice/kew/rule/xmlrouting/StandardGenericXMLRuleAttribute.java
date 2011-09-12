@@ -366,7 +366,8 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
             NodeList xPathExpressions = (NodeList) xpath.evaluate(findGlobalExpressions, configXml, XPathConstants.NODESET);
             for (int index = 0; index < xPathExpressions.getLength(); index++) {
                 Element expressionElement = (Element) xPathExpressions.item(index);
-                String expression = XmlJotter.jotNode(expressionElement);
+                //String expression = XmlJotter.jotNode(expressionElement);
+                String expression = expressionElement.getTextContent();
                 if (!StringUtils.isEmpty(expression)) {
                     if (LOG.isDebugEnabled()) {
                         LOG.debug("Adding global XPath expression: " + expression);

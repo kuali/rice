@@ -26,11 +26,11 @@
     <property name="lookupDefinition">
       <ref bean="RuleBaseValues-lookupDefinition"/>
     </property>
-    <property name="titleAttribute" value="ruleBaseValuesId"/>
+    <property name="titleAttribute" value="id"/>
     <property name="objectLabel" value="Rule"/>
     <property name="attributes">
       <list>
-        <ref bean="RuleBaseValues-ruleBaseValuesId"/>
+        <ref bean="RuleBaseValues-id"/>
         <ref bean="RuleBaseValues-previousVersionId"/>
         <ref bean="RuleBaseValues-documentId"/>
 
@@ -39,10 +39,10 @@
         <ref bean="RuleBaseValues-docTypeName"/>
         <ref bean="RuleBaseValues-documentTypeId"/>
         <ref bean="RuleBaseValues-ruleTemplateId"/>
-        <ref bean="RuleBaseValues-ruleTemplateName"/>
+        <ref bean="RuleBaseValues-ruleTemplate.name"/>
         <ref bean="RuleBaseValues-description"/>
-        <ref bean="RuleBaseValues-fromDate"/>
-        <ref bean="RuleBaseValues-toDate"/>
+        <ref bean="RuleBaseValues-fromDateValue"/>
+        <ref bean="RuleBaseValues-toDateValue"/>
         <ref bean="RuleBaseValues-forceAction"/>
         <ref bean="RuleBaseValues-active"/>
         <ref bean="RuleBaseValues-groupReviewerName"/>
@@ -80,7 +80,7 @@
           <property name="objectAttributeName" value="previousVersion"/>
           <property name="primitiveAttributes">
             <list>
-              <bean parent="PrimitiveAttributeDefinition" p:sourceName="previousVersionId" p:targetName="ruleBaseValuesId"/>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="previousVersionId" p:targetName="id"/>
             </list>
           </property>
         </bean>
@@ -119,7 +119,7 @@
           <property name="objectAttributeName" value="ruleTemplate"/>
           <property name="primitiveAttributes">
             <list>
-              <bean parent="PrimitiveAttributeDefinition" p:sourceName="ruleTemplateId" p:targetName="ruleTemplateId"/>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="ruleTemplateId" p:targetName="id"/>
             </list>
           </property>
           <property name="supportAttributes">
@@ -135,9 +135,9 @@
 
   <!-- Attribute Definitions -->
 
-  <bean id="RuleBaseValues-ruleBaseValuesId" parent="RuleBaseValues-ruleBaseValuesId-parentBean"/>
+  <bean id="RuleBaseValues-id" parent="RuleBaseValues-id-parentBean"/>
 
-  <bean id="RuleBaseValues-ruleBaseValuesId-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="RuleBaseValues-id-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Id"/>
     <property name="maxLength" value="30"/>
     <property name="validationPattern">
@@ -146,14 +146,14 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="30"/>
     </property>
-    <property name="name" value="ruleBaseValuesId"/>
+    <property name="name" value="id"/>
     <property name="label" value="Rule Id"/>
   </bean>
 
 
   <bean id="RuleBaseValues-previousVersionId" parent="RuleBaseValues-previousVersionId-parentBean"/>
 
-  <bean id="RuleBaseValues-previousVersionId-parentBean" abstract="true" parent="RuleBaseValues-ruleBaseValuesId">
+  <bean id="RuleBaseValues-previousVersionId-parentBean" abstract="true" parent="RuleBaseValues-id">
     <property name="shortLabel" value="previousVersionId"/>
     <property name="name" value="previousVersionId"/>
     <property name="label" value="Previous Version"/>
@@ -208,9 +208,9 @@
     <property name="label" value="Rule Template Id"/>
   </bean>
 
-  <bean id="RuleBaseValues-ruleTemplateName" parent="RuleBaseValues-ruleTemplateName-parentBean"/>
+  <bean id="RuleBaseValues-ruleTemplate.name" parent="RuleBaseValues-ruleTemplate.name-parentBean"/>
 
-  <bean id="RuleBaseValues-ruleTemplateName-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="RuleBaseValues-ruleTemplate.name-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Rule Template"/>
     <property name="maxLength" value="256"/>
     <property name="validationPattern">
@@ -362,10 +362,10 @@
     </property>
   </bean>
 
-  <bean id="RuleBaseValues-fromDate" parent="RuleBaseValues-fromDate-parentBean"/>
+  <bean id="RuleBaseValues-fromDateValue" parent="RuleBaseValues-fromDateValue-parentBean"/>
 
-  <bean id="RuleBaseValues-fromDate-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="name" value="fromDate"/>
+  <bean id="RuleBaseValues-fromDateValue-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="fromDateValue"/>
     <property name="forceUppercase" value="false"/>
     <property name="label" value="From Date"/>
     <property name="shortLabel" value="From Date"/>
@@ -379,10 +379,10 @@
     <property name="formatterClass" value="org.kuali.rice.core.web.format.DateDisplayTimestampObjectFormatter"/>
   </bean>
 
-  <bean id="RuleBaseValues-toDate" parent="RuleBaseValues-toDate-parentBean"/>
+  <bean id="RuleBaseValues-toDateValue" parent="RuleBaseValues-toDateValue-parentBean"/>
 
-  <bean id="RuleBaseValues-toDate-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="name" value="toDate"/>
+  <bean id="RuleBaseValues-toDateValue-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="toDateValue"/>
     <property name="forceUppercase" value="false"/>
     <property name="label" value="To Date"/>
     <property name="shortLabel" value="To Date"/>
@@ -399,7 +399,7 @@
   <bean id="RuleBaseValues-active" parent="RuleBaseValues-active-parentBean"/>
 
   <bean id="RuleBaseValues-active-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="name" value="activeInd"/>
+    <property name="name" value="active"/>
     <property name="forceUppercase" value="false"/>
     <property name="label" value="Active"/>
     <property name="shortLabel" value="Active"/>
@@ -446,17 +446,17 @@
           <property name="inquiryFields">
             <list>
    
-              <bean parent="FieldDefinition" p:attributeName="ruleBaseValuesId" p:noInquiry="true"/>
+              <bean parent="FieldDefinition" p:attributeName="id" p:noInquiry="true"/>
               <bean parent="FieldDefinition" p:attributeName="previousVersionId"/>
               <bean parent="FieldDefinition" p:attributeName="documentId"/>
 
               <bean parent="FieldDefinition" p:attributeName="documentType.name"/>
               <bean parent="FieldDefinition" p:attributeName="ruleTemplate.name"/>
               <bean parent="FieldDefinition" p:attributeName="description"/>
-              <bean parent="FieldDefinition" p:attributeName="fromDate"/>
-              <bean parent="FieldDefinition" p:attributeName="toDate"/>
+              <bean parent="FieldDefinition" p:attributeName="fromDateValue"/>
+              <bean parent="FieldDefinition" p:attributeName="toDateValue"/>
               <bean parent="FieldDefinition" p:attributeName="forceAction"/>
-              <bean parent="FieldDefinition" p:attributeName="activeInd"/>
+              <bean parent="FieldDefinition" p:attributeName="active"/>
             </list>
           </property>
         </bean>
@@ -566,8 +566,8 @@
         <bean parent="FieldDefinition" p:noDirectInquiry="true" p:attributeName="groupReviewerName"/>
 		<bean parent="FieldDefinition" p:noDirectInquiry="true" p:attributeName="personReviewer"/>
         <bean parent="FieldDefinition" p:attributeName="personReviewerType"/>
-        <bean parent="FieldDefinition" p:attributeName="ruleBaseValuesId"/>
-        <bean parent="FieldDefinition" p:attributeName="activeInd"/>
+        <bean parent="FieldDefinition" p:attributeName="id"/>
+        <bean parent="FieldDefinition" p:attributeName="active"/>
         <!-- <bean parent="FieldDefinition"
               p:attributeName="delegateRule"/>-->
       </list>
@@ -575,9 +575,9 @@
     <property name="resultFields">
       <list>
         <bean parent="FieldDefinition" p:attributeName="name"/>
-        <bean parent="FieldDefinition" p:attributeName="ruleBaseValuesId"/>
+        <bean parent="FieldDefinition" p:attributeName="id"/>
         <bean parent="FieldDefinition" p:attributeName="ruleTemplate.name"/>
-        <bean parent="FieldDefinition" p:attributeName="activeInd"/>
+        <bean parent="FieldDefinition" p:attributeName="active"/>
         <bean parent="FieldDefinition" p:attributeName="documentType.name"/>
         <bean parent="FieldDefinition" p:attributeName="delegateRule"/>
       </list>

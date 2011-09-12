@@ -43,6 +43,9 @@
   </ciManagement>
 
   <properties>
+    <gmaven.stubs.phase>generate-resources</gmaven.stubs.phase>
+    <gmaven.compile.phase>compile</gmaven.compile.phase>
+    <gmaven.test.compile.phase>test-compile</gmaven.test.compile.phase>
     <kuali.cm.tools.version>1.5</kuali.cm.tools.version>
     <checkstyle.suppressions.location>/org/kuali/rice/suppressions.xml</checkstyle.suppressions.location>
     <oracle.ojdbc.version>10.2.0.3.0</oracle.ojdbc.version>
@@ -468,12 +471,14 @@
           <executions>
             <execution>
               <id>gmaven-generate-stubs</id>
+              <phase>${gmaven.stubs.phase}</phase>
               <goals>
                 <goal>generateStubs</goal>
               </goals>
             </execution>
             <execution>
               <id>gmaven-compile-stubs</id>
+              <phase>${gmaven.compile.phase}</phase>
               <goals>
                 <goal>compile</goal>
               </goals>
@@ -483,6 +488,7 @@
                 <!--<goal>generateTestStubs</goal> -->
             <execution>
               <id>gmaven-test-compile-stubs</id>
+              <phase>${gmaven.test.compile.phase}</phase>
               <goals>
                 <goal>testCompile</goal>
               </goals>
@@ -838,9 +844,12 @@
   </build>
 
   <modules>
+<!--
     <module>db</module>
     <module>core</module>
+-->
     <module>api</module>
+<!--
     <module>kim</module>
     <module>shareddata</module>
     <module>krad</module>
@@ -858,6 +867,7 @@
     <module>it</module>
     <module>client-contrib</module>
     <module>dist</module>
+-->
   </modules>
 
   <repositories>

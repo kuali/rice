@@ -435,37 +435,6 @@ public class DocumentLookupGeneratorImpl implements DocumentLookupGenerator {
         }
     }
 
-    public String getInitiatorSql(String initiatorPrincipalName, String whereClausePredicatePrefix) {
-
-        if (StringUtils.isBlank(initiatorPrincipalName)) {
-            return "";
-        }
-
-        String tableAlias = "DOC_HDR";
-
-        Map<String, String> m = new HashMap<String, String>();
-        m.put("principalName", initiatorPrincipalName);
-
-        // This will search for people with the ability for the valid operands.
-        List<Person> pList = KimApiServiceLocator.getPersonService().findPeople(m, false);
-
-        if(pList == null || pList.isEmpty() ){
-            // they entered something that returned nothing... so we should return nothing
-             return new StringBuilder(whereClausePredicatePrefix + " 1 = 0 ").toString();
-        }
-
-        List<String> principalList = new ArrayList<String>();
-
-        for(Person p: pList){
-            principalList.add(p.getPrincipalId());
-        }
-
-        Criteria crit = new Criteria("KREW_DOC_HDR_T", tableAlias);
-        crit.in("INITR_PRNCPL_ID", principalList, String.class);
-
-        return new StringBuilder(whereClausePredicatePrefix + crit.buildWhere()).toString();
-    }
-
     public String getDocTitleSql(String docTitle, String whereClausePredicatePrefix) {
         if (StringUtils.isBlank(docTitle)) {
             return "";
@@ -570,6 +539,37 @@ public class DocumentLookupGeneratorImpl implements DocumentLookupGenerator {
             sql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID and KREW_ACTN_RQST_T.GRP_ID = " + groupId;
         }
         return sql;
+    }
+
+    public String getInitiatorSql(String initiatorPrincipalName, String whereClausePredicatePrefix) {
+
+        if (StringUtils.isBlank(initiatorPrincipalName)) {
+            return "";
+        }
+
+        String tableAlias = "DOC_HDR";
+
+        Map<String, String> m = new HashMap<String, String>();
+        m.put("principalName", initiatorPrincipalName);
+
+        // This will search for people with the ability for the valid operands.
+        List<Person> pList = KimApiServiceLocator.getPersonService().findPeople(m, false);
+
+        if(pList == null || pList.isEmpty() ){
+            // they entered something that returned nothing... so we should return nothing
+             return new StringBuilder(whereClausePredicatePrefix + " 1 = 0 ").toString();
+        }
+
+        List<String> principalList = new ArrayList<String>();
+
+        for(Person p: pList){
+            principalList.add(p.getPrincipalId());
+        }
+
+        Criteria crit = new Criteria("KREW_DOC_HDR_T", tableAlias);
+        crit.in("INITR_PRNCPL_ID", principalList, String.class);
+
+        return new StringBuilder(whereClausePredicatePrefix + crit.buildWhere()).toString();
     }
 
     public String getApproverSql(String approver, String whereClausePredicatePrefix) {

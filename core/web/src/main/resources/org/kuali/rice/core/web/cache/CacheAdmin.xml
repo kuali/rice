@@ -22,15 +22,14 @@
       </list>
     </property>
     <property name="formClass" value="org.kuali.rice.core.web.cache.CacheAdminForm"/>
-    <property name="footer" ref="Footer_FlushCloseCancel"/>
+    <property name="footer" ref="Footer_FlushClose"/>
   </bean>
 
-  <bean id="Footer_FlushCloseCancel" parent="Footer">
+  <bean id="Footer_FlushClose" parent="Footer">
       <property name="items">
         <list>
           <bean parent="ActionField_Secondary" p:methodToCall="flush" p:actionLabel="Flush"/>
           <bean parent="ActionField_Secondary" p:methodToCall="close" p:actionLabel="Close"/>
-          <bean parent="ActionLinkField" p:methodToCall="cancel" p:actionLabel="Cancel"/>
         </list>
       </property>
   </bean>

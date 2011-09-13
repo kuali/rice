@@ -16,6 +16,47 @@ input:focus, textarea:focus {
 	background: none repeat scroll 0 0 #ECFCE8;
     outline: none;
 }
+h1 {
+    font-size:1.61538462em;
+    font-weight:bold;
+    font-family: Georgia, Times New Roman, Serif;
+}
+h2 {
+    font-size:1.61538462em;
+    font-weight:normal;
+    font-family: Georgia, Times New Roman, Serif;
+}
+h3 {
+    font-size:1.23076923em;
+    font-weight:bold;
+    font-family: Georgia, Times New roman, Serif;
+}
+h4 {
+    font-size: 1.15384615em;
+    font-weight:normal;
+    font-family: Arial, Helvetica, sans-serif;
+}
+h5 {
+	font-size: 1.07692308em; /* 14px */
+	font-weight: bold;
+    font-family: arial, helvetica, sans-serif;
+    text-transform:uppercase;
+
+}
+
+h6 {
+	font-size: 1.0em; /* 13px black */
+	font-weight: bold;
+    font-family: arial, helvetica, sans-serif;
+	margin-bottom: 0;
+	color: #000;
+}
+
+h7 {
+	font-size: 0.92307692em; /* 12px */
+    font-family: arial, helvetica, sans-serif;
+	text-transform: uppercase;
+}
 
 
 
@@ -39,10 +80,7 @@ input:focus, textarea:focus {
     text-transform: uppercase;
 }
 
-.kr-watermark {			/* was .watermark */ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
-    font-family: Arial, Helvetica, sans-serif;
-    font-size:0.923077em;
-    color:#999;}
+
 .wrap {					/* not sure what this is or if it belongs in this category */
 	background-color: #fff;
 	border: none;
@@ -373,6 +411,24 @@ div.ui-tabs.ui-widget-content {
     background: url(../../images/sprite-icons-hover.png) no-repeat scroll -23px 0 transparent;
     text-decoration:none;
 }
+.ui-icon {
+  width: 16px;
+  height: 16px;
+  background: url(../../images/sprite-icons.png) no-repeat;
+  }
+.ui-icon-circle-plus { background-position: 0 -34px; }
+.ui-state-hover .ui-icon-circle-plus { background-position: 0 -34px; }
+
+
+.ui-icon-circle-check { background-position: 0 0px; }
+.ui-state-hover .ui-icon-circle-check { background-position: 0 0px; }
+.ui-state-hover .ui-icon {
+  width: 16px;
+  height: 16px;
+  background: url(../../images/sprite-icons-hover.png) no-repeat;
+  }
+
+
 .ui-datepicker-prev .ui-icon {
     color:transparent;
     visibility:hidden;

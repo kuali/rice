@@ -22,12 +22,18 @@ table td, table th {
 	vertical-align:top;
 	text-align:left;
 }
+.watermark {			/* NOT renamed in xml and/or jsp, as this will break js functionality   */
+    /* not sure if this is still necessary, now that html5 has the "placeholder" attribute */
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:0.923077em;
+    color:#999;
+}
 
 
 /* CONTAINERS - e.g.: kr-nav-menu, ks-error-cont *************************/
 
 
-.kr-constraint {                                /* was .constraint */ /* NOT RENAMED - changing this classname will break some javascript functionality  */
+.constraint {                                /* was .constraint */ /* NOT RENAMED - changing this classname will break some javascript functionality  */
 	font-size:0.84615385em;    /* 11px divided by 13px */
 }
 
@@ -55,6 +61,9 @@ h4.kr-section-subhead-no-border {	/* was h4.kr-section-subhead-no-border */ /* r
 .kr-field_attribute {			/* was .field_attribute */ /* renamed in xml and/or jsp */
     float:left;
 }
+.kr-field-attribute img {
+    margin-left:7px;
+}
 .kr-field-attribute .kr-labelTop label {   /* was .field_attribute .labelTop label */  /* renamed in xml and/or jsp */
 	margin: 5px 5px 0px 0px;  /* field top labels should not have left-margins  -David */
 }
@@ -75,28 +84,29 @@ h4.kr-section-subhead-no-border {	/* was h4.kr-section-subhead-no-border */ /* r
 	font-weight:bold;
 }
 .kr-errorsField {					/* was .errorsField */  /* renamed in xml and/or jsp */
-	padding-left: 10px;
 	overflow: hidden;
- *zoom: 1;
+    *zoom: 1;
+    font-weight:bold;
+    color: #DF0000;
 }
 .kr-errorsFieldForContainer {		/* was .errorsFieldForContainer */ /* renamed in xml and/or jsp */
 	float: none;
-	padding-left: 10px;
 	display:inline-block;
 	zoom:1;
  *display:inline;
 }
-.kr-errorMessages {					/* was .errorMessages */ /* NOT RENAMED in errorsField.jsp - changing this classname will break some javascript functionality  */
-	padding-left: 20px;
-	background: url("/kr-dev/krad/images/exclamation-red.png") no-repeat scroll left top transparent;
-}
+
 .kr-warningMessages {		/* was .warningMessages */ /* renamed in xml and/or jsp */
 	padding-left: 20px;
-	background: url("/kr-dev/krad/images/exclamation-diamond-frame.png") no-repeat scroll left top transparent;
+	background: url("../../images/exclamation-diamond-frame.png") no-repeat scroll 3px 2px transparent;
 }
 .kr-infoMessages {			/* was .infoMessages*/ /* renamed in xml and/or jsp */
 	padding-left: 20px;
-	background: url("/kr-dev/krad/images/information-frame.png") no-repeat scroll left top transparent;
+	background: url("../../images/information-frame.png") no-repeat scroll 3px 2px transparent;
+}
+.kr-errorMessages {
+    padding-left: 20px;
+	background: url("../../images/exclamation-red.png") no-repeat scroll 3px 2px transparent;
 }
 .kr-errorsFieldForContainer .kr-errorMessages {		/* was .errorsFieldForContainer .errorMessages */ /* .errorsFieldForContainer renamed in xml; .errorMessages NOT renamed, as this will break js functionality   */
 	border: 1px solid red;
@@ -126,6 +136,7 @@ h4.kr-section-subhead-no-border {	/* was h4.kr-section-subhead-no-border */ /* r
 	padding-right: 10px;
 }
 .kr-errorsField ul {		/* was .errorsField ul*/ /* renamed in xml and/or jsp */
+    /* David's note - this is still "errorsField ul" in the build */
 	list-style: none outside none;
 	margin: 0;
 }
@@ -134,26 +145,53 @@ h4.kr-section-subhead-no-border {	/* was h4.kr-section-subhead-no-border */ /* r
 	margin-left: 0;
 	padding: 1px 0;
 	line-height: 1.3em;
+    font-weight:normal;
+    display:block;
 }
-.kr-errorsField .kr-errorMessages { /* was .errorsField .errorMessages */ /* .errorsField renamed in xml; .errorMessages NOT renamed, as this will break js functionality   */
+.kr-errorsField .kr-errorMessages {
 	color: #DF0000;
 	font-weight: bold;
 }
-span.kr-clientError, div.kr-clientError, td.kr-clientError, span.kr-serverError, div.kr-serverError, td.kr-serverError {
-	/* was span.clientError, div.clientError, td.clientError, span.serverError, div.serverError, td.serverError*/ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
-	background-color: #FFE0E9 !important;
-}
-span.kr-information, div.kr-information, td.kr-information {	/* was span.information, div.information, td.information *//* NOT renamed in xml and/or jsp, as this will break js functionality   */
-	background-color: #AFDCEC;
-}
-span.kr-warning, div.kr-warning, td.kr-warning {	/* was span.warning, div.arning, td.warning *//* NOT renamed in xml and/or jsp, as this will break js functionality   */
-	background-color: #F4E271;
-}
-label.kr-clientError, a.kr-clientError, label.kr-serverError {			/* was label.kr-clientError, a.kr-clientError, label.kr-serverError */ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
-	color: #DF0000;
-}
-li label.kr-error {				/* was li label.error *//* NOT renamed in xml and/or jsp, as this will break js functionality   */
-	display: inline !important;
+/* breadcrumbs */
+
+.kr-breadcrumbs { 					/* was .breadcrumbs */ /* renamed in xml and/or jsp */
+    border-bottom: 1px dotted #C9C9C9;
+    border-top: 1px dotted #C9C9C9;
+    display: block;
+    width: 100%;
+    color: #3F7826;
+    letter-spacing: 0.02em;
+    padding: 3px 0 3px 15px;
+ }
+
+ .kr-breadcrumbs span {  /* was .breadcrumbs span*/ /* renamed in xml and/or jsp */
+	color: #3F7826;
+ }
+
+ .kr-breadcrumbs a {		/*  was .breadcrumbs a*/ /* renamed in xml and/or jsp */
+	color: #3F7826;
+	text-decoration: none;
+ }
+
+ .kr-breadcrumbs a:visited{		/* was .breadcrumbs a:visited*/ /* renamed in xml and/or jsp */
+	color: #3F7826;
+	text-decoration: none;
+ }
+
+ .kr-breadcrumbs a:focus, .breadcrumbs a:hover{  /* was .breadcrumbs a:focus, .breadcrumbs a:hover*/ /* renamed in xml and/or jsp */
+ 	text-decoration: underline;
+ }
+
+ .kr-breadcrumbs .kr-current{  /*  was .breadcrumbs .current*/ /* renamed in xml and/or jsp */
+	color: #000000;
+	font-weight: bold;
+ }
+
+ .kr-breadcrumbs ol, li{   /* was .breadcrumbs ol, li*/ /* renamed in xml and/or jsp */
+    display: inline;
+    margin: 0;
+    list-style: none;
+    width: auto;
 }
 
 
@@ -198,6 +236,34 @@ li label.kr-error {				/* was li label.error *//* NOT renamed in xml and/or jsp,
 }
 
 /* JQUERY - e.g.: ui-calendar *******************************************/
+
+/* JQUERY Errors */
+/* ************** !NOT RENAMED ERROR MSGS! ******************/
+.errorsField .errorMessages { /* was .errorsField .errorMessages */ /* .errorsField renamed in xml; .errorMessages NOT renamed, as this will break js functionality   */
+	color: #DF0000;
+	font-weight: bold;
+}
+.errorMessages {					/* was .errorMessages */ /* NOT RENAMED in errorsField.jsp - changing this classname will break some javascript functionality  */
+	padding-left: 20px;
+	background: url("/kr-dev/krad/images/exclamation-red.png") no-repeat scroll left top transparent;
+}
+span.clientError, div.clientError, td.clientError, span.serverError, div.serverError, td.serverError { /* NOT renamed in xml and/or jsp, as this will break js functionality   */
+	background-color: #FFE0E9 !important;
+}
+span.information, div.information, td.information {	/* NOT renamed in xml and/or jsp, as this will break js functionality   */
+	background-color: #AFDCEC;
+}
+span.warning, div.warning, td.warning {	/* was span.warning, div.arning, td.warning *//* NOT renamed in xml and/or jsp, as this will break js functionality   */
+	background-color: #F4E271;
+}
+label.clientError, a.clientError, label.serverError {	 /* NOT renamed in xml and/or jsp, as this will break js functionality   */
+	color: #DF0000;
+}
+li label.error {	/* NOT renamed in xml and/or jsp, as this will break js functionality   */
+	display: inline !important;
+}
+/* ****************** end error msgs not renamed *****************/
+
 /* date-picker */
 
 .ui-corner-all {
@@ -299,48 +365,6 @@ li label.kr-error {				/* was li label.error *//* NOT renamed in xml and/or jsp,
 .ui-tabs li {
 	clear: none;
 }
-.ui-tabs .ui-tabs-nav li {
-	border-bottom: 1px solid #000 !important; /* over-writing the style that removes it in tabs.css */
-}
 
-/* breadcrumbs */
 
-.kr-breadcrumbs { 					/* was .breadcrumbs */ /* renamed in xml and/or jsp */
-    border-bottom: 1px dotted #C9C9C9;
-    border-top: 1px dotted #C9C9C9;
-    display: block;
-    width: 100%;
-    color: #3F7826;
-    letter-spacing: 0.02em;
-    padding: 3px 0 3px 15px;
- }
- 
- .kr-breadcrumbs span {  /* was .breadcrumbs span*/ /* renamed in xml and/or jsp */
-	color: #3F7826;
- }
- 
- .kr-breadcrumbs a {		/*  was .breadcrumbs a*/ /* renamed in xml and/or jsp */
-	color: #3F7826;
-	text-decoration: none;
- }
- 
- .kr-breadcrumbs a:visited{		/* was .breadcrumbs a:visited*/ /* renamed in xml and/or jsp */
-	color: #3F7826;
-	text-decoration: none;
- }
- 
- .kr-breadcrumbs a:focus, .breadcrumbs a:hover{  /* was .breadcrumbs a:focus, .breadcrumbs a:hover*/ /* renamed in xml and/or jsp */
- 	text-decoration: underline;
- }
- 
- .kr-breadcrumbs .kr-current{  /*  was .breadcrumbs .current*/ /* renamed in xml and/or jsp */
-	color: #000000;
-	font-weight: bold;
- }
 
- .kr-breadcrumbs ol, li{   /* was .breadcrumbs ol, li*/ /* renamed in xml and/or jsp */
-    display: inline;
-    margin: 0;
-    list-style: none;
-    width: auto;
-}

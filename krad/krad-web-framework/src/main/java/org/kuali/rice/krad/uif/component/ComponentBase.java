@@ -10,9 +10,7 @@
  */
 package org.kuali.rice.krad.uif.component;
 
-import com.google.common.base.Function;
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
@@ -23,18 +21,11 @@ import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.view.View;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Base implementation of <code>Component</code> which other component
@@ -118,7 +109,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
 
     private List<ComponentModifier> componentModifiers;
 
-    private Map<String, Object> componentOptions;
+    private Map<String, String> componentOptions;
+    private String componentOptionsJSString;
 
     @ReferenceCopy(newCollectionInstance = true)
     private transient Map<String, Object> context;
@@ -140,7 +132,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         finalizeMethodAdditionalArguments = new ArrayList<Object>();
         styleClasses = new ArrayList<String>();
         componentModifiers = new ArrayList<ComponentModifier>();
-        componentOptions = new HashMap<String, Object>();
+        componentOptions = new HashMap<String, String>();
         context = new HashMap<String, Object>();
         propertyReplacers = new ArrayList<PropertyReplacer>();
     }
@@ -1148,30 +1140,17 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         this.onMouseMoveScript = onMouseMoveScript;
     }
 
-    public Map<String, Object> getComponentOptions() {
+    public Map<String, String> getComponentOptions() {
         if (componentOptions == null) {
-            componentOptions = new HashMap<String, Object>();
+            componentOptions = new HashMap<String, String>();
         }
         return this.componentOptions;
     }
 
-    public void setComponentOptions(Map<String, Object> componentOptions) {
+    public void setComponentOptions(Map<String, String> componentOptions) {
         this.componentOptions = componentOptions;
     }
-                                                    //ex: "function (n) { alert('foo'); }"
-    private static final Pattern FUNC = Pattern.compile("\"function\\s*\\(.*\\)\\s*\\{\\s*.*\\s*}\"", Pattern.MULTILINE);
 
-    public static void main(String[] args) {
-
-        String s = "\"function (n) {\n"
-                + "return [('foo_' + (n[0].id || Math.ceil(Math.random() * 10000))), 1];\n"
-                + "}\"";
-        Matcher m = FUNC.matcher(s);
-        m.find();
-        System.out.println(m.start()  + " " + m.end());
-       System.out.println(s.substring(m.start(), m.end()).trim());
-
-    }
     /**
      * Builds a string from the underlying <code>Map</code> of component options
      * that will export that options as a JavaScript Map for use in js and
@@ -1179,59 +1158,70 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      *
      * @return String of widget options formatted as JS Map
      */
+    @Override
     public String getComponentOptionsJSString() {
+        if (componentOptionsJSString != null) {
+            return componentOptionsJSString;
+        }
+
+
         if (componentOptions == null) {
-            componentOptions = Collections.emptyMap();
+            componentOptions = new HashMap<String, String>();
         }
+        StringBuilder sb = new StringBuilder();
 
-        final ObjectMapper om = new ObjectMapper();
-        //FIXME: tried to use a custom jackson serializer for strings but didn't work.  using regex to get this working
-        try {
-            String json = om.writeValueAsString(transform(componentOptions, Trim.INSTANCE));
-            final StringBuilder sb = new StringBuilder(json);
-            final Matcher m = FUNC.matcher(json);
-            while(m.find()) {
-                String funcStr = json.substring(m.start(), m.end()).trim();
-                sb.replace(m.start(), m.end(), funcStr.substring(1, funcStr.length() - 1));
+        sb.append("{");
+
+        for (String optionKey : componentOptions.keySet()) {
+            String optionValue = componentOptions.get(optionKey);
+
+            if (sb.length() > 1) {
+                sb.append(",");
             }
 
-            return sb.toString();
-        } catch (IOException e) {
-            return "{}";
+            sb.append(optionKey);
+            sb.append(":");
+
+            boolean isNumber = false;
+            if (StringUtils.isNotBlank(optionValue) && (StringUtils.isNumeric(optionValue.trim().substring(0, 1)) ||
+                    optionValue.trim().substring(0, 1).equals("-"))) {
+                try {
+                    Double.parseDouble(optionValue.trim());
+                    isNumber = true;
+                } catch (NumberFormatException e) {
+                    isNumber = false;
+                }
+            }
+            // If an option value starts with { or [, it would be a nested value
+            // and it should not use quotes around it
+            if (StringUtils.startsWith(optionValue, "{") || StringUtils.startsWith(optionValue, "[")) {
+                sb.append(optionValue);
+            }
+            // need to be the base boolean value "false" is true in js - a non
+            // empty string
+            else if (optionValue.equalsIgnoreCase("false") || optionValue.equalsIgnoreCase("true")) {
+                sb.append(optionValue);
+            }
+            // if it is a call back function, do not add the quotes
+            else if (StringUtils.startsWith(optionValue, "function") && StringUtils.endsWith(optionValue, "}")) {
+                sb.append(optionValue);
+            }
+            // for numerics
+            else if (isNumber) {
+                sb.append(optionValue);
+            } else {
+                sb.append("\"" + optionValue + "\"");
+            }
         }
+
+        sb.append("}");
+
+        return sb.toString();
     }
 
-    //FIXME: transform should not be needed if you can use a custom jackson serializer for strings
-    Object transform(Object o, Function<Object, Object> f) {
-        if (o instanceof Map) {
-            final Map<String, Object> map = new HashMap<String, Object>();
-            for (Map.Entry<String, Object> entry : ((Map<String, Object>) o).entrySet()) {
-                map.put(entry.getKey(), transform(entry.getValue(), f));
-            }
-            return map;
-        } else if (o instanceof Set) {
-            final Set<Object> set = new HashSet<Object>();
-            for (Object i : (Set<Object>) o) {
-                set.add(transform(i, f));
-            }
-            return set;
-        } else if (o instanceof Collection) {
-            final Collection<Object> col = new ArrayList<Object>();
-            for (Object i : (Collection<Object>) o) {
-                col.add(transform(i, f));
-            }
-            return col;
-        } else {
-            return f.apply(o);
-        }
-    }
-
-    private static final class Trim implements Function<Object, Object> {
-        private static final Trim INSTANCE = new Trim();
-        @Override
-        public Object apply(Object input) {
-            return input != null && input instanceof String ? ((String)input).trim() : input;
-        }
+    @Override
+    public void setComponentOptionsJSString(String componentOptionsJSString) {
+        this.componentOptionsJSString = componentOptionsJSString;
     }
 
     public String getEventCode() {

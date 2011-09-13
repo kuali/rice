@@ -43,35 +43,12 @@
 
           <property name="treeWidget">
             <bean parent="TreeWidget">
-              <property name="componentOptions">
-                <map>
-                  <entry key="themes">
-                    <map>
-                      <entry key="theme" value="default" />
-                      <entry key="dots" value="#{true}" />
-                      <entry key="icons" value="#{false}" />
-                    </map>
-                  </entry>
-                  <entry key="checkbox">
-                    <map>
-                      <entry key="two_state" value="#{true}" />
-                      <entry key="real_checkboxes_names">
-                        <value>
-                          function (n) { return ['flush', (n[0].id)]; }
-                        </value>
-                      </entry>
-                      <entry key="real_checkboxes" value="#{true}" />
-                    </map>
-                  </entry>
-                  <entry key="plugins">
-                    <list>
-                      <value>themes</value>
-                      <value>html_data</value>
-                      <value>ui</value>
-                      <value>checkbox</value>
-                    </list>
-                  </entry>
-                </map>
+              <property name="componentOptionsJSString">
+                <value>
+                  {"themes": {"theme": "default", "dots": true, "icons": false},
+                   "checkbox": {"two_state": true, "real_checkboxes": true, "real_checkboxes_names": function (n) { return ['flush', (n[0].id)]; }},
+                   "plugins": ["themes", "html_data", "ui", "checkbox"]}
+                </value>
               </property>
             </bean>
           </property>

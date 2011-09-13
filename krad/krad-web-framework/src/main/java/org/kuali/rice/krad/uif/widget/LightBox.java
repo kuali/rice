@@ -100,7 +100,7 @@ public class LightBox extends WidgetBase {
     @Override
     public String getComponentOptionsJSString() {
         if (getComponentOptions() == null) {
-            setComponentOptions(new HashMap<String, Object>());
+            setComponentOptions(new HashMap<String, String>());
         }
 
         // Add the width and height properties to the ComponentOptions

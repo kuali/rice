@@ -15,14 +15,13 @@
  */
 package org.kuali.rice.krad.uif.component;
 
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
+import org.kuali.rice.krad.uif.view.View;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * All classes of the UIF that are used as a rendering element implement the
@@ -514,16 +513,31 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
      * the option name, with the Map value as the option value. See
      * documentation on the particular widget render for available options.
      *
-     * @return Map<String, Object> options
+     * @return Map<String, String> options
      */
-    public Map<String, Object> getComponentOptions();
+    public Map<String, String> getComponentOptions();
 
     /**
      * Setter for the widget's options
      *
      * @param widgetOptions
      */
-    public void setComponentOptions(Map<String, Object> componentOptions);
+    public void setComponentOptions(Map<String, String> componentOptions);
+
+    /**
+     * Options that are passed through to the Component renderer. See
+     * documentation on the particular widget render for available options.
+     *
+     * @return String options
+     */
+    public String getComponentOptionsJSString();
+
+    /**
+     * Setter for the widget's options
+     *
+     * @param widgetOptions
+     */
+    public void setComponentOptionsJSString(String componentOptions);
 
     /**
      * Can be used to order a component within a List of other components, lower

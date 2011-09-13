@@ -44,8 +44,18 @@ public final class DocumentAttributeDecimal extends DocumentAttribute {
         return DocumentAttributeDataType.DECIMAL;
     }
 
+    /**
+     * A builder implementation which allows for construction of a {@code DocumentAttributeDecimal}.
+     */
     public static final class Builder extends AbstractBuilder<BigDecimal> {
 
+        /**
+         * Create a builder for the document attribute using the given attribute name.
+         *
+         * @param name the name of the document attribute which should be built by this builder, should never be a
+         * null or blank value
+         * @return a builder instance initialized with the given attribute name
+         */
         private Builder(String name) {
             super(name);
         }

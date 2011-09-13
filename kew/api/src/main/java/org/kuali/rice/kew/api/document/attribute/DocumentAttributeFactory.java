@@ -15,48 +15,145 @@ import java.util.Date;
  */
 public class DocumentAttributeFactory {
 
+    /**
+     * Constructs a document attribute containing character data from the given attribute name and {@link String} value.
+     *
+     * @param name the name of the attribute to construct, must not be a null or blank value
+     * @param value the value of the attribute as a {@code String}
+     *
+     * @return a constructed {@code DocumentAttributeString} representing the document attribute
+     *
+     * @throws IllegalArgumentException if name is a null or blank value
+     */
     public static DocumentAttributeString createStringAttribute(String name, String value) {
         DocumentAttributeString.Builder builder = DocumentAttributeString.Builder.create(name);
         builder.setValue(value);
         return builder.build();
     }
 
+    /**
+     * Constructs a document attribute containing date/time data from the given attribute name and {@link DateTime}
+     * object.
+     *
+     * @param name the name of the attribute to construct, must not be a null or blank value
+     * @param value the value of the attribute as a {@code DateTime}
+     *
+     * @return a constructed {@code DocumentAttributeDateTime} representing the document attribute
+     *
+     * @throws IllegalArgumentException if name is a null or blank value
+     */
     public static DocumentAttributeDateTime createDateTimeAttribute(String name, DateTime value) {
         DocumentAttributeDateTime.Builder builder = DocumentAttributeDateTime.Builder.create(name);
         builder.setValue(value);
         return builder.build();
     }
 
+    /**
+     * Constructs a document attribute containing date/time data from the given attribute name and {@link Date} object.
+     *
+     * @param name the name of the attribute to construct, must not be a null or blank value
+     * @param value the value of the attribute as a {@code Date}
+     *
+     * @return a constructed {@code DocumentAttributeDateTime} representing the document attribute
+     *
+     * @throws IllegalArgumentException if name is a null or blank value
+     */
     public static DocumentAttributeDateTime createDateTimeAttribute(String name, Date value) {
         return createDateTimeAttribute(name, new DateTime(value));
     }
 
+    /**
+     * Constructs a document attribute containing date/time data from the given attribute name and a numeric long
+     * representing the number of milliseconds from 1970-01-01T00:00:00Z in the default time zone.
+     *
+     * @param name the name of the attribute to construct, must not be a null or blank value
+     * @param instant the instant value represented as milliseconds from 1970-01-01T00:00:00Z
+     *
+     * @return a constructed {@code DocumentAttributeDateTime} representing the document attribute
+     *
+     * @throws IllegalArgumentException if name is a null or blank value
+     */
     public static DocumentAttributeDateTime createDateTimeAttribute(String name, long instant) {
         return createDateTimeAttribute(name, new DateTime(instant));
     }
 
-    public static DocumentAttributeDateTime createDateTimeAttribute(String name, Calendar calendar) {
-        return createDateTimeAttribute(name, new DateTime(calendar));
+    /**
+     * Constructs a document attribute containing date/time data from the given attribute name and {@link Calendar}
+     * object.
+     *
+     * @param name the name of the attribute to construct, must not be a null or blank value
+     * @param value the value of the attribute as a {@code Calendar}
+     *
+     * @return a constructed {@code DocumentAttributeDateTime} representing the document attribute
+     *
+     * @throws IllegalArgumentException if name is a null or blank value
+     */
+    public static DocumentAttributeDateTime createDateTimeAttribute(String name, Calendar value) {
+        return createDateTimeAttribute(name, new DateTime(value));
     }
 
+    /**
+     * Constructs a document attribute containing real number data from the given attribute name and {@link BigDecimal}
+     * object.
+     *
+     * @param name the name of the attribute to construct, must not be a null or blank value
+     * @param value the value of the attribute as a {@code BigDecimal}
+     *
+     * @return a constructed {@code DocumentAttributeDecimal} representing the document attribute
+     *
+     * @throws IllegalArgumentException if name is a null or blank value
+     */
     public static DocumentAttributeDecimal createDecimalAttribute(String name, BigDecimal value) {
         DocumentAttributeDecimal.Builder builder = DocumentAttributeDecimal.Builder.create(name);
         builder.setValue(value);
         return builder.build();
     }
 
-    public static DocumentAttributeDecimal createDecimalAttribute(String name, Number number) {
-        return createDecimalAttribute(name, BigDecimal.valueOf(number.doubleValue()));
+    /**
+     * Constructs a document attribute containing real number data from the given attribute name and {@link Number}
+     * object.  The given number is first translated to a {@code BigDecimal} using {@link Number#doubleValue()}.
+     *
+     * @param name the name of the attribute to construct, must not be a null or blank value
+     * @param value the value of the attribute as a {@code Number}
+     *
+     * @return a constructed {@code DocumentAttributeDecimal} representing the document attribute
+     *
+     * @throws IllegalArgumentException if name is a null or blank value
+     */
+    public static DocumentAttributeDecimal createDecimalAttribute(String name, Number value) {
+        return createDecimalAttribute(name, BigDecimal.valueOf(value.doubleValue()));
     }
 
+    /**
+     * Constructs a document attribute containing integer number data from the given attribute name and
+     * {@link BigInteger} object.
+     *
+     * @param name the name of the attribute to construct, must not be a null or blank value
+     * @param value the value of the attribute as a {@code BigInteger}
+     *
+     * @return a constructed {@code DocumentAttributeInteger} representing the document attribute
+     *
+     * @throws IllegalArgumentException if name is a null or blank value
+     */
     public static DocumentAttributeInteger createIntegerAttribute(String name, BigInteger value) {
         DocumentAttributeInteger.Builder builder = DocumentAttributeInteger.Builder.create(name);
         builder.setValue(value);
         return builder.build();
     }
 
-    public static DocumentAttributeInteger createIntegerAttribute(String name, Number number) {
-        return createIntegerAttribute(name, BigInteger.valueOf(number.longValue()));
+    /**
+     * Constructs a document attribute containing integer number data from the given attribute name and {@link Number}
+     * object.  The given number is first translated to a {@code BigInteger} using {@link Number#longValue()}.
+     *
+     * @param name the name of the attribute to construct, must not be a null or blank value
+     * @param value the value of the attribute as a {@code Number}
+     *
+     * @return a constructed {@code DocumentAttributeInteger} representing the document attribute
+     *
+     * @throws IllegalArgumentException if name is a null or blank value
+     */
+    public static DocumentAttributeInteger createIntegerAttribute(String name, Number value) {
+        return createIntegerAttribute(name, BigInteger.valueOf(value.longValue()));
     }
 
     /**

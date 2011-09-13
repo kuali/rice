@@ -56,6 +56,11 @@
                   <entry key="checkbox">
                     <map>
                       <entry key="two_state" value="#{true}" />
+                      <entry key="real_checkboxes_names">
+                        <value>
+                          function (n) { return ['flush', (n[0].id)]; }
+                        </value>
+                      </entry>
                       <entry key="real_checkboxes" value="#{true}" />
                     </map>
                   </entry>

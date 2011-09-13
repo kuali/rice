@@ -1,14 +1,12 @@
 package org.kuali.rice.core.web.cache;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.core.impl.cache.CacheManagerRegistry;
 import org.kuali.rice.core.impl.services.CoreImplServiceLocator;
+import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
-import org.springframework.beans.factory.NamedBean;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -19,18 +17,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/core/admin/cache")
 public final class CacheAdminController extends UifControllerBase {
-
-    private static final String GET_NAME = "getName";
-    private static final Log LOG = LogFactory.getLog(CacheAdminController.class);
-    private static final String GET_NAME_MSG = "unable to get the getName method on the cache manager";
 
     private CacheManagerRegistry registry;
 
@@ -53,10 +46,10 @@ public final class CacheAdminController extends UifControllerBase {
 
         final Tree<String, String> cacheTree = new Tree<String,String>();
 
-        Node<String,String> root = new Node<String,String>("Root", "Root");
+        final Node<String,String> root = new Node<String,String>("Root", "Root");
 
         for (final CacheManager cm : getRegistry().getCacheManagers()) {
-            final String name = getName(cm);
+            final String name = getRegistry().getCacheManagerName(cm);
             final Node<String, String> cmNode = new Node<String, String>(name, name);
 
             for (final String cn : cm.getCacheNames()) {
@@ -80,32 +73,62 @@ public final class CacheAdminController extends UifControllerBase {
 	public ModelAndView flush(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 
-        System.err.println("flushing cache!!!!!");
-        for (Object entry : request.getParameterMap().entrySet()) {
-            System.out.println(((Map.Entry) entry).getKey() + " = " + Arrays.toString((String[]) ((Map.Entry) entry).getValue()));
+        //FIXME: Could optimize this such that specific cache flushes don't execute if a complete CacheManager
+        //flush was requested
+        for (String name : ((CacheAdminForm) form).getFlush()) {
+            //path == cacheManager index, cache index
+            final List<Integer> path = path(removePrefix(name));
+            final Tree<String, String> tree = ((CacheAdminForm) form).getCacheTree();
+            final Integer cmIdx = path.get(0);
+            final Node<String, String> cmNode = tree.getRootElement().getChildren().get(cmIdx);
+            final String cmName = cmNode.getData();
+            final CacheManager cm = getRegistry().getCacheManager(cmName);
+
+            if (path.size() == 1) {
+                flushAllCaches(cm);
+                GlobalVariables.getMessageMap().putInfoForSectionId("mainGroup_div","flush.all.cachemanager", cmName);
+            } else {
+                final Integer cIdx = path.get(1);
+                final Node<String, String> cNode = cmNode.getChildren().get(cIdx);
+                final String cName = cNode.getData();
+                flushSpecificCache(cm, cName);
+                GlobalVariables.getMessageMap().putInfoForSectionId("mainGroup_div",
+                        "flush.single.cachemanager", cName, cmName);
+            }
         }
         return super.start(form, result, request, response);
     }
 
-    private String getName(CacheManager cm) {
-        if (cm instanceof NamedBean) {
-            return ((NamedBean) cm).getBeanName();
-        }
-
-        String v = "Unnamed CacheManager " + cm.hashCode();
-        try {
-            final Method nameMethod = cm.getClass().getMethod(GET_NAME, new Class[] {});
-            if (nameMethod != null && nameMethod.getReturnType() == String.class) {
-                v = (String) nameMethod.invoke(cm, new Object[] {});
+    private static void flushSpecificCache(CacheManager cm, String cache) {
+        for (String s : cm.getCacheNames()) {
+            if (cache.equals(s)) {
+                 cm.getCache(s).clear();
+                 return;
             }
-        } catch (NoSuchMethodException e) {
-            LOG.warn(GET_NAME_MSG, e);
-        } catch (InvocationTargetException e) {
-            LOG.warn(GET_NAME_MSG, e);
-        } catch (IllegalAccessException e) {
-            LOG.warn(GET_NAME_MSG, e);
         }
+    }
 
-        return v;
+    private static void flushAllCaches(CacheManager cm) {
+        for (String s : cm.getCacheNames()) {
+            cm.getCache(s).clear();
+        }
+    }
+
+    // given: 35_node_2_parent_node_0_parent_root will remove "35_"
+    private static String removePrefix(String s) {
+        final StringBuilder sbn = new StringBuilder(s);
+        sbn.delete(0, sbn.indexOf("_") + 1);
+        return sbn.toString();
+    }
+
+    // given: node_2_parent_node_0_parent_root will return {0, 2}
+    private static List<Integer> path(String s) {
+        final String[] path = s.split("_parent_");
+        final List<Integer> pathIdx = new ArrayList<Integer>();
+        //ignore length - 2 to ignore root
+        for (int i = path.length - 2; i >= 0; i--) {
+            pathIdx.add(Integer.valueOf(path[i].substring(5)));
+        }
+        return Collections.unmodifiableList(pathIdx);
     }
 }

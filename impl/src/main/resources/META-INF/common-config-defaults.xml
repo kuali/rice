@@ -20,7 +20,7 @@
     <param name="environment" override="false">dev</param>
     <param name="app.code" override="false">kr</param>
     <param name="app.context.name" override="false">${app.code}-${environment}</param>
-    <param name="rice.struts.message.resources" override="false">org.kuali.rice.krad.ApplicationResources,org.kuali.rice.krad.KRAD-ApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.ApplicationResources,org.kuali.rice.kim.ApplicationResources,org.kuali.rice.krms.ApplicationResources</param>
+    <param name="rice.struts.message.resources" override="false">org.kuali.rice.krad.ApplicationResources,org.kuali.rice.krad.KRAD-ApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.ApplicationResources,org.kuali.rice.kim.ApplicationResources,org.kuali.rice.krms.ApplicationResources,org.kuali.rice.core.web.cache.CacheApplicationResources</param>
     <param name="http.port" override="false">8080</param>
     <param name="application.host" override="false">localhost</param>
     <param name="application.http.scheme" override="false">http</param>

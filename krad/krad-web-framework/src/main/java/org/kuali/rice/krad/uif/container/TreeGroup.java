@@ -51,7 +51,6 @@ public class TreeGroup extends Group implements DataBinding{
      * <li>Calls view helper service to initialize prototypes</li>
      * </ul>
      *
-     * @see org.kuali.rice.kns.uif.core.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View)
      */
     @Override
     public void performInitialization(View view) {
@@ -68,12 +67,6 @@ public class TreeGroup extends Group implements DataBinding{
         initializeNodePrototypeComponents(view);
     }
 
-    /**
-     * This method initializes {@link org.kuali.rice.kns.uif.core.Component}s within the {@link
-     * org.kuali.rice.krad.uif.container.NodePrototype.NodePrototype}s
-     *
-     * @param view
-     */
     private void initializeNodePrototypeComponents(View view) {
         view.getViewHelperService().performComponentInitialization(view, defaultNodePrototype.getLabelPrototype());
         view.getViewHelperService().performComponentInitialization(view, defaultNodePrototype.getDataGroupPrototype());
@@ -101,10 +94,6 @@ public class TreeGroup extends Group implements DataBinding{
             }
     }
 
-    /**
-     * @see org.kuali.rice.kns.uif.container.ContainerBase#performApplyModel(org.kuali.rice.kns.uif.container.View,
-     *      java.lang.Object)
-     */
     @Override
     public void performApplyModel(View view, Object model, Component parent) {
         super.performApplyModel(view, model, parent);
@@ -135,14 +124,14 @@ public class TreeGroup extends Group implements DataBinding{
 
         String bindingPrefix = getBindingInfo().getBindingPrefixForNested();
         Node<Group, MessageField> rootNode =
-                buildTreeNode(treeData.getRootElement(), bindingPrefix + /* TODO: hack */ ".rootElement", 0);
+                buildTreeNode(treeData.getRootElement(), bindingPrefix + /* TODO: hack */ ".rootElement", "root");
         treeGroups.setRootElement(rootNode);
 
         setTreeGroups(treeGroups);
     }
 
     protected Node<Group, MessageField> buildTreeNode(Node<Object, String> nodeData, String bindingPrefix,
-            int nodeCounter) {
+            String parentNode) {
         if (nodeData == null) {
             return null;
         }
@@ -150,17 +139,15 @@ public class TreeGroup extends Group implements DataBinding{
         Node<Group, MessageField> node = new Node<Group, MessageField>();
         node.setNodeType(nodeData.getNodeType());
 
-        String idSuffix = "_n" + nodeCounter;
-
         NodePrototype prototype = getNodePrototype(nodeData);
 
-        MessageField messageField = ComponentUtils.copy(prototype.getLabelPrototype(), idSuffix);
+        MessageField messageField = ComponentUtils.copy(prototype.getLabelPrototype(), parentNode);
         ComponentUtils.pushObjectToContext(messageField, UifConstants.ContextVariableNames.NODE, nodeData);
         messageField.setMessageText(nodeData.getNodeLabel());
         node.setNodeLabel(messageField);
 
         Group nodeGroup =
-                ComponentUtils.copyComponent(prototype.getDataGroupPrototype(), bindingPrefix + ".data", idSuffix);
+                ComponentUtils.copyComponent(prototype.getDataGroupPrototype(), bindingPrefix + ".data", parentNode);
         ComponentUtils.pushObjectToContext(nodeGroup, UifConstants.ContextVariableNames.NODE, nodeData);
         node.setData(nodeGroup);
 
@@ -169,7 +156,7 @@ public class TreeGroup extends Group implements DataBinding{
         int childIndex = 0;
         for (Node<Object, String> childDataNode : nodeData.getChildren()) {
             String nextBindingPrefix = bindingPrefix + ".children[" + childIndex + "]";
-            Node<Group, MessageField> childNode = buildTreeNode(childDataNode, nextBindingPrefix, nodeCounter++);
+            Node<Group, MessageField> childNode = buildTreeNode(childDataNode, nextBindingPrefix, "_node_" + childIndex + ("root".equals(parentNode) ? "_parent_" : "_parent") + parentNode);
 
             nodeChildren.add(childNode);
 
@@ -205,9 +192,6 @@ public class TreeGroup extends Group implements DataBinding{
         return result;
     }
 
-    /**
-     * @see org.kuali.rice.kns.uif.container.ContainerBase#getNestedComponents()
-     */
     @Override
     public List<Component> getNestedComponents() {
         List<Component> components = super.getNestedComponents();

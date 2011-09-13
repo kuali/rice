@@ -23,11 +23,11 @@ import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
+import org.kuali.rice.kew.framework.document.attribute.SearchableAttribute;
 import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCustomizer;
 import org.kuali.rice.kew.framework.document.lookup.DocumentLookupResultSetConfiguration;
 import org.kuali.rice.kew.framework.document.lookup.DocumentLookupResultValues;
 import org.kuali.rice.kew.framework.document.lookup.NullDocumentLookupCustomizer;
-import org.kuali.rice.kew.framework.document.lookup.SearchableAttribute;
 
 import java.util.List;
 import java.util.Map;

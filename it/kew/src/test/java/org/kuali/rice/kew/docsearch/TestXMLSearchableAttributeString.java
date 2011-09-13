@@ -24,7 +24,7 @@ import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
-import org.kuali.rice.kew.framework.document.lookup.SearchableAttribute;
+import org.kuali.rice.kew.framework.document.attribute.SearchableAttribute;
 
 import java.util.ArrayList;
 import java.util.Collections;

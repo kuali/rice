@@ -56,8 +56,8 @@ import java.util.Map;
  *       then {@link WorkflowAttributeXmlValidator#validateClientRoutingData()} is called to validate any data the client app may have set
  *       on the client-instantiated attribute (the {@link org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition})</li>
  *   <li>Attribute content (content the attribute generates to place in the eDoc document content) is obtained from the attribute
- *       via {@link WorkflowAttribute#getDocContent()} or {@link org.kuali.rice.kew.framework.document.lookup.SearchableAttribute#generateSearchContent(org.kuali.rice.kew.api.extension.ExtensionDefinition, String, org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition)},
- *       depending on whether the attribute is a WorkflowAttribute or {@link org.kuali.rice.kew.framework.document.lookup.SearchableAttribute}</li>
+ *       via {@link WorkflowAttribute#getDocContent()} or {@link org.kuali.rice.kew.framework.document.attribute.SearchableAttribute#generateSearchContent(org.kuali.rice.kew.api.extension.ExtensionDefinition, String, org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition)},
+ *       depending on whether the attribute is a WorkflowAttribute or {@link org.kuali.rice.kew.framework.document.attribute.SearchableAttribute}</li>
  *   <li>When a Rule is invoked (for instance, when a <code>requests</code> node is fired), all attributes associated with the rule
  *       (those associated with the Rule Template associated with the rule) which are WorkflowAttributes are enumerated and for each:
  *       <ol>

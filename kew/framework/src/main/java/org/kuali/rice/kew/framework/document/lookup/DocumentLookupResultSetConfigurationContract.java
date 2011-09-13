@@ -27,7 +27,7 @@ public interface DocumentLookupResultSetConfigurationContract {
     /**
      * Returns a list of field names of custom fields representing document attributes which should be added to the
      * result set.  This may contains fields that are defined in {@link #getAdditionalAttributeFields()} or also fields
-     * defined as part of a {@link SearchableAttribute} (see {@code isOverrideSearchableAttributes()}).
+     * defined as part of a {@link org.kuali.rice.kew.framework.document.attribute.SearchableAttribute} (see {@code isOverrideSearchableAttributes()}).
      *
      * @return a list of field names of custom document attributes which should be added to the result set, can be an
      * empty or null list in which case no fields will be added

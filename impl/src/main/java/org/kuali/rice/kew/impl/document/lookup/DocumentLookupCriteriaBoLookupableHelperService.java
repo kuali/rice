@@ -93,6 +93,9 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
         try {
             lookupResults = KEWServiceLocator.getDocumentSearchService().lookupDocuments(
                     GlobalVariables.getUserSession().getPrincipalId(), criteria);
+            if (lookupResults.isCriteriaModified()) {
+                criteria = lookupResults.getCriteria();
+            }
         } catch (WorkflowServiceErrorException wsee) {
             for (WorkflowServiceError workflowServiceError : (List<WorkflowServiceError>) wsee.getServiceErrors()) {
                 if (workflowServiceError.getMessageMap() != null && workflowServiceError.getMessageMap().hasErrors()) {
@@ -147,7 +150,7 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
     }
 
     /**
-     * Applies changes that might have happend to the criteria back to the fields so that they show up on the form.
+     * Applies changes that might have happened to the criteria back to the fields so that they show up on the form.
      * Namely, this handles populating the form with today's date if the create date was not filled in on the form.
      */
     protected void applyCriteriaChangesToFields(DocumentLookupCriteriaContract criteria) {

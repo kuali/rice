@@ -25,7 +25,7 @@
             <id>searchableAttribute-wsdl</id>
             <phase>${rice.java2ws.phase}</phase>
             <configuration>
-              <className>org.kuali.rice.kew.framework.document.lookup.SearchableAttribute</className>
+              <className>org.kuali.rice.kew.framework.document.attribute.SearchableAttribute</className>
               <outputFile>${project.build.outputDirectory}/wsdl/SearchableAttribute.wsdl</outputFile>
               <serviceName>SearchableAttribute</serviceName>
             </configuration>

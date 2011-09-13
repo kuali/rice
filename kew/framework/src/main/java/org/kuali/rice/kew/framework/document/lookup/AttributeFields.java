@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.api.document.attribute;
+package org.kuali.rice.kew.framework.document.lookup;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
-import org.kuali.rice.kew.api.action.ActionType;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -34,6 +33,16 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * An immutable data transfer object used to hold a list of {@link RemotableAttributeField} objects and the name of the
+ * {@link org.kuali.rice.kew.framework.document.attribute.SearchableAttribute} from which the fields are derived.  This is essentially used as a grouping mechanism in
+ * order to identify which fields are sourced from which attributes.
+ *
+ * <p>Since this class serves primarily as a simple wrapper for use by {@link DocumentLookupCriteriaConfiguration},
+ * it does not have a builder, only a single static create method that is used for constructing instances of it.</p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 @XmlRootElement(name = AttributeFields.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = AttributeFields.Constants.TYPE_NAME, propOrder = {
@@ -74,6 +83,16 @@ public final class AttributeFields extends AbstractDataTransferObject {
         this.remotableAttributeFields = Collections.unmodifiableList(new ArrayList<RemotableAttributeField>(remotableAttributeFields));
     }
 
+    /**
+     * Constract a new instance of {@code AttributeFields} with the given attribute name and list of remotable attribute
+     * fields.
+     *
+     * @param attributeName the name of the attribute, must not be a null or blank value
+     * @param attributeFields the remotable attribute fields to associate with the given attribute name
+     *
+     * @return a new AttributeFields instance containing the given values
+     * @throws IllegalArgumentException if the given attributeName is blank or null
+     */
     public static AttributeFields create(String attributeName, List<RemotableAttributeField> attributeFields) {
         if (attributeFields == null) {
             attributeFields = Collections.emptyList();
@@ -81,10 +100,22 @@ public final class AttributeFields extends AbstractDataTransferObject {
         return new AttributeFields(attributeName, attributeFields);
     }
 
+    /**
+     * Returns the name of the searchable attribute associated with this attribute fields instance.  Should never return
+     * a null or blank value.
+     *
+     * @return the searchable attribute name of this instance
+     */
     public String getAttributeName() {
         return attributeName;
     }
 
+    /**
+     * Returns a list of remotable attribute fields associated with the searchable attribute name of this instance.
+     * This should never return a null reference, though the list returned can be empty.
+     *
+     * @return a list of remotable attribute fields associated with this instance
+     */
     public List<RemotableAttributeField> getRemotableAttributeFields() {
         return remotableAttributeFields;
     }
@@ -96,7 +127,6 @@ public final class AttributeFields extends AbstractDataTransferObject {
         final static String ROOT_ELEMENT_NAME = "attributeFields";
         final static String TYPE_NAME = "AttributeFieldsType";
     }
-
 
     /**
      * A private class which exposes constants which define the XML element names to use when this object is marshalled to XML.

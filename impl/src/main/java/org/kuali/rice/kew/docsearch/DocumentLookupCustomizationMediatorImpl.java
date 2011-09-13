@@ -3,7 +3,7 @@ package org.kuali.rice.kew.docsearch;
 import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
-import org.kuali.rice.kew.api.document.attribute.AttributeFields;
+import org.kuali.rice.kew.framework.document.lookup.AttributeFields;
 import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCriteriaConfiguration;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
 import org.kuali.rice.kew.framework.document.lookup.DocumentLookupResultSetConfiguration;

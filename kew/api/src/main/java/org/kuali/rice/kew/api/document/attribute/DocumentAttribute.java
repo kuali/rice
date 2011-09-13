@@ -1,9 +1,5 @@
 package org.kuali.rice.kew.api.document.attribute;
 
-/**
- * TODO...
- */
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
@@ -19,6 +15,16 @@ import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 import java.util.Collection;
 
+/**
+ * An abstract representation of the {@code DocumentAttributeContract} which can be used as the super class for
+ * concrete immutable data transfer object implementations of document attributes.  This class also defines an abstract
+ * builder implementation which can be extended by it's subclasses to create their own internal builder implementations.
+ *
+ * <p>The KEW api defines the understood set of document attribute implementations, so it is not generally of value for
+ * a client of the api to subclass this class.</p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org).
+ */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = DocumentAttribute.Constants.TYPE_NAME, propOrder = {
     DocumentAttribute.Elements.NAME,
@@ -52,6 +58,12 @@ public abstract class DocumentAttribute extends AbstractDataTransferObject imple
         return name;
     }
 
+    /**
+     * An abstract base class that can be extended by concrete builder implementations of subclasses of
+     * {@code DocumentAttribute}.
+     *
+     * @param <T> the type of the value contained within the document attribute that is built by this builder
+     */
     public abstract static class AbstractBuilder<T> implements Serializable, ModelBuilder, DocumentAttributeContract {
 
         private static final long serialVersionUID = -4402662354421207678L;
@@ -68,6 +80,12 @@ public abstract class DocumentAttribute extends AbstractDataTransferObject imple
             return name;
         }
 
+        /**
+         * Sets the name of the document attribute that will be built by this builder.
+         *
+         * @param name the name of the document attribute to set, must not be a null or blank value
+         * @throws IllegalArgumentException if the given name is a null or blank value.
+         */
         public void setName(String name) {
             if (StringUtils.isBlank(name)) {
                 throw new IllegalArgumentException("name was null or blank");
@@ -80,10 +98,20 @@ public abstract class DocumentAttribute extends AbstractDataTransferObject imple
             return value;
         }
 
+        /**
+         * Sets the value of the document attribute that will be built by this builder.
+         *
+         * @param value the value of the document attribute to set
+         */
         public void setValue(T value) {
             this.value = value;
         }
 
+        /**
+         * Build the {@code DocumentAttribute} for this builder based on it's current state.
+         *
+         * @return the instantiated instance of {@code DocumentAttribute} which was built by this builder
+         */
         public abstract DocumentAttribute build();
         
     }

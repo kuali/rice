@@ -17,7 +17,6 @@
 package org.kuali.rice.kew.rule;
 
 import java.io.Serializable;
-import java.util.Map;
 
 import org.kuali.rice.krad.util.MessageMap;
 
@@ -25,7 +24,7 @@ import org.kuali.rice.krad.util.MessageMap;
 /**
  * An error returned from the validation of a {@link WorkflowAttribute}.
  * Returned by a call to {@link WorkflowAttributeXmlValidator#validateClientRoutingData()}
- * and {@link org.kuali.rice.kew.framework.document.lookup.SearchableAttribute#validateSearchFieldParameters(org.kuali.rice.kew.api.extension.ExtensionDefinition, java.util.Map, String)}
+ * and {@link org.kuali.rice.kew.framework.document.attribute.SearchableAttribute#validateSearchFieldParameters(org.kuali.rice.kew.api.extension.ExtensionDefinition, java.util.Map, String)}
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

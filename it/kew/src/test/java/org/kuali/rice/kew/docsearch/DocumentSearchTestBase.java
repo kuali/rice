@@ -15,20 +15,11 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.junit.Ignore;
-import org.kuali.rice.core.api.uif.RemotableAttributeField;
-import org.kuali.rice.core.api.uif.Select;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
 import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.framework.document.lookup.SearchableAttribute;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
 
 /**
  * This is a base class used for document search unit test classes to consolidate some helper methods

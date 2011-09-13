@@ -9,8 +9,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
- * A document attribute which contains decimal data.  Construct instances of {@code DocumentAttributeDecimal} using
- * it's builder or the {@link DocumentAttributeFactory}.
+ * A document attribute which contains decimal or "real" data.  Construct instances of {@code DocumentAttributeDecimal}
+ * using it's builder or the {@link DocumentAttributeFactory}.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

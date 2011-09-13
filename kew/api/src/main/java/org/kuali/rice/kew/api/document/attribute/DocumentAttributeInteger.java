@@ -43,12 +43,22 @@ public final class DocumentAttributeInteger extends DocumentAttribute {
         return DocumentAttributeDataType.INTEGER;
     }
 
+    /**
+     * A builder implementation which allows for construction of a {@code DocumentAttributeInteger}.
+     */
     public static final class Builder extends AbstractBuilder<BigInteger> {
 
         private Builder(String name) {
             super(name);
         }
 
+        /**
+         * Create a builder for the document attribute using the given attribute name.
+         *
+         * @param name the name of the document attribute which should be built by this builder, should never be a
+         * null or blank value
+         * @return a builder instance initialized with the given attribute name
+         */
         public static Builder create(String name) {
             return new Builder(name);
         }

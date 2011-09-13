@@ -55,6 +55,18 @@
 							<goal>java2ws</goal>
 						</goals>
 					</execution>
+          <execution>
+            <id>workflowDocumentService-wsdl</id>
+            <phase>${rice.java2ws.phase}</phase>
+            <configuration>
+              <className>org.kuali.rice.kew.api.document.WorkflowDocumentService</className>
+              <outputFile>${project.build.outputDirectory}/wsdl/WorkflowDocumentService.wsdl</outputFile>
+              <serviceName>WorkflowDocumentService</serviceName>
+            </configuration>
+            <goals>
+              <goal>java2ws</goal>
+            </goals>
+          </execution>
 					<execution>
 						<id>documentTypeService-wsdl</id>
 						<phase>${rice.java2ws.phase}</phase>
@@ -79,6 +91,67 @@
 							<goal>java2ws</goal>
 						</goals>
 					</execution>
+          <execution>
+            <id>ruleService-wsdl</id>
+            <phase>${rice.java2ws.phase}</phase>
+            <configuration>
+              <className>org.kuali.rice.kew.api.rule.RuleService</className>
+              <outputFile>${project.build.outputDirectory}/wsdl/RuleService.wsdl</outputFile>
+              <serviceName>RuleService</serviceName>
+            </configuration>
+            <goals>
+              <goal>java2ws</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>kewTypeRepositoryService-wsdl</id>
+            <phase>${rice.java2ws.phase}</phase>
+            <configuration>
+              <className>org.kuali.rice.kew.api.repository.type.KewTypeRepositoryService</className>
+              <outputFile>${project.build.outputDirectory}/wsdl/KewTypeRepositoryService.wsdl</outputFile>
+              <serviceName>KewTypeRepositoryService</serviceName>
+            </configuration>
+            <goals>
+              <goal>java2ws</goal>
+            </goals>
+          </execution>
+          <execution>
+						<id>responsibilityChangeProcessor-wsdl</id>
+						<phase>${rice.java2ws.phase}</phase>
+						<configuration>
+							<className>org.kuali.rice.kew.api.Responsibility.ResponsibilityChangeProcessor</className>
+							<outputFile>${project.build.outputDirectory}/wsdl/ResponsibilityChangeProcessor.wsdl</outputFile>
+							<serviceName>ResponsibilityChangeProcessor</serviceName>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+          <execution>
+						<id>documentAttributeIndexingQueue-wsdl</id>
+						<phase>${rice.java2ws.phase}</phase>
+						<configuration>
+							<className>org.kuali.rice.kew.api.document.attribute.DocumentAttributeIndexingQueue</className>
+							<outputFile>${project.build.outputDirectory}/wsdl/DocumentAttributeIndexingQueue.wsdl</outputFile>
+							<serviceName>DocumentAttributeIndexingQueue</serviceName>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+          <execution>
+						<id>groupMembershipChangeQueue-wsdl</id>
+						<phase>${rice.java2ws.phase}</phase>
+						<configuration>
+							<className>org.kuali.rice.kew.api.group.GroupMembershipChangeQueue</className>
+							<outputFile>${project.build.outputDirectory}/wsdl/GroupMembershipChangeQueue.wsdl</outputFile>
+							<serviceName>GroupMembershipChangeQueue</serviceName>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+          
 					
 				</executions>
 			</plugin>

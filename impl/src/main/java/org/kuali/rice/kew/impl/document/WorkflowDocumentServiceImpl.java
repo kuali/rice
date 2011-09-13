@@ -224,7 +224,8 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	}
 	
 	@Override
-	public List<ActionRequest> getActionRequests(String documentId, String nodeName, String principalId) {
+	public List<ActionRequest> getActionRequestsForPrincipalAtNode(String documentId, String nodeName,
+            String principalId) {
         if (StringUtils.isBlank(documentId)) {
         	throw new RiceIllegalArgumentException("documentId was null or blank");
         }

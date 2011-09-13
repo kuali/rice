@@ -46,6 +46,18 @@
 						</goals>
 					</execution>
           <execution>
+						<id>documentSecurityHandlerService-wsdl</id>
+						<phase>${rice.java2ws.phase}</phase>
+						<configuration>
+							<className>org.kuali.rice.kew.framework.document.security.DocumentSecurityHandlerService</className>
+							<outputFile>${project.build.outputDirectory}/wsdl/DocumentSecurityHandlerService.wsdl</outputFile>
+							<serviceName>DocumentSecurityHandlerService</serviceName>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+          <execution>
 						<id>ruleValidationAttributeExporterService-wsdl</id>
 						<phase>${rice.java2ws.phase}</phase>
 						<configuration>

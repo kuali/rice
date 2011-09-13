@@ -122,13 +122,12 @@ public interface WorkflowDocumentService {
      *
      * @throws RiceIllegalArgumentException if {@code documentId} is null
      */
-    @WebMethod(operationName = "getActionRequests")
+    @WebMethod(operationName = "getActionRequestsForPrincipalAtNode")
     @XmlElementWrapper(name = "actionRequests", required = true)
     @XmlElement(name = "actionRequests", required = false)
     @WebResult(name = "actionRequests")
-	List<ActionRequest> getActionRequests(@WebParam(name = "documentId") String documentId,
-                                          @WebParam(name = "nodeName") String nodeName,
-                                          @WebParam(name = "principalId") String principalId)
+	List<ActionRequest> getActionRequestsForPrincipalAtNode(@WebParam(name = "documentId") String documentId,
+            @WebParam(name = "nodeName") String nodeName, @WebParam(name = "principalId") String principalId)
             throws RiceIllegalArgumentException;
 
     /**
@@ -512,7 +511,7 @@ public interface WorkflowDocumentService {
      */
     @WebMethod(operationName = "addDocumentLink")
     @WebResult(name = "documentLink")
-	DocumentLink addDocumentLink(DocumentLink documentLink) throws RiceIllegalArgumentException;
+	DocumentLink addDocumentLink(@WebParam(name = "documentLink") DocumentLink documentLink) throws RiceIllegalArgumentException;
 
     /**
      * Removes the  {@link DocumentLink} with the given documentLinkId.
@@ -526,7 +525,7 @@ public interface WorkflowDocumentService {
      */
     @WebMethod(operationName = "deleteDocumentLink")
     @WebResult(name = "documentLink")
-	DocumentLink deleteDocumentLink(String documentLinkId) throws RiceIllegalArgumentException;
+	DocumentLink deleteDocumentLink(@WebParam(name = "documentLinkId") String documentLinkId) throws RiceIllegalArgumentException;
 
 
     /**
@@ -542,7 +541,7 @@ public interface WorkflowDocumentService {
     @XmlElementWrapper(name = "documentLinks", required = true)
     @XmlElement(name = "documentLink", required = false)
     @WebResult(name = "documentLinks")
-    List<DocumentLink> deleteDocumentLinksByDocumentId(String originatingDocumentId) throws RiceIllegalArgumentException;
+    List<DocumentLink> deleteDocumentLinksByDocumentId(@WebParam(name = "originatingDocumentId") String originatingDocumentId) throws RiceIllegalArgumentException;
 
     /**
      * Gets a list of all {@link DocumentLink}s for outgoing links from the {@link Document} with the given documentId.
@@ -557,7 +556,7 @@ public interface WorkflowDocumentService {
     @XmlElementWrapper(name = "documentLinks", required = true)
     @XmlElement(name = "documentLink", required = false)
     @WebResult(name = "documentLinks")
-    List<DocumentLink> getOutgoingDocumentLinks(String originatingDocumentId) throws RiceIllegalArgumentException;
+    List<DocumentLink> getOutgoingDocumentLinks(@WebParam(name = "originatingDocumentId") String originatingDocumentId) throws RiceIllegalArgumentException;
 
     /**
      * Gets a list of all {@link DocumentLink}s for incoming links from the {@link Document} with the given documentId.
@@ -572,7 +571,7 @@ public interface WorkflowDocumentService {
     @XmlElementWrapper(name = "documentLinks", required = true)
     @XmlElement(name = "documentLink", required = false)
     @WebResult(name = "documentLinks")
-    List<DocumentLink> getIncomingDocumentLinks(String originatingDocumentId) throws RiceIllegalArgumentException;
+    List<DocumentLink> getIncomingDocumentLinks(@WebParam(name = "originatingDocumentId") String originatingDocumentId) throws RiceIllegalArgumentException;
 
     /**
      * Gets the {@link DocumentLink} for  with the given documentLinkId.
@@ -583,8 +582,8 @@ public interface WorkflowDocumentService {
      *
      * @throws RiceIllegalArgumentException if {@code documentLinkId} is null
      */
-    @WebMethod(operationName = "getIncomingDocumentLinks")
+    @WebMethod(operationName = "getDocumentLink")
     @WebResult(name = "documentLinks")
-    DocumentLink getDocumentLink(String documentLinkId) throws RiceIllegalArgumentException;
+    DocumentLink getDocumentLink(@WebParam(name = "documentLinkId") String documentLinkId) throws RiceIllegalArgumentException;
 
 }

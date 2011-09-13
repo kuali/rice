@@ -97,7 +97,8 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends DerivedRoleTypeServ
         validateRequiredAttributesAgainstReceived(qualification);
 		try {
 			if ( (qualification != null && !qualification.isEmpty()))  {
-				List<ActionRequest> actionRequests = KewApiServiceLocator.getWorkflowDocumentService().getActionRequests(qualification.get(KimConstants.AttributeConstants.DOCUMENT_NUMBER), null, principalId);
+				List<ActionRequest> actionRequests = KewApiServiceLocator.getWorkflowDocumentService().getActionRequestsForPrincipalAtNode(
+                        qualification.get(KimConstants.AttributeConstants.DOCUMENT_NUMBER), null, principalId);
                 if (APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName) || NON_AD_HOC_APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
 					for ( ActionRequest ar : actionRequests ) {
 						if ( ar.getActionRequested().getCode().equals( KEWConstants.ACTION_REQUEST_APPROVE_REQ )

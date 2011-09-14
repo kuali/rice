@@ -13,13 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.bo;
+package org.kuali.rice.devtools.generators.jpa;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
+import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -29,10 +27,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
-
-
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 

@@ -777,7 +777,6 @@
   -->
 
   <bean id="sessionDocumentService" class="org.kuali.rice.krad.service.impl.SessionDocumentServiceImpl">
-    <property name="maxCacheSize" value="${session.document.cache.size}"/>
     <property name="businessObjectService">
       <ref bean="businessObjectService"/>
     </property>

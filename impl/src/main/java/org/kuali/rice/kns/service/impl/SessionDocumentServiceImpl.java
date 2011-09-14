@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2008 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,11 +15,12 @@
  */
 package org.kuali.rice.kns.service.impl;
 
+import org.apache.commons.collections.map.LRUMap;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.kew.api.WorkflowDocument;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.service.SessionDocumentService;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
@@ -30,7 +31,6 @@ import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.util.KualiLRUMap;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +44,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Implementation of <code>SessionDocumentService</code> that persists the document form
+ * contents to the underlying database
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Deprecated
@@ -64,7 +67,7 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
     private DataDictionaryService dataDictionaryService;
     private SessionDocumentDao sessionDocumentDao;
 
-    public static class CachedObject {
+    private static class CachedObject {
         private UserSession userSession;
         private String formKey;
 
@@ -88,16 +91,51 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
         }
     }
 
+    /**
+     * Override LRUMap removeEntity method
+     *
+     *
+     */
+    private static class KualiLRUMap extends LRUMap {
+
+        /** Serialization version */
+        private static final long serialVersionUID = 1L;
+
+        private KualiLRUMap() {
+            super();
+        }
+
+        private KualiLRUMap(int maxSize) {
+            super(maxSize);
+        }
+
+        @Override
+        protected void removeEntry(HashEntry entry, int hashIndex, HashEntry previous) {
+
+            // It is for session document cache enhancement.
+            // To control the size of cache. When the LRUMap reach the maxsize.
+            // It will remove session document entries from the in-memory user
+            // session objects.
+            try {
+                CachedObject cachedObject
+                        = (CachedObject)this.entryValue(entry);
+                cachedObject.getUserSession().removeObject(cachedObject.getFormKey());
+            } catch (Exception ex) {
+                Logger.getLogger(getClass()).warn( "Problem purging old entry from the user session when removing from the map: ", ex);
+            }
+
+            super.removeEntry(entry, hashIndex, previous);
+        }
+
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public void afterPropertiesSet() throws Exception {
         cachedObjects = Collections.synchronizedMap(new KualiLRUMap(maxCacheSize));
     }
 
-    /**
-     * @see org.kuali.rice.kns.service.SessionDocumentService#getDocumentForm(String documentNumber, String
-     *      docFormKey,
-     *      org.kuali.rice.krad.UserSession userSession)
-     */
+
     @Override
     public KualiDocumentFormBase getDocumentForm(String documentNumber, String docFormKey, UserSession userSession,
             String ipAddress) {
@@ -201,10 +239,6 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
         }
     }
 
-    /**
-     * @see org.kuali.rice.krad.service.SessinoDocumentService#setDocumentForm()
-     */
-
     @Override
     public void setDocumentForm(KualiDocumentFormBase form, UserSession userSession, String ipAddress) {
         synchronized (userSession) {
@@ -283,44 +317,26 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
         sessionDocumentDao.purgeAllSessionDocuments(expirationDate);
     }
 
-    /**
-     * @return the sessionDocumentDao
-     */
     protected SessionDocumentDao getSessionDocumentDao() {
         return this.sessionDocumentDao;
     }
 
-    /**
-     * @param sessionDocumentDao the sessionDocumentDao to set
-     */
     public void setSessionDocumentDao(SessionDocumentDao sessionDocumentDao) {
         this.sessionDocumentDao = sessionDocumentDao;
     }
 
-    /**
-     * @return the businessObjectService
-     */
     protected BusinessObjectService getBusinessObjectService() {
         return this.businessObjectService;
     }
 
-    /**
-     * @param businessObjectService the businessObjectService to set
-     */
     public void setBusinessObjectService(BusinessObjectService businessObjectService) {
         this.businessObjectService = businessObjectService;
     }
 
-    /**
-     * @return the maxCacheSize
-     */
     public int getMaxCacheSize() {
         return maxCacheSize;
     }
 
-    /**
-     * @param maxCacheSize the maxCacheSize to set
-     */
     public void setMaxCacheSize(int maxCacheSize) {
         this.maxCacheSize = maxCacheSize;
     }

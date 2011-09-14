@@ -15,7 +15,8 @@
  */
 package org.kuali.rice.krad.web.filter;
 
-import java.io.IOException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -23,9 +24,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.io.IOException;
 
 /**
  * This class can be used to increase the response buffer size so that if there is a late exception, Tomcat's ErrorReportValve can

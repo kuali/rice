@@ -15,20 +15,10 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.sql.Timestamp;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.kew.api.WorkflowDocument;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.bo.SessionDocument;
@@ -38,10 +28,16 @@ import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.SessionDocumentService;
-import org.kuali.rice.krad.util.KualiLRUMap;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Implementation of <code>SessionDocumentService</code> that persists the document form
@@ -50,7 +46,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Transactional
-public class SessionDocumentServiceImpl implements SessionDocumentService, InitializingBean {
+public class SessionDocumentServiceImpl implements SessionDocumentService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SessionDocumentServiceImpl.class);
 
     protected static final String IP_ADDRESS = "ipAddress";
@@ -58,48 +54,12 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
     protected static final String DOCUMENT_NUMBER = "documentNumber";
     protected static final String SESSION_ID = "sessionId";
 
-    private Map<String, CachedObject> cachedObjects;
     private EncryptionService encryptionService;
-    private int maxCacheSize;
 
     private BusinessObjectService businessObjectService;
     private DataDictionaryService dataDictionaryService;
     private SessionDocumentDao sessionDocumentDao;
 
-    public static class CachedObject {
-        private UserSession userSession;
-        private String formKey;
-
-        CachedObject(UserSession userSession, String formKey) {
-            this.userSession = userSession;
-            this.formKey = formKey;
-        }
-
-        @Override
-        public String toString() {
-            return "CachedObject: principalId=" + userSession.getPrincipalId() + " / objectWithFormKey=" +
-                    userSession.retrieveObject(formKey);
-        }
-
-        public UserSession getUserSession() {
-            return this.userSession;
-        }
-
-        public String getFormKey() {
-            return this.formKey;
-        }
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public void afterPropertiesSet() throws Exception {
-        cachedObjects = Collections.synchronizedMap(new KualiLRUMap(maxCacheSize));
-    }
-
-    /**
-     * @see org.kuali.rice.krad.service.SessionDocumentService#getDocumentForm(org.kuali.rice.krad.web.form.DocumentFormBase,
-     *      org.kuali.rice.krad.UserSession, java.lang.String)
-     */
     @Override
     public DocumentFormBase getDocumentForm(String documentNumber, String docFormKey, UserSession userSession,
             String ipAddress) {
@@ -202,10 +162,6 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
         }
     }
 
-    /**
-     * @see org.kuali.rice.krad.service.SessionDocumentService#setDocumentForm(org.kuali.rice.krad.web.form.DocumentFormBase,
-     *      org.kuali.rice.krad.UserSession, java.lang.String)
-     */
     @Override
     public void setDocumentForm(DocumentFormBase form, UserSession userSession, String ipAddress) {
         synchronized (userSession) {
@@ -297,14 +253,6 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
 
     public void setBusinessObjectService(BusinessObjectService businessObjectService) {
         this.businessObjectService = businessObjectService;
-    }
-
-    public int getMaxCacheSize() {
-        return maxCacheSize;
-    }
-
-    public void setMaxCacheSize(int maxCacheSize) {
-        this.maxCacheSize = maxCacheSize;
     }
 
     protected EncryptionService getEncryptionService() {

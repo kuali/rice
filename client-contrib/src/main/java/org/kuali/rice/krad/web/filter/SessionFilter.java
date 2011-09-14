@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.web.filter;
 
-import java.io.IOException;
+import org.apache.log4j.Logger;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -24,8 +24,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.log4j.Logger;
+import java.io.IOException;
 
 public class SessionFilter implements Filter {
     private static final Logger LOG = Logger.getLogger(SessionFilter.class);

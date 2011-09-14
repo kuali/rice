@@ -434,7 +434,8 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
          * @return a builder instance initialized with properties from the given contract
          *
          * @throws IllegalArgumentException if the given contract is null
-         */        public static Builder create(DocumentLookupCriteriaContract contract) {
+         */
+        public static Builder create(DocumentLookupCriteriaContract contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
             }

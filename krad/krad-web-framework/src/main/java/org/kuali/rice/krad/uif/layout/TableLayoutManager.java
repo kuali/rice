@@ -137,6 +137,12 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 			totalColumns++;
 		}
 
+        if (collectionGroup.isRenderAddLine()){
+            if(StringUtils.isBlank(this.getFirstLineStyle())){
+                this.setFirstLineStyle("kr-addLine");
+            }
+        }
+
 		setNumberOfColumns(totalColumns);
 
 	}

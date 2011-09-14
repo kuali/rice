@@ -45,6 +45,7 @@
 		     <krad:grid items="${manager.dataFields}" numberOfColumns="${manager.numberOfColumns}" 
 		                applyAlternatingRowStyles="${manager.applyAlternatingRowStyles}"
 		                applyDefaultCellWidths="${manager.applyDefaultCellWidths}"
+                    firstLineStyle="${manager.firstLineStyle}"
 		                renderAlternatingHeaderColumns="false"/>
 		  </tbody>
 	  	

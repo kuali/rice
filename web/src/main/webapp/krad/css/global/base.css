@@ -235,6 +235,19 @@ h4.kr-section-subhead-no-border {	/* was h4.kr-section-subhead-no-border */ /* r
 	display: block;
 }
 
+tr.kr-addLine {
+    background-color: #F2F2F2 !important;
+    border: 1px solid #D3D3D3 !important;
+}
+tr.kr-addLine td.sorting_1 {
+    background-color: #F2F2F2 !important;
+}
+
+div.kr-addLine, span.kr-addLine{
+    background-color: #F2F2F2 !important;
+    border: 1px solid #D3D3D3 !important;
+}
+
 /* JQUERY - e.g.: ui-calendar *******************************************/
 
 /* JQUERY Errors */

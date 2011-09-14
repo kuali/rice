@@ -43,6 +43,7 @@ public class GridLayoutManager extends LayoutManagerBase {
     private boolean applyAlternatingRowStyles;
     private boolean applyDefaultCellWidths;
     private boolean renderAlternatingHeaderColumns;
+    private String firstLineStyle = "";
 
     public GridLayoutManager() {
         super();
@@ -207,4 +208,16 @@ public class GridLayoutManager extends LayoutManagerBase {
         this.renderAlternatingHeaderColumns = renderAlternatingHeaderColumns;
     }
 
+
+    public String getFirstLineStyle() {
+        return firstLineStyle;
+    }
+
+    /**
+     * Style class given to the first line in the collection
+     * @param firstLineStyle
+     */
+    public void setFirstLineStyle(String firstLineStyle) {
+        this.firstLineStyle = firstLineStyle;
+    }
 }

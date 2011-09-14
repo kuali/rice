@@ -214,7 +214,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
               p:quickfinderActionField.label="Look Up/Add Multiple Account Lines"/>
       </property>
       <property name="layoutManager">
-        <bean parent="StackedLayoutManager"/>
+        <bean parent="StackedLayoutManager" p:addLineGroup.styleClasses="kr-addLine"/>
       </property> 
   </bean>
 

@@ -64,9 +64,6 @@ public class DocumentLookupCustomizationHandlerServiceImpl implements DocumentLo
                 LOG.warn("Unable to connect to load searchable attributes for document type: " + documentTypeName, e);
             }
         }
-
-        // TODO - Rice 2.0 - add in the "resultSetFields"...
-
         return configBuilder.build();
     }
 

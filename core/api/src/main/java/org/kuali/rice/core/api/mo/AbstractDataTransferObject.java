@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  * <b>Important: all classes extending this class must be immutable</b>
  */
-@XmlTransient
+@XmlTransient // marked as @XmlTransient so that an AbstractDataTransferObjectType is not included in all WSDL schemas
 public abstract class AbstractDataTransferObject implements ModelObjectComplete {
 
     private transient volatile Integer _hashCode;

@@ -84,14 +84,16 @@ h4.kr-section-subhead-no-border {	/* was h4.kr-section-subhead-no-border */ /* r
 	font-weight:bold;
 }
 
-/* ************** !NOT RENAMED ERROR MSGS! ******************/
 .kr-errorsField .kr-errorMessages { /* was .errorsField .errorMessages */ /* .errorsField renamed in xml; .errorMessages NOT renamed, as this will break js functionality   */
 	color: #DF0000;
 	font-weight: bold;
 }
-.kr-errorMessages {					/* was .errorMessages */ /* NOT RENAMED in errorsField.jsp - changing this classname will break some javascript functionality  */
-	padding-left: 20px;
-	background: url("/kr-dev/krad/images/exclamation-red.png") no-repeat scroll left top transparent;
+.kr-errorMessages {
+    padding-left: 20px;
+	background: url("../../images/exclamation-red.png") no-repeat scroll 3px 2px transparent;
+}
+.kr-clientError img {
+	margin-left:10px;   /* adds spacing between tab label and the icon */
 }
 span.kr-clientError, div.kr-clientError, td.kr-clientError, span.kr-serverError, div.kr-serverError, td.kr-serverError { /* NOT renamed in xml and/or jsp, as this will break js functionality   */
 	background-color: #FFE0E9 !important;
@@ -130,10 +132,7 @@ li label.kr-error {	/* NOT renamed in xml and/or jsp, as this will break js func
 	padding-left: 20px;
 	background: url("../../images/information-frame.png") no-repeat scroll 3px 2px transparent;
 }
-.kr-errorMessages {
-    padding-left: 20px;
-	background: url("../../images/exclamation-red.png") no-repeat scroll 3px 2px transparent;
-}
+
 .kr-errorsFieldForContainer .kr-errorMessages {		/* was .errorsFieldForContainer .errorMessages */ /* .errorsFieldForContainer renamed in xml; .errorMessages NOT renamed, as this will break js functionality   */
 	border: 1px solid red;
 	background-color: #FFE0E9;
@@ -174,10 +173,7 @@ li label.kr-error {	/* NOT renamed in xml and/or jsp, as this will break js func
     font-weight:normal;
     display:block;
 }
-.kr-errorsField .kr-errorMessages {
-	color: #DF0000;
-	font-weight: bold;
-}
+
 /* breadcrumbs */
 
 .kr-breadcrumbs { 					/* was .breadcrumbs */ /* renamed in xml and/or jsp */
@@ -373,9 +369,7 @@ div.kr-addLine, span.kr-addLine{
 .tab-navigation-block li.ui-state-active a {
 	color: black !important;
 }
-.kr-clientError img {
-	margin-left:10px;   /* adds spacing between tab label and the icon */
-}
+
 .ui-tabs li {
 	clear: none;
 }

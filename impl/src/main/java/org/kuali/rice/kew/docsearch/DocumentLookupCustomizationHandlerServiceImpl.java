@@ -55,7 +55,9 @@ public class DocumentLookupCustomizationHandlerServiceImpl implements DocumentLo
                     }
                     SearchableAttribute searchableAttribute = loadSearchableAttribute(extensionDefinition);
                     List<RemotableAttributeField> attributeSearchFields = searchableAttribute.getSearchFields(extensionDefinition, documentTypeName);
-                    searchAttributeFields.add(AttributeFields.create(searchableAttributeName, attributeSearchFields));
+                    if (CollectionUtils.isNotEmpty(attributeSearchFields)) {
+                        searchAttributeFields.add(AttributeFields.create(searchableAttributeName, attributeSearchFields));
+                    }
                 }
                 configBuilder.setSearchAttributeFields(searchAttributeFields);
             } catch (RiceRemoteServiceConnectionException e) {

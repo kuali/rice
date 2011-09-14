@@ -35,8 +35,8 @@ import java.util.List;
 
 /**
  * An immutable data transfer object used to hold a list of {@link RemotableAttributeField} objects and the name of the
- * {@link org.kuali.rice.kew.framework.document.attribute.SearchableAttribute} from which the fields are derived.  This is essentially used as a grouping mechanism in
- * order to identify which fields are sourced from which attributes.
+ * {@link org.kuali.rice.kew.framework.document.attribute.SearchableAttribute} from which the fields are derived.  This
+ * is essentially used as a grouping mechanism in order to identify which fields are sourced from which attributes.
  *
  * <p>Since this class serves primarily as a simple wrapper for use by {@link DocumentLookupCriteriaConfiguration},
  * it does not have a builder, only a single static create method that is used for constructing instances of it.</p>
@@ -65,8 +65,8 @@ public final class AttributeFields extends AbstractDataTransferObject {
 
     /**
      * Private constructor used only by JAXB.
-     *
      */
+    @SuppressWarnings("unused")
     private AttributeFields() {
         this.attributeName = null;
         this.remotableAttributeFields = null;

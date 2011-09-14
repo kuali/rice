@@ -302,7 +302,7 @@ h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/ /* NOT FOUND in xml
    filter:Alpha(Opacity=75);
    }
 
-   .ui-state-disabled2 {
+.ui-state-disabled2 {
    border: 1px solid #a6a6a6;
    /*defines gradient background*/
    background-image: -moz-linear-gradient(top, #ffffff, #dcdcdc);

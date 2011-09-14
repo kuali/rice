@@ -83,6 +83,32 @@ h4.kr-section-subhead-no-border {	/* was h4.kr-section-subhead-no-border */ /* r
 .kr-labelTop label {				/* was .labelTop label */ /* renamed in xml and/or jsp */
 	font-weight:bold;
 }
+
+/* ************** !NOT RENAMED ERROR MSGS! ******************/
+.kr-errorsField .kr-errorMessages { /* was .errorsField .errorMessages */ /* .errorsField renamed in xml; .errorMessages NOT renamed, as this will break js functionality   */
+	color: #DF0000;
+	font-weight: bold;
+}
+.kr-errorMessages {					/* was .errorMessages */ /* NOT RENAMED in errorsField.jsp - changing this classname will break some javascript functionality  */
+	padding-left: 20px;
+	background: url("/kr-dev/krad/images/exclamation-red.png") no-repeat scroll left top transparent;
+}
+span.kr-clientError, div.kr-clientError, td.kr-clientError, span.kr-serverError, div.kr-serverError, td.kr-serverError { /* NOT renamed in xml and/or jsp, as this will break js functionality   */
+	background-color: #FFE0E9 !important;
+}
+span.kr-information, div.kr-information, td.kr-information {	/* NOT renamed in xml and/or jsp, as this will break js functionality   */
+	background-color: #AFDCEC;
+}
+span.kr-warning, div.kr-warning, td.kr-warning {	/* was span.warning, div.arning, td.warning *//* NOT renamed in xml and/or jsp, as this will break js functionality   */
+	background-color: #F4E271;
+}
+label.kr-clientError, a.kr-clientError, label.kr-serverError {	 /* NOT renamed in xml and/or jsp, as this will break js functionality   */
+	color: #DF0000;
+}
+li label.kr-error {	/* NOT renamed in xml and/or jsp, as this will break js functionality   */
+	display: inline !important;
+}
+/* ****************** end error msgs not renamed *****************/
 .kr-errorsField {					/* was .errorsField */  /* renamed in xml and/or jsp */
 	overflow: hidden;
     *zoom: 1;
@@ -250,32 +276,7 @@ div.kr-addLine, span.kr-addLine{
 
 /* JQUERY - e.g.: ui-calendar *******************************************/
 
-/* JQUERY Errors */
-/* ************** !NOT RENAMED ERROR MSGS! ******************/
-.errorsField .errorMessages { /* was .errorsField .errorMessages */ /* .errorsField renamed in xml; .errorMessages NOT renamed, as this will break js functionality   */
-	color: #DF0000;
-	font-weight: bold;
-}
-.errorMessages {					/* was .errorMessages */ /* NOT RENAMED in errorsField.jsp - changing this classname will break some javascript functionality  */
-	padding-left: 20px;
-	background: url("/kr-dev/krad/images/exclamation-red.png") no-repeat scroll left top transparent;
-}
-span.clientError, div.clientError, td.clientError, span.serverError, div.serverError, td.serverError { /* NOT renamed in xml and/or jsp, as this will break js functionality   */
-	background-color: #FFE0E9 !important;
-}
-span.information, div.information, td.information {	/* NOT renamed in xml and/or jsp, as this will break js functionality   */
-	background-color: #AFDCEC;
-}
-span.warning, div.warning, td.warning {	/* was span.warning, div.arning, td.warning *//* NOT renamed in xml and/or jsp, as this will break js functionality   */
-	background-color: #F4E271;
-}
-label.clientError, a.clientError, label.serverError {	 /* NOT renamed in xml and/or jsp, as this will break js functionality   */
-	color: #DF0000;
-}
-li label.error {	/* NOT renamed in xml and/or jsp, as this will break js functionality   */
-	display: inline !important;
-}
-/* ****************** end error msgs not renamed *****************/
+
 
 /* date-picker */
 

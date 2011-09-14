@@ -29,7 +29,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * TODO...
+ * An immutable data transfer object implementation of the {@code DocumentLookupCriteriaContract}.  Instances of this
+ * class should be constructed using the nested {@link Builder} class.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -421,6 +422,15 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
             return new Builder();
         }
 
+        /**
+         * Creates a new builder instance copies properties from the given contract.
+         *
+         * @param contract the contract from which to copy properties
+         * 
+         * @return a builder instance initialized with properties from the given contract
+         *
+         * @throws IllegalArgumentException if the given contract is null
+         */
         public static Builder create(DocumentLookupCriteriaContract contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");

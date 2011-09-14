@@ -126,22 +126,60 @@ public interface DocumentLookupCustomizer {
     DocumentLookupResultValues customizeResults(DocumentLookupCriteria documentLookupCriteria, List<DocumentLookupResult> defaultResults);
 
     /**
-     * TODO...
+     * Performs customization of what result fields should be displayed in the result set.  Allows for hiding of
+     * standard fields, addition of custom fields, and the ability to override the default behavior of searchable
+     * attributes that are defined for the document type.  Generally speaking, this controls which "columns" of data are
+     * displayed in the document search results.
+     *
+     * <p>This method is only invoked by the document lookup user interface whenever it is rendering document lookup
+     * results.  It is not invoked when invoking document lookup using only the api.</p>
      *
      * <p>It is guaranteed that the document type name on the given criteria will never be null and will always
      * represent a valid document type.</p>
      *
-     * @param documentLookupCriteria
-     * @return
+     * @param documentLookupCriteria the criteria against which the document lookup was executed
+     * @return the customized result set configuration, or null if no customization was performed
      */
     DocumentLookupResultSetConfiguration customizeResultSetConfiguration(DocumentLookupCriteria documentLookupCriteria);
 
+    /**
+     * Indicates if the {@link #customizeCriteria(org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria)} on
+     * this customizer should be invoked for the document type with the given name.  The caller of this method is
+     * permitted to cache the return value for a length of time of their choosing.
+     *
+     * @param documentTypeName the name of the document type against which this customizer is being applied
+     * @return true if the customization method should be executed, false otherwise
+     */
     boolean isCustomizeCriteriaEnabled(String documentTypeName);
 
+    /**
+     * Indicates if the {@link #customizeClearCriteria(org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria)}
+     * on this customizer should be invoked for the document type with the given name.  The caller of this method is
+     * permitted to cache the return value for a length of time of their choosing.
+     *
+     * @param documentTypeName the name of the document type against which this customizer is being applied
+     * @return true if the customization method should be executed, false otherwise
+     */
     boolean isCustomizeClearCriteriaEnabled(String documentTypeName);
 
+    /**
+     * Indicates if the {@link #customizeResults(org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria, java.util.List)}
+     * on this customizer should be invoked for the document type with the given name.  The caller of this method is
+     * permitted to cache the return value for a length of time of their choosing.
+     *
+     * @param documentTypeName the name of the document type against which this customizer is being applied
+     * @return true if the customization method should be executed, false otherwise
+     */
     boolean isCustomizeResultsEnabled(String documentTypeName);
 
+    /**
+     * Indicates if the {@link #customizeResultSetConfiguration(org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria)}
+     * on this customizer should be invoked for the document type with the given name.  The caller of this method is
+     * permitted to cache the return value for a length of time of their choosing.
+     *
+     * @param documentTypeName the name of the document type against which this customizer is being applied
+     * @return true if the customization method should be executed, false otherwise
+     */
     boolean isCustomizeResultSetFieldsEnabled(String documentTypeName);
 
 }

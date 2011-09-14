@@ -36,7 +36,7 @@ public interface DocumentSecurityAttribute extends Serializable {
      * @param principalId the principalId for which to check authorization
      * @param document the document for which to check security
      *
-     * @return true if the principal is authorized to view the workflow document, false otherwise
+     * @return true if the principal is authorized to view the document, false otherwise
      */
     boolean isAuthorizedForDocument(String principalId, Document document);
 

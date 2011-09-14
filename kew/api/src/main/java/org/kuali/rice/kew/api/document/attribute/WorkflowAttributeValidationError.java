@@ -30,7 +30,9 @@ import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.w3c.dom.Element;
 
 /**
- * TODO...
+ * Defines a validation error generated from some portion of the workflow system.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @XmlRootElement(name = WorkflowAttributeValidationError.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -56,7 +58,7 @@ public final class WorkflowAttributeValidationError extends AbstractDataTransfer
     /**
      * Private constructor used only by JAXB.
      */
-    public WorkflowAttributeValidationError() {
+    private WorkflowAttributeValidationError() {
     	this.key = null;
     	this.message = null;
     }
@@ -71,15 +73,36 @@ public final class WorkflowAttributeValidationError extends AbstractDataTransfer
         this.key = key;
         this.message = message;
     }
-    
+
+    /**
+     * Constructs a new validation error with the given error key and message values.  Both the key and the message
+     * must be non-null and non-blank values
+     *
+     * @param key the key of the validation error
+     * @param message the message associated with the validation error
+     *
+     * @return an instance of a {@code WorkflowValidationError} containing the given key and message
+     *
+     * @throws IllegalArgumentException if either key or message is a null or blank value
+     */
     public static WorkflowAttributeValidationError create(String key, String message) {
         return new WorkflowAttributeValidationError(key, message);
     }
-    
+
+    /**
+     * Returns the key this validation error.
+     *
+     * @return the key of this validation error
+     */
     public String getKey() {
         return key;
     }
 
+    /**
+     * Returns the message for this validation error.
+     *
+     * @return the messate for this validation error
+     */
     public String getMessage() {
         return message;
     }
@@ -100,6 +123,5 @@ public final class WorkflowAttributeValidationError extends AbstractDataTransfer
         final static String KEY = "key";
         final static String MESSAGE = "message";
     }
-
     
 }

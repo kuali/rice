@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * An immutable data transfer object implementation of the {@code DocumentLookupCriteriaContract}.  Instances of this
+ * An immutable data transfer object implementation of the {@link DocumentLookupCriteriaContract}.  Instances of this
  * class should be constructed using the nested {@link Builder} class.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)

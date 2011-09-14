@@ -17,7 +17,6 @@ public class NonSerializableSessionListener implements HttpSessionAttributeListe
     @Override
     public void attributeAdded(HttpSessionBindingEvent se) {
         logSerializationViolations(se, "added");
-
     }
 
     @Override

@@ -418,20 +418,24 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
             setDocumentAttributeValues(new HashMap<String, List<String>>());
         }
 
+        /**
+         * Creates an empty builder instance.  All collections on the new instance are initialized to empty collections.
+         *
+         * @return a new builder instance
+         */
         public static Builder create() {
             return new Builder();
         }
 
         /**
-         * Creates a new builder instance copies properties from the given contract.
+         * Creates a new builder instance initialized with copies of the properties from the given contract.
          *
          * @param contract the contract from which to copy properties
-         * 
+         *
          * @return a builder instance initialized with properties from the given contract
          *
          * @throws IllegalArgumentException if the given contract is null
-         */
-        public static Builder create(DocumentLookupCriteriaContract contract) {
+         */        public static Builder create(DocumentLookupCriteriaContract contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
             }

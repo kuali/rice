@@ -48,14 +48,17 @@ import java.util.Map;
  *     <li>The ability to define validation for custom search attribute criteria which is executed from the document lookup user interface.</li>
  * </ul>
  *
- * <p>Searchable attributes are designed to allow for re-use if desired.  To facilitate this, the name of the
- * document type for which the operation is being performed is included for all such methods which might make use of it.
- * Additionally, all of the operations on a searchable attribute are passed the {@link ExtensionDefinition} which wasused to
- * define the instance of the searchable attribute (the extension definition is ultimately what gets associated with the
- * document type).  The extension definition can be defined to include additional configuration which can be used by the
+ * <p>Searchable attributes are mapped to document types via the KEW extension framework (see
+ * {@link org.kuali.rice.kew.api.extension.ExtensionRepositoryService}).
+ *
+ * <p>Through this extension mechanism, searchable attributes are designed to allow for re-use if desired.  To
+ * facilitate this, the name of the document type for which the operation is being performed is included for all such
+ * methods which might make use of it.  Additionally, all of the operations on a searchable attribute are passed the
+ * {@link ExtensionDefinition} which was used to define the instance of the searchable attribute and link it to the
+ * document type.  The extension definition can be defined to include additional configuration which can be used by the
  * various methods on the searchable attribute implementation.  This allows for creating a single
- * {@code SearchableAttribute} implementation which can then be parameterized externally by an
- * {@code ExtensionDefinition}, or even multiple such definitions.</p>
+ * {@code SearchableAttribute} implementation which can then be parameterized externally by reusing the implementation
+ * in the extension repository, but parameterizing it via one ore more extension definitions.</p>
  *
  * <p>This interface is annotated to allow for it to be exposed as a JAXWS web service, so client applications
  * wanting to publish their own searchable attribute implementations may do so by publishing their search attribute
@@ -66,6 +69,7 @@ import java.util.Map;
  * the proper application id is associated with the extension definition.</p>
  *
  * @see org.kuali.rice.kew.framework.document.lookup.DocumentLookupCustomizationHandlerService
+ * @see org.kuali.rice.kew.api.extension.ExtensionRepositoryService
  * @see ExtensionDefinition
  * @see WorkflowAttributeDefinition
  *
@@ -94,6 +98,7 @@ public interface SearchableAttribute {
      * @param attributeDefinition contains parameters and properties that can be used to inform generation of the XML,
      * these are supplied by the user of the workflow API when the document's searchable XML content is requested to be
      * updated
+     * 
      * @return a String containing valid XML that should be included in the searchable attribute XML section of the
      * document's XML content
      */
@@ -106,13 +111,25 @@ public interface SearchableAttribute {
     );
 
     /**
-     * Extracts document attributes for the given document in order to allow indexing of those values for association
-     * with the document and use in document lookups.
+     * Extracts and returns document attributes for the given document in order to allow indexing of those values for
+     * association with the document and use in document lookups.  The document and it's XML content is passed to this
+     * method as that is a common source of data for indexing purposes, though implementations are free to pull data for
+     * indexing from any readily accessible source.
+     *
+     * <p>There are a finite set of {@link DocumentAttribute} implementations which can be returned and interpreted
+     * correctly.  Client application's should <strong>not</strong> create custom extensions of the
+     * {@code DocumentAttribute} abstract class but should preferably use the
+     * {@link org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory} to construct strongly-typed document
+     * attribute instances for indexing.</p>
      *
      * @param extensionDefinition the extension definition which was used to locate and load this searchable attribute
      * implementation
-     * @param documentWithContent
-     * @return
+     * @param documentWithContent the workflow document and it's XML content
+     * 
+     * @return a list of document attribute values that should be indexed for the given document, or a null or empty
+     * list if no attributes should be indexed
+     *
+     * @see org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory
      */
     @WebMethod(operationName = "extractDocumentAttributes")
     @WebResult(name = "documentAttributes")
@@ -123,11 +140,15 @@ public interface SearchableAttribute {
             @WebParam(name = "documentWithContent") DocumentWithContent documentWithContent);
 
     /**
+     * Returns a list of {@link RemotableAttributeField} objects which define which searchable attribute criteria fields
+     * should be included in the criteria section of the document lookup user interface for this searchable attribute.
      *
      * @param extensionDefinition the extension definition which was used to locate and load this searchable attribute
      * implementation
-     * @param documentTypeName
-     * @return
+     * @param documentTypeName the name of the document type for which this method is being invoked
+     *
+     * @return a list of remotable attribute fields which define the search fields that should be included in the
+     * document lookup criteria, or a null or empty list if no criteria should be included for this searchable attribute
      */
     @WebMethod(operationName = "getSearchFields")
     @WebResult(name = "searchFields")

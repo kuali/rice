@@ -33,7 +33,7 @@ h3 {
 }
 h4 {
     font-size: 1.15384615em;
-    font-weight:normal;
+    /*font-weight:normal;            this was font-weight normal in legacy versions... probably don't need it to be */
     font-family: Arial, Helvetica, sans-serif;
 }
 h5 {

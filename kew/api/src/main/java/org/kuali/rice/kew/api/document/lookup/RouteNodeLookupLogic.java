@@ -5,9 +5,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * Defines flags that can be used during document lookup to indicate what relation
- * the route node name being searched on should have to the current route node of
- * the documents being searched.
+ * Defines flags that can be used during document lookup to indicate what relation the route node name being searched on
+ * should have to the current route node of the documents being searched.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -16,6 +15,19 @@ import javax.xml.bind.annotation.XmlType;
 @XmlEnum
 public enum RouteNodeLookupLogic {
 
-    EXACTLY, BEFORE, AFTER
+    /**
+     * Indicates that the document should be exactly at the specified route node in it's route path.
+     */
+    EXACTLY,
+
+    /**
+     * Indicates that the document should currently be somewhere before the specified route node in it's route path.
+     */
+    BEFORE,
+
+    /**
+     * Indicates that the document should currently be somewhere after the specified route node in it's route path.
+     */
+    AFTER
 
 }

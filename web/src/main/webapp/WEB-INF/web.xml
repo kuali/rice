@@ -121,6 +121,10 @@
     </filter-mapping>
 
     <listener>
+      <listener-class>org.kuali.rice.krad.web.session.NonSerializableSessionListener</listener-class>
+    </listener>
+
+    <listener>
       <listener-class>org.kuali.rice.core.web.listener.KualiInitializeListener</listener-class>
     </listener>
       

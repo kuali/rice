@@ -21,10 +21,8 @@ import org.kuali.rice.kew.api.KewApiConstants;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
-import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-import javax.xml.bind.annotation.XmlElement;
 
 /**
  * Defines the contract for a message queue that handles indexing of workflow documents.  The indexing process is

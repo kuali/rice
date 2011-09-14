@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Allows for definition of custom attiributes on a document that should be indexed along with that document and made
+ * Allows for definition of custom attributes on a document that should be indexed along with that document and made
  * searchable when performing document lookups.  Applications who want to index and expose these custom attributes on
  * their documents can implement this interface and configure their document type to point to the searchable attributes
  * that it should use.

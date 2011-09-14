@@ -19,6 +19,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * An immutable data transfer object implementation of the {@link DocumentLookupResultsContract}.  Instances of this
+ * class should be constructed using the nested {@link Builder} class.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 @XmlRootElement(name = DocumentLookupResults.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = DocumentLookupResults.Constants.TYPE_NAME, propOrder = {
@@ -51,6 +57,9 @@ public final class DocumentLookupResults extends AbstractDataTransferObject impl
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
 
+    /**
+     * Private constructor used only by JAXB.
+     */
     @SuppressWarnings("unused")
     private DocumentLookupResults() {
         this.lookupResults = null;
@@ -114,10 +123,30 @@ public final class DocumentLookupResults extends AbstractDataTransferObject impl
 
         }
 
+        /**
+         * Create a builder for the document lookup result and initialize it with the given document lookup criteria
+         * builder.  Additionally initializes {@code criteriaModified} to "false", {@code overThreshold} to "false",
+         * and {@code numberOfSecurityFilteredResults} to 0.
+         *
+         * @param criteria the document lookup criteria builder with which to initialize the returned builder instance
+         *
+         * @return a builder instance initialized with the given document lookup criteria builder
+         *
+         * @throws IllegalArgumentException if the given document lookup criteria builder is null
+         */
         public static Builder create(DocumentLookupCriteria.Builder criteria) {
             return new Builder(criteria);
         }
 
+        /**
+         * Creates a new builder instance initialized with copies of the properties from the given contract.
+         *
+         * @param contract the contract from which to copy properties
+         *
+         * @return a builder instance initialized with properties from the given contract
+         *
+         * @throws IllegalArgumentException if the given contract is null
+         */
         public static Builder create(DocumentLookupResultsContract contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
@@ -167,6 +196,13 @@ public final class DocumentLookupResults extends AbstractDataTransferObject impl
             this.lookupResults = lookupResults;
         }
 
+        /**
+         * Sets the criteria builder on this builder to the given value.
+         *
+         * @param criteria the criteria builder to set, must not be null
+         *
+         * @throws IllegalArgumentException if criteria is null
+         */
         public void setCriteria(DocumentLookupCriteria.Builder criteria) {
             if (criteria == null) {
                 throw new IllegalArgumentException("criteria was null");

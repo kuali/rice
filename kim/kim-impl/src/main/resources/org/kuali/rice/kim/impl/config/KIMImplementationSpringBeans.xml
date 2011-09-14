@@ -29,6 +29,7 @@
        xmlns:task="http://www.springframework.org/schema/task"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:cache="http://www.springframework.org/schema/cache"
        xsi:schemaLocation="http://www.springframework.org/schema/aop
                            http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
                            http://www.springframework.org/schema/beans
@@ -52,7 +53,38 @@
                            http://www.springframework.org/schema/tx
                            http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
                            http://www.springframework.org/schema/util
-                           http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+                           http://www.springframework.org/schema/util/spring-util-3.0.xsd
+                           http://www.springframework.org/schema/cache
+                           http://www.springframework.org/schema/cache/spring-cache-3.1.xsd">
+
+  <!-- caching start -->
+  <cache:annotation-driven cache-manager="kimDistributedCacheManager" />
+
+  <bean id="rice.ksb.messageHelper" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="rice.ksb.messageHelper"/>
+  </bean>
+
+  <!-- this can be swapped with whatever cache manager you want (ehcache, java.util.concurrent, etc.) -->
+  <bean id="kimLocalCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+    <property name="cacheManager">
+      <bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" p:config-location="${kim.ehcache.config.location}"/>
+    </property>
+  </bean>
+
+  <!-- the distributed cache manager that calls into the sharedDataCacheService on the ksb -->
+  <bean id="kimDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator">
+    <property name="cacheManager" ref="kimLocalCacheManager" />
+    <property name="messageHelper" ref="rice.ksb.messageHelper" />
+    <property name="serviceName" value="{http://rice.kuali.org/kim}kimCacheServiceSoap" />
+  </bean>
+
+  <bean id="cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl">
+    <property name="cacheManager" ref="kimDistributedCacheManager" />
+  </bean>
+
+  <!-- spring service that should be exposed on the ksb to receive messages from the distributed cache manager -->
+  <bean id="kimCacheService" class="org.kuali.rice.core.impl.cache.CacheServiceImpl" p:cacheManager-ref="kimLocalCacheManager" />
+  <!-- caching end -->
 
 	<bean id="jtaTransactionManager"
 		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
@@ -91,7 +123,7 @@
 				<value>kimDataSource</value>
 			</list>
 		</property>
-		<property name="metadataLocation" value="classpath:org/kuali/rice/kim/config/OJB-repository-kim.xml" />
+		<property name="metadataLocation" value="classpath:org/kuali/rice/kim/impl/config/OJB-repository-kim.xml" />
 	</bean>
 
 	<bean id="dbPlatform"

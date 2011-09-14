@@ -17,6 +17,7 @@
 package org.kuali.rice.kim.api.type;
 
 import org.kuali.rice.kim.api.KimApiConstants;
+import org.springframework.cache.annotation.Cacheable;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -44,6 +45,7 @@ public interface KimTypeInfoService {
      */
     @WebMethod(operationName="getKimType")
     @WebResult(name = "kimType")
+    @Cacheable(value=KimType.Cache.NAME, key="'id=' + #id")
     KimType getKimType(@WebParam(name = "id") String id);
 
     /**
@@ -65,6 +67,7 @@ public interface KimTypeInfoService {
      */
     @WebMethod(operationName="findKimTypeByNameAndNamespace")
     @WebResult(name = "kimType")
+    @Cacheable(value=KimType.Cache.NAME, key="'namespaceCode=' + #namespaceCode + '|' + 'name=' + #name")
     KimType findKimTypeByNameAndNamespace(@WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "name") String name);
 
     /**
@@ -85,5 +88,6 @@ public interface KimTypeInfoService {
     @XmlElementWrapper(name = "kimTypes", required = true)
     @XmlElement(name = "kimType", required = false)
     @WebResult(name = "kimTypes")
+    @Cacheable(value=KimType.Cache.NAME, key="'all'")
     Collection<KimType> findAllKimTypes();
 }

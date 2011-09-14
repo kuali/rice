@@ -215,4 +215,14 @@
     </property>
   </bean>
 
+    <bean parent="kimLocalServiceExporter">
+    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
+    <property name="serviceDefinition">
+      <bean parent="kimJaxWsSoapService"
+            p:service-ref="kimCacheService"
+            p:localServiceName="kimCacheServiceSoap"/>
+    </property>
+    <property name="exportIf" value="kimCacheServiceSOAP.expose"/>
+  </bean>
+
 </beans>

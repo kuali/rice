@@ -21,6 +21,10 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
         </dependency>
@@ -37,6 +41,20 @@
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-java2ws-plugin</artifactId>
                 <executions>
+
+                  <execution>
+                        <id>kimCacheService-wsdl</id>
+						              <phase>${rice.java2ws.phase}</phase>
+                        <configuration>
+                            <className>org.kuali.rice.core.api.cache.CacheService</className>
+                          <outputFile>${project.build.outputDirectory}/wsdl/CacheService.wsdl</outputFile>
+                          <targetNamespace>http://rice.kuali.org/core</targetNamespace>
+                          <serviceName>KimCacheService</serviceName>
+                        </configuration>
+                        <goals>
+                            <goal>java2ws</goal>
+                        </goals>
+                    </execution>
 
                     <execution>
                         <id>groupService-wsdl</id>

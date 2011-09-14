@@ -62,8 +62,8 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
 
     private Cache wrap(Cache cache) {
         //just in case they are cached do not want to wrap twice. Obviously this only works
-        //if the Cache isn't wrapped a second time.
-        if (!(cache instanceof DistributedCacheDecorator)) {
+        //if the Cache isn't wrapped a second time. Don't want to wrap a null cache!
+        if (!(cache instanceof DistributedCacheDecorator) && cache != null) {
             return new DistributedCacheDecorator(cache);
         }
         return cache;

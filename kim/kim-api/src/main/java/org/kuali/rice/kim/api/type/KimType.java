@@ -20,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.kim.util.KimConstants;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -371,5 +372,9 @@ public final class KimType extends AbstractDataTransferObject implements KimType
         static final String NAME = "name";
         static final String ATTRIBUTE_DEFNS = "attributeDefinitions";
         static final String ACTIVE = "active";
+    }
+
+    public static class Cache {
+        public static final String NAME = KimConstants.Namespaces.KIM_NAMESPACE_2_0 + "/" + KimType.Constants.TYPE_NAME;
     }
 }

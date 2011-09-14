@@ -57,7 +57,7 @@
 	<bean id="kimConfig" class="org.kuali.rice.core.impl.config.property.ConfigFactoryBean">
 		<property name="configLocations">
 			<list>
-				<value>classpath:org/kuali/rice/kim/config/kim-config-defaults.xml</value>
+				<value>classpath:org/kuali/rice/kim/impl/config/kim-config-defaults.xml</value>
 			</list>
 		</property>
 	</bean>

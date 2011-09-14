@@ -41,7 +41,7 @@
 						              <phase>${rice.java2ws.phase}</phase>
                         <configuration>
                             <className>org.kuali.rice.core.api.cache.CacheService</className>
-                          <outputFile>${project.build.outputDirectory}/wsdl/CountryService.wsdl</outputFile>
+                          <outputFile>${project.build.outputDirectory}/wsdl/CacheService.wsdl</outputFile>
                           <targetNamespace>http://rice.kuali.org/shareddata</targetNamespace>
                           <serviceName>SharedDataCacheService</serviceName>
                         </configuration>

@@ -19,19 +19,19 @@ public final class CacheManagerRegistryImpl implements CacheManagerRegistry {
     private static final Log LOG = LogFactory.getLog(CacheManagerRegistryImpl.class);
     private static final String GET_NAME_MSG = "unable to get the getName method on the cache manager";
 
-    private final List<CacheManager> cacheManagers = new CopyOnWriteArrayList<CacheManager>();
+    private static final List<CacheManager> CACHE_MANAGERS = new CopyOnWriteArrayList<CacheManager>();
 
     public void setCacheManager(CacheManager c) {
         if (c == null) {
             throw new IllegalArgumentException("c is null");
         }
 
-        cacheManagers.add(c);
+        CACHE_MANAGERS.add(c);
     }
 
     @Override
     public List<CacheManager> getCacheManagers() {
-        return Collections.unmodifiableList(cacheManagers);
+        return Collections.unmodifiableList(CACHE_MANAGERS);
     }
 
     @Override

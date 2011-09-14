@@ -67,7 +67,7 @@ public interface CountryService {
      */
     @WebMethod(operationName = "findAllCountriesNotRestricted")
     @WebResult(name = "countriesNotRestricted")
-    @Cacheable(value=Country.Cache.NAME, key="allRestricted")
+    @Cacheable(value=Country.Cache.NAME, key="'allRestricted'")
     List<Country> findAllCountriesNotRestricted();
 
     /**
@@ -77,6 +77,6 @@ public interface CountryService {
      */
     @WebMethod(operationName = "findAllCountries")
     @WebResult(name = "allCountries")
-    @Cacheable(value=Country.Cache.NAME, key="all")
+    @Cacheable(value=Country.Cache.NAME, key="'all'")
     List<Country> findAllCountries();
 }

@@ -22,9 +22,6 @@
     <param name="TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE" override="false">MM/dd/yyyy hh:mm a</param>
     <param name="DATE_TO_STRING_FORMAT_FOR_FILE_NAME" override="false">yyyyMMdd</param>
     <param name="TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME" override="false">yyyyMMdd-HH-mm-ss-S</param>
-    
-    
-    
-    
-    
+
+   <param name="core.ehcache.config.location" override="false">classpath:org/kuali/rice/core/config/core.ehcache.xml</param>
 </config>

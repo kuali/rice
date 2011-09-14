@@ -29,10 +29,10 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KIMConfigurer extends ModuleConfigurer {
-	private static final String KIM_INTERFACE_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/config/KIMInterfaceSpringBeans.xml";
-	private static final String KIM_IMPL_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/config/KIMImplementationSpringBeans.xml";
-	private static final String KIM_KSB_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/config/KIMServiceBusSpringBeans.xml";
-	private static final String KIM_UI_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/config/KIMUserInterfaceSpringBeans.xml";
+	private static final String KIM_INTERFACE_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/impl/config/KIMInterfaceSpringBeans.xml";
+	private static final String KIM_IMPL_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/impl/config/KIMImplementationSpringBeans.xml";
+	private static final String KIM_KSB_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/impl/config/KIMServiceBusSpringBeans.xml";
+	private static final String KIM_UI_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/impl/config/KIMUserInterfaceSpringBeans.xml";
 	
 	@Override
 	public List<String> getPrimarySpringFiles() {

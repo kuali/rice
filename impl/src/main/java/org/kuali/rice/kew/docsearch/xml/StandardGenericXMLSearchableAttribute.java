@@ -36,6 +36,7 @@ import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.document.DocumentWithContent;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.attribute.XMLAttributeUtils;
 import org.kuali.rice.kew.docsearch.DocumentLookupInternalUtils;
@@ -611,7 +612,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
     }
 
     @Override
-    public List<RemotableAttributeError> validateSearchFieldParameters(ExtensionDefinition extensionDefinition, Map<String, List<String>> parameters, String documentTypeName) {
+    public List<RemotableAttributeError> validateDocumentAttributeCriteria(ExtensionDefinition extensionDefinition, DocumentLookupCriteria documentLookupCriteria) {
 		List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
 
 		XPath xpath = XPathHelper.newXPath();
@@ -631,16 +632,19 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
                     // check for range search members in the parameter map
                     boolean rangeMemberInSearchParams = false;
 
-                    if (parameters != null) {
+                    Map<String, List<String>> documentAttributeValues = documentLookupCriteria.getDocumentAttributeValues();
+                    if (documentAttributeValues != null) {
+
+                        // TODO - Rice 2.0 - I'm pretty sure this *won't* work because we don't store lower and upper bound keys in the document attributes
 
                         String lowerBoundFieldDefName = KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + fieldDefName;
                         String upperBoundFieldDefName = KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + fieldDefName;
-                        List<String> lowerBoundValues = parameters.get(lowerBoundFieldDefName);
+                        List<String> lowerBoundValues = documentAttributeValues.get(lowerBoundFieldDefName);
                         rangeMemberInSearchParams |= CollectionUtils.isNotEmpty(lowerBoundValues) && StringUtils.isNotBlank(lowerBoundValues.get(0));
-                        List<String> upperBoundValues = parameters.get(upperBoundFieldDefName);
+                        List<String> upperBoundValues = documentAttributeValues.get(upperBoundFieldDefName);
                         rangeMemberInSearchParams |= CollectionUtils.isNotEmpty(upperBoundValues) && StringUtils.isNotBlank(upperBoundValues.get(0));
 
-                        List<String> testObject = parameters.get(fieldDefName);
+                        List<String> testObject = documentAttributeValues.get(fieldDefName);
     					if (testObject != null || rangeMemberInSearchParams) {
 
                             // check to see if we need to process this field at all
@@ -733,7 +737,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
                                 }
 
         					} else {
-                                List<String> enteredValue = parameters.get(fieldDefName);
+                                List<String> enteredValue = documentAttributeValues.get(fieldDefName);
                                 if (enteredValue.size() == 1) {
                                     String stringVariable = enteredValue.get(0);
                                     errors.addAll(performValidation(extensionDefinition, attributeValue, fieldDefName, stringVariable, fieldDefTitle, findXpathExpressionPrefix));

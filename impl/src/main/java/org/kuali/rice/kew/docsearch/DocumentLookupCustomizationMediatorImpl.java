@@ -74,7 +74,7 @@ public class DocumentLookupCustomizationMediatorImpl implements DocumentLookupCu
 
     @Override
     public List<RemotableAttributeError> validateLookupFieldParameters(DocumentType documentType,
-            Map<String, List<String>> parameters) {
+            DocumentLookupCriteria documentLookupCriteria) {
 
         List<DocumentTypeAttribute> searchableAttributes = documentType.getSearchableAttributes();
         LinkedHashMap<String, List<String>> applicationIdToAttributeNameMap = new LinkedHashMap<String, List<String>>();
@@ -93,7 +93,8 @@ public class DocumentLookupCustomizationMediatorImpl implements DocumentLookupCu
         for (String applicationId : applicationIdToAttributeNameMap.keySet()) {
             DocumentLookupCustomizationHandlerService documentSearchCustomizationService = loadCustomizationService(applicationId);
             List<String> searchableAttributeNames = applicationIdToAttributeNameMap.get(applicationId);
-            List<RemotableAttributeError> searchErrors = documentSearchCustomizationService.validateSearchFieldParameters(documentType.getName(), searchableAttributeNames, parameters);
+            List<RemotableAttributeError> searchErrors = documentSearchCustomizationService.validateCriteria(
+                    documentLookupCriteria, searchableAttributeNames);
             if (!CollectionUtils.isEmpty(searchErrors)) {
                 errors.addAll(searchErrors);
             }

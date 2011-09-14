@@ -102,19 +102,9 @@ public class DocumentLookupGeneratorImpl implements DocumentLookupGenerator {
     @Override
     public List<RemotableAttributeError> validateSearchableAttributes(DocumentLookupCriteria.Builder criteria) {
         List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
-        Map<String, List<String>> paramMap = new HashMap<String, List<String>>();
-        for (String documentAttributeName : criteria.getDocumentAttributeValues().keySet()) {
-            List<String> documentAttributeValues = criteria.getDocumentAttributeValues().get(documentAttributeName);
-            if (CollectionUtils.isEmpty(documentAttributeValues)) {
-                paramMap.put(documentAttributeName, Collections.<String>emptyList());
-            } else {
-                paramMap.put(documentAttributeName, documentAttributeValues);
-            }
-            DocumentType documentType = getValidDocumentType(criteria.getDocumentTypeName());
-            if (documentType != null) {
-               errors = KEWServiceLocator.getDocumentLookupCustomizationMediator().validateLookupFieldParameters(
-                       documentType, paramMap);
-            }
+        DocumentType documentType = getValidDocumentType(criteria.getDocumentTypeName());
+        if (documentType != null) {
+            errors = KEWServiceLocator.getDocumentLookupCustomizationMediator().validateLookupFieldParameters(documentType, criteria.build());
         }
         return errors == null ? Collections.<RemotableAttributeError>emptyList() : Collections.unmodifiableList(errors);
     }

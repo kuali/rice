@@ -68,10 +68,9 @@ public class DataDictionaryDocumentSearchCustomizer implements SearchableAttribu
     }
 
     @Override
-    public final List<RemotableAttributeError> validateSearchFieldParameters(ExtensionDefinition extensionDefinition,
-            Map<String, List<String>> parameters,
-            String documentTypeName) {
-        return getSearchableAttribute().validateSearchFieldParameters(extensionDefinition, parameters, documentTypeName);
+    public final List<RemotableAttributeError> validateDocumentAttributeCriteria(ExtensionDefinition extensionDefinition,
+            DocumentLookupCriteria documentLookupCriteria) {
+        return getSearchableAttribute().validateDocumentAttributeCriteria(extensionDefinition, documentLookupCriteria);
     }
 
     @Override

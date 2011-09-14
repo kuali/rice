@@ -20,6 +20,7 @@ import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.DocumentWithContent;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 
 import javax.jws.WebMethod;
@@ -160,22 +161,35 @@ public interface SearchableAttribute {
     );
 
     /**
+     * Performs custom validation of document attribute values that come from this searchable attribute whenever a
+     * document lookup is performed against a document type which uses this searchable attribute.  This hook allows for
+     * any desired validation of this searchable attributes custom document attribute values to be performed prior to
+     * the execution of the document lookup.
+     *
+     * <p>The entire {@link DocumentLookupCriteria} is passed to this method, though it's intended that implementing
+     * code will pull out the document attribute values on the criteria which are managed by this searchable attribute
+     * and perform any desired validation.  However, there are certainly no restrictions on this method that would
+     * prevent it from performing validations outside of this scope and in relation to other portions of the criteria,
+     * though this is certainly not the intent of this validation hook.</p>
+     *
+     * <p>Note that this method is invoked when performing a document lookup from the user interface as well as via
+     * the {@link org.kuali.rice.kew.api.document.WorkflowDocumentService} api.</p>
      *
      * @param extensionDefinition the extension definition which was used to locate and load this searchable attribute
      * implementation
-     * @param parameters
-     * @param documentTypeName
-     * @return
+     * @param documentLookupCriteria the criteria that was submitted to the document lookup and against which validation
+     * is requested
+     *
+     * @return a list of attribute errors containing and validation failure errors messages for the relevant document
+     * attributes, if this returns a null or empty list it means that validation was successful
      */
     @WebMethod(operationName = "validateSearchParameters")
     @WebResult(name = "validationErrors")
     @XmlElementWrapper(name = "validationErrors", required = false)
     @XmlElement(name = "validationError", required = false)
-    public List<RemotableAttributeError> validateSearchFieldParameters(
+    public List<RemotableAttributeError> validateDocumentAttributeCriteria(
             @WebParam(name = "extensionDefinition") ExtensionDefinition extensionDefinition,
-            @WebParam(name = "parameters")
-            @XmlJavaTypeAdapter(MultiValuedStringMapAdapter.class) Map<String, List<String>> parameters,
-            @WebParam(name = "documentTypeName") String documentTypeName
+            @WebParam(name = "documentLookupCriteria") DocumentLookupCriteria documentLookupCriteria
     );
 
 }

@@ -309,10 +309,13 @@ public class DataDictionarySearchableAttributeTest extends KRADTestCase {
     	
     	caughtException = null;
     	foundErrors = new ArrayList();
+        DocumentLookupCriteria.Builder criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setDocumentTypeName(ACCOUNT_WITH_DD_ATTRIBUTES_DOCUMENT_NAME);
     	Map<String, List<String>> simpleParamMap = new HashMap<String, List<String>>();
     	simpleParamMap.put("accountState", Collections.singletonList("FirstState"));
+        criteria.setDocumentAttributeValues(simpleParamMap);
     	try {
-    		foundErrors = searchableAttribute.validateSearchFieldParameters(null, simpleParamMap, ACCOUNT_WITH_DD_ATTRIBUTES_DOCUMENT_NAME);
+    		foundErrors = searchableAttribute.validateDocumentAttributeCriteria(null, criteria.build());
     	} catch (RuntimeException re) {
     		caughtException = re;
     	}
@@ -326,9 +329,9 @@ public class DataDictionarySearchableAttributeTest extends KRADTestCase {
     	paramValues.add("FirstState");
     	paramValues.add("SecondState");
     	listParamMap.put("accountState", paramValues);
+        criteria.setDocumentAttributeValues(listParamMap);
     	try {
-    		foundErrors = searchableAttribute.validateSearchFieldParameters(null, listParamMap,
-                    ACCOUNT_WITH_DD_ATTRIBUTES_DOCUMENT_NAME);
+    		foundErrors = searchableAttribute.validateDocumentAttributeCriteria(null, criteria.build());
     	} catch (RuntimeException re) {
     		caughtException = re;
     	}

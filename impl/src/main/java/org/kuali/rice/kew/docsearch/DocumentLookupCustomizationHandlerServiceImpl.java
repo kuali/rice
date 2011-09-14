@@ -68,9 +68,10 @@ public class DocumentLookupCustomizationHandlerServiceImpl implements DocumentLo
     }
 
     @Override
-    public List<RemotableAttributeError> validateSearchFieldParameters(String documentTypeName, List<String> searchableAttributeNames, Map<String, List<String>> parameters) {
-        if (StringUtils.isBlank(documentTypeName)) {
-            throw new RiceIllegalArgumentException("documentTypeName was null or blank");
+    public List<RemotableAttributeError> validateCriteria(DocumentLookupCriteria documentLookupCriteria,
+            List<String> searchableAttributeNames) {
+        if (documentLookupCriteria == null) {
+            throw new RiceIllegalArgumentException("documentLookupCriteria was null or blank");
         }
         if (CollectionUtils.isEmpty(searchableAttributeNames)) {
             return Collections.emptyList();
@@ -83,14 +84,14 @@ public class DocumentLookupCustomizationHandlerServiceImpl implements DocumentLo
                    throw new RiceIllegalArgumentException("Failed to locate a SearchableAttribute with the given name: " + searchableAttributeName);
                 }
                 SearchableAttribute searchableAttribute = loadSearchableAttribute(extensionDefinition);
-                List<RemotableAttributeError> errors = searchableAttribute.validateSearchFieldParameters(extensionDefinition, parameters, documentTypeName);
+                List<RemotableAttributeError> errors = searchableAttribute.validateDocumentAttributeCriteria(extensionDefinition, documentLookupCriteria);
                 if (!CollectionUtils.isEmpty(errors)) {
                     searchFieldErrors.addAll(errors);
                 }
             }
             return Collections.unmodifiableList(searchFieldErrors);
         } catch (RiceRemoteServiceConnectionException e) {
-            LOG.warn("Unable to connect to load searchable attributes for document type: " + documentTypeName, e);
+            LOG.warn("Unable to connect to load searchable attributes for criteria: " + documentLookupCriteria, e);
             return Collections.emptyList();
         }
     }

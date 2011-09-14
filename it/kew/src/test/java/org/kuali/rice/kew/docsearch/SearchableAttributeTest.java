@@ -515,13 +515,15 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
     	StandardGenericXMLSearchableAttribute searchableAttribute = new StandardGenericXMLSearchableAttribute();
     	final RuleAttributeService ruleAttributeService = KEWServiceLocator.getRuleAttributeService();
         ExtensionDefinition extensionDefinition = KewApiServiceLocator.getExtensionRepositoryService().getExtensionByName("SearchableAttributeVisible");
-    	
+
+        DocumentLookupCriteria.Builder criteria = DocumentLookupCriteria.Builder.create();
     	Map<String, List<String>> simpleParamMap = new HashMap<String, List<String>>();
     	simpleParamMap.put("givenname", Collections.singletonList("test"));
+        criteria.setDocumentAttributeValues(simpleParamMap);
     	List errors = new ArrayList();
     	Exception caughtException = null;
     	try {
-    		errors = searchableAttribute.validateSearchFieldParameters(extensionDefinition, simpleParamMap, null);
+    		errors = searchableAttribute.validateDocumentAttributeCriteria(extensionDefinition, criteria.build());
     	} catch (RuntimeException re) {
     		caughtException = re;
     	}
@@ -533,10 +535,11 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
     	multipleValues.add("testone");
     	multipleValues.add("testtwo");
     	listParamMap.put("givenname", multipleValues);
+        criteria.setDocumentAttributeValues(listParamMap);
     	errors = new ArrayList();
     	caughtException = null;
     	try {
-    		errors = searchableAttribute.validateSearchFieldParameters(extensionDefinition, listParamMap, null);
+    		errors = searchableAttribute.validateDocumentAttributeCriteria(extensionDefinition, criteria.build());
     	} catch (RuntimeException re) {
     		caughtException = re;
     	}

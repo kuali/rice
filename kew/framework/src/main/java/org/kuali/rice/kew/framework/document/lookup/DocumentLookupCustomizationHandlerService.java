@@ -37,15 +37,12 @@ public interface DocumentLookupCustomizationHandlerService {
             @WebParam(name = "searchableAttributeNames") List<String> searchableAttributeNames
     ) throws RiceIllegalArgumentException;
 
-    @WebMethod(operationName = "validateSearchFieldParameters")
-    @WebResult(name = "searchFieldErrors")
-    @XmlElementWrapper(name = "searchFieldErrors", required = false)
-    @XmlElement(name = "searchFieldError", required = false)
-    List<RemotableAttributeError> validateSearchFieldParameters(
-            @WebParam(name = "documentTypeName") String documentTypeName,
-            @WebParam(name = "searchableAttributeNames") List<String> searchableAttributeNames,
-            @WebParam(name = "parameters")
-            @XmlJavaTypeAdapter(MultiValuedStringMapAdapter.class) Map<String, List<String>> parameters
+    @WebMethod(operationName = "validateCriteria")
+    @WebResult(name = "errors")
+    @XmlElementWrapper(name = "errors", required = false)
+    @XmlElement(name = "errors", required = false)
+    List<RemotableAttributeError> validateCriteria(@WebParam(name = "documentLookupCriteria") DocumentLookupCriteria documentLookupCriteria,
+            @WebParam(name = "searchableAttributeNames") List<String> searchableAttributeNames
     ) throws RiceIllegalArgumentException;
 
     @WebMethod(operationName = "customizeCriteria")

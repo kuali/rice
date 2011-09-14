@@ -16,11 +16,7 @@
  */
 package org.kuali.rice.kew.api.document.lookup;
 
-import org.kuali.rice.kew.api.document.DocumentContract;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Defines the contract for results returned from a document lookup.  A document lookup returns multiple results, each

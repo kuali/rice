@@ -7,6 +7,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.util.collect.CollectionUtils;
 
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * All model object's that are Jaxb annotated should extend this class.
@@ -22,6 +23,7 @@ import javax.xml.bind.Unmarshaller;
  *
  * <b>Important: all classes extending this class must be immutable</b>
  */
+@XmlTransient
 public abstract class AbstractDataTransferObject implements ModelObjectComplete {
 
     private transient volatile Integer _hashCode;

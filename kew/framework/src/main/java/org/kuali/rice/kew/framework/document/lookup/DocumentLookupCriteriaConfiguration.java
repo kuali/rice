@@ -19,6 +19,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * An immutable data transfer object implementation of the {@link DocumentLookupCriteriaConfigurationContract}.
+ * Instances of this class should be constructed using the nested {@link Builder} class.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 @XmlRootElement(name = DocumentLookupCriteriaConfiguration.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = DocumentLookupCriteriaConfiguration.Constants.TYPE_NAME, propOrder = {
@@ -67,7 +73,8 @@ public final class DocumentLookupCriteriaConfiguration extends AbstractDataTrans
     }
 
     /**
-     * A builder which can be used to construct {@link DocumentLookupCriteriaConfiguration} instances.  Enforces the constraints of the {@link DocumentLookupCriteriaConfigurationContract}.
+     * A builder which can be used to construct {@link DocumentLookupCriteriaConfiguration} instances.  Enforces the
+     * constraints of the {@link DocumentLookupCriteriaConfigurationContract}.
      */
     public final static class Builder implements Serializable, ModelBuilder, DocumentLookupCriteriaConfigurationContract {
 
@@ -77,10 +84,25 @@ public final class DocumentLookupCriteriaConfiguration extends AbstractDataTrans
             setSearchAttributeFields(new ArrayList<AttributeFields>());
         }
 
+        /**
+         * Creates new empty builder instance.  The list of search attributes on this builder is intialized to an empty
+         * list.
+         *
+         * @return a new empty builder instance
+         */
         public static Builder create() {
             return new Builder();
         }
 
+        /**
+         * Creates a new builder instance initialized with copies of the properties from the given contract.
+         *
+         * @param contract the contract from which to copy properties
+         *
+         * @return a builder instance initialized with properties from the given contract
+         *
+         * @throws IllegalArgumentException if the given contract is null
+         */
         public static Builder create(DocumentLookupCriteriaConfigurationContract contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
@@ -90,6 +112,7 @@ public final class DocumentLookupCriteriaConfiguration extends AbstractDataTrans
             return builder;
         }
 
+        @Override
         public DocumentLookupCriteriaConfiguration build() {
             return new DocumentLookupCriteriaConfiguration(this);
         }
@@ -99,6 +122,11 @@ public final class DocumentLookupCriteriaConfiguration extends AbstractDataTrans
             return this.searchAttributeFields;
         }
 
+        /**
+         * Sets the search attribute fields on this builder to the given list of attribute fields.
+         *
+         * @param searchAttributeFields the list of search attribute fields to set
+         */
         public void setSearchAttributeFields(List<AttributeFields> searchAttributeFields) {
             this.searchAttributeFields = searchAttributeFields;
         }

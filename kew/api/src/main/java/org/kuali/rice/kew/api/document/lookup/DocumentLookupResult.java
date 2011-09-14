@@ -1,11 +1,14 @@
 package org.kuali.rice.kew.api.document.lookup;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
+import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.kew.api.document.Document;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttributeContract;
+import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
+import org.w3c.dom.Element;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
@@ -13,15 +16,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
-import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.kew.api.document.Document;
-import org.kuali.rice.kew.api.document.DocumentContract;
-import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
-import org.kuali.rice.kew.api.document.attribute.DocumentAttributeContract;
-import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
-import org.w3c.dom.Element;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * An immutable data transfer object implementation of the {@link DocumentLookupResultContract}.  Instances of this
@@ -52,6 +51,7 @@ public final class DocumentLookupResult extends AbstractDataTransferObject imple
     /**
      * Private constructor used only by JAXB.
      */
+    @SuppressWarnings("unused")
     private DocumentLookupResult() {
         this.document = null;
         this.documentAttributes = null;

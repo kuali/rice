@@ -16,7 +16,10 @@
 
 package org.kuali.rice.shareddata.api.state;
 
-import java.util.List;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
+import org.kuali.rice.shareddata.api.SharedDataConstants;
+import org.springframework.cache.annotation.Cacheable;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -25,14 +28,12 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
-
-import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.core.api.exception.RiceIllegalStateException;
-import org.kuali.rice.shareddata.api.SharedDataConstants;
-import org.springframework.cache.annotation.Cacheable;
+import java.util.List;
 
 /**
  * Service for interacting with {@link State States}.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @WebService(name = "StateService", targetNamespace = SharedDataConstants.Namespaces.SHAREDDATA_NAMESPACE)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)

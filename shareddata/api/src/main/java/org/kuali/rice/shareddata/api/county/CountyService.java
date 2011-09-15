@@ -29,6 +29,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.List;
 
+/**
+ * <p>CountyService interface.</p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 @WebService(name = "CountyService", targetNamespace = SharedDataConstants.Namespaces.SHAREDDATA_NAMESPACE)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface CountyService {

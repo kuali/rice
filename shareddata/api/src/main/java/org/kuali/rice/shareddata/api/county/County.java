@@ -16,16 +16,6 @@
 
 package org.kuali.rice.shareddata.api.county;
 
-import java.io.Serializable;
-import java.util.Collection;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
@@ -33,12 +23,22 @@ import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.shareddata.api.SharedDataConstants;
 import org.w3c.dom.Element;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
+import java.util.Collection;
+
 /**
  * An immutable representation of a {@link CountyContract}.
  *
  * <p>To construct an instance of a County, use the {@link County.Builder} class.
  *
  * @see CountyContract
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @XmlRootElement(name = County.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -99,31 +99,37 @@ public final class County extends AbstractDataTransferObject implements CountyCo
         versionNumber = builder.getVersionNumber();
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getCode() {
         return code;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getName() {
         return name;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getCountryCode() {
         return countryCode;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getStateCode() {
         return stateCode;
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean isActive() {
         return active;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Long getVersionNumber() {
         return versionNumber;

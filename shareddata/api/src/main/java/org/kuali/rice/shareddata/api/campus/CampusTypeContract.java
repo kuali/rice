@@ -21,14 +21,20 @@ import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
+/**
+ * <p>CampusTypeContract interface.</p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public interface CampusTypeContract extends Versioned, GloballyUnique, Inactivatable, Coded {
 	
 	/**
-	 * This is the name for the CampusType. 
+	 * This is the name for the CampusType.
 	 *
 	 * <p>
 	 * It is a name a campus type.
 	 * </p>
+	 *
 	 * @return name for CampusType.
 	 */
 	String getName();

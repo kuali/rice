@@ -29,6 +29,11 @@ import javax.jws.soap.SOAPBinding;
 import java.util.List;
 
 
+/**
+ * <p>CountryService interface.</p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 @WebService(name = "CountryService", targetNamespace = SharedDataConstants.Namespaces.SHAREDDATA_NAMESPACE)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface CountryService {
@@ -60,7 +65,7 @@ public interface CountryService {
     Country getCountryByAlternateCode(@WebParam(name = "alternateCode") String alternateCode)
             throws RiceIllegalStateException, RiceIllegalArgumentException;
 
-   /**
+    /**
      * Returns all Countries that are not restricted.
      *
      * @return all countries that are not restricted

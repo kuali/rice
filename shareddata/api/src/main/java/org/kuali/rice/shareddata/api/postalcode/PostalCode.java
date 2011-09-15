@@ -39,6 +39,7 @@ import java.util.Collection;
  * <p>To construct an instance of a PostalCode, use the {@link PostalCode.Builder} class.
  *
  * @see PostalCodeContract
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @XmlRootElement(name = PostalCode.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -105,36 +106,43 @@ public final class PostalCode extends AbstractDataTransferObject implements Post
         versionNumber = builder.getVersionNumber();
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getCode() {
         return code;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getCityName() {
         return cityName;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getCountryCode() {
         return countryCode;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getStateCode() {
         return stateCode;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getCountyCode() {
         return countyCode;
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean isActive() {
         return active;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Long getVersionNumber() {
         return versionNumber;

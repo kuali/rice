@@ -20,13 +20,17 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.shareddata.api.SharedDataConstants;
 import org.springframework.cache.annotation.Cacheable;
 
-import java.util.List;
-
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import java.util.List;
 
+/**
+ * <p>CampusService interface.</p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 @WebService(name = "campusService", targetNamespace = SharedDataConstants.Namespaces.SHAREDDATA_NAMESPACE )
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface CampusService {
@@ -45,7 +49,6 @@ public interface CampusService {
     
     /**
      * This will return all {@link Campus}.
-     *
      */
     @WebMethod(operationName="findAllCampuses")
     @Cacheable(value=Campus.Cache.NAME, key="'all'")
@@ -66,7 +69,6 @@ public interface CampusService {
     
     /**
      * This will return all {@link CampusType}.
-     *
      */
     @WebMethod(operationName="findAllCampusTypes")
     @Cacheable(value=CampusType.Cache.NAME, key="'all'")

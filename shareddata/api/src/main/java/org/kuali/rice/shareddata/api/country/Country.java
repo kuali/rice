@@ -16,16 +16,6 @@
 
 package org.kuali.rice.shareddata.api.country;
 
-import java.io.Serializable;
-import java.util.Collection;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
@@ -33,10 +23,20 @@ import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.shareddata.api.SharedDataConstants;
 import org.w3c.dom.Element;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
+import java.util.Collection;
+
 /**
  * POJO implementation of CountryContract that is immutable. Instances of Country can be (un)marshalled to and from XML.
  *
  * @see CountryContract
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @XmlRootElement(name = Country.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -96,31 +96,37 @@ public final class Country extends AbstractDataTransferObject implements Country
         this.versionNumber = builder.getVersionNumber();
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getCode() {
         return this.code;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getAlternateCode() {
         return this.alternateCode;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getName() {
         return this.name;
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean isActive() {
         return this.active;
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean isRestricted() {
         return this.restricted;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Long getVersionNumber() {
         return this.versionNumber;

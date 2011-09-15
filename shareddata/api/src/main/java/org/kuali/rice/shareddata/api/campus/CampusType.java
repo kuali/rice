@@ -38,6 +38,7 @@ import java.util.Collection;
  * <p>To construct an instance of a CampusType, use the {@link CampusType.Builder} class.
  *
  * @see CampusTypeContract
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @XmlRootElement(name = CampusType.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -96,26 +97,31 @@ public final class CampusType extends AbstractDataTransferObject implements Camp
         this.objectId = builder.getObjectId();
     }
     
+	/** {@inheritDoc} */
 	@Override
 	public String getCode() {
 		return this.code;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String getName() {
 		return this.name;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isActive() {
 		return this.active; 
 	}
 
+    /** {@inheritDoc} */
     @Override
     public Long getVersionNumber() {
         return this.versionNumber;
     }
     
+    /** {@inheritDoc} */
     @Override
 	public String getObjectId() {
 		return objectId;

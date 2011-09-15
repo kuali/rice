@@ -23,15 +23,17 @@ import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 /**
  * Contract for a Country. Country is a basic abstraction over a Country, encapsulating its name, country code,
  * postal code, and if its restricted or not
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface CountryContract extends Versioned, Inactivatable, Coded {
 
     /**
+     * {@inheritDoc}
+     *
      * An abbreviated String representing the unique identifying code for a given country.  This code correlates
      * directly to the alpha-2 country codes from the ISO-3166-1-alpha-2 standard.
      * <p>This property is required to exist.</p>
-     *
-     * @return The country code for this Country.
      */
     @Override
     String getCode();
@@ -59,6 +61,7 @@ public interface CountryContract extends Versioned, Inactivatable, Coded {
      * may not be used in the address of a Vendor.</p>
      *
      * <p>The default value of this property is false.</p>
+     *
      * @return if a country is restricted.
      */
     boolean isRestricted();

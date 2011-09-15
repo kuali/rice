@@ -16,9 +16,12 @@
 
 package org.kuali.rice.shareddata.api.campus;
 
-
-import java.io.Serializable;
-import java.util.Collection;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
+import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.shareddata.api.SharedDataConstants;
+import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -26,19 +29,15 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
-import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.shareddata.api.SharedDataConstants;
-import org.w3c.dom.Element;
+import java.io.Serializable;
+import java.util.Collection;
 /**
  * An immutable representation of a {@link CampusContract}.
  *
  * <p>To construct an instance of a Campus, use the {@link Campus.Builder} class.
  *
  * @see CampusContract
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @XmlRootElement(name = Campus.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -115,36 +114,43 @@ public final class Campus extends AbstractDataTransferObject implements CampusCo
         this.objectId = builder.getObjectId();
     }
 
+	/** {@inheritDoc} */
 	@Override
 	public String getCode() {
 		return this.code;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String getName() {
 		return this.name;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String getShortName() {
 		return this.shortName;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public CampusType getCampusType() {
 		return this.campusType;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isActive() {
 		return this.active;
 	}
 
+    /** {@inheritDoc} */
     @Override
     public Long getVersionNumber() {
         return versionNumber;
     }
         
+	/** {@inheritDoc} */
 	@Override
 	public String getObjectId() {
 		return objectId;

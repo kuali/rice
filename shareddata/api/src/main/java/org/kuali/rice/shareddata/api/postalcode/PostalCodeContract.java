@@ -25,6 +25,8 @@ import org.kuali.rice.core.api.mo.common.active.Inactivatable;
  * in order to give each region an identifier.
  *
  * Examples of postal codes are Zip Codes in the United States and FSALDU in Canada.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface PostalCodeContract extends Versioned, Inactivatable, Coded {
 

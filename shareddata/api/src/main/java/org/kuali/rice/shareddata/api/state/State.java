@@ -36,6 +36,7 @@ import java.util.Collection;
  * POJO implementation of CountryContract that is immutable. Instances of State can be (un)marshalled to and from XML.
  *
  * @see StateContract
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @XmlRootElement(name = State.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -47,7 +48,6 @@ import java.util.Collection;
         CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-
 public final class State extends AbstractDataTransferObject implements StateContract {
 
     private static final long serialVersionUID = 6097498602725305353L;
@@ -91,26 +91,31 @@ public final class State extends AbstractDataTransferObject implements StateCont
         versionNumber = builder.getVersionNumber();
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getCode() {
         return code;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getName() {
         return name;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getCountryCode() {
         return countryCode;
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean isActive() {
         return active;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Long getVersionNumber() {
         return versionNumber;

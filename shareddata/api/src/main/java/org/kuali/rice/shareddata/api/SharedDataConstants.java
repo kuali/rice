@@ -18,6 +18,11 @@ package org.kuali.rice.shareddata.api;
 
 import org.kuali.rice.core.api.CoreConstants;
 
+/**
+ * <p>SharedDataConstants class.</p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public final class SharedDataConstants {
 	public final static class Namespaces {
         public static final String SHAREDDATA_NAMESPACE = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/shareddata";

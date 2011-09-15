@@ -22,6 +22,8 @@ import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
 /**
  * This is the contract for a State.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface StateContract extends Versioned, Inactivatable, Coded {
 

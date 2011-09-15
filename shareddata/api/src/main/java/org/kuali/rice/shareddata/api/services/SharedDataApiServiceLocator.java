@@ -23,33 +23,58 @@ import org.kuali.rice.shareddata.api.county.CountyService;
 import org.kuali.rice.shareddata.api.postalcode.PostalCodeService;
 import org.kuali.rice.shareddata.api.state.StateService;
 
+/**
+ * <p>SharedDataApiServiceLocator class.</p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class SharedDataApiServiceLocator {
+    /** Constant <code>COUNTRY_SERVICE="countryService"</code> */
     public static final String COUNTRY_SERVICE = "countryService";
+    /** Constant <code>CAMPUS_SERVICE="campusService"</code> */
     public static final String CAMPUS_SERVICE = "campusService";
+    /** Constant <code>STATE_SERVICE="stateService"</code> */
     public static final String STATE_SERVICE = "stateService";
+    /** Constant <code>COUNTY_SERVICE="countyService"</code> */
     public static final String COUNTY_SERVICE = "countyService";
+    /** Constant <code>POSTAL_CODE_SERVICE="postalCodeService"</code> */
     public static final String POSTAL_CODE_SERVICE = "postalCodeService";
 
     static <T> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
     }
 
+    /**
+     * <p>getCountryService.</p>
+     */
     public static CountryService getCountryService() {
         return getService(COUNTRY_SERVICE);
     }
 
+    /**
+     * <p>getCampusService.</p>
+     */
     public static CampusService getCampusService() {
         return getService(CAMPUS_SERVICE);
     }
 
+    /**
+     * <p>getStateService.</p>
+     */
     public static StateService getStateService() {
         return getService(STATE_SERVICE);
     }
 
+    /**
+     * <p>getCountyService.</p>
+     */
     public static CountyService getCountyService() {
         return (CountyService) getService(COUNTY_SERVICE);
     }
 
+    /**
+     * <p>getPostalCodeService.</p>
+     */
     public static PostalCodeService getPostalCodeService() {
         return (PostalCodeService) getService(POSTAL_CODE_SERVICE);
     }

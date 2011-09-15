@@ -3,7 +3,7 @@ package org.kuali.rice.kew.framework.document.lookup;
 import java.util.List;
 
 /**
- * Defines the contract which specifies attribute fields that should be included as part of document lookup criteria
+ * Defines the contract for which specifies attribute fields that should be included as part of document lookup criteria
  * on the document lookup user interface.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)

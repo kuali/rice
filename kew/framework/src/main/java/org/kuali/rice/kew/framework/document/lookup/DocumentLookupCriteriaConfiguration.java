@@ -142,7 +142,8 @@ public final class DocumentLookupCriteriaConfiguration extends AbstractDataTrans
     }
 
     /**
-     * A private class which exposes constants which define the XML element names to use when this object is marshalled to XML.
+     * A private class which exposes constants which define the XML element names to use when this object is marshalled
+     * to XML.
      */
     static class Elements {
         final static String SEARCH_ATTRIBUTE_FIELDS = "searchAttributeFields";

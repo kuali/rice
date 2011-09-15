@@ -73,7 +73,7 @@ abstract class BoPersistenceTest extends KIMTestCase {
         [ FDOC_NBR: bo.documentNumber ]
     }
     protected def kimdoc_fields(KimDocumentBoActivatableEditableBase bo) {
-        basic_fields(bo) + default_field(bo) + edit_field(bo) + docno_field(bo)
+        basic_fields(bo) + active_field(bo) + default_field(bo) + edit_field(bo) + docno_field(bo)
     }
 
     protected def basic_fields(PersistableBusinessObject bo) {

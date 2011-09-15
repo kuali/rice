@@ -25,6 +25,7 @@ class PersonDocumentAddressPersistenceTest extends BoPersistenceTest {
             addressType: addr.addressType,
             addressTypeCode: addr.addressTypeCode,
             entityTypeCode: ent_type.entityTypeCode,
+            documentNumber: System.currentTimeMillis(),
             city: addr.cityUnmasked,
             stateProvinceCode: addr.stateProvinceCodeUnmasked,
             postalCode: addr.postalCodeUnmasked,
@@ -36,10 +37,8 @@ class PersonDocumentAddressPersistenceTest extends BoPersistenceTest {
 
         boService.save(pda)
 
-        assertRow(standard_fields(addr) + [
+        assertRow(kimdoc_fields(pda) + [
             ENTITY_ADDR_ID: addr.id,
-            ENTITY_ID: entity.id,
-            ENT_TYP_CD: addr.entityTypeCode,
             ADDR_LINE_1: addr.line1Unmasked,
             ADDR_LINE_2: addr.line2Unmasked,
             ADDR_LINE_3: addr.line3Unmasked,
@@ -48,6 +47,7 @@ class PersonDocumentAddressPersistenceTest extends BoPersistenceTest {
             POSTAL_CNTRY_CD: addr.countryCodeUnmasked,
             ADDR_TYP_CD: addr.addressTypeCode,
             CITY_NM: addr.cityUnmasked,
+            DISPLAY_SORT_CD: null,
             DFLT_IND: addr.defaultValue ? "Y" : "N",
         ],
         "KRIM_PND_ADDR_MT", "ENTITY_ADDR_ID")

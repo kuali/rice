@@ -21,6 +21,12 @@ import org.kuali.rice.core.api.uif.AttributeField;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.w3c.dom.Element;
 
+/**
+ * An immutable data transfer object implementation of the {@link DocumentLookupResultSetConfigurationContract}.
+ * Instances of this class should be constructed using the nested {@link Builder} class.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 @XmlRootElement(name = DocumentLookupResultSetConfiguration.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = DocumentLookupResultSetConfiguration.Constants.TYPE_NAME, propOrder = {
@@ -55,6 +61,7 @@ public final class DocumentLookupResultSetConfiguration extends AbstractDataTran
     /**
      * Private constructor used only by JAXB.
      */
+    @SuppressWarnings("unused")
     private DocumentLookupResultSetConfiguration() {
         this.overrideSearchableAttributes = false;
         this.customFieldNamesToAdd = null;
@@ -109,10 +116,25 @@ public final class DocumentLookupResultSetConfiguration extends AbstractDataTran
             setAdditionalAttributeFields(new ArrayList<RemotableAttributeField.Builder>());
         }
 
+        /**
+         * Creates new empty builder instance.  The various lists on this builder are initialized to empty lists.  The
+         * {@code overrideSearchableAttribute} boolean property is initialized to "false".
+         *
+         * @return a new empty builder instance
+         */
         public static Builder create() {
             return new Builder();
         }
 
+        /**
+         * Creates a new builder instance initialized with copies of the properties from the given contract.
+         *
+         * @param contract the contract from which to copy properties
+         *
+         * @return a builder instance initialized with properties from the given contract
+         *
+         * @throws IllegalArgumentException if the given contract is null
+         */
         public static Builder create(DocumentLookupResultSetConfigurationContract contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
@@ -134,6 +156,7 @@ public final class DocumentLookupResultSetConfiguration extends AbstractDataTran
             return builder;
         }
 
+        @Override
         public DocumentLookupResultSetConfiguration build() {
             return new DocumentLookupResultSetConfiguration(this);
         }
@@ -184,9 +207,9 @@ public final class DocumentLookupResultSetConfiguration extends AbstractDataTran
         final static String TYPE_NAME = "DocumentLookupResultSetConfigurationType";
     }
 
-
     /**
-     * A private class which exposes constants which define the XML element names to use when this object is marshalled to XML.
+     * A private class which exposes constants which define the XML element names to use when this object is marshalled
+     * to XML.
      */
     static class Elements {
         final static String OVERRIDE_SEARCHABLE_ATTRIBUTES = "overrideSearchableAttributes";

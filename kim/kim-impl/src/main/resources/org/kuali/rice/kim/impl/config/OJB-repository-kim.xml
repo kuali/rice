@@ -400,7 +400,7 @@
     <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR"  />
     <field-descriptor name="addressTypeCode" column="ADDR_TYP_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="entityTypeCode" column="ENT_TYP_CD" jdbc-type="VARCHAR"  />
-    <field-descriptor name="city" column="CITY_NM" jdbc-type="VARCHAR"  />
+    <field-descriptor name="city" column="CITY" jdbc-type="VARCHAR"  />
     <field-descriptor name="stateProvinceCode" column="STATE_PVC_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="postalCode" column="postal_cd" jdbc-type="VARCHAR"  />
     <field-descriptor name="countryCode" column="POSTAL_CNTRY_CD" jdbc-type="VARCHAR"  />
@@ -872,7 +872,7 @@
     <field-descriptor name="entityAddressId" column="ENTITY_ADDR_ID" jdbc-type="VARCHAR" primarykey="true"   autoincrement="true" sequence-name="KRIM_ENTITY_ADDR_ID_S" />
 	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="addressTypeCode" column="ADDR_TYP_CD" jdbc-type="VARCHAR"  />
-     <field-descriptor name="city" column="CITY_NM" jdbc-type="VARCHAR"  />
+     <field-descriptor name="city" column="CITY" jdbc-type="VARCHAR"  />
     <field-descriptor name="stateProvinceCode" column="STATE_PVC_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="postalCode" column="postal_cd" jdbc-type="VARCHAR"  />
     <field-descriptor name="countryCode" column="POSTAL_CNTRY_CD" jdbc-type="VARCHAR"  />

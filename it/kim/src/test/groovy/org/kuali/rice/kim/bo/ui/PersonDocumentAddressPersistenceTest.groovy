@@ -51,11 +51,5 @@ class PersonDocumentAddressPersistenceTest extends BoPersistenceTest {
             DFLT_IND: addr.defaultValue ? "Y" : "N",
         ],
         "KRIM_PND_ADDR_MT", "ENTITY_ADDR_ID")
-
-        NM_TYP_CD=namecodeone, DFLT_IND=N, ENTITY_ID=132662f703d, $column=Y, PREFIX_NM=null, ENTITY_NM_ID=132662f7040}>
-
-
-        NM_TYP_CD=namecodeone, DFLT_IND=N, ENTITY_ID=132662f703d, ACTV_IND=Y, PREFIX_NM=null, ENTITY_NM_ID=132662f7040}>
-  test_save_entityaddress(org.kuali.rice.kim.impl.identity.name.EntityPersistenceTests): expected:<{ADDR_LINE_3=null, VER_NBR=1, ENTITY_ADDR_ID=132662f7044, POSTAL_CD=null, ADDR_LINE_1=null, STATE_PVC_CD=null, ADDR_LINE_2=null, OBJ_ID=162f364b-6423-41e3-b48b-7e0f5c8e350d, POSTAL_CNTRY_CD=null, ADDR_TYP_CD=HM, CITY_NM=null, DFLT_IND=N, ENTITY_ID=132662f7041, $column=Y, ENT_TYP_CD=PERSON}> but was:<{ADDR_LINE_3=null, VER_NBR=1, ENTITY_ADDR_ID=132662f7044, POSTAL_CD=null, ADDR_LINE_1=null, STATE_PVC_CD=null, ADDR_LINE_2=null, OBJ_ID=162f364b-6423-41e3-b48b-7e0f5c8e350d, POSTAL_CNTRY_CD=null, ADDR_TYP_CD=HM, CITY_NM=null, DFLT_IND=N, ENTITY_ID=132662f7041, ACTV_IND=Y, ENT_TYP_CD=PERSON}
     }
 }

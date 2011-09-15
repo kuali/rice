@@ -40,7 +40,6 @@ class ValidationResultsTest {
 
     private static final ValidationResults create_vrs(num=1) {
         def b = ValidationResults.Builder.create()
-        System.out.println(num)
         if (num > 0) {
             0.upto(num-1) {
               b.addError("field_${it}", "field_${it} error message")

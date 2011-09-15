@@ -60,7 +60,7 @@ public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
 	@Column(name = "CITY_NM")
 	protected String city;
 
-	@Column(name = "POSTAL_STATE_CD")
+	@Column(name = "STATE_PVC_CD")
 	protected String stateProvinceCode;
 
 	@Column(name = "POSTAL_CD")

@@ -37,7 +37,7 @@ class EntityNameBo extends PersistableBusinessObjectBase implements EntityNameCo
 	@Column(name = "LAST_NM")
 	String lastName;
 
-	@Column(name = "TITLE_NM")
+	@Column(name = "PREFIX_NM")
 	String namePrefix;
 
 	@Column(name = "SUFFIX_NM")

@@ -46,7 +46,7 @@ class EntityBioDemographicsBo extends PersistableBusinessObjectBase implements E
     @Column(name = "BIRTH_CNTRY_CD")
     String birthCountry;
 
-    @Column(name = "BIRTH_STATE_CD")
+    @Column(name = "BIRTH_STATE_PVC_CD")
     String birthStateProvinceCode;
 
     @Column(name = "BIRTH_CITY")

@@ -66,7 +66,7 @@ public class PersonDocumentName extends PersonDocumentBoDefaultBase {
 	@Column(name = "LAST_NM")
 	protected String lastName;
 
-	@Column(name = "TITLE_NM")
+	@Column(name = "PREFIX_NM")
 	protected String namePrefix;
 
 	@Column(name = "SUFFIX_NM")

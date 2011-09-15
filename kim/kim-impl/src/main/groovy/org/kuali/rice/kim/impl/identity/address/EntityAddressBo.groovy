@@ -41,7 +41,7 @@ public class EntityAddressBo extends PersistableBusinessObjectBase implements En
 	@Column(name = "CITY_NM")
 	String city
 
-	@Column(name = "POSTAL_STATE_CD")
+	@Column(name = "STATE_PVC_CD")
 	String stateProvinceCode
 
 	@Column(name = "POSTAL_CD")

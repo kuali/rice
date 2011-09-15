@@ -256,6 +256,13 @@ public final class QueryByCriteria extends AbstractDataTransferObject {
         public QueryByCriteria build() {
             return new QueryByCriteria(this);
         }
+
+        /** convenience method to create an immutable criteria from one or more predicates. */
+        public static QueryByCriteria fromPredicates(Predicate... predicates) {
+            final Builder b = Builder.create();
+            b.setPredicates(predicates);
+            return b.build();
+        }
     }
 
 	/**

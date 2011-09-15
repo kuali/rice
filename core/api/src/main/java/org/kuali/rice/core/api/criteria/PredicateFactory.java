@@ -34,14 +34,14 @@ import java.util.Set;
  * to create a deeply nested predicate where lots of
  * properties are evaluated do the following:
  *
- * Predicate deep =
+ * Predicate apiAuthors =
  *  and(
  *      like("display", "*Eric*"),
  *		greaterThan("birthDate", gtBirthDate),
  * 		lessThan("birthDate", ltBirthDate),
  *      or(
- *         equal("name.first", "Eric"),
- *         equal("name.last", "Westfall")))
+ *         equal("name.first", "Travis"),
+ *         equal("name.last", "Schneeberger")))
  *
  * <p>
  *     <strong>WARNING:</strong> this class does automatic reductions

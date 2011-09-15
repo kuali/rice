@@ -149,10 +149,7 @@
     <cobertura.maven.plugin.version>2.5.1</cobertura.maven.plugin.version>
     <javadoc.plugin.version>2.7</javadoc.plugin.version>
     <project.info.reports.plugin.version>2.4</project.info.reports.plugin.version>
-    <!--
-    <site.plugin.version>3.0-beta-3</site.plugin.version>
-    -->
-    <site.plugin.version>3.0</site.plugin.version>
+    <kuali.site.plugin.version>3.0</kuali.site.plugin.version>
     <surefire.plugin.version>2.9</surefire.plugin.version>
     <failsafe.plugin.version>2.9</failsafe.plugin.version>
     <source.plugin.version>2.1.2</source.plugin.version>
@@ -690,12 +687,6 @@
     </pluginManagement>
 
     <plugins>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <version>${site.plugin.version}</version>
-      </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

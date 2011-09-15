@@ -20,8 +20,10 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Defines a set of additional custom values for document lookup results that can be defined and returned by an
- * application which is customizing the document lookup for a specific document type.
+ * An immutable data transfer object implementation of the {@link DocumentLookupResultValuesContract}.
+ * Instances of this class should be constructed using the nested {@link Builder} class.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @XmlRootElement(name = DocumentLookupResultValues.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -39,6 +41,9 @@ public final class DocumentLookupResultValues extends AbstractDataTransferObject
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
 
+    /**
+     * Private constructor used only by JAXB.
+     */
     @SuppressWarnings("unused")
     private DocumentLookupResultValues() {
         this.resultValues = null;
@@ -53,6 +58,10 @@ public final class DocumentLookupResultValues extends AbstractDataTransferObject
         return this.resultValues;
     }
 
+    /**
+     * A builder which can be used to construct {@link DocumentLookupResultValues} instances.  Enforces the
+     * constraints of the {@link DocumentLookupResultValuesContract}.
+     */
     public final static class Builder implements Serializable, ModelBuilder, DocumentLookupResultValuesContract {
 
         private List<DocumentLookupResultValue.Builder> resultValues;
@@ -61,10 +70,25 @@ public final class DocumentLookupResultValues extends AbstractDataTransferObject
             setResultValues(new ArrayList<DocumentLookupResultValue.Builder>());
         }
 
+        /**
+         * Creates new empty builder instance.  The various lists on this builder are initialized to empty lists.  The
+         * internal list of result value builders is initialized to an empty list.
+         *
+         * @return a new empty builder instance
+         */
         public static Builder create() {
             return new Builder();
         }
 
+        /**
+         * Creates a new builder instance initialized with copies of the properties from the given contract.
+         *
+         * @param contract the contract from which to copy properties
+         *
+         * @return a builder instance initialized with properties from the given contract
+         *
+         * @throws IllegalArgumentException if the given contract is null
+         */
         public static Builder create(DocumentLookupResultValuesContract contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
@@ -78,6 +102,7 @@ public final class DocumentLookupResultValues extends AbstractDataTransferObject
             return builder;
         }
 
+        @Override
         public DocumentLookupResultValues build() {
             return new DocumentLookupResultValues(this);
         }

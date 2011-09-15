@@ -50,7 +50,11 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
    String propositionSummary;
    private StringBuffer propositionSummaryBuffer;
    String selectedPropositionId;
-   
+
+   public RuleBo() {
+       actions = new ArrayList<ActionBo>();
+   }
+
    public PropositionBo getProposition(){
        return proposition;
    }

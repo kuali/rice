@@ -26,9 +26,15 @@ import org.kuali.rice.krad.maintenance.Maintainable;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.uif.container.CollectionGroup;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.web.form.MaintenanceForm;
+import org.kuali.rice.krms.impl.repository.ActionBo;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.ContextBo;
+import org.kuali.rice.krms.impl.repository.ContextBoService;
+import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 
 /**
  * {@link Maintainable} for the {@link AgendaEditor}
@@ -46,6 +52,13 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
 	public BusinessObjectService getBoService() {
 		return KRADServiceLocator.getBusinessObjectService();
 	}
+
+    /**
+     * return the contextBoService
+     */
+    private ContextBoService getContextBoService() {
+        return KrmsRepositoryServiceLocator.getContextBoService();
+    }
 
     @Override
     public Object retrieveObjectForEditOrCopy(MaintenanceDocument document, Map<String, String> dataObjectKeys) {
@@ -174,6 +187,25 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
     @Override
     public Class getDataObjectClass() {
         return AgendaBo.class;
+    }
+
+    @Override
+    protected void processBeforeAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
+        Object dataObject = ((MaintenanceForm) model).getDocument().getNewMaintainableObject().getDataObject();
+        AgendaBo agenda = ((AgendaEditor) dataObject).getAgenda();
+        if (addLine instanceof ActionBo) {
+            ((ActionBo) addLine).setNamespace(getContextBoService().getContextByContextId(agenda.getContextId()).getNamespace());
+        } else {
+            super.processBeforeAddLine(view, collectionGroup, model, addLine);
+        }
+
+    }
+    @Override
+    protected void processAfterAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
+        // Exclude rule actions
+        if (!(addLine instanceof ActionBo)) {
+            super.processAfterAddLine(view, collectionGroup, model, addLine);
+        }
     }
 
 }

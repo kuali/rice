@@ -99,28 +99,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     }
 
     /**
-     * This override is used to populate the agenda from the agenda name and context selection of the user.
-     * It is triggered by the refreshWhenChanged property of the MaintenanceView.
-     */
-    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=updateComponent")
-    @Override
-    public ModelAndView updateComponent(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) {
-
-        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
-        AgendaEditor editorDocument =
-                ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
-        final Map<String, Object> map = new HashMap<String, Object>();
-        map.put("name", editorDocument.getAgenda().getName());
-        map.put("contextId", editorDocument.getContext().getId());
-
-        AgendaBo agenda = getBusinessObjectService().findByPrimaryKey(AgendaBo.class, Collections.unmodifiableMap(map));
-        editorDocument.setAgenda(agenda);
-
-        return super.updateComponent(form, result, request, response);
-    }
-
-    /**
      * This method updates the existing rule in the agenda.
      */
     @RequestMapping(params = "methodToCall=" + "goToAddRule")

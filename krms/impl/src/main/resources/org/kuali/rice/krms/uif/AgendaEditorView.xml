@@ -91,7 +91,6 @@
     <property name="items">
       <list>
         <bean parent="ruleEditorBody">
-          <property name="fieldBindByNamePrefix" value="agendaItemLine.rule"/>
         </bean>
       </list>
     </property>
@@ -112,7 +111,6 @@
     <property name="items">
       <list>
         <bean parent="ruleEditorBody">
-          <property name="fieldBindByNamePrefix" value="agendaItemLine.rule"/>
         </bean>
       </list>
     </property>

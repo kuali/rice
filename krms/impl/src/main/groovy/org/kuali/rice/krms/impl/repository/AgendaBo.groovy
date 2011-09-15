@@ -22,10 +22,6 @@ public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDef
         active = true;
     }
 
-	public String getNamespaceCode(){
-		return namespace
-	}
-
     public Map<String, String> getAttributes() {
         HashMap<String, String> attributes = new HashMap<String, String>();
         for (attr in attributeBos) {

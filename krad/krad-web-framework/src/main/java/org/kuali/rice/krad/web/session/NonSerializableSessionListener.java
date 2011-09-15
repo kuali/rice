@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+//TODO: May want to have a way to turn this off that way we aren't incurring the overhead
+//of testing every session object if it is serializable by actually serializing it!
+
 /** A session listener that detects when a non-serializable attributes is added to session. **/
 public class NonSerializableSessionListener implements HttpSessionAttributeListener {
     private static final Log LOG = LogFactory.getLog(NonSerializableSessionListener.class);

@@ -26,7 +26,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * TODO...
+ * A remotable service which handles processing of a client application's custom security processing of workflow
+ * documents.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -35,12 +36,23 @@ import java.util.Set;
 public interface DocumentSecurityHandlerService {
 
     /**
-     * TODO...
+     * Returns a list of document ids from the given list of document security directives for which the principal with
+     * the given principal is allowed to view.  Any document which is passed to this method as part of a document
+     * security directive which is not included in the list of document ids that is returned from this method should
+     * <strong>not</strong> be presented to the principal with the given principal id.
      *
-     * @param principalId
-     * @param documentSecurityDirectives
+     * <p>This method essentially invokes
+     * {@link DocumentSecurityAttribute#isAuthorizedForDocument(String, org.kuali.rice.kew.api.document.Document)}
+     * method for each of the security attributes supplied in the document security directives, passing the associated
+     * list of document ids.</p>
      *
-     * @return
+     * @param principalId the id of the principal against which to perform the authorization
+     * @param documentSecurityDirectives the list of security directives which define the documents which should be
+     * checked for authorization and the name of the {@code DocumentSecurityAttribute} extensions against which to
+     * execute the authorization check.
+     *
+     * @return the list of document ids from the given document security directives for which the given principal is
+     * authorized
      *
      * @throws RiceIllegalArgumentException if the given principalId is a null or blank value
      * @throws RiceIllegalArgumentException if any of the security attributes defined in the given list of security

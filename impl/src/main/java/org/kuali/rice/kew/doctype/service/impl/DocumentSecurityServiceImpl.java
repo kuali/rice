@@ -130,8 +130,6 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
                     + documentsRequiringExtensionProcessing.size()
                     + " documents)");
             long start = System.currentTimeMillis();
-            Map<String, List<String>> applicationIdToDocumentMap = new HashMap<String, List<String>>();
-            Map<String, List<String>> documentIdToSecurityAttributeNameMap = new HashMap<String, List<String>>();
             MultiValueMap<PartitionKey, Document> partitions = partitionDocumentsForSecurity(
                     documentsRequiringExtensionProcessing, securitySession);
             MultiValueMap<String, DocumentSecurityDirective> applicationSecurityDirectives =

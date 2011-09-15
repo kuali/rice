@@ -14,7 +14,7 @@ public interface DocumentLookupCriteriaConfigurationContract {
      * Returns the additional attribute fields that should be included as part of the document lookup criteria on the
      * document lookup user interface.
      *
-     * @return the search attribute fields
+     * @return the search attribute fields that are part of this configuration
      */
     List<AttributeFields> getSearchAttributeFields();
 

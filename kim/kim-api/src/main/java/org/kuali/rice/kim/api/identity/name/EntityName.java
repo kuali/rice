@@ -32,6 +32,7 @@ import org.w3c.dom.Element;
     EntityName.Elements.NAME_SUFFIX,
     EntityName.Elements.COMPOSITE_NAME,
     EntityName.Elements.NAME_PREFIX_UNMASKED,
+    EntityName.Elements.NAME_TITLE_UNMASKED,
     EntityName.Elements.FIRST_NAME_UNMASKED,
     EntityName.Elements.MIDDLE_NAME_UNMASKED,
     EntityName.Elements.LAST_NAME_UNMASKED,

@@ -305,12 +305,14 @@ class EntityTest {
                             <objectId>${NAME.nameType.objectId}</objectId>
                         </nameType>
                         <namePrefix>${NAME.namePrefix}</namePrefix>
+                        <nameTitle>${NAME.nameTitle}</nameTitle>
                         <firstName>${NAME.firstName}</firstName>
                         <middleName>${NAME.middleName}</middleName>
                         <lastName>${NAME.lastName}</lastName>
                         <nameSuffix>${NAME.nameSuffix}</nameSuffix>
                         <compositeName>${NAME.compositeName}</compositeName>
                         <namePrefixUnmasked>${NAME.namePrefixUnmasked}</namePrefixUnmasked>
+                        <nameTitleUnmasked>${NAME.nameTitleUnmasked}</nameTitleUnmasked>
                         <firstNameUnmasked>${NAME.firstNameUnmasked}</firstNameUnmasked>
                         <middleNameUnmasked>${NAME.middleNameUnmasked}</middleNameUnmasked>
                         <lastNameUnmasked>${NAME.lastNameUnmasked}</lastNameUnmasked>
@@ -456,12 +458,14 @@ class EntityTest {
                         <objectId>${NAME.nameType.objectId}</objectId>
                     </nameType>
                     <namePrefix>${NAME.namePrefix}</namePrefix>
+                    <nameTitle>${NAME.nameTitle}</nameTitle>
                     <firstName>${NAME.firstName}</firstName>
                     <middleName>${NAME.middleName}</middleName>
                     <lastName>${NAME.lastName}</lastName>
                     <nameSuffix>${NAME.nameSuffix}</nameSuffix>
                     <compositeName>${NAME.compositeName}</compositeName>
                     <namePrefixUnmasked>${NAME.namePrefixUnmasked}</namePrefixUnmasked>
+                    <nameTitleUnmasked>${NAME.nameTitleUnmasked}</nameTitleUnmasked>
                     <firstNameUnmasked>${NAME.firstNameUnmasked}</firstNameUnmasked>
                     <middleNameUnmasked>${NAME.middleNameUnmasked}</middleNameUnmasked>
                     <lastNameUnmasked>${NAME.lastNameUnmasked}</lastNameUnmasked>

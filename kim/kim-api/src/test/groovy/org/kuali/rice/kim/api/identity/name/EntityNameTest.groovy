@@ -17,6 +17,7 @@ class EntityNameTest {
     private static final Long TYPE_VERSION_NUMBER = new Integer(1)
 	private static final String TYPE_OBJECT_ID = UUID.randomUUID()
 	private static final String NAME_PREFIX = "Mr"
+    private static final String NAME_TITLE = "DVM"
     private static final String FIRST_NAME = "Bob"
     private static final String MIDDLE_NAME = "Mob"
     private static final String LAST_NAME = "Sob"
@@ -42,12 +43,14 @@ class EntityNameTest {
             <objectId>${TYPE_OBJECT_ID}</objectId>
         </nameType>
         <namePrefix>${NAME_PREFIX}</namePrefix>
+        <nameTitle>${NAME_TITLE}</nameTitle>
         <firstName>${FIRST_NAME}</firstName>
         <middleName>${MIDDLE_NAME}</middleName>
         <lastName>${LAST_NAME}</lastName>
         <nameSuffix>${NAME_SUFFIX}</nameSuffix>
         <compositeName>${COMPOSITE_NAME}</compositeName>
         <namePrefixUnmasked>${NAME_PREFIX}</namePrefixUnmasked>
+        <nameTitleUnmasked>${NAME_TITLE}</nameTitleUnmasked>
         <firstNameUnmasked>${FIRST_NAME}</firstNameUnmasked>
         <middleNameUnmasked>${MIDDLE_NAME}</middleNameUnmasked>
         <lastNameUnmasked>${LAST_NAME}</lastNameUnmasked>
@@ -98,12 +101,14 @@ class EntityNameTest {
 				def String objectId = EntityNameTest.TYPE_OBJECT_ID
 			}).build()}
             def String namePrefix= EntityNameTest.NAME_PREFIX
+            def String nameTitle= EntityNameTest.NAME_TITLE
             def String firstName = EntityNameTest.FIRST_NAME
             def String middleName = EntityNameTest.MIDDLE_NAME
             def String lastName = EntityNameTest.LAST_NAME
             def String nameSuffix = EntityNameTest.NAME_SUFFIX
             def String compositeName = EntityNameTest.COMPOSITE_NAME
             def String namePrefixUnmasked = EntityNameTest.NAME_PREFIX
+            def String nameTitleUnmasked= EntityNameTest.NAME_TITLE
             def String firstNameUnmasked = EntityNameTest.FIRST_NAME
             def String middleNameUnmasked = EntityNameTest.MIDDLE_NAME
             def String lastNameUnmasked = EntityNameTest.LAST_NAME

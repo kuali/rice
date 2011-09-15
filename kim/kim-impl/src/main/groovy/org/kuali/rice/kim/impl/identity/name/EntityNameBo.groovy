@@ -40,9 +40,11 @@ class EntityNameBo extends PersistableBusinessObjectBase implements EntityNameCo
 	@Column(name = "PREFIX_NM")
 	String namePrefix;
 
+    String nameTitle;
+
 	@Column(name = "SUFFIX_NM")
 	String nameSuffix;
-	
+
 	@ManyToOne(targetEntity=EntityNameTypeBo.class, fetch = FetchType.EAGER, cascade = [])
 	@JoinColumn(name = "NM_TYP_CD", insertable = false, updatable = false)
 	EntityNameTypeBo nameType;
@@ -58,22 +60,22 @@ class EntityNameBo extends PersistableBusinessObjectBase implements EntityNameCo
 	@Transient
 	boolean suppressName;
     
-         /*
-       * Converts a mutable EntityNameBo to an immutable EntityName representation.
-       * @param bo
-       * @return an immutable EntityName
-       */
-      static EntityName to(EntityNameBo bo) {
+    /*
+     * Converts a mutable EntityNameBo to an immutable EntityName representation.
+     * @param bo
+     * @return an immutable EntityName
+     */
+    static EntityName to(EntityNameBo bo) {
         if (bo == null) { return null }
         return EntityName.Builder.create(bo).build()
-      }
+    }
 
-      /**
-       * Creates a EntityNameBo business object from an immutable representation of a EntityName.
-       * @param an immutable EntityName
-       * @return a EntityNameBo
-       */
-      static EntityNameBo from(EntityName immutable) {
+    /**
+     * Creates a EntityNameBo business object from an immutable representation of a EntityName.
+     * @param an immutable EntityName
+     * @return a EntityNameBo
+     */
+    static EntityNameBo from(EntityName immutable) {
         if (immutable == null) {return null}
 
         EntityNameBo bo = new EntityNameBo()
@@ -88,6 +90,7 @@ class EntityNameBo extends PersistableBusinessObjectBase implements EntityNameCo
         bo.lastName = immutable.lastNameUnmasked
         bo.middleName = immutable.middleNameUnmasked
         bo.namePrefix = immutable.namePrefixUnmasked
+        bo.nameTitle = immutable.nameTitleUnmasked
         bo.nameSuffix = immutable.nameSuffixUnmasked
 
         bo.defaultValue = immutable.defaultValue
@@ -95,7 +98,7 @@ class EntityNameBo extends PersistableBusinessObjectBase implements EntityNameCo
         bo.objectId = immutable.objectId
 
         return bo;
-      }
+    }
 
 
     @Override
@@ -131,6 +134,13 @@ class EntityNameBo extends PersistableBusinessObjectBase implements EntityNameCo
         return this.namePrefix
     }
 
+    String getNameTitle() {
+        if (isSuppressName()) {
+            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK
+        }
+        return this.nameTitle
+    }
+
 
     String getFirstNameUnmasked() {
         return this.firstName
@@ -146,6 +156,10 @@ class EntityNameBo extends PersistableBusinessObjectBase implements EntityNameCo
 
     String getNamePrefixUnmasked() {
         return this.namePrefix
+    }
+
+    String getNameTitleUnmasked() {
+        return this.nameTitle
     }
 
     String getNameSuffixUnmasked() {

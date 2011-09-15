@@ -70,6 +70,21 @@ public interface EntityNameContract extends Versioned, GloballyUnique, Defaultab
      */
 	String getNamePrefixUnmasked();
 
+    /**
+     * Gets this {@link EntityNameContract}'s name title.
+     * Corresponds to PESC NameTitle.
+     * @return the name title for this {@link EntityNameContract}, or null if none has been assigned.
+     */
+    String getNameTitle();
+
+    /**
+     * Gets this {@link EntityNameContract}'s unmasked name title.
+     * Corresponds to PESC NameTitle.
+     * @return the unmasked name title for this {@link EntityNameContract}, or null if none has been assigned.
+     */
+    String getNameTitleUnmasked();
+
+
 	/**
      * Gets this {@link EntityNameContract}'s suffix.
      * Corresponds to PESC NameSuffix.

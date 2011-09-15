@@ -25,6 +25,7 @@ import org.w3c.dom.Element;
     EntityName.Elements.ENTITY_ID,
     EntityName.Elements.NAME_TYPE,
     EntityName.Elements.NAME_PREFIX,
+    EntityName.Elements.NAME_TITLE,
     EntityName.Elements.FIRST_NAME,
     EntityName.Elements.MIDDLE_NAME,
     EntityName.Elements.LAST_NAME,
@@ -69,6 +70,10 @@ public final class EntityName extends AbstractDataTransferObject
     private final String namePrefix;
     @XmlElement(name = Elements.NAME_PREFIX_UNMASKED, required = false)
     private final String namePrefixUnmasked;
+    @XmlElement(name = Elements.NAME_TITLE, required = false)
+    private final String nameTitle;
+    @XmlElement(name = Elements.NAME_TITLE_UNMASKED, required = false)
+    private final String nameTitleUnmasked;
     @XmlElement(name = Elements.NAME_SUFFIX_UNMASKED, required = false)
     private final String nameSuffixUnmasked;
     @XmlElement(name = Elements.COMPOSITE_NAME, required = false)
@@ -107,6 +112,8 @@ public final class EntityName extends AbstractDataTransferObject
         this.lastNameUnmasked = null;
         this.namePrefix = null;
         this.namePrefixUnmasked = null;
+        this.nameTitle = null;
+        this.nameTitleUnmasked = null;
         this.nameSuffixUnmasked = null;
         this.compositeName = null;
         this.compositeNameUnmasked = null;
@@ -130,6 +137,8 @@ public final class EntityName extends AbstractDataTransferObject
         this.lastNameUnmasked = builder.getLastNameUnmasked();
         this.namePrefix = builder.getNamePrefix();
         this.namePrefixUnmasked = builder.getNamePrefixUnmasked();
+        this.nameTitle = builder.getNameTitle();
+        this.nameTitleUnmasked = builder.getNameTitleUnmasked();
         this.nameSuffixUnmasked = builder.getNameSuffixUnmasked();
         this.compositeName = builder.getCompositeName();
         this.compositeNameUnmasked = builder.getCompositeNameUnmasked();
@@ -197,6 +206,16 @@ public final class EntityName extends AbstractDataTransferObject
     }
 
     @Override
+    public String getNameTitle() {
+        return this.nameTitle;
+    }
+
+    @Override
+    public String getNameTitleUnmasked() {
+        return this.nameTitleUnmasked;
+    }
+
+    @Override
     public String getNameSuffixUnmasked() {
         return this.nameSuffixUnmasked;
     }
@@ -257,6 +276,7 @@ public final class EntityName extends AbstractDataTransferObject
         private String middleName;
         private String lastName;
         private String namePrefix;
+        private String nameTitle;
         private boolean suppressName;
         private Long versionNumber;
         private String objectId;
@@ -284,6 +304,7 @@ public final class EntityName extends AbstractDataTransferObject
             builder.setMiddleName(contract.getMiddleName());
             builder.setLastName(contract.getLastName());
             builder.setNamePrefix(contract.getNamePrefix());
+            builder.setNameTitle(contract.getNameTitle());
             builder.setSuppressName(contract.isSuppressName());
             builder.setVersionNumber(contract.getVersionNumber());
             builder.setObjectId(contract.getObjectId());
@@ -368,6 +389,19 @@ public final class EntityName extends AbstractDataTransferObject
         }
 
         @Override
+        public String getNameTitle() {
+            if (isSuppressName()) {
+                return KimConstants.RESTRICTED_DATA_MASK;
+            }
+            return this.nameTitle;
+        }
+
+        @Override
+        public String getNameTitleUnmasked() {
+            return this.nameTitle;
+        }
+
+        @Override
         public String getNameSuffixUnmasked() {
             return this.nameSuffix;
         }
@@ -444,6 +478,9 @@ public final class EntityName extends AbstractDataTransferObject
             this.namePrefix = namePrefix;
         }
 
+        public void setNameTitle(String nameTitle) {
+            this.nameTitle = nameTitle;
+        }
 
         private void setSuppressName(boolean suppressName) {
             this.suppressName = suppressName;
@@ -503,6 +540,8 @@ public final class EntityName extends AbstractDataTransferObject
         final static String LAST_NAME_UNMASKED = "lastNameUnmasked";
         final static String NAME_PREFIX = "namePrefix";
         final static String NAME_PREFIX_UNMASKED = "namePrefixUnmasked";
+        final static String NAME_TITLE = "nameTitle";
+        final static String NAME_TITLE_UNMASKED = "nameTitleUnmasked";
         final static String NAME_SUFFIX_UNMASKED = "nameSuffixUnmasked";
         final static String COMPOSITE_NAME = "compositeName";
         final static String COMPOSITE_NAME_UNMASKED = "compositeNameUnmasked";

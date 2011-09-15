@@ -107,7 +107,7 @@ public class BaseWrappingResourceLoader extends BaseResourceLoader {
 	protected void cacheService(QName serviceName, Object service) {
 	    if (shouldCacheService(serviceName, service)) {
 		LOG.debug("Adding service " + serviceName + " to the service cache.");
-		serviceCache.put(serviceName, service);
+		    serviceCache.put(serviceName, service);
 	    }
 	}
 
@@ -120,7 +120,7 @@ public class BaseWrappingResourceLoader extends BaseResourceLoader {
 	}
 
 	protected boolean shouldCacheService(QName serviceName, Object service) {
-	    return servicesToCache.contains(serviceName);
+	    return servicesToCache.contains(serviceName) && service != null;
 	}
 
 	protected boolean shouldWrapObject(ObjectDefinition definition, Object object) {

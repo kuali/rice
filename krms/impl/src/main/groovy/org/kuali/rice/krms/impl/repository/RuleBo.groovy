@@ -15,48 +15,41 @@
 */
 package org.kuali.rice.krms.impl.repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
-import org.kuali.rice.core.api.util.tree.Node;
-import org.kuali.rice.core.api.util.tree.Tree;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-
+import java.util.Map.Entry
+import org.kuali.rice.core.api.util.tree.Node
+import org.kuali.rice.core.api.util.tree.Tree
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.krms.api.repository.LogicalOperator
-import org.kuali.rice.krms.api.repository.action.ActionDefinition;
-import org.kuali.rice.krms.api.repository.action.ActionDefinitionContract;
-import org.kuali.rice.krms.api.repository.proposition.PropositionType;
-import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
-import org.kuali.rice.krms.api.repository.rule.RuleDefinitionContract;
+import org.kuali.rice.krms.api.repository.action.ActionDefinition
+import org.kuali.rice.krms.api.repository.proposition.PropositionType
+import org.kuali.rice.krms.api.repository.rule.RuleDefinition
+import org.kuali.rice.krms.api.repository.rule.RuleDefinitionContract
 import org.kuali.rice.krms.impl.ui.CompoundOpCodeNode
-import org.kuali.rice.krms.impl.ui.RuleTreeNode;
-import org.kuali.rice.krms.impl.ui.RuleTreeSimplePropositionParameterNode;
-
+import org.kuali.rice.krms.impl.ui.RuleTreeNode
+import org.kuali.rice.krms.impl.ui.RuleTreeSimplePropositionParameterNode
 
 public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinitionContract {
    
-   def String id;
-   def String namespace;
-   def String description;
-   def String name;
-   def String typeId;
-   def String propId;
+   String id;
+   String namespace;
+   String description;
+   String name;
+   String typeId;
+   String propId;
 
-   def PropositionBo proposition;
-   def List<ActionBo> actions;
-   def List<RuleAttributeBo> attributeBos;
+   PropositionBo proposition;
+   List<ActionBo> actions;
+   List<RuleAttributeBo> attributeBos;
    //def List<PropositionBo> allChildPropositions
    
    // for Rule editor display
-   def Tree<RuleTreeNode, String> propositionTree;
+   Tree<RuleTreeNode, String> propositionTree;
    
    // for rule editor display
-   def String propositionSummary;
+   String propositionSummary;
    private StringBuffer propositionSummaryBuffer;
-   def String selectedPropositionId;
+   String selectedPropositionId;
    
    public PropositionBo getProposition(){
        return proposition;

@@ -59,6 +59,27 @@ public interface DocumentLookupCustomizationHandlerService {
             @WebParam(name = "searchableAttributeNames") List<String> searchableAttributeNames
     ) throws RiceIllegalArgumentException;
 
+    /**
+     * Executes validation of the given {@code DocumentLookupCriteria} against the searchable attributes with the given
+     * names..  This method is invoked by the document lookup implementation in order to allow for validation to be
+     * customized via custom searchable attribute implementations.
+     *
+     * <p>The given list of searchable attribute names may not necessary include all searchable attribute on the
+     * document type, only those which need to be handled by the client application hosting this service.  This
+     * determination is made based on the applicationId which is associated with the searchable attribute.
+     * Implementations of this method execute this validationby invoking the
+     * {@link org.kuali.rice.kew.framework.document.attribute.SearchableAttribute#validateDocumentAttributeCriteria(org.kuali.rice.kew.api.extension.ExtensionDefinition, org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria)}
+     * methods on each of the requested searchable attributes.</p>
+     *
+     * @param documentLookupCriteria the criteria against which to perform the validation
+     * @param searchableAttributeNames the names of the searchable attributes against which to execute validation which
+     * are owned by the application hosting this service
+     *
+     * @return a list or remotable attribute errors in the case that any validation errors were raised by the
+     * requested searchable attributes
+     *
+     * @throws RiceIllegalArgumentException if documentTypeName is a null or blank value
+     */
     @WebMethod(operationName = "validateCriteria")
     @WebResult(name = "errors")
     @XmlElementWrapper(name = "errors", required = false)

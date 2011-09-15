@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * TODO...
+ * A remotable service which handles processing of a client application's document lookup customizations.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -29,6 +29,28 @@ import java.util.Set;
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface DocumentLookupCustomizationHandlerService {
 
+    /**
+     * Retrieves the custom {@code DocumentLookupCriteriaConfiguration} to use for the document type with the given name
+     * and for the given list of searchable attributes.  This method is invoked by the document lookup implementation in
+     * order to help assemble the final criteria attribute fields (which includes configuration for all searchable
+     * attributes on the document type).
+     *
+     * <p>The given list of searchable attribute names may not necessary include all searchable attribute on the
+     * document type, only those which need to be handled by the client application hosting this service.  This
+     * determination is made based on the applicationId which is associated with the searchable attribute.
+     * Implementations of this method will assemble this information by invoking the
+     * {@link org.kuali.rice.kew.framework.document.attribute.SearchableAttribute#getSearchFields(org.kuali.rice.kew.api.extension.ExtensionDefinition, String)}
+     * methods on each of the requested searchable attributes.</p>
+     *
+     * @param documentTypeName the document type name for which to retrieve the configuration
+     * @param searchableAttributeNames the names of the searchable attributes from which to assemble criteria
+     * configuration which are owned by the application hosting this service
+     *
+     * @return the custom document lookup criteria configuration for the given searchable attribute, or null if no
+     * custom configuration is needed
+     * 
+     * @throws RiceIllegalArgumentException if documentTypeName is a null or blank value
+     */
     @WebMethod(operationName = "getDocumentLookupConfiguration")
 	@WebResult(name = "documentLookupConfiguration")
 	@XmlElement(name = "documentLookupConfiguration", required = false)

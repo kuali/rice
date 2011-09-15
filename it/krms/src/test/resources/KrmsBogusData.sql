@@ -33,6 +33,11 @@ insert into krms_typ_t
 values ('T3', 'KrmsActionResolverType', 'KRMS_TEST', 'testActionTypeService', 'Y', 1)
 ;
 
+insert into krms_cntxt_vld_actn_t
+(cntxt_vld_actn_id, cntxt_id, actn_typ_id, ver_nbr)
+values ('CONTEXT1T3', 'CONTEXT1', 'T3', 1)
+;
+
 insert into krms_typ_t
 (typ_id, nm, nmspc_cd, actv, ver_nbr)
 values ('T4', 'CONTEXT', 'KRMS_TEST',  'Y', 1)

@@ -9,4 +9,6 @@ public class ContextValidActionBo extends PersistableBusinessObjectBase {
 	def String actionTypeId
 	
 	def Long versionNumber
+
+    def KrmsTypeBo actionType;
 } 

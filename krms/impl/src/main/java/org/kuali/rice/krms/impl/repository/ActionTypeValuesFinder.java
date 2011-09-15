@@ -39,10 +39,9 @@ public class ActionTypeValuesFinder extends KeyValuesBase {
             keyValues.add(new ConcreteKeyValue("", ""));
         }
 
-        // TODO: return only types related to rule action
-        Collection<KrmsTypeBo> actionTypes = KRADServiceLocator.getBusinessObjectService().findAll(KrmsTypeBo.class);
-        for (KrmsTypeBo actionType : actionTypes) {
-            keyValues.add(new ConcreteKeyValue(actionType.getId(), actionType.getName()));
+        Collection<ContextValidActionBo> contextValidActions = KRADServiceLocator.getBusinessObjectService().findAll(ContextValidActionBo.class);
+        for (ContextValidActionBo contextValidAction : contextValidActions) {
+            keyValues.add(new ConcreteKeyValue(contextValidAction.getActionType().getId(), contextValidAction.getActionType().getName()));
         }
         return keyValues;
     }

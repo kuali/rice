@@ -406,4 +406,14 @@
         <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     </class-descriptor>
 
+  <class-descriptor class="org.kuali.rice.krms.impl.repository.ContextValidActionBo" table="KRMS_CNTXT_VLD_ACTN_T">
+      <field-descriptor name="id" column="CNTXT_VLD_ACTN_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRMS_CNTXT_VLD_ACTN_S"/>
+      <field-descriptor name="contextId" column="CNTXT_ID" jdbc-type="VARCHAR" />
+      <field-descriptor name="actionTypeId" column="ACTN_TYP_ID" jdbc-type="VARCHAR" />
+      <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+      <reference-descriptor name="actionType" class-ref="org.kuali.rice.krms.impl.repository.KrmsTypeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+          <foreignkey field-ref="actionTypeId" />
+      </reference-descriptor>
+  </class-descriptor>
+
 </descriptor-repository>

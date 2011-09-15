@@ -79,13 +79,13 @@ class EntityBioDemographicsBo extends PersistableBusinessObjectBase implements E
     EntityBioDemographicsBo bo = new EntityBioDemographicsBo()
     bo.entityId = immutable.entityId
     if (immutable.birthDateUnmasked != null) {
-        bo.birthDateValue = new SimpleDateFormat(EntityBioDemographicsContract.BIRTH_DATE_FORMAT).parse(immutable.birthDateUnmasked)
+        bo.birthDateValue = new java.sql.Date(new SimpleDateFormat(EntityBioDemographicsContract.BIRTH_DATE_FORMAT).parse(immutable.birthDateUnmasked).time)
     }
     bo.birthStateProvinceCode = immutable.birthStateProvinceCodeUnmasked
     bo.birthCity = immutable.birthCityUnmasked
     bo.birthCountry = immutable.birthCountryUnmasked
     if (immutable.deceasedDate != null) {
-        bo.deceasedDateValue = new SimpleDateFormat(EntityBioDemographicsContract.DECEASED_DATE_FORMAT).parse(immutable.deceasedDate)
+        bo.deceasedDateValue = new java.sql.Date(new SimpleDateFormat(EntityBioDemographicsContract.DECEASED_DATE_FORMAT).parse(immutable.deceasedDate).time)
     }
     bo.genderCode = immutable.genderCodeUnmasked
     bo.geographicOrigin = immutable.geographicOriginUnmasked

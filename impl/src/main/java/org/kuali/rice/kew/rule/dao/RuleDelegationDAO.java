@@ -20,18 +20,17 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kew.rule.RuleDelegation;
-
+import org.kuali.rice.kew.rule.RuleDelegationBo;
 
 public interface RuleDelegationDAO {
 
-    public List<RuleDelegation> findByDelegateRuleId(String ruleId);
-    public void save(RuleDelegation ruleDelegation);
-    public List<RuleDelegation> findAllCurrentRuleDelegations();
+    public List<RuleDelegationBo> findByDelegateRuleId(String ruleId);
+    public void save(RuleDelegationBo ruleDelegation);
+    public List<RuleDelegationBo> findAllCurrentRuleDelegations();
     public void delete(String ruleDelegationId);
-    public RuleDelegation findByRuleDelegationId(String ruleDelegationId);
-    public List<RuleDelegation> findByResponsibilityIdWithCurrentRule(String responsibiliytId);
-    public List<RuleDelegation> search(String parentRuleBaseVaueId, String parentResponsibilityId, String docTypeName, String ruleId, String ruleTemplateId, String ruleDescription, String workgroupId, String workflowId, String delegationType, Boolean activeInd, Map extensionValues, String workflowIdDirective);
-    public List<RuleDelegation> search(String parentRuleBaseVaueId, String parentResponsibilityId, String docTypeName, String ruleTemplateId, String ruleDescription, Collection<String> workgroupIds, String workflowId, String delegationType, Boolean activeInd, Map extensionValues, Collection actionRequestCodes);
+    public RuleDelegationBo findByRuleDelegationId(String ruleDelegationId);
+    public List<RuleDelegationBo> findByResponsibilityIdWithCurrentRule(String responsibiliytId);
+    public List<RuleDelegationBo> search(String parentRuleBaseVaueId, String parentResponsibilityId, String docTypeName, String ruleId, String ruleTemplateId, String ruleDescription, String workgroupId, String workflowId, String delegationType, Boolean activeInd, Map extensionValues, String workflowIdDirective);
+    public List<RuleDelegationBo> search(String parentRuleBaseVaueId, String parentResponsibilityId, String docTypeName, String ruleTemplateId, String ruleDescription, Collection<String> workgroupIds, String workflowId, String delegationType, Boolean activeInd, Map extensionValues, Collection actionRequestCodes);
 
 }

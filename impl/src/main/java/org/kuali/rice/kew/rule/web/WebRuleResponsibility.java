@@ -24,11 +24,11 @@ import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
-import org.kuali.rice.kew.rule.RuleResponsibility;
-import org.kuali.rice.kew.rule.service.RuleService;
+import org.kuali.rice.kew.rule.RuleResponsibilityBo;
+import org.kuali.rice.kew.rule.service.RuleServiceInternal;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.Group;
@@ -44,13 +44,13 @@ import java.util.List;
 
 
 /**
- * A decorator around a {@link RuleResponsibility} object which provides some
+ * A decorator around a {@link org.kuali.rice.kew.rule.RuleResponsibilityBo} object which provides some
  * convienance functions for interacting with the bean from the web-tier.
  * This helps to alleviate some of the weaknesses of JSTL.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class WebRuleResponsibility extends RuleResponsibility {
+public class WebRuleResponsibility extends RuleResponsibilityBo {
 
 	private static final long serialVersionUID = -8422695726158274189L;
 
@@ -106,7 +106,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 		setNumberOfDelegations(getDelegationRules().size());
 		if (delegationRulesMaterialized) {
 			for (Iterator iterator = getDelegationRules().iterator(); iterator.hasNext();) {
-				RuleDelegation ruleDelegation = (RuleDelegation) iterator.next();
+				RuleDelegationBo ruleDelegation = (RuleDelegationBo) iterator.next();
 				WebRuleBaseValues webRule = (WebRuleBaseValues) ruleDelegation.getDelegationRule();
 				webRule.initialize();
 			}
@@ -150,7 +150,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 
 		if (Integer.parseInt(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_DELEGATE_LIMIT)) > getDelegationRules().size() || showDelegations) {
 			for (Iterator iterator = getDelegationRules().iterator(); iterator.hasNext();) {
-				RuleDelegation ruleDelegation = (RuleDelegation) iterator.next();
+				RuleDelegationBo ruleDelegation = (RuleDelegationBo) iterator.next();
 				WebRuleBaseValues webRule = new WebRuleBaseValues();
 				webRule.load(ruleDelegation.getDelegationRule());
 				webRule.edit(ruleDelegation.getDelegationRule());
@@ -159,8 +159,8 @@ public class WebRuleResponsibility extends RuleResponsibility {
 		}
 	}
 
-	public RuleDelegation addNewDelegation() {
-		RuleDelegation ruleDelegation = new RuleDelegation();
+	public RuleDelegationBo addNewDelegation() {
+		RuleDelegationBo ruleDelegation = new RuleDelegationBo();
 		ruleDelegation.setDelegationRule(new WebRuleBaseValues());
 		ruleDelegation.setDelegationType(DelegationType.PRIMARY.getCode());
 		ruleDelegation.getDelegationRule().setDelegateRule(Boolean.TRUE);
@@ -220,11 +220,11 @@ public class WebRuleResponsibility extends RuleResponsibility {
 		this.workgroupLookupStyle = workgroupLookupStyle;
 	}
 
-	public RuleDelegation getDelegationRule(int index) {
+	public RuleDelegationBo getDelegationRule(int index) {
 		while (getDelegationRules().size() <= index) {
 			addNewDelegation();
 		}
-		return (RuleDelegation) getDelegationRules().get(index);
+		return (RuleDelegationBo) getDelegationRules().get(index);
 	}
 
 	public int getNumberOfDelegations() {
@@ -289,7 +289,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 		loadWebValues();
 		if (delegationRulesMaterialized) {
 			for (Iterator iterator = getDelegationRules().iterator(); iterator.hasNext();) {
-				RuleDelegation delegation = (RuleDelegation) iterator.next();
+				RuleDelegationBo delegation = (RuleDelegationBo) iterator.next();
 				((WebRuleBaseValues) delegation.getDelegationRule()).establishRequiredState();
 			}
 		}
@@ -335,17 +335,17 @@ public class WebRuleResponsibility extends RuleResponsibility {
 		int delIndex = 0;
 		for (Iterator respIterator = getDelegationRules().iterator(); respIterator.hasNext();) {
 			String delPrefix = keyPrefix + "delegationRule[" + delIndex + "].delegationRuleBaseValues.";
-			RuleDelegation ruleDelegation = (RuleDelegation) respIterator.next();
+			RuleDelegationBo ruleDelegation = (RuleDelegationBo) respIterator.next();
 			((WebRuleBaseValues) ruleDelegation.getDelegationRule()).validateRule(delPrefix, errors);
 		}
 	}
 
-	public void edit(RuleResponsibility ruleResponsibility) throws Exception {
+	public void edit(RuleResponsibilityBo ruleResponsibility) throws Exception {
 		load(ruleResponsibility);
 		initialize();
 	}
 
-	public void load(RuleResponsibility ruleResponsibility) throws Exception {
+	public void load(RuleResponsibilityBo ruleResponsibility) throws Exception {
 		PropertyUtils.copyProperties(this, ruleResponsibility);
 		injectWebMembers();
 	}
@@ -354,7 +354,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 		fetchDelegations();
 
 		for (Iterator iterator = getDelegationRules().iterator(); iterator.hasNext();) {
-			RuleDelegation ruleDelegation = (RuleDelegation) iterator.next();
+			RuleDelegationBo ruleDelegation = (RuleDelegationBo) iterator.next();
 			WebRuleBaseValues webRule = new WebRuleBaseValues();
 			webRule.edit(ruleDelegation.getDelegationRule());
 			ruleDelegation.setDelegationRule(webRule);
@@ -366,7 +366,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 	public void populatePreviousVersionIds() {
 		if (delegationRulesMaterialized) {
 			for (Iterator iterator = getDelegationRules().iterator(); iterator.hasNext();) {
-				RuleDelegation delegation = (RuleDelegation) iterator.next();
+				RuleDelegationBo delegation = (RuleDelegationBo) iterator.next();
 				((WebRuleBaseValues) delegation.getDelegationRule()).populatePreviousVersionIds();
 			}
 		}
@@ -374,7 +374,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 
 	private void fetchDelegations() {
 		if (getId() != null) {
-			RuleResponsibility responsibility = getRuleService().findByRuleResponsibilityId(getId());
+			RuleResponsibilityBo responsibility = getRuleService().findByRuleResponsibilityId(getId());
 			if (responsibility == null) {
 				return;
 			}
@@ -390,7 +390,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 		fetchDelegations();
 
 		for (Iterator iter = getDelegationRules().iterator(); iter.hasNext();) {
-			RuleDelegation delegation = (RuleDelegation) iter.next();
+			RuleDelegationBo delegation = (RuleDelegationBo) iter.next();
 			delegation.setDelegateRuleId(null);
 			delegation.setVersionNumber(null);
 			delegation.setRuleDelegationId(null);
@@ -404,7 +404,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 			rule.setId(null);
 
 			for (Iterator iterator = rule.getRuleResponsibilities().iterator(); iterator.hasNext();) {
-				RuleResponsibility responsibility = (RuleResponsibility) iterator.next();
+				RuleResponsibilityBo responsibility = (RuleResponsibilityBo) iterator.next();
 				responsibility.setVersionNumber(null);
 				responsibility.setRuleBaseValuesId(null);
 				responsibility.setRuleBaseValues(rule);
@@ -437,8 +437,8 @@ public class WebRuleResponsibility extends RuleResponsibility {
 		this.hasDelegateRuleTemplate = hasDelegateRuleTemplate;
 	}
 
-	private RuleService getRuleService() {
-		return (RuleService) KEWServiceLocator.getService(KEWServiceLocator.RULE_SERVICE);
+	private RuleServiceInternal getRuleService() {
+		return (RuleServiceInternal) KEWServiceLocator.getService(KEWServiceLocator.RULE_SERVICE);
 	}
 
 	/**
@@ -461,7 +461,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 		public Object invoke(Object proxy, Method m, Object[] args) throws Throwable {
 			if (!delegationRulesMaterialized && !m.getName().equals("isEmpty") && !m.getName().equals("size")) {
 				for (Iterator iterator = delegationRules.iterator(); iterator.hasNext();) {
-					RuleDelegation ruleDelegation = (RuleDelegation) iterator.next();
+					RuleDelegationBo ruleDelegation = (RuleDelegationBo) iterator.next();
 					WebRuleBaseValues webRule = new WebRuleBaseValues();
 					webRule.load(ruleDelegation.getDelegationRule());
 					webRule.establishRequiredState();

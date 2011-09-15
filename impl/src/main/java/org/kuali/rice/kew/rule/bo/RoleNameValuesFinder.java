@@ -20,7 +20,7 @@ import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.util.KNSGlobalVariables;
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
@@ -51,8 +51,8 @@ public class RoleNameValuesFinder extends KeyValuesBase {
 			RuleBaseValues rule = null;
 			if (businessObject instanceof RuleBaseValues) {
 				rule = (RuleBaseValues)businessObject;
-			} else if (businessObject instanceof RuleDelegation) {
-				rule = ((RuleDelegation)businessObject).getDelegationRule();
+			} else if (businessObject instanceof RuleDelegationBo) {
+				rule = ((RuleDelegationBo)businessObject).getDelegationRule();
 			} else {
 				throw new RiceRuntimeException("Cannot locate RuleBaseValues business object on maintenance document.  Business Object was " + businessObject);
 			}

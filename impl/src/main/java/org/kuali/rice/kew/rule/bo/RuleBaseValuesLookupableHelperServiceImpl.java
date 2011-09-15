@@ -31,7 +31,7 @@ import org.kuali.rice.kew.rule.OddSearchAttribute;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.WorkflowAttribute;
-import org.kuali.rice.kew.rule.service.RuleService;
+import org.kuali.rice.kew.rule.service.RuleServiceInternal;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.rule.web.WebRuleUtils;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
@@ -413,8 +413,8 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
     private RuleTemplateService getRuleTemplateService() {
         return (RuleTemplateService) KEWServiceLocator.getService(KEWServiceLocator.RULE_TEMPLATE_SERVICE);
     }
-    private RuleService getRuleService() {
-        return (RuleService) KEWServiceLocator.getService(KEWServiceLocator.RULE_SERVICE);
+    private RuleServiceInternal getRuleService() {
+        return (RuleServiceInternal) KEWServiceLocator.getService(KEWServiceLocator.RULE_SERVICE);
     }
 
     @Override

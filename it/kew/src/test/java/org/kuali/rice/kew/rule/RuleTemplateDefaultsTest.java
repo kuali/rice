@@ -200,7 +200,7 @@ public class RuleTemplateDefaultsTest extends KEWTestCase {
 		// Check each responsibility's default action.
 		for (int i = 0; i < respSectionConsts.length; i++) {
 			final String actualDefAction =
-					((RuleResponsibility) rrMaint.initNewCollectionLine(respSectionConsts[i])).getActionRequestedCd();
+					((RuleResponsibilityBo) rrMaint.initNewCollectionLine(respSectionConsts[i])).getActionRequestedCd();
 			assertEquals("The rule template does not have the expected default approve action.", expectedDefActions[i], actualDefAction);
 		}
 	}

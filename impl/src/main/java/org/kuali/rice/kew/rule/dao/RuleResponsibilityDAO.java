@@ -17,12 +17,12 @@
 
 package org.kuali.rice.kew.rule.dao;
 
-import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 
 
 public interface RuleResponsibilityDAO {
 
   public void delete(String ruleResponsibilityId);
-  public RuleResponsibility findByRuleResponsibilityId(String ruleResponsibilityId);
+  public RuleResponsibilityBo findByRuleResponsibilityId(String ruleResponsibilityId);
   
 }

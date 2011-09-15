@@ -27,7 +27,7 @@ import org.kuali.rice.core.api.util.xml.XmlException;
 import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kew.rule.RuleTemplateOptionBo;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
@@ -254,7 +254,7 @@ public class RuleTemplateXmlParser {
                 KEWServiceLocator.getRuleService().delete(ruleDefaults.getId());
                 // delete the associated rule delegation defaults
                 for (Iterator iterator = ruleDelegationDefaults.iterator(); iterator.hasNext();) {
-                    RuleDelegation ruleDelegation = (RuleDelegation) iterator.next();
+                    RuleDelegationBo ruleDelegation = (RuleDelegationBo) iterator.next();
                     KEWServiceLocator.getRuleDelegationService().delete(ruleDelegation.getRuleDelegationId());
                 }
             }
@@ -308,9 +308,9 @@ public class RuleTemplateXmlParser {
             
             // ok, if this is a "Delegate Template", then we need to set this other RuleDelegation object which contains
             // some delegation-related info
-            RuleDelegation ruleDelegationDefaults = null;
+            RuleDelegationBo ruleDelegationDefaults = null;
             if (isDelegation) {
-                ruleDelegationDefaults = new RuleDelegation();
+                ruleDelegationDefaults = new RuleDelegationBo();
                 ruleDelegationDefaults.setDelegationRule(ruleDefaults);
                 ruleDelegationDefaults.setDelegationType(delegationType);
                 ruleDelegationDefaults.setResponsibilityId(KEWConstants.ADHOC_REQUEST_RESPONSIBILITY_ID);

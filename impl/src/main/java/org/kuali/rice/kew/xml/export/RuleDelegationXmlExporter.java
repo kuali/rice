@@ -23,8 +23,8 @@ import org.kuali.rice.core.api.util.xml.XmlRenderer;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleDelegation;
-import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kew.rule.RuleDelegationBo;
+import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -58,7 +58,7 @@ public class RuleDelegationXmlExporter implements XmlExporter {
             Element rootElement = renderer.renderElement(null, RULE_DELEGATIONS);
             rootElement.setAttribute(SCHEMA_LOCATION_ATTR, RULE_SCHEMA_LOCATION, SCHEMA_NAMESPACE);
             for (Iterator iterator = dataSet.getRuleDelegations().iterator(); iterator.hasNext();) {
-                RuleDelegation ruleDelegation = (RuleDelegation) iterator.next();
+                RuleDelegationBo ruleDelegation = (RuleDelegationBo) iterator.next();
                 exportRuleDelegation(rootElement, ruleDelegation);
             }
             return rootElement;
@@ -66,16 +66,16 @@ public class RuleDelegationXmlExporter implements XmlExporter {
         return null;
     }
 
-    private void exportRuleDelegation(Element parent, RuleDelegation ruleDelegation) {
+    private void exportRuleDelegation(Element parent, RuleDelegationBo ruleDelegation) {
     	Element ruleDelegationElement = renderer.renderElement(parent, RULE_DELEGATION);
     	exportParentResponsibility(ruleDelegationElement, ruleDelegation);
     	renderer.renderTextElement(ruleDelegationElement, DELEGATION_TYPE, ruleDelegation.getDelegationType());
     	ruleExporter.exportRule(ruleDelegationElement, ruleDelegation.getDelegationRule());
     }
     
-    private void exportParentResponsibility(Element parent, RuleDelegation delegation) {
+    private void exportParentResponsibility(Element parent, RuleDelegationBo delegation) {
         Element parentResponsibilityElement = renderer.renderElement(parent, PARENT_RESPONSIBILITY);
-        RuleResponsibility ruleResponsibility = KEWServiceLocator.getRuleService().findRuleResponsibility(delegation.getResponsibilityId());
+        RuleResponsibilityBo ruleResponsibility = KEWServiceLocator.getRuleService().findRuleResponsibility(delegation.getResponsibilityId());
         renderer.renderTextElement(parentResponsibilityElement, PARENT_RULE_NAME, ruleResponsibility.getRuleBaseValues().getName());
         if (ruleResponsibility.isUsingPrincipal()) {
         	Principal principal = ruleResponsibility.getPrincipal();

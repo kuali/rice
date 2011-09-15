@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.document;
 
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 
 /**
@@ -42,8 +42,8 @@ public class RoutingRuleDelegationMaintainableBusRule extends RoutingRuleMaintai
 		return this.getBusObject(document).getDelegationRule();
 	}
 
-	protected RuleDelegation getBusObject(MaintenanceDocument document){
-		return (RuleDelegation)document.getNewMaintainableObject().getBusinessObject();
+	protected RuleDelegationBo getBusObject(MaintenanceDocument document){
+		return (RuleDelegationBo)document.getNewMaintainableObject().getBusinessObject();
 	}
 	
 	/**
@@ -55,8 +55,8 @@ public class RoutingRuleDelegationMaintainableBusRule extends RoutingRuleMaintai
 		return this.getOldBusObject(document).getDelegationRule();
 	}
 
-	protected RuleDelegation getOldBusObject(MaintenanceDocument document){
-		return (RuleDelegation)document.getOldMaintainableObject().getBusinessObject();
+	protected RuleDelegationBo getOldBusObject(MaintenanceDocument document){
+		return (RuleDelegationBo)document.getOldMaintainableObject().getBusinessObject();
 	}
 
 	/**

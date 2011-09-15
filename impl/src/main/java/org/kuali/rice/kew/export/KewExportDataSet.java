@@ -23,7 +23,7 @@ import javax.xml.namespace.QName;
 import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kim.api.group.Group;
@@ -50,7 +50,7 @@ public class KewExportDataSet {
 	private List<RuleAttribute> ruleAttributes = new ArrayList<RuleAttribute>();
 	private List<RuleTemplateBo> ruleTemplates = new ArrayList<RuleTemplateBo>();
 	private List<RuleBaseValues> rules = new ArrayList<RuleBaseValues>();
-	private List<RuleDelegation> ruleDelegations = new ArrayList<RuleDelegation>();
+	private List<RuleDelegationBo> ruleDelegations = new ArrayList<RuleDelegationBo>();
 
 	public List<DocumentType> getDocumentTypes() {
 		return documentTypes;
@@ -76,7 +76,7 @@ public class KewExportDataSet {
 		this.groups = groups;
 	}
 
-	public List<RuleDelegation> getRuleDelegations() {
+	public List<RuleDelegationBo> getRuleDelegations() {
 		return this.ruleDelegations;
 	}
 	
@@ -130,7 +130,7 @@ public class KewExportDataSet {
 		if (rules != null) {
 			kewExportDataSet.getRules().addAll(rules);
 		}
-		List<RuleDelegation> ruleDelegations = (List<RuleDelegation>)exportDataSet.getDataSets().get(RULE_DELEGATIONS);
+		List<RuleDelegationBo> ruleDelegations = (List<RuleDelegationBo>)exportDataSet.getDataSets().get(RULE_DELEGATIONS);
 		if (ruleDelegations != null) {
 			kewExportDataSet.getRuleDelegations().addAll(ruleDelegations);
 		}

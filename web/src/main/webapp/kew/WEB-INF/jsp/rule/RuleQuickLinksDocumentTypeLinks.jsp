@@ -86,7 +86,7 @@
 	                    <c:if test="${routeLevel.ruleTemplate.delegationTemplate != null}">
 	                      &nbsp;
 	                      <a href="<c:url value="RuleQuickLinks.do">
-	                          <c:param name="businessObjectClassName" value="org.kuali.rice.kew.rule.RuleDelegation"/>
+	                          <c:param name="businessObjectClassName" value="org.kuali.rice.kew.rule.RuleDelegationBo"/>
 	                          <c:param name="returnLocation" value="DelegateRule.do"/>
 	                          <c:param name="hideReturnLink" value="false"/>
 	                          <c:param name="methodToCall" value="addDelegationRule"/>
@@ -96,7 +96,7 @@
 	                          <c:param name="delegationRuleBaseValues.ruleTemplate.id" value="${routeLevel.ruleTemplate.id}"/>
 	                        </c:url>" target="_blank">Add Delegation</a>&nbsp;
 	                      <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.LOOKUP_ACTION}">
-	                          <c:param name="businessObjectClassName" value="org.kuali.rice.kew.rule.RuleDelegation"/>
+	                          <c:param name="businessObjectClassName" value="org.kuali.rice.kew.rule.RuleDelegationBo"/>
 	                          <c:param name="returnLocation" value="${ConfigProperties.application.url}/portal.do"/>
 	                          <c:param name="hideReturnLink" value="true"/>
 	                          <c:param name="methodToCall" value="start"/>
@@ -158,7 +158,7 @@
                     <c:if test="${routeLevel.ruleTemplate.delegationTemplate != null}">
                       &nbsp;
                       <a href="<c:url value="RuleQuickLinks.do">
-                          <c:param name="businessObjectClassName" value="org.kuali.rice.kew.rule.RuleDelegation"/>
+                          <c:param name="businessObjectClassName" value="org.kuali.rice.kew.rule.RuleDelegationBo"/>
                           <c:param name="returnLocation" value="DelegateRule.do"/>
                           <c:param name="hideReturnLink" value="false"/>
                           <c:param name="methodToCall" value="addDelegationRule"/>
@@ -168,7 +168,7 @@
                           <c:param name="delegationRuleBaseValues.ruleTemplate.id" value="${routeLevel.ruleTemplate.id}"/>
                         </c:url>" target="_blank">Add Delegation</a>&nbsp;
                       <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.LOOKUP_ACTION}">
-                          <c:param name="businessObjectClassName" value="org.kuali.rice.kew.rule.RuleDelegation"/>
+                          <c:param name="businessObjectClassName" value="org.kuali.rice.kew.rule.RuleDelegationBo"/>
                           <c:param name="returnLocation" value="${ConfigProperties.application.url}/portal.do"/>
                           <c:param name="hideReturnLink" value="true"/>
                           <c:param name="methodToCall" value="start"/>

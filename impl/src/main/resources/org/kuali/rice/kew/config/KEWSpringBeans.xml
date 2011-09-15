@@ -122,7 +122,7 @@
       <list>
         <idref local="enRuleAttributeService" />
         <idref local="enRuleTemplateService" />
-        <idref local="enRuleService" />
+        <idref local="enRuleServiceInternal" />
         <idref local="enDocumentRouteHeaderService" />
         <idref local="enActionListService" />
         <idref local="enDocumentSearchService" />
@@ -264,7 +264,7 @@
 	</bean>
 
 	<!--  RuleService -->
-	<bean id="enRuleService" class="org.kuali.rice.kew.rule.service.impl.RuleServiceImpl" lazy-init="true">
+	<bean id="enRuleServiceInternal" class="org.kuali.rice.kew.rule.service.impl.RuleServiceInternalImpl" lazy-init="true">
 		<property name="ruleDAO">
 			<ref bean="enRuleDAO" />
 		</property>
@@ -692,7 +692,7 @@
              <ref local="enGroupXmlService" />
              <ref local="enRuleTemplateService" />
              <ref local="enDocumentTypeService" />
-             <ref local="enRuleService" />
+             <ref local="enRuleServiceInternal" />
              <ref local="enRuleDelegationService" />
              <!--<ref local="kimImporterAndExporter" />-->
              <!--  ref local="enEDocLiteService" / -->
@@ -704,7 +704,7 @@
              <ref local="enGroupXmlService" />
              <ref local="enRuleTemplateService" />
              <ref local="enDocumentTypeService" />
-             <ref local="enRuleService" />
+             <ref local="enRuleServiceInternal" />
              <ref local="enRuleDelegationService" />
              <!--<ref local="kimImporterAndExporter" />-->
              <!-- ref local="enEDocLiteService" / -->
@@ -774,7 +774,9 @@
 		<property name="noteDao" ref="enNoteDAO" />
 	</bean>
 
-  <bean id="rice.kew.ruleService" class="org.kuali.rice.kew.impl.rule.RuleServiceImpl"/>
+  <bean id="rice.kew.ruleService" class="org.kuali.rice.kew.impl.rule.RuleServiceImpl"
+        p:businessObjectService-ref="businessObjectService"
+        p:criteriaLookupService-ref="criteriaLookupService" />
 
   <bean id="rice.kew.documentLookupCustomizationHandlerService" class="org.kuali.rice.kew.docsearch.DocumentLookupCustomizationHandlerServiceImpl">
 		<property name="extensionRepositoryService" ref="rice.kew.extensionRepositoryService" />
@@ -802,7 +804,12 @@
   <bean id="kewTypeRepository" class="org.kuali.rice.kew.impl.repository.KewTypeBoServiceImpl">
     <property name="businessObjectService" ref="businessObjectService"/>
   </bean>
-  
+
+  <bean id="criteriaLookupService"
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="criteriaLookupService" />
+	</bean>
+
   <bean id="businessObjectService"
 	 class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 	 <property name="serviceName" value="businessObjectService" />

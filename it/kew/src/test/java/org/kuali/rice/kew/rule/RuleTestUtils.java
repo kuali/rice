@@ -49,13 +49,13 @@ public final class RuleTestUtils {
 	 * 
 	 * @param delegateUser the user who will be the delegate
 	 */
-	public static RuleDelegation createDelegationToUser(String docType, String ruleTemplate, String delegateUser) {
+	public static RuleDelegationBo createDelegationToUser(String docType, String ruleTemplate, String delegateUser) {
 		// create and save a rule delegation 
     	RuleBaseValues originalRule = getRule(docType, ruleTemplate);
-    	List<RuleResponsibility> responsibilities = originalRule.getRuleResponsibilities();
+    	List<RuleResponsibilityBo> responsibilities = originalRule.getRuleResponsibilities();
     	assertTrue("assuming there is 1 responsibility", responsibilities != null && responsibilities.size() == 1);
     	
-    	RuleResponsibility originalResp = responsibilities.get(0);
+    	RuleResponsibilityBo originalResp = responsibilities.get(0);
 
     	Principal delegatePrincipal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(delegateUser);
 
@@ -72,13 +72,13 @@ public final class RuleTestUtils {
 	 * 
 	 * @param delegateUser the user who will be the delegate
 	 */
-	public static RuleDelegation createDelegationToGroup(String docType, String ruleTemplate, String delegateGroupId) {
+	public static RuleDelegationBo createDelegationToGroup(String docType, String ruleTemplate, String delegateGroupId) {
 		// create and save a rule delegation 
     	RuleBaseValues originalRule = getRule(docType, ruleTemplate);
-    	List<RuleResponsibility> responsibilities = originalRule.getRuleResponsibilities();
+    	List<RuleResponsibilityBo> responsibilities = originalRule.getRuleResponsibilities();
     	assertTrue("assuming there is 1 responsibility", responsibilities != null && responsibilities.size() == 1);
     	
-    	RuleResponsibility originalResp = responsibilities.get(0);
+    	RuleResponsibilityBo originalResp = responsibilities.get(0);
     	Group delegateGroup = KEWServiceLocator.getIdentityHelperService().getGroup(new GroupNameId(delegateGroupId));
     	
 		// save the new rule delegation
@@ -105,7 +105,7 @@ public final class RuleTestUtils {
 	 * @param parentResponsibility
 	 * @param delegatePrincipal
 	 */
-	public static RuleDelegation createRuleDelegationToUser(RuleBaseValues parentRule, RuleResponsibility parentResponsibility, PrincipalContract delegatePrincipal) {
+	public static RuleDelegationBo createRuleDelegationToUser(RuleBaseValues parentRule, RuleResponsibilityBo parentResponsibility, PrincipalContract delegatePrincipal) {
 		return createRuleDelegation(parentRule, parentResponsibility, delegatePrincipal.getPrincipalId(), KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
 	}
 	
@@ -118,7 +118,7 @@ public final class RuleTestUtils {
 	 * @param parentResponsibility
 	 * @param delegateGroup
 	 */
-	public static RuleDelegation createRuleDelegationToGroup(RuleBaseValues parentRule, RuleResponsibility parentResponsibility, Group delegateGroup) {
+	public static RuleDelegationBo createRuleDelegationToGroup(RuleBaseValues parentRule, RuleResponsibilityBo parentResponsibility, Group delegateGroup) {
 		return createRuleDelegation(parentRule, parentResponsibility, delegateGroup.getId(), KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
 	}
 	
@@ -127,9 +127,9 @@ public final class RuleTestUtils {
 	 * 
 	 * <p>As a side effect, active documents of this type will be requeued for workflow processing.
 	 */
-	private static RuleDelegation createRuleDelegation(RuleBaseValues parentRule, RuleResponsibility parentResponsibility, String delegateId, String groupTypeCode) {
+	private static RuleDelegationBo createRuleDelegation(RuleBaseValues parentRule, RuleResponsibilityBo parentResponsibility, String delegateId, String groupTypeCode) {
     	RuleTemplateBo delegationTemplate = parentRule.getRuleTemplate();
-		RuleDelegation ruleDelegation = new RuleDelegation();
+		RuleDelegationBo ruleDelegation = new RuleDelegationBo();
 		ruleDelegation.setResponsibilityId(parentResponsibility.getResponsibilityId());
 		ruleDelegation.setDelegationType(DelegationType.PRIMARY.getCode());
 		RuleBaseValues rule = new RuleBaseValues();
@@ -142,7 +142,7 @@ public final class RuleTestUtils {
 		rule.setRuleTemplate(delegationTemplate);
 		rule.setDescription("Description of this delegate rule");
 		rule.setForceAction(true);
-		RuleResponsibility delegationResponsibility = new RuleResponsibility();
+		RuleResponsibilityBo delegationResponsibility = new RuleResponsibilityBo();
 		rule.getRuleResponsibilities().add(delegationResponsibility);
 		delegationResponsibility.setRuleBaseValues(rule);
 		delegationResponsibility.setRuleResponsibilityName(delegateId);

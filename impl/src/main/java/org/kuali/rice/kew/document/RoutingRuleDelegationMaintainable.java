@@ -21,7 +21,7 @@ import java.util.Map;
 
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kew.rule.web.WebRuleUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
@@ -67,8 +67,8 @@ public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
 	 * populated with non-null object references.
 	 */
 	private void initializeBusinessObjects(MaintenanceDocument document) {
-		RuleDelegation oldRuleDelegation = getOldRuleDelegation(document);
-		RuleDelegation newRuleDelegation = getNewRuleDelegation(document);
+		RuleDelegationBo oldRuleDelegation = getOldRuleDelegation(document);
+		RuleDelegationBo newRuleDelegation = getNewRuleDelegation(document);
 		if (oldRuleDelegation.getDelegationRule() == null) {
 			oldRuleDelegation.setDelegationRule(new RuleBaseValues());
 		}
@@ -139,16 +139,16 @@ public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
         return title.toString();
 	}
 	
-	protected RuleDelegation getNewRuleDelegation(MaintenanceDocument document) {
-		return (RuleDelegation)document.getNewMaintainableObject().getBusinessObject();
+	protected RuleDelegationBo getNewRuleDelegation(MaintenanceDocument document) {
+		return (RuleDelegationBo)document.getNewMaintainableObject().getBusinessObject();
 	}
 	
-	protected RuleDelegation getOldRuleDelegation(MaintenanceDocument document) {
-		return (RuleDelegation)document.getOldMaintainableObject().getBusinessObject();
+	protected RuleDelegationBo getOldRuleDelegation(MaintenanceDocument document) {
+		return (RuleDelegationBo)document.getOldMaintainableObject().getBusinessObject();
 	}
 
-	protected RuleDelegation getThisRuleDelegation() {
-		return (RuleDelegation)getBusinessObject();
+	protected RuleDelegationBo getThisRuleDelegation() {
+		return (RuleDelegationBo)getBusinessObject();
 	}
 
 	protected RuleBaseValues getNewRule(MaintenanceDocument document) {

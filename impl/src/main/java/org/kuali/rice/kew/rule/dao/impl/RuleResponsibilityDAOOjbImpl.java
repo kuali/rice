@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.rule.dao.impl;
 
 import org.apache.ojb.broker.query.QueryByCriteria;
-import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.dao.RuleResponsibilityDAO;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
@@ -38,9 +38,9 @@ public class RuleResponsibilityDAOOjbImpl extends PersistenceBrokerDaoSupport im
      * 
      * @see org.kuali.rice.kew.rule.dao.RuleTemplateAttributeDAO#findByRuleTemplateAttributeId(java.lang.Long)
      */
-    public RuleResponsibility findByRuleResponsibilityId(String ruleResponsibilityId) {
-        RuleResponsibility ruleResponsibility = new RuleResponsibility();
+    public RuleResponsibilityBo findByRuleResponsibilityId(String ruleResponsibilityId) {
+        RuleResponsibilityBo ruleResponsibility = new RuleResponsibilityBo();
         ruleResponsibility.setId(ruleResponsibilityId);
-        return (RuleResponsibility) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(ruleResponsibility));
+        return (RuleResponsibilityBo) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(ruleResponsibility));
     }
 }

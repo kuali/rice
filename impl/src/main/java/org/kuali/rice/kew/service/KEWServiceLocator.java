@@ -45,7 +45,6 @@ import org.kuali.rice.kew.engine.node.service.BranchService;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.engine.simulation.SimulationWorkflowEngine;
 import org.kuali.rice.kew.exception.WorkflowDocumentExceptionRoutingService;
-import org.kuali.rice.kew.framework.validation.RuleValidationAttributeExporterService;
 import org.kuali.rice.kew.identity.service.IdentityHelperService;
 import org.kuali.rice.kew.impl.document.WorkflowDocumentPrototype;
 import org.kuali.rice.kew.mail.service.ActionListEmailService;
@@ -61,7 +60,7 @@ import org.kuali.rice.kew.routemodule.service.RouteModuleService;
 import org.kuali.rice.kew.routemodule.service.RoutingReportService;
 import org.kuali.rice.kew.rule.service.RuleAttributeService;
 import org.kuali.rice.kew.rule.service.RuleDelegationService;
-import org.kuali.rice.kew.rule.service.RuleService;
+import org.kuali.rice.kew.rule.service.RuleServiceInternal;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -122,7 +121,7 @@ public final class KEWServiceLocator {
 
 	public static final String RULE_TEMPLATE_SERVICE = "enRuleTemplateService";
 
-	public static final String RULE_SERVICE = "enRuleService";
+	public static final String RULE_SERVICE = "enRuleServiceInternal";
 
 	public static final String RULE_ATTRIBUTE_SERVICE = "enRuleAttributeService";
 
@@ -286,8 +285,8 @@ public final class KEWServiceLocator {
 		return (RoleService) getBean(ROLE_SERVICE);
 	}
 
-	public static RuleService getRuleService() {
-		return (RuleService) getBean(RULE_SERVICE);
+	public static RuleServiceInternal getRuleService() {
+		return (RuleServiceInternal) getBean(RULE_SERVICE);
 	}
 
 	public static RuleDelegationService getRuleDelegationService() {

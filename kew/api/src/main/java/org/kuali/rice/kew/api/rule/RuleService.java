@@ -35,7 +35,7 @@ public interface RuleService {
     /**
      * gets a Rule identified by the passed in id
      *
-     * @param id unique idea for the Rule
+     * @param id unique id for the Rule
      *
      * @return Rule with the passed in unique id
      *
@@ -61,6 +61,22 @@ public interface RuleService {
     @WebResult(name = "rule")
 	Rule getRuleByName(@WebParam(name="name") String name)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
+
+    /**
+     * gets a list of Rules with the specified templateId
+     *
+     * @param templateId unique id for the Rule
+     *
+     * @return Rules with the passed in templateId, or an empty list if none exist
+     *
+     * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException if {@code id} is null
+     */
+    @WebMethod(operationName = "getRuleByTemplateId")
+    @WebResult(name = "rules")
+    @XmlElementWrapper(name = "rules", required = true)
+    @XmlElement(name = "rule", required = true)
+	List<Rule> getRulesByTemplateId(@WebParam(name="templateId") String templateId)
+        throws RiceIllegalArgumentException;
 
     /**
      * Query for rules based on the given search criteria which is a Map of rule field names to values.
@@ -94,5 +110,79 @@ public interface RuleService {
     List<Rule> ruleReport(
             @WebParam(name = "ruleCriteria") RuleReportCriteria reportCriteria)
             throws RiceIllegalArgumentException;
-	
+
+
+    /**
+     * gets a RuleTemplate identified by the passed in id
+     *
+     * @param id unique id for the RuleTemplate
+     *
+     * @return RuleTemplate with the passed in unique id
+     *
+     * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException if {@code id} is null
+     * @throws org.kuali.rice.core.api.exception.RiceIllegalStateException if RuleTemplate does not exist
+     */
+    @WebMethod(operationName = "getRuleTemplate")
+    @WebResult(name = "ruleTemplate")
+    RuleTemplate getRuleTemplate(@WebParam(name = "id") String id);
+
+    /**
+     * gets a RuleTemplate identified by the passed in name
+     *
+     * @param name unique name for the RuleTemplate
+     *
+     * @return RuleTemplate with the passed in unique name
+     *
+     * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException if {@code name} is null
+     * @throws org.kuali.rice.core.api.exception.RiceIllegalStateException if RuleTemplate does not exist
+     */
+    @WebMethod(operationName = "getRuleTemplateByName")
+    @WebResult(name = "ruleTemplate")
+    RuleTemplate getRuleTemplateByName(@WebParam(name = "name") String name);
+
+    /**
+     * Query for rules based on the given search criteria which is a Map of ruleTemplate field names to values.
+     *
+     * <p>
+     * This method returns it's results as a List of RuleTemplates that match the given search criteria.
+     * </p>
+     *
+     * @param queryByCriteria the criteria.  Cannot be null.
+     * @return a list of RuleTemplate objects in which the given criteria match RuleTemplate properties.
+     * An empty list is returned if an invalid or non-existent criteria is supplied.
+     */
+    @WebMethod(operationName = "findRuleTemplates")
+    @WebResult(name = "findRuleTemplates")
+    RuleTemplateQueryResults findRuleTemplates(@WebParam(name = "query") QueryByCriteria queryByCriteria)
+        throws RiceIllegalArgumentException;
+
+    /**
+     * gets a RuleResponsibility identified by the passed in responsibilityId
+     *
+     * @param responsibilityId unique id for the RuleResponsibility
+     *
+     * @return RuleResponsibility with the passed in unique responsibilityId
+     *
+     * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException if {@code id} is null
+     * @throws org.kuali.rice.core.api.exception.RiceIllegalStateException if RuleResponsibility does not exist
+     */
+    @WebMethod(operationName = "getRuleResponsibility")
+    @WebResult(name = "ruleResponsibility")
+    RuleResponsibility getRuleResponsibility(@WebParam(name = "responsibilityId") String responsibilityId);
+
+    /**
+     * gets a RuleDelegations identified by the passed in id for responsibility
+     *
+     * @param id unique id for the RuleDelegation's Responsibility
+     *
+     * @return List of RuleDelegations with the provided ReponsibilityId.  Returns an empty list if none exist.
+     *
+     * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException if {@code id} is null
+     */
+    @WebMethod(operationName = "getRuleDelegationsByResponsiblityId")
+    @XmlElementWrapper(name = "ruleDelegations", required = true)
+    @XmlElement(name = "ruleDelegation", required = false)
+    @WebResult(name = "ruleDelegations")
+	List<RuleDelegation> getRuleDelegationsByResponsibiltityId(@WebParam(name="id") String id)
+        throws RiceIllegalArgumentException;
 }

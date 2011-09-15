@@ -23,7 +23,7 @@ import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleExtension;
-import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.dao.RuleDAO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -162,7 +162,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 	}
 
 	public List<RuleBaseValues> findRuleBaseValuesByResponsibilityReviewer(String reviewerName, String type) {
-		Criteria crit = new Criteria(RuleResponsibility.class.getName());
+		Criteria crit = new Criteria(RuleResponsibilityBo.class.getName());
 		crit.eq("ruleResponsibilityName", reviewerName);
 		crit.eq("ruleResponsibilityType", type);
 
@@ -170,7 +170,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		List rules = new ArrayList();
 
 		for (Iterator iter = responsibilities.iterator(); iter.hasNext();) {
-			RuleResponsibility responsibility = (RuleResponsibility) iter.next();
+			RuleResponsibilityBo responsibility = (RuleResponsibilityBo) iter.next();
 			RuleBaseValues rule = responsibility.getRuleBaseValues();
 			if (rule != null && rule.getCurrentInd() != null && rule.getCurrentInd().booleanValue()) {
 				rules.add(rule);
@@ -180,7 +180,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 	}
 
 	public List<RuleBaseValues> findRuleBaseValuesByResponsibilityReviewerTemplateDoc(String ruleTemplateName, String documentType, String reviewerName, String type) {
-	    Criteria crit = new Criteria(RuleResponsibility.class.getName());
+	    Criteria crit = new Criteria(RuleResponsibilityBo.class.getName());
 		crit.eq("ruleResponsibilityName", reviewerName);
 		crit.eq("ruleResponsibilityType", type);
 		crit.eq("ruleBaseValues.currentInd", Boolean.TRUE);
@@ -195,7 +195,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		List rules = new ArrayList();
 
 		for (Iterator iter = responsibilities.iterator(); iter.hasNext();) {
-			RuleResponsibility responsibility = (RuleResponsibility) iter.next();
+			RuleResponsibilityBo responsibility = (RuleResponsibilityBo) iter.next();
 			RuleBaseValues rule = responsibility.getRuleBaseValues();
 			if (rule != null && rule.getCurrentInd() != null && rule.getCurrentInd().booleanValue()) {
 				rules.add(rule);
@@ -211,12 +211,12 @@ public class RuleDAOJpaImpl implements RuleDAO {
 //		return (List) new QueryByObject(entityManager,ruleBaseValues).toQuery().getResultList();
 //	}
 
-	public RuleResponsibility findRuleResponsibility(String responsibilityId) {
-		Criteria crit = new Criteria(RuleResponsibility.class.getName());
+	public RuleResponsibilityBo findRuleResponsibility(String responsibilityId) {
+		Criteria crit = new Criteria(RuleResponsibilityBo.class.getName());
 		crit.eq("responsibilityId", responsibilityId);
 		Collection responsibilities = new QueryByCriteria(entityManager, crit).toQuery().getResultList();
 		for (Iterator iterator = responsibilities.iterator(); iterator.hasNext();) {
-			RuleResponsibility responsibility = (RuleResponsibility) iterator.next();
+			RuleResponsibilityBo responsibility = (RuleResponsibilityBo) iterator.next();
 			if (responsibility.getRuleBaseValues().getCurrentInd().booleanValue()) {
 				return responsibility;
 			}
@@ -478,7 +478,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 	}
 	
 	public String findResponsibilityIdForRule(String ruleName, String ruleResponsibilityName, String ruleResponsibilityType) {
-		Criteria crit = new Criteria(RuleResponsibility.class.getName());
+		Criteria crit = new Criteria(RuleResponsibilityBo.class.getName());
 		crit.eq("ruleResponsibilityName", ruleResponsibilityName);
 		crit.eq("ruleResponsibilityType", ruleResponsibilityType);
 		crit.eq("ruleBaseValues.currentInd", Boolean.TRUE);
@@ -486,7 +486,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		Collection responsibilities = new QueryByCriteria(entityManager, crit).toQuery().getResultList();
 		if (responsibilities != null) {
 			for (Iterator iter = responsibilities.iterator(); iter.hasNext();) {
-				RuleResponsibility responsibility = (RuleResponsibility) iter.next();
+				RuleResponsibilityBo responsibility = (RuleResponsibilityBo) iter.next();
 				return responsibility.getResponsibilityId();
 			}
 		}

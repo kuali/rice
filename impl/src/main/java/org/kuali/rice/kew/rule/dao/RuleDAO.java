@@ -22,8 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleResponsibility;
-
+import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 
 public interface RuleDAO {
 
@@ -31,7 +30,7 @@ public interface RuleDAO {
     public void delete(String ruleBaseValuesId);
     public RuleBaseValues findRuleBaseValuesByName(String name);
     public RuleBaseValues findRuleBaseValuesById(String ruleBaseValuesId);
-    public RuleResponsibility findRuleResponsibility(String responsibilityId);
+    public RuleResponsibilityBo findRuleResponsibility(String responsibilityId);
     public List<RuleBaseValues> fetchAllRules(boolean currentRules);
     public List<RuleBaseValues> fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateId, List documentTypes);
     public List<RuleBaseValues> fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateId, List documentTypes, Timestamp effectiveDate);

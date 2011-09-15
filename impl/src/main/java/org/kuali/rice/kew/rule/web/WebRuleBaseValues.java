@@ -26,10 +26,10 @@ import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.kew.rule.KeyValueId;
 import org.kuali.rice.kew.rule.RoleAttribute;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
-import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
@@ -378,7 +378,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
 		List currentResponsibilities = getRuleResponsibilities();
 		setRuleResponsibilities(new ArrayList());
 		for (Iterator iterator = currentResponsibilities.iterator(); iterator.hasNext();) {
-			RuleResponsibility responsibility = (RuleResponsibility) iterator.next();
+			RuleResponsibilityBo responsibility = (RuleResponsibilityBo) iterator.next();
 			WebRuleResponsibility webResponsibility = createNewRuleResponsibility();
 			webResponsibility.load(responsibility);
 		}
@@ -399,7 +399,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
 	}
 
 	@Override
-	public RuleResponsibility getResponsibility(int index) {
+	public RuleResponsibilityBo getResponsibility(int index) {
 		while (getRuleResponsibilities().size() <= index) {
 			createNewRuleResponsibility();
 		}
@@ -637,14 +637,14 @@ public class WebRuleBaseValues extends RuleBaseValues {
 		return actionRequestCodes;
 	}
 
-	public RuleDelegation getRuleDelegation() {
+	public RuleDelegationBo getRuleDelegation() {
 		if (getDelegateRule().booleanValue()) {
 			List ruleDelegations = getRuleDelegationService().findByDelegateRuleId(getId());
-			RuleDelegation currentRuleDelegation = (RuleDelegation) ruleDelegations.get(0);
+			RuleDelegationBo currentRuleDelegation = (RuleDelegationBo) ruleDelegations.get(0);
 			RuleBaseValues mostRecentRule = currentRuleDelegation.getRuleResponsibility().getRuleBaseValues();
 
 			for (Iterator iter = ruleDelegations.iterator(); iter.hasNext();) {
-				RuleDelegation ruleDelegation = (RuleDelegation) iter.next();
+				RuleDelegationBo ruleDelegation = (RuleDelegationBo) iter.next();
 				RuleBaseValues parentRule = ruleDelegation.getRuleResponsibility().getRuleBaseValues();
 
 				if (parentRule.getActivationDate().after(mostRecentRule.getActivationDate())) {
@@ -660,11 +660,11 @@ public class WebRuleBaseValues extends RuleBaseValues {
 	public String getParentRuleId() {
 		if (getDelegateRule().booleanValue()) {
 			List ruleDelegations = getRuleDelegationService().findByDelegateRuleId(getId());
-			RuleDelegation currentRuleDelegation = (RuleDelegation) ruleDelegations.get(0);
+			RuleDelegationBo currentRuleDelegation = (RuleDelegationBo) ruleDelegations.get(0);
 			RuleBaseValues mostRecentRule = currentRuleDelegation.getRuleResponsibility().getRuleBaseValues();
 
 			for (Iterator iter = ruleDelegations.iterator(); iter.hasNext();) {
-				RuleDelegation ruleDelegation = (RuleDelegation) iter.next();
+				RuleDelegationBo ruleDelegation = (RuleDelegationBo) iter.next();
 				RuleBaseValues parentRule = ruleDelegation.getRuleResponsibility().getRuleBaseValues();
 
 				if (parentRule.getActivationDate().after(mostRecentRule.getActivationDate())) {

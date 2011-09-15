@@ -29,8 +29,12 @@ import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
+import org.kuali.rice.kew.api.rule.RuleDelegation;
+import org.kuali.rice.kew.api.rule.RuleResponsibility;
+import org.kuali.rice.kew.api.rule.RuleService;
 import org.kuali.rice.kew.api.rule.RuleTemplate;
 import org.kuali.rice.kew.api.rule.RuleTemplateAttribute;
 import org.kuali.rice.kew.engine.RouteContext;
@@ -40,8 +44,6 @@ import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.rule.service.RuleDelegationService;
-import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.RoleRecipient;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -226,14 +228,14 @@ public class FlexRM {
 		if (responsibilityId == null) {
 			throw new IllegalArgumentException("A null responsibilityId was passed to resolve responsibility!");
 		}
-		RuleResponsibility resp = getRuleService().findRuleResponsibility(responsibilityId);
+		RuleResponsibility resp = getRuleService().getRuleResponsibility(responsibilityId);
 		ResponsibleParty responsibleParty = new ResponsibleParty();
 		if (resp!=null && resp.isUsingRole()) {
 			responsibleParty.setRoleName(resp.getResolvedRoleName());
 		} else if (resp!=null && resp.isUsingPrincipal()) {
-			responsibleParty.setPrincipalId(resp.getRuleResponsibilityName());
+			responsibleParty.setPrincipalId(resp.getPrincipalId());
 		} else if (resp!=null && resp.isUsingGroup()) {
-			responsibleParty.setGroupId(resp.getRuleResponsibilityName());
+			responsibleParty.setGroupId(resp.getGroupId());
 		} else {
 			throw new RiceRuntimeException("Failed to resolve responsibility from responsibility ID " + responsibilityId + ".  Responsibility was an invalid type: " + resp);
 		}
@@ -244,7 +246,7 @@ public class FlexRM {
 			throws WorkflowException {
 
 		List<org.kuali.rice.kew.api.rule.RuleResponsibility> responsibilities = rule.getRuleResponsibilities();
-		makeActionRequests(arFactory, responsibilities, context, org.kuali.rice.kew.api.rule.Rule.Builder.create(rule).build(), routeHeader, parentRequest, ruleDelegation);
+		makeActionRequests(arFactory, responsibilities, context, rule, routeHeader, parentRequest, ruleDelegation);
 	}
 
 	public void makeActionRequests(ActionRequestFactory arFactory, List<org.kuali.rice.kew.api.rule.RuleResponsibility> responsibilities, RouteContext context, org.kuali.rice.kew.api.rule.Rule rule, DocumentRouteHeaderValue routeHeader, ActionRequestValue parentRequest, RuleDelegation ruleDelegation) {
@@ -303,17 +305,14 @@ public class FlexRM {
 		} else {
 			qualifiedRoleNames.addAll(roleAttribute.getQualifiedRoleNames(roleName, context.getDocumentContent()));
 		}
-        for (String qualifiedRoleName : qualifiedRoleNames)
-        {
-            if (parentRequest == null && isDuplicateActionRequestDetected(routeHeader, context.getNodeInstance(), resp, qualifiedRoleName))
-            {
+        for (String qualifiedRoleName : qualifiedRoleNames) {
+            if (parentRequest == null && isDuplicateActionRequestDetected(routeHeader, context.getNodeInstance(), resp, qualifiedRoleName)) {
                 continue;
             }
 
             ResolvedQualifiedRole resolvedRole = roleAttribute.resolveQualifiedRole(context, roleName, qualifiedRoleName);
             RoleRecipient recipient = new RoleRecipient(roleName, qualifiedRoleName, resolvedRole);
-            if (parentRequest == null)
-            {
+            if (parentRequest == null) {
                 ActionRequestValue roleRequest = arFactory.addRoleRequest(recipient, resp.getActionRequestedCd(), resp.getApprovePolicy(), resp.getPriority(), resp.getResponsibilityId(), rule
                         .isForceAction(), rule.getDescription(), rule.getId());
 // Old, pre 1.0 delegate code, commenting out for now
@@ -331,25 +330,21 @@ public class FlexRM {
 
                 // new Rice 1.0 delegate rule code
 
-                List<RuleDelegation> ruleDelegations = getRuleDelegationService().findByResponsibilityId(resp.getResponsibilityId());
-                if (ruleDelegations != null && !ruleDelegations.isEmpty())
-                {
+                List<RuleDelegation> ruleDelegations = getRuleService().getRuleDelegationsByResponsibiltityId(resp.getResponsibilityId());
+                if (ruleDelegations != null && !ruleDelegations.isEmpty()) {
                     // create delegations for all the children
-                    for (ActionRequestValue request : roleRequest.getChildrenRequests())
-                    {
-                        for (RuleDelegation childRuleDelegation : ruleDelegations)
-                        {
-                            buildDelegationGraph(arFactory, context, RuleBaseValues.to(childRuleDelegation.getDelegationRule()), routeHeader, request, childRuleDelegation);
+                    for (ActionRequestValue request : roleRequest.getChildrenRequests()) {
+                        for (RuleDelegation childRuleDelegation : ruleDelegations) {
+                            buildDelegationGraph(arFactory, context, childRuleDelegation.getDelegationRule(), routeHeader, request, childRuleDelegation);
                         }
                     }
                 }
 
-            } else
-            {
+            } else {
                 arFactory.addDelegationRoleRequest(parentRequest, resp.getApprovePolicy(), recipient, resp.getResponsibilityId(), rule.isForceAction(), ruleDelegation.getDelegationType(), rule.getDescription(), rule.getId());
             }
         }
-			}
+	}
 
 	/**
 	 * Determines if the attribute has a setRuleAttribute method and then sets the value appropriately if it does.
@@ -425,10 +420,11 @@ public class FlexRM {
 			
 			// new Rice 1.0 delegate rule code
 			
-			List<RuleDelegation> ruleDelegations = getRuleDelegationService().findByResponsibilityId(resp.getResponsibilityId());
+			List<RuleDelegation> ruleDelegations = getRuleService().getRuleDelegationsByResponsibiltityId(
+                    resp.getResponsibilityId());
 			if (ruleDelegations != null && !ruleDelegations.isEmpty()) {
 				for (RuleDelegation childRuleDelegation : ruleDelegations) {
-					buildDelegationGraph(arFactory, context, RuleBaseValues.to(childRuleDelegation.getDelegationRule()), routeHeader, actionRequest, childRuleDelegation);
+					buildDelegationGraph(arFactory, context, childRuleDelegation.getDelegationRule(), routeHeader, actionRequest, childRuleDelegation);
 				}
 			}
 			
@@ -452,14 +448,9 @@ public class FlexRM {
 	}
 
 	public RuleService getRuleService() {
-		return KEWServiceLocator.getRuleService();
+		return KewApiServiceLocator.getRuleService();
 	}
 
-	public RuleDelegationService getRuleDelegationService() {
-		return KEWServiceLocator.getRuleDelegationService();
-	}
-
-	
 	private ActionRequestService getActionRequestService() {
 		return KEWServiceLocator.getActionRequestService();
 	}

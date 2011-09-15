@@ -29,7 +29,7 @@ import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleExtension;
-import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
@@ -140,7 +140,7 @@ public class InlineRequestsRouteModule extends FlexRMAdapter {
 
         for (Object o: root.getChildren("responsibility", XmlConstants.RULE_NAMESPACE)) {
             Element e = (Element) o;
-            RuleResponsibility responsibility = parser.parseResponsibility(e, fakeRule);
+            RuleResponsibilityBo responsibility = parser.parseResponsibility(e, fakeRule);
             responsibility.setResponsibilityId(KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID);
             responsibilities.add(org.kuali.rice.kew.api.rule.RuleResponsibility.Builder.create(responsibility).build());
         }

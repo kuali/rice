@@ -23,7 +23,7 @@ package org.kuali.rice.kew.rule;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class RoleRuleResponsibility extends RuleResponsibility {
+public class RoleRuleResponsibility extends RuleResponsibilityBo {
     
 	public String getRoleName() {
 		return getRuleResponsibilityName();

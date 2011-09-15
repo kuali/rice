@@ -24,16 +24,16 @@ import org.kuali.rice.kew.postprocessor.PostProcessor;
 import org.kuali.rice.kew.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
-import org.kuali.rice.kew.rule.service.RuleService;
+import org.kuali.rice.kew.rule.service.RuleServiceInternal;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 
 
 /**
  * The {@link PostProcessor} implementation for rules.  Delegates to the
- * {@link RuleService#makeCurrent(Long)} method.
+ * {@link org.kuali.rice.kew.rule.service.RuleServiceInternal#makeCurrent(Long)} method.
  *
- * @see RuleService#makeCurrent(Long)
+ * @see org.kuali.rice.kew.rule.service.RuleServiceInternal#makeCurrent(Long)
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -64,8 +64,8 @@ public class RulePostProcessor extends DefaultPostProcessor {
         return (RouteHeaderService) KEWServiceLocator.getService(KEWServiceLocator.DOC_ROUTE_HEADER_SRV);
     }
 
-    private RuleService getRuleService() {
-        return (RuleService) KEWServiceLocator.getService(KEWServiceLocator.RULE_SERVICE);
+    private RuleServiceInternal getRuleService() {
+        return (RuleServiceInternal) KEWServiceLocator.getService(KEWServiceLocator.RULE_SERVICE);
     }
 
 }

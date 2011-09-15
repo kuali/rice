@@ -189,6 +189,7 @@ public final class Rule
         return this.ruleExpressionDef;
     }
 
+
     /**
      * A builder which can be used to construct {@link Rule} instances.  Enforces the constraints of the {@link RuleContract}.
      * 

@@ -23,10 +23,9 @@ import java.util.Map;
 
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.core.framework.impex.xml.XmlLoader;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleDelegation;
-import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kew.rule.RuleDelegationBo;
+import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 
 
@@ -35,11 +34,11 @@ import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
  * A service which provides data access and functions for the KEW Rules engine.
  *
  * @see RuleBaseValues
- * @see RuleResponsibility
+ * @see org.kuali.rice.kew.rule.RuleResponsibilityBo
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface RuleService extends XmlLoader, XmlExporter {
+public interface RuleServiceInternal extends XmlLoader, XmlExporter {
 
     /**
      * Returns a Rule based on unique name.  Returns null if name is null.
@@ -51,24 +50,24 @@ public interface RuleService extends XmlLoader, XmlExporter {
     public String routeRuleWithDelegate(String documentId, RuleBaseValues parentRule, RuleBaseValues delegateRule, PrincipalContract principal, String annotation, boolean blanketApprove) throws Exception;
     //public void save(RuleBaseValues ruleBaseValues) throws Exception;
     public void save2(RuleBaseValues ruleBaseValues) throws Exception;
-    public void validate2(RuleBaseValues ruleBaseValues, RuleDelegation ruleDelegation, List errors) throws Exception;
+    public void validate2(RuleBaseValues ruleBaseValues, RuleDelegationBo ruleDelegation, List errors) throws Exception;
     public void delete(String ruleBaseValuesId);
     public RuleBaseValues findRuleBaseValuesById(String ruleBaseValuesId);
     public List<RuleBaseValues> search(String docTypeName, String ruleId, String ruleTemplateId, String ruleDescription, String groupId, String principalId, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective);
     public List<RuleBaseValues> searchByTemplate(String docTypeName, String ruleTemplateName, String ruleDescription, String groupId, String principalId, Boolean workgroupMember, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection<String> actionRequestCodes);
-    public RuleResponsibility findRuleResponsibility(String responsibilityId);
+    public RuleResponsibilityBo findRuleResponsibility(String responsibilityId);
     public void deleteRuleResponsibilityById(String ruleResponsibilityId);
-    public RuleResponsibility findByRuleResponsibilityId(String ruleResponsibilityId);
-    public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType);
-    public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType, Timestamp effectiveDate);
+    public RuleResponsibilityBo findByRuleResponsibilityId(String ruleResponsibilityId);
+    public List<RuleBaseValues> fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType);
+    public List<RuleBaseValues> fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType, Timestamp effectiveDate);
     public List<RuleBaseValues> findByDocumentId(String documentId);
     public void makeCurrent(String documentId);
     public void makeCurrent(RuleBaseValues rule, boolean isRetroactiveUpdatePermitted);
-    public void makeCurrent(RuleDelegation ruleDelegation, boolean isRetroactiveUpdatePermitted);
-    public List findRuleBaseValuesByResponsibilityReviewer(String reviewerName, String type);
-    public List findRuleBaseValuesByResponsibilityReviewerTemplateDoc(String ruleTemplateName, String documentType, String reviewerName, String type);
+    public void makeCurrent(RuleDelegationBo ruleDelegation, boolean isRetroactiveUpdatePermitted);
+    public List<RuleBaseValues> findRuleBaseValuesByResponsibilityReviewer(String reviewerName, String type);
+    public List<RuleBaseValues> findRuleBaseValuesByResponsibilityReviewerTemplateDoc(String ruleTemplateName, String documentType, String reviewerName, String type);
     public String isLockedForRouting(String currentRuleBaseValuesId);
-    public List fetchAllRules(boolean currentRules);
+    public List<RuleBaseValues> fetchAllRules(boolean currentRules);
     public RuleBaseValues findDefaultRuleByRuleTemplateId(String ruleTemplateId);
     public RuleBaseValues getParentRule(String ruleBaseValuesId);
 
@@ -77,7 +76,7 @@ public interface RuleService extends XmlLoader, XmlExporter {
      * return a null value, as it will default to the default Rule document type name if not custom document type is configured for
      * the given rules.
      */
-    public String getRuleDocmentTypeName(List rules);
+    public String getRuleDocumentTypeName(List<RuleBaseValues> rules);
 
     /**
      * Checks if the Rule with the given value is a duplicate of an existing rule in the system.
@@ -90,9 +89,9 @@ public interface RuleService extends XmlLoader, XmlExporter {
     
     public List<RuleBaseValues> saveRules(List<RuleBaseValues> rulesToSave, boolean isRetroactiveUpdatePermitted);
     
-    public RuleDelegation saveRuleDelegation(RuleDelegation ruleDelegation, boolean isRetroactiveUpdatePermitted);
+    public RuleDelegationBo saveRuleDelegation(RuleDelegationBo ruleDelegation, boolean isRetroactiveUpdatePermitted);
     
-    public List<RuleDelegation> saveRuleDelegations(List<RuleDelegation> ruleDelegationsToSave, boolean isRetroactiveUpdatePermitted);
+    public List<RuleDelegationBo> saveRuleDelegations(List<RuleDelegationBo> ruleDelegationsToSave, boolean isRetroactiveUpdatePermitted);
     
     public String findResponsibilityIdForRule(String ruleName, String ruleResponsibilityName, String ruleResponsibilityType);
 }

@@ -46,7 +46,7 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 @Entity
 @Table(name="KREW_DLGN_RSP_T")
 //@Sequence(name="KREW_RTE_TMPL_S", property="ruleDelegationId")
-public class RuleDelegation extends PersistableBusinessObjectBase implements RuleDelegationContract {
+public class RuleDelegationBo extends PersistableBusinessObjectBase implements RuleDelegationContract {
 
 	private static final long serialVersionUID = 7989203310473741293L;
 	@Id
@@ -71,11 +71,11 @@ public class RuleDelegation extends PersistableBusinessObjectBase implements Rul
 //	@JoinColumn(name="RULE_RSP_ID")
 //	private RuleResponsibility ruleResponsibility;
 
-    public RuleDelegation() {
+    public RuleDelegationBo() {
     }
 
     public Object copy(boolean preserveKeys) {
-        RuleDelegation clone = new RuleDelegation();
+        RuleDelegationBo clone = new RuleDelegationBo();
         if (ruleDelegationId != null && preserveKeys) {
             clone.setRuleDelegationId(ruleDelegationId);
         }
@@ -123,7 +123,7 @@ public class RuleDelegation extends PersistableBusinessObjectBase implements Rul
      * Returns the most recent RuleResponsibility for the responsibility
      * id on this RuleDelegation.
      */
-    public RuleResponsibility getRuleResponsibility() {
+    public RuleResponsibilityBo getRuleResponsibility() {
     	if ( getResponsibilityId() == null ) {
     		return null;
     	}
@@ -163,7 +163,7 @@ public class RuleDelegation extends PersistableBusinessObjectBase implements Rul
 		}
 	}
 
-    public static org.kuali.rice.kew.api.rule.RuleDelegation to(RuleDelegation bo) {
+    public static org.kuali.rice.kew.api.rule.RuleDelegation to(RuleDelegationBo bo) {
         if (bo == null) {
             return null;
         }

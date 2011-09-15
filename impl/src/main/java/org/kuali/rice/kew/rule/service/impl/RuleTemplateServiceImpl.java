@@ -26,7 +26,7 @@ import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kew.rule.RuleTemplateOptionBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
@@ -140,7 +140,7 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
     /**
      * Saves the given RuleDelegation and RuleBaseValues as the defaults for this RuleTemplate
      */
-    public void saveRuleDefaults(RuleDelegation ruleDelegation, RuleBaseValues ruleBaseValues) {
+    public void saveRuleDefaults(RuleDelegationBo ruleDelegation, RuleBaseValues ruleBaseValues) {
         KEWServiceLocator.getRuleService().saveRule(ruleBaseValues, false);
         if (ruleDelegation != null) {
         	KEWServiceLocator.getRuleService().saveRule(ruleDelegation.getDelegationRule(), false);

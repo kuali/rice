@@ -31,7 +31,7 @@ import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeConfigParam;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
-import org.kuali.rice.kew.rule.service.RuleService;
+import org.kuali.rice.kew.rule.service.RuleServiceInternal;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
@@ -364,7 +364,7 @@ public class RuleQuickLinksAction extends KewKualiAction {
         return KEWServiceLocator.getDocumentTypeService();
     }
 
-    private RuleService getRuleService() {
+    private RuleServiceInternal getRuleService() {
     	return KEWServiceLocator.getRuleService();
     }
     

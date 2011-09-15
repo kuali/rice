@@ -40,8 +40,8 @@ import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleDelegation;
-import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kew.rule.RuleDelegationBo;
+import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
@@ -171,10 +171,10 @@ public class NotificationSuppressionTest extends KEWTestCase {
         RuleBaseValues originalRule = existingRules.get(0);
         assertTrue("Original rule should be current.", originalRule.getCurrentInd());
 
-        List<RuleResponsibility> originalResps = originalRule.getRuleResponsibilities();
+        List<RuleResponsibilityBo> originalResps = originalRule.getRuleResponsibilities();
         assertEquals(1, originalResps.size());
 
-        RuleResponsibility originalResp = originalResps.get(0);
+        RuleResponsibilityBo originalResp = originalResps.get(0);
 
         RuleTemplateBo ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(
                 TEST_RULE_TEMPLATE);
@@ -183,7 +183,7 @@ public class NotificationSuppressionTest extends KEWTestCase {
         assertFalse(StringUtils.isEmpty(ruleTemplate.getName()));
 
         // save a new rule delegation
-        RuleDelegation ruleDelegation = new RuleDelegation();
+        RuleDelegationBo ruleDelegation = new RuleDelegationBo();
         ruleDelegation.setResponsibilityId(originalResp.getResponsibilityId());
         ruleDelegation.setDelegationType(DelegationType.PRIMARY.getCode());
         RuleBaseValues rule = new RuleBaseValues();
@@ -196,7 +196,7 @@ public class NotificationSuppressionTest extends KEWTestCase {
         rule.setRuleTemplate(ruleTemplate);
         rule.setDescription("Description of this delegate rule");
         rule.setForceAction(true);
-        RuleResponsibility delegationResponsibility = new RuleResponsibility();
+        RuleResponsibilityBo delegationResponsibility = new RuleResponsibilityBo();
         rule.getRuleResponsibilities().add(delegationResponsibility);
         delegationResponsibility.setRuleBaseValues(rule);
         delegationResponsibility.setRuleResponsibilityName("user2");

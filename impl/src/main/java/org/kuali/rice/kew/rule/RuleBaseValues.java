@@ -29,7 +29,7 @@ import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
-import org.kuali.rice.kew.rule.service.RuleService;
+import org.kuali.rice.kew.rule.service.RuleServiceInternal;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
@@ -38,7 +38,6 @@ import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.springframework.util.AutoPopulatingList;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -113,7 +112,7 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
 	private boolean forceAction;
     @Fetch(value = FetchMode.SELECT)
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},mappedBy="ruleBaseValues")
-	private List<RuleResponsibility> ruleResponsibilities;
+	private List<RuleResponsibilityBo> ruleResponsibilities;
     @Fetch(value = FetchMode.SELECT)
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},mappedBy="ruleBaseValues")
 	private List<RuleExtension> ruleExtensions;
@@ -161,7 +160,7 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
     private String personReviewerType;
 
     public RuleBaseValues() {
-        ruleResponsibilities = new ArrayList<RuleResponsibility>();
+        ruleResponsibilities = new ArrayList<RuleResponsibilityBo>();
         ruleExtensions = new ArrayList<RuleExtension>();
         /*personResponsibilities = new AutoPopulatingList<PersonRuleResponsibility>(PersonRuleResponsibility.class);
         groupResponsibilities = new AutoPopulatingList<GroupRuleResponsibility>(GroupRuleResponsibility.class);
@@ -222,7 +221,7 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
 
     public RuleBaseValues getPreviousVersion() {
         if (previousVersion == null && previousVersionId != null) {
-            RuleService ruleService = (RuleService) KEWServiceLocator.getService(KEWServiceLocator.RULE_SERVICE);
+            RuleServiceInternal ruleService = (RuleServiceInternal) KEWServiceLocator.getService(KEWServiceLocator.RULE_SERVICE);
             return ruleService.findRuleBaseValuesById(previousVersionId);
         }
         return previousVersion;
@@ -232,13 +231,13 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
         this.previousVersion = previousVersion;
     }
 
-    public RuleResponsibility getResponsibility(int index) {
+    public RuleResponsibilityBo getResponsibility(int index) {
         while (getRuleResponsibilities().size() <= index) {
-            RuleResponsibility ruleResponsibility = new RuleResponsibility();
+            RuleResponsibilityBo ruleResponsibility = new RuleResponsibilityBo();
             ruleResponsibility.setRuleBaseValues(this);
             getRuleResponsibilities().add(ruleResponsibility);
         }
-        return (RuleResponsibility) getRuleResponsibilities().get(index);
+        return (RuleResponsibilityBo) getRuleResponsibilities().get(index);
     }
 
     public RuleExtension getRuleExtension(int index) {
@@ -284,15 +283,15 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
         this.previousVersionId = previousVersion;
     }
 
-    public void addRuleResponsibility(RuleResponsibility ruleResponsibility) {
+    public void addRuleResponsibility(RuleResponsibilityBo ruleResponsibility) {
         addRuleResponsibility(ruleResponsibility, new Integer(getRuleResponsibilities().size()));
     }
 
-    public void addRuleResponsibility(RuleResponsibility ruleResponsibility, Integer counter) {
+    public void addRuleResponsibility(RuleResponsibilityBo ruleResponsibility, Integer counter) {
         boolean alreadyAdded = false;
         int location = 0;
         if (counter != null) {
-            for (RuleResponsibility ruleResponsibilityRow : getRuleResponsibilities()) {
+            for (RuleResponsibilityBo ruleResponsibilityRow : getRuleResponsibilities()) {
                 if (counter.intValue() == location) {
                     ruleResponsibilityRow.setPriority(ruleResponsibility.getPriority());
                     ruleResponsibilityRow.setActionRequestedCd(ruleResponsibility.getActionRequestedCd());
@@ -358,17 +357,17 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
         this.ruleExtensions = ruleExtensions;
     }
 
-    public List<RuleResponsibility> getRuleResponsibilities() {
+    public List<RuleResponsibilityBo> getRuleResponsibilities() {
         return this.ruleResponsibilities;
     }
 
-    public void setRuleResponsibilities(List<RuleResponsibility> ruleResponsibilities) {
+    public void setRuleResponsibilities(List<RuleResponsibilityBo> ruleResponsibilities) {
         this.ruleResponsibilities = ruleResponsibilities;
     }
 
-    public RuleResponsibility getResponsibility(Long ruleResponsibilityKey) {
+    public RuleResponsibilityBo getResponsibility(Long ruleResponsibilityKey) {
         for (Iterator iterator = getRuleResponsibilities().iterator(); iterator.hasNext();) {
-            RuleResponsibility responsibility = (RuleResponsibility) iterator.next();
+            RuleResponsibilityBo responsibility = (RuleResponsibilityBo) iterator.next();
             if (responsibility.getId() != null
                     && responsibility.getId().equals(ruleResponsibilityKey)) {
                 return responsibility;
@@ -508,8 +507,7 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
             }
             String className = ruleAttribute.getResourceDescriptor();
             List<RuleExtension> editedRuleExtensions = new ArrayList<RuleExtension>();
-            for (Iterator iter2 = getRuleExtensions().iterator(); iter2.hasNext();) {
-                RuleExtension extension = (RuleExtension) iter2.next();
+            for (RuleExtension extension : getRuleExtensions()) {
                 if (extension.getRuleTemplateAttribute().getRuleAttribute().getResourceDescriptor().equals(className)) {
                     editedRuleExtensions.add(extension);
                 }
@@ -521,9 +519,9 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
         return true;
     }
 
-    public RuleResponsibility findResponsibility(String roleName) {
+    public RuleResponsibilityBo findResponsibility(String roleName) {
         for (Iterator iter = getRuleResponsibilities().iterator(); iter.hasNext();) {
-            RuleResponsibility resp = (RuleResponsibility) iter.next();
+            RuleResponsibilityBo resp = (RuleResponsibilityBo) iter.next();
             if (KEWConstants.RULE_RESPONSIBILITY_ROLE_ID.equals(resp.getRuleResponsibilityType())
                     && roleName.equals(resp.getRuleResponsibilityName())) {
                 return resp;

@@ -22,27 +22,27 @@ import java.util.Map;
 
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.core.framework.impex.xml.XmlLoader;
-import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleDelegationBo;
 
 /**
- * A service providing data access for {@link RuleDelegation}s.
+ * A service providing data access for {@link org.kuali.rice.kew.rule.RuleDelegationBo}s.
  *
- * @see RuleDelegation
+ * @see org.kuali.rice.kew.rule.RuleDelegationBo
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface RuleDelegationService extends XmlLoader, XmlExporter {
 
-    public List<RuleDelegation> findByDelegateRuleId(String ruleId);
-    public void save(RuleDelegation ruleDelegation);
+    public List<RuleDelegationBo> findByDelegateRuleId(String ruleId);
+    public void save(RuleDelegationBo ruleDelegation);
     public void delete(String ruleDelegationId);
-    public List<RuleDelegation> findAllCurrentRuleDelegations();
-    public RuleDelegation findByRuleDelegationId(String ruleDelegationId);
-    public List<RuleDelegation> search(String parentRuleBaseVaueId, String parentResponsibilityId,  String docTypeName, String ruleId, String ruleTemplateId, String ruleDescription, String groupId, String principalId, String delegationType, Boolean activeInd, Map extensionValues, String workflowIdDirective);
-    public List<RuleDelegation> searchByTemplate(String parentRuleBaseVaueId, String parentResponsibilityId,  String docTypeName, String ruleTemplateName, String ruleDescription, String groupId, String principalId, Boolean workgroupMember, String delegationType, Boolean activeInd, Map extensionValues, Collection<String> actionRequestCodes);
+    public List<RuleDelegationBo> findAllCurrentRuleDelegations();
+    public RuleDelegationBo findByRuleDelegationId(String ruleDelegationId);
+    public List<RuleDelegationBo> search(String parentRuleBaseVaueId, String parentResponsibilityId,  String docTypeName, String ruleId, String ruleTemplateId, String ruleDescription, String groupId, String principalId, String delegationType, Boolean activeInd, Map extensionValues, String workflowIdDirective);
+    public List<RuleDelegationBo> searchByTemplate(String parentRuleBaseVaueId, String parentResponsibilityId,  String docTypeName, String ruleTemplateName, String ruleDescription, String groupId, String principalId, Boolean workgroupMember, String delegationType, Boolean activeInd, Map extensionValues, Collection<String> actionRequestCodes);
     /**
      * Returns a List of all RuleDelegations with "current" Rules for the given
      * responsibility id.
      */
-    public List<RuleDelegation> findByResponsibilityId(String responsibilityId);
+    public List<RuleDelegationBo> findByResponsibilityId(String responsibilityId);
 }

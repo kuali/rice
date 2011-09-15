@@ -22,7 +22,7 @@ import org.kuali.rice.core.api.util.xml.XmlRenderer;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kew.rule.RuleTemplateOptionBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
@@ -90,7 +90,7 @@ public class RuleTemplateXmlExporter implements XmlExporter {
     private void exportDefaults(Element parent, RuleTemplateBo ruleTemplate) {
         RuleBaseValues defaultRuleValues = KEWServiceLocator.getRuleService().findDefaultRuleByRuleTemplateId(ruleTemplate.getId());
         if (defaultRuleValues != null) {
-            RuleDelegation defaultDelegationValues = getDefaultDelegationValues(defaultRuleValues);
+            RuleDelegationBo defaultDelegationValues = getDefaultDelegationValues(defaultRuleValues);
             Element defaultsElement = renderer.renderElement(parent, RULE_DEFAULTS);
             if (defaultDelegationValues != null) {
                 renderer.renderTextElement(defaultsElement, DELEGATION_TYPE, defaultDelegationValues.getDelegationType());
@@ -134,12 +134,12 @@ public class RuleTemplateXmlExporter implements XmlExporter {
         }
     }
     
-    private RuleDelegation getDefaultDelegationValues(RuleBaseValues defaultRuleValues) {
+    private RuleDelegationBo getDefaultDelegationValues(RuleBaseValues defaultRuleValues) {
         List ruleDelegations = KEWServiceLocator.getRuleDelegationService().findByDelegateRuleId(defaultRuleValues.getId());
         if (ruleDelegations.size() > 1) {
             LOG.warn("The rule defaults has more than one associated delegation defaults.");
         }
-        return (ruleDelegations.isEmpty() ? null : (RuleDelegation)ruleDelegations.get(0));
+        return (ruleDelegations.isEmpty() ? null : (RuleDelegationBo)ruleDelegations.get(0));
     }
     
 }

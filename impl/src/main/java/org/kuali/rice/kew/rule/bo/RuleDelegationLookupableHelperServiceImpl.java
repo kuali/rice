@@ -29,7 +29,7 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.lookupable.MyColumns;
 import org.kuali.rice.kew.rule.OddSearchAttribute;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.rule.service.RuleDelegationService;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
@@ -258,7 +258,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
             if(ruleTemplate == null){
                 rows.clear();
                 LOG.info("Returning empty result set for Delegation Rule Lookup because a RuleTemplate Name or ID was provided, but no valid RuleTemplates were retrieved by the service.");
-                return new ArrayList<RuleDelegation>();
+                return new ArrayList<RuleDelegationBo>();
             }
 
             attributes = new HashMap();
@@ -323,11 +323,11 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
         workflowId = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(networkIdParam).getPrincipalId();
         }
 
-        Iterator<RuleDelegation> rules = getRuleDelegationService().search(parentRuleBaseValueId, parentResponsibilityId, docTypeSearchName, ruleId, ruleTemplateId, ruleDescription, workgroupId, workflowId, delegationParam, isActive, attributes, userDirectiveParam).iterator();
-        List<RuleDelegation> displayList = new ArrayList<RuleDelegation>();
+        Iterator<RuleDelegationBo> rules = getRuleDelegationService().search(parentRuleBaseValueId, parentResponsibilityId, docTypeSearchName, ruleId, ruleTemplateId, ruleDescription, workgroupId, workflowId, delegationParam, isActive, attributes, userDirectiveParam).iterator();
+        List<RuleDelegationBo> displayList = new ArrayList<RuleDelegationBo>();
 
         while (rules.hasNext()) {
-            RuleDelegation ruleDelegation = rules.next();
+            RuleDelegationBo ruleDelegation = rules.next();
             RuleBaseValues record = ruleDelegation.getDelegationRule();
 
             if (org.apache.commons.lang.StringUtils.isEmpty(record.getDescription())) {
@@ -472,8 +472,8 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
                 Object prop = null;
                 boolean skipPropTypeCheck = false;
                 //try to get value elsewhere
-                if (element instanceof RuleDelegation) {
-                    prop = ((RuleDelegation)element).getDelegationRule().getFieldValues().get(curPropName);
+                if (element instanceof RuleDelegationBo) {
+                    prop = ((RuleDelegationBo)element).getDelegationRule().getFieldValues().get(curPropName);
                     skipPropTypeCheck = true;
                 }
                 if (prop == null) {
@@ -574,7 +574,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
     @Override
     public List<HtmlData> getCustomActionUrls(BusinessObject businessObject,
             List pkNames) {
-        RuleDelegation ruleDelegation = (RuleDelegation)businessObject;
+        RuleDelegationBo ruleDelegation = (RuleDelegationBo)businessObject;
         List<HtmlData> htmlDataList = new ArrayList<HtmlData>();
         if (StringUtils.isNotBlank(ruleDelegation.getDelegationRule().getRuleTemplateName()) && StringUtils.isNotBlank(getMaintenanceDocumentTypeName())) {
         	if (allowsMaintenanceEditAction(businessObject)) {

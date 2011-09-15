@@ -20,7 +20,7 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.rule.GroupRuleResponsibility;
 import org.kuali.rice.kew.rule.PersonRuleResponsibility;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
@@ -182,7 +182,7 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
         	this.putFieldError("Responsibilities", "error.document.responsibility.required");
         	isValid &= false;
         } else {
-            for (RuleResponsibility responsibility : ruleBaseValues.getRuleResponsibilities()) {
+            for (RuleResponsibilityBo responsibility : ruleBaseValues.getRuleResponsibilities()) {
                 if (responsibility.getRuleResponsibilityName() != null && KEWConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
                     if (getGroupService().getGroup(responsibility.getRuleResponsibilityName()) == null) {
                     	this.putFieldError("Groups", "routetemplate.ruleservice.workgroup.invalid");

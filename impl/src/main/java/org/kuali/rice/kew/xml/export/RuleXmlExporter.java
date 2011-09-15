@@ -26,10 +26,10 @@ import org.kuali.rice.core.api.util.xml.XmlRenderer;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
-import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.rule.web.WebRuleUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -126,7 +126,7 @@ public class RuleXmlExporter implements XmlExporter {
         }
         
         // put responsibilities in a single collection 
-        Set<RuleResponsibility> responsibilities = new HashSet<RuleResponsibility>();
+        Set<RuleResponsibilityBo> responsibilities = new HashSet<RuleResponsibilityBo>();
         responsibilities.addAll(rule.getRuleResponsibilities());
         responsibilities.addAll(rule.getPersonResponsibilities());
         responsibilities.addAll(rule.getGroupResponsibilities());
@@ -161,10 +161,10 @@ public class RuleXmlExporter implements XmlExporter {
         }
     }
 
-    private void exportResponsibilities(Element parent, Collection<? extends RuleResponsibility> responsibilities) {
+    private void exportResponsibilities(Element parent, Collection<? extends RuleResponsibilityBo> responsibilities) {
         if (responsibilities != null && !responsibilities.isEmpty()) {
             Element responsibilitiesElement = renderer.renderElement(parent, RESPONSIBILITIES);
-            for (RuleResponsibility ruleResponsibility : responsibilities) {
+            for (RuleResponsibilityBo ruleResponsibility : responsibilities) {
                 Element respElement = renderer.renderElement(responsibilitiesElement, RESPONSIBILITY);
                 renderer.renderTextElement(respElement, RESPONSIBILITY_ID, "" + ruleResponsibility.getResponsibilityId());
                 if (ruleResponsibility.isUsingPrincipal()) {
@@ -189,8 +189,8 @@ public class RuleXmlExporter implements XmlExporter {
     
     //below are for exporting rule delegations in rule exportation
     private void exportRuleDelegations(Element rootElement, RuleBaseValues rule){
-		List<RuleDelegation> ruleDelegationDefaults = KEWServiceLocator.getRuleDelegationService().findByDelegateRuleId(rule.getId());
-		for(RuleDelegation dele : ruleDelegationDefaults){
+		List<RuleDelegationBo> ruleDelegationDefaults = KEWServiceLocator.getRuleDelegationService().findByDelegateRuleId(rule.getId());
+		for(RuleDelegationBo dele : ruleDelegationDefaults){
 			if (LOG.isInfoEnabled()) {
 				LOG.info("*******delegates********\t"  +  dele.getRuleDelegationId()) ;
 			}
@@ -198,16 +198,16 @@ public class RuleXmlExporter implements XmlExporter {
 		}
     }
     
-    private void exportRuleDelegation(Element parent, RuleDelegation ruleDelegation) {
+    private void exportRuleDelegation(Element parent, RuleDelegationBo ruleDelegation) {
     	Element ruleDelegationElement = renderer.renderElement(parent, RULE_DELEGATION);
     	exportRuleDelegationParentResponsibility(ruleDelegationElement, ruleDelegation);
     	renderer.renderTextElement(ruleDelegationElement, DELEGATION_TYPE, ruleDelegation.getDelegationType());
     	exportRule(ruleDelegationElement, ruleDelegation.getDelegationRule());
     }
     
-    private void exportRuleDelegationParentResponsibility(Element parent, RuleDelegation delegation) {
+    private void exportRuleDelegationParentResponsibility(Element parent, RuleDelegationBo delegation) {
         Element parentResponsibilityElement = renderer.renderElement(parent, PARENT_RESPONSIBILITY);
-        RuleResponsibility ruleResponsibility = KEWServiceLocator.getRuleService().findRuleResponsibility(delegation.getResponsibilityId());
+        RuleResponsibilityBo ruleResponsibility = KEWServiceLocator.getRuleService().findRuleResponsibility(delegation.getResponsibilityId());
         renderer.renderTextElement(parentResponsibilityElement, PARENT_RULE_NAME, ruleResponsibility.getRuleBaseValues().getName());
         if (ruleResponsibility.isUsingPrincipal()) {
         	Principal principal = ruleResponsibility.getPrincipal();

@@ -26,12 +26,11 @@ import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleExtension;
-import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.dao.RuleDAO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.config.KRADConfigurer;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
@@ -166,11 +165,11 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		crit.addEqualTo("ruleResponsibilityName", reviewerName);
 		crit.addEqualTo("ruleResponsibilityType", type);
 
-		List responsibilities = (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleResponsibility.class, crit));
+		List responsibilities = (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleResponsibilityBo.class, crit));
 		List rules = new ArrayList();
 
 		for (Iterator iter = responsibilities.iterator(); iter.hasNext();) {
-			RuleResponsibility responsibility = (RuleResponsibility) iter.next();
+			RuleResponsibilityBo responsibility = (RuleResponsibilityBo) iter.next();
 			RuleBaseValues rule = responsibility.getRuleBaseValues();
 			if (rule != null && rule.getCurrentInd() != null && rule.getCurrentInd().booleanValue()) {
 				rules.add(rule);
@@ -191,11 +190,11 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		    crit.addLike("ruleBaseValues.docTypeName", documentType.replace("*", "%").concat("%"));
 		}
 
-		List responsibilities = (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleResponsibility.class, crit));
+		List responsibilities = (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleResponsibilityBo.class, crit));
 		List rules = new ArrayList();
 
 		for (Iterator iter = responsibilities.iterator(); iter.hasNext();) {
-			RuleResponsibility responsibility = (RuleResponsibility) iter.next();
+			RuleResponsibilityBo responsibility = (RuleResponsibilityBo) iter.next();
 			RuleBaseValues rule = responsibility.getRuleBaseValues();
 			if (rule != null && rule.getCurrentInd() != null && rule.getCurrentInd().booleanValue()) {
 				rules.add(rule);
@@ -210,13 +209,13 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ruleBaseValues));
 	}
 
-	public RuleResponsibility findRuleResponsibility(String responsibilityId) {
+	public RuleResponsibilityBo findRuleResponsibility(String responsibilityId) {
 				
 		ReportQueryByCriteria subQuery;
 		Criteria subCrit = new Criteria();
 		Criteria crit2 = new Criteria();
 		subCrit.addLike("responsibilityId", responsibilityId);
-		subQuery = QueryFactory.newReportQuery(RuleResponsibility.class, subCrit);
+		subQuery = QueryFactory.newReportQuery(RuleResponsibilityBo.class, subCrit);
 		subQuery.setAttributes(new String[] {"RULE_ID"});
 		crit2.addIn("id", subQuery);
 		crit2.addEqualTo("currentInd", 1);
@@ -225,7 +224,8 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		Criteria finalCrit = new Criteria();
 		finalCrit.addEqualTo("responsibilityId", responsibilityId);
 		finalCrit.addEqualTo("ruleBaseValuesId", rbv.getId());
-		RuleResponsibility rResp = (RuleResponsibility)this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(RuleResponsibility.class, finalCrit));
+		RuleResponsibilityBo
+                rResp = (RuleResponsibilityBo)this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(RuleResponsibilityBo.class, finalCrit));
 		
 		if(rResp != null){
 			if(rResp.getRuleBaseValuesId().equals(rbv.getId())){
@@ -280,7 +280,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
         Criteria crit = getSearchCriteria(docTypeName, ruleTemplateId, ruleDescription, delegateRule, activeInd, extensionValues);
         ReportQueryByCriteria query = getResponsibilitySubQuery(workgroupIds, workflowId, actionRequestCodes, (workflowId != null), ((workgroupIds != null) && !workgroupIds.isEmpty()));
         if (query != null) {
-        	crit.addIn("responsibilities.ruleBaseValuesId", query);
+        	crit.addIn("ruleResponsibilities.ruleBaseValuesId", query);
         }
         results = (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleBaseValues.class, crit, true));
         return results;
@@ -339,7 +339,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
             responsibilityCrit.addAndCriteria(ruleResponsibilityNameCrit);
         }
         if (responsibilityCrit != null) {
-        	query = QueryFactory.newReportQuery(RuleResponsibility.class, responsibilityCrit);
+        	query = QueryFactory.newReportQuery(RuleResponsibilityBo.class, responsibilityCrit);
         	query.setAttributes(new String[] { "ruleBaseValuesId" });
         }
         return query;
@@ -403,7 +403,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
             orCriteria.addLike("ruleResponsibilityName", workgroupIdFromList);
             responsibilityCrit.addOrCriteria(orCriteria);
         }
-        ReportQueryByCriteria query = QueryFactory.newReportQuery(RuleResponsibility.class, responsibilityCrit);
+        ReportQueryByCriteria query = QueryFactory.newReportQuery(RuleResponsibilityBo.class, responsibilityCrit);
         query.setAttributes(new String[] { "ruleBaseValuesId" });
         Criteria crit = new Criteria();
         crit.addIn("responsibilities.ruleBaseValuesId", query);
@@ -413,7 +413,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 	private ReportQueryByCriteria getResponsibilitySubQuery(String ruleResponsibilityName) {
 		Criteria responsibilityCrit = new Criteria();
 		responsibilityCrit.addLike("ruleResponsibilityName", ruleResponsibilityName);
-		ReportQueryByCriteria query = QueryFactory.newReportQuery(RuleResponsibility.class, responsibilityCrit);
+		ReportQueryByCriteria query = QueryFactory.newReportQuery(RuleResponsibilityBo.class, responsibilityCrit);
 		query.setAttributes(new String[] { "ruleBaseValuesId" });
 		return query;
 	}
@@ -426,7 +426,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		Criteria responsibilityCrit = new Criteria();
 		responsibilityCrit.addIn("ruleResponsibilityName", workgroupIds);
 		responsibilityCrit.addEqualTo("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
-		ReportQueryByCriteria query = QueryFactory.newReportQuery(RuleResponsibility.class, responsibilityCrit);
+		ReportQueryByCriteria query = QueryFactory.newReportQuery(RuleResponsibilityBo.class, responsibilityCrit);
 		query.setAttributes(new String[] { "ruleBaseValuesId" });
 		return query;
 	}
@@ -510,10 +510,10 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		crit.addEqualTo("ruleResponsibilityType", ruleResponsibilityType);
 		crit.addEqualTo("ruleBaseValues.currentInd", Boolean.TRUE);
 		crit.addEqualTo("ruleBaseValues.name", ruleName);
-		List responsibilities = (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleResponsibility.class, crit));
+		List responsibilities = (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleResponsibilityBo.class, crit));
 		if (responsibilities != null) {
 			for (Iterator iter = responsibilities.iterator(); iter.hasNext();) {
-				RuleResponsibility responsibility = (RuleResponsibility) iter.next();
+				RuleResponsibilityBo responsibility = (RuleResponsibilityBo) iter.next();
 				return responsibility.getResponsibilityId();
 			}
 		}

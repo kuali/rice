@@ -28,9 +28,9 @@ import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kew.rule.RuleExpressionDef;
-import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -79,7 +79,7 @@ public class RuleXmlParser {
      */
     private static final String DEFAULT_ACTION_REQUESTED = KEWConstants.ACTION_REQUEST_APPROVE_REQ;
 
-    public List<RuleDelegation> parseRuleDelegations(InputStream input) throws IOException, XmlException {
+    public List<RuleDelegationBo> parseRuleDelegations(InputStream input) throws IOException, XmlException {
     	try {
             Document doc = XmlHelper.trimSAXXml(input);
             Element root = doc.getRootElement();
@@ -129,11 +129,11 @@ public class RuleXmlParser {
      * @param element top-level 'data' element which should contain a <rules> child element
      * @throws XmlException
      */
-    public List<RuleDelegation> parseRuleDelegations(Element element) throws XmlException {
-    	List<RuleDelegation> ruleDelegationsToSave = new ArrayList<RuleDelegation>();
+    public List<RuleDelegationBo> parseRuleDelegations(Element element) throws XmlException {
+    	List<RuleDelegationBo> ruleDelegationsToSave = new ArrayList<RuleDelegationBo>();
         for (Element ruleDelegationsElement: (List<Element>) element.getChildren(RULE_DELEGATIONS, RULE_NAMESPACE)) {
             for (Element ruleDelegationElement: (List<Element>) ruleDelegationsElement.getChildren(RULE_DELEGATION, RULE_NAMESPACE)) {
-                RuleDelegation ruleDelegation = parseRuleDelegation(ruleDelegationElement);
+                RuleDelegationBo ruleDelegation = parseRuleDelegation(ruleDelegationElement);
                 ruleDelegationsToSave.add(ruleDelegation);
             }
         }
@@ -156,8 +156,8 @@ public class RuleXmlParser {
     /**
      * Checks for rule delegations in the List that duplicate other Rules already in the system 
      */
-    private void checkForDuplicateRuleDelegations(List<RuleDelegation> ruleDelegations) throws XmlException {
-    	for (RuleDelegation ruleDelegation : ruleDelegations) {
+    private void checkForDuplicateRuleDelegations(List<RuleDelegationBo> ruleDelegations) throws XmlException {
+    	for (RuleDelegationBo ruleDelegation : ruleDelegations) {
     		if (StringUtils.isBlank(ruleDelegation.getDelegationRule().getName())) {
     			LOG.debug("Checking for rule duplication on an anonymous rule delegation.");
     			checkRuleDelegationForDuplicate(ruleDelegation);
@@ -165,8 +165,8 @@ public class RuleXmlParser {
     	}
     }
 
-    private RuleDelegation parseRuleDelegation(Element element) throws XmlException {
-    	RuleDelegation ruleDelegation = new RuleDelegation();
+    private RuleDelegationBo parseRuleDelegation(Element element) throws XmlException {
+    	RuleDelegationBo ruleDelegation = new RuleDelegationBo();
     	Element parentResponsibilityElement = element.getChild(PARENT_RESPONSIBILITY, element.getNamespace());
     	if (parentResponsibilityElement == null) {
     		throw new XmlException("parent responsibility was not defined");
@@ -201,7 +201,7 @@ public class RuleXmlParser {
     	if (parentRule == null) {
     		throw new XmlException("Could find the parent rule with name '" + parentRuleName + "'");
     	}
-    	RuleResponsibility ruleResponsibilityNameAndType = parseResponsibilityNameAndType(element);
+    	RuleResponsibilityBo ruleResponsibilityNameAndType = parseResponsibilityNameAndType(element);
     	if (ruleResponsibilityNameAndType == null) {
     		throw new XmlException("Could not locate a valid responsibility declaration for the parent responsibility.");
     	}
@@ -330,7 +330,7 @@ public class RuleXmlParser {
         }
     }
     
-    private void checkRuleDelegationForDuplicate(RuleDelegation ruleDelegation) throws XmlException {
+    private void checkRuleDelegationForDuplicate(RuleDelegationBo ruleDelegation) throws XmlException {
     	checkRuleForDuplicate(ruleDelegation.getDelegationRule());
     }
 
@@ -344,16 +344,16 @@ public class RuleXmlParser {
         rule.setDelegateRule(false);
     }
 
-    private List<RuleResponsibility> parseResponsibilities(Element element, RuleBaseValues rule) throws XmlException {
+    private List<RuleResponsibilityBo> parseResponsibilities(Element element, RuleBaseValues rule) throws XmlException {
         if (element == null) {
-            return new ArrayList<RuleResponsibility>(0);
+            return new ArrayList<RuleResponsibilityBo>(0);
         }
-        List<RuleResponsibility> existingResponsibilities = rule.getRuleResponsibilities();
-        List<RuleResponsibility> responsibilities = new ArrayList<RuleResponsibility>();
+        List<RuleResponsibilityBo> existingResponsibilities = rule.getRuleResponsibilities();
+        List<RuleResponsibilityBo> responsibilities = new ArrayList<RuleResponsibilityBo>();
         List responsibilityElements = element.getChildren(RESPONSIBILITY, element.getNamespace());
         for (Iterator iterator = responsibilityElements.iterator(); iterator.hasNext();) {
             Element responsibilityElement = (Element) iterator.next();
-            RuleResponsibility responsibility = parseResponsibility(responsibilityElement, rule);
+            RuleResponsibilityBo responsibility = parseResponsibility(responsibilityElement, rule);
             reconcileWithExistingResponsibility(responsibility, existingResponsibilities);
             responsibilities.add(responsibility);
         }
@@ -363,8 +363,8 @@ public class RuleXmlParser {
         return responsibilities;
     }
 
-    public RuleResponsibility parseResponsibility(Element element, RuleBaseValues rule) throws XmlException {
-        RuleResponsibility responsibility = new RuleResponsibility();
+    public RuleResponsibilityBo parseResponsibility(Element element, RuleBaseValues rule) throws XmlException {
+        RuleResponsibilityBo responsibility = new RuleResponsibilityBo();
         responsibility.setRuleBaseValues(rule);
         String actionRequested = null;
         String priority = null;
@@ -395,7 +395,7 @@ public class RuleXmlParser {
         responsibility.setPriority(priorityNumber);
         responsibility.setApprovePolicy(approvePolicy);
         
-        RuleResponsibility responsibilityNameAndType = parseResponsibilityNameAndType(element);
+        RuleResponsibilityBo responsibilityNameAndType = parseResponsibilityNameAndType(element);
         if (responsibilityNameAndType == null) {
         	throw new XmlException("Could not locate a valid responsibility declaration on a responsibility on rule with description '" + rule.getDescription() + "'");
         }
@@ -409,8 +409,8 @@ public class RuleXmlParser {
         return responsibility;
     }
 
-    public RuleResponsibility parseResponsibilityNameAndType(Element element) throws XmlException {
-    	RuleResponsibility responsibility = new RuleResponsibility();
+    public RuleResponsibilityBo parseResponsibilityNameAndType(Element element) throws XmlException {
+    	RuleResponsibilityBo responsibility = new RuleResponsibilityBo();
     	
     	String principalId = element.getChildText(PRINCIPAL_ID, element.getNamespace());
         String principalName = element.getChildText(PRINCIPAL_NAME, element.getNamespace());
@@ -511,12 +511,12 @@ public class RuleXmlParser {
      * to the new responsibility where appropriate.  The code will attempt to find exact matches based on the values found
      * on the responsibilities.
      */
-    private void reconcileWithExistingResponsibility(RuleResponsibility responsibility, List<RuleResponsibility> existingResponsibilities) {
+    private void reconcileWithExistingResponsibility(RuleResponsibilityBo responsibility, List<RuleResponsibilityBo> existingResponsibilities) {
     	if (existingResponsibilities == null || existingResponsibilities.isEmpty()) {
     		return;
     	}
-    	RuleResponsibility exactMatch = null;
-    	for (RuleResponsibility existingResponsibility : existingResponsibilities) {
+    	RuleResponsibilityBo exactMatch = null;
+    	for (RuleResponsibilityBo existingResponsibility : existingResponsibilities) {
     		if (isExactResponsibilityMatch(responsibility, existingResponsibility)) {
     			exactMatch = existingResponsibility;
     			break;
@@ -530,7 +530,7 @@ public class RuleXmlParser {
     /**
      * Checks if the given responsibilities are exact matches of one another.
      */
-    private boolean isExactResponsibilityMatch(RuleResponsibility newResponsibility, RuleResponsibility existingResponsibility) {
+    private boolean isExactResponsibilityMatch(RuleResponsibilityBo newResponsibility, RuleResponsibilityBo existingResponsibility) {
     	if (existingResponsibility.getResponsibilityId().equals(newResponsibility.getResponsibilityId())) {
     		return true;
     	}

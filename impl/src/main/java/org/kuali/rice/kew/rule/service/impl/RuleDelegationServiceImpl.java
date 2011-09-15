@@ -21,7 +21,7 @@ import org.jdom.Element;
 import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
-import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.rule.dao.RuleDelegationDAO;
 import org.kuali.rice.kew.rule.service.RuleDelegationService;
@@ -52,41 +52,41 @@ public class RuleDelegationServiceImpl implements RuleDelegationService {
 	
     private RuleDelegationDAO dao;
 
-    public List<RuleDelegation> findByDelegateRuleId(String ruleId) {
+    public List<RuleDelegationBo> findByDelegateRuleId(String ruleId) {
         if (ruleId == null) return Collections.EMPTY_LIST;
         return dao.findByDelegateRuleId(ruleId);
     }
 
-    public void save(RuleDelegation ruleDelegation) {
+    public void save(RuleDelegationBo ruleDelegation) {
         dao.save(ruleDelegation);
     }
 
     public void setRuleDelegationDAO(RuleDelegationDAO dao) {
         this.dao = dao;
     }
-    public List<RuleDelegation> findAllCurrentRuleDelegations(){
+    public List<RuleDelegationBo> findAllCurrentRuleDelegations(){
         return dao.findAllCurrentRuleDelegations();
     }
     public void delete(String ruleDelegationId){
         dao.delete(ruleDelegationId);
     }
 
-    public RuleDelegation findByRuleDelegationId(String ruleDelegationId){
+    public RuleDelegationBo findByRuleDelegationId(String ruleDelegationId){
         return dao.findByRuleDelegationId(ruleDelegationId);
     }
 
-    public List<RuleDelegation> findByResponsibilityId(String responsibilityId) {
+    public List<RuleDelegationBo> findByResponsibilityId(String responsibilityId) {
     	//return dao.findByResponsibilityIdWithCurrentRule(responsibilityId);
     	return findByResponsibilityId(responsibilityId, false);
     }
 
-    public List<RuleDelegation> search(String parentRuleBaseVaueId, String parentResponsibilityId,  String docTypeName, String ruleId, String ruleTemplateId, String ruleDescription, String groupId, String principalId,
+    public List<RuleDelegationBo> search(String parentRuleBaseVaueId, String parentResponsibilityId,  String docTypeName, String ruleId, String ruleTemplateId, String ruleDescription, String groupId, String principalId,
             String delegationType, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
         return dao.search(parentRuleBaseVaueId, parentResponsibilityId, docTypeName, ruleId, ruleTemplateId, ruleDescription, groupId, principalId, delegationType,
                 activeInd, extensionValues, workflowIdDirective);
     }
 
-    public List<RuleDelegation> searchByTemplate(String parentRuleBaseVaueId, String parentResponsibilityId,  String docTypeName, String ruleTemplateName, String ruleDescription, String groupId, String principalId,
+    public List<RuleDelegationBo> searchByTemplate(String parentRuleBaseVaueId, String parentResponsibilityId,  String docTypeName, String ruleTemplateName, String ruleDescription, String groupId, String principalId,
             Boolean workgroupMember, String delegationType, Boolean activeInd, Map extensionValues, Collection<String> actionRequestCodes) {
 
         if ( (StringUtils.isEmpty(docTypeName)) &&

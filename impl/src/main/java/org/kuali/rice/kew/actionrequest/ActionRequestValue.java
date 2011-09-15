@@ -41,7 +41,7 @@ import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.service.RuleService;
+import org.kuali.rice.kew.rule.service.RuleServiceInternal;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.RoleRecipient;
 import org.kuali.rice.kew.util.CodeTranslator;
@@ -841,8 +841,8 @@ public class ActionRequestValue implements Serializable {
         this.ruleBaseValuesId = ruleBaseValuesId;
     }
     
-	private RuleService getRuleService() {
-        return (RuleService) KEWServiceLocator.getService(KEWServiceLocator.RULE_SERVICE);
+	private RuleServiceInternal getRuleService() {
+        return (RuleServiceInternal) KEWServiceLocator.getService(KEWServiceLocator.RULE_SERVICE);
     }
 
     public boolean isPrimaryDelegator() {

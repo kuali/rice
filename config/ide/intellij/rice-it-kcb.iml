@@ -14,7 +14,6 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../it/kcb/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/kcb/src/test/resources/META-INF" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/kcb/target/generated-sources/test-annotations" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../it/kcb/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/kcb/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/kcb/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/kcb/target/test-classes" />
@@ -66,11 +65,11 @@
     <orderEntry type="module" module-name="rice-api" scope="TEST" />
     <orderEntry type="module" module-name="rice-krad-app-framework" scope="TEST" />
     <orderEntry type="module" module-name="rice-kim-api" scope="TEST" />
-    <orderEntry type="module" module-name="rice-shareddata-api" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-context:3.1.0.M2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-aop:3.1.0.M2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: aopalliance:aopalliance:1.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-expression:3.1.0.M2" level="project" />
+    <orderEntry type="module" module-name="rice-shareddata-api" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hibernate:hibernate-core:3.6.7.Final" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: dom4j:dom4j:1.6.1" level="project" />

@@ -53,7 +53,7 @@ import java.util.List;
 @Entity
 @Table(name="KREW_RULE_RSP_T")
 //@Sequence(name="KREW_RSP_S", property="id")
-public class RuleResponsibility extends PersistableBusinessObjectBase implements RuleResponsibilityContract {
+public class RuleResponsibilityBo extends PersistableBusinessObjectBase implements RuleResponsibilityContract {
 
 	private static final long serialVersionUID = -1565688857123316797L;
 	@Id
@@ -190,7 +190,7 @@ public class RuleResponsibility extends PersistableBusinessObjectBase implements
     }
 
     public Object copy(boolean preserveKeys) {
-        RuleResponsibility ruleResponsibilityClone = new RuleResponsibility();
+        RuleResponsibilityBo ruleResponsibilityClone = new RuleResponsibilityBo();
         ruleResponsibilityClone.setApprovePolicy(getApprovePolicy());
         if (actionRequestedCd != null) {
             ruleResponsibilityClone.setActionRequestedCd(actionRequestedCd);
@@ -247,11 +247,11 @@ public class RuleResponsibility extends PersistableBusinessObjectBase implements
         this.responsibilityId = responsibilityId;
     }
     
-    public List<RuleDelegation> getDelegationRules() {
+    public List<RuleDelegationBo> getDelegationRules() {
     	return KEWServiceLocator.getRuleDelegationService().findByResponsibilityId(getResponsibilityId());
     }
     
-    public RuleDelegation getDelegationRule(int index) {
+    public RuleDelegationBo getDelegationRule(int index) {
     	return getDelegationRules().get(index);
     }
     
@@ -288,8 +288,8 @@ public class RuleResponsibility extends PersistableBusinessObjectBase implements
     
     public boolean equals(Object o) {
         if (o == null) return false;
-        if (!(o instanceof RuleResponsibility)) return false;
-        RuleResponsibility pred = (RuleResponsibility) o;
+        if (!(o instanceof RuleResponsibilityBo)) return false;
+        RuleResponsibilityBo pred = (RuleResponsibilityBo) o;
         return ObjectUtils.equals(ruleResponsibilityName, pred.getRuleResponsibilityName()) &&
                ObjectUtils.equals(actionRequestedCd, pred.getActionRequestedCd()) &&
                ObjectUtils.equals(priority, pred.getPriority()) &&
@@ -329,7 +329,7 @@ public class RuleResponsibility extends PersistableBusinessObjectBase implements
         return getRole();
     }
 
-    public static org.kuali.rice.kew.api.rule.RuleResponsibility to(RuleResponsibility bo) {
+    public static org.kuali.rice.kew.api.rule.RuleResponsibility to(RuleResponsibilityBo bo) {
         if (bo == null) {
             return null;
         }

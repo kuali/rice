@@ -54,7 +54,7 @@ import static org.junit.Assert.*;
  * KULWF-654: Tests the resolution to this issue by configuring a CustomActionListAttribute as well as a
  * searchable attribute.
  */
-@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTestBase {
 
     protected void loadTestData() throws Exception {

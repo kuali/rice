@@ -48,8 +48,8 @@
     <class>org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo</class>
     <class>org.kuali.rice.kew.rule.RuleBaseValues</class>
     <class>org.kuali.rice.kew.rule.RuleExpressionDef</class>
-    <class>org.kuali.rice.kew.rule.RuleDelegation</class>
-    <class>org.kuali.rice.kew.rule.RuleResponsibility</class>
+    <class>org.kuali.rice.kew.rule.RuleDelegationBo</class>
+    <class>org.kuali.rice.kew.rule.RuleResponsibilityBo</class>
     <class>org.kuali.rice.kew.rule.RuleExtension</class>
     <class>org.kuali.rice.kew.rule.RuleExtensionValue</class>
     <class>org.kuali.rice.kew.help.HelpEntry</class>

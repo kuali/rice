@@ -20,7 +20,6 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../ldap/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../ldap/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../ldap/target/surefire" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../ldap/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

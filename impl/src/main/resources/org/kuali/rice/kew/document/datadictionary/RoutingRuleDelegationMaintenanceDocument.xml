@@ -18,7 +18,7 @@
   <bean id="RoutingRuleDelegationMaintenanceDocument" parent="RoutingRuleDelegationMaintenanceDocument-parentBean"/>
 
   <bean id="RoutingRuleDelegationMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
-    <property name="dataObjectClass" value="org.kuali.rice.kew.rule.RuleDelegation"/>
+    <property name="dataObjectClass" value="org.kuali.rice.kew.rule.RuleDelegationBo"/>
     <property name="maintainableClass" value="org.kuali.rice.kew.document.RoutingRuleDelegationMaintainable"/>
     <property name="maintainableSections">
       <list>

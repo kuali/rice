@@ -21,7 +21,7 @@ import java.util.Map;
 
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.rule.web.WebRuleUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -183,7 +183,7 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
             //    ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(getThisRule().getRuleTemplateId());
             //}
 			if(ruleTemplate.getDefaultActionRequestValue() != null && ruleTemplate.getDefaultActionRequestValue().getValue() != null){
-				((RuleResponsibility) addLine).setActionRequestedCd(ruleTemplate.getDefaultActionRequestValue().getValue());
+				((RuleResponsibilityBo) addLine).setActionRequestedCd(ruleTemplate.getDefaultActionRequestValue().getValue());
 	        }
 		}
 	}

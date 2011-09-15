@@ -18,7 +18,7 @@ package org.kuali.rice.kew.rule.bo;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kew.rule.web.WebRuleUtils;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
 import org.kuali.rice.kns.web.ui.Section;
@@ -34,7 +34,7 @@ public class RuleDelegationInquirableImpl extends KualiInquirableImpl {
 
 	@Override
 	public Object retrieveDataObject(Map fieldValues){
-		RuleDelegation rule = (RuleDelegation)super.retrieveDataObject(fieldValues);
+		RuleDelegationBo rule = (RuleDelegationBo)super.retrieveDataObject(fieldValues);
 		WebRuleUtils.populateRuleMaintenanceFields(rule.getDelegationRule());
 		return rule;
     }
@@ -45,7 +45,7 @@ public class RuleDelegationInquirableImpl extends KualiInquirableImpl {
 	 * @see org.kuali.rice.krad.inquiry.Inquirable#getBusinessObject(java.util.Map)
 	 */
 	public BusinessObject getBusinessObject(Map fieldValues) {
-		RuleDelegation rule = (RuleDelegation)super.getBusinessObject(fieldValues);
+		RuleDelegationBo rule = (RuleDelegationBo)super.getBusinessObject(fieldValues);
 		WebRuleUtils.populateRuleMaintenanceFields(rule.getDelegationRule());
 		return rule;
 	}
@@ -58,7 +58,7 @@ public class RuleDelegationInquirableImpl extends KualiInquirableImpl {
 	public List getSections(BusinessObject bo) {
 		List<Section> sections = super.getSections(bo);
 		
-		return WebRuleUtils.customizeSections(((RuleDelegation)bo).getDelegationRule(), sections, true);
+		return WebRuleUtils.customizeSections(((RuleDelegationBo)bo).getDelegationRule(), sections, true);
 		
 	}
 

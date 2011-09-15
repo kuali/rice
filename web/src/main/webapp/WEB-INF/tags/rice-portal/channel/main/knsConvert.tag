@@ -33,7 +33,7 @@
     <li><portal:portalLink displayTitle="true" title="Rule"
                            url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&ruleBaseValuesId=1103&dataObjectClassName=org.kuali.rice.kew.rule.RuleBaseValues&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
     <li><portal:portalLink displayTitle="true" title="Rule Delegation"
-                           url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&ruleDelegationId=1641&dataObjectClassName=org.kuali.rice.kew.rule.RuleDelegation&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
+                           url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&ruleDelegationId=1641&dataObjectClassName=org.kuali.rice.kew.rule.RuleDelegationBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
   </ul>
   <br/>
   <strong>KIM Lookups</strong>

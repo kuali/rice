@@ -19,7 +19,7 @@ package org.kuali.rice.kew.rule.web;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.Group;
@@ -44,7 +44,7 @@ public class DelegateRuleForm extends KualiForm {
 	private String parentResponsibilityId;
 
 	private RuleBaseValues parentRule;
-	private RuleResponsibility parentResponsibility;
+	private RuleResponsibilityBo parentResponsibility;
 		
 	private List<String> reviewers = new ArrayList<String>();
 	private List<String> responsibilityTypes = new ArrayList<String>();
@@ -82,11 +82,11 @@ public class DelegateRuleForm extends KualiForm {
 		this.parentRule = parentRule;
 	}
 
-	public RuleResponsibility getParentResponsibility() {
+	public RuleResponsibilityBo getParentResponsibility() {
 		return this.parentResponsibility;
 	}
 
-	public void setParentResponsibility(RuleResponsibility parentResponsibility) {
+	public void setParentResponsibility(RuleResponsibilityBo parentResponsibility) {
 		this.parentResponsibility = parentResponsibility;
 	}
 
@@ -134,7 +134,7 @@ public class DelegateRuleForm extends KualiForm {
 			setParentRule(KEWServiceLocator.getRuleService().findRuleBaseValuesById(getParentRuleId()));
 		}
 		if (getParentResponsibilityId() != null && getParentRule() != null) {
-			for (RuleResponsibility responsibility : getParentRule().getRuleResponsibilities()) {
+			for (RuleResponsibilityBo responsibility : getParentRule().getRuleResponsibilities()) {
 				if (responsibility.getResponsibilityId().equals(getParentResponsibilityId())) {
 					setParentResponsibility(responsibility);
 					break;
@@ -143,7 +143,7 @@ public class DelegateRuleForm extends KualiForm {
 		}
 		
 		if (getParentRule() != null) {
-			for (RuleResponsibility responsibility : getParentRule().getRuleResponsibilities()) {
+			for (RuleResponsibilityBo responsibility : getParentRule().getRuleResponsibilities()) {
 				if (KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(responsibility.getRuleResponsibilityType())) {
 					Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(responsibility.getRuleResponsibilityName());
 					if (principal != null) {

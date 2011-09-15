@@ -21,6 +21,7 @@ package org.kuali.rice.kew.rule.bo;
  import org.hibernate.annotations.FetchMode;
  import org.hibernate.annotations.GenericGenerator;
  import org.hibernate.annotations.Parameter;
+ import org.kuali.rice.kew.api.rule.RuleTemplate;
  import org.kuali.rice.kew.api.rule.RuleTemplateContract;
  import org.kuali.rice.kew.rule.Role;
  import org.kuali.rice.kew.rule.RoleAttribute;
@@ -384,5 +385,12 @@ public class RuleTemplateBo extends PersistableBusinessObjectBase implements Rul
             }
         }
 		return roles;
+    }
+
+    public static RuleTemplate to(RuleTemplateBo bo) {
+        if (bo == null) {
+            return null;
+        }
+        return RuleTemplate.Builder.create(bo).build();
     }
 }

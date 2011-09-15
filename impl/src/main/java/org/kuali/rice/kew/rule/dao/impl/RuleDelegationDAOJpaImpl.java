@@ -27,7 +27,7 @@ import javax.persistence.PersistenceContext;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
-import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kew.rule.dao.RuleDelegationDAO;
 
 
@@ -36,27 +36,27 @@ public class RuleDelegationDAOJpaImpl implements RuleDelegationDAO {
 	@PersistenceContext(unitName="kew-unit")
 	private EntityManager entityManager;
 
-    public List<RuleDelegation> findByDelegateRuleId(String ruleId) {
-        Criteria crit = new Criteria(RuleDelegation.class.getName());
+    public List<RuleDelegationBo> findByDelegateRuleId(String ruleId) {
+        Criteria crit = new Criteria(RuleDelegationBo.class.getName());
         crit.eq("delegateRuleId", ruleId);
         return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
     }
 
-    public void save(RuleDelegation ruleDelegation) {
+    public void save(RuleDelegationBo ruleDelegation) {
     	if(ruleDelegation.getRuleDelegationId()==null){
     		entityManager.persist(ruleDelegation);
     	}else{
     		OrmUtils.merge(entityManager, ruleDelegation);
     	}
     }
-    public List<RuleDelegation> findAllCurrentRuleDelegations(){
-        Criteria crit = new Criteria(RuleDelegation.class.getName());
+    public List<RuleDelegationBo> findAllCurrentRuleDelegations(){
+        Criteria crit = new Criteria(RuleDelegationBo.class.getName());
         crit.eq("delegationRuleBaseValues.currentInd", true);
         return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
     }
 
-    public RuleDelegation findByRuleDelegationId(String ruleDelegationId){
-        return entityManager.find(RuleDelegation.class, ruleDelegationId);
+    public RuleDelegationBo findByRuleDelegationId(String ruleDelegationId){
+        return entityManager.find(RuleDelegationBo.class, ruleDelegationId);
 
     }
     public void delete(String ruleDelegationId){
@@ -71,12 +71,12 @@ public class RuleDelegationDAOJpaImpl implements RuleDelegationDAO {
         this.entityManager = entityManager;
     }
 
-    public List<RuleDelegation> findByResponsibilityIdWithCurrentRule(String responsibilityId) {
-    	Criteria crit = new Criteria(RuleDelegation.class.getName());
+    public List<RuleDelegationBo> findByResponsibilityIdWithCurrentRule(String responsibilityId) {
+    	Criteria crit = new Criteria(RuleDelegationBo.class.getName());
     	crit.eq("responsibilityId", responsibilityId);
     	crit.eq("delegationRuleBaseValues.currentInd", true);
     	Collection delegations = new QueryByCriteria(entityManager, crit).toQuery().getResultList();
-    	return new ArrayList<RuleDelegation>(delegations);
+    	return new ArrayList<RuleDelegationBo>(delegations);
     }
 
     /**
@@ -84,7 +84,7 @@ public class RuleDelegationDAOJpaImpl implements RuleDelegationDAO {
      *
      * @see org.kuali.rice.kew.rule.dao.RuleDelegationDAO#search(java.lang.String, java.lang.Long, java.lang.Long, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean, java.util.Map, java.lang.String)
      */
-    public List<RuleDelegation> search(String parentRuleBaseVaueId, String parentResponsibilityId, String docTypeName, String ruleId,
+    public List<RuleDelegationBo> search(String parentRuleBaseVaueId, String parentResponsibilityId, String docTypeName, String ruleId,
             String ruleTemplateId, String ruleDescription, String workgroupId,
             String workflowId, String delegationType, Boolean activeInd,
             Map extensionValues, String workflowIdDirective) {
@@ -97,7 +97,7 @@ public class RuleDelegationDAOJpaImpl implements RuleDelegationDAO {
      *
      * @see org.kuali.rice.kew.rule.dao.RuleDelegationDAO#search(java.lang.String, java.lang.Long, java.lang.String, java.util.Collection, java.lang.String, java.lang.String, java.lang.Boolean, java.util.Map, java.util.Collection)
      */
-    public List<RuleDelegation> search(String parentRuleBaseVaueId, String parentResponsibilityId, String docTypeName, String ruleTemplateId,
+    public List<RuleDelegationBo> search(String parentRuleBaseVaueId, String parentResponsibilityId, String docTypeName, String ruleTemplateId,
             String ruleDescription, Collection<String> workgroupIds,
             String workflowId, String delegationType, Boolean activeInd,
             Map extensionValues, Collection actionRequestCodes) {

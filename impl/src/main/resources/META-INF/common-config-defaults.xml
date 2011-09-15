@@ -473,7 +473,7 @@
       enWorkflowDataSource,
       enRuleAttributeService,
       enRuleTemplateService,
-      enRuleService,
+      enRuleServiceInternal,
       enDocumentRouteHeaderService,
       enActionListService,
       enDocumentSearchService,

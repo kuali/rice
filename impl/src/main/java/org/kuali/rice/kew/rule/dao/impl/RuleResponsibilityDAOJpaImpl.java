@@ -19,7 +19,7 @@ package org.kuali.rice.kew.rule.dao.impl;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.dao.RuleResponsibilityDAO;
 
 
@@ -41,8 +41,8 @@ public class RuleResponsibilityDAOJpaImpl implements RuleResponsibilityDAO {
      * 
      * @see org.kuali.rice.kew.rule.dao.RuleTemplateAttributeDAO#findByRuleTemplateAttributeId(java.lang.Long)
      */
-    public RuleResponsibility findByRuleResponsibilityId(String ruleResponsibilityId) {
-        return entityManager.find(RuleResponsibility.class, ruleResponsibilityId);
+    public RuleResponsibilityBo findByRuleResponsibilityId(String ruleResponsibilityId) {
+        return entityManager.find(RuleResponsibilityBo.class, ruleResponsibilityId);
     }
 
     public EntityManager getEntityManager() {

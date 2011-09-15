@@ -21,7 +21,7 @@ import java.util.List;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.core.framework.impex.xml.XmlLoader;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 
@@ -35,7 +35,7 @@ public interface RuleTemplateService extends XmlLoader, XmlExporter {
 
     public void save(RuleTemplateBo ruleTemplate);
     public void save(RuleTemplateAttributeBo ruleTemplateAttribute);
-    public void saveRuleDefaults(RuleDelegation ruleDelegation, RuleBaseValues ruleBaseValues);
+    public void saveRuleDefaults(RuleDelegationBo ruleDelegation, RuleBaseValues ruleBaseValues);
     public RuleTemplateBo findByRuleTemplateId(String ruleTemplateId);
     public List<RuleTemplateBo> findAll();
     public List findByRuleTemplate(RuleTemplateBo ruleTemplate);

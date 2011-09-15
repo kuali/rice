@@ -19,7 +19,7 @@ import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kim.api.group.Group;
@@ -72,8 +72,8 @@ public class DataExporter implements Exporter {
 				dataSet.getDocumentTypes().add((DocumentType)dataObject);
 			} else if (dataObjectClass.equals(RuleBaseValues.class)) {
 				dataSet.getRules().add((RuleBaseValues)dataObject);
-			} else if (dataObjectClass.equals(RuleDelegation.class)) {
-				dataSet.getRuleDelegations().add((RuleDelegation)dataObject);
+			} else if (dataObjectClass.equals(RuleDelegationBo.class)) {
+				dataSet.getRuleDelegations().add((RuleDelegationBo)dataObject);
 			} else if (dataObjectClass.equals(GroupBo.class)) {
 				dataSet.getGroups().add((Group)dataObject);
 			}

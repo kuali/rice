@@ -581,7 +581,7 @@
         auto-delete="true" auto-retrieve="true" auto-update="true">
         <foreignkey field-ref="ruleExpressionId" target-field-ref="id"/>
     </reference-descriptor>
-    <collection-descriptor name="ruleResponsibilities" element-class-ref="org.kuali.rice.kew.rule.RuleResponsibility"
+    <collection-descriptor name="ruleResponsibilities" element-class-ref="org.kuali.rice.kew.rule.RuleResponsibilityBo"
         auto-delete="true" auto-retrieve="true" auto-update="true" proxy="false">
       <inverse-foreignkey field-ref="ruleBaseValuesId" target-field-ref="id" />
     </collection-descriptor>
@@ -599,7 +599,7 @@
 	<field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true" />
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kew.rule.RuleDelegation" table="KREW_DLGN_RSP_T">
+  <class-descriptor class="org.kuali.rice.kew.rule.RuleDelegationBo" table="KREW_DLGN_RSP_T">
   	<field-descriptor column="DLGN_RULE_ID" name="ruleDelegationId" jdbc-type="VARCHAR" primarykey="true" sequence-name="KREW_RTE_TMPL_S" autoincrement="true"/>
   	<field-descriptor column="RSP_ID" name="responsibilityId" jdbc-type="VARCHAR"/>
   	<field-descriptor column="DLGN_RULE_BASE_VAL_ID" name="delegateRuleId" jdbc-type="VARCHAR" />
@@ -611,14 +611,14 @@
       <foreignkey field-ref="delegateRuleId" target-field-ref="id"/>
     </reference-descriptor>
 <!--
-    <reference-descriptor class-ref="org.kuali.rice.kew.rule.RuleResponsibility" name="ruleResponsibility"
+    <reference-descriptor class-ref="org.kuali.rice.kew.rule.RuleResponsibilityBo" name="ruleResponsibility"
     	auto-delete="false" auto-retrieve="true" auto-update="false">
     	<foreignkey field-ref="ruleResponsibilityId" />
     </reference-descriptor>
      -->
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kew.rule.RuleResponsibility" table="KREW_RULE_RSP_T">
+  <class-descriptor class="org.kuali.rice.kew.rule.RuleResponsibilityBo" table="KREW_RULE_RSP_T">
     <field-descriptor column="RULE_RSP_ID" name="id" jdbc-type="VARCHAR" primarykey="true" sequence-name="KREW_RSP_S" autoincrement="true"/>
     <field-descriptor column="RSP_ID" name="responsibilityId" jdbc-type="VARCHAR"/>
     <field-descriptor column="RULE_ID" name="ruleBaseValuesId" jdbc-type="VARCHAR" />
@@ -635,7 +635,7 @@
     </reference-descriptor>
 
     <!-- Uses a ManageableArrayList because we never want to delete RuleDelegation objects from the database
-    <collection-descriptor element-class-ref="org.kuali.rice.kew.rule.RuleDelegation" name="delegationRules" auto-delete="false" auto-retrieve="true" auto-update="true" proxy="true"
+    <collection-descriptor element-class-ref="org.kuali.rice.kew.rule.RuleDelegationBo" name="delegationRules" auto-delete="false" auto-retrieve="true" auto-update="true" proxy="true"
       collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList">
     	<inverse-foreignkey field-ref="ruleResponsibilityId" />
     </collection-descriptor>-->

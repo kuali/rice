@@ -361,7 +361,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>
   
   <bean id="RuleDelegation-InquiryView" parent="InquiryView">
-    <property name="dataObjectClassName" value="org.kuali.rice.kew.rule.RuleDelegation"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.kew.rule.RuleDelegationBo"/>
     <property name="viewHelperServiceClassName" value="org.kuali.rice.kew.rule.bo.RuleDelegationInquirableImpl"/>
     <property name="Items">
         <list>

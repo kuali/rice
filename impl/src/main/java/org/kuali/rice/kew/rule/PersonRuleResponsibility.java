@@ -24,7 +24,7 @@ import org.kuali.rice.kim.bo.impl.PersonImpl;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class PersonRuleResponsibility extends RuleResponsibility {
+public class PersonRuleResponsibility extends RuleResponsibilityBo {
     protected PersonImpl personImpl;
 	private String principalName;
 

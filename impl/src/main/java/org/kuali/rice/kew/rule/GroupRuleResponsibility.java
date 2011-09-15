@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kew.rule;
 
-import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
@@ -25,7 +24,7 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class GroupRuleResponsibility extends RuleResponsibility {
+public class GroupRuleResponsibility extends RuleResponsibilityBo {
     protected Group group;
 	private String namespaceCode;
 	private String name;

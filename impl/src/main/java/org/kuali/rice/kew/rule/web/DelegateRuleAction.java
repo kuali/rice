@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -71,7 +71,7 @@ public class DelegateRuleAction extends KewKualiAction {
 	protected String generateMaintenanceUrl(HttpServletRequest request, DelegateRuleForm form) {
 		return getApplicationBaseUrl() + "/kr/" + KRADConstants.MAINTENANCE_ACTION + "?" +
 			KRADConstants.DISPATCH_REQUEST_PARAMETER + "=" + KRADConstants.START_METHOD + "&" +
-			KRADConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE + "=" + RuleDelegation.class.getName() +  "&" +
+			KRADConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE + "=" + RuleDelegationBo.class.getName() +  "&" +
 			WebRuleUtils.RESPONSIBILITY_ID_PARAM + "=" + form.getParentResponsibilityId() + "&" +
 			WebRuleUtils.RULE_TEMPLATE_ID_PARAM + "=" + form.getParentRule().getRuleTemplate().getDelegationTemplateId() + "&" +
 			WebRuleUtils.DOCUMENT_TYPE_NAME_PARAM + "=" + form.getParentRule().getDocTypeName();

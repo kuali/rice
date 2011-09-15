@@ -36,10 +36,10 @@ import org.junit.Test;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
-import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.web.WebRuleUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
@@ -237,10 +237,10 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
     private void assertResponsibilities(List oldResps, List newResps) {
         assertEquals(oldResps.size(), newResps.size());
         for (Iterator iterator = oldResps.iterator(); iterator.hasNext();) {
-            RuleResponsibility oldResp = (RuleResponsibility) iterator.next();
+            RuleResponsibilityBo oldResp = (RuleResponsibilityBo) iterator.next();
             boolean foundResp = false;
             for (Iterator iterator2 = newResps.iterator(); iterator2.hasNext();) {
-                RuleResponsibility newResp = (RuleResponsibility) iterator2.next();
+                RuleResponsibilityBo newResp = (RuleResponsibilityBo) iterator2.next();
                 if (oldResp.getRuleResponsibilityName().equals(newResp.getRuleResponsibilityName())) {
                     assertEquals(oldResp.getActionRequestedCd(), newResp.getActionRequestedCd());
                     assertEquals(oldResp.getApprovePolicy(), newResp.getApprovePolicy());
@@ -259,10 +259,10 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
     private void assertDelegations(List oldDelegations, List newDelegations) {
         assertEquals(oldDelegations.size(), newDelegations.size());
         for (Iterator iterator = oldDelegations.iterator(); iterator.hasNext();) {
-            RuleDelegation oldDelegation = (RuleDelegation) iterator.next();
+            RuleDelegationBo oldDelegation = (RuleDelegationBo) iterator.next();
             boolean foundDelegation = false;
             for (Iterator iterator2 = newDelegations.iterator(); iterator2.hasNext();) {
-                RuleDelegation newDelegation = (RuleDelegation) iterator2.next();
+                RuleDelegationBo newDelegation = (RuleDelegationBo) iterator2.next();
                 if (oldDelegation.getDelegationRule().getName().equals(newDelegation.getDelegationRule().getName())) {
                     assertEquals(oldDelegation.getDelegationType(), newDelegation.getDelegationType());
                     assertFalse(oldDelegation.getResponsibilityId().equals(newDelegation.getResponsibilityId()));
@@ -286,9 +286,9 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
 		}
     }
     
-    private void assertAllRuleDelegationsHaveUniqueNames(List<RuleDelegation> ruleDelegations) throws Exception {
+    private void assertAllRuleDelegationsHaveUniqueNames(List<RuleDelegationBo> ruleDelegations) throws Exception {
     	List<RuleBaseValues> rules = new ArrayList<RuleBaseValues>();
-    	for (RuleDelegation ruleDelegation : ruleDelegations) {
+    	for (RuleDelegationBo ruleDelegation : ruleDelegations) {
     		rules.add(ruleDelegation.getDelegationRule());
     	}
     	assertAllRulesHaveUniqueNames(rules);

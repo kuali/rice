@@ -57,7 +57,8 @@ class Factory {
     def static assignRelationId(key, fields, defaults = [:], id_key = key + 'Id') {
         Identifiable identifiable = fields[key]
         if (identifiable != null) {
-            defaults[key] = identifiable.id
+            println("Setting $id_key to $identifiable.id")
+            defaults[id_key] = identifiable.id
         }
         defaults.putAll(fields)
         defaults.remove(key)

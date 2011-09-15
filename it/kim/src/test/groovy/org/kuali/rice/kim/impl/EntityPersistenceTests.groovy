@@ -39,8 +39,9 @@ import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate
 import org.junit.Assert
 import org.junit.Ignore
+import org.kuali.rice.krad.bo.PersistableBusinessObject
 
-class EntityNameBoPersistenceTest extends KIMTestCase {
+class EntityPersistenceTests extends KIMTestCase {
 
     private BusinessObjectService boService;
     private factory = new EntityFactory()
@@ -56,28 +57,66 @@ class EntityNameBoPersistenceTest extends KIMTestCase {
     void test_save_entity() {
         def entity = Factory.make(EntityBo)
         boService.save(entity)
-        assertRow([
-            ENTITY_ID: entity.id,
-            OBJ_ID: entity.objectId,
-            VER_NBR: entity.versionNumber,
-            ACTV_IND: entity.active ? "Y" : "N"
+
+        // assert entity row
+        assertRow(standard_fields(entity) + [ ENTITY_ID: entity.id ], "KRIM_ENTITY_T", "ENTITY_ID")
+
+        // assert entity bio demographics row
+        assertRow(basic_fields(entity.bioDemographics) + [
+            ENTITY_ID: entity.id
         ],
-        "KRIM_ENTITY_T", "ENTITY_ID")
+        "KRIM_ENTITY_BIO_T", "ENTITY_ID")
     }
 
-    @Test @Ignore
+    @Test
     void test_save_entityname() {
         def entity = Factory.make(EntityBo)
         boService.save(entity)
         def name = Factory.make(EntityNameBo, entity: entity)
         boService.save(name)
-        assertRow([id: entity.id],
-        "KRIM_ENTITY_T", "ENTITY_ID")
+        assertRow(standard_fields(name) + [
+            ENTITY_NM_ID: name.id,
+            ENTITY_ID: entity.id,
+            FIRST_NM: name.firstName,
+            PREFIX_NM: null,
+            MIDDLE_NM: null,
+            LAST_NM: name.lastName,
+            SUFFIX_NM: null,
+            NM_TYP_CD: name.nameType.code,
+            DFLT_IND: name.defaultValue ? "Y" : "N",
+        ],
+        "KRIM_ENTITY_NM_T", "ENTITY_NM_ID")
+
+    }
+
+    private def active_field(bo) {
+        [ ACTV_IND: bo.active ? "Y" : "N" ]
+    }
+
+    private def basic_fields(PersistableBusinessObject bo) {
+        [ OBJ_ID: bo.objectId,
+          VER_NBR: new BigDecimal(bo.versionNumber) ]
+    }
+
+    private def standard_fields(PersistableBusinessObject bo) {
+        active_field(bo) + basic_fields(bo)
     }
 
     private def assertRow(Map fields, table, pk="id", ignore=["LAST_UPDT_DT"]) {
         Map row = new SimpleJdbcTemplate(datasource).queryForMap("select * from " + table + " where " + pk + "=?", fields[pk])
         row.keySet().removeAll(ignore)
+        /*for (Map.Entry e: fields.entrySet()) {
+            println(e.getKey().getClass());
+            println(e.getValue().getClass());
+            println(e.getKey());
+            println(e.getValue());
+        }
+        for (Map.Entry e: row.entrySet()) {
+            println(e.getKey().getClass());
+            println(e.getValue().getClass());
+            println(e.getKey());
+            println(e.getValue());
+        }*/
         Assert.assertEquals(new HashMap(fields), new HashMap(row))
     }
 }

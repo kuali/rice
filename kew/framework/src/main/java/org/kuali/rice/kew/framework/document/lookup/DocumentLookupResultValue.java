@@ -22,6 +22,12 @@ import org.kuali.rice.kew.api.document.attribute.DocumentAttributeContract;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
 import org.w3c.dom.Element;
 
+/**
+ * An immutable data transfer object implementation of the {@link DocumentLookupResultValueContract}.
+ * Instances of this class should be constructed using the nested {@link Builder} class.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 @XmlRootElement(name = DocumentLookupResultValue.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = DocumentLookupResultValue.Constants.TYPE_NAME, propOrder = {
@@ -46,6 +52,7 @@ public final class DocumentLookupResultValue extends AbstractDataTransferObject
     /**
      * Private constructor used only by JAXB.
      */
+    @SuppressWarnings("unused")
     private DocumentLookupResultValue() {
         this.documentId = null;
         this.documentAttributes = null;
@@ -74,16 +81,34 @@ public final class DocumentLookupResultValue extends AbstractDataTransferObject
 
         private String documentId;
         private List<DocumentAttribute.AbstractBuilder<?>> documentAttributes;
-        
+
         private Builder(String documentId) {
             setDocumentId(documentId);
             setDocumentAttributes(new ArrayList<DocumentAttribute.AbstractBuilder<?>>());
         }
 
+        /**
+         * Creates a new builder instance initialized with the given document id.  The list of document attributes on
+         * this builder is initialized to an empty list.
+         *
+         * @param documentId the id of the document with which to initialize this builder, must not be a null or blank
+         * value
+         *
+         * @return a new builder instance initialized with the given document id
+         */
         public static Builder create(String documentId) {
             return new Builder(documentId);
         }
 
+        /**
+         * Creates a new builder instance initialized with copies of the properties from the given contract.
+         *
+         * @param contract the contract from which to copy properties
+         *
+         * @return a builder instance initialized with properties from the given contract
+         *
+         * @throws IllegalArgumentException if the given contract is null
+         */
         public static Builder create(DocumentLookupResultValueContract contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
@@ -97,6 +122,7 @@ public final class DocumentLookupResultValue extends AbstractDataTransferObject
             return builder;
         }
 
+        @Override
         public DocumentLookupResultValue build() {
             return new DocumentLookupResultValue(this);
         }
@@ -111,6 +137,14 @@ public final class DocumentLookupResultValue extends AbstractDataTransferObject
             return this.documentAttributes;
         }
 
+        /**
+         * Sets the document id on this builder to the given value.  The given document id must not be a null or blank
+         * value.
+         *
+         * @param documentId the id of the document to set on this builder, must not be a null or blank value
+         *
+         * @throws IllegalArgumentException if documentId is a null or blank value
+         */
         public void setDocumentId(String documentId) {
             if (StringUtils.isBlank(documentId)) {
                 throw new IllegalArgumentException("documentId was null or blank");
@@ -118,6 +152,11 @@ public final class DocumentLookupResultValue extends AbstractDataTransferObject
             this.documentId = documentId;
         }
 
+        /**
+         * Sets the list of document attribute builders on this builder to the given list.
+         *
+         * @param documentAttributes the list of document attribute builders to set on this builder
+         */
         public void setDocumentAttributes(List<DocumentAttribute.AbstractBuilder<?>> documentAttributes) {
             this.documentAttributes = documentAttributes;
         }

@@ -67,15 +67,37 @@ public final class DocumentSecurityDirective {
         this.documents = ModelObjectUtils.createImmutableCopy(documents);
     }
 
+    /**
+     * Creates a new security directive from the given list of document secruity attribute names and documents.
+     *
+     * @param documentSecurityAttributeNames the list of document security attribute names with which to create this
+     * security directive
+     * @param documents the list of documents with which to create this security directive
+     *
+     * @return a new document security directive instance
+     *
+     * @throws IllegalArgumentException if the given list of security attribute names is null or empty
+     */
     public static DocumentSecurityDirective create(List<String> documentSecurityAttributeNames,
             List<Document> documents) {
         return new DocumentSecurityDirective(documentSecurityAttributeNames, documents);
     }
 
+    /**
+     * Returns the list of document security attribute names on this security directive.  Will never return a null or
+     * empty list.
+     *
+     * @return the list of document security attribute names on this security directive
+     */
     public List<String> getDocumentSecurityAttributeNames() {
         return documentSecurityAttributeNames;
     }
 
+    /**
+     * Returns the list of documents on this security directive.  Will never return null, but may return an empty list.
+     *
+     * @return the list of documents on this security directive
+     */
     public List<Document> getDocuments() {
         return documents;
     }

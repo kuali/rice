@@ -57,6 +57,26 @@ public final class KimConstants {
 		}
 	}
 
+    public static final class AddressTypes {
+        public static final String HOME = "HM";
+		public static final String WORK = "WRK";
+        public static final String OTHER= "OTH";
+
+		private AddressTypes() {
+			throw new UnsupportedOperationException("do not call");
+		}
+    }
+
+    public static final class NameTypes {
+        public static final String PREFERRED = "PRFR";
+		public static final String PRIMARY = "PRM";
+        public static final String OTHER= "OTH";
+
+		private NameTypes() {
+			throw new UnsupportedOperationException("do not call");
+		}
+    }
+
 	public static final class PersonExternalIdentifierTypes {
 		public static final String TAX = "TAX";
 		

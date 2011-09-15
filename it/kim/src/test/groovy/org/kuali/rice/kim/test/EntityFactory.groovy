@@ -25,13 +25,15 @@ import org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipStatusBo
 import org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo
+import org.kuali.rice.kim.util.KimConstants
 
 /**
  * Factory for constructing Entity- objects
+ * TODO: ensure valid default data and type codes
  */
 class EntityFactory extends Factory {
      def EntityPrivacyPreferencesBo(Map fields) {
-        new EntityPrivacyPreferencesBo(Factory.assignRelationId('entity', fields))
+        new EntityPrivacyPreferencesBo(Factory.mergeAndLink('entity', fields))
     }
 
     def EntityBioDemographicsBo(Map fields) {
@@ -49,87 +51,87 @@ class EntityFactory extends Factory {
             geographicOrigin: "None",
             suppressPersonal: false
         ]
-        new EntityBioDemographicsBo(Factory.assignRelationId('entity', fields, values))
+        new EntityBioDemographicsBo(Factory.mergeAndLink('entity', fields, values))
     }
 
     def PrincipalBo(Map fields) {
         def values = [
             principalId: Factory.makeId(), active: true, principalName: "first" + Factory.makeId(), password: "first_password"
         ]
-        new PrincipalBo(Factory.assignRelationId('entity', fields, values));
+        new PrincipalBo(Factory.mergeAndLink('entity', fields, values));
     }
 
     def EntityTypeContactInfoBo(Map fields) {
-        new EntityTypeContactInfoBo(Factory.assignRelationId('entity', fields, [ entityTypeCode: "typecodeone", active: true ]))
+        new EntityTypeContactInfoBo(Factory.mergeAndLink('entity', fields, [ entityTypeCode: KimConstants.EntityTypes.PERSON, active: true ]))
     }
 
     def EntityAddressBo(Map fields) {
         def values = [
-           entityTypeCode: "typecodeone", addressType: new EntityAddressTypeBo(code: "addresscodeone"), id: Factory.makeId(), addressTypeCode: "addresscodeone", active: true
+           entityTypeCode: KimConstants.EntityTypes.PERSON, addressType: new EntityAddressTypeBo(code: KimConstants.AddressTypes.HOME), id: Factory.makeId(), addressTypeCode: KimConstants.AddressTypes.HOME, active: true
         ]
-        new EntityAddressBo(Factory.assignRelationId('entity', fields, values))
+        new EntityAddressBo(Factory.mergeAndLink('entity', fields, values))
     }
 
     def EntityEmailBo(Map fields) {
         def values = [
             entityTypeCode: "typecodeone", emailType: new EntityEmailTypeBo(code: "emailcodeone"), id: Factory.makeId(), emailTypeCode: "emailcodeone", active: true
         ]
-        new EntityEmailBo(Factory.assignRelationId('entity', fields, values))
+        new EntityEmailBo(Factory.mergeAndLink('entity', fields, values))
     }
 
     def EntityPhoneBo(Map fields) {
         def values = [
             entityTypeCode: "typecodeone", phoneType: new EntityPhoneTypeBo(code: "phonecodeone"), id: Factory.makeId(), phoneTypeCode: "phonetypecodeone", active: true
         ]
-        new EntityPhoneBo(Factory.assignRelationId('entity', fields, values))
+        new EntityPhoneBo(Factory.mergeAndLink('entity', fields, values))
     }
 
     def EntityExternalIdentifierBo(Map fields) {
         def values = [
             externalIdentifierType: new EntityExternalIdentifierTypeBo(code: "exidtypecodeone"), id: Factory.makeId(), externalIdentifierTypeCode: "exidtypecodeone"
         ]
-        new EntityExternalIdentifierBo(Factory.assignRelationId('entity', fields, values))
+        new EntityExternalIdentifierBo(Factory.mergeAndLink('entity', fields, values))
     };
 
     def EntityAffiliationBo(Map fields) {
         def values = [
             affiliationType: new EntityAffiliationTypeBo(code: "affiliationcodeone"), id: Factory.makeId(), affiliationTypeCode: "affiliationcodeone", active: true
         ]
-        new EntityAffiliationBo(Factory.assignRelationId('entity', fields, values))
+        new EntityAffiliationBo(Factory.mergeAndLink('entity', fields, values))
     };
 
     def EntityCitizenshipBo(Map fields) {
         def values = [
             id: Factory.makeId(), active: true, status:  new EntityCitizenshipStatusBo(code: "statuscodeone", name: "statusnameone"), statusCode: "statuscodeone"
         ]
-        new EntityCitizenshipBo(Factory.assignRelationId('entity', fields, values))
+        new EntityCitizenshipBo(Factory.mergeAndLink('entity', fields, values))
     }
 
     def EntityEthnicityBo(Map fields) {
-        new EntityEthnicityBo(Factory.assignRelationId('entity', fields, [ id: Factory.makeId() ]))
+        new EntityEthnicityBo(Factory.mergeAndLink('entity', fields, [ id: Factory.makeId() ]))
     }
 
     def EntityResidencyBo(Map fields) {
-        new EntityResidencyBo(Factory.assignRelationId('entity', fields, [ id: Factory.makeId() ]))
+        new EntityResidencyBo(Factory.mergeAndLink('entity', fields, [ id: Factory.makeId() ]))
     }
 
     def EntityVisaBo(Map fields) {
-        new EntityVisaBo(assignRelationId('entity', fields, [ id: Factory.makeId() ]))
+        new EntityVisaBo(mergeAndLink('entity', fields, [ id: Factory.makeId() ]))
     };
 
     def EntityNameBo(Map fields) {
         def values = [
-            id: Factory.makeId(), active: true, firstName: "John", lastName: "Smith", nameType: new EntityNameTypeBo(code: "namecodeone"), nameCode: "namecodeone"
+            id: Factory.makeId(), active: true, firstName: "John", lastName: "Smith", nameType: new EntityNameTypeBo(code: KimConstants.NameTypes.PRIMARY), nameCode: KimConstants.NameTypes.PRIMARY
         ]
-        new EntityNameBo(assignRelationId('entity', fields, values))
+        new EntityNameBo(mergeAndLink('entity', fields, values))
     };
 
     def EntityEmploymentBo(Map fields) {
         def values = [
            id: Factory.makeId(), entityAffiliation: EntityAffiliationBo(fields), employeeType: new EntityEmploymentTypeBo(code: "employmenttypecodeone"), employeeTypeCode: "employmenttypecodeone", employeeStatus: new EntityEmploymentStatusBo(code: "employmentstatusone"), employeeStatusCode: "employmentstatusone", active: true
         ]
-        values = Factory.assignRelationId('entityAffiliation', values, [:])
-        new EntityEmploymentBo(Factory.assignRelationId('entity', fields, values))
+        values = Factory.mergeAndLink('entityAffiliation', values, [:])
+        new EntityEmploymentBo(Factory.mergeAndLink('entity', fields, values))
     };
 
     def EntityBo(Map fields) {

@@ -92,7 +92,7 @@
     <displaytag.version>1.2</displaytag.version>
     <dom4j.version>1.6.1</dom4j.version>
     <dwr.version>3.0.M1</dwr.version>
-    <ehcache.version>2.4.4</ehcache.version>
+    <ehcache.version>2.4.5</ehcache.version>
     <filemonitor.version>1.0-kuali</filemonitor.version>
     <groovy.version>1.8.1</groovy.version>
     <guava.version>r09</guava.version>
@@ -103,7 +103,7 @@
     <jaxen.version>1.1.1</jaxen.version>
     <!-- 1.1.1 is not in maven central repo -->
     <jdom.version>1.1</jdom.version>
-    <jetty.version>7.5.0.v20110901</jetty.version>
+    <jetty.version>7.5.1.v20110908</jetty.version>
     <joda-time.version>2.0</joda-time.version>
     <jotm.version>2.1.9</jotm.version>
     <jsp-2.1-glassfish.version>2.1.v20100127</jsp-2.1-glassfish.version>
@@ -118,22 +118,21 @@
     <persistence.version>1.0.1.Final</persistence.version>
     <!--
       http://www.quartz-scheduler.org/docs/2.0/migrationGuide.html
-      <quartz.version>2.0.1</quartz.version>
+      <quartz.version>2.0.2</quartz.version>
     -->
     <quartz.version>1.8.4</quartz.version>
-    <selenium-java.version>2.5.0</selenium-java.version>
+    <selenium-java.version>2.6.0</selenium-java.version>
     <serializer.version>2.7.1</serializer.version>
     <servlet-api.version>2.5</servlet-api.version>
     <slf4j.version>1.6.2</slf4j.version>
     <spring-modules-ojb.version>0.8a</spring-modules-ojb.version>
     <spring.version>3.1.0.M2</spring.version>
-    <!-- <spring.security.version>${spring.version}</spring.security.version> -->
-    <spring.security.version>3.0.6.RELEASE</spring.security.version>
+    <spring.security.version>3.0.7.RELEASE</spring.security.version>
     <struts.version>1.3.10</struts.version>
     <subethasmtp.version>3.1.6</subethasmtp.version>
     <tiles.version>2.2.2</tiles.version>
 
-    <!-- Version 2.3.5 of cxf requires wss4j 1.5.11 and does not work with 1.6.0 -->
+    <!-- Version 2.3.6 of cxf requires wss4j 1.5.11 and does not work with 1.6.0 -->
     <wss4j.version>1.5.11</wss4j.version>
     <xapool.version>1.5.0-patch3</xapool.version>
     <!-- 2.11.0 is not in maven central repo https://issues.apache.org/jira/browse/XERCESJ-1454 -->

@@ -19,7 +19,7 @@ import org.kuali.rice.kim.framework.role.RoleTypeService;
 import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.impl.KIMPropertyConstants;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
-import org.kuali.rice.kim.impl.common.delegate.DelegateBo;
+import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
 import org.kuali.rice.kim.impl.services.KIMServiceLocatorInternal;
@@ -218,7 +218,7 @@ public class RoleServiceBase {
     /**
      * Calls the KimRoleDao's "getDelegationImplMapFromRoleIds" method and/or retrieves any corresponding delegations from the cache.
      */
-    protected Map<String, DelegateBo> getStoredDelegationImplMapFromRoleIds(Collection<String> roleIds) {
+    protected Map<String, DelegateTypeBo> getStoredDelegationImplMapFromRoleIds(Collection<String> roleIds) {
         if (roleIds != null && !roleIds.isEmpty()) {
             return roleDao.getDelegationImplMapFromRoleIds(roleIds);
         }
@@ -229,7 +229,7 @@ public class RoleServiceBase {
     /**
      * Calls the KimRoleDao's "getDelegationBosForRoleIds" method and/or retrieves any corresponding delegations from the cache.
      */
-    protected List<DelegateBo> getStoredDelegationImplsForRoleIds(Collection<String> roleIds) {
+    protected List<DelegateTypeBo> getStoredDelegationImplsForRoleIds(Collection<String> roleIds) {
         if (roleIds != null && !roleIds.isEmpty()) {
             return roleDao.getDelegationBosForRoleIds(roleIds);
         }
@@ -354,8 +354,8 @@ public class RoleServiceBase {
 
     public List<DelegateMember> findDelegateMembers(final Map<String, String> fieldValues) {
         List<DelegateMember> delegateMembers = new ArrayList<DelegateMember>();
-        List<DelegateBo> delegateBoList = (List<DelegateBo>) getLookupService().findCollectionBySearchHelper(
-                DelegateBo.class, fieldValues, true);
+        List<DelegateTypeBo> delegateBoList = (List<DelegateTypeBo>) getLookupService().findCollectionBySearchHelper(
+                DelegateTypeBo.class, fieldValues, true);
 
         if (delegateBoList != null && !delegateBoList.isEmpty()) {
             Map<String, String> delegationMemberFieldValues = new HashMap<String, String>();
@@ -369,7 +369,7 @@ public class RoleServiceBase {
             }
 
             StringBuilder memberQueryString = new StringBuilder();
-            for (DelegateBo delegate : delegateBoList) {
+            for (DelegateTypeBo delegate : delegateBoList) {
                 memberQueryString.append(delegate.getDelegationId()).append(KimConstants.KimUIConstants.OR_OPERATOR);
             }
             delegationMemberFieldValues.put(KimConstants.PrimaryKeyConstants.DELEGATION_ID,
@@ -423,8 +423,8 @@ public class RoleServiceBase {
         return getBusinessObjectService().findBySinglePrimaryKey(RoleBo.class, roleId);
     }
 
-    protected DelegateBo getDelegationOfType(String roleId, String delegationTypeCode) {
-        List<DelegateBo> roleDelegates = getRoleDelegations(roleId);
+    protected DelegateTypeBo getDelegationOfType(String roleId, String delegationTypeCode) {
+        List<DelegateTypeBo> roleDelegates = getRoleDelegations(roleId);
         if (isDelegationPrimary(delegationTypeCode)) {
             return getPrimaryDelegation(roleId, roleDelegates);
         } else {
@@ -432,16 +432,16 @@ public class RoleServiceBase {
         }
     }
 
-    private DelegateBo getSecondaryDelegation(String roleId, List<DelegateBo> roleDelegates) {
-        DelegateBo secondaryDelegate = null;
+    private DelegateTypeBo getSecondaryDelegation(String roleId, List<DelegateTypeBo> roleDelegates) {
+        DelegateTypeBo secondaryDelegate = null;
         RoleBo roleBo = getRoleBo(roleId);
-        for (DelegateBo delegate : roleDelegates) {
+        for (DelegateTypeBo delegate : roleDelegates) {
             if (isDelegationSecondary(delegate.getDelegationTypeCode())) {
                 secondaryDelegate = delegate;
             }
         }
         if (secondaryDelegate == null) {
-            secondaryDelegate = new DelegateBo();
+            secondaryDelegate = new DelegateTypeBo();
             secondaryDelegate.setRoleId(roleId);
             secondaryDelegate.setDelegationId(getNewDelegationId());
             secondaryDelegate.setDelegationTypeCode(DelegationType.PRIMARY.getCode());
@@ -450,16 +450,16 @@ public class RoleServiceBase {
         return secondaryDelegate;
     }
 
-    protected DelegateBo getPrimaryDelegation(String roleId, List<DelegateBo> roleDelegates) {
-        DelegateBo primaryDelegate = null;
+    protected DelegateTypeBo getPrimaryDelegation(String roleId, List<DelegateTypeBo> roleDelegates) {
+        DelegateTypeBo primaryDelegate = null;
         RoleBo roleBo = getRoleBo(roleId);
-        for (DelegateBo delegate : roleDelegates) {
+        for (DelegateTypeBo delegate : roleDelegates) {
             if (isDelegationPrimary(delegate.getDelegationTypeCode())) {
                 primaryDelegate = delegate;
             }
         }
         if (primaryDelegate == null) {
-            primaryDelegate = new DelegateBo();
+            primaryDelegate = new DelegateTypeBo();
             primaryDelegate.setRoleId(roleId);
             primaryDelegate.setDelegationId(getNewDelegationId());
             primaryDelegate.setDelegationTypeCode(DelegationType.PRIMARY.getCode());
@@ -486,9 +486,9 @@ public class RoleServiceBase {
     }
 
 
-    private List<DelegateBo> getRoleDelegations(String roleId) {
+    private List<DelegateTypeBo> getRoleDelegations(String roleId) {
         if (roleId == null) {
-            return new ArrayList<DelegateBo>();
+            return new ArrayList<DelegateTypeBo>();
         }
         return getStoredDelegationImplsForRoleIds(Collections.singletonList(roleId));
 
@@ -646,7 +646,7 @@ public class RoleServiceBase {
         SequenceAccessorService sas = getSequenceAccessorService();
         Long nextSeq = sas.getNextAvailableSequenceNumber(
                 KimConstants.SequenceNames.KRIM_DLGN_ID_S,
-                DelegateBo.class);
+                DelegateTypeBo.class);
         return nextSeq.toString();
     }
 
@@ -662,7 +662,7 @@ public class RoleServiceBase {
         SequenceAccessorService sas = getSequenceAccessorService();
         Long nextSeq = sas.getNextAvailableSequenceNumber(
                 KimConstants.SequenceNames.KRIM_DLGN_MBR_ID_S,
-                DelegateBo.class);
+                DelegateTypeBo.class);
         return nextSeq.toString();
     }
 

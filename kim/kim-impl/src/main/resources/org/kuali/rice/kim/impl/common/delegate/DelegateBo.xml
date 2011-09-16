@@ -17,7 +17,7 @@
 
   <bean id="DelegateBo" parent="DelegateBo-parentBean"/>
 
-  <bean id="DelegateBo-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.impl.common.delegate.DelegateBo" p:titleAttribute="delegationId" p:objectLabel="Delegations" p:inquiryDefinition-ref="DelegateBo-inquiryDefinition" p:lookupDefinition-ref="DelegateBo-lookupDefinition">
+  <bean id="DelegateBo-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo" p:titleAttribute="delegationId" p:objectLabel="Delegations" p:inquiryDefinition-ref="DelegateBo-inquiryDefinition" p:lookupDefinition-ref="DelegateBo-lookupDefinition">
     <property name="attributes">
       <list>
         <ref bean="DelegateBo-delegationId"/>

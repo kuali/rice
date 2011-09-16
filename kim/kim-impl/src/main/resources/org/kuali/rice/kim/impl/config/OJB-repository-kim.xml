@@ -548,7 +548,7 @@
   <!-- Role Delegation Tables -->
   <!-- ******************************************************************* -->
 
-  <class-descriptor class="org.kuali.rice.kim.impl.common.delegate.DelegateBo" table="KRIM_DLGN_T">
+  <class-descriptor class="org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo" table="KRIM_DLGN_T">
     <field-descriptor name="delegationId" column="DLGN_ID" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="roleId" column="ROLE_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />

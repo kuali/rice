@@ -18,7 +18,7 @@ import org.springframework.util.AutoPopulatingList
 
 @Entity
 @Table(name = "KRIM_DLGN_T")
-public class DelegateBo extends PersistableBusinessObjectBase implements DelegateTypeContract {
+public class DelegateTypeBo extends PersistableBusinessObjectBase implements DelegateTypeContract {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -45,12 +45,12 @@ public class DelegateBo extends PersistableBusinessObjectBase implements Delegat
 
 
 
-    public static DelegateType to(DelegateBo bo) {
+    public static DelegateType to(DelegateTypeBo bo) {
         return DelegateType.Builder.create(bo).build()
     }
 
-    public static DelegateBo from(DelegateType immutable) {
-        return new DelegateBo(
+    public static DelegateTypeBo from(DelegateType immutable) {
+        return new DelegateTypeBo(
                 delegationId: immutable.delegationId,
                 roleId: immutable.roleId,
                 active: immutable.active,

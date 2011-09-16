@@ -41,7 +41,7 @@ import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
 import org.kuali.rice.kim.framework.type.KimTypeService;
-import org.kuali.rice.kim.impl.common.delegate.DelegateBo;
+import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.impl.group.GroupMemberBo;
 import org.kuali.rice.kim.impl.identity.entity.EntityBo;
@@ -131,7 +131,7 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 
 		List <GroupMemberBo>  groupPrincipals = populateGroupMembers(identityManagementPersonDocument);
 		List <RoleMemberBo>  rolePrincipals = populateRoleMembers(identityManagementPersonDocument);
-		List <DelegateBo> personDelegations = populateDelegations(identityManagementPersonDocument);
+		List <DelegateTypeBo> personDelegations = populateDelegations(identityManagementPersonDocument);
 		List <PersistableBusinessObject> bos = new ArrayList<PersistableBusinessObject>();
 		List <RoleResponsibilityActionBo> roleRspActions = populateRoleRspActions(identityManagementPersonDocument);
 		List <RoleMemberAttributeDataBo> blankRoleMemberAttrs = getBlankRoleMemberAttrs(rolePrincipals);

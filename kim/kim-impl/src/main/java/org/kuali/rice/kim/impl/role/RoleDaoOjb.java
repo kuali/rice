@@ -24,7 +24,7 @@ import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.KIMPropertyConstants;
-import org.kuali.rice.kim.impl.common.delegate.DelegateBo;
+import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 
 import java.sql.Timestamp;
@@ -158,15 +158,15 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
     }
 
     @SuppressWarnings("unchecked")
-    public Map<String, DelegateBo> getDelegationImplMapFromRoleIds(Collection<String> roleIds) {
-        HashMap<String, DelegateBo> results = new HashMap<String, DelegateBo>();
+    public Map<String, DelegateTypeBo> getDelegationImplMapFromRoleIds(Collection<String> roleIds) {
+        HashMap<String, DelegateTypeBo> results = new HashMap<String, DelegateTypeBo>();
         if (roleIds != null && !roleIds.isEmpty()) {
             Criteria c = new Criteria();
             c.addIn(KIMPropertyConstants.Delegation.ROLE_ID, roleIds);
             c.addEqualTo(KIMPropertyConstants.Delegation.ACTIVE, Boolean.TRUE);
-            Query query = QueryFactory.newQuery(DelegateBo.class, c);
-            Collection<DelegateBo> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
-            for (DelegateBo delegateBo : coll) {
+            Query query = QueryFactory.newQuery(DelegateTypeBo.class, c);
+            Collection<DelegateTypeBo> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
+            for (DelegateTypeBo delegateBo : coll) {
                 results.put(delegateBo.getDelegationId(), delegateBo);
             }
         }
@@ -174,15 +174,15 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
     }
 
     @SuppressWarnings("unchecked")
-    public List<DelegateBo> getDelegationBosForRoleIds(Collection<String> roleIds) {
-        List<DelegateBo> results = new ArrayList<DelegateBo>();
+    public List<DelegateTypeBo> getDelegationBosForRoleIds(Collection<String> roleIds) {
+        List<DelegateTypeBo> results = new ArrayList<DelegateTypeBo>();
         if (roleIds != null && !roleIds.isEmpty()) {
             Criteria c = new Criteria();
             c.addIn(KIMPropertyConstants.Delegation.ROLE_ID, roleIds);
             c.addEqualTo(KIMPropertyConstants.Delegation.ACTIVE, Boolean.TRUE);
-            Query query = QueryFactory.newQuery(DelegateBo.class, c);
-            Collection<DelegateBo> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
-            for (DelegateBo delegateBo : coll) {
+            Query query = QueryFactory.newQuery(DelegateTypeBo.class, c);
+            Collection<DelegateTypeBo> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
+            for (DelegateTypeBo delegateBo : coll) {
                 results.add(delegateBo);
             }
         }

@@ -22,7 +22,7 @@ import org.kuali.rice.kim.framework.common.delegate.DelegationTypeService;
 import org.kuali.rice.kim.framework.role.RoleTypeService;
 import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
 import org.kuali.rice.kim.framework.type.KimTypeService;
-import org.kuali.rice.kim.impl.common.delegate.DelegateBo;
+import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberAttributeDataBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.group.GroupMemberBo;
@@ -387,7 +387,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
     @Override
     public List<DelegateMember> getDelegationMembersByDelegationId(@WebParam(name = "delegationId") String delegationId) {
-        DelegateBo delegateBo = getKimDelegationImpl(delegationId);
+        DelegateTypeBo delegateBo = getKimDelegationImpl(delegationId);
         if (delegateBo == null) {return null;}
 
         return getDelegateMembersForDelegation(delegateBo);
@@ -395,7 +395,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
     @Override
     public DelegateMember getDelegationMemberByDelegationAndMemberId(@WebParam(name = "delegationId") String delegationId, @WebParam(name = "memberId") String memberId) {
-        DelegateBo delegateBo = getKimDelegationImpl(delegationId);
+        DelegateTypeBo delegateBo = getKimDelegationImpl(delegationId);
         DelegateMemberBo delegationMember = getKimDelegationMemberImplByDelegationAndId(delegationId, memberId);
 
         return getDelegateCompleteInfo(delegateBo, delegationMember);
@@ -409,7 +409,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             return null;
         }
 
-        DelegateBo delegateBo = getKimDelegationImpl(delegateMemberBo.getDelegationId());
+        DelegateTypeBo delegateBo = getKimDelegationImpl(delegateMemberBo.getDelegationId());
 
         return getDelegateCompleteInfo(delegateBo, delegateMemberBo);
     }
@@ -435,8 +435,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
     @Override
     public DelegateType getDelegateTypeInfo(@WebParam(name = "roleId") String roleId, @WebParam(name = "delegationTypeCode") String delegationTypeCode) {
-        DelegateBo delegateBo = getDelegationOfType(roleId, delegationTypeCode);
-        return DelegateBo.to(delegateBo);
+        DelegateTypeBo delegateBo = getDelegationOfType(roleId, delegationTypeCode);
+        return DelegateTypeBo.to(delegateBo);
     }
 
     @Override
@@ -444,8 +444,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         if (delegationId == null) {
             return null;
         }
-        DelegateBo delegateBo = getKimDelegationImpl(delegationId);
-        return DelegateBo.to(delegateBo);
+        DelegateTypeBo delegateBo = getKimDelegationImpl(delegationId);
+        return DelegateTypeBo.to(delegateBo);
     }
 
     @Override
@@ -840,9 +840,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
      */
     protected boolean matchesOnDelegation(Set<String> allRoleIds, String principalId, List<String> principalGroupIds, Map<String, String> qualification) {
         // get the list of delegations for the roles
-        Map<String, DelegateBo> delegations = getStoredDelegationImplMapFromRoleIds(allRoleIds);
+        Map<String, DelegateTypeBo> delegations = getStoredDelegationImplMapFromRoleIds(allRoleIds);
         // loop over the delegations - determine those which need to be inspected more directly
-        for (DelegateBo delegation : delegations.values()) {
+        for (DelegateTypeBo delegation : delegations.values()) {
             // check if each one matches via the original role type service
             if (!delegation.isActive()) {
                 continue;
@@ -961,18 +961,18 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
      * Retrieves a KimDelegationImpl object by its ID. If the delegateBo already exists in the cache, this method will return the cached
      * version; otherwise, it will retrieve the uncached version from the database and then cache it before returning it.
      */
-    protected DelegateBo getKimDelegationImpl(String delegationId) {
+    protected DelegateTypeBo getKimDelegationImpl(String delegationId) {
         if (StringUtils.isBlank(delegationId)) {
             return null;
         }
 
-        return getBusinessObjectService().findByPrimaryKey(DelegateBo.class,
+        return getBusinessObjectService().findByPrimaryKey(DelegateTypeBo.class,
                 Collections.singletonMap(KimConstants.PrimaryKeyConstants.DELEGATION_ID, delegationId));
     }
 
     protected DelegationTypeService getDelegationTypeService(String delegationId) {
         DelegationTypeService service = null;
-        DelegateBo delegateBo = getKimDelegationImpl(delegationId);
+        DelegateTypeBo delegateBo = getKimDelegationImpl(delegationId);
         KimType delegationType = KimApiServiceLocator.getKimTypeInfoService().getKimType(delegateBo.getKimTypeId());
         if (delegationType != null) {
             KimTypeService tempService = KimFrameworkServiceLocator.getKimTypeService(delegationType);
@@ -1087,8 +1087,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     private void inactivateRoleDelegations(List<String> roleIds, Timestamp yesterday) {
-        List<DelegateBo> delegations = getStoredDelegationImplsForRoleIds(roleIds);
-        for (DelegateBo delegation : delegations) {
+        List<DelegateTypeBo> delegations = getStoredDelegationImplsForRoleIds(roleIds);
+        for (DelegateTypeBo delegation : delegations) {
             delegation.setActive(false);
             for (DelegateMemberBo delegationMember : delegation.getMembers()) {
                 delegationMember.setActiveToDateValue(yesterday);
@@ -1105,7 +1105,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         getBusinessObjectService().save(roleMemberBoList);
     }
 
-    private List<DelegateMember> getDelegateMembersForDelegation(DelegateBo delegateBo) {
+    private List<DelegateMember> getDelegateMembersForDelegation(DelegateTypeBo delegateBo) {
         if (delegateBo == null || delegateBo.getMembers() == null) {return null;}
         List<DelegateMember> delegateMembersReturnList = new ArrayList<DelegateMember>();
         for (DelegateMemberBo delegateMemberBo : delegateBo.getMembers()) {
@@ -1116,7 +1116,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         return delegateMembersReturnList;
     }
 
-    private DelegateMember getDelegateCompleteInfo(DelegateBo delegateBo, DelegateMemberBo delegateMemberBo) {
+    private DelegateMember getDelegateCompleteInfo(DelegateTypeBo delegateBo, DelegateMemberBo delegateMemberBo) {
         if (delegateBo == null || delegateMemberBo == null) {return null;}
 
         DelegateMember.Builder delegateMemberBuilder = DelegateMember.Builder.create(delegateMemberBo);
@@ -1307,7 +1307,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	}
     	// look up the role
     	RoleBo role = getRoleBo(roleId);
-    	DelegateBo delegation = getDelegationOfType(role.getId(), delegationTypeCode);
+    	DelegateTypeBo delegation = getDelegationOfType(role.getId(), delegationTypeCode);
     	// create the new role member object
     	DelegateMemberBo newDelegationMember = new DelegateMemberBo();
 

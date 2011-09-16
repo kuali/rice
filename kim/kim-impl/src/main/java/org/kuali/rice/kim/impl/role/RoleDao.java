@@ -3,7 +3,7 @@ package org.kuali.rice.kim.impl.role;
 import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.role.RoleMembership;
-import org.kuali.rice.kim.impl.common.delegate.DelegateBo;
+import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 
 import java.util.Collection;
@@ -18,9 +18,9 @@ public interface RoleDao {
 
     List<RoleMemberBo> getRoleGroupsForGroupIdsAndRoleIds(Collection<String> roleIds, Collection<String> groupIds, Map<String, String> qualification);
 
-    Map<String, DelegateBo> getDelegationImplMapFromRoleIds(Collection<String> roleIds);
+    Map<String, DelegateTypeBo> getDelegationImplMapFromRoleIds(Collection<String> roleIds);
 
-    List<DelegateBo> getDelegationBosForRoleIds(Collection<String> roleIds);
+    List<DelegateTypeBo> getDelegationBosForRoleIds(Collection<String> roleIds);
 
     List<DelegateMemberBo> getDelegationPrincipalsForPrincipalIdAndDelegationIds(Collection<String> delegationIds, String principalId);
 

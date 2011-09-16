@@ -30,7 +30,7 @@ import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
-import org.kuali.rice.kim.impl.common.delegate.DelegateBo;
+import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityAttributeBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
@@ -43,7 +43,6 @@ import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.kim.impl.type.KimTypeAttributeBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.test.BaselineTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 
@@ -564,7 +563,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 		 * Manually create a delegate
 		 */
 		String id = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_DLGN_MBR_ID_S");
-		DelegateBo delegate = new DelegateBo();
+		DelegateTypeBo delegate = new DelegateTypeBo();
 
 		delegate.setDelegationId(id);
 		delegate.setDelegationTypeCode(DelegationType.PRIMARY.getCode());

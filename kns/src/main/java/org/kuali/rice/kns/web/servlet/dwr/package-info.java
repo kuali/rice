@@ -1,0 +1,2 @@
+@Deprecated
+package org.kuali.rice.kns.web.servlet.dwr;

@@ -4,11 +4,11 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 public class ContextValidActionBo extends PersistableBusinessObjectBase {
 
-	def String id
-	def String contextId
-	def String actionTypeId
+	String id
+	String contextId
+	String actionTypeId
 	
-	def Long versionNumber
+	Long versionNumber
 
-    def KrmsTypeBo actionType;
+    KrmsTypeBo actionType
 } 

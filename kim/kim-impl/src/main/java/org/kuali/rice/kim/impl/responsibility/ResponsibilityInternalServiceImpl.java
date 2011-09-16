@@ -20,6 +20,7 @@ import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.role.RoleResponsibility;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.role.RoleMemberBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.krad.service.BusinessObjectService;
@@ -37,6 +38,7 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
 	private BusinessObjectService businessObjectService;
     private ResponsibilityService responsibilityService;
 
+    @Override
 	public void saveRoleMember(RoleMemberBo roleMember){
 
 		//need to find what responsibilities changed so we can notify interested clients.  Like workflow.
@@ -51,7 +53,7 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
 
     	updateActionRequestsForResponsibilityChange(getChangedRoleResponsibilityIds(oldRoleResp, newRoleResp));
 	}
-
+    @Override
 	public void removeRoleMember(RoleMemberBo roleMember){
 		//need to find what responsibilities changed so we can notify interested clients.  Like workflow.
     	List<RoleResponsibility> oldRoleResp = getRoleResponsibilities(roleMember.getRoleId());
@@ -66,6 +68,7 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
     	updateActionRequestsForResponsibilityChange(getChangedRoleResponsibilityIds(oldRoleResp, newRoleResp));
 	}
 
+    @Override
 	@SuppressWarnings("unchecked")
 	public void updateActionRequestsForRoleChange(String roleId) {
     	List<RoleResponsibility> newRoleResp = getRoleResponsibilities(roleId);
@@ -79,6 +82,7 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
 	 *
 	 * @see ResponsibilityInternalService#updateActionRequestsForResponsibilityChange(java.util.Set)
 	 */
+    @Override
 	public void updateActionRequestsForResponsibilityChange(Set<String> responsibilityIds) {
         KewApiServiceLocator.getResponsibilityChangeProcessor().ResponsibilityChangeContents(responsibilityIds);
 	}
@@ -125,6 +129,14 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
 		return businessObjectService;
 	}
 
+    protected ResponsibilityService getResponsibilityService() {
+		if ( responsibilityService == null ) {
+			responsibilityService = KimApiServiceLocator.getResponsibilityService();
+		}
+		return responsibilityService;
+	}
+
+    @Override
     public boolean areActionsAtAssignmentLevel(Responsibility responsibility ) {
     	Map<String, String> details = responsibility.getAttributes();
     	if ( details == null ) {
@@ -134,8 +146,9 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
     	return Boolean.valueOf(actionDetailsAtRoleMemberLevel);
     }
 
+    @Override
     public boolean areActionsAtAssignmentLevelById( String responsibilityId ) {
-    	Responsibility responsibility = responsibilityService.getResponsibility(responsibilityId);
+    	Responsibility responsibility = getResponsibilityService().getResponsibility(responsibilityId);
     	if ( responsibility == null ) {
     		return false;
     	}

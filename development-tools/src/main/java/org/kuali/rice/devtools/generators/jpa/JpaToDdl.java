@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.devtools.generators.jpa;
 
-import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
@@ -41,9 +40,10 @@ import java.util.Map;
  */
 public class JpaToDdl {
 
-	public static void main( String[] args ) {
+	public static void main( String[] args ) throws ClassNotFoundException {
 		
-		Class<? extends PersistableBusinessObjectBase> clazz = KimEntityDefaultInfoCacheImpl.class;
+		Class<? extends PersistableBusinessObjectBase> clazz =
+                (Class<? extends PersistableBusinessObjectBase>) Class.forName(args[0]);
 
 		
 		StringBuffer sb = new StringBuffer( 1000 );

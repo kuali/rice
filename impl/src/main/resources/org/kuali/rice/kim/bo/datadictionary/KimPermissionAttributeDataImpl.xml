@@ -17,7 +17,7 @@
 
   <bean id="KimPermissionAttributeDataImpl" parent="KimPermissionAttributeDataImpl-parentBean"/>
 
-  <bean id="KimPermissionAttributeDataImpl-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl" p:titleAttribute="attributeDataId" p:objectLabel="Permission Attribute Data" p:inquiryDefinition-ref="KimPermissionAttributeDataImpl-inquiryDefinition">
+  <bean id="KimPermissionAttributeDataImpl-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.impl.role.PermissionAttributeDataImpl" p:titleAttribute="attributeDataId" p:objectLabel="Permission Attribute Data" p:inquiryDefinition-ref="KimPermissionAttributeDataImpl-inquiryDefinition">
 	<property name="attributes">
       <list>
         <ref bean="KimPermissionAttributeDataImpl-kimAttributeId"/>

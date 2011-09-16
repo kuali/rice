@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.bo;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
@@ -22,8 +23,6 @@ import javax.persistence.Entity;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Ad Hoc Route Person Business Object
@@ -44,7 +43,7 @@ public class AdHocRoutePerson extends AdHocRouteRecipient {
 
         // TODO: need some way of handling types that cannot be instantiated due to module dependencies
         try {
-            person = (Person) Class.forName("org.kuali.rice.kim.bo.impl.PersonImpl").newInstance();
+            person = (Person) Class.forName("org.kuali.rice.kim.impl.identity.PersonImpl").newInstance();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -85,7 +84,7 @@ public class AdHocRoutePerson extends AdHocRouteRecipient {
 
             if (person == null) {
                 try {
-                    person = (Person) Class.forName("org.kuali.rice.kim.bo.impl.PersonImpl").newInstance();
+                    person = (Person) Class.forName("org.kuali.rice.kim.impl.identity.PersonImpl").newInstance();
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }

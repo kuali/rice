@@ -290,7 +290,7 @@ public final class KimConstants {
 
     public final static class AttributeConstants {
 
-        public static final String PRINCIPAL_ID = KIMPropertyConstants.Person.PRINCIPAL_ID;
+        public static final String PRINCIPAL_ID = "principalId";
         public static final String BUTTON_NAME = "buttonName";
         public static final String BEAN_NAME = "beanName";
         public static final String ACTION_CLASS = "actionClass";

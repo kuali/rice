@@ -730,7 +730,7 @@
   <!-- Other Support Tables -->
   <!-- ******************************************************************* -->
 
-  <class-descriptor class="org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl" table="KRIM_ENTITY_CACHE_T">
+  <class-descriptor class="org.kuali.rice.kim.impl.identity.EntityDefaultInfoCacheBo" table="KRIM_ENTITY_CACHE_T">
   	<field-descriptor name="principalId" column="PRNCPL_ID" jdbc-type="VARCHAR" primarykey="true" />
   	<field-descriptor name="principalName" column="PRNCPL_NM" jdbc-type="VARCHAR" />
   	<field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR" />

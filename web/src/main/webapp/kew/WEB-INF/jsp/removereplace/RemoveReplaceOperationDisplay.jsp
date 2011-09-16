@@ -22,7 +22,7 @@
         <tr>
           <td><div align="right"><strong>User Id:</strong></div></td>
           <td><c:out value="${userDisplayName}" />
-             (<kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.PersonImpl" keyValues="principalId=${RemoveReplaceForm.user.workflowId}" render="true">
+             (<kul:inquiry boClassName="org.kuali.rice.kim.impl.identity.PersonImpl" keyValues="principalId=${RemoveReplaceForm.user.workflowId}" render="true">
                 <c:out value="${RemoveReplaceForm.userId}" />
               </kul:inquiry>)
           </td>
@@ -31,7 +31,7 @@
         <tr>
           <td><div align="right"><strong>User Id to Replace With:</strong></div></td>
           <td><c:out value="${replacementUserDisplayName}" />
-              (<kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.PersonImpl" keyValues="principalId=${RemoveReplaceForm.replacementUser.workflowId}" render="true">
+              (<kul:inquiry boClassName="org.kuali.rice.kim.impl.identity.PersonImpl" keyValues="principalId=${RemoveReplaceForm.replacementUser.workflowId}" render="true">
                 <c:out value="${RemoveReplaceForm.replacementUserId}" />
               </kul:inquiry>)
           </td>

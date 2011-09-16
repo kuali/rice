@@ -176,7 +176,7 @@
             <list>
               <bean parent="InquiryCollectionDefinition">
                 <property name="attributeName" value="memberPersons"/>
-                <property name="businessObjectClass" value="org.kuali.rice.kim.bo.impl.PersonImpl"/>
+                <property name="businessObjectClass" value="org.kuali.rice.kim.impl.identity.PersonImpl"/>
                 <property name="numberOfColumns" value="1"/>
                 <property name="inquiryFields">
                   <list>
@@ -265,7 +265,7 @@
 
         <bean parent="CollectionGroupSectionTableLayout" p:layoutManager.numberOfColumns="6">
           <property name="title" value="Assignees"/>
-          <property name="collectionObjectClass" value="org.kuali.rice.kim.bo.impl.PersonImpl"/>
+          <property name="collectionObjectClass" value="org.kuali.rice.kim.impl.identity.PersonImpl"/>
           <property name="propertyName" value="memberPersons"/>
           <property name="layoutManager.renderSequenceField" value="false"/>
           <property name="items">

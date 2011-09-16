@@ -15,23 +15,23 @@
  */
 package org.kuali.rice.krad.lookup;
 
+import org.junit.Ignore;
+import org.junit.Test;
+import org.kuali.rice.core.impl.parameter.ParameterBo;
+import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.impl.identity.PersonImpl;
+import org.kuali.rice.kns.lookup.LookupResultsService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.test.KRADTestCase;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-
-import org.junit.Ignore;
-import org.junit.Test;
-import org.kuali.rice.core.impl.parameter.ParameterBo;
-import org.kuali.rice.kim.api.identity.Person;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.impl.PersonImpl;
-import org.kuali.rice.kns.lookup.LookupResultsService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.test.KRADTestCase;
 
 /**
  * Tests the LookupResultsService

@@ -337,7 +337,7 @@
         <bean parent="GenericSelection" p:propertyName="affiliation"
               p:label="Affiliation" p:control.options-ref="affiliation-options"/>
         <bean parent="GenericTextField" p:propertyName="name" p:label="Name"
-              p:fieldLookup.dataObjectClassName="org.kuali.rice.kim.bo.impl.PersonImpl"/>
+              p:fieldLookup.dataObjectClassName="org.kuali.rice.kim.impl.identity.PersonImpl"/>
       </list>
     </property>
   </bean>

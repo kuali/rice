@@ -24,7 +24,7 @@ import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.IdentityArchiveService;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
+import org.kuali.rice.kim.impl.identity.EntityDefaultInfoCacheBo;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
@@ -105,7 +105,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 	public EntityDefault getEntityDefaultFromArchive( String entityId ) {
     	Map<String,String> criteria = new HashMap<String, String>(1);
     	criteria.put(KimConstants.PrimaryKeyConstants.SUB_ENTITY_ID, entityId);
-    	KimEntityDefaultInfoCacheImpl cachedValue = businessObjectService.findByPrimaryKey(KimEntityDefaultInfoCacheImpl.class, criteria);
+    	EntityDefaultInfoCacheBo cachedValue = businessObjectService.findByPrimaryKey(EntityDefaultInfoCacheBo.class, criteria);
     	return (cachedValue == null) ? null : cachedValue.convertCacheToEntityDefaultInfo();
     }
 
@@ -113,7 +113,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 	public EntityDefault getEntityDefaultFromArchiveByPrincipalId(String principalId) {
     	Map<String,String> criteria = new HashMap<String, String>(1);
     	criteria.put("principalId", principalId);
-    	KimEntityDefaultInfoCacheImpl cachedValue = businessObjectService.findByPrimaryKey(KimEntityDefaultInfoCacheImpl.class, criteria);
+    	EntityDefaultInfoCacheBo cachedValue = businessObjectService.findByPrimaryKey(EntityDefaultInfoCacheBo.class, criteria);
     	return (cachedValue == null) ? null : cachedValue.convertCacheToEntityDefaultInfo();
     }
 
@@ -121,7 +121,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 	public EntityDefault getEntityDefaultFromArchiveByPrincipalName(String principalName) {
     	Map<String,String> criteria = new HashMap<String, String>(1);
     	criteria.put("principalName", principalName);
-    	Collection<KimEntityDefaultInfoCacheImpl> entities = businessObjectService.findMatching(KimEntityDefaultInfoCacheImpl.class, criteria);
+    	Collection<EntityDefaultInfoCacheBo> entities = businessObjectService.findMatching(EntityDefaultInfoCacheBo.class, criteria);
     	return (entities == null || entities.isEmpty()) ? null : entities.iterator().next().convertCacheToEntityDefaultInfo();
     }
 
@@ -267,13 +267,13 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 						}
 
 						Collections.sort(entitiesToInsert, kediComparator);
-                        List<KimEntityDefaultInfoCacheImpl> entityCache = new ArrayList<KimEntityDefaultInfoCacheImpl>(entitiesToInsert.size());
+                        List<EntityDefaultInfoCacheBo> entityCache = new ArrayList<EntityDefaultInfoCacheBo>(entitiesToInsert.size());
                         for (EntityDefault entityToInsert : entitiesToInsert) {
-                            entityCache.add(new KimEntityDefaultInfoCacheImpl( entityToInsert ));
+                            entityCache.add(new EntityDefaultInfoCacheBo( entityToInsert ));
                         }
                         businessObjectService.save(entityCache);
 						//for (EntityDefault entityToInsert : entitiesToInsert) {
-						//	businessObjectService.save( new KimEntityDefaultInfoCacheImpl( entityToInsert ) );
+						//	businessObjectService.save( new EntityDefaultInfoCacheBo( entityToInsert ) );
 						//}
 						return null;
 					}

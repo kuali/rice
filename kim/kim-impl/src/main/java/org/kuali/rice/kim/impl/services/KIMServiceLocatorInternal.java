@@ -5,6 +5,7 @@ import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.impl.group.GroupInternalService;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
 
 import javax.xml.namespace.QName;
@@ -14,6 +15,7 @@ public class KIMServiceLocatorInternal {
 
     public static final String KIM_RUN_MODE_PROPERTY = "kim.mode";
     public static final String RESPONSIBILITY_INTERNAL_SERVICE = "responsibilityInternalService";
+    public static final String GROUP_INTERNAL_SERVICE = "groupInternalService";
 
     public static Object getService(String serviceName) {
         return getBean(serviceName);
@@ -29,6 +31,10 @@ public class KIMServiceLocatorInternal {
     }
 
     public static ResponsibilityInternalService getResponsibilityInternalService() {
-        return (ResponsibilityInternalService) KIMServiceLocatorInternal.getService(RESPONSIBILITY_INTERNAL_SERVICE);
+        return (ResponsibilityInternalService) getService(RESPONSIBILITY_INTERNAL_SERVICE);
+    }
+
+    public static GroupInternalService getGroupInternalService() {
+        return (GroupInternalService) getService(GROUP_INTERNAL_SERVICE);
     }
 }

@@ -15,9 +15,10 @@
  */
 package org.kuali.rice.kim.impl.responsibility;
 
-import java.util.Set;
-
+import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.impl.role.RoleMemberBo;
+
+import java.util.Set;
 
 /**
  * This is an internal service that was created as a proxy for kew
@@ -32,4 +33,18 @@ public interface ResponsibilityInternalService {
 	void saveRoleMember(RoleMemberBo roleMember);
 	void removeRoleMember(RoleMemberBo roleMember);
 	void updateActionRequestsForRoleChange(String roleId);
+
+        /**
+     * Lets the system know (mainly for UI purposes) whether this responsibility expects RoleResponsibilityAction
+     * records to be given at the assignment level or are global to the responsibility.  (I.e., they apply
+     * to any member assigned to the responsibility.)
+     */
+   	boolean areActionsAtAssignmentLevelById(String responsibilityId );
+
+    /**
+     * Lets the system know (mainly for UI purposes) whether this responsibility expects RoleResponsibilityAction
+     * records to be given at the assignment level or are global to the responsibility.  (I.e., they apply
+     * to any member assigned to the responsibility.)
+     */
+   	boolean areActionsAtAssignmentLevel(Responsibility responsibility );
 }

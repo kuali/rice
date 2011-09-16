@@ -305,7 +305,7 @@
 					<c:if test="${preferences.showInitiator == Constants.PREFERENCES_YES_VAL}">
 						<display:column sortable="true" title="${initiatorLabel}"
 							sortProperty="routeHeader.initiatorName" class="infocell">
-                            <kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.PersonImpl"
+                            <kul:inquiry boClassName="org.kuali.rice.kim.impl.identity.PersonImpl"
                                 keyValues="principalId=${result.routeHeader.actionListInitiatorPrincipal.principalId}"
                                 render="true">
                                   <c:out value="${result.routeHeader.initiatorName}" />
@@ -318,7 +318,7 @@
 							sortProperty="delegatorName" class="infocell">
 							<c:choose>
 								<c:when test="${result.delegatorPerson != null}">
-                                    <kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.PersonImpl"
+                                    <kul:inquiry boClassName="org.kuali.rice.kim.impl.identity.PersonImpl"
                                         keyValues="principalId=${result.delegatorPerson.principalId}"
                                         render="true">
                                           <c:out value="${result.delegatorPerson.name}" />

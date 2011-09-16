@@ -41,7 +41,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           </bean>
           <bean parent="CollectionGroupSectionTableLayout" p:layoutManager.numberOfColumns="6">
              <property name="title" value="Assignees"/>  
-             <property name="collectionObjectClass" value="org.kuali.rice.kim.bo.impl.PersonImpl"/>
+             <property name="collectionObjectClass" value="org.kuali.rice.kim.impl.identity.PersonImpl"/>
              <property name="propertyName" value="memberPersons"/>
              <property name="layoutManager.renderSequenceField" value="false"/>
              <property name="items">
@@ -62,7 +62,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="Permission-InquiryView" parent="InquiryView">
 	<property name="title" value="Permission Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.permission.PermissionBo"/>
-    <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.impl.permission.PermissionInquirableImpl"/>
+    <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.inquiry.PermissionInquirableImpl"/>
     <property name="Items">
         <list>
           <bean parent="GroupSectionGridLayout">
@@ -81,7 +81,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           </bean>
           <bean parent="CollectionGroup">
              <property name="title" value="Permission Detail Values"/>  
-             <property name="collectionObjectClass" value="org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl"/>
+             <property name="collectionObjectClass" value="org.kuali.rice.kim.impl.role.PermissionAttributeDataImpl"/>
              <property name="propertyName" value="detailObjects"/>
              <property name="layoutManager.summaryTitle" value="Detail Values"/>
              <property name="layoutManager.summaryFields">
@@ -387,7 +387,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           </bean>
            <!-- <bean parent="CollectionGroup">
              <property name="title" value="Rule Attributes"/>  
-             <property name="collectionObjectClass" value="org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl"/>
+             <property name="collectionObjectClass" value="org.kuali.rice.kim.impl.role.PermissionAttributeDataImpl"/>
              <property name="propertyName" value="detailObjects"/>
              <property name="layoutManager.summaryTitle" value="Detail Values"/>
              <property name="layoutManager.summaryFields">

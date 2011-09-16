@@ -123,7 +123,7 @@
         </bean>
       </list>
     </property>
-    <property name="inquirableClass" value="org.kuali.rice.kim.impl.permission.PermissionInquirableImpl"/>
+    <property name="inquirableClass" value="org.kuali.rice.kim.inquiry.PermissionInquirableImpl"/>
   </bean>
 
   <bean id="GenericPermissionBo-lookupDefinition" parent="GenericPermissionBo-lookupDefinition-parentBean"/>

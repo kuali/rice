@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.bo.impl;
+package org.kuali.rice.kim.impl.identity;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
@@ -33,10 +33,8 @@ import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoDefault;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo;
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo;
-import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.krad.bo.TransientBusinessObjectBase;
 
 import java.util.ArrayList;
@@ -44,12 +42,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * This is a description of what this class does - jonathan don't forget to fill this in. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
- *
- */
 public class PersonImpl extends TransientBusinessObjectBase implements Person {
 
 	private static final long serialVersionUID = 1L;
@@ -122,7 +114,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		this( getIdentityService().getPrincipal(principalId), personEntityTypeCode );
 	}
 	
-	public PersonImpl( KimEntityDefaultInfoCacheImpl p ) {
+	public PersonImpl( EntityDefaultInfoCacheBo p ) {
 		entityId = p.getEntityId();
 		principalId = p.getPrincipalId();
 		principalName = p.getPrincipalName();
@@ -336,7 +328,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	 * @see org.kuali.rice.kim.api.identity.Person#getFirstName()
 	 */
 	public String getFirstName() {
-	    if (KimCommonUtilsInternal.isSuppressName(getEntityId())){
+	    if (KimInternalSuppressUtils.isSuppressName(getEntityId())){
 	        return KimConstants.RESTRICTED_DATA_MASK;
 	    }
 		return firstName;
@@ -353,7 +345,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	 * @see org.kuali.rice.kim.api.identity.Person#getMiddleName()
 	 */
 	public String getMiddleName() {
-	    if (KimCommonUtilsInternal.isSuppressName(getEntityId())){
+	    if (KimInternalSuppressUtils.isSuppressName(getEntityId())){
             return KimConstants.RESTRICTED_DATA_MASK;
         }
 		return middleName;
@@ -370,7 +362,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	 * @see org.kuali.rice.kim.api.identity.Person#getLastName()
 	 */
 	public String getLastName() {
-	    if (KimCommonUtilsInternal.isSuppressName(getEntityId())){
+	    if (KimInternalSuppressUtils.isSuppressName(getEntityId())){
             return KimConstants.RESTRICTED_DATA_MASK;
         }
 		return lastName;
@@ -387,7 +379,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	 * @see org.kuali.rice.kim.api.identity.Person#getName()
 	 */
 	public String getName() {
-        if (StringUtils.isNotBlank(getEntityId()) && KimCommonUtilsInternal.isSuppressName(getEntityId())) {
+        if (StringUtils.isNotBlank(getEntityId()) && KimInternalSuppressUtils.isSuppressName(getEntityId())) {
             return KimConstants.RESTRICTED_DATA_MASK;
         }
         return name;
@@ -401,7 +393,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	 * @see org.kuali.rice.kim.api.identity.Person#getPhoneNumber()
 	 */
 	public String getPhoneNumber() {
-	    if (KimCommonUtilsInternal.isSuppressPhone(getEntityId())){
+	    if (KimInternalSuppressUtils.isSuppressPhone(getEntityId())){
             return KimConstants.RESTRICTED_DATA_MASK;
         }
 		return phoneNumber;
@@ -418,7 +410,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	 * @see org.kuali.rice.kim.api.identity.Person#getEmailAddress()
 	 */
 	public String getEmailAddress() {
-	    if (KimCommonUtilsInternal.isSuppressEmail(getEntityId())){
+	    if (KimInternalSuppressUtils.isSuppressEmail(getEntityId())){
             return KimConstants.RESTRICTED_DATA_MASK;
         }
 		return emailAddress;

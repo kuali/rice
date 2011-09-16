@@ -20,7 +20,7 @@
     <creator id="knsCreator" class="org.kuali.rice.kns.web.servlet.dwr.GlobalResourceDelegatingSpringCreator"/>
   </init>
   <allow>
-      <convert converter="bean" match="org.kuali.rice.kim.bo.impl.PersonImpl">
+      <convert converter="bean" match="org.kuali.rice.kim.impl.identity.PersonImpl">
         <param name="include" value="principalId,principalName,name,firstName,lastName,campusCode,middleName,emailAddress" />
       </convert>
       <create creator="knsCreator" javascript="PersonService">

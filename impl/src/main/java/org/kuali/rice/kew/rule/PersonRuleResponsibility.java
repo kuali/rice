@@ -15,8 +15,7 @@
  */
 package org.kuali.rice.kew.rule;
 
-import org.kuali.rice.kim.bo.impl.PersonImpl;
-
+import org.kuali.rice.kim.impl.identity.PersonImpl;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in.

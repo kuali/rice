@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.bo.role.impl;
+package org.kuali.rice.kim.impl.role;
 
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 

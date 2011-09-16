@@ -15,61 +15,39 @@
  */
 package org.kuali.rice.kim.dao.impl;
 
-import java.util.Arrays;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.framework.parameter.ParameterService;
+import org.kuali.rice.kim.api.identity.entity.Entity;
+import org.kuali.rice.kim.api.identity.entity.EntityDefault;
+import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
+import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
+import org.kuali.rice.kim.dao.LdapPrincipalDao;
+import org.kuali.rice.kim.impl.identity.PersonImpl;
+import org.kuali.rice.kim.ldap.InvalidLdapEntityException;
+import org.kuali.rice.kim.util.Constants;
+import org.springframework.ldap.SizeLimitExceededException;
+import org.springframework.ldap.core.ContextMapper;
+import org.springframework.ldap.core.ContextMapperCallbackHandler;
+import org.springframework.ldap.core.DistinguishedName;
+import org.springframework.ldap.core.LdapTemplate;
+import org.springframework.ldap.filter.AndFilter;
+import org.springframework.ldap.filter.LikeFilter;
+import org.springframework.ldap.filter.NotFilter;
+import org.springframework.ldap.filter.OrFilter;
+
+import javax.naming.NameClassPair;
+import javax.naming.directory.SearchControls;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.naming.NameClassPair;
-import javax.naming.directory.SearchControls;
-
-import org.apache.commons.lang.StringUtils;
-
-import org.kuali.rice.core.framework.parameter.ParameterService;
-import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
-import org.kuali.rice.kim.api.identity.address.EntityAddress;
-import org.kuali.rice.kim.api.identity.entity.Entity;
-import org.kuali.rice.kim.api.identity.entity.EntityDefault;
-import org.kuali.rice.kim.api.identity.email.EntityEmail;
-import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
-import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifier;
-import org.kuali.rice.kim.api.identity.name.EntityName;
-import org.kuali.rice.kim.api.identity.phone.EntityPhone;
-import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
-import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
-import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
-import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoDefault;
-import org.kuali.rice.kim.bo.impl.PersonImpl;
-import org.kuali.rice.kim.ldap.InvalidLdapEntityException;
-import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.core.api.util.type.KualiDecimal;
-
-import org.springframework.ldap.SizeLimitExceededException;
-import org.springframework.ldap.control.PagedResultsDirContextProcessor;
-import org.springframework.ldap.core.ContextMapper;
-import org.springframework.ldap.core.ContextMapperCallbackHandler;
-import org.springframework.ldap.core.DirContextProcessor;
-import org.springframework.ldap.core.DistinguishedName;
-import org.springframework.ldap.core.LdapTemplate;
-import org.springframework.ldap.core.support.AbstractContextMapper;
-import org.springframework.ldap.filter.AndFilter;
-import org.springframework.ldap.filter.EqualsFilter;
-import org.springframework.ldap.filter.LikeFilter;
-import org.springframework.ldap.filter.NotFilter;
-import org.springframework.ldap.filter.OrFilter;
-
-import org.kuali.rice.kim.util.Constants;
-import org.kuali.rice.kim.dao.LdapPrincipalDao;
-
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.StringUtils.capitalize;
-import static org.kuali.rice.kns.lookup.LookupUtils.getSearchResultsLimit;
 import static org.kuali.rice.core.util.BufferedLogger.*;
+import static org.kuali.rice.kns.lookup.LookupUtils.getSearchResultsLimit;
 
 /**
  * Integrated Data Access via LDAP to EDS. Provides implementation to interface method

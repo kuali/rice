@@ -22,13 +22,13 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.impl.identity.PersonServiceImpl;
 import org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierBo;
-import org.kuali.rice.kim.service.impl.PersonServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kim.test.bo.BOContainingPerson;
+import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -64,7 +64,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 	}
 
 	/**
-	 * Test method for {@link org.kuali.rice.kim.service.impl.PersonServiceImpl#getPersonByExternalIdentifier(java.lang.String, java.lang.String)}.
+	 * Test method for {@link org.kuali.rice.kim.impl.identity.PersonServiceImpl#getPersonByExternalIdentifier(java.lang.String, java.lang.String)}.
 	 */
 	@Test
 	public void testGetPersonByExternalIdentifier() {
@@ -155,7 +155,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 	}
 
 	/**
-	 * Test method for {@link org.kuali.rice.kim.service.impl.PersonServiceImpl#findPeople(Map)}.
+	 * Test method for {@link org.kuali.rice.kim.impl.identity.PersonServiceImpl#findPeople(Map)}.
 	 */
 	@Test
 	public void testFindPeople() {

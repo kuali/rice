@@ -17,7 +17,7 @@
 
   <bean id="PersonImpl" parent="PersonImpl-parentBean"/>
 
-  <bean id="PersonImpl-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.bo.impl.PersonImpl" p:titleAttribute="principalId" p:objectLabel="Person" p:inquiryDefinition-ref="PersonImpl-inquiryDefinition" p:lookupDefinition-ref="PersonImpl-lookupDefinition">
+  <bean id="PersonImpl-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.impl.identity.PersonImpl" p:titleAttribute="principalId" p:objectLabel="Person" p:inquiryDefinition-ref="PersonImpl-inquiryDefinition" p:lookupDefinition-ref="PersonImpl-lookupDefinition">
     <property name="attributes">
       <list>
         <ref bean="PersonImpl-campusCode"/>
@@ -271,7 +271,7 @@
 
   <bean id="PersonImpl-InquiryView" parent="InquiryView">
     <property name="title" value="Person Inquiry"/>
-    <property name="dataObjectClassName" value="org.kuali.rice.kim.bo.impl.PersonImpl"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.identity.PersonImpl"/>
     <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.inquiry.PersonInquirableImpl"/>
     <property name="Items">
       <list>
@@ -302,7 +302,7 @@
 
   <bean id="PersonImpl-LookupView" parent="LookupView">
     <property name="title" value="Person Lookup"/>
-    <property name="dataObjectClassName" value="org.kuali.rice.kim.bo.impl.PersonImpl"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.identity.PersonImpl"/>
     <property name="defaultSortAttributeNames" value="principalName"/>
     <property name="criteriaFields">
       <list>

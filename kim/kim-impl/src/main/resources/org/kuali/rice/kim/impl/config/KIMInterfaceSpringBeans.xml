@@ -198,7 +198,7 @@
         </property>
         <property name="externalizableBusinessObjectImplementations">
             <map>
-             <entry key="org.kuali.rice.kim.api.identity.Person" value="org.kuali.rice.kim.bo.impl.PersonImpl" />
+             <entry key="org.kuali.rice.kim.api.identity.Person" value="org.kuali.rice.kim.impl.identity.PersonImpl" />
              <entry key="org.kuali.rice.kim.api.role.RoleContract" value="org.kuali.rice.kim.framework.role.RoleEbo" />
              <entry key="org.kuali.rice.kim.api.group.GroupContract" value="org.kuali.rice.kim.framework.group.GroupEbo" />
              <entry key="org.kuali.rice.kim.framework.identity.email.EntityEmailTypeContractEbo" value="org.kuali.rice.kim.framework.identity.email.EntityEmailTypeEbo" />
@@ -224,7 +224,7 @@
         p:moduleConfiguration-ref="kimModuleConfiguration"
         p:kualiModuleService-ref="kualiModuleService" />
 
-  <bean id="personService" class="org.kuali.rice.kim.service.impl.PersonServiceImpl">
+  <bean id="personService" class="org.kuali.rice.kim.impl.identity.PersonServiceImpl">
     <property name="personEntityTypeCodes">
       <list>
         <value>PERSON</value>

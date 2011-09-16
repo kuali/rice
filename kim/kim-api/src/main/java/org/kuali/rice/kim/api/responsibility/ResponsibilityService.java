@@ -22,6 +22,8 @@ import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.common.template.TemplateQueryResults;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -71,6 +73,7 @@ public interface ResponsibilityService {
      */
     @WebMethod(operationName="createResponsibility")
     @WebResult(name = "responsibility")
+    @CacheEvict(value={Responsibility.Cache.NAME, Template.Cache.NAME + "{Responsibility}"}, allEntries = true)
     Responsibility createResponsibility(@WebParam(name = "responsibility") Responsibility responsibility)
             throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -83,6 +86,7 @@ public interface ResponsibilityService {
      */
     @WebMethod(operationName="updateResponsibility")
     @WebResult(name = "responsibility")
+    @CacheEvict(value={Responsibility.Cache.NAME, Template.Cache.NAME + "{Responsibility}"}, allEntries = true)
     Responsibility updateResponsibility(@WebParam(name = "responsibility") Responsibility responsibility)
             throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -99,6 +103,7 @@ public interface ResponsibilityService {
      */
     @WebMethod(operationName = "getResponsibility")
     @WebResult(name = "responsibility")
+    @Cacheable(value=Responsibility.Cache.NAME, key="'id=' + #id")
     Responsibility getResponsibility(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
     /**
@@ -111,6 +116,7 @@ public interface ResponsibilityService {
      */
     @WebMethod(operationName = "findRespByNamespaceCodeAndName")
     @WebResult(name = "responsibility")
+    @Cacheable(value=Responsibility.Cache.NAME, key="'namespaceCode=' + #namespaceCode + '|' + 'name=' + #name")
     Responsibility findRespByNamespaceCodeAndName(@WebParam(name = "namespaceCode") String namespaceCode,
                                                   @WebParam(name = "name") String name) throws RiceIllegalArgumentException;
     /**
@@ -126,6 +132,7 @@ public interface ResponsibilityService {
      */
     @WebMethod(operationName = "getResponsibilityTemplate")
     @WebResult(name = "template")
+    @Cacheable(value=Template.Cache.NAME + "{Responsibility}", key="'id=' + #id")
     Template getResponsibilityTemplate(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
     /**
@@ -138,6 +145,7 @@ public interface ResponsibilityService {
      */
     @WebMethod(operationName = "findRespTemplateByNamespaceCodeAndName")
     @WebResult(name = "template")
+    @Cacheable(value=Template.Cache.NAME + "{Responsibility}", key="'namespaceCode=' + #namespaceCode + '|' + 'name=' + #name")
     Template findRespTemplateByNamespaceCodeAndName(@WebParam(name = "namespaceCode") String namespaceCode,
                                                     @WebParam(name = "name") String name) throws RiceIllegalArgumentException;
     /**

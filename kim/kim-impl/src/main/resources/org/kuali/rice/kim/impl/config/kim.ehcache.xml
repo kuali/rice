@@ -5,5 +5,8 @@
 
   <cache name="http://rice.kuali.org/kim/v2_0/KimTypeType" eternal="false" overflowToDisk="false" copyOnRead="false"
          copyOnWrite="false"/>
-
+  <cache name="http://rice.kuali.org/kim/v2_0/ResponsibilityType" eternal="false" overflowToDisk="false" copyOnRead="false"
+         copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/TemplateType{Responsibility}" eternal="false" overflowToDisk="false" copyOnRead="false"
+         copyOnWrite="false"/>
 </ehcache>

@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.kim.api.KimConstants;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -326,5 +327,9 @@ public final class Template extends AbstractDataTransferObject implements Templa
         static final String DESCRIPTION = "description";
         static final String KIM_TYPE_ID = "kimTypeId";        
         static final String ACTIVE = "active";
+    }
+
+    public static class Cache {
+        public static final String NAME = KimConstants.Namespaces.KIM_NAMESPACE_2_0 + "/" + Template.Constants.TYPE_NAME;
     }
 }

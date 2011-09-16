@@ -4,7 +4,9 @@ import org.apache.commons.collections.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * A set of simple utilities to assist with common idioms in immutable model objects and their builders.
@@ -37,6 +39,19 @@ public class ModelObjectUtils {
         return Collections.unmodifiableList(copy);
     }
 
+    @SuppressWarnings("unchecked")
+    public static <B> Set<B> buildImmutableCopy(Set<? extends ModelBuilder> toConvert) {
+        if (CollectionUtils.isEmpty(toConvert)) {
+            return Collections.emptySet();
+        } else {
+            Set<B> results = new HashSet<B>(toConvert.size());
+            for (ModelBuilder elem : toConvert) {
+                results.add((B)elem.build());
+            }
+            return Collections.unmodifiableSet(results);
+        }
+    }
+
     /**
      * Takes the given list and returns an unmodifiable copy of that list containing the same elements as the original
      * list.  This method handles a null list being passed to it by returning an unmodifiable empty list.
@@ -52,6 +67,55 @@ public class ModelObjectUtils {
         }
         return Collections.unmodifiableList(new ArrayList<T>(listToCopy));
     }
+
+
+	/**
+	 * This method is useful for converting a List&lt;? extends BlahContract&gt; to a
+	 * List&lt;Blah.Builder&gt;.  You'll just need to implement Transformer to use it.
+	 *
+	 * @param <A>
+	 * @param <B>
+	 * @param toConvert
+	 * @param xform
+	 * @return
+	 */
+	public static <A,B> List<B> transform(List<? extends A> toConvert, Transformer<A,B> xform) {
+		if (CollectionUtils.isEmpty(toConvert)) {
+			return new ArrayList<B>();
+		} else {
+			List<B> results = new ArrayList<B>(toConvert.size());
+			for (A elem : toConvert) {
+				results.add(xform.transform(elem));
+			}
+			return results;
+		}
+	}
+
+    /**
+     * This method is useful for converting a Set&lt;? extends BlahContract&gt; to a
+     * Set&lt;Blah.Builder&gt;.  You'll just need to implement Transformer to use it.
+     *
+     * @param <A>
+     * @param <B>
+     * @param toConvert
+     * @param xform
+     * @return
+     */
+	public static <A,B> Set<B> transform(Set<? extends A> toConvert, Transformer<A,B> xform) {
+		if (CollectionUtils.isEmpty(toConvert)) {
+			return new HashSet<B>();
+		} else {
+			Set<B> results = new HashSet<B>(toConvert.size());
+			for (A elem : toConvert) {
+				results.add(xform.transform(elem));
+			}
+			return results;
+		}
+	}
+
+	public interface Transformer<A,B> {
+		public B transform(A input);
+	}
 
     private ModelObjectUtils() {
         throw new UnsupportedOperationException("Do not call.");

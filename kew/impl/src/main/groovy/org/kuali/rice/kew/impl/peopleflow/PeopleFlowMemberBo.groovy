@@ -1,20 +1,39 @@
 package org.kuali.rice.kew.impl.peopleflow
 
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
+import org.kuali.rice.kew.framework.peopleflow.PeopleFlowMemberContract
+import org.kuali.rice.kew.framework.peopleflow.PeopleFlowMemberDefinition
+import org.kuali.rice.kew.framework.peopleflow.PeopleFlowMemberContract.MemberType;
 
 /**
- * Created by IntelliJ IDEA.
- * User: gilesp
- * Date: 8/3/11
- * Time: 3:47 PM
- * To change this template use File | Settings | File Templates.
+ * mapped entity for PeopleFlow members
  */
-// TODO: implement contract interface
-class PeopleFlowMemberBo extends PersistableBusinessObjectBase {
+class PeopleFlowMemberBo extends PersistableBusinessObjectBase implements PeopleFlowMemberContract {
     def String id
     def String peopleFlowId
     def String memberTypeCode
     def String memberId
     def Integer priority
     def String delegatedFromId
+
+    MemberType getMemberType() {
+        return MemberType.getByCode(memberTypeCode);
+    }
+
+    public static PeopleFlowMemberBo from(PeopleFlowMemberDefinition member) {
+        PeopleFlowMemberBo result = new PeopleFlowMemberBo();
+
+        result.id = member.getId();
+        result.peopleFlowId = member.getPeopleFlowId();
+        result.memberTypeCode = member.getMemberType().code;
+        result.memberId = member.getMemberId();
+        result.priority = member.getPriority();
+        result.delegatedFromId = member.getDelegatedFromId();
+        result.setVersionNumber(member.getVersionNumber());
+    }
+
+    public static PeopleFlowMemberDefinition to(PeopleFlowMemberBo bo) {
+        return PeopleFlowMemberDefinition.Builder.create(bo).build();
+    }
+
 }

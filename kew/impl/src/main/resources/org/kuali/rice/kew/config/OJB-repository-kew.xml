@@ -909,7 +909,7 @@
     <field-descriptor name="typeId" column="TYP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="active" column="ACTV" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-    <collection-descriptor name="attributes" element-class-ref="org.kuali.rice.kew.impl.peopleflow.PeopleFlowAttributeBo"
+    <collection-descriptor name="attributeBos" element-class-ref="org.kuali.rice.kew.impl.peopleflow.PeopleFlowAttributeBo"
       auto-retrieve="true" auto-update="true" proxy="false">
       <inverse-foreignkey field-ref="peopleFlowId" />
     </collection-descriptor>

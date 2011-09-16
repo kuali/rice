@@ -95,7 +95,7 @@ public class PeopleFlowBoTest extends KEWTestCase {
         peopleFlowAttr.setPeopleFlowId(peopleFlowBo.getId());
         peopleFlowAttr.setValue("testAttrValue");
 
-        peopleFlowBo.getAttributes().add(peopleFlowAttr);
+        peopleFlowBo.getAttributeBos().add(peopleFlowAttr);
 
         PeopleFlowMemberBo peopleFlowMember = new PeopleFlowMemberBo();
         peopleFlowMember.setMemberTypeCode("P");

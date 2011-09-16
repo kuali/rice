@@ -2,16 +2,14 @@ package org.kuali.rice.kew.impl.peopleflow
 
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.krad.bo.MutableInactivatable
+import org.kuali.rice.kew.framework.peopleflow.PeopleFlowContract
+import org.kuali.rice.kew.framework.peopleflow.PeopleFlowDefinition
+import org.kuali.rice.kew.framework.peopleflow.PeopleFlowMemberDefinition
 
 /**
- * Created by IntelliJ IDEA.
- * User: gilesp
- * Date: 8/3/11
- * Time: 2:27 PM
- * To change this template use File | Settings | File Templates.
+ * Mapped entity for PeopleFlows
  */
-// TODO: implement contract interface
-class PeopleFlowBo extends PersistableBusinessObjectBase implements MutableInactivatable {
+class PeopleFlowBo extends PersistableBusinessObjectBase implements MutableInactivatable, PeopleFlowContract {
 
     def String id
     def String name
@@ -20,16 +18,38 @@ class PeopleFlowBo extends PersistableBusinessObjectBase implements MutableInact
     def String description
     def boolean active = true
 
-    def List<PeopleFlowAttributeBo> attributes;
-    def List<PeopleFlowMemberBo> members;
+    def List<PeopleFlowAttributeBo> attributeBos = new ArrayList<PeopleFlowAttributeBo>();
+    def List<PeopleFlowMemberBo> members = new ArrayList<PeopleFlowMemberBo>();
 
-    public List<PeopleFlowAttributeBo> getAttributes() {
-        if (attributes == null) attributes = new ArrayList<PeopleFlowAttributeBo>();
-        return attributes;
+    @Override
+    public Map<String, String> getAttributes() {
+        Map<String, String> results = new HashMap<String, String>();
+
+        if (attributeBos != null) for (PeopleFlowAttributeBo attr : attributeBos) {
+            results.put(attr.attributeDefinition.name, attr.value);
+        }
+
+        return results;
     }
 
-    public List<PeopleFlowMemberBo> getMembers() {
-        if (members == null) members = new ArrayList<PeopleFlowMemberBo>();
-        return members;
+    public static PeopleFlowBo from(PeopleFlowDefinition peopleFlow) {
+        PeopleFlowBo result = new PeopleFlowBo();
+
+        result.id = peopleFlow.getId();
+        result.name = peopleFlow.getName();
+        result.namespace = peopleFlow.getNamespace();
+        result.typeId = peopleFlow.getTypeId();
+        result.description = peopleFlow.getDescription();
+        result.active = peopleFlow.isActive();
+        result.versionNumber = peopleFlow.getVersionNumber();
+
+        result.attributeBos = null;  // TODO: Convert map to PeopleFlowAttributeBo list
+
+        result.members = new ArrayList<PeopleFlowMemberBo>();
+        for (PeopleFlowMemberDefinition member : peopleFlow.getMembers()) {
+            result.members.add(PeopleFlowMemberBo.from(member));
+        }
+
+        return result;
     }
 }

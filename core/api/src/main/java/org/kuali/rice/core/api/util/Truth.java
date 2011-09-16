@@ -38,7 +38,7 @@ public enum Truth {
      * will return null.  If the str is null, this method will return null.
      *
      * @param str the string.
-     * @param the default value to use when the str is not a recognized as a boolean value.
+     * @param defaultValue default value to use when the str is not a recognized as a boolean value.
      * @return the boolean value or the specified default value.
      */
     public static Boolean strToBooleanIgnoreCase(String str, Boolean defaultValue) {

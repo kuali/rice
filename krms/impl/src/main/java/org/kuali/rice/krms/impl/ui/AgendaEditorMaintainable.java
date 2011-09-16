@@ -195,17 +195,9 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         AgendaBo agenda = ((AgendaEditor) dataObject).getAgenda();
         if (addLine instanceof ActionBo) {
             ((ActionBo) addLine).setNamespace(getContextBoService().getContextByContextId(agenda.getContextId()).getNamespace());
-        } else {
-            super.processBeforeAddLine(view, collectionGroup, model, addLine);
         }
 
-    }
-    @Override
-    protected void processAfterAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
-        // Exclude rule actions
-        if (!(addLine instanceof ActionBo)) {
-            super.processAfterAddLine(view, collectionGroup, model, addLine);
-        }
+        super.processBeforeAddLine(view, collectionGroup, model, addLine);
     }
 
 }

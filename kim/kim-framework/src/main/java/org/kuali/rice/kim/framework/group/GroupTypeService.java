@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.kim.framework.group;
 
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.framework.type.KimTypeService;
-import org.kuali.rice.kim.util.KimConstants;
 
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;

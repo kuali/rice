@@ -15,18 +15,18 @@
  */
 package org.kuali.rice.kim.lookup;
 
-import java.util.Properties;
 import org.apache.commons.lang.StringUtils;
-
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.KualiLookupableImpl;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.UrlFactory;
+
+import java.util.Properties;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -52,7 +52,7 @@ public class PersonLookupableImpl extends KualiLookupableImpl {
 	        	parameters.put(KRADConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());
 	        	}
 	        url = getCreateNewUrl(UrlFactory.parameterizeUrl(
-	        		KimCommonUtilsInternal.getKimBasePath()+KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_ACTION, parameters));
+	        		KimCommonUtilsInternal.getKimBasePath()+ KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_ACTION, parameters));
 	        //String url = "lookup.do?businessObjectClassName=org.kuali.rice.kim.bo.types.impl.KimTypeImpl&returnLocation=portal.do&docFormKey="+KimApiConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY;
 	        //url = "../kim/identityManagementPersonDocument.do?methodToCall=docHandler&command=initiate&docTypeName=IdentityManagementPersonDocument";
 	        //url = "<a title=\"Create a new record\" href=\"" + url + "\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";

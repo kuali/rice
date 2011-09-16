@@ -16,12 +16,11 @@
 package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
-import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -67,6 +66,7 @@ public class DocumentTypeAndNodeAndFieldsPermissionTypeServiceImpl extends Docum
 		if ( StringUtils.isBlank( permissionDetails.get(KimConstants.AttributeConstants.ROUTE_NODE_NAME) ) ) {
 			return true;
 		}
-		return StringUtils.equals(requestedDetails.get(KimConstants.AttributeConstants.ROUTE_NODE_NAME), permissionDetails.get(KimConstants.AttributeConstants.ROUTE_NODE_NAME));
+		return StringUtils.equals(requestedDetails.get(KimConstants.AttributeConstants.ROUTE_NODE_NAME), permissionDetails.get(
+                KimConstants.AttributeConstants.ROUTE_NODE_NAME));
 	}
 }

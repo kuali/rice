@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.service.impl;
 
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.kim.api.identity.IdentityArchiveService;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.Type;
@@ -41,7 +42,6 @@ import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.identity.residency.EntityResidency;
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
 import org.kuali.rice.kim.api.identity.visa.EntityVisa;
-import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -56,9 +56,9 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-@WebService(endpointInterface = KIMWebServiceConstants.IdentityService.INTERFACE_CLASS, serviceName = KIMWebServiceConstants.IdentityService.WEB_SERVICE_NAME, portName = KIMWebServiceConstants.IdentityService.WEB_SERVICE_PORT, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
+@WebService(endpointInterface = IdentityCurrentAndArchivedServiceImpl.IdentityServiceConst.INTERFACE_CLASS, serviceName = IdentityCurrentAndArchivedServiceImpl.IdentityServiceConst.WEB_SERVICE_NAME, portName = IdentityCurrentAndArchivedServiceImpl.IdentityServiceConst.WEB_SERVICE_PORT, targetNamespace = IdentityCurrentAndArchivedServiceImpl.MODULE_TARGET_NAMESPACE)
 public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
-
+    public static final String MODULE_TARGET_NAMESPACE = RiceConstants.RICE_JAXWS_TARGET_NAMESPACE_BASE + "/kim";
 	private final IdentityArchiveService identityArchiveService;
 	private final IdentityService innerIdentityService;
 	
@@ -496,4 +496,14 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 		return identityArchiveService;
 	}
 
+    
+    public static final class IdentityServiceConst {
+		public static final String WEB_SERVICE_NAME = "identityServiceSOAP";
+		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.api.identity.IdentityService";
+		public static final String WEB_SERVICE_PORT = "IdentityServicePort";
+		
+		private IdentityServiceConst() {
+			throw new UnsupportedOperationException("do not call");
+		}
+	}
 }

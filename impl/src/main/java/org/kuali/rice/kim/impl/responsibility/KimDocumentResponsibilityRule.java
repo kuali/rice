@@ -17,10 +17,10 @@ package org.kuali.rice.kim.impl.responsibility;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.rules.DocumentRuleBase;
 import org.kuali.rice.krad.util.GlobalVariables;
 
@@ -81,7 +81,7 @@ public class KimDocumentResponsibilityRule extends DocumentRuleBase implements A
 		if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
 				document, 
 				KimConstants.NAMESPACE_CODE, 
-				KimConstants.PermissionTemplateNames.GRANT_RESPONSIBILITY, 
+				KimConstants.PermissionTemplateNames.GRANT_RESPONSIBILITY,
 				GlobalVariables.getUserSession().getPerson().getPrincipalId(), 
 				responsibilityDetails, null)) {
             return false;

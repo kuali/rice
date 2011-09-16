@@ -16,7 +16,7 @@ package org.kuali.rice.kim.impl.responsibility
  * limitations under the License.
  */
 
-import org.kuali.rice.kim.util.KimConstants
+import org.kuali.rice.kim.api.KimConstants
 
 //strange - hacky non-PBO
 class ReviewResponsibilityBo extends ResponsibilityBo {

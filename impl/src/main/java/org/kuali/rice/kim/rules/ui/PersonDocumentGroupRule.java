@@ -17,11 +17,11 @@ package org.kuali.rice.kim.rules.ui;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
 import org.kuali.rice.kim.rule.ui.AddGroupRule;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.rules.DocumentRuleBase;
 import org.kuali.rice.krad.util.GlobalVariables;
 
@@ -76,7 +76,7 @@ public class PersonDocumentGroupRule extends DocumentRuleBase implements AddGrou
         additionalPermissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, newGroup.getNamespaceCode());
         additionalPermissionDetails.put(KimConstants.AttributeConstants.GROUP_NAME, newGroup.getGroupName());
 		if(!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
-				document, KimConstants.NAMESPACE_CODE, KimConstants.PermissionTemplateNames.POPULATE_GROUP, 
+				document, KimConstants.NAMESPACE_CODE, KimConstants.PermissionTemplateNames.POPULATE_GROUP,
 				GlobalVariables.getUserSession().getPrincipalId(), additionalPermissionDetails, null)){
     		GlobalVariables.getMessageMap().putError(GROUP_ID_ERROR_PATH, 
     				RiceKeyConstants.ERROR_ASSIGN_GROUP, 

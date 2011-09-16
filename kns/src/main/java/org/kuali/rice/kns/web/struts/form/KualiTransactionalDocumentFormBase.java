@@ -18,7 +18,7 @@ package org.kuali.rice.kns.web.struts.form;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.document.TransactionalDocument;
 import org.kuali.rice.krad.service.DataDictionaryService;
@@ -134,7 +134,7 @@ public class KualiTransactionalDocumentFormBase extends KualiDocumentFormBase {
                     	populateForProperty(propertyName, KimConstants.KIM_ATTRIBUTE_BOOLEAN_FALSE_STR_VALUE_DISPLAY, parameterMap);
                     }  
                     else if ( !StringUtils.isBlank(propertyName) && parameterMap.get(propertyName) != null && parameterMap.get(propertyName).length >= 1 && parameterMap.get(propertyName)[0].equalsIgnoreCase("on") ) {
-                    	populateForProperty(propertyName, KimConstants.KIM_ATTRIBUTE_BOOLEAN_TRUE_STR_VALUE_DISPLAY, parameterMap); 
+                    	populateForProperty(propertyName, KimConstants.KIM_ATTRIBUTE_BOOLEAN_TRUE_STR_VALUE_DISPLAY, parameterMap);
                     }
                 }
             }

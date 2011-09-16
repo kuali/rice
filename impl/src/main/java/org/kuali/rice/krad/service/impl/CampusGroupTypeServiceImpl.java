@@ -17,7 +17,7 @@ package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kns.kim.group.GroupTypeServiceBase;
 
 import java.util.ArrayList;

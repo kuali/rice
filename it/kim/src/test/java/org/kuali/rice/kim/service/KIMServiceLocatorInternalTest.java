@@ -16,13 +16,12 @@
 package org.kuali.rice.kim.service;
 
 import org.junit.Test;
-import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
 import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.test.KIMTestCase;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceBase;
 
 import javax.xml.namespace.QName;
@@ -65,7 +64,8 @@ public class KIMServiceLocatorInternalTest extends KIMTestCase {
 		
 		// test by passing a KimType that refers to the Permission TypeService
 		
-		KimType permissionKimType = KimApiServiceLocator.getKimTypeInfoService().findKimTypeByNameAndNamespace(KimConstants.NAMESPACE_CODE, "Permission");
+		KimType permissionKimType = KimApiServiceLocator.getKimTypeInfoService().findKimTypeByNameAndNamespace(
+                KimConstants.NAMESPACE_CODE, "Permission");
 		assertNotNull("The KR-IDM:Permission KimType should exist.", permissionKimType);
 		
 		KimTypeService typeService4 = KimFrameworkServiceLocator.getKimTypeService(permissionKimType);

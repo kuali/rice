@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.impl.permission;
 
-import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.krad.valuefinder.SequenceValueFinder;
 
 public final class NextPermissionIdValuesFinder extends SequenceValueFinder {

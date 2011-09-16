@@ -13,16 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.util;
+package org.kuali.rice.kim.api;
 
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 
-/**
- * This is a description of what this class does - kellerj don't forget to fill this in. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
- *
- */
 public final class KIMPropertyConstants {
 
 	public static final class Entity {

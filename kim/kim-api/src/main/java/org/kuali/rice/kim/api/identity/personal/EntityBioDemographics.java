@@ -7,7 +7,7 @@ import org.joda.time.Years;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kim.api.KimConstants;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;

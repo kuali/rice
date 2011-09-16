@@ -18,8 +18,8 @@ package org.kuali.rice.krad.service.impl;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.type.KimAttributeField;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.kim.role.RoleTypeServiceBase;
 
 import java.util.ArrayList;

@@ -15,12 +15,9 @@
  */
 package org.kuali.rice.kim.document;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimAttributeField;
@@ -36,10 +33,13 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
 import org.kuali.rice.kim.impl.type.IdentityManagementTypeAttributeTransactionalDocument;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.springframework.util.AutoPopulatingList;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 
 /**

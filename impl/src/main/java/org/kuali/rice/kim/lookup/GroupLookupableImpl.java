@@ -17,8 +17,8 @@ package org.kuali.rice.kim.lookup;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.KualiLookupableImpl;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.UrlFactory;
@@ -46,7 +46,7 @@ public class GroupLookupableImpl extends KualiLookupableImpl {
 	        	parameters.put(KRADConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());
 	        	}
             url = getCreateNewUrl(UrlFactory.parameterizeUrl(
-            		KimCommonUtilsInternal.getKimBasePath()+KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION, parameters));            		
+            		KimCommonUtilsInternal.getKimBasePath()+ KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION, parameters));
         }
         return url;
     }

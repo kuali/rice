@@ -17,6 +17,7 @@ package org.kuali.rice.kim.bo.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.PersonService;
@@ -36,7 +37,6 @@ import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo;
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.bo.TransientBusinessObjectBase;
 
 import java.util.ArrayList;

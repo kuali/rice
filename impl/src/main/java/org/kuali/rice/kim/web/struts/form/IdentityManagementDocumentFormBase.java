@@ -18,7 +18,7 @@ package org.kuali.rice.kim.web.struts.form;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.parameter.Parameter;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kns.util.PagingBannerUtils;
 import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
 import org.kuali.rice.kns.web.struts.form.KualiTransactionalDocumentFormBase;

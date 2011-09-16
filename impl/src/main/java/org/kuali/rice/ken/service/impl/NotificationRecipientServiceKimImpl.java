@@ -18,10 +18,10 @@ package org.kuali.rice.ken.service.impl;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.kuali.rice.ken.service.NotificationRecipientService;
+import org.kuali.rice.kim.api.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 
 import java.util.List;
 

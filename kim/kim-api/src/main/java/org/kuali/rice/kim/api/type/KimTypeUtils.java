@@ -1,7 +1,7 @@
 package org.kuali.rice.kim.api.type;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kim.api.KimConstants;
 
 import javax.xml.namespace.QName;
 

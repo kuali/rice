@@ -15,7 +15,7 @@
 	                                <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.MAINTENANCE_ACTION}">
 		                                <c:param name="methodToCall" value="Constants.MAINTENANCE_NEWWITHEXISTING_ACTION" />
 		                                <%-- TODO: replace this class name with the interface or maintenance class and let module service handle --%>
-		                                <c:param name="businessObjectClassName" value="org.kuali.rice.kim.bo.role.impl.KimPermissionImpl"/>
+		                                <c:param name="businessObjectClassName" value="org.kuali.rice.kim.impl.permission.PermissionBo"/>
 		                                <%-- TODO: replace hard-coding of attribute ID with lookup stored on form --%>
 		                                <c:param name="detailObjects[0].kimAttributeId" value="13"/>
 		                                <c:param name="detailObjects[0].attributeValue" value="${permDocTypeName}"/>
@@ -28,7 +28,7 @@
                           <tr <c:if test="${perm.overridden}">class="overridden"</c:if>>
                             <td>
                             	<%-- TODO: update this to use the proper url for an inquiry and not use the impl class --%>
-                                <kul:inquiry boClassName="org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl" 
+                                <kul:inquiry boClassName="org.kuali.rice.kim.impl.permission.PermissionTemplateBo"
                                 			 keyValues="permissionTemplateId=${perm.template.id}" render="true">
                                 <c:out value="${perm.template.name}" />
                                 (<c:out value="${perm.template.namespaceCode}" />)
@@ -36,8 +36,8 @@
                             </td>
                             <td>
                             	<%-- TODO: update this to use the proper url for a detailed inquiry and not use the impl class --%>
-                                <kul:inquiry boClassName="org.kuali.rice.kim.bo.role.impl.KimPermissionImpl" 
-                                			 keyValues="permissionId=${perm.permissionId}" render="true">
+                                <kul:inquiry boClassName="org.kuali.rice.kim.impl.permission.PermissionBo"
+                                			 keyValues="permissionId=${perm.id}" render="true">
 	                                <c:if test="${empty perm.name}">
 	                                    <c:out value="${perm.template.name}" />
 	                                </c:if>
@@ -60,14 +60,14 @@
 			                	</c:if>
                             </td>
                             <td>
-                            	<c:forEach var="role" items="${KualiForm.permissionRoles[perm.permissionId]}">
+                            	<c:forEach var="role" items="${KualiForm.permissionRoles[perm.id]}">
                             		<kul:inquiry boClassName="org.kuali.rice.kim.impl.role.RoleBo"
                             					 keyValues="id=${role.id}" render="true">
                             			<c:out value="${role.namespaceCode} ${role.name}" />
                             		</kul:inquiry>
                             		<br />
                             	</c:forEach>
-                               	<c:if test="${empty KualiForm.permissionRoles[perm.permissionId]}">
+                               	<c:if test="${empty KualiForm.permissionRoles[perm.id]}">
 			                		&nbsp;
 			                	</c:if>
                             </td>
@@ -75,8 +75,8 @@
 	                            <td>
                                     <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.MAINTENANCE_ACTION}">
 		                                <c:param name="methodToCall" value="edit" />
-		                                <c:param name="businessObjectClassName" value="org.kuali.rice.kim.bo.role.impl.KimPermissionImpl"/>
-		                                <c:param name="permissionId" value="${perm.permissionId}"/>
+		                                <c:param name="businessObjectClassName" value="org.kuali.rice.kim.impl.permission.PermissionBo"/>
+		                                <c:param name="permissionId" value="${perm.id}"/>
 	                                </c:url>" target="_blank">Edit Permission</a>
 		                        </td>
                             </c:if>

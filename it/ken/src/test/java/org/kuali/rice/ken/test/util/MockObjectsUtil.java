@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.ken.test.util;
 
-import java.sql.Timestamp;
-import java.util.List;
-
 import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.bo.NotificationChannel;
 import org.kuali.rice.ken.bo.NotificationChannelReviewer;
@@ -26,8 +23,10 @@ import org.kuali.rice.ken.bo.NotificationPriority;
 import org.kuali.rice.ken.bo.NotificationProducer;
 import org.kuali.rice.ken.bo.NotificationRecipient;
 import org.kuali.rice.ken.bo.NotificationSender;
-import org.kuali.rice.ken.util.NotificationConstants;
-import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
+import org.kuali.rice.kim.api.KimConstants.KimGroupMemberTypes;
+
+import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * This class helps to provide common mock objects for testing and also helper methods to build instances of objects.

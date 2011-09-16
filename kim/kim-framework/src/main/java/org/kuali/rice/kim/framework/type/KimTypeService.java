@@ -3,8 +3,8 @@ package org.kuali.rice.kim.framework.type;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.type.KimAttributeField;
-import org.kuali.rice.kim.util.KimConstants;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;

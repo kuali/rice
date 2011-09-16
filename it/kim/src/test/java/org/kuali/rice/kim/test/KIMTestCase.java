@@ -21,7 +21,7 @@ import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl;
+import org.kuali.rice.kim.impl.permission.PermissionTemplateBo;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
@@ -120,11 +120,11 @@ public abstract class KIMTestCase extends BaselineTestCase {
 		return type;
 	}
 	
-	protected KimPermissionTemplateImpl getDefaultPermissionTemplate() {
+	protected PermissionTemplateBo getDefaultPermissionTemplate() {
 		Map<String, Object> fieldValues = new HashMap<String, Object>();
 		fieldValues.put("namespaceCode", "KUALI");
 		fieldValues.put("name", "Default");
-		KimPermissionTemplateImpl template = KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(KimPermissionTemplateImpl.class, fieldValues);
+		PermissionTemplateBo template = KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(PermissionTemplateBo.class, fieldValues);
 		if (template == null) {
 			fail("Failed to locate the default Permission Template.");
 		}

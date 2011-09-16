@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.workgroup;
 
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kim.api.KimConstants;
 
 /**
  * A {@link GroupId} which identifies the name of a {@link Workgroup}.

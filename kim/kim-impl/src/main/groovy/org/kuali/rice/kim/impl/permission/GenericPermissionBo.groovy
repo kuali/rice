@@ -16,37 +16,12 @@
 
 package org.kuali.rice.kim.impl.permission
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
-import javax.persistence.FetchType
 import javax.persistence.Id
-import javax.persistence.JoinColumn
-import javax.persistence.OneToMany
-import javax.persistence.OneToOne
 import javax.persistence.Table
-import javax.persistence.Transient
-
-import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.Fetch
-import org.hibernate.annotations.FetchMode
-import org.hibernate.annotations.Type
-import org.kuali.rice.kim.api.permission.Permission
-import org.kuali.rice.kim.api.services.KimApiServiceLocator
-import org.kuali.rice.kim.api.type.KimType
-import org.kuali.rice.kim.api.type.KimTypeAttribute
-import org.kuali.rice.kim.api.type.KimTypeInfoService
-import org.kuali.rice.kim.api.permission.PermissionContract
-import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo
-import org.kuali.rice.kim.impl.role.RolePermissionBo
-import org.kuali.rice.kim.util.KimConstants
+import org.apache.commons.lang.StringUtils
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
-import org.kuali.rice.krad.service.DataDictionaryService;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb
 
 @Entity
 @Table(name = "KRIM_PERM_T")

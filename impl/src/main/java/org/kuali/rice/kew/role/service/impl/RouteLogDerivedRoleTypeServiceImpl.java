@@ -19,11 +19,11 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.document.WorkflowDocumentService;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.framework.common.delegate.DelegationTypeService;
 import org.kuali.rice.kim.framework.role.RoleTypeService;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.kim.role.DerivedRoleTypeServiceBase;
 
 import java.util.ArrayList;

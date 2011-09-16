@@ -15,16 +15,15 @@
  */
 package org.kuali.rice.kim.impl.responsibility;
 
-import com.google.common.collect.MapMaker;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.kim.lookup.RoleMemberLookupableHelperServiceImpl;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.lookup.CollectionIncomplete;
@@ -39,8 +38,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.TimeUnit;
 
 public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupableHelperServiceImpl {
 

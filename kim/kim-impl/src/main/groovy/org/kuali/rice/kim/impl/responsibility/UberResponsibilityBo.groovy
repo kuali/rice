@@ -17,12 +17,11 @@ package org.kuali.rice.kim.impl.responsibility
  */
 
 import org.apache.commons.lang.StringUtils
+import org.kuali.rice.kim.api.KimConstants
 import org.kuali.rice.kim.api.identity.Person
 import org.kuali.rice.kim.impl.group.GroupBo
-import org.kuali.rice.kim.util.KimConstants
-import org.springframework.util.AutoPopulatingList
-
 import org.kuali.rice.kim.impl.role.RoleBo
+import org.springframework.util.AutoPopulatingList
 
 //strange - hacky non-PBO
 class UberResponsibilityBo extends ResponsibilityBo {

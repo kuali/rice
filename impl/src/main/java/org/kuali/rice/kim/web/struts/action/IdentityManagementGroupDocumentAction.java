@@ -22,6 +22,7 @@ import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.role.Role;
@@ -30,7 +31,6 @@ import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupMemberEvent;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementGroupDocumentForm;
 import org.kuali.rice.kns.web.struts.action.KualiTableRenderAction;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
@@ -268,7 +268,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
             			new String[] {newMember.getMemberId()});
             	return false;
         	}
-        	else if(StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE) 
+        	else if(StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE)
             		&& !validateRole(newMember.getMemberId(), role, "document.member.memberId", "Role")){
             	return false;
             }

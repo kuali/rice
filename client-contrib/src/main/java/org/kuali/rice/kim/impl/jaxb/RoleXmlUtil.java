@@ -17,6 +17,7 @@ package org.kuali.rice.kim.impl.jaxb;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.jaxb.NameAndNamespacePair;
+import org.kuali.rice.kim.api.KimConstants.KimUIConstants;
 import org.kuali.rice.kim.api.group.GroupContract;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.permission.PermissionContract;
@@ -24,7 +25,6 @@ import org.kuali.rice.kim.api.role.RoleContract;
 import org.kuali.rice.kim.api.role.RoleMemberContract;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.util.KimConstants.KimUIConstants;
 
 import javax.xml.bind.UnmarshalException;
 import java.sql.Date;

@@ -13,19 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.util;
+package org.kuali.rice.kim.api;
 
 import org.kuali.rice.core.api.CoreConstants;
 
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * This is a description of what this class does - jonathan don't forget to fill this in.
- *
- * @author Kuali Rice Team (rice.collab@kuali.org)
- *
- */
 public final class KimConstants {
 
 	public static final String KIM_MODULE_NAMESPACE = "KIM";
@@ -37,8 +31,6 @@ public final class KimConstants {
 	public static final String KIM_GROUP_WORKFLOW_NAMESPACE_CODE = "KR-WKFLW";
 	public static final String RESTRICTED_DATA_MASK = "Xxxxxx";
 
-	//Kim services constants for API
-	public static final String KIM_IDENTITY_MANAGEMENT_SERVICE = "kimIdentityManagementService";
 	public static final String KIM_PERSON_SERVICE = "personService";
 	public static final String DEFAULT_KIM_TYPE_SERVICE = "kimTypeService";
 

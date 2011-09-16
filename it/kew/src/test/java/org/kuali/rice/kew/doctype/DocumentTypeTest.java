@@ -40,8 +40,8 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.xml.export.DocumentTypeXmlExporter;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.test.BaselineTestCase;
 

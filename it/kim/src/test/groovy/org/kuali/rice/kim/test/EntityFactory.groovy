@@ -1,31 +1,31 @@
 package org.kuali.rice.kim.test
 
-import org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo
-import org.kuali.rice.kim.impl.identity.personal.EntityBioDemographicsBo
-import org.kuali.rice.kim.impl.identity.principal.PrincipalBo
-import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo
+import org.kuali.rice.kim.api.KimConstants
 import org.kuali.rice.kim.impl.identity.address.EntityAddressBo
-import org.kuali.rice.kim.impl.identity.email.EntityEmailBo
-import org.kuali.rice.kim.impl.identity.phone.EntityPhoneBo
-import org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierBo
-import org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipBo
-import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo
-import org.kuali.rice.kim.impl.identity.personal.EntityEthnicityBo
-import org.kuali.rice.kim.impl.identity.residency.EntityResidencyBo
-import org.kuali.rice.kim.impl.identity.visa.EntityVisaBo
-import org.kuali.rice.kim.impl.identity.name.EntityNameBo
-import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentBo
-import org.kuali.rice.kim.impl.identity.entity.EntityBo
 import org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo
-import org.kuali.rice.kim.impl.identity.email.EntityEmailTypeBo
+import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo
 import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo
-import org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierTypeBo
-import org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo
+import org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipBo
 import org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipStatusBo
-import org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo
-import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo
+import org.kuali.rice.kim.impl.identity.email.EntityEmailBo
+import org.kuali.rice.kim.impl.identity.email.EntityEmailTypeBo
+import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentBo
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo
-import org.kuali.rice.kim.util.KimConstants
+import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo
+import org.kuali.rice.kim.impl.identity.entity.EntityBo
+import org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierBo
+import org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierTypeBo
+import org.kuali.rice.kim.impl.identity.name.EntityNameBo
+import org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo
+import org.kuali.rice.kim.impl.identity.personal.EntityBioDemographicsBo
+import org.kuali.rice.kim.impl.identity.personal.EntityEthnicityBo
+import org.kuali.rice.kim.impl.identity.phone.EntityPhoneBo
+import org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo
+import org.kuali.rice.kim.impl.identity.principal.PrincipalBo
+import org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo
+import org.kuali.rice.kim.impl.identity.residency.EntityResidencyBo
+import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo
+import org.kuali.rice.kim.impl.identity.visa.EntityVisaBo
 
 /**
  * Factory for constructing Entity- objects

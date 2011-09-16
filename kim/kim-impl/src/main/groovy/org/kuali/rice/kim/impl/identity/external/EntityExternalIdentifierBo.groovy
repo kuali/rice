@@ -1,22 +1,21 @@
 package org.kuali.rice.kim.impl.identity.external
 
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
-import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierContract
-import javax.persistence.Id
+import javax.persistence.Column
+import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
+import javax.persistence.Id
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
+import javax.persistence.Transient
+import org.apache.commons.lang.StringUtils
 import org.hibernate.annotations.GenericGenerator
 import org.hibernate.annotations.Parameter
-import javax.persistence.Column
-import javax.persistence.ManyToOne
-import javax.persistence.JoinColumn
-import javax.persistence.Transient
-import javax.persistence.FetchType
-import org.apache.commons.lang.StringUtils
 import org.kuali.rice.core.api.CoreApiServiceLocator
-import org.kuali.rice.kim.util.KimConstants
-import org.kuali.rice.krad.service.KRADServiceLocator
+import org.kuali.rice.kim.api.KimConstants
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifier
-
+import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierContract
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krad.service.KRADServiceLocator
 
 class EntityExternalIdentifierBo extends PersistableBusinessObjectBase implements EntityExternalIdentifierContract {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(EntityExternalIdentifierBo.class)

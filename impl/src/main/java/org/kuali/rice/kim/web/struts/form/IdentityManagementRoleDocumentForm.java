@@ -17,9 +17,9 @@ package org.kuali.rice.kim.web.struts.form;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.web.format.DateDisplayTimestampObjectFormatter;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
-import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
@@ -28,7 +28,7 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.impl.group.GroupBo;
-import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kns.util.TableRenderUtil;
 
 import java.util.List;

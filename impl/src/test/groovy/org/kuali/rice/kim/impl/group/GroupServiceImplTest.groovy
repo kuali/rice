@@ -26,17 +26,15 @@ import org.kuali.rice.core.api.criteria.CriteriaLookupService
 import org.kuali.rice.core.api.criteria.GenericQueryResults
 import org.kuali.rice.core.api.criteria.LookupCustomizer
 import org.kuali.rice.core.api.criteria.QueryByCriteria
+import org.kuali.rice.kim.api.KimConstants
 import org.kuali.rice.kim.api.group.Group
 import org.kuali.rice.kim.api.group.GroupMember
+import org.kuali.rice.kim.api.group.GroupQueryResults
 import org.kuali.rice.kim.api.group.GroupService
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo
 import org.kuali.rice.kim.impl.type.KimTypeBo
-import org.kuali.rice.kim.util.KimConstants
-import static org.kuali.rice.core.api.criteria.PredicateFactory.*
-import org.kuali.rice.kim.api.group.GroupQueryResults
 import org.kuali.rice.krad.service.BusinessObjectService
-
-
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal
 
 class GroupServiceImplTest {
     private final shouldFail = new GroovyTestCase().&shouldFail

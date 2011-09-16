@@ -18,6 +18,7 @@ package org.kuali.rice.kim.rules.ui;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.document.rule.AttributeValidationHelper;
@@ -25,7 +26,6 @@ import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
 import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.rule.event.ui.AddMemberEvent;
 import org.kuali.rice.kim.rule.ui.AddMemberRule;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.rules.DocumentRuleBase;
 import org.kuali.rice.krad.util.GlobalVariables;
 
@@ -112,7 +112,7 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 			if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
 					document, 
 					KimConstants.NAMESPACE_CODE, 
-					KimConstants.PermissionTemplateNames.ASSIGN_ROLE, 
+					KimConstants.PermissionTemplateNames.ASSIGN_ROLE,
 					GlobalVariables.getUserSession().getPerson().getPrincipalId(), 
 					roleDetails, null)){
 	            GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_ASSIGN_ROLE, 

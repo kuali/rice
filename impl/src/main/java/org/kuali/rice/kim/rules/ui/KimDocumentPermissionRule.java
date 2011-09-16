@@ -17,12 +17,12 @@ package org.kuali.rice.kim.rules.ui;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.rule.event.ui.AddPermissionEvent;
 import org.kuali.rice.kim.rule.ui.AddPermissionRule;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.rules.DocumentRuleBase;
 import org.kuali.rice.krad.util.GlobalVariables;
 
@@ -82,7 +82,7 @@ public class KimDocumentPermissionRule extends DocumentRuleBase implements AddPe
 		if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
 				document, 
 				KimConstants.NAMESPACE_CODE, 
-				KimConstants.PermissionTemplateNames.GRANT_PERMISSION, 
+				KimConstants.PermissionTemplateNames.GRANT_PERMISSION,
 				GlobalVariables.getUserSession().getPerson().getPrincipalId(), 
 				permissionDetails, null)) {
 	        return false;

@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
@@ -27,11 +28,9 @@ import org.kuali.rice.kim.impl.role.RoleDao;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.impl.type.KimTypeLookupableHelperServiceImpl;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
 import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Field;
@@ -295,7 +294,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
     		docTypeAction = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION;
     	}
 		if (StringUtils.isNotBlank(href) && href.contains(ROLE_ID_URL_KEY)) {
-			int idx1 = href.indexOf("&"+KimConstants.PrimaryKeyConstants.SUB_ROLE_ID+"=");
+			int idx1 = href.indexOf("&"+ KimConstants.PrimaryKeyConstants.SUB_ROLE_ID+"=");
 		    int idx2 = href.indexOf("&", idx1+1);
 		    if (idx2 < 0) {
 		    	idx2 = href.length();

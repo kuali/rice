@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.ken.dao;
 
-import java.util.HashMap;
-
 import org.kuali.rice.ken.bo.NotificationChannel;
 import org.kuali.rice.ken.bo.NotificationChannelReviewer;
 import org.kuali.rice.ken.test.util.MockObjectsUtil;
 import org.kuali.rice.ken.util.NotificationConstants;
-import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
+import org.kuali.rice.kim.api.KimConstants.KimGroupMemberTypes;
+
+import java.util.HashMap;
 
 /**
  * This class tests basic persistence for the {@link NotificationChannelReviewer} business object.

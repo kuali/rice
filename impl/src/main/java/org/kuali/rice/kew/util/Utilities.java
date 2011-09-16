@@ -19,7 +19,7 @@ import org.apache.commons.lang.text.StrSubstitutor;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kim.api.KimConstants;
 
 import java.util.Calendar;
 import java.util.Collections;

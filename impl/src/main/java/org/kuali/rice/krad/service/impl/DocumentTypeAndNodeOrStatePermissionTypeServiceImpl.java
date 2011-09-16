@@ -16,9 +16,9 @@
 package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
-import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +74,8 @@ public class DocumentTypeAndNodeOrStatePermissionTypeServiceImpl extends Documen
 		if ( StringUtils.isBlank( permissionDetails.get(KimConstants.AttributeConstants.ROUTE_STATUS_CODE) ) ) {
 			return true;
 		}
-		return StringUtils.equals( requestedDetails.get(KimConstants.AttributeConstants.ROUTE_STATUS_CODE), permissionDetails.get(KimConstants.AttributeConstants.ROUTE_STATUS_CODE));
+		return StringUtils.equals( requestedDetails.get(KimConstants.AttributeConstants.ROUTE_STATUS_CODE), permissionDetails.get(
+                KimConstants.AttributeConstants.ROUTE_STATUS_CODE));
 	}
 
 }

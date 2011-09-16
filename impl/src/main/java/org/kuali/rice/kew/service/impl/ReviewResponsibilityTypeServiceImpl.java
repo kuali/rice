@@ -16,9 +16,9 @@
 package org.kuali.rice.kew.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.framework.responsibility.ResponsibilityTypeService;
-import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
 import java.util.Collections;

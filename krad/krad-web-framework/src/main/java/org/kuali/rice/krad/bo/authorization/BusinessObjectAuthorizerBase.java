@@ -15,11 +15,10 @@
  */
 package org.kuali.rice.krad.bo.authorization;
 
-
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.PersonService;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.permission.PermissionService;
-import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.authorization.BusinessObjectAuthorizer;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.service.DataDictionaryService;

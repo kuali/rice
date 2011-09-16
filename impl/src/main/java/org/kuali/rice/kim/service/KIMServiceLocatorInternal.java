@@ -20,10 +20,10 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.AuthenticationService;
 import org.kuali.rice.kim.api.identity.IdentityArchiveService;
 import org.kuali.rice.kim.impl.group.GroupInternalService;
-import org.kuali.rice.kim.util.KimConstants;
 
 import javax.xml.namespace.QName;
 
@@ -40,7 +40,6 @@ public final class KIMServiceLocatorInternal {
 	public static final String KIM_RUN_MODE_PROPERTY = "kim.mode";
 
 	public static final String KIM_IDENTITY_ARCHIVE_SERVICE = "kimIdentityArchiveService";
-	public static final String KIM_PERMISSION_UPDATE_SERVICE = "kimPermissionUpdateService";
 	public static final String KIM_AUTHENTICATION_SERVICE = "kimAuthenticationService";
     public static final String KIM_UI_DOCUMENT_SERVICE = "kimUiDocumentService";
 	public static final String GROUP_INTERNAL_SERVICE = "groupInternalService";
@@ -60,10 +59,6 @@ public final class KIMServiceLocatorInternal {
 
     public static IdentityArchiveService getIdentityArchiveService() {
     	return (IdentityArchiveService)getService(KIM_IDENTITY_ARCHIVE_SERVICE);
-    }
-    
-    public static PermissionUpdateService getPermissionUpdateService() {
-    	return (PermissionUpdateService)getService(KIM_PERMISSION_UPDATE_SERVICE);
     }
 
     public static AuthenticationService getAuthenticationService() {

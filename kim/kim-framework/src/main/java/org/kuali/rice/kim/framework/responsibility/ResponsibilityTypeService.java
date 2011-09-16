@@ -17,9 +17,9 @@ package org.kuali.rice.kim.framework.responsibility;
 
 
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.framework.type.KimTypeService;
-import org.kuali.rice.kim.util.KimConstants;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;

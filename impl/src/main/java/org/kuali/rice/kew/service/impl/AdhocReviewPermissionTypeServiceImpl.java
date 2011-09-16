@@ -16,10 +16,10 @@
 package org.kuali.rice.kew.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.framework.permission.PermissionTypeService;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.service.impl.DocumentTypePermissionTypeServiceImpl;
 
 import java.util.ArrayList;

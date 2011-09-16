@@ -17,6 +17,7 @@ package org.kuali.rice.kim.document.rule;
 
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -29,7 +30,6 @@ import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.rule.event.ui.AddGroupMemberEvent;
 import org.kuali.rice.kim.rule.ui.AddGroupMemberRule;
 import org.kuali.rice.kim.rules.ui.GroupDocumentMemberRule;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.rules.TransactionalDocumentRuleBase;
 import org.kuali.rice.krad.service.BusinessObjectService;
@@ -91,7 +91,7 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
         additionalPermissionDetails.put(KimConstants.AttributeConstants.GROUP_NAME, document.getGroupName());
 		if(document.getMembers()!=null && document.getMembers().size()>0){
 			if(!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
-					document, KimConstants.NAMESPACE_CODE, KimConstants.PermissionTemplateNames.POPULATE_GROUP, 
+					document, KimConstants.NAMESPACE_CODE, KimConstants.PermissionTemplateNames.POPULATE_GROUP,
 					GlobalVariables.getUserSession().getPrincipalId(), additionalPermissionDetails, null)){
 	    		GlobalVariables.getMessageMap().putError("document.groupName", 
 	    				RiceKeyConstants.ERROR_ASSIGN_GROUP, 

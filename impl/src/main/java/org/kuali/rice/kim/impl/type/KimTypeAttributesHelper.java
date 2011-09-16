@@ -16,13 +16,13 @@
 package org.kuali.rice.kim.impl.type;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
 import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceHelper;
 
 import java.io.Serializable;
@@ -94,7 +94,7 @@ public class KimTypeAttributesHelper implements Serializable {
 			commaDelimitedAttributesLabels.append(getAttributeEntry().get(name.trim())+KimConstants.KimUIConstants.COMMA_SEPARATOR);
 		}
         if(commaDelimitedAttributesLabels.toString().endsWith(KimConstants.KimUIConstants.COMMA_SEPARATOR))
-        	commaDelimitedAttributesLabels.delete(commaDelimitedAttributesLabels.length()-KimConstants.KimUIConstants.COMMA_SEPARATOR.length(), commaDelimitedAttributesLabels.length());
+        	commaDelimitedAttributesLabels.delete(commaDelimitedAttributesLabels.length()- KimConstants.KimUIConstants.COMMA_SEPARATOR.length(), commaDelimitedAttributesLabels.length());
         return commaDelimitedAttributesLabels.toString();
 	}
 

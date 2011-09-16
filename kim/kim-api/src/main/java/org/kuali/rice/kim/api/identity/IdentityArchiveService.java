@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.kim.api.identity;
 
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
-import org.kuali.rice.kim.util.KimConstants;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;

@@ -21,9 +21,9 @@ import org.kuali.rice.ken.service.impl.NotificationRecipientServiceKimImpl;
 import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.test.TestConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.api.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 
 import static org.junit.Assert.*;
 

@@ -17,10 +17,10 @@ package org.kuali.rice.kew.service.impl;
 
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.doctype.DocumentTypeService;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.framework.responsibility.ResponsibilityTypeService;
 import org.kuali.rice.kim.impl.responsibility.KimResponsibilityTypeServiceBase;
-import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
 import java.util.Collections;

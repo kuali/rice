@@ -17,15 +17,15 @@ package org.kuali.rice.kim.web.struts.form;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.web.format.DateDisplayTimestampObjectFormatter;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
-import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.impl.group.GroupBo;
+import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
-import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.List;
 

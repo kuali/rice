@@ -27,6 +27,8 @@ import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.kim.api.KIMPropertyConstants;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.api.group.GroupMemberQueryResults;
@@ -36,8 +38,6 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.common.attribute.AttributeTransform;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.util.KIMPropertyConstants;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.krad.service.BusinessObjectService;
 
 import java.sql.Timestamp;
@@ -809,7 +809,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 
 
 	/**
-	 * This helper method gets the active group members of the specified type (see {@link org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes}).
+	 * This helper method gets the active group members of the specified type (see {@link org.kuali.rice.kim.api.KimConstants.KimGroupMemberTypes}).
 	 * If the optional params are null, it will return all active members for the specified group regardless
 	 * of type.
 	 *

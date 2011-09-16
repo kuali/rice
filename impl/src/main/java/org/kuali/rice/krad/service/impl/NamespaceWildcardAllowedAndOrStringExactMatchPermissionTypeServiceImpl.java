@@ -19,10 +19,10 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.namespace.Namespace;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
-import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.ArrayList;
 import java.util.Collections;

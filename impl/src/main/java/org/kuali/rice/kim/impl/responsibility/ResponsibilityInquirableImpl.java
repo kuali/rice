@@ -17,6 +17,7 @@ package org.kuali.rice.kim.impl.responsibility;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.kuali.rice.core.impl.namespace.NamespaceBo;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleService;
@@ -25,7 +26,6 @@ import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.kim.inquiry.RoleMemberInquirableImpl;
 import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -101,7 +101,7 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
 		primaryKeys.add(ATTRIBUTE_DATA_ID);
     	for(ResponsibilityAttributeBo responsibilityAttributeDataImpl: responsibilityAttributeData){
     		htmlData.add(getInquiryUrlForPrimaryKeys(ResponsibilityAttributeBo.class, responsibilityAttributeDataImpl, primaryKeys,
-    			getKimAttributeLabelFromDD(responsibilityAttributeDataImpl.getKimAttribute().getAttributeName())+KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR+
+    			getKimAttributeLabelFromDD(responsibilityAttributeDataImpl.getKimAttribute().getAttributeName())+ KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR+
     			responsibilityAttributeDataImpl.getAttributeValue()));
     	}
     	return new HtmlData.MultipleAnchorHtmlData(htmlData);

@@ -23,12 +23,12 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.AuthenticationService;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.permission.PermissionService;
-import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.exception.AuthenticationException;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -131,7 +131,7 @@ public class UserLoginFilter implements Filter {
 		return getPermissionService().isAuthorized(
 				principalId, 
 				KimConstants.KIM_TYPE_DEFAULT_NAMESPACE, 
-				KimConstants.PermissionNames.LOG_IN, 
+				KimConstants.PermissionNames.LOG_IN,
 				null, 
 				Collections.singletonMap("principalId", principalId));
 	}

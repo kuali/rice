@@ -33,7 +33,7 @@ table td, table th {
 /* CONTAINERS - e.g.: kr-nav-menu, ks-error-cont *************************/
 
 
-.constraint {                                /* was .constraint */ /* NOT RENAMED - changing this classname will break some javascript functionality  */
+.constraint {                  /* NOT RENAMED - changing this classname will break some javascript functionality  */
 	font-size:0.84615385em;    /* 11px divided by 13px */
 }
 
@@ -84,7 +84,7 @@ h4.kr-section-subhead-no-border {	/* was h4.kr-section-subhead-no-border */ /* r
 	font-weight:bold;
 }
 
-.kr-errorsField .kr-errorMessages { /* was .errorsField .errorMessages */ /* .errorsField renamed in xml; .errorMessages NOT renamed, as this will break js functionality   */
+.kr-errorsField .kr-errorMessages { /* was .errorsField .errorMessages */
 	color: #DF0000;
 	font-weight: bold;
 }
@@ -95,22 +95,21 @@ h4.kr-section-subhead-no-border {	/* was h4.kr-section-subhead-no-border */ /* r
 .kr-clientError img {
 	margin-left:10px;   /* adds spacing between tab label and the icon */
 }
-span.kr-clientError, div.kr-clientError, td.kr-clientError, span.kr-serverError, div.kr-serverError, td.kr-serverError { /* NOT renamed in xml and/or jsp, as this will break js functionality   */
+span.kr-clientError, div.kr-clientError, td.kr-clientError, span.kr-serverError, div.kr-serverError, td.kr-serverError {
 	background-color: #FFE0E9 !important;
 }
-span.kr-information, div.kr-information, td.kr-information {	/* NOT renamed in xml and/or jsp, as this will break js functionality   */
-	background-color: #AFDCEC;
+span.kr-information, div.kr-information, td.kr-information {
 }
-span.kr-warning, div.kr-warning, td.kr-warning {	/* was span.warning, div.arning, td.warning *//* NOT renamed in xml and/or jsp, as this will break js functionality   */
+span.kr-warning, div.kr-warning, td.kr-warning {	/* was span.warning, div.arning, td.warning */
 	background-color: #F4E271;
 }
-label.kr-clientError, a.kr-clientError, label.kr-serverError {	 /* NOT renamed in xml and/or jsp, as this will break js functionality   */
+label.kr-clientError, a.kr-clientError, label.kr-serverError {
 	color: #DF0000;
 }
-li label.kr-error {	/* NOT renamed in xml and/or jsp, as this will break js functionality   */
+li label.kr-error {
 	display: inline !important;
 }
-/* ****************** end error msgs not renamed *****************/
+
 .kr-errorsField {					/* was .errorsField */  /* renamed in xml and/or jsp */
 	overflow: hidden;
     *zoom: 1;
@@ -161,7 +160,6 @@ li label.kr-error {	/* NOT renamed in xml and/or jsp, as this will break js func
 	padding-right: 10px;
 }
 .kr-errorsField ul {		/* was .errorsField ul*/ /* renamed in xml and/or jsp */
-    /* David's note - this is still "errorsField ul" in the build */
 	list-style: none outside none;
 	margin: 0;
 }

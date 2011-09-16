@@ -267,7 +267,7 @@
         <!--  collection-descriptor name="allChildPropositions" element-class-ref="org.kuali.rice.krms.impl.repository.PropositionBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
             <inverse-foreignkey field-ref="ruleId" />
         </collection-descriptor -->
-	    <collection-descriptor name="actions" element-class-ref="org.kuali.rice.krms.impl.repository.ActionBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+	    <collection-descriptor name="actions" element-class-ref="org.kuali.rice.krms.impl.repository.ActionBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       		<inverse-foreignkey field-ref="ruleId" />
     	</collection-descriptor>
 	    <collection-descriptor name="attributeBos" element-class-ref="org.kuali.rice.krms.impl.repository.RuleAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">

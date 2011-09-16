@@ -17,11 +17,10 @@ package org.kuali.rice.kim.test.service;
 
 import org.junit.Test;
 import org.kuali.rice.kim.api.common.assignee.Assignee;
+import org.kuali.rice.kim.api.permission.PermissionService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.impl.common.template.TemplateBo;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
-import org.kuali.rice.kim.api.permission.PermissionService;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.test.BaselineTestCase;
 

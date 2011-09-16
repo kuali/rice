@@ -158,7 +158,7 @@
         Identity Service
   -->
 
-  <bean id="kimIdentityDelegateService" class="org.kuali.rice.kim.service.impl.IdentityServiceImpl"
+  <bean id="kimIdentityDelegateService" class="org.kuali.rice.kim.impl.identity.IdentityServiceImpl"
           p:businessObjectService-ref="businessObjectService"
           p:criteriaLookupService-ref="criteriaLookupService" />
 
@@ -167,7 +167,7 @@
           p:kualiConfigurationService-ref="kualiConfigurationService"
   />
 
-  <bean id="kimIdentityService" class="org.kuali.rice.kim.service.impl.IdentityCurrentAndArchivedServiceImpl">
+  <bean id="kimIdentityService" class="org.kuali.rice.kim.impl.identity.IdentityCurrentAndArchivedServiceImpl">
     <constructor-arg ref="kimIdentityArchiveService" />
     <constructor-arg ref="kimIdentityDelegateService" />
   </bean>
@@ -218,7 +218,7 @@
     <property name="businessObjectService" ref="businessObjectService" />
   </bean>
 
-  <bean id="activePrincipalRoleTypeService" class="org.kuali.rice.kim.service.support.impl.PrincipalDerivedRoleTypeServiceImpl" />
+  <bean id="activePrincipalRoleTypeService" class="org.kuali.rice.kns.kim.role.PrincipalDerivedRoleTypeServiceImpl" />
 
   <bean id="groupInternalService" class="org.kuali.rice.kim.impl.group.GroupInternalServiceImpl" />
   <bean id="responsibilityInternalService" class="org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalServiceImpl" />
@@ -240,7 +240,7 @@
 
   <bean id="documentTypeAndNodeOrStatePermissionTypeService" class="org.kuali.rice.krad.service.impl.DocumentTypeAndNodeOrStatePermissionTypeServiceImpl" />
   <bean id="defaultPermissionTypeService" class="org.kuali.rice.kns.kim.permission.PermissionTypeServiceBase" />
-  <bean id="defaultResponsibilityTypeService" class="org.kuali.rice.kim.impl.responsibility.KimResponsibilityTypeServiceBase" />
+  <bean id="defaultResponsibilityTypeService" class="org.kuali.rice.kns.kim.responsibility.KimResponsibilityTypeServiceBase" />
 
   <bean id="permissionPermissionTypeService" class="org.kuali.rice.krad.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
     	<property name="exactMatchStringAttributeName" value="permissionName" />

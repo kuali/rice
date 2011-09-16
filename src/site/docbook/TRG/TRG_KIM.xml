@@ -269,7 +269,7 @@
                     <orderedlist>
                         <listitem>
                             <para><emphasis role="bold"
-                                    >org.kuali.rice.kim.service.impl.IdentityServiceImpl</emphasis>
+                                    >org.kuali.rice.kim.impl.identity.IdentityServiceImpl</emphasis>
                                 method <emphasis role="bold">getPrincipalByPrincipalName</emphasis>
                                 lowercases the principal name sent in; depending on how principals
                                 were integrated into the system it may not need to. Note that

@@ -233,6 +233,6 @@
     </property>
   </bean>
   
-  <bean id="kimAuthenticationService" class="org.kuali.rice.kim.service.impl.AuthenticationServiceImpl"/>
+  <bean id="kimAuthenticationService" class="org.kuali.rice.kim.impl.identity.AuthenticationServiceImpl"/>
   
 </beans>

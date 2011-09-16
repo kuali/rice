@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.impl.responsibility;
+package org.kuali.rice.kns.kim.responsibility;
 
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.framework.responsibility.ResponsibilityTypeService;
@@ -25,11 +25,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
- *
+ * @deprecated A krad integrated type service base class will be provided in the future.
  */
+@Deprecated
 public class KimResponsibilityTypeServiceBase extends DataDictionaryTypeServiceBase
 		implements ResponsibilityTypeService {
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.service.impl;
+package org.kuali.rice.kim.impl.identity;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -101,9 +101,6 @@ public class IdentityServiceImpl implements IdentityService {
 	private BusinessObjectService businessObjectService;
     private PersistenceService persistenceService;
 
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityInfo(java.lang.String)
-	 */
 	public Entity getEntity(String entityId) {
         if (StringUtils.isBlank(entityId)) {
             throw new RiceIllegalArgumentException("entityId is blank");
@@ -655,9 +652,7 @@ public class IdentityServiceImpl implements IdentityService {
         builder.setResults(ims);
         return builder.build();
 	}
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#findEntityDefault(Map, boolean)
-	 */
+
 	@SuppressWarnings("unchecked")
 	public EntityDefaultQueryResults findEntityDefaults(QueryByCriteria queryByCriteria) {
 		if (queryByCriteria == null) {
@@ -679,9 +674,6 @@ public class IdentityServiceImpl implements IdentityService {
         return builder.build();
 	}
 
-    /**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#findEntity(Map, boolean)
-	 */
 	@SuppressWarnings("unchecked")
 	public EntityNameQueryResults findNames(QueryByCriteria queryByCriteria) {
 		if (queryByCriteria == null) {
@@ -767,17 +759,11 @@ public class IdentityServiceImpl implements IdentityService {
 		return persistenceService;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#lookupEntitys(java.util.Map)
-	 */
 	@SuppressWarnings("unchecked")
 	protected List<EntityBo> lookupEntitys(Map<String, String> searchCriteria) {
 		return new ArrayList(KRADServiceLocatorWeb.getLookupService().findCollectionBySearchUnbounded( EntityBo.class, searchCriteria ));
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#lookupEntityIds(java.util.Map)
-	 */
 	public List<String> lookupEntityIds(Map<String,String> searchCriteria) {
 		List<EntityBo> entities = lookupEntitys( searchCriteria );
 		List<String> entityIds = new ArrayList<String>( entities.size() );
@@ -823,10 +809,7 @@ public class IdentityServiceImpl implements IdentityService {
 		}
         return getEntityByKeyValue("principals." + KIMPropertyConstants.Principal.PRINCIPAL_ID, principalId);
 	}
-	
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityIdByPrincipalId(java.lang.String)
-	 */
+
 	public String getEntityIdByPrincipalId(String principalId) {
 		if ( StringUtils.isBlank( principalId ) ) {
 			return null;
@@ -835,9 +818,6 @@ public class IdentityServiceImpl implements IdentityService {
 		return principal != null ? principal.getEntityId() : null;
     }
 
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityIdByPrincipalName(java.lang.String)
-	 */
 	public String getEntityIdByPrincipalName(String principalName) {
 		if ( StringUtils.isBlank( principalName ) ) {
 			return null;
@@ -845,10 +825,7 @@ public class IdentityServiceImpl implements IdentityService {
 		Principal principal = getPrincipalByPrincipalName(principalName);
 		return principal != null ? principal.getEntityId() : null;
     }
-	
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getPrincipalIdByPrincipalName(java.lang.String)
-	 */
+
 	public String getPrincipalIdByPrincipalName(String principalName) {
 		if ( StringUtils.isBlank( principalName ) ) {
 			return null;

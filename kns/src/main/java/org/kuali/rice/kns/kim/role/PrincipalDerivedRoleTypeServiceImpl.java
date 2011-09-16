@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.service.support.impl;
+package org.kuali.rice.kns.kim.role;
 
 
 import org.apache.commons.lang.StringUtils;
@@ -37,7 +37,9 @@ import java.util.Map;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated A krad integrated type service base class will be provided in the future.
  */
+@Deprecated
 public class PrincipalDerivedRoleTypeServiceImpl extends DerivedRoleTypeServiceBase {
 	
 	private IdentityService identityService;

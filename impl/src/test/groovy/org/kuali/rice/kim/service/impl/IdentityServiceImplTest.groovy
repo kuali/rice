@@ -61,6 +61,7 @@ import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo
 import org.kuali.rice.kim.impl.identity.visa.EntityVisaBo
 import org.kuali.rice.krad.service.BusinessObjectService
 import org.kuali.rice.krad.service.PersistenceService
+import org.kuali.rice.kim.impl.identity.IdentityServiceImpl
 
 class IdentityServiceImplTest {
     private final shouldFail = new GroovyTestCase().&shouldFail

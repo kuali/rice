@@ -53,6 +53,7 @@ import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.util.MethodInvoker;
 
+import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -69,7 +70,7 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ViewHelperServiceImpl implements ViewHelperService {
+public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ViewHelperServiceImpl.class);
 
     private transient DataDictionaryService dataDictionaryService;

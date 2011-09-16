@@ -15,22 +15,18 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kim.api.identity.entity.Entity;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
-import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.identity.IdentityService;
-import org.kuali.rice.kim.service.impl.IdentityServiceImpl;
+import org.kuali.rice.kim.impl.identity.IdentityServiceImpl;
 
 import org.kuali.rice.kim.dao.LdapPrincipalDao;
-
-import static org.kuali.rice.core.util.BufferedLogger.*;
 
 /**
  * Implementation of {@link IdentityService} that communicates with and serves information

@@ -21,7 +21,7 @@ import org.kuali.rice.kim.api.identity.principal.Principal;
 
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoContract;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.service.impl.IdentityServiceImpl;
+import org.kuali.rice.kim.impl.identity.IdentityServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.test.BaselineTestCase;
 

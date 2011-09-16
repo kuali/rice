@@ -61,40 +61,34 @@ public class FiscalOfficerInfoMaintenanceNewIT {
 //        System.out.println("adding Row");
 //        selenium.wait(90000);
     
-        selenium.click("//input[@value='save']");
+        selenium.click("//button[@value='save']");
         
         int docIdInt = Integer.valueOf(docId).intValue(); 
         
         selenium.waitForPageToLoad("50000");
         selenium.selectFrame("relative=up");
         selenium.click("//img[@alt='action list']");     
-        selenium.waitForPageToLoad("50000");      
-        
+        selenium.waitForPageToLoad("50000");              
         selenium.selectFrame("iframeportlet");
         if(selenium.isElementPresent("link=Last")){
             selenium.click("link=Last");
             selenium.waitForPageToLoad("50000");
             selenium.click("link="+docIdInt);
-            System.out.println("--------------------- :: doc found at last : " + docId + " :: --------------------------");
         } else {                                  
-            selenium.click("link="+docIdInt);
-            System.out.println("--------------------- :: doc found : " + docId + " :: --------------------------");
-            
+            selenium.click("link="+docIdInt);            
         }
         
         Thread.sleep(5000); 
-        String[] windowTitles = selenium.getAllWindowTitles();
-              
+        String[] windowTitles = selenium.getAllWindowTitles();              
         selenium.selectWindow(windowTitles[1]);  
         selenium.windowFocus();
         assertEquals(windowTitles[1], selenium.getTitle());
+        
         //------submit-----//
         selenium.selectFrame("relative=up");
-        selenium.click("//input[@value='submit']");
+        selenium.click("//button[@value='submit']");
         selenium.waitForPageToLoad("50000");       
-        selenium.close();             
-        System.out.println("--------------- :: Submitted and Closed :: -------------- ");
-      
+        selenium.close();                   
         //------submit over---//        
         
         //----step 2----//  

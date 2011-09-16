@@ -41,24 +41,6 @@
         PRSN_OPTN_ID="DOCUMENT_STATUS_COL_SHOW_NEW" VAL="yes" VER_NBR="2"/>
     <KREW_USR_OPTN_T PRNCPL_ID="admin"
         PRSN_OPTN_ID="DOC_TYPE_COL_SHOW_NEW" VAL="yes" VER_NBR="2"/>
-    <KREW_USR_OPTN_T PRNCPL_ID="admin"
-        PRSN_OPTN_ID="DocSearch.LastSearch.Holding0"
-        VAL=",,fromDateCreated=10/01/2008,,isAdvancedSearch=NO,,superUserSearch=NO" VER_NBR="11"/>
-    <KREW_USR_OPTN_T PRNCPL_ID="admin"
-        PRSN_OPTN_ID="DocSearch.LastSearch.Holding1"
-        VAL=",,fromDateCreated=03/17/2009,,isAdvancedSearch=NO,,superUserSearch=NO" VER_NBR="11"/>
-    <KREW_USR_OPTN_T PRNCPL_ID="admin"
-        PRSN_OPTN_ID="DocSearch.LastSearch.Holding2"
-        VAL=",,fromDateCreated=03/17/2009,,isAdvancedSearch=NO,,superUserSearch=NO" VER_NBR="11"/>
-    <KREW_USR_OPTN_T PRNCPL_ID="admin"
-        PRSN_OPTN_ID="DocSearch.LastSearch.Holding3"
-        VAL=",,fromDateCreated=11/01/2008,,superUserSearch=NO" VER_NBR="10"/>
-    <KREW_USR_OPTN_T PRNCPL_ID="admin"
-        PRSN_OPTN_ID="DocSearch.LastSearch.Holding4"
-        VAL=",,fromDateCreated=12/22/2008,,superUserSearch=NO" VER_NBR="10"/>
-    <KREW_USR_OPTN_T PRNCPL_ID="admin"
-        PRSN_OPTN_ID="DocSearch.LastSearch.Order"
-        VAL="DocSearch.LastSearch.Holding2,DocSearch.LastSearch.Holding1,DocSearch.LastSearch.Holding0,DocSearch.LastSearch.Holding4,DocSearch.LastSearch.Holding3" VER_NBR="53"/>
     <KREW_USR_OPTN_T PRNCPL_ID="admin" PRSN_OPTN_ID="EMAIL_NOTIFICATION"
         VAL="immediate" VER_NBR="2"/>
     <KREW_USR_OPTN_T PRNCPL_ID="admin"
@@ -82,24 +64,6 @@
         VAL="yes" VER_NBR="2"/>
     <KREW_USR_OPTN_T PRNCPL_ID="admin"
         PRSN_OPTN_ID="WORKGROUP_REQUEST_COL_SHOW_NEW" VAL="yes" VER_NBR="2"/>
-    <KREW_USR_OPTN_T PRNCPL_ID="employee"
-        PRSN_OPTN_ID="DocSearch.LastSearch.Holding0"
-        VAL=",,fromDateCreated=12/22/2008,,superUserSearch=NO" VER_NBR="1"/>
-    <KREW_USR_OPTN_T PRNCPL_ID="employee"
-        PRSN_OPTN_ID="DocSearch.LastSearch.Order"
-        VAL="DocSearch.LastSearch.Holding0" VER_NBR="1"/>
-    <KREW_USR_OPTN_T PRNCPL_ID="supervisor"
-        PRSN_OPTN_ID="DocSearch.LastSearch.Holding0"
-        VAL=",,fromDateCreated=12/22/2008,,superUserSearch=NO" VER_NBR="1"/>
-    <KREW_USR_OPTN_T PRNCPL_ID="supervisor"
-        PRSN_OPTN_ID="DocSearch.LastSearch.Order"
-        VAL="DocSearch.LastSearch.Holding0" VER_NBR="1"/>
-    <KREW_USR_OPTN_T PRNCPL_ID="user1"
-        PRSN_OPTN_ID="DocSearch.LastSearch.Holding0"
-        VAL=",,fromDateCreated=09/16/2008,,superUserSearch=NO" VER_NBR="1"/>
-    <KREW_USR_OPTN_T PRNCPL_ID="user1"
-        PRSN_OPTN_ID="DocSearch.LastSearch.Order"
-        VAL="DocSearch.LastSearch.Holding0" VER_NBR="1"/>
     <KREW_USR_OPTN_T PRNCPL_ID="user2"
         PRSN_OPTN_ID="ACTION_LIST_SIZE_NEW" VAL="10" VER_NBR="1"/>
     <KREW_USR_OPTN_T PRNCPL_ID="user2"
@@ -192,12 +156,6 @@
         PRSN_OPTN_ID="DOCUMENT_STATUS_COL_SHOW_NEW" VAL="yes" VER_NBR="1"/>
     <KREW_USR_OPTN_T PRNCPL_ID="user4"
         PRSN_OPTN_ID="DOC_TYPE_COL_SHOW_NEW" VAL="yes" VER_NBR="1"/>
-    <KREW_USR_OPTN_T PRNCPL_ID="user4"
-        PRSN_OPTN_ID="DocSearch.LastSearch.Holding0"
-        VAL=",,fromDateCreated=12/22/2008,,superUserSearch=NO" VER_NBR="1"/>
-    <KREW_USR_OPTN_T PRNCPL_ID="user4"
-        PRSN_OPTN_ID="DocSearch.LastSearch.Order"
-        VAL="DocSearch.LastSearch.Holding0" VER_NBR="1"/>
     <KREW_USR_OPTN_T PRNCPL_ID="user4" PRSN_OPTN_ID="EMAIL_NOTIFICATION"
         VAL="immediate" VER_NBR="1"/>
     <KREW_USR_OPTN_T PRNCPL_ID="user4"

@@ -31,17 +31,17 @@ import org.kuali.rice.kim.api.identity.entity.EntityQueryResults;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifier;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType;
 import org.kuali.rice.kim.api.identity.name.EntityName;
+import org.kuali.rice.kim.api.identity.name.StringToKimEntityNameInfoMapAdapter;
 import org.kuali.rice.kim.api.identity.personal.EntityBioDemographics;
 import org.kuali.rice.kim.api.identity.personal.EntityEthnicity;
 import org.kuali.rice.kim.api.identity.phone.EntityPhone;
 import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.identity.principal.StringToKimEntityNamePrincipalInfoMapAdapter;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.identity.residency.EntityResidency;
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
 import org.kuali.rice.kim.api.identity.visa.EntityVisa;
-import org.kuali.rice.kim.api.jaxb.StringToKimEntityNameInfoMapAdapter;
-import org.kuali.rice.kim.api.jaxb.StringToKimEntityNamePrincipalInfoMapAdapter;
 import org.kuali.rice.kim.util.KimConstants;
 
 import javax.jws.WebMethod;
@@ -609,7 +609,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getDefaultNamesForPrincipalIds")
     @WebResult(name = "entityNamePrincipalNames")
-	@XmlJavaTypeAdapter(value = StringToKimEntityNamePrincipalInfoMapAdapter.class) 
+	@XmlJavaTypeAdapter(value = StringToKimEntityNamePrincipalInfoMapAdapter.class)
     Map<String, EntityNamePrincipalName> getDefaultNamesForPrincipalIds(@WebParam(name="principalIds") List<String> principalIds);
     
 
@@ -627,7 +627,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getDefaultNamesForEntityIds")
     @WebResult(name = "entityNamePrincipalNames")
-	@XmlJavaTypeAdapter(value = StringToKimEntityNameInfoMapAdapter.class) 
+	@XmlJavaTypeAdapter(value = StringToKimEntityNameInfoMapAdapter.class)
     Map<String, EntityNamePrincipalName> getDefaultNamesForEntityIds(@WebParam(name="entityIds") List<String> entityIds);
 
     /**

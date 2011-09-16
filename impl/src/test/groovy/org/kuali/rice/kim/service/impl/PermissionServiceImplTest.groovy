@@ -1,25 +1,21 @@
 package org.kuali.rice.kim.service.impl
 
-import java.util.List;
-
-import org.junit.Test;
 import groovy.mock.interceptor.MockFor
-import org.junit.Before
-import org.kuali.rice.kim.api.role.RoleService
-import org.kuali.rice.kim.api.permission.PermissionService
-import org.kuali.rice.krad.service.BusinessObjectService
-import org.kuali.rice.kim.impl.permission.PermissionBo
 import org.junit.Assert
+import org.junit.Before
 import org.junit.BeforeClass
-import org.kuali.rice.kim.impl.permission.PermissionDao
+import org.junit.Test
 import org.kuali.rice.kim.api.common.assignee.Assignee
-import org.kuali.rice.kim.api.permission.Permission
-import org.kuali.rice.kim.impl.permission.PermissionTemplateBo
-import org.kuali.rice.kim.api.role.RoleMembership
-import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo
-import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.common.delegate.DelegateType
+import org.kuali.rice.kim.api.permission.Permission
+import org.kuali.rice.kim.api.permission.PermissionService
+import org.kuali.rice.kim.api.role.RoleMembership
+import org.kuali.rice.kim.api.role.RoleService
+import org.kuali.rice.kim.impl.permission.PermissionBo
+import org.kuali.rice.kim.impl.permission.PermissionDao
 import org.kuali.rice.kim.impl.permission.PermissionServiceImpl
+import org.kuali.rice.kim.impl.permission.PermissionTemplateBo
+import org.kuali.rice.krad.service.BusinessObjectService
 
 /*
  * Copyright 2007-2009 The Kuali Foundation
@@ -409,4 +405,17 @@ class PermissionServiceImplTest {
 
         mockBoService.verify(boService);
     }
+
+    public static class PermissionAssigneeInfo {
+        String principalId
+        String groupId
+        List<DelegateType> delegates = []
+
+        PermissionAssigneeInfo(String pId, String gId, List<DelegateType> ds) {
+            principalId = pId;
+            groupId = gId;
+            delegates = ds;
+        }
+    }
+
 }

@@ -13,11 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.api.jaxb;
+package org.kuali.rice.kim.api.identity.principal;
 
-import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
+import org.w3c.dom.Element;
 
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +32,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class StringToKimEntityNamePrincipalInfoMapAdapter extends XmlAdapter<StringEntNmPrncpInfoMapEntry[], Map<String, EntityNamePrincipalName>> {
+public class StringToKimEntityNamePrincipalInfoMapAdapter extends XmlAdapter<StringToKimEntityNamePrincipalInfoMapAdapter.StringEntNmPrncpInfoMapEntry[], Map<String, EntityNamePrincipalName>> {
 
 	/**
 	 * This overridden method ...
@@ -61,4 +66,42 @@ public class StringToKimEntityNamePrincipalInfoMapAdapter extends XmlAdapter<Str
 		}
 		return resultMap;
 	}
+
+    public static class StringEntNmPrncpInfoMapEntry extends AbstractDataTransferObject {
+
+        private static final long serialVersionUID = 1L;
+
+        @XmlAttribute
+        private final String key;
+
+        @XmlElement(required=true)
+        private final EntityNamePrincipalName value;
+
+        @SuppressWarnings("unused")
+        @XmlAnyElement
+        private final Collection<Element> _futureElements = null;
+
+        /**
+         * Private constructor used only by JAXB.
+         */
+        private StringEntNmPrncpInfoMapEntry() {
+            key = null;
+            value = null;
+        }
+
+        public StringEntNmPrncpInfoMapEntry(String key, EntityNamePrincipalName value) {
+            super();
+
+            this.key = key;
+            this.value = value;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public EntityNamePrincipalName getValue() {
+            return value;
+        }
+    }
 }

@@ -127,7 +127,7 @@
       <bean parent="kimJaxWsSoapService"
         p:service-ref="kimPermissionService"
         p:localServiceName="permissionServiceSoap"
-        p:serviceInterface="org.kuali.rice.kim.service.PermissionService" />
+        p:serviceInterface="org.kuali.rice.kim.api.permission.PermissionService" />
     </property>
     <property name="exportIf" value="permissionServiceSoap.expose"/>
   </bean>

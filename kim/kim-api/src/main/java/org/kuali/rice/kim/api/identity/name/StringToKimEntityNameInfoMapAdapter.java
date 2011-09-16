@@ -13,11 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.api.jaxb;
+package org.kuali.rice.kim.api.identity.name;
 
-import org.kuali.rice.kim.api.identity.name.EntityName;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
+import org.w3c.dom.Element;
 
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +32,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class StringToKimEntityNameInfoMapAdapter extends XmlAdapter<StringEntityNameInfoMapEntry[], Map<String, EntityName>> {
+public class StringToKimEntityNameInfoMapAdapter extends XmlAdapter<StringToKimEntityNameInfoMapAdapter.StringEntityNameInfoMapEntry[], Map<String, EntityName>> {
 
 	/**
 	 * This overridden method ...
@@ -61,4 +66,42 @@ public class StringToKimEntityNameInfoMapAdapter extends XmlAdapter<StringEntity
 		}
 		return resultMap;
 	}
+
+    public static class StringEntityNameInfoMapEntry extends AbstractDataTransferObject {
+
+        private static final long serialVersionUID = 1L;
+
+        @XmlAttribute
+        private final String key;
+
+        @XmlElement(required=true)
+        private final EntityName value;
+
+        @SuppressWarnings("unused")
+        @XmlAnyElement
+        private final Collection<Element> _futureElements = null;
+
+        /**
+         * Private constructor used only by JAXB.
+         */
+        public StringEntityNameInfoMapEntry() {
+            key = null;
+            value = null;
+        }
+
+        public StringEntityNameInfoMapEntry(String key, EntityName value) {
+            super();
+
+            this.key = key;
+            this.value = value;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public EntityName getValue() {
+            return value;
+        }
+    }
 }

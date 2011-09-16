@@ -40,6 +40,7 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
     private String selectedAgendaItemId;
     private String cutAgendaItemId;
     private String selectedPropositionId;
+    private String copyRuleName;
 
     public AgendaEditor() {
         agenda = new AgendaBo();
@@ -174,6 +175,20 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
 	public void setAgenda(AgendaBo agenda) {
 		this.agenda = agenda;
 	}
+
+    /**
+     * @param copyRuleName the rule name from which to copy
+     */
+    public void setCopyRuleName(String copyRuleName) {
+        this.copyRuleName = copyRuleName;
+    }
+
+    /**
+     * @return the rule name from which to copy
+     */
+    public String getCopyRuleName() {
+        return copyRuleName;
+    }
 
     // Need to override this method since the actual persistable BO is wrapped inside dataObject.
     @Override

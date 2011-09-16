@@ -86,7 +86,7 @@
     </property>
     <property name="items">
       <list>
-        <bean parent="AttributeField" p:propertyName="agendaItemLine.rule.name" p:style="font-size: smaller;">
+        <bean parent="AttributeField" p:propertyName="copyRuleName" p:style="font-size: smaller;">
           <property name="label" value="Copy from Existing Rule" />
           <property name="fieldLookup.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.RuleBo"/>
           <property name="control">
@@ -94,6 +94,9 @@
               p:watermarkText="Existing Rule Name" />
             </property>
         </bean>
+        <bean parent="ActionField" p:methodToCall="copyRule" p:actionLabel="Copy Rule"  p:clientSideJs="alert('Not Yet Implemented');"
+          p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt;"/>
+
 <!--         
         <bean parent="LabelField" p:labelText="or " p:style="padding: 10px;" 
           p:requiredMessageField="" p:renderColon="false" />

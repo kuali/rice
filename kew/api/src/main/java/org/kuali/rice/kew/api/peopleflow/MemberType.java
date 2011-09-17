@@ -7,8 +7,8 @@ import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement(name = "peopleFlowMemberType")
-@XmlType(name = "PeopleFlowMemberTypeType")
+@XmlRootElement(name = "memberType")
+@XmlType(name = "MemberTypeType")
 @XmlEnum
 public enum MemberType implements Coded {
 

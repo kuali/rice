@@ -1,9 +1,9 @@
 package org.kuali.rice.kew.impl.peopleflow
 
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
-import org.kuali.rice.kew.framework.peopleflow.PeopleFlowMemberContract
-import org.kuali.rice.kew.framework.peopleflow.PeopleFlowMemberDefinition
-import org.kuali.rice.kew.framework.peopleflow.PeopleFlowMemberContract.MemberType;
+import org.kuali.rice.kew.api.peopleflow.PeopleFlowMemberContract
+import org.kuali.rice.kew.api.peopleflow.MemberType
+import org.kuali.rice.kew.api.peopleflow.PeopleFlowMember;
 
 /**
  * mapped entity for PeopleFlow members
@@ -13,14 +13,14 @@ class PeopleFlowMemberBo extends PersistableBusinessObjectBase implements People
     def String peopleFlowId
     def String memberTypeCode
     def String memberId
-    def Integer priority
+    def int priority
     def String delegatedFromId
 
     MemberType getMemberType() {
         return MemberType.getByCode(memberTypeCode);
     }
 
-    public static PeopleFlowMemberBo from(PeopleFlowMemberDefinition member) {
+    public static PeopleFlowMemberBo from(PeopleFlowMember member) {
         PeopleFlowMemberBo result = new PeopleFlowMemberBo();
 
         result.id = member.getId();
@@ -32,8 +32,8 @@ class PeopleFlowMemberBo extends PersistableBusinessObjectBase implements People
         result.setVersionNumber(member.getVersionNumber());
     }
 
-    public static PeopleFlowMemberDefinition to(PeopleFlowMemberBo bo) {
-        return PeopleFlowMemberDefinition.Builder.create(bo).build();
+    public static PeopleFlowMember to(PeopleFlowMemberBo bo) {
+        return PeopleFlowMember.Builder.create(bo).build();
     }
 
 }

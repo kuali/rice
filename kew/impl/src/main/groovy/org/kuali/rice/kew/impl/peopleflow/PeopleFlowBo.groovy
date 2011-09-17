@@ -2,9 +2,7 @@ package org.kuali.rice.kew.impl.peopleflow
 
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.krad.bo.MutableInactivatable
-import org.kuali.rice.kew.framework.peopleflow.PeopleFlowContract
-import org.kuali.rice.kew.framework.peopleflow.PeopleFlowDefinition
-import org.kuali.rice.kew.framework.peopleflow.PeopleFlowMemberDefinition
+import org.kuali.rice.kew.api.peopleflow.PeopleFlowContract
 
 /**
  * Mapped entity for PeopleFlows
@@ -32,7 +30,7 @@ class PeopleFlowBo extends PersistableBusinessObjectBase implements MutableInact
         return results;
     }
 
-    public static PeopleFlowBo from(PeopleFlowDefinition peopleFlow) {
+    public static PeopleFlowBo from(PeopleFlowContract peopleFlow) {
         PeopleFlowBo result = new PeopleFlowBo();
 
         result.id = peopleFlow.getId();
@@ -46,9 +44,9 @@ class PeopleFlowBo extends PersistableBusinessObjectBase implements MutableInact
         result.attributeBos = null;  // TODO: Convert map to PeopleFlowAttributeBo list
 
         result.members = new ArrayList<PeopleFlowMemberBo>();
-        for (PeopleFlowMemberDefinition member : peopleFlow.getMembers()) {
-            result.members.add(PeopleFlowMemberBo.from(member));
-        }
+//        for (PeopleFlowMemberDefinition member : peopleFlow.getMembers()) {
+//            result.members.add(PeopleFlowMemberBo.from(member));
+//        }
 
         return result;
     }

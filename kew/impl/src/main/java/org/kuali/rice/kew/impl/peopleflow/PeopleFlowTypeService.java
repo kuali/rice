@@ -6,7 +6,7 @@ import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentContent;
-import org.kuali.rice.kew.framework.peopleflow.PeopleFlowDefinition;
+import org.kuali.rice.kew.api.peopleflow.PeopleFlowDefinition;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;

@@ -20,8 +20,8 @@ import org.w3c.dom.Element;
 @XmlType(name = PeopleFlowMember.Constants.TYPE_NAME, propOrder = {
         PeopleFlowMember.Elements.ID,
         PeopleFlowMember.Elements.PEOPLE_FLOW_ID,
-        PeopleFlowMember.Elements.MEMBER_TYPE,
         PeopleFlowMember.Elements.MEMBER_ID,
+        PeopleFlowMember.Elements.MEMBER_TYPE,
         PeopleFlowMember.Elements.PRIORITY,
         PeopleFlowMember.Elements.DELEGATED_FROM_ID,
         CoreConstants.CommonElements.VERSION_NUMBER,

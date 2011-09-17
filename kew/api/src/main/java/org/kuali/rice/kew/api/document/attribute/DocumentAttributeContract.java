@@ -37,7 +37,7 @@ public interface DocumentAttributeContract {
     Object getValue();
 
     /**
-     * Returns the datat type of this document attribute.  This will generally inform the type of object returned from
+     * Returns the data type of this document attribute.  This will generally inform the type of object returned from
      * the {@code #getValue} method.  This method should never return a null value.
      *
      * @return the data type of this document attribute

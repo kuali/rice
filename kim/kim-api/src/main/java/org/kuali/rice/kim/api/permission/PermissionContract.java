@@ -31,7 +31,7 @@ import java.util.Map;
  * never against roles or groups.
  *  
  */
-public interface PermissionContract extends Versioned, GloballyUnique, Inactivatable, Identifiable{;
+public interface PermissionContract extends Versioned, GloballyUnique, Inactivatable, Identifiable {
     
     /**
      * The namespace code that this Permission belongs too.

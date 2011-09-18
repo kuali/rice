@@ -29,9 +29,9 @@ import org.kuali.rice.kew.api.validation.RuleValidationContext
  */
 class MemberTypeTest {
 
-    private static final String ROLE_MEMBER_TYPE_XML = "<memberType>R</memberType>"
-    private static final String GROUP_MEMBER_TYPE_XML = "<memberType>G</memberType>"
-    private static final String PRINCIPAL_MEMBER_TYPE_XML = "<memberType>P</memberType>"
+    private static final String ROLE_MEMBER_TYPE_XML = """<memberType xmlns="http://rice.kuali.org/kew/v2_0">R</memberType>"""
+    private static final String GROUP_MEMBER_TYPE_XML = """<memberType xmlns="http://rice.kuali.org/kew/v2_0">G</memberType>"""
+    private static final String PRINCIPAL_MEMBER_TYPE_XML = """<memberType xmlns="http://rice.kuali.org/kew/v2_0">P</memberType>"""
 
     @Test
     void test_fromCode_null() {

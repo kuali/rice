@@ -37,7 +37,7 @@ class PeopleFlowDefinitionTest {
     private static final String MEMBER_ID = "admin"
 
     private static final String MINIMAL_XML = """
-    <peopleFlowDefinition xmlns:ns2="http://rice.kuali.org/core/v2_0">
+    <peopleFlowDefinition xmlns:ns2="http://rice.kuali.org/core/v2_0" xmlns="http://rice.kuali.org/kew/v2_0">
       <namespace>MyNamespace</namespace>
       <name>MyPeopleFlow</name>
       <members/>
@@ -47,7 +47,7 @@ class PeopleFlowDefinitionTest {
     """
 
     private static final String MAXIMAL_XML = """
-    <peopleFlowDefinition xmlns:ns2="http://rice.kuali.org/core/v2_0">
+    <peopleFlowDefinition xmlns:ns2="http://rice.kuali.org/core/v2_0" xmlns="http://rice.kuali.org/kew/v2_0">
       <id>1</id>
       <namespace>MyNamespace</namespace>
       <name>MyPeopleFlow</name>

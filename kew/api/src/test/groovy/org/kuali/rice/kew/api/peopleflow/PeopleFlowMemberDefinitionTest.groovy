@@ -26,7 +26,7 @@ import org.kuali.rice.core.test.JAXBAssert
 class PeopleFlowMemberDefinitionTest {
 
     private static final String MINIMAL_XML = """
-    <peopleFlowMemberDefinition>
+    <peopleFlowMemberDefinition xmlns="http://rice.kuali.org/kew/v2_0">
         <memberId>admin</memberId>
         <memberType>P</memberType>
         <priority>1</priority>
@@ -34,7 +34,7 @@ class PeopleFlowMemberDefinitionTest {
     """
 
     private static final String MAXIMAL_XML = """
-    <peopleFlowMemberDefinition>
+    <peopleFlowMemberDefinition xmlns="http://rice.kuali.org/kew/v2_0">
         <id>1</id>
         <peopleFlowId>2</peopleFlowId>
         <memberId>admin</memberId>

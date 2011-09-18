@@ -15,19 +15,19 @@ import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.w3c.dom.Element;
 
-@XmlRootElement(name = PeopleFlowMember.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = PeopleFlowMemberDefinition.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = PeopleFlowMember.Constants.TYPE_NAME, propOrder = {
-        PeopleFlowMember.Elements.ID,
-        PeopleFlowMember.Elements.PEOPLE_FLOW_ID,
-        PeopleFlowMember.Elements.MEMBER_ID,
-        PeopleFlowMember.Elements.MEMBER_TYPE,
-        PeopleFlowMember.Elements.PRIORITY,
-        PeopleFlowMember.Elements.DELEGATED_FROM_ID,
+@XmlType(name = PeopleFlowMemberDefinition.Constants.TYPE_NAME, propOrder = {
+        PeopleFlowMemberDefinition.Elements.ID,
+        PeopleFlowMemberDefinition.Elements.PEOPLE_FLOW_ID,
+        PeopleFlowMemberDefinition.Elements.MEMBER_ID,
+        PeopleFlowMemberDefinition.Elements.MEMBER_TYPE,
+        PeopleFlowMemberDefinition.Elements.PRIORITY,
+        PeopleFlowMemberDefinition.Elements.DELEGATED_FROM_ID,
         CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class PeopleFlowMember extends AbstractDataTransferObject implements PeopleFlowMemberContract {
+public final class PeopleFlowMemberDefinition extends AbstractDataTransferObject implements PeopleFlowMemberContract {
 
     private static final int STARTING_PRIORITY = 1;
 
@@ -59,7 +59,7 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
     /**
      * Private constructor used only by JAXB.
      */
-    private PeopleFlowMember() {
+    private PeopleFlowMemberDefinition() {
         this.priority = STARTING_PRIORITY;
         this.peopleFlowId = null;
         this.memberType = null;
@@ -69,7 +69,7 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
         this.versionNumber = null;
     }
 
-    private PeopleFlowMember(Builder builder) {
+    private PeopleFlowMemberDefinition(Builder builder) {
         this.priority = builder.getPriority();
         this.peopleFlowId = builder.getPeopleFlowId();
         this.memberType = builder.getMemberType();
@@ -115,7 +115,7 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
     }
 
     /**
-     * A builder which can be used to construct {@link PeopleFlowMember} instances.  Enforces the constraints of the
+     * A builder which can be used to construct {@link PeopleFlowMemberDefinition} instances.  Enforces the constraints of the
      * {@link PeopleFlowMemberContract}.
      * 
      */
@@ -153,8 +153,8 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
             return builder;
         }
 
-        public PeopleFlowMember build() {
-            return new PeopleFlowMember(this);
+        public PeopleFlowMemberDefinition build() {
+            return new PeopleFlowMemberDefinition(this);
         }
 
         @Override
@@ -235,8 +235,8 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        final static String ROOT_ELEMENT_NAME = "peopleFlowMember";
-        final static String TYPE_NAME = "PeopleFlowMemberType";
+        final static String ROOT_ELEMENT_NAME = "peopleFlowMemberDefinition";
+        final static String TYPE_NAME = "PeopleFlowMemberDefinitionType";
     }
 
     /**

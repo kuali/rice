@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Contract interface for a PeopleFlow.  A PeopleFlow is simply a collections of members and their (optional) delegates.
- * Each member of a PeopleFlow has a priority number assigned to it, which indicates the order in which members should
+ * Contract interface for a PeopleFlowDefinition.  A PeopleFlowDefinition is simply a collections of members and their (optional) delegates.
+ * Each member of a PeopleFlowDefinition has a priority number assigned to it, which indicates the order in which members should
  * be processed during execution of the flow.
  *
  * <p>Priority is ordered by the lowest priority number being the "beginning" of the flow.  It is possible for one or

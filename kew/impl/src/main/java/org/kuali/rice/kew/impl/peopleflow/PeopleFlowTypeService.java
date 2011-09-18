@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Service interface for PeopleFlow types.  TODO: ...
+ * Service interface for PeopleFlowDefinition types.  TODO: ...
  */
 // TODO: additional JAX-WS annotations
 public interface PeopleFlowTypeService {

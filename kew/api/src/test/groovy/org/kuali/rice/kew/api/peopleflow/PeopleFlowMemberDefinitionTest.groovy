@@ -23,18 +23,18 @@ import org.kuali.rice.core.test.JAXBAssert
 /**
  * Unit test for RuleValidationContext object
  */
-class PeopleFlowMemberTest {
+class PeopleFlowMemberDefinitionTest {
 
     private static final String MINIMAL_XML = """
-    <peopleFlowMember>
+    <peopleFlowMemberDefinition>
         <memberId>admin</memberId>
         <memberType>P</memberType>
         <priority>1</priority>
-    </peopleFlowMember>
+    </peopleFlowMemberDefinition>
     """
 
     private static final String MAXIMAL_XML = """
-    <peopleFlowMember>
+    <peopleFlowMemberDefinition>
         <id>1</id>
         <peopleFlowId>2</peopleFlowId>
         <memberId>admin</memberId>
@@ -42,34 +42,34 @@ class PeopleFlowMemberTest {
         <priority>10</priority>
         <delegatedFromId>3</delegatedFromId>
         <versionNumber>1</versionNumber>
-    </peopleFlowMember>
+    </peopleFlowMemberDefinition>
     """
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_invalid_null_memberId() {
-        PeopleFlowMember.Builder.create(null, MemberType.PRINCIPAL)
+        PeopleFlowMemberDefinition.Builder.create(null, MemberType.PRINCIPAL)
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_invalid_null_memberType() {
-        PeopleFlowMember.Builder.create("admin", null)
+        PeopleFlowMemberDefinition.Builder.create("admin", null)
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_invalid_null_contract() {
-        PeopleFlowMember.Builder.create(null)
+        PeopleFlowMemberDefinition.Builder.create(null)
     }
 
     @Test
     void test_Builder_minimal() {
-        PeopleFlowMember.Builder builder = createMinimal()
+        PeopleFlowMemberDefinition.Builder builder = createMinimal()
         Assert.assertNotNull(builder)
         assert "admin" == builder.getMemberId()
         assert MemberType.PRINCIPAL == builder.getMemberType()
         // should be initialized to default
         assert 1 == builder.getPriority()
 
-        PeopleFlowMember member = builder.build()
+        PeopleFlowMemberDefinition member = builder.build()
         Assert.assertNotNull(member)
         assert "admin" == member.getMemberId()
         assert MemberType.PRINCIPAL == member.getMemberType()
@@ -82,8 +82,8 @@ class PeopleFlowMemberTest {
 
     @Test
     void test_Builder_maximal() {
-        PeopleFlowMember.Builder builder = createMaximal()
-        PeopleFlowMember member = builder.build()
+        PeopleFlowMemberDefinition.Builder builder = createMaximal()
+        PeopleFlowMemberDefinition member = builder.build()
         Assert.assertNotNull(member)
         assert "admin" == member.getMemberId()
         assert MemberType.PRINCIPAL == member.getMemberType()
@@ -96,20 +96,20 @@ class PeopleFlowMemberTest {
 
     @Test
 	void test_Xml_Marshal_Unmarshal_minimal() {
-        JAXBAssert.assertEqualXmlMarshalUnmarshal(createMinimal().build(), MINIMAL_XML, PeopleFlowMember.class)
+        JAXBAssert.assertEqualXmlMarshalUnmarshal(createMinimal().build(), MINIMAL_XML, PeopleFlowMemberDefinition.class)
 	}
 
     @Test
 	void test_Xml_Marshal_Unmarshal_maximal() {
-        JAXBAssert.assertEqualXmlMarshalUnmarshal(createMaximal().build(), MAXIMAL_XML, PeopleFlowMember.class)
+        JAXBAssert.assertEqualXmlMarshalUnmarshal(createMaximal().build(), MAXIMAL_XML, PeopleFlowMemberDefinition.class)
 	}
 
-    private PeopleFlowMember.Builder createMinimal() {
-        return PeopleFlowMember.Builder.create("admin", MemberType.PRINCIPAL)
+    private PeopleFlowMemberDefinition.Builder createMinimal() {
+        return PeopleFlowMemberDefinition.Builder.create("admin", MemberType.PRINCIPAL)
     }
 
-    private PeopleFlowMember.Builder createMaximal() {
-        PeopleFlowMember.Builder builder = PeopleFlowMember.Builder.create("admin", MemberType.PRINCIPAL)
+    private PeopleFlowMemberDefinition.Builder createMaximal() {
+        PeopleFlowMemberDefinition.Builder builder = PeopleFlowMemberDefinition.Builder.create("admin", MemberType.PRINCIPAL)
         builder.setId("1")
         builder.setPriority(10)
         builder.setPeopleFlowId("2")

@@ -3,10 +3,11 @@ package org.kuali.rice.kew.impl.peopleflow
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowMemberContract
 import org.kuali.rice.kew.api.peopleflow.MemberType
-import org.kuali.rice.kew.api.peopleflow.PeopleFlowMember;
+
+import org.kuali.rice.kew.api.peopleflow.PeopleFlowMemberDefinition;
 
 /**
- * mapped entity for PeopleFlow members
+ * mapped entity for PeopleFlowDefinition members
  */
 class PeopleFlowMemberBo extends PersistableBusinessObjectBase implements PeopleFlowMemberContract {
     def String id
@@ -20,7 +21,7 @@ class PeopleFlowMemberBo extends PersistableBusinessObjectBase implements People
         return MemberType.getByCode(memberTypeCode);
     }
 
-    public static PeopleFlowMemberBo from(PeopleFlowMember member) {
+    public static PeopleFlowMemberBo from(PeopleFlowMemberDefinition member) {
         PeopleFlowMemberBo result = new PeopleFlowMemberBo();
 
         result.id = member.getId();
@@ -32,8 +33,8 @@ class PeopleFlowMemberBo extends PersistableBusinessObjectBase implements People
         result.setVersionNumber(member.getVersionNumber());
     }
 
-    public static PeopleFlowMember to(PeopleFlowMemberBo bo) {
-        return PeopleFlowMember.Builder.create(bo).build();
+    public static PeopleFlowMemberDefinition to(PeopleFlowMemberBo bo) {
+        return PeopleFlowMemberDefinition.Builder.create(bo).build();
     }
 
 }

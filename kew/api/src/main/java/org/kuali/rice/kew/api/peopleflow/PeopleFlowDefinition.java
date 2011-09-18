@@ -23,21 +23,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@XmlRootElement(name = PeopleFlow.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = PeopleFlowDefinition.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = PeopleFlow.Constants.TYPE_NAME, propOrder = {
-        PeopleFlow.Elements.ID,
-        PeopleFlow.Elements.NAME,
-        PeopleFlow.Elements.NAMESPACE,
-        PeopleFlow.Elements.TYPE_ID,
-        PeopleFlow.Elements.DESCRIPTION,
-        PeopleFlow.Elements.MEMBERS,
-        PeopleFlow.Elements.ATTRIBUTES,
-        PeopleFlow.Elements.ACTIVE,
+@XmlType(name = PeopleFlowDefinition.Constants.TYPE_NAME, propOrder = {
+        PeopleFlowDefinition.Elements.ID,
+        PeopleFlowDefinition.Elements.NAME,
+        PeopleFlowDefinition.Elements.NAMESPACE,
+        PeopleFlowDefinition.Elements.TYPE_ID,
+        PeopleFlowDefinition.Elements.DESCRIPTION,
+        PeopleFlowDefinition.Elements.MEMBERS,
+        PeopleFlowDefinition.Elements.ATTRIBUTES,
+        PeopleFlowDefinition.Elements.ACTIVE,
         CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class PeopleFlow extends AbstractDataTransferObject implements PeopleFlowContract {
+public final class PeopleFlowDefinition extends AbstractDataTransferObject implements PeopleFlowContract {
 
     @XmlElement(name = Elements.NAME, required = true)
     private final String name;
@@ -57,7 +57,7 @@ public final class PeopleFlow extends AbstractDataTransferObject implements Peop
 
     @XmlElementWrapper(name = Elements.MEMBERS, required = false)
     @XmlElement(name = Elements.MEMBER, required = false)
-    private final List<PeopleFlowMember> members;
+    private final List<PeopleFlowMemberDefinition> members;
     
     @XmlElement(name = Elements.ID, required = false)
     private final String id;
@@ -76,7 +76,7 @@ public final class PeopleFlow extends AbstractDataTransferObject implements Peop
      * Private constructor used only by JAXB.
      * 
      */
-    private PeopleFlow() {
+    private PeopleFlowDefinition() {
         this.name = null;
         this.attributes = null;
         this.namespace = null;
@@ -88,7 +88,7 @@ public final class PeopleFlow extends AbstractDataTransferObject implements Peop
         this.versionNumber = null;
     }
 
-    private PeopleFlow(Builder builder) {
+    private PeopleFlowDefinition(Builder builder) {
         this.name = builder.getName();
         this.attributes = builder.getAttributes();
         this.namespace = builder.getNamespace();
@@ -146,7 +146,7 @@ public final class PeopleFlow extends AbstractDataTransferObject implements Peop
     }
 
     /**
-     * A builder which can be used to construct {@link PeopleFlow} instances.  Enforces the constraints of the
+     * A builder which can be used to construct {@link PeopleFlowDefinition} instances.  Enforces the constraints of the
      * {@link PeopleFlowContract}.
      */
     public final static class Builder implements Serializable, ModelBuilder, PeopleFlowContract {
@@ -156,7 +156,7 @@ public final class PeopleFlow extends AbstractDataTransferObject implements Peop
         private String namespace;
         private String typeId;
         private String description;
-        private List<PeopleFlowMember.Builder> members;
+        private List<PeopleFlowMemberDefinition.Builder> members;
         private String id;
         private boolean active;
         private Long versionNumber;
@@ -166,7 +166,7 @@ public final class PeopleFlow extends AbstractDataTransferObject implements Peop
             setName(name);
             setActive(true);
             setAttributes(new HashMap<String, String>());
-            setMembers(new ArrayList<PeopleFlowMember.Builder>());
+            setMembers(new ArrayList<PeopleFlowMemberDefinition.Builder>());
         }
 
         public static Builder create(String namespace, String name) {
@@ -185,7 +185,7 @@ public final class PeopleFlow extends AbstractDataTransferObject implements Peop
             builder.setDescription(contract.getDescription());
             if (contract.getMembers() != null) {
                 for (PeopleFlowMemberContract member : contract.getMembers()) {
-                    builder.getMembers().add(PeopleFlowMember.Builder.create(member));
+                    builder.getMembers().add(PeopleFlowMemberDefinition.Builder.create(member));
                 }
             }
             builder.setId(contract.getId());
@@ -194,8 +194,8 @@ public final class PeopleFlow extends AbstractDataTransferObject implements Peop
             return builder;
         }
 
-        public PeopleFlow build() {
-            return new PeopleFlow(this);
+        public PeopleFlowDefinition build() {
+            return new PeopleFlowDefinition(this);
         }
 
         @Override
@@ -269,7 +269,7 @@ public final class PeopleFlow extends AbstractDataTransferObject implements Peop
             this.description = description;
         }
 
-        public void setMembers(List<PeopleFlowMember.Builder> members) {
+        public void setMembers(List<PeopleFlowMemberDefinition.Builder> members) {
             this.members = members;
         }
 
@@ -291,8 +291,8 @@ public final class PeopleFlow extends AbstractDataTransferObject implements Peop
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        final static String ROOT_ELEMENT_NAME = "peopleFlow";
-        final static String TYPE_NAME = "PeopleFlowType";
+        final static String ROOT_ELEMENT_NAME = "peopleFlowDefinition";
+        final static String TYPE_NAME = "PeopleFlowDefinitionType";
     }
 
     /**

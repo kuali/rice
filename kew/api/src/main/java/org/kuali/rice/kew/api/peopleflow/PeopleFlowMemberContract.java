@@ -4,7 +4,7 @@ import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 
 /**
- * Interface contract for PeopleFlow members.  TODO: ...
+ * Interface contract for PeopleFlowDefinition members.  TODO: ...
  */
 public interface PeopleFlowMemberContract extends Identifiable, Versioned {
 
@@ -25,7 +25,7 @@ public interface PeopleFlowMemberContract extends Identifiable, Versioned {
     String getMemberId();
 
     /**
-     * @return the priority of the member.  This is equivalent to the sequential stop in the PeopleFlow, which means
+     * @return the priority of the member.  This is equivalent to the sequential stop in the PeopleFlowDefinition, which means
      * lower integer value equates to higher priority.  The minimum priority is 1.
      * May be null if {@link #getDelegatedFromId()} is non-null.
      */

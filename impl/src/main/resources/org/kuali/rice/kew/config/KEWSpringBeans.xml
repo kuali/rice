@@ -799,8 +799,7 @@
 
   <bean id="rice.kew.ruleValidationAttributeResolver" class="org.kuali.rice.kew.validation.RuleValidationAttributeResolverImpl"/>
   
-    
-  <bean id="kewTypeRepository" class="org.kuali.rice.kew.impl.repository.KewTypeBoServiceImpl">
+  <bean id="kewTypeRepositoryService" class="org.kuali.rice.kew.impl.repository.KewTypeBoServiceImpl">
     <property name="businessObjectService" ref="businessObjectService"/>
   </bean>
 

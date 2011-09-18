@@ -356,6 +356,18 @@
 			</bean>
 		</property>
 	</bean>
+	  
+	<bean parent="kewLocalServiceExporter">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
+		<property name="serviceDefinition">
+			<bean parent="kewSoapService">
+				<property name="service">
+					<ref bean="kewTypeRepositoryService" />
+				</property>
+				<property name="localServiceName" value="kewTypeRepositoryService" />
+			</bean>
+		</property>
+	</bean>
 
 
 <!-- ************************************************************************** -->

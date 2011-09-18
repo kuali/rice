@@ -27,8 +27,8 @@ import java.util.Map;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = PeopleFlowDefinition.Constants.TYPE_NAME, propOrder = {
         PeopleFlowDefinition.Elements.ID,
-        PeopleFlowDefinition.Elements.NAME,
         PeopleFlowDefinition.Elements.NAMESPACE,
+        PeopleFlowDefinition.Elements.NAME,
         PeopleFlowDefinition.Elements.TYPE_ID,
         PeopleFlowDefinition.Elements.DESCRIPTION,
         PeopleFlowDefinition.Elements.MEMBERS,

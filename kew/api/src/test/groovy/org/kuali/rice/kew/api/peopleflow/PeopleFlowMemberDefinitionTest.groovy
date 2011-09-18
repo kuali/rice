@@ -21,7 +21,7 @@ import org.junit.Test
 import org.kuali.rice.core.test.JAXBAssert
 
 /**
- * Unit test for RuleValidationContext object
+ * Unit test for PeopleFlowMemberDefinition
  */
 class PeopleFlowMemberDefinitionTest {
 

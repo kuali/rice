@@ -22,7 +22,7 @@ import static org.junit.Assert.*
 import org.kuali.rice.core.test.JAXBAssert
 
 /**
- * Unit test for RuleValidationContext object
+ * Unit test for PeopleFlowDefinition
  */
 class PeopleFlowDefinitionTest {
 

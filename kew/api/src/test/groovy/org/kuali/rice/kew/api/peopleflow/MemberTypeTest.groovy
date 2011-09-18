@@ -25,7 +25,7 @@ import org.kuali.rice.kew.api.rule.RuleDelegation
 import org.kuali.rice.kew.api.validation.RuleValidationContext
 
 /**
- * Unit test for RuleValidationContext object
+ * Unit test for MemberType
  */
 class MemberTypeTest {
 

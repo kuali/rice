@@ -153,6 +153,14 @@ class PeopleFlowDefinitionTest {
     }
 
     @Test
+    void test_Builder_contract() {
+        PeopleFlowDefinition flow = createMaximal().build();
+        PeopleFlowDefinition.Builder builder = PeopleFlowDefinition.Builder.create(flow)
+        PeopleFlowDefinition flowCopy = builder.build()
+        assert flow == flowCopy
+    }
+
+    @Test
 	void test_Xml_Marshal_Unmarshal_minimal() {
         JAXBAssert.assertEqualXmlMarshalUnmarshal(createMinimal().build(), MINIMAL_XML, PeopleFlowDefinition.class)
 	}

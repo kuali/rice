@@ -13,3 +13,10 @@
 }
 
 
+/* Temporary classes for Course Offering screen */
+.labelTop {
+   display:block;
+}
+.labelTop label {
+    font-weight:bold;
+}

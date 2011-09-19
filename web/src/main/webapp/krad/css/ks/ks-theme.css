@@ -57,7 +57,9 @@ h7 {
     font-family: arial, helvetica, sans-serif;
 	text-transform: uppercase;
 }
-
+.watermark {
+    color:#999;
+}
 
 
 /* CONTAINERS - e.g.: kr-nav-menu, ks-error-cont *************************/
@@ -87,40 +89,31 @@ h7 {
 	margin-bottom: 12px;
 	padding: 0 12px 4px;
 }
+/* breadcrumbs */
 
 .kr-breadcrumbs { 					/* was .breadcrumbs */ /* renamed in xml and/or jsp */
-	border-bottom: 1px dotted #C9C9C9;
-	border-top: 1px dotted #C9C9C9;
-	clear: both;
+    display: block;
+    width: 100%;
+    letter-spacing: 0.02em;
+    padding: 3px 0 3px 15px;
+ }
+
+
+ .kr-breadcrumbs span {  /* was .breadcrumbs span*/ /* renamed in xml and/or jsp */
 	color: #3F7826;
-	letter-spacing: 0.02em;
-	padding: 3px 0 3px 15px;
-}
+ }
 
-.kr-breadcrumbs span {				/* was .breadcrumbs span */ /* renamed in xml and/or jsp */
+ .kr-breadcrumbs a, .kr-breadcrumbs a:visited {		/*  was .breadcrumbs a*/ /* renamed in xml and/or jsp */
 	color: #3F7826;
-}
+ }
 
-.kr-breadcrumbs a {					/* was .breadcrumbs a */ /* renamed in xml and/or jsp */
-	color: #3F7826;
-	text-decoration: none;
-}
-
-.kr-breadcrumbs a:visited {			/* was .breadcrumbs a:visited */ /* renamed in xml and/or jsp */
-	color: #3F7826;
-	text-decoration: none;
-}
-
-.kr-breadcrumbs a:focus, .kr-breadcrumbs a:hover {	/* was .breadcrumbs a:focus, .breadcrumbs a:hover */ /* renamed in xml and/or jsp */
-	text-decoration: underline;
-}
-
-.kr-breadcrumbs .kr-current {			/* was .breadcrumbs .current */ /* renamed in xml and/or jsp */
+ .kr-breadcrumbs .kr-current{  /*  was .breadcrumbs .current*/ /* renamed in xml and/or jsp */
 	color: #000000;
 	font-weight: bold;
-}
+ }
 
-.kr-field-attribute .labelTop {
+
+.kr-field-attribute .kr-labelTop {
     font-weight:bold;
 }
 
@@ -132,6 +125,8 @@ h1.kr-header-object-title {			/* was h1.header-object-title*/  /* NOT FOUND in x
 	padding-bottom: 0.3em;
 	font-weight: bold;
 }
+/*headers*/
+
 h2.kr-header-page-title {		/* was h2.header-page-title */  /* NOT FOUND in xml and/or jsp */
 	font-family:Arial, Helvetica, sans-serif;
 	font-size: 1.42em;
@@ -143,6 +138,9 @@ h3.kr-header-page-action {		/* was h3.header-page-action*/  /* NOT FOUND in xml 
 	font-family:Georgia, 'Times New Roman', Times, serif;
 	font-size: 2.1em;
 	font-weight: normal;
+}
+h3.kr-page-section-title {		/* was h2.page-section-title */ /* renamed in xml and/or jsp */
+	border-bottom: 2px solid #000;
 }
 h4.kr-header-page-subsection {		/* was h4.header-page-subsection  */  /* NOT FOUND in xml and/or jsp */
 	font-family:Arial, Helvetica, sans-serif;
@@ -183,13 +181,9 @@ h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/ /* NOT FOUND in xml
 	background-color:#73C561;
 	/* font styling */
 	color: #2A2A2A;
-	cursor:pointer;
     border-radius:4px;
     font-weight: normal;
     font-size:1.07692308em;   /* 14px divided by 13px */
-    padding: 0.6em 2em;
-   /*remove extra padding in IE*/
-   overflow: visible;
    text-shadow: 0px 1px 0px #83d485;
    filter: dropshadow(color=#83d485, offX=0, offY=1);
    }
@@ -246,12 +240,10 @@ h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/ /* NOT FOUND in xml
 	background: linear-gradient(top, rgba(153,153,153,1) 0%, rgba(51,51,51,1) 100%);
 	color: #ffffff;
 	border: 1px solid #999;
-    cursor:pointer;
 }
 
 .kr-button-primary a, .kr-button-primary a:link, .kr-button-primary a:visited {		/* was .button-primary a, .button-primary a:link, .button-primary a:visited */ /* renamed in xml and/or jsp */
 	color: #eeeeee;
-	text-decoration:none;
 }
 
 .kr-button-primary:hover, .kr-button-secondary1:hover {		/* was .button-primary:hover, .button-secondary1:hover */ /* renamed in xml and/or jsp */
@@ -625,6 +617,7 @@ ul.ui-autocomplete.ui-widget-content {
 	color: #3F7826;
 	border: 1px solid #999;
     cursor:pointer;
+    height:24px;
 }
 .ui-priority-secondary-sm:hover {
 	background: rgb(153,153,153);

@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/rice-portal/jsp/sys/riceTldHeader.jsp"%>
+<%@ include file="/rice-portal/jsp/sys/riceTldHeader.jsp" %>
 
 <%@ attribute name="channelTitle" required="true" %>
 <%@ attribute name="channelUrl" required="true" %>
@@ -23,13 +23,35 @@
   <c:set var="frameHeight" value="500"/>
 </c:if>
 
-<iframe src="${channelUrl}" onload='<c:if test="${ConfigProperties.test.mode ne 'true'}">setIframeAnchor("iframeportlet")</c:if>' name="iframeportlet" id="iframeportlet" style="height: ${frameHeight}px; width: 100%; overflow-x: hidden;" title="E-Doc" frameborder="0" height="${frameHeight}px" scrolling="auto" width="100%" ></iframe>                   
+<iframe src="${channelUrl}"
+        onload='<c:if test="${ConfigProperties.test.mode ne 'true'}">setIframeAnchor("iframeportlet")</c:if>'
+        name="iframeportlet" id="iframeportlet" style="width: 100%; overflow: hidden;"
+        title="E-Doc" frameborder="0" scrolling="auto" width="100%"></iframe>
+
+<script type="text/javascript">
+  jQuery(function(){
+  var if_height = ${frameHeight};
+  var iframe = jQuery("#iframeportlet");
+  jQuery.receiveMessage(function(e) {
+    // Get the height from the passsed data.
+    var h = Number(e.data.replace(/.*if_height=(\d+)(?:&|$)/, '$1'));
+
+    if (!isNaN(h) && h > 0 && h !== if_height) {
+      // Height has changed, update the iframe.
+      if_height = h + 40;
+      iframe.height(if_height);
+    }
+
+  });
+  });
+</script>
 
 <%-- 
   May want to move this to a script a js file at some point.
   Right now though this is very specific to this tag.  This was
   very simple logic until it came to supporting IE :-(
 --%>
+<%--
 <script type="text/javascript">
   /* <![CDATA[ */
   /** "namespacing" the portlet resize elements. */
@@ -144,3 +166,4 @@
   }();
   /* ]]> */
 </script>
+--%>

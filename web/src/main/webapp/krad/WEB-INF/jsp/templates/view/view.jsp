@@ -19,6 +19,14 @@
 
 <!-- begin of view render -->
 <krad:html view="${view}">
+<!----------------------------------- #Resize notification --------------------------------------->
+<krad:script value="
+    jq(function(){
+      publishHeight();
+      window.onresize = publishHeight;
+      window.setInterval(publishHeight, 500);
+    });
+" />
 
 <!----------------------------------- #APPLICATION HEADER --------------------------------------->
 <krad:template component="${view.applicationHeader}"/>

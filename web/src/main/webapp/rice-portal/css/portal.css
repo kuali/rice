@@ -851,6 +851,5 @@ ul {
 	background-repeat: repeat-y;
 	/* padding left 15px simulates previous table layout spacing */
 	padding: 0px 0px 0px 15px;
-	/* default height */
-	height: 500px;
+    overflow: hidden;
 }

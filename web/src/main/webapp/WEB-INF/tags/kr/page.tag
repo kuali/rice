@@ -78,6 +78,30 @@
 			<script language="JavaScript" type="text/javascript"
 				src="${pageContext.request.contextPath}/${javascriptFile}"></script>
 </c:if>
+
+<!-- new iframe resize logic -->
+<script type="text/javascript">
+
+var jq = jQuery.noConflict();
+var bodyHeight;
+function publishHeight(id) {
+    var parentUrl = window.location;
+    parentUrl = decodeURIComponent(parentUrl);
+
+    var height = jQuery('#view_div:first').outerHeight();
+    if (!isNaN(height) && height > 0 && height !== bodyHeight) {
+        jQuery.postMessage({ if_height: height}, parentUrl, parent);
+        bodyHeight = height;
+    }
+}
+
+jQuery(function(){
+  publishHeight();
+  window.onresize = publishHeight;
+  window.setInterval(publishHeight, 500);
+});
+</script>
+
 </c:forEach>
 	<c:choose>
 		<c:when test="${lookup}" >
@@ -121,6 +145,7 @@
 			<c:out value ="${KualiForm.lookupable.extraOnLoad}" />
 		</c:if>
 		">
+    <div id="view_div">
 		<kul:backdoor />
 
 			<c:if
@@ -153,6 +178,7 @@
 		</c:if>
 		<body onload="if ( !restoreScrollPosition() ) { ${anchorScript} }"
 			onKeyPress="return isReturnKeyAllowed('${Constants.DISPATCH_REQUEST_PARAMETER}.' , event);">
+    <div id="view_div">
 			<kul:backdoor />
 			${headerMenuBar}
 	</c:otherwise>
@@ -387,5 +413,7 @@
 
 </html:form>
 <div id="formComplete"></div>
+</div>
 </body>
+
 </html:html>

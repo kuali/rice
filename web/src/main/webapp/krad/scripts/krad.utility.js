@@ -14,6 +14,18 @@
  * limitations under the License.
  */
 
+var bodyHeight;
+function publishHeight(id) {
+    var parentUrl = window.location;
+    parentUrl = decodeURIComponent(parentUrl);
+
+    var height = jQuery('#view_div:first').outerHeight();
+    if (!isNaN(height) && height > 0 && height !== bodyHeight) {
+        jQuery.postMessage({ if_height: height}, parentUrl, parent);
+        bodyHeight = height;
+    }
+}
+
 /**
  * Get the current context
  *

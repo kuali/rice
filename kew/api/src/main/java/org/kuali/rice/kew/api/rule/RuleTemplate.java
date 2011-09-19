@@ -17,6 +17,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.w3c.dom.Element;
 
 @XmlRootElement(name = RuleTemplate.Constants.ROOT_ELEMENT_NAME)
@@ -326,4 +327,7 @@ public final class RuleTemplate
 
     }
 
+    public static class Cache {
+        public static final String NAME = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0 + "/" + RuleTemplate.Constants.TYPE_NAME;
+    }
 }

@@ -20,6 +20,7 @@ import java.text.ParseException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -120,7 +121,7 @@ public class KRAMetaRuleEngine {
         if (flagCode == null) {
             throw new ParseException("Invalid flag in statement (#" + stmtNum + "): " + statement, 0);
         }
-        RuleBaseValues nestedRule = KEWServiceLocator.getRuleService().getRuleByName(ruleName);
+        org.kuali.rice.kew.api.rule.Rule nestedRule = KewApiServiceLocator.getRuleService().getRuleByName(ruleName);
         if (nestedRule == null) {
             throw new ParseException("Rule '" + ruleName + "' in statement (#" + stmtNum + ") not found: " + statement, 0);
         }

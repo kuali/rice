@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.w3c.dom.Element;
 
 @XmlRootElement(name = RuleDelegation.Constants.ROOT_ELEMENT_NAME)
@@ -136,4 +137,7 @@ public final class RuleDelegation
 
     }
 
+    public static class Cache {
+        public static final String NAME = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0 + "/" + RuleDelegation.Constants.TYPE_NAME;
+    }
 }

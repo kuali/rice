@@ -20,6 +20,17 @@ public interface RuleContract extends Identifiable {
     String getName();
 
     /**
+     * Unique id for the previous version of this Rule.
+     *
+     * <p>
+     * This is the unique id value of the previous version of this Rule.
+     * </p>
+     *
+     * @return previousVersionId
+     */
+    String getPreviousVersionId();
+
+    /**
      * Unique Id for Template of Rule.
      *
      * <p>

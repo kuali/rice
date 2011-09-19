@@ -90,7 +90,7 @@ public class TestRuleAttribute implements WorkflowAttribute, RoleAttribute, Work
 
 	public List<String> getQualifiedRoleNames(String roleName, DocumentContent documentContent) {
 		List<String> qualifiedRoleNames = new ArrayList<String>();
-		Map<String, List<String>> qualifiedRoles = (Map<String, List<String>>)roles.get(roleName);
+		Map<String, List<String>> qualifiedRoles = roles.get(roleName);
 		if (qualifiedRoles != null) {
 			qualifiedRoleNames.addAll(qualifiedRoles.keySet());
 		} else {

@@ -16,10 +16,10 @@
 package org.kuali.rice.kew.rule;
 
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -101,7 +101,7 @@ public class BSFRuleExpression implements RuleExpression {
          * @throws WorkflowException 
          */
         public RuleExpressionResult invokeRule(String name) throws WorkflowException {
-            RuleBaseValues rbv = KEWServiceLocator.getRuleService().getRuleByName(name);
+            org.kuali.rice.kew.api.rule.Rule rbv = KewApiServiceLocator.getRuleService().getRuleByName(name);
             if (rbv == null) throw new WorkflowRuntimeException("Could not find rule named \"" + name + "\"");
             Rule r = new RuleImpl(rbv);
             return r.evaluate(r, context);

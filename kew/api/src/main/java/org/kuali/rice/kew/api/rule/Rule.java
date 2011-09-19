@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -23,8 +22,6 @@ import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kew.api.KewApiConstants;
-import org.kuali.rice.kew.api.document.DocumentContent;
-import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.w3c.dom.Element;
 
 @XmlRootElement(name = Rule.Constants.ROOT_ELEMENT_NAME)
@@ -39,8 +36,9 @@ import org.w3c.dom.Element;
     Rule.Elements.FROM_DATE,
     Rule.Elements.TO_DATE,
     Rule.Elements.FORCE_ACTION,
+    Rule.Elements.PREVIOUS_VERSION_ID,
     Rule.Elements.RULE_RESPONSIBILITIES,
-    Rule.Elements.RULE_EXTENSIONS,
+    Rule.Elements.RULE_EXTENSION_MAP,
     Rule.Elements.RULE_TEMPLATE_NAME,
     Rule.Elements.RULE_EXPRESSION_DEF,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
@@ -67,9 +65,11 @@ public final class Rule
     private final DateTime toDate;
     @XmlElement(name = Elements.FORCE_ACTION, required = false)
     private final boolean forceAction;
+    @XmlElement(name = Elements.PREVIOUS_VERSION_ID, required = false)
+    private final String previousVersionId;
     @XmlElement(name = Elements.RULE_RESPONSIBILITIES, required = false)
     private final List<RuleResponsibility> ruleResponsibilities;
-    @XmlElement(name = Elements.RULE_EXTENSIONS, required = false)
+    @XmlElement(name = Elements.RULE_EXTENSION_MAP, required = false)
     @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
     private final Map<String, String> ruleExtensions;
     @XmlElement(name = Elements.RULE_TEMPLATE_NAME, required = false)
@@ -98,6 +98,7 @@ public final class Rule
         this.ruleExtensions = null;
         this.ruleTemplateName = null;
         this.ruleExpressionDef = null;
+        this.previousVersionId = null;
     }
 
     private Rule(Builder builder) {
@@ -122,6 +123,7 @@ public final class Rule
         this.ruleExtensions = builder.getRuleExtensionMap();
         this.ruleTemplateName = builder.getRuleTemplateName();
         this.ruleExpressionDef = builder.getRuleExpressionDef() == null ? null : builder.getRuleExpressionDef().build();
+        this.previousVersionId = builder.getPreviousVersionId();
     }
 
     @Override
@@ -147,6 +149,11 @@ public final class Rule
     @Override
     public String getDescription() {
         return this.description;
+    }
+
+    @Override
+    public String getPreviousVersionId() {
+        return this.previousVersionId;
     }
 
     @Override
@@ -209,6 +216,7 @@ public final class Rule
         private List<RuleResponsibility.Builder> ruleResponsibilities = Collections.<RuleResponsibility.Builder>emptyList();
         private Map<String, String> ruleExtensions = Collections.<String,String>emptyMap();
         private String ruleTemplateName;
+        private String previousVersionId;
         private RuleExpression.Builder ruleExpressionDef;
 
         private Builder(String name) {
@@ -234,6 +242,7 @@ public final class Rule
             builder.setFromDate(contract.getFromDate());
             builder.setToDate(contract.getToDate());
             builder.setForceAction(contract.isForceAction());
+            builder.setPreviousVersionId(contract.getPreviousVersionId());
             if (CollectionUtils.isNotEmpty(contract.getRuleResponsibilities())) {
                 List<RuleResponsibility.Builder> responsibilityBuilders = new ArrayList<RuleResponsibility.Builder>();
                 for (RuleResponsibilityContract c : contract.getRuleResponsibilities()) {
@@ -301,6 +310,11 @@ public final class Rule
         }
 
         @Override
+        public String getPreviousVersionId() {
+            return this.previousVersionId;
+        }
+
+        @Override
         public List<RuleResponsibility.Builder> getRuleResponsibilities() {
             return this.ruleResponsibilities;
         }
@@ -361,6 +375,10 @@ public final class Rule
             this.forceAction = forceAction;
         }
 
+        public void setPreviousVersionId(String previousVersionId) {
+            this.previousVersionId = previousVersionId;
+        }
+
         public void setRuleResponsibilities(List<RuleResponsibility.Builder> ruleResponsibilities) {
             this.ruleResponsibilities = Collections.unmodifiableList(ruleResponsibilities);
         }
@@ -407,9 +425,13 @@ public final class Rule
         final static String TO_DATE = "toDate";
         final static String FORCE_ACTION = "forceAction";
         final static String RULE_RESPONSIBILITIES = "ruleResponsibilities";
-        final static String RULE_EXTENSIONS = "ruleExtensions";
+        final static String RULE_EXTENSION_MAP = "ruleExtensions";
         final static String RULE_TEMPLATE_NAME = "ruleTemplateName";
         final static String RULE_EXPRESSION_DEF = "ruleExpressionDef";
+        final static String PREVIOUS_VERSION_ID = "previousVersionId";
     }
 
+    public static class Cache {
+        public static final String NAME = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0 + "/" + Rule.Constants.TYPE_NAME;
+    }
 }

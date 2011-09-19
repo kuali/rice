@@ -219,9 +219,9 @@ public final class RuleResponsibility
         private String groupId;
         private String roleName;
         private List<RuleDelegation.Builder> delegationRules;
-        private boolean usingRole;
-        private boolean usingPrincipal;
-        private boolean usingGroup;
+        private boolean usingRole = false;
+        private boolean usingPrincipal = false;
+        private boolean usingGroup = false;
         private Long versionNumber;
         private String objectId;
 
@@ -429,4 +429,7 @@ public final class RuleResponsibility
         final static String USING_GROUP = "usingGroup";
     }
 
+    public static class Cache {
+        public static final String NAME = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0 + "/" + RuleResponsibility.Constants.TYPE_NAME;
+    }
 }

@@ -57,7 +57,7 @@
 	<bean id="kewConfig" class="org.kuali.rice.core.impl.config.property.ConfigFactoryBean">
 		<property name="configLocations">
 			<list>
-				<value>classpath:org/kuali/rice/kew/config/kew-config-defaults.xml</value>
+				<value>classpath:org/kuali/rice/kew/impl/config/kew-config-defaults.xml</value>
 			</list>
 		</property>
 	</bean>

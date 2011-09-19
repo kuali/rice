@@ -215,6 +215,7 @@ public class RuleAttribute extends PersistableBusinessObjectBase implements Exte
         }
         RuleAttribute bo = new RuleAttribute();
         bo.setApplicationId(im.getApplicationId());
+        bo.setName(im.getName());
         bo.setDescription(im.getDescription());
         bo.setResourceDescriptor(im.getResourceDescriptor());
         bo.setId(im.getId());

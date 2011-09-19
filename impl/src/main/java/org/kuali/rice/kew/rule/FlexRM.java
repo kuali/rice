@@ -296,8 +296,11 @@ public class FlexRM {
 	{
 		String roleName = resp.getResolvedRoleName();
 		//RoleAttribute roleAttribute = resp.resolveRoleAttribute();
-        RoleAttribute roleAttribute = (RoleAttribute)GlobalResourceLoader.getResourceLoader().getObject(new ObjectDefinition(
-                resp.getRoleAttributeName()));
+        RoleAttribute roleAttribute = null;
+        if (resp.isUsingRole()) {
+            roleAttribute = (RoleAttribute)GlobalResourceLoader.getResourceLoader().getObject(new ObjectDefinition(
+                    resp.getRoleAttributeName()));
+        }
 		setRuleAttribute(roleAttribute, rule, resp.getRoleAttributeName());
 		List<String> qualifiedRoleNames = new ArrayList<String>();
 		if (parentRequest != null && parentRequest.getQualifiedRoleName() != null) {
@@ -354,7 +357,9 @@ public class FlexRM {
 		Method setRuleAttributeMethod = null;
 		try {
 			setRuleAttributeMethod = roleAttribute.getClass().getMethod("setRuleAttribute", RuleAttribute.class);
-		} catch (NoSuchMethodException e) {}
+		} catch (NoSuchMethodException e) {
+            LOG.info("method setRuleAttribute not found on " + RuleAttribute.class.getName());
+        }
 		if (setRuleAttributeMethod == null) {
 			return;
 		}

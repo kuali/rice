@@ -15,6 +15,19 @@
  */
 package org.kuali.rice.kew.rule;
 
+import org.kuali.rice.core.api.criteria.Predicate;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.engine.RouteContext;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.routeheader.DocumentContent;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.PerformanceLogger;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,16 +35,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.kuali.rice.kew.api.WorkflowRuntimeException;
-import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.routeheader.DocumentContent;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
-import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.PerformanceLogger;
-
+import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
 /**
  * Rule selector that selects rules based on configured template name 
@@ -51,57 +55,69 @@ class TemplateRuleSelector implements RuleSelector {
     }
 
     public List<Rule> selectRules(RouteContext context, DocumentRouteHeaderValue routeHeader, RouteNodeInstance nodeInstance, String selectionCriterion, Timestamp effectiveDate) {
-	// for TemplateRuleSelector, the criterion is taken as a ruletemplate name
-	final String ruleTemplateName = selectionCriterion;
+        // for TemplateRuleSelector, the criterion is taken as a ruletemplate name
+        final String ruleTemplateName = selectionCriterion;
 
-	Set<MassRuleAttribute> massRules = new HashSet<MassRuleAttribute>();
-	RuleTemplateBo template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(ruleTemplateName);
-	if (template == null) {
-	    throw new WorkflowRuntimeException("Could not locate the rule template with name " + ruleTemplateName + " on document " + routeHeader.getDocumentId());
-	}
-	for (Iterator iter = template.getActiveRuleTemplateAttributes().iterator(); iter.hasNext();) {
+        Set<MassRuleAttribute> massRules = new HashSet<MassRuleAttribute>();
+        RuleTemplateBo template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(ruleTemplateName);
+        if (template == null) {
+            throw new WorkflowRuntimeException("Could not locate the rule template with name " + ruleTemplateName + " on document " + routeHeader.getDocumentId());
+        }
+        for (Iterator iter = template.getActiveRuleTemplateAttributes().iterator(); iter.hasNext();) {
 
-	    RuleTemplateAttributeBo templateAttribute = (RuleTemplateAttributeBo) iter.next();
-	    if (!templateAttribute.isWorkflowAttribute()) {
-		continue;
-	    }
-	    WorkflowAttribute attribute = templateAttribute.getWorkflowAttribute();
-	    if (attribute instanceof MassRuleAttribute) {
-		massRules.add((MassRuleAttribute) attribute);
-	    }
+            RuleTemplateAttributeBo templateAttribute = (RuleTemplateAttributeBo) iter.next();
+            if (!templateAttribute.isWorkflowAttribute()) {
+            continue;
+            }
+            WorkflowAttribute attribute = templateAttribute.getWorkflowAttribute();
+            if (attribute instanceof MassRuleAttribute) {
+            massRules.add((MassRuleAttribute) attribute);
+            }
 
-	}
+        }
 
-	List rules = null;
-	if (effectiveDate != null) {
-	    rules = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination(ruleTemplateName, routeHeader.getDocumentType().getName(), effectiveDate);
-	} else {
-	    rules = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination(ruleTemplateName, routeHeader.getDocumentType().getName());
-	}
-	numberOfSelectedRules = rules.size();
+        List<org.kuali.rice.kew.api.rule.Rule> rules = null;
+        QueryByCriteria.Builder query = QueryByCriteria.Builder.create();
+        List<Predicate> predicates = new ArrayList<Predicate>();
+        predicates.add(equal("ruleTemplate.name", ruleTemplateName));
+        predicates.add(equal("docTypeName", routeHeader.getDocumentType().getName()));
+        predicates.add(equal("active", "Y"));
+        if (effectiveDate != null) {
+            predicates.add(
+                    and(
+                        lessThanOrEqual("activationDate", effectiveDate),
+                        greaterThan("deactivationDate", effectiveDate)));
+            //rules = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination(ruleTemplateName, routeHeader.getDocumentType().getName(), effectiveDate);
+        } /*else {
+            rules = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination(ruleTemplateName, routeHeader.getDocumentType().getName());
+        }*/
+        Predicate p = and(predicates.toArray(new Predicate[]{}));
+        query.setPredicates(p);
+        rules = KewApiServiceLocator.getRuleService().findRules(query.build()).getResults();
+        numberOfSelectedRules = rules.size();
 
-	// TODO really the route context just needs to be able to support nested create and clears
-	// (i.e. a Stack model similar to transaction intercepting in Spring) and we wouldn't have to do this
-	if (context.getDocument() == null) {
-	    context.setDocument(routeHeader);
-	}
-	if (context.getNodeInstance() == null) {
-	    context.setNodeInstance(nodeInstance);
-	}
-	DocumentContent documentContent = context.getDocumentContent();
-	PerformanceLogger performanceLogger = new PerformanceLogger();
-	// have all mass rule attributes filter the list of non applicable rules
-	for (Iterator iter = massRules.iterator(); iter.hasNext();) {
-	    MassRuleAttribute massRuleAttribute = (MassRuleAttribute) iter.next();
-	    rules = massRuleAttribute.filterNonMatchingRules(context, rules);
-	}
-	performanceLogger.log("Time to filter massRules for template " + template.getName());
+        // TODO really the route context just needs to be able to support nested create and clears
+        // (i.e. a Stack model similar to transaction intercepting in Spring) and we wouldn't have to do this
+        if (context.getDocument() == null) {
+            context.setDocument(routeHeader);
+        }
+        if (context.getNodeInstance() == null) {
+            context.setNodeInstance(nodeInstance);
+        }
+        DocumentContent documentContent = context.getDocumentContent();
+        PerformanceLogger performanceLogger = new PerformanceLogger();
+        // have all mass rule attributes filter the list of non applicable rules
+        for (Iterator iter = massRules.iterator(); iter.hasNext();) {
+            MassRuleAttribute massRuleAttribute = (MassRuleAttribute) iter.next();
+            rules = massRuleAttribute.filterNonMatchingRules(context, rules);
+        }
+        performanceLogger.log("Time to filter massRules for template " + template.getName());
 
-	List<Rule> ruleList = new ArrayList<Rule>(rules.size());
-	for (RuleBaseValues ruleDefinition: (List<RuleBaseValues>) rules) {
-	    ruleList.add(new RuleImpl(ruleDefinition));
-	}
-	return ruleList;
+        List<Rule> ruleList = new ArrayList<Rule>(rules.size());
+        for (org.kuali.rice.kew.api.rule.Rule ruleDefinition: rules) {
+            ruleList.add(new RuleImpl(ruleDefinition));
+        }
+        return ruleList;
     }
 
 }

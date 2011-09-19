@@ -38,7 +38,7 @@ import static org.junit.Assert.*;
  */
 public class AttributeClientRoutingDataValidationTest extends KEWTestCase {
 
-
+    @Override
     protected void loadTestData() throws Exception {
         loadXmlFile("AttributeClientRoutingDataValidationTest.xml");
     }    

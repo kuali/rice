@@ -44,13 +44,13 @@ class RuleImpl implements Rule {
     /**
      * The BO of the rule definition in the system
      */
-    private final RuleBaseValues ruleDefinition;
+    private final org.kuali.rice.kew.api.rule.Rule ruleDefinition;
 
-    RuleImpl(RuleBaseValues ruleDefinition) {
+    RuleImpl(org.kuali.rice.kew.api.rule.Rule ruleDefinition) {
         this.ruleDefinition = ruleDefinition;
     }
 
-    public RuleBaseValues getDefinition() {
+    public org.kuali.rice.kew.api.rule.Rule getDefinition() {
         return ruleDefinition;
     }
 
@@ -91,8 +91,6 @@ class RuleImpl implements Rule {
     }
 
     public RuleExpressionResult evaluate(Rule rule, RouteContext context) {
-        org.kuali.rice.kew.api.rule.Rule ruleDefinition
-                = org.kuali.rice.kew.api.rule.Rule.Builder.create(rule.getDefinition()).build();
         org.kuali.rice.kew.api.rule.RuleExpression ruleExprDef = ruleDefinition.getRuleExpressionDef();
         String type = DEFAULT_RULE_EXPRESSION;
         if (ruleExprDef != null) {

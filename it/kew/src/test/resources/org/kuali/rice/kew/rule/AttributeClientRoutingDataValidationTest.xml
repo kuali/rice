@@ -23,12 +23,12 @@
 			<description>TestRuleAttributeDuex</description>
 			<type>TestRuleAttributeDuex</type>
 		</ruleAttribute>
-        <ruleAttribute>
-          <name>TestRuleAttributeThree</name>
-          <className>org.kuali.rice.kew.rule.TestRuleAttributeThree</className>
-          <label>TestRuleAttributeThree</label>
-          <description>TestRuleAttributeThree</description>
-          <type>TestRuleAttributeThree</type>
-      </ruleAttribute>
+    <ruleAttribute>
+      <name>TestRuleAttributeThree</name>
+      <className>org.kuali.rice.kew.rule.TestRuleAttributeThree</className>
+      <label>TestRuleAttributeThree</label>
+      <description>TestRuleAttributeThree</description>
+      <type>TestRuleAttributeThree</type>
+    </ruleAttribute>
 	</ruleAttributes>
 </data>

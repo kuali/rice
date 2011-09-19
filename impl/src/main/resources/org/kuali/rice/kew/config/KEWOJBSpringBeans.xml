@@ -62,7 +62,7 @@
 				<value>enWorkflowDataSource</value>
 			</list>
 		</property>
-		<property name="metadataLocation" value="classpath:org/kuali/rice/kew/config/OJB-repository-kew.xml" />
+		<property name="metadataLocation" value="classpath:org/kuali/rice/kew/impl/config/OJB-repository-kew.xml" />
 	</bean>
 
   <bean id="enActionListDAO" class="org.kuali.rice.kew.actionlist.dao.impl.ActionListDAOOjbImpl" lazy-init="true" depends-on="kewOjbConfigurer">

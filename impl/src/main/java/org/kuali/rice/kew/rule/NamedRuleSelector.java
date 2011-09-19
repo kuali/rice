@@ -15,20 +15,20 @@
  */
 package org.kuali.rice.kew.rule;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -69,7 +69,7 @@ public class NamedRuleSelector implements RuleSelector {
             throw new RiceIllegalStateException("No 'ruleName' configuration parameter present on route node definition: " + nodeInstance.getRouteNode());
         }
 
-        RuleBaseValues ruleDef = KEWServiceLocator.getRuleService().getRuleByName(ruleName);
+        org.kuali.rice.kew.api.rule.Rule ruleDef = KewApiServiceLocator.getRuleService().getRuleByName(ruleName);
         if (ruleDef == null) {
             throw new RiceIllegalStateException("No rule found with name '" + ruleName + "'");
         }

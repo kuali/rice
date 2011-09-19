@@ -82,6 +82,33 @@
 		</property>
 	</bean>
 
+  <bean id="rice.ksb.messageHelper" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="rice.ksb.messageHelper"/>
+  </bean>
+
+  <!-- this can be swapped with whatever cache manager you want (ehcache, java.util.concurrent, etc.) -->
+  <bean id="kewLocalCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+    <property name="cacheManager">
+      <bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" p:config-location="${kew.ehcache.config.location}"/>
+    </property>
+  </bean>
+
+  <!-- the distributed cache manager that calls into the sharedDataCacheService on the ksb -->
+  <bean id="kewDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator">
+    <property name="cacheManager" ref="kewLocalCacheManager" />
+    <property name="messageHelper" ref="rice.ksb.messageHelper" />
+    <property name="serviceName" value="{http://rice.kuali.org/kew}kewCacheServiceSoap" />
+  </bean>
+
+  <bean id="cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl">
+    <property name="cacheManager" ref="kewDistributedCacheManager" />
+  </bean>
+
+  <!-- spring service that should be exposed on the ksb to receive messages from the distributed cache manager -->
+  <bean id="kewCacheService" class="org.kuali.rice.core.impl.cache.CacheServiceImpl" p:cacheManager-ref="kewLocalCacheManager" />
+  <!-- caching end -->
+
+
 	<bean id="enWorkflowDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean">
         <property name="preferredDataSourceParams">
 			<list>

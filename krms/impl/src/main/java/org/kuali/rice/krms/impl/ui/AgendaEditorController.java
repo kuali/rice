@@ -27,6 +27,9 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.AgendaItemBo;
 import org.kuali.rice.krms.impl.repository.ContextBo;
+import org.kuali.rice.krms.impl.repository.ContextBoService;
+import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
+import org.kuali.rice.krms.impl.repository.RuleBo;
 import org.kuali.rice.krms.impl.rule.AgendaEditorBusRule;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -131,7 +134,11 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     private void setAgendaItemLine(UifFormBase form, AgendaItemBo agendaItem) {
         AgendaEditor editorDocument = getAgendaEditor(form);
         if (agendaItem == null) {
-            editorDocument.setAgendaItemLine(new AgendaItemBo());
+            RuleBo rule = new RuleBo();
+            rule.setNamespace(getContextBoService().getContextByContextId(editorDocument.getAgenda().getContextId()).getNamespace());
+            agendaItem = new AgendaItemBo();
+            agendaItem.setRule(rule);
+            editorDocument.setAgendaItemLine(agendaItem);
         } else {
             // TODO: Add a copy not the reference
             editorDocument.setAgendaItemLine((AgendaItemBo) ObjectUtils.deepCopy(agendaItem));
@@ -1079,11 +1086,21 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return result;
     }
 
-    protected SequenceAccessorService getSequenceAccessorService() {
+    /**
+     *  return the sequenceAssessorService
+     */
+    private SequenceAccessorService getSequenceAccessorService() {
         if ( sequenceAccessorService == null ) {
             sequenceAccessorService = KRADServiceLocator.getSequenceAccessorService();
         }
         return sequenceAccessorService;
+    }
+
+    /**
+     * return the contextBoService
+     */
+    private ContextBoService getContextBoService() {
+        return KrmsRepositoryServiceLocator.getContextBoService();
     }
 
     /**

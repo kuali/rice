@@ -191,10 +191,10 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
 
     @Override
     protected void processBeforeAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
-        Object dataObject = ((MaintenanceForm) model).getDocument().getNewMaintainableObject().getDataObject();
-        AgendaBo agenda = ((AgendaEditor) dataObject).getAgenda();
+        MaintenanceForm form = (MaintenanceForm) model;
+        AgendaEditor agendaEditor = (AgendaEditor) form.getDocument().getNewMaintainableObject().getDataObject();
         if (addLine instanceof ActionBo) {
-            ((ActionBo) addLine).setNamespace(getContextBoService().getContextByContextId(agenda.getContextId()).getNamespace());
+            ((ActionBo) addLine).setNamespace(agendaEditor.getAgendaItemLine().getRule().getNamespace());
         }
 
         super.processBeforeAddLine(view, collectionGroup, model, addLine);

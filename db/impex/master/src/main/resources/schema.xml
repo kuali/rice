@@ -925,7 +925,7 @@
         <column name="PPL_FLW_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="NM" required="true" size="100" type="VARCHAR"/>
         <column name="NMSPC_CD" required="true" size="40" type="VARCHAR"/>
-        <column name="TYP_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="TYP_ID" size="40" type="VARCHAR"/>
         <column default="Y" name="ACTV" required="true" size="1" type="VARCHAR"/>
         <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="DESC_TXT" size="4000" type="VARCHAR"/>

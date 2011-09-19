@@ -4,6 +4,14 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.krad.bo.MutableInactivatable
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowContract
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDefinition
+import org.kuali.rice.kew.api.peopleflow.PeopleFlowMemberDefinition
+import org.kuali.rice.kew.api.KewApiServiceLocator
+import org.kuali.rice.kew.api.repository.type.KewTypeRepositoryService
+import org.kuali.rice.kew.api.repository.type.KewTypeDefinition
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException
+import org.kuali.rice.core.api.exception.RiceIllegalStateException
+import org.apache.commons.collections.CollectionUtils
+import org.kuali.rice.kew.api.repository.type.KewAttributeDefinition
 
 /**
  * Mapped entity for PeopleFlows
@@ -31,26 +39,52 @@ class PeopleFlowBo extends PersistableBusinessObjectBase implements MutableInact
         return results;
     }
 
-//    public static PeopleFlowBo from(PeopleFlowContract peopleFlow) {
-//        PeopleFlowBo result = new PeopleFlowBo();
-//
-//        result.id = peopleFlow.getId();
-//        result.name = peopleFlow.getName();
-//        result.namespace = peopleFlow.getNamespace();
-//        result.typeId = peopleFlow.getTypeId();
-//        result.description = peopleFlow.getDescription();
-//        result.active = peopleFlow.isActive();
-//        result.versionNumber = peopleFlow.getVersionNumber();
-//
-//        result.attributeBos = null;  // TODO: Convert map to PeopleFlowAttributeBo list
-//
-//        result.members = new ArrayList<PeopleFlowMemberBo>();
-//        for (PeopleFlowMemberDefinition member : peopleFlow.getMembers()) {
-//            result.members.add(PeopleFlowMemberBo.from(member));
-//        }
-//
-//        return result;
-//    }
+    public static PeopleFlowBo from(PeopleFlowContract peopleFlow, KewTypeDefinition kewTypeDefinition) {
+        PeopleFlowBo result = new PeopleFlowBo();
+
+        result.id = peopleFlow.getId();
+        result.name = peopleFlow.getName();
+        result.namespace = peopleFlow.getNamespace();
+        result.typeId = peopleFlow.getTypeId();
+        result.description = peopleFlow.getDescription();
+        result.active = peopleFlow.isActive();
+        result.versionNumber = peopleFlow.getVersionNumber();
+
+        // we need to translate attributes over, this is a bit more work, first let's do some validation
+        if (peopleFlow.getTypeId() == null) {
+            if (CollectionUtils.isNotEmpty(peopleFlow.getAttributes())) {
+                throw new RiceIllegalArgumentException("Given PeopleFlow definition does not have a type, but does have attribute values");
+            }
+            if (kewTypeDefinition != null) {
+                throw new RiceIllegalArgumentException("PeopleFlow has no type id, but a KewTypeDefinition was supplied when it should not have been.");
+            }
+        }
+        if (peopleFlow.getTypeId() != null) {
+            if (kewTypeDefinition == null) {
+                throw new RiceIllegalArgumentException("PeopleFlow has a type id of '" + peopleFlow.getTypeId() + "' but no KewTypeDefinition was supplied.");
+            }
+            if (!kewTypeDefinition.getId().equals(peopleFlow.getTypeId())) {
+                throw new RiceIllegalArgumentException("Type id of given KewTypeDefinition does not match PeopleFlow type id:  " + kewTypeDefinition.getId() + " != " + peopleFlow.getTypeId());
+            }
+        }
+        result.attributeBos = new ArrayList<PeopleFlowAttributeBo>();
+        peopleFlow.getAttributes().each { key, value ->
+            KewAttributeDefinition attributeDefinition = kewTypeDefinition.getAttributeDefinitionByName(key);
+            if (attributeDefinition == null) {
+                throw new RiceIllegalArgumentException("There is no attribute definition for the given attribute name '" + key + "'");
+            }
+            // they have no way to pass us the id of the attribute from the given contract
+            result.attributeBos.add(PeopleFlowAttributeBo.from(attributeDefinition, null, peopleFlow.getId(), value));
+        }
+
+        // now translate the members
+        result.members = new ArrayList<PeopleFlowMemberBo>();
+        for (PeopleFlowMemberDefinition member : peopleFlow.getMembers()) {
+            result.members.add(PeopleFlowMemberBo.from(member));
+        }
+
+        return result;
+    }
 
     public static PeopleFlowDefinition to(PeopleFlowBo peopleFlowBo) {
         if (peopleFlowBo == null) {

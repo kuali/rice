@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
@@ -128,7 +129,34 @@ public final class KewTypeDefinition extends AbstractDataTransferObject implemen
     public Long getVersionNumber() {
         return versionNumber;
     }
-        
+
+    /**
+     * Gets the KewTypeAttribute matching the name of it's KewAttribute.  If no attribute definition exists with that
+     * name then null is returned.
+     *
+     * <p>
+     * If multiple exist with the same name then the first match is returned.  Since name
+     * is supposed to be unique this should not be a problem in practice.
+     * </p>
+     *
+     * @param name the KewTypeAttribute's name
+     * @return the KewTypeAttribute or null
+     * @throws IllegalArgumentException if the name is blank
+     */
+	public KewTypeAttribute getAttributeDefinitionByName(String name) {
+        if (StringUtils.isBlank(name)) {
+            throw new IllegalArgumentException("name was a null or blank value");
+        }
+        if (CollectionUtils.isNotEmpty(getAttributes())) {
+            for (KewTypeAttribute attribute : getAttributes()) {
+                if (name.equals(attribute.getAttributeDefinition().getName())) {
+                    return attribute;
+                }
+            }
+        }
+        return null;
+	}
+
 	/**
      * This builder is used to construct instances of KEW KewType.  It enforces the constraints of the {@link KewTypeDefinitionContract}.
      */

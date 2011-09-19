@@ -2,15 +2,9 @@ package org.kuali.rice.kew.impl.peopleflow
 
 import org.kuali.rice.kew.impl.type.KewAttributeDefinitionBo
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
+import org.kuali.rice.kew.api.repository.type.KewTypeAttribute
+import org.kuali.rice.kew.api.repository.type.KewAttributeDefinition
 
-/**
- * Created by IntelliJ IDEA.
- * User: gilesp
- * Date: 8/3/11
- * Time: 3:47 PM
- * To change this template use File | Settings | File Templates.
- */
-// TODO: implement contract interface
 class PeopleFlowAttributeBo extends PersistableBusinessObjectBase {
 
     def String id
@@ -28,4 +22,18 @@ class PeopleFlowAttributeBo extends PersistableBusinessObjectBase {
         }
         this.attributeDefinition = attrDef;
     }
+
+    public static PeopleFlowAttributeBo from(KewAttributeDefinition attributeDefinition, String id, String peopleFlowId, String value) {
+        if (attributeDefinition == null) {
+            return null;
+        }
+        PeopleFlowAttributeBo peopleFlowAttributeBo = new PeopleFlowAttributeBo();
+        peopleFlowAttributeBo.setId(id);
+        peopleFlowAttributeBo.setPeopleFlowId(peopleFlowId);
+        peopleFlowAttributeBo.setValue(value);
+        peopleFlowAttributeBo.setAttributeDefinition(KewAttributeDefinitionBo.from(attributeDefinition));
+        peopleFlowAttributeBo.setAttributeDefinitionId(attributeDefinition.getId());
+        return peopleFlowAttributeBo;
+    }
+    
 }

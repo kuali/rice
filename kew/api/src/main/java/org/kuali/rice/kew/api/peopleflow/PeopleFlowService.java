@@ -1,6 +1,7 @@
 package org.kuali.rice.kew.api.peopleflow;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.kew.api.KewApiConstants;
 
 import javax.jws.WebMethod;
@@ -25,6 +26,36 @@ public interface PeopleFlowService {
             @WebParam(name = "name") String name)
         throws RiceIllegalArgumentException;
 
+    /**
+     * TODO...
+     *
+     * @param peopleFlow
+     *
+     * @return
+     *
+     * @throws RiceIllegalArgumentException if the given PeopleFlow definition is null
+     * @throws RiceIllegalArgumentException if the given PeopleFlow definition has a non-null id.  When creating a new
+     * PeopleFlow definition, the ID will be generated.
+     * @throws RiceIllegalStateException if a PeopleFlow with the given namespace code and name already exists
+     */
+    @WebMethod(operationName = "createPeopleFlow")
+    @WebResult(name = "peopleFlow")
+    PeopleFlowDefinition createPeopleFlow(@WebParam(name = "peopleFlow") PeopleFlowDefinition peopleFlow)
+        throws RiceIllegalArgumentException, RiceIllegalStateException;
+
+    /**
+     *
+     * @param peopleFlow
+     *
+     * @return
+     *
+     * @throws RiceIllegalArgumentException
+     * @throws RiceIllegalStateException if the PeopleFlow does not exist in the system under the given peopleFlowId
+     */
+    @WebMethod(operationName = "updatePeopleFlow")
+    @WebResult(name = "peopleFlow")
+    PeopleFlowDefinition updatePeopleFlow(@WebParam(name = "peopleFlow") PeopleFlowDefinition peopleFlow)
+        throws RiceIllegalArgumentException, RiceIllegalStateException;
 
 
 }

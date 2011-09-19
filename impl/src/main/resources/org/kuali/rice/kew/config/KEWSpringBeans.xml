@@ -166,6 +166,8 @@
         <idref local="rice.kew.documentSecurityHandlerService" />
         <idref local="rice.kew.ruleValidationAttributeExporterService" />
         <idref local="rice.kew.extensionRepositoryService" />
+        <idref local="rice.kew.kewTypeRepositoryService" />
+        <idref local="rice.kew.peopleFlowService" />
                 
         <!-- it's important that this service remains non-transactionally proxied for various reasons
                 <idref local="enUserOptionsService"/>
@@ -799,8 +801,13 @@
 
   <bean id="rice.kew.ruleValidationAttributeResolver" class="org.kuali.rice.kew.validation.RuleValidationAttributeResolverImpl"/>
   
-  <bean id="kewTypeRepositoryService" class="org.kuali.rice.kew.impl.repository.KewTypeBoServiceImpl">
+  <bean id="rice.kew.kewTypeRepositoryService" class="org.kuali.rice.kew.impl.repository.KewTypeBoServiceImpl">
     <property name="businessObjectService" ref="businessObjectService"/>
+  </bean>
+
+  <bean id="rice.kew.peopleFlowService" class="org.kuali.rice.kew.impl.peopleflow.PeopleFlowServiceImpl">
+    <property name="businessObjectService" ref="businessObjectService"/>
+    <property name="kewTypeRepositoryService" ref="rice.kew.kewTypeRepositoryService"/>
   </bean>
 
   <bean id="criteriaLookupService"

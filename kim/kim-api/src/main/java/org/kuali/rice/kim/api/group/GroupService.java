@@ -49,11 +49,11 @@ public interface GroupService {
      * @return a list of Group objects in which the given Principal is a member of.  An empty list is returned if an invalid or
      *         non-existant principalId is supplied.
      */
-    @WebMethod(operationName = "getGroupsForPrincipal")
+    @WebMethod(operationName = "getGroupsByPrincipalId")
     @XmlElementWrapper(name = "groups", required = true)
     @XmlElement(name = "group", required = false)
     @WebResult(name = "groups")
-    List<Group> getGroupsForPrincipal(@WebParam(name="principalId") String principalId) throws RiceIllegalArgumentException;
+    List<Group> getGroupsByPrincipalId(@WebParam(name = "principalId") String principalId) throws RiceIllegalArgumentException;
 
 
     /**
@@ -69,11 +69,12 @@ public interface GroupService {
      * @return a list of Group objects in which the given Principal is a member of, filtered by Group namespace.  An empty list is returned if an invalid or
      *         non-existant principalId is supplied.
      */
-    @WebMethod(operationName = "getGroupsForPrincipalByNamespace")
+    @WebMethod(operationName = "getGroupsByPrincipalIdAndNamespaceCode")
     @XmlElementWrapper(name = "groups", required = true)
     @XmlElement(name = "group", required = false)
     @WebResult(name = "groups")
-    List<Group> getGroupsForPrincipalByNamespace(@WebParam(name="principalId") String principalId, @WebParam(name="namespaceCode") String namespaceCode) throws RiceIllegalArgumentException;
+    List<Group> getGroupsByPrincipalIdAndNamespaceCode(@WebParam(name = "principalId") String principalId,
+            @WebParam(name = "namespaceCode") String namespaceCode) throws RiceIllegalArgumentException;
 
     /**
      * Query for groups based on the given search criteria which is a Map of group field names to values.
@@ -142,9 +143,10 @@ public interface GroupService {
      * @return a Group with the given namespace and name values.  A null reference is returned if an invalid or
      *         non-existant id is supplied.
      */
-    @WebMethod(operationName = "getGroupByName")
+    @WebMethod(operationName = "getGroupByNameAndNamespaceCode")
     @WebResult(name = "group")
-    Group getGroupByName(@WebParam(name="namespaceCode") String namespaceCode, @WebParam(name="groupName") String groupName) throws RiceIllegalArgumentException;
+    Group getGroupByNameAndNamespaceCode(@WebParam(name = "namespaceCode") String namespaceCode,
+            @WebParam(name = "groupName") String groupName) throws RiceIllegalArgumentException;
 
     /**
      * Gets all groups for the given collection of group ids.
@@ -156,9 +158,8 @@ public interface GroupService {
      *         non-existant id is supplied.
      */
     @WebMethod(operationName = "getGroups")
-    //uncomment when returning a List type
-    //@XmlElementWrapper(name = "groups", required = true)
-    //@XmlElement(name = "group", required = false)
+    @XmlElementWrapper(name = "groups", required = true)
+    @XmlElement(name = "group", required = false)
     @WebResult(name = "groups")
     List<Group> getGroups(@WebParam(name="groupIds") Collection<String> groupIds);
 
@@ -205,11 +206,11 @@ public interface GroupService {
      * @param principalId Id of a Principal
      * @return a list of Group Ids in which the principal is a member of.
      */
-    @WebMethod(operationName = "getGroupIdsForPrincipal")
+    @WebMethod(operationName = "getGroupIdsByPrincipalId")
     @XmlElementWrapper(name = "groupIds", required = true)
     @XmlElement(name = "groupId", required = false)
     @WebResult(name = "groupIds")
-	List<String> getGroupIdsForPrincipal(@WebParam(name="principalId") String principalId) throws RiceIllegalArgumentException;
+	List<String> getGroupIdsByPrincipalId(@WebParam(name = "principalId") String principalId) throws RiceIllegalArgumentException;
 
     /**
      * Get all the groups for the given principal.  Recurses into parent groups
@@ -223,11 +224,12 @@ public interface GroupService {
      * @param namespaceCode Namspace code to limit group results to
      * @return a list of Group Ids in which the principal is a member of, limited to the passed in namespace.
      */
-    @WebMethod(operationName = "getGroupIdsForPrincipalByNamespace")
+    @WebMethod(operationName = "getGroupIdsByPrincipalIdAndNamespaceCode")
     @XmlElementWrapper(name = "groupIds", required = true)
     @XmlElement(name = "groupId", required = false)
     @WebResult(name = "groupIds")
-	List<String> getGroupIdsForPrincipalByNamespace(@WebParam(name="principalId") String principalId, @WebParam(name="namespaceCode") String namespaceCode) throws RiceIllegalArgumentException;
+	List<String> getGroupIdsByPrincipalIdAndNamespaceCode(@WebParam(name = "principalId") String principalId,
+            @WebParam(name = "namespaceCode") String namespaceCode) throws RiceIllegalArgumentException;
 
 
     /**
@@ -240,11 +242,11 @@ public interface GroupService {
      * @param principalId Id of a Principal
      * @return a list of Group Ids in which the principal is directly a member of.
      */
-    @WebMethod(operationName = "getDirectGroupIdsForPrincipal")
+    @WebMethod(operationName = "getDirectGroupIdsByPrincipalId")
     @XmlElementWrapper(name = "groupIds", required = true)
     @XmlElement(name = "groupId", required = false)
     @WebResult(name = "groupIds")
-    List<String> getDirectGroupIdsForPrincipal(@WebParam(name="principalId") String principalId) throws RiceIllegalArgumentException;
+    List<String> getDirectGroupIdsByPrincipalId(@WebParam(name = "principalId") String principalId) throws RiceIllegalArgumentException;
 
 
     /**
@@ -401,21 +403,6 @@ public interface GroupService {
     @XmlElement(name = "member", required = false)
     @WebResult(name = "members")
 	List<GroupMember> getMembers( @WebParam(name="groupIds") List<String> groupIds ) throws RiceIllegalArgumentException;
-
-
-    /**
-     * Get the Person objects for the person type members of the group.
-     *
-     * <p>
-     * Only Persons that are direct group members are returned.
-     * </p>
-     *
-     * @param groupId     Id of groups
-     * @return Collection of Person objects who are members of the group.
-     */
-/*    @WebMethod(operationName = "getPersonMembersOfGroup")
-    @WebResult(name = "personMembersOfGroup")
-    Collection<Person> getPersonMembersOfGroup( @WebParam(name="groupId") String groupId ) throws RiceIllegalArgumentException;
 
 
      /**

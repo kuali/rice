@@ -24,7 +24,6 @@ import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.impl.group.GroupServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 
-import javax.xml.namespace.QName;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -111,12 +110,12 @@ public class GroupServiceImplTest extends KIMTestCase {
 		boolean isIt = groupService.isMemberOfGroup("p2", "g101");
 		assertFalse( "p2 should not be a member of Group A", isIt );
 		
-		List<String> gIds = groupService.getGroupIdsForPrincipal("p1");
+		List<String> gIds = groupService.getGroupIdsByPrincipalId("p1");
 		assertTrue( "p1 should be a member of Group A", gIds.contains("g101"));
 		assertTrue( "p1 should be a member of Group B", gIds.contains("g102"));
 		assertTrue( "p1 should be a member of Group C", gIds.contains("g103"));
 		
-		gIds = groupService.getGroupIdsForPrincipalByNamespace("p1", "ADDL_GROUPS_TESTS");
+		gIds = groupService.getGroupIdsByPrincipalIdAndNamespaceCode("p1", "ADDL_GROUPS_TESTS");
 		assertTrue( "p1 should be a member of Group A", gIds.contains("g101"));
 		assertTrue( "p1 should be a member of Group B", gIds.contains("g102"));
 		assertTrue( "p1 should be a member of Group C", gIds.contains("g103"));
@@ -130,10 +129,10 @@ public class GroupServiceImplTest extends KIMTestCase {
 		gMembership = groupService.getMembersOfGroup("g102");
 		assertTrue( "Group B should have 2 members.", gMembership.size() == 2);
 		
-		List<Group> gInfo = groupService.getGroupsForPrincipal("p1");
+		List<Group> gInfo = groupService.getGroupsByPrincipalId("p1");
 		assertTrue( "p1 should be a member of at least 3 groups.", gInfo.size() >= 3);
 		
-		gInfo = groupService.getGroupsForPrincipalByNamespace("p1", "ADDL_GROUPS_TESTS");
+		gInfo = groupService.getGroupsByPrincipalIdAndNamespaceCode("p1", "ADDL_GROUPS_TESTS");
 		assertTrue( "p1 should be a member of exactly 3 groups with namespace = ADDL_GROUPS_TESTS.", gInfo.size() == 3);
 		
 		gIds = groupService.getMemberGroupIds("g101");

@@ -158,7 +158,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
         	// if groups, find any groups to which the user was added or removed
         	// get the type and service for each group
         	// handle as per the group document, a qualifier for each group
-        	List<String> currentGroups = getGroupService().getDirectGroupIdsForPrincipal(principalId);
+        	List<String> currentGroups = getGroupService().getDirectGroupIdsByPrincipalId(principalId);
         	List<PersonDocumentGroup> groups = personDoc.getGroups();
         	for ( PersonDocumentGroup group : groups ) {
         		// if they are being added to the group, add a qualifier set

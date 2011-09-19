@@ -198,7 +198,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         Map<String, RoleBo> roleBosById = getRoleBoMap(roleIds);
 
         // get the person's groups
-        List<String> groupIds = getGroupService().getGroupIdsForPrincipal(principalId);
+        List<String> groupIds = getGroupService().getGroupIdsByPrincipalId(principalId);
         List<RoleMemberBo> roleMemberBos = getStoredRoleMembersUsingExactMatchOnQualification(principalId, groupIds, roleIds, qualification);
 
         Map<String, List<RoleMembership>> roleIdToMembershipMap = new HashMap<String, List<RoleMembership>>();
@@ -712,7 +712,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         }
 
         // find the groups that the principal belongs to
-        List<String> principalGroupIds = getGroupService().getGroupIdsForPrincipal(principalId);
+        List<String> principalGroupIds = getGroupService().getGroupIdsByPrincipalId(principalId);
         // find the role/group associations
         if (!principalGroupIds.isEmpty()) {
             List<RoleMemberBo> rgs = getStoredRoleGroupsUsingExactMatchOnQualification(principalGroupIds, allRoleIds, qualification);

@@ -138,7 +138,8 @@ public class DocumentTypeSecurity implements Serializable {
         	value = Utilities.substituteConfigParameters(value);
             String namespaceCode = Utilities.parseGroupNamespaceCode(value);
             String groupName = Utilities.parseGroupName(value);
-        	Group groupObject = KimApiServiceLocator.getGroupService().getGroupByName(namespaceCode, groupName);
+        	Group groupObject = KimApiServiceLocator.getGroupService().getGroupByNameAndNamespaceCode(namespaceCode,
+                    groupName);
         	if (groupObject == null) {
         		throw new WorkflowException("Could not find group: " + value);
         	}
@@ -156,7 +157,8 @@ public class DocumentTypeSecurity implements Serializable {
             if (!org.apache.commons.lang.StringUtils.isEmpty(groupName)) {
               groupName = Utilities.substituteConfigParameters(groupName).trim();
               String namespaceCode = Utilities.substituteConfigParameters(((Element) groupNode).getAttribute(XmlConstants.NAMESPACE)).trim();
-              Group groupObject = KimApiServiceLocator.getGroupService().getGroupByName(namespaceCode, groupName);
+              Group groupObject = KimApiServiceLocator.getGroupService().getGroupByNameAndNamespaceCode(namespaceCode,
+                      groupName);
               
               
               if (groupObject != null) {

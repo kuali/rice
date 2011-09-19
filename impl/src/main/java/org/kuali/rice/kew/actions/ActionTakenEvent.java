@@ -289,7 +289,8 @@ public abstract class ActionTakenEvent {
 	
 	protected List<String> getGroupIdsForPrincipal() {
 		if (groupIdsForPrincipal == null) {
-			groupIdsForPrincipal = KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(getPrincipal().getPrincipalId());
+			groupIdsForPrincipal = KimApiServiceLocator.getGroupService().getGroupIdsByPrincipalId(
+                    getPrincipal().getPrincipalId());
 		}
 		return groupIdsForPrincipal;
 	}

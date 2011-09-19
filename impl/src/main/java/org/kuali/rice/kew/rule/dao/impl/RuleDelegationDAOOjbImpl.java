@@ -201,7 +201,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
             {
                 throw new RiceRuntimeException("Failed to locate user for the given workflow id: " + principalId);
             }
-            workgroupIds = KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
+            workgroupIds = KimApiServiceLocator.getGroupService().getGroupIdsByPrincipalId(principalId);
         }
         crit.addIn("ruleResponsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupIds, principalId, searchUser, searchUserInWorkgroups));
         crit.addEqualTo("delegateRule", 1);

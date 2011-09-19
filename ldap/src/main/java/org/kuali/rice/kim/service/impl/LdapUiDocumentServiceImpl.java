@@ -105,7 +105,8 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 			identityManagementPersonDocument.setAddrs(loadAddresses(identityManagementPersonDocument, principalId, entityType.getAddresses(), identityManagementPersonDocument.getPrivacy().isSuppressAddress()));
 		}
 
-		List<Group> groups = getGroupService().getGroups(getGroupService().getDirectGroupIdsForPrincipal(identityManagementPersonDocument.getPrincipalId()));
+		List<Group> groups = getGroupService().getGroups(getGroupService().getDirectGroupIdsByPrincipalId(
+                identityManagementPersonDocument.getPrincipalId()));
 		loadGroupToPersonDoc(identityManagementPersonDocument, groups);
 		loadRoleToPersonDoc(identityManagementPersonDocument);
 		loadDelegationsToPersonDoc(identityManagementPersonDocument);

@@ -534,7 +534,8 @@ public class SendEventNotificationMessageController extends BaseSendNotification
 	    				NotificationRecipient recipient = new NotificationRecipient();
 	    				recipient.setRecipientType(KimGroupMemberTypes.GROUP_MEMBER_TYPE);
 	    				recipient.setRecipientId(
-	    						getGroupService().getGroupByName(workgroupNamespaceCodes[i], workgroupRecipients[i]).getId());
+	    						getGroupService().getGroupByNameAndNamespaceCode(workgroupNamespaceCodes[i],
+                                        workgroupRecipients[i]).getId());
 	    				notification.addRecipient(recipient);
 	    			}
 	    		}

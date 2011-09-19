@@ -288,7 +288,7 @@ public final class RoleXmlUtil {
             } else if (KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)) {
                 // If the member is a group, ensure that the group exists and does not conflict with any existing group ID information.
                 NameAndNamespacePair groupNameAndNamespace = newRoleMember.getGroupName();
-                GroupContract tempGroup = KimApiServiceLocator.getGroupService().getGroupByName(
+                GroupContract tempGroup = KimApiServiceLocator.getGroupService().getGroupByNameAndNamespaceCode(
                         groupNameAndNamespace.getNamespaceCode(), groupNameAndNamespace.getName());
                 if (tempGroup == null) {
                     throw new UnmarshalException("Cannot create group role member with namespace \"" + groupNameAndNamespace.getNamespaceCode() +

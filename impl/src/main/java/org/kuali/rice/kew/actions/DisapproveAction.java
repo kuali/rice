@@ -177,7 +177,8 @@ public class DisapproveAction extends ActionTakenEvent {
         if( !StringUtils.isBlank(groupName))
         {
             Group systemUserWorkgroup = KimApiServiceLocator.getGroupService().
-                getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
+                    getGroupByNameAndNamespaceCode(Utilities.parseGroupNamespaceCode(groupName),
+                            Utilities.parseGroupName(groupName));
 
             List<String> principalIds = KimApiServiceLocator.
             getGroupService().getMemberPrincipalIds( systemUserWorkgroup.getId());

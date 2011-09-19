@@ -682,7 +682,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         if (principalId != null) {
             KEWServiceLocator.getIdentityHelperService().validatePrincipalId(principalId);
             if ( (workgroupMember == null) || (workgroupMember.booleanValue()) ) {
-        		workgroupIds = getGroupService().getGroupIdsForPrincipal(principalId);
+        		workgroupIds = getGroupService().getGroupIdsByPrincipalId(principalId);
         	} else {
         		// user was passed but workgroups should not be parsed... do nothing
         	}

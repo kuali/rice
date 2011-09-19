@@ -150,7 +150,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
     }
 
     public Collection<Recipient> findPrimaryDelegationRecipients(String principalId) {
-    	List<String> workgroupIds = KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
+    	List<String> workgroupIds = KimApiServiceLocator.getGroupService().getGroupIdsByPrincipalId(principalId);
         Criteria orCriteria = new Criteria();
         Criteria delegatorPrincipalIdCriteria = new Criteria();
         delegatorPrincipalIdCriteria.addEqualTo("delegatorPrincipalId", principalId);

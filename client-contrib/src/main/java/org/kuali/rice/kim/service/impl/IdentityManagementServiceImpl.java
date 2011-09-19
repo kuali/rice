@@ -187,19 +187,19 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 	}
     @Override
     public List<String> getGroupIdsForPrincipal(String principalId) {
-		return getGroupService().getGroupIdsForPrincipal(principalId);
+		return getGroupService().getGroupIdsByPrincipalId(principalId);
 	}
     @Override
     public List<String> getGroupIdsForPrincipal(String principalId, String namespaceCode ) {
-		return getGroupService().getGroupIdsForPrincipalByNamespace(principalId, namespaceCode );
+		return getGroupService().getGroupIdsByPrincipalIdAndNamespaceCode(principalId, namespaceCode);
 	}
     @Override
     public List<Group> getGroupsForPrincipal(String principalId) {
-		return getGroupService().getGroupsForPrincipal(principalId);
+		return getGroupService().getGroupsByPrincipalId(principalId);
 	}
     @Override
     public List<Group> getGroupsForPrincipal(String principalId, String namespaceCode ) {
-		return getGroupService().getGroupsForPrincipalByNamespace(principalId, namespaceCode );
+		return getGroupService().getGroupsByPrincipalIdAndNamespaceCode(principalId, namespaceCode);
 	}
     @Override
     public List<String> getMemberGroupIds(String groupId) {
@@ -215,7 +215,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 	}
     @Override
     public Group getGroupByName(String namespaceCode, String groupName) {
-		return getGroupService().getGroupByName( namespaceCode, groupName );
+		return getGroupService().getGroupByNameAndNamespaceCode(namespaceCode, groupName);
     }
     @Override
     public List<String> getParentGroupIds(String groupId) {

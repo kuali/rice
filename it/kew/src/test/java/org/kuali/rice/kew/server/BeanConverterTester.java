@@ -200,7 +200,8 @@ public class BeanConverterTester extends KEWTestCase {
     @Test public void testConvertActionItem() throws Exception {
         // get test data
         String testWorkgroupName = "TestWorkgroup";
-        Group testWorkgroup = KimApiServiceLocator.getGroupService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, testWorkgroupName);
+        Group testWorkgroup = KimApiServiceLocator.getGroupService().getGroupByNameAndNamespaceCode(
+                KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, testWorkgroupName);
         String testWorkgroupId = testWorkgroup.getId();
         assertTrue("Test workgroup '" + testWorkgroupName + "' should have at least one user", KimApiServiceLocator.getGroupService().getDirectMemberPrincipalIds(
                 testWorkgroup.getId()).size() > 0);

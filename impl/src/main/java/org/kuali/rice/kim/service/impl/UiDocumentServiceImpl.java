@@ -315,7 +315,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			identityManagementPersonDocument.setAddrs(loadAddresses(identityManagementPersonDocument, principalId, entityType.getAddresses(), identityManagementPersonDocument.getPrivacy().isSuppressAddress()));
 		}
 
-		List<Group> groups = getGroupService().getGroups(getGroupService().getDirectGroupIdsForPrincipal(identityManagementPersonDocument.getPrincipalId()));
+		List<Group> groups = getGroupService().getGroups(getGroupService().getDirectGroupIdsByPrincipalId(
+                identityManagementPersonDocument.getPrincipalId()));
 		loadGroupToPersonDoc(identityManagementPersonDocument, groups);
 		loadRoleToPersonDoc(identityManagementPersonDocument);
 		loadDelegationsToPersonDoc(identityManagementPersonDocument);
@@ -1282,7 +1283,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
     protected List <GroupMemberBo> populateGroupMembers(IdentityManagementPersonDocument identityManagementPersonDocument) {
 		List <GroupMemberBo>  groupPrincipals = new ArrayList<GroupMemberBo>();
-//		List<? extends Group> origGroups = getGroupService().getGroupsForPrincipal(identityManagementPersonDocument.getPrincipalId());
+//		List<? extends Group> origGroups = getGroupService().getGroupsByPrincipalId(identityManagementPersonDocument.getPrincipalId());
 		if(CollectionUtils.isNotEmpty(identityManagementPersonDocument.getGroups())){
 			for (PersonDocumentGroup group : identityManagementPersonDocument.getGroups()) {
 				GroupMember.Builder groupPrincipalImpl = GroupMember.Builder.create(group.getGroupId(), identityManagementPersonDocument.getPrincipalId(), KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
@@ -1812,7 +1813,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
             }
 
        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
-        	Group groupInfo = getGroupService().getGroupByName(memberNamespaceCode, memberName);
+        	Group groupInfo = getGroupService().getGroupByNameAndNamespaceCode(memberNamespaceCode, memberName);
         	if (groupInfo!=null) {
                 memberId = groupInfo.getId();
             }

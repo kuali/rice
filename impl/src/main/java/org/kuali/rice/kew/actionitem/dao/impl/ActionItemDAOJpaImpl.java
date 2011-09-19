@@ -190,7 +190,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
     }
 
     public Collection<Recipient> findPrimaryDelegationRecipients(String principalId) {
-    	List<String> workgroupIds = KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
+    	List<String> workgroupIds = KimApiServiceLocator.getGroupService().getGroupIdsByPrincipalId(principalId);
         Criteria orCriteria = new Criteria(ActionItem.class.getName());
         Criteria delegatorPrincipalIdCriteria = new Criteria(ActionItem.class.getName());
         delegatorPrincipalIdCriteria.eq("delegatorPrincipalId", principalId);

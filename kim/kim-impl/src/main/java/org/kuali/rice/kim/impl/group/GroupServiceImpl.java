@@ -67,15 +67,15 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
     }
 
     @Override
-    public List<Group> getGroupsForPrincipal(String principalId) throws RiceIllegalArgumentException {
+    public List<Group> getGroupsByPrincipalId(String principalId) throws RiceIllegalArgumentException {
         if ( StringUtils.isEmpty(principalId) ) {
 			 throw new RiceIllegalArgumentException("principalId is blank");
 		}
-        return getGroupsForPrincipalByNamespace( principalId, null );
+        return getGroupsByPrincipalIdAndNamespaceCode(principalId, null);
     }
 
     @Override
-    public List<Group> getGroupsForPrincipalByNamespace(String principalId, String namespaceCode) throws RiceIllegalArgumentException {
+    public List<Group> getGroupsByPrincipalIdAndNamespaceCode(String principalId, String namespaceCode) throws RiceIllegalArgumentException {
         if ( StringUtils.isEmpty(principalId) ) {
 			 throw new RiceIllegalArgumentException("principalId is blank");
 		}
@@ -124,22 +124,22 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
     }
 
     @Override
-    public List<String> getGroupIdsForPrincipal(String principalId) throws RiceIllegalArgumentException {
+    public List<String> getGroupIdsByPrincipalId(String principalId) throws RiceIllegalArgumentException {
         if ( StringUtils.isEmpty(principalId) ) {
 			throw new RiceIllegalArgumentException("principalId is blank");
 		}
-        return getGroupIdsForPrincipalByNamespace(principalId, null);
+        return getGroupIdsByPrincipalIdAndNamespaceCode(principalId, null);
     }
 
     @Override
-    public List<String> getGroupIdsForPrincipalByNamespace(String principalId, String namespaceCode) throws RiceIllegalArgumentException {
+    public List<String> getGroupIdsByPrincipalIdAndNamespaceCode(String principalId, String namespaceCode) throws RiceIllegalArgumentException {
         if ( StringUtils.isEmpty(principalId) ) {
 			 throw new RiceIllegalArgumentException("principalId is blank");
 		}
         List<String> result = new ArrayList<String>();
 
         if (principalId != null) {
-            List<Group> groupList = getGroupsForPrincipalByNamespace(principalId, namespaceCode);
+            List<Group> groupList = getGroupsByPrincipalIdAndNamespaceCode(principalId, namespaceCode);
 
             for (Group group : groupList) {
                 result.add(group.getId());
@@ -150,7 +150,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
     }
 
     @Override
-    public List<String> getDirectGroupIdsForPrincipal(String principalId) throws RiceIllegalArgumentException {
+    public List<String> getDirectGroupIdsByPrincipalId(String principalId) throws RiceIllegalArgumentException {
         if ( StringUtils.isEmpty(principalId) ) {
 			throw new RiceIllegalArgumentException("principalId is blank");
 		}
@@ -345,7 +345,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
     }
 
     //@Override
-    public Group getGroupByName(String namespaceCode, String groupName) {
+    public Group getGroupByNameAndNamespaceCode(String namespaceCode, String groupName) {
         if ( namespaceCode == null || groupName == null ) {
 			return null;
 		}

@@ -45,7 +45,8 @@ public class GroupXmlExporterTest extends XmlExporterTestCase {
     protected void assertExport() throws Exception {
         IdentityService identityService = KimApiServiceLocator.getIdentityService();
         GroupService groupService = KimApiServiceLocator.getGroupService();
-        List<? extends Group> oldGroups = groupService.getGroupsForPrincipal(identityService.getPrincipalByPrincipalName("ewestfal").getPrincipalId());
+        List<? extends Group> oldGroups = groupService.getGroupsByPrincipalId(
+                identityService.getPrincipalByPrincipalName("ewestfal").getPrincipalId());
 
         KewExportDataSet dataSet = new KewExportDataSet();
         dataSet.getGroups().addAll(oldGroups);

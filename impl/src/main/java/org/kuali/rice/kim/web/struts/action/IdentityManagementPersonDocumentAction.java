@@ -303,7 +303,8 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         } else if (newGroup.getGroupName() != null 
         		&& newGroup.getNamespaceCode() != null 
         		&& newGroup.getGroupId() == null) {
-        	Group tempGroup = KimApiServiceLocator.getGroupService().getGroupByName(newGroup.getNamespaceCode(), newGroup.getGroupName());
+        	Group tempGroup = KimApiServiceLocator.getGroupService().getGroupByNameAndNamespaceCode(
+                    newGroup.getNamespaceCode(), newGroup.getGroupName());
         	newGroup.setGroupId(tempGroup.getId());
 	        newGroup.setKimTypeId(tempGroup.getKimTypeId());
         }

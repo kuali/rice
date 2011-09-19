@@ -45,7 +45,7 @@ public class PeopleFlowServiceTest extends KEWTestCase {
         PeopleFlowMemberDefinition.Builder memberBuilder = PeopleFlowMemberDefinition.Builder.create("admin", MemberType.PRINCIPAL);
         memberBuilder.setPriority(1);
         builder.getMembers().add(memberBuilder);
-        Group group = KimApiServiceLocator.getGroupService().getGroupByName("KR-WKFLW", "TestWorkgroup");
+        Group group = KimApiServiceLocator.getGroupService().getGroupByNameAndNamespaceCode("KR-WKFLW", "TestWorkgroup");
         memberBuilder = PeopleFlowMemberDefinition.Builder.create(group.getId(), MemberType.GROUP);
         memberBuilder.setPriority(2);
         builder.getMembers().add(memberBuilder);

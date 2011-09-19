@@ -448,7 +448,8 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
         if (workgroup.getRecipientName() != null && workgroup.getRecipientNamespaceCode() != null) {
             // validate that they are a workgroup from the workgroup service by looking them up
             try {
-                Group group = getGroupService().getGroupByName(workgroup.getRecipientNamespaceCode(), workgroup.getRecipientName());
+                Group group = getGroupService().getGroupByNameAndNamespaceCode(workgroup.getRecipientNamespaceCode(),
+                        workgroup.getRecipientName());
                 if (group == null || !group.isActive()) {
                     GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID, RiceKeyConstants.ERROR_INVALID_ADHOC_WORKGROUP_ID);
                 }

@@ -222,7 +222,8 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 Criteria groupCrit = new Criteria();
                 Criteria orCrit = new Criteria();
                 userCrit.addEqualTo("delegatorPrincipalId", principalId);
-                List<String> delegatorGroupIds = KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
+                List<String> delegatorGroupIds = KimApiServiceLocator.getGroupService().getGroupIdsByPrincipalId(
+                        principalId);
                 if (delegatorGroupIds != null && !delegatorGroupIds.isEmpty()) {
                 	groupCrit.addIn("delegatorGroupId", delegatorGroupIds);
                 }
@@ -242,7 +243,8 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 Criteria groupCrit = new Criteria();
                 Criteria orCrit = new Criteria();
                 userCrit.addEqualTo("delegatorPrincipalId", principalId);
-                List<String> delegatorGroupIds = KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
+                List<String> delegatorGroupIds = KimApiServiceLocator.getGroupService().getGroupIdsByPrincipalId(
+                        principalId);
                 if (delegatorGroupIds != null && !delegatorGroupIds.isEmpty()) {
                 	groupCrit.addIn("delegatorGroupId", delegatorGroupIds);
                 }

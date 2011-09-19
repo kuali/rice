@@ -118,7 +118,7 @@ public class ThinClientTest extends KEWTestCase {
 //		assertTrue(principal.getPrincipalName().equals(KIM_PRINCIPAL_NAME));
 //
 //		// test KIM group service
-//		List<Group> groups = thinRL.getGroupService().getGroupsForPrincipal(principal.getPrincipalId());
+//		List<Group> groups = thinRL.getGroupService().getGroupsByPrincipalId(principal.getPrincipalId());
 //		assertNotNull(groups);
 //		assertTrue(groups.size() > 0);
 //

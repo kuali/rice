@@ -495,7 +495,7 @@ public class SendNotificationMessageController extends BaseSendNotificationContr
                             NotificationRecipient recipient = new NotificationRecipient();
                             recipient.setRecipientType(KimGroupMemberTypes.GROUP_MEMBER_TYPE);
                             recipient.setRecipientId(
-                                    getGroupService().getGroupByName(workgroupNamespaceCodes[i],
+                                    getGroupService().getGroupByNameAndNamespaceCode(workgroupNamespaceCodes[i],
                                             workgroupRecipients[i]).getId());
                             notification.addRecipient(recipient);
                         }

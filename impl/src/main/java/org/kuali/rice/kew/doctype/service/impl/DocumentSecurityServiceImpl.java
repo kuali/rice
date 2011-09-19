@@ -331,7 +331,7 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
     }
 
     private boolean isMemberOfGroupWithName(String namespace, String groupName, String principalId) {
-        for (Group group : KimApiServiceLocator.getGroupService().getGroupsForPrincipal(principalId)) {
+        for (Group group : KimApiServiceLocator.getGroupService().getGroupsByPrincipalId(principalId)) {
             if (StringUtils.equals(namespace, group.getNamespaceCode()) && StringUtils.equals(groupName,
                     group.getName())) {
                 return true;

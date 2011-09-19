@@ -115,7 +115,7 @@ public class RuleDelegationServiceImpl implements RuleDelegationService {
         Collection<String> workgroupIds = new ArrayList<String>();
         if (principalId != null) {
             if ( (workgroupMember == null) || (workgroupMember.booleanValue()) ) {
-                workgroupIds = getGroupService().getGroupIdsForPrincipal(principalId);
+                workgroupIds = getGroupService().getGroupIdsByPrincipalId(principalId);
             } else {
                 // user was passed but workgroups should not be parsed... do nothing
             }

@@ -265,7 +265,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
             {
             	throw new RiceRuntimeException("Failed to locate user for the given workflow id: " + principalId);
             }
-            workgroupIds = KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
+            workgroupIds = KimApiServiceLocator.getGroupService().getGroupIdsByPrincipalId(principalId);
         }
         ReportQueryByCriteria query = getResponsibilitySubQuery(workgroupIds, principalId, searchUser, searchUserInWorkgroups);
         if (query != null) {

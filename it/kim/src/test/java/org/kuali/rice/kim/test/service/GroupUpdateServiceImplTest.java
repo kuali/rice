@@ -60,7 +60,7 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
 	public void testCreateGroup() {
 		Group groupInfo = createGroup();
 
-		Group result = groupService.getGroupByName("KUALI", "gA");
+		Group result = groupService.getGroupByNameAndNamespaceCode("KUALI", "gA");
 
 		assertEquals(groupInfo.isActive(), result.isActive());
 		assertTrue(groupInfo.getNamespaceCode().equals(result.getNamespaceCode()));
@@ -177,7 +177,7 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
 
 		groupService.updateGroup(group.getId(), builder.build());
 
-		Group result = groupService.getGroupByName("KUALI", "gA");
+		Group result = groupService.getGroupByNameAndNamespaceCode("KUALI", "gA");
 
 		assertEquals(group.isActive(), result.isActive());
 		assertEquals(group.getNamespaceCode(), result.getNamespaceCode());

@@ -116,7 +116,7 @@ public class BaseSendNotificationController extends MultiActionController {
     		errors.addError((new StringBuilder()).append('\'').append(namespaceCode).append("' is not a valid namespace code").toString());
     		return false;
     	} else {
-    		Group i = getGroupService().getGroupByName(namespaceCode, groupName);
+    		Group i = getGroupService().getGroupByNameAndNamespaceCode(namespaceCode, groupName);
        		if (i == null) {
        			errors.addError((new StringBuilder()).append('\'').append(groupName).append(
        					"' is not a valid group name for namespace code '").append(namespaceCode).append('\'').toString());

@@ -503,7 +503,7 @@ public class SuperUserAction extends KewKualiAction {
                 }
             } else if (KEWConstants.WORKGROUP.equals(recipient.getType())) {
                 //if (getIdentityManagementService().getGroup(recipient.getId()) == null) {
-                if (getGroupService().getGroupByName(recipient.getNamespaceCode(), recipient.getId()) == null) {
+                if (getGroupService().getGroupByNameAndNamespaceCode(recipient.getNamespaceCode(), recipient.getId()) == null) {
                     GlobalVariables.getMessageMap().putError("appSpecificRouteRecipient2.id",
                             "appspecificroute.workgroup.invalid");
                 }

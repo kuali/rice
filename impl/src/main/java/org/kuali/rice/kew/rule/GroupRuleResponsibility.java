@@ -48,7 +48,8 @@ public class GroupRuleResponsibility extends RuleResponsibilityBo {
     @Override
 	public Group getGroup() {
         if (this.group == null) {
-	        this.group = KimApiServiceLocator.getGroupService().getGroupByName(getNamespaceCode(), getName());
+	        this.group = KimApiServiceLocator.getGroupService().getGroupByNameAndNamespaceCode(getNamespaceCode(),
+                    getName());
         }
         return this.group;
 	}

@@ -487,7 +487,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
 	 * namespace =
 	 * request.getParameter("newAdHocRouteWorkgroup.recipientNamespaceCode"
 	 * ).trim(); } Group group =
-	 * getIdentityManagementService().getGroupByName(namespace,
+	 * getIdentityManagementService().getGroupByNameAndNamespaceCode(namespace,
 	 * request.getParameter(parameterName)); if (group != null) {
 	 * form.getNewAdHocRouteWorkgroup().setId(group.getGroupId());
 	 * form.getNewAdHocRouteWorkgroup().setRecipientName(group.getGroupName());
@@ -507,7 +507,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
 	 * (request.getParameter(namespaceParam) != null &&
 	 * !"".equals(request.getParameter(namespaceParam).trim())) { namespace =
 	 * request.getParameter(namespaceParam).trim(); } Group group =
-	 * getIdentityManagementService().getGroupByName(namespace,
+	 * getIdentityManagementService().getGroupByNameAndNamespaceCode(namespace,
 	 * request.getParameter(parameterName)); if (group != null) {
 	 * form.getAdHocRouteWorkgroup(lineNumber).setId(group.getGroupId());
 	 * form.getAdHocRouteWorkgroup

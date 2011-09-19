@@ -312,7 +312,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
                 userCrit.eq("delegatorPrincipalId", principalId);
                 
                 List<String> userGroupIds = new ArrayList<String>();
-                for(String id: KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId)){
+                for(String id: KimApiServiceLocator.getGroupService().getGroupIdsByPrincipalId(principalId)){
                 	userGroupIds.add(id);
                 }
                 if (!userGroupIds.isEmpty()) {
@@ -335,7 +335,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
                 Criteria orCrit = new Criteria(objectsToRetrieve.getName());
                 userCrit.eq("delegatorPrincipalId", principalId);
                 List<String> userGroupIds = new ArrayList<String>();
-                for(String id: KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId)){
+                for(String id: KimApiServiceLocator.getGroupService().getGroupIdsByPrincipalId(principalId)){
                 	userGroupIds.add(id);
                 }
                 if (!userGroupIds.isEmpty()) {

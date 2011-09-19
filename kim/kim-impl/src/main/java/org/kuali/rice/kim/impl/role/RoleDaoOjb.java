@@ -92,7 +92,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
                 && principalId == null) {
             groupIdValues = new ArrayList<String>(groupIds);
         } else if (principalId != null) {
-            groupIdValues = KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
+            groupIdValues = KimApiServiceLocator.getGroupService().getGroupIdsByPrincipalId(principalId);
         }
         if (groupIdValues != null
                 && groupIdValues.size() > 0) {
@@ -455,7 +455,8 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
 
         List<String> groupIds = new ArrayList<String>();
         for (String principalId : principalIds) {
-            List<String> principalGroupIds = KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId);
+            List<String> principalGroupIds = KimApiServiceLocator.getGroupService().getGroupIdsByPrincipalId(
+                    principalId);
             for (String groupId : principalGroupIds) {
                 if (!groupIds.contains(groupId)) {
                     groupIds.add(groupId);

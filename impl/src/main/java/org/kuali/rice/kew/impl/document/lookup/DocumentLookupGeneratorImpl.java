@@ -496,7 +496,7 @@ public class DocumentLookupGeneratorImpl implements DocumentLookupGenerator {
 
             if(CollectionUtils.isNotEmpty(principalList)) {
                 for(String principalId: principalList){
-                    viewerGroupIds.addAll(KimApiServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId));
+                    viewerGroupIds.addAll(KimApiServiceLocator.getGroupService().getGroupIdsByPrincipalId(principalId));
                 }
             }
 

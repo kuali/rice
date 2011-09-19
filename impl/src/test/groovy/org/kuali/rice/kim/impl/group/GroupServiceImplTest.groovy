@@ -193,7 +193,7 @@ class GroupServiceImplTest {
 
         for (String name : sampleGroupsByName.keySet()) {
             GroupBo tempGroup = sampleGroupsByName.get(name)
-            Group group = groupService.getGroupByName(tempGroup.namespaceCode, tempGroup.name)
+            Group group = groupService.getGroupByNameAndNamespaceCode(tempGroup.namespaceCode, tempGroup.name)
             Assert.assertEquals(GroupBo.to(sampleGroupsByName.get(name)), group)
         }
         businessObjectServiceMockFor.verify(bos)
@@ -206,7 +206,7 @@ class GroupServiceImplTest {
         }
         injectBusinessObjectServiceIntoGroupService()
 
-        Group group = groupService.getGroupByName("badNamespace", "noname")
+        Group group = groupService.getGroupByNameAndNamespaceCode("badNamespace", "noname")
         Assert.assertNull(group)
         businessObjectServiceMockFor.verify(bos)
     }
@@ -257,7 +257,7 @@ class GroupServiceImplTest {
         injectCriteriaLookupServiceIntoGroupService()
 
         // Should be member
-        List<Group> groups = groupService.getGroupsForPrincipal("240");
+        List<Group> groups = groupService.getGroupsByPrincipalId("240");
         Assert.assertEquals("Pricipal should only be a member of 1 group", 1, groups.size())
         List<Group> expectedGroups = new ArrayList<Group>();
         expectedGroups.add(GroupBo.to(sampleGroups.get("1")))
@@ -280,7 +280,7 @@ class GroupServiceImplTest {
         injectCriteriaLookupServiceIntoGroupService()
 
         // Should be member
-        List<Group> groups = groupService.getGroupsForPrincipalByNamespace("240", "PUNK")
+        List<Group> groups = groupService.getGroupsByPrincipalIdAndNamespaceCode("240", "PUNK")
         Assert.assertEquals("Pricipal should only be a member of 1 group", 1, groups.size())
         List<Group> expectedGroups = new ArrayList<Group>();
         expectedGroups.add(GroupBo.to(sampleGroups.get("1")))
@@ -361,7 +361,7 @@ class GroupServiceImplTest {
         injectCriteriaLookupServiceIntoGroupService()
 
         // Should be member
-        List<String> groupIds = groupService.getGroupIdsForPrincipal("240");
+        List<String> groupIds = groupService.getGroupIdsByPrincipalId("240");
         Assert.assertEquals("PricipalId 240 should only be a member of 1 group", 1, groupIds.size())
         List<String> expectedGroupIds = Collections.singletonList("1");
         Assert.assertEquals(expectedGroupIds, groupIds)
@@ -385,7 +385,7 @@ class GroupServiceImplTest {
         injectCriteriaLookupServiceIntoGroupService()
 
         // Should be member
-        List<String> groupIds = groupService.getGroupIdsForPrincipalByNamespace("240", "PUNK");
+        List<String> groupIds = groupService.getGroupIdsByPrincipalIdAndNamespaceCode("240", "PUNK");
         Assert.assertEquals("PricipalId 240 should only be a member of 1 group", 1, groupIds.size())
         List<String> expectedGroupIds = Collections.singletonList("1");
         Assert.assertEquals(expectedGroupIds, groupIds)
@@ -405,7 +405,7 @@ class GroupServiceImplTest {
         injectCriteriaLookupServiceIntoGroupService()
 
         // Should be member
-        List<String> groupIds = groupService.getDirectGroupIdsForPrincipal("240");
+        List<String> groupIds = groupService.getDirectGroupIdsByPrincipalId("240");
         Assert.assertEquals("PricipalId 240 should only be a member of 1 group", 1, groupIds.size())
         List<String> expectedGroupIds = Collections.singletonList("1");
         Assert.assertEquals(expectedGroupIds, groupIds)

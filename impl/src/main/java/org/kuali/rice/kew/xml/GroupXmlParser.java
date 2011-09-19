@@ -93,7 +93,7 @@ public class GroupXmlParser {
         for (Group group : groups) {
             GroupService groupService = KimApiServiceLocator.getGroupService();
             // check if group already exists
-            Group foundGroup = groupService.getGroupByName(group.getNamespaceCode(), group.getName());
+            Group foundGroup = groupService.getGroupByNameAndNamespaceCode(group.getNamespaceCode(), group.getName());
 
             if (foundGroup == null) {
                 if ( LOG.isInfoEnabled() ) {
@@ -309,7 +309,8 @@ public class GroupXmlParser {
         List<String> groupNames = memberGroupNames.get(key);
         if (groupNames != null) {
             for (String groupName : groupNames) {
-                Group group = groupService.getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
+                Group group = groupService.getGroupByNameAndNamespaceCode(Utilities.parseGroupNamespaceCode(groupName),
+                        Utilities.parseGroupName(groupName));
                 if (group != null) {
                 	groupService.addGroupToGroup(group.getId(), groupInfo.getId());
                 } else {

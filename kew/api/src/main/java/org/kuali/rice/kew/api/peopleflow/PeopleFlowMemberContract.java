@@ -3,20 +3,12 @@ package org.kuali.rice.kew.api.peopleflow;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 
+import java.util.List;
+
 /**
  * Interface contract for PeopleFlowDefinition members.  TODO: ...
  */
-public interface PeopleFlowMemberContract extends Identifiable, Versioned {
-
-    /**
-     * @return the id for the {@link PeopleFlowContract} this member belongs to.  May be null before persistence.
-     */
-    String getPeopleFlowId();
-
-    /**
-     * @return the {@link MemberType} of this member.  Never null.
-     */
-    MemberType getMemberType();
+public interface PeopleFlowMemberContract {
 
     /**
      * @return the id of the member.  This will key in to different types depending on the {@link MemberType} of the
@@ -25,16 +17,20 @@ public interface PeopleFlowMemberContract extends Identifiable, Versioned {
     String getMemberId();
 
     /**
+     * @return the {@link MemberType} of this member.  Never null.
+     */
+    MemberType getMemberType();
+
+    /**
      * @return the priority of the member.  This is equivalent to the sequential stop in the PeopleFlowDefinition, which means
      * lower integer value equates to higher priority.  The minimum priority is 1.
-     * May be null if {@link #getDelegatedFromId()} is non-null.
      */
     int getPriority();
 
     /**
-     * @return the id of the {@link PeopleFlowMemberContract} that the instance is a delegate for.  Must be null if
-     * this member is not a delegate.
+     * @return the list of delegates for this member.  Should never be null but may be an empty list in the case where
+     * this member has no delegates
      */
-    String getDelegatedFromId();
+    List<? extends PeopleFlowDelegateContract> getDelegates();
 
 }

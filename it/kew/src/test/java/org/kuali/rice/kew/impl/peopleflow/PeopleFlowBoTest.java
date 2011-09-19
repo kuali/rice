@@ -2,6 +2,8 @@ package org.kuali.rice.kew.impl.peopleflow;
 
 import org.junit.Test;
 import org.kuali.rice.core.api.namespace.Namespace;
+import org.kuali.rice.kew.api.action.DelegationType;
+import org.kuali.rice.kew.api.peopleflow.MemberType;
 import org.kuali.rice.kew.impl.type.KewAttributeDefinitionBo;
 import org.kuali.rice.kew.impl.type.KewTypeAttributeBo;
 import org.kuali.rice.kew.impl.type.KewTypeBo;
@@ -17,7 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test the basic persistence of business objects related to PeopleFlows
@@ -104,7 +107,35 @@ public class PeopleFlowBoTest extends KEWTestCase {
 
         peopleFlowBo.getMembers().add(peopleFlowMember);
 
+        PeopleFlowDelegateBo peopleFlowDelegate = new PeopleFlowDelegateBo();
+        peopleFlowDelegate.setMemberTypeCode("G");
+        peopleFlowDelegate.setMemberId("1");
+        peopleFlowDelegate.setDelegationTypeCode(DelegationType.PRIMARY.getCode());
+        peopleFlowMember.getDelegates().add(peopleFlowDelegate);
+
         boService.save(peopleFlowBo);
+
+        assertNotNull(peopleFlowBo.getId());
+        peopleFlowBo = boService.findBySinglePrimaryKey(PeopleFlowBo.class, peopleFlowBo.getId());
+
+        assertNotNull(peopleFlowBo);
+        assertNotNull(peopleFlowBo.getId());
+        assertTrue(peopleFlowBo.getMembers().size() == 1);
+
+        PeopleFlowMemberBo memberBo = peopleFlowBo.getMembers().get(0);
+        assertNotNull(memberBo.getId());
+        assertEquals(peopleFlowBo.getId(), memberBo.getPeopleFlowId());
+        assertEquals("admin", memberBo.getMemberId());
+        assertEquals(MemberType.PRINCIPAL.getCode(), memberBo.getMemberTypeCode());
+        assertSame(1, memberBo.getPriority());
+        assertTrue(memberBo.getDelegates().size() == 1);
+
+        PeopleFlowDelegateBo delegateBo = memberBo.getDelegates().get(0);
+        assertNotNull(delegateBo.getId());
+        assertEquals(memberBo.getId(), delegateBo.getPeopleFlowMemberId());
+        assertEquals("1", delegateBo.getMemberId());
+        assertEquals(MemberType.GROUP.getCode(), delegateBo.getMemberTypeCode());
+        assertEquals(DelegationType.PRIMARY.getCode(), delegateBo.getDelegationTypeCode());
     }
 
 

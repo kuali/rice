@@ -16,7 +16,6 @@
  */
 package org.kuali.rice.kew.api.peopleflow
 
-import org.junit.Assert
 import org.junit.Test
 import static org.junit.Assert.*
 import org.kuali.rice.core.test.JAXBAssert
@@ -147,7 +146,7 @@ class PeopleFlowDefinitionTest {
 
         assert !flow.getMembers().isEmpty()
         assert 1 == flow.getMembers().size()
-        PeopleFlowMemberDefinition member = flow.getMembers()[0]
+        PeopleFlowMember member = flow.getMembers()[0]
         assert MEMBER_ID == member.getMemberId()
         assert MemberType.PRINCIPAL == member.getMemberType()
     }
@@ -182,7 +181,7 @@ class PeopleFlowDefinitionTest {
         builder.setTypeId(TYPE_ID)
         builder.setVersionNumber(VERSION_NUMBER)
 
-        PeopleFlowMemberDefinition.Builder memberBuilder = PeopleFlowMemberDefinition.Builder.create(MEMBER_ID, MemberType.PRINCIPAL)
+        PeopleFlowMember.Builder memberBuilder = PeopleFlowMember.Builder.create(MEMBER_ID, MemberType.PRINCIPAL)
         builder.setMembers([memberBuilder])
 
         return builder

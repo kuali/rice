@@ -4,29 +4,29 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.krad.bo.MutableInactivatable
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowContract
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDefinition
-import org.kuali.rice.kew.api.peopleflow.PeopleFlowMemberDefinition
-import org.kuali.rice.kew.api.KewApiServiceLocator
-import org.kuali.rice.kew.api.repository.type.KewTypeRepositoryService
+import org.kuali.rice.kew.api.peopleflow.PeopleFlowMember
+
 import org.kuali.rice.kew.api.repository.type.KewTypeDefinition
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException
-import org.kuali.rice.core.api.exception.RiceIllegalStateException
-import org.apache.commons.collections.CollectionUtils
+
 import org.kuali.rice.kew.api.repository.type.KewAttributeDefinition
+import org.kuali.rice.kew.api.peopleflow.PeopleFlowMemberContract
+import org.apache.commons.collections.CollectionUtils
 
 /**
  * Mapped entity for PeopleFlows
  */
 class PeopleFlowBo extends PersistableBusinessObjectBase implements MutableInactivatable, PeopleFlowContract {
 
-    def String id
-    def String name
-    def String namespaceCode
-    def String typeId
-    def String description
-    def boolean active = true
+    String id
+    String name
+    String namespaceCode
+    String typeId
+    String description
+    boolean active = true
 
-    def List<PeopleFlowAttributeBo> attributeBos = new ArrayList<PeopleFlowAttributeBo>();
-    def List<PeopleFlowMemberBo> members = new ArrayList<PeopleFlowMemberBo>();
+    List<PeopleFlowAttributeBo> attributeBos = new ArrayList<PeopleFlowAttributeBo>();
+    List<PeopleFlowMemberBo> members = new ArrayList<PeopleFlowMemberBo>();
 
     @Override
     public Map<String, String> getAttributes() {
@@ -40,7 +40,18 @@ class PeopleFlowBo extends PersistableBusinessObjectBase implements MutableInact
     }
 
     public static PeopleFlowBo from(PeopleFlowContract peopleFlow, KewTypeDefinition kewTypeDefinition) {
-        PeopleFlowBo result = new PeopleFlowBo();
+        return PeopleFlowBo.fromAndUpdate(peopleFlow, kewTypeDefinition, null);
+    }
+
+    /**
+     * Translates from the given PeopleFlowContract to a PeopleFlowBo, optionally updating the given "toUpdate" parameter
+     * instead of creating a new PeopleFlowBo.  If it's not passed then a new PeopleFlowBo will be created.
+     */
+    public static PeopleFlowBo fromAndUpdate(PeopleFlowContract peopleFlow, KewTypeDefinition kewTypeDefinition, PeopleFlowBo toUpdate) {
+        PeopleFlowBo result = toUpdate;
+        if (toUpdate == null) {
+            result = new PeopleFlowBo();
+        }
 
         result.id = peopleFlow.getId();
         result.name = peopleFlow.getName();
@@ -67,6 +78,8 @@ class PeopleFlowBo extends PersistableBusinessObjectBase implements MutableInact
                 throw new RiceIllegalArgumentException("Type id of given KewTypeDefinition does not match PeopleFlow type id:  " + kewTypeDefinition.getId() + " != " + peopleFlow.getTypeId());
             }
         }
+
+        // now we need to effectively do a diff with the given attributes, first let's add new entries and update existing ones
         result.attributeBos = new ArrayList<PeopleFlowAttributeBo>();
         peopleFlow.getAttributes().each { key, value ->
             KewAttributeDefinition attributeDefinition = kewTypeDefinition.getAttributeDefinitionByName(key);
@@ -77,13 +90,30 @@ class PeopleFlowBo extends PersistableBusinessObjectBase implements MutableInact
             result.attributeBos.add(PeopleFlowAttributeBo.from(attributeDefinition, null, peopleFlow.getId(), value));
         }
 
-        // now translate the members
-        result.members = new ArrayList<PeopleFlowMemberBo>();
-        for (PeopleFlowMemberDefinition member : peopleFlow.getMembers()) {
-            result.members.add(PeopleFlowMemberBo.from(member));
-        }
+        handleMembersUpdate(result, peopleFlow);
 
         return result;
+    }
+
+    /**
+     * Translate the members, if the members have changed at all, we want to clear so that the current set of members
+     * are removed by OJB's removal aware list.
+     */
+    private static void handleMembersUpdate(PeopleFlowBo peopleFlowBo, PeopleFlowDefinition peopleFlow) {
+        Set<PeopleFlowMember> currentMembers = new HashSet<PeopleFlowMember>();
+        if (peopleFlowBo.getMembers() == null) {
+            peopleFlowBo.setMembers(new ArrayList<PeopleFlowMemberBo>());
+        }
+        peopleFlowBo.getMembers().each {
+            currentMembers.add(PeopleFlowMember.Builder.create(it).build());
+        }
+        if (!currentMembers.equals(new HashSet<PeopleFlowMember>(peopleFlow.getMembers()))) {
+            // this means that the membership has been updated, we need to rebuild it
+            peopleFlowBo.getMembers().clear();
+            peopleFlow.getMembers().each {
+                peopleFlowBo.getMembers().add(PeopleFlowMemberBo.from(it));
+            }
+        }
     }
 
     public static PeopleFlowDefinition to(PeopleFlowBo peopleFlowBo) {

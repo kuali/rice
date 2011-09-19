@@ -4,44 +4,52 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowMemberContract
 import org.kuali.rice.kew.api.peopleflow.MemberType
 
-import org.kuali.rice.kew.api.peopleflow.PeopleFlowMemberDefinition;
+import org.kuali.rice.kew.api.peopleflow.PeopleFlowMember
+import org.springframework.util.MultiValueMap
+import org.springframework.util.LinkedMultiValueMap
+import org.apache.commons.collections.CollectionUtils
+import org.kuali.rice.kew.api.peopleflow.PeopleFlowDelegate
+import org.kuali.rice.kew.api.action.DelegationType;
 
 /**
- * mapped entity for PeopleFlowDefinition members
+ * mapped entity for PeopleFlow members
  */
 class PeopleFlowMemberBo extends PersistableBusinessObjectBase implements PeopleFlowMemberContract {
-    def String id
-    def String peopleFlowId
-    def String memberTypeCode
-    def String memberId
-    def int priority
-    def String delegatedFromId
 
+    String id
+    String peopleFlowId
+    String memberId
+    String memberTypeCode
+    int priority
+
+    List<PeopleFlowDelegateBo> delegates = new ArrayList<PeopleFlowDelegateBo>();
+
+    @Override
     MemberType getMemberType() {
         return MemberType.fromCode(memberTypeCode);
     }
 
-    public static PeopleFlowMemberBo from(PeopleFlowMemberDefinition member) {
+    public static PeopleFlowMember to(PeopleFlowMemberBo memberBo) {
+        if (memberBo == null) {
+            return null;
+        }
+        PeopleFlowMember.Builder member = PeopleFlowMember.Builder.create(memberBo);
+        return member.build();
+    }
+
+    public static PeopleFlowMemberBo from(PeopleFlowMember member) {
         if (member == null) {
             return null;
         }
-        PeopleFlowMemberBo result = new PeopleFlowMemberBo();
-
-        result.id = member.getId();
-        result.peopleFlowId = member.getPeopleFlowId();
-        result.memberTypeCode = member.getMemberType().code;
-        result.memberId = member.getMemberId();
-        result.priority = member.getPriority();
-        result.delegatedFromId = member.getDelegatedFromId();
-        result.setVersionNumber(member.getVersionNumber());
-        return result;
-    }
-
-    public static PeopleFlowMemberDefinition to(PeopleFlowMemberBo bo) {
-        if (bo == null) {
-            return null;
+        PeopleFlowMemberBo memberBo = new PeopleFlowMemberBo();
+        memberBo.setMemberId(member.getMemberId());
+        memberBo.setMemberTypeCode(member.getMemberType().getCode());
+        memberBo.setPriority(member.getPriority());
+        memberBo.setDelegates(new ArrayList<PeopleFlowDelegateBo>());
+        for (PeopleFlowDelegate delegate : member.getDelegates()) {
+            memberBo.getDelegates().add(PeopleFlowDelegateBo.from(delegate));
         }
-        return PeopleFlowMemberDefinition.Builder.create(bo).build();
+        return memberBo;
     }
 
 }

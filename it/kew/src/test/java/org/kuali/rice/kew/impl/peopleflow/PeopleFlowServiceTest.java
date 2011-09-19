@@ -5,15 +5,16 @@ import org.junit.Test;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.peopleflow.MemberType;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDefinition;
-import org.kuali.rice.kew.api.peopleflow.PeopleFlowMemberDefinition;
+import org.kuali.rice.kew.api.peopleflow.PeopleFlowMember;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowService;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 
+import java.util.Iterator;
+
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 /**
  * An integration test which tests the PeopleFlowService reference implementation.
@@ -25,6 +26,9 @@ public class PeopleFlowServiceTest extends KEWTestCase {
 
     private static final String NAMESPACE_CODE = "MyNamespace";
     private static final String NAME = "MyFlow";
+
+    private static final String NAME2 = "MyFlowUpdate";
+    private static final String DESCRIPTION = "Description after update";
 
     private PeopleFlowService peopleFlowService;
 
@@ -38,15 +42,15 @@ public class PeopleFlowServiceTest extends KEWTestCase {
     }
 
     @Test
-    public void testCreate() throws Exception {
+    public void testCRUD() throws Exception {
 
         // create a flow with a principal and a group member
         PeopleFlowDefinition.Builder builder = PeopleFlowDefinition.Builder.create(NAMESPACE_CODE, NAME);
-        PeopleFlowMemberDefinition.Builder memberBuilder = PeopleFlowMemberDefinition.Builder.create("admin", MemberType.PRINCIPAL);
+        PeopleFlowMember.Builder memberBuilder = PeopleFlowMember.Builder.create("admin", MemberType.PRINCIPAL);
         memberBuilder.setPriority(1);
         builder.getMembers().add(memberBuilder);
         Group group = KimApiServiceLocator.getGroupService().getGroupByNameAndNamespaceCode("KR-WKFLW", "TestWorkgroup");
-        memberBuilder = PeopleFlowMemberDefinition.Builder.create(group.getId(), MemberType.GROUP);
+        memberBuilder = PeopleFlowMember.Builder.create(group.getId(), MemberType.GROUP);
         memberBuilder.setPriority(2);
         builder.getMembers().add(memberBuilder);
         
@@ -62,6 +66,44 @@ public class PeopleFlowServiceTest extends KEWTestCase {
         peopleFlow = peopleFlowService.getPeopleFlowByName(NAMESPACE_CODE, NAME);
         assertPeopleFlowCreate(peopleFlow, group);
 
+        // try an update
+        builder = PeopleFlowDefinition.Builder.create(peopleFlow);
+        builder.setName(NAME2);
+        // create a new member and update an existing member, remove the group member first
+        for (Iterator<PeopleFlowMember.Builder> iterator = builder.getMembers().iterator(); iterator.hasNext();) {
+            PeopleFlowMember.Builder member = iterator.next();
+            if (member.getMemberType() == MemberType.GROUP) {
+                iterator.remove();
+            }
+        }
+        // save the admin member for some checks later
+        PeopleFlowMember.Builder adminMember = builder.getMembers().get(0);
+        assertEquals(1, builder.getMembers().size());
+        memberBuilder = PeopleFlowMember.Builder.create("ewestfal", MemberType.PRINCIPAL);
+        builder.getMembers().add(memberBuilder);
+        builder.setDescription(DESCRIPTION);
+
+        // execute the update
+        PeopleFlowDefinition updatedPeopleFlow = peopleFlowService.updatePeopleFlow(builder.build());
+        updatedPeopleFlow = peopleFlowService.getPeopleFlow(updatedPeopleFlow.getId());
+        assertNotNull(updatedPeopleFlow);
+        assertEquals(NAME2, updatedPeopleFlow.getName());
+        assertEquals(DESCRIPTION, updatedPeopleFlow.getDescription());
+        assertEquals("Ids should be the same", peopleFlow.getId(), updatedPeopleFlow.getId());
+        assertEquals("Version number should be one higher", new Long(peopleFlow.getVersionNumber() + 1),
+                updatedPeopleFlow.getVersionNumber());
+        assertEquals("Should have 2 members", 2, updatedPeopleFlow.getMembers().size());
+        
+        // now check the members
+        for (PeopleFlowMember member : updatedPeopleFlow.getMembers()) {
+            assertTrue("should not have any delegates", member.getDelegates().isEmpty());
+            assertEquals(MemberType.PRINCIPAL, member.getMemberType());
+            assertEquals(1, member.getPriority());
+            if (!(member.getMemberId().equals("admin") || member.getMemberId().equals("ewestfal"))) {
+                fail("Encountered a member that shouldn't exist! " + member.getMemberId());
+            }
+        }
+
     }
 
     private void assertPeopleFlowCreate(PeopleFlowDefinition peopleFlow, Group groupMember) {
@@ -69,11 +111,8 @@ public class PeopleFlowServiceTest extends KEWTestCase {
         assertNotNull(peopleFlow.getId());
         assertEquals(2, peopleFlow.getMembers().size());
         
-        for (PeopleFlowMemberDefinition member : peopleFlow.getMembers()) {
-            assertNotNull("member should have an id", member.getId());
-            assertEquals("member peopleflow id should be same", peopleFlow.getId(), member.getPeopleFlowId());
-            assertNotNull("should have a non-null version number", member.getVersionNumber());
-            assertNull("should not a delegated from id", member.getDelegatedFromId());
+        for (PeopleFlowMember member : peopleFlow.getMembers()) {
+            assertTrue("should not have any delegates", member.getDelegates().isEmpty());
             if (MemberType.PRINCIPAL == member.getMemberType()) {
                 assertEquals(1, member.getPriority());
                 assertEquals("admin", member.getMemberId());

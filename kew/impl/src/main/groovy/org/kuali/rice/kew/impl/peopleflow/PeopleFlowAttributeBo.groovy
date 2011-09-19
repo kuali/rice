@@ -7,10 +7,10 @@ import org.kuali.rice.kew.api.repository.type.KewAttributeDefinition
 
 class PeopleFlowAttributeBo extends PersistableBusinessObjectBase {
 
-    def String id
-	def String attributeDefinitionId
-	def String value
-    def String peopleFlowId
+    String id
+	String attributeDefinitionId
+	String value
+    String peopleFlowId
 
 	def KewAttributeDefinitionBo attributeDefinition
 

@@ -41,10 +41,9 @@ public class PeopleFlowServiceImpl implements PeopleFlowService {
 
     @Override
     public PeopleFlowDefinition updatePeopleFlow(PeopleFlowDefinition peopleFlow) {
-        validateForUpdate(peopleFlow);
+        PeopleFlowBo existingBo = validateForUpdate(peopleFlow);
         KewTypeDefinition kewTypeDefinition = loadKewTypeDefinition(peopleFlow);
-        PeopleFlowBo peopleFlowBo = PeopleFlowBo.from(peopleFlow, kewTypeDefinition);
-        // note that the current list of people flow attributes should get deleted and new records inserted (with new ids)
+        PeopleFlowBo peopleFlowBo = PeopleFlowBo.fromAndUpdate(peopleFlow, kewTypeDefinition, existingBo);
         peopleFlowBo = savePeopleFlow(peopleFlowBo);
         return PeopleFlowBo.to(peopleFlowBo);
     }
@@ -78,7 +77,7 @@ public class PeopleFlowServiceImpl implements PeopleFlowService {
         }
     }
 
-    protected void validateForUpdate(PeopleFlowDefinition peopleFlow) {
+    protected PeopleFlowBo validateForUpdate(PeopleFlowDefinition peopleFlow) {
         if (peopleFlow == null) {
             throw new RiceIllegalArgumentException("peopleFlow is null");
         }
@@ -88,6 +87,11 @@ public class PeopleFlowServiceImpl implements PeopleFlowService {
         if (peopleFlow.getVersionNumber() == null) {
             throw new RiceIllegalArgumentException("The version number on the given PeopleFlow definition was null, a version number must be supplied when updating a PeopleFlow.");
         }
+        PeopleFlowBo peopleFlowBo = getPeopleFlowBo(peopleFlow.getId());
+        if (peopleFlowBo == null) {
+            throw new RiceIllegalArgumentException("Failed to locate an existing PeopleFlow definition with the given id of '" + peopleFlow.getId() + "'");
+        }
+        return peopleFlowBo;
     }
 
     protected PeopleFlowBo getPeopleFlowBo(String peopleFlowId) {

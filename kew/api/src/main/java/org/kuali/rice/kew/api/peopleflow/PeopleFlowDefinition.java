@@ -57,7 +57,7 @@ public final class PeopleFlowDefinition extends AbstractDataTransferObject imple
 
     @XmlElementWrapper(name = Elements.MEMBERS, required = false)
     @XmlElement(name = Elements.MEMBER, required = false)
-    private final List<PeopleFlowMemberDefinition> members;
+    private final List<PeopleFlowMember> members;
     
     @XmlElement(name = Elements.ID, required = false)
     private final String id;
@@ -126,7 +126,7 @@ public final class PeopleFlowDefinition extends AbstractDataTransferObject imple
     }
 
     @Override
-    public List<PeopleFlowMemberDefinition> getMembers() {
+    public List<PeopleFlowMember> getMembers() {
         return this.members;
     }
 
@@ -156,7 +156,7 @@ public final class PeopleFlowDefinition extends AbstractDataTransferObject imple
         private String namespaceCode;
         private String typeId;
         private String description;
-        private List<PeopleFlowMemberDefinition.Builder> members;
+        private List<PeopleFlowMember.Builder> members;
         private String id;
         private boolean active;
         private Long versionNumber;
@@ -166,7 +166,7 @@ public final class PeopleFlowDefinition extends AbstractDataTransferObject imple
             setName(name);
             setActive(true);
             setAttributes(new HashMap<String, String>());
-            setMembers(new ArrayList<PeopleFlowMemberDefinition.Builder>());
+            setMembers(new ArrayList<PeopleFlowMember.Builder>());
         }
 
         public static Builder create(String namespaceCode, String name) {
@@ -185,7 +185,7 @@ public final class PeopleFlowDefinition extends AbstractDataTransferObject imple
             builder.setDescription(contract.getDescription());
             if (contract.getMembers() != null) {
                 for (PeopleFlowMemberContract member : contract.getMembers()) {
-                    builder.getMembers().add(PeopleFlowMemberDefinition.Builder.create(member));
+                    builder.getMembers().add(PeopleFlowMember.Builder.create(member));
                 }
             }
             builder.setId(contract.getId());
@@ -224,7 +224,7 @@ public final class PeopleFlowDefinition extends AbstractDataTransferObject imple
         }
 
         @Override
-        public List<PeopleFlowMemberDefinition.Builder> getMembers() {
+        public List<PeopleFlowMember.Builder> getMembers() {
             return this.members;
         }
 
@@ -269,7 +269,7 @@ public final class PeopleFlowDefinition extends AbstractDataTransferObject imple
             this.description = description;
         }
 
-        public void setMembers(List<PeopleFlowMemberDefinition.Builder> members) {
+        public void setMembers(List<PeopleFlowMember.Builder> members) {
             this.members = members;
         }
 

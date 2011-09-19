@@ -25,6 +25,7 @@ import org.kuali.rice.kew.api.document.attribute.DocumentAttributeIndexingQueue;
 import org.kuali.rice.kew.api.extension.ExtensionRepositoryService;
 import org.kuali.rice.kew.api.group.GroupMembershipChangeQueue;
 import org.kuali.rice.kew.api.note.NoteService;
+import org.kuali.rice.kew.api.peopleflow.PeopleFlowService;
 import org.kuali.rice.kew.api.repository.type.KewTypeRepositoryService;
 import org.kuali.rice.kew.api.rule.RuleService;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
@@ -46,6 +47,7 @@ public class KewApiServiceLocator {
     public static final String EXTENSION_REPOSITORY_SERVICE = "rice.kew.extensionRepositoryService";
     public static final String RULE_SERVICE = "rice.kew.ruleService";
     public static final String KEW_TYPE_REPOSITORY_SERVICE = "rice.kew.kewTypeRepositoryService";
+    public static final String PEOPLE_FLOW_SERVICE = "rice.kew.peopleFlowService";
 
     public static final QName DOCUMENT_ATTRIBUTE_INDEXING_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "documentAttributeIndexingQueueSoap");
     public static final QName GROUP_MEMBERSHIP_CHANGE_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "groupMembershipChangeQueueSoap");
@@ -85,6 +87,10 @@ public class KewApiServiceLocator {
 
     public static KewTypeRepositoryService getKewTypeRepositoryService() {
         return getService(KEW_TYPE_REPOSITORY_SERVICE);
+    }
+
+    public static PeopleFlowService getPeopleFlowService() {
+        return getService(PEOPLE_FLOW_SERVICE);
     }
 
     public static DocumentAttributeIndexingQueue getDocumentAttributeIndexingQueue() {

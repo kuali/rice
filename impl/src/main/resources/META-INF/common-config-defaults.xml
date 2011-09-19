@@ -460,6 +460,8 @@
   <param name="rice.kew.ruleValidationAttributeExporterServiceSoap.secure">true</param>
   <param name="rice.kew.groupMembershipChangeQueueSoap.secure">true</param>
   <param name="rice.kew.responsibilityChangeProcessorSoap.secure">true</param>
+  <param name="rice.kew.kewTypeRepositoryServiceSoap.secure">true</param>
+  <param name="rice.kew.peopleFlowServiceSoap.secure">true</param>
 
   <param name="secure.workflowutility.javaservice.endpoint">true</param>
   <param name="secure.workflowutility.soapservice.endpoint">true</param>

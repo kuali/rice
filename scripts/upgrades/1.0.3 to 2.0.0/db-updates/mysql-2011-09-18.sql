@@ -1,0 +1,1 @@
+alter table KREW_PPL_FLW_T CHANGE TYP_ID TYP_ID varchar(40) NULL;

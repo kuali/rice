@@ -27,7 +27,7 @@ import java.util.Map;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = PeopleFlowDefinition.Constants.TYPE_NAME, propOrder = {
         PeopleFlowDefinition.Elements.ID,
-        PeopleFlowDefinition.Elements.NAMESPACE,
+        PeopleFlowDefinition.Elements.NAMESPACE_CODE,
         PeopleFlowDefinition.Elements.NAME,
         PeopleFlowDefinition.Elements.TYPE_ID,
         PeopleFlowDefinition.Elements.DESCRIPTION,
@@ -46,8 +46,8 @@ public final class PeopleFlowDefinition extends AbstractDataTransferObject imple
     @XmlJavaTypeAdapter(MapStringStringAdapter.class)
     private final Map<String, String> attributes;
 
-    @XmlElement(name = Elements.NAMESPACE, required = true)
-    private final String namespace;
+    @XmlElement(name = Elements.NAMESPACE_CODE, required = true)
+    private final String namespaceCode;
 
     @XmlElement(name = Elements.TYPE_ID, required = false)
     private final String typeId;
@@ -79,7 +79,7 @@ public final class PeopleFlowDefinition extends AbstractDataTransferObject imple
     private PeopleFlowDefinition() {
         this.name = null;
         this.attributes = null;
-        this.namespace = null;
+        this.namespaceCode = null;
         this.typeId = null;
         this.description = null;
         this.members = null;
@@ -91,7 +91,7 @@ public final class PeopleFlowDefinition extends AbstractDataTransferObject imple
     private PeopleFlowDefinition(Builder builder) {
         this.name = builder.getName();
         this.attributes = builder.getAttributes();
-        this.namespace = builder.getNamespace();
+        this.namespaceCode = builder.getNamespaceCode();
         this.typeId = builder.getTypeId();
         this.description = builder.getDescription();
         this.members = ModelObjectUtils.buildImmutableCopy(builder.getMembers());
@@ -106,13 +106,13 @@ public final class PeopleFlowDefinition extends AbstractDataTransferObject imple
     }
 
     @Override
-    public Map getAttributes() {
+    public Map<String, String> getAttributes() {
         return this.attributes;
     }
 
     @Override
-    public String getNamespace() {
-        return this.namespace;
+    public String getNamespaceCode() {
+        return this.namespaceCode;
     }
 
     @Override
@@ -126,7 +126,7 @@ public final class PeopleFlowDefinition extends AbstractDataTransferObject imple
     }
 
     @Override
-    public List getMembers() {
+    public List<PeopleFlowMemberDefinition> getMembers() {
         return this.members;
     }
 
@@ -153,7 +153,7 @@ public final class PeopleFlowDefinition extends AbstractDataTransferObject imple
 
         private String name;
         private Map<String, String> attributes;
-        private String namespace;
+        private String namespaceCode;
         private String typeId;
         private String description;
         private List<PeopleFlowMemberDefinition.Builder> members;
@@ -161,23 +161,23 @@ public final class PeopleFlowDefinition extends AbstractDataTransferObject imple
         private boolean active;
         private Long versionNumber;
 
-        private Builder(String namespace, String name) {
-            setNamespace(namespace);
+        private Builder(String namespaceCode, String name) {
+            setNamespaceCode(namespaceCode);
             setName(name);
             setActive(true);
             setAttributes(new HashMap<String, String>());
             setMembers(new ArrayList<PeopleFlowMemberDefinition.Builder>());
         }
 
-        public static Builder create(String namespace, String name) {
-            return new Builder(namespace, name);
+        public static Builder create(String namespaceCode, String name) {
+            return new Builder(namespaceCode, name);
         }
 
         public static Builder create(PeopleFlowContract contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
             }
-            Builder builder = create(contract.getNamespace(), contract.getName());
+            Builder builder = create(contract.getNamespaceCode(), contract.getName());
             if (contract.getAttributes() != null) {
                 builder.getAttributes().putAll(contract.getAttributes());
             }
@@ -204,13 +204,13 @@ public final class PeopleFlowDefinition extends AbstractDataTransferObject imple
         }
 
         @Override
-        public Map getAttributes() {
+        public Map<String, String> getAttributes() {
             return this.attributes;
         }
 
         @Override
-        public String getNamespace() {
-            return this.namespace;
+        public String getNamespaceCode() {
+            return this.namespaceCode;
         }
 
         @Override
@@ -224,7 +224,7 @@ public final class PeopleFlowDefinition extends AbstractDataTransferObject imple
         }
 
         @Override
-        public List getMembers() {
+        public List<PeopleFlowMemberDefinition.Builder> getMembers() {
             return this.members;
         }
 
@@ -254,11 +254,11 @@ public final class PeopleFlowDefinition extends AbstractDataTransferObject imple
             this.attributes = attributes;
         }
 
-        public void setNamespace(String namespace) {
-            if (StringUtils.isBlank(namespace)) {
-                throw new IllegalArgumentException("namespace was null or blank");
+        public void setNamespaceCode(String namespaceCode) {
+            if (StringUtils.isBlank(namespaceCode)) {
+                throw new IllegalArgumentException("namespaceCode was null or blank");
             }
-            this.namespace = namespace;
+            this.namespaceCode = namespaceCode;
         }
 
         public void setTypeId(String typeId) {
@@ -301,7 +301,7 @@ public final class PeopleFlowDefinition extends AbstractDataTransferObject imple
     static class Elements {
         final static String NAME = "name";
         final static String ATTRIBUTES = "attributes";
-        final static String NAMESPACE = "namespace";
+        final static String NAMESPACE_CODE = "namespaceCode";
         final static String TYPE_ID = "typeId";
         final static String DESCRIPTION = "description";
         final static String MEMBERS = "members";

@@ -82,7 +82,7 @@ public class PeopleFlowBoTest extends KEWTestCase {
         PeopleFlowBo peopleFlowBo = new PeopleFlowBo();
         peopleFlowBo.setDescription("description of testPeopleFlow");
         peopleFlowBo.setName("testPeopleFlow");
-        peopleFlowBo.setNamespace("testNamespace");
+        peopleFlowBo.setNamespaceCode("testNamespace");
         peopleFlowBo.setTypeId(kewTypeBo.getId());
 
         boService.save(peopleFlowBo);

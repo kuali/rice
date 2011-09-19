@@ -356,19 +356,32 @@
 			</bean>
 		</property>
 	</bean>
-	  
-	<bean parent="kewLocalServiceExporter">
+
+	<bean id="rice.kew.kewTypeRepositoryServiceSoap.exporter" parent="kewLocalServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-			<bean parent="kewSoapService">
+			<bean parent="kewJaxWsSoapService">
 				<property name="service">
-					<ref bean="kewTypeRepositoryService" />
+					<ref bean="rice.kew.kewTypeRepositoryService" />
 				</property>
-				<property name="localServiceName" value="kewTypeRepositoryService" />
+				<property name="localServiceName" value="kewTypeRepositoryServiceSoap" />
+        <property name="busSecurity" value="${rice.kew.kewTypeRepositoryServiceSoap.secure}" />
 			</bean>
 		</property>
 	</bean>
 
+  <bean id="rice.kew.peopleFlowServiceSoap.exporter" parent="kewLocalServiceExporter">
+    <property name="serviceBus" ref="rice.ksb.serviceBus" />
+    <property name="serviceDefinition">
+      <bean parent="kewJaxWsSoapService">
+        <property name="service">
+          <ref bean="rice.kew.peopleFlowService" />
+        </property>
+        <property name="localServiceName" value="peopleFlowServiceSoap" />
+        <property name="busSecurity" value="${rice.kew.peopleFlowServiceSoap.secure}" />
+      </bean>
+    </property>
+  </bean>
 
 <!-- ************************************************************************** -->
 <!-- **** These are not SOAP methods... They need to be refactored for 1.1***** -->

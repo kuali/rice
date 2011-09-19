@@ -72,8 +72,8 @@ public class PeopleFlowServiceImpl implements PeopleFlowService {
             throw new RiceIllegalArgumentException("The version number on the given PeopleFlow definition was not null, value was " + peopleFlow.getVersionNumber() +
                     "  When creating a new PeopleFlow, the given version number must be null.");
         }
-        if (getPeopleFlowBoByName(peopleFlow.getNamespace(), peopleFlow.getName()) != null) {
-            throw new RiceIllegalStateException("A PeopleFlow definition with the namespace code '" + peopleFlow.getNamespace() +
+        if (getPeopleFlowBoByName(peopleFlow.getNamespaceCode(), peopleFlow.getName()) != null) {
+            throw new RiceIllegalStateException("A PeopleFlow definition with the namespace code '" + peopleFlow.getNamespaceCode() +
             "' and name '" + peopleFlow.getName() + "' already exists.");
         }
     }
@@ -110,7 +110,7 @@ public class PeopleFlowServiceImpl implements PeopleFlowService {
 		Collection<PeopleFlowBo> peopleFlows = businessObjectService.findMatching(PeopleFlowBo.class, criteria);
         if (CollectionUtils.isEmpty(peopleFlows)) {
             return null;
-        } else if (peopleFlows.size() > 0) {
+        } else if (peopleFlows.size() > 1) {
             throw new RiceIllegalStateException("Found more than one PeopleFlow with the given namespace code '" + namespaceCode + "' and name '" + name + "'");
 		}
         return peopleFlows.iterator().next();

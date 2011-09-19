@@ -30,7 +30,7 @@ public interface PeopleFlowContract extends Identifiable, Inactivatable, Version
     /**
      * @return the namespace for this {@link PeopleFlowContract}.  Will never be null.
      */
-    String getNamespace();
+    String getNamespaceCode();
 
     /**
      * @return the type id for this {@link PeopleFlowContract}.  Will never be null.

@@ -26,7 +26,7 @@ import org.kuali.rice.core.test.JAXBAssert
  */
 class PeopleFlowDefinitionTest {
 
-    private static final String NAMESPACE = "MyNamespace"
+    private static final String NAMESPACE_CODE = "MyNamespace"
     private static final String NAME = "MyPeopleFlow"
     private static final String ID = "1"
     private static final String ATTRIBUTE_KEY = "key"
@@ -38,7 +38,7 @@ class PeopleFlowDefinitionTest {
 
     private static final String MINIMAL_XML = """
     <peopleFlowDefinition xmlns:ns2="http://rice.kuali.org/core/v2_0" xmlns="http://rice.kuali.org/kew/v2_0">
-      <namespace>MyNamespace</namespace>
+      <namespaceCode>MyNamespace</namespaceCode>
       <name>MyPeopleFlow</name>
       <members/>
       <attributes/>
@@ -49,7 +49,7 @@ class PeopleFlowDefinitionTest {
     private static final String MAXIMAL_XML = """
     <peopleFlowDefinition xmlns:ns2="http://rice.kuali.org/core/v2_0" xmlns="http://rice.kuali.org/kew/v2_0">
       <id>1</id>
-      <namespace>MyNamespace</namespace>
+      <namespaceCode>MyNamespace</namespaceCode>
       <name>MyPeopleFlow</name>
       <typeId>2</typeId>
       <description>desc</description>
@@ -107,7 +107,7 @@ class PeopleFlowDefinitionTest {
     void test_Builder_minimal() {
         PeopleFlowDefinition.Builder builder = createMinimal()
         assertNotNull builder
-        assert NAMESPACE == builder.getNamespace()
+        assert NAMESPACE_CODE == builder.getNamespaceCode()
         assert NAME == builder.getName()
 
         // should be initialized to empty map
@@ -121,7 +121,7 @@ class PeopleFlowDefinitionTest {
 
         PeopleFlowDefinition flow = builder.build()
         assertNotNull flow
-        assert NAMESPACE == flow.getNamespace()
+        assert NAMESPACE_CODE == flow.getNamespaceCode()
         assert NAME == flow.getName()
         assert flow.getAttributes().isEmpty()
         assert flow.getMembers().isEmpty()
@@ -137,7 +137,7 @@ class PeopleFlowDefinitionTest {
         PeopleFlowDefinition.Builder builder = createMaximal()
         PeopleFlowDefinition flow = builder.build()
         assertNotNull flow
-        assert NAMESPACE == flow.getNamespace()
+        assert NAMESPACE_CODE == flow.getNamespaceCode()
         assert NAME == flow.getName()
         assert ID == flow.getId()
         assert ATTRIBUTE_VALUE == flow.getAttributes().get(ATTRIBUTE_KEY)
@@ -171,7 +171,7 @@ class PeopleFlowDefinitionTest {
 	}
 
     private PeopleFlowDefinition.Builder createMinimal() {
-        return PeopleFlowDefinition.Builder.create(NAMESPACE, NAME)
+        return PeopleFlowDefinition.Builder.create(NAMESPACE_CODE, NAME)
     }
 
     private PeopleFlowDefinition.Builder createMaximal() {

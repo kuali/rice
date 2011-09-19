@@ -20,7 +20,7 @@ class PeopleFlowBo extends PersistableBusinessObjectBase implements MutableInact
 
     def String id
     def String name
-    def String namespace
+    def String namespaceCode
     def String typeId
     def String description
     def boolean active = true
@@ -44,7 +44,7 @@ class PeopleFlowBo extends PersistableBusinessObjectBase implements MutableInact
 
         result.id = peopleFlow.getId();
         result.name = peopleFlow.getName();
-        result.namespace = peopleFlow.getNamespace();
+        result.namespaceCode = peopleFlow.getNamespaceCode();
         result.typeId = peopleFlow.getTypeId();
         result.description = peopleFlow.getDescription();
         result.active = peopleFlow.isActive();
@@ -52,7 +52,7 @@ class PeopleFlowBo extends PersistableBusinessObjectBase implements MutableInact
 
         // we need to translate attributes over, this is a bit more work, first let's do some validation
         if (peopleFlow.getTypeId() == null) {
-            if (CollectionUtils.isNotEmpty(peopleFlow.getAttributes())) {
+            if (!peopleFlow.getAttributes().isEmpty()) {
                 throw new RiceIllegalArgumentException("Given PeopleFlow definition does not have a type, but does have attribute values");
             }
             if (kewTypeDefinition != null) {

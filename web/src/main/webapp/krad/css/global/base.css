@@ -26,7 +26,6 @@ table td, table th {
     /* not sure if this is still necessary, now that html5 has the "placeholder" attribute */
     font-family: Arial, Helvetica, sans-serif;
     font-size:0.923077em;
-    color:#999;
 }
 
 
@@ -48,7 +47,6 @@ h2.kr-page-action {				/* was h2.page-action */ /* renamed in xml and/or jsp */
 h3.kr-page-section-title {		/* was h2.page-section-title */ /* renamed in xml and/or jsp */
 	font-weight: bold;
 	margin:0;
-	border-bottom: 2px solid #000;
 }
 h4.kr-section-subhead-no-border {	/* was h4.kr-section-subhead-no-border */ /* renamed in xml and/or jsp */
 	border-bottom:none;
@@ -175,36 +173,21 @@ li label.kr-error {
 /* breadcrumbs */
 
 .kr-breadcrumbs { 					/* was .breadcrumbs */ /* renamed in xml and/or jsp */
-    border-bottom: 1px dotted #C9C9C9;
-    border-top: 1px dotted #C9C9C9;
     display: block;
     width: 100%;
-    color: #3F7826;
     letter-spacing: 0.02em;
-    padding: 3px 0 3px 15px;
- }
-
- .kr-breadcrumbs span {  /* was .breadcrumbs span*/ /* renamed in xml and/or jsp */
-	color: #3F7826;
  }
 
  .kr-breadcrumbs a {		/*  was .breadcrumbs a*/ /* renamed in xml and/or jsp */
-	color: #3F7826;
 	text-decoration: none;
  }
 
  .kr-breadcrumbs a:visited{		/* was .breadcrumbs a:visited*/ /* renamed in xml and/or jsp */
-	color: #3F7826;
 	text-decoration: none;
  }
 
- .kr-breadcrumbs a:focus, .breadcrumbs a:hover{  /* was .breadcrumbs a:focus, .breadcrumbs a:hover*/ /* renamed in xml and/or jsp */
+ .kr-breadcrumbs a:focus, .kr-breadcrumbs a:hover{  /* was .breadcrumbs a:focus, .breadcrumbs a:hover*/ /* renamed in xml and/or jsp */
  	text-decoration: underline;
- }
-
- .kr-breadcrumbs .kr-current{  /*  was .breadcrumbs .current*/ /* renamed in xml and/or jsp */
-	color: #000000;
-	font-weight: bold;
  }
 
  .kr-breadcrumbs ol, li{   /* was .breadcrumbs ol, li*/ /* renamed in xml and/or jsp */
@@ -221,12 +204,24 @@ li label.kr-error {
 
 .kr-button-primary { /* was .button-primary */ /* renamed in xml and/or jsp */
 	cursor:pointer;
+    padding: 0.6em 2em;
+   /*remove extra padding in IE*/
+   overflow: visible;
 }
 .kr-button-secondary1 { /* was .button-secondary1 */ /* renamed in xml and/or jsp */
 	cursor:pointer;
 	/*remove extra padding in IE*/
 	overflow: visible;
 	padding: 0.1em 2.1em;
+}
+.kr-button-secondary2, .kr-button-secondary2:hover {				/* was .button-secondary2 */ /* NOT FOUND in xml and/or jsp */
+	cursor:pointer;
+	/*remove extra padding in IE*/
+	overflow: visible;
+	padding: 0.1em 2.1em;
+}
+.kr-button-primary a, .kr-button-primary a:link, .kr-button-primary a:visited {		/* was .button-primary a, .button-primary a:link, .button-primary a:visited */ /* renamed in xml and/or jsp */
+	text-decoration:none;
 }
 
 /* LAYOUTS - e.g.: kr-box-horizontal, ks-left, ks-right *****************/
@@ -247,7 +242,7 @@ li label.kr-error {
 .boxLayoutHorizontalItem {
 	float:left;
 	display:block;
-	margin-right:25px;
+	margin-right:3em;
 }
 
 .fieldContainerVerticalItem {
@@ -282,7 +277,7 @@ div.kr-addLine, span.kr-addLine{
 
 .ui-datepicker-group-first {
     float:left;
-    margin-right:15px;
+    margin:0 15px 0 15px;
 }
 
 .ui-datepicker-trigger {

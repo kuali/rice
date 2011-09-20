@@ -71,7 +71,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         if ( StringUtils.isEmpty(principalId) ) {
 			 throw new RiceIllegalArgumentException("principalId is blank");
 		}
-        return getGroupsByPrincipalIdAndNamespaceCode(principalId, null);
+        return getGroupsByPrincipalIdAndNamespaceCodeInternal(principalId, null);
     }
 
     @Override
@@ -79,6 +79,16 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         if ( StringUtils.isEmpty(principalId) ) {
 			 throw new RiceIllegalArgumentException("principalId is blank");
 		}
+
+        if ( StringUtils.isEmpty(namespaceCode) ) {
+			 throw new RiceIllegalArgumentException("namespaceCode is blank");
+		}
+
+		return getGroupsByPrincipalIdAndNamespaceCodeInternal(principalId, namespaceCode);
+    }
+
+    protected List<Group> getGroupsByPrincipalIdAndNamespaceCodeInternal(String principalId, String namespaceCode) throws RiceIllegalArgumentException {
+
         Collection<Group> directGroups = getDirectGroupsForPrincipal( principalId, namespaceCode );
 		Set<Group> groups = new HashSet<Group>();
         groups.addAll(directGroups);
@@ -91,6 +101,10 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 
     @Override
     public List<String> findGroupIds(final QueryByCriteria queryByCriteria) {
+        if (queryByCriteria == null) {
+			 throw new RiceIllegalArgumentException("queryByCriteria is null");
+		}
+
         GroupQueryResults results = this.findGroups(queryByCriteria);
         List<String> result = new ArrayList<String>();
 
@@ -128,7 +142,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         if ( StringUtils.isEmpty(principalId) ) {
 			throw new RiceIllegalArgumentException("principalId is blank");
 		}
-        return getGroupIdsByPrincipalIdAndNamespaceCode(principalId, null);
+        return getGroupIdsByPrincipalIdAndNamespaceCodeInternal(principalId, null);
     }
 
     @Override
@@ -136,10 +150,30 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         if ( StringUtils.isEmpty(principalId) ) {
 			 throw new RiceIllegalArgumentException("principalId is blank");
 		}
+
+        if ( StringUtils.isEmpty(namespaceCode) ) {
+			 throw new RiceIllegalArgumentException("namespaceCode is blank");
+		}
+
         List<String> result = new ArrayList<String>();
 
         if (principalId != null) {
             List<Group> groupList = getGroupsByPrincipalIdAndNamespaceCode(principalId, namespaceCode);
+
+            for (Group group : groupList) {
+                result.add(group.getId());
+            }
+        }
+
+        return result;
+    }
+
+    protected List<String> getGroupIdsByPrincipalIdAndNamespaceCodeInternal(String principalId, String namespaceCode) throws RiceIllegalArgumentException {
+
+        List<String> result = new ArrayList<String>();
+
+        if (principalId != null) {
+            List<Group> groupList = getGroupsByPrincipalIdAndNamespaceCodeInternal(principalId, namespaceCode);
 
             for (Group group : groupList) {
                 result.add(group.getId());
@@ -187,13 +221,6 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 
     @Override
     public List<String> getMemberGroupIds(String groupId) throws RiceIllegalArgumentException {
-        /*if ( StringUtils.isEmpty(groupId) ) {
-			throw new RiceIllegalArgumentException("groupId is blank");
-		}
-		Set<String> visitedGroupIds = new HashSet<String>();
-		return getMemberIdsInternalByType(groupId, visitedGroupIds, KimApiConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE);
-*/
-
         if ( StringUtils.isEmpty(groupId) ) {
 			throw new RiceIllegalArgumentException("groupId is blank");
 		}
@@ -239,8 +266,12 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 
     @Override
 	public boolean isGroupMemberOfGroup(String groupMemberId, String groupId) {
-        if ( StringUtils.isEmpty(groupId) || StringUtils.isEmpty(groupMemberId) ) {
-			 throw new RiceIllegalArgumentException("groupMemberId or groupId is blank");
+        if ( StringUtils.isEmpty(groupMemberId) ) {
+			 throw new RiceIllegalArgumentException("groupMemberId is blank");
+		}
+
+        if ( StringUtils.isEmpty(groupId) ) {
+			 throw new RiceIllegalArgumentException("groupId is blank");
 		}
 
         Set<String> visitedGroupIds = new HashSet<String>();
@@ -249,17 +280,26 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 
     @Override
     public boolean isMemberOfGroup(String principalId, String groupId) {
-        if ( principalId == null || groupId == null ) {
-			return false;
+        if ( StringUtils.isEmpty(principalId) ) {
+			 throw new RiceIllegalArgumentException("principalId is blank");
 		}
+
+        if ( StringUtils.isEmpty(groupId) ) {
+			 throw new RiceIllegalArgumentException("groupId is blank");
+		}
+
 		Set<String> visitedGroupIds = new HashSet<String>();
 		return isMemberOfGroupInternal(principalId, groupId, visitedGroupIds, KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
     }
 
     @Override
     public List<String> getDirectMemberGroupIds(String groupId) {
-        if ( groupId == null ) {
-			return Collections.emptyList();
+        if ( StringUtils.isEmpty(groupId) ) {
+			 throw new RiceIllegalArgumentException("groupId is blank");
+		}
+
+        if ( StringUtils.isEmpty(groupId) ) {
+			 throw new RiceIllegalArgumentException("groupId is blank");
 		}
         //Group group = getGroup(groupId);
         return this.getMemberIdsByType(getMembersOfGroup(groupId), KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE);
@@ -329,14 +369,12 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         return groupMembers;
     }
 
-    /**
-     * @see org.kuali.rice.kim.api.group.GroupService#getGroups(java.util.Collection)
-     */
-    //@Override
+    @Override
     public List<Group> getGroups(Collection<String> groupIds) {
         if (CollectionUtils.isEmpty(groupIds)) {
-            return new ArrayList<Group>();
-        }
+            throw new RiceIllegalArgumentException("groupIds is empty");
+		}
+
         final QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
         builder.setPredicates(and(in("id", groupIds.toArray()), equal("active", "Y")));
         GroupQueryResults qr = findGroups(builder.build());
@@ -344,21 +382,27 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         return qr.getResults();
     }
 
-    //@Override
+    @Override
     public Group getGroupByNameAndNamespaceCode(String namespaceCode, String groupName) {
-        if ( namespaceCode == null || groupName == null ) {
-			return null;
+        if ( StringUtils.isEmpty(namespaceCode) ) {
+			 throw new RiceIllegalArgumentException("namespaceCode is blank");
 		}
+
+        if ( StringUtils.isEmpty(groupName) ) {
+			 throw new RiceIllegalArgumentException("groupName is blank");
+		}
+
 		Map<String,String> criteria = new HashMap<String,String>();
 		criteria.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode);
 		criteria.put(KimConstants.UniqueKeyConstants.GROUP_NAME, groupName);
 		Collection<GroupBo> groups = businessObjectService.findMatching(GroupBo.class, criteria);
-		if ( groups.size() > 0 ) {
+		if ( !groups.isEmpty() ) {
 			return GroupBo.to(groups.iterator().next());
 		}
 		return null;
     }
 
+    @Override
     public GroupQueryResults findGroups(final QueryByCriteria queryByCriteria) {
         if (queryByCriteria == null) {
             throw new RiceIllegalArgumentException("queryByCriteria is null");
@@ -382,6 +426,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         return builder.build();
     }
 
+    @Override
     public GroupMemberQueryResults findGroupMembers(final QueryByCriteria queryByCriteria) {
         if (queryByCriteria == null) {
             throw new RiceIllegalArgumentException("queryByCriteria is null");
@@ -403,7 +448,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
     }
 
 
-    public boolean isMemberOfGroupInternal(String memberId, String groupId, Set<String> visitedGroupIds, String memberType) {
+    protected boolean isMemberOfGroupInternal(String memberId, String groupId, Set<String> visitedGroupIds, String memberType) {
 		if ( memberId == null || groupId == null ) {
 			return false;
 		}
@@ -462,9 +507,13 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 				matchingGroupIds.add(gm.getGroupId());
 			}
 		}
-		return getGroups(matchingGroupIds);
+		if (CollectionUtils.isNotEmpty(matchingGroupIds)) {
+            return getGroups(matchingGroupIds);
+        }
+        return Collections.emptyList();
 	}
 
+    @Override
     public List<GroupMember> getMembersOfGroup(String groupId) {
         if (groupId == null) {
             throw new RiceIllegalArgumentException("groupId is blank");
@@ -480,19 +529,6 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
             }
         }
         return groupMembers;
-    }
-
-
-
-    protected List<Group> toGroupList(List<GroupBo> groupBos) {
-        if (groupBos == null) {
-            return null;
-        }
-        List<Group> groups = new ArrayList<Group>();
-        for (GroupBo bo : groupBos) {
-            groups.add(GroupBo.to(bo));
-        }
-        return groups;
     }
 
     protected List<String> getMemberIdsByType(Collection<GroupMember> members, String memberType) {
@@ -511,7 +547,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         if ( StringUtils.isEmpty(groupId) ) {
 			 throw new RiceIllegalArgumentException("groupId is blank");
 		}
-        return (GroupBo)businessObjectService.findBySinglePrimaryKey(GroupBo.class, groupId);
+        return businessObjectService.findBySinglePrimaryKey(GroupBo.class, groupId);
 
     }
 
@@ -553,7 +589,6 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 		return getDirectGroupsForPrincipal( principalId, null );
 	}
 
-    @SuppressWarnings("unchecked")
 	protected Collection<Group> getDirectGroupsForPrincipal( String principalId, String namespaceCode ) {
 		if ( principalId == null ) {
 			return Collections.emptyList();
@@ -583,10 +618,16 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 		return result;
 	}
 
-    	/**
-     * @see org.kuali.rice.kim.api.group.GroupService#addGroupToGroup(java.lang.String, java.lang.String)
-     */
+    @Override
     public boolean addGroupToGroup(String childId, String parentId) {
+        if ( StringUtils.isEmpty(childId) ) {
+			 throw new RiceIllegalArgumentException("childId is blank");
+		}
+
+        if ( StringUtils.isEmpty(parentId) ) {
+			 throw new RiceIllegalArgumentException("parentId is blank");
+		}
+
         if(childId.equals(parentId)) {
             throw new RiceIllegalArgumentException("Can't add group to itself.");
         }
@@ -604,21 +645,28 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         return true;
     }
 
-    /**
-     * @see org.kuali.rice.kim.api.group.GroupService#addPrincipalToGroup(java.lang.String, java.lang.String)
-     */
+    @Override
     public boolean addPrincipalToGroup(String principalId, String groupId) {
+        if ( StringUtils.isEmpty(principalId) ) {
+			 throw new RiceIllegalArgumentException("principalId is blank");
+		}
+
+        if ( StringUtils.isEmpty(groupId) ) {
+			 throw new RiceIllegalArgumentException("groupId is blank");
+		}
+
         GroupMemberBo groupMember = new GroupMemberBo();
         groupMember.setGroupId(groupId);
         groupMember.setTypeCode(KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
         groupMember.setMemberId(principalId);
 
-        groupMember = (GroupMemberBo)this.businessObjectService.save(groupMember);
+        groupMember = this.businessObjectService.save(groupMember);
         KIMServiceLocatorInternal.getGroupInternalService().updateForUserAddedToGroup(groupMember.getMemberId(),
                 groupMember.getGroupId());
         return true;
     }
 
+     @Override
     public Group createGroup(Group group) {
         if (group == null) {
             throw new RiceIllegalArgumentException(("group is null"));
@@ -641,6 +689,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         return GroupBo.to(bo);
     }
 
+     @Override
     public Group updateGroup(Group group) {
         if (group == null) {
             throw new RiceIllegalArgumentException(("group is null"));
@@ -659,10 +708,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         return GroupBo.to(bo);
     }
 
-    	/**
-	 *
-	 * @see org.kuali.rice.kim.api.group.GroupService#updateGroup(java.lang.String, org.kuali.rice.kim.api.group.Group)
-	 */
+    @Override
 	public Group updateGroup(String groupId, Group group) {
         if (group == null) {
             throw new RiceIllegalArgumentException(("group is null"));
@@ -696,12 +742,14 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         return GroupBo.to(newGroup);
     }
 
-    /**
-    *
-    * @see org.kuali.rice.kim.api.group.GroupService#removeAllMembers(java.lang.String)
-    */
+ @Override
    public void removeAllMembers(String groupId) {
-	   GroupService groupService = KimApiServiceLocator.getGroupService();
+	    if ( StringUtils.isEmpty(groupId) ) {
+			 throw new RiceIllegalArgumentException("groupId is blank");
+		}
+
+
+       GroupService groupService = KimApiServiceLocator.getGroupService();
        List<String> memberPrincipalsBefore = groupService.getMemberPrincipalIds(groupId);
 
        Collection<GroupMemberBo> toDeactivate = getActiveGroupMembers(groupId, null, null);
@@ -726,11 +774,17 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
                memberPrincipalsAfter);
    }
 
-	/**
-     * @see org.kuali.rice.kim.api.group.GroupService#removeGroupFromGroup(java.lang.String, java.lang.String)
-     */
+    @Override
     public boolean removeGroupFromGroup(String childId, String parentId) {
-    	java.sql.Timestamp today = new java.sql.Timestamp(System.currentTimeMillis());
+    	if ( StringUtils.isEmpty(childId) ) {
+			 throw new RiceIllegalArgumentException("childId is blank");
+		}
+
+        if ( StringUtils.isEmpty(parentId) ) {
+			 throw new RiceIllegalArgumentException("parentId is blank");
+		}
+
+        java.sql.Timestamp today = new java.sql.Timestamp(System.currentTimeMillis());
 
     	List<GroupMemberBo> groupMembers =
     		getActiveGroupMembers(parentId, childId, KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE);
@@ -745,12 +799,17 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         return false;
     }
 
-	/**
-     * @see org.kuali.rice.kim.api.group.GroupService#removePrincipalFromGroup(java.lang.String, java.lang.String)
-     */
-    @SuppressWarnings("unchecked")
+    @Override
     public boolean removePrincipalFromGroup(String principalId, String groupId) {
-    	List<GroupMemberBo> groupMembers =
+    	if ( StringUtils.isEmpty(principalId) ) {
+			 throw new RiceIllegalArgumentException("principalId is blank");
+		}
+
+        if ( StringUtils.isEmpty(groupId) ) {
+			 throw new RiceIllegalArgumentException("groupId is blank");
+		}
+
+        List<GroupMemberBo> groupMembers =
     		getActiveGroupMembers(groupId, principalId, KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
 
         if(groupMembers.size() == 1) {
@@ -803,8 +862,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 			}
 		}
 
-		GroupBo savedGroup = KIMServiceLocatorInternal.getGroupInternalService().saveWorkgroup(group);
-		return savedGroup;
+		return KIMServiceLocatorInternal.getGroupInternalService().saveWorkgroup(group);
 	}
 
 
@@ -822,7 +880,9 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 			String childId, String memberType) {
     	final java.sql.Date today = new java.sql.Date(System.currentTimeMillis());
 
-    	if (childId != null && memberType == null) throw new RiceRuntimeException("memberType must be non-null if childId is non-null");
+    	if (childId != null && memberType == null) {
+            throw new RiceRuntimeException("memberType must be non-null if childId is non-null");
+        }
 
 		Map<String,Object> criteria = new HashMap<String,Object>(4);
         criteria.put(KIMPropertyConstants.GroupMember.GROUP_ID, parentId);
@@ -835,7 +895,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         Collection<GroupMemberBo> groupMembers = this.businessObjectService.findMatching(GroupMemberBo.class, criteria);
 
         CollectionUtils.filter(groupMembers, new Predicate() {
-			public boolean evaluate(Object object) {
+			@Override public boolean evaluate(Object object) {
 				GroupMemberBo member = (GroupMemberBo) object;
 				// keep in the collection (return true) if the activeToDate is null, or if it is set to a future date
 				return member.getActiveToDate() == null || today.before(member.getActiveToDate().toDate());

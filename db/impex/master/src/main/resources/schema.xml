@@ -890,29 +890,30 @@
             <index-column name="ATTR_DEFN_ID"/>
         </index>
     </table>
+    <table name="KREW_PPL_FLW_DLGT_T">
+        <column name="PPL_FLW_DLGT_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="PPL_FLW_MBR_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="MBR_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="MBR_TYP_CD" required="true" size="1" type="VARCHAR"/>
+        <column name="DLGN_TYP_CD" required="true" size="1" type="VARCHAR"/>
+        <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <foreign-key foreignTable="KREW_PPL_FLW_MBR_T" name="KREW_PPL_FLW_DLGT_FK1">
+            <reference foreign="PPL_FLW_MBR_ID" local="PPL_FLW_MBR_ID"/>
+        </foreign-key>
+        <index name="KREW_PPL_FLW_DLGT_TI1">
+            <index-column name="PPL_FLW_MBR_ID"/>
+        </index>
+    </table>
     <table name="KREW_PPL_FLW_MBR_T">
         <column name="PPL_FLW_MBR_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="PPL_FLW_ID" required="true" size="40" type="VARCHAR"/>
         <column name="MBR_TYP_CD" required="true" size="1" type="VARCHAR"/>
         <column name="MBR_ID" required="true" size="40" type="VARCHAR"/>
         <column name="PRIO" size="8" type="DECIMAL"/>
-        <column name="DLGT_FRM_ID" size="40" type="VARCHAR"/>
         <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <foreign-key foreignTable="KREW_PPL_FLW_MBR_T" name="KREW_PPL_FLW_MBR_FK2">
-            <reference foreign="PPL_FLW_MBR_ID" local="DLGT_FRM_ID"/>
-        </foreign-key>
         <foreign-key foreignTable="KREW_PPL_FLW_T" name="KREW_PPL_FLW_MBR_FK1">
             <reference foreign="PPL_FLW_ID" local="PPL_FLW_ID"/>
         </foreign-key>
-        <unique name="KREW_PPL_FLW_MBR_TC1">
-            <unique-column name="PPL_FLW_ID"/>
-            <unique-column name="MBR_TYP_CD"/>
-            <unique-column name="MBR_ID"/>
-            <unique-column name="DLGT_FRM_ID"/>
-        </unique>
-        <index name="KREW_PPL_FLW_MBR_FK2">
-            <index-column name="DLGT_FRM_ID"/>
-        </index>
         <index name="KREW_PPL_FLW_MBR_TI1">
             <index-column name="PPL_FLW_ID"/>
         </index>
@@ -3656,6 +3657,7 @@
     <sequence name="KREW_HLP_S" nextval="100"/>
     <sequence name="KREW_OUT_BOX_ITM_S" nextval="10043"/>
     <sequence name="KREW_PPL_FLW_ATTR_S" nextval="10000"/>
+    <sequence name="KREW_PPL_FLW_DLGT_S" nextval="10000"/>
     <sequence name="KREW_PPL_FLW_MBR_S" nextval="10000"/>
     <sequence name="KREW_PPL_FLW_S" nextval="10000"/>
     <sequence name="KREW_RSP_S" nextval="2065"/>

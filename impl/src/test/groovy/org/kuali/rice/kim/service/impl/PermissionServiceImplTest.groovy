@@ -12,7 +12,6 @@ import org.kuali.rice.kim.api.permission.PermissionService
 import org.kuali.rice.kim.api.role.RoleMembership
 import org.kuali.rice.kim.api.role.RoleService
 import org.kuali.rice.kim.impl.permission.PermissionBo
-import org.kuali.rice.kim.impl.permission.PermissionDao
 import org.kuali.rice.kim.impl.permission.PermissionServiceImpl
 import org.kuali.rice.kim.impl.permission.PermissionTemplateBo
 import org.kuali.rice.krad.service.BusinessObjectService
@@ -35,10 +34,8 @@ import org.kuali.rice.krad.service.BusinessObjectService
 class PermissionServiceImplTest {
     private MockFor mockRoleService;
     private MockFor mockBoService;
-    private MockFor mockPermissionDao;
     private RoleService roleService;
     private BusinessObjectService boService;
-    private PermissionDao permissionDao;
     PermissionService permissionService;
     PermissionServiceImpl permissionServiceImpl;
 
@@ -61,7 +58,6 @@ class PermissionServiceImplTest {
     void setupMockContext() {
         mockRoleService = new MockFor(RoleService.class);
         mockBoService = new MockFor(BusinessObjectService.class);
-        mockPermissionDao = new MockFor(PermissionDao.class);
     }
 
     @Before
@@ -78,11 +74,6 @@ class PermissionServiceImplTest {
     void injectBusinessObjectServiceIntoPermissionService() {
         boService = mockBoService.proxyDelegateInstance();
         permissionServiceImpl.setBusinessObjectService(boService);
-    }
-
-    void injectKimPermissionDaoIntoPermissionService() {
-        permissionDao = mockPermissionDao.proxyDelegateInstance();
-        permissionServiceImpl.setPermissionDao(permissionDao);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -372,38 +363,12 @@ class PermissionServiceImplTest {
         injectKimPermissionDaoIntoPermissionService();
         injectRoleServiceIntoPermissionService();
 
-        List<PermissionAssigneeInfo> actualPermissions = permissionService.getPermissionAssigneesForTemplateName(authorizedNamespaceCode, permissionName, authorizedPermissionDetails, authorizedQualification);
+        List<PermissionAssigneeInfo> actualPermissions = permissionService.getPermissionAssigneesByTemplateName(authorizedNamespaceCode, permissionName, authorizedPermissionDetails, authorizedQualification);
 
         Assert.assertEquals(expectedPermissions.size(), actualPermissions.size());
         Assert.assertEquals(expectedPermissions[0].principalId, actualPermissions[0].principalId);
 
         mockBoService.verify(boService)
-    }
-
-    @Test
-    void testGetPermissionsByNameIncludingInactiveSucceeds()
-    {
-        PermissionTemplateBo firstPermissionTemplateBo = new PermissionTemplateBo(id: "permissiontemplateidone", name: "permissiontemplateone", namespaceCode: "templatenamespaceone", kimTypeId: "kimtypeidone", versionNumber: 1);
-        PermissionBo expectedPermissionBo = new PermissionBo(id: "permidone", name: "permissionone", namespaceCode: "namespacecodeone", active: "Y", template: firstPermissionTemplateBo, versionNumber: 1);
-
-        mockBoService.demand.findMatching(1..samplePermissions.size()) {
-            Class clazz, Map map -> for (PermissionBo permissionBo in samplePermissions.values()) {
-                if (permissionBo.namespaceCode.equals(map.get("namespaceCode")))
-                {
-                    Collection<PermissionBo> permissions = new ArrayList<PermissionBo>();
-                    permissions.add(permissionBo);
-                    return permissions;
-                }
-            }
-        }
-
-        injectBusinessObjectServiceIntoPermissionService();
-
-        List<Permission> permissions = permissionService.getPermissionsByNameIncludingInactive(expectedPermissionBo.namespaceCode, expectedPermissionBo.name);
-
-        Assert.assertEquals(PermissionBo.to(expectedPermissionBo), permissions.get(0));
-
-        mockBoService.verify(boService);
     }
 
     public static class PermissionAssigneeInfo {

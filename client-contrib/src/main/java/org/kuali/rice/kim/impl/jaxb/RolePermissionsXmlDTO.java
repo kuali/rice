@@ -156,7 +156,7 @@ public abstract class RolePermissionsXmlDTO<T extends RolePermissionXmlDTO> impl
         
         void beforeMarshal(Marshaller marshaller) {
             // TODO: Use new API method once it becomes available!!!!
-            List<String> permissionIds = new ArrayList<String>();// KIMServiceLocator.getPermissionService().getRoleIdsForPermissionId(permissionId);
+            List<String> permissionIds = new ArrayList<String>();// KIMServiceLocator.getPermissionService().getRoleIdsForPermission(permissionId);
             if (permissionIds != null && !permissionIds.isEmpty()) {
                 setRolePermissions(new RiceXmlExportList<RolePermissionXmlDTO.WithinRole,String>(permissionIds, this));
             }

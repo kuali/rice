@@ -34,12 +34,12 @@ import org.kuali.rice.kim.api.permission.PermissionService;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.role.RoleService;
-import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.framework.permission.PermissionTypeService;
 import org.kuali.rice.kim.impl.common.attribute.AttributeTransform;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
+import org.kuali.rice.kim.impl.role.RolePermissionBo;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 
@@ -51,6 +51,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
+
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
  * 
@@ -59,7 +61,6 @@ import java.util.Map;
  */
 public class PermissionServiceImpl implements PermissionService {
 	private RoleService roleService;
-	private PermissionDao permissionDao;
     private PermissionTypeService defaultPermissionTypeService;
     private KimTypeInfoService kimTypeInfoService;
 	private BusinessObjectService businessObjectService;
@@ -261,7 +262,7 @@ public class PermissionServiceImpl implements PermissionService {
     	for ( Permission perm : permissions ) {
     		tempList.clear();
     		tempList.add( perm );
-    		List<String> roleIds = permissionDao.getRoleIdsForPermissions( tempList );
+    		List<String> roleIds = getRoleIdsForPermissions( tempList );
     		// TODO: This could be made a little better by collecting the role IDs into
     		// a set and then processing the distinct list rather than a check
     		// for every permission
@@ -348,7 +349,8 @@ public class PermissionServiceImpl implements PermissionService {
     	return results;
     }
     @Override
-    public List<Assignee> getPermissionAssigneesForTemplateName( String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
+    public List<Assignee> getPermissionAssigneesByTemplateName(String namespaceCode, String permissionTemplateName,
+            Map<String, String> permissionDetails, Map<String, String> qualification) {
     	List<Assignee> results = new ArrayList<Assignee>();
     	List<String> roleIds = getRoleIdsForPermissionTemplate( namespaceCode, permissionTemplateName, permissionDetails);
     	if ( roleIds.isEmpty() ) {
@@ -379,7 +381,8 @@ public class PermissionServiceImpl implements PermissionService {
     	return !getMatchingPermissions( permissions, permissionDetails ).isEmpty();
     }
     @Override
-    public boolean isPermissionDefinedForTemplateName( String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails ) {
+    public boolean isPermissionDefinedByTemplateName(String namespaceCode, String permissionTemplateName,
+            Map<String, String> permissionDetails) {
     	// get all the permission objects whose name match that requested
     	List<PermissionBo> permissions = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
     	// now, filter the full list by the detail passed
@@ -391,7 +394,7 @@ public class PermissionServiceImpl implements PermissionService {
     	List<PermissionBo> permissions = getPermissionImplsByName( namespaceCode, permissionName );
     	// now, filter the full list by the detail passed
     	List<Permission> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );
-        return permissionDao.getRoleIdsForPermissions( applicablePermissions );
+        return getRoleIdsForPermissions( applicablePermissions );
     }
 
     protected List<String> getRoleIdsForPermissionTemplate( String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails ) {
@@ -399,11 +402,7 @@ public class PermissionServiceImpl implements PermissionService {
     	List<PermissionBo> permissions = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
     	// now, filter the full list by the detail passed
     	List<Permission> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );
-    	return permissionDao.getRoleIdsForPermissions( applicablePermissions );
-    }
-    @Override
-    public List<String> getRoleIdsForPermissions( List<Permission> permissions ) {
-   		return permissionDao.getRoleIdsForPermissions( permissions );
+    	return getRoleIdsForPermissions( applicablePermissions );
     }
 
     // --------------------
@@ -454,29 +453,6 @@ public class PermissionServiceImpl implements PermissionService {
         
         return ((List<PermissionBo>) businessObjectService.findMatching( PermissionBo.class, pk ));
     }
-
-    
-    
-    // --------------------
-    // Support Methods
-    // --------------------
-
-	public void setPermissionDao(PermissionDao permissionDao) {
-		this.permissionDao = permissionDao;
-	}
-
-    @Override
-	public String getPermissionDetailLabel( String permissionId, String kimTypeId, String attributeName) {
-    	// get the type service for this permission
-		PermissionTypeService typeService = getPermissionTypeService(null, null, null, permissionId);
-		if ( typeService != null ) {
-			// ask the type service for the attribute definition for the given attribute name
-			final KimAttributeField attributeDef = KimAttributeField.findAttribute(attributeName, typeService.getAttributeDefinitions( kimTypeId ));
-			return attributeDef != null ? attributeDef.getAttributeField().getLongLabel() : "Missing Def: " + attributeName;
-		} else {
-			return "No Label: " + attributeName;
-		}
-	}
 	
     @Override
 	public Template getPermissionTemplate(String permissionTemplateId) {
@@ -523,31 +499,6 @@ public class PermissionServiceImpl implements PermissionService {
 			allTemplates = infos;
 		}
 		return allTemplates;
-	}	
-    @Override
-    public List<String> getRoleIdsForPermissionId(String permissionId) {
-        Permission permissionInfo = getPermission(permissionId);
-
-        List<Permission> applicablePermissions = new ArrayList<Permission>();
-        applicablePermissions.add(permissionInfo);
-
-        return permissionDao.getRoleIdsForPermissions(applicablePermissions);
-    }
-    @Override
-    public List<Permission> getPermissionsByNameIncludingInactive(String namespaceCode, String permissionName) {
-        List<PermissionBo> impls = getPermissionImplsByNameIncludingInactive(namespaceCode, permissionName);
-        List<Permission> results = new ArrayList<Permission>(impls.size());
-        for (PermissionBo impl : impls) {
-            results.add(PermissionBo.to(impl));
-        }
-        return results;
-    }
-	
-    protected List<PermissionBo> getPermissionImplsByNameIncludingInactive(String namespaceCode, String permissionName) {
-        HashMap<String, Object> pk = new HashMap<String, Object>(2);
-        pk.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode);
-        pk.put(KimConstants.UniqueKeyConstants.PERMISSION_NAME, permissionName);
-        return ((List<PermissionBo>) businessObjectService.findMatching(PermissionBo.class, pk));
     }
 
 
@@ -653,6 +604,22 @@ public class PermissionServiceImpl implements PermissionService {
 
         builder.setResults(ims);
         return builder.build();
+    }
+
+    private List<String> getRoleIdsForPermissions( Collection<Permission> permissions ) {
+        List<String> ids = new ArrayList<String>();
+        for (Permission p : permissions) {
+            ids.add(p.getId());
+        }
+
+        QueryByCriteria query = QueryByCriteria.Builder.fromPredicates(equal("active", "true"), in("permissionId", ids.toArray(new String[]{})));
+
+        GenericQueryResults<RolePermissionBo> results = criteriaLookupService.lookup(RolePermissionBo.class, query);
+        List<String> roleIds = new ArrayList<String>();
+        for (RolePermissionBo bo : results.getResults()) {
+            roleIds.add(bo.getRoleId());
+        }
+        return Collections.unmodifiableList(roleIds);
     }
 	
 	/**

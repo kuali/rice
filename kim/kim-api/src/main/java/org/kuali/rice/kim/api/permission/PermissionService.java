@@ -23,7 +23,6 @@ import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.common.assignee.Assignee;
 import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.common.template.TemplateQueryResults;
-import org.kuali.rice.kim.api.responsibility.ResponsibilityQueryResults;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -217,16 +216,16 @@ public interface PermissionService {
      * in the given context (qualification), the permissions are examined.
      * 
      */
-	@WebMethod(operationName = "getPermissionAssigneesForTemplateName")
+	@WebMethod(operationName = "getPermissionAssigneesByTemplateName")
     @XmlElementWrapper(name = "assignees", required = true)
     @XmlElement(name = "assignee", required = false)
     @WebResult(name = "assignees")
-    List<Assignee> getPermissionAssigneesForTemplateName( @WebParam(name="namespaceCode") String namespaceCode,
-    																	@WebParam(name="permissionTemplateName") String permissionTemplateName,
-                                                                        @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    																	@WebParam(name="permissionDetails") Map<String, String> permissionDetails,
-                                                                        @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    																	@WebParam(name="qualification") Map<String, String> qualification );
+    List<Assignee> getPermissionAssigneesByTemplateName(@WebParam(name = "namespaceCode") String namespaceCode,
+            @WebParam(name = "permissionTemplateName") String permissionTemplateName,
+            @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(
+                    name = "permissionDetails") Map<String, String> permissionDetails,
+            @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(
+                    name = "qualification") Map<String, String> qualification);
     
     /**
      * Returns true if the given permission is defined on any Roles.
@@ -241,12 +240,12 @@ public interface PermissionService {
     /**
      * Returns true if the given permission template is defined on any Roles.
      */
-    @WebMethod(operationName = "isPermissionDefinedForTemplateName")
-    @WebResult(name = "isPermissionDefinedForTemplateName")
-    boolean isPermissionDefinedForTemplateName( @WebParam(name="namespaceCode") String namespaceCode,
-    											@WebParam(name="permissionTemplateName") String permissionTemplateName,
-                                                @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    											@WebParam(name="permissionDetails") Map<String, String> permissionDetails );
+    @WebMethod(operationName = "isPermissionDefinedByTemplateName")
+    @WebResult(name = "isPermissionDefinedByTemplateName")
+    boolean isPermissionDefinedByTemplateName(@WebParam(name = "namespaceCode") String namespaceCode,
+            @WebParam(name = "permissionTemplateName") String permissionTemplateName,
+            @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(
+                    name = "permissionDetails") Map<String, String> permissionDetails);
     
     /**
      * Returns permissions (with their details) that are granted to the principal given
@@ -385,39 +384,6 @@ public interface PermissionService {
     									  @WebParam(name="permissionName") String permissionName,
                                           @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
     									  @WebParam(name="permissionDetails") Map<String, String> permissionDetails);
-    
-    /**
-     * Get the role IDs for the given list of permissions.
-     */
-	@WebMethod(operationName = "getRoleIdsForPermissions")
-    @XmlElementWrapper(name = "roleIds", required = true)
-    @XmlElement(name = "roleId", required = false)
-    @WebResult(name = "roleIds")
-    List<String> getRoleIdsForPermissions( @WebParam(name="permissions") List<Permission> permissions );
-    
-    /**
-     * Returns the label of the permission detail for the given permissionId, kimType and attributeName. 
-     */
-	@WebMethod(operationName = "getPermissionDetailLabel")
-    @WebResult(name = "permissionDetailLabel")
-    String getPermissionDetailLabel( String permissionId, String kimTypeId, String attributeName);
-
-    /**
-     * Get the role IDs for the given permission.
-     */
-	@WebMethod(operationName = "getRoleIdsForPermissionId")
-    @XmlElementWrapper(name = "roleIds", required = true)
-    @XmlElement(name = "roleId", required = false)
-    @WebResult(name = "roleIds")
-    List<String> getRoleIdsForPermissionId(@WebParam(name = "permissionId") String permissionId);
-
-    /**
-     * Return the permission object for the given unique combination of namespace, component and permission name. Inactive
-     * permissions are also returned
-     */
-	@WebMethod(operationName = "getPermissionsByNameIncludingInactive")
-    @WebResult(name = "permissionsIncludingInactive")
-    List<Permission> getPermissionsByNameIncludingInactive(@WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "permissionName") String permissionName);
 
     /**
      * This method find Permissions based on a query criteria.  The criteria cannot be null.

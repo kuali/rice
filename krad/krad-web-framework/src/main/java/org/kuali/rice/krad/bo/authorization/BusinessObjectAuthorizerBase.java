@@ -94,19 +94,15 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 			BusinessObject businessObject, String namespaceCode,
 			String permissionTemplateName) {
 		return getPermissionService()
-				.isPermissionDefinedForTemplateName(
-						namespaceCode,
-						permissionTemplateName,
-						new HashMap<String, String>(
-								getPermissionDetailValues(businessObject)));
+				.isPermissionDefinedByTemplateName(namespaceCode, permissionTemplateName, new HashMap<String, String>(
+                        getPermissionDetailValues(businessObject)));
 	}
 
 	protected final boolean permissionExistsByTemplate(String namespaceCode,
 			String permissionTemplateName, Map<String, String> permissionDetails) {
 		return getPermissionService()
-				.isPermissionDefinedForTemplateName(namespaceCode,
-						permissionTemplateName,
-						new HashMap<String, String>(permissionDetails));
+				.isPermissionDefinedByTemplateName(namespaceCode, permissionTemplateName, new HashMap<String, String>(
+                        permissionDetails));
 	}
 
 	protected final boolean permissionExistsByTemplate(
@@ -116,8 +112,7 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 				getPermissionDetailValues(businessObject));
 		combinedPermissionDetails.putAll(permissionDetails);
 		return getPermissionService()
-				.isPermissionDefinedForTemplateName(namespaceCode,
-						permissionTemplateName, combinedPermissionDetails);
+				.isPermissionDefinedByTemplateName(namespaceCode, permissionTemplateName, combinedPermissionDetails);
 	}
 
 	public final boolean isAuthorized(BusinessObject businessObject,

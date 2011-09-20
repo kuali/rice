@@ -115,13 +115,13 @@ public class AuthorizerBase implements Authorizer {
 
     protected final boolean permissionExistsByTemplate(Object dataObject, String namespaceCode,
             String permissionTemplateName) {
-        return getPermissionService().isPermissionDefinedForTemplateName(namespaceCode, permissionTemplateName,
+        return getPermissionService().isPermissionDefinedByTemplateName(namespaceCode, permissionTemplateName,
                 new HashMap<String, String>(getPermissionDetailValues(dataObject)));
     }
 
     protected final boolean permissionExistsByTemplate(String namespaceCode, String permissionTemplateName,
             Map<String, String> permissionDetails) {
-        return getPermissionService().isPermissionDefinedForTemplateName(namespaceCode, permissionTemplateName,
+        return getPermissionService().isPermissionDefinedByTemplateName(namespaceCode, permissionTemplateName,
                 new HashMap<String, String>(permissionDetails));
     }
 
@@ -130,7 +130,7 @@ public class AuthorizerBase implements Authorizer {
         Map<String, String> combinedPermissionDetails = new HashMap<String, String>(getPermissionDetailValues(dataObject));
         combinedPermissionDetails.putAll(permissionDetails);
 
-        return getPermissionService().isPermissionDefinedForTemplateName(namespaceCode, permissionTemplateName,
+        return getPermissionService().isPermissionDefinedByTemplateName(namespaceCode, permissionTemplateName,
                 combinedPermissionDetails);
     }
 

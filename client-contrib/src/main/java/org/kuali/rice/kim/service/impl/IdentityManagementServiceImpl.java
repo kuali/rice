@@ -143,7 +143,8 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 
     @Override
     public boolean isPermissionDefinedForTemplateName(String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails) {
-        return getPermissionService().isPermissionDefinedForTemplateName(namespaceCode, permissionTemplateName, permissionDetails);
+        return getPermissionService().isPermissionDefinedByTemplateName(namespaceCode, permissionTemplateName,
+                permissionDetails);
     }
 
     @Override
@@ -157,8 +158,8 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 	public List<Assignee> getPermissionAssigneesForTemplateName(String namespaceCode,
 			String permissionTemplateName, Map<String, String> permissionDetails,
 			Map<String, String> qualification) {
-		return this.permissionService.getPermissionAssigneesForTemplateName( namespaceCode,
-				permissionTemplateName, new HashMap<String, String>(permissionDetails), new HashMap<String, String>(qualification) );
+		return this.permissionService.getPermissionAssigneesByTemplateName(namespaceCode, permissionTemplateName,
+                new HashMap<String, String>(permissionDetails), new HashMap<String, String>(qualification));
 	}
 
     // GROUP SERVICE

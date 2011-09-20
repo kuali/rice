@@ -65,7 +65,9 @@ public class PermissionDerivedRoleTypeServiceImpl extends DerivedRoleTypeService
 	}
 	
 	protected List<Assignee> getPermissionAssignees(Map<String, String> qualification) {
-		return getPermissionService().getPermissionAssigneesForTemplateName(permissionTemplateNamespace, permissionTemplateName, new HashMap<String, String>(qualification),  new HashMap<String, String>(qualification));
+		return getPermissionService().getPermissionAssigneesByTemplateName(permissionTemplateNamespace,
+                permissionTemplateName, new HashMap<String, String>(qualification), new HashMap<String, String>(
+                qualification));
 	}
 
     @Override

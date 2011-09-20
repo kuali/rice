@@ -566,7 +566,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
         List<String> roleIds = null;
 
         if (permList != null && !permList.isEmpty()) {
-            roleIds = KimApiServiceLocator.getPermissionService().getRoleIdsForPermissions(permList);
+            roleIds = getRoleIdsForPermissions(permList);
         }
 
         if (roleIds == null || roleIds.isEmpty()) {
@@ -580,6 +580,27 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
         return QueryFactory.newReportQuery(RoleBo.class, memberSubCrit);
 
     }
+
+    private List<String> getRoleIdsForPermissions(Collection<Permission> permissions) {
+		if ( permissions.isEmpty() ) {
+			return new ArrayList<String>(0);
+		}
+		List<String> permissionIds = new ArrayList<String>( permissions.size() );
+		for ( Permission permission : permissions ) {
+			permissionIds.add( permission.getId() );
+		}
+		Criteria c = new Criteria();
+		c.addIn( "permissionId", permissionIds );
+		c.addEqualTo( "active", true );
+
+		Query query = QueryFactory.newQuery( RolePermissionBo.class, c, true );
+		Collection<RolePermissionBo> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
+		List<String> roleIds = new ArrayList<String>( coll.size() );
+		for ( RolePermissionBo rp : coll ) {
+			roleIds.add( rp.getRoleId() );
+		}
+		return roleIds;
+	}
 
     private ReportQueryByCriteria setupRespCriteria(Map<String, String> respCrit) {
         QueryByCriteria.Builder queryByCriteriaBuilder = QueryByCriteria.Builder.create();

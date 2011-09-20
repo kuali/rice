@@ -17,8 +17,6 @@
 
 <tiles:useAttribute name="widget" classname="org.kuali.rice.krad.uif.widget.TreeWidget"/>
 <tiles:useAttribute name="componentId"/>
-<script language="JavaScript" type="text/javascript" src="../krms/scripts/ruleTree.js"></script>
-
 <%--
     TODO:
     TODO:

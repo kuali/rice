@@ -255,7 +255,7 @@
               <bean parent="GroupBodyOnly" p:hidden="true" p:style="float: right;">
                 <property name="items">
                   <list>
-                    <bean parent="AttributeField" p:propertyName="agendaItemLine.rule.proposition.id"
+                    <bean parent="AttributeField" p:propertyName="proposition.id"
                             p:showLabel="false" p:label="id" p:maxLength="255">
                       <property name="control">
                         <bean parent="HiddenControl"/>
@@ -282,7 +282,7 @@
               <bean parent="GroupBodyOnly" p:hidden="true" p:style="float: right;">
                 <property name="items">
                   <list>
-                    <bean parent="AttributeField" p:propertyName="agendaItemLine.rule.proposition.id"
+                    <bean parent="AttributeField" p:propertyName="proposition.id"
                             p:showLabel="false" p:label="id" p:maxLength="255">
                       <property name="control">
                         <bean parent="HiddenControl"/>

@@ -1231,13 +1231,15 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         // this is the root of the tree:
         AgendaItemBo firstItem = getFirstAgendaItem(agendaEditor.getAgenda());
 
+        String selectedPropId = request.getParameter("proposition_selected_attribute");       // just a debug stab
+        String selectedPropId2 = agendaEditor.getAgendaItemLine().getRule().getSelectedPropositionId();
         String selectedItemId = agendaEditor.getSelectedAgendaItemId();
         AgendaItemBo node = getAgendaItemById(firstItem, selectedItemId);
 
         setSelectedAgendaItemId(form, selectedItemId);
         setAgendaItemLine(form, node);
 
-        return super.updateComponent(form, result, request, response);
+        return super.refresh(form, result, request, response);
     }
 
     

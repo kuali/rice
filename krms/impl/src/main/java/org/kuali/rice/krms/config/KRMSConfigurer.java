@@ -30,11 +30,18 @@ import org.kuali.rice.core.impl.config.module.ModuleConfigurer;
 public class KRMSConfigurer extends ModuleConfigurer {
 
 	private static final String KRMS_SPRING_BEANS_PATH = "classpath:org/kuali/rice/krms/config/KRMSSpringBeans.xml";
+    private static final String KRMS_KSB_SPRING_BEANS_PATH = "classpath:org/kuali/rice/krms/config/KRMSServiceBusSpringBeans.xml";
+
 	
 	@Override
 	public List<String> getPrimarySpringFiles() {
 		final List<String> springFileLocations = new ArrayList<String>();
 		springFileLocations.add( KRMS_SPRING_BEANS_PATH );
+
+        if ( isExposeServicesOnBus() ) {
+		    springFileLocations.add(KRMS_KSB_SPRING_BEANS_PATH);
+		}
+
 		return springFileLocations;
 	}
 	

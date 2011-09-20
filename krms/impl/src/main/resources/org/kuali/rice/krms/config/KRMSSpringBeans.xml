@@ -29,6 +29,8 @@
   <!-- TODO: there is one of these in krad-servlet.xml, remove that one or this one -->
   <context:component-scan base-package="org.kuali.rice.krms.impl" />
 
+  <import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
+
   <bean class="org.kuali.rice.core.framework.resourceloader.RiceSpringResourceLoaderConfigurer">
     <property name="localServiceName" value="KRMSContext" />
   </bean>

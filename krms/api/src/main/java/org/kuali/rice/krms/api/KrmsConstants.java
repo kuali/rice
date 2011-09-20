@@ -22,6 +22,11 @@ public final class KrmsConstants {
 		
         public static final String KRMS_NAMESPACE_PREFIX = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/krms";
 
+        /**
+         * Namespace for the kew module which is compatible with Kuali Rice 2.0.x.
+         */
+        public static final String KRMS_NAMESPACE_2_0 = KRMS_NAMESPACE_PREFIX + "/" + CoreConstants.Versions.VERSION_2_0;
 	}
+
 }
 

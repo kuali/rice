@@ -114,7 +114,7 @@ public class UserLoginFilter implements Filter {
 			}
 			
 			if (!isAuthorizedToLogin(principal.getPrincipalId())) {
-				throw new AuthenticationException("You cannot log in, because you are not an active Kuali user.\nPlease ask someone to activate your account, if you need to use Kuali Systems.\nThe user id provided was: " + principalName + ".\n");
+				throw new AuthenticationException("You cannot log in, because you are not an active Kuali user.\nPlease ask someone to activate your account if you need to use Kuali Systems.\nThe user id provided was: " + principalName + ".\n");
 			}
 
 			final UserSession userSession = new UserSession(principalName);

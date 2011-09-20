@@ -11,7 +11,7 @@ public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDef
 	def String name
 	def String typeId
 	def String contextId
-	def boolean active
+	def boolean active = true
 
 	def String firstItemId
 	def Set<AgendaAttributeBo> attributeBos

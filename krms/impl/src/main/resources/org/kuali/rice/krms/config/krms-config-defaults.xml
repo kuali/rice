@@ -16,6 +16,4 @@
 
 <config>
 
-    <param name="krms.mode" override="false">LOCAL</param>
-
 </config>

@@ -16,10 +16,13 @@
 package org.kuali.rice.krms.impl.type;
 
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.function.FunctionDefinition;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
+import org.kuali.rice.krms.framework.engine.Agenda;
 import org.kuali.rice.krms.framework.type.ActionTypeService;
+import org.kuali.rice.krms.framework.type.AgendaTypeService;
 import org.kuali.rice.krms.framework.type.FunctionTypeService;
 import org.kuali.rice.krms.framework.type.PropositionTypeService;
 import org.kuali.rice.krms.framework.type.TermResolverTypeService;
@@ -37,6 +40,8 @@ public interface KrmsTypeResolver {
 	
 	ActionTypeService getActionTypeService(ActionDefinition actionDefinition);
 	
+    AgendaTypeService getAgendaTypeService(AgendaDefinition actionDefinition);
+
 	TermResolverTypeService getTermResolverTypeService(TermResolverDefinition termResolverDefintion);
 	
 	FunctionTypeService getFunctionTypeService(FunctionDefinition functionDefinition);

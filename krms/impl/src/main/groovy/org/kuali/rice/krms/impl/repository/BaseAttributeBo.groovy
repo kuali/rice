@@ -1,7 +1,8 @@
 package org.kuali.rice.krms.impl.repository
 
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
-import org.kuali.rice.krms.api.repository.BaseAttributeContract;
+import org.kuali.rice.krms.api.repository.BaseAttributeContract
+import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinitionContract;
 
 /**
  * This class contains the common elements of a KRMS attribute.
@@ -19,9 +20,9 @@ public class BaseAttributeBo extends PersistableBusinessObjectBase implements Ba
 	def String attributeDefinitionId
 	def String value
 	def KrmsAttributeDefinitionBo attributeDefinition
-	
+
    @Override
-   public KrmsAttributeDefinitionBo getAttributeDefinition() {
+   public KrmsAttributeDefinitionContract getAttributeDefinition() {
 	   return attributeDefinition
    }
 } 

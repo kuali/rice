@@ -86,7 +86,15 @@ public class KualiInitializeListener implements ServletContextListener {
             context.setConfigLocation(bootstrapSpringBeans);
         }
         context.setServletContext(sce.getServletContext());
-        context.refresh();
+
+        try {
+            context.refresh();
+        } catch (RuntimeException e) {
+            LOG.error("problem during context.refresh()", e);
+
+            throw e;
+        }
+
         context.start();
         long endInit = System.currentTimeMillis();
         LOG.info("...Kuali Rice Application successfully initialized, startup took " + (endInit - startInit) + " ms.");

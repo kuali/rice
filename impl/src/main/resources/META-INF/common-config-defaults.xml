@@ -123,7 +123,7 @@
 	     This is helpful for client apps using the rice portal, because both client and rice config params
 	     can be linked to -->
 	  <param name="rice.portal.links.showRiceServerConfig" override="false">false</param>
-	  <param name="rice.portal.logout.redirectUrl">${application.url}/portal.do</param>
+	  <param name="rice.portal.logout.redirectUrl" override="false">${application.url}/portal.do</param>
 
     <!-- App specific parameters -->
     <param name="externalizable.help.url" override="false">${application.url}/kr/static/help/</param>
@@ -411,6 +411,11 @@
 	<param name="rice.kim.expose.services.on.bus" override="false">true</param>
 	<param name="rice.kim.include.user.interface.components" override="false">true</param>
 
+  <!-- rice.kew.workflowDocumentActionsServiceSoap.secure KRMS -->
+  <param name="krms.mode" override="false">LOCAL</param>
+  <param name="rice.krms.ruleRepositoryServiceSoap.secure" override="false">true</param>
+  <param name="rice.krms.expose.services.on.bus" override="false">true</param>
+
   <!-- SHAREDDATA -->
 
 	<param name="shareddata.mode" override="false">LOCAL</param>
@@ -441,34 +446,34 @@
 	
 	 <!-- Daily emails every day at 1 AM -->
   <!--  By disabling the cronExpression below, that disables the related scheduled email -->
-  <!--<param name="dailyEmail.cronExpression">0 0 1 * * ?</param>-->
-  <param name="dailyEmail.active">true</param>
+  <!--<param name="dailyEmail.cronExpression" override="false">0 0 1 * * ?</param>-->
+  <param name="dailyEmail.active" override="false">true</param>
 
   <!-- Weekly emails every Monday at 2 AM -->
   <!--  By disabling the cronExpression below, that disables the related scheduled email -->
-  <!--<param name="weeklyEmail.cronExpression">0 0 2 ? * 2</param>-->
-  <param name="weeklyEmail.active">true</param>
+  <!--<param name="weeklyEmail.cronExpression" override="false">0 0 2 ? * 2</param>-->
+  <param name="weeklyEmail.active" override="false">true</param>
 
-  <param name="rice.kew.workflowDocumentActionsServiceSoap.secure">true</param>
-  <param name="rice.kew.actionListServiceSoap.secure">true</param>
-  <param name="rice.kew.documentTypeServiceSoap.secure">true</param>
-  <param name="rice.kew.noteServiceSoap.secure">true</param>
-  <param name="rice.kew.ruleServiceSoap.secure">true</param>
-  <param name="rice.kew.documentAttributeIndexingQueueSoap.secure">true</param>
-  <param name="rice.kew.documentLookupCustomizationHandlerServiceSoap.secure">true</param>
-  <param name="rice.kew.documentSecurityHandlerServiceSoap.secure">true</param>
-  <param name="rice.kew.ruleValidationAttributeExporterServiceSoap.secure">true</param>
-  <param name="rice.kew.groupMembershipChangeQueueSoap.secure">true</param>
-  <param name="rice.kew.responsibilityChangeProcessorSoap.secure">true</param>
-  <param name="rice.kew.kewTypeRepositoryServiceSoap.secure">true</param>
-  <param name="rice.kew.peopleFlowServiceSoap.secure">true</param>
+  <param name="rice.kew.workflowDocumentActionsServiceSoap.secure" override="false">true</param>
+  <param name="rice.kew.actionListServiceSoap.secure" override="false">true</param>
+  <param name="rice.kew.documentTypeServiceSoap.secure" override="false">true</param>
+  <param name="rice.kew.noteServiceSoap.secure" override="false">true</param>
+  <param name="rice.kew.ruleServiceSoap.secure" override="false">true</param>
+  <param name="rice.kew.documentAttributeIndexingQueueSoap.secure" override="false">true</param>
+  <param name="rice.kew.documentLookupCustomizationHandlerServiceSoap.secure" override="false">true</param>
+  <param name="rice.kew.documentSecurityHandlerServiceSoap.secure" override="false">true</param>
+  <param name="rice.kew.ruleValidationAttributeExporterServiceSoap.secure" override="false">true</param>
+  <param name="rice.kew.groupMembershipChangeQueueSoap.secure" override="false">true</param>
+  <param name="rice.kew.responsibilityChangeProcessorSoap.secure" override="false">true</param>
+  <param name="rice.kew.kewTypeRepositoryServiceSoap.secure" override="false">true</param>
+  <param name="rice.kew.peopleFlowServiceSoap.secure" override="false">true</param>
 
-  <param name="secure.workflowutility.javaservice.endpoint">true</param>
-  <param name="secure.workflowutility.soapservice.endpoint">true</param>
-  <param name="secure.identity.javaservice.endpoint">true</param>
-  <param name="secure.group.javaservice.endpoint">true</param>
+  <param name="secure.workflowutility.javaservice.endpoint" override="false">true</param>
+  <param name="secure.workflowutility.soapservice.endpoint" override="false">true</param>
+  <param name="secure.identity.javaservice.endpoint" override="false">true</param>
+  <param name="secure.group.javaservice.endpoint" override="false">true</param>
 
-  <param name="rice.resourceloader.servicesToCache">
+  <param name="rice.resourceloader.servicesToCache" override="false">
       userTransaction,
       jtaTransactionManager,
       transactionManager,

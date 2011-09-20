@@ -48,6 +48,7 @@ public interface GroupService {
      * @param principalId The id of the Principal
      * @return a list of Group objects in which the given Principal is a member of.  An empty list is returned if an invalid or
      *         non-existant principalId is supplied.
+     * @throws IllegalArgumentException if the principalId is null or blank
      */
     @WebMethod(operationName = "getGroupsByPrincipalId")
     @XmlElementWrapper(name = "groups", required = true)
@@ -68,6 +69,7 @@ public interface GroupService {
      * @param namespaceCode The namespace code of the desired Groups to return
      * @return a list of Group objects in which the given Principal is a member of, filtered by Group namespace.  An empty list is returned if an invalid or
      *         non-existant principalId is supplied.
+     * @throws IllegalArgumentException if the principalId, namespaceCode is null or blank
      */
     @WebMethod(operationName = "getGroupsByPrincipalIdAndNamespaceCode")
     @XmlElementWrapper(name = "groups", required = true)
@@ -86,12 +88,13 @@ public interface GroupService {
      * @param queryByCriteria the criteria.  Cannot be null.
      * @return a list of groupId Strings in which the given criteria match Group properties.  An empty list is returned if an invalid or
      *         non-existent criteria is supplied.
+     * @throws IllegalArgumentException if the queryByCriteria is null
      */
     @WebMethod(operationName = "findGroupIds")
     @XmlElementWrapper(name = "groupIds", required = true)
     @XmlElement(name = "groupId", required = false)
     @WebResult(name = "groupIds")
-    List<String> findGroupIds(@WebParam(name = "query") QueryByCriteria queryByCriteria);
+    List<String> findGroupIds(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
 
     /**
      * Query for groups based on the given search criteria which is a Map of group field names to values.
@@ -103,10 +106,11 @@ public interface GroupService {
      * @param queryByCriteria the criteria.  Cannot be null.
      * @return a list of Group objects in which the given criteria match Group properties.  An empty list is returned if an invalid or
      *         non-existent criteria is supplied.
+     * @throws IllegalArgumentException if the queryByCriteria is null
      */
     @WebMethod(operationName = "findGroups")
     @WebResult(name = "findGroup")
-    GroupQueryResults findGroups(@WebParam(name = "query") QueryByCriteria queryByCriteria);
+    GroupQueryResults findGroups(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
 
     /**
      * Query for group members based on the given search criteria which is a Map of group member field names to values.
@@ -118,10 +122,11 @@ public interface GroupService {
      * @param queryByCriteria the criteria.  Cannot be null.
      * @return a list of GroupMember objects in which the given criteria match Group properties.  An empty list is returned if an invalid or
      *         non-existent criteria is supplied.
+     * @throws IllegalArgumentException if the queryByCriteria is null
      */
     @WebMethod(operationName = "findGroupMembers")
     @WebResult(name = "findGroupMember")
-    GroupMemberQueryResults findGroupMembers(@WebParam(name = "query") QueryByCriteria queryByCriteria);
+    GroupMemberQueryResults findGroupMembers(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
     /**
      * Lookup a Group based on the passed in id.
      *
@@ -129,6 +134,7 @@ public interface GroupService {
      * @param groupId String that matches the desired Groups id
      * @return a Group with the given id value.  A null reference is returned if an invalid or
      *         non-existant id is supplied.
+     * @throws IllegalArgumentException if the groupId is null or blank
      */
     @WebMethod(operationName = "getGroup")
     @WebResult(name = "group")
@@ -142,6 +148,7 @@ public interface GroupService {
      * @param groupName     String that matches the desired Group's name
      * @return a Group with the given namespace and name values.  A null reference is returned if an invalid or
      *         non-existant id is supplied.
+     * @throws IllegalArgumentException if the namespaceCode, groupName is null or blank
      */
     @WebMethod(operationName = "getGroupByNameAndNamespaceCode")
     @WebResult(name = "group")
@@ -156,12 +163,13 @@ public interface GroupService {
      * @param groupIds Collection that matches the desired Groups' id
      * @return a Map of Groups with the given id values.  An empty Map is returned if an invalid or
      *         non-existant id is supplied.
+     * @throws IllegalArgumentException if the groupIds null or empty
      */
     @WebMethod(operationName = "getGroups")
     @XmlElementWrapper(name = "groups", required = true)
     @XmlElement(name = "group", required = false)
     @WebResult(name = "groups")
-    List<Group> getGroups(@WebParam(name="groupIds") Collection<String> groupIds);
+    List<Group> getGroups(@WebParam(name="groupIds") Collection<String> groupIds) throws RiceIllegalArgumentException;
 
 
     /**
@@ -172,6 +180,7 @@ public interface GroupService {
      * @param principalId Id of the principal
      * @param groupId     Id string of group
      * @return true if principal is a member of the group or a member of a group assigned to the the group.
+     * @throws IllegalArgumentException if the principalId, groupId is null or blank
      */
     @WebMethod(operationName = "isMemberOfGroup")
     @WebResult(name = "isMember")
@@ -190,6 +199,7 @@ public interface GroupService {
      * @param principalId Id of the principal
      * @param groupId     Id string of group
      * @return true if principal is a direct member of the group.
+     * @throws IllegalArgumentException if the principalId, groupId is null or blank
      */
     @WebMethod(operationName = "isDirectMemberOfGroup")
     @WebResult(name = "isDirectMember")
@@ -205,6 +215,7 @@ public interface GroupService {
      *
      * @param principalId Id of a Principal
      * @return a list of Group Ids in which the principal is a member of.
+     * @throws IllegalArgumentException if the principalId is null or blank
      */
     @WebMethod(operationName = "getGroupIdsByPrincipalId")
     @XmlElementWrapper(name = "groupIds", required = true)
@@ -223,6 +234,7 @@ public interface GroupService {
      * @param principalId Id of a Principal
      * @param namespaceCode Namspace code to limit group results to
      * @return a list of Group Ids in which the principal is a member of, limited to the passed in namespace.
+     * @throws IllegalArgumentException if the principalId, namespaceCode is null or blank
      */
     @WebMethod(operationName = "getGroupIdsByPrincipalIdAndNamespaceCode")
     @XmlElementWrapper(name = "groupIds", required = true)
@@ -241,6 +253,7 @@ public interface GroupService {
      *
      * @param principalId Id of a Principal
      * @return a list of Group Ids in which the principal is directly a member of.
+     * @throws IllegalArgumentException if the principalId is null or blank
      */
     @WebMethod(operationName = "getDirectGroupIdsByPrincipalId")
     @XmlElementWrapper(name = "groupIds", required = true)
@@ -258,6 +271,7 @@ public interface GroupService {
      * @param groupMemberId Id of the principal
      * @param groupId     Id string of group
      * @return true if group is a member of the group or a member of a group assigned to the the group.
+     * @throws IllegalArgumentException if the groupMemberId, groupId is null or blank
      */
     @WebMethod(operationName = "isGroupMemberOfGroup")
     @WebResult(name = "isMember")
@@ -277,6 +291,7 @@ public interface GroupService {
      *
      * @param groupId     Id string of group
      * @return List of principal ids
+     * @throws IllegalArgumentException if the groupId is null or blank
      */
     @WebMethod(operationName = "getMemberPrincipalIds")
     @XmlElementWrapper(name = "principalIds", required = true)
@@ -292,6 +307,7 @@ public interface GroupService {
      *
      * @param groupId     Id string of group
      * @return List of direct member principal ids.
+     * @throws IllegalArgumentException if the groupId is null or blank
      */
     @WebMethod(operationName = "getDirectMemberPrincipalIds")
     @XmlElementWrapper(name = "principalIds", required = true)
@@ -308,6 +324,7 @@ public interface GroupService {
      *
      * @param groupId     Id string of group
      * @return List of group ids
+     * @throws IllegalArgumentException if the groupId is null or blank
      */
     @WebMethod(operationName = "getMemberGroupIds")
     @XmlElementWrapper(name = "groupIds", required = true)
@@ -323,6 +340,7 @@ public interface GroupService {
      *
      * @param groupId     Id string of group
      * @return List of direct member group ids.
+     * @throws IllegalArgumentException if the groupId is null or blank
      */
     @WebMethod(operationName = "getDirectMemberOfGroup")
     @XmlElementWrapper(name = "groupIds", required = true)
@@ -339,6 +357,7 @@ public interface GroupService {
      *
      * @param groupId     Id string of group
      * @return List of parent group ids.
+     * @throws IllegalArgumentException if the groupId is null or blank
      */
     @WebMethod(operationName = "getParentGroupIds")
     @XmlElementWrapper(name = "groupIds", required = true)
@@ -354,6 +373,7 @@ public interface GroupService {
      *
      * @param groupId     Id string of group
      * @return List of parent group ids.
+     * @throws IllegalArgumentException if the groupId is null or blank
      */
     @WebMethod(operationName = "getDirectParentGroupIds")
     @XmlElementWrapper(name = "groupIds", required = true)
@@ -363,6 +383,7 @@ public interface GroupService {
 
 	/**
 	 * Get all the attributes of the given group.
+     * @throws IllegalArgumentException if the groupId is null or blank
 	 */
     @WebMethod(operationName = "getAttributes")
     @WebResult(name = "attributes")
@@ -377,14 +398,15 @@ public interface GroupService {
      * The collection of GroupMembers will contain members for a the group in no defined order.
      * </p>
      *
-     * @param groupIds     Id of group
+     * @param groupId     Id of group
      * @return Collection of GroupMembers.
+     * @throws IllegalArgumentException if the groupId is null or blank
      */
     @WebMethod(operationName = "getMembersOfGroup")
     @XmlElementWrapper(name = "members", required = true)
     @XmlElement(name = "member", required = false)
     @WebResult(name = "members")
-	List<GroupMember> getMembersOfGroup( @WebParam(name="groupId") String groupIds ) throws RiceIllegalArgumentException;
+	List<GroupMember> getMembersOfGroup( @WebParam(name="groupId") String groupId ) throws RiceIllegalArgumentException;
 
 
     /**
@@ -397,6 +419,7 @@ public interface GroupService {
      *
      * @param groupIds     Ids of groups
      * @return Collection of GroupMembers.
+     * @throws IllegalArgumentException if the groupIds is null or empty
      */
     @WebMethod(operationName = "getMembers")
     @XmlElementWrapper(name = "members", required = true)
@@ -414,6 +437,7 @@ public interface GroupService {
      *
      * @param group The new group to be created
      * @return a the Group that has been created.
+     * @throws IllegalArgumentException if the group is null
      */
     @WebMethod(operationName = "createGroup")
     @WebResult(name = "group")
@@ -429,6 +453,7 @@ public interface GroupService {
      *
      * @param group The group to be updated
      * @return a the Group that has been updated.
+     * @throws IllegalArgumentException if the group is null
      */
     @WebMethod(operationName = "updateGroup")
     @WebResult(name = "group")
@@ -445,6 +470,7 @@ public interface GroupService {
      * @param groupId Id of the Group to be updated
      * @param group   Group object to use for update
      * @return a the Group that has been updated.
+     * @throws IllegalArgumentException if the group is null or the groupId is null or blank
      */
     @WebMethod(operationName = "updateGroupWithId")
     @WebResult(name = "group")
@@ -456,6 +482,7 @@ public interface GroupService {
      * @param childId Id of the Group to be added to the members of Parent
      * @param parentId  Id of the Group object to add the member to
      * @return true if the member was added successfully.
+     * @throws IllegalArgumentException if the childId, parentId is null or blank
      */
     @WebMethod(operationName = "addGroupToGroup")
     @WebResult(name = "addedToGroup")
@@ -467,6 +494,7 @@ public interface GroupService {
      * @param childId Id of the Group to be removed from the members of Parent
      * @param parentId  Id of the Group object to remove the member from
      * @return true if the member was removed successfully.
+     * @throws IllegalArgumentException if the childId, parentId is null or blank
      */
     @WebMethod(operationName = "removeGroupFromGroup")
     @WebResult(name = "removedFromGroup")
@@ -478,6 +506,7 @@ public interface GroupService {
      * @param principalId Id of the Principal to be added to the members of the Parent Group
      * @param groupId  Id of the Group object to add the member to
      * @return true if the member was added successfully.
+     * @throws IllegalArgumentException if the principalId, groupId is null or blank
      */
     @WebMethod(operationName = "addPrincipalToGroup")
     @WebResult(name = "addedToGroup")
@@ -489,6 +518,7 @@ public interface GroupService {
      * @param principalId Id of the Principal to be removed from the members of the Parent Group
      * @param groupId  Id of the Group object to remove the member from
      * @return true if the member was removed successfully.
+     * @throws IllegalArgumentException if the principalId, groupId is null or blank
      */
     @WebMethod(operationName = "removePrincipalFromGroup")
     @WebResult(name = "removedFromGroup")
@@ -498,6 +528,7 @@ public interface GroupService {
      * Removes all members from the group with the given groupId.
      *
      * @param groupId  Id of the Group object to remove the members from
+     * @throws IllegalArgumentException if the groupId is null or blank
      */
     @WebMethod(operationName = "removeAllMembers")
     void removeAllMembers( @WebParam(name="groupId") String groupId ) throws RiceIllegalArgumentException;

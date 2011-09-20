@@ -16,7 +16,6 @@
 package org.kuali.rice.kim.impl.identity;
 
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
-import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.kim.api.identity.IdentityArchiveService;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.Type;
@@ -43,8 +42,6 @@ import org.kuali.rice.kim.api.identity.residency.EntityResidency;
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
 import org.kuali.rice.kim.api.identity.visa.EntityVisa;
 
-import javax.jws.WebParam;
-import javax.jws.WebService;
 import java.util.List;
 import java.util.Map;
 
@@ -55,10 +52,7 @@ import java.util.Map;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
-@WebService(endpointInterface = IdentityCurrentAndArchivedServiceImpl.IdentityServiceConst.INTERFACE_CLASS, serviceName = IdentityCurrentAndArchivedServiceImpl.IdentityServiceConst.WEB_SERVICE_NAME, portName = IdentityCurrentAndArchivedServiceImpl.IdentityServiceConst.WEB_SERVICE_PORT, targetNamespace = IdentityCurrentAndArchivedServiceImpl.MODULE_TARGET_NAMESPACE)
 public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
-    public static final String MODULE_TARGET_NAMESPACE = RiceConstants.RICE_JAXWS_TARGET_NAMESPACE_BASE + "/kim";
 	private final IdentityArchiveService identityArchiveService;
 	private final IdentityService innerIdentityService;
 	
@@ -72,30 +66,22 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 		this.identityArchiveService = identityArchiveService;
 	}
 	
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getAddressType(java.lang.String)
-	 */
+    @Override
 	public Type getAddressType(String code) {
 		return getInnerIdentityService().getAddressType(code);
 	}
 
-    /**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getAffiliationType(java.lang.String)
-	 */
+    @Override
 	public EntityAffiliationType getAffiliationType(String code) {
 		return getInnerIdentityService().getAffiliationType(code);
 	}
 
-    /**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getCitizenshipStatus(java.lang.String)
-	 */
+    @Override
 	public Type getCitizenshipStatus(String code) {
-		return Type.Builder.create(getInnerIdentityService().getCitizenshipStatus(code)).build();
+		return getInnerIdentityService().getCitizenshipStatus(code);
 	}
 
-    /**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getDefaultNamesForEntityIds(java.util.List)
-	 */
+    @Override
 	public Map<String, EntityNamePrincipalName> getDefaultNamesForEntityIds(
 			List<String> entityIds) {
 		return getInnerIdentityService().getDefaultNamesForEntityIds(entityIds);
@@ -141,32 +127,24 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
         return getInnerIdentityService().updateBioDemographics(bioDemographics);
     }
 
-    /**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getDefaultNamesForPrincipalIds(java.util.List)
-	 */
+    @Override
 	public Map<String, EntityNamePrincipalName> getDefaultNamesForPrincipalIds(
 			List<String> principalIds) {
 		return getInnerIdentityService().getDefaultNamesForPrincipalIds(principalIds);
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEmailType(java.lang.String)
-	 */
+    @Override
 	public Type getEmailType(String code) {
 		return getInnerIdentityService().getEmailType(code);
 	}
 
-    /**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEmploymentStatus(java.lang.String)
-	 */
+    @Override
 	public Type getEmploymentStatus(String code) {
 		return getInnerIdentityService().getEmploymentStatus(code);
 	}
 
 
-    /**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEmploymentType(java.lang.String)
-	 */
+    @Override
 	public Type getEmploymentType(String code) {
 		return getInnerIdentityService().getEmploymentType(code);
 	}
@@ -175,9 +153,8 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
     /**
 	 * This method first tries the inner IdentityService impl, and resorts to
 	 * the IdentityArchiveService if need be.
-	 * 
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityDefault(java.lang.String)
 	 */
+    @Override
 	public EntityDefault getEntityDefault(String entityId) {
 		EntityDefault entity = getInnerIdentityService().getEntityDefault(entityId);
     	if ( entity == null ) {
@@ -191,9 +168,8 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 	/**
 	 * This method first tries the inner IdentityService impl, and resorts to
 	 * the IdentityArchiveService if need be.
-	 * 
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityDefaultByPrincipalId(java.lang.String)
 	 */
+    @Override
 	public EntityDefault getEntityDefaultByPrincipalId(String principalId) {
 		EntityDefault entity = getInnerIdentityService().getEntityDefaultByPrincipalId(principalId);
     	if ( entity == null ) {
@@ -207,9 +183,8 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 	/**
 	 * This method first tries the inner IdentityService impl, and resorts to
 	 * the IdentityArchiveService if need be.
-	 * 
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityDefaultByPrincipalName(java.lang.String)
 	 */
+    @Override
 	public EntityDefault getEntityDefaultByPrincipalName(String principalName) {
 		EntityDefault entity = getInnerIdentityService().getEntityDefaultByPrincipalName(principalName);
     	if ( entity == null ) {
@@ -221,32 +196,26 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 	}
 
     @Override
-    public EntityDefaultQueryResults findEntityDefaults(@WebParam(name = "query") QueryByCriteria queryByCriteria) {
+    public EntityDefaultQueryResults findEntityDefaults( QueryByCriteria queryByCriteria) {
         return getInnerIdentityService().findEntityDefaults(queryByCriteria);
     }
 
     @Override
-    public EntityQueryResults findEntities(@WebParam(name = "query") QueryByCriteria queryByCriteria) {
+    public EntityQueryResults findEntities(QueryByCriteria queryByCriteria) {
         return getInnerIdentityService().findEntities(queryByCriteria);
     }
 
-    /**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntity(java.lang.String)
-	 */
+    @Override
 	public Entity getEntity(String entityId) {
 		return getInnerIdentityService().getEntity(entityId);
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityByPrincipalId(java.lang.String)
-	 */
+    @Override
 	public Entity getEntityByPrincipalId(String principalId) {
 		return getInnerIdentityService().getEntityByPrincipalId(principalId);
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityByPrincipalName(java.lang.String)
-	 */
+    @Override
 	public Entity getEntityByPrincipalName(String principalName) {
 		return getInnerIdentityService().getEntityByPrincipalName(principalName);
 	}
@@ -267,16 +236,12 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
         return getInnerIdentityService().inactivateEntity(entityId);
     }
 
-    /**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getNameType(java.lang.String)
-	 */
+    @Override
 	public Type getNameType(String code) {
 		return getInnerIdentityService().getNameType(code);
 	}
 
-    /**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityPrivacyPreferences(java.lang.String)
-	 */
+    @Override
 	public EntityPrivacyPreferences getEntityPrivacyPreferences(
 			String entityId) {
 		return getInnerIdentityService().getEntityPrivacyPreferences(entityId);
@@ -337,45 +302,33 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
         return getInnerIdentityService().updateVisa(visa);
     }
 
-    /**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityType(java.lang.String)
-	 */
+    @Override
 	public Type getEntityType(String code) {
 		return getInnerIdentityService().getEntityType(code);
 	}
 
-    /**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getExternalIdentifierType(java.lang.String)
-	 */
+    @Override
 	public EntityExternalIdentifierType getExternalIdentifierType(String code) {
 		return getInnerIdentityService().getExternalIdentifierType(code);
 	}
 
 
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getPhoneType(java.lang.String)
-	 */
+    @Override
 	public Type getPhoneType(String code) {
 		return getInnerIdentityService().getPhoneType(code);
 	}
 
-    /**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getPrincipal(java.lang.String)
-	 */
+    @Override
 	public Principal getPrincipal(String principalId) {
 		return getInnerIdentityService().getPrincipal(principalId);
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getPrincipalByPrincipalName(java.lang.String)
-	 */
+    @Override
 	public Principal getPrincipalByPrincipalName(String principalName) {
 		return getInnerIdentityService().getPrincipalByPrincipalName(principalName);
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getPrincipalByPrincipalNameAndPassword(java.lang.String, java.lang.String)
-	 */
+    @Override
 	public Principal getPrincipalByPrincipalNameAndPassword(
 			String principalName, String password) {
 		return getInnerIdentityService().getPrincipalByPrincipalNameAndPassword(
@@ -494,16 +447,5 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 	
 	private IdentityArchiveService getIdentityArchiveService() {
 		return identityArchiveService;
-	}
-
-    
-    public static final class IdentityServiceConst {
-		public static final String WEB_SERVICE_NAME = "identityServiceSOAP";
-		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.api.identity.IdentityService";
-		public static final String WEB_SERVICE_PORT = "IdentityServicePort";
-		
-		private IdentityServiceConst() {
-			throw new UnsupportedOperationException("do not call");
-		}
 	}
 }

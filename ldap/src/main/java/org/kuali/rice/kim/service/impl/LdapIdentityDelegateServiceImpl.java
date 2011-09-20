@@ -18,6 +18,9 @@ package org.kuali.rice.kim.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kim.api.identity.entity.Entity;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
@@ -35,15 +38,13 @@ import org.kuali.rice.kim.dao.LdapPrincipalDao;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl implements IdentityService {
+public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl {
     private LdapPrincipalDao principalDao;
     
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#lookupEntityIds(java.util.Map)
-	 */
-	public List<String> lookupEntityIds(Map<String,String> searchCriteria) {
+    @Override
+	protected List<String> lookupEntityIds(Map<String,String> searchCriteria) {
         final List<String> edsInfo = getPrincipalDao().lookupEntityIds(searchCriteria);
-        if (edsInfo.size() > 0) {
+        if (edsInfo != null && !edsInfo.isEmpty()) {
             return edsInfo;
         } 
         else {
@@ -51,14 +52,12 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl impleme
         }
     }
 
-	public int getMatchingEntityCount(Map<String,String> searchCriteria) {
-        return lookupEntityIds(searchCriteria).size();
-    }
-
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityInfo(java.lang.String)
-	 */
+    @Override
 	public Entity getEntity(String entityId) {
+        if (StringUtils.isBlank(entityId)) {
+            throw new RiceIllegalArgumentException("entityId is blank");
+        }
+
         Entity edsInfo = getPrincipalDao().getEntity(entityId);
         if (edsInfo != null) {
             return edsInfo;
@@ -69,9 +68,13 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl impleme
 	
 	/**
 	 * Overridden to populate this information from the LdapPrincipalDao
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityByPrincipalId(java.lang.String)
 	 */
+    @Override
 	public Entity getEntityByPrincipalId(String principalId) {
+        if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId is blank");
+        }
+
         Entity edsInfo = getPrincipalDao().getEntityByPrincipalId(principalId);
         if (edsInfo != null) {
             return edsInfo;
@@ -80,10 +83,12 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl impleme
         }
 	}
 	
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityByPrincipalName(java.lang.String)
-	 */
+    @Override
 	public Entity getEntityByPrincipalName(String principalName) {
+        if (StringUtils.isBlank(principalName)) {
+            throw new RiceIllegalArgumentException("principalName is blank");
+        }
+
         final Entity edsInfo = getPrincipalDao().getEntityByPrincipalName(principalName);
         if (edsInfo != null) {
             return edsInfo;
@@ -92,10 +97,12 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl impleme
         }
 	}
 	
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityDefault(java.lang.String)
-	 */
+    @Override
 	public EntityDefault getEntityDefault(String entityId) {
+        if (StringUtils.isBlank(entityId)) {
+            throw new RiceIllegalArgumentException("entityId is blank");
+        }
+
         EntityDefault edsInfo = getPrincipalDao().getEntityDefault(entityId);
         if (edsInfo != null) {
             return edsInfo;
@@ -105,10 +112,12 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl impleme
         }
 	}
 	
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityDefaultByPrincipalId(java.lang.String)
-	 */
+    @Override
 	public EntityDefault getEntityDefaultByPrincipalId(String principalId) {
+        if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId is blank");
+        }
+
         final EntityDefault retval = getPrincipalDao().getEntityDefaultByPrincipalId(principalId);
         if (retval != null) {
             return retval;
@@ -118,10 +127,12 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl impleme
         }
 	}
 	
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityDefaultByPrincipalName(java.lang.String)
-	 */
+    @Override
 	public EntityDefault getEntityDefaultByPrincipalName(String principalName) {
+        if (StringUtils.isBlank(principalName)) {
+            throw new RiceIllegalArgumentException("principalName is blank");
+        }
+
         final EntityDefault retval = getPrincipalDao().getEntityDefaultByPrincipalName(principalName);
         if (retval != null) {
             return retval;
@@ -136,22 +147,33 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl impleme
      * of this if that's what you need.
      *
      */
+    @Override
     @Deprecated
 	public Principal getPrincipalByPrincipalNameAndPassword(String principalName, String password) {
+        if (StringUtils.isBlank(principalName)) {
+            throw new RiceIllegalArgumentException("principalName is blank");
+        }
+
+        //not validating password
+
         return getPrincipalByPrincipalName(principalName);
     }
 	
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityPrivacyPreferences(java.lang.String)
-	 */
+    @Override
 	public EntityPrivacyPreferences getEntityPrivacyPreferences(String entityId) {
+        if (StringUtils.isBlank(entityId)) {
+            throw new RiceIllegalArgumentException("entityId is blank");
+        }
+
         return getPrincipalDao().getEntityPrivacyPreferences(entityId);
 	}
 
-    /**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getPrincipal(java.lang.String)
-	 */
+    @Override
 	public Principal getPrincipal(String principalId) {	
+        if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId is blank");
+        }
+
         final Principal edsInfo = getPrincipalDao().getPrincipal(principalId);
             if (edsInfo != null) {
 	        return edsInfo;
@@ -160,11 +182,12 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl impleme
 	    }
     }
 
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getPrincipalByPrincipalName(java.lang.String)
-	 */
-	@SuppressWarnings("unchecked")
+    @Override
 	public Principal getPrincipalByPrincipalName(String principalName) {
+        if (StringUtils.isBlank(principalName)) {
+            throw new RiceIllegalArgumentException("principalName is blank");
+        }
+
         final Principal edsInfo = getPrincipalDao().getPrincipalByName(principalName);
         if (edsInfo != null) {
             return edsInfo;
@@ -172,41 +195,24 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl impleme
             return super.getPrincipalByPrincipalName(principalName);
         }
     }
-
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityIdByPrincipalId(java.lang.String)
-	 */
-	public String getEntityIdByPrincipalId(String principalId) {
-        return getEntityByPrincipalId(principalId).getId();
-    }
-
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityIdByPrincipalName(java.lang.String)
-	 */
-	public String getEntityIdByPrincipalName(String principalName) {
-        return getEntityByPrincipalName(principalName).getId();
-    }
 	
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getPrincipalIdByPrincipalName(java.lang.String)
-	 */
-	public String getPrincipalIdByPrincipalName(String principalName) {
-        return getPrincipalByPrincipalName(principalName).getPrincipalId();
-	}
-	
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getDefaultNamesForEntityIds(java.util.List)
-	 */
+	@Override
 	public Map<String, EntityNamePrincipalName> getDefaultNamesForEntityIds(List<String> entityIds) {
+        if (CollectionUtils.isEmpty(entityIds)) {
+            throw new RiceIllegalArgumentException("entityIds is empty or null");
+        }
+
         return getPrincipalDao().getDefaultNamesForEntityIds(entityIds);
 	}
 
 
 
-    /**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getDefaultNamesForPrincipalIds(java.util.List)
-	 */
+    @Override
 	public Map<String, EntityNamePrincipalName> getDefaultNamesForPrincipalIds(List<String> principalIds) {
+        if (CollectionUtils.isEmpty(principalIds)) {
+            throw new RiceIllegalArgumentException("principalIds is empty or null");
+        }
+
         return getPrincipalDao().getDefaultNamesForPrincipalIds(principalIds);
 	}
 

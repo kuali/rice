@@ -84,12 +84,84 @@
 }
 
 .labelLeft label {
-    color: #666666;
-    font-family: Arial;
     font-size: 12px;
-    font-style: normal;
     font-weight: bold;
+}
+
+.labelLeft {
+    padding-right: 8px;
+}
+
+.kr-quickfinder {
+    display: block;
+    margin-top: 3px;
+    font-size: 10px;
+}
+
+.summary {
+   font-size: 11px;
+}
+
+.summary-bold {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.kr-highlight-red {
+    color: red;
+}
+
+.kr-highlight-blue {
+    color: blue;
+}
+
+.kr-emphasis {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.kr-coursesection-line {
+    background-color: #DBEDF1;
+    border-bottom: 1px solid #DDDDDD;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.kr-coursesection-line .kr-collection-list-cntr a {
+    font-size: 11px;
+    color: #3F7826;
+}
+
+.kr-collection-list-cntr ul {
+    margin-left: 0px;
+    font-size: 11px;
+}
+
+.kr-collection-list-cntr .labelLeft label {
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.kr-collection-list-cntr .fieldContainerVerticalItem {
+    margin-bottom: 3px;
+}
+
+.kr-collection-list-cntr a {
+    color: #333333;
+    font-family: Arial;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: normal;
     text-decoration: none;
+}
+
+.kr-collection-list-cntr h3 {
+    border-bottom: none;
+    font-family: arial,helvetica,sans-serif;
+    text-transform: none;
+    font-weight: normal;
+    font-size: 13px !important;
+    line-height: 16px;
 }
 
 .kr-collectionLine-cntr .fieldLine {
@@ -108,12 +180,26 @@
     margin-right: 1em;
 }
 
+.kr-field-tight {
+    margin-right: 5px;
+}
+
 .fl-container-flex15 {
     width: 15%;
 }
 
 .button-primary input {
     background-color: white;
+}
+
+.registration-tabgroup {
+    width: 56%;
+    float: left;
+}
+
+.kr-border-right {
+    border-right: 2px solid black;
+    padding-right: 25px;
 }
 
 .breadcrumbs {
@@ -126,9 +212,6 @@
     width: 70%;
 }
 
-.summary {
-    font-size: 0.923077em;
-}
 #ks-page-header_div {
     border-bottom: 3px solid #000000;
     margin-bottom: 30px;

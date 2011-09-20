@@ -23,6 +23,12 @@
   <bean id="GenericTextFieldMedium" parent="GenericTextField" p:control.size="12"/>
   <bean id="GenericTextFieldSmall" parent="GenericTextField" p:control.size="5"/>
 
+  <bean id="GenericFieldGroup" parent="FieldGroup" p:labelField.styleClasses="labelTop" p:labelPlacement="TOP"
+        p:labelField.renderColon="false"/>
+
+  <bean id="GenericHorizontalFieldGroup" parent="HorizontalFieldGroup" p:labelField.styleClasses="labelTop" p:labelPlacement="TOP"
+        p:labelField.renderColon="false"/>
+
   <bean id="GenericDateField" parent="GenericTextField">
     <property name="control">
       <bean parent="TextControl" p:size="10" p:datePicker-ref="DatePicker"/>
@@ -117,7 +123,8 @@
   <bean id="KSFormView" parent="FormView" p:breadcrumbsInApplicationHeader="true"
         p:breadcrumbs.styleClasses="fl-container-flex75 fl-col breadcrumbs gutter-right">
     <property name="applicationHeader">
-      <bean parent="Header" p:id="ks-banner" p:template="/WEB-INF/jsp/templates/StudentApplicationHeader.jsp" p:styleClasses="fl-container-flex"/>
+      <bean parent="Header" p:id="ks-banner" p:template="/WEB-INF/jsp/templates/StudentApplicationHeader.jsp"
+            p:styleClasses="fl-container-flex"/>
     </property>
     <property name="applicationFooter">
       <bean parent="Footer" p:template="/WEB-INF/jsp/templates/StudentApplicationFooter.jsp"
@@ -128,6 +135,21 @@
         <value>/krad/css/ks/ks-theme.css</value>
         <value>/krad/css/ks/fss-theme-ks.css</value>
       </list>
+    </property>
+  </bean>
+
+  <bean id="GenericCriteriaGroup" parent="Group">
+    <property name="renderHeader" value="false"/>
+  </bean>
+
+  <bean id="AdvancedSearchQuickFinder" parent="QuickFinder">
+    <property name="quickfinderActionField">
+      <bean parent="ActionLinkField" p:methodToCall="performLookup" p:actionLabel="Advanced Search"
+            p:styleClasses="kr-quickfinder action">
+        <property name="lightBoxLookup">
+          <bean parent="LightBoxPost" p:lookupReturnByScript="true"/>
+        </property>
+      </bean>
     </property>
   </bean>
 

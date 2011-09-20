@@ -88,6 +88,7 @@ public class LookupForm extends UifFormBase {
             if (StringUtils.isBlank(getDataObjectClassName())) {
                 setDataObjectClassName(((LookupView) getView()).getDataObjectClassName().getName());
             }
+
             // init lookupable with data object class
             Class<?> dataObjectClass = Class.forName(getDataObjectClassName());
             lookupable.setDataObjectClass(dataObjectClass);

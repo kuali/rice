@@ -111,6 +111,7 @@
                 <value>classpath:edu/sampleu/financial/uif/VendorDetailLookup.xml</value>
                 <value>classpath:edu/sampleu/financial/uif/VendorMaintenanceDocument.xml</value>
                 <value>classpath:edu/sampleu/student/uif/CourseOfferingView.xml</value>
+                <value>classpath:edu/sampleu/student/uif/RegistrationView.xml</value>
                 <value>classpath:edu/sampleu/student/uif/UifStudentDefinitions.xml</value>
                 <!-- <value>classpath:edu/sampleu/kim/uif/ResponsibilityMaintenanceDocument.xml</value>
                 <value>classpath:edu/sampleu/kim/uif/ResponsibilityInquiry.xml</value> -->

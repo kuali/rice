@@ -44,32 +44,34 @@
   <c:set var="itemSpanClasses" value="class=\"fieldContainerVerticalItem clearfix\""/>
 </c:if>
 
-<%-- render items --%> 
+<%-- render items --%>
 <div id="${manager.id}" ${style} ${styleClass}>
-<span ${fieldItemsStyle}>
+  <span ${fieldItemsStyle}>
    <c:forEach items="${items}" var="item" varStatus="itemVarStatus">
-	   <c:choose>
-	   	   <c:when test="${manager.orientation=='HORIZONTAL'}">
-	       		<krad:template component="${item}"/>
-	       </c:when>
-	       <c:otherwise>
+     <c:choose>
+       <c:when test="${manager.orientation=='HORIZONTAL'}">
+         <krad:template component="${item}"/>
+       </c:when>
+       <c:otherwise>
 	       		<span ${itemSpanClasses} style="${manager.itemStyle}">
 	       			<krad:template component="${item}"/>
 	       		</span>
-	       </c:otherwise>
-	   </c:choose>
+       </c:otherwise>
+     </c:choose>
    </c:forEach>
-</span>
-<%-- 
-   Adds a special error container for horizontal case, fields will instead display their errors here 
-   (errorsField in attributeFields of this layout will not generate their errorsField through their jsp, as normal) 
-   see BoxLayoutManager.java 
---%> 
+  </span>
+
+  <%--
+     Adds a special error container for horizontal case, fields will instead display their errors here
+     (errorsField in attributeFields of this layout will not generate their errorsField through their jsp, as normal)
+     see BoxLayoutManager.java
+  --%>
   <c:if test="${manager.layoutFieldErrors}">
 	   <span id="${manager.id}_errors_block" class="kr-errorsField" style="float:left;">
 	   		<c:forEach items="${container.attributeFields}" var="item">
-				<krad:template component="${item.errorsField}"/>
-	   		</c:forEach>
+           <krad:template component="${item.errorsField}"/>
+         </c:forEach>
 	   </span>
-  </c:if> 
+  </c:if>
+
 </div> 

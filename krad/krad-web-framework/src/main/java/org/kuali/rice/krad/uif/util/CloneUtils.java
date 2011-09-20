@@ -194,6 +194,32 @@ public class CloneUtils {
         return annotationFields;
     }
 
+    /**
+     * Determines whether the property of the given class has the given annotation specified
+     *
+     * @param clazz - class containing the property to check
+     * @param propertyName - name of the property to check
+     * @param annotationClass - class for the annotation to look for
+     * @return boolean true if the field associated with the property name has the given annotation, false if not
+     */
+    public static boolean fieldHasAnnotation(Class<?> clazz, String propertyName,
+            Class<? extends Annotation> annotationClass) {
+        Field[] fields = getFields(clazz, false);
+        for (int i = 0; i < fields.length; i++) {
+            Field field = fields[i];
+            if (field.getName().equals(propertyName)) {
+                Annotation fieldAnnotation = field.getAnnotation(annotationClass);
+                if (fieldAnnotation != null) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        return false;
+    }
+
     protected static final Object instantiate(Object original) throws InstantiationException, IllegalAccessException {
         return original.getClass().newInstance();
     }

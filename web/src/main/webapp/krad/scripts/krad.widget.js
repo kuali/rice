@@ -327,29 +327,35 @@ function createDatePicker(controlId, options) {
  *          path to the image that should be displayed for expanding the group
  * @param animationSpeed -
  *          speed at which the group should be expanded or collapsed
- * @param isOpen -
- *          boolean that indicates whether the accordion should be set to open
- *          initially (true) or closed (false)
+ * @param renderImage -
+ *          boolean that indicates whether the expanded or collapsed image should be rendered
  */
-function createAccordion(groupId, headerId, widgetId, defaultOpen, collapseImgSrc, expandImgSrc, animationSpeed) {
+function createAccordion(groupId, headerId, widgetId, defaultOpen, collapseImgSrc, expandImgSrc, animationSpeed, renderImage) {
     jq(document).ready(function() {
         var groupToggleLinkId = groupId + "_toggle";
-        var groupToggleLink = "<a href='#' id='" + groupToggleLinkId + "'></a>";
 
-        var expandImage = "<img id='" + groupId + "_exp" + "' src='" + expandImgSrc + "' alt='expand' class='expand_collapse-buttons'/>";
-        var collapseImage = "<img id='" + groupId + "_col" + "' src='" + collapseImgSrc + "' alt='collapse' class='expand_collapse-buttons'/>";
+        var expandImage = "";
+        var collapseImage = "";
+        if (renderImage) {
+            var expandImage = "<img id='" + groupId + "_exp" + "' src='" + expandImgSrc + "' alt='expand' class='expand_collapse-buttons'/>";
+            var collapseImage = "<img id='" + groupId + "_col" + "' src='" + collapseImgSrc + "' alt='collapse' class='expand_collapse-buttons'/>";
+        }
 
         var groupAccordionSpanId = groupId + "_group";
 
         // perform initial open/close and insert toggle link and image
+        var headerText = jq("#" + headerId + "_header > :header").html();
         if (defaultOpen) {
-            jq("#" + groupAccordionSpanId).slideDown(000);
-            jq("#" + headerId + "_header > :header").prepend("<a href='#' id='" + groupToggleLinkId + "'>" + expandImage + "</a>");
+            jq("#" + groupAccordionSpanId).slideDown(000)
+            headerText = expandImage + headerText;
         }
         else {
             jq("#" + groupAccordionSpanId).slideUp(000);
-            jq("#" + headerId + "_header > :header").prepend("<a href='#' id='" + groupToggleLinkId + "'>" + collapseImage + "</a>");
+            headerText = collapseImage + headerText;
         }
+
+        jq("#" + headerId + "_header > :header").html(headerText);
+        jq("#" + headerId + "_header > :header").wrap("<a href='#' id='" + groupToggleLinkId + "'>");
 
         // perform slide and switch image
         if (defaultOpen) {

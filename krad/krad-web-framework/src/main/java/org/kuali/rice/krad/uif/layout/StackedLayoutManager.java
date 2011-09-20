@@ -16,7 +16,9 @@
 package org.kuali.rice.krad.uif.layout;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants.Orientation;
+import org.kuali.rice.krad.uif.component.KeepExpression;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
@@ -54,6 +56,7 @@ import java.util.List;
 public class StackedLayoutManager extends BoxLayoutManager implements CollectionLayoutManager {
     private static final long serialVersionUID = 4602368505430238846L;
 
+    @KeepExpression
     private String summaryTitle;
     private List<String> summaryFields;
 
@@ -138,9 +141,13 @@ public class StackedLayoutManager extends BoxLayoutManager implements Collection
             List<Object> modelCollection = ObjectPropertyUtils.getPropertyValue(model,
                     ((DataBinding) collectionGroup).getBindingInfo().getBindingPath());
 
-            headerText = buildLineHeaderText(modelCollection.get(lineIndex));
+            headerText = buildLineHeaderText(modelCollection.get(lineIndex), lineGroup);
         }
-        lineGroup.getHeader().setHeaderText(headerText);
+
+        // don't set header if text is blank (could already be set by other means)
+        if (StringUtils.isNotBlank(headerText)) {
+            lineGroup.getHeader().setHeaderText(headerText);
+        }
 
         // stack all fields (including sub-collections) for the group
         List<Field> groupFields = new ArrayList<Field>();
@@ -167,10 +174,23 @@ public class StackedLayoutManager extends BoxLayoutManager implements Collection
      * added to the header.
      * </p>
      *
+     * <p>
+     * Note the {@link #getSummaryTitle()} field may have expressions defined, in which cause it will be copied to the
+     * property expressions map to set the title for the line group (which will have the item context variable set)
+     * </p>
+     *
      * @param line - Collection line containing data
+     * @param lineGroup - Group instance for rendering the line and whose title should be built
      * @return String header text for line
      */
-    protected String buildLineHeaderText(Object line) {
+    protected String buildLineHeaderText(Object line, Group lineGroup) {
+        // check for expression on summary title
+        if (KRADServiceLocatorWeb.getExpressionEvaluatorService().containsElPlaceholder(summaryTitle)) {
+            lineGroup.getPropertyExpressions().put("title", summaryTitle);
+            return null;
+        }
+
+        // build up line summary from declared field values and fixed title
         String summaryFieldString = "";
         for (String summaryField : summaryFields) {
             Object summaryFieldValue = ObjectPropertyUtils.getPropertyValue(line, summaryField);

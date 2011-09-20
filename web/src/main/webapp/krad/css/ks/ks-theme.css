@@ -533,6 +533,15 @@ h3 img.expand_collapse-buttons[alt="collapse"] {		/* was h3 img.expand_collapse-
 	background: url(../../images/h3_collapse-back-ks.png);
 	background-repeat:no-repeat;
 }
+h4 img.expand_collapse-buttons[alt="expand"] {		/* was h3 img.expand_collapse-buttons[alt="expand"]*/ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
+	background: url(../../images/h3_expand-back-ks.png);
+	background-repeat:no-repeat;
+}
+
+h4 img.expand_collapse-buttons[alt="collapse"] {		/* was h3 img.expand_collapse-buttons[alt="collapse"]*/ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
+	background: url(../../images/h3_collapse-back-ks.png);
+	background-repeat:no-repeat;
+}
 #viewpage_div {				/* was #viewpage_div - I'm not sure this should be changed */ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
 	margin-left: 120px;
 	margin-right: 20px;

@@ -28,10 +28,13 @@ public class Accordion extends WidgetBase {
     @ClientSideState
     private boolean defaultOpen;
 
+    private boolean renderImage;
+
     public Accordion() {
         super();
 
         defaultOpen = true;
+        renderImage = true;
     }
 
     /**
@@ -108,4 +111,22 @@ public class Accordion extends WidgetBase {
         this.defaultOpen = defaultOpen;
     }
 
+    /**
+     * Indicates whether the expand/collapse image should be rendered for the closure, if set to false only
+     * the group title will be clickable
+     *
+     * @return boolean true to render the expand/colapse image false to not
+     */
+    public boolean isRenderImage() {
+        return renderImage;
+    }
+
+    /**
+     * Setter for the render expand/collapse image indicator
+     *
+     * @param renderImage
+     */
+    public void setRenderImage(boolean renderImage) {
+        this.renderImage = renderImage;
+    }
 }

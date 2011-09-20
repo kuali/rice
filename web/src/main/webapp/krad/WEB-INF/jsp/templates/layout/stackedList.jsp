@@ -15,16 +15,20 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="widget" classname="org.kuali.rice.krad.uif.widget.Accordion"/>
-<tiles:useAttribute name="parent" classname="org.kuali.rice.krad.uif.container.Group"/>
+<tiles:useAttribute name="items" classname="java.util.List"/>
+<tiles:useAttribute name="manager" classname="org.kuali.rice.krad.uif.layout.StackedLayoutManager"/>
+<tiles:useAttribute name="container" classname="org.kuali.rice.krad.uif.container.ContainerBase"/>
 
 <%--
-    Invokes JS method to setup collapse/expand script for group
+    Stacked Layout Manager:
+    
+      Used to render the collection line groups in an unordered list
  --%>
- 
-<c:set var="isOpen" value="${widget.defaultOpen}"/>
- 
-<krad:script value="
-  createAccordion('${parent.id}', '${parent.header.id}', '${widget.id}', ${isOpen},
-  		          '${widget.collapseImageSrc}', '${widget.expandImageSrc}', ${widget.animationSpeed}, ${widget.renderImage});
-"/>
+
+<ul id="${manager.id}">
+  <c:forEach items="${manager.stackedGroups}" var="item" varStatus="itemVarStatus">
+    <li>
+      <krad:template component="${item}"/>
+    </li>
+  </c:forEach>
+</ul>

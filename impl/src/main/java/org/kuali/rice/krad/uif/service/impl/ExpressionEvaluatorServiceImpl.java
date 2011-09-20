@@ -19,9 +19,11 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.Configurable;
+import org.kuali.rice.krad.uif.component.KeepExpression;
 import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
+import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ExpressionFunctions;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.springframework.expression.Expression;
@@ -187,6 +189,13 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
             String propertyName = propertyExpression.getKey();
             String expression = propertyExpression.getValue();
 
+            // check whether expression should be evaluated or property should retain the expression
+            if (CloneUtils.fieldHasAnnotation(object.getClass(), propertyName, KeepExpression.class)) {
+                // set expression as property value to be handled by the component
+                ObjectPropertyUtils.setPropertyValue(object, propertyName, expression);
+                continue;
+            }
+
             Object propertyValue = null;
 
             // determine whether the expression is a string template, or evaluates to another object type
@@ -209,10 +218,12 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
     public boolean containsElPlaceholder(String value) {
         boolean containsElPlaceholder = false;
 
-        String elPlaceholder = StringUtils.substringBetween(value, UifConstants.EL_PLACEHOLDER_PREFIX,
-                UifConstants.EL_PLACEHOLDER_SUFFIX);
-        if (StringUtils.isNotBlank(elPlaceholder)) {
-            containsElPlaceholder = true;
+        if (StringUtils.isNotBlank(value)) {
+            String elPlaceholder = StringUtils.substringBetween(value, UifConstants.EL_PLACEHOLDER_PREFIX,
+                    UifConstants.EL_PLACEHOLDER_SUFFIX);
+            if (StringUtils.isNotBlank(elPlaceholder)) {
+                containsElPlaceholder = true;
+            }
         }
 
         return containsElPlaceholder;

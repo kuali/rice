@@ -15,6 +15,7 @@
  */
 package edu.sampleu.student.dataobject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.List;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class CourseSection {
+public class CourseSection implements Serializable {
 
     private String section;
     private String registrationId;
@@ -63,12 +64,20 @@ public class CourseSection {
     private String courseUrl;
     private String internetClassProvider;
 
+    private String location;
+    private Integer registeredNumber;
+    private Integer waitlistNumber;
+    private String instructor;
+
     private Course course;
 
     private List<CourseInstructor> instructors;
 
     public CourseSection() {
         instructors = new ArrayList<CourseInstructor>();
+
+        registeredNumber = 0;
+        waitlistNumber = 0;
     }
 
     public String getSection() {
@@ -339,6 +348,38 @@ public class CourseSection {
 
     public void setInternetClassProvider(String internetClassProvider) {
         this.internetClassProvider = internetClassProvider;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public Integer getRegisteredNumber() {
+        return registeredNumber;
+    }
+
+    public void setRegisteredNumber(Integer registeredNumber) {
+        this.registeredNumber = registeredNumber;
+    }
+
+    public Integer getWaitlistNumber() {
+        return waitlistNumber;
+    }
+
+    public void setWaitlistNumber(Integer waitlistNumber) {
+        this.waitlistNumber = waitlistNumber;
+    }
+
+    public String getInstructor() {
+        return instructor;
+    }
+
+    public void setInstructor(String instructor) {
+        this.instructor = instructor;
     }
 
     public Course getCourse() {

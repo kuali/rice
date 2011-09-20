@@ -56,7 +56,7 @@ public class LookupController extends UifControllerBase {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupController.class);
 
     @Override
-    protected Class<LookupForm> formType() {
+    protected Class<? extends LookupForm> formType() {
         return LookupForm.class;
     }
 

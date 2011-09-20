@@ -17,13 +17,14 @@ package edu.sampleu.student.dataobject;
 
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class Course {
+public class Course implements Serializable {
 
     private String subjectId;
     private String prefix;

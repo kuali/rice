@@ -145,9 +145,6 @@ span.desc {
 
 }
 
-.expand_collapse-buttons {
-    margin-right: 3px;	
-}
 /*
 * Field Attribute
 */
@@ -440,14 +437,22 @@ table.datatable th[scope="row"].collection-header {
     padding-bottom: 3px;
 }
 
-h2 img.expand_collapse-buttons[alt="expand"] {
+img.expand_collapse-buttons[alt="expand"] {
 	background: url(../../images/h2_expand-back-kns.png);
 	background-repeat:no-repeat;
+    float: left;
+    margin-left: 12px;
+    margin-right: 3px;
+    margin-top: 8px;
 }
 
-h2 img.expand_collapse-buttons[alt="collapse"] {
+img.expand_collapse-buttons[alt="collapse"] {
 	background: url(../../images/h2_collapse-back-kns.png);
 	background-repeat:no-repeat;
+    float: left;
+    margin-left: 12px;
+    margin-right: 3px;
+    margin-top: 8px;
 }
 
 .group-actions {

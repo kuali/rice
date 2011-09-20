@@ -224,7 +224,9 @@ public class CollectionGroupBuilder implements Serializable {
                 }
 
                 subCollectionGroup.getBindingInfo().setBindByNamePrefix(bindingPath);
-                subCollectionGroup.getAddLineBindingInfo().setBindByNamePrefix(bindingPath);
+                if (subCollectionGroup.isRenderAddLine()) {
+                    subCollectionGroup.getAddLineBindingInfo().setBindByNamePrefix(bindingPath);
+                }
 
                 // set sub-collection suffix on group so it can be used for generated groups
                 String subCollectionSuffix = lineSuffix;

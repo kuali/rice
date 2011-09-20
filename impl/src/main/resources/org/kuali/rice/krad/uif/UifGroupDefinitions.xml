@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-xmlns:p="http://www.springframework.org/schema/p" 
-xsi:schemaLocation="http://www.springframework.org/schema/beans         
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:p="http://www.springframework.org/schema/p"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 <!--
  Copyright 2007-2009 The Kuali Foundation
- 
+
  Licensed under the Educational Community License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
- 
+
  http://www.opensource.org/licenses/ecl2.php
- 
+
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,7 +20,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 -->
 
   <!-- Base Groups -->
-  
+
   <bean id="Group" abstract="true" parent="Group-parentBean"/>
   <bean id="Group-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.Group" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/group/group.jsp"/>
@@ -29,19 +29,19 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
       <property name="header">
         <bean parent="HeaderFour"/>
-      </property> 
+      </property>
       <property name="accordion">
         <bean parent="Accordion"/>
-      </property>       
+      </property>
       <property name="layoutManager">
         <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
-      </property>  
+      </property>
       <property name="summaryMessageField">
         <bean parent="MessageField" p:messageType="SUMMARY" p:styleClasses="summary"/>
-      </property> 
+      </property>
       <property name="readOnly" value="@{#parent.readOnly}"/>
   </bean>
-  
+
   <bean id="PageGroup" abstract="true" parent="PageGroup-parentBean"/>
   <bean id="PageGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.PageGroup" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/group/group.jsp"/>
@@ -50,19 +50,19 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
       <property name="header">
         <bean parent="HeaderTwo"/>
-      </property> 
+      </property>
       <property name="accordion">
         <bean parent="Accordion"/>
-      </property>       
+      </property>
       <property name="layoutManager">
         <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
-      </property>  
+      </property>
       <property name="summaryMessageField">
         <bean parent="MessageField" p:messageType="SUMMARY" p:styleClasses="summary"/>
-      </property> 
+      </property>
       <property name="readOnly" value="@{#parent.readOnly}"/>
   </bean>
-  
+
   <bean id="GroupGridLayout" abstract="true" parent="GroupGridLayout-parentBean"/>
   <bean id="GroupGridLayout-parentBean" abstract="true" parent="Group">
       <property name="layoutManager">
@@ -74,14 +74,14 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
          </list>
       </property>
   </bean>
-  
+
   <bean id="GroupBodyOnly" abstract="true" parent="GroupBodyOnly-parentBean"/>
   <bean id="GroupBodyOnly-parentBean" abstract="true" parent="Group">
       <property name="renderHeader" value="false"/>
       <property name="renderFooter" value="false"/>
       <property name="accordion.render" value="false"/>
-  </bean>  
-  
+  </bean>
+
   <bean id="GroupGridBodyOnly" abstract="true" parent="GroupGridBodyOnly-parentBean"/>
   <bean id="GroupGridBodyOnly-parentBean" abstract="true" parent="GroupBodyOnly">
       <property name="layoutManager">
@@ -91,30 +91,30 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
          <list>
             <bean parent="LabelFieldSeparateModifier" p:runPhase="FINALIZE"/>
          </list>
-      </property>  
+      </property>
   </bean>
-  
+
   <bean id="TabGroup" abstract="true" parent="TabGroup-parentBean"/>
   <bean id="TabGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.TabGroup" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/group/tabGroup.jsp"/>
 	  <property name="accordion">
         <bean parent="Accordion" p:render="false"/>
-      </property>  
+      </property>
 	  <property name="tabsWidget">
         <bean parent="Tabs"/>
       </property>
   </bean>
-  
+
   <bean id="NavigationGroup" abstract="true" parent="NavigationGroup-parentBean"/>
   <bean id="NavigationGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.NavigationGroup" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/group/navigationGroup.jsp"/>
   </bean>
-  
+
   <bean id="NavigationGroupMenu" abstract="true" parent="NavigationGroupMenu-parentBean"/>
   <bean id="NavigationGroupMenu-parentBean" abstract="true" parent="NavigationGroup">
       <property name="navigationType" value="VERTICAL_MENU"/>
   </bean>
-  
+
   <bean id="NavigationGroupTabMenu" abstract="true" parent="NavigationGroupTabMenu-parentBean"/>
   <bean id="NavigationGroupTabMenu-parentBean" abstract="true" parent="NavigationGroup">
       <property name="navigationType" value="TAB_MENU"/>
@@ -157,32 +157,32 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="groupBeginDelimiter" value="&amp;nbsp;["/>
       <property name="groupEndDelimiter" value="]"/>
   </bean>
-  
+
   <bean id="GroupSection" abstract="true" parent="GroupSection-parentBean"/>
   <bean id="GroupSection-parentBean" abstract="true" parent="Group">
       <property name="styleClasses" value="wrap"/>
       <property name="header">
         <bean parent="HeaderThree" p:styleClasses="grouping-header-expandable"/>
-      </property> 
+      </property>
       <property name="accordion.collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_collapse.png"/>
       <property name="accordion.expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_expand.png"/>
       <property name="layoutManager">
         <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
-      </property> 
-  </bean>   
-  
+      </property>
+  </bean>
+
   <bean id="GroupSectionGridLayout" abstract="true" parent="GroupSectionGridLayout-parentBean"/>
   <bean id="GroupSectionGridLayout-parentBean" abstract="true" parent="GroupSection">
       <property name="layoutManager">
         <bean parent="GridLayoutManager"/>
-      </property>  
+      </property>
       <property name="componentModifiers">
          <list>
             <bean parent="LabelFieldSeparateModifier" p:runPhase="FINALIZE"/>
          </list>
-      </property>      
-  </bean>    
-  
+      </property>
+  </bean>
+
   <bean id="CollectionGroup" abstract="true" parent="CollectionGroup-parentBean"/>
   <bean id="CollectionGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.CollectionGroup" parent="Group">
       <property name="template" value="/krad/WEB-INF/jsp/templates/group/collectionGroup.jsp"/>
@@ -192,15 +192,15 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
       <property name="addLineBindingInfo">
         <ref bean="BindingInfo"/>
-      </property>      
+      </property>
       <property name="addLineLabelField">
         <bean parent="LabelField" p:labelText="add" p:requiredMessageField.render="false"/>
-      </property>  
+      </property>
       <property name="addLineActionFields">
         <list>
           <bean parent="ActionField_Small" p:methodToCall="addLine" p:actionLabel="add"/>
         </list>
-      </property>          
+      </property>
       <property name="actionFields">
         <list>
           <bean parent="ActionField_SmallSecondary" p:methodToCall="deleteLine" p:actionLabel="delete"/>
@@ -215,7 +215,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
       <property name="layoutManager">
         <bean parent="StackedLayoutManager" p:addLineGroup.styleClasses="kr-addLine"/>
-      </property> 
+      </property>
   </bean>
 
   <bean id="CollectionGroupSection" abstract="true" parent="CollectionGroupSection-parentBean"/>
@@ -224,55 +224,84 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     <property name="header.styleClasses" value="grouping-header-expandable"/>
     <property name="accordion.collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_collapse.png"/>
     <property name="accordion.expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_expand.png"/>
-  </bean>  
-  
+  </bean>
+
   <bean id="CollectionGroupTableLayout" abstract="true" parent="CollectionGroupTableLayout-parentBean"/>
   <bean id="CollectionGroupTableLayout-parentBean" abstract="true" parent="CollectionGroup">
       <property name="layoutManager">
         <bean parent="TableLayoutManager"/>
-      </property> 
+      </property>
   </bean>
-  
+
   <bean id="CollectionGroupSectionTableLayout" abstract="true" parent="CollectionGroupSectionTableLayout-parentBean"/>
   <bean id="CollectionGroupSectionTableLayout-parentBean" parent="CollectionGroupTableLayout">
     <property name="styleClasses" value="wrap"/>
     <property name="header.styleClasses" value="grouping-header-expandable"/>
     <property name="accordion.collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_collapse.png"/>
     <property name="accordion.expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_expand.png"/>
-  </bean>   
+  </bean>
+
+  <bean id="ListGroup" abstract="true" parent="ListGroup-parentBean"/>
+  <bean id="ListGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.CollectionGroup"
+        parent="Group">
+    <property name="styleClasses" value="kr-collection-cntr,kr-collection-list-cntr"/>
+    <property name="bindingInfo">
+      <ref bean="BindingInfo"/>
+    </property>
+    <property name="renderAddLine" value="false"/>
+    <property name="renderLineActions" value="false"/>
+    <property name="renderSelectField" value="false"/>
+    <property name="layoutManager">
+      <bean parent="StackedLayoutManager">
+        <property name="template" value="/krad/WEB-INF/jsp/templates/layout/stackedList.jsp"/>
+        <property name="lineGroupPrototype">
+          <bean parent="Group">
+            <property name="header">
+              <bean parent="HeaderThree" p:styleClasses="kr-collection-header"/>
+            </property>
+            <property name="accordion.renderImage" value="false"/>
+            <property name="accordion.defaultOpen" value="true"/>
+          </bean>
+        </property>
+        <property name="subCollectionFieldGroupPrototype">
+          <bean parent="FieldGroup" p:labelField.render="false" p:group.header.render="false"/>
+        </property>
+      </bean>
+    </property>
+  </bean>
 
   <!-- Common Groups -->
-  
+
   <bean id="Group_LookupHeader" parent="GroupBodyOnly">
       <property name="styleClasses" value="group_expandclose"/>
       <property name="items">
-         <list> 
+         <list>
            <bean parent="ActionLinkField_CreateNew"/>
          </list>
       </property>
   </bean>
-  
+
   <bean id="Group_ExpandCloseActions" parent="GroupBodyOnly">
       <property name="styleClasses" value="group_expandclose"/>
       <property name="items">
-         <list> 
+         <list>
            <bean parent="ActionField_ExpandAccordions"/>
            <bean parent="ActionField_CollapseAccordions"/>
          </list>
       </property>
-      <property name="layoutManager.orientation" value="HORIZONTAL"/> 
+      <property name="layoutManager.orientation" value="HORIZONTAL"/>
   </bean>
-  
+
   <bean id="Group_ExpandCloseActionsRequired" parent="GroupBodyOnly">
       <property name="styleClasses" value="group_expandclose"/>
       <property name="items">
-         <list> 
+         <list>
            <bean parent="ActionField_ExpandAccordions"/>
            <bean parent="ActionField_CollapseAccordions"/>
            <bean parent="MessageField_RequiredIndicator"/>
          </list>
       </property>
-      <property name="layoutManager.orientation" value="HORIZONTAL"/> 
+      <property name="layoutManager.orientation" value="HORIZONTAL"/>
   </bean>
 
   <bean id="Group_ShowHideInactive" parent="GroupBodyOnly"
@@ -285,11 +314,11 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </list>
     </property>
   </bean>
-  
+
   <bean id="Group_DocumentHeader" parent="GroupGridBodyOnly" p:readOnly="true">
       <property name="id" value="group_docheader"/>
       <property name="items">
-         <list> 
+         <list>
            <bean parent="AttributeField_DocumentNumber"/>
            <bean parent="AttributeField_DocumentStatus"/>
            <bean parent="AttributeField_FormDocumentInitiatorNetworkId"/>
@@ -301,13 +330,13 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
       <property name="fieldBindingObjectPath" value="document"/>
       <property name="errorsField.render" value="false"/>
-  </bean>   
-  
+  </bean>
+
   <bean id="Group_DocumentOverview" parent="GroupSectionGridLayout" p:layoutManager.numberOfColumns="4"  p:layoutManager.applyDefaultCellWidths="false">
       <property name="id" value="group_docoverview"/>
       <property name="title" value="Document Overview"/>
       <property name="items">
-         <list> 
+         <list>
            <bean parent="AttributeField_DocumentDescription" p:required="true" p:label="Description"/>
            <bean parent="AttributeField_Explanation" p:rowSpan="2" p:labelField.rowSpan="2"/>
            <bean parent="AttributeField_OrganizationDocumentNumber"/>
@@ -334,7 +363,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 				<bean parent="FieldGroup" p:label="Attached File" p:render="@{#DocumentEntry.allowsNoteAttachments}">
 					<property name="items">
 						<list>
-							<bean parent="AttributeField_Form" p:propertyName="attachmentFile" 
+							<bean parent="AttributeField_Form" p:propertyName="attachmentFile"
 							      p:bindingInfo.bindingPath="attachmentFile" p:labelField.render="false">
 							  <property name="control">
 							    <bean parent="FileControl" p:size="15"/>
@@ -350,24 +379,24 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 								<property name="replacement">
 								   <list>
 						            <bean parent="ActionField_Small" p:methodToCall="downloadAttachment"
-								          p:actionLabel="download attachment" p:title="download attachment" 
-								           p:onClickScript="writeHiddenToForm(&quot;unblockUIOnLoading&quot;, &quot;true&quot;);writeHiddenToForm(&quot;actionParameters[selectedLineIndex]&quot;, &quot;@{#index}&quot;);"/> 
-								           
-								    <bean parent="MessageField" p:messageText="@{#line.attachment?.attachmentFileName}" /> 
-                                    <bean parent="MessageField" 
+								          p:actionLabel="download attachment" p:title="download attachment"
+								           p:onClickScript="writeHiddenToForm(&quot;unblockUIOnLoading&quot;, &quot;true&quot;);writeHiddenToForm(&quot;actionParameters[selectedLineIndex]&quot;, &quot;@{#index}&quot;);"/>
+
+								    <bean parent="MessageField" p:messageText="@{#line.attachment?.attachmentFileName}" />
+                                    <bean parent="MessageField"
                                           p:messageText="(@{#line.attachment?.attachmentFileSizeWithUnits}, @{#line.attachment?.attachmentMimeTypeCode})" />
-                                             
+
 						         </list>
 								</property>
-							</bean>	
+							</bean>
 							<bean parent="PropertyReplacer" p:propertyName="items" p:condition="!#isAddLine and (#line.attachment == null or !#line.attachment.complete)" >
 								<property name="replacement">
 								  <list>
 								    <bean parent="BlankField" />
 								  </list>
 								</property>
-							</bean>	  
-							 							
+							</bean>
+
 						</list>
 					</property>
 				</bean>
@@ -464,7 +493,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="id" value="group_docroutelog"/>
       <property name="title" value="Route Log"/>
       <property name="items">
-         <list> 
+         <list>
            <bean parent="IframeField" p:height="500" p:width="95%" p:vspace="0" p:hspace="0" p:frameborder="0">
              <property name="id" value="routeLogIFrame"/>
              <property name="source" value="@{#ConfigProperties['workflow.url']}/RouteLog.do?documentId=@{workflowDocument.documentId}"/>

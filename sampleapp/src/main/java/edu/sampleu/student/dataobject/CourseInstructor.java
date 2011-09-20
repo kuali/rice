@@ -15,10 +15,12 @@
  */
 package edu.sampleu.student.dataobject;
 
+import java.io.Serializable;
+
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class CourseInstructor {
+public class CourseInstructor implements Serializable {
     private String affiliation;
     private String name;
 

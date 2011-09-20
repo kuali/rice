@@ -83,20 +83,20 @@ public class Group extends ContainerBase {
             // append group's field bind by name prefix (if set) to each
             // attribute field's binding prefix
             if (component instanceof DataBinding) {
-                DataBinding field = (DataBinding) component;
+                DataBinding dataBinding = (DataBinding) component;
 
                 if (StringUtils.isNotBlank(getFieldBindByNamePrefix())) {
                     String bindByNamePrefixToSet = getFieldBindByNamePrefix();
 
-                    if (StringUtils.isNotBlank(field.getBindingInfo().getBindByNamePrefix())) {
-                        bindByNamePrefixToSet += "." + field.getBindingInfo().getBindByNamePrefix();
+                    if (StringUtils.isNotBlank(dataBinding.getBindingInfo().getBindByNamePrefix())) {
+                        bindByNamePrefixToSet += "." + dataBinding.getBindingInfo().getBindByNamePrefix();
                     }
-                    field.getBindingInfo().setBindByNamePrefix(bindByNamePrefixToSet);
+                    dataBinding.getBindingInfo().setBindByNamePrefix(bindByNamePrefixToSet);
                 }
 
                 if (StringUtils.isNotBlank(fieldBindingObjectPath) &&
-                        StringUtils.isBlank(field.getBindingInfo().getBindingObjectPath())) {
-                    field.getBindingInfo().setBindingObjectPath(fieldBindingObjectPath);
+                        StringUtils.isBlank(dataBinding.getBindingInfo().getBindingObjectPath())) {
+                    dataBinding.getBindingInfo().setBindingObjectPath(fieldBindingObjectPath);
                 }
             }
             // set on FieldGroup's group to recursively set AttributeFields
@@ -153,7 +153,7 @@ public class Group extends ContainerBase {
 	 * @see org.kuali.rice.krad.uif.component.Component#getComponentTypeName()
 	 */
 	@Override
-	public String getComponentTypeName() {
+	public final String getComponentTypeName() {
 		return "group";
 	}
 

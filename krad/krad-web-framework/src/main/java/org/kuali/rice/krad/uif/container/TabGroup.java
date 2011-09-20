@@ -19,55 +19,65 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.widget.Tabs;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
  * A group that presents its child Groups as tabs.  Items in this group's item list must be Groups
  * themselves.
- * 
- * @see Group
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @see Group
  */
-public class TabGroup extends Group{
-	
-	private static final long serialVersionUID = 3L;
-	private Tabs tabsWidget;
-	/**
-	 * @see org.kuali.rice.krad.uif.component.Component#getComponentTypeName()
-	 */
-	@Override
-	public String getComponentTypeName() {
-		return "tabGroup";
-	}
-	
-	/**
-	 * Only groups are supported for this group.
-	 * @see org.kuali.rice.krad.web.view.container.ContainerBase#getSupportedComponents()
-	 */
-	@Override
-	public Set<Class<? extends Component>> getSupportedComponents() {
-		Set<Class<? extends Component>> supportedComponents = new HashSet<Class<? extends Component>>();
-		supportedComponents.add(Group.class);
+public class TabGroup extends Group {
+    private static final long serialVersionUID = 3L;
 
-		return supportedComponents;
-	}
+    private Tabs tabsWidget;
 
-	/**
-	 * Gets the widget which contains any configuration for the tab widget component used to render
-	 * this TabGroup
+    public TabGroup() {
+        super();
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getNestedComponents()
+     */
+    @Override
+    public List<Component> getNestedComponents() {
+        List<Component> components = super.getNestedComponents();
+
+        components.add(tabsWidget);
+
+        return components;
+    }
+
+    /**
+     * Only groups are supported for this group.
      *
-	 * @return the tabsWidget
-	 */
-	public Tabs getTabsWidget() {
-		return this.tabsWidget;
-	}
+     * @see org.kuali.rice.krad.web.view.container.ContainerBase#getSupportedComponents()
+     */
+    @Override
+    public Set<Class<? extends Component>> getSupportedComponents() {
+        Set<Class<? extends Component>> supportedComponents = new HashSet<Class<? extends Component>>();
+        supportedComponents.add(Group.class);
 
-	/**
-	 * @param tabsWidget the tabsWidget to set
-	 */
-	public void setTabsWidget(Tabs tabsWidget) {
-		this.tabsWidget = tabsWidget;
-	}
-	
-	
+        return supportedComponents;
+    }
+
+    /**
+     * Gets the widget which contains any configuration for the tab widget component used to render
+     * this TabGroup
+     *
+     * @return the tabsWidget
+     */
+    public Tabs getTabsWidget() {
+        return this.tabsWidget;
+    }
+
+    /**
+     * @param tabsWidget the tabsWidget to set
+     */
+    public void setTabsWidget(Tabs tabsWidget) {
+        this.tabsWidget = tabsWidget;
+    }
+
 }

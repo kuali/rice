@@ -37,6 +37,7 @@
   <strong>Demo Views</strong>
   <ul class="chan">
     <li><a class="portal_link" href="${ConfigProperties.application.url}/spring/courseOffering?viewId=CourseOfferingView&methodToCall=start" title="Course Offering" target="_blank">Course Offering</a></li>
+    <li><a class="portal_link" href="${ConfigProperties.application.url}/spring/registration?viewId=RegistrationView&methodToCall=start" title="Registration" target="_blank">Registration</a></li>
   </ul>
 </div>
 <channel:portalChannelBottom />

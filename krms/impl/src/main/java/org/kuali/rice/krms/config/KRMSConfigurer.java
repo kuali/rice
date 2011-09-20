@@ -38,9 +38,9 @@ public class KRMSConfigurer extends ModuleConfigurer {
 		final List<String> springFileLocations = new ArrayList<String>();
 		springFileLocations.add( KRMS_SPRING_BEANS_PATH );
 
-        if ( isExposeServicesOnBus() ) {
-		    springFileLocations.add(KRMS_KSB_SPRING_BEANS_PATH);
-		}
+//        if ( isExposeServicesOnBus() ) {
+//		    springFileLocations.add(KRMS_KSB_SPRING_BEANS_PATH);
+//		}
 
 		return springFileLocations;
 	}

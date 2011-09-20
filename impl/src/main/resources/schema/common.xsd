@@ -103,4 +103,18 @@
       </extension>
     </simpleContent>
   </complexType>
+
+  <complexType name="NamedType">
+    <simpleContent>
+      <extension base="c:ShortStringType">
+        <attribute name="namespace" type="c:ShortStringType" use="required">
+          <annotation>
+            <documentation>
+              An element which is named with a namespace.
+            </documentation>
+          </annotation>
+        </attribute>
+      </extension>
+    </simpleContent>
+  </complexType>
 </schema>

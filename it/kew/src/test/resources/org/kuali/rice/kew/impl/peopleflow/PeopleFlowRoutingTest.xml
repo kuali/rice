@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+
+	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+		<documentType>
+			<name>SinglePeopleFlow-Parallel-Approve</name>
+			<routePaths>
+				<routePath>
+					<start name="AdHoc" nextNode="PeopleFlows" />
+					<requests name="PeopleFlows" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="AdHoc">
+					<activationType>P</activationType>
+				</start>
+				<requests name="PeopleFlows">
+					<activationType>P</activationType>
+					<peopleFlows>
+            <peopleFlow>
+              <name namespace="TEST">PeopleFlow1</name>
+            </peopleFlow>
+					</peopleFlows>
+				</requests>
+			</routeNodes>
+		</documentType>
+  </documentTypes>
+
+</data>

@@ -933,6 +933,12 @@ Definitions are applied to the names in the routeNodes section.
             	</annotation>
             </element>
 
+            <element name="peopleFlows" type="dt:PeopleFlowsType" minOccurs="0" maxOccurs="1">
+              <annotation>
+                <documentation>A list of PeopleFlows which should be executed.</documentation>
+              </annotation>
+            </element>
+
           </choice>
           <element name="mandatoryRoute" type="boolean" default="false" minOccurs="0" maxOccurs="1">
           	<annotation>
@@ -1053,14 +1059,31 @@ Definitions are applied to the names in the routeNodes section.
 	 </extension>
 	</simpleContent>	 
   </complexType>
- <!--
-  <complexType name="SecurityRoleType">
-    <simpleContent>
-      <extension base="string">
-        <attribute name="allowed" type="boolean" use="required"/>
-      </extension>
-    </simpleContent>
+ 
+  <simpleType name="ActionRequestedType">
+    <restriction base="string">
+      <!-- acknowledge -->
+      <enumeration value="K"/>
+      <!-- FYI -->
+      <enumeration value="F"/>
+      <!-- approve -->
+      <enumeration value="A"/>
+      <!-- complete -->
+      <enumeration value="C"/>
+    </restriction>
+  </simpleType>
+
+  <complexType name="PeopleFlowsType">
+    <sequence>
+      <element name="peopleFlow" type="dt:PeopleFlowType" minOccurs="0" maxOccurs="unbounded"/>
+    </sequence>
   </complexType>
--->
+
+  <complexType name="PeopleFlowType">
+    <sequence>
+      <element name="actionRequested" type="dt:ActionRequestedType" minOccurs="0" maxOccurs="1" default="A"/>
+      <element name="name" type="c:NamedType" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+  </complexType>
 
 </schema>

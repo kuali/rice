@@ -103,7 +103,11 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 
 	@Override
 	public EntityDefault getEntityDefaultFromArchive( String entityId ) {
-    	Map<String,String> criteria = new HashMap<String, String>(1);
+    	if (StringUtils.isBlank(entityId)) {
+            throw new IllegalArgumentException("entityId is blank");
+        }
+
+        Map<String,String> criteria = new HashMap<String, String>(1);
     	criteria.put(KimConstants.PrimaryKeyConstants.SUB_ENTITY_ID, entityId);
     	EntityDefaultInfoCacheBo cachedValue = businessObjectService.findByPrimaryKey(EntityDefaultInfoCacheBo.class, criteria);
     	return (cachedValue == null) ? null : cachedValue.convertCacheToEntityDefaultInfo();
@@ -111,7 +115,11 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 
     @Override
 	public EntityDefault getEntityDefaultFromArchiveByPrincipalId(String principalId) {
-    	Map<String,String> criteria = new HashMap<String, String>(1);
+    	if (StringUtils.isBlank(principalId)) {
+            throw new IllegalArgumentException("principalId is blank");
+        }
+
+        Map<String,String> criteria = new HashMap<String, String>(1);
     	criteria.put("principalId", principalId);
     	EntityDefaultInfoCacheBo cachedValue = businessObjectService.findByPrimaryKey(EntityDefaultInfoCacheBo.class, criteria);
     	return (cachedValue == null) ? null : cachedValue.convertCacheToEntityDefaultInfo();
@@ -119,7 +127,11 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 
     @Override
 	public EntityDefault getEntityDefaultFromArchiveByPrincipalName(String principalName) {
-    	Map<String,String> criteria = new HashMap<String, String>(1);
+    	if (StringUtils.isBlank(principalName)) {
+            throw new IllegalArgumentException("principalName is blank");
+        }
+
+        Map<String,String> criteria = new HashMap<String, String>(1);
     	criteria.put("principalName", principalName);
     	Collection<EntityDefaultInfoCacheBo> entities = businessObjectService.findMatching(EntityDefaultInfoCacheBo.class, criteria);
     	return (entities == null || entities.isEmpty()) ? null : entities.iterator().next().convertCacheToEntityDefaultInfo();
@@ -127,6 +139,10 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 
     @Override
 	public void saveEntityDefaultToArchive(EntityDefault entity) {
+    	if (entity == null) {
+            throw new IllegalArgumentException("entity is blank");
+        }
+
     	// if the max size has been reached, schedule now
     	if (getMaxWriteQueueSize() <= writeQueue.offerAndGetSize(entity) /* <- this enqueues the KEDI */ &&
     			writer.requestSubmit()) {

@@ -609,7 +609,7 @@ public class PersonServiceImpl implements PersonService {
     /**
      * @see org.kuali.rice.kim.api.identity.PersonService#hasPersonProperty(java.lang.Class, java.util.Map)
      */
-    public boolean hasPersonProperty(Class<? extends BusinessObject> businessObjectClass, Map<String,String> fieldValues) {
+    public boolean hasPersonProperty(Class<? extends Person> businessObjectClass, Map<String,String> fieldValues) {
     	if ( businessObjectClass == null || fieldValues == null ) {
     		return false;
     	}

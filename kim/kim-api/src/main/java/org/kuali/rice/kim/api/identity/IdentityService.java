@@ -89,7 +89,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "findEntityDefaults")
     @WebResult(name = "results")
-	EntityDefaultQueryResults findEntityDefaults(@WebParam(name = "query") QueryByCriteria query);
+	EntityDefaultQueryResults findEntityDefaults(@WebParam(name = "query") QueryByCriteria query)  throws RiceIllegalArgumentException;
 
     /**
      * This method finds Entities based on a query criteria.  The criteria cannot be null.
@@ -100,7 +100,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "findEntities")
     @WebResult(name = "results")
-	EntityQueryResults findEntities(@WebParam(name = "query") QueryByCriteria query);
+	EntityQueryResults findEntities(@WebParam(name = "query") QueryByCriteria query)  throws RiceIllegalArgumentException;
 
 	
     /**
@@ -116,7 +116,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEntity")
     @WebResult(name = "entity")
-	Entity getEntity( @WebParam(name="id") String id );
+	Entity getEntity( @WebParam(name="id") String id )  throws RiceIllegalArgumentException;
 
 	/**
      * Gets a {@link org.kuali.rice.kim.api.identity.entity.Entity} from a principalId.
@@ -131,7 +131,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEntityByPrincipalId")
     @WebResult(name = "entity")
-	Entity getEntityByPrincipalId(@WebParam(name = "principalId") String principalId);
+	Entity getEntityByPrincipalId(@WebParam(name = "principalId") String principalId)  throws RiceIllegalArgumentException;
 
 	/**
      * Gets a {@link org.kuali.rice.kim.api.identity.entity.Entity} from a principalName.
@@ -146,7 +146,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEntityByPrincipalName")
     @WebResult(name = "entity")
-	Entity getEntityByPrincipalName(@WebParam(name = "principalName") String principalName);
+	Entity getEntityByPrincipalName(@WebParam(name = "principalName") String principalName)  throws RiceIllegalArgumentException;
 
 
     /**
@@ -205,7 +205,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEntityDefault")
     @WebResult(name = "entityDefault")
-	EntityDefault getEntityDefault(@WebParam(name = "id") String id);
+	EntityDefault getEntityDefault(@WebParam(name = "id") String id)  throws RiceIllegalArgumentException;
 
 	/**
      * Gets a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} from an principalId.
@@ -222,7 +222,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEntityDefaultByPrincipalId")
     @WebResult(name = "entityDefault")
-	EntityDefault getEntityDefaultByPrincipalId(@WebParam(name = "principalId") String principalId);
+	EntityDefault getEntityDefaultByPrincipalId(@WebParam(name = "principalId") String principalId)  throws RiceIllegalArgumentException;
 
 	/**
      * Gets a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} from an principalName.
@@ -239,7 +239,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEntityDefaultByPrincipalName")
     @WebResult(name = "entityDefault")
-	EntityDefault getEntityDefaultByPrincipalName(@WebParam(name = "principalName") String principalName);
+	EntityDefault getEntityDefaultByPrincipalName(@WebParam(name = "principalName") String principalName)  throws RiceIllegalArgumentException;
     
     
 
@@ -256,7 +256,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getPrincipal")
     @WebResult(name = "principal")
-    Principal getPrincipal( @WebParam(name="principalId") String principalId );
+    Principal getPrincipal( @WebParam(name="principalId") String principalId )  throws RiceIllegalArgumentException;
 
     /**
      * Gets a {@link org.kuali.rice.kim.api.identity.principal.Principal} from an principalName.
@@ -271,7 +271,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getPrincipalByPrincipalName")
     @WebResult(name = "principal")
-    Principal getPrincipalByPrincipalName( @WebParam(name="principalName") String principalName );
+    Principal getPrincipalByPrincipalName( @WebParam(name="principalName") String principalName )  throws RiceIllegalArgumentException;
 
     /**
      * Gets a {@link org.kuali.rice.kim.api.identity.principal.Principal} from an principalName and password.
@@ -287,7 +287,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getPrincipalByPrincipalNameAndPassword")
     @WebResult(name = "principal")
-    Principal getPrincipalByPrincipalNameAndPassword( @WebParam(name="principalName") String principalName,  @WebParam(name="password") String password );
+    Principal getPrincipalByPrincipalNameAndPassword( @WebParam(name="principalName") String principalName,  @WebParam(name="password") String password )  throws RiceIllegalArgumentException;
 
     /**
      * This will create a {@link org.kuali.rice.kim.api.identity.principal.Principal} exactly like the principal passed in.
@@ -610,7 +610,7 @@ public interface IdentityService {
     @WebMethod(operationName = "getDefaultNamesForPrincipalIds")
     @WebResult(name = "entityNamePrincipalNames")
 	@XmlJavaTypeAdapter(value = StringToKimEntityNamePrincipalInfoMapAdapter.class)
-    Map<String, EntityNamePrincipalName> getDefaultNamesForPrincipalIds(@WebParam(name="principalIds") List<String> principalIds);
+    Map<String, EntityNamePrincipalName> getDefaultNamesForPrincipalIds(@WebParam(name="principalIds") List<String> principalIds)  throws RiceIllegalArgumentException;
     
 
     /**
@@ -628,7 +628,7 @@ public interface IdentityService {
     @WebMethod(operationName = "getDefaultNamesForEntityIds")
     @WebResult(name = "entityNamePrincipalNames")
 	@XmlJavaTypeAdapter(value = StringToKimEntityNameInfoMapAdapter.class)
-    Map<String, EntityNamePrincipalName> getDefaultNamesForEntityIds(@WebParam(name="entityIds") List<String> entityIds);
+    Map<String, EntityNamePrincipalName> getDefaultNamesForEntityIds(@WebParam(name="entityIds") List<String> entityIds)  throws RiceIllegalArgumentException;
 
     /**
      * This will create a {@link org.kuali.rice.kim.api.identity.name.EntityName} exactly like the name passed in.
@@ -758,7 +758,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEntityPrivacyPreferences")
     @WebResult(name = "privacyPreferences")
-	EntityPrivacyPreferences getEntityPrivacyPreferences( @WebParam(name="entityId") String entityId );
+	EntityPrivacyPreferences getEntityPrivacyPreferences( @WebParam(name="entityId") String entityId )  throws RiceIllegalArgumentException;
 
     /**
      * This will create a {@link org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences} exactly like the privacyPreferences passed in.
@@ -934,7 +934,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEntityType")
     @WebResult(name = "type")
-	Type getEntityType( @WebParam(name="code") String code );
+	Type getEntityType( @WebParam(name="code") String code )  throws RiceIllegalArgumentException;
 
 
     /**
@@ -950,7 +950,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getAddressType")
     @WebResult(name = "type")
-	Type getAddressType( @WebParam(name="code") String code );
+	Type getAddressType( @WebParam(name="code") String code )  throws RiceIllegalArgumentException;
 
     /**
      * Gets the {@link org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType} for a given EntityAffiliationType code.
@@ -965,7 +965,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getAffiliationType")
     @WebResult(name = "affiliationType")
-	EntityAffiliationType getAffiliationType( @WebParam(name="code") String code );
+	EntityAffiliationType getAffiliationType( @WebParam(name="code") String code )  throws RiceIllegalArgumentException;
 
     /**
      * Gets the {@link org.kuali.rice.kim.api.identity.Type} for a given EntityCitizenship status code.
@@ -980,7 +980,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getCitizenshipStatus")
     @WebResult(name = "type")
-	Type getCitizenshipStatus( @WebParam(name="code") String code );
+	Type getCitizenshipStatus( @WebParam(name="code") String code )  throws RiceIllegalArgumentException;
 
     /**
      * Gets the {@link org.kuali.rice.kim.api.identity.Type} for a given EntityEmployment type code.
@@ -995,7 +995,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEmploymentType")
     @WebResult(name = "type")
-	Type getEmploymentType( @WebParam(name="code") String code );
+	Type getEmploymentType( @WebParam(name="code") String code )  throws RiceIllegalArgumentException;
     
     /**
      * Gets the {@link org.kuali.rice.kim.api.identity.Type} for a given EntityEmployment status code.
@@ -1010,7 +1010,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEmploymentStatus")
     @WebResult(name = "type")
-	Type getEmploymentStatus( @WebParam(name="code") String code );
+	Type getEmploymentStatus( @WebParam(name="code") String code )  throws RiceIllegalArgumentException;
     
     /**
      * Gets the {@link org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType} for a given type code.
@@ -1025,7 +1025,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getExternalIdentifierType")
     @WebResult(name = "type")
-	EntityExternalIdentifierType getExternalIdentifierType( @WebParam(name="code") String code );
+	EntityExternalIdentifierType getExternalIdentifierType( @WebParam(name="code") String code )  throws RiceIllegalArgumentException;
     
     /**
      * Gets the {@link org.kuali.rice.kim.api.identity.Type} for a given EntityName type code.
@@ -1040,7 +1040,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getNameType")
     @WebResult(name = "type")
-	Type getNameType(@WebParam(name = "code") String code);
+	Type getNameType(@WebParam(name = "code") String code)  throws RiceIllegalArgumentException;
     
     /**
      * Gets the {@link org.kuali.rice.kim.api.identity.Type} for a given EntityPhone type code.
@@ -1055,7 +1055,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getPhoneType")
     @WebResult(name = "type")
-	Type getPhoneType( @WebParam(name="code") String code );
+	Type getPhoneType( @WebParam(name="code") String code )  throws RiceIllegalArgumentException;
     
     /**
      * Gets the {@link org.kuali.rice.kim.api.identity.Type} for a given EntityEmail type code.
@@ -1070,6 +1070,6 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEmailType")
     @WebResult(name = "type")
-	Type getEmailType( @WebParam(name="code") String code );
+	Type getEmailType( @WebParam(name="code") String code )  throws RiceIllegalArgumentException;
 
 }

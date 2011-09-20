@@ -103,5 +103,5 @@ public interface PersonService {
 	 * a related Person object.  This would be used by the lookup service to determine if special steps need
 	 * to be taken when performing a search.
 	 */
-	boolean hasPersonProperty(Class<? extends BusinessObject> businessObjectClass, Map<String,String> fieldValues);
+	boolean hasPersonProperty(Class<? extends Person> businessObjectClass, Map<String,String> fieldValues);
 }

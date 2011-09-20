@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.api.identity;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 
@@ -52,7 +53,7 @@ public interface IdentityArchiveService {
      */
     @WebMethod(operationName = "getEntityDefaultFromArchive")
     @WebResult(name = "entityDefault")
-    EntityDefault getEntityDefaultFromArchive(@WebParam(name = "id") String entityId );
+    EntityDefault getEntityDefaultFromArchive(@WebParam(name = "id") String entityId ) throws RiceIllegalArgumentException;
 
 	/**
      * Gets a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} with an principalId from the archive.
@@ -69,7 +70,7 @@ public interface IdentityArchiveService {
      */
     @WebMethod(operationName = "getEntityDefaultFromArchiveByPrincipalId")
     @WebResult(name = "entityDefault")
-    EntityDefault getEntityDefaultFromArchiveByPrincipalId(@WebParam(name = "principalId") String principalId);
+    EntityDefault getEntityDefaultFromArchiveByPrincipalId(@WebParam(name = "principalId") String principalId) throws RiceIllegalArgumentException;
 
 	/**
      * Gets a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} with an principalName from the archive.
@@ -86,7 +87,7 @@ public interface IdentityArchiveService {
      */
     @WebMethod(operationName = "getEntityDefaultFromArchiveByPrincipalName")
     @WebResult(name = "entityDefault")
-	EntityDefault getEntityDefaultFromArchiveByPrincipalName(@WebParam(name = "principalName") String principalName);
+	EntityDefault getEntityDefaultFromArchiveByPrincipalName(@WebParam(name = "principalName") String principalName) throws RiceIllegalArgumentException;
 	
 	/**
      * Saves a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} to the archive.
@@ -99,9 +100,10 @@ public interface IdentityArchiveService {
      *
      * @param entityDefault the unique principalName to retrieve the entity by. cannot be null.
      * @return a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} or null
-     * @throws IllegalArgumentException if the principalName is blank
+     * @throws IllegalArgumentException if the entityDefault is null
      */
+    //TODO: this should probably return some kind of Future<EntityDefault> if we can find a way to remote that
     @WebMethod(operationName = "saveEntityDefaultToArchive")
-	void saveEntityDefaultToArchive(@WebParam(name = "entityDefault") EntityDefault entityDefault);
+	void saveEntityDefaultToArchive(@WebParam(name = "entityDefault") EntityDefault entityDefault) throws RiceIllegalArgumentException;
 	
 }

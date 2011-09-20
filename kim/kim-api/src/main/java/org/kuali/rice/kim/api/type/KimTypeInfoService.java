@@ -16,6 +16,7 @@
 
 package org.kuali.rice.kim.api.type;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kim.api.KimApiConstants;
 import org.springframework.cache.annotation.Cacheable;
 
@@ -46,7 +47,7 @@ public interface KimTypeInfoService {
     @WebMethod(operationName="getKimType")
     @WebResult(name = "kimType")
     @Cacheable(value=KimType.Cache.NAME, key="'id=' + #id")
-    KimType getKimType(@WebParam(name = "id") String id);
+    KimType getKimType(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
     /**
      * Gets a {@link KimType} from a kim type name and namespace code.
@@ -68,7 +69,7 @@ public interface KimTypeInfoService {
     @WebMethod(operationName="findKimTypeByNameAndNamespace")
     @WebResult(name = "kimType")
     @Cacheable(value=KimType.Cache.NAME, key="'namespaceCode=' + #namespaceCode + '|' + 'name=' + #name")
-    KimType findKimTypeByNameAndNamespace(@WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "name") String name);
+    KimType findKimTypeByNameAndNamespace(@WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "name") String name) throws RiceIllegalArgumentException;
 
     /**
      * Gets all the {@link KimType KimTypes}.

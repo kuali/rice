@@ -17,6 +17,7 @@
 package org.kuali.rice.kim.impl.type;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.krad.service.BusinessObjectService;
@@ -34,7 +35,7 @@ public class KimTypeInfoServiceImpl implements KimTypeInfoService {
     @Override
     public KimType getKimType(final String id) {
         if (StringUtils.isBlank(id)) {
-            throw new IllegalArgumentException("id is blank");
+            throw new RiceIllegalArgumentException("id is blank");
         }
 
         return KimTypeBo.to(businessObjectService.findBySinglePrimaryKey(KimTypeBo.class, id));
@@ -43,11 +44,11 @@ public class KimTypeInfoServiceImpl implements KimTypeInfoService {
     @Override
     public KimType findKimTypeByNameAndNamespace(final String namespaceCode, final String name) {
         if (StringUtils.isBlank(namespaceCode)) {
-            throw new IllegalArgumentException("namespaceCode is blank");
+            throw new RiceIllegalArgumentException("namespaceCode is blank");
         }
 
         if (StringUtils.isBlank(name)) {
-            throw new IllegalArgumentException("name is blank");
+            throw new RiceIllegalArgumentException("name is blank");
         }
 
         final Map<String, Object> crit = new HashMap<String, Object>();

@@ -208,15 +208,12 @@ public class RuleQuickLinksAction extends KewKualiAction {
 
 		public List<Permission> getPermissions() {
 			if ( permissions == null ) {
-//				Logger sqlLogger = Logger.getLogger(SqlGeneratorSuffixableImpl.class);
-//				sqlLogger.setLevel( Level.DEBUG );
-				Map<String,String> searchCriteria = new HashMap<String,String>();
-				searchCriteria.put("attributeName", "documentTypeName" );
-				searchCriteria.put("active", "Y");
-				searchCriteria.put("detailCriteria",
-						KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME+"="+getDocumentType().getName()
-						);
-				permissions = KimApiServiceLocator.getPermissionService().lookupPermissions( searchCriteria, false );
+                Predicate p = and(
+                        equal("attributeName", "documentTypeName"),
+                        equal("active", "Y"),
+                        equal("detailCriteria",
+						KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME+"="+getDocumentType().getName()));
+				permissions = KimApiServiceLocator.getPermissionService().findPermissions( QueryByCriteria.Builder.fromPredicates(p)).getResults();
 //				sqlLogger.setLevel( Level.INFO );
 			}
 			return permissions;
@@ -382,9 +379,6 @@ public class RuleQuickLinksAction extends KewKualiAction {
 		return maintenanceDocumentDictionaryService;
 	}
 
-	/**
-	 * @see org.kuali.rice.krad.web.struts.action.KualiAction#toggleTab(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-	 */
 	@Override
 	public ActionForward toggleTab(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)

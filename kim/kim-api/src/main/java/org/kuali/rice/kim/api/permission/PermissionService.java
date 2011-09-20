@@ -15,12 +15,15 @@
  */
 package org.kuali.rice.kim.api.permission;
 
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.common.assignee.Assignee;
 import org.kuali.rice.kim.api.common.template.Template;
+import org.kuali.rice.kim.api.common.template.TemplateQueryResults;
+import org.kuali.rice.kim.api.responsibility.ResponsibilityQueryResults;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -54,12 +57,7 @@ import java.util.Map;
  * 
  * <p>The actual logic for how permission evaluation logic is defined and executed is dependent upon
  * the permission service implementation.  However, it will typically be associated with the permission
- * template used on the permission. 
- * 
- * <p>This service provides read-only operations.  For write operations, see
- * {@link PermissionUpdateService}.
- * 
- * @see PermissionUpdateService
+ * template used on the permission.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -327,39 +325,30 @@ public interface PermissionService {
      *
      * If any parameter is blank, this method returns <code>null</code>.
      */
-    @WebMethod(operationName = "getPermissionByName")
+    @WebMethod(operationName = "findPermByNamespaceCodeAndName")
     @WebResult(name = "permission")
-    Permission getPermissionByName(@WebParam(name = "namespaceCode") String namespaceCode,
-                       @WebParam(name = "permissionName") String permissionName);
+    Permission findPermByNamespaceCodeAndName(@WebParam(name = "namespaceCode") String namespaceCode,
+            @WebParam(name = "permissionName") String permissionName);
    
 	/** 
 	 * Return the permission object for the given unique combination of namespace,
 	 * component and permission template name.
 	 */
-	@WebMethod(operationName = "getPermissionsByTemplateName")
+	@WebMethod(operationName = "findPermsByNamespaceCodeTemplateName")
     @WebResult(name = "permission")
-    List<Permission> getPermissionsByTemplateName( @WebParam(name="namespaceCode") String namespaceCode,
-    													  @WebParam(name="permissionTemplateName") String permissionTemplateName );
+    List<Permission> findPermsByNamespaceCodeTemplateName(@WebParam(name = "namespaceCode") String namespaceCode,
+            @WebParam(name = "permissionTemplateName") String permissionTemplateName);
 
-	/** 
-	 * Return the permission object for the given unique combination of namespace,
-	 * component and permission name.
-	 */
-	@WebMethod(operationName = "getPermissionsByName")
-    @WebResult(name = "permissions")
-    List<Permission> getPermissionsByName( @WebParam(name="namespaceCode") String namespaceCode,
-			    											  @WebParam(name="permissionName") String permissionName );
-    
 	/**
 	 * 
 	 * Return the Permission Template given the Template ID.
 	 * 
-	 * @param permissionTemplateId
+	 * @param id
 	 * @return PermissionTemplate
 	 */
 	@WebMethod(operationName = "getPermissionTemplate")
-    @WebResult(name = "permissionTemplate")
-    Template getPermissionTemplate( @WebParam(name="permissionTemplateId") String permissionTemplateId );
+    @WebResult(name = "id")
+    Template getPermissionTemplate( @WebParam(name="id") String id );
 
 	/**
 	 * 
@@ -368,16 +357,15 @@ public interface PermissionService {
 	 * @param namespaceCode, permissionTemplateName
 	 * @return PermissionTemplate
 	 */
-	@WebMethod(operationName = "getPermissionTemplateByName")
+	@WebMethod(operationName = "findPermTemplateByNamespaceCodeAndName")
     @WebResult(name = "permissionTemplate")
-    Template getPermissionTemplateByName( @WebParam(name="namespaceCode") String namespaceCode,
-			  										@WebParam(name="permissionTemplateName") String permissionTemplateName );
+    Template findPermTemplateByNamespaceCodeAndName(@WebParam(name = "namespaceCode") String namespaceCode,
+            @WebParam(name = "permissionTemplateName") String permissionTemplateName);
 
 	/**
 	 * 
 	 * Return all Permission Templates.
-	 * 
-	 * @param namespaceCode, permissionTemplateName
+	 *
 	 * @return PermissionTemplate
 	 */
 	@WebMethod(operationName = "getAllTemplates")
@@ -385,19 +373,6 @@ public interface PermissionService {
     @XmlElement(name = "template", required = false)
     @WebResult(name = "templates")
     List<Template> getAllTemplates();
-	
-    /**
-     * Search for permissions using arbitrary search criteria.  JavaBeans property syntax 
-     * should be used to reference the properties.
-     * 
-     * If the searchCriteria parameter is null or empty, an empty list will be returned.
-     */
-	@WebMethod(operationName = "lookupPermissions")
-    @XmlElementWrapper(name = "permissions", required = true)
-    @XmlElement(name = "permission", required = false)
-    @WebResult(name = "permissions")
-    List<Permission> lookupPermissions( @WebParam(name="searchCriteria") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String,String> searchCriteria,
-    									@WebParam(name="unbounded") boolean unbounded);
     
     /**
      * Get the role IDs for the given permission.
@@ -443,4 +418,27 @@ public interface PermissionService {
 	@WebMethod(operationName = "getPermissionsByNameIncludingInactive")
     @WebResult(name = "permissionsIncludingInactive")
     List<Permission> getPermissionsByNameIncludingInactive(@WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "permissionName") String permissionName);
+
+    /**
+     * This method find Permissions based on a query criteria.  The criteria cannot be null.
+     *
+     * @param queryByCriteria the criteria.  Cannot be null.
+     * @return query results.  will never return null.
+     * @throws IllegalArgumentException if the queryByCriteria is null
+     */
+    @WebMethod(operationName = "findPermissions")
+    @WebResult(name = "results")
+    PermissionQueryResults findPermissions(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
+
+
+    /**
+     * This method find Permission Templates based on a query criteria.  The criteria cannot be null.
+     *
+     * @param queryByCriteria the criteria.  Cannot be null.
+     * @return query results.  will never return null.
+     * @throws IllegalArgumentException if the queryByCriteria is null
+     */
+    @WebMethod(operationName = "findPermissionTemplates")
+    @WebResult(name = "results")
+    TemplateQueryResults findPermissionTemplates(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
 }

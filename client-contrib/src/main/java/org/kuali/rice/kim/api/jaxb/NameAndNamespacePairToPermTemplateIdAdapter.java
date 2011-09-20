@@ -37,7 +37,7 @@ public class NameAndNamespacePairToPermTemplateIdAdapter extends XmlAdapter<Name
     @Override
     public String unmarshal(NameAndNamespacePair v) throws Exception {
         if (v != null) {
-            Template permissionTemplate = KimApiServiceLocator.getPermissionService().getPermissionTemplateByName(
+            Template permissionTemplate = KimApiServiceLocator.getPermissionService().findPermTemplateByNamespaceCodeAndName(
                     v.getNamespaceCode(), new NormalizedStringAdapter().unmarshal(v.getName()));
             if (permissionTemplate == null) {
                 throw new UnmarshalException("Cannot find permission template with namespace \"" + v.getNamespaceCode() + "\" and name \"" + v.getName() + "\"");

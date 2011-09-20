@@ -16,7 +16,10 @@
 package org.kuali.rice.kim.impl.permission;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.criteria.CriteriaLookupService;
+import org.kuali.rice.core.api.criteria.GenericQueryResults;
+import org.kuali.rice.core.api.criteria.LookupCustomizer;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
@@ -24,7 +27,9 @@ import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.common.assignee.Assignee;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
 import org.kuali.rice.kim.api.common.template.Template;
+import org.kuali.rice.kim.api.common.template.TemplateQueryResults;
 import org.kuali.rice.kim.api.permission.Permission;
+import org.kuali.rice.kim.api.permission.PermissionQueryResults;
 import org.kuali.rice.kim.api.permission.PermissionService;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
@@ -33,13 +38,9 @@ import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.framework.permission.PermissionTypeService;
+import org.kuali.rice.kim.impl.common.attribute.AttributeTransform;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
-import org.kuali.rice.kns.lookup.Lookupable;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.lookup.CollectionIncomplete;
-import org.kuali.rice.krad.service.BusinessObjectDictionaryService;
-import org.kuali.rice.krad.service.DataDictionaryService;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 
 import java.util.ArrayList;
@@ -56,19 +57,16 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@SuppressWarnings("unused")
-public class PermissionServiceImpl extends PermissionServiceBase implements PermissionService {
-	private static final Logger LOG = Logger.getLogger( PermissionServiceImpl.class );
-
+public class PermissionServiceImpl implements PermissionService {
 	private RoleService roleService;
 	private PermissionDao permissionDao;
     private PermissionTypeService defaultPermissionTypeService;
-    private DataDictionaryService dataDictionaryService;
     private KimTypeInfoService kimTypeInfoService;
-    private BusinessObjectDictionaryService businessObjectDictionaryService;
-	
+	private BusinessObjectService businessObjectService;
+	private CriteriaLookupService criteriaLookupService;
+
  	private List<Template> allTemplates;
-	
+
     // --------------------
     // Authorization Checks
     // --------------------
@@ -120,10 +118,8 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     		throw new RuntimeException( "Error retrieving service: " + serviceName + " from the KIMServiceLocatorInternal.", ex );
     	}
     }
-    
-    /**
-     * @see org.kuali.rice.kim.service.PermissionService#hasPermission(java.lang.String, String, java.lang.String, Map<String, String>)
-     */
+
+    @Override
     public boolean hasPermission(String principalId, String namespaceCode, String permissionName, Map<String, String> permissionDetails) {
         if (StringUtils.isBlank(principalId)) {
             throw new RiceIllegalArgumentException("principalId is null or blank");
@@ -139,6 +135,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
         return isAuthorized( principalId, namespaceCode, permissionName, permissionDetails, null );
     }
 
+    @Override
     public boolean isAuthorized(String principalId, String namespaceCode, String permissionName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
         if (StringUtils.isBlank(principalId)) {
             throw new RiceIllegalArgumentException("principalId is null or blank");
@@ -161,7 +158,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 		return roleService.principalHasRole( principalId, roleIds, qualification);
 
     }
-
+    @Override
     public boolean hasPermissionByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails) {
         if (StringUtils.isBlank(principalId)) {
             throw new RiceIllegalArgumentException("principalId is null or blank");
@@ -179,7 +176,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
         }
         return isAuthorizedByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails, null );
     }
-
+    @Override
     public boolean isAuthorizedByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
         if (StringUtils.isBlank(principalId)) {
             throw new RiceIllegalArgumentException("principalId is null or blank");
@@ -204,7 +201,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	}
     	return roleService.principalHasRole( principalId, roleIds, qualification);
     }
-
+    @Override
     public List<Permission> getAuthorizedPermissions( String principalId, String namespaceCode, String permissionName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
         if (StringUtils.isBlank(principalId)) {
             throw new RiceIllegalArgumentException("principalId is null or blank");
@@ -229,7 +226,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	List<Permission> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );
     	return getPermissionsForUser(principalId, applicablePermissions, qualification);
     }
-
+    @Override
     public List<Permission> getAuthorizedPermissionsByTemplateName( String principalId, String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
         if (StringUtils.isBlank(principalId)) {
             throw new RiceIllegalArgumentException("principalId is null or blank");
@@ -327,7 +324,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	}
     	return applicablePermissions;
     }
-
+    @Override
     public List<Assignee> getPermissionAssignees( String namespaceCode, String permissionName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
     	List<Assignee> results = new ArrayList<Assignee>();
     	List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName, permissionDetails);
@@ -350,7 +347,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	}
     	return results;
     }
-    
+    @Override
     public List<Assignee> getPermissionAssigneesForTemplateName( String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
     	List<Assignee> results = new ArrayList<Assignee>();
     	List<String> roleIds = getRoleIdsForPermissionTemplate( namespaceCode, permissionTemplateName, permissionDetails);
@@ -373,25 +370,22 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	}
     	return results;
     }
-    
-    public boolean isPermissionAssigned( String namespaceCode, String permissionName, Map<String, String> permissionDetails ) {
-    	return !getRoleIdsForPermission(namespaceCode, permissionName, permissionDetails).isEmpty();
-    }
-    
+
+     @Override
     public boolean isPermissionDefined( String namespaceCode, String permissionName, Map<String, String> permissionDetails ) {
     	// get all the permission objects whose name match that requested
     	List<PermissionBo> permissions = getPermissionImplsByName( namespaceCode, permissionName );
     	// now, filter the full list by the detail passed
     	return !getMatchingPermissions( permissions, permissionDetails ).isEmpty();
     }
-    
+    @Override
     public boolean isPermissionDefinedForTemplateName( String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails ) {
     	// get all the permission objects whose name match that requested
     	List<PermissionBo> permissions = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
     	// now, filter the full list by the detail passed
     	return !getMatchingPermissions( permissions, permissionDetails ).isEmpty();
     }
- 
+     @Override
     public List<String> getRoleIdsForPermission( String namespaceCode, String permissionName, Map<String, String> permissionDetails) {
     	// get all the permission objects whose name match that requested
     	List<PermissionBo> permissions = getPermissionImplsByName( namespaceCode, permissionName );
@@ -407,7 +401,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	List<Permission> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );
     	return permissionDao.getRoleIdsForPermissions( applicablePermissions );
     }
-    
+    @Override
     public List<String> getRoleIdsForPermissions( List<Permission> permissions ) {
    		return permissionDao.getRoleIdsForPermissions( permissions );
     }
@@ -416,9 +410,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     // Permission Data
     // --------------------
     
-    /**
-     * @see org.kuali.rice.kim.service.PermissionService#getPermission(java.lang.String)
-     */
+    @Override
     public Permission getPermission(String permissionId) {
     	PermissionBo impl = getPermissionImpl( permissionId );
     	if ( impl != null ) {
@@ -427,10 +419,8 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	return null;
     }
     
-    /**
-     * @see org.kuali.rice.kim.service.PermissionService#getPermissionsByTemplateName(String, String)
-     */
-    public List<Permission> getPermissionsByTemplateName(String namespaceCode, String permissionTemplateName) {
+    @Override
+    public List<Permission> findPermsByNamespaceCodeTemplateName(String namespaceCode, String permissionTemplateName) {
     	List<PermissionBo> impls = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
     	List<Permission> results = new ArrayList<Permission>(impls.size());
     	for (PermissionBo impl : impls) {
@@ -439,19 +429,6 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	return results;
     }
 
-	/**
-     * @see org.kuali.rice.kim.service.PermissionService#getPermissionsByName(String, String)
-     */
-    public List<Permission> getPermissionsByName(String namespaceCode, String permissionName) {
-    	List<PermissionBo> impls = getPermissionImplsByName( namespaceCode, permissionName );
-    	List<Permission> results = new ArrayList<Permission>(impls.size());
-        for (PermissionBo impl : impls) {
-            results.add(PermissionBo.to(impl));
-        }
-        return results;
-    }
-    
-    @SuppressWarnings("unchecked")
 	protected PermissionBo getPermissionImpl(String permissionId) {
     	if ( StringUtils.isBlank( permissionId ) ) {
     		return null;
@@ -483,37 +460,12 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     // --------------------
     // Support Methods
     // --------------------
-	
-	
-    public PermissionDao getPermissionDao() {
-		return this.permissionDao;
-	}
 
 	public void setPermissionDao(PermissionDao permissionDao) {
 		this.permissionDao = permissionDao;
 	}
 
-    @SuppressWarnings("unchecked")
-	public List<Permission> lookupPermissions(Map<String, String> searchCriteria, boolean unbounded ){
-		Collection baseResults = null;
-		Lookupable permissionLookupable = KNSServiceLocator.getLookupable(
-                KRADServiceLocatorWeb.getBusinessObjectDictionaryService().getLookupableID(PermissionBo.class));
-		permissionLookupable.setBusinessObjectClass(PermissionBo.class);
-		if ( unbounded ) {
-		    baseResults = permissionLookupable.getSearchResultsUnbounded( searchCriteria );
-		} else {
-			baseResults = permissionLookupable.getSearchResults(searchCriteria);
-		}
-		List<Permission> results = new ArrayList<Permission>( baseResults.size() );
-		for ( PermissionBo resp : (Collection<PermissionBo>)baseResults ) {
-			results.add( PermissionBo.to(resp) );
-		}
-		if ( baseResults instanceof CollectionIncomplete ) {
-			results = new CollectionIncomplete<Permission>( results, ((CollectionIncomplete<Permission>)baseResults).getActualSizeIfTruncated() ); 
-		}		
-		return results;
-	}
-
+    @Override
 	public String getPermissionDetailLabel( String permissionId, String kimTypeId, String attributeName) {
     	// get the type service for this permission
 		PermissionTypeService typeService = getPermissionTypeService(null, null, null, permissionId);
@@ -526,9 +478,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 		}
 	}
 	
-	/**
-	 * @see org.kuali.rice.kim.service.PermissionService#getPermissionTemplate(java.lang.String)
-	 */
+    @Override
 	public Template getPermissionTemplate(String permissionTemplateId) {
 		PermissionTemplateBo impl = businessObjectService.findBySinglePrimaryKey( PermissionTemplateBo.class, permissionTemplateId );
 		if ( impl != null ) {
@@ -537,11 +487,8 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 		return null;
 	}
 
-	/** 
-	 * @see org.kuali.rice.kim.service.PermissionService#getPermissionTemplateByName(java.lang.String, java.lang.String)
-	 */
-	public Template getPermissionTemplateByName(String namespaceCode,
-			String permissionTemplateName) {
+    @Override
+	public Template findPermTemplateByNamespaceCodeAndName(String namespaceCode, String permissionTemplateName) {
 		Map<String,String> criteria = new HashMap<String,String>(2);
 		criteria.put( KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode );
 		criteria.put( KimConstants.UniqueKeyConstants.PERMISSION_TEMPLATE_NAME, permissionTemplateName );
@@ -551,7 +498,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 		}
 		return null;
 	}
-	
+    @Override
 	public List<Template> getAllTemplates() {
 		if ( allTemplates == null ) {
 			Map<String,String> criteria = new HashMap<String,String>(1);
@@ -577,7 +524,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 		}
 		return allTemplates;
 	}	
-
+    @Override
     public List<String> getRoleIdsForPermissionId(String permissionId) {
         Permission permissionInfo = getPermission(permissionId);
 
@@ -586,7 +533,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 
         return permissionDao.getRoleIdsForPermissions(applicablePermissions);
     }
-
+    @Override
     public List<Permission> getPermissionsByNameIncludingInactive(String namespaceCode, String permissionName) {
         List<PermissionBo> impls = getPermissionImplsByNameIncludingInactive(namespaceCode, permissionName);
         List<Permission> results = new ArrayList<Permission>(impls.size());
@@ -603,9 +550,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
         return ((List<PermissionBo>) businessObjectService.findMatching(PermissionBo.class, pk));
     }
 
-	/**
-	 * @see org.kuali.rice.kim.api.permission.PermissionService#createPermission(org.kuali.rice.kim.api.permission.Permission)
-	 */
+
 	@Override
 	public Permission createPermission(Permission permission)
 			throws RiceIllegalArgumentException, RiceIllegalStateException {
@@ -622,9 +567,6 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
         return PermissionBo.to(businessObjectService.save(bo));
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.api.permission.PermissionService#updatePermission(org.kuali.rice.kim.api.permission.Permission)
-	 */
 	@Override
 	public Permission updatePermission(Permission permission)
 			throws RiceIllegalArgumentException, RiceIllegalStateException {
@@ -647,7 +589,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 	}
 	
     @Override
-    public Permission getPermissionByName(String namespaceCode, String permissionName) {
+    public Permission findPermByNamespaceCodeAndName(String namespaceCode, String permissionName) {
         PermissionBo permissionBo = getPermissionBoByName(namespaceCode, permissionName);
         if (permissionBo != null) {
             return PermissionBo.to(permissionBo);
@@ -667,15 +609,51 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
         // while this is not actually the primary key - there will be at most one row with these criteria
         return businessObjectService.findByPrimaryKey(PermissionBo.class, criteria);
     }
-    
-    /**
-     * Sets the dataDictionaryService attribute value.
-     *
-     * @param dataDictionaryService The dataDictionaryService to set.
-     */
-	public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
-		this.dataDictionaryService = dataDictionaryService;
-	}
+
+    @Override
+    public PermissionQueryResults findPermissions(final QueryByCriteria queryByCriteria) {
+        if (queryByCriteria == null) {
+            throw new RiceIllegalArgumentException("queryByCriteria is null");
+        }
+
+        LookupCustomizer.Builder<PermissionBo> lc = LookupCustomizer.Builder.create();
+        lc.setPredicateTransform(AttributeTransform.getInstance());
+
+        GenericQueryResults<PermissionBo> results = criteriaLookupService.lookup(PermissionBo.class, queryByCriteria, lc.build());
+
+        PermissionQueryResults.Builder builder = PermissionQueryResults.Builder.create();
+        builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
+        builder.setTotalRowCount(results.getTotalRowCount());
+
+        final List<Permission.Builder> ims = new ArrayList<Permission.Builder>();
+        for (PermissionBo bo : results.getResults()) {
+            ims.add(Permission.Builder.create(bo));
+        }
+
+        builder.setResults(ims);
+        return builder.build();
+    }
+
+    @Override
+    public TemplateQueryResults findPermissionTemplates(final QueryByCriteria queryByCriteria) {
+        if (queryByCriteria == null) {
+            throw new RiceIllegalArgumentException("queryByCriteria is null");
+        }
+
+        GenericQueryResults<PermissionTemplateBo> results = criteriaLookupService.lookup(PermissionTemplateBo.class, queryByCriteria);
+
+        TemplateQueryResults.Builder builder = TemplateQueryResults.Builder.create();
+        builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
+        builder.setTotalRowCount(results.getTotalRowCount());
+
+        final List<Template.Builder> ims = new ArrayList<Template.Builder>();
+        for (PermissionTemplateBo bo : results.getResults()) {
+            ims.add(Template.Builder.create(bo));
+        }
+
+        builder.setResults(ims);
+        return builder.build();
+    }
 	
 	/**
      * Sets the kimTypeInfoService attribute value.
@@ -695,16 +673,6 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	this.defaultPermissionTypeService = defaultPermissionTypeService;
 	}
 	
-	// TODO remove business object dd service?
-	/**
-     * Sets the businessObjectDictionaryService attribute value.
-     *
-     * @param businessObjectDictionaryService The businessObjectDictionaryService to set.
-     */
-	public void setBusinessObjectDictionaryService(BusinessObjectDictionaryService businessObjectDictionaryService) {
-		this.businessObjectDictionaryService = businessObjectDictionaryService;
-	}
-	
 	/**
      * Sets the roleService attribute value.
      *
@@ -712,5 +680,23 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
      */
 	public void setRoleService(RoleService roleService) {
 		this.roleService = roleService;
-	}	
+	}
+
+    /**
+     * Sets the businessObjectService attribute value.
+     *
+     * @param businessObjectService The businessObjectService to set.
+     */
+    public void setBusinessObjectService(final BusinessObjectService businessObjectService) {
+        this.businessObjectService = businessObjectService;
+    }
+
+    /**
+     * Sets the criteriaLookupService attribute value.
+     *
+     * @param criteriaLookupService The criteriaLookupService to set.
+     */
+    public void setCriteriaLookupService(final CriteriaLookupService criteriaLookupService) {
+        this.criteriaLookupService = criteriaLookupService;
+    }
 }

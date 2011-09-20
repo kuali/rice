@@ -370,7 +370,7 @@ public final class RoleXmlUtil {
         
         // If the permission is being identified by name and namespace, derive or validate its permission ID accordingly.
         if (newRolePermission.getPermissionNameAndNamespace() != null) {
-            PermissionContract permission = KimApiServiceLocator.getPermissionService().getPermissionByName(
+            PermissionContract permission = KimApiServiceLocator.getPermissionService().findPermByNamespaceCodeAndName(
                     newRolePermission.getPermissionNamespaceCode(), newRolePermission.getPermissionName());
             if (permission == null) {
                 throw new UnmarshalException("Cannot get role assigned to permission with namespace \"" + newRolePermission.getPermissionNamespaceCode() +

@@ -18,7 +18,6 @@ package org.kuali.rice.kim.impl.jaxb;
 import javax.xml.bind.UnmarshalException;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.permission.PermissionContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -76,7 +75,8 @@ public final class PermissionXmlUtil {
         }
         
         // If another permission with that name and namespace exists, use its ID on the new permission.
-        PermissionContract permission = KimApiServiceLocator.getPermissionService().getPermissionByName(newPermission.getNamespaceCode(), newPermission.getPermissionName());
+        PermissionContract permission = KimApiServiceLocator.getPermissionService().findPermByNamespaceCodeAndName(
+                newPermission.getNamespaceCode(), newPermission.getPermissionName());
         if (permission != null) {
             newPermission.setPermissionId(permission.getId());
         }

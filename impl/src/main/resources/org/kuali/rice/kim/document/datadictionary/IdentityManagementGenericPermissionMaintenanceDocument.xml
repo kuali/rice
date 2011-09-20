@@ -51,8 +51,7 @@
     <property name="maintainableItems">
       <list>
         <bean parent="MaintainableFieldDefinition" p:name="id"
-            p:unconditionallyReadOnly="true" p:required="true" 
-            p:defaultValueFinderClass="org.kuali.rice.kim.impl.permission.NextPermissionIdValuesFinder" />
+            p:unconditionallyReadOnly="true" p:required="true" />
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="templateId"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="namespaceCode"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="name" />

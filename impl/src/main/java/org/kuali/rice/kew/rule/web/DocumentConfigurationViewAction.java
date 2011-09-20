@@ -61,8 +61,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
+
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -143,17 +143,16 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		
 		DocumentType docType = form.getDocumentType();
 		Map<String,List<Role>> permRoles = new HashMap<String, List<Role>>();
-		Map<String,String> searchCriteria = new HashMap<String,String>();
-		searchCriteria.put("attributeName", "documentTypeName" );
-		searchCriteria.put("active", "Y");
 		// loop over the document hierarchy
 		Set<String> seenDocumentPermissions = new HashSet<String>();
 		while ( docType != null) {
 			String documentTypeName = docType.getName();
-			searchCriteria.put("detailCriteria",
-					KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME+"="+docType.getName()
-					);
-			List<Permission> perms = getPermissionService().lookupPermissions(searchCriteria, true);
+            Predicate p = and(
+                equal("attributeName", "documentTypeName"),
+                equal("active", "Y"),
+                equal("detailCriteria",
+					KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME+"="+docType.getName()));
+			List<Permission> perms = getPermissionService().findPermissions(QueryByCriteria.Builder.fromPredicates(p)).getResults();
 			for ( Permission perm : perms ) {
                 PermissionBo permBo = PermissionBo.from(perm);
 				List<String> roleIds = getPermissionService().getRoleIdsForPermissions(Collections.singletonList(perm));
@@ -335,10 +334,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		}
 		form.setResponsibilityRoles( respToRoleMap );
 	}
-	
-	/**
-	 * @see org.kuali.rice.krad.web.struts.action.KualiAction#toggleTab(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-	 */
+
 	@Override
 	public ActionForward toggleTab(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// Repopulating the form is necessary when toggling tab states on the server side.

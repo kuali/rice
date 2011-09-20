@@ -539,29 +539,30 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
 
     private ReportQueryByCriteria setupPermCriteria(Map<String, String> permCrit) {
 
-        Map<String, String> searchCrit = new HashMap<String, String>();
+        List<Predicate> andConds = new ArrayList<Predicate>();
 
         for (Map.Entry<String, String> entry : permCrit.entrySet()) {
             if (entry.getKey().equals("permTmplName") || entry.getKey().equals("permTmplNamespaceCode")) {
                 if (entry.getKey().equals("permTmplName")) {
-                    searchCrit.put("template." + KimConstants.UniqueKeyConstants.PERMISSION_TEMPLATE_NAME, entry.getValue());
+                    andConds.add(equal("template." + KimConstants.UniqueKeyConstants.PERMISSION_TEMPLATE_NAME, entry.getValue()));
 
                 } else {
-                    searchCrit.put("template." + KimConstants.UniqueKeyConstants.NAMESPACE_CODE, entry.getValue());
+                     andConds.add(equal("template." + KimConstants.UniqueKeyConstants.NAMESPACE_CODE, entry.getValue()));
                 }
             }
 
             if (entry.getKey().equals("permName") || entry.getKey().equals("permNamespaceCode")) {
                 if (entry.getKey().equals("permName")) {
-                    searchCrit.put(KimConstants.UniqueKeyConstants.PERMISSION_NAME, entry.getValue());
+                     andConds.add(equal(KimConstants.UniqueKeyConstants.PERMISSION_NAME, entry.getValue()));
                 } else {
-                    searchCrit.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, entry.getValue());
+                     andConds.add(equal(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, entry.getValue()));
 
                 }
             }
         }
 
-        List<Permission> permList = KimApiServiceLocator.getPermissionService().lookupPermissions(searchCrit, true);
+
+        List<Permission> permList = KimApiServiceLocator.getPermissionService().findPermissions(QueryByCriteria.Builder.fromPredicates(andConds.toArray(new Predicate[]{}))).getResults();
         List<String> roleIds = null;
 
         if (permList != null && !permList.isEmpty()) {

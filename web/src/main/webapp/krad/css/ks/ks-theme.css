@@ -372,6 +372,15 @@ div.ui-tabs.ui-widget-content {
 	border:none;
     width: 222px;
 }
+#ui-datepicker-div table {
+    margin: auto;
+    margin-bottom:10px;
+}
+.ui-datepicker-calendar td, .ui-datepicker-calendar th {
+    width:20px;
+    padding: .2em;
+    text-align:center;
+}
 .ui-datepicker-trigger {            /* make sure the icons appear clickable*/
 	background-image:url(../../images/cal_ks.gif);
     margin-left:8px;
@@ -469,10 +478,10 @@ div.ui-tabs.ui-widget-content {
 	height: 15px;
 	padding-bottom: 0;
 	padding-top: 3px;
-	width: 24px;
+	width: 100%;
 	background-image:-moz-linear-gradient(top, #f9f9f9, #f8f8f8);
     background-image:-o-linear-gradient(top, rgba(249,249,249,1) 0%, rgba(248,248,248,1) 100%);  /* be nice to opera */
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #f9f9f9), color-stop(1, #f8f8f8));
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #f9f9f9), color-stop(1, #f8f8f8));
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorStr=#f9f9f9, endColorStr=#f8f8f8, GradientType=0 );  /* ie7 and earlier */
     -ms-filter: progid:DXImageTransform.Microsoft.gradient( startColorStr=#f9f9f9, endColorStr=#f8f8f8, GradientType=0 ); /* ie8 */
     background: linear-gradient(top, rgba(249,249,249,1) 0% rgba(248,248,248,1) 100%);
@@ -489,7 +498,7 @@ div.ui-tabs.ui-widget-content {
 	height: 15px;
 	padding-bottom: 0;
 	padding-top: 3px;
-	width: 24px;
+	width: 100%;
 	background-image:-moz-linear-gradient(top, #99DE80, #62D255);
     background-image:-o-linear-gradient(top, rgba(153,222,128,1) 0%, rgba(98,210,85,1) 100%);
 	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #99DE80), color-stop(1, #62D255));
@@ -513,6 +522,10 @@ div.ui-tabs.ui-widget-content {
 }
 .ui-datepicker-calendar tbody {
 	border-bottom: none;
+}
+.ui-datepicker-calendar th span {
+    width:100%;
+    font-size: .76923077em;
 }
 h2 img.expand_collapse-buttons[alt="expand"] {		/* was h2 img.expand_collapse-buttons[alt="expand"] */ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
 	background: url(../../images/h2_expand-back-ks.png);

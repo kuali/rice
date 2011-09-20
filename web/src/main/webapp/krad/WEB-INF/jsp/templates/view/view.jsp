@@ -20,6 +20,7 @@
 <!-- begin of view render -->
 <krad:html view="${view}">
 <!----------------------------------- #Resize notification --------------------------------------->
+<c:if test="${!view.dialogMode}">
 <krad:script value="
     jq(function(){
       publishHeight();
@@ -27,6 +28,7 @@
       window.setInterval(publishHeight, 500);
     });
 " />
+</c:if>
 
 <!----------------------------------- #APPLICATION HEADER --------------------------------------->
 <krad:template component="${view.applicationHeader}"/>

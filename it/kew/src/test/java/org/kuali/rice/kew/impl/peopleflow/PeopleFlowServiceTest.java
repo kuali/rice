@@ -41,6 +41,10 @@ public class PeopleFlowServiceTest extends KEWTestCase {
         this.peopleFlowService = peopleFlowService;
     }
 
+    protected PeopleFlowService getPeopleFlowService() {
+        return peopleFlowService;
+    }
+
     @Test
     public void testCRUD() throws Exception {
 
@@ -55,15 +59,15 @@ public class PeopleFlowServiceTest extends KEWTestCase {
         builder.getMembers().add(memberBuilder);
         
         // now create it
-        PeopleFlowDefinition peopleFlow = peopleFlowService.createPeopleFlow(builder.build());
+        PeopleFlowDefinition peopleFlow = getPeopleFlowService().createPeopleFlow(builder.build());
         assertPeopleFlowCreate(peopleFlow, group);
 
         // load by id and check it's state after a fresh load
-        peopleFlow = peopleFlowService.getPeopleFlow(peopleFlow.getId());
+        peopleFlow = getPeopleFlowService().getPeopleFlow(peopleFlow.getId());
         assertPeopleFlowCreate(peopleFlow, group);
 
         // load by name and check it's state after a fresh load
-        peopleFlow = peopleFlowService.getPeopleFlowByName(NAMESPACE_CODE, NAME);
+        peopleFlow = getPeopleFlowService().getPeopleFlowByName(NAMESPACE_CODE, NAME);
         assertPeopleFlowCreate(peopleFlow, group);
 
         // try an update
@@ -84,8 +88,8 @@ public class PeopleFlowServiceTest extends KEWTestCase {
         builder.setDescription(DESCRIPTION);
 
         // execute the update
-        PeopleFlowDefinition updatedPeopleFlow = peopleFlowService.updatePeopleFlow(builder.build());
-        updatedPeopleFlow = peopleFlowService.getPeopleFlow(updatedPeopleFlow.getId());
+        PeopleFlowDefinition updatedPeopleFlow = getPeopleFlowService().updatePeopleFlow(builder.build());
+        updatedPeopleFlow = getPeopleFlowService().getPeopleFlow(updatedPeopleFlow.getId());
         assertNotNull(updatedPeopleFlow);
         assertEquals(NAME2, updatedPeopleFlow.getName());
         assertEquals(DESCRIPTION, updatedPeopleFlow.getDescription());

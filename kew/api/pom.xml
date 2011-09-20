@@ -155,8 +155,18 @@
 							<goal>java2ws</goal>
 						</goals>
 					</execution>
-          
-					
+          <execution>
+						<id>pepleFlowService-wsdl</id>
+						<phase>${rice.java2ws.phase}</phase>
+						<configuration>
+							<className>org.kuali.rice.kew.api.peopleflow.PeopleFlowService</className>
+							<outputFile>${project.build.outputDirectory}/wsdl/PeopleFlowService.wsdl</outputFile>
+							<serviceName>PeopleFlowService</serviceName>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
 				</executions>
 			</plugin>
 		</plugins>

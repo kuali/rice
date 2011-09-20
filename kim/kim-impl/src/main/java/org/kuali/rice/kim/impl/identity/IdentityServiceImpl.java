@@ -48,7 +48,6 @@ import org.kuali.rice.kim.api.identity.residency.EntityResidency;
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
 import org.kuali.rice.kim.api.identity.visa.EntityVisa;
 import org.kuali.rice.kim.impl.KIMPropertyConstants;
-import org.kuali.rice.kim.impl.identity.EntityTypeBo;
 import org.kuali.rice.kim.impl.identity.address.EntityAddressBo;
 import org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo;
 import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo;
@@ -101,6 +100,7 @@ public class IdentityServiceImpl implements IdentityService {
 	private BusinessObjectService businessObjectService;
     private PersistenceService persistenceService;
 
+    @Override
 	public Entity getEntity(String entityId) {
         if (StringUtils.isBlank(entityId)) {
             throw new RiceIllegalArgumentException("entityId is blank");
@@ -113,9 +113,7 @@ public class IdentityServiceImpl implements IdentityService {
 		return EntityBo.to( entity );
 	}
 	
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityByPrincipalId(java.lang.String)
-	 */
+    @Override
 	public Entity getEntityByPrincipalId(String principalId) {
         if (StringUtils.isBlank(principalId)) {
             throw new RiceIllegalArgumentException("principalId is blank");
@@ -127,9 +125,7 @@ public class IdentityServiceImpl implements IdentityService {
 		return EntityBo.to(entity);
 	}
 	
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityByPrincipalName(java.lang.String)
-	 */
+    @Override
 	public Entity getEntityByPrincipalName(String principalName) {
         if (StringUtils.isBlank(principalName)) {
             throw new RiceIllegalArgumentException("principalName is blank");
@@ -141,9 +137,7 @@ public class IdentityServiceImpl implements IdentityService {
 		return EntityBo.to(entity);
 	}
 	
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityDefault(java.lang.String)
-	 */
+    @Override
 	public EntityDefault getEntityDefault(String entityId) {
         if (StringUtils.isBlank(entityId)) {
             throw new RiceIllegalArgumentException("entityId is blank");
@@ -155,9 +149,7 @@ public class IdentityServiceImpl implements IdentityService {
 		return EntityBo.toDefault( entity );
 	}
 	
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityDefaultByPrincipalId(java.lang.String)
-	 */
+    @Override
 	public EntityDefault getEntityDefaultByPrincipalId(String principalId) {
         if (StringUtils.isBlank(principalId)) {
             throw new RiceIllegalArgumentException("principalId is blank");
@@ -169,9 +161,7 @@ public class IdentityServiceImpl implements IdentityService {
 		return EntityBo.toDefault(entity);
 	}
 	
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityDefaultByPrincipalName(java.lang.String)
-	 */
+    @Override
 	public EntityDefault getEntityDefaultByPrincipalName(String principalName) {
         if (StringUtils.isBlank(principalName)) {
             throw new RiceIllegalArgumentException("principalName is blank");
@@ -183,10 +173,7 @@ public class IdentityServiceImpl implements IdentityService {
 		return EntityBo.toDefault(entity);
 	}
 	
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getPrincipalByPrincipalNameAndPassword(java.lang.String, java.lang.String)
-	 */
-	@SuppressWarnings("unchecked")
+    @Override
 	public Principal getPrincipalByPrincipalNameAndPassword(String principalName, String password) {
         if (StringUtils.isBlank(principalName)) {
             throw new RiceIllegalArgumentException("principalName is blank");
@@ -197,7 +184,7 @@ public class IdentityServiceImpl implements IdentityService {
 		Map<String,Object> criteria = new HashMap<String,Object>(3);
         criteria.put(KIMPropertyConstants.Principal.PRINCIPAL_NAME, principalName);
         criteria.put(KIMPropertyConstants.Principal.PASSWORD, password);
-        criteria.put(KIMPropertyConstants.Principal.ACTIVE, true);
+        criteria.put(KIMPropertyConstants.Principal.ACTIVE, Boolean.TRUE);
         Collection<PrincipalBo> principals = businessObjectService.findMatching(PrincipalBo.class, criteria);
 
         if (!principals.isEmpty()) {
@@ -245,8 +232,8 @@ public class IdentityServiceImpl implements IdentityService {
 
     @Override
     public Principal inactivatePrincipal(String principalId) {
-        if (principalId == null || StringUtils.isEmpty(principalId)) {
-            throw new RiceIllegalArgumentException("principalId is null or empty");
+        if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId is blank");
         }
 
         Principal principal = getPrincipal(principalId);
@@ -260,6 +247,10 @@ public class IdentityServiceImpl implements IdentityService {
 
     @Override
     public Principal inactivatePrincipalByName(String principalName) {
+        if (StringUtils.isBlank(principalName)) {
+            throw new RiceIllegalArgumentException("principalName is blank");
+        }
+
         Principal principal = getPrincipalByPrincipalName(principalName);
         if (principal == null) {
             throw new RiceIllegalStateException("Principal with principalName: " + principalName + " does not exist");
@@ -291,14 +282,14 @@ public class IdentityServiceImpl implements IdentityService {
         Map<String,Object> criteria = new HashMap<String,Object>(3);
          criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, entityId);
          criteria.put(KIMPropertyConstants.Entity.ENTITY_TYPE_CODE, entityTypeCode);
-         criteria.put(KIMPropertyConstants.Entity.ACTIVE, true);
+         criteria.put(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE);
          return businessObjectService.findByPrimaryKey(EntityTypeContactInfoBo.class, criteria);
     }
 
     @Override
     public EntityTypeContactInfo updateEntityTypeContactInfo(EntityTypeContactInfo entityTypeContactInfo) {
         if (entityTypeContactInfo == null) {
-            throw new RiceIllegalArgumentException("entityTypeData is null");
+            throw new RiceIllegalArgumentException("entityTypeContactInfo is null");
         }
 
         if (StringUtils.isBlank(entityTypeContactInfo.getEntityId()) || StringUtils.isEmpty(entityTypeContactInfo.getEntityId())
@@ -315,6 +306,14 @@ public class IdentityServiceImpl implements IdentityService {
 
     @Override
     public EntityTypeContactInfo inactivateEntityTypeContactInfo(String entityId, String entityTypeCode) {
+        if (StringUtils.isBlank(entityId)) {
+            throw new RiceIllegalArgumentException("entityId is null");
+        }
+
+        if (StringUtils.isBlank(entityTypeCode)) {
+            throw new RiceIllegalArgumentException("entityTypeCode is null");
+        }
+
         EntityTypeContactInfoBo bo = getEntityTypeDataBo(entityId, entityTypeCode);
         if (bo == null) {
             throw new RiceIllegalStateException("EntityTypeData with entityId: " + entityId + " entityTypeCode: " + entityTypeCode + " does not exist");
@@ -328,7 +327,7 @@ public class IdentityServiceImpl implements IdentityService {
         criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, entityId);
         criteria.put(KIMPropertyConstants.Entity.ENTITY_TYPE_CODE, entityTypeCode);
         criteria.put("addressTypeCode", addressTypeCode);
-        criteria.put(KIMPropertyConstants.Entity.ACTIVE, true);
+        criteria.put(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE);
         return businessObjectService.findByPrimaryKey(EntityAddressBo.class, criteria);
     }
 
@@ -383,6 +382,10 @@ public class IdentityServiceImpl implements IdentityService {
 
     @Override
     public EntityAddress inactivateAddress(String addressId) {
+        if (StringUtils.isBlank(addressId)) {
+            throw new RiceIllegalArgumentException("addressId is null");
+        }
+
         EntityAddressBo bo = getEntityAddressBo(addressId);
         if (bo == null) {
             throw new RiceIllegalStateException("Address with addressId: " + addressId + " does not exist");
@@ -396,7 +399,7 @@ public class IdentityServiceImpl implements IdentityService {
         criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, entityId);
         criteria.put(KIMPropertyConstants.Entity.ENTITY_TYPE_CODE, entityTypeCode);
         criteria.put("emailTypeCode", emailTypeCode);
-        criteria.put(KIMPropertyConstants.Entity.ACTIVE, true);
+        criteria.put(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE);
         return businessObjectService.findByPrimaryKey(EntityEmailBo.class, criteria);
     }
 
@@ -450,6 +453,10 @@ public class IdentityServiceImpl implements IdentityService {
 
     @Override
     public EntityEmail inactivateEmail(String emailId) {
+        if (StringUtils.isBlank(emailId)) {
+            throw new RiceIllegalArgumentException("emailId is null");
+        }
+
         EntityEmailBo bo = getEntityEmailBo(emailId);
         if (bo == null) {
             throw new RiceIllegalStateException("Email with emailId: " + emailId + " does not exist");
@@ -463,7 +470,7 @@ public class IdentityServiceImpl implements IdentityService {
         criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, entityId);
         criteria.put(KIMPropertyConstants.Entity.ENTITY_TYPE_CODE, entityTypeCode);
         criteria.put("phoneTypeCode", phoneTypeCode);
-        criteria.put(KIMPropertyConstants.Entity.ACTIVE, true);
+        criteria.put(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE);
         return businessObjectService.findByPrimaryKey(EntityPhoneBo.class, criteria);
     }
 
@@ -518,6 +525,10 @@ public class IdentityServiceImpl implements IdentityService {
 
     @Override
     public EntityPhone inactivatePhone(String phoneId) {
+        if (StringUtils.isBlank(phoneId)) {
+            throw new RiceIllegalArgumentException("phoneId is null");
+        }
+
         EntityPhoneBo bo = getEntityPhoneBo(phoneId);
         if (bo == null) {
             throw new RiceIllegalStateException("Phone with phoneId: " + phoneId + " does not exist");
@@ -621,6 +632,10 @@ public class IdentityServiceImpl implements IdentityService {
 
     @Override
     public EntityAffiliation inactivateAffiliation(String id) {
+        if (StringUtils.isBlank(id)) {
+            throw new RiceIllegalArgumentException("id is null");
+        }
+
         EntityAffiliationBo bo = getEntityAffiliationBo(id);
         if (bo == null) {
             throw new RiceIllegalStateException("EntityAffiliation with id: " + id + " does not exist");
@@ -629,10 +644,7 @@ public class IdentityServiceImpl implements IdentityService {
         return EntityAffiliationBo.to(businessObjectService.save(bo));
     }
 
-    /**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#findEntities(org.kuali.rice.core.api.criteria.QueryByCriteria)
-	 */
-	@SuppressWarnings("unchecked")
+    @Override
 	public EntityQueryResults findEntities(QueryByCriteria queryByCriteria) {
 		if (queryByCriteria == null) {
             throw new RiceIllegalArgumentException("queryByCriteria is null");
@@ -653,7 +665,7 @@ public class IdentityServiceImpl implements IdentityService {
         return builder.build();
 	}
 
-	@SuppressWarnings("unchecked")
+    @Override
 	public EntityDefaultQueryResults findEntityDefaults(QueryByCriteria queryByCriteria) {
 		if (queryByCriteria == null) {
             throw new RiceIllegalArgumentException("queryByCriteria is null");
@@ -674,8 +686,7 @@ public class IdentityServiceImpl implements IdentityService {
         return builder.build();
 	}
 
-	@SuppressWarnings("unchecked")
-	public EntityNameQueryResults findNames(QueryByCriteria queryByCriteria) {
+	protected EntityNameQueryResults findNames(QueryByCriteria queryByCriteria) {
 		if (queryByCriteria == null) {
             throw new RiceIllegalArgumentException("queryByCriteria is null");
         }
@@ -695,23 +706,23 @@ public class IdentityServiceImpl implements IdentityService {
         return builder.build();
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityPrivacyPreferences(java.lang.String)
-	 */
+    @Override
 	public EntityPrivacyPreferences getEntityPrivacyPreferences(String entityId) {
-        if (StringUtils.isEmpty(entityId)) {
-            return null;
+        if (StringUtils.isBlank(entityId)) {
+            throw new RiceIllegalArgumentException("entityId is null");
         }
 		Map<String,String> criteria = new HashMap<String,String>(1);
         criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, entityId);
 		return EntityPrivacyPreferencesBo.to(businessObjectService.findByPrimaryKey(EntityPrivacyPreferencesBo.class, criteria));
 	}
 
-    /**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getPrincipal(java.lang.String)
-	 */
+    @Override
 	public Principal getPrincipal(String principalId) {
-		PrincipalBo principal = getPrincipalBo(principalId);
+		if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId is null");
+        }
+
+        PrincipalBo principal = getPrincipalBo(principalId);
 		if ( principal == null ) {
 			return null;
 		}
@@ -759,12 +770,11 @@ public class IdentityServiceImpl implements IdentityService {
 		return persistenceService;
 	}
 
-	@SuppressWarnings("unchecked")
 	protected List<EntityBo> lookupEntitys(Map<String, String> searchCriteria) {
-		return new ArrayList(KRADServiceLocatorWeb.getLookupService().findCollectionBySearchUnbounded( EntityBo.class, searchCriteria ));
+		return new ArrayList<EntityBo>(KRADServiceLocatorWeb.getLookupService().findCollectionBySearchUnbounded( EntityBo.class, searchCriteria ));
 	}
 
-	public List<String> lookupEntityIds(Map<String,String> searchCriteria) {
+	protected List<String> lookupEntityIds(Map<String,String> searchCriteria) {
 		List<EntityBo> entities = lookupEntitys( searchCriteria );
 		List<String> entityIds = new ArrayList<String>( entities.size() );
 		for ( EntityBo entity : entities ) {
@@ -773,14 +783,12 @@ public class IdentityServiceImpl implements IdentityService {
 		return entityIds;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getPrincipalByPrincipalName(java.lang.String)
-	 */
-	@SuppressWarnings("unchecked")
+	@Override
 	public Principal getPrincipalByPrincipalName(String principalName) {
-		if ( StringUtils.isBlank(principalName) ) {
-			return null;
-		}
+		if (StringUtils.isBlank(principalName)) {
+            throw new RiceIllegalArgumentException("principalName is null");
+        }
+
 		Map<String,Object> criteria = new HashMap<String,Object>(1);
         criteria.put(KIMPropertyConstants.Principal.PRINCIPAL_NAME, principalName.toLowerCase());
         Collection<PrincipalBo> principals = businessObjectService.findMatching(PrincipalBo.class, criteria);
@@ -810,6 +818,7 @@ public class IdentityServiceImpl implements IdentityService {
         return getEntityByKeyValue("principals." + KIMPropertyConstants.Principal.PRINCIPAL_ID, principalId);
 	}
 
+    /*
 	public String getEntityIdByPrincipalId(String principalId) {
 		if ( StringUtils.isBlank( principalId ) ) {
 			return null;
@@ -832,13 +841,15 @@ public class IdentityServiceImpl implements IdentityService {
 		}
 		Principal principal = getPrincipalByPrincipalName( principalName );
 		return principal != null ? principal.getPrincipalId() : null;
-	}
+	}*/
 	
-	/**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getDefaultNamesForEntityIds(java.util.List)
-	 */
+    @Override
 	public Map<String, EntityNamePrincipalName> getDefaultNamesForEntityIds(List<String> entityIds) {
-		Map<String, EntityNamePrincipalName> result = new HashMap<String, EntityNamePrincipalName>(entityIds.size());
+		if (CollectionUtils.isEmpty(entityIds)) {
+            throw new RiceIllegalArgumentException("entityIds is empty or null");
+        }
+
+        Map<String, EntityNamePrincipalName> result = new HashMap<String, EntityNamePrincipalName>(entityIds.size());
 
         if (CollectionUtils.isEmpty(entityIds)) {
             return result;
@@ -864,11 +875,13 @@ public class IdentityServiceImpl implements IdentityService {
 
 
 
-    /**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getDefaultNamesForPrincipalIds(java.util.List)
-	 */
+    @Override
 	public Map<String, EntityNamePrincipalName> getDefaultNamesForPrincipalIds(List<String> principalIds) {
-		Map<String, EntityNamePrincipalName> result = new HashMap<String, EntityNamePrincipalName>();
+	    if (CollectionUtils.isEmpty(principalIds)) {
+            throw new RiceIllegalArgumentException("principalIds is empty or null");
+        }
+
+        Map<String, EntityNamePrincipalName> result = new HashMap<String, EntityNamePrincipalName>();
 
         QueryByCriteria.Builder qb = QueryByCriteria.Builder.create();
         qb.setPredicates(and(in("principals.principalId", principalIds.toArray()),
@@ -902,8 +915,13 @@ public class IdentityServiceImpl implements IdentityService {
 		return null;
 	}
 
+    @Override
 	public Type getAddressType( String code ) {
-		EntityAddressTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityAddressTypeBo.class, code);
+	    if (StringUtils.isBlank(code)) {
+            throw new RiceIllegalArgumentException("code is empty or null");
+        }
+
+        EntityAddressTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityAddressTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
 		}
@@ -911,25 +929,38 @@ public class IdentityServiceImpl implements IdentityService {
 	}
 
 
-
+    @Override
     public EntityAffiliationType getAffiliationType( String code ) {
-		EntityAffiliationTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityAffiliationTypeBo.class, code);
+        if (StringUtils.isBlank(code)) {
+            throw new RiceIllegalArgumentException("code is empty or null");
+        }
+
+        EntityAffiliationTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityAffiliationTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
 		}
 		return EntityAffiliationTypeBo.to(impl);
 	}
 
-
+    @Override
     public Type getCitizenshipStatus( String code ) {
-		EntityCitizenshipStatusBo impl = businessObjectService.findBySinglePrimaryKey(EntityCitizenshipStatusBo.class, code);
+		if (StringUtils.isBlank(code)) {
+            throw new RiceIllegalArgumentException("code is empty or null");
+        }
+
+        EntityCitizenshipStatusBo impl = businessObjectService.findBySinglePrimaryKey(EntityCitizenshipStatusBo.class, code);
 		if ( impl == null ) {
 			return null;
 		}
 		return EntityCitizenshipStatusBo.to(impl);
 	}
 
+    @Override
     public Type getEmailType( String code ) {
+        if (StringUtils.isBlank(code)) {
+            throw new RiceIllegalArgumentException("code is empty or null");
+        }
+
 		EntityEmailTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityEmailTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
@@ -937,40 +968,65 @@ public class IdentityServiceImpl implements IdentityService {
 		return EntityEmailTypeBo.to(impl);
 	}
 
+    @Override
     public Type getEmploymentStatus( String code ) {
-		EntityEmploymentStatusBo impl = businessObjectService.findBySinglePrimaryKey(EntityEmploymentStatusBo.class, code);
+		if (StringUtils.isBlank(code)) {
+            throw new RiceIllegalArgumentException("code is empty or null");
+        }
+
+        EntityEmploymentStatusBo impl = businessObjectService.findBySinglePrimaryKey(EntityEmploymentStatusBo.class, code);
 		if ( impl == null ) {
 			return null;
 		}
 		return EntityEmploymentStatusBo.to(impl);
 	}
 
+    @Override
     public Type getEmploymentType( String code ) {
-		EntityEmploymentTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityEmploymentTypeBo.class, code);
+		if (StringUtils.isBlank(code)) {
+            throw new RiceIllegalArgumentException("code is empty or null");
+        }
+
+        EntityEmploymentTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityEmploymentTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
 		}
 		return EntityEmploymentTypeBo.to(impl);
 	}
 
+    @Override
     public Type getNameType(String code) {
-		EntityNameTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityNameTypeBo.class, code);
+		if (StringUtils.isBlank(code)) {
+            throw new RiceIllegalArgumentException("code is empty or null");
+        }
+
+        EntityNameTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityNameTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
 		}
 		return EntityNameTypeBo.to(impl);
 	}
 
+    @Override
     public Type getEntityType( String code ) {
-		EntityTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityTypeBo.class, code);
+		if (StringUtils.isBlank(code)) {
+            throw new RiceIllegalArgumentException("code is empty or null");
+        }
+
+        EntityTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
 		}
 		return EntityTypeBo.to(impl);
 	}
 
+    @Override
     public EntityExternalIdentifierType getExternalIdentifierType( String code ) {
-		EntityExternalIdentifierTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityExternalIdentifierTypeBo.class, code);
+		if (StringUtils.isBlank(code)) {
+            throw new RiceIllegalArgumentException("code is empty or null");
+        }
+
+        EntityExternalIdentifierTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityExternalIdentifierTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
 		}
@@ -978,9 +1034,13 @@ public class IdentityServiceImpl implements IdentityService {
 	}
 
 
-
+    @Override
     public Type getPhoneType( String code ) {
-		EntityPhoneTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityPhoneTypeBo.class, code);
+		if (StringUtils.isBlank(code)) {
+            throw new RiceIllegalArgumentException("code is empty or null");
+        }
+
+        EntityPhoneTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityPhoneTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
 		}
@@ -1072,7 +1132,7 @@ public class IdentityServiceImpl implements IdentityService {
         Map<String,Object> criteria = new HashMap<String,Object>(4);
         criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, entityId);
         criteria.put("statusCode", citizenshipStatusCode);
-        criteria.put(KIMPropertyConstants.Entity.ACTIVE, true);
+        criteria.put(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE);
         return businessObjectService.findByPrimaryKey(EntityCitizenshipBo.class, criteria);
     }
 
@@ -1082,7 +1142,7 @@ public class IdentityServiceImpl implements IdentityService {
         }
         Map<String,Object> criteria = new HashMap<String,Object>();
         criteria.put(KIMPropertyConstants.Entity.ID, id);
-        criteria.put(KIMPropertyConstants.Entity.ACTIVE, true);
+        criteria.put(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE);
         return businessObjectService.findByPrimaryKey(EntityCitizenshipBo.class, criteria);
     }
 
@@ -1128,8 +1188,8 @@ public class IdentityServiceImpl implements IdentityService {
 
     @Override
     public EntityCitizenship inactivateCitizenship(String id) {
-        if (StringUtils.isEmpty(id)) {
-            throw new RiceIllegalArgumentException("id is empty");
+        if (StringUtils.isBlank(id)) {
+            throw new RiceIllegalArgumentException("id is blank or null");
         }
 
         EntityCitizenshipBo bo = getEntityCitizenshipBo(id);
@@ -1329,8 +1389,8 @@ public class IdentityServiceImpl implements IdentityService {
 
     @Override
     public EntityName inactivateName(String id) {
-        if (StringUtils.isEmpty(id)) {
-            throw new RiceIllegalArgumentException("id is empty");
+        if (StringUtils.isBlank(id)) {
+            throw new RiceIllegalArgumentException("id is blank or null");
         }
 
         EntityNameBo bo = getEntityNameBo(id);
@@ -1412,6 +1472,10 @@ public class IdentityServiceImpl implements IdentityService {
 
     @Override
     public EntityEmployment inactivateEmployment(String id) {
+        if (StringUtils.isBlank(id)) {
+            throw new RiceIllegalArgumentException("id is empty or null");
+        }
+
         EntityEmploymentBo bo = getEntityEmploymentBo(id);
         if (bo == null) {
             throw new RiceIllegalStateException("the EntityEmployment to inactivate does not exist");
@@ -1420,9 +1484,6 @@ public class IdentityServiceImpl implements IdentityService {
         return EntityEmploymentBo.to(businessObjectService.save(bo));
     }
 
-    /**
-	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityPrivacyPreferences(java.lang.String)
-	 */
 	private EntityBioDemographicsBo getEntityBioDemographicsBo(String entityId) {
         if (StringUtils.isEmpty(entityId)) {
             return null;

@@ -46,7 +46,7 @@ public interface IdentityArchiveService {
      *   This method will return null if the Entity does not exist.
      * </p>
      *
-     * @param id the unique id to retrieve the entity by. cannot be null.
+     * @param entityId the unique id to retrieve the entity by. cannot be null.
      * @return a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} or null
      * @throws IllegalArgumentException if the id is blank
      */

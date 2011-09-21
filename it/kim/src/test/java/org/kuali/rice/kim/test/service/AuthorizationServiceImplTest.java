@@ -26,6 +26,7 @@ import org.kuali.rice.kim.test.KIMTestCase;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 
 import static org.junit.Assert.*;
@@ -251,12 +252,12 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 	@Test
 	public void testHasPermission() {
 		
-		assertTrue( "p1 must have perm1 (via r1)", permissionService.hasPermission( "p1", "KR-NS", "perm1", null ) );		
-		assertTrue( "p1 must have perm2 (via r1)", permissionService.hasPermission( "p1", "KR-NS", "perm2", null ) );
-		assertTrue( "p1 must have perm3 (via r2)", permissionService.hasPermission( "p1", "KR-NS", "perm3", null ) );
-		assertTrue( "p3 must have perm3 (via r2)", permissionService.hasPermission( "p3", "KR-NS", "perm3", null ) );
-		assertFalse( "p3 must not have perm1", permissionService.hasPermission( "p3", "KR-NS", "perm1", null ) );
-		assertFalse( "p3 must not have perm2", permissionService.hasPermission( "p3", "KR-NS", "perm2", null ) );
+		assertTrue( "p1 must have perm1 (via r1)", permissionService.hasPermission( "p1", "KR-NS", "perm1", Collections.<String, String>emptyMap() ));
+		assertTrue( "p1 must have perm2 (via r1)", permissionService.hasPermission( "p1", "KR-NS", "perm2", Collections.<String, String>emptyMap() ) );
+		assertTrue( "p1 must have perm3 (via r2)", permissionService.hasPermission( "p1", "KR-NS", "perm3", Collections.<String, String>emptyMap() ) );
+		assertTrue( "p3 must have perm3 (via r2)", permissionService.hasPermission( "p3", "KR-NS", "perm3", Collections.<String, String>emptyMap() ) );
+		assertFalse( "p3 must not have perm1", permissionService.hasPermission( "p3", "KR-NS", "perm1", Collections.<String, String>emptyMap())  );
+		assertFalse( "p3 must not have perm2", permissionService.hasPermission( "p3", "KR-NS", "perm2", Collections.<String, String>emptyMap())  );
 	}
 	
 //	protected boolean hasPermission( List<PermissionDetailsInfo> perms, String permissionId ) {

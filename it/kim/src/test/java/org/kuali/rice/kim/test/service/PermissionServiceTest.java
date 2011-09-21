@@ -24,6 +24,7 @@ import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.test.BaselineTestCase;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -75,12 +76,13 @@ public class PermissionServiceTest extends KIMTestCase {
 	@Test
 	public void testGetPermissionAssignees() {
 		
-		List<Assignee> assignees = getPermissionService().getPermissionAssignees("KUALI", "Log In Kuali Portal", null, null);
+		List<Assignee> assignees = getPermissionService().getPermissionAssignees("KUALI", "Log In Kuali Portal", Collections
+                .<String, String>emptyMap(), Collections.<String, String>emptyMap());
 		assertNotNull(assignees);
 		assertEquals(1, assignees.size());
 		Assignee permInfo = assignees.get(0);
 		assertEquals("entity123pId", permInfo.getPrincipalId());
-		assignees = getPermissionService().getPermissionAssignees("KUALI", "Not A Valid Permission Name", null, null);
+		assignees = getPermissionService().getPermissionAssignees("KUALI", "Not A Valid Permission Name", Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap());
 		// TODO - jax-ws remoted service returns null; local return empty List. Fix webservice return
 		assertTrue(null == assignees || assignees.size() == 0);
 	}

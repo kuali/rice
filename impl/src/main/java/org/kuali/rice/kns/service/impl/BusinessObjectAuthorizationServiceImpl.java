@@ -563,7 +563,7 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 					KRADConstants.KRAD_NAMESPACE,
 					KimConstants.PermissionTemplateNames.PARTIAL_UNMASK_FIELD,
 					new HashMap<String, String>(getFieldPermissionDetails(dataObjectClass,fieldName)),
-					null);
+					Collections.<String, String>emptyMap());
 		} else { // if a document was passed, evaluate the permission in the context of a document
 			return getDocumentHelperService().getDocumentAuthorizer( document )
 					.isAuthorizedByTemplate( document, 

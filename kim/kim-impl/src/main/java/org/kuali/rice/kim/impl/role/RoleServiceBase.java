@@ -13,6 +13,7 @@ import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
+import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.framework.role.RoleTypeService;
@@ -40,12 +41,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class RoleServiceBase {
+public abstract class RoleServiceBase implements RoleService {
     private static final Logger LOG = Logger.getLogger( RoleServiceBase.class );
 
     private BusinessObjectService businessObjectService;
     private LookupService lookupService;
-    private SequenceAccessorService sequenceAccessorService;
     private IdentityService identityService;
     private GroupService groupService;
     private ResponsibilityInternalService responsibilityInternalService;
@@ -105,6 +105,7 @@ public class RoleServiceBase {
         }
     }
 
+    @Override
     public List<String> getMemberParentRoleIds(String memberType, String memberId) {
         List<RoleMemberBo> parentRoleMembers = roleDao.getRoleMembershipsForMemberId(memberType, memberId, Collections.<String, String>emptyMap());
 
@@ -273,24 +274,6 @@ public class RoleServiceBase {
     }
 
     /**
-     * Calls the KimRoleDao's "getDelegationGroupsForGroupIdAndDelegationIds" method and/or retrieves any corresponding members from the cache.
-     */
-    protected List<DelegateMemberBo> getStoredDelegationGroupsForGroupIdsAndDelegationIds(Collection<String> delegationIds, List<String> groupIds) {
-        return getDelegationMemberBoList(RoleDaoAction.DELEGATION_GROUPS_FOR_GROUP_IDS_AND_DELEGATION_IDS, delegationIds, null, groupIds);
-    }
-
-    /**
-     * Calls the KimRoleDao's "getDelegationMembersForDelegationIds" method and/or retrieves any corresponding members from the cache.
-     */
-    protected Map<String, List<DelegateMemberBo>> getStoredDelegationMembersForDelegationIds(List<String> delegationIds) {
-        if (delegationIds != null && !delegationIds.isEmpty()) {
-            return roleDao.getDelegationMembersForDelegationIds(delegationIds);
-        }
-
-        return Collections.emptyMap();
-    }
-
-    /**
      * Retrieves a DelegateMemberBo object by its ID. If the delegation member already exists in the cache, this method will return the cached
      * version; otherwise, it will retrieve the uncached version from the database and then cache it before returning it.
      */
@@ -325,6 +308,7 @@ public class RoleServiceBase {
         return null;
     }
 
+    @Override
     public List<RoleMember> findRoleMembers(Map<String, String> fieldValues) {
         List<RoleMember> roleMembers = new ArrayList<RoleMember>();
         List<RoleMemberBo> roleMemberBos = (List<RoleMemberBo>) getLookupService().findCollectionBySearchHelper(
@@ -337,6 +321,7 @@ public class RoleServiceBase {
         return roleMembers;
     }
 
+    @Override
     public List<RoleResponsibilityAction> getRoleMemberResponsibilityActions(String roleMemberId) {
         Map<String, String> criteria = new HashMap<String, String>(1);
         criteria.put(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID, roleMemberId);
@@ -352,6 +337,7 @@ public class RoleServiceBase {
         return roleResponsibilityActionsList;
     }
 
+    @Override
     public List<DelegateMember> findDelegateMembers(final Map<String, String> fieldValues) {
         List<DelegateMember> delegateMembers = new ArrayList<DelegateMember>();
         List<DelegateTypeBo> delegateBoList = (List<DelegateTypeBo>) getLookupService().findCollectionBySearchHelper(
@@ -443,7 +429,6 @@ public class RoleServiceBase {
         if (secondaryDelegate == null) {
             secondaryDelegate = new DelegateTypeBo();
             secondaryDelegate.setRoleId(roleId);
-            secondaryDelegate.setDelegationId(getNewDelegationId());
             secondaryDelegate.setDelegationTypeCode(DelegationType.PRIMARY.getCode());
             secondaryDelegate.setKimTypeId(roleBo.getKimTypeId());
         }
@@ -461,7 +446,6 @@ public class RoleServiceBase {
         if (primaryDelegate == null) {
             primaryDelegate = new DelegateTypeBo();
             primaryDelegate.setRoleId(roleId);
-            primaryDelegate.setDelegationId(getNewDelegationId());
             primaryDelegate.setDelegationTypeCode(DelegationType.PRIMARY.getCode());
             primaryDelegate.setKimTypeId(roleBo.getKimTypeId());
         }
@@ -642,30 +626,6 @@ public class RoleServiceBase {
         return result;
     }
 
-    protected String getNewDelegationId() {
-        SequenceAccessorService sas = getSequenceAccessorService();
-        Long nextSeq = sas.getNextAvailableSequenceNumber(
-                KimConstants.SequenceNames.KRIM_DLGN_ID_S,
-                DelegateTypeBo.class);
-        return nextSeq.toString();
-    }
-
-    protected String getNewAttributeDataId() {
-        SequenceAccessorService sas = getSequenceAccessorService();
-        Long nextSeq = sas.getNextAvailableSequenceNumber(
-                KimConstants.SequenceNames.KRIM_ATTR_DATA_ID_S,
-                RoleMemberAttributeDataBo.class);
-        return nextSeq.toString();
-    }
-
-    protected String getNewDelegationMemberId() {
-        SequenceAccessorService sas = getSequenceAccessorService();
-        Long nextSeq = sas.getNextAvailableSequenceNumber(
-                KimConstants.SequenceNames.KRIM_DLGN_MBR_ID_S,
-                DelegateTypeBo.class);
-        return nextSeq.toString();
-    }
-
     protected BusinessObjectService getBusinessObjectService() {
         if (businessObjectService == null) {
             businessObjectService = KRADServiceLocator.getBusinessObjectService();
@@ -697,13 +657,6 @@ public class RoleServiceBase {
         }
 
         return groupService;
-    }
-
-    protected SequenceAccessorService getSequenceAccessorService() {
-        if (sequenceAccessorService == null) {
-            sequenceAccessorService = KRADServiceLocator.getSequenceAccessorService();
-        }
-        return sequenceAccessorService;
     }
 
     protected ResponsibilityInternalService getResponsibilityInternalService() {

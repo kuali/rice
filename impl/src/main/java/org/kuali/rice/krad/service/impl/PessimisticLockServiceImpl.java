@@ -38,6 +38,7 @@ import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -134,7 +135,8 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      * @see org.kuali.rice.krad.service.PessimisticLockService#isPessimisticLockAdminUser(org.kuali.rice.kim.api.identity.Person)
      */
     public boolean isPessimisticLockAdminUser(Person user) {
-    	return getPermissionService().isAuthorized( user.getPrincipalId(), KRADConstants.KRAD_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING, null, null );
+    	return getPermissionService().isAuthorized( user.getPrincipalId(), KRADConstants.KRAD_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING,
+                Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap() );
     }
 
     /**

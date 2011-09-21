@@ -4,8 +4,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
-import org.kuali.rice.core.api.util.jaxb.SqlDateAdapter;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
@@ -15,22 +13,18 @@ import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.role.RoleResponsibility;
 import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
-import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.framework.common.delegate.DelegationTypeService;
 import org.kuali.rice.kim.framework.role.RoleTypeService;
 import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
 import org.kuali.rice.kim.framework.type.KimTypeService;
-import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberAttributeDataBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
+import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.group.GroupMemberBo;
 import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.service.SequenceAccessorService;
 
-import javax.jws.WebParam;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,7 +37,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-public class RoleServiceImpl extends RoleServiceBase implements RoleService {
+public class RoleServiceImpl extends RoleServiceBase {
     private static final Logger LOG = Logger.getLogger(RoleServiceImpl.class);
 
     private static final Map<String, RoleDaoAction> memberTypeToRoleDaoActionMap = populateMemberTypeToRoleDaoActionMap();
@@ -57,7 +51,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
     
     @Override
-    public Role getRole(@WebParam(name = "roleId") String roleId) {
+    public Role getRole(String roleId) {
         RoleBo roleBo = getRoleBo(roleId);
         if (roleBo == null) {
             return null;
@@ -89,7 +83,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public List<Role> getRoles(@WebParam(name = "roleIds") List<String> roleIds) {
+    public List<Role> getRoles(List<String> roleIds) {
         Collection<RoleBo> roleBos = getRoleBoMap(roleIds).values();
         List<Role> roles = new ArrayList<Role>(roleBos.size());
         for (RoleBo bo : roleBos) {
@@ -99,7 +93,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public Role getRoleByName(@WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName) {
+    public Role getRoleByName(String namespaceCode, String roleName) {
         RoleBo roleBo = getRoleBoByName(namespaceCode, roleName);
         if (roleBo != null) {
             return RoleBo.to(roleBo);
@@ -108,7 +102,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public String getRoleIdByName(@WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName) {
+    public String getRoleIdByName( String namespaceCode, String roleName) {
         Role role = getRoleByName(namespaceCode, roleName);
         if (role != null) {
             return role.getId();
@@ -118,15 +112,15 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public boolean isRoleActive(@WebParam(name = "roleId") String roleId) {
+    public boolean isRoleActive(String roleId) {
         RoleBo roleBo = getRoleBo(roleId);
         return roleBo != null && roleBo.isActive();
     }
 
     @Override
-    public List<Map<String, String>> getRoleQualifiersForPrincipal(@WebParam(name = "principalId") String principalId,
-                                                            @WebParam(name = "roleIds") List<String> roleIds,
-                                                            @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification) {
+    public List<Map<String, String>> getRoleQualifiersForPrincipal(String principalId,
+                                                            List<String> roleIds,
+                                                            Map<String, String> qualification) {
 
         List<Map<String, String>> results = new ArrayList<Map<String, String>>();
 
@@ -174,7 +168,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public List<Map<String, String>> getRoleQualifiersForPrincipal(@WebParam(name = "principalId") String principalId, @WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification) {
+    public List<Map<String, String>> getRoleQualifiersForPrincipal(String principalId, String namespaceCode,  String roleName, Map<String, String> qualification) {
         String roleId = getRoleIdByName(namespaceCode, roleName);
         if (roleId == null) {
             return new ArrayList<Map<String, String>>(0);
@@ -183,7 +177,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public List<Map<String, String>> getNestedRoleQualifiersForPrincipal(@WebParam(name = "principalId") String principalId, @WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification) {
+    public List<Map<String, String>> getNestedRoleQualifiersForPrincipal(String principalId, String namespaceCode, String roleName, Map<String, String> qualification) {
         String roleId = getRoleIdByName(namespaceCode, roleName);
         if (roleId == null) {
             return new ArrayList<Map<String, String>>(0);
@@ -192,7 +186,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public List<Map<String, String>> getNestedRoleQualifiersForPrincipal(@WebParam(name = "principalId") String principalId, @WebParam(name = "roleIds") List<String> roleIds, @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification) {
+    public List<Map<String, String>> getNestedRoleQualifiersForPrincipal(String principalId, List<String> roleIds, Map<String, String> qualification) {
         List<Map<String, String>> results = new ArrayList<Map<String, String>>();
 
         Map<String, RoleBo> roleBosById = getRoleBoMap(roleIds);
@@ -268,13 +262,13 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public List<RoleMembership> getRoleMembers(@WebParam(name = "roleIds") List<String> roleIds, @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification) {
+    public List<RoleMembership> getRoleMembers(List<String> roleIds, Map<String, String> qualification) {
         Set<String> foundRoleTypeMembers = new HashSet<String>();
         return getRoleMembers(roleIds, qualification, true, foundRoleTypeMembers);
     }
 
     @Override
-    public Collection<String> getRoleMemberPrincipalIds(@WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification) {
+    public Collection<String> getRoleMemberPrincipalIds(String namespaceCode, String roleName, Map<String, String> qualification) {
         Set<String> principalIds = new HashSet<String>();
         Set<String> foundRoleTypeMembers = new HashSet<String>();
         List<String> roleIds = Collections.singletonList(getRoleIdByName(namespaceCode, roleName));
@@ -289,12 +283,12 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public boolean principalHasRole(@WebParam(name = "principalId") String principalId, @WebParam(name = "roleIds") List<String> roleIds, @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification) {
+    public boolean principalHasRole(String principalId, List<String> roleIds, Map<String, String> qualification) {
         return principalHasRole(principalId, roleIds, qualification, true);
     }
 
     @Override
-    public List<String> getPrincipalIdSubListWithRole(@WebParam(name = "principalIds") List<String> principalIds, @WebParam(name = "roleNamespaceCode") String roleNamespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification) {
+    public List<String> getPrincipalIdSubListWithRole(List<String> principalIds, String roleNamespaceCode, String roleName, Map<String, String> qualification) {
         List<String> subList = new ArrayList<String>();
         RoleBo role = getRoleBoByName(roleNamespaceCode, roleName);
         for (String principalId : principalIds) {
@@ -306,7 +300,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public List<Role> getRolesSearchResults(@XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name = "fieldValues") Map<String, String> fieldValues) {
+    public List<Role> getRolesSearchResults(Map<String, String> fieldValues) {
         List<RoleBo> roleBoList = getRoleDao().getRoles(fieldValues);
         List<Role> roles = new ArrayList<Role>();
         for (RoleBo roleBo : roleBoList) {
@@ -316,7 +310,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public void principalInactivated(@WebParam(name = "principalId") String principalId) {
+    public void principalInactivated(String principalId) {
         long oneDayInMillis = TimeUnit.DAYS.toMillis(1);
         Timestamp yesterday = new Timestamp(System.currentTimeMillis() - oneDayInMillis);
 
@@ -327,7 +321,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public void roleInactivated(@WebParam(name = "roleId") String roleId) {
+    public void roleInactivated(String roleId) {
         long oneDayInMillis = TimeUnit.DAYS.toMillis(1);
         Timestamp yesterday = new Timestamp(System.currentTimeMillis() - oneDayInMillis);
 
@@ -339,7 +333,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public void groupInactivated(@WebParam(name = "groupId") String groupId) {
+    public void groupInactivated(String groupId) {
         long oneDayInMillis = TimeUnit.DAYS.toMillis(1);
         Timestamp yesterday = new Timestamp(System.currentTimeMillis() - oneDayInMillis);
 
@@ -350,7 +344,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public List<RoleMembership> getFirstLevelRoleMembers(@WebParam(name = "roleIds") List<String> roleIds) {
+    public List<RoleMembership> getFirstLevelRoleMembers(List<String> roleIds) {
         List<RoleMemberBo> roleMemberBoList = getStoredRoleMembersForRoleIds(roleIds, null, null);
         List<RoleMembership> roleMemberships = new ArrayList<RoleMembership>();
         for (RoleMemberBo roleMemberBo : roleMemberBoList) {
@@ -366,7 +360,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public List<RoleMembership> findRoleMemberships(@XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name = "fieldValues") Map<String, String> fieldValues) {
+    public List<RoleMembership> findRoleMemberships( Map<String, String> fieldValues) {
         return getRoleDao().getRoleMembers(fieldValues);
     }
 
@@ -376,17 +370,17 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public List<RoleMember> findRoleMembers(@XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name = "fieldValues") Map<String, String> fieldValues) {
+    public List<RoleMember> findRoleMembers(Map<String, String> fieldValues) {
         return super.findRoleMembers(fieldValues);
     }
 
     @Override
-    public List<DelegateMember> findDelegateMembers(@XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name = "fieldValues") Map<String, String> fieldValues) {
+    public List<DelegateMember> findDelegateMembers(Map<String, String> fieldValues) {
         return super.findDelegateMembers(fieldValues);
     }
 
     @Override
-    public List<DelegateMember> getDelegationMembersByDelegationId(@WebParam(name = "delegationId") String delegationId) {
+    public List<DelegateMember> getDelegationMembersByDelegationId(String delegationId) {
         DelegateTypeBo delegateBo = getKimDelegationImpl(delegationId);
         if (delegateBo == null) {return null;}
 
@@ -394,7 +388,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public DelegateMember getDelegationMemberByDelegationAndMemberId(@WebParam(name = "delegationId") String delegationId, @WebParam(name = "memberId") String memberId) {
+    public DelegateMember getDelegationMemberByDelegationAndMemberId(String delegationId, String memberId) {
         DelegateTypeBo delegateBo = getKimDelegationImpl(delegationId);
         DelegateMemberBo delegationMember = getKimDelegationMemberImplByDelegationAndId(delegationId, memberId);
 
@@ -402,7 +396,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public DelegateMember getDelegationMemberById(@WebParam(name = "assignedToId") String delegationMemberId) {
+    public DelegateMember getDelegationMemberById(String delegationMemberId) {
 
         DelegateMemberBo delegateMemberBo = getDelegateMemberBo(delegationMemberId);
         if (delegateMemberBo == null) {
@@ -415,7 +409,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public List<RoleResponsibility> getRoleResponsibilities(@WebParam(name = "roleId") String roleId) {
+    public List<RoleResponsibility> getRoleResponsibilities(String roleId) {
         Map<String, String> criteria = new HashMap<String, String>(1);
         criteria.put(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID, roleId);
         List<RoleResponsibilityBo> roleResponsibilityBos = (List<RoleResponsibilityBo>)
@@ -429,18 +423,18 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public List<RoleResponsibilityAction> getRoleMemberResponsibilityActions(@WebParam(name = "roleMemberId") String roleMemberId) {
+    public List<RoleResponsibilityAction> getRoleMemberResponsibilityActions(String roleMemberId) {
         return super.getRoleMemberResponsibilityActions(roleMemberId);
     }
 
     @Override
-    public DelegateType getDelegateTypeInfo(@WebParam(name = "roleId") String roleId, @WebParam(name = "delegationTypeCode") String delegationTypeCode) {
+    public DelegateType getDelegateTypeInfo(String roleId, String delegationTypeCode) {
         DelegateTypeBo delegateBo = getDelegationOfType(roleId, delegationTypeCode);
         return DelegateTypeBo.to(delegateBo);
     }
 
     @Override
-    public DelegateType getDelegateTypeInfoById(@WebParam(name = "delegationId") String delegationId) {
+    public DelegateType getDelegateTypeInfoById(String delegationId) {
         if (delegationId == null) {
             return null;
         }
@@ -449,12 +443,12 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public void applicationRoleMembershipChanged(@WebParam(name = "roleId") String roleId) {
+    public void applicationRoleMembershipChanged(String roleId) {
         getResponsibilityInternalService().updateActionRequestsForRoleChange(roleId);
     }
 
     @Override
-    public List<Role> lookupRoles(@WebParam(name = "searchCriteria") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> searchCriteria) {
+    public List<Role> lookupRoles(Map<String, String> searchCriteria) {
         Collection<RoleBo> roleBoCollection = getBusinessObjectService().findMatching(RoleBo.class, searchCriteria);
         ArrayList<Role> roleList = new ArrayList<Role>();
         for (RoleBo roleBo : roleBoCollection) {
@@ -1125,7 +1119,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public void assignPrincipalToRole(@WebParam(name = "principalId") String principalId, @WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualifier") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifier) throws UnsupportedOperationException {
+    public void assignPrincipalToRole(String principalId, String namespaceCode, String roleName, Map<String, String> qualifier) throws UnsupportedOperationException {
         // look up the role
         RoleBo role = getRoleBoByName(namespaceCode, roleName);
         role.refreshReferenceObject("members");
@@ -1137,11 +1131,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	}
         // create the new role member object
         RoleMemberBo newRoleMember = new RoleMemberBo();
-        // get a new ID from the sequence
-        SequenceAccessorService sas = getSequenceAccessorService();
-        Long nextSeq = sas.getNextAvailableSequenceNumber(
-                KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S, RoleMemberBo.class);
-        newRoleMember.setRoleMemberId(nextSeq.toString());
 
         newRoleMember.setRoleId(role.getId());
         newRoleMember.setMemberId(principalId);
@@ -1156,7 +1145,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public void assignGroupToRole(@WebParam(name = "groupId") String groupId, @WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualifier") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifier) throws UnsupportedOperationException {
+    public void assignGroupToRole(String groupId, String namespaceCode, String roleName, Map<String, String> qualifier) throws UnsupportedOperationException {
         // look up the role
         RoleBo role = getRoleBoByName(namespaceCode, roleName);
         // check that identical member does not already exist
@@ -1166,12 +1155,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	}
         // create the new role member object
         RoleMemberBo newRoleMember = new RoleMemberBo();
-        // get a new ID from the sequence
-        SequenceAccessorService sas = getSequenceAccessorService();
-        Long nextSeq = sas.getNextAvailableSequenceNumber(
-                KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S, RoleMemberBo.class);
-        newRoleMember.setRoleMemberId(nextSeq.toString());
-
         newRoleMember.setRoleId(role.getId());
         newRoleMember.setMemberId(groupId);
         newRoleMember.setMemberTypeCode(Role.GROUP_MEMBER_TYPE);
@@ -1184,7 +1167,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public void assignRoleToRole(@WebParam(name = "roleId") String roleId, @WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualifier") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifier) throws UnsupportedOperationException {
+    public void assignRoleToRole(String roleId, String namespaceCode, String roleName, Map<String, String> qualifier) throws UnsupportedOperationException {
         // look up the roleBo
         RoleBo roleBo = getRoleBoByName(namespaceCode, roleName);
         // check that identical member does not already exist
@@ -1198,12 +1181,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         }
         // create the new roleBo member object
         RoleMemberBo newRoleMember = new RoleMemberBo();
-        // get a new ID from the sequence
-        SequenceAccessorService sas = getSequenceAccessorService();
-        Long nextSeq = sas.getNextAvailableSequenceNumber(
-                KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S, RoleMemberBo.class);
-        newRoleMember.setRoleMemberId(nextSeq.toString());
-
         newRoleMember.setRoleId(roleBo.getId());
         newRoleMember.setMemberId(roleId);
         newRoleMember.setMemberTypeCode(Role.ROLE_MEMBER_TYPE);
@@ -1215,7 +1192,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public RoleMember saveRoleMemberForRole(@WebParam(name = "roleMemberId") String roleMemberId, @WebParam(name = "memberId") String memberId, @WebParam(name = "memberTypeCode") String memberTypeCode, @WebParam(name = "roleId") String roleId, @WebParam(name = "qualifications") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifications, @XmlJavaTypeAdapter(value = SqlDateAdapter.class) @WebParam(name = "activeFromDate") java.sql.Date activeFromDate, @XmlJavaTypeAdapter(value = SqlDateAdapter.class) @WebParam(name = "activeToDate") java.sql.Date activeToDate) throws UnsupportedOperationException {
+    public RoleMember saveRoleMemberForRole(String roleMemberId, String memberId, String memberTypeCode, String roleId, Map<String, String> qualifications, java.sql.Date activeFromDate, java.sql.Date activeToDate) throws UnsupportedOperationException {
         if(StringUtils.isEmpty(roleMemberId) && StringUtils.isEmpty(memberId) && StringUtils.isEmpty(roleId)){
     		throw new IllegalArgumentException("Either Role member ID or a combination of member ID and roleBo ID must be passed in.");
     	}
@@ -1236,12 +1213,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	if(origRoleMemberBo !=null){
     		newRoleMember.setRoleMemberId(origRoleMemberBo.getRoleMemberId());
     		newRoleMember.setVersionNumber(origRoleMemberBo.getVersionNumber());
-    	} else {
-	    	// get a new ID from the sequence
-	    	SequenceAccessorService sas = getSequenceAccessorService();
-	    	Long nextSeq = sas.getNextAvailableSequenceNumber(
-	    			KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S, RoleMemberBo.class);
-	    	newRoleMember.setRoleMemberId( nextSeq.toString() );
     	}
     	newRoleMember.setRoleId(roleBo.getId());
     	newRoleMember.setMemberId( memberId );
@@ -1262,7 +1233,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public void saveRoleRspActions(@WebParam(name = "roleResponsibilityActionId") String roleResponsibilityActionId, @WebParam(name = "roleId") String roleId, @WebParam(name = "roleResponsibilityId") String roleResponsibilityId, @WebParam(name = "roleMemberId") String roleMemberId, @WebParam(name = "actionTypeCode") String actionTypeCode, @WebParam(name = "actionPolicyCode") String actionPolicyCode, @WebParam(name = "priorityNumber") Integer priorityNumber, @WebParam(name = "forceAction") Boolean forceAction) {
+    public void saveRoleRspActions(String roleResponsibilityActionId, String roleId, String roleResponsibilityId, String roleMemberId, String actionTypeCode, String actionPolicyCode, Integer priorityNumber, Boolean forceAction) {
         RoleResponsibilityActionBo newRoleRspAction = new RoleResponsibilityActionBo();
 		newRoleRspAction.setActionPolicyCode(actionPolicyCode);
 		newRoleRspAction.setActionTypeCode(actionTypeCode);
@@ -1280,12 +1251,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 			if(roleResponsibilityActionImpls!=null && roleResponsibilityActionImpls.size()>0){
 				newRoleRspAction.setId(roleResponsibilityActionImpls.get(0).getId());
 				newRoleRspAction.setVersionNumber(roleResponsibilityActionImpls.get(0).getVersionNumber());
-			} else{
-	//			 get a new ID from the sequence
-		    	SequenceAccessorService sas = getSequenceAccessorService();
-		    	Long nextSeq = sas.getNextAvailableSequenceNumber(
-		    			KimConstants.SequenceNames.KRIM_ROLE_RSP_ACTN_ID_S, RoleResponsibilityActionBo.class);
-		    	newRoleRspAction.setId(nextSeq.toString());
 			}
 		} else{
 			Map<String, String> criteria = new HashMap<String, String>(1);
@@ -1301,7 +1266,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public void saveDelegationMemberForRole(@WebParam(name = "assignedToId") String delegationMemberId, @WebParam(name = "roleMemberId") String roleMemberId, @WebParam(name = "memberId") String memberId, @WebParam(name = "memberTypeCode") String memberTypeCode, @WebParam(name = "delegationTypeCode") String delegationTypeCode, @WebParam(name = "roleId") String roleId, @WebParam(name = "qualifications") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifications, @XmlJavaTypeAdapter(value = SqlDateAdapter.class) @WebParam(name = "activeFromDate") java.sql.Date activeFromDate, @XmlJavaTypeAdapter(value = SqlDateAdapter.class) @WebParam(name = "activeToDate") java.sql.Date activeToDate) throws UnsupportedOperationException {
+    public void saveDelegationMemberForRole(String delegationMemberId, String roleMemberId, String memberId, String memberTypeCode, String delegationTypeCode, String roleId, Map<String, String> qualifications, java.sql.Date activeFromDate, java.sql.Date activeToDate) throws UnsupportedOperationException {
         if(StringUtils.isEmpty(delegationMemberId) && StringUtils.isEmpty(memberId) && StringUtils.isEmpty(roleId)){
     		throw new IllegalArgumentException("Either Delegation member ID or a combination of member ID and role ID must be passed in.");
     	}
@@ -1323,8 +1288,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	if(origDelegationMember!=null){
     		newDelegationMember.setDelegationMemberId(origDelegationMember.getDelegationMemberId());
     		newDelegationMember.setVersionNumber(origDelegationMember.getVersionNumber());
-    	} else{
-    		newDelegationMember.setDelegationMemberId(getNewDelegationMemberId());
     	}
     	newDelegationMember.setMemberId(memberId);
     	newDelegationMember.setDelegationId(delegation.getDelegationId());
@@ -1371,7 +1334,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
     
     @Override
-    public void removePrincipalFromRole(@WebParam(name = "principalId") String principalId, @WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualifier") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifier) throws UnsupportedOperationException {
+    public void removePrincipalFromRole(String principalId, String namespaceCode, String roleName, Map<String, String> qualifier) throws UnsupportedOperationException {
         // look up the role
     	RoleBo role = getRoleBoByName(namespaceCode, roleName);
     	// pull all the principal members
@@ -1384,7 +1347,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
     
     @Override
-    public void removeGroupFromRole(@WebParam(name = "groupId") String groupId, @WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualifier") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifier) throws UnsupportedOperationException {
+    public void removeGroupFromRole(String groupId, String namespaceCode, String roleName, Map<String, String> qualifier) throws UnsupportedOperationException {
         // look up the roleBo
     	RoleBo roleBo = getRoleBoByName(namespaceCode, roleName);
     	// pull all the group roleBo members
@@ -1397,7 +1360,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }   
     
     @Override
-    public void removeRoleFromRole(@WebParam(name = "roleId") String roleId, @WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName, @WebParam(name = "qualifier") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifier) throws UnsupportedOperationException {
+    public void removeRoleFromRole(String roleId, String namespaceCode, String roleName, Map<String, String> qualifier) throws UnsupportedOperationException {
         // look up the role
     	RoleBo role = getRoleBoByName(namespaceCode, roleName);
     	// pull all the group role members
@@ -1410,7 +1373,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }    
 
     @Override
-    public void saveRole(@WebParam(name = "roleId") String roleId, @WebParam(name = "roleName") String roleName, @WebParam(name = "roleDescription") String roleDescription, @WebParam(name = "active") boolean active, @WebParam(name = "kimTypeId") String kimTypeId, @WebParam(name = "namespaceCode") String namespaceCode) throws UnsupportedOperationException {
+    public void saveRole(String roleId, String roleName, String roleDescription, boolean active, String kimTypeId, String namespaceCode) throws UnsupportedOperationException {
         // look for existing role
         RoleBo role = getBusinessObjectService().findBySinglePrimaryKey(RoleBo.class, roleId);
         if (role == null) {
@@ -1425,18 +1388,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         role.setNamespaceCode(namespaceCode);
 
         getBusinessObjectService().save(role);
-    }
-
-    @Override
-    public String getNextAvailableRoleId() throws UnsupportedOperationException {
-        Long nextSeq = KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S, RoleBo.class);
-
-        if (nextSeq == null) {
-            LOG.error("Unable to get new role id from sequence " + KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S);
-            throw new RuntimeException("Unable to get new role id from sequence " + KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S);
-        }
-
-        return nextSeq.toString();
     }
 
     @Override
@@ -1478,9 +1429,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             if (origRoleMemberAttribute != null) {
                 roleMemberAttrBo.setId(origRoleMemberAttribute.getId());
                 roleMemberAttrBo.setVersionNumber(origRoleMemberAttribute.getVersionNumber());
-            } else {
-                // pull the next sequence number for the data ID
-                roleMemberAttrBo.setId(getNewAttributeDataId());
             }
             attributes.add(roleMemberAttrBo);
         }
@@ -1506,9 +1454,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 	    	if(origDelegationMemberAttribute!=null){
 	    		delegateMemberAttrBo.setId(origDelegationMemberAttribute.getId());
 	    		delegateMemberAttrBo.setVersionNumber(origDelegationMemberAttribute.getVersionNumber());
-	    	} else{
-				// pull the next sequence number for the data ID
-				delegateMemberAttrBo.setId(getNewAttributeDataId());
 	    	}
 			attributes.add( delegateMemberAttrBo );
 		}

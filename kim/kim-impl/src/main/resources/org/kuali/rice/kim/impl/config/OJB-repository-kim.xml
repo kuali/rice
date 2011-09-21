@@ -172,7 +172,7 @@
   <!-- ******************************************************************* -->
 
   <class-descriptor class="org.kuali.rice.kim.impl.identity.principal.PrincipalBo" table="KRIM_PRNCPL_T">
-    <field-descriptor name="principalId" column="PRNCPL_ID" jdbc-type="VARCHAR" primarykey="true"  />
+    <field-descriptor name="principalId" column="PRNCPL_ID" jdbc-type="VARCHAR" primarykey="true" sequence-name="krim_prncpl_id_s" autoincrement="true" />
     <field-descriptor name="principalName" column="PRNCPL_NM" jdbc-type="VARCHAR"  />
     <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR"  />
     <field-descriptor name="password" column="PRNCPL_PSWD" jdbc-type="VARCHAR"  />
@@ -187,7 +187,7 @@
   <!-- ******************************************************************* -->
 
   <class-descriptor class="org.kuali.rice.kim.impl.identity.entity.EntityBo" table="KRIM_ENTITY_T">
-    <field-descriptor name="id" column="ENTITY_ID" jdbc-type="VARCHAR" primarykey="true"  />
+    <field-descriptor name="id" column="ENTITY_ID" jdbc-type="VARCHAR" primarykey="true"  sequence-name="krim_entity_id_s" autoincrement="true" />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />
@@ -230,7 +230,7 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo" table="KRIM_ENTITY_AFLTN_T">
-    <field-descriptor name="id" column="ENTITY_AFLTN_ID" jdbc-type="VARCHAR" primarykey="true"  />
+    <field-descriptor name="id" column="ENTITY_AFLTN_ID" jdbc-type="VARCHAR" primarykey="true" sequence-name="krim_entity_afltn_id_s" autoincrement="true"/>
     <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR"  />
     <field-descriptor name="affiliationTypeCode" column="AFLTN_TYP_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="campusCode" column="CAMPUS_CD" jdbc-type="VARCHAR"  />
@@ -244,7 +244,7 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.impl.identity.personal.EntityBioDemographicsBo" table="KRIM_ENTITY_BIO_T">
-    <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR" primarykey="true"  />
+    <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR" primarykey="true"/>
     <field-descriptor name="genderCode" column="GNDR_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="birthDateValue" column="BIRTH_DT" jdbc-type="DATE"  />
     <field-descriptor name="deceasedDateValue" column="DECEASED_DT" jdbc-type="DATE"  />
@@ -260,7 +260,7 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipBo" table="KRIM_ENTITY_CTZNSHP_T">
-    <field-descriptor name="id" column="ENTITY_CTZNSHP_ID" jdbc-type="VARCHAR" primarykey="true"  />
+    <field-descriptor name="id" column="ENTITY_CTZNSHP_ID" jdbc-type="VARCHAR" primarykey="true" sequence-name="krim_entity_ctznshp_id_s" autoincrement="true" />
     <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR"  />
     <field-descriptor name="countryCode" column="POSTAL_CNTRY_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="statusCode" column="CTZNSHP_STAT_CD" jdbc-type="VARCHAR"  />
@@ -275,7 +275,7 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.impl.identity.employment.EntityEmploymentBo" table="KRIM_ENTITY_EMP_INFO_T">
-    <field-descriptor name="id" column="ENTITY_EMP_ID" jdbc-type="VARCHAR" primarykey="true"  />
+    <field-descriptor name="id" column="ENTITY_EMP_ID" jdbc-type="VARCHAR" primarykey="true" sequence-name="krim_entity_emp_id_s" autoincrement="true" />
     <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR"  />
     <field-descriptor name="entityAffiliationId" column="ENTITY_AFLTN_ID" jdbc-type="VARCHAR"  />
     <field-descriptor name="employeeStatusCode" column="EMP_STAT_CD" jdbc-type="VARCHAR"  />
@@ -312,7 +312,7 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo" table="KRIM_ENTITY_PRIV_PREF_T">
-    <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR" primarykey="true"  />
+    <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="suppressName" column="SUPPRESS_NM_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="suppressEmail" column="SUPPRESS_EMAIL_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="suppressAddress" column="SUPPRESS_ADDR_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
@@ -323,7 +323,7 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.impl.identity.name.EntityNameBo" table="KRIM_ENTITY_NM_T">
-    <field-descriptor name="id" column="ENTITY_NM_ID" jdbc-type="VARCHAR" primarykey="true"  />
+    <field-descriptor name="id" column="ENTITY_NM_ID" jdbc-type="VARCHAR" primarykey="true" sequence-name="krim_entity_nm_id_s" autoincrement="true" />
     <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR"  />
     <field-descriptor name="nameCode" column="NM_TYP_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="firstName" column="FIRST_NM" jdbc-type="VARCHAR"  />
@@ -396,7 +396,7 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.impl.identity.address.EntityAddressBo" table="KRIM_ENTITY_ADDR_T">
-    <field-descriptor name="id" column="ENTITY_ADDR_ID" jdbc-type="VARCHAR" primarykey="true"  />
+    <field-descriptor name="id" column="ENTITY_ADDR_ID" jdbc-type="VARCHAR" primarykey="true"  autoincrement="true" sequence-name="krim_entity_addr_id_s" />
     <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR"  />
     <field-descriptor name="addressTypeCode" column="ADDR_TYP_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="entityTypeCode" column="ENT_TYP_CD" jdbc-type="VARCHAR"  />
@@ -417,7 +417,7 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.impl.identity.email.EntityEmailBo" table="KRIM_ENTITY_EMAIL_T">
-    <field-descriptor name="id" column="ENTITY_EMAIL_ID" jdbc-type="VARCHAR" primarykey="true"  />
+    <field-descriptor name="id" column="ENTITY_EMAIL_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="krim_entity_email_id_s"/>
     <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR"  />
     <field-descriptor name="entityTypeCode" column="ENT_TYP_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="emailTypeCode" column="EMAIL_TYP_CD" jdbc-type="VARCHAR"  />
@@ -433,7 +433,7 @@
 
 
   <class-descriptor class="org.kuali.rice.kim.impl.identity.phone.EntityPhoneBo" table="KRIM_ENTITY_PHONE_T">
-    <field-descriptor name="id" column="ENTITY_PHONE_ID" jdbc-type="VARCHAR" primarykey="true"  />
+    <field-descriptor name="id" column="ENTITY_PHONE_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="krim_entity_phone_id_s" />
     <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR"  />
     <field-descriptor name="entityTypeCode" column="ENT_TYP_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="phoneTypeCode" column="PHONE_TYP_CD" jdbc-type="VARCHAR"  />
@@ -503,7 +503,7 @@
 
 
   <class-descriptor class="org.kuali.rice.kim.impl.role.RoleBo" table="KRIM_ROLE_T">
-    <field-descriptor name="id" column="ROLE_ID" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="id" column="ROLE_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="krim_role_id_s" />
     <field-descriptor name="name" column="ROLE_NM" jdbc-type="VARCHAR" />
     <field-descriptor name="description" column="DESC_TXT" jdbc-type="VARCHAR" />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
@@ -531,7 +531,7 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.impl.role.RoleMemberAttributeDataBo" table="KRIM_ROLE_MBR_ATTR_DATA_T">
-    <field-descriptor name="id" column="ATTR_DATA_ID" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="id" column="ATTR_DATA_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="krim_attr_data_id_s" />
     <field-descriptor name="assignedToId" column="ROLE_MBR_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="kimTypeId" column="KIM_TYP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="kimAttributeId" column="KIM_ATTR_DEFN_ID" jdbc-type="VARCHAR" />
@@ -549,7 +549,7 @@
   <!-- ******************************************************************* -->
 
   <class-descriptor class="org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo" table="KRIM_DLGN_T">
-    <field-descriptor name="delegationId" column="DLGN_ID" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="delegationId" column="DLGN_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="krim_dlgn_id_s" />
     <field-descriptor name="roleId" column="ROLE_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
     <field-descriptor name="kimTypeId" column="KIM_TYP_ID" jdbc-type="VARCHAR" />
@@ -562,7 +562,7 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo" table="KRIM_DLGN_MBR_T">
-    <field-descriptor name="delegationMemberId" column="DLGN_MBR_ID" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="delegationMemberId" column="DLGN_MBR_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="krim_dlgn_mbr_id_s" />
     <field-descriptor name="delegationId" column="DLGN_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="memberId" column="MBR_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="typeCode" column="MBR_TYP_CD" jdbc-type="CHAR" />
@@ -577,7 +577,7 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.impl.common.delegate.DelegateMemberAttributeDataBo" table="KRIM_DLGN_MBR_ATTR_DATA_T">
-    <field-descriptor name="id" column="ATTR_DATA_ID" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="id" column="ATTR_DATA_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="krim_attr_data_id_s" />
     <field-descriptor name="assignedToId" column="DLGN_MBR_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="kimTypeId" column="KIM_TYP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="kimAttributeId" column="KIM_ATTR_DEFN_ID" jdbc-type="VARCHAR" />
@@ -625,7 +625,7 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.impl.role.RolePermissionBo" table="KRIM_ROLE_PERM_T">
-    <field-descriptor name="id" column="ROLE_PERM_ID" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="id" column="ROLE_PERM_ID" jdbc-type="VARCHAR" primarykey="true"  autoincrement="true" sequence-name="krim_role_perm_id_s"/>
     <field-descriptor name="roleId" column="ROLE_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="permissionId" column="PERM_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
@@ -638,7 +638,7 @@
 
 
   <class-descriptor class="org.kuali.rice.kim.impl.permission.PermissionAttributeBo" table="KRIM_PERM_ATTR_DATA_T">
-    <field-descriptor name="id" column="ATTR_DATA_ID" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="id" column="ATTR_DATA_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="krim_attr_data_id_s" />
     <field-descriptor name="assignedToId" column="PERM_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="kimTypeId" column="KIM_TYP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="kimAttributeId" column="KIM_ATTR_DEFN_ID" jdbc-type="VARCHAR" />
@@ -687,7 +687,7 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.impl.role.RoleResponsibilityBo" table="KRIM_ROLE_RSP_T">
-    <field-descriptor name="roleResponsibilityId" column="ROLE_RSP_ID" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="roleResponsibilityId" column="ROLE_RSP_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="krim_role_rsp_id_s" />
     <field-descriptor name="roleId" column="ROLE_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="responsibilityId" column="RSP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
@@ -712,7 +712,7 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo" table="KRIM_ROLE_RSP_ACTN_T">
-    <field-descriptor name="id" column="ROLE_RSP_ACTN_ID" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="id" column="ROLE_RSP_ACTN_ID" jdbc-type="VARCHAR" primarykey="true"  autoincrement="true" sequence-name="krim_role_rsp_actn_id_s" />
     <field-descriptor name="roleResponsibilityId" column="ROLE_RSP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="roleMemberId" column="ROLE_MBR_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="actionTypeCode" column="ACTN_TYP_CD" jdbc-type="VARCHAR" />

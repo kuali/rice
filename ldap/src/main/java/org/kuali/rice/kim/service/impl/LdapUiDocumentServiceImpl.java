@@ -386,7 +386,7 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 						currentUserPrincipalId,
 						KimConstants.NAMESPACE_CODE,
 						KimConstants.PermissionNames.MODIFY_ENTITY,
-						null,
+						Collections.<String, String>emptyMap(),
 						Collections.singletonMap(KimConstants.AttributeConstants.PRINCIPAL_ID, currentUserPrincipalId));
 	}
     

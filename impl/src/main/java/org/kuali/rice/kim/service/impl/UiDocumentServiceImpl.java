@@ -774,7 +774,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 						currentUserPrincipalId,
 						KimConstants.NAMESPACE_CODE,
 						KimConstants.PermissionNames.MODIFY_ENTITY,
-						null,
+						Collections.<String, String>emptyMap(),
 						Collections.singletonMap(KimConstants.AttributeConstants.PRINCIPAL_ID, currentUserPrincipalId));
 	}
 
@@ -785,7 +785,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 						currentUserPrincipalId,
 						KimConstants.NAMESPACE_CODE,
 						KimConstants.PermissionNames.OVERRIDE_ENTITY_PRIVACY_PREFERENCES,
-						null,
+						Collections.<String, String>emptyMap(),
 						Collections.singletonMap(KimConstants.AttributeConstants.PRINCIPAL_ID, currentUserPrincipalId) );
 	}
 

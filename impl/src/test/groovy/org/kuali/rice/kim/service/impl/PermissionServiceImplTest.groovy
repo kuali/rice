@@ -5,6 +5,8 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
+import org.kuali.rice.core.api.criteria.CriteriaLookupService
+import org.kuali.rice.core.api.criteria.GenericQueryResults
 import org.kuali.rice.kim.api.common.assignee.Assignee
 import org.kuali.rice.kim.api.common.delegate.DelegateType
 import org.kuali.rice.kim.api.permission.Permission
@@ -14,8 +16,8 @@ import org.kuali.rice.kim.api.role.RoleService
 import org.kuali.rice.kim.impl.permission.PermissionBo
 import org.kuali.rice.kim.impl.permission.PermissionServiceImpl
 import org.kuali.rice.kim.impl.permission.PermissionTemplateBo
+import org.kuali.rice.kim.impl.role.RolePermissionBo
 import org.kuali.rice.krad.service.BusinessObjectService
-import org.junit.Ignore
 
 /*
  * Copyright 2007-2009 The Kuali Foundation
@@ -35,8 +37,12 @@ import org.junit.Ignore
 class PermissionServiceImplTest {
     private MockFor mockRoleService;
     private MockFor mockBoService;
+    private MockFor mockCriteriaLookupService;
+
     private RoleService roleService;
     private BusinessObjectService boService;
+    private CriteriaLookupService criteriaLookupService;
+
     PermissionService permissionService;
     PermissionServiceImpl permissionServiceImpl;
 
@@ -59,6 +65,7 @@ class PermissionServiceImplTest {
     void setupMockContext() {
         mockRoleService = new MockFor(RoleService.class);
         mockBoService = new MockFor(BusinessObjectService.class);
+        mockCriteriaLookupService = new MockFor(CriteriaLookupService.class);
     }
 
     @Before
@@ -77,6 +84,11 @@ class PermissionServiceImplTest {
         permissionServiceImpl.setBusinessObjectService(boService);
     }
 
+    void injectCriteriaLookupServiceIntoPermissionService() {
+        criteriaLookupService = mockCriteriaLookupService.proxyDelegateInstance();
+        permissionServiceImpl.setCriteriaLookupService(criteriaLookupService)
+    }
+
     @Test(expected = IllegalArgumentException.class)
     void testIsAuthorizedWithNullFails() {
         permissionService.isAuthorized(null, null, null, null, null);
@@ -87,7 +99,7 @@ class PermissionServiceImplTest {
         permissionService.isAuthorized("", "", "", null, null);
     }
 
-    @Test @Ignore("Travis is dumb!")
+    @Test
     void testIsAuthorizedSucceeds() {
         String authorizedPrincipalId = "principalid";
         String authorizedNamespaceCode = "namespacecodeone";
@@ -106,18 +118,16 @@ class PermissionServiceImplTest {
             }
         }
 
-        mockPermissionDao.demand.getRoleIdsForPermissions(1) {
-            Collection<PermissionBo> permissions -> List<String> roleIds = new ArrayList<String>(1);
-            roleIds.add("test");
-            return roleIds;
-        }
+        final GenericQueryResults.Builder<RolePermissionBo> results = GenericQueryResults.Builder.create();
+        results.setResults([new RolePermissionBo(["roleId":"test"])]);
+        mockCriteriaLookupService.demand.lookup(1) { c, q -> results.build(); }
 
         mockRoleService.demand.principalHasRole(1) {
             String principalId, List<String> roleIds, Map<String, String> qualification -> return true;
         }
 
         injectBusinessObjectServiceIntoPermissionService();
-        injectKimPermissionDaoIntoPermissionService();
+        injectCriteriaLookupServiceIntoPermissionService();
         injectRoleServiceIntoPermissionService();
 
         Assert.assertEquals(true, permissionService.isAuthorized(authorizedPrincipalId, authorizedNamespaceCode, authorizedPermissionName, authorizedPermissionDetails, authorizedQualification));
@@ -135,7 +145,7 @@ class PermissionServiceImplTest {
         permissionService.isAuthorizedByTemplateName("", "", "", null, null);
     }
 
-    @Test @Ignore("Travis is dumb!")
+    @Test
     void testIsAuthorizedByTemplateNameSucceeds() {
         String authorizedPrincipalId = "principalid";
         String authorizedNamespaceCode = "templatenamespaceone";
@@ -154,18 +164,16 @@ class PermissionServiceImplTest {
             }
         }
 
-        mockPermissionDao.demand.getRoleIdsForPermissions(1) {
-            Collection<PermissionBo> permissions -> List<String> roleIds = new ArrayList<String>(1);
-            roleIds.add("test");
-            return roleIds;
-        }
+        final GenericQueryResults.Builder<RolePermissionBo> results = GenericQueryResults.Builder.create();
+        results.setResults([new RolePermissionBo(["roleId":"test"])]);
+        mockCriteriaLookupService.demand.lookup(1) { c, q -> results.build(); }
 
         mockRoleService.demand.principalHasRole(1) {
             String principalId, List<String> roleIds, Map<String, String> qualification -> return true;
         }
 
         injectBusinessObjectServiceIntoPermissionService();
-        injectKimPermissionDaoIntoPermissionService();
+        injectCriteriaLookupServiceIntoPermissionService();
         injectRoleServiceIntoPermissionService();
 
         Assert.assertEquals(true, permissionService.isAuthorizedByTemplateName(authorizedPrincipalId, authorizedNamespaceCode, permissionTemplateName, authorizedPermissionDetails, authorizedQualification));
@@ -183,7 +191,7 @@ class PermissionServiceImplTest {
         permissionService.getAuthorizedPermissions("", "", "", null, null);
     }
 
-    @Test @Ignore("Travis is dumb!")
+    @Test
     void testGetAuthorizedPermissionsSucceeds() {
         String authorizedPrincipalId = "principalid";
         String authorizedNamespaceCode = "namespacecodeone";
@@ -204,18 +212,16 @@ class PermissionServiceImplTest {
             }
         }
 
-        mockPermissionDao.demand.getRoleIdsForPermissions(1) {
-            Collection<PermissionBo> permissions -> List<String> roleIds = new ArrayList<String>(1);
-            roleIds.add("test");
-            return roleIds;
-        }
+        final GenericQueryResults.Builder<RolePermissionBo> results = GenericQueryResults.Builder.create();
+        results.setResults([new RolePermissionBo(["roleId":"test"])]);
+        mockCriteriaLookupService.demand.lookup(1) { c, q -> results.build(); }
 
         mockRoleService.demand.principalHasRole(1) {
             String principalId, List<String> roleIds, Map<String, String> qualification -> return true;
         }
 
         injectBusinessObjectServiceIntoPermissionService();
-        injectKimPermissionDaoIntoPermissionService();
+        injectCriteriaLookupServiceIntoPermissionService();
         injectRoleServiceIntoPermissionService();
 
 		List<Permission> actualPermissions = permissionService.getAuthorizedPermissions(authorizedPrincipalId, authorizedNamespaceCode, authorizedPermissionName, authorizedPermissionDetails, authorizedQualification);
@@ -236,7 +242,7 @@ class PermissionServiceImplTest {
         permissionService.getAuthorizedPermissionsByTemplateName("", "", "", null, null);
     }
 
-    @Test @Ignore("Travis is dumb!")
+    @Test
     void testGetAuthorizedPermissionsByTemplateNameSucceeds() {
         String authorizedPrincipalId = "principalid";
         String authorizedNamespaceCode = "templatenamespaceone";
@@ -257,18 +263,16 @@ class PermissionServiceImplTest {
             }
         }
 
-        mockPermissionDao.demand.getRoleIdsForPermissions(1) {
-            Collection<PermissionBo> permissions -> List<String> roleIds = new ArrayList<String>(1);
-            roleIds.add("test");
-            return roleIds;
-        }
+        final GenericQueryResults.Builder<RolePermissionBo> results = GenericQueryResults.Builder.create();
+        results.setResults([new RolePermissionBo(["roleId":"test"])]);
+        mockCriteriaLookupService.demand.lookup(1) { c, q -> results.build(); }
 
         mockRoleService.demand.principalHasRole(1) {
             String principalId, List<String> roleIds, Map<String, String> qualification -> return true;
         }
 
         injectBusinessObjectServiceIntoPermissionService();
-        injectKimPermissionDaoIntoPermissionService();
+        injectCriteriaLookupServiceIntoPermissionService();
         injectRoleServiceIntoPermissionService();
 
         List<Permission> actualPermissions = permissionService.getAuthorizedPermissionsByTemplateName(authorizedPrincipalId, authorizedNamespaceCode, permissionTemplateName, authorizedPermissionDetails, authorizedQualification);
@@ -279,7 +283,7 @@ class PermissionServiceImplTest {
         mockBoService.verify(boService)
     }
 
-    @Test @Ignore("Travis is dumb!")
+    @Test
     void testGetPermissionAssigneesSucceeds() {
 		String authorizedPrincipalId = "principalid";
 		String authorizedNamespaceCode = "namespacecodeone";
@@ -302,11 +306,9 @@ class PermissionServiceImplTest {
 			}
 		}
 
-		mockPermissionDao.demand.getRoleIdsForPermissions(1) {
-			Collection<PermissionBo> permissions -> List<String> roleIds = new ArrayList<String>(1);
-			roleIds.add("test");
-			return roleIds;
-		}
+        final GenericQueryResults.Builder<RolePermissionBo> results = GenericQueryResults.Builder.create();
+        results.setResults([new RolePermissionBo(["roleId":"test"])]);
+        mockCriteriaLookupService.demand.lookup(1) { c, q -> results.build(); }
 
 		mockRoleService.demand.getRoleMembers(1) {
             List<String> roleIds, Map<String, String> qualification -> List<RoleMembership> memberships = new ArrayList<RoleMembership>(1);
@@ -316,7 +318,7 @@ class PermissionServiceImplTest {
         }
 
 		injectBusinessObjectServiceIntoPermissionService();
-		injectKimPermissionDaoIntoPermissionService();
+		injectCriteriaLookupServiceIntoPermissionService();
 		injectRoleServiceIntoPermissionService();
 
 		List<Assignee> actualPermissions = permissionService.getPermissionAssignees(authorizedNamespaceCode, authorizedPermissionName, authorizedPermissionDetails, authorizedQualification);
@@ -327,7 +329,7 @@ class PermissionServiceImplTest {
 		mockBoService.verify(boService)
     }
 
-    @Test @Ignore("Travis is dumb!")
+    @Test
     void testGetPermissionAssigneesForTemplateNameSucceeds() {
         String authorizedNamespaceCode = "templatenamespaceone";
         String permissionName = "permission";
@@ -347,11 +349,9 @@ class PermissionServiceImplTest {
             }
         }
 
-        mockPermissionDao.demand.getRoleIdsForPermissions(1) {
-            Collection<PermissionBo> permissions -> List<String> roleIds = new ArrayList<String>(1);
-            roleIds.add("test");
-            return roleIds;
-        }
+        final GenericQueryResults.Builder<RolePermissionBo> results = GenericQueryResults.Builder.create();
+        results.setResults([new RolePermissionBo(["roleId":"test"])]);
+        mockCriteriaLookupService.demand.lookup(1) { c, q -> results.build(); }
 
         mockRoleService.demand.getRoleMembers(1) {
             List<String> roleIds, Map<String, String> qualification -> List<RoleMembership> memberships = new ArrayList<RoleMembership>(1);
@@ -361,7 +361,7 @@ class PermissionServiceImplTest {
         }
 
         injectBusinessObjectServiceIntoPermissionService();
-        injectKimPermissionDaoIntoPermissionService();
+        injectCriteriaLookupServiceIntoPermissionService();
         injectRoleServiceIntoPermissionService();
 
         List<PermissionAssigneeInfo> actualPermissions = permissionService.getPermissionAssigneesByTemplateName(authorizedNamespaceCode, permissionName, authorizedPermissionDetails, authorizedQualification);

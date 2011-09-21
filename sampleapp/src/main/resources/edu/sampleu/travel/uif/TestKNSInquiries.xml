@@ -81,7 +81,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           </bean>
           <bean parent="CollectionGroup">
              <property name="title" value="Permission Detail Values"/>  
-             <property name="collectionObjectClass" value="org.kuali.rice.kim.impl.role.PermissionAttributeDataImpl"/>
+             <property name="collectionObjectClass" value="org.kuali.rice.kim.impl.permission.PermissionAttributeBo"/>
              <property name="propertyName" value="detailObjects"/>
              <property name="layoutManager.summaryTitle" value="Detail Values"/>
              <property name="layoutManager.summaryFields">
@@ -387,7 +387,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           </bean>
            <!-- <bean parent="CollectionGroup">
              <property name="title" value="Rule Attributes"/>  
-             <property name="collectionObjectClass" value="org.kuali.rice.kim.impl.role.PermissionAttributeDataImpl"/>
+             <property name="collectionObjectClass" value="org.kuali.rice.kim.impl.permission.PermissionAttributeBo"/>
              <property name="propertyName" value="detailObjects"/>
              <property name="layoutManager.summaryTitle" value="Detail Values"/>
              <property name="layoutManager.summaryFields">

@@ -22,9 +22,9 @@ import org.kuali.rice.kim.api.permission.PermissionService;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.impl.permission.PermissionAttributeBo;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.impl.permission.UberPermissionBo;
-import org.kuali.rice.kim.impl.role.PermissionAttributeDataImpl;
 import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.impl.role.RolePermissionBo;
 import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
@@ -98,13 +98,13 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
     }
 
     protected HtmlData getAttributesInquiryUrl(BusinessObject businessObject, String attributeName){
-    	List<PermissionAttributeDataImpl> permissionAttributeData =
-    		(List<PermissionAttributeDataImpl>)ObjectUtils.getPropertyValue(businessObject, attributeName);
+    	List<PermissionAttributeBo> permissionAttributeData =
+    		(List<PermissionAttributeBo>)ObjectUtils.getPropertyValue(businessObject, attributeName);
     	List<HtmlData.AnchorHtmlData> htmlData = new ArrayList<HtmlData.AnchorHtmlData>();
 		List<String> primaryKeys = new ArrayList<String>();
 		primaryKeys.add(ATTRIBUTE_DATA_ID);
-    	for(PermissionAttributeDataImpl permissionAttributeDataImpl: permissionAttributeData){
-    		htmlData.add(getInquiryUrlForPrimaryKeys(PermissionAttributeDataImpl.class, permissionAttributeDataImpl, primaryKeys,
+    	for(PermissionAttributeBo permissionAttributeDataImpl: permissionAttributeData){
+    		htmlData.add(getInquiryUrlForPrimaryKeys(PermissionAttributeBo.class, permissionAttributeDataImpl, primaryKeys,
     			getKimAttributeLabelFromDD(permissionAttributeDataImpl.getKimAttribute().getAttributeName())+
     			KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR+
     			permissionAttributeDataImpl.getAttributeValue()));

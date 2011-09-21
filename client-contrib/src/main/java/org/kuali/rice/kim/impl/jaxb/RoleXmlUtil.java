@@ -62,11 +62,6 @@ public final class RoleXmlUtil {
         // Validate the role and (if applicable) retrieve the ID from an existing matching role.
         validateAndPrepareRole(newRole);
         
-        // If necessary, assign a new role ID.
-        if (StringUtils.isBlank(newRole.getRoleId())) {
-            newRole.setRoleId(KimApiServiceLocator.getRoleService().getNextAvailableRoleId());
-        }
-        
         // Save the role.
         KimApiServiceLocator.getRoleService().saveRole(newRole.getRoleId(), newRole.getRoleName(), newRole.getRoleDescription(), newRole.getActive().booleanValue(),
                 newRole.getKimTypeId(), newRole.getNamespaceCode());

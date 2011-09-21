@@ -43,7 +43,6 @@ import org.kuali.rice.kim.impl.responsibility.AddResponsibilityRule;
 import org.kuali.rice.kim.impl.responsibility.KimDocumentResponsibilityRule;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
-import org.kuali.rice.kim.impl.role.RoleServiceBase;
 import org.kuali.rice.kim.impl.type.KimTypeLookupableHelperServiceImpl;
 import org.kuali.rice.kim.rule.event.ui.AddDelegationEvent;
 import org.kuali.rice.kim.rule.event.ui.AddDelegationMemberEvent;
@@ -621,7 +620,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 		if (newMember.isRole()){
 			// get all nested role member ids that are of type role
 			RoleService roleService = KimApiServiceLocator.getRoleService();
-			roleMemberIds = ((RoleServiceBase) roleService).getRoleTypeRoleMemberIds(newMember.getMemberId());
+			roleMemberIds = roleService.getRoleTypeRoleMemberIds(newMember.getMemberId());
 
 			// check to see if the document role is not a member of the new member role
 			IdentityManagementRoleDocument document = (IdentityManagementRoleDocument)addMemberEvent.getDocument();

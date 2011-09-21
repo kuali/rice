@@ -250,7 +250,7 @@ public class PersonServiceImpl implements PersonService {
 					LOG.debug( "Only active criteria specified, running role search first" );
 				}
 				// in this case, run the role lookup first and pass those results to the person lookup
-				Collection<String> principalIds = getRoleService().getRoleMemberPrincipalIds(namespaceCode, roleName, null);
+				Collection<String> principalIds = getRoleService().getRoleMemberPrincipalIds(namespaceCode, roleName,  Collections.<String, String>emptyMap());
 				StringBuffer sb = new StringBuffer(principalIds.size()*15);
 				Iterator<String> pi = principalIds.iterator();
 				while ( pi.hasNext() ) {
@@ -270,7 +270,7 @@ public class PersonServiceImpl implements PersonService {
 				// build a principal list
 				List<String> principalIds = peopleToPrincipalIds( people );
 				// get sublist of principals that have the given roles
-				principalIds = getRoleService().getPrincipalIdSubListWithRole(principalIds, namespaceCode, roleName, null);
+				principalIds = getRoleService().getPrincipalIdSubListWithRole(principalIds, namespaceCode, roleName,  Collections.<String, String>emptyMap());
 				// re-convert into people objects, wrapping in CollectionIncomplete if needed
 				if ( !unbounded && principalIds.size() > searchResultsLimitInt ) {
 					int actualResultSize = principalIds.size();
@@ -286,7 +286,7 @@ public class PersonServiceImpl implements PersonService {
 					LOG.debug( "No Person criteria specified - only using role service." );
 				}
 				// run the role criteria to get the principals with the role
-				Collection<String> principalIds = getRoleService().getRoleMemberPrincipalIds(namespaceCode, roleName, null);
+				Collection<String> principalIds = getRoleService().getRoleMemberPrincipalIds(namespaceCode, roleName,  Collections.<String, String>emptyMap());
 				if ( !unbounded && principalIds.size() > searchResultsLimitInt ) {
 					int actualResultSize = principalIds.size();
 					// trim the list down before converting to people

@@ -15,8 +15,7 @@
  */
 package org.kuali.rice.kew.api.doctype;
 
-import org.kuali.rice.core.api.util.jaxb.StringMapEntry;
-import org.kuali.rice.core.api.util.jaxb.StringMapEntryList;
+import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.util.ArrayList;
@@ -30,24 +29,24 @@ import java.util.Map;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-class DocumentTypePolicyMapAdapter extends XmlAdapter<StringMapEntryList, Map<DocumentTypePolicy, String>> {
+class DocumentTypePolicyMapAdapter extends XmlAdapter<MapStringStringAdapter.StringMapEntryList, Map<DocumentTypePolicy, String>> {
 
 	@Override
-	public StringMapEntryList marshal(Map<DocumentTypePolicy, String> map) {
-	    List<StringMapEntry> entries = new ArrayList<StringMapEntry>();
+	public MapStringStringAdapter.StringMapEntryList marshal(Map<DocumentTypePolicy, String> map) {
+	    List<MapStringStringAdapter.StringMapEntry> entries = new ArrayList<MapStringStringAdapter.StringMapEntry>();
 	    if (map != null) {
 	        for (DocumentTypePolicy policy : map.keySet()) {
-	            entries.add(new StringMapEntry(policy.getCode(), map.get(policy)));
+	            entries.add(new MapStringStringAdapter.StringMapEntry(policy.getCode(), map.get(policy)));
 	        }
 	    }
-	    return new StringMapEntryList(entries);
+	    return new MapStringStringAdapter.StringMapEntryList(entries);
 	}
 
 	@Override
-	public Map<DocumentTypePolicy, String> unmarshal(StringMapEntryList entryList) {
+	public Map<DocumentTypePolicy, String> unmarshal(MapStringStringAdapter.StringMapEntryList entryList) {
 	    Map<DocumentTypePolicy, String> policies = new HashMap<DocumentTypePolicy, String>();
 	    if (entryList != null) {
-	        for (StringMapEntry entry : entryList.getEntries()) {
+	        for (MapStringStringAdapter.StringMapEntry entry : entryList.getEntries()) {
 	            DocumentTypePolicy policy = DocumentTypePolicy.fromCode(entry.getKey());
 	            // if the policy value comes back as null, that means we recieved a policy that we
 	            // don't understand...ignore it

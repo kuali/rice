@@ -3,6 +3,7 @@ package org.kuali.rice.kim.impl.role;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
@@ -41,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class RoleServiceBase implements RoleService {
+abstract class RoleServiceBase implements RoleService {
     private static final Logger LOG = Logger.getLogger( RoleServiceBase.class );
 
     private BusinessObjectService businessObjectService;
@@ -85,10 +86,15 @@ public abstract class RoleServiceBase implements RoleService {
         return convertedQualification;
     }
 
+    @Override
     public Set<String> getRoleTypeRoleMemberIds(String roleId) {
+        if (StringUtils.isBlank(roleId)) {
+            throw new RiceIllegalArgumentException("roleId is null or blank");
+        }
+
         Set<String> results = new HashSet<String>();
         getNestedRoleTypeMemberIds(roleId, results);
-        return results;
+        return Collections.unmodifiableSet(results);
     }
 
     protected void getNestedRoleTypeMemberIds(String roleId, Set<String> members) {
@@ -107,6 +113,14 @@ public abstract class RoleServiceBase implements RoleService {
 
     @Override
     public List<String> getMemberParentRoleIds(String memberType, String memberId) {
+        if (StringUtils.isBlank(memberType)) {
+            throw new RiceIllegalArgumentException("memberType is null or blank");
+        }
+
+        if (StringUtils.isBlank(memberId)) {
+            throw new RiceIllegalArgumentException("memberId is null or blank");
+        }
+
         List<RoleMemberBo> parentRoleMembers = roleDao.getRoleMembershipsForMemberId(memberType, memberId, Collections.<String, String>emptyMap());
 
         List<String> parentRoleIds = new ArrayList<String>(parentRoleMembers.size());
@@ -298,7 +312,7 @@ public abstract class RoleServiceBase implements RoleService {
         return new ArrayList<DelegateMemberBo>(getBusinessObjectService().findMatching(DelegateMemberBo.class, searchCriteria));
     }
 
-    public RoleMember findRoleMember(String roleMemberId) {
+    protected RoleMember findRoleMember(String roleMemberId) {
         Map<String, String> fieldValues = new HashMap<String, String>();
         fieldValues.put(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID, roleMemberId);
         List<RoleMember> roleMembers = findRoleMembers(fieldValues);
@@ -310,6 +324,10 @@ public abstract class RoleServiceBase implements RoleService {
 
     @Override
     public List<RoleMember> findRoleMembers(Map<String, String> fieldValues) {
+        if (fieldValues == null) {
+            throw new RiceIllegalArgumentException("fieldValues is null");
+        }
+
         List<RoleMember> roleMembers = new ArrayList<RoleMember>();
         List<RoleMemberBo> roleMemberBos = (List<RoleMemberBo>) getLookupService().findCollectionBySearchHelper(
                 RoleMemberBo.class, fieldValues, true);
@@ -323,6 +341,10 @@ public abstract class RoleServiceBase implements RoleService {
 
     @Override
     public List<RoleResponsibilityAction> getRoleMemberResponsibilityActions(String roleMemberId) {
+        if (StringUtils.isBlank(roleMemberId)) {
+            throw new RiceIllegalArgumentException("roleMemberId is null or blank");
+        }
+
         Map<String, String> criteria = new HashMap<String, String>(1);
         criteria.put(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID, roleMemberId);
 
@@ -339,6 +361,10 @@ public abstract class RoleServiceBase implements RoleService {
 
     @Override
     public List<DelegateMember> findDelegateMembers(final Map<String, String> fieldValues) {
+        if (fieldValues == null) {
+            throw new RiceIllegalArgumentException("fieldValues is null or blank");
+        }
+
         List<DelegateMember> delegateMembers = new ArrayList<DelegateMember>();
         List<DelegateTypeBo> delegateBoList = (List<DelegateTypeBo>) getLookupService().findCollectionBySearchHelper(
                 DelegateTypeBo.class, fieldValues, true);

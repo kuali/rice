@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.api.jaxb;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.util.jaxb.StringMapEntry;
+import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 
 import javax.xml.bind.UnmarshalException;
 import javax.xml.bind.annotation.adapters.NormalizedStringAdapter;
@@ -42,7 +42,7 @@ public class QualificationListAdapter extends XmlAdapter<QualificationList,Map<S
         if (v != null) {
             NormalizedStringAdapter normalizedStringAdapter = new NormalizedStringAdapter();
             Map<String, String> map = new HashMap<String, String>();
-            for (StringMapEntry stringMapEntry : v.getQualifications()) {
+            for (MapStringStringAdapter.StringMapEntry stringMapEntry : v.getQualifications()) {
                 String tempKey = normalizedStringAdapter.unmarshal(stringMapEntry.getKey());
                 if (StringUtils.isBlank(tempKey)) {
                     throw new UnmarshalException("Cannot create a qualification entry with a blank key");

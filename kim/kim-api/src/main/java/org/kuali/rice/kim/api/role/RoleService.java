@@ -15,9 +15,10 @@
 
 package org.kuali.rice.kim.api.role;
 
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
-import org.kuali.rice.core.api.util.jaxb.SqlDateAdapter;
 import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
@@ -30,10 +31,10 @@ import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.sql.Date;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -67,7 +68,6 @@ public interface RoleService {
 	/**
 	 * Get the KIM Role object with the given ID.
 	 *
-	 * If the roleId is blank, this method returns <code>null</code>.
 	 */
     @WebMethod(operationName = "getRole")
     @WebResult(name = "role")
@@ -85,7 +85,6 @@ public interface RoleService {
 	/** Get the KIM Role object with the unique combination of namespace, component,
 	 * and role name.
 	 *
-	 * If any parameter is blank, this method returns <code>null</code>.
 	 */
     @WebMethod(operationName = "getRoleByName")
     @WebResult(name = "role")
@@ -389,8 +388,8 @@ public interface RoleService {
     		@WebParam(name="memberTypeCode") String memberTypeCode,
     		@WebParam(name="roleId") String roleId,
     		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifications,
-    		@XmlJavaTypeAdapter(value = SqlDateAdapter.class) @WebParam(name="activeFromDate") Date activeFromDate,
-    		@XmlJavaTypeAdapter(value = SqlDateAdapter.class) @WebParam(name="activeToDate") Date activeToDate) throws RiceIllegalArgumentException;
+    		@XmlJavaTypeAdapter(value = DateTimeAdapter.class) @WebParam(name="activeFromDate") DateTime activeFromDate,
+    		@XmlJavaTypeAdapter(value = DateTimeAdapter.class) @WebParam(name="activeToDate") DateTime activeToDate) throws RiceIllegalArgumentException;
 
     /**
      * @param roleResponsibilityId
@@ -413,15 +412,15 @@ public interface RoleService {
 	 * Assigns the member with the given id as a delegation member to the role
 	 * with the specified namespace code and name with the supplied set of qualifications.
 	 */
-    public void saveDelegationMemberForRole(@WebParam(name="delegationMemberId") String delegationMemberId,
+    void saveDelegationMemberForRole(@WebParam(name="delegationMemberId") String delegationMemberId,
     		@WebParam(name="roleMemberId") String roleMemberId,
     		@WebParam(name="memberId") String memberId,
     		@WebParam(name="memberTypeCode") String memberTypeCode,
     		@WebParam(name="delegationTypeCode") String delegationTypeCode,
     		@WebParam(name="roleId") String roleId,
     		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifications,
-    		@XmlJavaTypeAdapter(value = SqlDateAdapter.class) @WebParam(name="activeFromDate") Date activeFromDate,
-    		@XmlJavaTypeAdapter(value = SqlDateAdapter.class) @WebParam(name="activeToDate") Date activeToDate) throws RiceIllegalArgumentException;
+    		@XmlJavaTypeAdapter(value = DateTimeAdapter.class) @WebParam(name="activeFromDate") DateTime activeFromDate,
+    		@XmlJavaTypeAdapter(value = DateTimeAdapter.class) @WebParam(name="activeToDate") DateTime activeToDate) throws RiceIllegalArgumentException;
 
     /**
      * Remove the principal with the given id and qualifications from the role
@@ -460,4 +459,6 @@ public interface RoleService {
      * Assigns the given permission to the given role
      */
     void assignPermissionToRole(String permissionId, String roleId) throws RiceIllegalArgumentException;
+
+    Set<String> getRoleTypeRoleMemberIds(String roleId) throws RiceIllegalArgumentException;
 }

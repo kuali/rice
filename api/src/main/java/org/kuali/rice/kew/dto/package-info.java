@@ -15,9 +15,7 @@
  */
 
 @javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters({
-	@javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter(value=org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter.class,type=Map.class),
-	@javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter(value=org.kuali.rice.core.api.util.jaxb.SqlDateAdapter.class,type=java.sql.Date.class),
-	@javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter(value=org.kuali.rice.core.api.util.jaxb.SqlTimestampAdapter.class,type=java.sql.Timestamp.class)
+	@javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter(value=org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter.class,type=Map.class)
 })
 package org.kuali.rice.kew.dto;
 

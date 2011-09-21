@@ -24,6 +24,7 @@ import org.kuali.rice.kim.test.KIMTestCase;
 
 import javax.xml.namespace.QName;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +46,8 @@ public class RoleServiceImplTest extends KIMTestCase {
 	public void testPrincipaHasRoleOfDirectAssignment() {
 		List <String>roleIds = new ArrayList<String>();
 		roleIds.add("r1");
-		assertTrue( "p1 has direct role r1", roleService.principalHasRole("p1", roleIds, null ));	
+		assertTrue( "p1 has direct role r1", roleService.principalHasRole("p1", roleIds,  Collections
+                .<String, String>emptyMap() ));
 		//assertFalse( "p4 has no direct/higher level role r1", roleService.principalHasRole("p4", roleIds, null ));
 		Map<String, String> qualification = new HashMap<String, String>();
 		qualification.put("Attribute 2", "CHEM");
@@ -63,7 +65,7 @@ public class RoleServiceImplTest extends KIMTestCase {
 		// "p3" is in "r2" and "r2 contains "r1"
 		List <String>roleIds = new ArrayList<String>();
 		roleIds.add("r2");
-		assertTrue( "p1 has assigned in higher level role r1", roleService.principalHasRole("p1", roleIds, null ));		
+		assertTrue( "p1 has assigned in higher level role r1", roleService.principalHasRole("p1", roleIds,  Collections.<String, String>emptyMap() ));
 	}
 	
 	@Test
@@ -71,7 +73,7 @@ public class RoleServiceImplTest extends KIMTestCase {
 		// "p2" is in "g1" and "g1" assigned to "r2"
 		List <String>roleIds = new ArrayList<String>();
 		roleIds.add("r2");
-		assertTrue( "p2 is assigned to g1 and g1 assigned to r2", roleService.principalHasRole("p2", roleIds, null ));		
+		assertTrue( "p2 is assigned to g1 and g1 assigned to r2", roleService.principalHasRole("p2", roleIds,  Collections.<String, String>emptyMap() ));
 	}
 	
 	/**

@@ -24,6 +24,7 @@ import org.kuali.rice.test.BaselineTestCase;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,7 +87,8 @@ public class RoleServiceTest extends KIMTestCase {
 		List <String>roleIds = new ArrayList<String>();
 		Collection <String>rolePrincipalIds;
 		roleIds.add("r101");
-		rolePrincipalIds = getRoleService().getRoleMemberPrincipalIds("ADDL_ROLES_TESTS", "Role A", null);
+		rolePrincipalIds = getRoleService().getRoleMemberPrincipalIds("ADDL_ROLES_TESTS", "Role A",  Collections
+                .<String, String>emptyMap());
 		assertNotNull(rolePrincipalIds);
 		assertEquals("RoleTwo should have 6 principal ids", 5, rolePrincipalIds.size());
 	}

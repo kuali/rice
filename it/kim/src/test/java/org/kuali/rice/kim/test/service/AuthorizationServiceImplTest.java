@@ -196,7 +196,7 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 		ArrayList<String> roleList = new ArrayList<String>( 1 );
 		roleList.add( role2Id );
 		
-		Collection<String> memberPrincipalIds = roleService.getRoleMemberPrincipalIds(role2NamespaceCode, role2Name, null);
+		Collection<String> memberPrincipalIds = roleService.getRoleMemberPrincipalIds(role2NamespaceCode, role2Name,  Collections.<String, String>emptyMap());
 		assertNotNull(memberPrincipalIds);
 		assertEquals("RoleTwo should have 6 principal ids", 5, memberPrincipalIds.size());
 		assertTrue( "p3 must belong to role", memberPrincipalIds.contains(principal3Id) );
@@ -228,7 +228,7 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 		assertNotNull( "r1 must exist", role );
 		roleList.clear();
 		roleList.add( role1Id );
-		members = roleService.getRoleMembers( roleList, null );
+		members = roleService.getRoleMembers( roleList,  Collections.<String, String>emptyMap() );
 		assertNotNull( "returned list may not be null", members );
 		assertEquals("Should have 2 members", 2, members.size());
 		Iterator<RoleMembership> iter = members.iterator();

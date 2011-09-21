@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.api.jaxb;
 
-import org.kuali.rice.core.api.util.jaxb.StringMapEntry;
+import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -39,30 +39,30 @@ public class QualificationList implements Serializable {
     private static final long serialVersionUID = 1L;
     
     @XmlElement(name="qualification")
-    private List<StringMapEntry> qualifications;
+    private List<MapStringStringAdapter.StringMapEntry> qualifications;
     
     public QualificationList () {
-        qualifications = new ArrayList<StringMapEntry>();
+        qualifications = new ArrayList<MapStringStringAdapter.StringMapEntry>();
     }
     
     public QualificationList(Map<String, String> map) {
         this();
         for (Map.Entry<String,String> tempEntry : map.entrySet()) {
-            qualifications.add(new StringMapEntry(tempEntry));
+            qualifications.add(new MapStringStringAdapter.StringMapEntry(tempEntry));
         }
     }
 
     /**
      * @return the qualifications
      */
-    public List<StringMapEntry> getQualifications() {
+    public List<MapStringStringAdapter.StringMapEntry> getQualifications() {
         return this.qualifications;
     }
 
     /**
      * @param qualifications the qualifications to set
      */
-    public void setQualifications(List<StringMapEntry> qualifications) {
+    public void setQualifications(List<MapStringStringAdapter.StringMapEntry> qualifications) {
         this.qualifications = qualifications;
     }
 

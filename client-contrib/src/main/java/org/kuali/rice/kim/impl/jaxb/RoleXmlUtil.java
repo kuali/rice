@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.impl.jaxb;
 
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.util.jaxb.NameAndNamespacePair;
 import org.kuali.rice.kim.api.KimConstants.KimUIConstants;
 import org.kuali.rice.kim.api.group.GroupContract;
@@ -27,7 +28,6 @@ import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 import javax.xml.bind.UnmarshalException;
-import java.sql.Date;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -107,8 +107,8 @@ public final class RoleXmlUtil {
         RoleMemberContract newMember = KimApiServiceLocator.getRoleService().saveRoleMemberForRole(
                 null, newRoleMember.getMemberId(), newRoleMember.getMemberTypeCode(),
                         newRoleMember.getRoleId(), newRoleMember.getQualifications(),
-                                (newRoleMember.getActiveFromDate() != null) ? new Date(newRoleMember.getActiveFromDate().getMillis()) : null,
-                                (newRoleMember.getActiveToDate() != null) ? new Date(newRoleMember.getActiveToDate().getMillis()) : null);
+                                (newRoleMember.getActiveFromDate() != null) ? new DateTime(newRoleMember.getActiveFromDate().getMillis()) : null,
+                                (newRoleMember.getActiveToDate() != null) ? new DateTime(newRoleMember.getActiveToDate().getMillis()) : null);
         
         return newMember.getRoleMemberId();
     }

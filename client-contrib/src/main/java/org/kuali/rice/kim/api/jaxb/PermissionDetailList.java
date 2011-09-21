@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.api.jaxb;
 
-import org.kuali.rice.core.api.util.jaxb.StringMapEntry;
+import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -39,30 +39,30 @@ public class PermissionDetailList implements Serializable {
     private static final long serialVersionUID = 1L;
     
     @XmlElement(name="permissionDetail")
-    private List<StringMapEntry> permissionDetails;
+    private List<MapStringStringAdapter.StringMapEntry> permissionDetails;
     
     public PermissionDetailList() {
-        this.permissionDetails = new ArrayList<StringMapEntry>();
+        this.permissionDetails = new ArrayList<MapStringStringAdapter.StringMapEntry>();
     }
     
     public PermissionDetailList(Map<String, String> map) {
         this();
         for (Map.Entry<String,String> tempEntry : map.entrySet()) {
-            permissionDetails.add(new StringMapEntry(tempEntry));
+            permissionDetails.add(new MapStringStringAdapter.StringMapEntry(tempEntry));
         }
     }
 
     /**
      * @return the permissionDetails
      */
-    public List<StringMapEntry> getPermissionDetails() {
+    public List<MapStringStringAdapter.StringMapEntry> getPermissionDetails() {
         return this.permissionDetails;
     }
 
     /**
      * @param permissionDetails the permissionDetails to set
      */
-    public void setPermissionDetails(List<StringMapEntry> permissionDetails) {
+    public void setPermissionDetails(List<MapStringStringAdapter.StringMapEntry> permissionDetails) {
         this.permissionDetails = permissionDetails;
     }
     

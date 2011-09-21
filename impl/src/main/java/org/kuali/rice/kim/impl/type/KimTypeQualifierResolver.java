@@ -126,7 +126,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
     	if ( typeService != null ) {
     		// QUESTION: can roles be modified in a way which requires routing?
     		// get the existing role members
-    		List<RoleMembership> currentRoleMembers = KimApiServiceLocator.getRoleService().getRoleMembers( Collections.singletonList( roleDoc.getRoleId() ), null );
+    		List<RoleMembership> currentRoleMembers = KimApiServiceLocator.getRoleService().getRoleMembers( Collections.singletonList( roleDoc.getRoleId() ),  Collections.<String, String>emptyMap() );
     		// loop over the role members on the document, check  if added or removed
     		for ( KimDocumentRoleMember rm : roleDoc.getMembers() ) {
     			boolean foundMember = false;
@@ -184,7 +184,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
             	KimTypeService typeService = getTypeService(pdr.getKimTypeId());
         		for ( KimDocumentRoleMember rm : pdr.getRolePrncpls() ) {
         			boolean foundMember = false;
-            		for ( RoleMembership rmi : getRoleService().getRoleMembers( Collections.singletonList( rm.getRoleId() ), null ) ) {
+            		for ( RoleMembership rmi : getRoleService().getRoleMembers( Collections.singletonList( rm.getRoleId() ), Collections.<String, String>emptyMap() ) ) {
             			if ( StringUtils.equals( rmi.getRoleMemberId(), rm.getRoleMemberId() ) ) {
             				foundMember = true;
         					if ( !rm.isActive() ) { // don't need to check the role member information 

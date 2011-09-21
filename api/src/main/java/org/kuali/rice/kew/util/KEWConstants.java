@@ -224,8 +224,6 @@ public final class KEWConstants {
 
     public static final int TITLE_MAX_LENGTH = 255;
 
-    public static final Date CURRENT_DATE = new Date(-7);
-
     public static final String DOCUMENT_STATUS_PARENT_TYPE_PENDING = "Pending";
     public static final String DOCUMENT_STATUS_PARENT_TYPE_SUCCESSFUL = "Successful";
     public static final String DOCUMENT_STATUS_PARENT_TYPE_UNSUCCESSFUL = "Unsuccessful";

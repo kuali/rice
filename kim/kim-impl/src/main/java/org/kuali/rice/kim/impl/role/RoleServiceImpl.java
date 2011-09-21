@@ -4,6 +4,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
@@ -12,7 +13,6 @@ import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.role.RoleResponsibility;
-import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.framework.common.delegate.DelegationTypeService;
@@ -52,6 +52,10 @@ public class RoleServiceImpl extends RoleServiceBase {
     
     @Override
     public Role getRole(String roleId) {
+        if (StringUtils.isBlank(roleId)) {
+            throw new RiceIllegalArgumentException("roleId is null or blank");
+        }
+
         RoleBo roleBo = getRoleBo(roleId);
         if (roleBo == null) {
             return null;
@@ -84,6 +88,10 @@ public class RoleServiceImpl extends RoleServiceBase {
 
     @Override
     public List<Role> getRoles(List<String> roleIds) {
+        if (roleIds == null) {
+            throw new RiceIllegalArgumentException("roleIds is null");
+        }
+
         Collection<RoleBo> roleBos = getRoleBoMap(roleIds).values();
         List<Role> roles = new ArrayList<Role>(roleBos.size());
         for (RoleBo bo : roleBos) {
@@ -94,6 +102,14 @@ public class RoleServiceImpl extends RoleServiceBase {
 
     @Override
     public Role getRoleByName(String namespaceCode, String roleName) {
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode is blank or null");
+        }
+
+        if (StringUtils.isBlank(roleName)) {
+            throw new RiceIllegalArgumentException("roleName is blank or null");
+        }
+
         RoleBo roleBo = getRoleBoByName(namespaceCode, roleName);
         if (roleBo != null) {
             return RoleBo.to(roleBo);
@@ -103,6 +119,14 @@ public class RoleServiceImpl extends RoleServiceBase {
 
     @Override
     public String getRoleIdByName( String namespaceCode, String roleName) {
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode is blank or null");
+        }
+
+        if (StringUtils.isBlank(roleName)) {
+            throw new RiceIllegalArgumentException("roleName is blank or null");
+        }
+
         Role role = getRoleByName(namespaceCode, roleName);
         if (role != null) {
             return role.getId();
@@ -113,6 +137,10 @@ public class RoleServiceImpl extends RoleServiceBase {
 
     @Override
     public boolean isRoleActive(String roleId) {
+        if (StringUtils.isBlank(roleId)) {
+            throw new RiceIllegalArgumentException("roleId is blank or null");
+        }
+
         RoleBo roleBo = getRoleBo(roleId);
         return roleBo != null && roleBo.isActive();
     }
@@ -121,6 +149,17 @@ public class RoleServiceImpl extends RoleServiceBase {
     public List<Map<String, String>> getRoleQualifiersForPrincipal(String principalId,
                                                             List<String> roleIds,
                                                             Map<String, String> qualification) {
+        if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId is blank or null");
+        }
+
+        if (roleIds == null) {
+            throw new RiceIllegalArgumentException("roleIds is null");
+        }
+
+        if (qualification == null) {
+            throw new RiceIllegalArgumentException("qualification is null");
+        }
 
         List<Map<String, String>> results = new ArrayList<Map<String, String>>();
 
@@ -169,6 +208,22 @@ public class RoleServiceImpl extends RoleServiceBase {
 
     @Override
     public List<Map<String, String>> getRoleQualifiersForPrincipal(String principalId, String namespaceCode,  String roleName, Map<String, String> qualification) {
+        if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId is blank or null");
+        }
+
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode is blank or null");
+        }
+
+        if (StringUtils.isBlank(roleName)) {
+            throw new RiceIllegalArgumentException("roleName is blank or null");
+        }
+
+        if (qualification == null) {
+            throw new RiceIllegalArgumentException("qualification is null");
+        }
+
         String roleId = getRoleIdByName(namespaceCode, roleName);
         if (roleId == null) {
             return new ArrayList<Map<String, String>>(0);
@@ -178,6 +233,22 @@ public class RoleServiceImpl extends RoleServiceBase {
 
     @Override
     public List<Map<String, String>> getNestedRoleQualifiersForPrincipal(String principalId, String namespaceCode, String roleName, Map<String, String> qualification) {
+        if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId is blank or null");
+        }
+
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode is blank or null");
+        }
+
+        if (StringUtils.isBlank(roleName)) {
+            throw new RiceIllegalArgumentException("roleName is blank or null");
+        }
+
+        if (qualification == null) {
+            throw new RiceIllegalArgumentException("qualification is null");
+        }
+
         String roleId = getRoleIdByName(namespaceCode, roleName);
         if (roleId == null) {
             return new ArrayList<Map<String, String>>(0);
@@ -187,6 +258,19 @@ public class RoleServiceImpl extends RoleServiceBase {
 
     @Override
     public List<Map<String, String>> getNestedRoleQualifiersForPrincipal(String principalId, List<String> roleIds, Map<String, String> qualification) {
+        if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId is blank or null");
+        }
+
+        if (roleIds == null) {
+            throw new RiceIllegalArgumentException("roleIds is null");
+        }
+
+        if (qualification == null) {
+            throw new RiceIllegalArgumentException("qualification is null");
+        }
+
+
         List<Map<String, String>> results = new ArrayList<Map<String, String>>();
 
         Map<String, RoleBo> roleBosById = getRoleBoMap(roleIds);
@@ -263,12 +347,32 @@ public class RoleServiceImpl extends RoleServiceBase {
 
     @Override
     public List<RoleMembership> getRoleMembers(List<String> roleIds, Map<String, String> qualification) {
+        if (roleIds == null) {
+            throw new RiceIllegalArgumentException("roleIds is null");
+        }
+
+        if (qualification == null) {
+            throw new RiceIllegalArgumentException("qualification is null");
+        }
+
         Set<String> foundRoleTypeMembers = new HashSet<String>();
         return getRoleMembers(roleIds, qualification, true, foundRoleTypeMembers);
     }
 
     @Override
     public Collection<String> getRoleMemberPrincipalIds(String namespaceCode, String roleName, Map<String, String> qualification) {
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode is blank or null");
+        }
+
+        if (StringUtils.isBlank(roleName)) {
+            throw new RiceIllegalArgumentException("roleName is blank or null");
+        }
+
+        if (qualification == null) {
+            throw new RiceIllegalArgumentException("qualification is null");
+        }
+
         Set<String> principalIds = new HashSet<String>();
         Set<String> foundRoleTypeMembers = new HashSet<String>();
         List<String> roleIds = Collections.singletonList(getRoleIdByName(namespaceCode, roleName));
@@ -284,11 +388,39 @@ public class RoleServiceImpl extends RoleServiceBase {
 
     @Override
     public boolean principalHasRole(String principalId, List<String> roleIds, Map<String, String> qualification) {
+        if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId is blank or null");
+        }
+
+        if (roleIds == null) {
+            throw new RiceIllegalArgumentException("roleIds is null");
+        }
+
+        if (qualification == null) {
+            throw new RiceIllegalArgumentException("qualification is null");
+        }
+
         return principalHasRole(principalId, roleIds, qualification, true);
     }
 
     @Override
     public List<String> getPrincipalIdSubListWithRole(List<String> principalIds, String roleNamespaceCode, String roleName, Map<String, String> qualification) {
+        if (principalIds == null) {
+            throw new RiceIllegalArgumentException("principalIds is null");
+        }
+
+        if (StringUtils.isBlank(roleNamespaceCode)) {
+            throw new RiceIllegalArgumentException("roleNamespaceCode is null");
+        }
+
+        if (StringUtils.isBlank(roleName)) {
+            throw new RiceIllegalArgumentException("roleName is null");
+        }
+
+        if (qualification == null) {
+            throw new RiceIllegalArgumentException("qualification is null");
+        }
+
         List<String> subList = new ArrayList<String>();
         RoleBo role = getRoleBoByName(roleNamespaceCode, roleName);
         for (String principalId : principalIds) {
@@ -301,6 +433,10 @@ public class RoleServiceImpl extends RoleServiceBase {
 
     @Override
     public List<Role> getRolesSearchResults(Map<String, String> fieldValues) {
+        if (fieldValues == null) {
+            throw new RiceIllegalArgumentException("fieldValues is null");
+        }
+
         List<RoleBo> roleBoList = getRoleDao().getRoles(fieldValues);
         List<Role> roles = new ArrayList<Role>();
         for (RoleBo roleBo : roleBoList) {
@@ -311,6 +447,10 @@ public class RoleServiceImpl extends RoleServiceBase {
 
     @Override
     public void principalInactivated(String principalId) {
+        if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId is null or blank");
+        }
+
         long oneDayInMillis = TimeUnit.DAYS.toMillis(1);
         Timestamp yesterday = new Timestamp(System.currentTimeMillis() - oneDayInMillis);
 
@@ -322,6 +462,10 @@ public class RoleServiceImpl extends RoleServiceBase {
 
     @Override
     public void roleInactivated(String roleId) {
+        if (StringUtils.isBlank(roleId)) {
+            throw new RiceIllegalArgumentException("roleId is null or blank");
+        }
+
         long oneDayInMillis = TimeUnit.DAYS.toMillis(1);
         Timestamp yesterday = new Timestamp(System.currentTimeMillis() - oneDayInMillis);
 
@@ -334,6 +478,10 @@ public class RoleServiceImpl extends RoleServiceBase {
 
     @Override
     public void groupInactivated(String groupId) {
+        if (StringUtils.isBlank(groupId)) {
+            throw new RiceIllegalArgumentException("groupId is null or blank");
+        }
+
         long oneDayInMillis = TimeUnit.DAYS.toMillis(1);
         Timestamp yesterday = new Timestamp(System.currentTimeMillis() - oneDayInMillis);
 
@@ -345,6 +493,10 @@ public class RoleServiceImpl extends RoleServiceBase {
 
     @Override
     public List<RoleMembership> getFirstLevelRoleMembers(List<String> roleIds) {
+        if (roleIds == null) {
+            throw new RiceIllegalArgumentException("roleIds is null");
+        }
+
         List<RoleMemberBo> roleMemberBoList = getStoredRoleMembersForRoleIds(roleIds, null, null);
         List<RoleMembership> roleMemberships = new ArrayList<RoleMembership>();
         for (RoleMemberBo roleMemberBo : roleMemberBoList) {
@@ -361,26 +513,18 @@ public class RoleServiceImpl extends RoleServiceBase {
 
     @Override
     public List<RoleMembership> findRoleMemberships( Map<String, String> fieldValues) {
+        if (fieldValues == null) {
+            throw new RiceIllegalArgumentException("fieldValues is null");
+        }
         return getRoleDao().getRoleMembers(fieldValues);
     }
 
     @Override
-    public List<String> getMemberParentRoleIds(String memberType, String memberId) {
-        return super.getMemberParentRoleIds(memberType, memberId);
-    }
-
-    @Override
-    public List<RoleMember> findRoleMembers(Map<String, String> fieldValues) {
-        return super.findRoleMembers(fieldValues);
-    }
-
-    @Override
-    public List<DelegateMember> findDelegateMembers(Map<String, String> fieldValues) {
-        return super.findDelegateMembers(fieldValues);
-    }
-
-    @Override
     public List<DelegateMember> getDelegationMembersByDelegationId(String delegationId) {
+        if (StringUtils.isBlank(delegationId)) {
+            throw new RiceIllegalArgumentException("delegationId is null or blank");
+        }
+
         DelegateTypeBo delegateBo = getKimDelegationImpl(delegationId);
         if (delegateBo == null) {return null;}
 
@@ -389,6 +533,14 @@ public class RoleServiceImpl extends RoleServiceBase {
 
     @Override
     public DelegateMember getDelegationMemberByDelegationAndMemberId(String delegationId, String memberId) {
+        if (StringUtils.isBlank(delegationId)) {
+            throw new RiceIllegalArgumentException("delegationId is null or blank");
+        }
+
+        if (StringUtils.isBlank(memberId)) {
+            throw new RiceIllegalArgumentException("memberId is null or blank");
+        }
+
         DelegateTypeBo delegateBo = getKimDelegationImpl(delegationId);
         DelegateMemberBo delegationMember = getKimDelegationMemberImplByDelegationAndId(delegationId, memberId);
 
@@ -397,6 +549,10 @@ public class RoleServiceImpl extends RoleServiceBase {
 
     @Override
     public DelegateMember getDelegationMemberById(String delegationMemberId) {
+
+        if (StringUtils.isBlank(delegationMemberId)) {
+            throw new RiceIllegalArgumentException("delegationMemberId is null or blank");
+        }
 
         DelegateMemberBo delegateMemberBo = getDelegateMemberBo(delegationMemberId);
         if (delegateMemberBo == null) {
@@ -410,6 +566,10 @@ public class RoleServiceImpl extends RoleServiceBase {
 
     @Override
     public List<RoleResponsibility> getRoleResponsibilities(String roleId) {
+        if (StringUtils.isBlank(roleId)) {
+            throw new RiceIllegalArgumentException("roleId is null or blank");
+        }
+
         Map<String, String> criteria = new HashMap<String, String>(1);
         criteria.put(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID, roleId);
         List<RoleResponsibilityBo> roleResponsibilityBos = (List<RoleResponsibilityBo>)
@@ -423,32 +583,44 @@ public class RoleServiceImpl extends RoleServiceBase {
     }
 
     @Override
-    public List<RoleResponsibilityAction> getRoleMemberResponsibilityActions(String roleMemberId) {
-        return super.getRoleMemberResponsibilityActions(roleMemberId);
-    }
-
-    @Override
     public DelegateType getDelegateTypeInfo(String roleId, String delegationTypeCode) {
+        if (StringUtils.isBlank(roleId)) {
+            throw new RiceIllegalArgumentException("roleId is null or blank");
+        }
+
+        if (StringUtils.isBlank(delegationTypeCode)) {
+            throw new RiceIllegalArgumentException("delegationTypeCode is null or blank");
+        }
+
         DelegateTypeBo delegateBo = getDelegationOfType(roleId, delegationTypeCode);
         return DelegateTypeBo.to(delegateBo);
     }
 
     @Override
     public DelegateType getDelegateTypeInfoById(String delegationId) {
-        if (delegationId == null) {
-            return null;
+        if (StringUtils.isBlank(delegationId)) {
+            throw new RiceIllegalArgumentException("delegationId is null or blank");
         }
+
         DelegateTypeBo delegateBo = getKimDelegationImpl(delegationId);
         return DelegateTypeBo.to(delegateBo);
     }
 
     @Override
     public void applicationRoleMembershipChanged(String roleId) {
+        if (StringUtils.isBlank(roleId)) {
+            throw new RiceIllegalArgumentException("roleId is null or blank");
+        }
+
         getResponsibilityInternalService().updateActionRequestsForRoleChange(roleId);
     }
 
     @Override
     public List<Role> lookupRoles(Map<String, String> searchCriteria) {
+        if (searchCriteria == null) {
+            throw new RiceIllegalArgumentException("searchCriteria is null");
+        }
+
         Collection<RoleBo> roleBoCollection = getBusinessObjectService().findMatching(RoleBo.class, searchCriteria);
         ArrayList<Role> roleList = new ArrayList<Role>();
         for (RoleBo roleBo : roleBoCollection) {
@@ -457,7 +629,6 @@ public class RoleServiceImpl extends RoleServiceBase {
         return roleList;
     }
 
-    @SuppressWarnings("unchecked")
     protected void inactivateApplicationRoleMemberships(String principalId, Timestamp yesterday) {
 
     }
@@ -1119,7 +1290,23 @@ public class RoleServiceImpl extends RoleServiceBase {
     }
 
     @Override
-    public void assignPrincipalToRole(String principalId, String namespaceCode, String roleName, Map<String, String> qualifier) throws UnsupportedOperationException {
+    public void assignPrincipalToRole(String principalId, String namespaceCode, String roleName, Map<String, String> qualifier) {
+        if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId is null");
+        }
+
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode is null");
+        }
+
+        if (StringUtils.isBlank(roleName)) {
+            throw new RiceIllegalArgumentException("roleName is null");
+        }
+
+        if (qualifier == null) {
+            throw new RiceIllegalArgumentException("qualifier is null");
+        }
+
         // look up the role
         RoleBo role = getRoleBoByName(namespaceCode, roleName);
         role.refreshReferenceObject("members");
@@ -1145,7 +1332,23 @@ public class RoleServiceImpl extends RoleServiceBase {
     }
 
     @Override
-    public void assignGroupToRole(String groupId, String namespaceCode, String roleName, Map<String, String> qualifier) throws UnsupportedOperationException {
+    public void assignGroupToRole(String groupId, String namespaceCode, String roleName, Map<String, String> qualifier) {
+        if (StringUtils.isBlank(groupId)) {
+            throw new RiceIllegalArgumentException("groupId is null");
+        }
+
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode is null");
+        }
+
+        if (StringUtils.isBlank(roleName)) {
+            throw new RiceIllegalArgumentException("roleName is null");
+        }
+
+        if (qualifier == null) {
+            throw new RiceIllegalArgumentException("qualifier is null");
+        }
+
         // look up the role
         RoleBo role = getRoleBoByName(namespaceCode, roleName);
         // check that identical member does not already exist
@@ -1167,7 +1370,23 @@ public class RoleServiceImpl extends RoleServiceBase {
     }
 
     @Override
-    public void assignRoleToRole(String roleId, String namespaceCode, String roleName, Map<String, String> qualifier) throws UnsupportedOperationException {
+    public void assignRoleToRole(String roleId, String namespaceCode, String roleName, Map<String, String> qualifier) {
+        if (StringUtils.isBlank(roleId)) {
+            throw new RiceIllegalArgumentException("roleId is null");
+        }
+
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode is null");
+        }
+
+        if (StringUtils.isBlank(roleName)) {
+            throw new RiceIllegalArgumentException("roleName is null");
+        }
+
+        if (qualifier == null) {
+            throw new RiceIllegalArgumentException("qualifier is null");
+        }
+
         // look up the roleBo
         RoleBo roleBo = getRoleBoByName(namespaceCode, roleName);
         // check that identical member does not already exist
@@ -1192,10 +1411,19 @@ public class RoleServiceImpl extends RoleServiceBase {
     }
 
     @Override
-    public RoleMember saveRoleMemberForRole(String roleMemberId, String memberId, String memberTypeCode, String roleId, Map<String, String> qualifications, java.sql.Date activeFromDate, java.sql.Date activeToDate) throws UnsupportedOperationException {
-        if(StringUtils.isEmpty(roleMemberId) && StringUtils.isEmpty(memberId) && StringUtils.isEmpty(roleId)){
-    		throw new IllegalArgumentException("Either Role member ID or a combination of member ID and roleBo ID must be passed in.");
+    public RoleMember saveRoleMemberForRole(String roleMemberId, String memberId, String memberTypeCode, String roleId, Map<String, String> qualifications, DateTime activeFromDate, DateTime activeToDate) {
+        if(StringUtils.isBlank(roleMemberId) && StringUtils.isBlank(memberId) && StringUtils.isBlank(roleId)){
+    		throw new RiceIllegalArgumentException("Either Role member ID or a combination of member ID and roleBo ID must be passed in.");
     	}
+
+        if (StringUtils.isBlank(memberTypeCode)) {
+            throw new RiceIllegalArgumentException("memberTypeCode is null");
+        }
+
+        if (qualifications == null) {
+            throw new RiceIllegalArgumentException("qualifications is null");
+        }
+
     	RoleMemberBo origRoleMemberBo;
     	RoleBo roleBo;
     	// create the new roleBo member object
@@ -1218,10 +1446,10 @@ public class RoleServiceImpl extends RoleServiceBase {
     	newRoleMember.setMemberId( memberId );
     	newRoleMember.setMemberTypeCode( memberTypeCode );
 		if (activeFromDate != null) {
-			newRoleMember.setActiveFromDateValue(new java.sql.Timestamp(activeFromDate.getTime()));
+			newRoleMember.setActiveFromDateValue(new java.sql.Timestamp(activeFromDate.getMillis()));
 		}
 		if (activeToDate != null) {
-			newRoleMember.setActiveToDateValue(new java.sql.Timestamp(activeToDate.getTime()));
+			newRoleMember.setActiveToDateValue(new java.sql.Timestamp(activeToDate.getMillis()));
 		}
     	// build roleBo member attribute objects from the given Map<String, String>
     	addMemberAttributeData( newRoleMember, qualifications, roleBo.getKimTypeId() );
@@ -1234,6 +1462,38 @@ public class RoleServiceImpl extends RoleServiceBase {
 
     @Override
     public void saveRoleRspActions(String roleResponsibilityActionId, String roleId, String roleResponsibilityId, String roleMemberId, String actionTypeCode, String actionPolicyCode, Integer priorityNumber, Boolean forceAction) {
+        if (StringUtils.isBlank(roleResponsibilityActionId)) {
+            throw new RiceIllegalArgumentException("roleResponsibilityActionId is null");
+        }
+
+        if (StringUtils.isBlank(roleId)) {
+            throw new RiceIllegalArgumentException("roleId is null or blank");
+        }
+
+        if (StringUtils.isBlank(roleResponsibilityId)) {
+            throw new RiceIllegalArgumentException("roleResponsibilityId is null or blank");
+        }
+
+        if (StringUtils.isBlank(roleMemberId)) {
+            throw new RiceIllegalArgumentException("roleMemberId is null");
+        }
+
+        if (StringUtils.isBlank(actionTypeCode)) {
+            throw new RiceIllegalArgumentException("actionTypeCode is null or blank");
+        }
+
+        if (StringUtils.isBlank(actionPolicyCode)) {
+            throw new RiceIllegalArgumentException("actionPolicyCode is null or blank");
+        }
+
+        if (priorityNumber == null) {
+            throw new RiceIllegalArgumentException("priorityNumber is null");
+        }
+
+        if (forceAction == null) {
+            throw new RiceIllegalArgumentException("forceAction is null");
+        }
+
         RoleResponsibilityActionBo newRoleRspAction = new RoleResponsibilityActionBo();
 		newRoleRspAction.setActionPolicyCode(actionPolicyCode);
 		newRoleRspAction.setActionTypeCode(actionTypeCode);
@@ -1266,10 +1526,23 @@ public class RoleServiceImpl extends RoleServiceBase {
     }
 
     @Override
-    public void saveDelegationMemberForRole(String delegationMemberId, String roleMemberId, String memberId, String memberTypeCode, String delegationTypeCode, String roleId, Map<String, String> qualifications, java.sql.Date activeFromDate, java.sql.Date activeToDate) throws UnsupportedOperationException {
-        if(StringUtils.isEmpty(delegationMemberId) && StringUtils.isEmpty(memberId) && StringUtils.isEmpty(roleId)){
+    public void saveDelegationMemberForRole(String delegationMemberId, String roleMemberId, String memberId, String memberTypeCode, String delegationTypeCode, String roleId, Map<String, String> qualifications, DateTime activeFromDate, DateTime activeToDate) {
+        if(StringUtils.isBlank(delegationMemberId) && StringUtils.isBlank(memberId) && StringUtils.isBlank(roleId)){
     		throw new IllegalArgumentException("Either Delegation member ID or a combination of member ID and role ID must be passed in.");
     	}
+
+        if (StringUtils.isBlank(memberTypeCode)) {
+            throw new RiceIllegalArgumentException("memberTypeCode is null");
+        }
+
+        if (StringUtils.isBlank(delegationTypeCode)) {
+            throw new RiceIllegalArgumentException("delegationTypeCode is null");
+        }
+
+        if (qualifications == null) {
+            throw new RiceIllegalArgumentException("qualifications is null");
+        }
+
     	// look up the role
     	RoleBo role = getRoleBo(roleId);
     	DelegateTypeBo delegation = getDelegationOfType(role.getId(), delegationTypeCode);
@@ -1294,10 +1567,10 @@ public class RoleServiceImpl extends RoleServiceBase {
     	newDelegationMember.setRoleMemberId(roleMemberId);
     	newDelegationMember.setTypeCode(memberTypeCode);
 		if (activeFromDate != null) {
-			newDelegationMember.setActiveFromDateValue(new java.sql.Timestamp(activeFromDate.getTime()));
+			newDelegationMember.setActiveFromDateValue(new java.sql.Timestamp(activeFromDate.getMillis()));
 		}
 		if (activeToDate != null) {
-			newDelegationMember.setActiveToDateValue(new java.sql.Timestamp(activeToDate.getTime()));
+			newDelegationMember.setActiveToDateValue(new java.sql.Timestamp(activeToDate.getMillis()));
 		}
 
     	// build role member attribute objects from the given Map<String, String>
@@ -1334,7 +1607,23 @@ public class RoleServiceImpl extends RoleServiceBase {
     }
     
     @Override
-    public void removePrincipalFromRole(String principalId, String namespaceCode, String roleName, Map<String, String> qualifier) throws UnsupportedOperationException {
+    public void removePrincipalFromRole(String principalId, String namespaceCode, String roleName, Map<String, String> qualifier) {
+        if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId is null");
+        }
+
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode is null");
+        }
+
+        if (StringUtils.isBlank(roleName)) {
+            throw new RiceIllegalArgumentException("roleName is null");
+        }
+
+        if (qualifier == null) {
+            throw new RiceIllegalArgumentException("qualifier is null");
+        }
+
         // look up the role
     	RoleBo role = getRoleBoByName(namespaceCode, roleName);
     	// pull all the principal members
@@ -1347,7 +1636,23 @@ public class RoleServiceImpl extends RoleServiceBase {
     }
     
     @Override
-    public void removeGroupFromRole(String groupId, String namespaceCode, String roleName, Map<String, String> qualifier) throws UnsupportedOperationException {
+    public void removeGroupFromRole(String groupId, String namespaceCode, String roleName, Map<String, String> qualifier) {
+        if (StringUtils.isBlank(groupId)) {
+            throw new RiceIllegalArgumentException("groupId is null");
+        }
+
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode is null");
+        }
+
+        if (StringUtils.isBlank(roleName)) {
+            throw new RiceIllegalArgumentException("roleName is null");
+        }
+
+        if (qualifier == null) {
+            throw new RiceIllegalArgumentException("qualifier is null");
+        }
+
         // look up the roleBo
     	RoleBo roleBo = getRoleBoByName(namespaceCode, roleName);
     	// pull all the group roleBo members
@@ -1360,7 +1665,23 @@ public class RoleServiceImpl extends RoleServiceBase {
     }   
     
     @Override
-    public void removeRoleFromRole(String roleId, String namespaceCode, String roleName, Map<String, String> qualifier) throws UnsupportedOperationException {
+    public void removeRoleFromRole(String roleId, String namespaceCode, String roleName, Map<String, String> qualifier) {
+        if (StringUtils.isBlank(roleId)) {
+            throw new RiceIllegalArgumentException("roleId is null");
+        }
+
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode is null");
+        }
+
+        if (StringUtils.isBlank(roleName)) {
+            throw new RiceIllegalArgumentException("roleName is null");
+        }
+
+        if (qualifier == null) {
+            throw new RiceIllegalArgumentException("qualifier is null");
+        }
+
         // look up the role
     	RoleBo role = getRoleBoByName(namespaceCode, roleName);
     	// pull all the group role members
@@ -1373,7 +1694,27 @@ public class RoleServiceImpl extends RoleServiceBase {
     }    
 
     @Override
-    public void saveRole(String roleId, String roleName, String roleDescription, boolean active, String kimTypeId, String namespaceCode) throws UnsupportedOperationException {
+    public void saveRole(String roleId, String roleName, String roleDescription, boolean active, String kimTypeId, String namespaceCode) {
+        if (StringUtils.isBlank(roleId)) {
+            throw new RiceIllegalArgumentException("roleId is null");
+        }
+
+        if (StringUtils.isBlank(roleName)) {
+            throw new RiceIllegalArgumentException("roleName is null");
+        }
+
+        if (StringUtils.isBlank(roleDescription)) {
+            throw new RiceIllegalArgumentException("roleDescription is null");
+        }
+
+        if (StringUtils.isBlank(kimTypeId)) {
+            throw new RiceIllegalArgumentException("kimTypeId is null");
+        }
+
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode is null");
+        }
+
         // look for existing role
         RoleBo role = getBusinessObjectService().findBySinglePrimaryKey(RoleBo.class, roleId);
         if (role == null) {
@@ -1391,7 +1732,15 @@ public class RoleServiceImpl extends RoleServiceBase {
     }
 
     @Override
-    public void assignPermissionToRole(String permissionId, String roleId) throws UnsupportedOperationException {
+    public void assignPermissionToRole(String permissionId, String roleId) {
+        if (StringUtils.isBlank(permissionId)) {
+            throw new RiceIllegalArgumentException("permissionId is null");
+        }
+
+        if (StringUtils.isBlank(roleId)) {
+            throw new RiceIllegalArgumentException("roleId is null");
+        }
+
         RolePermissionBo newRolePermission = new RolePermissionBo();
 
         Long nextSeq = KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_ROLE_PERM_ID_S, RolePermissionBo.class);

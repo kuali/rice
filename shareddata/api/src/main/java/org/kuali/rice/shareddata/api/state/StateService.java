@@ -81,7 +81,7 @@ public interface StateService {
     @XmlElementWrapper(name = "states", required = true)
     @XmlElement(name = "state", required = false)
     @WebResult(name = "states")
-    @Cacheable(value=State.Cache.NAME, key="countryCode=#countryCode")
+    @Cacheable(value=State.Cache.NAME, key="'countryCode=' + #countryCode")
     List<State> findAllStatesInCountry(@WebParam(name = "countryCode") String countryCode)
             throws RiceIllegalArgumentException;
     
@@ -106,7 +106,7 @@ public interface StateService {
     @XmlElementWrapper(name = "states", required = true)
     @XmlElement(name = "state", required = false)
     @WebResult(name = "states")
-    @Cacheable(value=State.Cache.NAME, key="alternateCode=#alternateCode")
+    @Cacheable(value=State.Cache.NAME, key="'alternateCode=' + #alternateCode")
     List<State> findAllStatesInCountryByAltCode(@WebParam(name = "alternateCode") String alternateCode)
             throws RiceIllegalArgumentException, RiceIllegalStateException;
 }

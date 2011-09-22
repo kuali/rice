@@ -2,8 +2,8 @@ package org.kuali.rice.kim.api.identity.email
 
 import org.junit.Assert
 import org.junit.Test
-import org.kuali.rice.kim.api.identity.Type
-import org.kuali.rice.kim.api.identity.TypeContract
+import org.kuali.rice.kim.api.identity.CodedAttribute
+import org.kuali.rice.kim.api.identity.CodedAttributeContract
 import org.kuali.rice.kim.api.test.JAXBAssert
 
 class EntityEmailTest {
@@ -75,7 +75,7 @@ class EntityEmailTest {
 			def String id = EntityEmailTest.ID
             def String entityTypeCode = EntityEmailTest.ENTITY_TYPE_CODE
             def String entityId = EntityEmailTest.ENTITY_ID
-			def Type getEmailType() { Type.Builder.create(new TypeContract() {
+			def CodedAttribute getEmailType() { CodedAttribute.Builder.create(new CodedAttributeContract() {
 				def String code = EntityEmailTest.TYPE_CODE
 				def String name = EntityEmailTest.TYPE_NAME
 				def boolean active = EntityEmailTest.TYPE_ACTIVE.toBoolean()

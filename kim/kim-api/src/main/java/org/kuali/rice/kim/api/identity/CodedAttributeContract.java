@@ -6,7 +6,7 @@ import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
-public interface TypeContract extends Versioned, GloballyUnique, Inactivatable, Coded {
+public interface CodedAttributeContract extends Versioned, GloballyUnique, Inactivatable, Coded {
 
     /**
      * This the name for the AddressType.  This can be null or a blank string.

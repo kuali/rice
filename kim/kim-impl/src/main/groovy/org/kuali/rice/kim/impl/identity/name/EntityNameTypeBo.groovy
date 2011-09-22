@@ -4,13 +4,13 @@ import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
-import org.kuali.rice.kim.api.identity.Type
-import org.kuali.rice.kim.api.identity.TypeContract
+import org.kuali.rice.kim.api.identity.CodedAttribute
+import org.kuali.rice.kim.api.identity.CodedAttributeContract
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 @Entity
 @Table(name="KRIM_ENT_NM_TYP_T")
-public class EntityNameTypeBo extends PersistableBusinessObjectBase implements TypeContract {
+public class EntityNameTypeBo extends PersistableBusinessObjectBase implements CodedAttributeContract {
     @Id
     @Column(name="ENT_NM_TYP_CD")
     String code;
@@ -28,9 +28,9 @@ public class EntityNameTypeBo extends PersistableBusinessObjectBase implements T
    * @param bo
    * @return an immutable AddressType
    */
-  static Type to(EntityNameTypeBo bo) {
+  static CodedAttribute to(EntityNameTypeBo bo) {
     if (bo == null) { return null }
-    return Type.Builder.create(bo).build()
+    return CodedAttribute.Builder.create(bo).build()
   }
 
   /**
@@ -38,7 +38,7 @@ public class EntityNameTypeBo extends PersistableBusinessObjectBase implements T
    * @param an immutable AddressType
    * @return a AddressTypeBo
    */
-  static EntityNameTypeBo from(Type immutable) {
+  static EntityNameTypeBo from(CodedAttribute immutable) {
     if (immutable == null) {return null}
 
     EntityNameTypeBo bo = new EntityNameTypeBo()

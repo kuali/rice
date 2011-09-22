@@ -5,7 +5,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.kim.api.KimApiConstants;
-import org.kuali.rice.kim.api.identity.Type;
+import org.kuali.rice.kim.api.identity.CodedAttribute;
 
 import javax.xml.bind.Element;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -42,7 +42,7 @@ public class EntityEmail extends AbstractDataTransferObject implements EntityEma
     @XmlElement(name = Elements.ENTITY_ID, required = false)
     private final String entityId;
     @XmlElement(name = Elements.EMAIL_TYPE, required = false)
-    private final Type emailType;
+    private final CodedAttribute emailType;
     @XmlElement(name = Elements.EMAIL_ADDRESS, required = false)
     private final String emailAddress;
     @XmlElement(name = Elements.EMAIL_ADDRESS_UNMASKED, required = false)
@@ -109,7 +109,7 @@ public class EntityEmail extends AbstractDataTransferObject implements EntityEma
     }
 
     @Override
-    public Type getEmailType() {
+    public CodedAttribute getEmailType() {
         return this.emailType;
     }
 
@@ -159,7 +159,7 @@ public class EntityEmail extends AbstractDataTransferObject implements EntityEma
         private String id;
         private String entityId;
         private String entityTypeCode;
-        private Type.Builder emailType;
+        private CodedAttribute.Builder emailType;
         private String emailAddressUnmasked;
         private boolean suppressEmail;
         private boolean defaultValue;
@@ -185,7 +185,7 @@ public class EntityEmail extends AbstractDataTransferObject implements EntityEma
             builder.setEntityTypeCode(contract.getEntityTypeCode());
             builder.setSuppressEmail(contract.isSuppressEmail());
             if (contract.getEmailType() != null) {
-                builder.setEmailType(Type.Builder.create(contract.getEmailType()));
+                builder.setEmailType(CodedAttribute.Builder.create(contract.getEmailType()));
             }
             builder.setEmailAddress(contract.getEmailAddressUnmasked());
             builder.setDefaultValue(contract.isDefaultValue());
@@ -215,7 +215,7 @@ public class EntityEmail extends AbstractDataTransferObject implements EntityEma
         }
 
         @Override
-        public Type.Builder getEmailType() {
+        public CodedAttribute.Builder getEmailType() {
             return this.emailType;
         }
 
@@ -272,7 +272,7 @@ public class EntityEmail extends AbstractDataTransferObject implements EntityEma
             this.entityId = entityId;
         }
 
-        public void setEmailType(Type.Builder emailType) {
+        public void setEmailType(CodedAttribute.Builder emailType) {
             this.emailType = emailType;
         }
 

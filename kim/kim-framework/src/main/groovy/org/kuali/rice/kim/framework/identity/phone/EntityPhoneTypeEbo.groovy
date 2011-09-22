@@ -1,11 +1,11 @@
 package org.kuali.rice.kim.framework.identity.phone
 
-import org.kuali.rice.kim.api.identity.Type
-import org.kuali.rice.kim.api.identity.TypeContract
+import org.kuali.rice.kim.api.identity.CodedAttribute
+import org.kuali.rice.kim.api.identity.CodedAttributeContract
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject
 
 
-class EntityPhoneTypeEbo implements TypeContract, ExternalizableBusinessObject {
+class EntityPhoneTypeEbo implements CodedAttributeContract, ExternalizableBusinessObject {
     String code;
     String name;
     boolean active;
@@ -19,9 +19,9 @@ class EntityPhoneTypeEbo implements TypeContract, ExternalizableBusinessObject {
    * @param bo
    * @return an immutable Type
    */
-  static Type to(EntityPhoneTypeEbo bo) {
+  static CodedAttribute to(EntityPhoneTypeEbo bo) {
     if (bo == null) { return null }
-    return Type.Builder.create(bo).build()
+    return CodedAttribute.Builder.create(bo).build()
   }
 
   /**
@@ -29,7 +29,7 @@ class EntityPhoneTypeEbo implements TypeContract, ExternalizableBusinessObject {
    * @param an immutable Type
    * @return a EntityAddressTypeEbo
    */
-  static EntityPhoneTypeEbo from(Type immutable) {
+  static EntityPhoneTypeEbo from(CodedAttribute immutable) {
     if (immutable == null) {return null}
 
     EntityPhoneTypeEbo bo = new EntityPhoneTypeEbo()

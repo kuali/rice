@@ -4,8 +4,8 @@ import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
-import org.kuali.rice.kim.api.identity.Type
-import org.kuali.rice.kim.api.identity.TypeContract
+import org.kuali.rice.kim.api.identity.CodedAttribute
+import org.kuali.rice.kim.api.identity.CodedAttributeContract
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierTypeContract
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType

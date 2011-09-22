@@ -922,35 +922,35 @@ public interface IdentityService {
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
-     * Gets the {@link org.kuali.rice.kim.api.identity.Type} for a given EntityType code.
+     * Gets the {@link org.kuali.rice.kim.api.identity.CodedAttribute} for a given EntityType code.
      *
      * <p>
      *   This method will return null if the code does not exist.
      * </p>
      *
      * @param code the unique id to retrieve the Type by. Cannot be null.
-     * @return a {@link org.kuali.rice.kim.api.identity.Type} or null
+     * @return a {@link org.kuali.rice.kim.api.identity.CodedAttribute} or null
      * @throws IllegalArgumentException if the code is blank
      */
     @WebMethod(operationName = "getEntityType")
     @WebResult(name = "type")
-	Type getEntityType( @WebParam(name="code") String code )  throws RiceIllegalArgumentException;
+	CodedAttribute getEntityType( @WebParam(name="code") String code );
 
 
     /**
-     * Gets the {@link org.kuali.rice.kim.api.identity.Type} for a given EntityAddressType code.
+     * Gets the {@link org.kuali.rice.kim.api.identity.CodedAttribute} for a given EntityAddressType code.
      *
      * <p>
      *   This method will return null if the code does not exist.
      * </p>
      *
      * @param code the unique id to retrieve the Type by. Cannot be null.
-     * @return a {@link org.kuali.rice.kim.api.identity.Type} or null
+     * @return a {@link org.kuali.rice.kim.api.identity.CodedAttribute} or null
      * @throws IllegalArgumentException if the code is blank
      */
     @WebMethod(operationName = "getAddressType")
     @WebResult(name = "type")
-	Type getAddressType( @WebParam(name="code") String code )  throws RiceIllegalArgumentException;
+	CodedAttribute getAddressType( @WebParam(name="code") String code );
 
     /**
      * Gets the {@link org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType} for a given EntityAffiliationType code.
@@ -968,49 +968,49 @@ public interface IdentityService {
 	EntityAffiliationType getAffiliationType( @WebParam(name="code") String code )  throws RiceIllegalArgumentException;
 
     /**
-     * Gets the {@link org.kuali.rice.kim.api.identity.Type} for a given EntityCitizenship status code.
+     * Gets the {@link org.kuali.rice.kim.api.identity.CodedAttribute} for a given EntityCitizenship status code.
      *
      * <p>
      *   This method will return null if the code does not exist.
      * </p>
      *
      * @param code the unique id to retrieve the Type by. Cannot be null.
-     * @return a {@link org.kuali.rice.kim.api.identity.Type} or null
+     * @return a {@link org.kuali.rice.kim.api.identity.CodedAttribute} or null
      * @throws IllegalArgumentException if the code is blank
      */
     @WebMethod(operationName = "getCitizenshipStatus")
     @WebResult(name = "type")
-	Type getCitizenshipStatus( @WebParam(name="code") String code )  throws RiceIllegalArgumentException;
+	CodedAttribute getCitizenshipStatus( @WebParam(name="code") String code );
 
     /**
-     * Gets the {@link org.kuali.rice.kim.api.identity.Type} for a given EntityEmployment type code.
+     * Gets the {@link org.kuali.rice.kim.api.identity.CodedAttribute} for a given EntityEmployment type code.
      *
      * <p>
      *   This method will return null if the code does not exist.
      * </p>
      *
      * @param code the unique id to retrieve the Type by. Cannot be null.
-     * @return a {@link org.kuali.rice.kim.api.identity.Type} or null
+     * @return a {@link org.kuali.rice.kim.api.identity.CodedAttribute} or null
      * @throws IllegalArgumentException if the code is blank
      */
     @WebMethod(operationName = "getEmploymentType")
     @WebResult(name = "type")
-	Type getEmploymentType( @WebParam(name="code") String code )  throws RiceIllegalArgumentException;
+	CodedAttribute getEmploymentType( @WebParam(name="code") String code );
     
     /**
-     * Gets the {@link org.kuali.rice.kim.api.identity.Type} for a given EntityEmployment status code.
+     * Gets the {@link org.kuali.rice.kim.api.identity.CodedAttribute} for a given EntityEmployment status code.
      *
      * <p>
      *   This method will return null if the code does not exist.
      * </p>
      *
      * @param code the unique id to retrieve the Type by. Cannot be null.
-     * @return a {@link org.kuali.rice.kim.api.identity.Type} or null
+     * @return a {@link org.kuali.rice.kim.api.identity.CodedAttribute} or null
      * @throws IllegalArgumentException if the code is blank
      */
     @WebMethod(operationName = "getEmploymentStatus")
     @WebResult(name = "type")
-	Type getEmploymentStatus( @WebParam(name="code") String code )  throws RiceIllegalArgumentException;
+	CodedAttribute getEmploymentStatus( @WebParam(name="code") String code );
     
     /**
      * Gets the {@link org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType} for a given type code.
@@ -1020,7 +1020,7 @@ public interface IdentityService {
      * </p>
      *
      * @param code the unique id to retrieve the EntityExternalIdentifierType by. Cannot be null.
-     * @return a {@link org.kuali.rice.kim.api.identity.Type} or null
+     * @return a {@link org.kuali.rice.kim.api.identity.CodedAttribute} or null
      * @throws IllegalArgumentException if the code is blank
      */
     @WebMethod(operationName = "getExternalIdentifierType")
@@ -1028,48 +1028,48 @@ public interface IdentityService {
 	EntityExternalIdentifierType getExternalIdentifierType( @WebParam(name="code") String code )  throws RiceIllegalArgumentException;
     
     /**
-     * Gets the {@link org.kuali.rice.kim.api.identity.Type} for a given EntityName type code.
+     * Gets the {@link org.kuali.rice.kim.api.identity.CodedAttribute} for a given EntityName type code.
      *
      * <p>
      *   This method will return null if the code does not exist.
      * </p>
      *
      * @param code the unique id to retrieve the Type by. Cannot be null.
-     * @return a {@link org.kuali.rice.kim.api.identity.Type} or null
+     * @return a {@link org.kuali.rice.kim.api.identity.CodedAttribute} or null
      * @throws IllegalArgumentException if the code is blank
      */
     @WebMethod(operationName = "getNameType")
     @WebResult(name = "type")
-	Type getNameType(@WebParam(name = "code") String code)  throws RiceIllegalArgumentException;
+	CodedAttribute getNameType(@WebParam(name = "code") String code);
     
     /**
-     * Gets the {@link org.kuali.rice.kim.api.identity.Type} for a given EntityPhone type code.
+     * Gets the {@link org.kuali.rice.kim.api.identity.CodedAttribute} for a given EntityPhone type code.
      *
      * <p>
      *   This method will return null if the code does not exist.
      * </p>
      *
      * @param code the unique id to retrieve the Type by. Cannot be null.
-     * @return a {@link org.kuali.rice.kim.api.identity.Type} or null
+     * @return a {@link org.kuali.rice.kim.api.identity.CodedAttribute} or null
      * @throws IllegalArgumentException if the code is blank
      */
     @WebMethod(operationName = "getPhoneType")
     @WebResult(name = "type")
-	Type getPhoneType( @WebParam(name="code") String code )  throws RiceIllegalArgumentException;
+	CodedAttribute getPhoneType( @WebParam(name="code") String code );
     
     /**
-     * Gets the {@link org.kuali.rice.kim.api.identity.Type} for a given EntityEmail type code.
+     * Gets the {@link org.kuali.rice.kim.api.identity.CodedAttribute} for a given EntityEmail type code.
      *
      * <p>
      *   This method will return null if the code does not exist.
      * </p>
      *
      * @param code the unique id to retrieve the Type by. Cannot be null.
-     * @return a {@link org.kuali.rice.kim.api.identity.Type} or null
+     * @return a {@link org.kuali.rice.kim.api.identity.CodedAttribute} or null
      * @throws IllegalArgumentException if the code is blank
      */
     @WebMethod(operationName = "getEmailType")
     @WebResult(name = "type")
-	Type getEmailType( @WebParam(name="code") String code )  throws RiceIllegalArgumentException;
+	CodedAttribute getEmailType( @WebParam(name="code") String code );
 
 }

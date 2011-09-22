@@ -6,7 +6,7 @@ import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.util.jaxb.KualiDecimalAdapter;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
-import org.kuali.rice.kim.api.identity.Type;
+import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.w3c.dom.Element;
 
@@ -49,9 +49,9 @@ public final class EntityEmployment extends AbstractDataTransferObject
     @XmlElement(name = Elements.ENTITY_AFFILIATION, required = false)
     private final EntityAffiliation entityAffiliation;
     @XmlElement(name = Elements.EMPLOYEE_STATUS, required = false)
-    private final Type employeeStatus;
+    private final CodedAttribute employeeStatus;
     @XmlElement(name = Elements.EMPLOYEE_TYPE, required = false)
-    private final Type employeeType;
+    private final CodedAttribute employeeType;
     @XmlElement(name = Elements.PRIMARY_DEPARTMENT_CODE, required = false)
     private final String primaryDepartmentCode;
     @XmlElement(name = Elements.EMPLOYEE_ID, required = false)
@@ -120,12 +120,12 @@ public final class EntityEmployment extends AbstractDataTransferObject
     }
 
     @Override
-    public Type getEmployeeStatus() {
+    public CodedAttribute getEmployeeStatus() {
         return this.employeeStatus;
     }
 
     @Override
-    public Type getEmployeeType() {
+    public CodedAttribute getEmployeeType() {
         return this.employeeType;
     }
 
@@ -183,8 +183,8 @@ public final class EntityEmployment extends AbstractDataTransferObject
     {
         private String entityId;
         private EntityAffiliation.Builder entityAffiliation;
-        private Type.Builder employeeStatus;
-        private Type.Builder employeeType;
+        private CodedAttribute.Builder employeeStatus;
+        private CodedAttribute.Builder employeeType;
         private String primaryDepartmentCode;
         private String employeeId;
         private String employmentRecordId;
@@ -211,10 +211,10 @@ public final class EntityEmployment extends AbstractDataTransferObject
                 builder.setEntityAffiliation(EntityAffiliation.Builder.create(contract.getEntityAffiliation()));
             }
             if (contract.getEmployeeStatus() != null) {
-                builder.setEmployeeStatus(Type.Builder.create(contract.getEmployeeStatus()));
+                builder.setEmployeeStatus(CodedAttribute.Builder.create(contract.getEmployeeStatus()));
             }
             if (contract.getEmployeeType() != null) {
-                builder.setEmployeeType(Type.Builder.create(contract.getEmployeeType()));
+                builder.setEmployeeType(CodedAttribute.Builder.create(contract.getEmployeeType()));
             }
             builder.setPrimaryDepartmentCode(contract.getPrimaryDepartmentCode());
             builder.setEmployeeId(contract.getEmployeeId());
@@ -242,12 +242,12 @@ public final class EntityEmployment extends AbstractDataTransferObject
         }
 
         @Override
-        public Type.Builder getEmployeeStatus() {
+        public CodedAttribute.Builder getEmployeeStatus() {
             return this.employeeStatus;
         }
 
         @Override
-        public Type.Builder getEmployeeType() {
+        public CodedAttribute.Builder getEmployeeType() {
             return this.employeeType;
         }
 
@@ -300,11 +300,11 @@ public final class EntityEmployment extends AbstractDataTransferObject
             this.entityAffiliation = entityAffiliation;
         }
 
-        public void setEmployeeStatus(Type.Builder employeeStatus) {
+        public void setEmployeeStatus(CodedAttribute.Builder employeeStatus) {
             this.employeeStatus = employeeStatus;
         }
 
-        public void setEmployeeType(Type.Builder employeeType) {
+        public void setEmployeeType(CodedAttribute.Builder employeeType) {
             this.employeeType = employeeType;
         }
 

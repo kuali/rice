@@ -18,7 +18,7 @@ package org.kuali.rice.kim.ldap;
 import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.ldap.core.support.AbstractContextMapper;
 
-import org.kuali.rice.kim.api.identity.Type;
+import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.kuali.rice.kim.api.identity.phone.EntityPhone;
 import org.kuali.rice.kim.util.Constants;
 
@@ -65,7 +65,7 @@ public class EntityPhoneMapper extends AbstractContextMapper {
         
         builder.setCountryCode(countryCode);
         builder.setPhoneNumber(phoneNumber);
-        builder.setPhoneType(Type.Builder.create("WORK"));
+        builder.setPhoneType(CodedAttribute.Builder.create("WORK"));
         builder.setActive(true);
         builder.setDefaultValue(isdefault);
 

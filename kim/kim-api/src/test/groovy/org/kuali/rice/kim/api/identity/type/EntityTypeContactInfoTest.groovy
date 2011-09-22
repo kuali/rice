@@ -3,8 +3,8 @@ package org.kuali.rice.kim.api.identity.type
 import org.junit.Test
 import org.junit.Assert
 import org.kuali.rice.kim.api.test.JAXBAssert
-import org.kuali.rice.kim.api.identity.Type
-import org.kuali.rice.kim.api.identity.TypeContract
+import org.kuali.rice.kim.api.identity.CodedAttribute
+import org.kuali.rice.kim.api.identity.CodedAttributeContract
 import org.kuali.rice.kim.api.identity.address.EntityAddress
 import org.kuali.rice.kim.api.identity.address.EntityAddressContract
 import org.kuali.rice.kim.api.identity.email.EntityEmail
@@ -298,7 +298,7 @@ class EntityTypeContactInfoTest {
                     def String id = EntityTypeContactInfoTest.ADDR_ID
                     def String entityTypeCode = EntityTypeContactInfoTest.ENTITY_TYPE_CODE
                     def String entityId = EntityTypeContactInfoTest.ENTITY_ID
-                    def Type getAddressType() { Type.Builder.create(new TypeContract() {
+                    def CodedAttribute getAddressType() { CodedAttribute.Builder.create(new CodedAttributeContract() {
                         def String code = EntityTypeContactInfoTest.TYPE_CODE
                         def String name = EntityTypeContactInfoTest.TYPE_NAME
                         def boolean active = EntityTypeContactInfoTest.TYPE_ACTIVE.toBoolean()
@@ -332,7 +332,7 @@ class EntityTypeContactInfoTest {
                     def String id = EntityTypeContactInfoTest.EMAIL_ID
                     def String entityTypeCode = EntityTypeContactInfoTest.ENTITY_TYPE_CODE
                     def String entityId = EntityTypeContactInfoTest.ENTITY_ID
-                    def Type getEmailType() { Type.Builder.create(new TypeContract() {
+                    def CodedAttribute getEmailType() { CodedAttribute.Builder.create(new CodedAttributeContract() {
                         def String code = EntityTypeContactInfoTest.TYPE_CODE
                         def String name = EntityTypeContactInfoTest.TYPE_NAME
                         def boolean active = EntityTypeContactInfoTest.TYPE_ACTIVE.toBoolean()
@@ -353,7 +353,7 @@ class EntityTypeContactInfoTest {
                     def String id = EntityTypeContactInfoTest.PHONE_ID
                     def String entityTypeCode = EntityTypeContactInfoTest.ENTITY_TYPE_CODE
                     def String entityId = EntityTypeContactInfoTest.ENTITY_ID
-                    def Type getPhoneType() { Type.Builder.create(new TypeContract() {
+                    def CodedAttribute getPhoneType() { CodedAttribute.Builder.create(new CodedAttributeContract() {
                         def String code = EntityTypeContactInfoTest.TYPE_CODE
                         def String name = EntityTypeContactInfoTest.TYPE_NAME
                         def boolean active = EntityTypeContactInfoTest.TYPE_ACTIVE.toBoolean()
@@ -379,7 +379,7 @@ class EntityTypeContactInfoTest {
 		return EntityTypeContactInfo.Builder.create(new EntityTypeContactInfoContract() {
             def String entityTypeCode = EntityTypeContactInfoTest.ENTITY_TYPE_CODE
             def String entityId = EntityTypeContactInfoTest.ENTITY_ID
-			def Type getEntityType() { Type.Builder.create(new TypeContract() {
+			def CodedAttribute getEntityType() { CodedAttribute.Builder.create(new CodedAttributeContract() {
 				def String code = EntityTypeContactInfoTest.ENTITY_TYPE_CODE
 				def String name = EntityTypeContactInfoTest.ENTITY_TYPE_NAME
 				def boolean active = EntityTypeContactInfoTest.TYPE_ACTIVE

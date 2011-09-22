@@ -22,7 +22,7 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.kuali.rice.core.api.util.xml.XmlException;
 import org.kuali.rice.core.api.util.xml.XmlHelper;
-import org.kuali.rice.kim.api.identity.Type;
+import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.kuali.rice.kim.api.identity.email.EntityEmail;
 import org.kuali.rice.kim.impl.identity.email.EntityEmailBo;
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentBo;
@@ -145,7 +145,7 @@ public class UserXmlParser {
 			email.setId("" + emailId);
 			email.setEntityTypeCode(entityTypeCode);
 			// must be in krim_email_typ_t.email_typ_cd:
-			email.setEmailType(Type.Builder.create("WRK"));
+			email.setEmailType(CodedAttribute.Builder.create("WRK"));
 			email.setVersionNumber(new Long(1));
 			email.setEmailAddress(emailAddress);
 			email.setDefaultValue(true);

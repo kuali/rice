@@ -5,7 +5,7 @@ import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
-import org.kuali.rice.kim.api.identity.TypeContract;
+import org.kuali.rice.kim.api.identity.CodedAttributeContract;
 
 public interface EntityNameContract extends Versioned, GloballyUnique, Defaultable, Inactivatable, Identifiable {
     /**
@@ -18,7 +18,7 @@ public interface EntityNameContract extends Versioned, GloballyUnique, Defaultab
      * Gets this {@link EntityNameContract}'s TypeContract.
      * @return the type for this {@link EntityNameContract}, or null if none has been assigned.
      */
-	TypeContract getNameType();
+	CodedAttributeContract getNameType();
 
 	/**
      * Gets this {@link EntityNameContract}'s first name.

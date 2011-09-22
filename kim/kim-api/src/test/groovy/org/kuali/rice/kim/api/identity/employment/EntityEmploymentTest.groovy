@@ -3,13 +3,13 @@ package org.kuali.rice.kim.api.identity.employment
 import org.junit.Assert
 import org.junit.Test
 import org.kuali.rice.core.api.util.type.KualiDecimal
-import org.kuali.rice.kim.api.identity.Type
-import org.kuali.rice.kim.api.identity.TypeContract
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationContract
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationTypeContract
 import org.kuali.rice.kim.api.test.JAXBAssert
+import org.kuali.rice.kim.api.identity.CodedAttribute
+import org.kuali.rice.kim.api.identity.CodedAttributeContract
 
 class EntityEmploymentTest {
     private static final String ID = "1";
@@ -151,7 +151,7 @@ class EntityEmploymentTest {
                 def Long versionNumber = EntityEmploymentTest.AFFILIATION_VERSION_NUMBER;
                 def String objectId = EntityEmploymentTest.AFFILIATION_OBJECT_ID
             }).build()}
-            def Type getEmployeeStatus() { Type.Builder.create(new TypeContract() {
+            def CodedAttribute getEmployeeStatus() { CodedAttribute.Builder.create(new CodedAttributeContract() {
 				def String code = EntityEmploymentTest.STATUS_CODE
 				def String name = EntityEmploymentTest.STATUS_NAME
 				def boolean active = EntityEmploymentTest.STATUS_ACTIVE.toBoolean()
@@ -159,7 +159,7 @@ class EntityEmploymentTest {
                 def Long versionNumber = EntityEmploymentTest.STATUS_VERSION_NUMBER
 				def String objectId = EntityEmploymentTest.STATUS_OBJECT_ID
 			}).build()}
-			def Type getEmployeeType() { Type.Builder.create(new TypeContract() {
+			def CodedAttribute getEmployeeType() { CodedAttribute.Builder.create(new CodedAttributeContract() {
 				def String code = EntityEmploymentTest.TYPE_CODE
 				def String name = EntityEmploymentTest.TYPE_NAME
 				def boolean active = EntityEmploymentTest.TYPE_ACTIVE.toBoolean()

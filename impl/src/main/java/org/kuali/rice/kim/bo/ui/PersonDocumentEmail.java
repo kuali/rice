@@ -17,7 +17,7 @@ package org.kuali.rice.kim.bo.ui;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kim.api.identity.TypeContract;
+import org.kuali.rice.kim.api.identity.CodedAttributeContract;
 import org.kuali.rice.kim.impl.identity.email.EntityEmailTypeBo;
 
 

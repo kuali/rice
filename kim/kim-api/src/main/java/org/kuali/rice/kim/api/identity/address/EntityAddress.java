@@ -14,7 +14,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.kim.api.KimApiConstants;
-import org.kuali.rice.kim.api.identity.Type;
+import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.w3c.dom.Element;
 
 @XmlRootElement(name = EntityAddress.Constants.ROOT_ELEMENT_NAME)
@@ -56,7 +56,7 @@ public final class EntityAddress extends AbstractDataTransferObject
     @XmlElement(name = Elements.ENTITY_ID, required = false)
     private final String entityId;
     @XmlElement(name = Elements.ADDRESS_TYPE, required = false)
-    private final Type addressType;
+    private final CodedAttribute addressType;
     @XmlElement(name = Elements.LINE1, required = false)
     private final String line1;
     @XmlElement(name = Elements.LINE2, required = false)
@@ -167,7 +167,7 @@ public final class EntityAddress extends AbstractDataTransferObject
     }
 
     @Override
-    public Type getAddressType() {
+    public CodedAttribute getAddressType() {
         return this.addressType;
     }
 
@@ -281,7 +281,7 @@ public final class EntityAddress extends AbstractDataTransferObject
 
         private String entityId;
         private String entityTypeCode;
-        private Type.Builder addressType;
+        private CodedAttribute.Builder addressType;
         private String line1Unmasked;
         private String line2Unmasked;
         private String line3Unmasked;
@@ -311,7 +311,7 @@ public final class EntityAddress extends AbstractDataTransferObject
             builder.setSuppressAddress(contract.isSuppressAddress());
             builder.setEntityTypeCode(contract.getEntityTypeCode());
             if (contract.getAddressType() != null) {
-                builder.setAddressType(Type.Builder.create(contract.getAddressType()));
+                builder.setAddressType(CodedAttribute.Builder.create(contract.getAddressType()));
             }
             builder.setLine1(contract.getLine1Unmasked());
             builder.setLine2(contract.getLine2Unmasked());
@@ -343,7 +343,7 @@ public final class EntityAddress extends AbstractDataTransferObject
         }
 
         @Override
-        public Type.Builder getAddressType() {
+        public CodedAttribute.Builder getAddressType() {
             return this.addressType;
         }
 
@@ -477,7 +477,7 @@ public final class EntityAddress extends AbstractDataTransferObject
             this.entityTypeCode = entityTypeCode;
         }
 
-        public void setAddressType(Type.Builder addressType) {
+        public void setAddressType(CodedAttribute.Builder addressType) {
             this.addressType = addressType;
         }
 

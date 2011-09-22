@@ -3,8 +3,8 @@ package org.kuali.rice.kim.api.identity.citizenship
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import org.junit.Test
-import org.kuali.rice.kim.api.identity.Type
-import org.kuali.rice.kim.api.identity.TypeContract
+import org.kuali.rice.kim.api.identity.CodedAttribute
+import org.kuali.rice.kim.api.identity.CodedAttributeContract
 import org.kuali.rice.kim.api.test.JAXBAssert
 import org.junit.Assert
 import org.joda.time.DateTime
@@ -77,7 +77,7 @@ class EntityCitizenshipTest {
 		return EntityCitizenship.Builder.create(new EntityCitizenshipContract() {
 			def String id = EntityCitizenshipTest.ID
             def String entityId = EntityCitizenshipTest.ENTITY_ID
-			def Type getStatus() { Type.Builder.create(new TypeContract() {
+			def CodedAttribute getStatus() { CodedAttribute.Builder.create(new CodedAttributeContract() {
 				def String code = EntityCitizenshipTest.STATUS_CODE
 				def String name = EntityCitizenshipTest.STATUS_NAME
 				def boolean active = EntityCitizenshipTest.STATUS_ACTIVE.toBoolean()

@@ -3,8 +3,8 @@ package org.kuali.rice.kim.api.identity.phone
 import org.junit.Test
 import org.junit.Assert
 import org.kuali.rice.kim.api.test.JAXBAssert
-import org.kuali.rice.kim.api.identity.Type
-import org.kuali.rice.kim.api.identity.TypeContract
+import org.kuali.rice.kim.api.identity.CodedAttribute
+import org.kuali.rice.kim.api.identity.CodedAttributeContract
 
 
 class EntityPhoneTest {
@@ -84,7 +84,7 @@ class EntityPhoneTest {
 			def String id = EntityPhoneTest.ID
             def String entityTypeCode = EntityPhoneTest.ENTITY_TYPE_CODE
             def String entityId = EntityPhoneTest.ENTITY_ID
-			def Type getPhoneType() { Type.Builder.create(new TypeContract() {
+			def CodedAttribute getPhoneType() { CodedAttribute.Builder.create(new CodedAttributeContract() {
 				def String code = EntityPhoneTest.TYPE_CODE
 				def String name = EntityPhoneTest.TYPE_NAME
 				def boolean active = EntityPhoneTest.TYPE_ACTIVE

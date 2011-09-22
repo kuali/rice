@@ -1,8 +1,8 @@
 package org.kuali.rice.kim.api.identity.external;
 
-import org.kuali.rice.kim.api.identity.TypeContract;
+import org.kuali.rice.kim.api.identity.CodedAttributeContract;
 
-public interface EntityExternalIdentifierTypeContract extends TypeContract {
+public interface EntityExternalIdentifierTypeContract extends CodedAttributeContract {
     /**
      * This value determines if the encryption is required for this type.
      *

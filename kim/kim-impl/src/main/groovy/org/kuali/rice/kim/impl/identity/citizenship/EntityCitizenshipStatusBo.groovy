@@ -4,13 +4,13 @@ import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
-import org.kuali.rice.kim.api.identity.Type
-import org.kuali.rice.kim.api.identity.TypeContract
+import org.kuali.rice.kim.api.identity.CodedAttribute
+import org.kuali.rice.kim.api.identity.CodedAttributeContract
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 @Entity
 @Table(name="KRIM_CTZNSHP_STAT_T")
-public class EntityCitizenshipStatusBo extends PersistableBusinessObjectBase implements TypeContract {
+public class EntityCitizenshipStatusBo extends PersistableBusinessObjectBase implements CodedAttributeContract {
     @Id
     @Column(name="CTZNSHP_STAT_CD")
     String code;
@@ -28,9 +28,9 @@ public class EntityCitizenshipStatusBo extends PersistableBusinessObjectBase imp
    * @param bo
    * @return an immutable EntityCitizenshipStatus
    */
-  static Type to(EntityCitizenshipStatusBo bo) {
+  static CodedAttribute to(EntityCitizenshipStatusBo bo) {
     if (bo == null) { return null }
-    return Type.Builder.create(bo).build()
+    return CodedAttribute.Builder.create(bo).build()
   }
 
   /**
@@ -38,7 +38,7 @@ public class EntityCitizenshipStatusBo extends PersistableBusinessObjectBase imp
    * @param an immutable EntityCitizenshipStatus
    * @return a EntityCitizenshipStatusBo
    */
-  static EntityCitizenshipStatusBo from(Type immutable) {
+  static EntityCitizenshipStatusBo from(CodedAttribute immutable) {
     if (immutable == null) {return null}
 
     EntityCitizenshipStatusBo bo = new EntityCitizenshipStatusBo()

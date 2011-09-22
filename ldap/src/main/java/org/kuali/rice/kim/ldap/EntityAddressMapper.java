@@ -18,7 +18,7 @@ package org.kuali.rice.kim.ldap;
 import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.ldap.core.support.AbstractContextMapper;
 
-import org.kuali.rice.kim.api.identity.Type;
+import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.kuali.rice.kim.api.identity.address.EntityAddress;
 import org.kuali.rice.kim.util.Constants;
 
@@ -49,7 +49,7 @@ public class EntityAddressMapper extends AbstractContextMapper {
         final String stateProvinceCode  = context.getStringAttribute("employeeState");
         final String postalCode         = context.getStringAttribute("employeeZip");
         
-        builder.setAddressType(Type.Builder.create("WORK"));
+        builder.setAddressType(CodedAttribute.Builder.create("WORK"));
         builder.setLine1(line1);
         builder.setLine2(line2);
         builder.setCity(city);

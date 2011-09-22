@@ -4,13 +4,13 @@ import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
-import org.kuali.rice.kim.api.identity.Type
-import org.kuali.rice.kim.api.identity.TypeContract
+import org.kuali.rice.kim.api.identity.CodedAttribute
+import org.kuali.rice.kim.api.identity.CodedAttributeContract
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 @Entity
 @Table(name="KRIM_EMP_TYP_T")
-public class EntityEmploymentTypeBo extends PersistableBusinessObjectBase implements TypeContract {
+public class EntityEmploymentTypeBo extends PersistableBusinessObjectBase implements CodedAttributeContract {
     @Id
     @Column(name="EMP_TYP_CD")
     String code;
@@ -28,9 +28,9 @@ public class EntityEmploymentTypeBo extends PersistableBusinessObjectBase implem
    * @param bo
    * @return an immutable EmploymentType
    */
-  static Type to(EntityEmploymentTypeBo bo) {
+  static CodedAttribute to(EntityEmploymentTypeBo bo) {
     if (bo == null) { return null }
-    return Type.Builder.create(bo).build()
+    return CodedAttribute.Builder.create(bo).build()
   }
 
   /**
@@ -38,7 +38,7 @@ public class EntityEmploymentTypeBo extends PersistableBusinessObjectBase implem
    * @param an immutable EmploymentType
    * @return a EmploymentTypeBo
    */
-  static EntityEmploymentTypeBo from(Type immutable) {
+  static EntityEmploymentTypeBo from(CodedAttribute immutable) {
     if (immutable == null) {return null}
 
     EntityEmploymentTypeBo bo = new EntityEmploymentTypeBo()

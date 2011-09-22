@@ -18,7 +18,7 @@ package org.kuali.rice.kim.impl.identity;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kim.api.identity.IdentityArchiveService;
 import org.kuali.rice.kim.api.identity.IdentityService;
-import org.kuali.rice.kim.api.identity.Type;
+import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.kuali.rice.kim.api.identity.address.EntityAddress;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
@@ -66,8 +66,11 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 		this.identityArchiveService = identityArchiveService;
 	}
 	
+	/**
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getAddressType(java.lang.String)
+	 */
     @Override
-	public Type getAddressType(String code) {
+	public CodedAttribute getAddressType(String code) {
 		return getInnerIdentityService().getAddressType(code);
 	}
 
@@ -76,9 +79,12 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 		return getInnerIdentityService().getAffiliationType(code);
 	}
 
+    /**
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getCitizenshipStatus(java.lang.String)
+	 */       
     @Override
-	public Type getCitizenshipStatus(String code) {
-		return getInnerIdentityService().getCitizenshipStatus(code);
+	public CodedAttribute getCitizenshipStatus(String code) {
+		return CodedAttribute.Builder.create(getInnerIdentityService().getCitizenshipStatus(code)).build();
 	}
 
     @Override
@@ -133,19 +139,28 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 		return getInnerIdentityService().getDefaultNamesForPrincipalIds(principalIds);
 	}
 
+	/**
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEmailType(java.lang.String)
+	 */
     @Override
-	public Type getEmailType(String code) {
+	public CodedAttribute getEmailType(String code) {
 		return getInnerIdentityService().getEmailType(code);
 	}
 
+    /**
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEmploymentStatus(java.lang.String)
+	 */
     @Override
-	public Type getEmploymentStatus(String code) {
+	public CodedAttribute getEmploymentStatus(String code) {
 		return getInnerIdentityService().getEmploymentStatus(code);
 	}
 
 
+    /**
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEmploymentType(java.lang.String)
+	 */
     @Override
-	public Type getEmploymentType(String code) {
+	public CodedAttribute getEmploymentType(String code) {
 		return getInnerIdentityService().getEmploymentType(code);
 	}
 
@@ -236,8 +251,11 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
         return getInnerIdentityService().inactivateEntity(entityId);
     }
 
+    /**
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getNameType(java.lang.String)
+	 */
     @Override
-	public Type getNameType(String code) {
+	public CodedAttribute getNameType(String code) {
 		return getInnerIdentityService().getNameType(code);
 	}
 
@@ -302,8 +320,11 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
         return getInnerIdentityService().updateVisa(visa);
     }
 
+    /**
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityType(java.lang.String)
+	 */
     @Override
-	public Type getEntityType(String code) {
+	public CodedAttribute getEntityType(String code) {
 		return getInnerIdentityService().getEntityType(code);
 	}
 
@@ -313,8 +334,11 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 	}
 
 
+	/**
+	 * @see org.kuali.rice.kim.api.identity.IdentityService#getPhoneType(java.lang.String)
+	 */
     @Override
-	public Type getPhoneType(String code) {
+	public CodedAttribute getPhoneType(String code) {
 		return getInnerIdentityService().getPhoneType(code);
 	}
 

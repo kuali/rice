@@ -108,7 +108,7 @@ public final class EntityExternalIdentifierType extends AbstractDataTransferObje
     }
 
     /**
-     * A builder which can be used to construct {@link Type} instances.  Enforces the constraints of the {@link TypeContract}.
+     * A builder which can be used to construct {@link CodedAttribute} instances.  Enforces the constraints of the {@link CodedAttributeContract}.
      * 
      */
     public final static class Builder

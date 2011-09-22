@@ -5,8 +5,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.kim.api.KimConstants;
-import org.kuali.rice.kim.api.identity.Type;
-import org.kuali.rice.kim.api.identity.TypeContract;
+import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -54,7 +53,7 @@ public final class EntityName extends AbstractDataTransferObject
     @XmlElement(name = Elements.ENTITY_ID, required = false)
     private final String entityId;
     @XmlElement(name = Elements.NAME_TYPE, required = false)
-    private final Type nameType;
+    private final CodedAttribute nameType;
     @XmlElement(name = Elements.FIRST_NAME, required = false)
     private final String firstName;
     @XmlElement(name = Elements.FIRST_NAME_UNMASKED, required = false)
@@ -162,7 +161,7 @@ public final class EntityName extends AbstractDataTransferObject
     }
 
     @Override
-    public TypeContract getNameType() {
+    public CodedAttribute getNameType() {
         return this.nameType;
     }
 
@@ -272,7 +271,7 @@ public final class EntityName extends AbstractDataTransferObject
 
         private String nameSuffix;
         private String entityId;
-        private Type.Builder nameType;
+        private CodedAttribute.Builder nameType;
         private String firstName;
         private String middleName;
         private String lastName;
@@ -299,7 +298,7 @@ public final class EntityName extends AbstractDataTransferObject
             builder.setNameSuffix(contract.getNameSuffix());
             builder.setEntityId(contract.getEntityId());
             if (contract.getNameType() != null) {
-                builder.setNameType(Type.Builder.create(contract.getNameType()));
+                builder.setNameType(CodedAttribute.Builder.create(contract.getNameType()));
             }
             builder.setFirstName(contract.getFirstName());
             builder.setMiddleName(contract.getMiddleName());
@@ -333,7 +332,7 @@ public final class EntityName extends AbstractDataTransferObject
         }
 
         @Override
-        public Type.Builder getNameType() {
+        public CodedAttribute.Builder getNameType() {
             return this.nameType;
         }
 
@@ -458,7 +457,7 @@ public final class EntityName extends AbstractDataTransferObject
             this.entityId = entityId;
         }
 
-        public void setNameType(Type.Builder nameType) {
+        public void setNameType(CodedAttribute.Builder nameType) {
             this.nameType = nameType;
         }
 

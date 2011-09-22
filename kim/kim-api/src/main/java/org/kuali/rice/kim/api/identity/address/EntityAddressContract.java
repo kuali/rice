@@ -20,7 +20,7 @@ import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
-import org.kuali.rice.kim.api.identity.TypeContract;
+import org.kuali.rice.kim.api.identity.CodedAttributeContract;
 
 /**
  * address information for a KIM identity
@@ -46,7 +46,7 @@ public interface EntityAddressContract extends Versioned, GloballyUnique, Defaul
      * Gets this {@link EntityAddressContract}'s address type code.
      * @return the address type for this {@link EntityAddressContract}, or null if none has been assigned.
      */
-	TypeContract getAddressType();
+	CodedAttributeContract getAddressType();
 
     /**
      * Gets this {@link EntityAddressContract}'s first line.

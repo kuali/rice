@@ -4,7 +4,7 @@ package org.kuali.rice.kim.api.identity.type;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
-import org.kuali.rice.kim.api.identity.TypeContract;
+import org.kuali.rice.kim.api.identity.CodedAttributeContract;
 import org.kuali.rice.kim.api.identity.address.EntityAddressContract;
 import org.kuali.rice.kim.api.identity.email.EntityEmailContract;
 import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract;
@@ -28,7 +28,7 @@ public interface EntityTypeContactInfoContract extends Versioned, GloballyUnique
      * Gets this identity Type of the {@link EntityTypeContactInfoContract}'s object.
      * @return the identity type for this {@link EntityTypeContactInfoContract}
      */
-	TypeContract getEntityType();
+	CodedAttributeContract getEntityType();
 
 	/**
      * Gets this {@link EntityTypeContactInfoContract}'s List of {@link org.kuali.rice.kim.api.identity.address.EntityAddress}S.

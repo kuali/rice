@@ -18,7 +18,7 @@ package org.kuali.rice.kim.api.services;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kim.api.common.assignee.Assignee;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.identity.Type;
+import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
 import org.kuali.rice.kim.api.identity.entity.Entity;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
@@ -76,16 +76,16 @@ public interface IdentityManagementService {
 
 	EntityQueryResults findEntities(QueryByCriteria queryByCriteria);
 
-	Type getAddressType( String code);
+	CodedAttribute getAddressType( String code);
 	EntityAffiliationType getAffiliationType( String code);
-	Type getCitizenshipStatus( String code);
-	Type getEmailType( String code);
-	Type getEmploymentStatus( String code);
-	Type getEmploymentType( String code);
-	Type getEntityNameType( String code);
-	Type getEntityType( String code);
+	CodedAttribute getCitizenshipStatus( String code);
+	CodedAttribute getEmailType( String code);
+	CodedAttribute getEmploymentStatus( String code);
+	CodedAttribute getEmploymentType( String code);
+	CodedAttribute getEntityNameType( String code);
+	CodedAttribute getEntityType( String code);
 	EntityExternalIdentifierType getExternalIdentifierType( String code);
-	Type getPhoneType( String code);
+	CodedAttribute getPhoneType( String code);
 
 	// *******************************
 	// GroupService

@@ -22,7 +22,7 @@ import org.kuali.rice.kim.api.common.assignee.Assignee;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.identity.IdentityService;
-import org.kuali.rice.kim.api.identity.Type;
+import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
 import org.kuali.rice.kim.api.identity.entity.Entity;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
@@ -322,12 +322,12 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
     }
 
     @Override
-	public Type getAddressType( String code ) {
+	public CodedAttribute getAddressType( String code ) {
 		return getIdentityService().getAddressType(code);
 	}
 
     @Override
-    public Type getEmailType( String code ) {
+    public CodedAttribute getEmailType( String code ) {
 		return getIdentityService().getEmailType(code);
 	}
 
@@ -337,23 +337,23 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 	}
 
     @Override
-	public Type getCitizenshipStatus( String code ) {
-			return Type.Builder.create(getIdentityService().getCitizenshipStatus(code)).build();
+	public CodedAttribute getCitizenshipStatus( String code ) {
+			return CodedAttribute.Builder.create(getIdentityService().getCitizenshipStatus(code)).build();
 	}
     @Override
-	public Type getEmploymentStatus( String code ) {
+	public CodedAttribute getEmploymentStatus( String code ) {
 			return getIdentityService().getEmploymentStatus(code);
 	}
     @Override
-	public Type getEmploymentType( String code ) {
+	public CodedAttribute getEmploymentType( String code ) {
 			return getIdentityService().getEmploymentType(code);
 	}
     @Override
-	public Type getEntityNameType( String code ) {
+	public CodedAttribute getEntityNameType( String code ) {
 			return getIdentityService().getNameType(code);
 	}
     @Override
-	public Type getEntityType( String code ) {
+	public CodedAttribute getEntityType( String code ) {
 		return getIdentityService().getEntityType(code);
 	}
     @Override
@@ -361,7 +361,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 			return getIdentityService().getExternalIdentifierType(code);
 	}
     @Override
-	public Type getPhoneType( String code ) {
+	public CodedAttribute getPhoneType( String code ) {
 			return getIdentityService().getPhoneType(code);
 	}
 

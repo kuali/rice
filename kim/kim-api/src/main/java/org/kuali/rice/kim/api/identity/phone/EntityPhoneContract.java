@@ -5,7 +5,7 @@ import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
-import org.kuali.rice.kim.api.identity.TypeContract;
+import org.kuali.rice.kim.api.identity.CodedAttributeContract;
 
 public interface EntityPhoneContract extends Versioned, GloballyUnique, Defaultable, Inactivatable, Identifiable {
 
@@ -25,7 +25,7 @@ public interface EntityPhoneContract extends Versioned, GloballyUnique, Defaulta
      * Gets this {@link EntityPhone}'s type code.
      * @return the type code for this {@link EntityPhone}, or null if none has been assigned.
      */
-	TypeContract getPhoneType();
+	CodedAttributeContract getPhoneType();
 
 	/**
      * Gets this {@link EntityPhone}'s phone number.

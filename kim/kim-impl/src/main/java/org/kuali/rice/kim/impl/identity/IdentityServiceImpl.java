@@ -23,7 +23,7 @@ import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.kim.api.identity.IdentityService;
-import org.kuali.rice.kim.api.identity.Type;
+import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.kuali.rice.kim.api.identity.address.EntityAddress;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
@@ -847,13 +847,11 @@ public class IdentityServiceImpl implements IdentityService {
 		return null;
 	}
 
-    @Override
-	public Type getAddressType( String code ) {
-	    if (StringUtils.isBlank(code)) {
+	public CodedAttribute getAddressType( String code ) {
+        if (StringUtils.isBlank(code)) {
             throw new RiceIllegalArgumentException("code is empty or null");
         }
-
-        EntityAddressTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityAddressTypeBo.class, code);
+		EntityAddressTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityAddressTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
 		}
@@ -874,12 +872,11 @@ public class IdentityServiceImpl implements IdentityService {
 		return EntityAffiliationTypeBo.to(impl);
 	}
 
-    @Override
-    public Type getCitizenshipStatus( String code ) {
+
+    public CodedAttribute getCitizenshipStatus( String code ) {
 		if (StringUtils.isBlank(code)) {
             throw new RiceIllegalArgumentException("code is empty or null");
         }
-
         EntityCitizenshipStatusBo impl = businessObjectService.findBySinglePrimaryKey(EntityCitizenshipStatusBo.class, code);
 		if ( impl == null ) {
 			return null;
@@ -887,25 +884,21 @@ public class IdentityServiceImpl implements IdentityService {
 		return EntityCitizenshipStatusBo.to(impl);
 	}
 
-    @Override
-    public Type getEmailType( String code ) {
-        if (StringUtils.isBlank(code)) {
+    public CodedAttribute getEmailType( String code ) {
+		if (StringUtils.isBlank(code)) {
             throw new RiceIllegalArgumentException("code is empty or null");
         }
-
-		EntityEmailTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityEmailTypeBo.class, code);
+        EntityEmailTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityEmailTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
 		}
 		return EntityEmailTypeBo.to(impl);
 	}
 
-    @Override
-    public Type getEmploymentStatus( String code ) {
+    public CodedAttribute getEmploymentStatus( String code ) {
 		if (StringUtils.isBlank(code)) {
             throw new RiceIllegalArgumentException("code is empty or null");
         }
-
         EntityEmploymentStatusBo impl = businessObjectService.findBySinglePrimaryKey(EntityEmploymentStatusBo.class, code);
 		if ( impl == null ) {
 			return null;
@@ -913,12 +906,10 @@ public class IdentityServiceImpl implements IdentityService {
 		return EntityEmploymentStatusBo.to(impl);
 	}
 
-    @Override
-    public Type getEmploymentType( String code ) {
+    public CodedAttribute getEmploymentType( String code ) {
 		if (StringUtils.isBlank(code)) {
             throw new RiceIllegalArgumentException("code is empty or null");
         }
-
         EntityEmploymentTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityEmploymentTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
@@ -926,12 +917,10 @@ public class IdentityServiceImpl implements IdentityService {
 		return EntityEmploymentTypeBo.to(impl);
 	}
 
-    @Override
-    public Type getNameType(String code) {
+    public CodedAttribute getNameType(String code) {
 		if (StringUtils.isBlank(code)) {
             throw new RiceIllegalArgumentException("code is empty or null");
         }
-
         EntityNameTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityNameTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
@@ -939,12 +928,10 @@ public class IdentityServiceImpl implements IdentityService {
 		return EntityNameTypeBo.to(impl);
 	}
 
-    @Override
-    public Type getEntityType( String code ) {
+    public CodedAttribute getEntityType( String code ) {
 		if (StringUtils.isBlank(code)) {
             throw new RiceIllegalArgumentException("code is empty or null");
         }
-
         EntityTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
@@ -966,12 +953,11 @@ public class IdentityServiceImpl implements IdentityService {
 	}
 
 
-    @Override
-    public Type getPhoneType( String code ) {
+
+    public CodedAttribute getPhoneType( String code ) {
 		if (StringUtils.isBlank(code)) {
             throw new RiceIllegalArgumentException("code is empty or null");
         }
-
         EntityPhoneTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityPhoneTypeBo.class, code);
 		if ( impl == null ) {
 			return null;

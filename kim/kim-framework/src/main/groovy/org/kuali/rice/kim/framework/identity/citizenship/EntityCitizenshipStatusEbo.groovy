@@ -1,10 +1,10 @@
 package org.kuali.rice.kim.framework.identity.citizenship
 
-import org.kuali.rice.kim.api.identity.TypeContract
+import org.kuali.rice.kim.api.identity.CodedAttributeContract
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject
-import org.kuali.rice.kim.api.identity.Type
+import org.kuali.rice.kim.api.identity.CodedAttribute
 
-class EntityCitizenshipStatusEbo implements TypeContract, ExternalizableBusinessObject {
+class EntityCitizenshipStatusEbo implements CodedAttributeContract, ExternalizableBusinessObject {
     String code;
     String name;
     boolean active;
@@ -18,9 +18,9 @@ class EntityCitizenshipStatusEbo implements TypeContract, ExternalizableBusiness
    * @param bo
    * @return an immutable EntityCitizenshipStatus
    */
-  static Type to(EntityCitizenshipStatusEbo bo) {
+  static CodedAttribute to(EntityCitizenshipStatusEbo bo) {
     if (bo == null) { return null }
-    return Type.Builder.create(bo).build()
+    return CodedAttribute.Builder.create(bo).build()
   }
 
   /**
@@ -28,7 +28,7 @@ class EntityCitizenshipStatusEbo implements TypeContract, ExternalizableBusiness
    * @param an immutable EntityCitizenshipStatus
    * @return a EntityCitizenshipStatusEbo
    */
-  static EntityCitizenshipStatusEbo from(Type immutable) {
+  static EntityCitizenshipStatusEbo from(CodedAttribute immutable) {
     if (immutable == null) {return null}
 
     EntityCitizenshipStatusEbo bo = new EntityCitizenshipStatusEbo()

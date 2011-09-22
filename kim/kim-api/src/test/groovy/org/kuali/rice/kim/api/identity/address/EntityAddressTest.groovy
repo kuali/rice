@@ -3,8 +3,8 @@ package org.kuali.rice.kim.api.identity.address
 import org.junit.Test
 import junit.framework.Assert
 import org.kuali.rice.kim.api.test.JAXBAssert
-import org.kuali.rice.kim.api.identity.Type
-import org.kuali.rice.kim.api.identity.TypeContract
+import org.kuali.rice.kim.api.identity.CodedAttribute
+import org.kuali.rice.kim.api.identity.CodedAttributeContract
 
 
 class EntityAddressTest {
@@ -93,7 +93,7 @@ class EntityAddressTest {
 			def String id = EntityAddressTest.ID
             def String entityTypeCode = EntityAddressTest.ENTITY_TYPE_CODE
             def String entityId = EntityAddressTest.ENTITY_ID
-			def Type getAddressType() { Type.Builder.create(new TypeContract() {
+			def CodedAttribute getAddressType() { CodedAttribute.Builder.create(new CodedAttributeContract() {
 				def String code = EntityAddressTest.TYPE_CODE
 				def String name = EntityAddressTest.TYPE_NAME
 				def boolean active = EntityAddressTest.TYPE_ACTIVE

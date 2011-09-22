@@ -6,7 +6,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
-import org.kuali.rice.kim.api.identity.Type;
+import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -41,7 +41,7 @@ public final class EntityCitizenship extends AbstractDataTransferObject
     @XmlElement(name = Elements.ENTITY_ID, required = false)
     private final String entityId;
     @XmlElement(name = Elements.STATUS, required = false)
-    private final Type status;
+    private final CodedAttribute status;
     @XmlElement(name = Elements.COUNTRY_CODE, required = false)
     private final String countryCode;
     @XmlJavaTypeAdapter(DateTimeAdapter.class)
@@ -94,7 +94,7 @@ public final class EntityCitizenship extends AbstractDataTransferObject
     }
 
     @Override
-    public Type getStatus() {
+    public CodedAttribute getStatus() {
         return this.status;
     }
 
@@ -141,7 +141,7 @@ public final class EntityCitizenship extends AbstractDataTransferObject
         implements Serializable, ModelBuilder, EntityCitizenshipContract
     {
         private String entityId;
-        private Type.Builder status;
+        private CodedAttribute.Builder status;
         private String countryCode;
         private DateTime startDate;
         private DateTime endDate;
@@ -164,7 +164,7 @@ public final class EntityCitizenship extends AbstractDataTransferObject
             Builder builder = create();
             builder.setEntityId(contract.getEntityId());
             if (contract.getStatus() != null) {
-                builder.setStatus(Type.Builder.create(contract.getStatus()));
+                builder.setStatus(CodedAttribute.Builder.create(contract.getStatus()));
             }
             builder.setCountryCode(contract.getCountryCode());
             builder.setStartDate(contract.getStartDate());
@@ -186,7 +186,7 @@ public final class EntityCitizenship extends AbstractDataTransferObject
         }
 
         @Override
-        public Type.Builder getStatus() {
+        public CodedAttribute.Builder getStatus() {
             return this.status;
         }
 
@@ -228,7 +228,7 @@ public final class EntityCitizenship extends AbstractDataTransferObject
         public void setEntityId(String entityId) {
             this.entityId = entityId;
         }
-        public void setStatus(Type.Builder status) {
+        public void setStatus(CodedAttribute.Builder status) {
             this.status = status;
         }
 

@@ -5,7 +5,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.kim.api.KimApiConstants;
-import org.kuali.rice.kim.api.identity.Type;
+import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -50,7 +50,7 @@ public final class EntityPhone extends AbstractDataTransferObject
     @XmlElement(name = Elements.ENTITY_ID, required = false)
     private final String entityId;
     @XmlElement(name = Elements.PHONE_TYPE, required = false)
-    private final Type phoneType;
+    private final CodedAttribute phoneType;
     @XmlElement(name = Elements.PHONE_NUMBER, required = false)
     private final String phoneNumber;
     @XmlElement(name = Elements.EXTENSION_NUMBER, required = false)
@@ -141,7 +141,7 @@ public final class EntityPhone extends AbstractDataTransferObject
     }
 
     @Override
-    public Type getPhoneType() {
+    public CodedAttribute getPhoneType() {
         return this.phoneType;
     }
 
@@ -221,7 +221,7 @@ public final class EntityPhone extends AbstractDataTransferObject
         private String id;
         private String entityId;
         private String entityTypeCode;
-        private Type.Builder phoneType;
+        private CodedAttribute.Builder phoneType;
         //private String phoneNumber;
         //private String extensionNumber;
         //private String countryCode;
@@ -254,7 +254,7 @@ public final class EntityPhone extends AbstractDataTransferObject
             builder.setEntityTypeCode(contract.getEntityTypeCode());
             builder.setSuppressPhone(contract.isSuppressPhone());
             if (contract.getPhoneType() != null) {
-                builder.setPhoneType(Type.Builder.create(contract.getPhoneType()));
+                builder.setPhoneType(CodedAttribute.Builder.create(contract.getPhoneType()));
             }
             builder.setPhoneNumber(contract.getPhoneNumberUnmasked());
             builder.setExtensionNumber(contract.getExtensionNumberUnmasked());
@@ -286,7 +286,7 @@ public final class EntityPhone extends AbstractDataTransferObject
         }
 
         @Override
-        public Type.Builder getPhoneType() {
+        public CodedAttribute.Builder getPhoneType() {
             return this.phoneType;
         }
 
@@ -392,7 +392,7 @@ public final class EntityPhone extends AbstractDataTransferObject
             this.entityId = entityId;
         }
 
-        public void setPhoneType(Type.Builder phoneType) {
+        public void setPhoneType(CodedAttribute.Builder phoneType) {
             this.phoneType = phoneType;
         }
 

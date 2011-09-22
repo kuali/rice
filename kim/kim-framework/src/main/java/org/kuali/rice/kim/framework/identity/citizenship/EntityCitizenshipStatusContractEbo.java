@@ -1,5 +1,5 @@
 package org.kuali.rice.kim.framework.identity.citizenship;
 
-import org.kuali.rice.kim.api.identity.TypeContract;
+import org.kuali.rice.kim.api.identity.CodedAttributeContract;
 
-public interface EntityCitizenshipStatusContractEbo extends TypeContract { }
+public interface EntityCitizenshipStatusContractEbo extends CodedAttributeContract { }

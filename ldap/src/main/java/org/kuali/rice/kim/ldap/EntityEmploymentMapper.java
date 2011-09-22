@@ -18,7 +18,7 @@ package org.kuali.rice.kim.ldap;
 import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.ldap.core.support.AbstractContextMapper;
 
-import org.kuali.rice.kim.api.identity.Type;
+import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
 import org.kuali.rice.kim.util.Constants;
 
@@ -45,9 +45,10 @@ public class EntityEmploymentMapper extends AbstractContextMapper {
 
         final EntityEmployment.Builder employee = EntityEmployment.Builder.create();
         employee.setId(context.getStringAttribute(getConstants().getEmployeeIdProperty()));
-        employee.setEmployeeStatus(Type.Builder.create(context.getStringAttribute(getConstants().getEmployeeStatusProperty())));
+        employee.setEmployeeStatus(
+                CodedAttribute.Builder.create(context.getStringAttribute(getConstants().getEmployeeStatusProperty())));
         //employee.setEmployeeTypeCode(context.getStringAttribute(getConstants().getEmployeeTypeProperty()));
-        employee.setEmployeeType(Type.Builder.create("P"));
+        employee.setEmployeeType(CodedAttribute.Builder.create("P"));
         employee.setBaseSalaryAmount(KualiDecimal.ZERO);
         
         employee.setActive(true);

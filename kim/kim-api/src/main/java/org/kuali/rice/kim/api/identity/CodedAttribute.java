@@ -15,19 +15,19 @@ import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.w3c.dom.Element;
 
-@XmlRootElement(name = Type.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = CodedAttribute.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = Type.Constants.TYPE_NAME, propOrder = {
-    Type.Elements.CODE,
-    Type.Elements.NAME,
-    Type.Elements.SORT_CODE,
-    Type.Elements.ACTIVE,
+@XmlType(name = CodedAttribute.Constants.TYPE_NAME, propOrder = {
+    CodedAttribute.Elements.CODE,
+    CodedAttribute.Elements.NAME,
+    CodedAttribute.Elements.SORT_CODE,
+    CodedAttribute.Elements.ACTIVE,
     CoreConstants.CommonElements.VERSION_NUMBER,
     CoreConstants.CommonElements.OBJECT_ID,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class Type extends AbstractDataTransferObject
-    implements TypeContract
+public final class CodedAttribute extends AbstractDataTransferObject
+    implements CodedAttributeContract
 {
     @XmlElement(name = Elements.CODE, required = true)
     private final String code;
@@ -49,7 +49,7 @@ public final class Type extends AbstractDataTransferObject
      * Private constructor used only by JAXB.
      * 
      */
-    private Type() {
+    private CodedAttribute() {
         this.name = null;
         this.code = null;
         this.sortCode = null;
@@ -58,7 +58,7 @@ public final class Type extends AbstractDataTransferObject
         this.active = false;
     }
 
-    private Type(Builder builder) {
+    private CodedAttribute(Builder builder) {
         this.name = builder.getName();
         this.code = builder.getCode();
         this.sortCode = builder.getSortCode();
@@ -99,11 +99,11 @@ public final class Type extends AbstractDataTransferObject
 
 
     /**
-     * A builder which can be used to construct {@link Type} instances.  Enforces the constraints of the {@link TypeContract}.
+     * A builder which can be used to construct {@link CodedAttribute} instances.  Enforces the constraints of the {@link CodedAttributeContract}.
      * 
      */
     public final static class Builder
-        implements Serializable, ModelBuilder, TypeContract
+        implements Serializable, ModelBuilder, CodedAttributeContract
     {
 
         private String name;
@@ -121,7 +121,7 @@ public final class Type extends AbstractDataTransferObject
             return new Builder(code);
         }
 
-        public static Builder create(TypeContract contract) {
+        public static Builder create(CodedAttributeContract contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
             }
@@ -135,8 +135,8 @@ public final class Type extends AbstractDataTransferObject
             return builder;
         }
 
-        public Type build() {
-            return new Type(this);
+        public CodedAttribute build() {
+            return new CodedAttribute(this);
         }
 
         @Override

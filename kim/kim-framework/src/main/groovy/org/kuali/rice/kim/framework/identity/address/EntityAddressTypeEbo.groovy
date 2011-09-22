@@ -1,11 +1,11 @@
 package org.kuali.rice.kim.framework.identity.address
 
-import org.kuali.rice.kim.api.identity.Type
-import org.kuali.rice.kim.api.identity.TypeContract
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject
+import org.kuali.rice.kim.api.identity.CodedAttributeContract
+import org.kuali.rice.kim.api.identity.CodedAttribute
 
 
-class EntityAddressTypeEbo implements TypeContract, ExternalizableBusinessObject {
+class EntityAddressTypeEbo implements CodedAttributeContract, ExternalizableBusinessObject {
     String code;
     String name;
     boolean active;
@@ -19,9 +19,9 @@ class EntityAddressTypeEbo implements TypeContract, ExternalizableBusinessObject
    * @param bo
    * @return an immutable Type
    */
-  static Type to(EntityAddressTypeEbo bo) {
+  static CodedAttribute to(EntityAddressTypeEbo bo) {
     if (bo == null) { return null }
-    return Type.Builder.create(bo).build()
+    return CodedAttribute.Builder.create(bo).build()
   }
 
   /**
@@ -29,7 +29,7 @@ class EntityAddressTypeEbo implements TypeContract, ExternalizableBusinessObject
    * @param an immutable Type
    * @return a EntityAddressTypeEbo
    */
-  static EntityAddressTypeEbo from(Type immutable) {
+  static EntityAddressTypeEbo from(CodedAttribute immutable) {
     if (immutable == null) {return null}
 
     EntityAddressTypeEbo bo = new EntityAddressTypeEbo()

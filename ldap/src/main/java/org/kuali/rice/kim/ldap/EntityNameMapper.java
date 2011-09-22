@@ -15,13 +15,11 @@
  */
 package org.kuali.rice.kim.ldap;
 
-import org.springframework.ldap.core.ContextMapper;
-import org.springframework.ldap.core.DirContextOperations;
-import org.springframework.ldap.core.support.AbstractContextMapper;
-
-import org.kuali.rice.kim.api.identity.Type;
+import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.util.Constants;
+import org.springframework.ldap.core.DirContextOperations;
+import org.springframework.ldap.core.support.AbstractContextMapper;
 
 /**
  * 
@@ -63,7 +61,7 @@ public class EntityNameMapper extends AbstractContextMapper {
         person.setLastName(context.getStringAttribute(getConstants().getSnLdapProperty()));
         person.setDefaultValue(isdefault);
         person.setActive(true);
-        person.setNameType(Type.Builder.create("PRI"));
+        person.setNameType(CodedAttribute.Builder.create("PRI"));
         
         return person;
     }

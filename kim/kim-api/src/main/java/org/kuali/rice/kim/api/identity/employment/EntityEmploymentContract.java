@@ -20,7 +20,7 @@ import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
-import org.kuali.rice.kim.api.identity.TypeContract;
+import org.kuali.rice.kim.api.identity.CodedAttributeContract;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationContract;
 
 /**
@@ -33,7 +33,7 @@ public interface EntityEmploymentContract extends Versioned, GloballyUnique, Ina
 
     /**
      * Gets this id of the parent identity object.
-     * @return the identity id for this {@link EntityEmailContract}
+     * @return the identity id for this {@link org.kuali.rice.kim.api.identity.email.EntityEmailContract}
      */
     String getEntityId();
 
@@ -47,13 +47,13 @@ public interface EntityEmploymentContract extends Versioned, GloballyUnique, Ina
      * Gets this {@link EntityEmploymentContract}'s employee status.
      * @return the employee status for this {@link EntityEmploymentContract}, or null if none has been assigned.
      */
-	TypeContract getEmployeeStatus();
+	CodedAttributeContract getEmployeeStatus();
 	
 	/**
      * Gets this {@link EntityEmploymentContract}'s employee type.
      * @return the employee type for this {@link EntityEmploymentContract}, or null if none has been assigned.
      */
-	TypeContract getEmployeeType();
+	CodedAttributeContract getEmployeeType();
 	
 	/**
      * Gets this {@link EntityEmploymentContract}'s primary department code.

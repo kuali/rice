@@ -22,31 +22,31 @@ class TypeTest {
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_empty() {
-        Type.Builder.create("");
+        CodedAttribute.Builder.create("");
     }
 
     @Test(expected=IllegalArgumentException.class)
     void test_Builder_fail_first_whitespace() {
-        Type.Builder.create("  ");
+        CodedAttribute.Builder.create("  ");
     }
 
     @Test
     void test_create_only_required() {
-        Type.Builder.create(Type.Builder.create(TYPE_CODE)).build();
+        CodedAttribute.Builder.create(CodedAttribute.Builder.create(TYPE_CODE)).build();
     }
 
     @Test
     void happy_path() {
-        Type.Builder.create(TYPE_CODE);
+        CodedAttribute.Builder.create(TYPE_CODE);
     }
 
     @Test
 	public void test_Xml_Marshal_Unmarshal() {
-		JAXBAssert.assertEqualXmlMarshalUnmarshal(this.create(), XML, Type.class)
+		JAXBAssert.assertEqualXmlMarshalUnmarshal(this.create(), XML, CodedAttribute.class)
 	}
 
     private create() {
-		return Type.Builder.create(new TypeContract() {
+		return CodedAttribute.Builder.create(new CodedAttributeContract() {
 				def String code ="HOME"
 				def String name = "Home"
 				def boolean active = true

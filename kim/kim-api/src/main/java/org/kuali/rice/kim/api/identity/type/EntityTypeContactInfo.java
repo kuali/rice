@@ -6,8 +6,8 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.kim.api.identity.EntityUtils;
-import org.kuali.rice.kim.api.identity.Type;
-import org.kuali.rice.kim.api.identity.TypeContract;
+import org.kuali.rice.kim.api.identity.CodedAttribute;
+import org.kuali.rice.kim.api.identity.CodedAttributeContract;
 import org.kuali.rice.kim.api.identity.address.EntityAddress;
 import org.kuali.rice.kim.api.identity.address.EntityAddressContract;
 import org.kuali.rice.kim.api.identity.email.EntityEmail;
@@ -54,7 +54,7 @@ public final class EntityTypeContactInfo extends AbstractDataTransferObject
     @XmlElement(name = Elements.ENTITY_TYPE_CODE, required = true)
     private final String entityTypeCode;
     @XmlElement(name = Elements.ENTITY_TYPE, required = false)
-    private final Type entityType;
+    private final CodedAttribute entityType;
     @XmlElementWrapper(name = Elements.ADDRESSES, required = false)
     @XmlElement(name = Elements.ADDRESS, required = false)
     private final List<EntityAddress> addresses;
@@ -140,7 +140,7 @@ public final class EntityTypeContactInfo extends AbstractDataTransferObject
     }
 
     @Override
-    public TypeContract getEntityType() {
+    public CodedAttributeContract getEntityType() {
         return this.entityType;
     }
 
@@ -199,7 +199,7 @@ public final class EntityTypeContactInfo extends AbstractDataTransferObject
     {
         private String entityId;
         private String entityTypeCode;
-        private Type.Builder entityType;
+        private CodedAttribute.Builder entityType;
         private List<EntityAddress.Builder> addresses;
         private List<EntityEmail.Builder> emailAddresses;
         private List<EntityPhone.Builder> phoneNumbers;
@@ -210,7 +210,7 @@ public final class EntityTypeContactInfo extends AbstractDataTransferObject
         private Builder(String entityId, String entityTypeCode) {
             setEntityId(entityId);
             setEntityTypeCode(entityTypeCode);
-            setEntityType(Type.Builder.create(entityTypeCode));
+            setEntityType(CodedAttribute.Builder.create(entityTypeCode));
         }
 
         public static Builder create(String entityId, String entityTypeCode) {
@@ -223,7 +223,7 @@ public final class EntityTypeContactInfo extends AbstractDataTransferObject
             }
             Builder builder = create(contract.getEntityId(), contract.getEntityTypeCode());
             if (contract.getEntityType() != null) {
-                builder.setEntityType(Type.Builder.create(contract.getEntityType()));
+                builder.setEntityType(CodedAttribute.Builder.create(contract.getEntityType()));
             }
             builder.addresses = new ArrayList<EntityAddress.Builder>();
             if (!CollectionUtils.isEmpty(contract.getAddresses())) {
@@ -264,7 +264,7 @@ public final class EntityTypeContactInfo extends AbstractDataTransferObject
         }
 
         @Override
-        public Type.Builder getEntityType() {
+        public CodedAttribute.Builder getEntityType() {
             return this.entityType;
         }
 
@@ -327,7 +327,7 @@ public final class EntityTypeContactInfo extends AbstractDataTransferObject
             this.entityTypeCode = entityTypeCode;
         }
 
-        public void setEntityType(Type.Builder entityType) {
+        public void setEntityType(CodedAttribute.Builder entityType) {
             this.entityType = entityType;
         }
 

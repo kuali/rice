@@ -1,5 +1,5 @@
 package org.kuali.rice.kim.framework.identity.employment;
 
-import org.kuali.rice.kim.api.identity.TypeContract;
+import org.kuali.rice.kim.api.identity.CodedAttributeContract;
 
-public interface EntityEmploymentTypeContractEbo extends TypeContract { }
+public interface EntityEmploymentTypeContractEbo extends CodedAttributeContract { }

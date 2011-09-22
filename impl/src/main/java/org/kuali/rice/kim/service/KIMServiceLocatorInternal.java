@@ -21,7 +21,6 @@ import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.api.KimConstants;
-import org.kuali.rice.kim.api.identity.IdentityArchiveService;
 import org.kuali.rice.kim.impl.group.GroupInternalService;
 
 import javax.xml.namespace.QName;
@@ -38,7 +37,6 @@ public final class KIMServiceLocatorInternal {
 
 	public static final String KIM_RUN_MODE_PROPERTY = "kim.mode";
 
-	public static final String KIM_IDENTITY_ARCHIVE_SERVICE = "kimIdentityArchiveService";
     public static final String KIM_UI_DOCUMENT_SERVICE = "kimUiDocumentService";
 	public static final String GROUP_INTERNAL_SERVICE = "groupInternalService";
 
@@ -54,10 +52,6 @@ public final class KIMServiceLocatorInternal {
                 (RunMode.REMOTE.equals(RunMode.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KIM_RUN_MODE_PROPERTY)))) ?
                         new QName(KimConstants.KIM_MODULE_NAMESPACE, serviceName) : new QName(serviceName));
 	}
-
-    public static IdentityArchiveService getIdentityArchiveService() {
-    	return (IdentityArchiveService)getService(KIM_IDENTITY_ARCHIVE_SERVICE);
-    }
 
     public static UiDocumentService getUiDocumentService() {
     	return (UiDocumentService)getService(KIM_UI_DOCUMENT_SERVICE);

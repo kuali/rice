@@ -18,7 +18,8 @@ package org.kuali.rice.kim.test.service;
 
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.kim.api.identity.IdentityArchiveService;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kim.impl.identity.IdentityArchiveService;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.impl.identity.EntityDefaultInfoCacheBo;
@@ -43,15 +44,20 @@ import static org.junit.Assert.*;
  */
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class IdentityArchiveServiceTest extends KIMTestCase {
+    public static final String KIM_IDENTITY_ARCHIVE_SERVICE = "kimIdentityArchiveService";
 
 	private IdentityArchiveService identityArchiveService;
+
+    public static IdentityArchiveService getIdentityArchiveService() {
+    	return GlobalResourceLoader.getService(KIM_IDENTITY_ARCHIVE_SERVICE);
+    }
 
 	public void setUp() throws Exception {
 		super.setUp();
 		final Map<String, Object> emptyMap = Collections.emptyMap();
 		KRADServiceLocator.getBusinessObjectService().deleteMatching(EntityDefaultInfoCacheBo.class, emptyMap);
 		if (null == identityArchiveService) {
-			identityArchiveService = KIMServiceLocatorInternal.getIdentityArchiveService();
+			identityArchiveService = getIdentityArchiveService();
 		}
 	}
 

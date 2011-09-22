@@ -13,8 +13,6 @@
          copyOnWrite="false"/>
   <cache name="http://rice.kuali.org/kim/v2_0/GroupMemberType" eternal="false" overflowToDisk="false" copyOnRead="false"
          copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/EntityDefaultType{Archive}" eternal="false" overflowToDisk="false" copyOnRead="false"
-         copyOnWrite="false"/>
   <cache name="http://rice.kuali.org/kim/v2_0/EntityDefaultType" eternal="false" overflowToDisk="false" copyOnRead="false"
          copyOnWrite="false"/>
   <cache name="http://rice.kuali.org/kim/v2_0/EntityType" eternal="false" overflowToDisk="false" copyOnRead="false"

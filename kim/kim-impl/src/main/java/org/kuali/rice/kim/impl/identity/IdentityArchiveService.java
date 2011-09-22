@@ -13,20 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.api.identity;
+package org.kuali.rice.kim.impl.identity;
 
-import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.kim.api.KimConstants;
-import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
 
 /**
  * 
@@ -37,8 +26,6 @@ import javax.jws.soap.SOAPBinding;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@WebService(name = "IdentityArchiveServiceSoap", targetNamespace = KimConstants.Namespaces.KIM_NAMESPACE_2_0)
-@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface IdentityArchiveService {
 
     /**
@@ -54,10 +41,7 @@ public interface IdentityArchiveService {
      * @return a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} or null
      * @throws IllegalArgumentException if the id is blank
      */
-    @WebMethod(operationName = "getEntityDefaultFromArchive")
-    @WebResult(name = "entityDefault")
-    @Cacheable(value= EntityDefault.Cache.NAME + "{Archive}", key="'id=' + #id")
-    EntityDefault getEntityDefaultFromArchive(@WebParam(name = "id") String id ) throws RiceIllegalArgumentException;
+    EntityDefault getEntityDefaultFromArchive(String id ) throws IllegalArgumentException;
 
 	/**
      * Gets a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} with an principalId from the archive.
@@ -72,10 +56,7 @@ public interface IdentityArchiveService {
      * @return a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} or null
      * @throws IllegalArgumentException if the principalId is blank
      */
-    @WebMethod(operationName = "getEntityDefaultFromArchiveByPrincipalId")
-    @WebResult(name = "entityDefault")
-    @Cacheable(value= EntityDefault.Cache.NAME + "{Archive}", key="'principalId=' + #principalId")
-    EntityDefault getEntityDefaultFromArchiveByPrincipalId(@WebParam(name = "principalId") String principalId) throws RiceIllegalArgumentException;
+    EntityDefault getEntityDefaultFromArchiveByPrincipalId(String principalId) throws IllegalArgumentException;
 
 	/**
      * Gets a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} with an principalName from the archive.
@@ -90,10 +71,7 @@ public interface IdentityArchiveService {
      * @return a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} or null
      * @throws IllegalArgumentException if the principalName is blank
      */
-    @WebMethod(operationName = "getEntityDefaultFromArchiveByPrincipalName")
-    @WebResult(name = "entityDefault")
-    @Cacheable(value= EntityDefault.Cache.NAME + "{Archive}", key="'principalName=' + #principalName")
-	EntityDefault getEntityDefaultFromArchiveByPrincipalName(@WebParam(name = "principalName") String principalName) throws RiceIllegalArgumentException;
+	EntityDefault getEntityDefaultFromArchiveByPrincipalName(String principalName) throws IllegalArgumentException;
 	
 	/**
      * Saves a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} to the archive.
@@ -109,8 +87,6 @@ public interface IdentityArchiveService {
      * @throws IllegalArgumentException if the entityDefault is null
      */
     //TODO: this should probably return some kind of Future<EntityDefault> if we can find a way to remote that
-    @WebMethod(operationName = "saveEntityDefaultToArchive")
-    @CacheEvict(value= EntityDefault.Cache.NAME + "{Archive}", allEntries = true)
-	void saveEntityDefaultToArchive(@WebParam(name = "entityDefault") EntityDefault entityDefault) throws RiceIllegalArgumentException;
+	void saveEntityDefaultToArchive(EntityDefault entityDefault) throws IllegalArgumentException;
 	
 }

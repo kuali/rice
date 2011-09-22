@@ -18,7 +18,7 @@ package org.kuali.rice.kew.actionlist.web;
 
 import org.displaytag.decorator.TableDecorator;
 import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
-import org.kuali.rice.kew.actionlist.DisplayParameters;
+import org.kuali.rice.kew.api.actionlist.DisplayParameters;
 import org.kuali.rice.kew.util.KEWConstants;
 
 

@@ -101,6 +101,14 @@ public final class KewApiConstants {
     public static final String SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE_LABEL = "Document Search Result Processor XML Attribute";
     public static final String DOCUMENT_SEARCH_SECURITY_FILTER_ATTRIBUTE_TYPE_LABEL = "Document Search Security Filter Attribute";
     public static final String QUALIFIER_RESOLVER_ATTRIBUTE_TYPE_LABEL = "Qualifier Resolver";
+    
+    public static final String ACTION_TAKEN_APPROVED_CD = "A";
+    public static final String ACTION_TAKEN_COMPLETED_CD = "C";
+    public static final String ACTION_TAKEN_ACKNOWLEDGED_CD = "K";
+    public static final String ACTION_TAKEN_FYI_CD = "F";
+    public static final String ACTION_TAKEN_DENIED_CD = "D";
+    public static final String ACTION_TAKEN_CANCELED_CD = "X";
+    public static final String ACTION_TAKEN_ROUTED_CD = "O";
 
     public static final String[] RULE_ATTRIBUTE_TYPES = {
     	RULE_ATTRIBUTE_TYPE,

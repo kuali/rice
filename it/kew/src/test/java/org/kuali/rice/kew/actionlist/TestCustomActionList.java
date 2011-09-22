@@ -17,8 +17,9 @@
 package org.kuali.rice.kew.actionlist;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actions.ActionSet;
+import org.kuali.rice.kew.api.action.ActionSet;
 import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.actionlist.DisplayParameters;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.mail.CustomEmailAttribute;
 import org.kuali.rice.kew.notes.CustomNoteAttribute;
@@ -57,7 +58,7 @@ public class TestCustomActionList implements CustomActionListAttribute, Serializ
     }
 
 	public ActionSet getLegalActions(String principalId, ActionItem actionItem) throws Exception {
-		ActionSet actionSet = new ActionSet();
+		ActionSet actionSet = ActionSet.Builder.create().build();
 		actionSet.addAcknowledge();
 		actionSet.addApprove();
 		actionSet.addCancel();
@@ -66,7 +67,7 @@ public class TestCustomActionList implements CustomActionListAttribute, Serializ
 	}
     
     public DisplayParameters getDocHandlerDisplayParameters(String principalId, ActionItem actionItem) throws Exception {
-		return new DisplayParameters(new Integer(300));
+        return DisplayParameters.Builder.create(new Integer(300)).build();
 	}
     
     public RouteHeaderDTO getRouteHeaderVO() {

@@ -17,7 +17,8 @@
 package org.kuali.rice.kew.actionlist;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actions.ActionSet;
+import org.kuali.rice.kew.api.action.ActionSet;
+import org.kuali.rice.kew.api.actionlist.DisplayParameters;
 
 
 
@@ -33,7 +34,7 @@ public class DefaultCustomActionListAttribute implements CustomActionListAttribu
 	/**
 	 * Sets up the default ActionSet which includes only FYIs.
 	 */
-	private static ActionSet DEFAULT_LEGAL_ACTIONS = new ActionSet();
+	private static ActionSet DEFAULT_LEGAL_ACTIONS = ActionSet.Builder.create().build();
 	static {
 		DEFAULT_LEGAL_ACTIONS.addFyi();
 	}

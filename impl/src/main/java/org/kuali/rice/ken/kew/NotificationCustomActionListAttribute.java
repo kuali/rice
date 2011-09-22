@@ -17,8 +17,8 @@ package org.kuali.rice.ken.kew;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
-import org.kuali.rice.kew.actionlist.DisplayParameters;
-import org.kuali.rice.kew.actions.ActionSet;
+import org.kuali.rice.kew.api.action.ActionSet;
+import org.kuali.rice.kew.api.actionlist.DisplayParameters;
 
 
 /**
@@ -30,13 +30,13 @@ public class NotificationCustomActionListAttribute implements CustomActionListAt
 
     @Override
 	public DisplayParameters getDocHandlerDisplayParameters(String principalId, ActionItem actionItem) throws Exception {
-	DisplayParameters dp = new DisplayParameters(new Integer(400));
+	DisplayParameters dp = DisplayParameters.Builder.create(new Integer(400)).build();
 	return dp;
     }
 
     @Override
 	public ActionSet getLegalActions(String principalId,ActionItem actionItem) throws Exception {
-	ActionSet as = new ActionSet();
+	ActionSet as = ActionSet.Builder.create().build();
 	as.addFyi();
 	return as;
     }

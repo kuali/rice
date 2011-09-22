@@ -23,34 +23,66 @@ import java.util.Map;
 public interface RemotableAttributeOwner {
 
     /**
+     * <p>get the attributes supported by the people flow type with the given krmsTypeId.</p>
      *
-     * @return
+     * @param krmsTypeId the people flow type identifier.  Must not be null or blank.
+     * @return the {@link RemotableAttributeField}s that the PeopleFlow type with the given id supports.
+     * Will not return null.
      */
     @WebMethod(operationName="getAttributeFields")
     @WebResult(name = "attributeFields")
-    public List<RemotableAttributeField> getAttributeFields();
+    List<RemotableAttributeField> getAttributeFields( @WebParam(name = "krmsTypeId") String krmsTypeId );
 
+    /**
+     * <p>This method validates the passed in attributes for a krmsTypeId generating a List of
+     * {@link RemotableAttributeError}s.</p>
+     *
+     * @param krmsTypeId the people flow type identifier.  Must not be null or blank.
+     * @param attributes the attributes to validate. Cannot be null.
+     * @return any errors that are discovered during validation.  Will not return null.
+     * @throws RiceIllegalArgumentException
+     */
     @WebMethod(operationName="validateAttributes")
     @XmlElementWrapper(name = "attributeErrors", required = true)
     @XmlElement(name = "attributeError", required = false)
     @WebResult(name = "attributeErrors")
-    public List<RemotableAttributeError> validateAttributes(
+    List<RemotableAttributeError> validateAttributes(
+
+            @WebParam(name = "krmsTypeId") String krmsTypeId,
+
             @WebParam(name = "attributes")
             @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
             Map<String, String> attributes
+
     )  throws RiceIllegalArgumentException;
 
+    /**
+     * <p>This method validates the passed in attributes for a krmsTypeId generating a List of
+     * {@link RemotableAttributeError}s.  This method used the oldAttributes to aid in validation.  This is useful for
+     * validating "new" or "updated" attributes.</p>
+     *
+     * @param krmsTypeId the people flow type identifier.  Must not be null or blank.
+     * @param newAttributes the kim type attributes to validate. Cannot be null.
+     * @param oldAttributes the old attributes to use for validation. Cannot be null.
+     * @return any errors that are discovered during validation.  Will not return null.
+     * @throws RiceIllegalArgumentException
+     */
     @WebMethod(operationName="validateAttributesAgainstExisting")
     @XmlElementWrapper(name = "attributeErrors", required = true)
     @XmlElement(name = "attributeError", required = false)
     @WebResult(name = "attributeErrors")
-    public List<RemotableAttributeError> validateAttributesAgainstExisting(
+    List<RemotableAttributeError> validateAttributesAgainstExisting(
+
+            @WebParam(name = "krmsTypeId") String krmsTypeId,
+
             @WebParam(name = "newAttributes")
             @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
             Map<String, String> newAttributes,
+
             @WebParam(name = "oldAttributes")
             @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
             Map<String, String> oldAttributes
+
     ) throws RiceIllegalArgumentException;
 
 }

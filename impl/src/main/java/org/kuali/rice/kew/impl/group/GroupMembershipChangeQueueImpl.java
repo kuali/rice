@@ -34,7 +34,7 @@ import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 /**
- * Executes the updating of {@link ActionItem}s for a {@link Workgroup} when
+ * Executes the updating of {@link ActionItem}s for a {@link Group} when
  * the membership of a group changes.  This keeps users' Action Lists
  * in-sync with their group membership.  Allowing their Action List to
  * be updated for requests routed to groups that they are either added to
@@ -75,8 +75,10 @@ public class GroupMembershipChangeQueueImpl implements GroupMembershipChangeQueu
      */
     private void updateActionListForUserAddedToGroup(String principalId, String groupId) {
         List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
-        List<String> allGroupsToCheck = KimApiServiceLocator.getGroupService().getParentGroupIds(groupId);
+        List<String> parentGroupIds = KimApiServiceLocator.getGroupService().getParentGroupIds(groupId);
+        List<String> allGroupsToCheck = new ArrayList<String>();
         allGroupsToCheck.add(0, groupId);
+        allGroupsToCheck.addAll(parentGroupIds);
         for (String groupToCheckId : allGroupsToCheck) {
             actionRequests.addAll(getActionRequestService().findActivatedByGroup(groupToCheckId));
         }
@@ -88,8 +90,10 @@ public class GroupMembershipChangeQueueImpl implements GroupMembershipChangeQueu
     }
     
     private void updateActionListForUserRemovedFromGroup(String principalId, String groupId) {
-        List<String> allGroupsToCheck = KimApiServiceLocator.getGroupService().getParentGroupIds(groupId);
+        List<String> parentGroupIds = KimApiServiceLocator.getGroupService().getParentGroupIds(groupId);
+        List<String> allGroupsToCheck = new ArrayList<String>();
         allGroupsToCheck.add(0, groupId);
+        allGroupsToCheck.addAll(parentGroupIds);
         Collection<ActionItem> actionItems = getActionListService().findByPrincipalId(principalId);
         for (Iterator<ActionItem> itemIt = actionItems.iterator(); itemIt.hasNext();) {
             ActionItem item = itemIt.next();

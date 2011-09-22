@@ -79,20 +79,24 @@ public class TestActionTypeService implements ActionTypeService, Action {
     }
 
     @Override
-    public List<RemotableAttributeField> getAttributeFields() {
+    public List<RemotableAttributeField> getAttributeFields(String id) {
         return Collections.emptyList();
     }
 
     @Override
-    public List<RemotableAttributeError> validateAttributes(@WebParam(name = "attributes") @XmlJavaTypeAdapter(
-            value = MapStringStringAdapter.class) Map<String, String> attributes) throws RiceIllegalArgumentException {
+    public List<RemotableAttributeError> validateAttributes(
+            String id,
+            Map<String, String> attributes
+    ) throws RiceIllegalArgumentException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public List<RemotableAttributeError> validateAttributesAgainstExisting(@WebParam(name = "newAttributes") @XmlJavaTypeAdapter(
-            value = MapStringStringAdapter.class) Map<String, String> newAttributes, @WebParam(name = "oldAttributes") @XmlJavaTypeAdapter(
-            value = MapStringStringAdapter.class) Map<String, String> oldAttributes) throws RiceIllegalArgumentException {
+    public List<RemotableAttributeError> validateAttributesAgainstExisting(
+            String id,
+            Map<String, String> newAttributes,
+            Map<String, String> oldAttributes
+    ) throws RiceIllegalArgumentException {
         throw new UnsupportedOperationException();
     }
 }

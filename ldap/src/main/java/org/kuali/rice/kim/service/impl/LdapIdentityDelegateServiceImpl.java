@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.service.impl;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -40,17 +41,6 @@ import org.kuali.rice.kim.dao.LdapPrincipalDao;
  */
 public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl {
     private LdapPrincipalDao principalDao;
-    
-    @Override
-	protected List<String> lookupEntityIds(Map<String,String> searchCriteria) {
-        final List<String> edsInfo = getPrincipalDao().lookupEntityIds(searchCriteria);
-        if (edsInfo != null && !edsInfo.isEmpty()) {
-            return edsInfo;
-        } 
-        else {
-            return super.lookupEntityIds(searchCriteria);
-        }
-    }
 
     @Override
 	public Entity getEntity(String entityId) {
@@ -169,7 +159,7 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl {
 	}
 
     @Override
-	public Principal getPrincipal(String principalId) {	
+	public Principal getPrincipal(String principalId) {
         if (StringUtils.isBlank(principalId)) {
             throw new RiceIllegalArgumentException("principalId is blank");
         }
@@ -201,8 +191,8 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl {
         if (CollectionUtils.isEmpty(entityIds)) {
             throw new RiceIllegalArgumentException("entityIds is empty or null");
         }
-
-        return getPrincipalDao().getDefaultNamesForEntityIds(entityIds);
+        Map<String, EntityNamePrincipalName> map = getPrincipalDao().getDefaultNamesForEntityIds(entityIds);
+        return map != null ? Collections.unmodifiableMap(map) : Collections.<String, EntityNamePrincipalName>emptyMap();
 	}
 
 
@@ -213,7 +203,8 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl {
             throw new RiceIllegalArgumentException("principalIds is empty or null");
         }
 
-        return getPrincipalDao().getDefaultNamesForPrincipalIds(principalIds);
+        Map<String, EntityNamePrincipalName> map = getPrincipalDao().getDefaultNamesForPrincipalIds(principalIds);
+        return map != null ? Collections.unmodifiableMap(map) : Collections.<String, EntityNamePrincipalName>emptyMap();
 	}
 
     public void setPrincipalDao(LdapPrincipalDao principalDao) {

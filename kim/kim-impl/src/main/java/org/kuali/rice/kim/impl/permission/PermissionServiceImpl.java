@@ -51,6 +51,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
@@ -61,32 +62,11 @@ public class PermissionServiceImpl implements PermissionService {
 	private BusinessObjectService businessObjectService;
 	private CriteriaLookupService criteriaLookupService;
 
- 	private List<Template> allTemplates;
+ 	private final CopyOnWriteArrayList<Template> allTemplates = new CopyOnWriteArrayList<Template>();
 
     // --------------------
     // Authorization Checks
     // --------------------
-    
-	protected PermissionTypeService getPermissionTypeService( String namespaceCode, String permissionTemplateName, String permissionName, String permissionId ) {
-        PermissionTemplateBo permTemplate = null;
-        if ( permissionTemplateName != null ) {
-            List<PermissionBo> perms = getPermissionImplsByTemplateName(namespaceCode, permissionTemplateName);
-            if ( !perms.isEmpty() ) {    
-                permTemplate = perms.get(0).getTemplate();
-            }
-        } else if ( permissionName != null ) {
-            List<PermissionBo> perms = getPermissionImplsByName(namespaceCode, permissionName);
-            if ( !perms.isEmpty() ) {    
-                permTemplate = perms.get(0).getTemplate();
-            }
-        } else if ( permissionId != null ) {
-            PermissionBo perm = getPermissionImpl(permissionId);
-            if ( perm != null ) {
-                permTemplate = perm.getTemplate();
-            }
-        }
-        return getPermissionTypeService( permTemplate );
-	}
 
     protected PermissionTypeService getPermissionTypeService( PermissionTemplateBo permissionTemplate ) {
     	if ( permissionTemplate == null ) {
@@ -159,8 +139,6 @@ public class PermissionServiceImpl implements PermissionService {
     	if ( roleIds.isEmpty() ) {
     		return false;
     	}
-
-		//return roleService.principalHasRole( principalId, roleIds, new Map<String, String>(qualification.toMap()));
 
 		return roleService.principalHasRole( principalId, roleIds, qualification);
 
@@ -279,7 +257,7 @@ public class PermissionServiceImpl implements PermissionService {
     		}
     	}
     	
-    	return results;    	
+    	return Collections.unmodifiableList(results);
     }
 
     protected Map<String,PermissionTypeService> getPermissionTypeServicesByTemplateId( Collection<PermissionBo> permissions ) {
@@ -299,7 +277,7 @@ public class PermissionServiceImpl implements PermissionService {
     			perms = new ArrayList<Permission>();
     			results.put( perm.getTemplateId(), perms );
     		}
-    		perms.add( perm.to(perm) );
+    		perms.add( PermissionBo.to(perm) );
     	}
     	return results;
     }
@@ -323,9 +301,9 @@ public class PermissionServiceImpl implements PermissionService {
     		Map<String,List<Permission>> permissionMap = groupPermissionsByTemplate( permissions );
     		// loop over the different templates, matching all of the same template against the type
     		// service at once
-    		for ( String templateId : permissionMap.keySet() ) {
-    			PermissionTypeService permissionTypeService = permissionTypeServices.get( templateId );
-    			List<Permission> permissionList = permissionMap.get( templateId );
+    		for ( Map.Entry<String,List<Permission>> entry : permissionMap.entrySet() ) {
+    			PermissionTypeService permissionTypeService = permissionTypeServices.get( entry.getKey() );
+    			List<Permission> permissionList = entry.getValue();
 				applicablePermissions.addAll( permissionTypeService.getMatchingPermissions( permissionDetails, permissionList ) );    				
     		}
     	}
@@ -347,13 +325,14 @@ public class PermissionServiceImpl implements PermissionService {
             throw new RiceIllegalArgumentException("permissionDetails is null");
         }
 
-        List<Assignee> results = new ArrayList<Assignee>();
+
     	List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName, permissionDetails);
     	if ( roleIds.isEmpty() ) {
-    		return results;
+    		return Collections.emptyList();
     	}
     	Collection<RoleMembership> roleMembers = roleService.getRoleMembers( roleIds,qualification );
-    	for ( RoleMembership rm : roleMembers ) {
+    	List<Assignee> results = new ArrayList<Assignee>();
+        for ( RoleMembership rm : roleMembers ) {
 			List<DelegateType.Builder> delegateBuilderList = new ArrayList<DelegateType.Builder>();
 			if (!rm.getDelegates().isEmpty()) {
     			for (DelegateType delegate : rm.getDelegates()){
@@ -366,7 +345,7 @@ public class PermissionServiceImpl implements PermissionService {
     			results.add (Assignee.Builder.create(null, rm.getMemberId(), delegateBuilderList).build());
     		}
     	}
-    	return results;
+    	return Collections.unmodifiableList(results);
     }
     @Override
     public List<Assignee> getPermissionAssigneesByTemplateName(String namespaceCode, String permissionTemplateName,
@@ -385,13 +364,13 @@ public class PermissionServiceImpl implements PermissionService {
             throw new RiceIllegalArgumentException("permissionDetails is null");
         }
 
-        List<Assignee> results = new ArrayList<Assignee>();
     	List<String> roleIds = getRoleIdsForPermissionTemplate( namespaceCode, permissionTemplateName, permissionDetails);
     	if ( roleIds.isEmpty() ) {
-    		return results;
+    		return Collections.emptyList();
     	}
     	Collection<RoleMembership> roleMembers = roleService.getRoleMembers( roleIds,qualification);
-    	for ( RoleMembership rm : roleMembers ) {
+    	List<Assignee> results = new ArrayList<Assignee>();
+        for ( RoleMembership rm : roleMembers ) {
 			List<DelegateType.Builder> delegateBuilderList = new ArrayList<DelegateType.Builder>();
 			if (!rm.getDelegates().isEmpty()) {
     			for (DelegateType delegate : rm.getDelegates()){
@@ -404,7 +383,7 @@ public class PermissionServiceImpl implements PermissionService {
     			results.add (Assignee.Builder.create(null, rm.getMemberId(), delegateBuilderList).build());
     		}
     	}
-    	return results;
+    	return Collections.unmodifiableList(results);
     }
 
      @Override
@@ -509,7 +488,7 @@ public class PermissionServiceImpl implements PermissionService {
     	for (PermissionBo impl : impls) {
     	    results.add(PermissionBo.to(impl));
     	}
-    	return results;
+    	return Collections.unmodifiableList(results);
     }
 
 	protected PermissionBo getPermissionImpl(String permissionId) {
@@ -565,7 +544,7 @@ public class PermissionServiceImpl implements PermissionService {
         Map<String,String> criteria = new HashMap<String,String>(2);
 		criteria.put( KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode );
 		criteria.put( KimConstants.UniqueKeyConstants.PERMISSION_TEMPLATE_NAME, permissionTemplateName );
-		PermissionTemplateBo impl = (PermissionTemplateBo) businessObjectService.findByPrimaryKey( PermissionTemplateBo.class, criteria );
+		PermissionTemplateBo impl = businessObjectService.findByPrimaryKey( PermissionTemplateBo.class, criteria );
 		if ( impl != null ) {
 			return PermissionTemplateBo.to(impl);
 		}
@@ -573,7 +552,7 @@ public class PermissionServiceImpl implements PermissionService {
 	}
     @Override
 	public List<Template> getAllTemplates() {
-		if ( allTemplates == null ) {
+		if ( allTemplates.isEmpty() ) {
 			Map<String,String> criteria = new HashMap<String,String>(1);
 			criteria.put( KRADPropertyConstants.ACTIVE, "Y" );
 			List<PermissionTemplateBo> impls = (List<PermissionTemplateBo>) businessObjectService.findMatching( PermissionTemplateBo.class, criteria );
@@ -582,10 +561,10 @@ public class PermissionServiceImpl implements PermissionService {
 				infos.add( PermissionTemplateBo.to(impl) );
 			}
 			Collections.sort(infos, new Comparator<Template>() {
-				public int compare(Template tmpl1,
+				@Override public int compare(Template tmpl1,
 						Template tmpl2) {
-					int result = 0;
-					result = tmpl1.getNamespaceCode().compareTo(tmpl2.getNamespaceCode());
+
+					int result = tmpl1.getNamespaceCode().compareTo(tmpl2.getNamespaceCode());
 					if ( result != 0 ) {
 						return result;
 					}
@@ -593,9 +572,9 @@ public class PermissionServiceImpl implements PermissionService {
 					return result;
 				}
 			});
-			allTemplates = infos;
+			allTemplates.addAll(infos);
 		}
-		return allTemplates;
+		return Collections.unmodifiableList(allTemplates);
     }
 
 

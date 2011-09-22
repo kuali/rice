@@ -325,7 +325,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
                 results.add(rai.build());
             }
         }
-        return results;
+        return Collections.unmodifiableList(results);
     }
 
     private RoleResponsibilityAction getResponsibilityAction(String roleId, String responsibilityId, String roleMemberId) {
@@ -367,7 +367,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         final List<String> roleIds = getRoleIdsForPredicate(and(equal("responsibilityId", id), equal("active", "Y")));
 
         //TODO filter with qualifiers
-        return roleIds;
+        return Collections.unmodifiableList(roleIds);
     }
 
     @Override
@@ -441,7 +441,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
             }
             applicableResponsibilities.addAll(responsibilityTypeService.getMatchingResponsibilities(responsibilityDetails, responsibilityInfos));
         }
-        return applicableResponsibilities;
+        return Collections.unmodifiableList(applicableResponsibilities);
     }
 
     private Map<String, ResponsibilityTypeService> getResponsibilityTypeServicesByTemplateId(Collection<Responsibility> responsibilities) {
@@ -460,7 +460,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
                 }
             }
         }
-        return responsibilityTypeServices;
+        return Collections.unmodifiableMap(responsibilityTypeServices);
     }
 
     private Map<String, List<Responsibility>> groupResponsibilitiesByTemplate(Collection<Responsibility> responsibilities) {
@@ -473,14 +473,14 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
             }
             responsibilityInfos.add(responsibility);
         }
-        return results;
+        return Collections.unmodifiableMap(results);
     }
 
     private List<String> getRoleIdsForResponsibilities(Collection<String> ids, Map<String, String> qualification) {
         final List<String> roleIds = getRoleIdsForPredicate(and(in("responsibilityId", ids.toArray()), equal("active", "Y")));
 
         //TODO filter with qualifiers
-        return roleIds;
+        return Collections.unmodifiableList(roleIds);
     }
 
     private List<String> getRoleIdsForPredicate(Predicate p) {
@@ -492,7 +492,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         for (RoleResponsibilityBo bo : qr.getResults()) {
             roleIds.add(bo.getRoleId());
         }
-        return roleIds;
+        return Collections.unmodifiableList(roleIds);
     }
 
     private List<Responsibility> findRespsByNamespaceCodeAndTemplateName(final String namespaceCode, final String templateName) {

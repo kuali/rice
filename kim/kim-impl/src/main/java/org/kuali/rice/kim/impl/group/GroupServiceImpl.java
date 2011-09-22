@@ -96,7 +96,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 			groups.add( group );
 			groups.addAll( getParentGroups( group.getId() ) );
 		}
-		return new ArrayList<Group>( groups );
+		return Collections.unmodifiableList(new ArrayList<Group>( groups ));
     }
 
     @Override
@@ -112,7 +112,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
             result.add(group.getId());
         }
 
-        return result;
+        return Collections.unmodifiableList(result);
     }
 
     @Override
@@ -180,7 +180,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
             }
         }
 
-        return result;
+        return Collections.unmodifiableList(result);
     }
 
     @Override
@@ -198,7 +198,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
             }
         }
 
-        return result;
+        return Collections.unmodifiableList(result);
     }
 
     @Override
@@ -206,8 +206,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         if ( StringUtils.isEmpty(groupId) ) {
 			throw new RiceIllegalArgumentException("groupId is blank");
 		}
-		Set<String> visitedGroupIds = new HashSet<String>();
-		return getMemberPrincipalIdsInternal(groupId, visitedGroupIds);
+		return getMemberPrincipalIdsInternal(groupId, new HashSet<String>());
     }
 
     @Override
@@ -215,7 +214,6 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         if ( StringUtils.isEmpty(groupId) ) {
 			throw new RiceIllegalArgumentException("groupId is blank");
 		}
-        //Group group = getGroup(groupId);
         return this.getMemberIdsByType(getMembersOfGroup(groupId), KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
     }
 
@@ -231,7 +229,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 				groupIds.add( group.getId() );
 			}
 		}
-		return groupIds;
+		return Collections.unmodifiableList(groupIds);
     }
 
 
@@ -273,9 +271,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         if ( StringUtils.isEmpty(groupId) ) {
 			 throw new RiceIllegalArgumentException("groupId is blank");
 		}
-
-        Set<String> visitedGroupIds = new HashSet<String>();
-		return isMemberOfGroupInternal(groupMemberId, groupId, visitedGroupIds, KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE);
+		return isMemberOfGroupInternal(groupMemberId, groupId, new HashSet<String>(), KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE);
 	}
 
     @Override
@@ -301,7 +297,6 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         if ( StringUtils.isEmpty(groupId) ) {
 			 throw new RiceIllegalArgumentException("groupId is blank");
 		}
-        //Group group = getGroup(groupId);
         return this.getMemberIdsByType(getMembersOfGroup(groupId), KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE);
     }
 
@@ -319,7 +314,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
             }
         }
 
-        return result;
+        return Collections.unmodifiableList(result);
     }
 
     @Override
@@ -335,7 +330,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
             }
         }
 
-        return result;
+        return Collections.unmodifiableList(result);
     }
 
     @Override
@@ -352,7 +347,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         if (group != null) {
             return group.getAttributes();
         }
-        return null;
+        return Collections.emptyMap();
     }
 
     @Override
@@ -366,7 +361,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         for (String groupId : groupIds) {
               groupMembers.addAll(getMembersOfGroup(groupId));
         }
-        return groupMembers;
+        return Collections.unmodifiableList(groupMembers);
     }
 
     @Override
@@ -528,7 +523,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
                 groupMembers.add(GroupMemberBo.to(groupBo));
             }
         }
-        return groupMembers;
+        return Collections.unmodifiableList(groupMembers);
     }
 
     protected List<String> getMemberIdsByType(Collection<GroupMember> members, String memberType) {
@@ -540,7 +535,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
                 }
             }
         }
-        return membersIds;
+        return Collections.unmodifiableList(membersIds);
     }
 
     protected GroupBo getGroupBo(String groupId) {
@@ -582,7 +577,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 			}
 		}
 
-		return new ArrayList<String>(ids);
+		return Collections.unmodifiableList(new ArrayList<String>(ids));
 	}
 
     protected Collection<Group> getDirectGroupsForPrincipal( String principalId ) {

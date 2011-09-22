@@ -67,7 +67,6 @@ class IdentityServiceImplTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
 
     private MockFor mockBoService;
-    private MockFor mockPersistenceService;
     private MockFor mockCriteriaLookupService;
     private BusinessObjectService boService;
     private PersistenceService persistenceService;
@@ -223,7 +222,6 @@ class IdentityServiceImplTest {
     @Before
     void setupMockContext() {
         mockBoService = new MockFor(BusinessObjectService.class);
-        mockPersistenceService = new MockFor(PersistenceService.class);
         mockCriteriaLookupService = new MockFor(CriteriaLookupService.class);
     }
 
@@ -236,11 +234,6 @@ class IdentityServiceImplTest {
     void injectBusinessObjectServiceIntoIdentityService() {
         boService = mockBoService.proxyDelegateInstance()
         identityServiceImpl.setBusinessObjectService(boService)
-    }
-
-    void injectPersistenceServiceIntoIdentityService() {
-        persistenceService = mockPersistenceService.proxyDelegateInstance();
-        identityServiceImpl.setPersistenceService(persistenceService);
     }
 
     void injectCriteriaLookupServiceIntoIdentityService() {
@@ -284,12 +277,7 @@ class IdentityServiceImplTest {
             Class clazz, Map map -> return sampleEntities.get(map.get("id"))
         }
 
-        mockPersistenceService.demand.retrieveNonKeyFields(1..sampleEntities.size()) {
-            Object object -> return null
-        }
-
         injectBusinessObjectServiceIntoIdentityService();
-        injectPersistenceServiceIntoIdentityService();
 
         for (EntityBo entityBo in sampleEntities.values()) {
             Assert.assertEquals(EntityBo.to(entityBo), identityService.getEntity(entityBo.id))

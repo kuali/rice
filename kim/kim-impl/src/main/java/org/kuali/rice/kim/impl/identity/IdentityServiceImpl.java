@@ -98,7 +98,6 @@ public class IdentityServiceImpl implements IdentityService {
 
     private CriteriaLookupService criteriaLookupService;
 	private BusinessObjectService businessObjectService;
-    private PersistenceService persistenceService;
 
     @Override
 	public Entity getEntity(String entityId) {
@@ -737,50 +736,6 @@ public class IdentityServiceImpl implements IdentityService {
 
 	private EntityBo getEntityBo(String entityId) {
 		return businessObjectService.findByPrimaryKey(EntityBo.class, Collections.singletonMap("id", entityId));
-        /*if(entityImpl!=null) {
-            // in order for unit tests to run, we needed a way to mock the persistence service, so the refresh is done within here now rather than on the BO
-            getPersistenceService().retrieveNonKeyFields(entityImpl);
-            *//*TODO: We need to try and remove this.  Currently, without it, some integration tests fail because of some
-             * sort of OJB caching and not filling in the type values.  We need to figure out why this is happening and fix it.
-             * Yes, this is a hack :P
-             *//*
-            for (EntityTypeContactInfoBo type : entityImpl.getEntityTypeContactInfos()) {
-                type.refresh();
-                for (EntityAddressBo addressBo : type.getAddresses()) {
-                    addressBo.refreshReferenceObject("addressType");
-                }
-                for (EntityEmailBo emailBo : type.getEmailAddresses()) {
-                    emailBo.refreshReferenceObject("emailType");
-                }
-                for (EntityPhoneBo phoneBo : type.getPhoneNumbers()) {
-                    phoneBo.refreshReferenceObject("phoneType");
-                }
-            }
-            for (EntityNameBo name : entityImpl.getNames()) {
-                name.refreshReferenceObject("nameType");
-            }
-        }
-        return entityImpl;*/
-	}
-
-    private PersistenceService getPersistenceService() {
-		if ( persistenceService == null ) {
-			persistenceService = KRADServiceLocator.getPersistenceService();
-		}
-		return persistenceService;
-	}
-
-	protected List<EntityBo> lookupEntitys(Map<String, String> searchCriteria) {
-		return new ArrayList<EntityBo>(KRADServiceLocatorWeb.getLookupService().findCollectionBySearchUnbounded( EntityBo.class, searchCriteria ));
-	}
-
-	protected List<String> lookupEntityIds(Map<String,String> searchCriteria) {
-		List<EntityBo> entities = lookupEntitys( searchCriteria );
-		List<String> entityIds = new ArrayList<String>( entities.size() );
-		for ( EntityBo entity : entities ) {
-			entityIds.add( entity.getId() );
-		}
-		return entityIds;
 	}
 
 	@Override
@@ -817,31 +772,6 @@ public class IdentityServiceImpl implements IdentityService {
 		}
         return getEntityByKeyValue("principals." + KIMPropertyConstants.Principal.PRINCIPAL_ID, principalId);
 	}
-
-    /*
-	public String getEntityIdByPrincipalId(String principalId) {
-		if ( StringUtils.isBlank( principalId ) ) {
-			return null;
-		}
-		PrincipalBo principal = getPrincipalBo(principalId);
-		return principal != null ? principal.getEntityId() : null;
-    }
-
-	public String getEntityIdByPrincipalName(String principalName) {
-		if ( StringUtils.isBlank( principalName ) ) {
-			return null;
-		}
-		Principal principal = getPrincipalByPrincipalName(principalName);
-		return principal != null ? principal.getEntityId() : null;
-    }
-
-	public String getPrincipalIdByPrincipalName(String principalName) {
-		if ( StringUtils.isBlank( principalName ) ) {
-			return null;
-		}
-		Principal principal = getPrincipalByPrincipalName( principalName );
-		return principal != null ? principal.getPrincipalId() : null;
-	}*/
 	
     @Override
 	public Map<String, EntityNamePrincipalName> getDefaultNamesForEntityIds(List<String> entityIds) {
@@ -849,10 +779,10 @@ public class IdentityServiceImpl implements IdentityService {
             throw new RiceIllegalArgumentException("entityIds is empty or null");
         }
 
-        Map<String, EntityNamePrincipalName> result = new HashMap<String, EntityNamePrincipalName>(entityIds.size());
+
 
         if (CollectionUtils.isEmpty(entityIds)) {
-            return result;
+            return Collections.emptyMap();
         }
         final QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
         builder.setPredicates(and(in("id", entityIds.toArray()),
@@ -861,6 +791,7 @@ public class IdentityServiceImpl implements IdentityService {
                                     equal("names.active", "Y"),
                                     equal("names.defaultValue", "Y"))));
         EntityDefaultQueryResults qr = findEntityDefaults(builder.build());
+        Map<String, EntityNamePrincipalName> result = new HashMap<String, EntityNamePrincipalName>(entityIds.size());
         for(EntityDefault entityDefault : qr.getResults()) {
 
             for (Principal principal : entityDefault.getPrincipals()) {
@@ -870,7 +801,7 @@ public class IdentityServiceImpl implements IdentityService {
                 break;
             }
 		}
-		return result;
+		return Collections.unmodifiableMap(result);
 	}
 
 
@@ -881,7 +812,7 @@ public class IdentityServiceImpl implements IdentityService {
             throw new RiceIllegalArgumentException("principalIds is empty or null");
         }
 
-        Map<String, EntityNamePrincipalName> result = new HashMap<String, EntityNamePrincipalName>();
+
 
         QueryByCriteria.Builder qb = QueryByCriteria.Builder.create();
         qb.setPredicates(and(in("principals.principalId", principalIds.toArray()),
@@ -889,7 +820,8 @@ public class IdentityServiceImpl implements IdentityService {
                              equal("names.defaultValue", "Y")));
 
         List<EntityDefault> entityDefaults = findEntityDefaults(qb.build()).getResults();
-		for(EntityDefault entityDefault : entityDefaults) {
+		 Map<String, EntityNamePrincipalName> result = new HashMap<String, EntityNamePrincipalName>();
+        for(EntityDefault entityDefault : entityDefaults) {
 
             for (Principal principal : entityDefault.getPrincipals()) {
                 result.put(principal.getPrincipalId(), EntityNamePrincipalName.Builder
@@ -898,7 +830,7 @@ public class IdentityServiceImpl implements IdentityService {
             }
 		}
 		
-		return result;
+		return Collections.unmodifiableMap(result);
 	}
 	
 	/**
@@ -1529,9 +1461,5 @@ public class IdentityServiceImpl implements IdentityService {
 
     public void setBusinessObjectService(final BusinessObjectService businessObjectService) {
         this.businessObjectService = businessObjectService;
-    }
-
-    public void setPersistenceService(final PersistenceService persistenceService) {
-        this.persistenceService = persistenceService;
     }
 }

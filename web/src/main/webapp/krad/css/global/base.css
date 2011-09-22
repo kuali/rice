@@ -441,6 +441,122 @@ button img.rightActionImage, a img.rightActionImage{
 }
 
 
+/*Navigation Menu*/
+
+.navigation-parent-div{
+	margin-left: 225px;
+}
+
+.navigation-div{
+	float: left;
+	margin-left: -225px;
+}
+
+.navigation-block {
+   float: left;
+   width: 219px;
+}
+
+/*
+Basic Navigation Menu
+*/
+ul.basic-navigation {
+    list-style: none outside none;
+    padding: 0;
+    margin-left: 25px;
+
+}
+
+ul.basic-navigation li{
+  
+    border-bottom: 1px solid #bebebe;
+}
+
+ul.basic-navigation li.basic-element h3, ul.basic-navigation li.basic-element h2 {
+
+    display: block;
+    margin: 0;
+    padding: 5px 10px;
+	
+}
+
+ul.basic-navigation li.basic-element a {
+    display: block;
+    padding: 5px 10px;
+}
+
+ul.basic-navigation li.basic-element a:hover, ul.basic-navigation li.basic-element a:focus {
+
+}
+
+ul.basic-navigation li.basic-element a.current {
+	
+}
+
+/*
+Animated Navigation Menu
+*/
+ul.animated-navigation {
+    list-style: none outside none;
+    padding: 0;
+    margin-top: 0px;
+}
+ul.animated-navigation li{
+    padding: 0;
+}
+ul.animated-navigation li.animated-element h3, ul.animated-navigation li.animated-element h2 {
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-top: 1px solid black;
+    color: #333333;
+    display: block;
+    margin-bottom: 0;
+    padding: 5px 18px;
+    width: 150px;
+	font-weight: normal;
+    margin-top: 0px;
+    font-size: .9em;
+}
+
+ul.animated-navigation li.animated-element a {
+	background-color: #E3E4E2;
+    display: block;
+    margin-top: 1px;
+	/*
+	Changing the padding here will require updating the script to correct return padding (pad_in)
+	*/
+    padding: 5px 18px;
+    width: 150px;
+    border: 1px solid #1A1A1A;
+    color: #333333;
+    text-decoration: none;
+}
+
+ul.animated-navigation li.animated-element a:hover, ul.animated-navigation li.animated-element a:focus {
+    background: none repeat scroll 0 0 #889606;
+    color: white;
+}
+ul.animated-navigation li.animated-element a.current {
+	background-color:#636D05;
+	padding-left: 25px !important;
+	color: white;
+}
+
+/*
+Navigation Slide Control
+*/
+
+.slideLink{
+	padding-left: .5em;
+	float: left;
+}
+
+.collapseLink{
+	float: right;
+
+	padding-bottom: 5px;
+}
+
 
 /* accessibility */
 

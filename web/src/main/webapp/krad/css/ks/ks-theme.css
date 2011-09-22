@@ -719,43 +719,25 @@ table.display tbody tr {
 }
 /* navigation */
 
-.navigation-parent-div {
-	margin-left: 225px;
-}
-.navigation-div {
-	float: left;
-	margin-left: -225px;
-}
-.navigation-block {
-	float: left;
-	width: 219px;
-}
+
 /* Navigation Menu (basic)*/
 ul.basic-navigation {
-	list-style: none outside none;
-	padding: 0;
-	margin-left: 25px;
+	
 	font-size: .95em;
 }
 ul.basic-navigation li {
-	padding: 0;
+	
 	border-bottom: 1px solid #bebebe;
 }
 ul.basic-navigation li.basic-element h3, ul.basic-navigation li.basic-element h2 {
 	border-top: 1px solid black;
 	color: black;
-	display: block;
-	margin: 0;
-	padding: 5px 10px;
 	font-weight: bold;
 	font-weight:0.9em;
 	text-transform: uppercase;
 	font-size: .9em;
 }
-ul.basic-navigation li.basic-element a {
-	display: block;
-	padding: 5px 10px;
-}
+
 ul.basic-navigation li.basic-element a:hover, ul.basic-navigation li.basic-element a:focus {
 	background: none repeat scroll 0 0 #64a142;
 	color: white;
@@ -782,18 +764,15 @@ ul.basic-navigation li.basic-element a.current, ul.basic-navigation li.basic-ele
 }
 
 /* Navigation Menu (animated)*/
-li.animated-element {
-	list-style: none outside none;
-}
+
 .slideLink {
-	padding-left: .5em;
+	
 	font-size: .9em;
-	float: left;
+	
 }
 .collapseLink {
-	float: right;
+	
 	font-size: .9em;
-	padding-bottom: 5px;
 	color: #666;
 }
 ul.animated-navigation {
@@ -860,6 +839,13 @@ ul.animated-navigation li.animated-element a.current {
 	float: right;
 	font-size: .9em;
 	padding-bottom: 5px;
+}
+
+a#controlbtn {
+	color: #333;
+	text-decoration: none;
+	display: inline-block;
+	padding-left: 20px;
 }
 
 #controlbtn.slideLink {

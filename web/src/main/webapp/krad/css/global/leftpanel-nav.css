@@ -1,85 +1,20 @@
-.panelslider_control {
-	position:absolute;
-	left:-40px;
-	width:30px;
-	height:30px;
-}
-.panelslider_control a.open {
-	width:30px;
-	height:30px;
-	background-color:#F00
-	background-image: url(../images/slide-control.png);
-	background-position: top;
-}
-
-
-a#controlbtn {
-	color: #333;
-	text-decoration: none;
-	display: inline-block;
-	padding-left: 20px;
-}
-a#controlbtn.open {
-	background: transparent url(images/toggle_minus.png) no-repeat left center;
-}
-a#controlbtn.close {
-	background: transparent url(images/toggle_plus.png) no-repeat left center;
-}
-div#linkblock {
-	float: left;
-	width: 140px;
-	margin-left: -150px;
-	/* [disabled]border-right: solid 1px #DDDDDD; */
-	/*background-color:#E6E6E6;*/
-	background-color:#EDEDED;
-	padding:0px;
-	min-height:500px
-}
-
-
-.left-navcontainer h4 {
-	background-color:#ededed;
-	font-size: 1.1em;
-	padding-top: 6px;
-	padding-bottom: 6px;
-	padding-left: 6px;
-	border-right-width: 1px;
-	border-right-style: solid;
-	border-right-color: #efefef;
-	color:#000
-}
-
-
-.left-navcontainer ul {
-
-	list-style-type: none;
-	border-top-width: 1px;
-	border-top-style: solid;
-	border-top-color: #eee; font-size:.9em;
-}
-
-.left-navcontainer a {
-	display: block;
-	width: 134px;
-	background-color: #FFF;
-	border-bottom-width: 1px;
-	border-bottom-style: solid;
-	border-bottom-color: #eee;
-	padding-top: 6px;
-	padding-bottom: 6px;
-	padding-left: 6px;
-}
+/*
+ * Copyright 2005-2008 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 
 
 
-
-
-.left-navcontainer a:link, .navlist a:visited {
-	color: #666;
-	text-decoration: none;
-}
-.left-navcontainer a:hover {
-	background-color: #060;
-	color: #fff;
-}
+/* consolidated into base.css  */

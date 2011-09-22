@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -47,12 +48,16 @@ public final class CacheAdminController extends UifControllerBase {
         final Tree<String, String> cacheTree = new Tree<String,String>();
 
         final Node<String,String> root = new Node<String,String>("Root", "Root");
+        final List<CacheManager> cms = new ArrayList<CacheManager>(getRegistry().getCacheManagers());
+        Collections.sort(cms, new ByName());
 
-        for (final CacheManager cm : getRegistry().getCacheManagers()) {
+        for (final CacheManager cm : cms) {
             final String name = getRegistry().getCacheManagerName(cm);
             final Node<String, String> cmNode = new Node<String, String>(name, name);
+            final List<String> names = new ArrayList<String>(cm.getCacheNames());
+            Collections.sort(names, String.CASE_INSENSITIVE_ORDER);
 
-            for (final String cn : cm.getCacheNames()) {
+            for (final String cn : names) {
                 final Node<String, String> cNode = new Node<String, String>(cn, cn);
                 //no way to get a keySet from the cache w/o calling the nativeCache
                 //method which is a bad idea b/c it will tie the rice codebase to
@@ -130,5 +135,14 @@ public final class CacheAdminController extends UifControllerBase {
             pathIdx.add(Integer.valueOf(path[i].substring(5)));
         }
         return Collections.unmodifiableList(pathIdx);
+    }
+
+    private final class ByName implements Comparator<CacheManager> {
+
+        @Override
+        public int compare(CacheManager o1, CacheManager o2) {
+            return String.CASE_INSENSITIVE_ORDER.compare(getRegistry().getCacheManagerName(o1),
+                    getRegistry().getCacheManagerName(o2));
+        }
     }
 }

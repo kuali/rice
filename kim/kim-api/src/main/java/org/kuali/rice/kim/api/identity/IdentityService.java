@@ -43,6 +43,8 @@ import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.identity.residency.EntityResidency;
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
 import org.kuali.rice.kim.api.identity.visa.EntityVisa;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -116,6 +118,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEntity")
     @WebResult(name = "entity")
+    @Cacheable(value= Entity.Cache.NAME, key="'id=' + #id")
 	Entity getEntity( @WebParam(name="id") String id )  throws RiceIllegalArgumentException;
 
 	/**
@@ -131,6 +134,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEntityByPrincipalId")
     @WebResult(name = "entity")
+    @Cacheable(value= Entity.Cache.NAME, key="'principalId=' + #principalId")
 	Entity getEntityByPrincipalId(@WebParam(name = "principalId") String principalId)  throws RiceIllegalArgumentException;
 
 	/**
@@ -146,6 +150,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEntityByPrincipalName")
     @WebResult(name = "entity")
+    @Cacheable(value= Entity.Cache.NAME, key="'principalName=' + #principalName")
 	Entity getEntityByPrincipalName(@WebParam(name = "principalName") String principalName)  throws RiceIllegalArgumentException;
 
 
@@ -159,6 +164,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="createEntity")
     @WebResult(name = "entity")
+    @CacheEvict(value= Entity.Cache.NAME, allEntries = true)
     Entity createEntity(@WebParam(name = "entity") Entity entity)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -172,6 +178,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="updateEntity")
     @WebResult(name = "entity")
+    @CacheEvict(value= Entity.Cache.NAME, allEntries = true)
     Entity updateEntity(@WebParam(name = "entity") Entity entity)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -185,6 +192,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="inactivateEntity")
     @WebResult(name = "entity")
+    @CacheEvict(value= Entity.Cache.NAME, allEntries = true)
     Entity inactivateEntity(@WebParam(name = "id") String id)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -205,6 +213,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEntityDefault")
     @WebResult(name = "entityDefault")
+    @Cacheable(value= EntityDefault.Cache.NAME, key="'id=' + #id")
 	EntityDefault getEntityDefault(@WebParam(name = "id") String id)  throws RiceIllegalArgumentException;
 
 	/**
@@ -222,6 +231,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEntityDefaultByPrincipalId")
     @WebResult(name = "entityDefault")
+    @Cacheable(value= EntityDefault.Cache.NAME, key="'principalId=' + #principalId")
 	EntityDefault getEntityDefaultByPrincipalId(@WebParam(name = "principalId") String principalId)  throws RiceIllegalArgumentException;
 
 	/**
@@ -239,6 +249,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEntityDefaultByPrincipalName")
     @WebResult(name = "entityDefault")
+    @Cacheable(value= EntityDefault.Cache.NAME, key="'principalName=' + #principalName")
 	EntityDefault getEntityDefaultByPrincipalName(@WebParam(name = "principalName") String principalName)  throws RiceIllegalArgumentException;
     
     

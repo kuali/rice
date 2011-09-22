@@ -33,7 +33,12 @@ table td, table th {
 
 
 .constraint {                  /* NOT RENAMED - changing this classname will break some javascript functionality  */
-	font-size:0.84615385em;    /* 11px divided by 13px */
+	font-size:0.813em;
+	/* begin styles brought over from kuali-stacked.css  */
+	color: gray;
+	margin-bottom: 5px;
+	margin-top: 5px;
+	display: block; 
 }
 
 /* headers */
@@ -73,6 +78,11 @@ h4.kr-section-subhead-no-border {	/* was h4.kr-section-subhead-no-border */ /* r
     }
 .kr-field-attribute .summary {		/* was .field_attribute .summary */ /* renamed in xml and/or jsp */
 	line-height: 1.125em;
+	/* begin styles brought over from kuali-stacked.css  */
+	margin-bottom: auto;
+	display: block;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
 }
 .kr-labelTop {						/* was .labelTop */ /* renamed in xml and/or jsp */
 	float:none;
@@ -250,6 +260,10 @@ li label.kr-error {
 	display: block;
 }
 
+.boxLayoutVerticalItem{
+	padding-bottom: 20px;
+	display: block;
+}
 tr.kr-addLine {
     background-color: #F2F2F2 !important;
     border: 1px solid #D3D3D3 !important;
@@ -284,6 +298,27 @@ div.kr-addLine, span.kr-addLine{
 	cursor: pointer;
 }
 
+
+.ui-datepicker-calendar td { text-align:center; padding:.2em}
+
+
+.ui-datepicker-title select {font-size:.7em}
+
+
+.ui-datepicker-title { text-align:center}
+
+
+.ui-datepicker-calendar .ui-state-default {border:none;
+	background:none;
+	font-weight: normal;
+	color: #9c1c1c;
+	font-size:.7em}
+
+ .ui-datepicker-buttonpane button { font-size:.7em}
+ 
+  .ui-datepicker-buttonpane { text-align:center; background-color:#999999}
+  
+  
 
 /* fg buttons */
 .fg-button {
@@ -333,6 +368,44 @@ div.kr-addLine, span.kr-addLine{
    width:8px;
    text-indent: -9999px;
    }	 /* solo icon buttons must have block properties for the text-indent to work */
+   
+   
+   
+   
+   button, a{
+    overflow: visible;
+    white-space:nowrap;
+    width:auto;
+    cursor: pointer;
+}
+
+button img{
+    vertical-align: middle;
+}
+
+button span.topBottomSpan{
+    display: block;
+    text-align: center;
+    width: 100%;
+}
+
+button img.topActionImage{
+    margin-bottom: 1px;
+}
+
+button img.bottomActionImage{
+    margin-top: 1px;
+}
+
+button img.leftActionImage, a img.leftActionImage{
+    margin-right: 5px;
+}
+
+button img.rightActionImage, a img.rightActionImage{
+    margin-left: 5px;
+}
+   
+   
 
 /* tabs */
 /* Tab menu */
@@ -368,4 +441,13 @@ div.kr-addLine, span.kr-addLine{
 }
 
 
+
+/* accessibility */
+
+.offScreen{
+    position: absolute;
+    left: -200em;
+    width: 10em;
+    overflow: hidden;
+}
 

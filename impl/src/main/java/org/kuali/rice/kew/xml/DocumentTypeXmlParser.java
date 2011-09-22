@@ -1271,6 +1271,8 @@ public class DocumentTypeXmlParser {
         } else if (((Boolean) getXPath().evaluate("./routeModule", node, XPathConstants.BOOLEAN)).booleanValue()) {
             routeNode.setRouteMethodName((String) getXPath().evaluate("./routeModule", node, XPathConstants.STRING));
             routeNode.setRouteMethodCode(KEWConstants.ROUTE_LEVEL_ROUTE_MODULE);
+        } else if (((Boolean) getXPath().evaluate("./peopleFlows", node, XPathConstants.BOOLEAN)).booleanValue()) {
+            routeNode.setRouteMethodCode(KEWConstants.ROUTE_LEVEL_PEOPLE_FLOW);
         }
 
         String nodeType = null;

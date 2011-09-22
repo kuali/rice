@@ -436,6 +436,7 @@ public final class KEWConstants {
     /** Route Level type constants FlexRM or Route Module **/
     public static final String ROUTE_LEVEL_FLEX_RM = "FR";
     public static final String ROUTE_LEVEL_ROUTE_MODULE = "RM";
+    public static final String ROUTE_LEVEL_PEOPLE_FLOW = "PF";
     public static final String ROUTE_LEVEL_METHOD_NAME_ROUTE_MODULE = "Route Module";
     public static final String ROUTE_LEVEL_METHOD_NAME_FLEX_RM = "Rule Template";
     /** No route module available for this route level * */

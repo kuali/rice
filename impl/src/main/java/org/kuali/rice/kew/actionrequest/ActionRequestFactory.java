@@ -25,6 +25,7 @@ import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
 import org.kuali.rice.kew.api.action.RecipientType;
+import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.identity.service.IdentityHelperService;
@@ -90,6 +91,10 @@ public class ActionRequestFactory {
 		this.document = document;
 		this.routeNode = routeNode;
 	}
+
+    public ActionRequestFactory(RouteContext routeContext) {
+        this(routeContext.getDocument(), routeContext.getNodeInstance());
+    }
 
 	/**
 	 * Constructs ActionRequestValue using default priority and 0 as responsibility

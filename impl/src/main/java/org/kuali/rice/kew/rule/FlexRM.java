@@ -413,18 +413,6 @@ public class FlexRM {
 					resp.getApprovePolicy(),
 					rule.getId());
 
-			// old, pre 1.0 delegation code, commented out for now
-			
-//			if (resp.isDelegating()) {
-//			for (Iterator iterator = resp.getDelegationRules().iterator(); iterator.hasNext();) {
-//				RuleDelegation childRuleDelegation = (RuleDelegation) iterator.next();
-//				buildDelegationGraph(arFactory, context, childRuleDelegation.getDelegationRuleBaseValues(), routeHeader, actionRequest, childRuleDelegation);
-//			}
-//		}
-
-			
-			// new Rice 1.0 delegate rule code
-			
 			List<RuleDelegation> ruleDelegations = getRuleService().getRuleDelegationsByResponsibiltityId(
                     resp.getResponsibilityId());
 			if (ruleDelegations != null && !ruleDelegations.isEmpty()) {
@@ -464,11 +452,4 @@ public class FlexRM {
 		return selectedRules;
 	}
 
-	//  private DocumentContent parseDocumentContent(RouteContext context) throws WorkflowException {
-	//  try {
-	//  return new StandardDocumentContent(context.getDocument().getDocContent(), context);
-	//  } catch (Exception e) {
-	//  throw new WorkflowException("Error parsing doc content for document " + context.getDocument().getDocumentId());
-	//  }
-	//  }
 }

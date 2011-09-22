@@ -323,6 +323,10 @@ public class RouteNode implements Serializable, RouteNodeContract {
     public boolean isFlexRM() {
         return routeMethodCode != null && routeMethodCode.equals(KEWConstants.ROUTE_LEVEL_FLEX_RM);
     }
+
+    public boolean isPeopleFlow() {
+        return StringUtils.equals(routeMethodCode, KEWConstants.ROUTE_LEVEL_PEOPLE_FLOW);
+    }
     
     public boolean isRoleNode() {
     	try {

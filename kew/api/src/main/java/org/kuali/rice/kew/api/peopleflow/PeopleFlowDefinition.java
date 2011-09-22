@@ -285,6 +285,24 @@ public final class PeopleFlowDefinition extends AbstractDataTransferObject imple
             this.versionNumber = versionNumber;
         }
 
+        public PeopleFlowMember.Builder addPrincipal(String principalId) {
+            PeopleFlowMember.Builder member = PeopleFlowMember.Builder.create(principalId, MemberType.PRINCIPAL);
+            getMembers().add(member);
+            return member;
+        }
+
+        public PeopleFlowMember.Builder addGroup(String groupId) {
+            PeopleFlowMember.Builder member = PeopleFlowMember.Builder.create(groupId, MemberType.GROUP);
+            getMembers().add(member);
+            return member;
+        }
+
+        public PeopleFlowMember.Builder addRole(String roleId) {
+            PeopleFlowMember.Builder member = PeopleFlowMember.Builder.create(roleId, MemberType.ROLE);
+            getMembers().add(member);
+            return member;
+        }
+
     }
 
     /**

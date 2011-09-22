@@ -213,8 +213,16 @@
 	<!-- WorkflowDocument -->
 	<bean id="enWorkflowDocumentService" class="org.kuali.rice.kew.routeheader.service.impl.WorkflowDocumentServiceImpl" lazy-init="true" />
 
-	<!--  RouteModuleService -->
-	<bean id="enRouteModuleService" class="org.kuali.rice.kew.routemodule.service.impl.RouteModuleServiceImpl"  lazy-init="true"/>
+  <bean id="peopleFlowRequestGenerator" class="org.kuali.rice.kew.impl.peopleflow.PeopleFlowRequestGeneratorImpl"/>
+
+  <bean id="peopleFlowRouteModule" class="org.kuali.rice.kew.impl.peopleflow.PeopleFlowRouteModule" lazy-init="true">
+    <property name="peopleFlowService" ref="rice.kew.peopleFlowService" />
+    <property name="peopleFlowRequestGenerator" ref="peopleFlowRequestGenerator" />
+  </bean>
+
+  <bean id="enRouteModuleService" class="org.kuali.rice.kew.routemodule.service.impl.RouteModuleServiceImpl" lazy-init="true">
+    <property name="peopleFlowRouteModule" ref="peopleFlowRouteModule"/>
+  </bean>
 
 	<!-- 2.1 Workflow Engine -->
 	<bean id="workflowEngine" class="org.kuali.rice.kew.engine.StandardWorkflowEngine" lazy-init="true">

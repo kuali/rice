@@ -40,12 +40,16 @@ public class RouteModuleServiceImpl implements RouteModuleService {
 
     private static final Logger LOG = Logger.getLogger(RouteModuleServiceImpl.class);
 
+    private RouteModule peopleFlowRouteModule;
+
     public RouteModule findRouteModule(RouteNode node) throws ResourceUnavailableException {
         String routeMethodName = node.getRouteMethodName();
         LOG.debug("Finding route module for routeMethodName="+routeMethodName+" at route level "+node.getRouteNodeName());
         RouteModule routeModule = null;
         // default to FlexRM module if the routeMethodName is null
-        if (routeMethodName == null || node.isFlexRM()) {
+        if (node.isPeopleFlow()) {
+            routeModule = getPeopleFlowRouteModule();
+        } else if (routeMethodName == null || node.isFlexRM()) {
             routeModule = getFlexRMRouteModule(routeMethodName);
         } else {
             routeModule = getRouteModule(routeMethodName);
@@ -82,5 +86,11 @@ public class RouteModuleServiceImpl implements RouteModuleService {
         return new FlexRMAdapter();
     }
 
+    public void setPeopleFlowRouteModule(RouteModule peopleFlowRouteModule) {
+        this.peopleFlowRouteModule = peopleFlowRouteModule;
+    }
 
+    public RouteModule getPeopleFlowRouteModule() {
+        return peopleFlowRouteModule;
+    }
 }

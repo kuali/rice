@@ -267,6 +267,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getPrincipal")
     @WebResult(name = "principal")
+    @Cacheable(value= Principal.Cache.NAME, key="'principalId=' + #principalId")
     Principal getPrincipal( @WebParam(name="principalId") String principalId )  throws RiceIllegalArgumentException;
 
     /**
@@ -282,6 +283,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getPrincipalByPrincipalName")
     @WebResult(name = "principal")
+    @Cacheable(value= Principal.Cache.NAME, key="'principalName=' + #principalName")
     Principal getPrincipalByPrincipalName( @WebParam(name="principalName") String principalName )  throws RiceIllegalArgumentException;
 
     /**
@@ -298,6 +300,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getPrincipalByPrincipalNameAndPassword")
     @WebResult(name = "principal")
+    @Cacheable(value= Principal.Cache.NAME, key="'principalName=' + #principalName + '|' + 'password=' + #password")
     Principal getPrincipalByPrincipalNameAndPassword( @WebParam(name="principalName") String principalName,  @WebParam(name="password") String password )  throws RiceIllegalArgumentException;
 
     /**
@@ -312,6 +315,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="addPrincipalToEntity")
     @WebResult(name = "principal")
+    @CacheEvict(value = Principal.Cache.NAME, allEntries = true)
     Principal addPrincipalToEntity(@WebParam(name = "principal") Principal principal)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -326,6 +330,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="updatePrincipal")
     @WebResult(name = "principal")
+    @CacheEvict(value = Principal.Cache.NAME, allEntries = true)
     Principal updatePrincipal(@WebParam(name = "principal") Principal principal)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -340,6 +345,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="inactivatePrincipal")
     @WebResult(name = "principal")
+    @CacheEvict(value = Principal.Cache.NAME, allEntries = true)
     Principal inactivatePrincipal(@WebParam(name = "principalId") String principalId)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -354,6 +360,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="inactivatePrincipalByName")
     @WebResult(name = "principal")
+    @CacheEvict(value = Principal.Cache.NAME, allEntries = true)
     Principal inactivatePrincipalByName(@WebParam(name = "principalName") String principalName)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 

@@ -475,7 +475,7 @@ public interface GroupService {
      */
     @WebMethod(operationName = "updateGroup")
     @WebResult(name = "group")
-    @CacheEvict(value=Group.Cache.NAME, allEntries = true)
+    @CacheEvict(value={Group.Cache.NAME, GroupMember.Cache.NAME}, allEntries = true)
 	Group updateGroup(@WebParam(name="group") Group group) throws RiceIllegalArgumentException;
 
 	/**
@@ -493,7 +493,7 @@ public interface GroupService {
      */
     @WebMethod(operationName = "updateGroupWithId")
     @WebResult(name = "group")
-    @CacheEvict(value=Group.Cache.NAME, allEntries = true)
+    @CacheEvict(value={Group.Cache.NAME, GroupMember.Cache.NAME}, allEntries = true)
     Group updateGroup(@WebParam(name="groupId") String groupId, @WebParam(name="group") Group group) throws RiceIllegalArgumentException;
 
     /**

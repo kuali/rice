@@ -40,6 +40,5 @@ public interface AuthenticationService {
 	 * @return the principalName of the authenticated principal, or null if
 	 * the principal could not be authenticated
 	 */
-    public String getPrincipalName(HttpServletRequest request);
-    
+    String getPrincipalName(HttpServletRequest request);
 }

@@ -4,6 +4,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.EntityUtils;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationContract;
@@ -183,8 +184,8 @@ public class EntityDefault extends AbstractDataTransferObject {
     }
 
     /**
-     * Gets this {@link EntityDefault}'s {@link KimEntityEntityTypeDefaultInfo} for the given type code.
-     * @return the {@link org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoDefault} for the given type code for this {@link KimEntityDefaultInfo},
+     * Gets this {@link EntityDefault}'s {@link EntityTypeContactInfoDefault} for the given type code.
+     * @return the {@link org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoDefault} for the given type code for this {@link EntityTypeContactInfoDefault},
      * or null if none has been assigned.
      */
     public EntityTypeContactInfoDefault getEntityType(String entityTypeCode) {
@@ -387,5 +388,9 @@ public class EntityDefault extends AbstractDataTransferObject {
         final static String PRIVACY_PREFERENCES = "privacyPreferences";
         final static String ACTIVE = "active";
 
+    }
+
+    public static class Cache {
+        public static final String NAME = KimConstants.Namespaces.KIM_NAMESPACE_2_0 + "/" + EntityDefault.Constants.TYPE_NAME;
     }
 }

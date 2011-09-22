@@ -20,6 +20,7 @@ import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.permission.GenericPermissionBo;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
+import org.kuali.rice.kim.impl.permission.PermissionTemplateBo;
 import org.kuali.rice.kim.impl.responsibility.ReviewResponsibilityBo;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
 import org.kuali.rice.krad.bo.BusinessObject;
@@ -49,7 +50,13 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 			if ( LOG.isInfoEnabled() ) {
 				LOG.info( "Attempting to save Permission BO via PermissionService: " + getBusinessObject() );
 			}
-			PermissionBo perm = (PermissionBo)getBusinessObject();
+            GenericPermissionBo genericPermissionBo = (GenericPermissionBo)getBusinessObject();
+            if (genericPermissionBo.getTemplateId() != null && genericPermissionBo.getTemplate() == null) {
+                genericPermissionBo.setTemplate(
+                        PermissionTemplateBo.from(
+                                KimApiServiceLocator.getPermissionService().getPermissionTemplate(genericPermissionBo.getTemplateId())));
+            }
+			PermissionBo perm = GenericPermissionBo.toPermissionBo(genericPermissionBo);
 			
 			KimApiServiceLocator.getPermissionService().createPermission(PermissionBo.to(perm));
 		} catch ( RuntimeException ex ) {
@@ -57,6 +64,35 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 			throw ex;
 		}
 	}
+
+    /**
+     * @see org.kuali.rice.krad.maintenance.Maintainable#saveDataObject
+     */
+    @Override
+    public void saveDataObject() {
+        if (getDataObject() instanceof PersistableBusinessObject) {
+            GenericPermissionBo genericPermissionBo = (GenericPermissionBo)getDataObject();
+            boolean permissionExists = false;
+            if (genericPermissionBo.getId() != null) {
+                permissionExists = KimApiServiceLocator.getPermissionService().getPermission(genericPermissionBo.getId()) != null;
+            }
+            if (genericPermissionBo.getTemplateId() != null && genericPermissionBo.getTemplate() == null) {
+                genericPermissionBo.setTemplate(
+                        PermissionTemplateBo.from(
+                                KimApiServiceLocator.getPermissionService().getPermissionTemplate(genericPermissionBo.getTemplateId())));
+            }
+            PermissionBo perm = GenericPermissionBo.toPermissionBo(genericPermissionBo);
+            if (permissionExists) {
+                KimApiServiceLocator.getPermissionService().updatePermission(PermissionBo.to(perm));
+            } else {
+                KimApiServiceLocator.getPermissionService().createPermission(PermissionBo.to(perm));
+            }
+            //getBusinessObjectService().linkAndSave((PersistableBusinessObject) dataObject);
+        } else {
+            throw new RuntimeException(
+                    "Cannot save object of type: " + getDataObjectClass() + " with permission service");
+        }
+    }
 	
 	/**
 	 * This overridden method ...
@@ -94,7 +130,7 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 				businessObject = new GenericPermissionBo(perm);
 			} else if ( businessObject instanceof GenericPermissionBo ) {
 				// lookup the PermissionBo and convert to a GenericPermissionBo
-				PermissionBo perm = getBusinessObjectService().findBySinglePrimaryKey(PermissionBo.class, ((PermissionBo)businessObject).getId() );		
+				PermissionBo perm = getBusinessObjectService().findBySinglePrimaryKey(PermissionBo.class, ((GenericPermissionBo)businessObject).getId() );
 				((GenericPermissionBo)businessObject).loadFromPermission(perm);
 			} else {
 				throw new RuntimeException( "Configuration ERROR: GenericPermissionMaintainable passed an unsupported object type: " + businessObject.getClass() );

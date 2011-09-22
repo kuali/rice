@@ -315,7 +315,8 @@ public final class Permission extends AbstractDataTransferObject implements Perm
 		}
 
 		public void setVersionNumber(final Long versionNumber) {
-			if (versionNumber == null || versionNumber <= 0) {
+
+			if (versionNumber != null && versionNumber <= 0) {
 	            throw new IllegalArgumentException("versionNumber is invalid");
 	        }
 			this.versionNumber = versionNumber;

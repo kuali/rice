@@ -97,7 +97,7 @@
   <bean id="kewDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator">
     <property name="cacheManager" ref="kewLocalCacheManager" />
     <property name="messageHelper" ref="rice.ksb.messageHelper" />
-    <property name="serviceName" value="{http://rice.kuali.org/kew}kewCacheServiceSoap" />
+    <property name="serviceName" value="{http://rice.kuali.org/kew/v2_0}kewCacheServiceSoap" />
   </bean>
 
   <bean id="cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl">

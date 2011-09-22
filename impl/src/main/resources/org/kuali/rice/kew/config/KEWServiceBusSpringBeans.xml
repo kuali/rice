@@ -420,6 +420,16 @@
 		<property name="exportIf" value="Email.useRemoteServices" />
 	</bean>
 
+  <bean parent="kewLocalServiceExporter">
+    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
+    <property name="serviceDefinition">
+      <bean parent="kewJaxWsSoapService"
+            p:service-ref="kewCacheService"
+            p:localServiceName="kewCacheServiceSoap"/>
+    </property>
+    <property name="exportIf" value="kewCacheServiceSOAP.expose"/>
+  </bean>
+
 
 <!-- ************************************************************************** -->
 <!-- **** END OF NON SOAP METHODS ********************************************* -->

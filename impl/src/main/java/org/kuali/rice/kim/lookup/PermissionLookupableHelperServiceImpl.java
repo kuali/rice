@@ -228,6 +228,7 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 
             try {
                 PropertyUtils.copyProperties(permissionCopy, permissionBo);
+
             } catch (IllegalAccessException e) {
                 throw new RuntimeException("unable to copy properties");
             } catch (InvocationTargetException e) {

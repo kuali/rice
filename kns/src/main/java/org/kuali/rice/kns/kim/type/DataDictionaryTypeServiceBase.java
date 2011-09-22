@@ -18,6 +18,7 @@ package org.kuali.rice.kns.kim.type;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.uif.RemotableAbstractWidget;
@@ -167,6 +168,7 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
 			}
 		}
 
+
 		final List<RemotableAttributeError> referenceCheckErrors = validateReferencesExistAndActive(kimType, attributes, validationErrors);
         validationErrors.addAll(referenceCheckErrors);
 
@@ -299,7 +301,10 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
 					getDictionaryValidationService().validateReferenceExistsAndIsActive(entry.getValue(), relationshipDefinition.getObjectAttributeName(),
 							attributeToHighlightOnFail, attributeDisplayLabel);
 				}
-				errors.add(RemotableAttributeError.Builder.create(attributeToHighlightOnFail, extractErrorsFromGlobalVariablesErrorMap(attributeToHighlightOnFail)).build());
+                List<String> extractedErrors = extractErrorsFromGlobalVariablesErrorMap(attributeToHighlightOnFail);
+                if (CollectionUtils.isNotEmpty(extractedErrors)) {
+				    errors.add(RemotableAttributeError.Builder.create(attributeToHighlightOnFail, extractedErrors).build());
+                }
 			}
 		}
 		return errors;

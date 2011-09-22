@@ -134,6 +134,10 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
     PermissionTemplateBo getTemplate() {
         return template;
     }
+
+    void setTemplate(PermissionTemplateBo template) {
+        this.template = template
+    }
     
     public String getDetailObjectsValues() {
         StringBuffer detailObjectsToDisplay = new StringBuffer();

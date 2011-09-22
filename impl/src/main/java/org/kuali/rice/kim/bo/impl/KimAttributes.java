@@ -18,9 +18,13 @@ package org.kuali.rice.kim.bo.impl;
 import org.kuali.rice.core.framework.component.ComponentEbo;
 import org.kuali.rice.core.framework.namespace.NamespaceEbo;
 import org.kuali.rice.core.framework.parameter.ParameterEbo;
+import org.kuali.rice.core.impl.component.ComponentBo;
+import org.kuali.rice.core.impl.namespace.NamespaceBo;
+import org.kuali.rice.core.impl.parameter.ParameterBo;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.krad.bo.TransientBusinessObjectBase;
 import org.kuali.rice.shareddata.framework.campus.CampusEbo;
+import org.kuali.rice.shareddata.impl.campus.CampusBo;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -57,10 +61,10 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	protected String kimTypeId;
 	protected String qualifierResolverProvidedIdentifier;
 	
-	protected CampusEbo campus;
-	protected NamespaceEbo namespace;
-	protected ComponentEbo component;
-	protected ParameterEbo parameter;
+	protected CampusBo campus;
+	protected NamespaceBo namespace;
+	protected ComponentBo component;
+	protected ParameterBo parameter;
 	protected DocumentType documentType;
 
 	/**
@@ -413,35 +417,35 @@ public class KimAttributes extends TransientBusinessObjectBase {
 		this.sectionId = sectionId;
 	} 
 
-	public CampusEbo getCampus() {
+	public CampusBo getCampus() {
 		return this.campus;
 	}
 
-	public void setCampus(CampusEbo campus) {
+	public void setCampus(CampusBo campus) {
 		this.campus = campus;
 	}
 
-	public NamespaceEbo getNamespace() {
+	public NamespaceBo getNamespace() {
 		return this.namespace;
 	}
 
-	public void setNamespace(NamespaceEbo namespace) {
+	public void setNamespace(NamespaceBo namespace) {
 		this.namespace = namespace;
 	}
 
-	public ComponentEbo getComponent() {
+	public ComponentBo getComponent() {
 		return this.component;
 	}
 
-	public void setComponent(ComponentEbo component) {
+	public void setComponent(ComponentBo component) {
 		this.component = component;
 	}
 
-	public ParameterEbo getParameter() {
+	public ParameterBo getParameter() {
 		return this.parameter;
 	}
 
-	public void setParameter(ParameterEbo parameter) {
+	public void setParameter(ParameterBo parameter) {
 		this.parameter = parameter;
 	}
 

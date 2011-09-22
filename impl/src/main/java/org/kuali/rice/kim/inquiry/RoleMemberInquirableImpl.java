@@ -31,7 +31,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
  */
 public class RoleMemberInquirableImpl extends KualiInquirableImpl {
 
-	protected final String ROLE_ID = "roleId";
+	protected final String ROLE_ID = "id";
 	protected final String NAME = "name";
 	protected final String NAME_TO_DISPLAY = "nameToDisplay";
 	protected final String TEMPLATE_NAME = "template.name";

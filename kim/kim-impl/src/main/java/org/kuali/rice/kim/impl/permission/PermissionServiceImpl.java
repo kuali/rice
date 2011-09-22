@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.impl.permission;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
@@ -610,6 +611,9 @@ public class PermissionServiceImpl implements PermissionService {
         }
         List<PermissionAttributeBo> attrBos = KimAttributeDataBo.createFrom(PermissionAttributeBo.class, permission.getAttributes(), permission.getTemplate().getKimTypeId());
         PermissionBo bo = PermissionBo.from(permission);
+        if (bo.getTemplate() == null && bo.getTemplateId() != null) {
+            bo.setTemplate(PermissionTemplateBo.from(getPermissionTemplate(bo.getTemplateId())));
+        }
         bo.setAttributeDetails(attrBos);
         return PermissionBo.to(businessObjectService.save(bo));
 	}
@@ -621,15 +625,35 @@ public class PermissionServiceImpl implements PermissionService {
             throw new RiceIllegalArgumentException("permission is null");
         }
 
-        if (StringUtils.isBlank(permission.getId()) || getPermission(permission.getId()) == null) {
+        PermissionBo oldPermission = getPermissionImpl(permission.getId());
+        if (StringUtils.isBlank(permission.getId()) || oldPermission == null) {
             throw new RiceIllegalStateException("the permission does not exist: " + permission);
         }
 
-        List<PermissionAttributeBo> attrBos = KimAttributeDataBo.createFrom(PermissionAttributeBo.class, permission.getAttributes(), permission.getTemplate().getKimTypeId());
-        PermissionBo bo = PermissionBo.from(permission);
+        //List<PermissionAttributeBo> attrBos = KimAttributeDataBo.createFrom(PermissionAttributeBo.class, permission.getAttributes(), permission.getTemplate().getKimTypeId());
 
-        if (bo.getAttributeDetails() != null) {
-            bo.getAttributeDetails().addAll(attrBos);
+        List<PermissionAttributeBo> oldAttrBos = oldPermission.getAttributeDetails();
+        //put old attributes in map for easier updating
+        Map<String, PermissionAttributeBo> oldAttrMap = new HashMap<String, PermissionAttributeBo>();
+        for (PermissionAttributeBo oldAttr : oldAttrBos) {
+            oldAttrMap.put(oldAttr.getKimAttribute().getAttributeName(), oldAttr);
+        }
+        List<PermissionAttributeBo> newAttrBos = new ArrayList<PermissionAttributeBo>();
+        for (String key : permission.getAttributes().keySet()) {
+            if (oldAttrMap.containsKey(key)) {
+                PermissionAttributeBo updatedAttr = oldAttrMap.get(key);
+                updatedAttr.setAttributeValue(permission.getAttributes().get(key));
+                newAttrBos.add(updatedAttr);
+            } else { //new attribute
+                newAttrBos.addAll(KimAttributeDataBo.createFrom(PermissionAttributeBo.class, Collections.singletonMap(key, permission.getAttributes().get(key)), permission.getTemplate().getKimTypeId()));
+            }
+        }
+        PermissionBo bo = PermissionBo.from(permission);
+        if (CollectionUtils.isNotEmpty(newAttrBos)) {
+            bo.setAttributeDetails(newAttrBos);
+        }
+        if (bo.getTemplate() == null && bo.getTemplateId() != null) {
+            bo.setTemplate(PermissionTemplateBo.from(getPermissionTemplate(bo.getTemplateId())));
         }
 
         return PermissionBo.to(businessObjectService.save(bo));		
@@ -712,6 +736,9 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     private List<String> getRoleIdsForPermissions( Collection<Permission> permissions ) {
+        if (CollectionUtils.isEmpty(permissions)) {
+            return Collections.emptyList();
+        }
         List<String> ids = new ArrayList<String>();
         for (Permission p : permissions) {
             ids.add(p.getId());

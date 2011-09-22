@@ -97,11 +97,6 @@ class PermissionTest {
     }
 
 	@Test(expected = IllegalArgumentException.class)
-	void test_Builder_fail_ver_num_null() {
-		Permission.Builder.create(NAMESPACE_CODE, NAME).setVersionNumber(null);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
 	void test_Builder_fail_ver_num_less_than_1() {
 		Permission.Builder.create(NAMESPACE_CODE, NAME).setVersionNumber(-1);
 	}

@@ -38,6 +38,8 @@ public class GenericPermissionBo extends PersistableBusinessObjectBase {
     protected String templateId;
     protected String detailValues;
     protected Map<String,String> details;
+    PermissionTemplateBo template;
+    List<PermissionAttributeBo> attributeDetails
     
     /**
      * This constructs a ...
@@ -50,14 +52,22 @@ public class GenericPermissionBo extends PersistableBusinessObjectBase {
         loadFromPermission( perm );
 
     }
+
     public void loadFromPermission( PermissionBo perm ) {
         setId( perm.getId() );
         setNamespaceCode( perm.getNamespaceCode() );
+        setTemplate(perm.getTemplate());
+        setAttributeDetails(perm.attributeDetails);
+        setDetailValues(perm.detailObjectsValues);
         setName( perm.getName() );
         setTemplateId( perm.getTemplateId() );
         setDescription( perm.getDescription() );
         setActive( perm.isActive() );
         setDetails( perm.getAttributes() );
+        setVersionNumber(perm.getVersionNumber());
+        setObjectId(perm.getObjectId());
+        setExtension(perm.getExtension());
+
     }
 
     
@@ -196,5 +206,22 @@ public class GenericPermissionBo extends PersistableBusinessObjectBase {
     @Override
     protected void preRemove() {
         throw new UnsupportedOperationException( "This object should never be persisted.");
+    }
+
+    public static PermissionBo toPermissionBo(GenericPermissionBo bo) {
+        PermissionBo permission = new PermissionBo()
+        permission.setTemplateId(bo.templateId)
+        permission.setId(bo.id)
+        permission.setTemplate(bo.getTemplate())
+        permission.setActive(bo.active)
+        permission.setDescription(bo.description)
+        permission.setName(bo.name)
+        permission.setNamespaceCode(bo.namespaceCode)
+        permission.setAttributeDetails(bo.getAttributeDetails())
+        permission.setAttributes(bo.getDetails())
+        permission.setVersionNumber(bo.versionNumber)
+        permission.setObjectId(bo.objectId)
+        permission.setExtension(bo.getExtension());
+        return permission
     }
 }

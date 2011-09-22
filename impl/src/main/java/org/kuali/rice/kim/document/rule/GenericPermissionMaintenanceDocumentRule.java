@@ -52,12 +52,12 @@ public class GenericPermissionMaintenanceDocumentRule extends MaintenanceDocumen
 	protected boolean processCustomRouteDocumentBusinessRules(MaintenanceDocument document) {
 		boolean rulesPassed = true;
 		try {
-			PermissionBo perm = (PermissionBo)getNewBo();
-			validateDetailValuesFormat(perm.getDetailObjectsValues());
+			GenericPermissionBo perm = (GenericPermissionBo)getNewBo();
+			validateDetailValuesFormat(perm.getDetailValues());
 			// detailValues
 			// get the type from the template for validation
-			Template template = KimApiServiceLocator.getPermissionService().getPermissionTemplate( PermissionTemplateBo.to(perm.getTemplate()).getId());
-			if ( template == null ) {
+			Template template = KimApiServiceLocator.getPermissionService().getPermissionTemplate(perm.getTemplateId());
+            if ( template == null ) {
 				GlobalVariables.getMessageMap().addToErrorPath( MAINTAINABLE_ERROR_PATH );
 				GlobalVariables.getMessageMap().putError( DETAIL_VALUES_PROPERTY, ERROR_MISSING_TEMPLATE, perm.getTemplateId() );
 				GlobalVariables.getMessageMap().removeFromErrorPath( MAINTAINABLE_ERROR_PATH );

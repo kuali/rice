@@ -22,6 +22,7 @@ import org.kuali.rice.kim.api.identity.Person
 import org.kuali.rice.kim.impl.group.GroupBo
 import org.kuali.rice.kim.impl.role.RoleBo
 import org.springframework.util.AutoPopulatingList
+import org.kuali.rice.kim.api.permission.Permission
 
 //strange - hacky non-PBO
 class UberPermissionBo extends PermissionBo {
@@ -41,16 +42,28 @@ class UberPermissionBo extends PermissionBo {
     String attributeValue
     String detailCriteria
 
-    public String getAssignedToRolesToDisplay() {
-        StringBuffer assignedToRolesToDisplay = new StringBuffer()
-        for (RoleBo roleImpl: assignedToRoles) {
-            assignedToRolesToDisplay.append(getRoleDetailsToDisplay(roleImpl))
+    public static UberPermissionBo from(PermissionBo bo) {
+        if (bo == null) {
+            return null
         }
-        return StringUtils.chomp(assignedToRolesToDisplay.toString(), KimConstants.KimUIConstants.COMMA_SEPARATOR)
+        Permission.Builder builder =  Permission.Builder.create(bo)
+        return (UberPermissionBo) PermissionBo.from(builder.build())
+
+    }
+    public String getAssignedToRolesToDisplay() {
+        StringBuffer assignedToRolesText = new StringBuffer()
+        for (RoleBo roleImpl: assignedToRoles) {
+            assignedToRolesText.append(roleImpl.namespaceCode.trim()
+                    + " "
+                    + roleImpl.name.trim()
+                    + KimConstants.KimUIConstants.COMMA_SEPARATOR)
+        }
+        return StringUtils.chomp(assignedToRolesText.toString(), KimConstants.KimUIConstants.COMMA_SEPARATOR)
     }
 
-    public String getRoleDetailsToDisplay(RoleBo roleImpl) {
-        return roleImpl.getNamespaceCode().trim() + " " + roleImpl.getName().trim() + KimConstants.KimUIConstants.COMMA_SEPARATOR
-    }
+    /*String getRoleDetailsToDisplay(RoleBo roleImpl) {
+        String value = roleImpl.namespaceCode.trim() + " " + roleImpl.name.trim() + KimConstants.KimUIConstants.COMMA_SEPARATOR
+        return value;
+    }*/
 }
 

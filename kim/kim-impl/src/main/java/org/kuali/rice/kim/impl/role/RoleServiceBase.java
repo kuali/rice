@@ -206,17 +206,6 @@ abstract class RoleServiceBase implements RoleService {
     }
 
     /**
-     * Determines whether or not the given role should allow its members to be cached. The default implementation always returns true, but
-     * subclasses can override this method if other non-default Role implementations forbid their members from being cached.
-     *
-     * @param roleId The ID of the role to check for determining whether or not to allow caching of its members.
-     * @return True if the given role allows its members to be cached; false otherwise.
-     */
-    protected boolean shouldCacheMembersOfRole(String roleId) {
-        return true;
-    }
-
-    /**
      * Retrieves a RoleMemberBo object by its ID. If the role member already exists in the cache, this method will return the cached
      * version; otherwise, it will retrieve the uncached version from the database and then cache it (if it belongs to a role that allows
      * its members to be cached) before returning it.

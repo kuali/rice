@@ -283,40 +283,10 @@ div.kr-addLine, span.kr-addLine{
 
 /* date-picker */
 
-.ui-corner-all {
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
-	border-radius: 4px;
-}
-
-.ui-datepicker-group-first {
-    float:left;
-    margin:0 15px 0 15px;
-}
 
 .ui-datepicker-trigger {
 	cursor: pointer;
 }
-
-
-.ui-datepicker-calendar td { text-align:center; padding:.2em}
-
-
-.ui-datepicker-title select {font-size:.7em}
-
-
-.ui-datepicker-title { text-align:center}
-
-
-.ui-datepicker-calendar .ui-state-default {border:none;
-	background:none;
-	font-weight: normal;
-	color: #9c1c1c;
-	font-size:.7em}
-
- .ui-datepicker-buttonpane button { font-size:.7em}
- 
-  .ui-datepicker-buttonpane { text-align:center; background-color:#999999}
   
   
 
@@ -440,6 +410,16 @@ button img.rightActionImage, a img.rightActionImage{
 	clear: none;
 }
 
+ /* TEMPORARY JQUERY STYLES (until jquery-ui-1.8.11.css is included) */
+/*
+ * jQuery UI CSS Framework 1.8.11
+ *
+ * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Theming/API
+ */
 
 /*Navigation Menu*/
 

@@ -23,6 +23,7 @@ import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
 import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
+import org.kuali.rice.kim.api.KimConstants;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -291,5 +292,9 @@ public class GroupMember extends AbstractDataTransferObject implements GroupMemb
         final static String GROUP_ID = "groupId";
         final static String MEMBER_ID = "memberId";
         final static String TYPE_CODE = "typeCode";
+    }
+
+    public static class Cache {
+        public static final String NAME = KimConstants.Namespaces.KIM_NAMESPACE_2_0 + "/" + GroupMember.Constants.TYPE_NAME;
     }
 }

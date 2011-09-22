@@ -20,6 +20,8 @@ import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.KimConstants;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -54,6 +56,7 @@ public interface GroupService {
     @XmlElementWrapper(name = "groups", required = true)
     @XmlElement(name = "group", required = false)
     @WebResult(name = "groups")
+    @Cacheable(value= Group.Cache.NAME, key="'principalId=' + #principalId")
     List<Group> getGroupsByPrincipalId(@WebParam(name = "principalId") String principalId) throws RiceIllegalArgumentException;
 
 
@@ -75,6 +78,7 @@ public interface GroupService {
     @XmlElementWrapper(name = "groups", required = true)
     @XmlElement(name = "group", required = false)
     @WebResult(name = "groups")
+    @Cacheable(value= Group.Cache.NAME, key="'principalId=' + #principalId + '|' + 'namespaceCode=' + #namespaceCode")
     List<Group> getGroupsByPrincipalIdAndNamespaceCode(@WebParam(name = "principalId") String principalId,
             @WebParam(name = "namespaceCode") String namespaceCode) throws RiceIllegalArgumentException;
 
@@ -131,14 +135,15 @@ public interface GroupService {
      * Lookup a Group based on the passed in id.
      *
      *
-     * @param groupId String that matches the desired Groups id
+     * @param id String that matches the desired Groups id
      * @return a Group with the given id value.  A null reference is returned if an invalid or
      *         non-existant id is supplied.
      * @throws IllegalArgumentException if the groupId is null or blank
      */
     @WebMethod(operationName = "getGroup")
     @WebResult(name = "group")
-    Group getGroup(@WebParam(name="groupId") String groupId) throws RiceIllegalArgumentException;
+    @Cacheable(value= Group.Cache.NAME, key="'id=' + #id")
+    Group getGroup(@WebParam(name="id") String id) throws RiceIllegalArgumentException;
 
     /**
      * Lookup a Group based on the passed in namespace and name.
@@ -152,6 +157,7 @@ public interface GroupService {
      */
     @WebMethod(operationName = "getGroupByNameAndNamespaceCode")
     @WebResult(name = "group")
+    @Cacheable(value= Group.Cache.NAME, key="'namespaceCode=' + #namespaceCode + '|' + 'groupName=' + #groupName")
     Group getGroupByNameAndNamespaceCode(@WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "groupName") String groupName) throws RiceIllegalArgumentException;
 
@@ -160,7 +166,7 @@ public interface GroupService {
      *
      * <p>The result is a Map containing the group id as the key and the Group as the value.</p>
      *
-     * @param groupIds Collection that matches the desired Groups' id
+     * @param ids Collection that matches the desired Groups' id
      * @return a Map of Groups with the given id values.  An empty Map is returned if an invalid or
      *         non-existant id is supplied.
      * @throws IllegalArgumentException if the groupIds null or empty
@@ -169,7 +175,8 @@ public interface GroupService {
     @XmlElementWrapper(name = "groups", required = true)
     @XmlElement(name = "group", required = false)
     @WebResult(name = "groups")
-    List<Group> getGroups(@WebParam(name="groupIds") Collection<String> groupIds) throws RiceIllegalArgumentException;
+    @Cacheable(value= Group.Cache.NAME, key="'ids=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#ids)")
+    List<Group> getGroups(@WebParam(name="ids") Collection<String> ids) throws RiceIllegalArgumentException;
 
 
     /**
@@ -276,11 +283,6 @@ public interface GroupService {
     @WebMethod(operationName = "isGroupMemberOfGroup")
     @WebResult(name = "isMember")
     boolean isGroupMemberOfGroup(@WebParam(name="groupMemberId") String groupMemberId, @WebParam(name="groupId") String groupId) throws RiceIllegalArgumentException;
-
-    /**
-     * Checks if the group with the given id is active.  Returns true if it is, false otherwise.
-     */
-    //boolean isGroupActive( @WebParam(name="groupId") String groupId );
 
 
     /**
@@ -406,6 +408,7 @@ public interface GroupService {
     @XmlElementWrapper(name = "members", required = true)
     @XmlElement(name = "member", required = false)
     @WebResult(name = "members")
+    @Cacheable(value= GroupMember.Cache.NAME, key="'groupId=' + #groupId")
 	List<GroupMember> getMembersOfGroup( @WebParam(name="groupId") String groupId ) throws RiceIllegalArgumentException;
 
 
@@ -425,6 +428,7 @@ public interface GroupService {
     @XmlElementWrapper(name = "members", required = true)
     @XmlElement(name = "member", required = false)
     @WebResult(name = "members")
+    @Cacheable(value= GroupMember.Cache.NAME, key="'groupIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#groupIds)")
 	List<GroupMember> getMembers( @WebParam(name="groupIds") List<String> groupIds ) throws RiceIllegalArgumentException;
 
 
@@ -441,6 +445,7 @@ public interface GroupService {
      */
     @WebMethod(operationName = "createGroup")
     @WebResult(name = "group")
+    @CacheEvict(value=Group.Cache.NAME, allEntries = true)
 	Group createGroup(@WebParam(name="group") Group group) throws RiceIllegalArgumentException;
 
     /**
@@ -457,6 +462,7 @@ public interface GroupService {
      */
     @WebMethod(operationName = "updateGroup")
     @WebResult(name = "group")
+    @CacheEvict(value=Group.Cache.NAME, allEntries = true)
 	Group updateGroup(@WebParam(name="group") Group group) throws RiceIllegalArgumentException;
 
 	/**
@@ -474,6 +480,7 @@ public interface GroupService {
      */
     @WebMethod(operationName = "updateGroupWithId")
     @WebResult(name = "group")
+    @CacheEvict(value=Group.Cache.NAME, allEntries = true)
     Group updateGroup(@WebParam(name="groupId") String groupId, @WebParam(name="group") Group group) throws RiceIllegalArgumentException;
 
     /**
@@ -486,6 +493,7 @@ public interface GroupService {
      */
     @WebMethod(operationName = "addGroupToGroup")
     @WebResult(name = "addedToGroup")
+    @CacheEvict(value=GroupMember.Cache.NAME, allEntries = true)
     boolean addGroupToGroup(@WebParam(name="childId") String childId, @WebParam(name="parentId") String parentId) throws RiceIllegalArgumentException;
 
     /**
@@ -498,6 +506,7 @@ public interface GroupService {
      */
     @WebMethod(operationName = "removeGroupFromGroup")
     @WebResult(name = "removedFromGroup")
+    @CacheEvict(value=GroupMember.Cache.NAME, allEntries = true)
     boolean removeGroupFromGroup(@WebParam(name="childId") String childId, @WebParam(name="parentId") String parentId) throws RiceIllegalArgumentException;
 
     /**
@@ -510,6 +519,7 @@ public interface GroupService {
      */
     @WebMethod(operationName = "addPrincipalToGroup")
     @WebResult(name = "addedToGroup")
+    @CacheEvict(value=GroupMember.Cache.NAME, allEntries = true)
     boolean addPrincipalToGroup(@WebParam(name="principalId") String principalId, @WebParam(name="groupId") String groupId) throws RiceIllegalArgumentException;
 
     /**
@@ -522,6 +532,7 @@ public interface GroupService {
      */
     @WebMethod(operationName = "removePrincipalFromGroup")
     @WebResult(name = "removedFromGroup")
+    @CacheEvict(value=GroupMember.Cache.NAME, allEntries = true)
     boolean removePrincipalFromGroup(@WebParam(name="principalId") String principalId, @WebParam(name="groupId") String groupId) throws RiceIllegalArgumentException;
 
     /**
@@ -531,5 +542,6 @@ public interface GroupService {
      * @throws IllegalArgumentException if the groupId is null or blank
      */
     @WebMethod(operationName = "removeAllMembers")
+    @CacheEvict(value=GroupMember.Cache.NAME, allEntries = true)
     void removeAllMembers( @WebParam(name="groupId") String groupId ) throws RiceIllegalArgumentException;
 }

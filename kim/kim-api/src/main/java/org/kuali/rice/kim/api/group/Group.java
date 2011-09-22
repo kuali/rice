@@ -22,6 +22,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.kim.api.KimConstants;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -320,5 +321,9 @@ public final class Group extends AbstractDataTransferObject implements GroupCont
         final static String KIM_TYPE_ID = "kimTypeId";
         final static String ATTRIBUTES = "attributes";
         final static String ACTIVE = "active";
+    }
+
+    public static class Cache {
+        public static final String NAME = KimConstants.Namespaces.KIM_NAMESPACE_2_0 + "/" + Group.Constants.TYPE_NAME;
     }
 }

@@ -22,6 +22,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.kim.api.KimConstants;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -242,5 +243,9 @@ final public class RoleResponsibility extends AbstractDataTransferObject impleme
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "roleResponsibility";
         final static String TYPE_NAME = "RoleResponsibilityType";
+    }
+
+    public static class Cache {
+        public static final String NAME = KimConstants.Namespaces.KIM_NAMESPACE_2_0 + "/" + RoleResponsibility.Constants.TYPE_NAME;
     }
 }

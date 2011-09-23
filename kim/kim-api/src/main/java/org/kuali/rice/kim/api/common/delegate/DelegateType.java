@@ -24,6 +24,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.kim.api.KimConstants;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -274,5 +275,9 @@ public final class DelegateType extends AbstractDataTransferObject implements De
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "delegateType";
         final static String TYPE_NAME = "DelegateTypeType";
+    }
+
+    public static class Cache {
+        public static final String NAME = KimConstants.Namespaces.KIM_NAMESPACE_2_0 + "/" + DelegateType.Constants.TYPE_NAME;
     }
 }

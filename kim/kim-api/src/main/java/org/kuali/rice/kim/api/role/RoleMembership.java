@@ -25,6 +25,7 @@ import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
 import org.kuali.rice.kim.api.common.delegate.DelegateTypeContract;
 import org.w3c.dom.Element;
@@ -312,5 +313,9 @@ public class RoleMembership extends AbstractDataTransferObject implements RoleMe
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "roleMembership";
         final static String TYPE_NAME = "RoleMembershipType";
+    }
+
+    public static class Cache {
+        public static final String NAME = KimConstants.Namespaces.KIM_NAMESPACE_2_0 + "/" + RoleMembership.Constants.TYPE_NAME;
     }
 }

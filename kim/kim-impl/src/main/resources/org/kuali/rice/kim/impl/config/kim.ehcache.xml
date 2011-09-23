@@ -47,4 +47,14 @@
        copyOnWrite="false"/>
   <cache name="http://rice.kuali.org/kim/v2_0/RoleType" eternal="false" overflowToDisk="false" copyOnRead="false"
        copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/RoleMembershipType" eternal="false" overflowToDisk="false" copyOnRead="false"
+       copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/RoleMemberType" eternal="false" overflowToDisk="false" copyOnRead="false"
+       copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/DelegateMemberType" eternal="false" overflowToDisk="false" copyOnRead="false"
+       copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/RoleResponsibilityType" eternal="false" overflowToDisk="false" copyOnRead="false"
+       copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/DelegateTypeType" eternal="false" overflowToDisk="false" copyOnRead="false"
+       copyOnWrite="false"/>
 </ehcache>

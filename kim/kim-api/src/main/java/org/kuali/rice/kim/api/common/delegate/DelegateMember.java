@@ -7,6 +7,7 @@ import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
 import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
+import org.kuali.rice.kim.api.KimConstants;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -283,5 +284,9 @@ public final class DelegateMember extends AbstractDataTransferObject
         final static String MEMBER_ID = "memberId";
         final static String ROLE_MEMBER_ID = "roleMemberId";
         final static String TYPE_CODE = "typeCode";
+    }
+
+    public static class Cache {
+        public static final String NAME = KimConstants.Namespaces.KIM_NAMESPACE_2_0 + "/" + DelegateMember.Constants.TYPE_NAME;
     }
 }

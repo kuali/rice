@@ -28,6 +28,7 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
 import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.kim.api.KimConstants;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -328,5 +329,9 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "roleMember";
         final static String TYPE_NAME = "RoleMemberType";
+    }
+
+    public static class Cache {
+        public static final String NAME = KimConstants.Namespaces.KIM_NAMESPACE_2_0 + "/" + RoleMember.Constants.TYPE_NAME;
     }
 }

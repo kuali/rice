@@ -115,7 +115,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             throw new RiceIllegalArgumentException("memberId is null or blank");
         }
 
-        List<RoleMemberBo> parentRoleMembers = getRoleDao().getRoleMembershipsForMemberId(memberType, memberId, Collections.<String, String>emptyMap());
+        List<RoleMemberBo> parentRoleMembers = getRoleDao().getRoleMembershipsForMemberId(memberType, memberId,
+                Collections.<String, String>emptyMap());
 
         List<String> parentRoleIds = new ArrayList<String>(parentRoleMembers.size());
         for (RoleMemberBo parentRoleMember : parentRoleMembers) {
@@ -667,7 +668,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public DelegateType getDelegateTypeInfo(String roleId, String delegationTypeCode) {
+    public DelegateType getDelegateTypeByRoleIdAndDelegateTypeCode(String roleId, String delegationTypeCode) {
         if (StringUtils.isBlank(roleId)) {
             throw new RiceIllegalArgumentException("roleId is null or blank");
         }
@@ -681,22 +682,13 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public DelegateType getDelegateTypeInfoById(String delegationId) {
+    public DelegateType getDelegateTypeByDelegationId(String delegationId) {
         if (StringUtils.isBlank(delegationId)) {
             throw new RiceIllegalArgumentException("delegationId is null or blank");
         }
 
         DelegateTypeBo delegateBo = getKimDelegationImpl(delegationId);
         return DelegateTypeBo.to(delegateBo);
-    }
-
-    @Override
-    public void applicationRoleMembershipChanged(String roleId) {
-        if (StringUtils.isBlank(roleId)) {
-            throw new RiceIllegalArgumentException("roleId is null or blank");
-        }
-
-        getResponsibilityInternalService().updateActionRequestsForRoleChange(roleId);
     }
 
     @Override

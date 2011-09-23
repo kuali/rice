@@ -87,6 +87,7 @@ class EntityPersistenceTests extends BoPersistenceTest {
             POSTAL_CD: addr.postalCodeUnmasked,
             POSTAL_CNTRY_CD: addr.countryCodeUnmasked,
             ADDR_TYP_CD: addr.addressTypeCode,
+            ADDR_FMT: addr.addressFormat,
             CITY: addr.cityUnmasked,
             DFLT_IND: addr.defaultValue ? "Y" : "N",
         ],

@@ -69,6 +69,9 @@ public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
 	@Column(name = "POSTAL_CNTRY_CD")
 	protected String countryCode;
 
+    @Column(name = "ATTN_LINE")
+	protected String attentionLine;
+
 	@Column(name = "ADDR_LINE_1")
 	protected String line1;
 
@@ -77,6 +80,9 @@ public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
 
 	@Column(name = "ADDR_LINE_3")
 	protected String line3;
+
+    @Column(name = "ADDR_FMT")
+	protected String addressFormat;
 
 	@ManyToOne(targetEntity=EntityAddressTypeBo.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "ADDR_TYP_CD", insertable = false, updatable = false)
@@ -118,6 +124,13 @@ public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
 		return entityAddressId;
 	}
 
+    /**
+	 * @see org.kuali.rice.kim.api.identity.address.EntityAddressContract#getAttentionLine()
+	 */
+	public String getAttentionLine() {
+		return attentionLine;
+	}
+
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getLine1()
 	 */
@@ -137,6 +150,13 @@ public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
 	 */
 	public String getLine3() {
 		return line3;
+	}
+
+    /**
+	 * @see @see org.kuali.rice.kim.api.identity.address.EntityAddressContract#getAddressFormat
+	 */
+	public String getAddressFormat() {
+		return addressFormat;
 	}
 
 	/**
@@ -176,6 +196,13 @@ public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
 		this.countryCode = countryCode;
 	}
 
+    /**
+	 * @see org.kuali.rice.kim.api.identity.address.EntityAddressContract#getAttentionLine()
+	 */
+	public void setAttentionLine(String attentionLine) {
+		this.attentionLine = attentionLine;
+	}
+
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#setLine1(java.lang.String)
 	 */
@@ -195,6 +222,13 @@ public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
 	 */
 	public void setLine3(String line3) {
 		this.line3 = line3;
+	}
+
+    /**
+	 * @see org.kuali.rice.kim.api.identity.address.EntityAddressContract#getAddressFormat()
+	 */
+	public void setAddressFormat(String addressFormat) {
+		this.addressFormat = addressFormat;
 	}
 
 	/**

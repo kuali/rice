@@ -409,9 +409,11 @@
     <field-descriptor name="stateProvinceCode" column="STATE_PVC_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="postalCode" column="postal_cd" jdbc-type="VARCHAR"  />
     <field-descriptor name="countryCode" column="POSTAL_CNTRY_CD" jdbc-type="VARCHAR"  />
+    <field-descriptor name="attentionLine" column="ATTN_LINE" jdbc-type="VARCHAR"  />
     <field-descriptor name="line1" column="ADDR_LINE_1" jdbc-type="VARCHAR"  />
     <field-descriptor name="line2" column="ADDR_LINE_2" jdbc-type="VARCHAR"  />
     <field-descriptor name="line3" column="ADDR_LINE_3" jdbc-type="VARCHAR"  />
+    <field-descriptor name="addressFormat" column="ADDR_FMT" jdbc-type="VARCHAR"  />
     <field-descriptor name="defaultValue" column="DFLT_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
@@ -884,9 +886,11 @@
     <field-descriptor name="stateProvinceCode" column="STATE_PVC_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="postalCode" column="postal_cd" jdbc-type="VARCHAR"  />
     <field-descriptor name="countryCode" column="POSTAL_CNTRY_CD" jdbc-type="VARCHAR"  />
+    <field-descriptor name="attentionLine" column="ATTN_LINE" jdbc-type="VARCHAR"  />
     <field-descriptor name="line1" column="ADDR_LINE_1" jdbc-type="VARCHAR"  />
     <field-descriptor name="line2" column="ADDR_LINE_2" jdbc-type="VARCHAR"  />
     <field-descriptor name="line3" column="ADDR_LINE_3" jdbc-type="VARCHAR"  />
+    <field-descriptor name="addressFormat" column="ADDR_FMT" jdbc-type="VARCHAR"  />
     <field-descriptor name="dflt" column="DFLT_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />

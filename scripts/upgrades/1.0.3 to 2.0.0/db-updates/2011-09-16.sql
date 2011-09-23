@@ -8,6 +8,8 @@ alter table KRIM_ENTITY_NM_T add NM_CHNG_DT DATE
 
 alter table KRIM_ENTITY_ADDR_T add ATTN_LINE VARCHAR(45)
 /
+alter table KRIM_ENTITY_ADDR_T add ADDR_FMT VARCHAR(256)
+/
 
 alter table KRIM_ENTITY_BIO_T add NOTE_MSG VARCHAR(1024)
 /
@@ -19,4 +21,9 @@ alter table KRIM_PND_NM_MT add TITLE_NM VARCHAR(20)
 alter table KRIM_PND_NM_MT add NOTE_MSG VARCHAR(1024)
 /
 alter table KRIM_PND_NM_MT add NM_CHNG_DT DATE
+/
+
+alter table KRIM_PND_ADDR_MT add ATTN_LINE VARCHAR(45)
+/
+alter table KRIM_PND_ADDR_MT add ADDR_FMT VARCHAR(256)
 /

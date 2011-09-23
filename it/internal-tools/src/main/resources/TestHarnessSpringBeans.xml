@@ -87,7 +87,16 @@
 		</property>
 	</bean>
 
-  <bean id="dataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.XAPoolDataSource">
+   <!-- Bitronix transaction manager -->
+   <bean id="btmConfig" factory-method="getConfiguration" class="bitronix.tm.TransactionManagerServices">
+       <!-- <property name="serverId" value="spring-btm" /> -->
+       <property name="disableJmx" value="true" />
+   </bean>
+
+   <bean id="transactionManagerBitronix" factory-method="getTransactionManager"
+         class="bitronix.tm.TransactionManagerServices" depends-on="btmConfig" destroy-method="shutdown" />
+
+   <bean id="riceDataSourceXAPool" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.XAPoolDataSource">
     <property name="transactionManager"><ref local="jtaTransactionManager"/></property>
     <property name="driverClassName" value="${datasource.driver.name}"/>
     <property name="url" value="${datasource.url}"/>
@@ -98,7 +107,43 @@
     <property name="username" value="${datasource.username}" />
     <property name="password" value="${datasource.password}" />
   </bean>
-  
+ 
+    <!-- 
+         In order for Bitronix to work with Oracle the following grants need to be run as user SYS 
+          grant select on pending_trans$ to <user>;   
+          grant select on dba_2pc_pending to <user>;  
+          grant select on dba_pending_transactions to <user>;  
+          grant execute on dbms_system to <user>;  
+    -->
+
+    <!--   Commenting out Bitronix code until above grants can be run in the 
+               master datababe or another solution can be found 
+    <bean id="ds-random-string" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="org.apache.commons.lang.RandomStringUtils.randomAlphanumeric"/>
+        <property name="arguments"><list><value>20</value></list></property>
+    </bean>
+
+    <bean id="riceDataSourceBitronix" class="bitronix.tm.resource.jdbc.PoolingDataSource" init-method="init" destroy-method="close">
+        <property name="className" value="${datasource.pool.class}" />
+        <property name="uniqueName" ref="ds-random-string" />
+        <property name="minPoolSize" value="${datasource.pool.minSize}" />
+        <property name="maxPoolSize" value="${datasource.pool.maxSize}" />
+        <property name="useTmJoin" value="true" />
+        <property name="testQuery" value="${datasource.pool.validationQuery}" />
+        <property name="allowLocalTransactions" value="true" />
+        <property name="driverProperties">
+            <props>
+                <prop key="URL">${datasource.url}</prop>
+                <prop key="user">${datasource.username}</prop>
+                <prop key="password">${datasource.password}</prop>
+            </props>
+        </property>
+    </bean>
+    -->
+
+    <alias name="riceDataSource${connection.pool.impl}" alias="riceDataSource"/> 
+    <alias name="riceDataSource${connection.pool.impl}" alias="dataSource"/> 
+ 
   <bean id="nonTransactionalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
     <property name="driverClassName" value="${datasource.driver.name}"/>
     <property name="url" value="${datasource.url}"/>

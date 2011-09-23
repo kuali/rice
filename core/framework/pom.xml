@@ -65,6 +65,11 @@
 			<groupId>org.ow2.jotm</groupId>
 			<artifactId>jotm-core</artifactId>
 		</dependency>
+        <!-- bitronix -->
+        <dependency>
+            <groupId>org.codehaus.btm</groupId>
+            <artifactId>btm</artifactId>
+        </dependency>
         <dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

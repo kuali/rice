@@ -55,8 +55,8 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="riceDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.XAPoolDataSource">
-		<property name="transactionManager" ref="jotm" />
+  <bean id="riceDataSourceXAPool" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.XAPoolDataSource">
+    <property name="transactionManager" ref="transactionManagerXAPool" />
 		<property name="driverClassName" value="${datasource.driver.name}" />
 		<property name="url" value="${datasource.url}" />
 		<property name="maxSize" value="${datasource.pool.maxSize}" />
@@ -67,7 +67,55 @@
 		<property name="password" value="${datasource.password}" />
 	</bean>
 
+   <bean id="ds-random-string" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+     <property name="staticMethod" value="org.apache.commons.lang.RandomStringUtils.randomAlphanumeric"/>
+     <property name="arguments"><list><value>20</value></list></property>
+   </bean>
+
+   <bean id="riceDataSourceBitronix" class="bitronix.tm.resource.jdbc.PoolingDataSource" init-method="init"
+         destroy-method="close" lazy-init="true">
+     <property name="className" value="${datasource.pool.class.non.xa}" />
+     <property name="uniqueName" ref="ds-random-string" />
+     <property name="minPoolSize" value="${datasource.pool.minSize}" />
+     <property name="maxPoolSize" value="${datasource.pool.maxSize}" />
+     <property name="useTmJoin" value="true" />
+     <property name="testQuery" value="${datasource.pool.validationQuery}" />
+     <property name="allowLocalTransactions" value="true" />
+     <property name="driverProperties">
+       <props>
+         <prop key="Url">${datasource.url}</prop>
+         <prop key="driverClassName">${datasource.driver.name}</prop>
+         <prop key="user">${datasource.username}</prop>
+         <prop key="password">${datasource.password}</prop>
+       </props>
+     </property>
+   </bean>
+
+
+  <bean id="riceDataSourceBitronixXa" class="bitronix.tm.resource.jdbc.PoolingDataSource" init-method="init"
+        destroy-method="close" lazy-init="true">
+      <property name="className" value="${datasource.pool.class}" />
+      <property name="uniqueName" ref="ds-random-string" />
+      <property name="minPoolSize" value="${datasource.pool.minSize}" />
+      <property name="maxPoolSize" value="${datasource.pool.maxSize}" />
+      <property name="useTmJoin" value="true" />
+      <property name="testQuery" value="${datasource.pool.validationQuery}" />
+      <property name="allowLocalTransactions" value="true" />
+      <property name="driverProperties">
+          <props>
+              <prop key="URL">${datasource.url}</prop>
+              <prop key="user">${datasource.username}</prop>
+              <prop key="password">${datasource.password}</prop>
+          </props>
+      </property>
+  </bean>
+
+
+  <alias name="riceDataSource${connection.pool.impl}" alias="riceDataSource"/>
+  <alias name="riceDataSource${connection.pool.impl}" alias="dataSource"/>
+
 <!--
+
     <bean id="riceDataSource" class="com.atomikos.jdbc.nonxa.NonXADataSourceBean">
   	  <property name="uniqueResourceName" value="riceRiceDataSource"/>
   	  <property name="driverClassName" value="${datasource.driver.name}"/>
@@ -81,16 +129,16 @@
     </bean>
 -->
 
-    <bean id="riceNonTransactionalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-        <property name="driverClassName" value="${datasource.driver.name}"/>
-        <property name="url" value="${datasource.url}"/>
-        <property name="maxActive" value="${datasource.pool.maxActive}"/>
-        <property name="minIdle" value="${datasource.minIdle}" />
-        <property name="initialSize" value="${datasource.initialSize}"/>
-        <property name="validationQuery" value="${datasource.pool.validationQuery}"/>
-        <property name="username" value="${datasource.username}" />
-        <property name="password" value="${datasource.password}" />
-        <property name="accessToUnderlyingConnectionAllowed" value="${datasource.accessToUnderlyingConnectionAllowed}"/>
-    </bean>
+  <bean id="riceNonTransactionalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="${datasource.driver.name}"/>
+    <property name="url" value="${datasource.url}"/>
+    <property name="maxActive" value="${datasource.pool.maxActive}"/>
+    <property name="minIdle" value="${datasource.minIdle}" />
+    <property name="initialSize" value="${datasource.initialSize}"/>
+    <property name="validationQuery" value="${datasource.pool.validationQuery}"/>
+    <property name="username" value="${datasource.username}" />
+    <property name="password" value="${datasource.password}" />
+    <property name="accessToUnderlyingConnectionAllowed" value="${datasource.accessToUnderlyingConnectionAllowed}"/>
+  </bean>
 
 </beans>

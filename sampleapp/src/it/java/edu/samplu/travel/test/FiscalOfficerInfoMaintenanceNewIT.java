@@ -38,7 +38,7 @@ public class FiscalOfficerInfoMaintenanceNewIT {
     
     @Test
     public void testUntitled() throws Exception {
-        selenium.open("/kr-dev/portal.do?selectedTab=main");
+        selenium.open(System.getProperty("remote.public.url") + "/portal.do?selectedTab=main");
         selenium.type("__login_user", "admin");
         selenium.click("//input[@value='Login']");     
         selenium.waitForPageToLoad("50000");    

@@ -24,6 +24,7 @@ import org.w3c.dom.Element;
     EntityAddress.Elements.ENTITY_TYPE_CODE,
     EntityAddress.Elements.ENTITY_ID,
     EntityAddress.Elements.ADDRESS_TYPE,
+    EntityAddress.Elements.ATTENTION_LINE,
     EntityAddress.Elements.LINE1,
     EntityAddress.Elements.LINE2,
     EntityAddress.Elements.LINE3,
@@ -31,7 +32,7 @@ import org.w3c.dom.Element;
     EntityAddress.Elements.STATE_PROVINCE_CODE,
     EntityAddress.Elements.POSTAL_CODE,
     EntityAddress.Elements.COUNTRY_CODE,
-
+    EntityAddress.Elements.ATTENTION_LINE_UNMASKED,
     EntityAddress.Elements.LINE1_UNMASKED,
     EntityAddress.Elements.LINE2_UNMASKED,
     EntityAddress.Elements.LINE3_UNMASKED,
@@ -57,6 +58,8 @@ public final class EntityAddress extends AbstractDataTransferObject
     private final String entityId;
     @XmlElement(name = Elements.ADDRESS_TYPE, required = false)
     private final CodedAttribute addressType;
+    @XmlElement(name = Elements.ATTENTION_LINE, required = false)
+    private final String attentionLine;
     @XmlElement(name = Elements.LINE1, required = false)
     private final String line1;
     @XmlElement(name = Elements.LINE2, required = false)
@@ -71,6 +74,8 @@ public final class EntityAddress extends AbstractDataTransferObject
     private final String postalCode;
     @XmlElement(name = Elements.COUNTRY_CODE, required = false)
     private final String countryCode;
+    @XmlElement(name = Elements.ATTENTION_LINE_UNMASKED, required = false)
+    private final String attentionLineUnmasked;
     @XmlElement(name = Elements.LINE1_UNMASKED, required = false)
     private final String line1Unmasked;
     @XmlElement(name = Elements.LINE2_UNMASKED, required = false)
@@ -107,6 +112,7 @@ public final class EntityAddress extends AbstractDataTransferObject
         this.entityId = null;
         this.entityTypeCode = null;
         this.addressType = null;
+        this.attentionLine = null;
         this.line1 = null;
         this.line2 = null;
         this.line3 = null;
@@ -114,6 +120,7 @@ public final class EntityAddress extends AbstractDataTransferObject
         this.stateProvinceCode = null;
         this.postalCode = null;
         this.countryCode = null;
+        this.attentionLineUnmasked = null;
         this.line1Unmasked = null;
         this.line2Unmasked = null;
         this.line3Unmasked = null;
@@ -134,6 +141,7 @@ public final class EntityAddress extends AbstractDataTransferObject
         this.entityTypeCode = builder.getEntityTypeCode();
 
         this.addressType = (builder.getAddressType() != null) ? builder.getAddressType().build() : null;
+        this.attentionLine = builder.getAttentionLine();
         this.line1 = builder.getLine1();
         this.line2 = builder.getLine2();
         this.line3 = builder.getLine3();
@@ -141,6 +149,7 @@ public final class EntityAddress extends AbstractDataTransferObject
         this.stateProvinceCode = builder.getStateProvinceCode();
         this.postalCode = builder.getPostalCode();
         this.countryCode = builder.getCountryCode();
+        this.attentionLineUnmasked = builder.getAttentionLineUnmasked();
         this.line1Unmasked = builder.getLine1Unmasked();
         this.line2Unmasked = builder.getLine2Unmasked();
         this.line3Unmasked = builder.getLine3Unmasked();
@@ -169,6 +178,11 @@ public final class EntityAddress extends AbstractDataTransferObject
     @Override
     public CodedAttribute getAddressType() {
         return this.addressType;
+    }
+
+    @Override
+    public String getAttentionLine() {
+        return this.attentionLine;
     }
 
     @Override
@@ -204,6 +218,11 @@ public final class EntityAddress extends AbstractDataTransferObject
     @Override
     public String getCountryCode() {
         return this.countryCode;
+    }
+
+    @Override
+    public String getAttentionLineUnmasked() {
+        return this.attentionLineUnmasked;
     }
 
     @Override
@@ -282,6 +301,7 @@ public final class EntityAddress extends AbstractDataTransferObject
         private String entityId;
         private String entityTypeCode;
         private CodedAttribute.Builder addressType;
+        private String attentionLineUnmasked;
         private String line1Unmasked;
         private String line2Unmasked;
         private String line3Unmasked;
@@ -313,6 +333,7 @@ public final class EntityAddress extends AbstractDataTransferObject
             if (contract.getAddressType() != null) {
                 builder.setAddressType(CodedAttribute.Builder.create(contract.getAddressType()));
             }
+            builder.setAttentionLine(contract.getAttentionLineUnmasked());
             builder.setLine1(contract.getLine1Unmasked());
             builder.setLine2(contract.getLine2Unmasked());
             builder.setLine3(contract.getLine3Unmasked());
@@ -345,6 +366,15 @@ public final class EntityAddress extends AbstractDataTransferObject
         @Override
         public CodedAttribute.Builder getAddressType() {
             return this.addressType;
+        }
+
+        @Override
+        public String getAttentionLine() {
+            if (isSuppressAddress()) {
+                return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
+            }
+            return this.attentionLineUnmasked;
+
         }
 
         @Override
@@ -402,6 +432,11 @@ public final class EntityAddress extends AbstractDataTransferObject
                 return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE;
             }
             return this.countryCodeUnmasked;
+        }
+
+        @Override
+        public String getAttentionLineUnmasked() {
+            return this.attentionLineUnmasked;
         }
 
         @Override
@@ -479,6 +514,10 @@ public final class EntityAddress extends AbstractDataTransferObject
 
         public void setAddressType(CodedAttribute.Builder addressType) {
             this.addressType = addressType;
+        }
+
+        public void setAttentionLine(String attnLine) {
+            this.attentionLineUnmasked = attnLine;
         }
 
         public void setLine1(String line1) {
@@ -559,6 +598,7 @@ public final class EntityAddress extends AbstractDataTransferObject
         final static String ENTITY_ID = "entityId";
         final static String ENTITY_TYPE_CODE = "entityTypeCode";
         final static String ADDRESS_TYPE = "addressType";
+        final static String ATTENTION_LINE = "attentionLine";
         final static String LINE1 = "line1";
         final static String LINE2 = "line2";
         final static String LINE3 = "line3";
@@ -566,6 +606,7 @@ public final class EntityAddress extends AbstractDataTransferObject
         final static String STATE_PROVINCE_CODE = "stateProvinceCode";
         final static String POSTAL_CODE = "postalCode";
         final static String COUNTRY_CODE = "countryCode";
+        final static String ATTENTION_LINE_UNMASKED = "attentionLineUnmasked";
         final static String LINE1_UNMASKED = "line1Unmasked";
         final static String LINE2_UNMASKED = "line2Unmasked";
         final static String LINE3_UNMASKED = "line3Unmasked";

@@ -121,7 +121,7 @@ class EntityFactory extends Factory {
 
     def EntityNameBo(Map fields) {
         def values = [
-            id: Factory.makeId(), active: true, firstName: "John", lastName: "Smith", nameType: new EntityNameTypeBo(code: KimConstants.NameTypes.PRIMARY), nameCode: KimConstants.NameTypes.PRIMARY
+            id: Factory.makeId(), active: true, nameTitle: "DVM", namePrefix: "Mr.", firstName: "John", lastName: "Smith", nameSuffix: "Jr.", noteMessage: "note message", nameType: new EntityNameTypeBo(code: KimConstants.NameTypes.PRIMARY), nameCode: KimConstants.NameTypes.PRIMARY
         ]
         new EntityNameBo(mergeAndLink('entity', fields, values))
     };

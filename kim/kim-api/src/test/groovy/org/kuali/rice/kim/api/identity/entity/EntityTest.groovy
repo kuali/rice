@@ -99,6 +99,7 @@ class EntityTest {
                                     <versionNumber>${ENTITY_TYPE.addresses.get(0).addressType.versionNumber}</versionNumber>
                                     <objectId>${ENTITY_TYPE.addresses.get(0).addressType.objectId}</objectId>
                                 </addressType>
+                                <attentionLine>${ENTITY_TYPE.addresses.get(0).attentionLine}</attentionLine>
                                 <line1>${ENTITY_TYPE.addresses.get(0).line1}</line1>
                                 <line2>${ENTITY_TYPE.addresses.get(0).line2}</line2>
                                 <line3>${ENTITY_TYPE.addresses.get(0).line3}</line3>
@@ -106,6 +107,7 @@ class EntityTest {
                                 <stateProvinceCode>${ENTITY_TYPE.addresses.get(0).stateProvinceCode}</stateProvinceCode>
                                 <postalCode>${ENTITY_TYPE.addresses.get(0).postalCode}</postalCode>
                                 <countryCode>${ENTITY_TYPE.addresses.get(0).countryCode}</countryCode>
+                                <attentionLineUnmasked>${ENTITY_TYPE.addresses.get(0).attentionLineUnmasked}</attentionLineUnmasked>
                                 <line1Unmasked>${ENTITY_TYPE.addresses.get(0).line1Unmasked}</line1Unmasked>
                                 <line2Unmasked>${ENTITY_TYPE.addresses.get(0).line2Unmasked}</line2Unmasked>
                                 <line3Unmasked>${ENTITY_TYPE.addresses.get(0).line3Unmasked}</line3Unmasked>
@@ -182,6 +184,7 @@ class EntityTest {
                                 <versionNumber>${ENTITY_TYPE.addresses.get(0).addressType.versionNumber}</versionNumber>
                                 <objectId>${ENTITY_TYPE.addresses.get(0).addressType.objectId}</objectId>
                             </addressType>
+                            <attentionLine>${ENTITY_TYPE.addresses.get(0).attentionLine}</attentionLine>
                             <line1>${ENTITY_TYPE.addresses.get(0).line1}</line1>
                             <line2>${ENTITY_TYPE.addresses.get(0).line2}</line2>
                             <line3>${ENTITY_TYPE.addresses.get(0).line3}</line3>
@@ -189,6 +192,7 @@ class EntityTest {
                             <stateProvinceCode>${ENTITY_TYPE.addresses.get(0).stateProvinceCode}</stateProvinceCode>
                             <postalCode>${ENTITY_TYPE.addresses.get(0).postalCode}</postalCode>
                             <countryCode>${ENTITY_TYPE.addresses.get(0).countryCode}</countryCode>
+                            <attentionLineUnmasked>${ENTITY_TYPE.addresses.get(0).attentionLineUnmasked}</attentionLineUnmasked>
                             <line1Unmasked>${ENTITY_TYPE.addresses.get(0).line1Unmasked}</line1Unmasked>
                             <line2Unmasked>${ENTITY_TYPE.addresses.get(0).line2Unmasked}</line2Unmasked>
                             <line3Unmasked>${ENTITY_TYPE.addresses.get(0).line3Unmasked}</line3Unmasked>
@@ -318,6 +322,7 @@ class EntityTest {
                         <lastNameUnmasked>${NAME.lastNameUnmasked}</lastNameUnmasked>
                         <nameSuffixUnmasked>${NAME.nameSuffixUnmasked}</nameSuffixUnmasked>
                         <compositeNameUnmasked>${NAME.compositeNameUnmasked}</compositeNameUnmasked>
+                        <noteMessage>${NAME.noteMessage}</noteMessage>
                         <suppressName>${NAME.suppressName}</suppressName>
                         <defaultValue>${NAME.defaultValue}</defaultValue>
                         <active>${NAME.active}</active>
@@ -471,6 +476,7 @@ class EntityTest {
                     <lastNameUnmasked>${NAME.lastNameUnmasked}</lastNameUnmasked>
                     <nameSuffixUnmasked>${NAME.nameSuffixUnmasked}</nameSuffixUnmasked>
                     <compositeNameUnmasked>${NAME.compositeNameUnmasked}</compositeNameUnmasked>
+                    <noteMessage>${NAME.noteMessage}</noteMessage>
                     <suppressName>${NAME.suppressName}</suppressName>
                     <defaultValue>${NAME.defaultValue}</defaultValue>
                     <active>${NAME.active}</active>

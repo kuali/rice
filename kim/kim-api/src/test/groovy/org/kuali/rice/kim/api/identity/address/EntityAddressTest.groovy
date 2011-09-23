@@ -17,6 +17,7 @@ class EntityAddressTest {
     private static final String TYPE_ACTIVE = "true"
     private static final Long TYPE_VERSION_NUMBER = new Integer(1)
 	private static final String TYPE_OBJECT_ID = UUID.randomUUID()
+    private static final String ATTENTION_LINE = "Attn Line";
 	private static final String LINE1 = "Line 1";
     private static final String LINE2 = "Line 2";
     private static final String LINE3 = "Line 3";
@@ -43,6 +44,7 @@ class EntityAddressTest {
             <versionNumber>${TYPE_VERSION_NUMBER}</versionNumber>
             <objectId>${TYPE_OBJECT_ID}</objectId>
         </addressType>
+        <attentionLine>${ATTENTION_LINE}</attentionLine>
         <line1>${LINE1}</line1>
         <line2>${LINE2}</line2>
         <line3>${LINE3}</line3>
@@ -50,6 +52,7 @@ class EntityAddressTest {
         <stateProvinceCode>${STATE_PROVINCE_CODE}</stateProvinceCode>
         <postalCode>${POSTAL_CODE}</postalCode>
         <countryCode>${COUNTRY_CODE}</countryCode>
+        <attentionLineUnmasked>${ATTENTION_LINE}</attentionLineUnmasked>
         <line1Unmasked>${LINE1}</line1Unmasked>
         <line2Unmasked>${LINE2}</line2Unmasked>
         <line3Unmasked>${LINE3}</line3Unmasked>
@@ -102,6 +105,7 @@ class EntityAddressTest {
 				def String objectId = EntityAddressTest.TYPE_OBJECT_ID
 			}).build()
             }
+            def String attentionLine = EntityAddressTest.ATTENTION_LINE
             def String line1 = EntityAddressTest.LINE1
             def String line2 = EntityAddressTest.LINE2
             def String line3 = EntityAddressTest.LINE3
@@ -109,6 +113,7 @@ class EntityAddressTest {
             def String stateProvinceCode = EntityAddressTest.STATE_PROVINCE_CODE
             def String postalCode = EntityAddressTest.POSTAL_CODE
             def String countryCode = EntityAddressTest.COUNTRY_CODE
+            def String attentionLineUnmasked = EntityAddressTest.ATTENTION_LINE
             def String line1Unmasked = EntityAddressTest.LINE1
             def String line2Unmasked = EntityAddressTest.LINE2
             def String line3Unmasked = EntityAddressTest.LINE3

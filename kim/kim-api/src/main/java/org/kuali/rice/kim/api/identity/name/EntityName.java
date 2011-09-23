@@ -37,6 +37,7 @@ import java.util.Collection;
     EntityName.Elements.LAST_NAME_UNMASKED,
     EntityName.Elements.NAME_SUFFIX_UNMASKED,
     EntityName.Elements.COMPOSITE_NAME_UNMASKED,
+    EntityName.Elements.NOTE_MESSAGE,
     EntityName.Elements.SUPPRESS_NAME,
     EntityName.Elements.DEFAULT_VALUE,
     EntityName.Elements.ACTIVE,
@@ -80,6 +81,8 @@ public final class EntityName extends AbstractDataTransferObject
     private final String compositeName;
     @XmlElement(name = Elements.COMPOSITE_NAME_UNMASKED, required = false)
     private final String compositeNameUnmasked;
+    @XmlElement(name = Elements.NOTE_MESSAGE, required = false)
+    private final String noteMessage;
     @XmlElement(name = Elements.SUPPRESS_NAME, required = false)
     private final boolean suppressName;
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
@@ -117,6 +120,7 @@ public final class EntityName extends AbstractDataTransferObject
         this.nameSuffixUnmasked = null;
         this.compositeName = null;
         this.compositeNameUnmasked = null;
+        this.noteMessage = null;
         this.suppressName = false;
         this.versionNumber = null;
         this.objectId = null;
@@ -142,6 +146,7 @@ public final class EntityName extends AbstractDataTransferObject
         this.nameSuffixUnmasked = builder.getNameSuffixUnmasked();
         this.compositeName = builder.getCompositeName();
         this.compositeNameUnmasked = builder.getCompositeNameUnmasked();
+        this.noteMessage = builder.getNoteMessage();
         this.suppressName = builder.isSuppressName();
         this.versionNumber = builder.getVersionNumber();
         this.objectId = builder.getObjectId();
@@ -231,6 +236,11 @@ public final class EntityName extends AbstractDataTransferObject
     }
 
     @Override
+    public String getNoteMessage() {
+        return this.noteMessage;
+    }
+
+    @Override
     public boolean isSuppressName() {
         return this.suppressName;
     }
@@ -277,6 +287,7 @@ public final class EntityName extends AbstractDataTransferObject
         private String lastName;
         private String namePrefix;
         private String nameTitle;
+        private String noteMessage;
         private boolean suppressName;
         private Long versionNumber;
         private String objectId;
@@ -305,6 +316,7 @@ public final class EntityName extends AbstractDataTransferObject
             builder.setLastName(contract.getLastName());
             builder.setNamePrefix(contract.getNamePrefix());
             builder.setNameTitle(contract.getNameTitle());
+            builder.setNoteMessage(contract.getNoteMessage());
             builder.setSuppressName(contract.isSuppressName());
             builder.setVersionNumber(contract.getVersionNumber());
             builder.setObjectId(contract.getObjectId());
@@ -420,6 +432,11 @@ public final class EntityName extends AbstractDataTransferObject
         }
 
         @Override
+        public String getNoteMessage() {
+            return this.noteMessage;
+        }
+
+        @Override
         public boolean isSuppressName() {
             return this.suppressName;
         }
@@ -480,6 +497,10 @@ public final class EntityName extends AbstractDataTransferObject
 
         public void setNameTitle(String nameTitle) {
             this.nameTitle = nameTitle;
+        }
+
+        public void setNoteMessage(String noteMessage) {
+            this.noteMessage = noteMessage;
         }
 
         private void setSuppressName(boolean suppressName) {
@@ -545,6 +566,7 @@ public final class EntityName extends AbstractDataTransferObject
         final static String NAME_SUFFIX_UNMASKED = "nameSuffixUnmasked";
         final static String COMPOSITE_NAME = "compositeName";
         final static String COMPOSITE_NAME_UNMASKED = "compositeNameUnmasked";
+        final static String NOTE_MESSAGE = "noteMessage";
         final static String SUPPRESS_NAME = "suppressName";
         final static String DEFAULT_VALUE = "defaultValue";
         final static String ACTIVE = "active";

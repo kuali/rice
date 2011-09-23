@@ -114,6 +114,13 @@ public interface EntityNameContract extends Versioned, GloballyUnique, Defaultab
 	String getCompositeNameUnmasked();
 
     /**
+     * Get the note associated with this {@link EntityNameContract}
+     * Corresponds to PESC NoteMessage
+     * @return the message associated with this EntityName
+     */
+    String getNoteMessage();
+
+    /**
      * Returns a boolean value that determines if email fields should be suppressed.
      * @return boolean value that determines if email should be suppressed.
      */

@@ -22,6 +22,7 @@ class EntityNameTest {
     private static final String MIDDLE_NAME = "Mob"
     private static final String LAST_NAME = "Sob"
     private static final String NAME_SUFFIX = "Jr"
+    private static final String NOTE_MESSAGE = "note message"
     private static final String COMPOSITE_NAME = LAST_NAME + ", " + FIRST_NAME + " " + MIDDLE_NAME;
     
     private static final String SUPPRESS = "false"
@@ -56,6 +57,7 @@ class EntityNameTest {
         <lastNameUnmasked>${LAST_NAME}</lastNameUnmasked>
         <nameSuffixUnmasked>${NAME_SUFFIX}</nameSuffixUnmasked>
         <compositeNameUnmasked>${COMPOSITE_NAME}</compositeNameUnmasked>
+        <noteMessage>${NOTE_MESSAGE}</noteMessage>
         <suppressName>${SUPPRESS}</suppressName>
         <defaultValue>${DEFAULT}</defaultValue>
         <active>${ACTIVE}</active>
@@ -114,6 +116,7 @@ class EntityNameTest {
             def String lastNameUnmasked = EntityNameTest.LAST_NAME
             def String nameSuffixUnmasked = EntityNameTest.NAME_SUFFIX
             def String compositeNameUnmasked = EntityNameTest.COMPOSITE_NAME
+            def String noteMessage = EntityNameTest.NOTE_MESSAGE
             def boolean suppressName = EntityNameTest.SUPPRESS.toBoolean()
             def boolean defaultValue = EntityNameTest.DEFAULT.toBoolean()
             def boolean active = EntityNameTest.ACTIVE.toBoolean()

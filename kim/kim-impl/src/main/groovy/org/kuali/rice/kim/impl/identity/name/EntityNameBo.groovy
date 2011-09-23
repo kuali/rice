@@ -40,6 +40,7 @@ class EntityNameBo extends PersistableBusinessObjectBase implements EntityNameCo
 	@Column(name = "PREFIX_NM")
 	String namePrefix;
 
+    @Column(name = "TITLE_NM")
     String nameTitle;
 
 	@Column(name = "SUFFIX_NM")
@@ -56,7 +57,10 @@ class EntityNameBo extends PersistableBusinessObjectBase implements EntityNameCo
     @Type(type="yes_no")
     @Column(name="DFLT_IND")
     boolean defaultValue;
-	
+
+    @Column(name = "NOTE_MSG")
+	String noteMessage;
+
 	@Transient
 	boolean suppressName;
     
@@ -92,6 +96,7 @@ class EntityNameBo extends PersistableBusinessObjectBase implements EntityNameCo
         bo.namePrefix = immutable.namePrefixUnmasked
         bo.nameTitle = immutable.nameTitleUnmasked
         bo.nameSuffix = immutable.nameSuffixUnmasked
+        bo.noteMessage = immutable.noteMessage
 
         bo.defaultValue = immutable.defaultValue
         bo.versionNumber = immutable.versionNumber
@@ -140,7 +145,6 @@ class EntityNameBo extends PersistableBusinessObjectBase implements EntityNameCo
         }
         return this.nameTitle
     }
-
 
     String getFirstNameUnmasked() {
         return this.firstName

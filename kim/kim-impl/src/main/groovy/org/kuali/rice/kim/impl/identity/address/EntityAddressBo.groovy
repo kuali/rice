@@ -50,6 +50,9 @@ public class EntityAddressBo extends PersistableBusinessObjectBase implements En
 	@Column(name = "POSTAL_CNTRY_CD")
 	String countryCode
 
+    @Column(name = "ATTN_LINE")
+	String attentionLine;
+
 	@Column(name = "ADDR_LINE_1")
 	String line1
 
@@ -101,6 +104,7 @@ public class EntityAddressBo extends PersistableBusinessObjectBase implements En
   	}
     bo.addressType = EntityAddressTypeBo.from(immutable.addressType)
     bo.defaultValue = immutable.defaultValue
+    bo.attentionLine = immutable.attentionLineUnmasked
     bo.line1 = immutable.line1Unmasked
     bo.line2 = immutable.line2Unmasked
     bo.line3 = immutable.line3Unmasked
@@ -141,12 +145,19 @@ public class EntityAddressBo extends PersistableBusinessObjectBase implements En
     }
 
     @Override
+    String getAttentionLine() {
+        if (isSuppressAddress()) {
+            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
+        }
+        return this.attentionLine;
+    }
+
+    @Override
     String getLine1() {
         if (isSuppressAddress()) {
             return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
         }
         return this.line1;
-
     }
 
     @Override
@@ -197,6 +208,10 @@ public class EntityAddressBo extends PersistableBusinessObjectBase implements En
         return this.countryCode;
     }
 
+    @Override
+    String getAttentionLineUnmasked() {
+        return attentionLine
+    }
     @Override
     String getLine1Unmasked() {
         return line1

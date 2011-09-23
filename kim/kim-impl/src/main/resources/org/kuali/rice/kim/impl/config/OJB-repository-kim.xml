@@ -330,7 +330,9 @@
     <field-descriptor name="middleName" column="MIDDLE_NM" jdbc-type="VARCHAR"  />
     <field-descriptor name="lastName" column="LAST_NM" jdbc-type="VARCHAR"  />
     <field-descriptor name="namePrefix" column="PREFIX_NM" jdbc-type="VARCHAR"  />
+    <field-descriptor name="nameTitle" column="TITLE_NM" jdbc-type="VARCHAR"  />
     <field-descriptor name="nameSuffix" column="SUFFIX_NM" jdbc-type="VARCHAR"  />
+    <field-descriptor name="noteMessage" column="NOTE_MSG" jdbc-type="VARCHAR"  />
     <field-descriptor name="defaultValue" column="DFLT_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
@@ -856,7 +858,9 @@
     <field-descriptor name="middleName" column="MIDDLE_NM" jdbc-type="VARCHAR"  />
     <field-descriptor name="lastName" column="LAST_NM" jdbc-type="VARCHAR"  />
     <field-descriptor name="namePrefix" column="PREFIX_NM" jdbc-type="VARCHAR"  />
+    <field-descriptor name="nameTitle" column="TITLE_NM" jdbc-type="VARCHAR"  />
     <field-descriptor name="nameSuffix" column="SUFFIX_NM" jdbc-type="VARCHAR"  />
+    <field-descriptor name="noteMessage" column="NOTE_MSG" jdbc-type="VARCHAR"  />
     <field-descriptor name="dflt" column="DFLT_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />

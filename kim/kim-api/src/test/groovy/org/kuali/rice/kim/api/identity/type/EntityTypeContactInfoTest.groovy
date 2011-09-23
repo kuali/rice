@@ -33,6 +33,7 @@ class EntityTypeContactInfoTest {
     private static final String ADDR_ID = "1";
     private static final Long ADDR_TYPE_VERSION_NUMBER = new Integer(1)
 	private static final String ADDR_TYPE_OBJECT_ID = UUID.randomUUID()
+    private static final String ATTENTION_LINE= "Attn Line";
 	private static final String ADDR_LINE1 = "Line 1";
     private static final String ADDR_LINE2 = "Line 2";
     private static final String ADDR_LINE3 = "Line 3";
@@ -101,6 +102,7 @@ class EntityTypeContactInfoTest {
                 <versionNumber>${ADDR_TYPE_VERSION_NUMBER}</versionNumber>
                 <objectId>${ADDR_TYPE_OBJECT_ID}</objectId>
             </addressType>
+            <attentionLine>${ATTENTION_LINE}</attentionLine>
             <line1>${ADDR_LINE1}</line1>
             <line2>${ADDR_LINE2}</line2>
             <line3>${ADDR_LINE3}</line3>
@@ -108,6 +110,7 @@ class EntityTypeContactInfoTest {
             <stateProvinceCode>${ADDR_STATE_PROVINCE_CODE}</stateProvinceCode>
             <postalCode>${ADDR_POSTAL_CODE}</postalCode>
             <countryCode>${ADDR_COUNTRY_CODE}</countryCode>
+            <attentionLineUnmasked>${ATTENTION_LINE}</attentionLineUnmasked>
             <line1Unmasked>${ADDR_LINE1}</line1Unmasked>
             <line2Unmasked>${ADDR_LINE2}</line2Unmasked>
             <line3Unmasked>${ADDR_LINE3}</line3Unmasked>
@@ -183,6 +186,7 @@ class EntityTypeContactInfoTest {
                 <versionNumber>${ADDR_TYPE_VERSION_NUMBER}</versionNumber>
                 <objectId>${ADDR_TYPE_OBJECT_ID}</objectId>
             </addressType>
+            <attentionLine>${ATTENTION_LINE}</attentionLine>
             <line1>${ADDR_LINE1}</line1>
             <line2>${ADDR_LINE2}</line2>
             <line3>${ADDR_LINE3}</line3>
@@ -190,6 +194,7 @@ class EntityTypeContactInfoTest {
             <stateProvinceCode>${ADDR_STATE_PROVINCE_CODE}</stateProvinceCode>
             <postalCode>${ADDR_POSTAL_CODE}</postalCode>
             <countryCode>${ADDR_COUNTRY_CODE}</countryCode>
+            <attentionLineUnmasked>${ATTENTION_LINE}</attentionLineUnmasked>
             <line1Unmasked>${ADDR_LINE1}</line1Unmasked>
             <line2Unmasked>${ADDR_LINE2}</line2Unmasked>
             <line3Unmasked>${ADDR_LINE3}</line3Unmasked>
@@ -307,6 +312,7 @@ class EntityTypeContactInfoTest {
                         def String objectId = EntityTypeContactInfoTest.ADDR_TYPE_OBJECT_ID
                     }).build()
                     }
+                    def String attentionLine = EntityTypeContactInfoTest.ATTENTION_LINE
                     def String line1 = EntityTypeContactInfoTest.ADDR_LINE1
                     def String line2 = EntityTypeContactInfoTest.ADDR_LINE2
                     def String line3 = EntityTypeContactInfoTest.ADDR_LINE3
@@ -314,6 +320,7 @@ class EntityTypeContactInfoTest {
                     def String stateProvinceCode = EntityTypeContactInfoTest.ADDR_STATE_PROVINCE_CODE
                     def String postalCode = EntityTypeContactInfoTest.ADDR_POSTAL_CODE
                     def String countryCode = EntityTypeContactInfoTest.ADDR_COUNTRY_CODE
+                    def String attentionLineUnmasked = EntityTypeContactInfoTest.ATTENTION_LINE
                     def String line1Unmasked = EntityTypeContactInfoTest.ADDR_LINE1
                     def String line2Unmasked = EntityTypeContactInfoTest.ADDR_LINE2
                     def String line3Unmasked = EntityTypeContactInfoTest.ADDR_LINE3

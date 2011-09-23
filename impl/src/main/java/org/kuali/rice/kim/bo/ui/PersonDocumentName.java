@@ -69,8 +69,14 @@ public class PersonDocumentName extends PersonDocumentBoDefaultBase {
 	@Column(name = "PREFIX_NM")
 	protected String namePrefix;
 
+    @Column(name = "TITLE_NM")
+    protected String nameTitle;
+
 	@Column(name = "SUFFIX_NM")
 	protected String nameSuffix;
+
+    @Column(name = "NOTE_MSG")
+	protected String noteMessage;
 	
 	@ManyToOne(targetEntity=EntityNameTypeBo.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "NM_TYP_CD", insertable = false, updatable = false)
@@ -129,6 +135,14 @@ public class PersonDocumentName extends PersonDocumentBoDefaultBase {
 		return namePrefix;
 	}
 
+    public String getNameTitle() {
+		return nameTitle;
+	}
+
+    public String getNoteMessage() {
+        return noteMessage;
+    }
+
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
@@ -151,6 +165,14 @@ public class PersonDocumentName extends PersonDocumentBoDefaultBase {
 
 	public void setNamePrefix(String namePrefix) {
 		this.namePrefix = namePrefix;
+	}
+
+    public void setNameTitle(String nameTitle) {
+		this.nameTitle = nameTitle;
+	}
+
+    public void setNoteMessage(String noteMessage) {
+		this.noteMessage = noteMessage;
 	}
 
 	/**

@@ -35,11 +35,13 @@ class PersonDocumentNamePersistenceTest extends BoPersistenceTest {
 
         assertRow(kimdoc_fields(pdn) + [
             ENTITY_NM_ID: pdn.entityNameId,
-            FIRST_NM: pdn.firstName,
             PREFIX_NM: pdn.namePrefix,
+            TITLE_NM: pdn.nameTitle,
+            FIRST_NM: pdn.firstName,
             MIDDLE_NM: pdn.middleName,
             LAST_NM: pdn.lastName,
             SUFFIX_NM: pdn.nameSuffix,
+            NOTE_MSG: pdn.noteMessage,
             NM_TYP_CD: pdn.entityNameType.code
         ],
         "KRIM_PND_NM_MT", "ENTITY_NM_ID")

@@ -49,6 +49,13 @@ public interface EntityAddressContract extends Versioned, GloballyUnique, Defaul
 	CodedAttributeContract getAddressType();
 
     /**
+     * Returns the attention line for this {@link EntityAddressContract}
+     * Corresponds to PESC AttentionLine
+     * @return the attention line
+     */
+    String getAttentionLine();
+
+    /**
      * Gets this {@link EntityAddressContract}'s first line.
      * @return the first line for this {@link EntityAddressContract}, or null if none has been assigned.
      */
@@ -133,6 +140,12 @@ public interface EntityAddressContract extends Versioned, GloballyUnique, Defaul
      * @return the unmasked country code for this {@link EntityAddressContract}, or null if none has been assigned.
      */
     String getCountryCodeUnmasked();
+
+    /**
+     * Returns the unmasked attention line for this {@link EntityAddressContract}
+     * @return the unmasked attention line
+     */
+    String getAttentionLineUnmasked();
 
     /**
      * Returns a boolean value that determines if address fields should be suppressed.

@@ -17,8 +17,8 @@ package edu.sampleu.travel.workflow;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
-import org.kuali.rice.kew.actionlist.DisplayParameters;
-import org.kuali.rice.kew.actions.ActionSet;
+import org.kuali.rice.kew.api.action.ActionSet;
+import org.kuali.rice.kew.api.actionlist.DisplayParameters;
 
 
 public class CustomActionListAttributeImpl implements CustomActionListAttribute {
@@ -27,12 +27,12 @@ public class CustomActionListAttributeImpl implements CustomActionListAttribute 
 
 	@Override
 	public DisplayParameters getDocHandlerDisplayParameters(String principalId, ActionItem actionItem) throws Exception {
-		return new DisplayParameters(new Integer(400));
+		return DisplayParameters.Builder.create(new Integer(400)).build();
 	}
 
 	@Override
 	public ActionSet getLegalActions(String principalId, ActionItem actionItem) throws Exception {
-		ActionSet actionSet = new ActionSet();
+		ActionSet actionSet = ActionSet.Builder.create().build();
 		actionSet.addAcknowledge();
 		actionSet.addApprove();
 		actionSet.addFyi();

@@ -44,7 +44,7 @@ class EntityTypeContactInfoTest {
     private static final String ADDR_SUPPRESS = "false"
     private static final String ADDR_DEFAULT = "true"
     private static final String ADDR_ACTIVE = "true"
-    private static final String ADDR_FMT = null
+    private static final String ADDR_FMT = "address format"
     private static final Long ADDR_VERSION_NUMBER = new Integer(1);
 	private static final String ADDR_OBJECT_ID = UUID.randomUUID();
 

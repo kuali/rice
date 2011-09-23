@@ -46,6 +46,7 @@ public class LoginLogoutIT {
                 selenium.waitForPageToLoad("30000");
                 selenium.click("link=Main Menu");
                 selenium.waitForPageToLoad("30000");
+                selenium.click("//input[@name='imageField' and @value='Logout']");
         }
 
         @After

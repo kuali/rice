@@ -31,12 +31,16 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.util.jaxb.RiceXmlExportList;
 import org.kuali.rice.core.util.jaxb.RiceXmlImportList;
 import org.kuali.rice.core.util.jaxb.RiceXmlListAdditionListener;
 import org.kuali.rice.core.util.jaxb.RiceXmlListGetterListener;
+import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.role.RoleMemberContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 /**
  * Base class representing an unmarshalled &lt;roleMembers&gt; element.
@@ -203,7 +207,8 @@ public abstract class RoleMembersXmlDTO<T extends RoleMemberXmlDTO> implements R
         }
         
         void beforeMarshal(Marshaller marshaller) {
-            List<? extends RoleMemberContract> tempMembers = KimApiServiceLocator.getRoleService().findRoleMembers(Collections.singletonMap("roleId", roleId));
+            List<RoleMember> tempMembers = KimApiServiceLocator.getRoleService().findRoleMembers(
+                    QueryByCriteria.Builder.fromPredicates(equal("roleId", roleId))).getResults();
             if (tempMembers != null && !tempMembers.isEmpty()) {
                 List<String> roleMemberIds = new ArrayList<String>();
                 
@@ -228,8 +233,7 @@ public abstract class RoleMembersXmlDTO<T extends RoleMemberXmlDTO> implements R
          */
         @Override
         public RoleMemberXmlDTO.WithinRole gettingNextItem(String nextItem, int index) {
-            return new RoleMemberXmlDTO.WithinRole(KimApiServiceLocator.getRoleService().findRoleMembers(
-                    Collections.singletonMap("roleMemberId", nextItem)).get(0), false);
+            return new RoleMemberXmlDTO.WithinRole(KimApiServiceLocator.getRoleService().findRoleMembers(QueryByCriteria.Builder.fromPredicates(equal("roleMemberId", nextItem))).getResults().get(0), false);
         }
     }
 }

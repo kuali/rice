@@ -34,13 +34,7 @@ public interface RoleDao {
 
     List<RoleMemberBo> getRoleMembersForRoleIdsWithFilters(Collection<String> roleIds, String principalId, Collection<String> groupIds, Map<String, String> qualification);
 
-    Map<String, List<DelegateMemberBo>> getDelegationMembersForDelegationIds(List<String> delegationIds);
-
     List<RoleBo> getRoles(Map<String, String> fieldValues);
 
     List<GroupMember> getGroupMembers(Collection<String> groupIds);
-
-    List<RoleMembership> getRoleMembers(Map<String, String> fieldValues);
-
-    List<RoleMember> getRoleMembersCompleteInfo(Map<String, String> fieldValues);
 }

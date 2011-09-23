@@ -21,6 +21,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.criteria.Predicate;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.parameter.Parameter;
 import org.kuali.rice.core.api.uif.RemotableCheckboxGroup;
 import org.kuali.rice.core.framework.parameter.ParameterService;
@@ -140,6 +142,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in.
@@ -2811,7 +2815,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
     public List<KimDocumentRoleMember> getRoleMembers(Map<String,String> fieldValues) {
 		List<KimDocumentRoleMember> matchingRoleMembers = new ArrayList<KimDocumentRoleMember>();
-		List<RoleMember> matchingRoleMembersTemp = getRoleService().findRoleMembers(fieldValues);
+		List<RoleMember> matchingRoleMembersTemp = getRoleService().findRoleMembers(toQuery(fieldValues)).getResults();
 		KimDocumentRoleMember matchingRoleMember;
 		BusinessObject roleMemberObject;
 		RoleMemberBo roleMemberBo;
@@ -2828,6 +2832,16 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			}
 		}
 		return matchingRoleMembers;
+    }
+
+   private QueryByCriteria toQuery(Map<String,?> fieldValues) {
+        Set<Predicate> preds = new HashSet<Predicate>();
+        for (String key : fieldValues.keySet()) {
+            preds.add(equal(key, fieldValues.get(key)));
+        }
+        Predicate[] predicates = new Predicate[0];
+        predicates = preds.toArray(predicates);
+        return QueryByCriteria.Builder.fromPredicates(predicates);
     }
 
     private List<KimDocumentRoleQualifier> getQualifiers(List<RoleMemberAttributeDataBo> attributes){

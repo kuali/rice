@@ -113,7 +113,7 @@ public interface GroupService {
      * @throws IllegalArgumentException if the queryByCriteria is null
      */
     @WebMethod(operationName = "findGroups")
-    @WebResult(name = "findGroup")
+    @WebResult(name = "results")
     GroupQueryResults findGroups(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
 
     /**
@@ -129,7 +129,7 @@ public interface GroupService {
      * @throws IllegalArgumentException if the queryByCriteria is null
      */
     @WebMethod(operationName = "findGroupMembers")
-    @WebResult(name = "findGroupMember")
+    @WebResult(name = "results")
     GroupMemberQueryResults findGroupMembers(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
     /**
      * Lookup a Group based on the passed in id.

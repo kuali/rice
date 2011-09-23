@@ -25,6 +25,7 @@ import org.kuali.rice.kim.api.group.GroupContract;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.jaxb.QualificationListAdapter;
 import org.kuali.rice.kim.api.role.RoleContract;
+import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.role.RoleMemberContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
@@ -103,7 +104,7 @@ public abstract class RoleMemberXmlDTO implements Serializable {
      * the member principal/group/role name and (if applicable) namespace will get populated.
      * @throws IllegalArgumentException if roleMember is null, has an invalid member type code, or refers to a nonexistent principal/group/role.
      */
-    public RoleMemberXmlDTO(RoleMemberContract roleMember, boolean populateMemberId) {
+    public RoleMemberXmlDTO(RoleMember roleMember, boolean populateMemberId) {
         if (roleMember == null) {
             throw new IllegalArgumentException("roleMember cannot be null");
         }
@@ -404,7 +405,7 @@ public abstract class RoleMemberXmlDTO implements Serializable {
             super();
         }
         
-        public OutsideOfRole(RoleMemberContract roleMember, boolean populateMemberId) {
+        public OutsideOfRole(RoleMember roleMember, boolean populateMemberId) {
             super(roleMember, populateMemberId);
             this.roleId = roleMember.getRoleId();
             RoleContract tempRole = KimApiServiceLocator.getRoleService().getRole(roleId);
@@ -485,7 +486,7 @@ public abstract class RoleMemberXmlDTO implements Serializable {
             super();
         }
         
-        public WithinRole(RoleMemberContract roleMember, boolean populateMemberId) {
+        public WithinRole(RoleMember roleMember, boolean populateMemberId) {
             super(roleMember, populateMemberId);
             this.roleId = roleMember.getRoleId();
         }

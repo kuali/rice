@@ -4,14 +4,22 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.kuali.rice.core.api.criteria.GenericQueryResults;
+import org.kuali.rice.core.api.criteria.LookupCustomizer;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
 import org.kuali.rice.kim.api.group.GroupMember;
+import org.kuali.rice.kim.api.group.GroupQueryResults;
+import org.kuali.rice.kim.api.role.DelegateMemberQueryResults;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMember;
+import org.kuali.rice.kim.api.role.RoleMemberQueryResults;
 import org.kuali.rice.kim.api.role.RoleMembership;
+import org.kuali.rice.kim.api.role.RoleMembershipQueryResults;
+import org.kuali.rice.kim.api.role.RoleQueryResults;
 import org.kuali.rice.kim.api.role.RoleResponsibility;
 import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
 import org.kuali.rice.kim.api.role.RoleService;
@@ -21,12 +29,14 @@ import org.kuali.rice.kim.framework.common.delegate.DelegationTypeService;
 import org.kuali.rice.kim.framework.role.RoleTypeService;
 import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
 import org.kuali.rice.kim.framework.type.KimTypeService;
+import org.kuali.rice.kim.impl.common.attribute.AttributeTransform;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberAttributeDataBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.group.GroupMemberBo;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 
+import javax.jws.WebParam;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,6 +48,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     private static final Logger LOG = Logger.getLogger(RoleServiceImpl.class);
@@ -68,9 +80,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     protected RoleMember findRoleMember(String roleMemberId) {
-        Map<String, String> fieldValues = new HashMap<String, String>();
-        fieldValues.put(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID, roleMemberId);
-        List<RoleMember> roleMembers = findRoleMembers(fieldValues);
+        final List<RoleMember> roleMembers = findRoleMembers(QueryByCriteria.Builder.fromPredicates(equal(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID, roleMemberId))).getResults();
         if (roleMembers != null && !roleMembers.isEmpty()) {
             return roleMembers.get(0);
         }
@@ -78,20 +88,24 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public List<RoleMember> findRoleMembers(Map<String, String> fieldValues) {
-        if (fieldValues == null) {
-            throw new RiceIllegalArgumentException("fieldValues is null");
+    public RoleMemberQueryResults findRoleMembers(QueryByCriteria queryByCriteria) {
+        if (queryByCriteria == null) {
+            throw new RiceIllegalArgumentException("queryByCriteria is null");
         }
 
-        List<RoleMember> roleMembers = new ArrayList<RoleMember>();
-        List<RoleMemberBo> roleMemberBos = (List<RoleMemberBo>) getLookupService().findCollectionBySearchHelper(
-                RoleMemberBo.class, fieldValues, true);
+        GenericQueryResults<RoleMemberBo> results = getCriteriaLookupService().lookup(RoleMemberBo.class, queryByCriteria);
 
-        for (RoleMemberBo bo : roleMemberBos) {
-            RoleMember roleMember = RoleMemberBo.to(bo);
-            roleMembers.add(roleMember);
+        RoleMemberQueryResults.Builder builder = RoleMemberQueryResults.Builder.create();
+        builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
+        builder.setTotalRowCount(results.getTotalRowCount());
+
+        final List<RoleMember.Builder> ims = new ArrayList<RoleMember.Builder>();
+        for (RoleMemberBo bo : results.getResults()) {
+            ims.add(RoleMember.Builder.create(bo));
         }
-        return roleMembers;
+
+        builder.setResults(ims);
+        return builder.build();
     }
 
     @Override
@@ -147,42 +161,24 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public List<DelegateMember> findDelegateMembers(final Map<String, String> fieldValues) {
-        if (fieldValues == null) {
-            throw new RiceIllegalArgumentException("fieldValues is null or blank");
+    public DelegateMemberQueryResults findDelegateMembers(QueryByCriteria queryByCriteria) {
+        if (queryByCriteria == null) {
+            throw new RiceIllegalArgumentException("queryByCriteria is null");
         }
 
-        List<DelegateMember> delegateMembers = new ArrayList<DelegateMember>();
-        List<DelegateTypeBo> delegateBoList = (List<DelegateTypeBo>) getLookupService().findCollectionBySearchHelper(
-                DelegateTypeBo.class, fieldValues, true);
+        GenericQueryResults<DelegateMemberBo> results = getCriteriaLookupService().lookup(DelegateMemberBo.class, queryByCriteria);
 
-        if (delegateBoList != null && !delegateBoList.isEmpty()) {
-            Map<String, String> delegationMemberFieldValues = new HashMap<String, String>();
-            for (Map.Entry<String, String> entry : fieldValues.entrySet()) {
-                if (entry.getKey().startsWith(KimConstants.KimUIConstants.MEMBER_ID_PREFIX)) {
-                    delegationMemberFieldValues.put(
-                            entry.getKey().substring(entry.getKey().indexOf(
-                                    KimConstants.KimUIConstants.MEMBER_ID_PREFIX) + KimConstants.KimUIConstants.MEMBER_ID_PREFIX.length()),
-                            entry.getValue());
-                }
-            }
+        DelegateMemberQueryResults.Builder builder = DelegateMemberQueryResults.Builder.create();
+        builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
+        builder.setTotalRowCount(results.getTotalRowCount());
 
-            StringBuilder memberQueryString = new StringBuilder();
-            for (DelegateTypeBo delegate : delegateBoList) {
-                memberQueryString.append(delegate.getDelegationId()).append(KimConstants.KimUIConstants.OR_OPERATOR);
-            }
-            delegationMemberFieldValues.put(KimConstants.PrimaryKeyConstants.DELEGATION_ID,
-                    StringUtils.stripEnd(memberQueryString.toString(), KimConstants.KimUIConstants.OR_OPERATOR));
-            List<DelegateMemberBo> delegateMemberBoList = (List<DelegateMemberBo>) getLookupService().findCollectionBySearchHelper(
-                    DelegateMemberBo.class, delegationMemberFieldValues, true);
-
-
-            for (DelegateMemberBo delegateMemberBo : delegateMemberBoList) {
-                DelegateMember delegateMember = DelegateMemberBo.to(delegateMemberBo);
-                delegateMembers.add(delegateMember);
-            }
+        final List<DelegateMember.Builder> ims = new ArrayList<DelegateMember.Builder>();
+        for (DelegateMemberBo bo : results.getResults()) {
+            ims.add(DelegateMember.Builder.create(bo));
         }
-        return delegateMembers;
+
+        builder.setResults(ims);
+        return builder.build();
     }
 
     @Override
@@ -294,7 +290,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
         List<Map<String, String>> results = new ArrayList<Map<String, String>>();
 
-        List<RoleMemberBo> roleMemberBoList = getStoredRoleMembersUsingExactMatchOnQualification(principalId, null, roleIds, qualification);
+        List<RoleMemberBo> roleMemberBoList = getStoredRoleMembersUsingExactMatchOnQualification(principalId, null,
+                roleIds, qualification);
 
         Map<String, List<RoleMembership>> roleIdToMembershipMap = new HashMap<String, List<RoleMembership>>();
         for (RoleMemberBo roleMemberBo : roleMemberBoList) {
@@ -562,17 +559,24 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public List<Role> getRolesSearchResults(Map<String, String> fieldValues) {
-        if (fieldValues == null) {
-            throw new RiceIllegalArgumentException("fieldValues is null");
+    public RoleQueryResults findRoles(QueryByCriteria queryByCriteria) {
+        if (queryByCriteria == null) {
+            throw new RiceIllegalArgumentException("queryByCriteria is null");
         }
 
-        List<RoleBo> roleBoList = getRoleDao().getRoles(fieldValues);
-        List<Role> roles = new ArrayList<Role>();
-        for (RoleBo roleBo : roleBoList) {
-            roles.add(RoleBo.to(roleBo));
+        GenericQueryResults<RoleBo> results = getCriteriaLookupService().lookup(RoleBo.class, queryByCriteria);
+
+        RoleQueryResults.Builder builder = RoleQueryResults.Builder.create();
+        builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
+        builder.setTotalRowCount(results.getTotalRowCount());
+
+        final List<Role.Builder> ims = new ArrayList<Role.Builder>();
+        for (RoleBo bo : results.getResults()) {
+            ims.add(Role.Builder.create(bo));
         }
-        return Collections.unmodifiableList(roles);
+
+        builder.setResults(ims);
+        return builder.build();
     }
 
     @Override
@@ -596,12 +600,30 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public List<RoleMembership> findRoleMemberships( Map<String, String> fieldValues) {
-        if (fieldValues == null) {
-            throw new RiceIllegalArgumentException("fieldValues is null");
+    public RoleMembershipQueryResults findRoleMemberships( QueryByCriteria queryByCriteria) {
+        if (queryByCriteria == null) {
+            throw new RiceIllegalArgumentException("queryByCriteria is null");
         }
-        List<RoleMembership> l = getRoleDao().getRoleMembers(fieldValues);
-        return l != null ? Collections.unmodifiableList(l) : Collections.<RoleMembership>emptyList();
+
+        GenericQueryResults<RoleMemberBo> results = getCriteriaLookupService().lookup(RoleMemberBo.class, queryByCriteria);
+
+        RoleMembershipQueryResults.Builder builder = RoleMembershipQueryResults.Builder.create();
+        builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
+        builder.setTotalRowCount(results.getTotalRowCount());
+
+        final List<RoleMembership.Builder> ims = new ArrayList<RoleMembership.Builder>();
+        for (RoleMemberBo bo : results.getResults()) {
+            RoleMembership.Builder roleMembership = RoleMembership.Builder.create(
+                    bo.getRoleId(),
+                    bo.getRoleMemberId(),
+                    bo.getMemberId(),
+                    bo.getMemberTypeCode(),
+                    bo.getAttributes());
+            ims.add(roleMembership);
+        }
+
+        builder.setResults(ims);
+        return builder.build();
     }
 
     @Override

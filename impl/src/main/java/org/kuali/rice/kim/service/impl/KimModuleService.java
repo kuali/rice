@@ -111,27 +111,23 @@ public class KimModuleService extends ModuleServiceBase {
 			return (List)getPersonService().findPeople( (Map)fieldValues );
 		}
         else if ( Role.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
-            List<Role> roles = getKimRoleService().getRolesSearchResults((Map)fieldValues);
-            List<T> eboList = new ArrayList<T>();
-            for (Role role : roles) { eboList.add((T) RoleEbo.from(role));}
-			return eboList;
+            return (List) getKimRoleService().findRoles(toQuery(fieldValues));
 		} else if ( Group.class.isAssignableFrom(externalizableBusinessObjectClass) ) {
-            QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
-
-
-            Set<Predicate> preds = new HashSet<Predicate>();
-            for (String key : fieldValues.keySet()) {
-                preds.add(equal(key, fieldValues.get(key)));
-            }
-            Predicate[] predicates = new Predicate[0];
-            predicates = preds.toArray(predicates);
-            Predicate p = and(predicates);
-            builder.setPredicates(p);
-			return (List)getGroupService().findGroups(builder.build());
+			return (List)getGroupService().findGroups(toQuery(fieldValues));
 		}
 		// otherwise, use the default implementation
 		return super.getExternalizableBusinessObjectsList( externalizableBusinessObjectClass, fieldValues );
 	}
+
+    private QueryByCriteria toQuery(Map<String,?> fieldValues) {
+        Set<Predicate> preds = new HashSet<Predicate>();
+        for (String key : fieldValues.keySet()) {
+            preds.add(equal(key, fieldValues.get(key)));
+        }
+        Predicate[] predicates = new Predicate[0];
+        predicates = preds.toArray(predicates);
+        return QueryByCriteria.Builder.fromPredicates(predicates);
+    }
 
 	/***
 	 * @see org.kuali.rice.krad.service.ModuleService#getExternalizableBusinessObjectsListForLookup(java.lang.Class, java.util.Map, boolean)
@@ -145,7 +141,7 @@ public class KimModuleService extends ModuleServiceBase {
 			return (List)getPersonService().findPeople( (Map)fieldValues, unbounded );
 		} else if ( Role.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
 			// FIXME: needs to send unbounded flag
-			return (List)getKimRoleService().getRolesSearchResults((Map)fieldValues );
+			return (List) getKimRoleService().findRoles(toQuery(fieldValues));
 		}
 		// otherwise, use the default implementation
 		return super.getExternalizableBusinessObjectsListForLookup(externalizableBusinessObjectClass, fieldValues, unbounded);

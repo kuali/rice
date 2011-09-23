@@ -17,12 +17,14 @@ package org.kuali.rice.kim.impl.jaxb;
 
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.util.jaxb.NameAndNamespacePair;
 import org.kuali.rice.kim.api.KimConstants.KimUIConstants;
 import org.kuali.rice.kim.api.group.GroupContract;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.permission.PermissionContract;
 import org.kuali.rice.kim.api.role.RoleContract;
+import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.role.RoleMemberContract;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -32,6 +34,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 /**
  * Helper class containing static methods for aiding in parsing role XML.
@@ -152,7 +156,8 @@ public final class RoleXmlUtil {
         }
         
         // Remove any role members whose IDs are not in the set.
-        List<? extends RoleMemberContract> roleMembers = KimApiServiceLocator.getRoleService().findRoleMembers(Collections.singletonMap("roleId", roleId));
+        List<RoleMember> roleMembers = KimApiServiceLocator.getRoleService().findRoleMembers(
+                QueryByCriteria.Builder.fromPredicates(equal("roleId", roleId))).getResults();
         if (roleMembers != null && !roleMembers.isEmpty()) {
             for (RoleMemberContract roleMember : roleMembers) {
                 if (!existingRoleMemberIds.contains(roleMember.getRoleMemberId())) {

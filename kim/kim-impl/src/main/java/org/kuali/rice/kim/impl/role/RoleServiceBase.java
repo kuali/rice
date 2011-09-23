@@ -3,6 +3,7 @@ package org.kuali.rice.kim.impl.role;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.criteria.CriteriaLookupService;
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
@@ -44,6 +45,7 @@ abstract class RoleServiceBase {
     private GroupService groupService;
     private ResponsibilityInternalService responsibilityInternalService;
     private RoleDao roleDao;
+    private CriteriaLookupService criteriaLookupService;
 
     /**
      * A helper enumeration for indicating which KimRoleDao method to use when attempting to get role/delegation-related lists that are not in the cache.
@@ -177,8 +179,8 @@ abstract class RoleServiceBase {
             return null;
         }
 
-        return getBusinessObjectService().findByPrimaryKey(RoleMemberBo.class,
-                Collections.singletonMap(KIMPropertyConstants.RoleMember.ROLE_MEMBER_ID, roleMemberId));
+        return getBusinessObjectService().findByPrimaryKey(RoleMemberBo.class, Collections.singletonMap(
+                KIMPropertyConstants.RoleMember.ROLE_MEMBER_ID, roleMemberId));
     }
 
     /**
@@ -235,7 +237,8 @@ abstract class RoleServiceBase {
      * Calls the KimRoleDao's "getDelegationPrincipalsForPrincipalIdAndDelegationIds" method and/or retrieves any corresponding members from the cache.
      */
     protected List<DelegateMemberBo> getStoredDelegationPrincipalsForPrincipalIdAndDelegationIds(Collection<String> delegationIds, String principalId) {
-        return getDelegationMemberBoList(RoleDaoAction.DELEGATION_PRINCIPALS_FOR_PRINCIPAL_ID_AND_DELEGATION_IDS, delegationIds, principalId, null);
+        return getDelegationMemberBoList(RoleDaoAction.DELEGATION_PRINCIPALS_FOR_PRINCIPAL_ID_AND_DELEGATION_IDS,
+                delegationIds, principalId, null);
     }
 
     /**
@@ -554,6 +557,14 @@ abstract class RoleServiceBase {
      */
     public void setRoleDao(RoleDao roleDao) {
         this.roleDao = roleDao;
+    }
+
+    public void setCriteriaLookupService(final CriteriaLookupService criteriaLookupService) {
+        this.criteriaLookupService = criteriaLookupService;
+    }
+
+    public CriteriaLookupService getCriteriaLookupService() {
+        return criteriaLookupService;
     }
 
 }

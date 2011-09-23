@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.api.role;
 
 import org.joda.time.DateTime;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
@@ -232,11 +233,8 @@ public interface RoleService {
 	 * This method gets search results for role lookup
 	 */
     @WebMethod(operationName = "getRolesSearchResults")
-    @XmlElementWrapper(name = "roles", required = true)
-    @XmlElement(name = "role", required = false)
-    @WebResult(name = "roles")
-	List<Role> getRolesSearchResults(
-            @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name = "fieldValues") Map<String,String> fieldValues) throws RiceIllegalArgumentException;
+    @WebResult(name = "results")
+	RoleQueryResults findRoles(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
 
 
 
@@ -262,11 +260,8 @@ public interface RoleService {
 	 * key and the values to search on as the value.
 	 */
     @WebMethod(operationName = "findRoleMemberships")
-    @XmlElementWrapper(name = "roleMemberships", required = true)
-    @XmlElement(name = "roleMembership", required = false)
-    @WebResult(name = "roleMemberships")
-	List<RoleMembership> findRoleMemberships(
-            @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name="fieldValues") java.util.Map<String, String> fieldValues) throws RiceIllegalArgumentException;
+    @WebResult(name = "results")
+	RoleMembershipQueryResults findRoleMemberships(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
 
 	/**
 	 * Gets a list of Roles that the given member belongs to.
@@ -280,11 +275,8 @@ public interface RoleService {
 
 
     @WebMethod(operationName = "findRoleMembers")
-    @XmlElementWrapper(name = "roleMembers", required = true)
-    @XmlElement(name = "roleMember", required = false)
-    @WebResult(name = "roleMembers")
-	List<RoleMember> findRoleMembers(
-            @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name="fieldValues") java.util.Map<String, String> fieldValues) throws RiceIllegalArgumentException;
+    @WebResult(name = "results")
+	RoleMemberQueryResults findRoleMembers(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
 
     @WebMethod(operationName = "getRoleTypeRoleMemberIds")
     @XmlElementWrapper(name = "memberIds", required = true)
@@ -294,11 +286,8 @@ public interface RoleService {
     Set<String> getRoleTypeRoleMemberIds(@WebParam(name = "roleId") String roleId) throws RiceIllegalArgumentException;
 
     @WebMethod(operationName = "findDelegateMembers")
-    @XmlElementWrapper(name = "delegateMembers", required = true)
-    @XmlElement(name = "delegateMember", required = false)
-    @WebResult(name = "delegateMembers")
-    List<DelegateMember> findDelegateMembers
-            (@XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name = "fieldValues") java.util.Map<String, String> fieldValues) throws RiceIllegalArgumentException;
+    @WebResult(name = "results")
+    DelegateMemberQueryResults findDelegateMembers(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
 
 	/**
 	 * Gets delegation member information based on the given search criteria.  The

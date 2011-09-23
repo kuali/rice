@@ -19,4 +19,26 @@
          copyOnWrite="false"/>
   <cache name="http://rice.kuali.org/kim/v2_0/PrincipalType" eternal="false" overflowToDisk="false" copyOnRead="false"
        copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/EntityPrivacyPreferencesType" eternal="false" overflowToDisk="false" copyOnRead="false"
+       copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{EntityType}" eternal="false" overflowToDisk="false" copyOnRead="false"
+       copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{AddressType}" eternal="false" overflowToDisk="false" copyOnRead="false"
+     copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{AffiliationType}" eternal="false" overflowToDisk="false" copyOnRead="false"
+     copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{CitizenshipStatus}" eternal="false" overflowToDisk="false" copyOnRead="false"
+     copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{EmploymentType}" eternal="false" overflowToDisk="false" copyOnRead="false"
+     copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{EmploymentStatus}" eternal="false" overflowToDisk="false" copyOnRead="false"
+     copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{ExternalIdentifierType}" eternal="false" overflowToDisk="false" copyOnRead="false"
+     copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{NameType}" eternal="false" overflowToDisk="false" copyOnRead="false"
+     copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{PhoneType}" eternal="false" overflowToDisk="false" copyOnRead="false"
+   copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{EmailType}" eternal="false" overflowToDisk="false" copyOnRead="false"
+   copyOnWrite="false"/>
 </ehcache>

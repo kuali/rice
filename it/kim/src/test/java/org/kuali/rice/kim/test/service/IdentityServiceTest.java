@@ -59,39 +59,6 @@ public class IdentityServiceTest extends KIMTestCase {
 			identityService = findIdSvc();
 		}
 	}
-
-	@Test
-	public void testGetDefaultNamesForEntityIds(){
-		//List<String> entityIds= new ArrayList<String>();
-		//entityIds.add("p1");
-		//entityIds.add("kuluser");
-		List<String> principalIds= new ArrayList<String>();
-		principalIds.add("p1");
-		principalIds.add("KULUSER");
-		List<String> entityIds= new ArrayList<String>();
-		for (String principalId : principalIds) {
-			Entity entityInfo = identityService.getEntityByPrincipalId(principalId);
-			entityIds.add(entityInfo.getId());
-		}
-		
-		Map<String,EntityNamePrincipalName> results = identityService.getDefaultNamesForEntityIds(entityIds);
-		assertEquals(2,results.size());
-		for (String entityId : entityIds) {
-			assertTrue(results.containsKey(entityId));
-		}
-		//assertTrue(results.containsKey("kuluser"));
-	}
-	
-	@Test
-	public void getDefaultNamesForPrincipalIds(){
-		List<String> principalIds= new ArrayList<String>();
-		principalIds.add("p1");
-		principalIds.add("KULUSER");
-		Map<String, EntityNamePrincipalName> results = identityService.getDefaultNamesForPrincipalIds(principalIds);
-		assertEquals(2,results.size());
-		assertTrue(results.containsKey("p1"));
-		assertTrue(results.containsKey("KULUSER"));
-	}
 	
 	@Test
 	public void testGetPrincipal() {

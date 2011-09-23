@@ -164,7 +164,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="createEntity")
     @WebResult(name = "entity")
-    @CacheEvict(value= Entity.Cache.NAME, allEntries = true)
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     Entity createEntity(@WebParam(name = "entity") Entity entity)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -178,7 +178,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="updateEntity")
     @WebResult(name = "entity")
-    @CacheEvict(value= Entity.Cache.NAME, allEntries = true)
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     Entity updateEntity(@WebParam(name = "entity") Entity entity)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -192,7 +192,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="inactivateEntity")
     @WebResult(name = "entity")
-    @CacheEvict(value= Entity.Cache.NAME, allEntries = true)
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     Entity inactivateEntity(@WebParam(name = "id") String id)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -377,6 +377,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="addEntityTypeContactInfoToEntity")
     @WebResult(name = "entityTypeContactInfo")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityTypeContactInfo addEntityTypeContactInfoToEntity(
             @WebParam(name = "entityTypeContactInfo") EntityTypeContactInfo entityTypeContactInfo)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
@@ -392,6 +393,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="updateEntityTypeContactInfo")
     @WebResult(name = "entityTypeContactInfo")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityTypeContactInfo updateEntityTypeContactInfo(@WebParam(name = "entityTypeContactInfo") EntityTypeContactInfo entityTypeContactInfo)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -407,6 +409,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="inactivateEntityTypeContactInfo")
     @WebResult(name = "entityTypeContactInfo")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityTypeContactInfo inactivateEntityTypeContactInfo(@WebParam(name = "entityId") String entityId,
             @WebParam(name = "entityTypeCode") String entityTypeCode)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
@@ -423,6 +426,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="addAddressToEntity")
     @WebResult(name = "address")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityAddress addAddressToEntity(@WebParam(name = "address") EntityAddress address)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -437,6 +441,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="updateAddress")
     @WebResult(name = "address")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityAddress updateAddress(@WebParam(name = "address")EntityAddress address)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -451,6 +456,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="inactivateAddress")
     @WebResult(name = "address")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityAddress inactivateAddress(@WebParam(name = "id") String id)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -466,6 +472,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="addEmailToEntity")
     @WebResult(name = "email")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityEmail addEmailToEntity(@WebParam(name = "email") EntityEmail email)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -480,6 +487,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="updateEmail")
     @WebResult(name = "email")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityEmail updateEmail(@WebParam(name = "email") EntityEmail email)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -494,6 +502,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="inactivateEmail")
     @WebResult(name = "email")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityEmail inactivateEmail(@WebParam(name = "id") String id)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -509,6 +518,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="addPhoneToEntity")
     @WebResult(name = "phone")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityPhone addPhoneToEntity(@WebParam(name = "phone") EntityPhone phone)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -523,6 +533,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="updatePhone")
     @WebResult(name = "phone")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityPhone updatePhone(@WebParam(name = "phone") EntityPhone phone)
             throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -537,6 +548,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="inactivatePhone")
     @WebResult(name = "phone")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityPhone inactivatePhone(@WebParam(name = "id") String id)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -553,6 +565,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="addExternalIdentifierToEntity")
     @WebResult(name = "externalId")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityExternalIdentifier addExternalIdentifierToEntity(@WebParam(name = "externalId") EntityExternalIdentifier externalId)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -567,6 +580,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="updateExternalIdentifier")
     @WebResult(name = "externalId")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityExternalIdentifier updateExternalIdentifier(@WebParam(name = "externalId") EntityExternalIdentifier externalId)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -582,6 +596,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="addAffiliationToEntity")
     @WebResult(name = "affiliation")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityAffiliation addAffiliationToEntity(@WebParam(name = "affiliation") EntityAffiliation affiliation)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -596,6 +611,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="updateAffiliation")
     @WebResult(name = "affiliation")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityAffiliation updateAffiliation(@WebParam(name = "affiliation") EntityAffiliation affiliation)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -610,43 +626,9 @@ public interface IdentityService {
      */
     @WebMethod(operationName="inactivateAffiliation")
     @WebResult(name = "affiliation")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityAffiliation inactivateAffiliation(@WebParam(name = "id") String id)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
-
-    /**
-     * Gets a map {@link org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName} for a list of principalIds.
-     *
-     * <p>The resulting Map contains the principalId as the key and the EntityNamePrincipalName as the value.
-	 * When fetching names by principal id, the resulting EntityNamePrincipalName contains the identity's default name
-	 * as well as the principalName.
-     * </p>
-     *
-     * @param principalIds list of  unique principalIds to retrieve the names by. Cannot be null.
-     * @return a map of {@link org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName}
-     * @throws IllegalArgumentException if the list of principalIds is null
-     */
-    @WebMethod(operationName = "getDefaultNamesForPrincipalIds")
-    @WebResult(name = "entityNamePrincipalNames")
-	@XmlJavaTypeAdapter(value = StringToKimEntityNamePrincipalInfoMapAdapter.class)
-    Map<String, EntityNamePrincipalName> getDefaultNamesForPrincipalIds(@WebParam(name="principalIds") List<String> principalIds)  throws RiceIllegalArgumentException;
-    
-
-    /**
-     * Gets a map {@link org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName} for a list of entityIds.
-     *
-     * <p>The resulting Map contains the entityId as the key and the EntityNamePrincipalName as the value.
-	 * When fetching names by principal id, the resulting EntityNamePrincipalName contains the identity's default name
-	 * as well as the principalName.
-     * </p>
-     *
-     * @param entityIds list of  unique entityIds to retrieve the names by. Cannot be null.
-     * @return a map of {@link org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName}
-     * @throws IllegalArgumentException if the list of principalIds is null
-     */
-    @WebMethod(operationName = "getDefaultNamesForEntityIds")
-    @WebResult(name = "entityNamePrincipalNames")
-	@XmlJavaTypeAdapter(value = StringToKimEntityNameInfoMapAdapter.class)
-    Map<String, EntityNamePrincipalName> getDefaultNamesForEntityIds(@WebParam(name="entityIds") List<String> entityIds)  throws RiceIllegalArgumentException;
 
     /**
      * This will create a {@link org.kuali.rice.kim.api.identity.name.EntityName} exactly like the name passed in.
@@ -660,6 +642,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="addNameToEntity")
     @WebResult(name = "name")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityName addNameToEntity(@WebParam(name = "name") EntityName name)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -674,6 +657,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="updateName")
     @WebResult(name = "name")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityName updateName(@WebParam(name = "name") EntityName name)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -688,6 +672,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="inactivateName")
     @WebResult(name = "name")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityName inactivateName(@WebParam(name = "id") String id)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -703,6 +688,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="addEmploymentToEntity")
     @WebResult(name = "employment")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityEmployment addEmploymentToEntity(@WebParam(name = "employment") EntityEmployment employment)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -717,6 +703,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="updateEmployment")
     @WebResult(name = "employment")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityEmployment updateEmployment(@WebParam(name = "employment") EntityEmployment employment)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -731,6 +718,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="inactivateEmployment")
     @WebResult(name = "employment")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityEmployment inactivateEmployment(@WebParam(name = "id") String id)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -746,6 +734,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="addBioDemographicsToEntity")
     @WebResult(name = "bioDemographics")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityBioDemographics addBioDemographicsToEntity(@WebParam(name = "bioDemographics") EntityBioDemographics bioDemographics)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -760,23 +749,25 @@ public interface IdentityService {
      */
     @WebMethod(operationName="updateBioDemographics")
     @WebResult(name = "bioDemographics")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityBioDemographics updateBioDemographics(@WebParam(name = "bioDemographics") EntityBioDemographics bioDemographics)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
     
     /**
-     * Gets a {@link org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences} for a given entityId.
+     * Gets a {@link org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences} for a given id.
      *
      * <p>
      *   This method will return null if the EntityPrivacyPreferences does not exist.
      * </p>
      *
-     * @param entityId the unique id to retrieve the EntityPrivacyPreferences by. Cannot be null.
+     * @param id the unique id to retrieve the EntityPrivacyPreferences by. Cannot be null.
      * @return a {@link org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences} or null
      * @throws IllegalArgumentException if the entityId is blank
      */
     @WebMethod(operationName = "getEntityPrivacyPreferences")
     @WebResult(name = "privacyPreferences")
-	EntityPrivacyPreferences getEntityPrivacyPreferences( @WebParam(name="entityId") String entityId )  throws RiceIllegalArgumentException;
+    @Cacheable(value= EntityPrivacyPreferences.Cache.NAME, key="'id=' + #id")
+	EntityPrivacyPreferences getEntityPrivacyPreferences( @WebParam(name="id") String id )  throws RiceIllegalArgumentException;
 
     /**
      * This will create a {@link org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences} exactly like the privacyPreferences passed in.
@@ -790,6 +781,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="addPrivacyPreferencesToEntity")
     @WebResult(name = "privacyPreferences")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME, EntityPrivacyPreferences.Cache.NAME}, allEntries = true)
     EntityPrivacyPreferences addPrivacyPreferencesToEntity(@WebParam(name = "privacyPreferences") EntityPrivacyPreferences privacyPreferences)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -804,6 +796,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="updatePrivacyPreferences")
     @WebResult(name = "privacyPreferences")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME, EntityPrivacyPreferences.Cache.NAME}, allEntries = true)
     EntityPrivacyPreferences updatePrivacyPreferences(@WebParam(name = "privacyPreferences") EntityPrivacyPreferences privacyPreferences)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -820,6 +813,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="addCitizenshipToEntity")
     @WebResult(name = "citizenship")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityCitizenship addCitizenshipToEntity(@WebParam(name = "citizenship") EntityCitizenship citizenship)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -834,6 +828,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="updateCitizenship")
     @WebResult(name = "citizenship")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityCitizenship updateCitizenship(@WebParam(name = "citizenship") EntityCitizenship citizenship)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -848,6 +843,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="inactivateCitizenship")
     @WebResult(name = "citizenship")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityCitizenship inactivateCitizenship(@WebParam(name = "id") String id)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -863,6 +859,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="addEthnicityToEntity")
     @WebResult(name = "ethnicity")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityEthnicity addEthnicityToEntity(@WebParam(name = "ethnicity") EntityEthnicity ethnicity)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -877,6 +874,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="updateEthnicity")
     @WebResult(name = "ethnicity")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityEthnicity updateEthnicity(@WebParam(name = "ethnicity") EntityEthnicity ethnicity)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -892,6 +890,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="addResidencyToEntity")
     @WebResult(name = "residency")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityResidency addResidencyToEntity(@WebParam(name = "residency") EntityResidency residency)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -906,6 +905,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="updateResidency")
     @WebResult(name = "residency")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityResidency updateResidency(@WebParam(name = "residency") EntityResidency residency)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -922,6 +922,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="addVisaToEntity")
     @WebResult(name = "visa")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityVisa addVisaToEntity(@WebParam(name = "visa") EntityVisa visa)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -936,6 +937,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="updateVisa")
     @WebResult(name = "visa")
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityVisa updateVisa(@WebParam(name = "visa") EntityVisa visa)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -952,6 +954,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEntityType")
     @WebResult(name = "type")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{EntityType}", key="'code=' + #code")
 	CodedAttribute getEntityType( @WebParam(name="code") String code );
 
 
@@ -968,6 +971,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getAddressType")
     @WebResult(name = "type")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{AddressType}", key="'code=' + #code")
 	CodedAttribute getAddressType( @WebParam(name="code") String code );
 
     /**
@@ -983,6 +987,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getAffiliationType")
     @WebResult(name = "affiliationType")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{AffiliationType}", key="'code=' + #code")
 	EntityAffiliationType getAffiliationType( @WebParam(name="code") String code )  throws RiceIllegalArgumentException;
 
     /**
@@ -998,6 +1003,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getCitizenshipStatus")
     @WebResult(name = "type")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{CitizenshipStatus}", key="'code=' + #code")
 	CodedAttribute getCitizenshipStatus( @WebParam(name="code") String code );
 
     /**
@@ -1013,6 +1019,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEmploymentType")
     @WebResult(name = "type")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{EmploymentType}", key="'code=' + #code")
 	CodedAttribute getEmploymentType( @WebParam(name="code") String code );
     
     /**
@@ -1028,6 +1035,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEmploymentStatus")
     @WebResult(name = "type")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{EmploymentStatus}", key="'code=' + #code")
 	CodedAttribute getEmploymentStatus( @WebParam(name="code") String code );
     
     /**
@@ -1043,6 +1051,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getExternalIdentifierType")
     @WebResult(name = "type")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{ExternalIdentifierType}", key="'code=' + #code")
 	EntityExternalIdentifierType getExternalIdentifierType( @WebParam(name="code") String code )  throws RiceIllegalArgumentException;
     
     /**
@@ -1058,6 +1067,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getNameType")
     @WebResult(name = "type")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{NameType}", key="'code=' + #code")
 	CodedAttribute getNameType(@WebParam(name = "code") String code);
     
     /**
@@ -1073,6 +1083,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getPhoneType")
     @WebResult(name = "type")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{PhoneType}", key="'code=' + #code")
 	CodedAttribute getPhoneType( @WebParam(name="code") String code );
     
     /**
@@ -1088,6 +1099,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEmailType")
     @WebResult(name = "type")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{EmailType}", key="'code=' + #code")
 	CodedAttribute getEmailType( @WebParam(name="code") String code );
 
 }

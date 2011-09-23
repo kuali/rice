@@ -13,6 +13,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.kim.api.KimConstants;
 import org.w3c.dom.Element;
 
 @XmlRootElement(name = CodedAttribute.Constants.ROOT_ELEMENT_NAME)
@@ -222,6 +223,10 @@ public final class CodedAttribute extends AbstractDataTransferObject
         final static String SORT_CODE = "sortCode";
         final static String ACTIVE = "active";
 
+    }
+
+    public static class Cache {
+        public static final String NAME = KimConstants.Namespaces.KIM_NAMESPACE_2_0 + "/" + CodedAttribute.Constants.TYPE_NAME;
     }
 
 }

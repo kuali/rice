@@ -13,6 +13,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.kim.api.KimConstants;
 import org.w3c.dom.Element;
 
 @XmlRootElement(name = EntityPrivacyPreferences.Constants.ROOT_ELEMENT_NAME)
@@ -272,6 +273,10 @@ public final class EntityPrivacyPreferences extends AbstractDataTransferObject
         final static String SUPPRESS_PHONE = "suppressPhone";
         final static String SUPPRESS_PERSONAL = "suppressPersonal";
 
+    }
+
+    public static class Cache {
+        public static final String NAME = KimConstants.Namespaces.KIM_NAMESPACE_2_0 + "/" + EntityPrivacyPreferences.Constants.TYPE_NAME;
     }
 
 }

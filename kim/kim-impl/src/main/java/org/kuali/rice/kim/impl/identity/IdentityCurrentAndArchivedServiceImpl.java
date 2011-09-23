@@ -87,12 +87,6 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 	}
 
     @Override
-	public Map<String, EntityNamePrincipalName> getDefaultNamesForEntityIds(
-			List<String> entityIds) {
-		return getInnerIdentityService().getDefaultNamesForEntityIds(entityIds);
-	}
-
-    @Override
     public EntityName addNameToEntity(EntityName name) {
         return getInnerIdentityService().addNameToEntity(name);
     }
@@ -131,12 +125,6 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
     public EntityBioDemographics updateBioDemographics(EntityBioDemographics bioDemographics) {
         return getInnerIdentityService().updateBioDemographics(bioDemographics);
     }
-
-    @Override
-	public Map<String, EntityNamePrincipalName> getDefaultNamesForPrincipalIds(
-			List<String> principalIds) {
-		return getInnerIdentityService().getDefaultNamesForPrincipalIds(principalIds);
-	}
 
 	/**
 	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEmailType(java.lang.String)

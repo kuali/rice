@@ -185,27 +185,6 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl {
             return super.getPrincipalByPrincipalName(principalName);
         }
     }
-	
-	@Override
-	public Map<String, EntityNamePrincipalName> getDefaultNamesForEntityIds(List<String> entityIds) {
-        if (CollectionUtils.isEmpty(entityIds)) {
-            throw new RiceIllegalArgumentException("entityIds is empty or null");
-        }
-        Map<String, EntityNamePrincipalName> map = getPrincipalDao().getDefaultNamesForEntityIds(entityIds);
-        return map != null ? Collections.unmodifiableMap(map) : Collections.<String, EntityNamePrincipalName>emptyMap();
-	}
-
-
-
-    @Override
-	public Map<String, EntityNamePrincipalName> getDefaultNamesForPrincipalIds(List<String> principalIds) {
-        if (CollectionUtils.isEmpty(principalIds)) {
-            throw new RiceIllegalArgumentException("principalIds is empty or null");
-        }
-
-        Map<String, EntityNamePrincipalName> map = getPrincipalDao().getDefaultNamesForPrincipalIds(principalIds);
-        return map != null ? Collections.unmodifiableMap(map) : Collections.<String, EntityNamePrincipalName>emptyMap();
-	}
 
     public void setPrincipalDao(LdapPrincipalDao principalDao) {
         this.principalDao = principalDao;

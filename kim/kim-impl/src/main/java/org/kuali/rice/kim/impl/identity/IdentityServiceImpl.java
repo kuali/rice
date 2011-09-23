@@ -15,15 +15,14 @@
  */
 package org.kuali.rice.kim.impl.identity;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
-import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.CodedAttribute;
+import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.address.EntityAddress;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
@@ -41,7 +40,6 @@ import org.kuali.rice.kim.api.identity.name.EntityNameQueryResults;
 import org.kuali.rice.kim.api.identity.personal.EntityBioDemographics;
 import org.kuali.rice.kim.api.identity.personal.EntityEthnicity;
 import org.kuali.rice.kim.api.identity.phone.EntityPhone;
-import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.identity.residency.EntityResidency;
@@ -74,9 +72,6 @@ import org.kuali.rice.kim.impl.identity.residency.EntityResidencyBo;
 import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo;
 import org.kuali.rice.kim.impl.identity.visa.EntityVisaBo;
 import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.service.PersistenceService;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -84,8 +79,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
 /**
  * Base implementation of the identity (identity) service.  This version assumes the KimEntity
@@ -772,71 +765,10 @@ public class IdentityServiceImpl implements IdentityService {
 		}
         return getEntityByKeyValue("principals." + KIMPropertyConstants.Principal.PRINCIPAL_ID, principalId);
 	}
-	
-    @Override
-	public Map<String, EntityNamePrincipalName> getDefaultNamesForEntityIds(List<String> entityIds) {
-		if (CollectionUtils.isEmpty(entityIds)) {
-            throw new RiceIllegalArgumentException("entityIds is empty or null");
-        }
 
-
-
-        if (CollectionUtils.isEmpty(entityIds)) {
-            return Collections.emptyMap();
-        }
-        final QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
-        builder.setPredicates(and(in("id", entityIds.toArray()),
-                                  equal("active", "Y"),
-                                  and(
-                                    equal("names.active", "Y"),
-                                    equal("names.defaultValue", "Y"))));
-        EntityDefaultQueryResults qr = findEntityDefaults(builder.build());
-        Map<String, EntityNamePrincipalName> result = new HashMap<String, EntityNamePrincipalName>(entityIds.size());
-        for(EntityDefault entityDefault : qr.getResults()) {
-
-            for (Principal principal : entityDefault.getPrincipals()) {
-                result.put(entityDefault.getEntityId(), EntityNamePrincipalName.Builder
-                        .create(principal.getPrincipalName(), EntityName.Builder.create(entityDefault.getName()))
-                        .build());
-                break;
-            }
-		}
-		return Collections.unmodifiableMap(result);
-	}
-
-
-
-    @Override
-	public Map<String, EntityNamePrincipalName> getDefaultNamesForPrincipalIds(List<String> principalIds) {
-	    if (CollectionUtils.isEmpty(principalIds)) {
-            throw new RiceIllegalArgumentException("principalIds is empty or null");
-        }
-
-
-
-        QueryByCriteria.Builder qb = QueryByCriteria.Builder.create();
-        qb.setPredicates(and(in("principals.principalId", principalIds.toArray()),
-                             equal("active", "Y"),
-                             equal("names.defaultValue", "Y")));
-
-        List<EntityDefault> entityDefaults = findEntityDefaults(qb.build()).getResults();
-		 Map<String, EntityNamePrincipalName> result = new HashMap<String, EntityNamePrincipalName>();
-        for(EntityDefault entityDefault : entityDefaults) {
-
-            for (Principal principal : entityDefault.getPrincipals()) {
-                result.put(principal.getPrincipalId(), EntityNamePrincipalName.Builder
-                        .create(principal.getPrincipalName(), EntityName.Builder.create(entityDefault.getName()))
-                        .build());
-            }
-		}
-		
-		return Collections.unmodifiableMap(result);
-	}
-	
 	/**
 	 * Generic helper method for performing a lookup through the business object service.
 	 */
-	@SuppressWarnings("unchecked")
 	protected EntityBo getEntityByKeyValue(String key, String value) {
 		Map<String,String> criteria = new HashMap<String,String>(1);
         criteria.put(key, value);
@@ -847,6 +779,7 @@ public class IdentityServiceImpl implements IdentityService {
 		return null;
 	}
 
+    @Override
 	public CodedAttribute getAddressType( String code ) {
         if (StringUtils.isBlank(code)) {
             throw new RiceIllegalArgumentException("code is empty or null");
@@ -872,7 +805,7 @@ public class IdentityServiceImpl implements IdentityService {
 		return EntityAffiliationTypeBo.to(impl);
 	}
 
-
+    @Override
     public CodedAttribute getCitizenshipStatus( String code ) {
 		if (StringUtils.isBlank(code)) {
             throw new RiceIllegalArgumentException("code is empty or null");
@@ -883,7 +816,7 @@ public class IdentityServiceImpl implements IdentityService {
 		}
 		return EntityCitizenshipStatusBo.to(impl);
 	}
-
+    @Override
     public CodedAttribute getEmailType( String code ) {
 		if (StringUtils.isBlank(code)) {
             throw new RiceIllegalArgumentException("code is empty or null");
@@ -894,7 +827,7 @@ public class IdentityServiceImpl implements IdentityService {
 		}
 		return EntityEmailTypeBo.to(impl);
 	}
-
+    @Override
     public CodedAttribute getEmploymentStatus( String code ) {
 		if (StringUtils.isBlank(code)) {
             throw new RiceIllegalArgumentException("code is empty or null");
@@ -905,7 +838,7 @@ public class IdentityServiceImpl implements IdentityService {
 		}
 		return EntityEmploymentStatusBo.to(impl);
 	}
-
+    @Override
     public CodedAttribute getEmploymentType( String code ) {
 		if (StringUtils.isBlank(code)) {
             throw new RiceIllegalArgumentException("code is empty or null");
@@ -916,7 +849,7 @@ public class IdentityServiceImpl implements IdentityService {
 		}
 		return EntityEmploymentTypeBo.to(impl);
 	}
-
+    @Override
     public CodedAttribute getNameType(String code) {
 		if (StringUtils.isBlank(code)) {
             throw new RiceIllegalArgumentException("code is empty or null");
@@ -927,7 +860,7 @@ public class IdentityServiceImpl implements IdentityService {
 		}
 		return EntityNameTypeBo.to(impl);
 	}
-
+    @Override
     public CodedAttribute getEntityType( String code ) {
 		if (StringUtils.isBlank(code)) {
             throw new RiceIllegalArgumentException("code is empty or null");
@@ -953,7 +886,7 @@ public class IdentityServiceImpl implements IdentityService {
 	}
 
 
-
+    @Override
     public CodedAttribute getPhoneType( String code ) {
 		if (StringUtils.isBlank(code)) {
             throw new RiceIllegalArgumentException("code is empty or null");

@@ -40,6 +40,7 @@ import org.w3c.dom.Element;
     EntityAddress.Elements.STATE_PROVINCE_CODE_UNMASKED,
     EntityAddress.Elements.POSTAL_CODE_UNMASKED,
     EntityAddress.Elements.COUNTRY_CODE_UNMASKED,
+    EntityAddress.Elements.ADDRESS_FORMAT,
     EntityAddress.Elements.SUPPRESS_ADDRESS,
     EntityAddress.Elements.DEFAULT_VALUE,
     EntityAddress.Elements.ACTIVE,
@@ -90,6 +91,8 @@ public final class EntityAddress extends AbstractDataTransferObject
     private final String postalCodeUnmasked;
     @XmlElement(name = Elements.COUNTRY_CODE_UNMASKED, required = false)
     private final String countryCodeUnmasked;
+    @XmlElement(name = Elements.ADDRESS_FORMAT, required = false)
+    private final String addressFormat;
     @XmlElement(name = Elements.SUPPRESS_ADDRESS, required = false)
     private final boolean suppressAddress;
     @XmlElement(name = Elements.DEFAULT_VALUE, required = false)
@@ -128,6 +131,7 @@ public final class EntityAddress extends AbstractDataTransferObject
         this.stateProvinceCodeUnmasked = null;
         this.postalCodeUnmasked = null;
         this.countryCodeUnmasked = null;
+        this.addressFormat = null;
         this.suppressAddress = false;
         this.defaultValue = false;
         this.versionNumber = null;
@@ -157,6 +161,7 @@ public final class EntityAddress extends AbstractDataTransferObject
         this.stateProvinceCodeUnmasked = builder.getStateProvinceCodeUnmasked();
         this.postalCodeUnmasked = builder.getPostalCodeUnmasked();
         this.countryCodeUnmasked = builder.getCountryCodeUnmasked();
+        this.addressFormat = builder.getAddressFormat();
         this.suppressAddress = builder.isSuppressAddress();
         this.defaultValue = builder.isDefaultValue();
         this.versionNumber = builder.getVersionNumber();
@@ -261,6 +266,11 @@ public final class EntityAddress extends AbstractDataTransferObject
     }
 
     @Override
+    public String getAddressFormat() {
+        return this.addressFormat;
+    }
+
+    @Override
     public boolean isSuppressAddress() {
         return this.suppressAddress;
     }
@@ -309,6 +319,7 @@ public final class EntityAddress extends AbstractDataTransferObject
         private String stateProvinceCodeUnmasked;
         private String postalCodeUnmasked;
         private String countryCodeUnmasked;
+        private String addressFormat;
         private boolean suppressAddress;
         private boolean defaultValue;
         private Long versionNumber;
@@ -341,6 +352,7 @@ public final class EntityAddress extends AbstractDataTransferObject
             builder.setStateProvinceCode(contract.getStateProvinceCodeUnmasked());
             builder.setPostalCode(contract.getPostalCodeUnmasked());
             builder.setCountryCode(contract.getCountryCodeUnmasked());
+            builder.setAddressFormat(contract.getAddressFormat());
             builder.setDefaultValue(contract.isDefaultValue());
             builder.setVersionNumber(contract.getVersionNumber());
             builder.setObjectId(contract.getObjectId());
@@ -475,6 +487,11 @@ public final class EntityAddress extends AbstractDataTransferObject
         }
 
         @Override
+        public String getAddressFormat() {
+            return this.addressFormat;
+        }
+
+        @Override
         public boolean isSuppressAddress() {
             return this.suppressAddress;
         }
@@ -548,6 +565,10 @@ public final class EntityAddress extends AbstractDataTransferObject
             this.countryCodeUnmasked = countryCode;
         }
 
+        public void setAddressFormat(String addressFormat) {
+            this.addressFormat = addressFormat;
+        }
+
         private void setSuppressAddress(boolean suppressAddress) {
             this.suppressAddress = suppressAddress;
         }
@@ -614,6 +635,7 @@ public final class EntityAddress extends AbstractDataTransferObject
         final static String STATE_PROVINCE_CODE_UNMASKED = "stateProvinceCodeUnmasked";
         final static String POSTAL_CODE_UNMASKED = "postalCodeUnmasked";
         final static String COUNTRY_CODE_UNMASKED = "countryCodeUnmasked";
+        final static String ADDRESS_FORMAT= "addressFormat";
         final static String SUPPRESS_ADDRESS = "suppressAddress";
         final static String DEFAULT_VALUE = "defaultValue";
         final static String ACTIVE = "active";

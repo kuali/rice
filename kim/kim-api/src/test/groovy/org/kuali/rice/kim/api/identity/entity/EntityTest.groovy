@@ -115,6 +115,7 @@ class EntityTest {
                                 <stateProvinceCodeUnmasked>${ENTITY_TYPE.addresses.get(0).stateProvinceCodeUnmasked}</stateProvinceCodeUnmasked>
                                 <postalCodeUnmasked>${ENTITY_TYPE.addresses.get(0).postalCodeUnmasked}</postalCodeUnmasked>
                                 <countryCodeUnmasked>${ENTITY_TYPE.addresses.get(0).countryCodeUnmasked}</countryCodeUnmasked>
+                                <addressFormat>${ENTITY_TYPE.addresses.get(0).addressFormat}</addressFormat>
                                 <suppressAddress>${ENTITY_TYPE.addresses.get(0).suppressAddress}</suppressAddress>
                                 <defaultValue>${ENTITY_TYPE.addresses.get(0).defaultValue}</defaultValue>
                                 <active>${ENTITY_TYPE.addresses.get(0).active}</active>
@@ -200,6 +201,7 @@ class EntityTest {
                             <stateProvinceCodeUnmasked>${ENTITY_TYPE.addresses.get(0).stateProvinceCodeUnmasked}</stateProvinceCodeUnmasked>
                             <postalCodeUnmasked>${ENTITY_TYPE.addresses.get(0).postalCodeUnmasked}</postalCodeUnmasked>
                             <countryCodeUnmasked>${ENTITY_TYPE.addresses.get(0).countryCodeUnmasked}</countryCodeUnmasked>
+                            <addressFormat>${ENTITY_TYPE.addresses.get(0).addressFormat}</addressFormat>
                             <suppressAddress>${ENTITY_TYPE.addresses.get(0).suppressAddress}</suppressAddress>
                             <defaultValue>${ENTITY_TYPE.addresses.get(0).defaultValue}</defaultValue>
                             <active>${ENTITY_TYPE.addresses.get(0).active}</active>
@@ -394,6 +396,7 @@ class EntityTest {
                     <deceasedDate>${BIO.deceasedDate}</deceasedDate>
                     <birthDate>${BIO.birthDate}</birthDate>
                     <genderCode>${BIO.genderCode}</genderCode>
+                    <genderChangeCode>${BIO.genderChangeCode}</genderChangeCode>
                     <maritalStatusCode>${BIO.maritalStatusCode}</maritalStatusCode>
                     <primaryLanguageCode>${BIO.primaryLanguageCode}</primaryLanguageCode>
                     <secondaryLanguageCode>${BIO.secondaryLanguageCode}</secondaryLanguageCode>
@@ -403,6 +406,7 @@ class EntityTest {
                     <geographicOrigin>${BIO.geographicOrigin}</geographicOrigin>
                     <birthDateUnmasked>${BIO.birthDateUnmasked}</birthDateUnmasked>
                     <genderCodeUnmasked>${BIO.genderCodeUnmasked}</genderCodeUnmasked>
+                    <genderChangeCodeUnmasked>${BIO.genderChangeCodeUnmasked}</genderChangeCodeUnmasked>
                     <maritalStatusCodeUnmasked>${BIO.maritalStatusCodeUnmasked}</maritalStatusCodeUnmasked>
                     <primaryLanguageCodeUnmasked>${BIO.primaryLanguageCodeUnmasked}</primaryLanguageCodeUnmasked>
                     <secondaryLanguageCodeUnmasked>${BIO.secondaryLanguageCodeUnmasked}</secondaryLanguageCodeUnmasked>

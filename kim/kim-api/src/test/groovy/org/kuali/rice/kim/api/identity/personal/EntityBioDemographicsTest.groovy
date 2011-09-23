@@ -16,6 +16,7 @@ class EntityBioDemographicsTest {
     private static final String BIRTH_DATE_STRING = "1980-01-01";
     private static final Integer VALID_AGE = calculateAge(BIRTH_DATE_STRING, DECEASED_DATE_STRING);
     private static final String GENDER_CODE = "M";
+    private static final String GENDER_CHANGE_CODE = "M";
     private static final String MARITAL_STATUS_CODE = "M";
     private static final String PRIMARY_LANGUAGE_CODE = "E";
     private static final String SECONDARY_LANGUAGE_CODE = "S";
@@ -36,6 +37,7 @@ class EntityBioDemographicsTest {
         <birthDate>${BIRTH_DATE_STRING}</birthDate>
         <age>${VALID_AGE}</age>
         <genderCode>${GENDER_CODE}</genderCode>
+        <genderChangeCode>${GENDER_CHANGE_CODE}</genderChangeCode>
         <maritalStatusCode>${MARITAL_STATUS_CODE}</maritalStatusCode>
         <primaryLanguageCode>${PRIMARY_LANGUAGE_CODE}</primaryLanguageCode>
         <secondaryLanguageCode>${SECONDARY_LANGUAGE_CODE}</secondaryLanguageCode>
@@ -45,6 +47,7 @@ class EntityBioDemographicsTest {
         <geographicOrigin>${GEOGRAPHIC_ORIGIN}</geographicOrigin>
         <birthDateUnmasked>${BIRTH_DATE_STRING}</birthDateUnmasked>
         <genderCodeUnmasked>${GENDER_CODE}</genderCodeUnmasked>
+        <genderChangeCodeUnmasked>${GENDER_CHANGE_CODE}</genderChangeCodeUnmasked>
         <maritalStatusCodeUnmasked>${MARITAL_STATUS_CODE}</maritalStatusCodeUnmasked>
         <primaryLanguageCodeUnmasked>${PRIMARY_LANGUAGE_CODE}</primaryLanguageCodeUnmasked>
         <secondaryLanguageCodeUnmasked>${SECONDARY_LANGUAGE_CODE}</secondaryLanguageCodeUnmasked>
@@ -149,6 +152,7 @@ class EntityBioDemographicsTest {
             // set a bogus value here so we are not confused as to whether this is actually under test
             def Integer age = -1 // satisfy interface
             def String genderCode = EntityBioDemographicsTest.GENDER_CODE
+            def String genderChangeCode = EntityBioDemographicsTest.GENDER_CHANGE_CODE
             def String maritalStatusCode = EntityBioDemographicsTest.MARITAL_STATUS_CODE
             def String primaryLanguageCode = EntityBioDemographicsTest.PRIMARY_LANGUAGE_CODE
             def String secondaryLanguageCode = EntityBioDemographicsTest.SECONDARY_LANGUAGE_CODE
@@ -167,6 +171,7 @@ class EntityBioDemographicsTest {
             def String birthStateProvinceCodeUnmasked = EntityBioDemographicsTest.BIRTH_STATE_PROVINCE_CODE
             def String birthCityUnmasked = EntityBioDemographicsTest.BIRTH_CITY
             def String geographicOriginUnmasked = EntityBioDemographicsTest.GEOGRAPHIC_ORIGIN
+            def String genderChangeCodeUnmasked = EntityBioDemographicsTest.GENDER_CHANGE_CODE
             def String noteMessage = EntityBioDemographicsTest.NOTE_MESSAGE
             def boolean suppressPersonal = EntityBioDemographicsTest.SUPPRESS_PERSONAL.toBoolean()
             def Long versionNumber = EntityBioDemographicsTest.VERSION_NUMBER;

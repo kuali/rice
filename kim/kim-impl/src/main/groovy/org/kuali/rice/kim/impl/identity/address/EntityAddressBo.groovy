@@ -70,55 +70,58 @@ public class EntityAddressBo extends PersistableBusinessObjectBase implements En
 	@Column(name="ACTV_IND")
     boolean active;
 
-
 	@ManyToOne(targetEntity=EntityAddressTypeBo.class, fetch=FetchType.EAGER, cascade=[])
 	@JoinColumn(name = "ADDR_TYP_CD", insertable = false, updatable = false)
 	EntityAddressTypeBo addressType;
 
+    @Column(name = "ADDR_FMT")
+    String addressFormat;
+
 	@Transient
     boolean suppressAddress;
 
-  /*
-   * Converts a mutable EntityAddressBo to an immutable EntityAddress representation.
-   * @param bo
-   * @return an immutable EntityAddress
-   */
-  static EntityAddress to(EntityAddressBo bo) {
-    if (bo == null) { return null }
-    return EntityAddress.Builder.create(bo).build()
-  }
+    /*
+     * Converts a mutable EntityAddressBo to an immutable EntityAddress representation.
+     * @param bo
+     * @return an immutable EntityAddress
+     */
+    static EntityAddress to(EntityAddressBo bo) {
+      if (bo == null) { return null }
+      return EntityAddress.Builder.create(bo).build()
+    }
 
-  /**
-   * Creates a EntityAddressBo business object from an immutable representation of a EntityAddress.
-   * @param an immutable EntityAddress
-   * @return a EntityAddressBo
-   */
-  static EntityAddressBo from(EntityAddress immutable) {
-    if (immutable == null) {return null}
+    /**
+     * Creates a EntityAddressBo business object from an immutable representation of a EntityAddress.
+     * @param an immutable EntityAddress
+     * @return a EntityAddressBo
+     */
+    static EntityAddressBo from(EntityAddress immutable) {
+        if (immutable == null) {return null}
 
-    EntityAddressBo bo = new EntityAddressBo()
-    bo.active = immutable.active
-    bo.entityTypeCode = immutable.entityTypeCode
-    if (immutable.addressType != null) {
-    	bo.addressTypeCode = immutable.addressType.code
-  	}
-    bo.addressType = EntityAddressTypeBo.from(immutable.addressType)
-    bo.defaultValue = immutable.defaultValue
-    bo.attentionLine = immutable.attentionLineUnmasked
-    bo.line1 = immutable.line1Unmasked
-    bo.line2 = immutable.line2Unmasked
-    bo.line3 = immutable.line3Unmasked
-    bo.city = immutable.cityUnmasked
-    bo.stateProvinceCode = immutable.stateProvinceCodeUnmasked
-    bo.countryCode = immutable.countryCodeUnmasked
-    bo.postalCode = immutable.postalCodeUnmasked
-    bo.id = immutable.id
-    bo.entityId = immutable.entityId
-    bo.active = immutable.active
-    bo.versionNumber = immutable.versionNumber
+        EntityAddressBo bo = new EntityAddressBo()
+        bo.active = immutable.active
+        bo.entityTypeCode = immutable.entityTypeCode
+        if (immutable.addressType != null) {
+            bo.addressTypeCode = immutable.addressType.code
+        }
+        bo.addressType = EntityAddressTypeBo.from(immutable.addressType)
+        bo.defaultValue = immutable.defaultValue
+        bo.attentionLine = immutable.attentionLineUnmasked
+        bo.line1 = immutable.line1Unmasked
+        bo.line2 = immutable.line2Unmasked
+        bo.line3 = immutable.line3Unmasked
+        bo.city = immutable.cityUnmasked
+        bo.stateProvinceCode = immutable.stateProvinceCodeUnmasked
+        bo.countryCode = immutable.countryCodeUnmasked
+        bo.postalCode = immutable.postalCodeUnmasked
+        bo.addressFormat = immutable.addressFormat
+        bo.id = immutable.id
+        bo.entityId = immutable.entityId
+        bo.active = immutable.active
+        bo.versionNumber = immutable.versionNumber
 
-    return bo;
-  }
+        return bo;
+    }
 
 
     @Override

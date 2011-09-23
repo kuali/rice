@@ -25,6 +25,7 @@ class EntityAddressTest {
 	private static final String STATE_PROVINCE_CODE = "CA";
 	private static final String POSTAL_CODE = "55555"
     private static final String COUNTRY_CODE = "USA"
+    private static final String ADDR_FMT = "address format"
     private static final String SUPPRESS = "false"
     private static final String DEFAULT = "true"
     private static final String ACTIVE = "true"
@@ -60,6 +61,7 @@ class EntityAddressTest {
         <stateProvinceCodeUnmasked>${STATE_PROVINCE_CODE}</stateProvinceCodeUnmasked>
         <postalCodeUnmasked>${POSTAL_CODE}</postalCodeUnmasked>
         <countryCodeUnmasked>${COUNTRY_CODE}</countryCodeUnmasked>
+        <addressFormat>${ADDR_FMT}</addressFormat>
         <defaultValue>${DEFAULT}</defaultValue>
         <active>${ACTIVE}</active>
         <versionNumber>${VERSION_NUMBER}</versionNumber>
@@ -121,6 +123,7 @@ class EntityAddressTest {
             def String stateProvinceCodeUnmasked = EntityAddressTest.STATE_PROVINCE_CODE
             def String postalCodeUnmasked = EntityAddressTest.POSTAL_CODE
             def String countryCodeUnmasked = EntityAddressTest.COUNTRY_CODE
+            def String addressFormat = EntityAddressTest.ADDR_FMT
             def boolean suppressAddress = EntityAddressTest.SUPPRESS.toBoolean()
             def boolean defaultValue = EntityAddressTest.DEFAULT.toBoolean()
             def boolean active = EntityAddressTest.ACTIVE.toBoolean()

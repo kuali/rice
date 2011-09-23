@@ -74,7 +74,7 @@ class EntityFactory extends Factory {
 
     def EntityAddressBo(Map fields) {
         def values = [
-           entityTypeCode: KimConstants.EntityTypes.PERSON, addressType: new EntityAddressTypeBo(code: KimConstants.AddressTypes.HOME), id: Factory.makeId(), addressTypeCode: KimConstants.AddressTypes.HOME, active: true
+           entityTypeCode: KimConstants.EntityTypes.PERSON, addressType: new EntityAddressTypeBo(code: KimConstants.AddressTypes.HOME), id: Factory.makeId(), addressTypeCode: KimConstants.AddressTypes.HOME, addressFormat: "address format", active: true
         ]
         new EntityAddressBo(Factory.mergeAndLink('entity', fields, values))
     }

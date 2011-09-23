@@ -44,6 +44,7 @@ class EntityTypeContactInfoTest {
     private static final String ADDR_SUPPRESS = "false"
     private static final String ADDR_DEFAULT = "true"
     private static final String ADDR_ACTIVE = "true"
+    private static final String ADDR_FMT = null
     private static final Long ADDR_VERSION_NUMBER = new Integer(1);
 	private static final String ADDR_OBJECT_ID = UUID.randomUUID();
 
@@ -328,6 +329,7 @@ class EntityTypeContactInfoTest {
                     def String stateProvinceCodeUnmasked = EntityTypeContactInfoTest.ADDR_STATE_PROVINCE_CODE
                     def String postalCodeUnmasked = EntityTypeContactInfoTest.ADDR_POSTAL_CODE
                     def String countryCodeUnmasked = EntityTypeContactInfoTest.ADDR_COUNTRY_CODE
+                    def String addressFormat = EntityTypeContactInfoTest.ADDR_FMT
                     def boolean suppressAddress = EntityTypeContactInfoTest.ADDR_SUPPRESS.toBoolean()
                     def boolean defaultValue = EntityTypeContactInfoTest.ADDR_DEFAULT.toBoolean()
                     def boolean active = EntityTypeContactInfoTest.ADDR_ACTIVE.toBoolean()

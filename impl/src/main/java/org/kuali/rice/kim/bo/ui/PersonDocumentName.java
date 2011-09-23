@@ -29,6 +29,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.sql.Timestamp;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -77,6 +78,9 @@ public class PersonDocumentName extends PersonDocumentBoDefaultBase {
 
     @Column(name = "NOTE_MSG")
 	protected String noteMessage;
+
+    @Column(name = "NM_CHNG_DT")
+    protected Timestamp nameChangedDate;
 	
 	@ManyToOne(targetEntity=EntityNameTypeBo.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "NM_TYP_CD", insertable = false, updatable = false)
@@ -143,6 +147,10 @@ public class PersonDocumentName extends PersonDocumentBoDefaultBase {
         return noteMessage;
     }
 
+    public Timestamp getNameChangedDate() {
+        return nameChangedDate;
+    }
+
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
@@ -174,6 +182,10 @@ public class PersonDocumentName extends PersonDocumentBoDefaultBase {
     public void setNoteMessage(String noteMessage) {
 		this.noteMessage = noteMessage;
 	}
+
+    public void setNameChangedDate(Timestamp timestamp) {
+        this.nameChangedDate = timestamp;
+    }
 
 	/**
 	 * This default implementation formats the name as LAST, FIRST MIDDLE.

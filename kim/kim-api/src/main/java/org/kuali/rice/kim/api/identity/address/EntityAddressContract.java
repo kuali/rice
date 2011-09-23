@@ -148,6 +148,12 @@ public interface EntityAddressContract extends Versioned, GloballyUnique, Defaul
     String getAttentionLineUnmasked();
 
     /**
+     * Returns the {@link EntityAddressContract}'s address format
+     * @return the address format or null if none is set
+     */
+    String getAddressFormat();
+
+    /**
      * Returns a boolean value that determines if address fields should be suppressed.
      * @return boolean value that determines if address should be suppressed.
      */

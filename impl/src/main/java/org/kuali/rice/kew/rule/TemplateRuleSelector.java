@@ -19,6 +19,8 @@ import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.rule.RuleTemplate;
+import org.kuali.rice.kew.api.rule.RuleTemplateAttribute;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.routeheader.DocumentContent;
@@ -60,12 +62,11 @@ class TemplateRuleSelector implements RuleSelector {
 
         Set<MassRuleAttribute> massRules = new HashSet<MassRuleAttribute>();
         RuleTemplateBo template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(ruleTemplateName);
+        //RuleTemplate template = KewApiServiceLocator.getRuleService().getRuleTemplateByName(ruleTemplateName);
         if (template == null) {
             throw new WorkflowRuntimeException("Could not locate the rule template with name " + ruleTemplateName + " on document " + routeHeader.getDocumentId());
         }
-        for (Iterator iter = template.getActiveRuleTemplateAttributes().iterator(); iter.hasNext();) {
-
-            RuleTemplateAttributeBo templateAttribute = (RuleTemplateAttributeBo) iter.next();
+        for (RuleTemplateAttributeBo templateAttribute : template.getActiveRuleTemplateAttributes()) {
             if (!templateAttribute.isWorkflowAttribute()) {
             continue;
             }
@@ -81,7 +82,7 @@ class TemplateRuleSelector implements RuleSelector {
         List<Predicate> predicates = new ArrayList<Predicate>();
         predicates.add(equal("ruleTemplate.name", ruleTemplateName));
         predicates.add(equal("docTypeName", routeHeader.getDocumentType().getName()));
-        predicates.add(equal("active", "Y"));
+        predicates.add(equal("active", new Integer(1)));
         if (effectiveDate != null) {
             predicates.add(
                     and(

@@ -16,17 +16,17 @@
  */
 package org.kuali.rice.kew.messaging;
 
+import javax.xml.namespace.QName;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService;
 import org.kuali.rice.kew.actions.asyncservices.ActionInvocationService;
 import org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessorService;
 import org.kuali.rice.kew.actions.asyncservices.MoveDocumentService;
-import org.kuali.rice.kew.mail.service.ActionListImmediateEmailReminderService;
+import org.kuali.rice.kew.api.mail.ImmediateEmailReminderService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
-
-import javax.xml.namespace.QName;
 
 
 /**
@@ -78,10 +78,6 @@ public class MessageServiceNames {
 
 	public static BlanketApproveProcessorService getBlanketApproveProcessorService(DocumentRouteHeaderValue document) {
 		return (BlanketApproveProcessorService) getServiceAsynchronously(getQName(BLANKET_APPROVE_PROCESSING_SERVICE, document), document);
-	}
-
-	public static ActionListImmediateEmailReminderService getImmediateEmailService() {
-		return (ActionListImmediateEmailReminderService) getServiceAsynchronously(getQName(ACTION_LIST_IMMEDIATE_REMINDER_SERVICE, (DocumentRouteHeaderValue) null), (String)null);
 	}
 	
 	public static DocumentRequeuerService getDocumentRequeuerService(String applicationId, String documentId, long waitTime) {

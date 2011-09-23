@@ -24,6 +24,7 @@ import org.kuali.rice.kew.api.document.WorkflowDocumentService;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeIndexingQueue;
 import org.kuali.rice.kew.api.extension.ExtensionRepositoryService;
 import org.kuali.rice.kew.api.group.GroupMembershipChangeQueue;
+import org.kuali.rice.kew.api.mail.ImmediateEmailReminderService;
 import org.kuali.rice.kew.api.note.NoteService;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowService;
 import org.kuali.rice.kew.api.repository.type.KewTypeRepositoryService;
@@ -51,6 +52,9 @@ public class KewApiServiceLocator {
 
     public static final QName DOCUMENT_ATTRIBUTE_INDEXING_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "documentAttributeIndexingQueueSoap");
     public static final QName GROUP_MEMBERSHIP_CHANGE_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "groupMembershipChangeQueueSoap");
+    public static final QName RULE_CACHE_PROCESSOR_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "ruleCacheProcessorSoap");
+    public static final QName RULE_DELEGATION_CACHE_PROCESSOR_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "ruleDelegationCacheProcessorSoap");
+    public static final QName IMMEDIATE_EMAIL_REMINDER_SERVICE_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "immediateEmailReminderServiceSoap");
     public static final QName RESPONSIBILITY_CHANGE_PROCESSOR_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "responsibilityChangeProcessorSoap");
 
     static <T> T getService(String serviceName) {
@@ -107,5 +111,9 @@ public class KewApiServiceLocator {
 
     public static ResponsibilityChangeProcessor getResponsibilityChangeProcessor() {
         return (ResponsibilityChangeProcessor)KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(RESPONSIBILITY_CHANGE_PROCESSOR_QUEUE_NAME);
+    }
+    
+    public static ImmediateEmailReminderService getImmediateEmailReminderService() {
+        return KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(IMMEDIATE_EMAIL_REMINDER_SERVICE_QUEUE_NAME);
     }
 }

@@ -16,8 +16,8 @@
  */
 package org.kuali.rice.kew.mail.service;
 
-import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.kew.api.action.ActionItem;
+
 
 /**
  * A service which allows for the sending of email reminders triggered by the state
@@ -27,7 +27,7 @@ import org.kuali.rice.kim.api.identity.Person;
  */
 public interface ActionListEmailService {
 
-    public void sendImmediateReminder(Person user, ActionItem actionItem);
+    public void sendImmediateReminder(ActionItem actionItem, Boolean skipOnApprovals);
     public void sendDailyReminder();
     public void sendWeeklyReminder();
     public void scheduleBatchEmailReminders() throws Exception;

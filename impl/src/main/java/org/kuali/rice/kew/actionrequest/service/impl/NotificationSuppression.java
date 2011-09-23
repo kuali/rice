@@ -134,7 +134,9 @@ public class NotificationSuppression {
 			actionItems = new ArrayList<ActionItem>(actionItems); // defensive copy since we will filter
 			filterNotificationSuppressedActionItems(actionItems, routeNodeInstance);
 			// notify for any actionItems that were not filtered
-			if (actionItems.size() > 0) { KEWServiceLocator.getNotificationService().notify(actionItems); }
+			if (actionItems.size() > 0) { 
+			    KEWServiceLocator.getNotificationService().notify(ActionItem.to(actionItems)); 
+			}
 			deleteNotificationSuppression(routeNodeInstance);
 		}
 	}

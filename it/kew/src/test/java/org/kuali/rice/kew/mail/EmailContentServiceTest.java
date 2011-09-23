@@ -72,7 +72,7 @@ public class EmailContentServiceTest extends KEWTestCase {
 		
 		Person person = KimApiServiceLocator.getPersonService().getPerson(ewestfalPrincipalId);
 		// this would blow up before the fix
-		EmailContent emailContent = emailContentService.generateDailyReminder(person, actionItems);
+		EmailContent emailContent = emailContentService.generateDailyReminder(person, ActionItem.to(actionItems));
 	}
 	
 	/**
@@ -98,7 +98,7 @@ public class EmailContentServiceTest extends KEWTestCase {
 		EmailContentService emailContentService = KEWServiceLocator.getEmailContentService();
 		
 		Person person = KimApiServiceLocator.getPersonService().getPerson(user1PrincipalId);
-		EmailContent emailContent = emailContentService.generateDailyReminder(person, actionItems);
+		EmailContent emailContent = emailContentService.generateDailyReminder(person, ActionItem.to(actionItems));
 	}
 	
 	/**
@@ -124,6 +124,6 @@ public class EmailContentServiceTest extends KEWTestCase {
 		EmailContentService emailContentService = KEWServiceLocator.getEmailContentService();
 		
 		Person person = KimApiServiceLocator.getPersonService().getPerson(user1PrincipalId);
-		EmailContent emailContent = emailContentService.generateDailyReminder(person, actionItems);
+		EmailContent emailContent = emailContentService.generateDailyReminder(person, ActionItem.to(actionItems));
 	}
 }

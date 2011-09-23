@@ -16,6 +16,17 @@
 
 package org.kuali.rice.kew.actionrequest.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -50,16 +61,6 @@ import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Default implementation of the {@link ActionRequestService}.
@@ -171,7 +172,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         activationContext.setGeneratedActionItems(new ArrayList<ActionItem>());
         activateRequestsInternal(actionRequests, activationContext);
         if (!activationContext.isSimulation()) {
-            KEWServiceLocator.getNotificationService().notify(activationContext.getGeneratedActionItems());
+            KEWServiceLocator.getNotificationService().notify(ActionItem.to(activationContext.getGeneratedActionItems()));
         }
         if ( LOG.isInfoEnabled() ) {
         	performanceLogger.log("Time to " + (activationContext.isSimulation() ? "simulate activation of " : "activate ")

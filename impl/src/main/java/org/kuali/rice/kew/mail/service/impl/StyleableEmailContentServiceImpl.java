@@ -17,32 +17,10 @@
 
 package org.kuali.rice.kew.mail.service.impl;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.style.StyleService;
-import org.kuali.rice.core.api.util.RiceConstants;
-import org.kuali.rice.core.api.util.xml.XmlHelper;
-import org.kuali.rice.core.api.util.xml.XmlJotter;
-import org.kuali.rice.core.mail.EmailContent;
-import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.api.WorkflowRuntimeException;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.feedback.web.FeedbackForm;
-import org.kuali.rice.kew.mail.CustomEmailAttribute;
-import org.kuali.rice.kew.mail.EmailStyleHelper;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.UserUtils;
-import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.api.identity.Person;
-import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.util.GlobalVariables;
-import org.springframework.core.io.DefaultResourceLoader;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
+import java.io.StringWriter;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -54,10 +32,34 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import java.io.StringWriter;
-import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.style.StyleService;
+import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.core.api.util.xml.XmlHelper;
+import org.kuali.rice.core.api.util.xml.XmlJotter;
+import org.kuali.rice.core.mail.EmailContent;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.action.ActionItem;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.feedback.web.FeedbackForm;
+import org.kuali.rice.kew.mail.CustomEmailAttribute;
+import org.kuali.rice.kew.mail.EmailStyleHelper;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.user.UserUtils;
+import org.kuali.rice.kew.util.CodeTranslator;
+import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 
 
@@ -133,7 +135,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         baseElement.appendChild(element);
     }
 
-    protected static void addTimestampElement(Document doc, Element baseElement, String elementName, Timestamp elementData) {
+    protected static void addTimestampElement(Document doc, Element baseElement, String elementName, Date elementData) {
         addTextElement(doc, baseElement, elementName, RiceConstants.getDefaultDateFormat().format(elementData));
     }
 
@@ -177,7 +179,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
 
     protected static void addWorkgroupRequestElement(Document doc, Element baseElement, ActionItem actionItem) {
         Element workgroupElement = doc.createElement("workgroupRequest");
-        if (actionItem.isWorkgroupItem()) {
+        if (actionItem.getGroupId() != null) {
             // add the id element
             Element idElement = doc.createElement("id");
             idElement.appendChild(doc.createTextNode(actionItem.getGroupId()));
@@ -216,11 +218,12 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         addTextElement(doc, root, "docRouteStatus", routeHeader.getDocRouteStatus());
         addCDataElement(doc, root, "routeStatusLabel", routeHeader.getRouteStatusLabel());
         addTextElement(doc, root, "actionRequestCd", actionItem.getActionRequestCd());
-        addTextElement(doc, root, "actionRequestLabel", actionItem.getActionRequestLabel());
+        addTextElement(doc, root, "actionRequestLabel", CodeTranslator.getActionRequestLabel(actionItem.getActionRequestCd()));
         addDelegatorElement(doc, root, actionItem);
         addTimestampElement(doc, root, "createDate", routeHeader.getCreateDate());
         addWorkgroupRequestElement(doc, root, actionItem);
-        addTimestampElement(doc, root, "dateAssigned", actionItem.getDateAssigned());
+        if (actionItem.getDateTimeAssigned() != null)
+            addTimestampElement(doc, root, "dateAssigned", actionItem.getDateTimeAssigned().toDate());
 
         node.appendChild(root);
     }
@@ -351,8 +354,8 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
     	LOG.info("Starting generation of immediate email reminder...");
     	LOG.info("Action Id: " + actionItem.getId() +
     			 ";  ActionRequestId: " + actionItem.getActionRequestId() + 
-    			 ";  Action Item Principal Name: " + actionItem.getPerson().getPrincipalName());
-    	LOG.info("User Principal Name: " + user.getPrincipalName());
+    			 ";  Action Item Principal Id: " + actionItem.getPrincipalId());
+    	LOG.info("User Principal Id: " + user.getPrincipalId());
         // change style name based on documentType when configurable email style on document is implemented...
         String styleSheet = documentType.getCustomEmailStylesheet();
         LOG.debug(documentType.getName() + " style: " + styleSheet);
@@ -397,7 +400,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
             } catch (Exception e) {
                 LOG.error("Error when checking for custom email body and subject.", e);
             }
-            Person person = actionItem.getPerson();
+            Person person = KimApiServiceLocator.getPersonService().getPerson(actionItem.getPrincipalId());
             DocumentRouteHeaderValue header = getRouteHeader(actionItem);
             // keep adding stuff until we have all the xml we need to formulate the message :/
             addObjectXML(doc, actionItem, root, "actionItem");

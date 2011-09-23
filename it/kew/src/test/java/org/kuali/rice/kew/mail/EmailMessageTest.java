@@ -30,9 +30,9 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.mail.EmailContent;
-import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.ActionItem;
 import org.kuali.rice.kew.mail.service.impl.ActionListEmailServiceImpl;
 import org.kuali.rice.kew.mail.service.impl.StyleableEmailContentServiceImpl;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -99,7 +99,7 @@ public class EmailMessageTest extends KEWTestCase {
         Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("arh14");
         int count = generateDocs(new String[] { "PingDocument", "PingDocumentWithEmailAttrib" }, user);
 
-        Collection<ActionItem> actionItems = KEWServiceLocator.getActionListService().getActionList(user.getPrincipalId(), null);
+        Collection<ActionItem> actionItems = org.kuali.rice.kew.actionitem.ActionItem.to(KEWServiceLocator.getActionListService().getActionList(user.getPrincipalId(), null));
         assertEquals("user should have " + count + " items in his action list.", count, actionItems.size());
 
         EmailContent content = styleableContentService.generateImmediateReminder(user, actionItems.iterator().next(), KEWServiceLocator.getDocumentTypeService().findByName(actionItems.iterator().next().getDocName()));
@@ -133,7 +133,7 @@ public class EmailMessageTest extends KEWTestCase {
         Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("arh14");
         int count = generateDocs(new String[] { "PingDocumentCustomStyle" }, user);
 
-        Collection<ActionItem> actionItems = KEWServiceLocator.getActionListService().getActionList(user.getPrincipalId(), null);
+        Collection<ActionItem> actionItems = org.kuali.rice.kew.actionitem.ActionItem.to(KEWServiceLocator.getActionListService().getActionList(user.getPrincipalId(), null));
         assertEquals("user should have " + count + " items in his action list.", count, actionItems.size());
 
         EmailContent content = styleableContentService.generateImmediateReminder(user, actionItems.iterator().next(), KEWServiceLocator.getDocumentTypeService().findByName(actionItems.iterator().next().getDocName()));

@@ -178,7 +178,6 @@
         <idref local="rice.kew.responsibilityChangeProcessor" />
         <idref local="enMoveDocumentService" />
         <idref local="enActionInvocationService" />
-        <idref local="enImmediateEmailReminderService" />
         <idref local="enActionListEmailService" />
         <idref local="enQuickLinksService" />
         <idref local="enDocumentRequeuerService"/>
@@ -522,7 +521,6 @@
   <bean id="enBlanketApproveProcessor" class="org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessor"/>
   <bean id="enMoveDocumentService" class="org.kuali.rice.kew.actions.asyncservices.MoveDocumentProcessor" />
   <bean id="enActionInvocationService" class="org.kuali.rice.kew.actions.asyncservices.ActionInvocationProcessor" />
-  <bean id="enImmediateEmailReminderService" class="org.kuali.rice.kew.mail.service.impl.ActionListImmediateProcessorImpl" />
   <bean id="enDocumentRequeuerService" class="org.kuali.rice.kew.actionrequest.service.impl.DocumentRequeuerImpl" />
 
   <bean id="rice.kew.documentAttributeIndexingQueue" class="org.kuali.rice.kew.impl.document.attribute.DocumentAttributeIndexingQueueImpl" />
@@ -834,6 +832,8 @@
 	</bean>
 
   <bean id="rice.kew.ruleValidationAttributeResolver" class="org.kuali.rice.kew.validation.RuleValidationAttributeResolverImpl"/>
+  
+  <bean id="rice.kew.immediateEmailReminderService" class="org.kuali.rice.kew.mail.service.impl.ImmediateEmailReminderServiceImpl"/>
   
   <bean id="rice.kew.kewTypeRepositoryService" class="org.kuali.rice.kew.impl.repository.KewTypeBoServiceImpl">
     <property name="businessObjectService" ref="businessObjectService"/>

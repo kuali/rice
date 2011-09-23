@@ -16,6 +16,14 @@
 
 package org.kuali.rice.kew.actionlist.service.impl;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.kew.actionitem.ActionItem;
@@ -39,13 +47,6 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * Default implementation of the {@link ActionListService}.
@@ -100,9 +101,7 @@ public class ActionListServiceImpl implements ActionListService {
         }
         getActionItemDAO().deleteActionItem(actionItem);
         // remove notification from KCB
-        List<ActionItem> l = new ArrayList<ActionItem>(1);
-        l.add(actionItem);
-        KEWServiceLocator.getNotificationService().removeNotification(l);
+        KEWServiceLocator.getNotificationService().removeNotification(Collections.singletonList(ActionItem.to(actionItem)));
         this.saveOutboxItem(actionItem, forceIntoOutbox);
     }
 

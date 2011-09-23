@@ -27,9 +27,8 @@ import org.kuali.rice.kcb.dto.MessageDTO;
 import org.kuali.rice.kcb.service.KCBServiceNames;
 import org.kuali.rice.kcb.service.MessagingService;
 import org.kuali.rice.kcb.util.KCBConstants;
-import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
-import org.kuali.rice.kew.api.action.RecipientType;
+import org.kuali.rice.kew.api.action.ActionItem;
 import org.kuali.rice.kew.util.KEWConstants;
 
 
@@ -46,7 +45,7 @@ public class KCBNotificationService extends DefaultNotificationService {
         String enableKENNotificationValue = ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.ENABLE_KEN_NOTIFICATION);
         boolean enableKENNotification = Boolean.parseBoolean(enableKENNotificationValue);
         // we only send per-user messages to KCB
-        if (!enableKENNotification || !RecipientType.PRINCIPAL.getCode().equals(actionItem.getRecipientTypeCode()))
+        if (!enableKENNotification || actionItem.getPrincipalId() != null)
             return;
 
 
@@ -87,7 +86,7 @@ public class KCBNotificationService extends DefaultNotificationService {
         MessagingService ms = (MessagingService) GlobalResourceLoader.getService(new QName(KCBConstants.SERVICE_NAMESPACE, KCBServiceNames.KCB_MESSAGING));
 
         for (ActionItem actionItem: actionItems) {
-        	LOG.debug("Removing KCB messages for action item: " + actionItem.getId() + " " + actionItem.getActionRequestCd() + " " + actionItem.getPerson());
+        	LOG.debug("Removing KCB messages for action item: " + actionItem.getId() + " " + actionItem.getActionRequestCd() + " " + actionItem.getPrincipalId());
             try {
                 // we don't have the action takens at this point...? :(
                 ms.removeByOriginId(String.valueOf(actionItem.getId()), null, null);

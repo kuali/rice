@@ -15,20 +15,20 @@
  */
 package mocks;
 
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.mail.Mailer;
-import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.mail.service.EmailContentService;
-import org.kuali.rice.kim.api.identity.Person;
-import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.mail.Mailer;
+import org.kuali.rice.kew.api.action.ActionItem;
+import org.kuali.rice.kew.mail.service.EmailContentService;
+import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 
 public class MockEmailNotificationServiceImpl /*extends CustomizableActionListEmailServiceImpl*/ implements MockEmailNotificationService {
@@ -57,12 +57,12 @@ public class MockEmailNotificationServiceImpl /*extends CustomizableActionListEm
      * items processed
      */
     @Override
-    public void sendImmediateReminder(Person user, ActionItem actionItem) {
+    public void sendImmediateReminder(ActionItem actionItem, Boolean skipOnApprovals) {
         //super.sendImmediateReminder(user, actionItem);
-        List actionItemsSentUser = (List)immediateReminders.get(user.getPrincipalId());
+        List actionItemsSentUser = (List)immediateReminders.get(actionItem.getPrincipalId());
         if (actionItemsSentUser == null) {
             actionItemsSentUser = new ArrayList();
-            immediateReminders.put(user.getPrincipalId(), actionItemsSentUser);
+            immediateReminders.put(actionItem.getPrincipalId(), actionItemsSentUser);
         }
         actionItemsSentUser.add(actionItem);
     }

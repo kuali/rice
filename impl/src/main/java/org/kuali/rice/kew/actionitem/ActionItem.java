@@ -16,6 +16,26 @@
  */
 package org.kuali.rice.kew.actionitem;
 
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.GenericGenerator;
@@ -32,22 +52,6 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This is the model for action items. These are displayed as the action list as well.  Mapped to ActionItemService.
@@ -426,5 +430,18 @@ public class ActionItem implements ActionItemContract, RowStyleable, Serializabl
             return null;
         }
         return org.kuali.rice.kew.api.action.ActionItem.Builder.create(bo).build();
+    }
+    
+    public static List<org.kuali.rice.kew.api.action.ActionItem> to(Collection<ActionItem> bos) {
+        if (bos == null)
+            return null;
+        if (bos.isEmpty()) 
+            return new ArrayList<org.kuali.rice.kew.api.action.ActionItem>();
+        
+        List<org.kuali.rice.kew.api.action.ActionItem> dtos = new ArrayList<org.kuali.rice.kew.api.action.ActionItem>(bos.size());
+        for (ActionItem bo : bos) {
+            dtos.add(ActionItem.to(bo));
+        }
+        return dtos;
     }
 }

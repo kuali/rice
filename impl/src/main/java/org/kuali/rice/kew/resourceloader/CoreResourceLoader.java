@@ -24,8 +24,8 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.ServiceLocator;
 import org.kuali.rice.core.impl.resourceloader.BaseWrappingResourceLoader;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.plugin.PluginRegistry;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 
 
@@ -96,7 +96,7 @@ public class CoreResourceLoader extends BaseWrappingResourceLoader {
 	 */
 	protected boolean isRemoteService(QName serviceName) {
 	    return (useRemoteEmailServices() &&
-			    serviceName.getLocalPart().equals(KEWServiceLocator.IMMEDIATE_EMAIL_REMINDER_SERVICE));
+			    serviceName.getLocalPart().equals(KewApiServiceLocator.IMMEDIATE_EMAIL_REMINDER_SERVICE_QUEUE_NAME.getLocalPart()));
 	}
 		
 	protected boolean useRemoteEmailServices() {

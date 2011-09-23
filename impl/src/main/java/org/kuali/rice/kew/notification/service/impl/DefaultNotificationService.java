@@ -24,14 +24,14 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.collections.ComparatorUtils;
-import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionitem.ActionItemComparator;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.action.ActionItem;
 import org.kuali.rice.kew.api.action.DelegationType;
+import org.kuali.rice.kew.api.mail.ImmediateEmailReminderService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.mail.service.ActionListImmediateEmailReminderService;
-import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.notification.service.NotificationService;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -72,8 +72,9 @@ public class DefaultNotificationService implements NotificationService {
 	 * @param actionItem the action item
 	 */
 	protected void sendNotification(ActionItem actionItem) {
-        ActionListImmediateEmailReminderService immediateEmailService = MessageServiceNames.getImmediateEmailService();
+        ImmediateEmailReminderService immediateEmailService = KewApiServiceLocator.getImmediateEmailReminderService();
         immediateEmailService.sendReminder(actionItem, RouteContext.getCurrentRouteContext().isDoNotSendApproveNotificationEmails());
+        // TODO: JLR - replace with direct call to ActionListEmailService 
 	}
 
 	protected boolean shouldNotify(ActionItem actionItem) {

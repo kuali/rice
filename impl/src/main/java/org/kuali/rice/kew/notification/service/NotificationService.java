@@ -18,7 +18,8 @@ package org.kuali.rice.kew.notification.service;
 
 import java.util.List;
 
-import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.api.action.ActionItem;
+
 
 
 /**

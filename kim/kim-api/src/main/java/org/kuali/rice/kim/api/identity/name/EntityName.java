@@ -1,11 +1,28 @@
 package org.kuali.rice.kim.api.identity.name;
 
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Date;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.CodedAttribute;
+import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
+import org.kuali.rice.kim.api.identity.Type;
+import org.kuali.rice.kim.api.identity.TypeContract;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -38,6 +55,7 @@ import java.util.Collection;
     EntityName.Elements.NAME_SUFFIX_UNMASKED,
     EntityName.Elements.COMPOSITE_NAME_UNMASKED,
     EntityName.Elements.NOTE_MESSAGE,
+    EntityName.Elements.NAME_CHANGED_DATE,
     EntityName.Elements.SUPPRESS_NAME,
     EntityName.Elements.DEFAULT_VALUE,
     EntityName.Elements.ACTIVE,
@@ -83,6 +101,9 @@ public final class EntityName extends AbstractDataTransferObject
     private final String compositeNameUnmasked;
     @XmlElement(name = Elements.NOTE_MESSAGE, required = false)
     private final String noteMessage;
+    @XmlElement(name = Elements.NAME_CHANGED_DATE, required = false)
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
+    private final DateTime nameChangedDate;
     @XmlElement(name = Elements.SUPPRESS_NAME, required = false)
     private final boolean suppressName;
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
@@ -121,6 +142,7 @@ public final class EntityName extends AbstractDataTransferObject
         this.compositeName = null;
         this.compositeNameUnmasked = null;
         this.noteMessage = null;
+        this.nameChangedDate = null;
         this.suppressName = false;
         this.versionNumber = null;
         this.objectId = null;
@@ -147,6 +169,7 @@ public final class EntityName extends AbstractDataTransferObject
         this.compositeName = builder.getCompositeName();
         this.compositeNameUnmasked = builder.getCompositeNameUnmasked();
         this.noteMessage = builder.getNoteMessage();
+        this.nameChangedDate = builder.getNameChangedDate();
         this.suppressName = builder.isSuppressName();
         this.versionNumber = builder.getVersionNumber();
         this.objectId = builder.getObjectId();
@@ -241,6 +264,11 @@ public final class EntityName extends AbstractDataTransferObject
     }
 
     @Override
+    public DateTime getNameChangedDate() {
+        return this.nameChangedDate;
+    }
+
+    @Override
     public boolean isSuppressName() {
         return this.suppressName;
     }
@@ -288,6 +316,7 @@ public final class EntityName extends AbstractDataTransferObject
         private String namePrefix;
         private String nameTitle;
         private String noteMessage;
+        private DateTime nameChangedDate;
         private boolean suppressName;
         private Long versionNumber;
         private String objectId;
@@ -317,6 +346,7 @@ public final class EntityName extends AbstractDataTransferObject
             builder.setNamePrefix(contract.getNamePrefix());
             builder.setNameTitle(contract.getNameTitle());
             builder.setNoteMessage(contract.getNoteMessage());
+            builder.setNameChangedDate(contract.getNameChangedDate());
             builder.setSuppressName(contract.isSuppressName());
             builder.setVersionNumber(contract.getVersionNumber());
             builder.setObjectId(contract.getObjectId());
@@ -437,6 +467,11 @@ public final class EntityName extends AbstractDataTransferObject
         }
 
         @Override
+        public DateTime getNameChangedDate() {
+            return this.nameChangedDate;
+        }
+
+        @Override
         public boolean isSuppressName() {
             return this.suppressName;
         }
@@ -503,6 +538,10 @@ public final class EntityName extends AbstractDataTransferObject
             this.noteMessage = noteMessage;
         }
 
+        public void setNameChangedDate(DateTime nameChangedDate) {
+            this.nameChangedDate = nameChangedDate;
+        }
+
         private void setSuppressName(boolean suppressName) {
             this.suppressName = suppressName;
         }
@@ -567,6 +606,7 @@ public final class EntityName extends AbstractDataTransferObject
         final static String COMPOSITE_NAME = "compositeName";
         final static String COMPOSITE_NAME_UNMASKED = "compositeNameUnmasked";
         final static String NOTE_MESSAGE = "noteMessage";
+        final static String NAME_CHANGED_DATE= "nameChangedDate";
         final static String SUPPRESS_NAME = "suppressName";
         final static String DEFAULT_VALUE = "defaultValue";
         final static String ACTIVE = "active";

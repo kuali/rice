@@ -5,6 +5,9 @@ import org.junit.Assert
 import org.kuali.rice.kim.api.test.JAXBAssert
 import org.kuali.rice.kim.api.identity.CodedAttribute
 import org.kuali.rice.kim.api.identity.CodedAttributeContract
+import org.kuali.rice.kim.api.identity.Type
+import org.kuali.rice.kim.api.identity.TypeContract
+import org.joda.time.DateTime
 
 class EntityNameTest {
     private static final String ID = "1";
@@ -23,6 +26,7 @@ class EntityNameTest {
     private static final String LAST_NAME = "Sob"
     private static final String NAME_SUFFIX = "Jr"
     private static final String NOTE_MESSAGE = "note message"
+    private static final DateTime NAME_CHANGED_DATE = new DateTime()
     private static final String COMPOSITE_NAME = LAST_NAME + ", " + FIRST_NAME + " " + MIDDLE_NAME;
     
     private static final String SUPPRESS = "false"
@@ -58,6 +62,7 @@ class EntityNameTest {
         <nameSuffixUnmasked>${NAME_SUFFIX}</nameSuffixUnmasked>
         <compositeNameUnmasked>${COMPOSITE_NAME}</compositeNameUnmasked>
         <noteMessage>${NOTE_MESSAGE}</noteMessage>
+        <nameChangedDate>${NAME_CHANGED_DATE}</nameChangedDate>
         <suppressName>${SUPPRESS}</suppressName>
         <defaultValue>${DEFAULT}</defaultValue>
         <active>${ACTIVE}</active>
@@ -117,6 +122,7 @@ class EntityNameTest {
             def String nameSuffixUnmasked = EntityNameTest.NAME_SUFFIX
             def String compositeNameUnmasked = EntityNameTest.COMPOSITE_NAME
             def String noteMessage = EntityNameTest.NOTE_MESSAGE
+            def DateTime nameChangedDate = EntityNameTest.NAME_CHANGED_DATE
             def boolean suppressName = EntityNameTest.SUPPRESS.toBoolean()
             def boolean defaultValue = EntityNameTest.DEFAULT.toBoolean()
             def boolean active = EntityNameTest.ACTIVE.toBoolean()

@@ -31,6 +31,9 @@ class EntityBioDemographicsBo extends PersistableBusinessObjectBase implements E
     @Column(name = "GNDR_CD")
     String genderCode;
 
+    @Column(name = "GNDR_CHNG_CD")
+    String genderChangeCode;
+
     @Column(name = "DECEASED_DT")
     Date deceasedDateValue;
 
@@ -165,6 +168,13 @@ class EntityBioDemographicsBo extends PersistableBusinessObjectBase implements E
         return this.genderCode
     }
 
+    String getGenderChangeCode() {
+        if (isSuppressPersonal()) {
+            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE
+        }
+        return this.genderChangeCode
+    }
+
     String getMaritalStatusCode() {
         if (isSuppressPersonal()) {
             return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE
@@ -211,6 +221,9 @@ class EntityBioDemographicsBo extends PersistableBusinessObjectBase implements E
 
     String getGenderCodeUnmasked() {
         return this.genderCode
+    }
+    String getGenderChangeCodeUnmasked() {
+        return this.genderChangeCode
     }
     String getMaritalStatusCodeUnmasked() {
         return this.maritalStatusCode

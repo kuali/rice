@@ -35,6 +35,7 @@ class EntityPersistenceTests extends BoPersistenceTest {
             GEO_ORIGIN: bio.geographicOrigin,
             PRIM_LANG_CD: bio.primaryLanguageCode,
             GNDR_CD: bio.genderCode,
+            GNDR_CHG_CD: bio.genderChangeCode,
             BIRTH_DT: new java.sql.Timestamp(born.time),
             BIRTH_STATE_PVC_CD: bio.birthStateProvinceCode,
             BIRTH_CNTRY_CD: bio.birthCountry,
@@ -49,6 +50,7 @@ class EntityPersistenceTests extends BoPersistenceTest {
         boService.save(entity)
         EntityNameBo name = Factory.make(EntityNameBo, entity: entity)
         boService.save(name)
+
         assertRow(standard_fields(name) + [
             ENTITY_NM_ID: name.id,
             ENTITY_ID: entity.id,
@@ -60,6 +62,7 @@ class EntityPersistenceTests extends BoPersistenceTest {
             SUFFIX_NM: name.nameSuffixUnmasked,
             NOTE_MSG: name.noteMessage,
             NM_TYP_CD: name.nameType.code,
+            NM_CHNG_DT: toDbTimestamp(name.nameChangedDate),
             DFLT_IND: name.defaultValue ? "Y" : "N",
         ],
         "KRIM_ENTITY_NM_T", "ENTITY_NM_ID")

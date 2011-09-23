@@ -26,6 +26,11 @@ import org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo
 import org.kuali.rice.kim.impl.identity.residency.EntityResidencyBo
 import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo
 import org.kuali.rice.kim.impl.identity.visa.EntityVisaBo
+import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo
+import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo
+import org.kuali.rice.kim.util.KimConstants
+import org.joda.time.DateTime
+import java.sql.Timestamp
 
 /**
  * Factory for constructing Entity- objects
@@ -41,6 +46,7 @@ class EntityFactory extends Factory {
         def values = [
             birthDateValue: now,
             genderCode: "M",
+            genderChangeCode: "...",
             deceasedDateValue: new java.sql.Date((long) (now.time + (1000L * 60 * 60 * 24 * 365 * 80))),
             maritalStatusCode: "S",
             primaryLanguageCode: "EN",
@@ -122,7 +128,7 @@ class EntityFactory extends Factory {
 
     def EntityNameBo(Map fields) {
         def values = [
-            id: Factory.makeId(), active: true, nameTitle: "DVM", namePrefix: "Mr.", firstName: "John", lastName: "Smith", nameSuffix: "Jr.", noteMessage: "note message", nameType: new EntityNameTypeBo(code: KimConstants.NameTypes.PRIMARY), nameCode: KimConstants.NameTypes.PRIMARY
+            id: Factory.makeId(), active: true, nameTitle: "DVM", namePrefix: "Mr.", firstName: "John", lastName: "Smith", nameSuffix: "Jr.", noteMessage: "note message", nameChangedDate: new Timestamp(new Date().time), nameType: new EntityNameTypeBo(code: KimConstants.NameTypes.PRIMARY), nameCode: KimConstants.NameTypes.PRIMARY
         ]
         new EntityNameBo(mergeAndLink('entity', fields, values))
     };

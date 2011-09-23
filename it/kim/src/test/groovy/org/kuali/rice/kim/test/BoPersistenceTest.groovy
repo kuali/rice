@@ -41,6 +41,8 @@ import org.junit.Assert
 import org.junit.Ignore
 import org.kuali.rice.krad.bo.PersistableBusinessObject
 import org.kuali.rice.kim.bo.ui.KimDocumentBoActivatableEditableBase
+import org.joda.time.DateTime
+import java.sql.Timestamp
 
 /**
  * Tests persisting Entity objects in order to verify ORM mappings
@@ -83,6 +85,16 @@ abstract class BoPersistenceTest extends KIMTestCase {
 
     protected def standard_fields(PersistableBusinessObject bo) {
         active_field(bo) + basic_fields(bo)
+    }
+
+    protected def toDbTimestamp(DateTime datetime) {
+        return toDbTimestamp(datetime.millis)
+    }
+
+    protected def toDbTimestamp(long millis) {
+        def timestamp = new java.sql.Timestamp(millis)
+        timestamp.nanos = 0
+        timestamp
     }
 
     protected def assertRow(Map fields, table, pk="id", ignore=["LAST_UPDT_DT"]) {

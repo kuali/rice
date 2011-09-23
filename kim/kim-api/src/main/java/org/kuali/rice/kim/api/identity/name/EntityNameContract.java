@@ -1,5 +1,6 @@
 package org.kuali.rice.kim.api.identity.name;
 
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.mo.common.Defaultable;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
@@ -7,7 +8,11 @@ import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.kim.api.identity.CodedAttributeContract;
 
+import java.util.Date;
+
 public interface EntityNameContract extends Versioned, GloballyUnique, Defaultable, Inactivatable, Identifiable {
+    public static final String NAME_CHANGED_DATE_FORMAT = "yyyy-MM-dd";
+
     /**
      * Gets this {@link Entity}'s id.
      * @return the id for this {@link EntityNameContract}, or null if none has been assigned.
@@ -119,6 +124,13 @@ public interface EntityNameContract extends Versioned, GloballyUnique, Defaultab
      * @return the message associated with this EntityName
      */
     String getNoteMessage();
+
+    /**
+     * Get the name change date {@link EntityNameContract}
+     * Corresponds to PESC name changed date
+     * @return the name change date of this EntityName
+     */
+    DateTime getNameChangedDate();
 
     /**
      * Returns a boolean value that determines if email fields should be suppressed.

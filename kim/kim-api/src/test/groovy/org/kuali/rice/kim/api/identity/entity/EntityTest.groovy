@@ -323,6 +323,7 @@ class EntityTest {
                         <nameSuffixUnmasked>${NAME.nameSuffixUnmasked}</nameSuffixUnmasked>
                         <compositeNameUnmasked>${NAME.compositeNameUnmasked}</compositeNameUnmasked>
                         <noteMessage>${NAME.noteMessage}</noteMessage>
+                        <nameChangedDate>${NAME.nameChangedDate}</nameChangedDate>
                         <suppressName>${NAME.suppressName}</suppressName>
                         <defaultValue>${NAME.defaultValue}</defaultValue>
                         <active>${NAME.active}</active>
@@ -478,6 +479,7 @@ class EntityTest {
                     <nameSuffixUnmasked>${NAME.nameSuffixUnmasked}</nameSuffixUnmasked>
                     <compositeNameUnmasked>${NAME.compositeNameUnmasked}</compositeNameUnmasked>
                     <noteMessage>${NAME.noteMessage}</noteMessage>
+                    <nameChangedDate>${NAME.nameChangedDate}</nameChangedDate>
                     <suppressName>${NAME.suppressName}</suppressName>
                     <defaultValue>${NAME.defaultValue}</defaultValue>
                     <active>${NAME.active}</active>

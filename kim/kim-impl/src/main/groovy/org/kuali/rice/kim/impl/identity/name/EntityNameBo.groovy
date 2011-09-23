@@ -14,6 +14,8 @@ import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
 
 import org.kuali.rice.kim.api.KimApiConstants
+import java.sql.Timestamp
+import org.joda.time.DateTime
 
 
 class EntityNameBo extends PersistableBusinessObjectBase implements EntityNameContract {
@@ -61,6 +63,9 @@ class EntityNameBo extends PersistableBusinessObjectBase implements EntityNameCo
     @Column(name = "NOTE_MSG")
 	String noteMessage;
 
+    @Column(name = "NM_CHNG_DT")
+    Timestamp nameChangedDate;
+
 	@Transient
 	boolean suppressName;
     
@@ -97,6 +102,9 @@ class EntityNameBo extends PersistableBusinessObjectBase implements EntityNameCo
         bo.nameTitle = immutable.nameTitleUnmasked
         bo.nameSuffix = immutable.nameSuffixUnmasked
         bo.noteMessage = immutable.noteMessage
+        if (immutable.nameChangedDate != null) {
+            bo.nameChangedDate = new Timestamp(immutable.nameChangedDate.millis);
+        }
 
         bo.defaultValue = immutable.defaultValue
         bo.versionNumber = immutable.versionNumber
@@ -179,6 +187,10 @@ class EntityNameBo extends PersistableBusinessObjectBase implements EntityNameCo
 
     String getCompositeNameUnmasked() {
         return getLastName() + ", " + getFirstName() + (getMiddleName()==null?"":" " + getMiddleName())
+    }
+
+    DateTime getNameChangedDate() {
+        return nameChangedDate ? new DateTime(nameChangedDate.time) : null
     }
 
     boolean isSuppressName() {

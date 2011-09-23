@@ -8,6 +8,7 @@ import org.kuali.rice.kim.test.BoPersistenceTest
 import org.kuali.rice.kim.test.Factory
 import org.kuali.rice.kim.impl.identity.name.EntityNameBo
 import org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo
+import org.joda.time.DateTime
 
 /**
  * Tests persisting PersonDocumentName object in order to verify ORM mappings
@@ -28,6 +29,7 @@ class PersonDocumentNamePersistenceTest extends BoPersistenceTest {
             lastName: name.lastNameUnmasked,
             nameSuffix: name.nameSuffixUnmasked,
             entityNameType: name.nameType,
+            nameChangedDate: new java.sql.Timestamp(new Date().time),
             nameCode: name.nameType.code
         ])
 
@@ -42,6 +44,7 @@ class PersonDocumentNamePersistenceTest extends BoPersistenceTest {
             LAST_NM: pdn.lastName,
             SUFFIX_NM: pdn.nameSuffix,
             NOTE_MSG: pdn.noteMessage,
+            NM_CHNG_DT: toDbTimestamp(pdn.nameChangedDate.time),
             NM_TYP_CD: pdn.entityNameType.code
         ],
         "KRIM_PND_NM_MT", "ENTITY_NM_ID")

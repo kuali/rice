@@ -139,12 +139,26 @@ public interface EntityBioDemographicsContract extends Versioned, GloballyUnique
      */
 	String getGeographicOriginUnmasked();
 
-     /**
+    /**
      * Get the note associated with this {@link EntityBioDemographicsContract}
      * Corresponds to PESC NoteMessage
      * @return the message associated with this EntityName
      */
     String getNoteMessage();
+
+    /**
+     * Get the {@link EntityBioDemographicsContract}'s gender change code
+     * Corresponds to PESC GenderChangeCode
+     * @return the gender change code or null if no change
+     */
+    String getGenderChangeCode();
+
+    /**
+     * Get the {@link EntityBioDemographicsContract}'s gender change code
+     * Corresponds to PESC GenderChangeCode
+     * @return the gender change code or null if no change
+     */
+    String getGenderChangeCodeUnmasked();
 
     /**
      * Returns a boolean value that determines if personal fields should be suppressed.

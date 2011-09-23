@@ -69,6 +69,15 @@ public final class KimConstants {
 		}
     }
 
+    public static final class GenderChangeCodes {
+		public static final String MALE_TO_FEMALE = "ChangeFemale";
+        public static final String FEMALE_TO_MALE = "ChangeMale";
+
+		private GenderChangeCodes() {
+			throw new UnsupportedOperationException("do not call");
+		}
+    }
+
 	public static final class PersonExternalIdentifierTypes {
 		public static final String TAX = "TAX";
 		

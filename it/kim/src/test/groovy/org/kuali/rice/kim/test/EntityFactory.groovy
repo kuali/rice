@@ -28,7 +28,6 @@ import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo
 import org.kuali.rice.kim.impl.identity.visa.EntityVisaBo
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo
-import org.kuali.rice.kim.util.KimConstants
 import org.joda.time.DateTime
 import java.sql.Timestamp
 

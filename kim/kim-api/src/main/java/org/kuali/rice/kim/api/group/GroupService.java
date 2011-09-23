@@ -458,7 +458,7 @@ public interface GroupService {
      */
     @WebMethod(operationName = "createGroup")
     @WebResult(name = "group")
-    @CacheEvict(value=Group.Cache.NAME, allEntries = true)
+    @CacheEvict(value={Group.Cache.NAME,GroupMember.Cache.NAME}, allEntries = true)
 	Group createGroup(@WebParam(name="group") Group group) throws RiceIllegalArgumentException;
 
     /**
@@ -506,7 +506,7 @@ public interface GroupService {
      */
     @WebMethod(operationName = "addGroupToGroup")
     @WebResult(name = "addedToGroup")
-    @CacheEvict(value=GroupMember.Cache.NAME, allEntries = true)
+    @CacheEvict(value={Group.Cache.NAME,GroupMember.Cache.NAME}, allEntries = true)
     boolean addGroupToGroup(@WebParam(name="childId") String childId, @WebParam(name="parentId") String parentId) throws RiceIllegalArgumentException;
 
     /**
@@ -519,7 +519,7 @@ public interface GroupService {
      */
     @WebMethod(operationName = "removeGroupFromGroup")
     @WebResult(name = "removedFromGroup")
-    @CacheEvict(value=GroupMember.Cache.NAME, allEntries = true)
+    @CacheEvict(value={Group.Cache.NAME,GroupMember.Cache.NAME}, allEntries = true)
     boolean removeGroupFromGroup(@WebParam(name="childId") String childId, @WebParam(name="parentId") String parentId) throws RiceIllegalArgumentException;
 
     /**
@@ -532,7 +532,7 @@ public interface GroupService {
      */
     @WebMethod(operationName = "addPrincipalToGroup")
     @WebResult(name = "addedToGroup")
-    @CacheEvict(value=GroupMember.Cache.NAME, allEntries = true)
+    @CacheEvict(value={Group.Cache.NAME,GroupMember.Cache.NAME}, allEntries = true)
     boolean addPrincipalToGroup(@WebParam(name="principalId") String principalId, @WebParam(name="groupId") String groupId) throws RiceIllegalArgumentException;
 
     /**
@@ -545,7 +545,7 @@ public interface GroupService {
      */
     @WebMethod(operationName = "removePrincipalFromGroup")
     @WebResult(name = "removedFromGroup")
-    @CacheEvict(value=GroupMember.Cache.NAME, allEntries = true)
+    @CacheEvict(value={Group.Cache.NAME,GroupMember.Cache.NAME}, allEntries = true)
     boolean removePrincipalFromGroup(@WebParam(name="principalId") String principalId, @WebParam(name="groupId") String groupId) throws RiceIllegalArgumentException;
 
     /**
@@ -555,6 +555,6 @@ public interface GroupService {
      * @throws IllegalArgumentException if the groupId is null or blank
      */
     @WebMethod(operationName = "removeAllMembers")
-    @CacheEvict(value=GroupMember.Cache.NAME, allEntries = true)
+    @CacheEvict(value={Group.Cache.NAME,GroupMember.Cache.NAME}, allEntries = true)
     void removeAllMembers( @WebParam(name="groupId") String groupId ) throws RiceIllegalArgumentException;
 }

@@ -97,7 +97,7 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
                 }
             }
         } catch (Throwable t) {
-            LOG.error("failed to flush the queue for serviceName " + serviceName, t);
+            LOG.error("failed to execute distributed flush for serviceName " + serviceName, t);
         }
     }
 

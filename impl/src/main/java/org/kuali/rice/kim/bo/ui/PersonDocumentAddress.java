@@ -17,6 +17,7 @@ package org.kuali.rice.kim.bo.ui;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo;
 
 import javax.persistence.Column;
@@ -29,6 +30,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.sql.Timestamp;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -82,7 +84,20 @@ public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
 	protected String line3;
 
     @Column(name = "ADDR_FMT")
-	protected String addressFormat;
+    protected String addressFormat;
+
+    @Column(name = "MOD_DT")
+    protected Timestamp modifiedDate;
+
+    @Column(name = "VALID_DT")
+    protected Timestamp validatedDate;
+
+    @Type(type="yes_no")
+	@Column(name="VALID_IND")
+    protected boolean validated;
+
+    @Column(name = "NOTE_MSG")
+	protected String noteMessage;
 
 	@ManyToOne(targetEntity=EntityAddressTypeBo.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "ADDR_TYP_CD", insertable = false, updatable = false)
@@ -159,6 +174,22 @@ public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
 		return addressFormat;
 	}
 
+    public Timestamp getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public Timestamp getValidatedDate() {
+        return validatedDate;
+    }
+
+    public boolean isValidated() {
+        return validated;
+    }
+
+    public String getNoteMessage() {
+        return noteMessage;
+    }
+
 	/**
 	 * This overridden method ...
 	 * 
@@ -230,6 +261,22 @@ public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
 	public void setAddressFormat(String addressFormat) {
 		this.addressFormat = addressFormat;
 	}
+
+    public void setModifiedDate(Timestamp modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public void setValidatedDate(Timestamp validatedDate) {
+        this.validatedDate = validatedDate;
+    }
+
+    public void setValidated(boolean validated) {
+        this.validated = validated;
+    }
+
+    public void setNoteMessage(String noteMessage) {
+        this.noteMessage = noteMessage;
+    }
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#setPostalCode(java.lang.String)

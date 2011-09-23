@@ -6,6 +6,7 @@ import org.kuali.rice.kim.impl.identity.entity.EntityBo
 import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo
 import org.kuali.rice.kim.test.BoPersistenceTest
 import org.kuali.rice.kim.test.Factory
+import org.joda.time.DateTime
 
 /**
  * Tests persisting PersonDocumentAddress object in order to verify ORM mappings
@@ -33,7 +34,11 @@ class PersonDocumentAddressPersistenceTest extends BoPersistenceTest {
             line1: addr.line1Unmasked,
             line2: addr.line2Unmasked,
             line3: addr.line3Unmasked,
-            addressFormat: addr.addressFormat
+            addressFormat: addr.addressFormat,
+            modifiedDate: toDbTimestamp(new DateTime(addr.modifiedDate)),
+            validatedDate: toDbTimestamp(new DateTime(addr.validatedDate)),
+            validated: addr.validated,
+            noteMessage: addr.noteMessage
         ])
 
         boService.save(pda)
@@ -49,6 +54,10 @@ class PersonDocumentAddressPersistenceTest extends BoPersistenceTest {
             POSTAL_CNTRY_CD: pda.countryCode,
             ADDR_TYP_CD: pda.addressTypeCode,
             ADDR_FMT: pda.addressFormat,
+            MOD_DT: toDbTimestamp(new DateTime(pda.modifiedDate)),
+            VALID_DT: toDbTimestamp(new DateTime(pda.validatedDate)),
+            VALID_IND: pda.validated ? "Y" : "N",
+            NOTE_MSG: pda.noteMessage,
             CITY: pda.city,
             DISPLAY_SORT_CD: null
         ],

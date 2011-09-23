@@ -35,7 +35,7 @@ public class LocationCampusIT {
     private Selenium selenium;
     @Before
     public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", "http://localhost:8080/");
+        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
         selenium.start();
     }
 

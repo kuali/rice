@@ -34,7 +34,7 @@ public class UIFComponentValidationRegexPatternIT {
 
     @Before
     public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", "http://localhost:8080/");
+        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
         selenium.start();
     }
 
@@ -48,7 +48,7 @@ public class UIFComponentValidationRegexPatternIT {
          *  
          */
         
-        selenium.open("http://localhost:8080/kr-dev/portal.do");
+        selenium.open(System.getProperty("remote.public.url"));
         assertEquals("Login", selenium.getTitle());
         selenium.type("__login_user", "admin");
         selenium.click("//input[@value='Login']");

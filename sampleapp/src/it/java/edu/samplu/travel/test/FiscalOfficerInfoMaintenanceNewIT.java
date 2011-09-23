@@ -32,7 +32,7 @@ public class FiscalOfficerInfoMaintenanceNewIT {
     @Before
     public void setUp() throws Exception { 
         //---- 3rd parameter(*firefox) can also be replaced by *chrome , *googlechrome.
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", "http://localhost:8080/");
+        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));
         selenium.start();
     }
     

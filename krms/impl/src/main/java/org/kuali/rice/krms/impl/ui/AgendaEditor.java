@@ -190,6 +190,20 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
         return copyRuleName;
     }
 
+    /**
+     * @return the selectedPropositionId
+     */
+    public String getSelectedPropositionId() {
+        return this.selectedPropositionId;
+    }
+
+    /**
+     * @param selectedPropositionId the selectedPropositionId to set
+     */
+    public void setSelectedPropositionId(String selectedPropositionId) {
+        this.selectedPropositionId = selectedPropositionId;
+    }
+
     // Need to override this method since the actual persistable BO is wrapped inside dataObject.
     @Override
     public void refreshNonUpdateableReferences() {

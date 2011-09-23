@@ -1,3 +1,6 @@
+function getSelectedPropositionInput() {
+    return jq('input[id="proposition_selected_attribute"]');
+}
 
 // binding to tree loaded event
 function initRuleTree(componentId){
@@ -9,7 +12,7 @@ jq('#' + componentId).bind('loaded.jstree', function (event, data) {
     // rule node clicks should set the selected item
     jq('a.ruleTreeNode').click( function() {
         var propositionId = jq(this.parentNode).find('input').attr('value');
-        var selectedItemTracker = jq('input[name=\"proposition_selected_attribute\"]');
+        var selectedItemTracker = getSelectedPropositionInput();
         selectedItemTracker.val(propositionId);
         // make li show containment of children
         jq('li').each( function() {

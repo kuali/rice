@@ -17,6 +17,8 @@ package org.kuali.rice.krms.impl.ui;
 
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.util.tree.Node;
+import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krad.uif.UifParameters;
@@ -29,6 +31,7 @@ import org.kuali.rice.krms.impl.repository.AgendaItemBo;
 import org.kuali.rice.krms.impl.repository.ContextBo;
 import org.kuali.rice.krms.impl.repository.ContextBoService;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
+import org.kuali.rice.krms.impl.repository.PropositionBo;
 import org.kuali.rice.krms.impl.repository.RuleBo;
 import org.kuali.rice.krms.impl.rule.AgendaEditorBusRule;
 import org.springframework.stereotype.Controller;
@@ -1228,20 +1231,48 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         // TODO: for a simple prop add an edit simple proposition node
 
         AgendaEditor agendaEditor = getAgendaEditor(form);
-        // this is the root of the tree:
-        AgendaItemBo firstItem = getFirstAgendaItem(agendaEditor.getAgenda());
+        // Get the selected proposition id and find the node in the tree
+        String selectedPropId = agendaEditor.getSelectedPropositionId();
+        Node propNode = findPropositionTreeNode(agendaEditor.getAgendaItemLine().getRule().getPropositionTree().getRootElement(), selectedPropId);
 
-        String selectedPropId = request.getParameter("proposition_selected_attribute");       // just a debug stab
-        String selectedPropId2 = agendaEditor.getAgendaItemLine().getRule().getSelectedPropositionId();
-        String selectedItemId = agendaEditor.getSelectedAgendaItemId();
-        AgendaItemBo node = getAgendaItemById(firstItem, selectedItemId);
-
-        setSelectedAgendaItemId(form, selectedItemId);
-        setAgendaItemLine(form, node);
+        // Swap out display node for edit node
+        replaceWithEditNode(propNode);
 
         return super.refresh(form, result, request, response);
     }
 
-    
+    private Node<RuleTreeNode, String> findPropositionTreeNode(Node<RuleTreeNode, String> currentNode, String selectedPropId){
+        Node<RuleTreeNode,String> bingo = null;
+        if (currentNode.getData() != null){
+            RuleTreeNode dataNode = currentNode.getData();
+            if (selectedPropId.equalsIgnoreCase(dataNode.getProposition().getId())){
+                return currentNode;
+            }
+        }
+        List<Node<RuleTreeNode,String>> children = currentNode.getChildren();
+        for( Node<RuleTreeNode,String> child : children){
+              bingo = findPropositionTreeNode(child, selectedPropId);
+              if (bingo != null) break;
+        }
+        return bingo;
+    }
 
+    private void replaceWithEditNode(Node<RuleTreeNode, String> node){
+        if (node != null) {
+            RuleTreeNode oldChild = node.getData();
+            PropositionBo prop = oldChild.getProposition();
+
+            if (prop != null) {
+                // Simple Proposition
+                // add a node to edit the proposition parameters
+                Node<RuleTreeNode, String> editChild = new Node<RuleTreeNode, String>();
+                EditSimplePropositionParameterNode eNode = new EditSimplePropositionParameterNode(prop);
+                editChild.setNodeLabel("");
+                editChild.setNodeType("ruleTreeNode editSimplePropositionParameterNode");
+                editChild.setData(eNode);
+                node.removeChildAt(0);
+                node.addChild(editChild);
+            }
+        }
+    }
 }

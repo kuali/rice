@@ -80,18 +80,26 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
     * @return Tree representing a rule proposition.
     */
    public Tree getPropositionTree() {
-       Tree<RuleTreeNode, String> propositionTree = new Tree<RuleTreeNode, String>();
+       if (this.propositionTree == null){
+           this.propositionTree = refreshPropositionTree();
+       }
+
+       return this.propositionTree;
+   }
+
+   public Tree refreshPropositionTree(){
+       Tree myTree = new Tree<RuleTreeNode, String>();
 
        Node<RuleTreeNode, String> rootNode = new Node<RuleTreeNode, String>();
-       propositionTree.setRootElement(rootNode);
+       myTree.setRootElement(rootNode);
 
        propositionSummaryBuffer = new StringBuffer();
        PropositionBo prop = this.getProposition();
        buildPropTree( rootNode, prop );
-              
-       return propositionTree;
+       this.propositionTree = myTree;
+       return myTree;
    }
-   
+
    private void buildPropTree( Node sprout, PropositionBo prop){       
        // This is a work in progress
        // will need a recursive function to walk the tree in the compound proposition

@@ -35,8 +35,8 @@ class PersonDocumentAddressPersistenceTest extends BoPersistenceTest {
             line2: addr.line2Unmasked,
             line3: addr.line3Unmasked,
             addressFormat: addr.addressFormat,
-            modifiedDate: addr.modifiedDate,
-            validatedDate: addr.validatedDate,
+            modifiedDate: toDbTimestamp(addr.modifiedDate),
+            validatedDate: toDbTimestamp(addr.validatedDate),
             validated: addr.validated,
             noteMessage: addr.noteMessage
         ])
@@ -54,8 +54,8 @@ class PersonDocumentAddressPersistenceTest extends BoPersistenceTest {
             POSTAL_CNTRY_CD: pda.countryCode,
             ADDR_TYP_CD: pda.addressTypeCode,
             ADDR_FMT: pda.addressFormat,
-            MOD_DT: toDbTimestamp(pda.modifiedDate),
-            VALID_DT: toDbTimestamp(pda.validatedDate),
+            MOD_DT: toDbTimestamp(pda.modifiedDate.time),
+            VALID_DT: toDbTimestamp(pda.validatedDate.time),
             VALID_IND: pda.validated ? "Y" : "N",
             NOTE_MSG: pda.noteMessage,
             CITY: pda.city,

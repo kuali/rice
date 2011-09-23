@@ -94,7 +94,7 @@ abstract class BoPersistenceTest extends KIMTestCase {
         // this should not be rocket science but we have to deal
         // but it appears mysql (driver?) is truncating time component of datetimes
         // so we can only portably test timestamps without times...
-        new Timestamp(new Date().clearTime().time)
+        new Timestamp(new Date().time)
     }
 
     protected def toDbTimestamp(DateTime datetime) {

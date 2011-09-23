@@ -44,7 +44,7 @@ class PersonDocumentNamePersistenceTest extends BoPersistenceTest {
             LAST_NM: pdn.lastName,
             SUFFIX_NM: pdn.nameSuffix,
             NOTE_MSG: pdn.noteMessage,
-            NM_CHNG_DT: toDbTimestamp(pdn.nameChangedDate),
+            NM_CHNG_DT: toDbTimestamp(pdn.nameChangedDate.time),
             NM_TYP_CD: pdn.entityNameType.code
         ],
         "KRIM_PND_NM_MT", "ENTITY_NM_ID")

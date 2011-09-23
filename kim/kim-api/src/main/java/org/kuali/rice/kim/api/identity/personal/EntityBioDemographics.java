@@ -46,6 +46,7 @@ import java.util.Date;
     EntityBioDemographics.Elements.BIRTH_STATE_PROVINCE_CODE_UNMASKED,
     EntityBioDemographics.Elements.BIRTH_CITY_UNMASKED,
     EntityBioDemographics.Elements.GEOGRAPHIC_ORIGIN_UNMASKED,
+    EntityBioDemographics.Elements.NOTE_MESSAGE,
     EntityBioDemographics.Elements.SUPPRESS_PERSONAL,
     CoreConstants.CommonElements.VERSION_NUMBER,
     CoreConstants.CommonElements.OBJECT_ID,
@@ -96,6 +97,8 @@ public final class EntityBioDemographics extends AbstractDataTransferObject
     private final String birthCityUnmasked;
     @XmlElement(name = Elements.GEOGRAPHIC_ORIGIN_UNMASKED, required = false)
     private final String geographicOriginUnmasked;
+    @XmlElement(name = Elements.NOTE_MESSAGE, required = false)
+    private final String noteMessage;
     @XmlElement(name = Elements.SUPPRESS_PERSONAL, required = false)
     private final boolean suppressPersonal;
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
@@ -131,6 +134,7 @@ public final class EntityBioDemographics extends AbstractDataTransferObject
         this.birthStateProvinceCodeUnmasked = null;
         this.birthCityUnmasked = null;
         this.geographicOriginUnmasked = null;
+        this.noteMessage = null;
         this.suppressPersonal = false;
         this.versionNumber = null;
         this.objectId = null;
@@ -157,6 +161,7 @@ public final class EntityBioDemographics extends AbstractDataTransferObject
         this.birthStateProvinceCodeUnmasked = builder.getBirthStateProvinceCodeUnmasked();
         this.birthCityUnmasked = builder.getBirthCityUnmasked();
         this.geographicOriginUnmasked = builder.getGeographicOriginUnmasked();
+        this.noteMessage = builder.getNoteMessage();
         this.suppressPersonal = builder.isSuppressPersonal();
         this.versionNumber = builder.getVersionNumber();
         this.objectId = builder.getObjectId();
@@ -269,6 +274,11 @@ public final class EntityBioDemographics extends AbstractDataTransferObject
     }
 
     @Override
+    public String getNoteMessage() {
+        return this.noteMessage;
+    }
+
+    @Override
     public boolean isSuppressPersonal() {
         return this.suppressPersonal;
     }
@@ -334,6 +344,7 @@ public final class EntityBioDemographics extends AbstractDataTransferObject
         private String birthStateProvinceCode;
         private String birthCity;
         private String geographicOrigin;
+        private String noteMessage;
         private boolean suppressPersonal;
         private Long versionNumber;
         private String objectId;
@@ -362,6 +373,7 @@ public final class EntityBioDemographics extends AbstractDataTransferObject
             builder.setBirthStateProvinceCode(contract.getBirthStateProvinceCode());
             builder.setBirthCity(contract.getBirthCity());
             builder.setGeographicOrigin(contract.getGeographicOrigin());
+            builder.setNoteMessage(contract.getNoteMessage());
             builder.setSuppressPersonal(contract.isSuppressPersonal());
             builder.setVersionNumber(contract.getVersionNumber());
             builder.setObjectId(contract.getObjectId());
@@ -505,6 +517,11 @@ public final class EntityBioDemographics extends AbstractDataTransferObject
         }
 
         @Override
+        public String getNoteMessage() {
+            return this.noteMessage;
+        }
+
+        @Override
         public boolean isSuppressPersonal() {
             return this.suppressPersonal;
         }
@@ -595,6 +612,10 @@ public final class EntityBioDemographics extends AbstractDataTransferObject
             this.geographicOrigin = geographicOrigin;
         }
 
+        private void setNoteMessage(String noteMessage) {
+            this.noteMessage = noteMessage;
+        }
+
         private void setSuppressPersonal(boolean suppressPersonal) {
             this.suppressPersonal = suppressPersonal;
         }
@@ -648,6 +669,7 @@ public final class EntityBioDemographics extends AbstractDataTransferObject
         final static String BIRTH_STATE_PROVINCE_CODE_UNMASKED = "birthStateProvinceCodeUnmasked";
         final static String BIRTH_CITY_UNMASKED = "birthCityUnmasked";
         final static String GEOGRAPHIC_ORIGIN_UNMASKED = "geographicOriginUnmasked";
+        final static String NOTE_MESSAGE = "noteMessage";
         final static String SUPPRESS_PERSONAL = "suppressPersonal";
 
     }

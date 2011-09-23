@@ -49,6 +49,7 @@ class EntityFactory extends Factory {
             birthStateProvinceCode: "IN",
             birthCity: "Bloomington",
             geographicOrigin: "None",
+            noteMessage: "note message",
             suppressPersonal: false
         ]
         new EntityBioDemographicsBo(Factory.mergeAndLink('entity', fields, values))

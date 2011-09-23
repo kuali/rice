@@ -37,7 +37,8 @@ class EntityPersistenceTests extends BoPersistenceTest {
             GNDR_CD: bio.genderCode,
             BIRTH_DT: new java.sql.Timestamp(born.time),
             BIRTH_STATE_PVC_CD: bio.birthStateProvinceCode,
-            BIRTH_CNTRY_CD: bio.birthCountry
+            BIRTH_CNTRY_CD: bio.birthCountry,
+            NOTE_MSG: bio.noteMessage
         ],
         "KRIM_ENTITY_BIO_T", "ENTITY_ID")
     }

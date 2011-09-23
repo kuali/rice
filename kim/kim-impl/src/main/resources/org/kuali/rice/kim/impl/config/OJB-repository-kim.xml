@@ -255,6 +255,7 @@
     <field-descriptor name="birthStateProvinceCode" column="BIRTH_STATE_PVC_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="birthCountry" column="BIRTH_CNTRY_CD" jdbc-type="VARCHAR"  />
     <field-descriptor name="geographicOrigin" column="GEO_ORIGIN" jdbc-type="VARCHAR"  />
+    <field-descriptor name="noteMessage" column="NOTE_MSG" jdbc-type="VARCHAR"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />
   </class-descriptor>

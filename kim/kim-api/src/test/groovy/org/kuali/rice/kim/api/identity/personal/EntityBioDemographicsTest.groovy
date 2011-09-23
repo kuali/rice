@@ -23,6 +23,7 @@ class EntityBioDemographicsTest {
     private static final String BIRTH_STATE_PROVINCE_CODE = "ST";
     private static final String BIRTH_CITY = "CITY";
     private static final String GEOGRAPHIC_ORIGIN = "Over there";
+    private static final String NOTE_MESSAGE = "noteMessage";
     private static final String SUPPRESS_PERSONAL = "false";
     
     private static final Long VERSION_NUMBER = new Integer(1);
@@ -51,6 +52,7 @@ class EntityBioDemographicsTest {
         <birthStateProvinceCodeUnmasked>${BIRTH_STATE_PROVINCE_CODE}</birthStateProvinceCodeUnmasked>
         <birthCityUnmasked>${BIRTH_CITY}</birthCityUnmasked>
         <geographicOriginUnmasked>${GEOGRAPHIC_ORIGIN}</geographicOriginUnmasked>
+        <noteMessage>${NOTE_MESSAGE}</noteMessage>
         <suppressPersonal>${SUPPRESS_PERSONAL}</suppressPersonal>
         <versionNumber>${VERSION_NUMBER}</versionNumber>
         <objectId>${OBJECT_ID}</objectId>
@@ -165,6 +167,7 @@ class EntityBioDemographicsTest {
             def String birthStateProvinceCodeUnmasked = EntityBioDemographicsTest.BIRTH_STATE_PROVINCE_CODE
             def String birthCityUnmasked = EntityBioDemographicsTest.BIRTH_CITY
             def String geographicOriginUnmasked = EntityBioDemographicsTest.GEOGRAPHIC_ORIGIN
+            def String noteMessage = EntityBioDemographicsTest.NOTE_MESSAGE
             def boolean suppressPersonal = EntityBioDemographicsTest.SUPPRESS_PERSONAL.toBoolean()
             def Long versionNumber = EntityBioDemographicsTest.VERSION_NUMBER;
 			def String objectId = EntityBioDemographicsTest.OBJECT_ID

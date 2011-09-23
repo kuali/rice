@@ -409,6 +409,7 @@ class EntityTest {
                     <birthStateProvinceCodeUnmasked>${BIO.birthStateProvinceCodeUnmasked}</birthStateProvinceCodeUnmasked>
                     <birthCityUnmasked>${BIO.birthCityUnmasked}</birthCityUnmasked>
                     <geographicOriginUnmasked>${BIO.geographicOriginUnmasked}</geographicOriginUnmasked>
+                    <noteMessage>${BIO.noteMessage}</noteMessage>
                     <suppressPersonal>${BIO.suppressPersonal}</suppressPersonal>
                     <versionNumber>${BIO.versionNumber}</versionNumber>
                     <objectId>${BIO.objectId}</objectId>

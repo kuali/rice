@@ -55,6 +55,9 @@ class EntityBioDemographicsBo extends PersistableBusinessObjectBase implements E
     @Column(name = "GEO_ORIGIN")
     String geographicOrigin;
 
+    @Column(name = "NOTE_MSG")
+    String noteMessage;
+
     @Transient
     boolean suppressPersonal;
 
@@ -92,6 +95,8 @@ class EntityBioDemographicsBo extends PersistableBusinessObjectBase implements E
     bo.maritalStatusCode = immutable.maritalStatusCodeUnmasked
     bo.primaryLanguageCode = immutable.primaryLanguageCodeUnmasked
     bo.secondaryLanguageCode = immutable.secondaryLanguageCodeUnmasked
+    bo.noteMessage = immutable.noteMessage
+    bo.suppressPersonal = immutable.suppressPersonal
     bo.versionNumber = immutable.versionNumber
     bo.objectId = immutable.objectId
 
